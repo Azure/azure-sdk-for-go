@@ -73,8 +73,8 @@ func (afp AggregateFunctionProperties) AsBasicFunctionProperties() (BasicFunctio
 	return &afp, true
 }
 
-// AvroSerialization describes how data from an input is serialized or how data is serialized when written to
-// an output in Avro format.
+// AvroSerialization describes how data from an input is serialized or how data is serialized when written
+// to an output in Avro format.
 type AvroSerialization struct {
 	// Properties - The properties that are associated with the Avro serialization type. Required on PUT (CreateOrReplace) requests.
 	Properties interface{} `json:"properties,omitempty"`
@@ -499,8 +499,8 @@ func (amlsfb *AzureMachineLearningServiceFunctionBinding) UnmarshalJSON(body []b
 	return nil
 }
 
-// AzureMachineLearningServiceFunctionBindingProperties the binding properties associated with an Azure Machine
-// learning web service.
+// AzureMachineLearningServiceFunctionBindingProperties the binding properties associated with an Azure
+// Machine learning web service.
 type AzureMachineLearningServiceFunctionBindingProperties struct {
 	// Endpoint - The Request-Response execute endpoint of the Azure Machine Learning web service.
 	Endpoint *string `json:"endpoint,omitempty"`
@@ -516,8 +516,8 @@ type AzureMachineLearningServiceFunctionBindingProperties struct {
 	NumberOfParallelRequests *int32 `json:"numberOfParallelRequests,omitempty"`
 }
 
-// AzureMachineLearningServiceFunctionBindingRetrievalProperties the binding retrieval properties associated
-// with an Azure Machine learning web service.
+// AzureMachineLearningServiceFunctionBindingRetrievalProperties the binding retrieval properties
+// associated with an Azure Machine learning web service.
 type AzureMachineLearningServiceFunctionBindingRetrievalProperties struct {
 	// ExecuteEndpoint - The Request-Response execute endpoint of the Azure Machine Learning web service.
 	ExecuteEndpoint *string `json:"executeEndpoint,omitempty"`
@@ -525,8 +525,8 @@ type AzureMachineLearningServiceFunctionBindingRetrievalProperties struct {
 	UdfType UdfType `json:"udfType,omitempty"`
 }
 
-// AzureMachineLearningServiceFunctionRetrieveDefaultDefinitionParameters the parameters needed to retrieve the
-// default function definition for an Azure Machine Learning web service function.
+// AzureMachineLearningServiceFunctionRetrieveDefaultDefinitionParameters the parameters needed to retrieve
+// the default function definition for an Azure Machine Learning web service function.
 type AzureMachineLearningServiceFunctionRetrieveDefaultDefinitionParameters struct {
 	// AzureMachineLearningServiceFunctionBindingRetrievalProperties - The binding retrieval properties associated with an Azure Machine learning web service.
 	*AzureMachineLearningServiceFunctionBindingRetrievalProperties `json:"bindingRetrievalProperties,omitempty"`
@@ -610,8 +610,8 @@ func (amlsfrddp *AzureMachineLearningServiceFunctionRetrieveDefaultDefinitionPar
 	return nil
 }
 
-// AzureMachineLearningServiceInputColumn describes an input column for the Azure Machine Learning web service
-// endpoint.
+// AzureMachineLearningServiceInputColumn describes an input column for the Azure Machine Learning web
+// service endpoint.
 type AzureMachineLearningServiceInputColumn struct {
 	// Name - The name of the input column.
 	Name *string `json:"name,omitempty"`
@@ -724,8 +724,8 @@ func (amlsfb *AzureMachineLearningStudioFunctionBinding) UnmarshalJSON(body []by
 	return nil
 }
 
-// AzureMachineLearningStudioFunctionBindingProperties the binding properties associated with an Azure Machine
-// learning Studio.
+// AzureMachineLearningStudioFunctionBindingProperties the binding properties associated with an Azure
+// Machine learning Studio.
 type AzureMachineLearningStudioFunctionBindingProperties struct {
 	// Endpoint - The Request-Response execute endpoint of the Azure Machine Learning Studio. Find out more here: https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs
 	Endpoint *string `json:"endpoint,omitempty"`
@@ -748,8 +748,8 @@ type AzureMachineLearningStudioFunctionBindingRetrievalProperties struct {
 	UdfType UdfType `json:"udfType,omitempty"`
 }
 
-// AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters the parameters needed to retrieve the
-// default function definition for an Azure Machine Learning Studio function.
+// AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters the parameters needed to retrieve
+// the default function definition for an Azure Machine Learning Studio function.
 type AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters struct {
 	// AzureMachineLearningStudioFunctionBindingRetrievalProperties - The binding retrieval properties associated with an Azure Machine learning Studio.
 	*AzureMachineLearningStudioFunctionBindingRetrievalProperties `json:"bindingRetrievalProperties,omitempty"`
@@ -1089,7 +1089,8 @@ type AzureSQLReferenceInputDataSourceProperties struct {
 	DeltaSnapshotQuery *string `json:"deltaSnapshotQuery,omitempty"`
 }
 
-// AzureSynapseDataSourceProperties the properties that are associated with an Azure SQL database data source.
+// AzureSynapseDataSourceProperties the properties that are associated with an Azure SQL database data
+// source.
 type AzureSynapseDataSourceProperties struct {
 	// Server - The name of the SQL server containing the Azure SQL database. Required on PUT (CreateOrReplace) requests.
 	Server *string `json:"server,omitempty"`
@@ -1710,8 +1711,8 @@ func (bsids *BlobStreamInputDataSource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// BlobStreamInputDataSourceProperties the properties that are associated with a blob input containing stream
-// data.
+// BlobStreamInputDataSourceProperties the properties that are associated with a blob input containing
+// stream data.
 type BlobStreamInputDataSourceProperties struct {
 	// SourcePartitionCount - The partition count of the blob input data source. Range 1 - 256.
 	SourcePartitionCount *int32 `json:"sourcePartitionCount,omitempty"`
@@ -1942,8 +1943,11 @@ func (page ClusterJobListResultPage) Values() []ClusterJob {
 }
 
 // Creates a new instance of the ClusterJobListResultPage type.
-func NewClusterJobListResultPage(getNextPage func(context.Context, ClusterJobListResult) (ClusterJobListResult, error)) ClusterJobListResultPage {
-	return ClusterJobListResultPage{fn: getNextPage}
+func NewClusterJobListResultPage(cur ClusterJobListResult, getNextPage func(context.Context, ClusterJobListResult) (ClusterJobListResult, error)) ClusterJobListResultPage {
+	return ClusterJobListResultPage{
+		fn:   getNextPage,
+		cjlr: cur,
+	}
 }
 
 // ClusterListResult a list of clusters populated by a 'list' operation.
@@ -2098,8 +2102,11 @@ func (page ClusterListResultPage) Values() []Cluster {
 }
 
 // Creates a new instance of the ClusterListResultPage type.
-func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
-	return ClusterListResultPage{fn: getNextPage}
+func NewClusterListResultPage(cur ClusterListResult, getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return ClusterListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // ClusterProperties the properties associated with a Stream Analytics cluster.
@@ -2154,7 +2161,8 @@ func (future *ClustersCreateOrUpdateFuture) Result(client ClustersClient) (c Clu
 	return
 }
 
-// ClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ClustersDeleteFuture struct {
 	azure.Future
 }
@@ -2185,7 +2193,8 @@ type ClusterSku struct {
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 
-// ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ClustersUpdateFuture struct {
 	azure.Future
 }
@@ -2314,7 +2323,8 @@ type CSharpFunctionBindingProperties struct {
 	Method *string `json:"method,omitempty"`
 }
 
-// CSharpFunctionBindingRetrievalProperties the binding retrieval properties associated with a CSharp function.
+// CSharpFunctionBindingRetrievalProperties the binding retrieval properties associated with a CSharp
+// function.
 type CSharpFunctionBindingRetrievalProperties struct {
 	// Script - The CSharp code containing a single function definition.
 	Script *string `json:"script,omitempty"`
@@ -2407,8 +2417,8 @@ func (csfrddp *CSharpFunctionRetrieveDefaultDefinitionParameters) UnmarshalJSON(
 	return nil
 }
 
-// CsvSerialization describes how data from an input is serialized or how data is serialized when written to an
-// output in CSV format.
+// CsvSerialization describes how data from an input is serialized or how data is serialized when written
+// to an output in CSV format.
 type CsvSerialization struct {
 	// CsvSerializationProperties - The properties that are associated with the CSV serialization type. Required on PUT (CreateOrReplace) requests.
 	*CsvSerializationProperties `json:"properties,omitempty"`
@@ -2505,8 +2515,8 @@ type CsvSerializationProperties struct {
 	Encoding Encoding `json:"encoding,omitempty"`
 }
 
-// CustomClrSerialization describes how data from an input is serialized or how data is serialized when written
-// to an output in custom format.
+// CustomClrSerialization describes how data from an input is serialized or how data is serialized when
+// written to an output in custom format.
 type CustomClrSerialization struct {
 	// CustomClrSerializationProperties - The properties that are associated with the CustomClr serialization type. Required on PUT (CreateOrReplace) requests.
 	*CustomClrSerializationProperties `json:"properties,omitempty"`
@@ -2595,7 +2605,8 @@ func (ccs *CustomClrSerialization) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// CustomClrSerializationProperties the properties that are associated with the CustomClr serialization type.
+// CustomClrSerializationProperties the properties that are associated with the CustomClr serialization
+// type.
 type CustomClrSerializationProperties struct {
 	// SerializationDllPath - The serialization library path.
 	SerializationDllPath *string `json:"serializationDllPath,omitempty"`
@@ -2614,8 +2625,8 @@ type DiagnosticCondition struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// Diagnostics describes conditions applicable to the Input, Output, or the job overall, that warrant customer
-// attention.
+// Diagnostics describes conditions applicable to the Input, Output, or the job overall, that warrant
+// customer attention.
 type Diagnostics struct {
 	// Conditions - READ-ONLY; A collection of zero or more conditions applicable to the resource, or to the job overall, that warrant customer attention.
 	Conditions *[]DiagnosticCondition `json:"conditions,omitempty"`
@@ -3036,8 +3047,8 @@ func (ehsids *EventHubStreamInputDataSource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// EventHubStreamInputDataSourceProperties the properties that are associated with a Event Hub input containing
-// stream data.
+// EventHubStreamInputDataSourceProperties the properties that are associated with a Event Hub input
+// containing stream data.
 type EventHubStreamInputDataSourceProperties struct {
 	// ConsumerGroupName - The name of an Event Hub Consumer Group that should be used to read events from the Event Hub. Specifying distinct consumer group names for multiple inputs allows each of those inputs to receive the same events from the Event Hub. If not specified, the input uses the Event Hub’s default consumer group.
 	ConsumerGroupName *string `json:"consumerGroupName,omitempty"`
@@ -3268,8 +3279,8 @@ type External struct {
 	Path           *string         `json:"path,omitempty"`
 }
 
-// Function a function object, containing all information associated with the named function. All functions are
-// contained under a streaming job.
+// Function a function object, containing all information associated with the named function. All functions
+// are contained under a streaming job.
 type Function struct {
 	autorest.Response `json:"-"`
 	// Properties - The properties that are associated with a function.
@@ -3656,8 +3667,11 @@ func (page FunctionListResultPage) Values() []Function {
 }
 
 // Creates a new instance of the FunctionListResultPage type.
-func NewFunctionListResultPage(getNextPage func(context.Context, FunctionListResult) (FunctionListResult, error)) FunctionListResultPage {
-	return FunctionListResultPage{fn: getNextPage}
+func NewFunctionListResultPage(cur FunctionListResult, getNextPage func(context.Context, FunctionListResult) (FunctionListResult, error)) FunctionListResultPage {
+	return FunctionListResultPage{
+		fn:  getNextPage,
+		flr: cur,
+	}
 }
 
 // FunctionOutput describes the output of a function.
@@ -3904,7 +3918,8 @@ func (frddp FunctionRetrieveDefaultDefinitionParameters) AsBasicFunctionRetrieve
 	return &frddp, true
 }
 
-// FunctionsTestFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// FunctionsTestFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type FunctionsTestFuture struct {
 	azure.Future
 }
@@ -3939,8 +3954,8 @@ type Identity struct {
 	Type        *string `json:"type,omitempty"`
 }
 
-// Input an input object, containing all information associated with the named input. All inputs are contained
-// under a streaming job.
+// Input an input object, containing all information associated with the named input. All inputs are
+// contained under a streaming job.
 type Input struct {
 	autorest.Response `json:"-"`
 	// Properties - The properties that are associated with an input. Required on PUT (CreateOrReplace) requests.
@@ -4165,8 +4180,11 @@ func (page InputListResultPage) Values() []Input {
 }
 
 // Creates a new instance of the InputListResultPage type.
-func NewInputListResultPage(getNextPage func(context.Context, InputListResult) (InputListResult, error)) InputListResultPage {
-	return InputListResultPage{fn: getNextPage}
+func NewInputListResultPage(cur InputListResult, getNextPage func(context.Context, InputListResult) (InputListResult, error)) InputListResultPage {
+	return InputListResultPage{
+		fn:  getNextPage,
+		ilr: cur,
+	}
 }
 
 // BasicInputProperties the properties that are associated with an input.
@@ -4554,8 +4572,8 @@ type JavaScriptFunctionBindingProperties struct {
 	Script *string `json:"script,omitempty"`
 }
 
-// JavaScriptFunctionBindingRetrievalProperties the binding retrieval properties associated with a JavaScript
-// function.
+// JavaScriptFunctionBindingRetrievalProperties the binding retrieval properties associated with a
+// JavaScript function.
 type JavaScriptFunctionBindingRetrievalProperties struct {
 	// Script - The JavaScript code containing a single function definition. For example: 'function (x, y) { return x + y; }'.
 	Script *string `json:"script,omitempty"`
@@ -4563,8 +4581,8 @@ type JavaScriptFunctionBindingRetrievalProperties struct {
 	UdfType UdfType `json:"udfType,omitempty"`
 }
 
-// JavaScriptFunctionRetrieveDefaultDefinitionParameters the parameters needed to retrieve the default function
-// definition for a JavaScript function.
+// JavaScriptFunctionRetrieveDefaultDefinitionParameters the parameters needed to retrieve the default
+// function definition for a JavaScript function.
 type JavaScriptFunctionRetrieveDefaultDefinitionParameters struct {
 	// JavaScriptFunctionBindingRetrievalProperties - The binding retrieval properties associated with a JavaScript function.
 	*JavaScriptFunctionBindingRetrievalProperties `json:"bindingRetrievalProperties,omitempty"`
@@ -4658,8 +4676,8 @@ type JobStorageAccount struct {
 	AccountKey *string `json:"accountKey,omitempty"`
 }
 
-// JSONSerialization describes how data from an input is serialized or how data is serialized when written to
-// an output in JSON format.
+// JSONSerialization describes how data from an input is serialized or how data is serialized when written
+// to an output in JSON format.
 type JSONSerialization struct {
 	// JSONSerializationProperties - The properties that are associated with the JSON serialization type. Required on PUT (CreateOrReplace) requests.
 	*JSONSerializationProperties `json:"properties,omitempty"`
@@ -4756,8 +4774,8 @@ type JSONSerializationProperties struct {
 	Format JSONOutputSerializationFormat `json:"format,omitempty"`
 }
 
-// OAuthBasedDataSourceProperties the properties that are associated with data sources that use OAuth as their
-// authentication model.
+// OAuthBasedDataSourceProperties the properties that are associated with data sources that use OAuth as
+// their authentication model.
 type OAuthBasedDataSourceProperties struct {
 	// RefreshToken - A refresh token that can be used to obtain a valid access token that can then be used to authenticate with the data source. A valid refresh token is currently only obtainable via the Azure Portal. It is recommended to put a dummy string value here when creating the data source and then going to the Azure Portal to authenticate the data source which will update this property with a valid refresh token. Required on PUT (CreateOrReplace) requests.
 	RefreshToken *string `json:"refreshToken,omitempty"`
@@ -4940,8 +4958,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // Output an output object, containing all information associated with the named output. All outputs are
@@ -5357,8 +5378,11 @@ func (page OutputListResultPage) Values() []Output {
 }
 
 // Creates a new instance of the OutputListResultPage type.
-func NewOutputListResultPage(getNextPage func(context.Context, OutputListResult) (OutputListResult, error)) OutputListResultPage {
-	return OutputListResultPage{fn: getNextPage}
+func NewOutputListResultPage(cur OutputListResult, getNextPage func(context.Context, OutputListResult) (OutputListResult, error)) OutputListResultPage {
+	return OutputListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OutputProperties the properties that are associated with an output.
@@ -5484,8 +5508,8 @@ func (future *OutputsTestFuture) Result(client OutputsClient) (rts ResourceTestS
 	return
 }
 
-// ParquetSerialization describes how data from an input is serialized or how data is serialized when written
-// to an output in Parquet format.
+// ParquetSerialization describes how data from an input is serialized or how data is serialized when
+// written to an output in Parquet format.
 type ParquetSerialization struct {
 	// Properties - The properties that are associated with the Parquet serialization type. Required on PUT (CreateOrReplace) requests.
 	Properties interface{} `json:"properties,omitempty"`
@@ -5861,8 +5885,11 @@ func (page PrivateEndpointListResultPage) Values() []PrivateEndpoint {
 }
 
 // Creates a new instance of the PrivateEndpointListResultPage type.
-func NewPrivateEndpointListResultPage(getNextPage func(context.Context, PrivateEndpointListResult) (PrivateEndpointListResult, error)) PrivateEndpointListResultPage {
-	return PrivateEndpointListResultPage{fn: getNextPage}
+func NewPrivateEndpointListResultPage(cur PrivateEndpointListResult, getNextPage func(context.Context, PrivateEndpointListResult) (PrivateEndpointListResult, error)) PrivateEndpointListResultPage {
+	return PrivateEndpointListResultPage{
+		fn:   getNextPage,
+		pelr: cur,
+	}
 }
 
 // PrivateEndpointProperties the properties associated with a private endpoint.
@@ -5905,8 +5932,8 @@ func (future *PrivateEndpointsDeleteFuture) Result(client PrivateEndpointsClient
 	return
 }
 
-// PrivateLinkConnectionState a collection of read-only information about the state of the connection to the
-// private remote resource.
+// PrivateLinkConnectionState a collection of read-only information about the state of the connection to
+// the private remote resource.
 type PrivateLinkConnectionState struct {
 	// Status - READ-ONLY; Indicates whether the connection has been Approved/Rejected/Removed by the owner of the remote resource/service.
 	Status *string `json:"status,omitempty"`
@@ -6203,7 +6230,8 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// ResourceTestStatus describes the status of the test operation along with error information, if applicable.
+// ResourceTestStatus describes the status of the test operation along with error information, if
+// applicable.
 type ResourceTestStatus struct {
 	autorest.Response `json:"-"`
 	// Status - READ-ONLY; The status of the test operation.
@@ -7004,8 +7032,11 @@ func (page StreamingJobListResultPage) Values() []StreamingJob {
 }
 
 // Creates a new instance of the StreamingJobListResultPage type.
-func NewStreamingJobListResultPage(getNextPage func(context.Context, StreamingJobListResult) (StreamingJobListResult, error)) StreamingJobListResultPage {
-	return StreamingJobListResultPage{fn: getNextPage}
+func NewStreamingJobListResultPage(cur StreamingJobListResult, getNextPage func(context.Context, StreamingJobListResult) (StreamingJobListResult, error)) StreamingJobListResultPage {
+	return StreamingJobListResultPage{
+		fn:   getNextPage,
+		sjlr: cur,
+	}
 }
 
 // StreamingJobProperties the properties that are associated with a streaming job.
@@ -7051,7 +7082,7 @@ type StreamingJobProperties struct {
 	// Etag - READ-ONLY; The current entity tag for the streaming job. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency.
 	Etag              *string            `json:"etag,omitempty"`
 	JobStorageAccount *JobStorageAccount `json:"jobStorageAccount,omitempty"`
-	// ContentStoragePolicy - READ-ONLY; Valid values are JobStorageAccount and SystemAccount. If set to JobStorageAccount, this requires the user to also specify jobStorageAccount property. Possible values include: 'ContentStoragePolicySystemAccount', 'ContentStoragePolicyJobStorageAccount'
+	// ContentStoragePolicy - Valid values are JobStorageAccount and SystemAccount. If set to JobStorageAccount, this requires the user to also specify jobStorageAccount property. Possible values include: 'ContentStoragePolicySystemAccount', 'ContentStoragePolicyJobStorageAccount'
 	ContentStoragePolicy ContentStoragePolicy `json:"contentStoragePolicy,omitempty"`
 	// Externals - The storage account where the custom code artifacts are located.
 	Externals *External `json:"externals,omitempty"`
@@ -7106,6 +7137,9 @@ func (sjp StreamingJobProperties) MarshalJSON() ([]byte, error) {
 	}
 	if sjp.JobStorageAccount != nil {
 		objectMap["jobStorageAccount"] = sjp.JobStorageAccount
+	}
+	if sjp.ContentStoragePolicy != "" {
+		objectMap["contentStoragePolicy"] = sjp.ContentStoragePolicy
 	}
 	if sjp.Externals != nil {
 		objectMap["externals"] = sjp.Externals
@@ -7588,8 +7622,8 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Transformation a transformation object, containing all information associated with the named transformation.
-// All transformations are contained under a streaming job.
+// Transformation a transformation object, containing all information associated with the named
+// transformation. All transformations are contained under a streaming job.
 type Transformation struct {
 	autorest.Response `json:"-"`
 	// TransformationProperties - The properties that are associated with a transformation. Required on PUT (CreateOrReplace) requests.

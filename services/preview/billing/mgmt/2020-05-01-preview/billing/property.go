@@ -31,14 +31,14 @@ type PropertyClient struct {
 }
 
 // NewPropertyClient creates an instance of the PropertyClient client.
-func NewPropertyClient(subscriptionID string, subscriptionID1 string) PropertyClient {
-	return NewPropertyClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewPropertyClient(subscriptionID string) PropertyClient {
+	return NewPropertyClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewPropertyClientWithBaseURI creates an instance of the PropertyClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewPropertyClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PropertyClient {
-	return PropertyClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewPropertyClientWithBaseURI(baseURI string, subscriptionID string) PropertyClient {
+	return PropertyClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get get the billing properties for a subscription. This operation is not supported for billing accounts with

@@ -128,8 +128,8 @@ type ErrorResponseErrorDetailsItem struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// Export a property containing information about the blobs to be exported for an export job. This property is
-// required for export jobs, but must not be specified for import jobs.
+// Export a property containing information about the blobs to be exported for an export job. This property
+// is required for export jobs, but must not be specified for import jobs.
 type Export struct {
 	// ExportBlobList - A list of the blobs to be exported.
 	*ExportBlobList `json:"blobList,omitempty"`
@@ -419,8 +419,11 @@ func (page ListJobsResponsePage) Values() []JobResponse {
 }
 
 // Creates a new instance of the ListJobsResponsePage type.
-func NewListJobsResponsePage(getNextPage func(context.Context, ListJobsResponse) (ListJobsResponse, error)) ListJobsResponsePage {
-	return ListJobsResponsePage{fn: getNextPage}
+func NewListJobsResponsePage(cur ListJobsResponse, getNextPage func(context.Context, ListJobsResponse) (ListJobsResponse, error)) ListJobsResponsePage {
+	return ListJobsResponsePage{
+		fn:  getNextPage,
+		ljr: cur,
+	}
 }
 
 // ListOperationsResponse list operations response
@@ -608,8 +611,8 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// PackageInfomation contains information about the package being shipped by the customer to the Microsoft data
-// center.
+// PackageInfomation contains information about the package being shipped by the customer to the Microsoft
+// data center.
 type PackageInfomation struct {
 	// CarrierName - The name of the carrier that is used to ship the import or export drives.
 	CarrierName *string `json:"carrierName,omitempty"`

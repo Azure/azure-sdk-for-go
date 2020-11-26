@@ -705,8 +705,11 @@ func (page ActionsListPage) Values() []ActionResponse {
 }
 
 // Creates a new instance of the ActionsListPage type.
-func NewActionsListPage(getNextPage func(context.Context, ActionsList) (ActionsList, error)) ActionsListPage {
-	return ActionsListPage{fn: getNextPage}
+func NewActionsListPage(cur ActionsList, getNextPage func(context.Context, ActionsList) (ActionsList, error)) ActionsListPage {
+	return ActionsListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // BasicAlertRule alert rule.
@@ -1025,8 +1028,11 @@ func (page AlertRulesListPage) Values() []BasicAlertRule {
 }
 
 // Creates a new instance of the AlertRulesListPage type.
-func NewAlertRulesListPage(getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
-	return AlertRulesListPage{fn: getNextPage}
+func NewAlertRulesListPage(cur AlertRulesList, getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
+	return AlertRulesListPage{
+		fn:  getNextPage,
+		arl: cur,
+	}
 }
 
 // BasicAlertRuleTemplate alert rule template.
@@ -1348,8 +1354,11 @@ func (page AlertRuleTemplatesListPage) Values() []BasicAlertRuleTemplate {
 }
 
 // Creates a new instance of the AlertRuleTemplatesListPage type.
-func NewAlertRuleTemplatesListPage(getNextPage func(context.Context, AlertRuleTemplatesList) (AlertRuleTemplatesList, error)) AlertRuleTemplatesListPage {
-	return AlertRuleTemplatesListPage{fn: getNextPage}
+func NewAlertRuleTemplatesListPage(cur AlertRuleTemplatesList, getNextPage func(context.Context, AlertRuleTemplatesList) (AlertRuleTemplatesList, error)) AlertRuleTemplatesListPage {
+	return AlertRuleTemplatesListPage{
+		fn:   getNextPage,
+		artl: cur,
+	}
 }
 
 // AlertsDataTypeOfDataConnector alerts data type for data connectors.
@@ -1937,8 +1946,11 @@ func (page BookmarkListPage) Values() []Bookmark {
 }
 
 // Creates a new instance of the BookmarkListPage type.
-func NewBookmarkListPage(getNextPage func(context.Context, BookmarkList) (BookmarkList, error)) BookmarkListPage {
-	return BookmarkListPage{fn: getNextPage}
+func NewBookmarkListPage(cur BookmarkList, getNextPage func(context.Context, BookmarkList) (BookmarkList, error)) BookmarkListPage {
+	return BookmarkListPage{
+		fn: getNextPage,
+		bl: cur,
+	}
 }
 
 // BookmarkProperties describes bookmark properties
@@ -2338,8 +2350,11 @@ func (page DataConnectorListPage) Values() []BasicDataConnector {
 }
 
 // Creates a new instance of the DataConnectorListPage type.
-func NewDataConnectorListPage(getNextPage func(context.Context, DataConnectorList) (DataConnectorList, error)) DataConnectorListPage {
-	return DataConnectorListPage{fn: getNextPage}
+func NewDataConnectorListPage(cur DataConnectorList, getNextPage func(context.Context, DataConnectorList) (DataConnectorList, error)) DataConnectorListPage {
+	return DataConnectorListPage{
+		fn:  getNextPage,
+		dcl: cur,
+	}
 }
 
 // DataConnectorModel ...
@@ -2379,8 +2394,8 @@ type ErrorAdditionalInfo struct {
 	Info interface{} `json:"info,omitempty"`
 }
 
-// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for failed
-// operations. (This also follows the OData error response format.)
+// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
+// failed operations. (This also follows the OData error response format.)
 type ErrorResponse struct {
 	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
@@ -3044,8 +3059,11 @@ func (page IncidentCommentListPage) Values() []IncidentComment {
 }
 
 // Creates a new instance of the IncidentCommentListPage type.
-func NewIncidentCommentListPage(getNextPage func(context.Context, IncidentCommentList) (IncidentCommentList, error)) IncidentCommentListPage {
-	return IncidentCommentListPage{fn: getNextPage}
+func NewIncidentCommentListPage(cur IncidentCommentList, getNextPage func(context.Context, IncidentCommentList) (IncidentCommentList, error)) IncidentCommentListPage {
+	return IncidentCommentListPage{
+		fn:  getNextPage,
+		icl: cur,
+	}
 }
 
 // IncidentCommentProperties incident comment property bag.
@@ -3257,8 +3275,11 @@ func (page IncidentListPage) Values() []Incident {
 }
 
 // Creates a new instance of the IncidentListPage type.
-func NewIncidentListPage(getNextPage func(context.Context, IncidentList) (IncidentList, error)) IncidentListPage {
-	return IncidentListPage{fn: getNextPage}
+func NewIncidentListPage(cur IncidentList, getNextPage func(context.Context, IncidentList) (IncidentList, error)) IncidentListPage {
+	return IncidentListPage{
+		fn: getNextPage,
+		il: cur,
+	}
 }
 
 // IncidentOwnerInfo information on the user an incident is assigned to
@@ -3501,7 +3522,8 @@ func (mdc *MCASDataConnector) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// MCASDataConnectorDataTypes the available data types for MCAS (Microsoft Cloud App Security) data connector.
+// MCASDataConnectorDataTypes the available data types for MCAS (Microsoft Cloud App Security) data
+// connector.
 type MCASDataConnectorDataTypes struct {
 	// DiscoveryLogs - Discovery log data type connection.
 	DiscoveryLogs *DataConnectorDataTypeCommon `json:"discoveryLogs,omitempty"`
@@ -3816,7 +3838,8 @@ type MicrosoftSecurityIncidentCreationAlertRuleCommonProperties struct {
 	SeveritiesFilter *[]AlertSeverity `json:"severitiesFilter,omitempty"`
 }
 
-// MicrosoftSecurityIncidentCreationAlertRuleProperties microsoftSecurityIncidentCreation rule property bag.
+// MicrosoftSecurityIncidentCreationAlertRuleProperties microsoftSecurityIncidentCreation rule property
+// bag.
 type MicrosoftSecurityIncidentCreationAlertRuleProperties struct {
 	// AlertRuleTemplateName - The Name of the alert rule template used to create this rule.
 	AlertRuleTemplateName *string `json:"alertRuleTemplateName,omitempty"`
@@ -3981,8 +4004,8 @@ func (msicart *MicrosoftSecurityIncidentCreationAlertRuleTemplate) UnmarshalJSON
 	return nil
 }
 
-// MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties microsoftSecurityIncidentCreation rule template
-// properties
+// MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties microsoftSecurityIncidentCreation rule
+// template properties
 type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties struct {
 	// AlertRulesCreatedByTemplateCount - the number of alert rules that were created by this template
 	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
@@ -4496,8 +4519,11 @@ func (page OperationsListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationsListPage type.
-func NewOperationsListPage(getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
-	return OperationsListPage{fn: getNextPage}
+func NewOperationsListPage(cur OperationsList, getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
+	return OperationsListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // Resource an azure resource object

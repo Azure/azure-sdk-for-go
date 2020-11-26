@@ -177,7 +177,8 @@ type AvailableOperationsListResponse struct {
 	Value *[]AvailableOperation `json:"value,omitempty"`
 }
 
-// AvailableOperationsListResponseIterator provides access to a complete listing of AvailableOperation values.
+// AvailableOperationsListResponseIterator provides access to a complete listing of AvailableOperation
+// values.
 type AvailableOperationsListResponseIterator struct {
 	i    int
 	page AvailableOperationsListResponsePage
@@ -320,8 +321,11 @@ func (page AvailableOperationsListResponsePage) Values() []AvailableOperation {
 }
 
 // Creates a new instance of the AvailableOperationsListResponsePage type.
-func NewAvailableOperationsListResponsePage(getNextPage func(context.Context, AvailableOperationsListResponse) (AvailableOperationsListResponse, error)) AvailableOperationsListResponsePage {
-	return AvailableOperationsListResponsePage{fn: getNextPage}
+func NewAvailableOperationsListResponsePage(cur AvailableOperationsListResponse, getNextPage func(context.Context, AvailableOperationsListResponse) (AvailableOperationsListResponse, error)) AvailableOperationsListResponsePage {
+	return AvailableOperationsListResponsePage{
+		fn:   getNextPage,
+		aolr: cur,
+	}
 }
 
 // CSRPError general error model
@@ -558,8 +562,11 @@ func (page CustomizationPoliciesListResponsePage) Values() []CustomizationPolicy
 }
 
 // Creates a new instance of the CustomizationPoliciesListResponsePage type.
-func NewCustomizationPoliciesListResponsePage(getNextPage func(context.Context, CustomizationPoliciesListResponse) (CustomizationPoliciesListResponse, error)) CustomizationPoliciesListResponsePage {
-	return CustomizationPoliciesListResponsePage{fn: getNextPage}
+func NewCustomizationPoliciesListResponsePage(cur CustomizationPoliciesListResponse, getNextPage func(context.Context, CustomizationPoliciesListResponse) (CustomizationPoliciesListResponse, error)) CustomizationPoliciesListResponsePage {
+	return CustomizationPoliciesListResponsePage{
+		fn:   getNextPage,
+		cplr: cur,
+	}
 }
 
 // CustomizationPolicy the virtual machine customization policy
@@ -798,7 +805,8 @@ type DedicatedCloudNodeListResponse struct {
 	Value *[]DedicatedCloudNode `json:"value,omitempty"`
 }
 
-// DedicatedCloudNodeListResponseIterator provides access to a complete listing of DedicatedCloudNode values.
+// DedicatedCloudNodeListResponseIterator provides access to a complete listing of DedicatedCloudNode
+// values.
 type DedicatedCloudNodeListResponseIterator struct {
 	i    int
 	page DedicatedCloudNodeListResponsePage
@@ -941,8 +949,11 @@ func (page DedicatedCloudNodeListResponsePage) Values() []DedicatedCloudNode {
 }
 
 // Creates a new instance of the DedicatedCloudNodeListResponsePage type.
-func NewDedicatedCloudNodeListResponsePage(getNextPage func(context.Context, DedicatedCloudNodeListResponse) (DedicatedCloudNodeListResponse, error)) DedicatedCloudNodeListResponsePage {
-	return DedicatedCloudNodeListResponsePage{fn: getNextPage}
+func NewDedicatedCloudNodeListResponsePage(cur DedicatedCloudNodeListResponse, getNextPage func(context.Context, DedicatedCloudNodeListResponse) (DedicatedCloudNodeListResponse, error)) DedicatedCloudNodeListResponsePage {
+	return DedicatedCloudNodeListResponsePage{
+		fn:    getNextPage,
+		dcnlr: cur,
+	}
 }
 
 // DedicatedCloudNodeProperties properties of dedicated cloud node
@@ -1422,8 +1433,11 @@ func (page DedicatedCloudServiceListResponsePage) Values() []DedicatedCloudServi
 }
 
 // Creates a new instance of the DedicatedCloudServiceListResponsePage type.
-func NewDedicatedCloudServiceListResponsePage(getNextPage func(context.Context, DedicatedCloudServiceListResponse) (DedicatedCloudServiceListResponse, error)) DedicatedCloudServiceListResponsePage {
-	return DedicatedCloudServiceListResponsePage{fn: getNextPage}
+func NewDedicatedCloudServiceListResponsePage(cur DedicatedCloudServiceListResponse, getNextPage func(context.Context, DedicatedCloudServiceListResponse) (DedicatedCloudServiceListResponse, error)) DedicatedCloudServiceListResponsePage {
+	return DedicatedCloudServiceListResponsePage{
+		fn:    getNextPage,
+		dcslr: cur,
+	}
 }
 
 // DedicatedCloudServiceProperties properties of dedicated cloud service
@@ -1799,8 +1813,11 @@ func (page PrivateCloudListPage) Values() []PrivateCloud {
 }
 
 // Creates a new instance of the PrivateCloudListPage type.
-func NewPrivateCloudListPage(getNextPage func(context.Context, PrivateCloudList) (PrivateCloudList, error)) PrivateCloudListPage {
-	return PrivateCloudListPage{fn: getNextPage}
+func NewPrivateCloudListPage(cur PrivateCloudList, getNextPage func(context.Context, PrivateCloudList) (PrivateCloudList, error)) PrivateCloudListPage {
+	return PrivateCloudListPage{
+		fn:  getNextPage,
+		pcl: cur,
+	}
 }
 
 // PrivateCloudProperties properties of private
@@ -2111,8 +2128,11 @@ func (page ResourcePoolsListResponsePage) Values() []ResourcePool {
 }
 
 // Creates a new instance of the ResourcePoolsListResponsePage type.
-func NewResourcePoolsListResponsePage(getNextPage func(context.Context, ResourcePoolsListResponse) (ResourcePoolsListResponse, error)) ResourcePoolsListResponsePage {
-	return ResourcePoolsListResponsePage{fn: getNextPage}
+func NewResourcePoolsListResponsePage(cur ResourcePoolsListResponse, getNextPage func(context.Context, ResourcePoolsListResponse) (ResourcePoolsListResponse, error)) ResourcePoolsListResponsePage {
+	return ResourcePoolsListResponsePage{
+		fn:   getNextPage,
+		rplr: cur,
+	}
 }
 
 // Sku the purchase SKU for CloudSimple paid resources
@@ -2301,8 +2321,11 @@ func (page SkuAvailabilityListResponsePage) Values() []SkuAvailability {
 }
 
 // Creates a new instance of the SkuAvailabilityListResponsePage type.
-func NewSkuAvailabilityListResponsePage(getNextPage func(context.Context, SkuAvailabilityListResponse) (SkuAvailabilityListResponse, error)) SkuAvailabilityListResponsePage {
-	return SkuAvailabilityListResponsePage{fn: getNextPage}
+func NewSkuAvailabilityListResponsePage(cur SkuAvailabilityListResponse, getNextPage func(context.Context, SkuAvailabilityListResponse) (SkuAvailabilityListResponse, error)) SkuAvailabilityListResponsePage {
+	return SkuAvailabilityListResponsePage{
+		fn:   getNextPage,
+		salr: cur,
+	}
 }
 
 // SkuDescription the purchase SKU for CloudSimple paid resources
@@ -2486,8 +2509,11 @@ func (page UsageListResponsePage) Values() []Usage {
 }
 
 // Creates a new instance of the UsageListResponsePage type.
-func NewUsageListResponsePage(getNextPage func(context.Context, UsageListResponse) (UsageListResponse, error)) UsageListResponsePage {
-	return UsageListResponsePage{fn: getNextPage}
+func NewUsageListResponsePage(cur UsageListResponse, getNextPage func(context.Context, UsageListResponse) (UsageListResponse, error)) UsageListResponsePage {
+	return UsageListResponsePage{
+		fn:  getNextPage,
+		ulr: cur,
+	}
 }
 
 // UsageName user name model
@@ -2795,8 +2821,11 @@ func (page VirtualMachineListResponsePage) Values() []VirtualMachine {
 }
 
 // Creates a new instance of the VirtualMachineListResponsePage type.
-func NewVirtualMachineListResponsePage(getNextPage func(context.Context, VirtualMachineListResponse) (VirtualMachineListResponse, error)) VirtualMachineListResponsePage {
-	return VirtualMachineListResponsePage{fn: getNextPage}
+func NewVirtualMachineListResponsePage(cur VirtualMachineListResponse, getNextPage func(context.Context, VirtualMachineListResponse) (VirtualMachineListResponse, error)) VirtualMachineListResponsePage {
+	return VirtualMachineListResponsePage{
+		fn:   getNextPage,
+		vmlr: cur,
+	}
 }
 
 // VirtualMachineProperties properties of virtual machine
@@ -3118,8 +3147,8 @@ type VirtualMachineTemplateListResponse struct {
 	Value *[]VirtualMachineTemplate `json:"value,omitempty"`
 }
 
-// VirtualMachineTemplateListResponseIterator provides access to a complete listing of VirtualMachineTemplate
-// values.
+// VirtualMachineTemplateListResponseIterator provides access to a complete listing of
+// VirtualMachineTemplate values.
 type VirtualMachineTemplateListResponseIterator struct {
 	i    int
 	page VirtualMachineTemplateListResponsePage
@@ -3262,8 +3291,11 @@ func (page VirtualMachineTemplateListResponsePage) Values() []VirtualMachineTemp
 }
 
 // Creates a new instance of the VirtualMachineTemplateListResponsePage type.
-func NewVirtualMachineTemplateListResponsePage(getNextPage func(context.Context, VirtualMachineTemplateListResponse) (VirtualMachineTemplateListResponse, error)) VirtualMachineTemplateListResponsePage {
-	return VirtualMachineTemplateListResponsePage{fn: getNextPage}
+func NewVirtualMachineTemplateListResponsePage(cur VirtualMachineTemplateListResponse, getNextPage func(context.Context, VirtualMachineTemplateListResponse) (VirtualMachineTemplateListResponse, error)) VirtualMachineTemplateListResponsePage {
+	return VirtualMachineTemplateListResponsePage{
+		fn:    getNextPage,
+		vmtlr: cur,
+	}
 }
 
 // VirtualMachineTemplateProperties properties of virtual machine template
@@ -3587,8 +3619,11 @@ func (page VirtualNetworkListResponsePage) Values() []VirtualNetwork {
 }
 
 // Creates a new instance of the VirtualNetworkListResponsePage type.
-func NewVirtualNetworkListResponsePage(getNextPage func(context.Context, VirtualNetworkListResponse) (VirtualNetworkListResponse, error)) VirtualNetworkListResponsePage {
-	return VirtualNetworkListResponsePage{fn: getNextPage}
+func NewVirtualNetworkListResponsePage(cur VirtualNetworkListResponse, getNextPage func(context.Context, VirtualNetworkListResponse) (VirtualNetworkListResponse, error)) VirtualNetworkListResponsePage {
+	return VirtualNetworkListResponsePage{
+		fn:   getNextPage,
+		vnlr: cur,
+	}
 }
 
 // VirtualNetworkProperties properties of virtual network

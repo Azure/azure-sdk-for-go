@@ -25,8 +25,8 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2015-11-01/trafficmanager"
 
-// CheckTrafficManagerRelativeDNSNameAvailabilityParameters parameters supplied to check Traffic Manager name
-// operation.
+// CheckTrafficManagerRelativeDNSNameAvailabilityParameters parameters supplied to check Traffic Manager
+// name operation.
 type CheckTrafficManagerRelativeDNSNameAvailabilityParameters struct {
 	// Name - Gets or sets the name of the resource.
 	Name *string `json:"name,omitempty"`

@@ -284,8 +284,11 @@ func (page ResourceProviderOperationListPage) Values() []ResourceProviderOperati
 }
 
 // Creates a new instance of the ResourceProviderOperationListPage type.
-func NewResourceProviderOperationListPage(getNextPage func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error)) ResourceProviderOperationListPage {
-	return ResourceProviderOperationListPage{fn: getNextPage}
+func NewResourceProviderOperationListPage(cur ResourceProviderOperationList, getNextPage func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error)) ResourceProviderOperationListPage {
+	return ResourceProviderOperationListPage{
+		fn:   getNextPage,
+		rpol: cur,
+	}
 }
 
 // Result sample result definition
@@ -367,8 +370,8 @@ func (scc *SourceControlConfiguration) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SourceControlConfigurationList result of the request to list Source Control Configurations.  It contains a
-// list of SourceControlConfiguration objects and a URL link to get the next set of results.
+// SourceControlConfigurationList result of the request to list Source Control Configurations.  It contains
+// a list of SourceControlConfiguration objects and a URL link to get the next set of results.
 type SourceControlConfigurationList struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of Source Control Configurations within a Kubernetes cluster.
@@ -377,8 +380,8 @@ type SourceControlConfigurationList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// SourceControlConfigurationListIterator provides access to a complete listing of SourceControlConfiguration
-// values.
+// SourceControlConfigurationListIterator provides access to a complete listing of
+// SourceControlConfiguration values.
 type SourceControlConfigurationListIterator struct {
 	i    int
 	page SourceControlConfigurationListPage
@@ -521,8 +524,11 @@ func (page SourceControlConfigurationListPage) Values() []SourceControlConfigura
 }
 
 // Creates a new instance of the SourceControlConfigurationListPage type.
-func NewSourceControlConfigurationListPage(getNextPage func(context.Context, SourceControlConfigurationList) (SourceControlConfigurationList, error)) SourceControlConfigurationListPage {
-	return SourceControlConfigurationListPage{fn: getNextPage}
+func NewSourceControlConfigurationListPage(cur SourceControlConfigurationList, getNextPage func(context.Context, SourceControlConfigurationList) (SourceControlConfigurationList, error)) SourceControlConfigurationListPage {
+	return SourceControlConfigurationListPage{
+		fn:   getNextPage,
+		sccl: cur,
+	}
 }
 
 // SourceControlConfigurationProperties properties to create a Source Control Configuration resource

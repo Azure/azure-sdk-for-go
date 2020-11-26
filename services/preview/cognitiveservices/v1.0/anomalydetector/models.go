@@ -25,20 +25,12 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/anomalydetector"
 
-// APIError error information returned by the API.
-type APIError struct {
-	// Code - The error code.
-	Code interface{} `json:"code,omitempty"`
-	// Message - A message explaining the error reported by the service.
-	Message *string `json:"message,omitempty"`
-}
-
 // ChangePointDetectRequest ...
 type ChangePointDetectRequest struct {
 	// Series - Time series data points. Points should be sorted by timestamp in ascending order to match the change point detection result.
-	Series *[]Point `json:"series,omitempty"`
-	// Granularity - Can only be one of yearly, monthly, weekly, daily, hourly, minutely or secondly. Granularity is used for verify whether input series is valid. Possible values include: 'Yearly', 'Monthly', 'Weekly', 'Daily', 'Hourly', 'Minutely', 'Secondly'
-	Granularity Granularity `json:"granularity,omitempty"`
+	Series *[]TimeSeriesPoint `json:"series,omitempty"`
+	// Granularity - Can only be one of yearly, monthly, weekly, daily, hourly, minutely or secondly. Granularity is used for verify whether input series is valid. Possible values include: 'Yearly', 'Monthly', 'Weekly', 'Daily', 'Hourly', 'PerMinute', 'PerSecond'
+	Granularity TimeGranularity `json:"granularity,omitempty"`
 	// CustomInterval - Custom Interval is used to set non-standard time interval, for example, if the series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
 	CustomInterval *int32 `json:"customInterval,omitempty"`
 	// Period - Optional argument, periodic value of a time series. If the value is null or does not present, the API will determine the period automatically.
@@ -60,6 +52,22 @@ type ChangePointDetectResponse struct {
 	ConfidenceScores *[]float64 `json:"confidenceScores,omitempty"`
 }
 
+// DetectRequest ...
+type DetectRequest struct {
+	// Series - Time series data points. Points should be sorted by timestamp in ascending order to match the anomaly detection result. If the data is not sorted correctly or there is duplicated timestamp, the API will not work. In such case, an error message will be returned.
+	Series *[]TimeSeriesPoint `json:"series,omitempty"`
+	// Granularity - Possible values include: 'Yearly', 'Monthly', 'Weekly', 'Daily', 'Hourly', 'PerMinute', 'PerSecond'
+	Granularity TimeGranularity `json:"granularity,omitempty"`
+	// CustomInterval - Custom Interval is used to set non-standard time interval, for example, if the series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
+	CustomInterval *int32 `json:"customInterval,omitempty"`
+	// Period - Optional argument, periodic value of a time series. If the value is null or does not present, the API will determine the period automatically.
+	Period *int32 `json:"period,omitempty"`
+	// MaxAnomalyRatio - Optional argument, advanced model parameter, max anomaly ratio in a time series.
+	MaxAnomalyRatio *float64 `json:"maxAnomalyRatio,omitempty"`
+	// Sensitivity - Optional argument, advanced model parameter, between 0-99, the lower the value is, the larger the margin value will be which means less anomalies will be accepted.
+	Sensitivity *int32 `json:"sensitivity,omitempty"`
+}
+
 // EntireDetectResponse ...
 type EntireDetectResponse struct {
 	autorest.Response `json:"-"`
@@ -77,6 +85,14 @@ type EntireDetectResponse struct {
 	IsNegativeAnomaly *[]bool `json:"isNegativeAnomaly,omitempty"`
 	// IsPositiveAnomaly - IsPositiveAnomaly contain anomaly status in positive direction for each input point. True means a positive anomaly has been detected. A positive anomaly means the point is detected as an anomaly and its real value is larger than the expected one. The index of the array is consistent with the input series.
 	IsPositiveAnomaly *[]bool `json:"isPositiveAnomaly,omitempty"`
+}
+
+// Error error information returned by the API.
+type Error struct {
+	// Code - The error code.
+	Code interface{} `json:"code,omitempty"`
+	// Message - A message explaining the error reported by the service.
+	Message *string `json:"message,omitempty"`
 }
 
 // LastDetectResponse ...
@@ -100,26 +116,10 @@ type LastDetectResponse struct {
 	IsPositiveAnomaly *bool `json:"isPositiveAnomaly,omitempty"`
 }
 
-// Point ...
-type Point struct {
+// TimeSeriesPoint ...
+type TimeSeriesPoint struct {
 	// Timestamp - Timestamp of a data point (ISO8601 format).
 	Timestamp *date.Time `json:"timestamp,omitempty"`
 	// Value - The measurement of that point, should be float.
 	Value *float64 `json:"value,omitempty"`
-}
-
-// Request ...
-type Request struct {
-	// Series - Time series data points. Points should be sorted by timestamp in ascending order to match the anomaly detection result. If the data is not sorted correctly or there is duplicated timestamp, the API will not work. In such case, an error message will be returned.
-	Series *[]Point `json:"series,omitempty"`
-	// Granularity - Possible values include: 'Yearly', 'Monthly', 'Weekly', 'Daily', 'Hourly', 'Minutely', 'Secondly'
-	Granularity Granularity `json:"granularity,omitempty"`
-	// CustomInterval - Custom Interval is used to set non-standard time interval, for example, if the series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
-	CustomInterval *int32 `json:"customInterval,omitempty"`
-	// Period - Optional argument, periodic value of a time series. If the value is null or does not present, the API will determine the period automatically.
-	Period *int32 `json:"period,omitempty"`
-	// MaxAnomalyRatio - Optional argument, advanced model parameter, max anomaly ratio in a time series.
-	MaxAnomalyRatio *float64 `json:"maxAnomalyRatio,omitempty"`
-	// Sensitivity - Optional argument, advanced model parameter, between 0-99, the lower the value is, the larger the margin value will be which means less anomalies will be accepted.
-	Sensitivity *int32 `json:"sensitivity,omitempty"`
 }

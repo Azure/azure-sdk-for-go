@@ -36,6 +36,23 @@ func PossibleAuthenticationTypeValues() []AuthenticationType {
 	return []AuthenticationType{AuthenticationTypeAnonymous, AuthenticationTypeBasic, AuthenticationTypeClientCertificate, AuthenticationTypeWebLinkedServiceTypeProperties}
 }
 
+// AuthorizationType enumerates the values for authorization type.
+type AuthorizationType string
+
+const (
+	// AuthorizationTypeKey ...
+	AuthorizationTypeKey AuthorizationType = "Key"
+	// AuthorizationTypeLinkedIntegrationRuntimeType ...
+	AuthorizationTypeLinkedIntegrationRuntimeType AuthorizationType = "LinkedIntegrationRuntimeType"
+	// AuthorizationTypeRBAC ...
+	AuthorizationTypeRBAC AuthorizationType = "RBAC"
+)
+
+// PossibleAuthorizationTypeValues returns an array of possible values for the AuthorizationType const type.
+func PossibleAuthorizationTypeValues() []AuthorizationType {
+	return []AuthorizationType{AuthorizationTypeKey, AuthorizationTypeLinkedIntegrationRuntimeType, AuthorizationTypeRBAC}
+}
+
 // AvroCompressionCodec enumerates the values for avro compression codec.
 type AvroCompressionCodec string
 
@@ -162,6 +179,23 @@ func PossibleCellOutputTypeValues() []CellOutputType {
 	return []CellOutputType{DisplayData, Error, ExecuteResult, Stream}
 }
 
+// CopyBehaviorType enumerates the values for copy behavior type.
+type CopyBehaviorType string
+
+const (
+	// FlattenHierarchy ...
+	FlattenHierarchy CopyBehaviorType = "FlattenHierarchy"
+	// MergeFiles ...
+	MergeFiles CopyBehaviorType = "MergeFiles"
+	// PreserveHierarchy ...
+	PreserveHierarchy CopyBehaviorType = "PreserveHierarchy"
+)
+
+// PossibleCopyBehaviorTypeValues returns an array of possible values for the CopyBehaviorType const type.
+func PossibleCopyBehaviorTypeValues() []CopyBehaviorType {
+	return []CopyBehaviorType{FlattenHierarchy, MergeFiles, PreserveHierarchy}
+}
+
 // DataFlowComputeType enumerates the values for data flow compute type.
 type DataFlowComputeType string
 
@@ -217,31 +251,6 @@ const (
 // PossibleDayOfWeekValues returns an array of possible values for the DayOfWeek const type.
 func PossibleDayOfWeekValues() []DayOfWeek {
 	return []DayOfWeek{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
-}
-
-// DaysOfWeek enumerates the values for days of week.
-type DaysOfWeek string
-
-const (
-	// DaysOfWeekFriday ...
-	DaysOfWeekFriday DaysOfWeek = "Friday"
-	// DaysOfWeekMonday ...
-	DaysOfWeekMonday DaysOfWeek = "Monday"
-	// DaysOfWeekSaturday ...
-	DaysOfWeekSaturday DaysOfWeek = "Saturday"
-	// DaysOfWeekSunday ...
-	DaysOfWeekSunday DaysOfWeek = "Sunday"
-	// DaysOfWeekThursday ...
-	DaysOfWeekThursday DaysOfWeek = "Thursday"
-	// DaysOfWeekTuesday ...
-	DaysOfWeekTuesday DaysOfWeek = "Tuesday"
-	// DaysOfWeekWednesday ...
-	DaysOfWeekWednesday DaysOfWeek = "Wednesday"
-)
-
-// PossibleDaysOfWeekValues returns an array of possible values for the DaysOfWeek const type.
-func PossibleDaysOfWeekValues() []DaysOfWeek {
-	return []DaysOfWeek{DaysOfWeekFriday, DaysOfWeekMonday, DaysOfWeekSaturday, DaysOfWeekSunday, DaysOfWeekThursday, DaysOfWeekTuesday, DaysOfWeekWednesday}
 }
 
 // Db2AuthenticationType enumerates the values for db 2 authentication type.
@@ -552,19 +561,145 @@ func PossibleImpalaAuthenticationTypeValues() []ImpalaAuthenticationType {
 	return []ImpalaAuthenticationType{ImpalaAuthenticationTypeAnonymous, ImpalaAuthenticationTypeSASLUsername, ImpalaAuthenticationTypeUsernameAndPassword}
 }
 
+// IntegrationRuntimeEdition enumerates the values for integration runtime edition.
+type IntegrationRuntimeEdition string
+
+const (
+	// Enterprise ...
+	Enterprise IntegrationRuntimeEdition = "Enterprise"
+	// Standard ...
+	Standard IntegrationRuntimeEdition = "Standard"
+)
+
+// PossibleIntegrationRuntimeEditionValues returns an array of possible values for the IntegrationRuntimeEdition const type.
+func PossibleIntegrationRuntimeEditionValues() []IntegrationRuntimeEdition {
+	return []IntegrationRuntimeEdition{Enterprise, Standard}
+}
+
+// IntegrationRuntimeEntityReferenceType enumerates the values for integration runtime entity reference type.
+type IntegrationRuntimeEntityReferenceType string
+
+const (
+	// IntegrationRuntimeEntityReferenceTypeIntegrationRuntimeReference ...
+	IntegrationRuntimeEntityReferenceTypeIntegrationRuntimeReference IntegrationRuntimeEntityReferenceType = "IntegrationRuntimeReference"
+	// IntegrationRuntimeEntityReferenceTypeLinkedServiceReference ...
+	IntegrationRuntimeEntityReferenceTypeLinkedServiceReference IntegrationRuntimeEntityReferenceType = "LinkedServiceReference"
+)
+
+// PossibleIntegrationRuntimeEntityReferenceTypeValues returns an array of possible values for the IntegrationRuntimeEntityReferenceType const type.
+func PossibleIntegrationRuntimeEntityReferenceTypeValues() []IntegrationRuntimeEntityReferenceType {
+	return []IntegrationRuntimeEntityReferenceType{IntegrationRuntimeEntityReferenceTypeIntegrationRuntimeReference, IntegrationRuntimeEntityReferenceTypeLinkedServiceReference}
+}
+
+// IntegrationRuntimeLicenseType enumerates the values for integration runtime license type.
+type IntegrationRuntimeLicenseType string
+
+const (
+	// BasePrice ...
+	BasePrice IntegrationRuntimeLicenseType = "BasePrice"
+	// LicenseIncluded ...
+	LicenseIncluded IntegrationRuntimeLicenseType = "LicenseIncluded"
+)
+
+// PossibleIntegrationRuntimeLicenseTypeValues returns an array of possible values for the IntegrationRuntimeLicenseType const type.
+func PossibleIntegrationRuntimeLicenseTypeValues() []IntegrationRuntimeLicenseType {
+	return []IntegrationRuntimeLicenseType{BasePrice, LicenseIncluded}
+}
+
+// IntegrationRuntimeSsisCatalogPricingTier enumerates the values for integration runtime ssis catalog pricing
+// tier.
+type IntegrationRuntimeSsisCatalogPricingTier string
+
+const (
+	// IntegrationRuntimeSsisCatalogPricingTierBasic ...
+	IntegrationRuntimeSsisCatalogPricingTierBasic IntegrationRuntimeSsisCatalogPricingTier = "Basic"
+	// IntegrationRuntimeSsisCatalogPricingTierPremium ...
+	IntegrationRuntimeSsisCatalogPricingTierPremium IntegrationRuntimeSsisCatalogPricingTier = "Premium"
+	// IntegrationRuntimeSsisCatalogPricingTierPremiumRS ...
+	IntegrationRuntimeSsisCatalogPricingTierPremiumRS IntegrationRuntimeSsisCatalogPricingTier = "PremiumRS"
+	// IntegrationRuntimeSsisCatalogPricingTierStandard ...
+	IntegrationRuntimeSsisCatalogPricingTierStandard IntegrationRuntimeSsisCatalogPricingTier = "Standard"
+)
+
+// PossibleIntegrationRuntimeSsisCatalogPricingTierValues returns an array of possible values for the IntegrationRuntimeSsisCatalogPricingTier const type.
+func PossibleIntegrationRuntimeSsisCatalogPricingTierValues() []IntegrationRuntimeSsisCatalogPricingTier {
+	return []IntegrationRuntimeSsisCatalogPricingTier{IntegrationRuntimeSsisCatalogPricingTierBasic, IntegrationRuntimeSsisCatalogPricingTierPremium, IntegrationRuntimeSsisCatalogPricingTierPremiumRS, IntegrationRuntimeSsisCatalogPricingTierStandard}
+}
+
+// IntegrationRuntimeState enumerates the values for integration runtime state.
+type IntegrationRuntimeState string
+
+const (
+	// IntegrationRuntimeStateAccessDenied ...
+	IntegrationRuntimeStateAccessDenied IntegrationRuntimeState = "AccessDenied"
+	// IntegrationRuntimeStateInitial ...
+	IntegrationRuntimeStateInitial IntegrationRuntimeState = "Initial"
+	// IntegrationRuntimeStateLimited ...
+	IntegrationRuntimeStateLimited IntegrationRuntimeState = "Limited"
+	// IntegrationRuntimeStateNeedRegistration ...
+	IntegrationRuntimeStateNeedRegistration IntegrationRuntimeState = "NeedRegistration"
+	// IntegrationRuntimeStateOffline ...
+	IntegrationRuntimeStateOffline IntegrationRuntimeState = "Offline"
+	// IntegrationRuntimeStateOnline ...
+	IntegrationRuntimeStateOnline IntegrationRuntimeState = "Online"
+	// IntegrationRuntimeStateStarted ...
+	IntegrationRuntimeStateStarted IntegrationRuntimeState = "Started"
+	// IntegrationRuntimeStateStarting ...
+	IntegrationRuntimeStateStarting IntegrationRuntimeState = "Starting"
+	// IntegrationRuntimeStateStopped ...
+	IntegrationRuntimeStateStopped IntegrationRuntimeState = "Stopped"
+	// IntegrationRuntimeStateStopping ...
+	IntegrationRuntimeStateStopping IntegrationRuntimeState = "Stopping"
+)
+
+// PossibleIntegrationRuntimeStateValues returns an array of possible values for the IntegrationRuntimeState const type.
+func PossibleIntegrationRuntimeStateValues() []IntegrationRuntimeState {
+	return []IntegrationRuntimeState{IntegrationRuntimeStateAccessDenied, IntegrationRuntimeStateInitial, IntegrationRuntimeStateLimited, IntegrationRuntimeStateNeedRegistration, IntegrationRuntimeStateOffline, IntegrationRuntimeStateOnline, IntegrationRuntimeStateStarted, IntegrationRuntimeStateStarting, IntegrationRuntimeStateStopped, IntegrationRuntimeStateStopping}
+}
+
+// IntegrationRuntimeType enumerates the values for integration runtime type.
+type IntegrationRuntimeType string
+
+const (
+	// Managed ...
+	Managed IntegrationRuntimeType = "Managed"
+	// SelfHosted ...
+	SelfHosted IntegrationRuntimeType = "SelfHosted"
+)
+
+// PossibleIntegrationRuntimeTypeValues returns an array of possible values for the IntegrationRuntimeType const type.
+func PossibleIntegrationRuntimeTypeValues() []IntegrationRuntimeType {
+	return []IntegrationRuntimeType{Managed, SelfHosted}
+}
+
+// JSONFormatFilePattern enumerates the values for json format file pattern.
+type JSONFormatFilePattern string
+
+const (
+	// ArrayOfObjects ...
+	ArrayOfObjects JSONFormatFilePattern = "arrayOfObjects"
+	// SetOfObjects ...
+	SetOfObjects JSONFormatFilePattern = "setOfObjects"
+)
+
+// PossibleJSONFormatFilePatternValues returns an array of possible values for the JSONFormatFilePattern const type.
+func PossibleJSONFormatFilePatternValues() []JSONFormatFilePattern {
+	return []JSONFormatFilePattern{ArrayOfObjects, SetOfObjects}
+}
+
 // JSONWriteFilePattern enumerates the values for json write file pattern.
 type JSONWriteFilePattern string
 
 const (
-	// ArrayOfObjects ...
-	ArrayOfObjects JSONWriteFilePattern = "arrayOfObjects"
-	// SetOfObjects ...
-	SetOfObjects JSONWriteFilePattern = "setOfObjects"
+	// JSONWriteFilePatternArrayOfObjects ...
+	JSONWriteFilePatternArrayOfObjects JSONWriteFilePattern = "arrayOfObjects"
+	// JSONWriteFilePatternSetOfObjects ...
+	JSONWriteFilePatternSetOfObjects JSONWriteFilePattern = "setOfObjects"
 )
 
 // PossibleJSONWriteFilePatternValues returns an array of possible values for the JSONWriteFilePattern const type.
 func PossibleJSONWriteFilePatternValues() []JSONWriteFilePattern {
-	return []JSONWriteFilePattern{ArrayOfObjects, SetOfObjects}
+	return []JSONWriteFilePattern{JSONWriteFilePatternArrayOfObjects, JSONWriteFilePatternSetOfObjects}
 }
 
 // MongoDbAuthenticationType enumerates the values for mongo db authentication type.
@@ -597,6 +732,46 @@ const (
 // PossibleNetezzaPartitionOptionValues returns an array of possible values for the NetezzaPartitionOption const type.
 func PossibleNetezzaPartitionOptionValues() []NetezzaPartitionOption {
 	return []NetezzaPartitionOption{NetezzaPartitionOptionDataSlice, NetezzaPartitionOptionDynamicRange, NetezzaPartitionOptionNone}
+}
+
+// NodeSize enumerates the values for node size.
+type NodeSize string
+
+const (
+	// NodeSizeLarge ...
+	NodeSizeLarge NodeSize = "Large"
+	// NodeSizeMedium ...
+	NodeSizeMedium NodeSize = "Medium"
+	// NodeSizeNone ...
+	NodeSizeNone NodeSize = "None"
+	// NodeSizeSmall ...
+	NodeSizeSmall NodeSize = "Small"
+	// NodeSizeXLarge ...
+	NodeSizeXLarge NodeSize = "XLarge"
+	// NodeSizeXXLarge ...
+	NodeSizeXXLarge NodeSize = "XXLarge"
+	// NodeSizeXXXLarge ...
+	NodeSizeXXXLarge NodeSize = "XXXLarge"
+)
+
+// PossibleNodeSizeValues returns an array of possible values for the NodeSize const type.
+func PossibleNodeSizeValues() []NodeSize {
+	return []NodeSize{NodeSizeLarge, NodeSizeMedium, NodeSizeNone, NodeSizeSmall, NodeSizeXLarge, NodeSizeXXLarge, NodeSizeXXXLarge}
+}
+
+// NodeSizeFamily enumerates the values for node size family.
+type NodeSizeFamily string
+
+const (
+	// NodeSizeFamilyMemoryOptimized ...
+	NodeSizeFamilyMemoryOptimized NodeSizeFamily = "MemoryOptimized"
+	// NodeSizeFamilyNone ...
+	NodeSizeFamilyNone NodeSizeFamily = "None"
+)
+
+// PossibleNodeSizeFamilyValues returns an array of possible values for the NodeSizeFamily const type.
+func PossibleNodeSizeFamilyValues() []NodeSizeFamily {
+	return []NodeSizeFamily{NodeSizeFamilyMemoryOptimized, NodeSizeFamilyNone}
 }
 
 // ODataAadServicePrincipalCredentialType enumerates the values for o data aad service principal credential
@@ -809,6 +984,21 @@ const (
 // PossibleRecurrenceFrequencyValues returns an array of possible values for the RecurrenceFrequency const type.
 func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
 	return []RecurrenceFrequency{Day, Hour, Minute, Month, NotSpecified, Week, Year}
+}
+
+// ResourceIdentityType enumerates the values for resource identity type.
+type ResourceIdentityType string
+
+const (
+	// ResourceIdentityTypeNone ...
+	ResourceIdentityTypeNone ResourceIdentityType = "None"
+	// ResourceIdentityTypeSystemAssigned ...
+	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
+)
+
+// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return []ResourceIdentityType{ResourceIdentityTypeNone, ResourceIdentityTypeSystemAssigned}
 }
 
 // RestServiceAuthenticationType enumerates the values for rest service authentication type.
@@ -1185,15 +1375,15 @@ func PossibleSparkThriftTransportProtocolValues() []SparkThriftTransportProtocol
 type SQLConnectionType string
 
 const (
-	// SQLOnDemand ...
-	SQLOnDemand SQLConnectionType = "SqlOnDemand"
-	// SQLPool ...
-	SQLPool SQLConnectionType = "SqlPool"
+	// SQLConnectionTypeSQLOnDemand ...
+	SQLConnectionTypeSQLOnDemand SQLConnectionType = "SqlOnDemand"
+	// SQLConnectionTypeSQLPool ...
+	SQLConnectionTypeSQLPool SQLConnectionType = "SqlPool"
 )
 
 // PossibleSQLConnectionTypeValues returns an array of possible values for the SQLConnectionType const type.
 func PossibleSQLConnectionTypeValues() []SQLConnectionType {
-	return []SQLConnectionType{SQLOnDemand, SQLPool}
+	return []SQLConnectionType{SQLConnectionTypeSQLOnDemand, SQLConnectionTypeSQLPool}
 }
 
 // SQLScriptType enumerates the values for sql script type.
@@ -1428,10 +1618,16 @@ const (
 	TypeLookup TypeBasicActivity = "Lookup"
 	// TypeSetVariable ...
 	TypeSetVariable TypeBasicActivity = "SetVariable"
+	// TypeSparkJob ...
+	TypeSparkJob TypeBasicActivity = "SparkJob"
+	// TypeSQLPoolStoredProcedure ...
+	TypeSQLPoolStoredProcedure TypeBasicActivity = "SqlPoolStoredProcedure"
 	// TypeSQLServerStoredProcedure ...
 	TypeSQLServerStoredProcedure TypeBasicActivity = "SqlServerStoredProcedure"
 	// TypeSwitch ...
 	TypeSwitch TypeBasicActivity = "Switch"
+	// TypeSynapseNotebook ...
+	TypeSynapseNotebook TypeBasicActivity = "SynapseNotebook"
 	// TypeUntil ...
 	TypeUntil TypeBasicActivity = "Until"
 	// TypeValidation ...
@@ -1446,7 +1642,7 @@ const (
 
 // PossibleTypeBasicActivityValues returns an array of possible values for the TypeBasicActivity const type.
 func PossibleTypeBasicActivityValues() []TypeBasicActivity {
-	return []TypeBasicActivity{TypeActivity, TypeAppendVariable, TypeAzureDataExplorerCommand, TypeAzureFunctionActivity, TypeAzureMLBatchExecution, TypeAzureMLExecutePipeline, TypeAzureMLUpdateResource, TypeContainer, TypeCopy, TypeCustom, TypeDatabricksNotebook, TypeDatabricksSparkJar, TypeDatabricksSparkPython, TypeDataLakeAnalyticsUSQL, TypeDelete, TypeExecuteDataFlow, TypeExecutePipeline, TypeExecuteSSISPackage, TypeExecution, TypeFilter, TypeForEach, TypeGetMetadata, TypeHDInsightHive, TypeHDInsightMapReduce, TypeHDInsightPig, TypeHDInsightSpark, TypeHDInsightStreaming, TypeIfCondition, TypeLookup, TypeSetVariable, TypeSQLServerStoredProcedure, TypeSwitch, TypeUntil, TypeValidation, TypeWait, TypeWebActivity, TypeWebHook}
+	return []TypeBasicActivity{TypeActivity, TypeAppendVariable, TypeAzureDataExplorerCommand, TypeAzureFunctionActivity, TypeAzureMLBatchExecution, TypeAzureMLExecutePipeline, TypeAzureMLUpdateResource, TypeContainer, TypeCopy, TypeCustom, TypeDatabricksNotebook, TypeDatabricksSparkJar, TypeDatabricksSparkPython, TypeDataLakeAnalyticsUSQL, TypeDelete, TypeExecuteDataFlow, TypeExecutePipeline, TypeExecuteSSISPackage, TypeExecution, TypeFilter, TypeForEach, TypeGetMetadata, TypeHDInsightHive, TypeHDInsightMapReduce, TypeHDInsightPig, TypeHDInsightSpark, TypeHDInsightStreaming, TypeIfCondition, TypeLookup, TypeSetVariable, TypeSparkJob, TypeSQLPoolStoredProcedure, TypeSQLServerStoredProcedure, TypeSwitch, TypeSynapseNotebook, TypeUntil, TypeValidation, TypeWait, TypeWebActivity, TypeWebHook}
 }
 
 // TypeBasicCopySink enumerates the values for type basic copy sink.
@@ -1717,6 +1913,40 @@ func PossibleTypeBasicCopySourceValues() []TypeBasicCopySource {
 	return []TypeBasicCopySource{TypeAmazonMWSSource, TypeAmazonRedshiftSource, TypeAvroSource, TypeAzureBlobFSSource, TypeAzureDataExplorerSource, TypeAzureDataLakeStoreSource, TypeAzureMariaDBSource, TypeAzureMySQLSource, TypeAzurePostgreSQLSource, TypeAzureSQLSource, TypeAzureTableSource, TypeBinarySource, TypeBlobSource, TypeCassandraSource, TypeCommonDataServiceForAppsSource, TypeConcurSource, TypeCopySource, TypeCosmosDbMongoDbAPISource, TypeCosmosDbSQLAPISource, TypeCouchbaseSource, TypeDb2Source, TypeDelimitedTextSource, TypeDocumentDbCollectionSource, TypeDrillSource, TypeDynamicsAXSource, TypeDynamicsCrmSource, TypeDynamicsSource, TypeEloquaSource, TypeFileSystemSource, TypeGoogleAdWordsSource, TypeGoogleBigQuerySource, TypeGreenplumSource, TypeHBaseSource, TypeHdfsSource, TypeHiveSource, TypeHTTPSource, TypeHubspotSource, TypeImpalaSource, TypeInformixSource, TypeJiraSource, TypeJSONSource, TypeMagentoSource, TypeMariaDBSource, TypeMarketoSource, TypeMicrosoftAccessSource, TypeMongoDbSource, TypeMongoDbV2Source, TypeMySQLSource, TypeNetezzaSource, TypeODataSource, TypeOdbcSource, TypeOffice365Source, TypeOracleServiceCloudSource, TypeOracleSource, TypeOrcSource, TypeParquetSource, TypePaypalSource, TypePhoenixSource, TypePostgreSQLSource, TypePrestoSource, TypeQuickBooksSource, TypeRelationalSource, TypeResponsysSource, TypeRestSource, TypeSalesforceMarketingCloudSource, TypeSalesforceServiceCloudSource, TypeSalesforceSource, TypeSapBwSource, TypeSapCloudForCustomerSource, TypeSapEccSource, TypeSapHanaSource, TypeSapOpenHubSource, TypeSapTableSource, TypeServiceNowSource, TypeShopifySource, TypeSparkSource, TypeSQLDWSource, TypeSQLMISource, TypeSQLServerSource, TypeSQLSource, TypeSquareSource, TypeSybaseSource, TypeTabularSource, TypeTeradataSource, TypeVerticaSource, TypeWebSource, TypeXeroSource, TypeZohoSource}
 }
 
+// TypeBasicCopyTranslator enumerates the values for type basic copy translator.
+type TypeBasicCopyTranslator string
+
+const (
+	// TypeCopyTranslator ...
+	TypeCopyTranslator TypeBasicCopyTranslator = "CopyTranslator"
+	// TypeTabularTranslator ...
+	TypeTabularTranslator TypeBasicCopyTranslator = "TabularTranslator"
+)
+
+// PossibleTypeBasicCopyTranslatorValues returns an array of possible values for the TypeBasicCopyTranslator const type.
+func PossibleTypeBasicCopyTranslatorValues() []TypeBasicCopyTranslator {
+	return []TypeBasicCopyTranslator{TypeCopyTranslator, TypeTabularTranslator}
+}
+
+// TypeBasicCustomSetupBase enumerates the values for type basic custom setup base.
+type TypeBasicCustomSetupBase string
+
+const (
+	// TypeCmdkeySetup ...
+	TypeCmdkeySetup TypeBasicCustomSetupBase = "CmdkeySetup"
+	// TypeComponentSetup ...
+	TypeComponentSetup TypeBasicCustomSetupBase = "ComponentSetup"
+	// TypeCustomSetupBase ...
+	TypeCustomSetupBase TypeBasicCustomSetupBase = "CustomSetupBase"
+	// TypeEnvironmentVariableSetup ...
+	TypeEnvironmentVariableSetup TypeBasicCustomSetupBase = "EnvironmentVariableSetup"
+)
+
+// PossibleTypeBasicCustomSetupBaseValues returns an array of possible values for the TypeBasicCustomSetupBase const type.
+func PossibleTypeBasicCustomSetupBaseValues() []TypeBasicCustomSetupBase {
+	return []TypeBasicCustomSetupBase{TypeCmdkeySetup, TypeComponentSetup, TypeCustomSetupBase, TypeEnvironmentVariableSetup}
+}
+
 // TypeBasicDataFlow enumerates the values for type basic data flow.
 type TypeBasicDataFlow string
 
@@ -1963,6 +2193,29 @@ func PossibleTypeBasicDatasetLocationValues() []TypeBasicDatasetLocation {
 	return []TypeBasicDatasetLocation{TypeAmazonS3Location, TypeAzureBlobFSLocation, TypeAzureBlobStorageLocation, TypeAzureDataLakeStoreLocation, TypeAzureFileStorageLocation, TypeDatasetLocation, TypeFileServerLocation, TypeFtpServerLocation, TypeGoogleCloudStorageLocation, TypeHdfsLocation, TypeHTTPServerLocation, TypeSftpLocation}
 }
 
+// TypeBasicDatasetStorageFormat enumerates the values for type basic dataset storage format.
+type TypeBasicDatasetStorageFormat string
+
+const (
+	// TypeAvroFormat ...
+	TypeAvroFormat TypeBasicDatasetStorageFormat = "AvroFormat"
+	// TypeDatasetStorageFormat ...
+	TypeDatasetStorageFormat TypeBasicDatasetStorageFormat = "DatasetStorageFormat"
+	// TypeJSONFormat ...
+	TypeJSONFormat TypeBasicDatasetStorageFormat = "JsonFormat"
+	// TypeOrcFormat ...
+	TypeOrcFormat TypeBasicDatasetStorageFormat = "OrcFormat"
+	// TypeParquetFormat ...
+	TypeParquetFormat TypeBasicDatasetStorageFormat = "ParquetFormat"
+	// TypeTextFormat ...
+	TypeTextFormat TypeBasicDatasetStorageFormat = "TextFormat"
+)
+
+// PossibleTypeBasicDatasetStorageFormatValues returns an array of possible values for the TypeBasicDatasetStorageFormat const type.
+func PossibleTypeBasicDatasetStorageFormatValues() []TypeBasicDatasetStorageFormat {
+	return []TypeBasicDatasetStorageFormat{TypeAvroFormat, TypeDatasetStorageFormat, TypeJSONFormat, TypeOrcFormat, TypeParquetFormat, TypeTextFormat}
+}
+
 // TypeBasicDependencyReference enumerates the values for type basic dependency reference.
 type TypeBasicDependencyReference string
 
@@ -2014,6 +2267,23 @@ const (
 // PossibleTypeBasicFormatWriteSettingsValues returns an array of possible values for the TypeBasicFormatWriteSettings const type.
 func PossibleTypeBasicFormatWriteSettingsValues() []TypeBasicFormatWriteSettings {
 	return []TypeBasicFormatWriteSettings{TypeAvroWriteSettings, TypeDelimitedTextWriteSettings, TypeFormatWriteSettings, TypeJSONWriteSettings}
+}
+
+// TypeBasicIntegrationRuntime enumerates the values for type basic integration runtime.
+type TypeBasicIntegrationRuntime string
+
+const (
+	// TypeIntegrationRuntime ...
+	TypeIntegrationRuntime TypeBasicIntegrationRuntime = "IntegrationRuntime"
+	// TypeManaged ...
+	TypeManaged TypeBasicIntegrationRuntime = "Managed"
+	// TypeSelfHosted ...
+	TypeSelfHosted TypeBasicIntegrationRuntime = "SelfHosted"
+)
+
+// PossibleTypeBasicIntegrationRuntimeValues returns an array of possible values for the TypeBasicIntegrationRuntime const type.
+func PossibleTypeBasicIntegrationRuntimeValues() []TypeBasicIntegrationRuntime {
+	return []TypeBasicIntegrationRuntime{TypeIntegrationRuntime, TypeManaged, TypeSelfHosted}
 }
 
 // TypeBasicLinkedService enumerates the values for type basic linked service.

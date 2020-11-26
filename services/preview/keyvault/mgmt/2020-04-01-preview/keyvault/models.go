@@ -32,8 +32,8 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/keyvault/mgmt/2020-04-01-preview/keyvault"
 
-// AccessPolicyEntry an identity that have access to the key vault. All identities in the array must use the
-// same tenant ID as the key vault's tenant ID.
+// AccessPolicyEntry an identity that have access to the key vault. All identities in the array must use
+// the same tenant ID as the key vault's tenant ID.
 type AccessPolicyEntry struct {
 	// TenantID - The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
 	TenantID *uuid.UUID `json:"tenantId,omitempty"`
@@ -243,8 +243,11 @@ func (page DeletedVaultListResultPage) Values() []DeletedVault {
 }
 
 // Creates a new instance of the DeletedVaultListResultPage type.
-func NewDeletedVaultListResultPage(getNextPage func(context.Context, DeletedVaultListResult) (DeletedVaultListResult, error)) DeletedVaultListResultPage {
-	return DeletedVaultListResultPage{fn: getNextPage}
+func NewDeletedVaultListResultPage(cur DeletedVaultListResult, getNextPage func(context.Context, DeletedVaultListResult) (DeletedVaultListResult, error)) DeletedVaultListResultPage {
+	return DeletedVaultListResultPage{
+		fn:   getNextPage,
+		dvlr: cur,
+	}
 }
 
 // DeletedVaultProperties properties of the deleted vault.
@@ -488,8 +491,11 @@ func (page ManagedHsmListResultPage) Values() []ManagedHsm {
 }
 
 // Creates a new instance of the ManagedHsmListResultPage type.
-func NewManagedHsmListResultPage(getNextPage func(context.Context, ManagedHsmListResult) (ManagedHsmListResult, error)) ManagedHsmListResultPage {
-	return ManagedHsmListResultPage{fn: getNextPage}
+func NewManagedHsmListResultPage(cur ManagedHsmListResult, getNextPage func(context.Context, ManagedHsmListResult) (ManagedHsmListResult, error)) ManagedHsmListResultPage {
+	return ManagedHsmListResultPage{
+		fn:   getNextPage,
+		mhlr: cur,
+	}
 }
 
 // ManagedHsmProperties properties of the managed HSM Pool
@@ -572,8 +578,8 @@ func (mhr ManagedHsmResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ManagedHsmsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ManagedHsmsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ManagedHsmsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -766,8 +772,8 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationListResult result of the request to list Storage operations. It contains a list of operations and a
-// URL link to get the next set of results.
+// OperationListResult result of the request to list Storage operations. It contains a list of operations
+// and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of Storage operations supported by the Storage resource provider.
@@ -919,8 +925,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationProperties properties of operation, include metric specifications.
@@ -1423,8 +1432,11 @@ func (page ResourceListResultPage) Values() []Resource {
 }
 
 // Creates a new instance of the ResourceListResultPage type.
-func NewResourceListResultPage(getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
-	return ResourceListResultPage{fn: getNextPage}
+func NewResourceListResultPage(cur ResourceListResult, getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
+	return ResourceListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // ServiceSpecification one property of operation, include log specifications.
@@ -1688,8 +1700,11 @@ func (page VaultListResultPage) Values() []Vault {
 }
 
 // Creates a new instance of the VaultListResultPage type.
-func NewVaultListResultPage(getNextPage func(context.Context, VaultListResult) (VaultListResult, error)) VaultListResultPage {
-	return VaultListResultPage{fn: getNextPage}
+func NewVaultListResultPage(cur VaultListResult, getNextPage func(context.Context, VaultListResult) (VaultListResult, error)) VaultListResultPage {
+	return VaultListResultPage{
+		fn:  getNextPage,
+		vlr: cur,
+	}
 }
 
 // VaultPatchParameters parameters for creating or updating a vault

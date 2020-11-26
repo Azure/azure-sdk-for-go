@@ -33,11 +33,11 @@ import (
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/mgmt/2015-10-01-preview/account"
 
 // AzureAsyncOperationResult the response body contains the status of the specified asynchronous operation,
-// indicating whether it has succeeded, is in progress, or has failed. Note that this status is distinct from
-// the HTTP status code returned for the Get Operation Status operation itself. If the asynchronous operation
-// succeeded, the response body includes the HTTP status code for the successful request. If the asynchronous
-// operation failed, the response body includes the HTTP status code for the failed request and error
-// information regarding the failure.
+// indicating whether it has succeeded, is in progress, or has failed. Note that this status is distinct
+// from the HTTP status code returned for the Get Operation Status operation itself. If the asynchronous
+// operation succeeded, the response body includes the HTTP status code for the successful request. If the
+// asynchronous operation failed, the response body includes the HTTP status code for the failed request
+// and error information regarding the failure.
 type AzureAsyncOperationResult struct {
 	// Status - READ-ONLY; the status of the AzureAsyncOperation. Possible values include: 'OperationStatusInProgress', 'OperationStatusSucceeded', 'OperationStatusFailed'
 	Status OperationStatus `json:"status,omitempty"`
@@ -124,7 +124,8 @@ type DataLakeStoreAccountListResult struct {
 	Count *int64 `json:"count,omitempty"`
 }
 
-// DataLakeStoreAccountListResultIterator provides access to a complete listing of DataLakeStoreAccount values.
+// DataLakeStoreAccountListResultIterator provides access to a complete listing of DataLakeStoreAccount
+// values.
 type DataLakeStoreAccountListResultIterator struct {
 	i    int
 	page DataLakeStoreAccountListResultPage
@@ -267,8 +268,11 @@ func (page DataLakeStoreAccountListResultPage) Values() []DataLakeStoreAccount {
 }
 
 // Creates a new instance of the DataLakeStoreAccountListResultPage type.
-func NewDataLakeStoreAccountListResultPage(getNextPage func(context.Context, DataLakeStoreAccountListResult) (DataLakeStoreAccountListResult, error)) DataLakeStoreAccountListResultPage {
-	return DataLakeStoreAccountListResultPage{fn: getNextPage}
+func NewDataLakeStoreAccountListResultPage(cur DataLakeStoreAccountListResult, getNextPage func(context.Context, DataLakeStoreAccountListResult) (DataLakeStoreAccountListResult, error)) DataLakeStoreAccountListResultPage {
+	return DataLakeStoreAccountListResultPage{
+		fn:     getNextPage,
+		dlsalr: cur,
+	}
 }
 
 // DataLakeStoreAccountProperties data Lake Store account properties information
@@ -322,7 +326,8 @@ type DataLakeStoreFirewallRuleListResult struct {
 	Count *int64 `json:"count,omitempty"`
 }
 
-// DataLakeStoreFirewallRuleListResultIterator provides access to a complete listing of FirewallRule values.
+// DataLakeStoreFirewallRuleListResultIterator provides access to a complete listing of FirewallRule
+// values.
 type DataLakeStoreFirewallRuleListResultIterator struct {
 	i    int
 	page DataLakeStoreFirewallRuleListResultPage
@@ -465,8 +470,11 @@ func (page DataLakeStoreFirewallRuleListResultPage) Values() []FirewallRule {
 }
 
 // Creates a new instance of the DataLakeStoreFirewallRuleListResultPage type.
-func NewDataLakeStoreFirewallRuleListResultPage(getNextPage func(context.Context, DataLakeStoreFirewallRuleListResult) (DataLakeStoreFirewallRuleListResult, error)) DataLakeStoreFirewallRuleListResultPage {
-	return DataLakeStoreFirewallRuleListResultPage{fn: getNextPage}
+func NewDataLakeStoreFirewallRuleListResultPage(cur DataLakeStoreFirewallRuleListResult, getNextPage func(context.Context, DataLakeStoreFirewallRuleListResult) (DataLakeStoreFirewallRuleListResult, error)) DataLakeStoreFirewallRuleListResultPage {
+	return DataLakeStoreFirewallRuleListResultPage{
+		fn:      getNextPage,
+		dlsfrlr: cur,
+	}
 }
 
 // DeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.

@@ -32,216 +32,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2016-10-01/keyvault"
 
-// AccessPolicyUpdateKind enumerates the values for access policy update kind.
-type AccessPolicyUpdateKind string
-
-const (
-	// Add ...
-	Add AccessPolicyUpdateKind = "add"
-	// Remove ...
-	Remove AccessPolicyUpdateKind = "remove"
-	// Replace ...
-	Replace AccessPolicyUpdateKind = "replace"
-)
-
-// PossibleAccessPolicyUpdateKindValues returns an array of possible values for the AccessPolicyUpdateKind const type.
-func PossibleAccessPolicyUpdateKindValues() []AccessPolicyUpdateKind {
-	return []AccessPolicyUpdateKind{Add, Remove, Replace}
-}
-
-// CertificatePermissions enumerates the values for certificate permissions.
-type CertificatePermissions string
-
-const (
-	// Create ...
-	Create CertificatePermissions = "create"
-	// Delete ...
-	Delete CertificatePermissions = "delete"
-	// Deleteissuers ...
-	Deleteissuers CertificatePermissions = "deleteissuers"
-	// Get ...
-	Get CertificatePermissions = "get"
-	// Getissuers ...
-	Getissuers CertificatePermissions = "getissuers"
-	// Import ...
-	Import CertificatePermissions = "import"
-	// List ...
-	List CertificatePermissions = "list"
-	// Listissuers ...
-	Listissuers CertificatePermissions = "listissuers"
-	// Managecontacts ...
-	Managecontacts CertificatePermissions = "managecontacts"
-	// Manageissuers ...
-	Manageissuers CertificatePermissions = "manageissuers"
-	// Purge ...
-	Purge CertificatePermissions = "purge"
-	// Recover ...
-	Recover CertificatePermissions = "recover"
-	// Setissuers ...
-	Setissuers CertificatePermissions = "setissuers"
-	// Update ...
-	Update CertificatePermissions = "update"
-)
-
-// PossibleCertificatePermissionsValues returns an array of possible values for the CertificatePermissions const type.
-func PossibleCertificatePermissionsValues() []CertificatePermissions {
-	return []CertificatePermissions{Create, Delete, Deleteissuers, Get, Getissuers, Import, List, Listissuers, Managecontacts, Manageissuers, Purge, Recover, Setissuers, Update}
-}
-
-// CreateMode enumerates the values for create mode.
-type CreateMode string
-
-const (
-	// CreateModeDefault ...
-	CreateModeDefault CreateMode = "default"
-	// CreateModeRecover ...
-	CreateModeRecover CreateMode = "recover"
-)
-
-// PossibleCreateModeValues returns an array of possible values for the CreateMode const type.
-func PossibleCreateModeValues() []CreateMode {
-	return []CreateMode{CreateModeDefault, CreateModeRecover}
-}
-
-// KeyPermissions enumerates the values for key permissions.
-type KeyPermissions string
-
-const (
-	// KeyPermissionsBackup ...
-	KeyPermissionsBackup KeyPermissions = "backup"
-	// KeyPermissionsCreate ...
-	KeyPermissionsCreate KeyPermissions = "create"
-	// KeyPermissionsDecrypt ...
-	KeyPermissionsDecrypt KeyPermissions = "decrypt"
-	// KeyPermissionsDelete ...
-	KeyPermissionsDelete KeyPermissions = "delete"
-	// KeyPermissionsEncrypt ...
-	KeyPermissionsEncrypt KeyPermissions = "encrypt"
-	// KeyPermissionsGet ...
-	KeyPermissionsGet KeyPermissions = "get"
-	// KeyPermissionsImport ...
-	KeyPermissionsImport KeyPermissions = "import"
-	// KeyPermissionsList ...
-	KeyPermissionsList KeyPermissions = "list"
-	// KeyPermissionsPurge ...
-	KeyPermissionsPurge KeyPermissions = "purge"
-	// KeyPermissionsRecover ...
-	KeyPermissionsRecover KeyPermissions = "recover"
-	// KeyPermissionsRestore ...
-	KeyPermissionsRestore KeyPermissions = "restore"
-	// KeyPermissionsSign ...
-	KeyPermissionsSign KeyPermissions = "sign"
-	// KeyPermissionsUnwrapKey ...
-	KeyPermissionsUnwrapKey KeyPermissions = "unwrapKey"
-	// KeyPermissionsUpdate ...
-	KeyPermissionsUpdate KeyPermissions = "update"
-	// KeyPermissionsVerify ...
-	KeyPermissionsVerify KeyPermissions = "verify"
-	// KeyPermissionsWrapKey ...
-	KeyPermissionsWrapKey KeyPermissions = "wrapKey"
-)
-
-// PossibleKeyPermissionsValues returns an array of possible values for the KeyPermissions const type.
-func PossibleKeyPermissionsValues() []KeyPermissions {
-	return []KeyPermissions{KeyPermissionsBackup, KeyPermissionsCreate, KeyPermissionsDecrypt, KeyPermissionsDelete, KeyPermissionsEncrypt, KeyPermissionsGet, KeyPermissionsImport, KeyPermissionsList, KeyPermissionsPurge, KeyPermissionsRecover, KeyPermissionsRestore, KeyPermissionsSign, KeyPermissionsUnwrapKey, KeyPermissionsUpdate, KeyPermissionsVerify, KeyPermissionsWrapKey}
-}
-
-// Reason enumerates the values for reason.
-type Reason string
-
-const (
-	// AccountNameInvalid ...
-	AccountNameInvalid Reason = "AccountNameInvalid"
-	// AlreadyExists ...
-	AlreadyExists Reason = "AlreadyExists"
-)
-
-// PossibleReasonValues returns an array of possible values for the Reason const type.
-func PossibleReasonValues() []Reason {
-	return []Reason{AccountNameInvalid, AlreadyExists}
-}
-
-// SecretPermissions enumerates the values for secret permissions.
-type SecretPermissions string
-
-const (
-	// SecretPermissionsBackup ...
-	SecretPermissionsBackup SecretPermissions = "backup"
-	// SecretPermissionsDelete ...
-	SecretPermissionsDelete SecretPermissions = "delete"
-	// SecretPermissionsGet ...
-	SecretPermissionsGet SecretPermissions = "get"
-	// SecretPermissionsList ...
-	SecretPermissionsList SecretPermissions = "list"
-	// SecretPermissionsPurge ...
-	SecretPermissionsPurge SecretPermissions = "purge"
-	// SecretPermissionsRecover ...
-	SecretPermissionsRecover SecretPermissions = "recover"
-	// SecretPermissionsRestore ...
-	SecretPermissionsRestore SecretPermissions = "restore"
-	// SecretPermissionsSet ...
-	SecretPermissionsSet SecretPermissions = "set"
-)
-
-// PossibleSecretPermissionsValues returns an array of possible values for the SecretPermissions const type.
-func PossibleSecretPermissionsValues() []SecretPermissions {
-	return []SecretPermissions{SecretPermissionsBackup, SecretPermissionsDelete, SecretPermissionsGet, SecretPermissionsList, SecretPermissionsPurge, SecretPermissionsRecover, SecretPermissionsRestore, SecretPermissionsSet}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// Premium ...
-	Premium SkuName = "premium"
-	// Standard ...
-	Standard SkuName = "standard"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{Premium, Standard}
-}
-
-// StoragePermissions enumerates the values for storage permissions.
-type StoragePermissions string
-
-const (
-	// StoragePermissionsBackup ...
-	StoragePermissionsBackup StoragePermissions = "backup"
-	// StoragePermissionsDelete ...
-	StoragePermissionsDelete StoragePermissions = "delete"
-	// StoragePermissionsDeletesas ...
-	StoragePermissionsDeletesas StoragePermissions = "deletesas"
-	// StoragePermissionsGet ...
-	StoragePermissionsGet StoragePermissions = "get"
-	// StoragePermissionsGetsas ...
-	StoragePermissionsGetsas StoragePermissions = "getsas"
-	// StoragePermissionsList ...
-	StoragePermissionsList StoragePermissions = "list"
-	// StoragePermissionsListsas ...
-	StoragePermissionsListsas StoragePermissions = "listsas"
-	// StoragePermissionsPurge ...
-	StoragePermissionsPurge StoragePermissions = "purge"
-	// StoragePermissionsRecover ...
-	StoragePermissionsRecover StoragePermissions = "recover"
-	// StoragePermissionsRegeneratekey ...
-	StoragePermissionsRegeneratekey StoragePermissions = "regeneratekey"
-	// StoragePermissionsRestore ...
-	StoragePermissionsRestore StoragePermissions = "restore"
-	// StoragePermissionsSet ...
-	StoragePermissionsSet StoragePermissions = "set"
-	// StoragePermissionsSetsas ...
-	StoragePermissionsSetsas StoragePermissions = "setsas"
-	// StoragePermissionsUpdate ...
-	StoragePermissionsUpdate StoragePermissions = "update"
-)
-
-// PossibleStoragePermissionsValues returns an array of possible values for the StoragePermissions const type.
-func PossibleStoragePermissionsValues() []StoragePermissions {
-	return []StoragePermissions{StoragePermissionsBackup, StoragePermissionsDelete, StoragePermissionsDeletesas, StoragePermissionsGet, StoragePermissionsGetsas, StoragePermissionsList, StoragePermissionsListsas, StoragePermissionsPurge, StoragePermissionsRecover, StoragePermissionsRegeneratekey, StoragePermissionsRestore, StoragePermissionsSet, StoragePermissionsSetsas, StoragePermissionsUpdate}
-}
-
 // AccessPolicyEntry an identity that have access to the key vault. All identities in the array must use
 // the same tenant ID as the key vault's tenant ID.
 type AccessPolicyEntry struct {
@@ -277,6 +67,15 @@ type DeletedVault struct {
 	Type *string `json:"type,omitempty"`
 	// Properties - Properties of the vault
 	Properties *DeletedVaultProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeletedVault.
+func (dv DeletedVault) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dv.Properties != nil {
+		objectMap["properties"] = dv.Properties
+	}
+	return json.Marshal(objectMap)
 }
 
 // DeletedVaultListResult list of vaults
@@ -356,10 +155,15 @@ func (dvlr DeletedVaultListResult) IsEmpty() bool {
 	return dvlr.Value == nil || len(*dvlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dvlr DeletedVaultListResult) hasNextLink() bool {
+	return dvlr.NextLink != nil && len(*dvlr.NextLink) != 0
+}
+
 // deletedVaultListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dvlr DeletedVaultListResult) deletedVaultListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dvlr.NextLink == nil || len(to.String(dvlr.NextLink)) < 1 {
+	if !dvlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -387,11 +191,16 @@ func (page *DeletedVaultListResultPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dvlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dvlr)
+		if err != nil {
+			return err
+		}
+		page.dvlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dvlr = next
 	return nil
 }
 
@@ -421,8 +230,11 @@ func (page DeletedVaultListResultPage) Values() []DeletedVault {
 }
 
 // Creates a new instance of the DeletedVaultListResultPage type.
-func NewDeletedVaultListResultPage(getNextPage func(context.Context, DeletedVaultListResult) (DeletedVaultListResult, error)) DeletedVaultListResultPage {
-	return DeletedVaultListResultPage{fn: getNextPage}
+func NewDeletedVaultListResultPage(cur DeletedVaultListResult, getNextPage func(context.Context, DeletedVaultListResult) (DeletedVaultListResult, error)) DeletedVaultListResultPage {
+	return DeletedVaultListResultPage{
+		fn:   getNextPage,
+		dvlr: cur,
+	}
 }
 
 // DeletedVaultProperties properties of the deleted vault.
@@ -626,10 +438,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -657,11 +474,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -691,8 +513,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationProperties properties of operation, include metric specifications.
@@ -816,10 +641,15 @@ func (rlr ResourceListResult) IsEmpty() bool {
 	return rlr.Value == nil || len(*rlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rlr ResourceListResult) hasNextLink() bool {
+	return rlr.NextLink != nil && len(*rlr.NextLink) != 0
+}
+
 // resourceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rlr ResourceListResult) resourceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rlr.NextLink == nil || len(to.String(rlr.NextLink)) < 1 {
+	if !rlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -847,11 +677,16 @@ func (page *ResourceListResultPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rlr)
+		if err != nil {
+			return err
+		}
+		page.rlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rlr = next
 	return nil
 }
 
@@ -881,8 +716,11 @@ func (page ResourceListResultPage) Values() []Resource {
 }
 
 // Creates a new instance of the ResourceListResultPage type.
-func NewResourceListResultPage(getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
-	return ResourceListResultPage{fn: getNextPage}
+func NewResourceListResultPage(cur ResourceListResult, getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
+	return ResourceListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // ServiceSpecification one property of operation, include log specifications.
@@ -944,6 +782,15 @@ type VaultAccessPolicyParameters struct {
 	Location *string `json:"location,omitempty"`
 	// Properties - Properties of the access policy
 	Properties *VaultAccessPolicyProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VaultAccessPolicyParameters.
+func (vapp VaultAccessPolicyParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vapp.Properties != nil {
+		objectMap["properties"] = vapp.Properties
+	}
+	return json.Marshal(objectMap)
 }
 
 // VaultAccessPolicyProperties properties of the vault access policy
@@ -1062,10 +909,15 @@ func (vlr VaultListResult) IsEmpty() bool {
 	return vlr.Value == nil || len(*vlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (vlr VaultListResult) hasNextLink() bool {
+	return vlr.NextLink != nil && len(*vlr.NextLink) != 0
+}
+
 // vaultListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (vlr VaultListResult) vaultListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if vlr.NextLink == nil || len(to.String(vlr.NextLink)) < 1 {
+	if !vlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1093,11 +945,16 @@ func (page *VaultListResultPage) NextWithContext(ctx context.Context) (err error
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.vlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.vlr)
+		if err != nil {
+			return err
+		}
+		page.vlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.vlr = next
 	return nil
 }
 
@@ -1127,8 +984,11 @@ func (page VaultListResultPage) Values() []Vault {
 }
 
 // Creates a new instance of the VaultListResultPage type.
-func NewVaultListResultPage(getNextPage func(context.Context, VaultListResult) (VaultListResult, error)) VaultListResultPage {
-	return VaultListResultPage{fn: getNextPage}
+func NewVaultListResultPage(cur VaultListResult, getNextPage func(context.Context, VaultListResult) (VaultListResult, error)) VaultListResultPage {
+	return VaultListResultPage{
+		fn:  getNextPage,
+		vlr: cur,
+	}
 }
 
 // VaultPatchParameters parameters for creating or updating a vault

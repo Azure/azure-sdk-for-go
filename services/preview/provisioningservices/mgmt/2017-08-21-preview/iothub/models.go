@@ -264,7 +264,8 @@ func (idsdlr IotDpsSkuDefinitionListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// IotDpsSkuDefinitionListResultIterator provides access to a complete listing of IotDpsSkuDefinition values.
+// IotDpsSkuDefinitionListResultIterator provides access to a complete listing of IotDpsSkuDefinition
+// values.
 type IotDpsSkuDefinitionListResultIterator struct {
 	i    int
 	page IotDpsSkuDefinitionListResultPage
@@ -407,8 +408,11 @@ func (page IotDpsSkuDefinitionListResultPage) Values() []IotDpsSkuDefinition {
 }
 
 // Creates a new instance of the IotDpsSkuDefinitionListResultPage type.
-func NewIotDpsSkuDefinitionListResultPage(getNextPage func(context.Context, IotDpsSkuDefinitionListResult) (IotDpsSkuDefinitionListResult, error)) IotDpsSkuDefinitionListResultPage {
-	return IotDpsSkuDefinitionListResultPage{fn: getNextPage}
+func NewIotDpsSkuDefinitionListResultPage(cur IotDpsSkuDefinitionListResult, getNextPage func(context.Context, IotDpsSkuDefinitionListResult) (IotDpsSkuDefinitionListResult, error)) IotDpsSkuDefinitionListResultPage {
+	return IotDpsSkuDefinitionListResultPage{
+		fn:     getNextPage,
+		idsdlr: cur,
+	}
 }
 
 // IotDpsSkuInfo list of possible provisioning service SKUs.
@@ -475,8 +479,8 @@ type OperationInputs struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// OperationListResult result of the request to list IoT Hub operations. It contains a list of operations and a
-// URL link to get the next set of results.
+// OperationListResult result of the request to list IoT Hub operations. It contains a list of operations
+// and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of IoT Hub operations supported by the Microsoft.Devices resource provider.
@@ -628,8 +632,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // ProvisioningServiceDescription the description of the provisioning service.
@@ -833,8 +840,11 @@ func (page ProvisioningServiceDescriptionListResultPage) Values() []Provisioning
 }
 
 // Creates a new instance of the ProvisioningServiceDescriptionListResultPage type.
-func NewProvisioningServiceDescriptionListResultPage(getNextPage func(context.Context, ProvisioningServiceDescriptionListResult) (ProvisioningServiceDescriptionListResult, error)) ProvisioningServiceDescriptionListResultPage {
-	return ProvisioningServiceDescriptionListResultPage{fn: getNextPage}
+func NewProvisioningServiceDescriptionListResultPage(cur ProvisioningServiceDescriptionListResult, getNextPage func(context.Context, ProvisioningServiceDescriptionListResult) (ProvisioningServiceDescriptionListResult, error)) ProvisioningServiceDescriptionListResultPage {
+	return ProvisioningServiceDescriptionListResultPage{
+		fn:    getNextPage,
+		psdlr: cur,
+	}
 }
 
 // Resource the common properties of an Azure resource.
@@ -1038,8 +1048,11 @@ func (page SharedAccessSignatureAuthorizationRuleListResultPage) Values() []Shar
 }
 
 // Creates a new instance of the SharedAccessSignatureAuthorizationRuleListResultPage type.
-func NewSharedAccessSignatureAuthorizationRuleListResultPage(getNextPage func(context.Context, SharedAccessSignatureAuthorizationRuleListResult) (SharedAccessSignatureAuthorizationRuleListResult, error)) SharedAccessSignatureAuthorizationRuleListResultPage {
-	return SharedAccessSignatureAuthorizationRuleListResultPage{fn: getNextPage}
+func NewSharedAccessSignatureAuthorizationRuleListResultPage(cur SharedAccessSignatureAuthorizationRuleListResult, getNextPage func(context.Context, SharedAccessSignatureAuthorizationRuleListResult) (SharedAccessSignatureAuthorizationRuleListResult, error)) SharedAccessSignatureAuthorizationRuleListResultPage {
+	return SharedAccessSignatureAuthorizationRuleListResultPage{
+		fn:      getNextPage,
+		sasarlr: cur,
+	}
 }
 
 // VerificationCodeRequest certificate to generate verification code for.

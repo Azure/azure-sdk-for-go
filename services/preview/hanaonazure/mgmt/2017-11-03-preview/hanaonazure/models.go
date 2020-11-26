@@ -421,8 +421,11 @@ func (page HanaInstancesListResultPage) Values() []HanaInstance {
 }
 
 // Creates a new instance of the HanaInstancesListResultPage type.
-func NewHanaInstancesListResultPage(getNextPage func(context.Context, HanaInstancesListResult) (HanaInstancesListResult, error)) HanaInstancesListResultPage {
-	return HanaInstancesListResultPage{fn: getNextPage}
+func NewHanaInstancesListResultPage(cur HanaInstancesListResult, getNextPage func(context.Context, HanaInstancesListResult) (HanaInstancesListResult, error)) HanaInstancesListResultPage {
+	return HanaInstancesListResultPage{
+		fn:   getNextPage,
+		hilr: cur,
+	}
 }
 
 // HanaInstancesRestartFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -862,8 +865,11 @@ func (page SapMonitorListResultPage) Values() []SapMonitor {
 }
 
 // Creates a new instance of the SapMonitorListResultPage type.
-func NewSapMonitorListResultPage(getNextPage func(context.Context, SapMonitorListResult) (SapMonitorListResult, error)) SapMonitorListResultPage {
-	return SapMonitorListResultPage{fn: getNextPage}
+func NewSapMonitorListResultPage(cur SapMonitorListResult, getNextPage func(context.Context, SapMonitorListResult) (SapMonitorListResult, error)) SapMonitorListResultPage {
+	return SapMonitorListResultPage{
+		fn:   getNextPage,
+		smlr: cur,
+	}
 }
 
 // SapMonitorProperties describes the properties of a SAP monitor.

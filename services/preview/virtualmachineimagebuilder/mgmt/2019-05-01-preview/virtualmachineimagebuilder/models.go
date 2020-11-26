@@ -383,7 +383,8 @@ func (itd ImageTemplateDistributor) AsBasicImageTemplateDistributor() (BasicImag
 	return &itd, true
 }
 
-// ImageTemplateFileCustomizer uploads files to VMs (Linux, Windows). Corresponds to Packer file provisioner
+// ImageTemplateFileCustomizer uploads files to VMs (Linux, Windows). Corresponds to Packer file
+// provisioner
 type ImageTemplateFileCustomizer struct {
 	// SourceURI - The URI of the file to be uploaded for customizing the VM. It can be a github link, SAS URI for Azure Storage, etc
 	SourceURI *string `json:"sourceUri,omitempty"`
@@ -477,8 +478,8 @@ type ImageTemplateIdentityUserAssignedIdentitiesValue struct {
 	ClientID *string `json:"clientId,omitempty"`
 }
 
-// ImageTemplateIsoSource describes an image source that is an installation ISO. Currently only supports Red
-// Hat Enterprise Linux 7.2-7.5 ISO's.
+// ImageTemplateIsoSource describes an image source that is an installation ISO. Currently only supports
+// Red Hat Enterprise Linux 7.2-7.5 ISO's.
 type ImageTemplateIsoSource struct {
 	// SourceURI - URI to get the ISO image. This URI has to be accessible to the resource provider at the time of the image template creation.
 	SourceURI *string `json:"sourceUri,omitempty"`
@@ -700,8 +701,11 @@ func (page ImageTemplateListResultPage) Values() []ImageTemplate {
 }
 
 // Creates a new instance of the ImageTemplateListResultPage type.
-func NewImageTemplateListResultPage(getNextPage func(context.Context, ImageTemplateListResult) (ImageTemplateListResult, error)) ImageTemplateListResultPage {
-	return ImageTemplateListResultPage{fn: getNextPage}
+func NewImageTemplateListResultPage(cur ImageTemplateListResult, getNextPage func(context.Context, ImageTemplateListResult) (ImageTemplateListResult, error)) ImageTemplateListResultPage {
+	return ImageTemplateListResultPage{
+		fn:   getNextPage,
+		itlr: cur,
+	}
 }
 
 // ImageTemplateManagedImageDistributor distribute as a Managed Disk Image.
@@ -765,7 +769,8 @@ func (itmid ImageTemplateManagedImageDistributor) AsBasicImageTemplateDistributo
 	return &itmid, true
 }
 
-// ImageTemplateManagedImageSource describes an image source that is a managed image in customer subscription.
+// ImageTemplateManagedImageSource describes an image source that is a managed image in customer
+// subscription.
 type ImageTemplateManagedImageSource struct {
 	// ImageID - ARM resource id of the managed image in customer subscription
 	ImageID *string `json:"imageId,omitempty"`
@@ -883,8 +888,8 @@ func (itpis ImageTemplatePlatformImageSource) AsBasicImageTemplateSource() (Basi
 	return &itpis, true
 }
 
-// ImageTemplatePowerShellCustomizer runs the specified PowerShell on the VM (Windows). Corresponds to Packer
-// powershell provisioner. Exactly one of 'scriptUri' or 'inline' can be specified.
+// ImageTemplatePowerShellCustomizer runs the specified PowerShell on the VM (Windows). Corresponds to
+// Packer powershell provisioner. Exactly one of 'scriptUri' or 'inline' can be specified.
 type ImageTemplatePowerShellCustomizer struct {
 	// ScriptURI - URI of the PowerShell script to be run for customizing. It can be a github link, SAS URI for Azure Storage, etc
 	ScriptURI *string `json:"scriptUri,omitempty"`
@@ -1083,8 +1088,8 @@ func (itp *ImageTemplateProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ImageTemplateRestartCustomizer reboots a VM and waits for it to come back online (Windows). Corresponds to
-// Packer windows-restart provisioner
+// ImageTemplateRestartCustomizer reboots a VM and waits for it to come back online (Windows). Corresponds
+// to Packer windows-restart provisioner
 type ImageTemplateRestartCustomizer struct {
 	// RestartCommand - Command to execute the restart [Default: 'shutdown /r /f /t 0 /c "packer restart"']
 	RestartCommand *string `json:"restartCommand,omitempty"`
@@ -1211,8 +1216,8 @@ func (itsid ImageTemplateSharedImageDistributor) AsBasicImageTemplateDistributor
 	return &itsid, true
 }
 
-// ImageTemplateSharedImageVersionSource describes an image source that is an image version in a shared image
-// gallery.
+// ImageTemplateSharedImageVersionSource describes an image source that is an image version in a shared
+// image gallery.
 type ImageTemplateSharedImageVersionSource struct {
 	// ImageVersionID - ARM resource id of the image version in the shared image gallery
 	ImageVersionID *string `json:"imageVersionId,omitempty"`
@@ -1687,8 +1692,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // ProvisioningError describes the error happened when create or update an image template
@@ -1953,8 +1961,11 @@ func (page RunOutputCollectionPage) Values() []RunOutput {
 }
 
 // Creates a new instance of the RunOutputCollectionPage type.
-func NewRunOutputCollectionPage(getNextPage func(context.Context, RunOutputCollection) (RunOutputCollection, error)) RunOutputCollectionPage {
-	return RunOutputCollectionPage{fn: getNextPage}
+func NewRunOutputCollectionPage(cur RunOutputCollection, getNextPage func(context.Context, RunOutputCollection) (RunOutputCollection, error)) RunOutputCollectionPage {
+	return RunOutputCollectionPage{
+		fn:  getNextPage,
+		roc: cur,
+	}
 }
 
 // RunOutputProperties describes the properties of a run output
@@ -1998,8 +2009,8 @@ func (sr SubResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// VirtualMachineImageTemplatesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// VirtualMachineImageTemplatesCreateOrUpdateFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type VirtualMachineImageTemplatesCreateOrUpdateFuture struct {
 	azure.Future
 }

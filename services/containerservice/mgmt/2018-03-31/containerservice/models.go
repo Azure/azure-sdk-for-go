@@ -223,8 +223,8 @@ func (future *ContainerServicesCreateOrUpdateFutureType) Result(client Container
 	return
 }
 
-// ContainerServicesDeleteFutureType an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ContainerServicesDeleteFutureType an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ContainerServicesDeleteFutureType struct {
 	azure.Future
 }
@@ -452,8 +452,11 @@ func (page ListResultPage) Values() []ContainerService {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // ManagedCluster managed cluster.
@@ -898,8 +901,11 @@ func (page ManagedClusterListResultPage) Values() []ManagedCluster {
 }
 
 // Creates a new instance of the ManagedClusterListResultPage type.
-func NewManagedClusterListResultPage(getNextPage func(context.Context, ManagedClusterListResult) (ManagedClusterListResult, error)) ManagedClusterListResultPage {
-	return ManagedClusterListResultPage{fn: getNextPage}
+func NewManagedClusterListResultPage(cur ManagedClusterListResult, getNextPage func(context.Context, ManagedClusterListResult) (ManagedClusterListResult, error)) ManagedClusterListResultPage {
+	return ManagedClusterListResultPage{
+		fn:   getNextPage,
+		mclr: cur,
+	}
 }
 
 // ManagedClusterPoolUpgradeProfile the list of available upgrade versions.
@@ -1027,8 +1033,8 @@ func (future *ManagedClustersDeleteFuture) Result(client ManagedClustersClient) 
 	return
 }
 
-// ManagedClusterServicePrincipalProfile information about a service principal identity for the cluster to use
-// for manipulating Azure APIs.
+// ManagedClusterServicePrincipalProfile information about a service principal identity for the cluster to
+// use for manipulating Azure APIs.
 type ManagedClusterServicePrincipalProfile struct {
 	// ClientID - The ID for the service principal.
 	ClientID *string `json:"clientId,omitempty"`
@@ -1059,8 +1065,8 @@ func (future *ManagedClustersResetAADProfileFuture) Result(client ManagedCluster
 	return
 }
 
-// ManagedClustersResetServicePrincipalProfileFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// ManagedClustersResetServicePrincipalProfileFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type ManagedClustersResetServicePrincipalProfileFuture struct {
 	azure.Future
 }
@@ -1082,8 +1088,8 @@ func (future *ManagedClustersResetServicePrincipalProfileFuture) Result(client M
 	return
 }
 
-// ManagedClustersUpdateTagsFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ManagedClustersUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ManagedClustersUpdateTagsFuture struct {
 	azure.Future
 }

@@ -1,0 +1,262 @@
+
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/b97299c968df5f99b724bd1231fd2161731d3b8f
+
+Code generator C:\Users\dapzhang\Documents\workspace\autorest.go
+
+## Breaking Changes
+
+- Const `User` type has been changed from `OperationOrigin` to `IdentityType`
+- Function `NewWithBaseURI` signature has been changed from `(string,string)` to `(string,string,string)`
+- Function `NewSQLServerRegistrationListResultPage` signature has been changed from `(func(context.Context, SQLServerRegistrationListResult) (SQLServerRegistrationListResult, error))` to `(SQLServerRegistrationListResult,func(context.Context, SQLServerRegistrationListResult) (SQLServerRegistrationListResult, error))`
+- Function `NewSQLServersClientWithBaseURI` signature has been changed from `(string,string)` to `(string,string,string)`
+- Function `NewSQLServersClient` signature has been changed from `(string)` to `(string,string)`
+- Function `NewOperationListResultPage` signature has been changed from `(func(context.Context, OperationListResult) (OperationListResult, error))` to `(OperationListResult,func(context.Context, OperationListResult) (OperationListResult, error))`
+- Function `NewOperationsClient` signature has been changed from `(string)` to `(string,string)`
+- Function `NewSQLServerRegistrationsClient` signature has been changed from `(string)` to `(string,string)`
+- Function `NewSQLServerRegistrationsClientWithBaseURI` signature has been changed from `(string,string)` to `(string,string,string)`
+- Function `New` signature has been changed from `(string)` to `(string,string)`
+- Function `NewOperationsClientWithBaseURI` signature has been changed from `(string,string)` to `(string,string,string)`
+- Function `NewSQLServerListResultPage` signature has been changed from `(func(context.Context, SQLServerListResult) (SQLServerListResult, error))` to `(SQLServerListResult,func(context.Context, SQLServerListResult) (SQLServerListResult, error))`
+- Type of `SQLServerRegistrationProperties.SubscriptionID` has been changed from `*uuid.UUID` to `*string`
+- Const `System` has been removed
+
+## New Content
+
+- Const `Free` is added
+- Const `Standard` is added
+- Const `OperationOriginSystem` is added
+- Const `OperationOriginUser` is added
+- Const `Premium` is added
+- Const `Application` is added
+- Const `Key` is added
+- Const `ManagedIdentity` is added
+- Const `SystemAssigned` is added
+- Const `Basic` is added
+- Function `SQLManagedInstancesClient.ListResponder(*http.Response) (SQLManagedInstanceListResult,error)` is added
+- Function `DataControllerUpdate.MarshalJSON() ([]byte,error)` is added
+- Function `*SQLManagedInstanceListResultIterator.Next() error` is added
+- Function `SQLServerInstanceListResultIterator.Response() SQLServerInstanceListResult` is added
+- Function `SQLServerInstancesClient.List(context.Context) (SQLServerInstanceListResultPage,error)` is added
+- Function `SQLServerInstancesClient.DeleteSender(*http.Request) (*http.Response,error)` is added
+- Function `PostgresInstancesClient.UpdateSender(*http.Request) (*http.Response,error)` is added
+- Function `PostgresInstanceListResultPage.Values() []PostgresInstance` is added
+- Function `SQLManagedInstancesClient.ListByResourceGroupComplete(context.Context,string) (SQLManagedInstanceListResultIterator,error)` is added
+- Function `NewDataControllersClient(string,string) DataControllersClient` is added
+- Function `SQLManagedInstanceListResult.IsEmpty() bool` is added
+- Function `PostgresInstancesClient.UpdatePreparer(context.Context,string,string,PostgresInstanceUpdate) (*http.Request,error)` is added
+- Function `DataControllersClient.ListInGroupPreparer(context.Context,string) (*http.Request,error)` is added
+- Function `*PageOfDataControllerResourcePage.Next() error` is added
+- Function `SQLManagedInstancesClient.ListComplete(context.Context) (SQLManagedInstanceListResultIterator,error)` is added
+- Function `PostgresInstancesClient.ListPreparer(context.Context) (*http.Request,error)` is added
+- Function `PossibleSkuTierValues() []SkuTier` is added
+- Function `NewSQLServerInstanceListResultPage(SQLServerInstanceListResult,func(context.Context, SQLServerInstanceListResult) (SQLServerInstanceListResult, error)) SQLServerInstanceListResultPage` is added
+- Function `DataControllersClient.GetDataControllerPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `NewPostgresInstanceListResultPage(PostgresInstanceListResult,func(context.Context, PostgresInstanceListResult) (PostgresInstanceListResult, error)) PostgresInstanceListResultPage` is added
+- Function `PageOfDataControllerResourcePage.Response() PageOfDataControllerResource` is added
+- Function `*SQLManagedInstanceListResultIterator.NextWithContext(context.Context) error` is added
+- Function `NewSQLManagedInstanceListResultPage(SQLManagedInstanceListResult,func(context.Context, SQLManagedInstanceListResult) (SQLManagedInstanceListResult, error)) SQLManagedInstanceListResultPage` is added
+- Function `PageOfDataControllerResourcePage.NotDone() bool` is added
+- Function `SQLServerInstancesClient.Update(context.Context,string,string,SQLServerInstanceUpdate) (SQLServerInstance,error)` is added
+- Function `Identity.MarshalJSON() ([]byte,error)` is added
+- Function `PageOfDataControllerResource.IsEmpty() bool` is added
+- Function `PostgresInstanceListResultIterator.Response() PostgresInstanceListResult` is added
+- Function `SQLServerInstancesClient.ListByResourceGroupComplete(context.Context,string) (SQLServerInstanceListResultIterator,error)` is added
+- Function `SQLServerInstance.MarshalJSON() ([]byte,error)` is added
+- Function `DataControllersClient.PatchDataControllerSender(*http.Request) (*http.Response,error)` is added
+- Function `PageOfDataControllerResourceIterator.Response() PageOfDataControllerResource` is added
+- Function `PostgresInstancesClient.DeletePreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `SQLServerInstancesClient.ListByResourceGroupResponder(*http.Response) (SQLServerInstanceListResult,error)` is added
+- Function `SQLManagedInstanceListResultPage.NotDone() bool` is added
+- Function `SQLManagedInstancesClient.List(context.Context) (SQLManagedInstanceListResultPage,error)` is added
+- Function `SQLServerInstancesClient.UpdatePreparer(context.Context,string,string,SQLServerInstanceUpdate) (*http.Request,error)` is added
+- Function `PostgresInstancesClient.ListResponder(*http.Response) (PostgresInstanceListResult,error)` is added
+- Function `SQLManagedInstancesClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `PostgresInstancesClient.ListByResourceGroup(context.Context,string) (PostgresInstanceListResultPage,error)` is added
+- Function `PostgresInstancesClient.Update(context.Context,string,string,PostgresInstanceUpdate) (PostgresInstance,error)` is added
+- Function `SQLManagedInstancesClient.ListByResourceGroupPreparer(context.Context,string) (*http.Request,error)` is added
+- Function `DataControllersClient.ListInSubscription(context.Context) (PageOfDataControllerResourcePage,error)` is added
+- Function `SQLManagedInstancesClient.DeletePreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `*PostgresInstanceListResultIterator.NextWithContext(context.Context) error` is added
+- Function `*PageOfDataControllerResourceIterator.NextWithContext(context.Context) error` is added
+- Function `SQLManagedInstancesClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `PageOfDataControllerResourcePage.Values() []DataControllerResource` is added
+- Function `PostgresInstanceUpdate.MarshalJSON() ([]byte,error)` is added
+- Function `DataControllersClient.PatchDataControllerResponder(*http.Response) (DataControllerResource,error)` is added
+- Function `*PostgresInstance.UnmarshalJSON([]byte) error` is added
+- Function `PostgresInstancesClient.Create(context.Context,string,string) (PostgresInstance,error)` is added
+- Function `*PostgresInstanceListResultPage.NextWithContext(context.Context) error` is added
+- Function `SQLServerInstancesClient.ListResponder(*http.Response) (SQLServerInstanceListResult,error)` is added
+- Function `SQLServerInstancesClient.ListByResourceGroup(context.Context,string) (SQLServerInstanceListResultPage,error)` is added
+- Function `SQLServerInstancesClient.UpdateSender(*http.Request) (*http.Response,error)` is added
+- Function `NewSQLManagedInstancesClientWithBaseURI(string,string,string) SQLManagedInstancesClient` is added
+- Function `DataControllersClient.DeleteDataControllerResponder(*http.Response) (autorest.Response,error)` is added
+- Function `NewDataControllersClientWithBaseURI(string,string,string) DataControllersClient` is added
+- Function `ResourceModelWithAllowedPropertySet.MarshalJSON() ([]byte,error)` is added
+- Function `PostgresInstanceListResultPage.NotDone() bool` is added
+- Function `PostgresInstancesClient.ListByResourceGroupSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLServerInstanceUpdate.MarshalJSON() ([]byte,error)` is added
+- Function `DataControllersClient.PatchDataController(context.Context,string,string,DataControllerUpdate) (DataControllerResource,error)` is added
+- Function `NewPageOfDataControllerResourcePage(PageOfDataControllerResource,func(context.Context, PageOfDataControllerResource) (PageOfDataControllerResource, error)) PageOfDataControllerResourcePage` is added
+- Function `DataControllersClient.ListInGroupResponder(*http.Response) (PageOfDataControllerResource,error)` is added
+- Function `SQLServerInstancesClient.Get(context.Context,string,string) (SQLServerInstance,error)` is added
+- Function `SQLServerInstancesClient.ListByResourceGroupPreparer(context.Context,string) (*http.Request,error)` is added
+- Function `SQLServerInstancesClient.Delete(context.Context,string,string) (autorest.Response,error)` is added
+- Function `DataControllersClient.PutDataControllerSender(*http.Request) (*http.Response,error)` is added
+- Function `NewPageOfDataControllerResourceIterator(PageOfDataControllerResourcePage) PageOfDataControllerResourceIterator` is added
+- Function `SQLServerInstancesClient.UpdateResponder(*http.Response) (SQLServerInstance,error)` is added
+- Function `DataControllersClient.ListInSubscriptionResponder(*http.Response) (PageOfDataControllerResource,error)` is added
+- Function `SQLManagedInstancesClient.ListByResourceGroup(context.Context,string) (SQLManagedInstanceListResultPage,error)` is added
+- Function `*SQLServerInstance.UnmarshalJSON([]byte) error` is added
+- Function `DataControllersClient.ListInSubscriptionSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLServerInstancesClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `*SQLManagedInstance.UnmarshalJSON([]byte) error` is added
+- Function `SQLServerInstancesClient.DeletePreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `SQLManagedInstancesClient.Delete(context.Context,string,string) (autorest.Response,error)` is added
+- Function `SQLServerInstancesClient.GetPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `*PostgresInstanceListResultIterator.Next() error` is added
+- Function `SQLManagedInstancesClient.GetPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `PostgresInstancesClient.UpdateResponder(*http.Response) (PostgresInstance,error)` is added
+- Function `SQLManagedInstancesClient.DeleteSender(*http.Request) (*http.Response,error)` is added
+- Function `PageOfDataControllerResourceIterator.NotDone() bool` is added
+- Function `*SQLManagedInstanceListResultPage.Next() error` is added
+- Function `*PageOfDataControllerResourceIterator.Next() error` is added
+- Function `PostgresInstancesClient.CreateResponder(*http.Response) (PostgresInstance,error)` is added
+- Function `SQLServerInstanceListResultPage.Values() []SQLServerInstance` is added
+- Function `PostgresInstancesClient.DeleteSender(*http.Request) (*http.Response,error)` is added
+- Function `DataControllersClient.ListInSubscriptionComplete(context.Context) (PageOfDataControllerResourceIterator,error)` is added
+- Function `SQLManagedInstancesClient.Update(context.Context,string,string,SQLManagedInstanceUpdate) (SQLManagedInstance,error)` is added
+- Function `*PageOfDataControllerResourcePage.NextWithContext(context.Context) error` is added
+- Function `SQLManagedInstancesClient.UpdatePreparer(context.Context,string,string,SQLManagedInstanceUpdate) (*http.Request,error)` is added
+- Function `*SQLServerInstanceListResultPage.Next() error` is added
+- Function `*SQLServerInstanceListResultIterator.NextWithContext(context.Context) error` is added
+- Function `SQLServerInstancesClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `PostgresInstancesClient.CreateSender(*http.Request) (*http.Response,error)` is added
+- Function `PostgresInstancesClient.Delete(context.Context,string,string) (autorest.Response,error)` is added
+- Function `DataControllersClient.ListInGroup(context.Context,string) (PageOfDataControllerResourcePage,error)` is added
+- Function `PostgresInstancesClient.Get(context.Context,string,string) (PostgresInstance,error)` is added
+- Function `PostgresInstancesClient.CreatePreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `SQLManagedInstanceListResultIterator.Response() SQLManagedInstanceListResult` is added
+- Function `SQLServerInstancesClient.Create(context.Context,string,string,SQLServerInstance) (SQLServerInstance,error)` is added
+- Function `DataControllersClient.ListInSubscriptionPreparer(context.Context) (*http.Request,error)` is added
+- Function `SQLServerInstancesClient.ListPreparer(context.Context) (*http.Request,error)` is added
+- Function `PostgresInstancesClient.GetResponder(*http.Response) (PostgresInstance,error)` is added
+- Function `SQLManagedInstancesClient.CreateResponder(*http.Response) (SQLManagedInstance,error)` is added
+- Function `NewSQLManagedInstanceListResultIterator(SQLManagedInstanceListResultPage) SQLManagedInstanceListResultIterator` is added
+- Function `SQLServerInstancesClient.ListByResourceGroupSender(*http.Request) (*http.Response,error)` is added
+- Function `DataControllersClient.DeleteDataControllerSender(*http.Request) (*http.Response,error)` is added
+- Function `PostgresInstancesClient.ListComplete(context.Context) (PostgresInstanceListResultIterator,error)` is added
+- Function `SQLManagedInstancesClient.Get(context.Context,string,string) (SQLManagedInstance,error)` is added
+- Function `SQLServerInstancesClient.GetResponder(*http.Response) (SQLServerInstance,error)` is added
+- Function `SQLServerInstanceListResult.IsEmpty() bool` is added
+- Function `SQLServerInstanceListResultIterator.Value() SQLServerInstance` is added
+- Function `SQLManagedInstancesClient.GetResponder(*http.Response) (SQLManagedInstance,error)` is added
+- Function `SQLServerInstancesClient.CreateSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLManagedInstanceUpdate.MarshalJSON() ([]byte,error)` is added
+- Function `SQLManagedInstancesClient.ListByResourceGroupSender(*http.Request) (*http.Response,error)` is added
+- Function `PostgresInstancesClient.ListByResourceGroupComplete(context.Context,string) (PostgresInstanceListResultIterator,error)` is added
+- Function `PageOfDataControllerResourceIterator.Value() DataControllerResource` is added
+- Function `PostgresInstancesClient.GetPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `NewPostgresInstancesClientWithBaseURI(string,string,string) PostgresInstancesClient` is added
+- Function `SQLManagedInstancesClient.Create(context.Context,string,string,SQLManagedInstance) (SQLManagedInstance,error)` is added
+- Function `NewPostgresInstancesClient(string,string) PostgresInstancesClient` is added
+- Function `PostgresInstance.MarshalJSON() ([]byte,error)` is added
+- Function `NewSQLServerInstanceListResultIterator(SQLServerInstanceListResultPage) SQLServerInstanceListResultIterator` is added
+- Function `PostgresInstancesClient.DeleteResponder(*http.Response) (autorest.Response,error)` is added
+- Function `SQLManagedInstancesClient.UpdateSender(*http.Request) (*http.Response,error)` is added
+- Function `DataControllersClient.PutDataControllerPreparer(context.Context,string,DataControllerResource,string) (*http.Request,error)` is added
+- Function `SQLServerInstanceListResultPage.NotDone() bool` is added
+- Function `ResourceModelWithAllowedPropertySetIdentity.MarshalJSON() ([]byte,error)` is added
+- Function `NewSQLServerInstancesClientWithBaseURI(string,string,string) SQLServerInstancesClient` is added
+- Function `SQLServerInstanceProperties.MarshalJSON() ([]byte,error)` is added
+- Function `SQLManagedInstancesClient.CreateSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLManagedInstanceListResultIterator.Value() SQLManagedInstance` is added
+- Function `PostgresInstancesClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLManagedInstancesClient.ListByResourceGroupResponder(*http.Response) (SQLManagedInstanceListResult,error)` is added
+- Function `*SQLManagedInstanceListResultPage.NextWithContext(context.Context) error` is added
+- Function `DataControllersClient.PutDataController(context.Context,string,DataControllerResource,string) (DataControllerResource,error)` is added
+- Function `DataControllersClient.ListInGroupComplete(context.Context,string) (PageOfDataControllerResourceIterator,error)` is added
+- Function `*PostgresInstanceListResultPage.Next() error` is added
+- Function `DataControllersClient.PutDataControllerResponder(*http.Response) (DataControllerResource,error)` is added
+- Function `PostgresInstanceListResultIterator.NotDone() bool` is added
+- Function `NewSQLManagedInstancesClient(string,string) SQLManagedInstancesClient` is added
+- Function `DataControllersClient.DeleteDataController(context.Context,string,string) (autorest.Response,error)` is added
+- Function `SQLManagedInstanceListResultIterator.NotDone() bool` is added
+- Function `NewSQLServerInstancesClient(string,string) SQLServerInstancesClient` is added
+- Function `SQLManagedInstancesClient.ListPreparer(context.Context) (*http.Request,error)` is added
+- Function `SQLManagedInstance.MarshalJSON() ([]byte,error)` is added
+- Function `*DataControllerResource.UnmarshalJSON([]byte) error` is added
+- Function `DataControllersClient.DeleteDataControllerPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `SQLServerInstanceListResultIterator.NotDone() bool` is added
+- Function `*SQLServerInstanceListResultPage.NextWithContext(context.Context) error` is added
+- Function `SQLManagedInstanceListResultPage.Values() []SQLManagedInstance` is added
+- Function `PostgresInstanceListResultPage.Response() PostgresInstanceListResult` is added
+- Function `SQLServerInstancesClient.CreateResponder(*http.Response) (SQLServerInstance,error)` is added
+- Function `DataControllersClient.GetDataControllerSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLManagedInstanceListResultPage.Response() SQLManagedInstanceListResult` is added
+- Function `SQLServerInstancesClient.DeleteResponder(*http.Response) (autorest.Response,error)` is added
+- Function `SQLManagedInstancesClient.CreatePreparer(context.Context,string,string,SQLManagedInstance) (*http.Request,error)` is added
+- Function `PostgresInstanceListResultIterator.Value() PostgresInstance` is added
+- Function `PostgresInstancesClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `PossibleIdentityTypeValues() []IdentityType` is added
+- Function `PostgresInstanceListResult.IsEmpty() bool` is added
+- Function `NewPostgresInstanceListResultIterator(PostgresInstanceListResultPage) PostgresInstanceListResultIterator` is added
+- Function `DataControllersClient.ListInGroupSender(*http.Request) (*http.Response,error)` is added
+- Function `PostgresInstancesClient.ListByResourceGroupResponder(*http.Response) (PostgresInstanceListResult,error)` is added
+- Function `SQLServerInstancesClient.ListComplete(context.Context) (SQLServerInstanceListResultIterator,error)` is added
+- Function `PostgresInstancesClient.ListByResourceGroupPreparer(context.Context,string) (*http.Request,error)` is added
+- Function `PostgresInstancesClient.List(context.Context) (PostgresInstanceListResultPage,error)` is added
+- Function `DataControllersClient.PatchDataControllerPreparer(context.Context,string,string,DataControllerUpdate) (*http.Request,error)` is added
+- Function `SQLManagedInstancesClient.UpdateResponder(*http.Response) (SQLManagedInstance,error)` is added
+- Function `SQLManagedInstancesClient.DeleteResponder(*http.Response) (autorest.Response,error)` is added
+- Function `DataControllersClient.GetDataController(context.Context,string,string) (DataControllerResource,error)` is added
+- Function `DataControllerResource.MarshalJSON() ([]byte,error)` is added
+- Function `DataControllersClient.GetDataControllerResponder(*http.Response) (DataControllerResource,error)` is added
+- Function `SQLServerInstanceListResultPage.Response() SQLServerInstanceListResult` is added
+- Function `*SQLServerInstanceListResultIterator.Next() error` is added
+- Function `PossibleResourceIdentityTypeValues() []ResourceIdentityType` is added
+- Function `SQLServerInstancesClient.CreatePreparer(context.Context,string,string,SQLServerInstance) (*http.Request,error)` is added
+- Struct `CloudError` is added
+- Struct `CloudErrorBody` is added
+- Struct `DataControllerProperties` is added
+- Struct `DataControllerResource` is added
+- Struct `DataControllerUpdate` is added
+- Struct `DataControllersClient` is added
+- Struct `Identity` is added
+- Struct `ODataError` is added
+- Struct `OnPremiseProperty` is added
+- Struct `PageOfDataControllerResource` is added
+- Struct `PageOfDataControllerResourceIterator` is added
+- Struct `PageOfDataControllerResourcePage` is added
+- Struct `Plan` is added
+- Struct `PostgresInstance` is added
+- Struct `PostgresInstanceListResult` is added
+- Struct `PostgresInstanceListResultIterator` is added
+- Struct `PostgresInstanceListResultPage` is added
+- Struct `PostgresInstanceProperties` is added
+- Struct `PostgresInstanceUpdate` is added
+- Struct `PostgresInstancesClient` is added
+- Struct `ResourceModelWithAllowedPropertySet` is added
+- Struct `ResourceModelWithAllowedPropertySetIdentity` is added
+- Struct `ResourceModelWithAllowedPropertySetPlan` is added
+- Struct `ResourceModelWithAllowedPropertySetSku` is added
+- Struct `ResourceSku` is added
+- Struct `SQLManagedInstance` is added
+- Struct `SQLManagedInstanceListResult` is added
+- Struct `SQLManagedInstanceListResultIterator` is added
+- Struct `SQLManagedInstanceListResultPage` is added
+- Struct `SQLManagedInstanceProperties` is added
+- Struct `SQLManagedInstanceUpdate` is added
+- Struct `SQLManagedInstancesClient` is added
+- Struct `SQLServerInstance` is added
+- Struct `SQLServerInstanceListResult` is added
+- Struct `SQLServerInstanceListResultIterator` is added
+- Struct `SQLServerInstanceListResultPage` is added
+- Struct `SQLServerInstanceProperties` is added
+- Struct `SQLServerInstanceUpdate` is added
+- Struct `SQLServerInstancesClient` is added
+- Struct `Sku` is added
+- Struct `SystemData` is added
+- Field `SystemData` is added to struct `SQLServerRegistration`
+- Field `SubscriptionID1` is added to struct `BaseClient`
+- Field `SystemData` is added to struct `TrackedResource`
+

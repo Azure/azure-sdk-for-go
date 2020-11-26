@@ -393,7 +393,8 @@ func (future *EnvironmentsDeleteFuture) Result(client EnvironmentsClient) (ar au
 	return
 }
 
-// EnvironmentSetting represents settings of an environment, from which environment instances would be created
+// EnvironmentSetting represents settings of an environment, from which environment instances would be
+// created
 type EnvironmentSetting struct {
 	autorest.Response `json:"-"`
 	// EnvironmentSettingProperties - The properties of the Environment Setting resource
@@ -500,8 +501,8 @@ type EnvironmentSettingCreationParameters struct {
 	ResourceSettingCreationParameters *ResourceSettingCreationParameters `json:"resourceSettingCreationParameters,omitempty"`
 }
 
-// EnvironmentSettingFragment represents settings of an environment, from which environment instances would be
-// created
+// EnvironmentSettingFragment represents settings of an environment, from which environment instances would
+// be created
 type EnvironmentSettingFragment struct {
 	// EnvironmentSettingPropertiesFragment - The properties of the Environment Setting resource
 	*EnvironmentSettingPropertiesFragment `json:"properties,omitempty"`
@@ -694,8 +695,8 @@ func (future *EnvironmentSettingsCreateOrUpdateFuture) Result(client Environment
 	return
 }
 
-// EnvironmentSettingsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EnvironmentSettingsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type EnvironmentSettingsDeleteFuture struct {
 	azure.Future
 }
@@ -717,8 +718,8 @@ func (future *EnvironmentSettingsDeleteFuture) Result(client EnvironmentSettings
 	return
 }
 
-// EnvironmentSettingsStartFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EnvironmentSettingsStartFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type EnvironmentSettingsStartFuture struct {
 	azure.Future
 }
@@ -789,7 +790,8 @@ func (es EnvironmentSize) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// EnvironmentSizeFragment represents a size category supported by this Lab Account (small, medium or large)
+// EnvironmentSizeFragment represents a size category supported by this Lab Account (small, medium or
+// large)
 type EnvironmentSizeFragment struct {
 	// Name - The size category. Possible values include: 'Basic', 'Standard', 'Performance'
 	Name ManagedLabVMSize `json:"name,omitempty"`
@@ -797,8 +799,8 @@ type EnvironmentSizeFragment struct {
 	VMSizes *[]SizeInfoFragment `json:"vmSizes,omitempty"`
 }
 
-// EnvironmentsResetPasswordFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EnvironmentsResetPasswordFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type EnvironmentsResetPasswordFuture struct {
 	azure.Future
 }
@@ -843,7 +845,8 @@ func (future *EnvironmentsStartFuture) Result(client EnvironmentsClient) (ar aut
 	return
 }
 
-// EnvironmentsStopFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// EnvironmentsStopFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type EnvironmentsStopFuture struct {
 	azure.Future
 }
@@ -1180,8 +1183,8 @@ type GetRegionalAvailabilityResponse struct {
 	RegionalAvailability *[]RegionalAvailability `json:"regionalAvailability,omitempty"`
 }
 
-// GlobalUsersResetPasswordFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// GlobalUsersResetPasswordFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type GlobalUsersResetPasswordFuture struct {
 	azure.Future
 }
@@ -1203,8 +1206,8 @@ func (future *GlobalUsersResetPasswordFuture) Result(client GlobalUsersClient) (
 	return
 }
 
-// GlobalUsersStartEnvironmentFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// GlobalUsersStartEnvironmentFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type GlobalUsersStartEnvironmentFuture struct {
 	azure.Future
 }
@@ -1226,8 +1229,8 @@ func (future *GlobalUsersStartEnvironmentFuture) Result(client GlobalUsersClient
 	return
 }
 
-// GlobalUsersStopEnvironmentFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// GlobalUsersStopEnvironmentFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type GlobalUsersStopEnvironmentFuture struct {
 	azure.Future
 }
@@ -2120,8 +2123,11 @@ func (page ProviderOperationResultPage) Values() []OperationMetadata {
 }
 
 // Creates a new instance of the ProviderOperationResultPage type.
-func NewProviderOperationResultPage(getNextPage func(context.Context, ProviderOperationResult) (ProviderOperationResult, error)) ProviderOperationResultPage {
-	return ProviderOperationResultPage{fn: getNextPage}
+func NewProviderOperationResultPage(cur ProviderOperationResult, getNextPage func(context.Context, ProviderOperationResult) (ProviderOperationResult, error)) ProviderOperationResultPage {
+	return ProviderOperationResultPage{
+		fn:  getNextPage,
+		por: cur,
+	}
 }
 
 // PublishPayload payload for Publish operation on EnvironmentSetting.
@@ -2443,8 +2449,11 @@ func (page ResponseWithContinuationEnvironmentPage) Values() []Environment {
 }
 
 // Creates a new instance of the ResponseWithContinuationEnvironmentPage type.
-func NewResponseWithContinuationEnvironmentPage(getNextPage func(context.Context, ResponseWithContinuationEnvironment) (ResponseWithContinuationEnvironment, error)) ResponseWithContinuationEnvironmentPage {
-	return ResponseWithContinuationEnvironmentPage{fn: getNextPage}
+func NewResponseWithContinuationEnvironmentPage(cur ResponseWithContinuationEnvironment, getNextPage func(context.Context, ResponseWithContinuationEnvironment) (ResponseWithContinuationEnvironment, error)) ResponseWithContinuationEnvironmentPage {
+	return ResponseWithContinuationEnvironmentPage{
+		fn:   getNextPage,
+		rwce: cur,
+	}
 }
 
 // ResponseWithContinuationEnvironmentSetting the response of a list operation.
@@ -2600,8 +2609,11 @@ func (page ResponseWithContinuationEnvironmentSettingPage) Values() []Environmen
 }
 
 // Creates a new instance of the ResponseWithContinuationEnvironmentSettingPage type.
-func NewResponseWithContinuationEnvironmentSettingPage(getNextPage func(context.Context, ResponseWithContinuationEnvironmentSetting) (ResponseWithContinuationEnvironmentSetting, error)) ResponseWithContinuationEnvironmentSettingPage {
-	return ResponseWithContinuationEnvironmentSettingPage{fn: getNextPage}
+func NewResponseWithContinuationEnvironmentSettingPage(cur ResponseWithContinuationEnvironmentSetting, getNextPage func(context.Context, ResponseWithContinuationEnvironmentSetting) (ResponseWithContinuationEnvironmentSetting, error)) ResponseWithContinuationEnvironmentSettingPage {
+	return ResponseWithContinuationEnvironmentSettingPage{
+		fn:    getNextPage,
+		rwces: cur,
+	}
 }
 
 // ResponseWithContinuationGalleryImage the response of a list operation.
@@ -2613,7 +2625,8 @@ type ResponseWithContinuationGalleryImage struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ResponseWithContinuationGalleryImageIterator provides access to a complete listing of GalleryImage values.
+// ResponseWithContinuationGalleryImageIterator provides access to a complete listing of GalleryImage
+// values.
 type ResponseWithContinuationGalleryImageIterator struct {
 	i    int
 	page ResponseWithContinuationGalleryImagePage
@@ -2756,8 +2769,11 @@ func (page ResponseWithContinuationGalleryImagePage) Values() []GalleryImage {
 }
 
 // Creates a new instance of the ResponseWithContinuationGalleryImagePage type.
-func NewResponseWithContinuationGalleryImagePage(getNextPage func(context.Context, ResponseWithContinuationGalleryImage) (ResponseWithContinuationGalleryImage, error)) ResponseWithContinuationGalleryImagePage {
-	return ResponseWithContinuationGalleryImagePage{fn: getNextPage}
+func NewResponseWithContinuationGalleryImagePage(cur ResponseWithContinuationGalleryImage, getNextPage func(context.Context, ResponseWithContinuationGalleryImage) (ResponseWithContinuationGalleryImage, error)) ResponseWithContinuationGalleryImagePage {
+	return ResponseWithContinuationGalleryImagePage{
+		fn:    getNextPage,
+		rwcgi: cur,
+	}
 }
 
 // ResponseWithContinuationLab the response of a list operation.
@@ -2921,8 +2937,11 @@ func (page ResponseWithContinuationLabAccountPage) Values() []LabAccount {
 }
 
 // Creates a new instance of the ResponseWithContinuationLabAccountPage type.
-func NewResponseWithContinuationLabAccountPage(getNextPage func(context.Context, ResponseWithContinuationLabAccount) (ResponseWithContinuationLabAccount, error)) ResponseWithContinuationLabAccountPage {
-	return ResponseWithContinuationLabAccountPage{fn: getNextPage}
+func NewResponseWithContinuationLabAccountPage(cur ResponseWithContinuationLabAccount, getNextPage func(context.Context, ResponseWithContinuationLabAccount) (ResponseWithContinuationLabAccount, error)) ResponseWithContinuationLabAccountPage {
+	return ResponseWithContinuationLabAccountPage{
+		fn:    getNextPage,
+		rwcla: cur,
+	}
 }
 
 // ResponseWithContinuationLabIterator provides access to a complete listing of Lab values.
@@ -3068,8 +3087,11 @@ func (page ResponseWithContinuationLabPage) Values() []Lab {
 }
 
 // Creates a new instance of the ResponseWithContinuationLabPage type.
-func NewResponseWithContinuationLabPage(getNextPage func(context.Context, ResponseWithContinuationLab) (ResponseWithContinuationLab, error)) ResponseWithContinuationLabPage {
-	return ResponseWithContinuationLabPage{fn: getNextPage}
+func NewResponseWithContinuationLabPage(cur ResponseWithContinuationLab, getNextPage func(context.Context, ResponseWithContinuationLab) (ResponseWithContinuationLab, error)) ResponseWithContinuationLabPage {
+	return ResponseWithContinuationLabPage{
+		fn:   getNextPage,
+		rwcl: cur,
+	}
 }
 
 // ResponseWithContinuationUser the response of a list operation.
@@ -3224,8 +3246,11 @@ func (page ResponseWithContinuationUserPage) Values() []User {
 }
 
 // Creates a new instance of the ResponseWithContinuationUserPage type.
-func NewResponseWithContinuationUserPage(getNextPage func(context.Context, ResponseWithContinuationUser) (ResponseWithContinuationUser, error)) ResponseWithContinuationUserPage {
-	return ResponseWithContinuationUserPage{fn: getNextPage}
+func NewResponseWithContinuationUserPage(cur ResponseWithContinuationUser, getNextPage func(context.Context, ResponseWithContinuationUser) (ResponseWithContinuationUser, error)) ResponseWithContinuationUserPage {
+	return ResponseWithContinuationUserPage{
+		fn:   getNextPage,
+		rwcu: cur,
+	}
 }
 
 // SizeAvailability represents the size information

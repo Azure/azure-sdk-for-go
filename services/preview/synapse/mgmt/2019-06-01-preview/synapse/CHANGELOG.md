@@ -1,0 +1,724 @@
+
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/b97299c968df5f99b724bd1231fd2161731d3b8f
+
+Code generator C:\Users\dapzhang\Documents\workspace\autorest.go
+
+## Breaking Changes
+
+- Function `NewSQLPoolTableListResultPage` signature has been changed from `(func(context.Context, SQLPoolTableListResult) (SQLPoolTableListResult, error))` to `(SQLPoolTableListResult,func(context.Context, SQLPoolTableListResult) (SQLPoolTableListResult, error))`
+- Function `NewRestorePointListResultPage` signature has been changed from `(func(context.Context, RestorePointListResult) (RestorePointListResult, error))` to `(RestorePointListResult,func(context.Context, RestorePointListResult) (RestorePointListResult, error))`
+- Function `PrivateLinkHubsClient.Update` signature has been changed from `(context.Context,string,string,PrivateLinkHubPatchInfo)` to `(context.Context,PrivateLinkHubPatchInfo,string,string)`
+- Function `IntegrationRuntimeObjectMetadataClient.RefreshSender` return values have been changed from `(*http.Response,error)` to `(IntegrationRuntimeObjectMetadataRefreshFuture,error)`
+- Function `NewBigDataPoolResourceInfoListResultPage` signature has been changed from `(func(context.Context, BigDataPoolResourceInfoListResult) (BigDataPoolResourceInfoListResult, error))` to `(BigDataPoolResourceInfoListResult,func(context.Context, BigDataPoolResourceInfoListResult) (BigDataPoolResourceInfoListResult, error))`
+- Function `PrivateLinkHubsClient.CreateOrUpdate` signature has been changed from `(context.Context,string,string,PrivateLinkHub)` to `(context.Context,PrivateLinkHub,string,string)`
+- Function `OperationsClient.GetAzureAsyncHeaderResultResponder` return values have been changed from `(SetObject,error)` to `(OperationResource,error)`
+- Function `PrivateLinkHubsClient.DeleteSender` return values have been changed from `(*http.Response,error)` to `(PrivateLinkHubsDeleteFuture,error)`
+- Function `IntegrationRuntimesClient.Start` return values have been changed from `(IntegrationRuntimeStatusResponse,error)` to `(IntegrationRuntimesStartFuture,error)`
+- Function `NewSQLPoolInfoListResultPage` signature has been changed from `(func(context.Context, SQLPoolInfoListResult) (SQLPoolInfoListResult, error))` to `(SQLPoolInfoListResult,func(context.Context, SQLPoolInfoListResult) (SQLPoolInfoListResult, error))`
+- Function `NewReplicationLinkListResultPage` signature has been changed from `(func(context.Context, ReplicationLinkListResult) (ReplicationLinkListResult, error))` to `(ReplicationLinkListResult,func(context.Context, ReplicationLinkListResult) (ReplicationLinkListResult, error))`
+- Function `IntegrationRuntimesClient.StartSender` return values have been changed from `(*http.Response,error)` to `(IntegrationRuntimesStartFuture,error)`
+- Function `NewPrivateLinkHubInfoListResultPage` signature has been changed from `(func(context.Context, PrivateLinkHubInfoListResult) (PrivateLinkHubInfoListResult, error))` to `(PrivateLinkHubInfoListResult,func(context.Context, PrivateLinkHubInfoListResult) (PrivateLinkHubInfoListResult, error))`
+- Function `IntegrationRuntimesClient.StopSender` return values have been changed from `(*http.Response,error)` to `(IntegrationRuntimesStopFuture,error)`
+- Function `NewWorkspaceInfoListResultPage` signature has been changed from `(func(context.Context, WorkspaceInfoListResult) (WorkspaceInfoListResult, error))` to `(WorkspaceInfoListResult,func(context.Context, WorkspaceInfoListResult) (WorkspaceInfoListResult, error))`
+- Function `IntegrationRuntimesClient.Stop` return values have been changed from `(autorest.Response,error)` to `(IntegrationRuntimesStopFuture,error)`
+- Function `NewVulnerabilityAssessmentScanRecordListResultPage` signature has been changed from `(func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error))` to `(VulnerabilityAssessmentScanRecordListResult,func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error))`
+- Function `PrivateLinkHubsClient.UpdatePreparer` signature has been changed from `(context.Context,string,string,PrivateLinkHubPatchInfo)` to `(context.Context,PrivateLinkHubPatchInfo,string,string)`
+- Function `NewPrivateLinkResourceListResultPage` signature has been changed from `(func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error))` to `(PrivateLinkResourceListResult,func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error))`
+- Function `NewIntegrationRuntimeListResponsePage` signature has been changed from `(func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error))` to `(IntegrationRuntimeListResponse,func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error))`
+- Function `PrivateLinkHubsClient.Delete` return values have been changed from `(autorest.Response,error)` to `(PrivateLinkHubsDeleteFuture,error)`
+- Function `NewSQLPoolVulnerabilityAssessmentListResultPage` signature has been changed from `(func(context.Context, SQLPoolVulnerabilityAssessmentListResult) (SQLPoolVulnerabilityAssessmentListResult, error))` to `(SQLPoolVulnerabilityAssessmentListResult,func(context.Context, SQLPoolVulnerabilityAssessmentListResult) (SQLPoolVulnerabilityAssessmentListResult, error))`
+- Function `NewPrivateEndpointConnectionListPage` signature has been changed from `(func(context.Context, PrivateEndpointConnectionList) (PrivateEndpointConnectionList, error))` to `(PrivateEndpointConnectionList,func(context.Context, PrivateEndpointConnectionList) (PrivateEndpointConnectionList, error))`
+- Function `NewSQLPoolColumnListResultPage` signature has been changed from `(func(context.Context, SQLPoolColumnListResult) (SQLPoolColumnListResult, error))` to `(SQLPoolColumnListResult,func(context.Context, SQLPoolColumnListResult) (SQLPoolColumnListResult, error))`
+- Function `NewSQLPoolBlobAuditingPolicySQLPoolOperationListResultPage` signature has been changed from `(func(context.Context, SQLPoolBlobAuditingPolicySQLPoolOperationListResult) (SQLPoolBlobAuditingPolicySQLPoolOperationListResult, error))` to `(SQLPoolBlobAuditingPolicySQLPoolOperationListResult,func(context.Context, SQLPoolBlobAuditingPolicySQLPoolOperationListResult) (SQLPoolBlobAuditingPolicySQLPoolOperationListResult, error))`
+- Function `NewSensitivityLabelListResultPage` signature has been changed from `(func(context.Context, SensitivityLabelListResult) (SensitivityLabelListResult, error))` to `(SensitivityLabelListResult,func(context.Context, SensitivityLabelListResult) (SensitivityLabelListResult, error))`
+- Function `OperationsClient.GetAzureAsyncHeaderResult` return values have been changed from `(SetObject,error)` to `(OperationResource,error)`
+- Function `PrivateEndpointConnectionsClient.Create` signature has been changed from `(context.Context,string,string,string)` to `(context.Context,PrivateEndpointConnection,string,string,string)`
+- Function `PrivateEndpointConnectionsClient.CreatePreparer` signature has been changed from `(context.Context,string,string,string)` to `(context.Context,PrivateEndpointConnection,string,string,string)`
+- Function `NewIPFirewallRuleInfoListResultPage` signature has been changed from `(func(context.Context, IPFirewallRuleInfoListResult) (IPFirewallRuleInfoListResult, error))` to `(IPFirewallRuleInfoListResult,func(context.Context, IPFirewallRuleInfoListResult) (IPFirewallRuleInfoListResult, error))`
+- Function `NewSQLPoolSchemaListResultPage` signature has been changed from `(func(context.Context, SQLPoolSchemaListResult) (SQLPoolSchemaListResult, error))` to `(SQLPoolSchemaListResult,func(context.Context, SQLPoolSchemaListResult) (SQLPoolSchemaListResult, error))`
+- Function `PrivateLinkHubsClient.CreateOrUpdatePreparer` signature has been changed from `(context.Context,string,string,PrivateLinkHub)` to `(context.Context,PrivateLinkHub,string,string)`
+- Function `IntegrationRuntimeObjectMetadataClient.Refresh` return values have been changed from `(SsisObjectMetadataStatusResponse,error)` to `(IntegrationRuntimeObjectMetadataRefreshFuture,error)`
+- Function `NewSQLPoolUsageListResultPage` signature has been changed from `(func(context.Context, SQLPoolUsageListResult) (SQLPoolUsageListResult, error))` to `(SQLPoolUsageListResult,func(context.Context, SQLPoolUsageListResult) (SQLPoolUsageListResult, error))`
+- Type of `PrivateLinkHubProperties.ProvisioningState` has been changed from `ProvisioningState1` to `*string`
+- Type of `PrivateLinkServiceConnectionState.Status` has been changed from `Status` to `*string`
+- Type of `ManagedIdentity.TenantID` has been changed from `*string` to `*uuid.UUID`
+- Type of `SQLPoolResourceProperties.RestorePointInTime` has been changed from `*date.Time` to `*string`
+- Const `StatusDisconnected` has been removed
+- Const `StatusRejected` has been removed
+- Const `ProvisioningState1Failed` has been removed
+- Const `StatusPending` has been removed
+- Const `ProvisioningState1Succeeded` has been removed
+- Const `StatusApproved` has been removed
+- Function `IntegrationRuntimeMonitoringDataClient.GetPreparer` has been removed
+- Function `SQLPoolsClient.RenamePreparer` has been removed
+- Function `IntegrationRuntimeObjectMetadataClient.GetResponder` has been removed
+- Function `IntegrationRuntimeMonitoringDataClient.GetSender` has been removed
+- Function `SQLPoolsClient.RenameSender` has been removed
+- Function `SQLPoolsClient.RenameResponder` has been removed
+- Function `IntegrationRuntimeObjectMetadataClient.GetPreparer` has been removed
+- Function `IntegrationRuntimeObjectMetadataClient.Get` has been removed
+- Function `IntegrationRuntimeMonitoringDataClient.GetResponder` has been removed
+- Function `PossibleProvisioningState1Values` has been removed
+- Function `SQLPoolsClient.Rename` has been removed
+- Function `IntegrationRuntimeObjectMetadataClient.GetSender` has been removed
+- Function `IntegrationRuntimeMonitoringDataClient.Get` has been removed
+- Function `PossibleStatusValues` has been removed
+- Struct `ResourceMoveDefinition` has been removed
+
+## New Content
+
+- Const `DataMaskingFunctionEmail` is added
+- Const `Recommended` is added
+- Const `DataMaskingFunctionNumber` is added
+- Const `DataMaskingFunctionDefault` is added
+- Const `NodeSizeXXXLarge` is added
+- Const `DataMaskingFunctionCCN` is added
+- Const `DataMaskingFunctionText` is added
+- Const `DataMaskingStateDisabled` is added
+- Const `DataMaskingRuleStateEnabled` is added
+- Const `DataMaskingStateEnabled` is added
+- Const `DataMaskingFunctionSSN` is added
+- Const `Current` is added
+- Const `DataMaskingRuleStateDisabled` is added
+- Function `ExtendedSQLPoolBlobAuditingPolicyListResult.IsEmpty() bool` is added
+- Function `WorkloadGroupListResultPage.Response() WorkloadGroupListResult` is added
+- Function `SQLPoolReplicationLinksClient.GetByNamePreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `*KeyInfoListResultIterator.NextWithContext(context.Context) error` is added
+- Function `ExtendedSQLPoolBlobAuditingPolicyListResultPage.NotDone() bool` is added
+- Function `KeysClient.CreateOrUpdateResponder(*http.Response) (Key,error)` is added
+- Function `KeyInfoListResultIterator.NotDone() bool` is added
+- Function `WorkspaceManagedSQLServerSecurityAlertPolicyClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `*SQLPoolBlobAuditingPolicyListResultPage.NextWithContext(context.Context) error` is added
+- Function `IntegrationRuntimeMonitoringDataClient.ListResponder(*http.Response) (IntegrationRuntimeMonitoringData,error)` is added
+- Function `*IntegrationRuntimesStartFuture.Result(IntegrationRuntimesClient) (IntegrationRuntimeStatusResponse,error)` is added
+- Function `SQLPoolSchemasClient.Get(context.Context,string,string,string,string) (SQLPoolSchema,error)` is added
+- Function `WorkspaceManagedSQLServerRecoverableSqlpoolsClient.ListComplete(context.Context,string,string) (RecoverableSQLPoolListResultIterator,error)` is added
+- Function `WorkloadClassifierListResultPage.Values() []WorkloadClassifier` is added
+- Function `ExtendedSQLPoolBlobAuditingPoliciesClient.GetPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `WorkspaceSQLAadAdminsClient.DeleteResponder(*http.Response) (autorest.Response,error)` is added
+- Function `SQLPoolReplicationLinksClient.GetByName(context.Context,string,string,string,string) (ReplicationLink,error)` is added
+- Function `SQLPoolWorkloadClassifierClient.List(context.Context,string,string,string,string) (WorkloadClassifierListResultPage,error)` is added
+- Function `TransparentDataEncryptionListResultIterator.Value() TransparentDataEncryption` is added
+- Function `NewWorkloadClassifierListResultPage(WorkloadClassifierListResult,func(context.Context, WorkloadClassifierListResult) (WorkloadClassifierListResult, error)) WorkloadClassifierListResultPage` is added
+- Function `RecoverableSQLPoolListResultPage.Response() RecoverableSQLPoolListResult` is added
+- Function `SQLPoolRestorePointsClient.DeletePreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `NewKeysClient(string) KeysClient` is added
+- Function `SQLPoolVulnerabilityAssessmentScansClient.Get(context.Context,string,string,string,string) (VulnerabilityAssessmentScanRecord,error)` is added
+- Function `SQLPoolSensitivityLabelsClient.GetPreparer(context.Context,string,string,string,string,string,string,SensitivityLabelSource) (*http.Request,error)` is added
+- Function `SQLPoolVulnerabilityAssessmentScansClient.GetResponder(*http.Response) (VulnerabilityAssessmentScanRecord,error)` is added
+- Function `WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.List(context.Context,string,string) (ServerVulnerabilityAssessmentListResultPage,error)` is added
+- Function `*TransparentDataEncryptionListResultPage.NextWithContext(context.Context) error` is added
+- Function `*ServerSecurityAlertPolicy.UnmarshalJSON([]byte) error` is added
+- Function `SQLPoolBlobAuditingPolicyListResultIterator.Response() SQLPoolBlobAuditingPolicyListResult` is added
+- Function `SQLPoolWorkloadGroupClient.GetPreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `*WorkloadGroupListResultPage.NextWithContext(context.Context) error` is added
+- Function `SQLPoolWorkloadGroupClient.GetResponder(*http.Response) (WorkloadGroup,error)` is added
+- Function `NewExtendedSQLPoolBlobAuditingPoliciesClient(string) ExtendedSQLPoolBlobAuditingPoliciesClient` is added
+- Function `NewPrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponsePage(PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse,func(context.Context, PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse) (PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse, error)) PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponsePage` is added
+- Function `WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.CreateOrUpdateResponder(*http.Response) (ServerVulnerabilityAssessment,error)` is added
+- Function `*Key.UnmarshalJSON([]byte) error` is added
+- Function `IntegrationRuntimeObjectMetadataClient.ListResponder(*http.Response) (SsisObjectMetadataListResponse,error)` is added
+- Function `NewServerVulnerabilityAssessmentListResultPage(ServerVulnerabilityAssessmentListResult,func(context.Context, ServerVulnerabilityAssessmentListResult) (ServerVulnerabilityAssessmentListResult, error)) ServerVulnerabilityAssessmentListResultPage` is added
+- Function `*SQLPoolBlobAuditingPolicyListResultIterator.NextWithContext(context.Context) error` is added
+- Function `*WorkspaceSQLAadAdminsCreateOrUpdateFuture.Result(WorkspaceSQLAadAdminsClient) (WorkspaceAadAdminInfo,error)` is added
+- Function `KeysClient.ListByWorkspace(context.Context,string,string) (KeyInfoListResultPage,error)` is added
+- Function `ServerSecurityAlertPolicyListResultIterator.Value() ServerSecurityAlertPolicy` is added
+- Function `SQLPoolRestorePointsClient.DeleteResponder(*http.Response) (autorest.Response,error)` is added
+- Function `WorkloadClassifier.MarshalJSON() ([]byte,error)` is added
+- Function `*RestorableDroppedSQLPool.UnmarshalJSON([]byte) error` is added
+- Function `ServerBlobAuditingPolicyListResultIterator.NotDone() bool` is added
+- Function `ExtendedSQLPoolBlobAuditingPoliciesClient.CreateOrUpdateSender(*http.Request) (*http.Response,error)` is added
+- Function `NewRestorableDroppedSQLPoolsClientWithBaseURI(string,string) RestorableDroppedSQLPoolsClient` is added
+- Function `ExtendedSQLPoolBlobAuditingPoliciesClient.CreateOrUpdateResponder(*http.Response) (ExtendedSQLPoolBlobAuditingPolicy,error)` is added
+- Function `NewTransparentDataEncryptionListResultPage(TransparentDataEncryptionListResult,func(context.Context, TransparentDataEncryptionListResult) (TransparentDataEncryptionListResult, error)) TransparentDataEncryptionListResultPage` is added
+- Function `SQLPoolRestorePointsClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLPoolWorkloadGroupClient.DeletePreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `SQLPoolTransparentDataEncryptionsClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `WorkloadGroupListResult.IsEmpty() bool` is added
+- Function `ServerSecurityAlertPolicyListResultIterator.Response() ServerSecurityAlertPolicyListResult` is added
+- Function `SQLPoolVulnerabilityAssessmentScansClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLPoolBlobAuditingPoliciesClient.ListBySQLPoolSender(*http.Request) (*http.Response,error)` is added
+- Function `WorkspaceManagedSQLServerRecoverableSqlpoolsClient.GetResponder(*http.Response) (RecoverableSQLPool,error)` is added
+- Function `DataMaskingPoliciesClient.CreateOrUpdateResponder(*http.Response) (DataMaskingPolicy,error)` is added
+- Function `WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.DeletePreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `DataMaskingPoliciesClient.GetResponder(*http.Response) (DataMaskingPolicy,error)` is added
+- Function `PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponsePage.NotDone() bool` is added
+- Function `*ExtendedSQLPoolBlobAuditingPolicy.UnmarshalJSON([]byte) error` is added
+- Function `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.ListByWorkspaceResponder(*http.Response) (ExtendedServerBlobAuditingPolicyListResult,error)` is added
+- Function `NewSQLPoolColumnsClient(string) SQLPoolColumnsClient` is added
+- Function `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.ListByWorkspace(context.Context,string,string) (ExtendedServerBlobAuditingPolicyListResultPage,error)` is added
+- Function `*ExtendedServerBlobAuditingPolicyListResultIterator.Next() error` is added
+- Function `SQLPoolTablesClient.GetResponder(*http.Response) (SQLPoolTable,error)` is added
+- Function `IntegrationRuntimesClient.DisableInteractiveQueryPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `NewRestorableDroppedSQLPoolsClient(string) RestorableDroppedSQLPoolsClient` is added
+- Function `ExtendedSQLPoolBlobAuditingPolicyListResultIterator.NotDone() bool` is added
+- Function `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.ListByWorkspacePreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `WorkspaceSQLAadAdminsClient.CreateOrUpdate(context.Context,string,string,WorkspaceAadAdminInfo) (WorkspaceSQLAadAdminsCreateOrUpdateFuture,error)` is added
+- Function `ServerVulnerabilityAssessmentListResultIterator.Response() ServerVulnerabilityAssessmentListResult` is added
+- Function `NewServerSecurityAlertPolicyListResultPage(ServerSecurityAlertPolicyListResult,func(context.Context, ServerSecurityAlertPolicyListResult) (ServerSecurityAlertPolicyListResult, error)) ServerSecurityAlertPolicyListResultPage` is added
+- Function `WorkspaceManagedSQLServerUsagesClient.List(context.Context,string,string) (ServerUsageListResultPage,error)` is added
+- Function `WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `ExtendedSQLPoolBlobAuditingPoliciesClient.ListBySQLPoolResponder(*http.Response) (ExtendedSQLPoolBlobAuditingPolicyListResult,error)` is added
+- Function `PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponsePage.Response() PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse` is added
+- Function `DataMaskingPoliciesClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLPoolWorkloadGroupClient.CreateOrUpdateSender(*http.Request) (SQLPoolWorkloadGroupCreateOrUpdateFuture,error)` is added
+- Function `WorkspaceManagedSQLServerBlobAuditingPoliciesClient.CreateOrUpdateSender(*http.Request) (WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdateFuture,error)` is added
+- Function `NewWorkspaceSQLAadAdminsClientWithBaseURI(string,string) WorkspaceSQLAadAdminsClient` is added
+- Function `*ServerVulnerabilityAssessment.UnmarshalJSON([]byte) error` is added
+- Function `DataMaskingPolicyProperties.MarshalJSON() ([]byte,error)` is added
+- Function `SQLPoolWorkloadGroupClient.Get(context.Context,string,string,string,string) (WorkloadGroup,error)` is added
+- Function `ServerSecurityAlertPolicyListResultPage.Response() ServerSecurityAlertPolicyListResult` is added
+- Function `WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.ListComplete(context.Context,string,string) (ServerVulnerabilityAssessmentListResultIterator,error)` is added
+- Function `SQLPoolWorkloadGroupClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLPoolVulnerabilityAssessmentRuleBaselinesClient.GetResponder(*http.Response) (SQLPoolVulnerabilityAssessmentRuleBaseline,error)` is added
+- Function `*IntegrationRuntimesDisableInteractiveQueryFuture.Result(IntegrationRuntimesClient) (autorest.Response,error)` is added
+- Function `WorkspaceSQLAadAdminsClient.CreateOrUpdatePreparer(context.Context,string,string,WorkspaceAadAdminInfo) (*http.Request,error)` is added
+- Function `PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponseIterator.Response() PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse` is added
+- Function `WorkspaceManagedSQLServerRecoverableSqlpoolsClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `*IntegrationRuntimesStopFuture.Result(IntegrationRuntimesClient) (autorest.Response,error)` is added
+- Function `SQLPoolWorkloadClassifierClient.ListComplete(context.Context,string,string,string,string) (WorkloadClassifierListResultIterator,error)` is added
+- Function `NewWorkloadGroupListResultIterator(WorkloadGroupListResultPage) WorkloadGroupListResultIterator` is added
+- Function `PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponsePage.Values() []PrivateEndpointConnectionForPrivateLinkHub` is added
+- Function `ExtendedServerBlobAuditingPolicyListResultPage.NotDone() bool` is added
+- Function `WorkloadGroupListResultPage.Values() []WorkloadGroup` is added
+- Function `*ExtendedSQLPoolBlobAuditingPolicyListResultIterator.NextWithContext(context.Context) error` is added
+- Function `ServerUsageListResultPage.Response() ServerUsageListResult` is added
+- Function `ListSQLPoolSecurityAlertPoliciesPage.NotDone() bool` is added
+- Function `WorkspaceSQLAadAdminsClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `IntegrationRuntimeMonitoringDataClient.ListPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `SQLPoolRestorePointsClient.Get(context.Context,string,string,string,string) (RestorePoint,error)` is added
+- Function `TransparentDataEncryptionListResultIterator.NotDone() bool` is added
+- Function `ExtendedSQLPoolBlobAuditingPoliciesClient.Get(context.Context,string,string,string) (ExtendedSQLPoolBlobAuditingPolicy,error)` is added
+- Function `KeyInfoListResultPage.Response() KeyInfoListResult` is added
+- Function `WorkloadGroupListResultIterator.Response() WorkloadGroupListResult` is added
+- Function `*PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponsePage.NextWithContext(context.Context) error` is added
+- Function `*ExtendedSQLPoolBlobAuditingPolicyListResultPage.NextWithContext(context.Context) error` is added
+- Function `WorkspaceManagedSQLServerSecurityAlertPolicyClient.ListComplete(context.Context,string,string) (ServerSecurityAlertPolicyListResultIterator,error)` is added
+- Function `IntegrationRuntimesClient.EnableInteractiveQueryPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `IntegrationRuntimesClient.EnableInteractiveQuery(context.Context,string,string,string) (IntegrationRuntimesEnableInteractiveQueryFuture,error)` is added
+- Function `SQLPoolWorkloadGroupClient.ListResponder(*http.Response) (WorkloadGroupListResult,error)` is added
+- Function `*ExtendedSQLPoolBlobAuditingPolicyListResultPage.Next() error` is added
+- Function `WorkspaceManagedSQLServerRecoverableSqlpoolsClient.ListResponder(*http.Response) (RecoverableSQLPoolListResult,error)` is added
+- Function `DataMaskingRulesClient.ListBySQLPoolPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `SQLPoolWorkloadClassifierClient.DeleteResponder(*http.Response) (autorest.Response,error)` is added
+- Function `ServerUsageListResultPage.Values() []ServerUsage` is added
+- Function `PrivateEndpointConnectionsPrivateLinkHubClient.ListComplete(context.Context,string,string) (PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponseIterator,error)` is added
+- Function `*ServerVulnerabilityAssessmentListResultIterator.NextWithContext(context.Context) error` is added
+- Function `WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.Delete(context.Context,string,string) (autorest.Response,error)` is added
+- Function `RecoverableSQLPool.MarshalJSON() ([]byte,error)` is added
+- Function `SQLPoolTablesClient.Get(context.Context,string,string,string,string,string) (SQLPoolTable,error)` is added
+- Function `*TransparentDataEncryptionListResultIterator.NextWithContext(context.Context) error` is added
+- Function `SQLPoolWorkloadGroupClient.Delete(context.Context,string,string,string,string) (SQLPoolWorkloadGroupDeleteFuture,error)` is added
+- Function `WorkloadClassifierListResultIterator.Value() WorkloadClassifier` is added
+- Function `SQLPoolWorkloadClassifierClient.CreateOrUpdateSender(*http.Request) (SQLPoolWorkloadClassifierCreateOrUpdateFuture,error)` is added
+- Function `NewWorkloadGroupListResultPage(WorkloadGroupListResult,func(context.Context, WorkloadGroupListResult) (WorkloadGroupListResult, error)) WorkloadGroupListResultPage` is added
+- Function `ServerBlobAuditingPolicyListResult.IsEmpty() bool` is added
+- Function `WorkspaceManagedSQLServerUsagesClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLPoolSecurityAlertPoliciesClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `WorkspaceManagedSQLServerSecurityAlertPolicyClient.ListResponder(*http.Response) (ServerSecurityAlertPolicyListResult,error)` is added
+- Function `NewDataMaskingRulesClientWithBaseURI(string,string) DataMaskingRulesClient` is added
+- Function `DataMaskingRuleProperties.MarshalJSON() ([]byte,error)` is added
+- Function `NewWorkspaceManagedSQLServerBlobAuditingPoliciesClientWithBaseURI(string,string) WorkspaceManagedSQLServerBlobAuditingPoliciesClient` is added
+- Function `SQLPoolRestorePointsClient.DeleteSender(*http.Request) (*http.Response,error)` is added
+- Function `ServerBlobAuditingPolicyListResultIterator.Response() ServerBlobAuditingPolicyListResult` is added
+- Function `Key.MarshalJSON() ([]byte,error)` is added
+- Function `NewWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient(string) WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient` is added
+- Function `SQLPoolSecurityAlertPoliciesClient.List(context.Context,string,string,string) (ListSQLPoolSecurityAlertPoliciesPage,error)` is added
+- Function `NewExtendedSQLPoolBlobAuditingPolicyListResultIterator(ExtendedSQLPoolBlobAuditingPolicyListResultPage) ExtendedSQLPoolBlobAuditingPolicyListResultIterator` is added
+- Function `ExtendedSQLPoolBlobAuditingPolicyListResultIterator.Response() ExtendedSQLPoolBlobAuditingPolicyListResult` is added
+- Function `RecoverableSQLPoolListResultPage.Values() []RecoverableSQLPool` is added
+- Function `IntegrationRuntimesClient.EnableInteractiveQueryResponder(*http.Response) (autorest.Response,error)` is added
+- Function `DataMaskingRulesClient.CreateOrUpdateSender(*http.Request) (*http.Response,error)` is added
+- Function `NewServerSecurityAlertPolicyListResultIterator(ServerSecurityAlertPolicyListResultPage) ServerSecurityAlertPolicyListResultIterator` is added
+- Function `WorkspaceManagedSQLServerSecurityAlertPolicyClient.ListPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `NewWorkspaceManagedSQLServerRecoverableSqlpoolsClientWithBaseURI(string,string) WorkspaceManagedSQLServerRecoverableSqlpoolsClient` is added
+- Function `DataMaskingPoliciesClient.GetPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `*ServerBlobAuditingPolicyListResultIterator.Next() error` is added
+- Function `WorkloadGroupListResultPage.NotDone() bool` is added
+- Function `WorkspaceManagedSQLServerBlobAuditingPoliciesClient.CreateOrUpdate(context.Context,string,string,ServerBlobAuditingPolicy) (WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdateFuture,error)` is added
+- Function `*ServerUsageListResultPage.Next() error` is added
+- Function `SQLPoolWorkloadClassifierClient.Get(context.Context,string,string,string,string,string) (WorkloadClassifier,error)` is added
+- Function `EncryptionDetails.MarshalJSON() ([]byte,error)` is added
+- Function `SQLPoolVulnerabilityAssessmentRuleBaselinesClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `ExtendedSQLPoolBlobAuditingPoliciesClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `RestorableDroppedSQLPool.MarshalJSON() ([]byte,error)` is added
+- Function `ExtendedSQLPoolBlobAuditingPoliciesClient.CreateOrUpdatePreparer(context.Context,string,string,string,ExtendedSQLPoolBlobAuditingPolicy) (*http.Request,error)` is added
+- Function `PrivateEndpointConnectionsPrivateLinkHubClient.ListResponder(*http.Response) (PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse,error)` is added
+- Function `DataMaskingRulesClient.CreateOrUpdatePreparer(context.Context,string,string,string,string,DataMaskingRule) (*http.Request,error)` is added
+- Function `NewExtendedServerBlobAuditingPolicyListResultPage(ExtendedServerBlobAuditingPolicyListResult,func(context.Context, ExtendedServerBlobAuditingPolicyListResult) (ExtendedServerBlobAuditingPolicyListResult, error)) ExtendedServerBlobAuditingPolicyListResultPage` is added
+- Function `KeysClient.GetResponder(*http.Response) (Key,error)` is added
+- Function `ExtendedServerBlobAuditingPolicyListResultIterator.Response() ExtendedServerBlobAuditingPolicyListResult` is added
+- Function `SQLPoolWorkloadGroupClient.CreateOrUpdate(context.Context,string,string,string,string,WorkloadGroup) (SQLPoolWorkloadGroupCreateOrUpdateFuture,error)` is added
+- Function `WorkspaceManagedSQLServerBlobAuditingPoliciesClient.GetPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `IntegrationRuntimeMonitoringDataClient.List(context.Context,string,string,string) (IntegrationRuntimeMonitoringData,error)` is added
+- Function `WorkspaceManagedSQLServerRecoverableSqlpoolsClient.GetPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `PrivateEndpointConnectionsPrivateLinkHubClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `*DataMaskingPolicy.UnmarshalJSON([]byte) error` is added
+- Function `*PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponsePage.Next() error` is added
+- Function `ServerBlobAuditingPolicy.MarshalJSON() ([]byte,error)` is added
+- Function `IntegrationRuntimesClient.EnableInteractiveQuerySender(*http.Request) (IntegrationRuntimesEnableInteractiveQueryFuture,error)` is added
+- Function `WorkspaceManagedSQLServerRecoverableSqlpoolsClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `ExtendedSQLPoolBlobAuditingPolicyListResultPage.Values() []ExtendedSQLPoolBlobAuditingPolicy` is added
+- Function `*WorkloadClassifierListResultIterator.NextWithContext(context.Context) error` is added
+- Function `PrivateEndpointConnectionsPrivateLinkHubClient.ListPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `SQLPoolColumnsClient.Get(context.Context,string,string,string,string,string,string) (SQLPoolColumn,error)` is added
+- Function `PossibleDataMaskingStateValues() []DataMaskingState` is added
+- Function `ServerBlobAuditingPolicyListResultPage.Values() []ServerBlobAuditingPolicy` is added
+- Function `SQLPoolBlobAuditingPolicyListResult.IsEmpty() bool` is added
+- Function `KeysClient.Delete(context.Context,string,string,string) (Key,error)` is added
+- Function `NewWorkspaceManagedSQLServerBlobAuditingPoliciesClient(string) WorkspaceManagedSQLServerBlobAuditingPoliciesClient` is added
+- Function `WorkspaceManagedSQLServerBlobAuditingPoliciesClient.ListByWorkspaceComplete(context.Context,string,string) (ServerBlobAuditingPolicyListResultIterator,error)` is added
+- Function `*RecoverableSQLPool.UnmarshalJSON([]byte) error` is added
+- Function `PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse.IsEmpty() bool` is added
+- Function `NewWorkspaceManagedSQLServerSecurityAlertPolicyClient(string) WorkspaceManagedSQLServerSecurityAlertPolicyClient` is added
+- Function `NewPrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponseIterator(PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponsePage) PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponseIterator` is added
+- Function `WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.CreateOrUpdatePreparer(context.Context,string,string,ServerVulnerabilityAssessment) (*http.Request,error)` is added
+- Function `*TransparentDataEncryptionListResultIterator.Next() error` is added
+- Function `SQLPoolTransparentDataEncryptionsClient.ListComplete(context.Context,string,string,string) (TransparentDataEncryptionListResultIterator,error)` is added
+- Function `RestorableDroppedSQLPoolsClient.ListByWorkspace(context.Context,string,string) (RestorableDroppedSQLPoolListResult,error)` is added
+- Function `DataMaskingRulesClient.ListBySQLPool(context.Context,string,string,string) (DataMaskingRuleListResult,error)` is added
+- Function `SQLPoolWorkloadGroupClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `PossibleSensitivityLabelSourceValues() []SensitivityLabelSource` is added
+- Function `WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.CreateOrUpdateResponder(*http.Response) (ExtendedServerBlobAuditingPolicy,error)` is added
+- Function `TransparentDataEncryptionListResultPage.NotDone() bool` is added
+- Function `KeysClient.ListByWorkspaceSender(*http.Request) (*http.Response,error)` is added
+- Function `WorkloadClassifierListResultPage.Response() WorkloadClassifierListResult` is added
+- Function `IntegrationRuntimeMonitoringDataClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `ExtendedSQLPoolBlobAuditingPoliciesClient.ListBySQLPoolPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `*PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponseIterator.Next() error` is added
+- Function `SQLPoolWorkloadClassifierClient.Delete(context.Context,string,string,string,string,string) (SQLPoolWorkloadClassifierDeleteFuture,error)` is added
+- Function `PossibleDataMaskingRuleStateValues() []DataMaskingRuleState` is added
+- Function `*WorkloadGroupListResultPage.Next() error` is added
+- Function `SQLPoolTransparentDataEncryptionsClient.List(context.Context,string,string,string) (TransparentDataEncryptionListResultPage,error)` is added
+- Function `SQLPoolWorkloadClassifierClient.DeleteSender(*http.Request) (SQLPoolWorkloadClassifierDeleteFuture,error)` is added
+- Function `ServerVulnerabilityAssessmentListResultPage.NotDone() bool` is added
+- Function `NewWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientWithBaseURI(string,string) WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient` is added
+- Function `NewRecoverableSQLPoolListResultIterator(RecoverableSQLPoolListResultPage) RecoverableSQLPoolListResultIterator` is added
+- Function `SQLPoolWorkloadClassifierClient.CreateOrUpdateResponder(*http.Response) (WorkloadClassifier,error)` is added
+- Function `NewServerUsageListResultPage(ServerUsageListResult,func(context.Context, ServerUsageListResult) (ServerUsageListResult, error)) ServerUsageListResultPage` is added
+- Function `ExtendedServerBlobAuditingPolicyListResultPage.Values() []ExtendedServerBlobAuditingPolicy` is added
+- Function `DataMaskingPoliciesClient.CreateOrUpdate(context.Context,string,string,string,DataMaskingPolicy) (DataMaskingPolicy,error)` is added
+- Function `SQLPoolTablesClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `*SQLPoolBlobAuditingPolicyListResultIterator.Next() error` is added
+- Function `WorkspaceManagedSQLServerUsagesClient.ListPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `ListSQLPoolSecurityAlertPoliciesIterator.NotDone() bool` is added
+- Function `DataMaskingPolicy.MarshalJSON() ([]byte,error)` is added
+- Function `NewExtendedSQLPoolBlobAuditingPolicyListResultPage(ExtendedSQLPoolBlobAuditingPolicyListResult,func(context.Context, ExtendedSQLPoolBlobAuditingPolicyListResult) (ExtendedSQLPoolBlobAuditingPolicyListResult, error)) ExtendedSQLPoolBlobAuditingPolicyListResultPage` is added
+- Function `ExtendedSQLPoolBlobAuditingPoliciesClient.ListBySQLPoolSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLPoolSecurityAlertPoliciesClient.ListComplete(context.Context,string,string,string) (ListSQLPoolSecurityAlertPoliciesIterator,error)` is added
+- Function `ServerUsageListResultIterator.NotDone() bool` is added
+- Function `ExtendedServerBlobAuditingPolicy.MarshalJSON() ([]byte,error)` is added
+- Function `WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.DeleteSender(*http.Request) (*http.Response,error)` is added
+- Function `NewWorkspaceManagedSQLServerSecurityAlertPolicyClientWithBaseURI(string,string) WorkspaceManagedSQLServerSecurityAlertPolicyClient` is added
+- Function `RecoverableSQLPoolListResultIterator.NotDone() bool` is added
+- Function `WorkspaceSQLAadAdminsClient.Get(context.Context,string,string) (WorkspaceAadAdminInfo,error)` is added
+- Function `DataMaskingRulesClient.ListBySQLPoolSender(*http.Request) (*http.Response,error)` is added
+- Function `ListSQLPoolSecurityAlertPoliciesPage.Values() []SQLPoolSecurityAlertPolicy` is added
+- Function `ServerBlobAuditingPolicyListResultPage.NotDone() bool` is added
+- Function `NewExtendedSQLPoolBlobAuditingPoliciesClientWithBaseURI(string,string) ExtendedSQLPoolBlobAuditingPoliciesClient` is added
+- Function `SQLPoolWorkloadClassifierClient.CreateOrUpdate(context.Context,string,string,string,string,string,WorkloadClassifier) (SQLPoolWorkloadClassifierCreateOrUpdateFuture,error)` is added
+- Function `WorkloadGroupListResultIterator.Value() WorkloadGroup` is added
+- Function `ServerUsageListResultIterator.Value() ServerUsage` is added
+- Function `WorkspaceSQLAadAdminsClient.GetResponder(*http.Response) (WorkspaceAadAdminInfo,error)` is added
+- Function `ServerSecurityAlertPolicyListResultIterator.NotDone() bool` is added
+- Function `WorkspaceManagedSQLServerBlobAuditingPoliciesClient.ListByWorkspaceSender(*http.Request) (*http.Response,error)` is added
+- Function `ExtendedSQLPoolBlobAuditingPolicy.MarshalJSON() ([]byte,error)` is added
+- Function `KeysClient.CreateOrUpdate(context.Context,string,string,string,Key) (Key,error)` is added
+- Function `DataMaskingPoliciesClient.CreateOrUpdateSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLPoolSchemasClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `WorkspaceSQLAadAdminsClient.DeletePreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `WorkspaceManagedSQLServerSecurityAlertPolicyClient.CreateOrUpdatePreparer(context.Context,string,string,ServerSecurityAlertPolicy) (*http.Request,error)` is added
+- Function `WorkspaceManagedSQLServerBlobAuditingPoliciesClient.CreateOrUpdatePreparer(context.Context,string,string,ServerBlobAuditingPolicy) (*http.Request,error)` is added
+- Function `ListSQLPoolSecurityAlertPoliciesIterator.Response() ListSQLPoolSecurityAlertPolicies` is added
+- Function `PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponseIterator.Value() PrivateEndpointConnectionForPrivateLinkHub` is added
+- Function `NewDataMaskingPoliciesClientWithBaseURI(string,string) DataMaskingPoliciesClient` is added
+- Function `*PrivateEndpointConnectionForPrivateLinkHubBasic.UnmarshalJSON([]byte) error` is added
+- Function `NewWorkspaceManagedSQLServerVulnerabilityAssessmentsClientWithBaseURI(string,string) WorkspaceManagedSQLServerVulnerabilityAssessmentsClient` is added
+- Function `ExtendedSQLPoolBlobAuditingPolicyListResultPage.Response() ExtendedSQLPoolBlobAuditingPolicyListResult` is added
+- Function `*SQLPoolWorkloadClassifierCreateOrUpdateFuture.Result(SQLPoolWorkloadClassifierClient) (WorkloadClassifier,error)` is added
+- Function `SQLPoolRestorePointsClient.GetResponder(*http.Response) (RestorePoint,error)` is added
+- Function `WorkloadGroupListResultIterator.NotDone() bool` is added
+- Function `RestorableDroppedSQLPoolsClient.Get(context.Context,string,string,string) (RestorableDroppedSQLPool,error)` is added
+- Function `KeysClient.Get(context.Context,string,string,string) (Key,error)` is added
+- Function `SQLPoolBlobAuditingPolicyListResultPage.NotDone() bool` is added
+- Function `WorkspaceManagedSQLServerBlobAuditingPoliciesClient.CreateOrUpdateResponder(*http.Response) (ServerBlobAuditingPolicy,error)` is added
+- Function `*SQLPoolWorkloadGroupCreateOrUpdateFuture.Result(SQLPoolWorkloadGroupClient) (WorkloadGroup,error)` is added
+- Function `SQLPoolSensitivityLabelsClient.GetResponder(*http.Response) (SensitivityLabel,error)` is added
+- Function `SQLPoolVulnerabilityAssessmentRuleBaselinesClient.Get(context.Context,string,string,string,string,VulnerabilityAssessmentPolicyBaselineName) (SQLPoolVulnerabilityAssessmentRuleBaseline,error)` is added
+- Function `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.ListByWorkspaceComplete(context.Context,string,string) (ExtendedServerBlobAuditingPolicyListResultIterator,error)` is added
+- Function `DataMaskingPoliciesClient.Get(context.Context,string,string,string) (DataMaskingPolicy,error)` is added
+- Function `*WorkloadClassifier.UnmarshalJSON([]byte) error` is added
+- Function `NewListSQLPoolSecurityAlertPoliciesPage(ListSQLPoolSecurityAlertPolicies,func(context.Context, ListSQLPoolSecurityAlertPolicies) (ListSQLPoolSecurityAlertPolicies, error)) ListSQLPoolSecurityAlertPoliciesPage` is added
+- Function `WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.Get(context.Context,string,string) (ServerVulnerabilityAssessment,error)` is added
+- Function `SQLPoolSchemasClient.GetResponder(*http.Response) (SQLPoolSchema,error)` is added
+- Function `SQLPoolGeoBackupPoliciesClient.ListPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `SQLPoolSchemasClient.GetPreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.GetResponder(*http.Response) (ExtendedServerBlobAuditingPolicy,error)` is added
+- Function `SQLPoolWorkloadGroupClient.ListPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `SQLPoolColumnsClient.GetResponder(*http.Response) (SQLPoolColumn,error)` is added
+- Function `WorkspaceManagedSQLServerSecurityAlertPolicyClient.GetPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `ServerSecurityAlertPolicyProperties.MarshalJSON() ([]byte,error)` is added
+- Function `NewRecoverableSQLPoolListResultPage(RecoverableSQLPoolListResult,func(context.Context, RecoverableSQLPoolListResult) (RecoverableSQLPoolListResult, error)) RecoverableSQLPoolListResultPage` is added
+- Function `*TransparentDataEncryptionListResultPage.Next() error` is added
+- Function `KeysClient.DeleteSender(*http.Request) (*http.Response,error)` is added
+- Function `IntegrationRuntimesClient.DisableInteractiveQuery(context.Context,string,string,string) (IntegrationRuntimesDisableInteractiveQueryFuture,error)` is added
+- Function `*SQLPoolWorkloadGroupDeleteFuture.Result(SQLPoolWorkloadGroupClient) (autorest.Response,error)` is added
+- Function `KeysClient.DeleteResponder(*http.Response) (Key,error)` is added
+- Function `CustomerManagedKeyDetails.MarshalJSON() ([]byte,error)` is added
+- Function `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.Get(context.Context,string,string) (ExtendedServerBlobAuditingPolicy,error)` is added
+- Function `NewTransparentDataEncryptionListResultIterator(TransparentDataEncryptionListResultPage) TransparentDataEncryptionListResultIterator` is added
+- Function `RecoverableSQLPoolListResultPage.NotDone() bool` is added
+- Function `SQLPoolBlobAuditingPoliciesClient.ListBySQLPoolComplete(context.Context,string,string,string) (SQLPoolBlobAuditingPolicyListResultIterator,error)` is added
+- Function `SQLPoolWorkloadGroupClient.DeleteResponder(*http.Response) (autorest.Response,error)` is added
+- Function `WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.GetResponder(*http.Response) (ServerVulnerabilityAssessment,error)` is added
+- Function `WorkspaceManagedSQLServerSecurityAlertPolicyClient.CreateOrUpdateResponder(*http.Response) (ServerSecurityAlertPolicy,error)` is added
+- Function `ServerUsageListResult.MarshalJSON() ([]byte,error)` is added
+- Function `*RecoverableSQLPoolListResultPage.Next() error` is added
+- Function `PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponseIterator.NotDone() bool` is added
+- Function `ServerVulnerabilityAssessmentListResultIterator.NotDone() bool` is added
+- Function `*IntegrationRuntimesEnableInteractiveQueryFuture.Result(IntegrationRuntimesClient) (autorest.Response,error)` is added
+- Function `IntegrationRuntimesClient.DisableInteractiveQuerySender(*http.Request) (IntegrationRuntimesDisableInteractiveQueryFuture,error)` is added
+- Function `SQLPoolBlobAuditingPolicyListResultIterator.Value() SQLPoolBlobAuditingPolicy` is added
+- Function `*ServerSecurityAlertPolicyListResultPage.Next() error` is added
+- Function `KeyInfoListResultIterator.Response() KeyInfoListResult` is added
+- Function `TransparentDataEncryptionListResultPage.Response() TransparentDataEncryptionListResult` is added
+- Function `SQLPoolWorkloadGroupClient.List(context.Context,string,string,string) (WorkloadGroupListResultPage,error)` is added
+- Function `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLPoolWorkloadGroupClient.CreateOrUpdatePreparer(context.Context,string,string,string,string,WorkloadGroup) (*http.Request,error)` is added
+- Function `NewWorkspaceManagedSQLServerUsagesClient(string) WorkspaceManagedSQLServerUsagesClient` is added
+- Function `ServerUsageListResultIterator.Response() ServerUsageListResult` is added
+- Function `WorkspaceManagedSQLServerBlobAuditingPoliciesClient.Get(context.Context,string,string) (ServerBlobAuditingPolicy,error)` is added
+- Function `*IntegrationRuntimeObjectMetadataRefreshFuture.Result(IntegrationRuntimeObjectMetadataClient) (SsisObjectMetadataStatusResponse,error)` is added
+- Function `SQLPoolReplicationLinksClient.GetByNameResponder(*http.Response) (ReplicationLink,error)` is added
+- Function `ExtendedServerBlobAuditingPolicyListResultIterator.NotDone() bool` is added
+- Function `SQLPoolSecurityAlertPoliciesClient.ListResponder(*http.Response) (ListSQLPoolSecurityAlertPolicies,error)` is added
+- Function `NewWorkspaceManagedSQLServerUsagesClientWithBaseURI(string,string) WorkspaceManagedSQLServerUsagesClient` is added
+- Function `ExtendedSQLPoolBlobAuditingPoliciesClient.GetResponder(*http.Response) (ExtendedSQLPoolBlobAuditingPolicy,error)` is added
+- Function `*ServerVulnerabilityAssessmentListResultIterator.Next() error` is added
+- Function `SQLPoolBlobAuditingPolicyListResultPage.Values() []SQLPoolBlobAuditingPolicy` is added
+- Function `IntegrationRuntimeObjectMetadataClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `KeysClient.GetPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `*ExtendedServerBlobAuditingPolicyListResultIterator.NextWithContext(context.Context) error` is added
+- Function `WorkspaceManagedSQLServerRecoverableSqlpoolsClient.ListPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `*KeyInfoListResultPage.Next() error` is added
+- Function `TransparentDataEncryptionListResultIterator.Response() TransparentDataEncryptionListResult` is added
+- Function `ServerVulnerabilityAssessmentListResultPage.Response() ServerVulnerabilityAssessmentListResult` is added
+- Function `*WorkloadGroupListResultIterator.Next() error` is added
+- Function `KeysClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `*RecoverableSQLPoolListResultIterator.NextWithContext(context.Context) error` is added
+- Function `WorkspaceSQLAadAdminsClient.CreateOrUpdateSender(*http.Request) (WorkspaceSQLAadAdminsCreateOrUpdateFuture,error)` is added
+- Function `ServerVulnerabilityAssessment.MarshalJSON() ([]byte,error)` is added
+- Function `PrivateLinkHubProperties.MarshalJSON() ([]byte,error)` is added
+- Function `WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.ListResponder(*http.Response) (ServerVulnerabilityAssessmentListResult,error)` is added
+- Function `SQLPoolWorkloadGroupClient.ListComplete(context.Context,string,string,string) (WorkloadGroupListResultIterator,error)` is added
+- Function `*WorkloadGroup.UnmarshalJSON([]byte) error` is added
+- Function `SQLPoolWorkloadGroupClient.DeleteSender(*http.Request) (SQLPoolWorkloadGroupDeleteFuture,error)` is added
+- Function `*ListSQLPoolSecurityAlertPoliciesPage.NextWithContext(context.Context) error` is added
+- Function `*RecoverableSQLPoolListResultPage.NextWithContext(context.Context) error` is added
+- Function `NewSQLPoolWorkloadClassifierClientWithBaseURI(string,string) SQLPoolWorkloadClassifierClient` is added
+- Function `NewWorkspaceManagedSQLServerRecoverableSqlpoolsClient(string) WorkspaceManagedSQLServerRecoverableSqlpoolsClient` is added
+- Function `NewKeyInfoListResultPage(KeyInfoListResult,func(context.Context, KeyInfoListResult) (KeyInfoListResult, error)) KeyInfoListResultPage` is added
+- Function `WorkspaceManagedSQLServerRecoverableSqlpoolsClient.Get(context.Context,string,string,string) (RecoverableSQLPool,error)` is added
+- Function `*ExtendedServerBlobAuditingPolicyListResultPage.NextWithContext(context.Context) error` is added
+- Function `ListSQLPoolSecurityAlertPoliciesPage.Response() ListSQLPoolSecurityAlertPolicies` is added
+- Function `NewSQLPoolWorkloadGroupClient(string) SQLPoolWorkloadGroupClient` is added
+- Function `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.CreateOrUpdatePreparer(context.Context,string,string,ExtendedServerBlobAuditingPolicy) (*http.Request,error)` is added
+- Function `*ServerBlobAuditingPolicyListResultIterator.NextWithContext(context.Context) error` is added
+- Function `KeysClient.CreateOrUpdateSender(*http.Request) (*http.Response,error)` is added
+- Function `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.ListByWorkspaceSender(*http.Request) (*http.Response,error)` is added
+- Function `ExtendedServerBlobAuditingPolicyListResultIterator.Value() ExtendedServerBlobAuditingPolicy` is added
+- Function `*SQLPoolBlobAuditingPolicyListResultPage.Next() error` is added
+- Function `*ListSQLPoolSecurityAlertPoliciesIterator.Next() error` is added
+- Function `SQLPoolRestorePointsClient.GetPreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.CreateOrUpdate(context.Context,string,string,ExtendedServerBlobAuditingPolicy) (WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdateFuture,error)` is added
+- Function `NewServerVulnerabilityAssessmentListResultIterator(ServerVulnerabilityAssessmentListResultPage) ServerVulnerabilityAssessmentListResultIterator` is added
+- Function `SQLPoolRestorePointsClient.Delete(context.Context,string,string,string,string) (autorest.Response,error)` is added
+- Function `ServerVulnerabilityAssessmentListResultIterator.Value() ServerVulnerabilityAssessment` is added
+- Function `*ServerBlobAuditingPolicyListResultPage.NextWithContext(context.Context) error` is added
+- Function `KeysClient.DeletePreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `NewKeyInfoListResultIterator(KeyInfoListResultPage) KeyInfoListResultIterator` is added
+- Function `*ExtendedSQLPoolBlobAuditingPolicyListResultIterator.Next() error` is added
+- Function `ServerBlobAuditingPolicyListResultIterator.Value() ServerBlobAuditingPolicy` is added
+- Function `NewSQLPoolColumnsClientWithBaseURI(string,string) SQLPoolColumnsClient` is added
+- Function `RestorableDroppedSQLPoolsClient.GetResponder(*http.Response) (RestorableDroppedSQLPool,error)` is added
+- Function `DataMaskingPoliciesClient.CreateOrUpdatePreparer(context.Context,string,string,string,DataMaskingPolicy) (*http.Request,error)` is added
+- Function `NewSQLPoolWorkloadClassifierClient(string) SQLPoolWorkloadClassifierClient` is added
+- Function `PrivateEndpointConnectionForPrivateLinkHubBasic.MarshalJSON() ([]byte,error)` is added
+- Function `*WorkloadGroupListResultIterator.NextWithContext(context.Context) error` is added
+- Function `WorkspaceManagedSQLServerBlobAuditingPoliciesClient.ListByWorkspace(context.Context,string,string) (ServerBlobAuditingPolicyListResultPage,error)` is added
+- Function `WorkspaceSQLAadAdminsClient.GetPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `KeyInfoListResultPage.NotDone() bool` is added
+- Function `ExtendedSQLPoolBlobAuditingPoliciesClient.ListBySQLPool(context.Context,string,string,string) (ExtendedSQLPoolBlobAuditingPolicyListResultPage,error)` is added
+- Function `SQLPoolWorkloadClassifierClient.ListPreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `NewSQLPoolBlobAuditingPolicyListResultPage(SQLPoolBlobAuditingPolicyListResult,func(context.Context, SQLPoolBlobAuditingPolicyListResult) (SQLPoolBlobAuditingPolicyListResult, error)) SQLPoolBlobAuditingPolicyListResultPage` is added
+- Function `ServerUsageListResultPage.NotDone() bool` is added
+- Function `KeyInfoListResult.IsEmpty() bool` is added
+- Function `ExtendedServerBlobAuditingPolicyListResultPage.Response() ExtendedServerBlobAuditingPolicyListResult` is added
+- Function `ServerUsageListResult.IsEmpty() bool` is added
+- Function `NewServerBlobAuditingPolicyListResultIterator(ServerBlobAuditingPolicyListResultPage) ServerBlobAuditingPolicyListResultIterator` is added
+- Function `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.CreateOrUpdateSender(*http.Request) (WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdateFuture,error)` is added
+- Function `RecoverableSQLPoolListResult.IsEmpty() bool` is added
+- Function `SQLPoolBlobAuditingPolicyListResultIterator.NotDone() bool` is added
+- Function `TransparentDataEncryptionListResultPage.Values() []TransparentDataEncryption` is added
+- Function `*RecoverableSQLPoolListResultIterator.Next() error` is added
+- Function `*ServerUsageListResultIterator.NextWithContext(context.Context) error` is added
+- Function `*PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponseIterator.NextWithContext(context.Context) error` is added
+- Function `*ExtendedServerBlobAuditingPolicyListResultPage.Next() error` is added
+- Function `SQLPoolVulnerabilityAssessmentScansClient.GetPreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `DataMaskingRulesClient.ListBySQLPoolResponder(*http.Response) (DataMaskingRuleListResult,error)` is added
+- Function `KeysClient.CreateOrUpdatePreparer(context.Context,string,string,string,Key) (*http.Request,error)` is added
+- Function `RecoverableSQLPoolListResultIterator.Value() RecoverableSQLPool` is added
+- Function `SQLPoolGeoBackupPoliciesClient.ListResponder(*http.Response) (GeoBackupPolicyListResult,error)` is added
+- Function `SQLPoolWorkloadClassifierClient.ListResponder(*http.Response) (WorkloadClassifierListResult,error)` is added
+- Function `ServerSecurityAlertPolicyListResult.IsEmpty() bool` is added
+- Function `SQLPoolTablesClient.GetPreparer(context.Context,string,string,string,string,string) (*http.Request,error)` is added
+- Function `*SQLPoolWorkloadClassifierDeleteFuture.Result(SQLPoolWorkloadClassifierClient) (autorest.Response,error)` is added
+- Function `SQLPoolSecurityAlertPoliciesClient.ListPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `*ServerVulnerabilityAssessmentListResultPage.Next() error` is added
+- Function `WorkspaceManagedSQLServerBlobAuditingPoliciesClient.ListByWorkspaceResponder(*http.Response) (ServerBlobAuditingPolicyListResult,error)` is added
+- Function `DataMaskingRule.MarshalJSON() ([]byte,error)` is added
+- Function `*ServerBlobAuditingPolicy.UnmarshalJSON([]byte) error` is added
+- Function `SQLPoolWorkloadClassifierClient.DeletePreparer(context.Context,string,string,string,string,string) (*http.Request,error)` is added
+- Function `*WorkloadClassifierListResultPage.NextWithContext(context.Context) error` is added
+- Function `NewWorkloadClassifierListResultIterator(WorkloadClassifierListResultPage) WorkloadClassifierListResultIterator` is added
+- Function `ServerVulnerabilityAssessmentListResultPage.Values() []ServerVulnerabilityAssessment` is added
+- Function `RestorableDroppedSQLPoolsClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `WorkloadClassifierListResult.IsEmpty() bool` is added
+- Function `NewServerUsageListResultIterator(ServerUsageListResultPage) ServerUsageListResultIterator` is added
+- Function `WorkspaceManagedSQLServerBlobAuditingPoliciesClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `PrivateEndpointConnectionsPrivateLinkHubClient.List(context.Context,string,string) (PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponsePage,error)` is added
+- Function `WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.DeleteResponder(*http.Response) (autorest.Response,error)` is added
+- Function `WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.ListPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.GetPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `*WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdateFuture.Result(WorkspaceManagedSQLServerBlobAuditingPoliciesClient) (ServerBlobAuditingPolicy,error)` is added
+- Function `SQLPoolWorkloadClassifierClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `ExtendedSQLPoolBlobAuditingPoliciesClient.CreateOrUpdate(context.Context,string,string,string,ExtendedSQLPoolBlobAuditingPolicy) (ExtendedSQLPoolBlobAuditingPolicy,error)` is added
+- Function `SQLPoolSensitivityLabelsClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `ListSQLPoolSecurityAlertPoliciesIterator.Value() SQLPoolSecurityAlertPolicy` is added
+- Function `WorkloadClassifierListResultPage.NotDone() bool` is added
+- Function `*ServerSecurityAlertPolicyListResultPage.NextWithContext(context.Context) error` is added
+- Function `NewSQLPoolBlobAuditingPolicyListResultIterator(SQLPoolBlobAuditingPolicyListResultPage) SQLPoolBlobAuditingPolicyListResultIterator` is added
+- Function `WorkspaceManagedSQLServerSecurityAlertPolicyClient.GetResponder(*http.Response) (ServerSecurityAlertPolicy,error)` is added
+- Function `WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.CreateOrUpdate(context.Context,string,string,ServerVulnerabilityAssessment) (ServerVulnerabilityAssessment,error)` is added
+- Function `NewDataMaskingPoliciesClient(string) DataMaskingPoliciesClient` is added
+- Function `SQLPoolVulnerabilityAssessmentRuleBaselinesClient.GetPreparer(context.Context,string,string,string,string,VulnerabilityAssessmentPolicyBaselineName) (*http.Request,error)` is added
+- Function `NewListSQLPoolSecurityAlertPoliciesIterator(ListSQLPoolSecurityAlertPoliciesPage) ListSQLPoolSecurityAlertPoliciesIterator` is added
+- Function `*ServerSecurityAlertPolicyListResultIterator.NextWithContext(context.Context) error` is added
+- Function `RestorableDroppedSQLPoolsClient.ListByWorkspacePreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `*ExtendedServerBlobAuditingPolicy.UnmarshalJSON([]byte) error` is added
+- Function `ExtendedServerBlobAuditingPolicyListResult.IsEmpty() bool` is added
+- Function `WorkspaceManagedSQLServerSecurityAlertPolicyClient.Get(context.Context,string,string) (ServerSecurityAlertPolicy,error)` is added
+- Function `WorkspaceSQLAadAdminsClient.DeleteSender(*http.Request) (WorkspaceSQLAadAdminsDeleteFuture,error)` is added
+- Function `*ListSQLPoolSecurityAlertPoliciesPage.Next() error` is added
+- Function `KeyInfoListResultIterator.Value() Key` is added
+- Function `SQLPoolBlobAuditingPoliciesClient.ListBySQLPool(context.Context,string,string,string) (SQLPoolBlobAuditingPolicyListResultPage,error)` is added
+- Function `*WorkspaceSQLAadAdminsDeleteFuture.Result(WorkspaceSQLAadAdminsClient) (autorest.Response,error)` is added
+- Function `KeysClient.ListByWorkspaceResponder(*http.Response) (KeyInfoListResult,error)` is added
+- Function `WorkloadClassifierListResultIterator.NotDone() bool` is added
+- Function `WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.CreateOrUpdateSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLPoolWorkloadClassifierClient.GetResponder(*http.Response) (WorkloadClassifier,error)` is added
+- Function `WorkloadGroup.MarshalJSON() ([]byte,error)` is added
+- Function `NewServerBlobAuditingPolicyListResultPage(ServerBlobAuditingPolicyListResult,func(context.Context, ServerBlobAuditingPolicyListResult) (ServerBlobAuditingPolicyListResult, error)) ServerBlobAuditingPolicyListResultPage` is added
+- Function `WorkspaceSQLAadAdminsClient.Delete(context.Context,string,string) (WorkspaceSQLAadAdminsDeleteFuture,error)` is added
+- Function `SQLPoolWorkloadGroupClient.CreateOrUpdateResponder(*http.Response) (WorkloadGroup,error)` is added
+- Function `WorkspaceManagedSQLServerUsagesClient.ListResponder(*http.Response) (ServerUsageListResult,error)` is added
+- Function `WorkspaceManagedSQLServerBlobAuditingPoliciesClient.ListByWorkspacePreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `ListSQLPoolSecurityAlertPolicies.IsEmpty() bool` is added
+- Function `IntegrationRuntimesClient.DisableInteractiveQueryResponder(*http.Response) (autorest.Response,error)` is added
+- Function `NewWorkspaceSQLAadAdminsClient(string) WorkspaceSQLAadAdminsClient` is added
+- Function `*ServerVulnerabilityAssessmentListResultPage.NextWithContext(context.Context) error` is added
+- Function `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.GetPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `WorkspaceManagedSQLServerRecoverableSqlpoolsClient.List(context.Context,string,string) (RecoverableSQLPoolListResultPage,error)` is added
+- Function `*DataMaskingRule.UnmarshalJSON([]byte) error` is added
+- Function `WorkspaceManagedSQLServerSecurityAlertPolicyClient.List(context.Context,string,string) (ServerSecurityAlertPolicyListResultPage,error)` is added
+- Function `SQLPoolWorkloadClassifierClient.GetPreparer(context.Context,string,string,string,string,string) (*http.Request,error)` is added
+- Function `DataMaskingRulesClient.CreateOrUpdateResponder(*http.Response) (DataMaskingRule,error)` is added
+- Function `ExtendedSQLPoolBlobAuditingPoliciesClient.ListBySQLPoolComplete(context.Context,string,string,string) (ExtendedSQLPoolBlobAuditingPolicyListResultIterator,error)` is added
+- Function `SQLPoolWorkloadClassifierClient.CreateOrUpdatePreparer(context.Context,string,string,string,string,string,WorkloadClassifier) (*http.Request,error)` is added
+- Function `ServerBlobAuditingPolicyListResultPage.Response() ServerBlobAuditingPolicyListResult` is added
+- Function `KeyInfoListResultPage.Values() []Key` is added
+- Function `RecoverableSQLPoolListResultIterator.Response() RecoverableSQLPoolListResult` is added
+- Function `KeysClient.ListByWorkspaceComplete(context.Context,string,string) (KeyInfoListResultIterator,error)` is added
+- Function `SQLPoolBlobAuditingPoliciesClient.ListBySQLPoolPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `SQLPoolReplicationLinksClient.GetByNameSender(*http.Request) (*http.Response,error)` is added
+- Function `*ServerUsageListResultPage.NextWithContext(context.Context) error` is added
+- Function `NewPrivateEndpointConnectionsPrivateLinkHubClient(string) PrivateEndpointConnectionsPrivateLinkHubClient` is added
+- Function `ExtendedSQLPoolBlobAuditingPolicyListResultIterator.Value() ExtendedSQLPoolBlobAuditingPolicy` is added
+- Function `SQLPoolBlobAuditingPoliciesClient.ListBySQLPoolResponder(*http.Response) (SQLPoolBlobAuditingPolicyListResult,error)` is added
+- Function `NewExtendedServerBlobAuditingPolicyListResultIterator(ExtendedServerBlobAuditingPolicyListResultPage) ExtendedServerBlobAuditingPolicyListResultIterator` is added
+- Function `KeysClient.ListByWorkspacePreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `PossibleDataMaskingFunctionValues() []DataMaskingFunction` is added
+- Function `SQLPoolGeoBackupPoliciesClient.List(context.Context,string,string,string) (GeoBackupPolicyListResult,error)` is added
+- Function `NewKeysClientWithBaseURI(string,string) KeysClient` is added
+- Function `ServerVulnerabilityAssessmentListResult.IsEmpty() bool` is added
+- Function `SQLPoolTransparentDataEncryptionsClient.ListResponder(*http.Response) (TransparentDataEncryptionListResult,error)` is added
+- Function `WorkspaceSQLAadAdminsClient.CreateOrUpdateResponder(*http.Response) (WorkspaceAadAdminInfo,error)` is added
+- Function `*KeyInfoListResultIterator.Next() error` is added
+- Function `*WorkloadClassifierListResultPage.Next() error` is added
+- Function `IntegrationRuntimeObjectMetadataClient.ListPreparer(context.Context,string,string,string,*GetSsisObjectMetadataRequest) (*http.Request,error)` is added
+- Function `NewPrivateEndpointConnectionsPrivateLinkHubClientWithBaseURI(string,string) PrivateEndpointConnectionsPrivateLinkHubClient` is added
+- Function `ServerSecurityAlertPolicyListResultPage.Values() []ServerSecurityAlertPolicy` is added
+- Function `*PrivateLinkHubsDeleteFuture.Result(PrivateLinkHubsClient) (autorest.Response,error)` is added
+- Function `WorkspaceManagedSQLServerUsagesClient.ListComplete(context.Context,string,string) (ServerUsageListResultIterator,error)` is added
+- Function `PrivateEndpointConnectionForPrivateLinkHub.MarshalJSON() ([]byte,error)` is added
+- Function `NewSQLPoolWorkloadGroupClientWithBaseURI(string,string) SQLPoolWorkloadGroupClient` is added
+- Function `*WorkloadClassifierListResultIterator.Next() error` is added
+- Function `RestorableDroppedSQLPoolsClient.ListByWorkspaceResponder(*http.Response) (RestorableDroppedSQLPoolListResult,error)` is added
+- Function `RestorableDroppedSQLPoolsClient.ListByWorkspaceSender(*http.Request) (*http.Response,error)` is added
+- Function `IntegrationRuntimeObjectMetadataClient.List(context.Context,string,string,string,*GetSsisObjectMetadataRequest) (SsisObjectMetadataListResponse,error)` is added
+- Function `RestorableDroppedSQLPoolsClient.GetPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `ServerSecurityAlertPolicyListResultPage.NotDone() bool` is added
+- Function `*ServerBlobAuditingPolicyListResultPage.Next() error` is added
+- Function `WorkspaceManagedSQLServerSecurityAlertPolicyClient.CreateOrUpdateSender(*http.Request) (WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdateFuture,error)` is added
+- Function `*ServerSecurityAlertPolicyListResultIterator.Next() error` is added
+- Function `SQLPoolGeoBackupPoliciesClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `NewWorkspaceManagedSQLServerVulnerabilityAssessmentsClient(string) WorkspaceManagedSQLServerVulnerabilityAssessmentsClient` is added
+- Function `SQLPoolWorkloadClassifierClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLPoolColumnsClient.GetPreparer(context.Context,string,string,string,string,string,string) (*http.Request,error)` is added
+- Function `WorkspaceManagedSQLServerBlobAuditingPoliciesClient.GetResponder(*http.Response) (ServerBlobAuditingPolicy,error)` is added
+- Function `WorkspaceManagedSQLServerSecurityAlertPolicyClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLPoolColumnsClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdateFuture.Result(WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient) (ExtendedServerBlobAuditingPolicy,error)` is added
+- Function `ServerSecurityAlertPolicy.MarshalJSON() ([]byte,error)` is added
+- Function `SQLPoolSensitivityLabelsClient.Get(context.Context,string,string,string,string,string,string,SensitivityLabelSource) (SensitivityLabel,error)` is added
+- Function `WorkspaceManagedSQLServerSecurityAlertPolicyClient.CreateOrUpdate(context.Context,string,string,ServerSecurityAlertPolicy) (WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdateFuture,error)` is added
+- Function `*ListSQLPoolSecurityAlertPoliciesIterator.NextWithContext(context.Context) error` is added
+- Function `SQLPoolTransparentDataEncryptionsClient.ListPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `TransparentDataEncryptionListResult.IsEmpty() bool` is added
+- Function `*WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdateFuture.Result(WorkspaceManagedSQLServerSecurityAlertPolicyClient) (ServerSecurityAlertPolicy,error)` is added
+- Function `NewDataMaskingRulesClient(string) DataMaskingRulesClient` is added
+- Function `*ServerUsageListResultIterator.Next() error` is added
+- Function `WorkloadClassifierListResultIterator.Response() WorkloadClassifierListResult` is added
+- Function `DataMaskingRulesClient.CreateOrUpdate(context.Context,string,string,string,string,DataMaskingRule) (DataMaskingRule,error)` is added
+- Function `SQLPoolBlobAuditingPolicyListResultPage.Response() SQLPoolBlobAuditingPolicyListResult` is added
+- Function `*KeyInfoListResultPage.NextWithContext(context.Context) error` is added
+- Struct `CustomerManagedKeyDetails` is added
+- Struct `DataMaskingPoliciesClient` is added
+- Struct `DataMaskingPolicy` is added
+- Struct `DataMaskingPolicyProperties` is added
+- Struct `DataMaskingRule` is added
+- Struct `DataMaskingRuleListResult` is added
+- Struct `DataMaskingRuleProperties` is added
+- Struct `DataMaskingRulesClient` is added
+- Struct `EncryptionDetails` is added
+- Struct `ExtendedSQLPoolBlobAuditingPoliciesClient` is added
+- Struct `ExtendedSQLPoolBlobAuditingPolicy` is added
+- Struct `ExtendedSQLPoolBlobAuditingPolicyListResult` is added
+- Struct `ExtendedSQLPoolBlobAuditingPolicyListResultIterator` is added
+- Struct `ExtendedSQLPoolBlobAuditingPolicyListResultPage` is added
+- Struct `ExtendedSQLPoolBlobAuditingPolicyProperties` is added
+- Struct `ExtendedServerBlobAuditingPolicy` is added
+- Struct `ExtendedServerBlobAuditingPolicyListResult` is added
+- Struct `ExtendedServerBlobAuditingPolicyListResultIterator` is added
+- Struct `ExtendedServerBlobAuditingPolicyListResultPage` is added
+- Struct `ExtendedServerBlobAuditingPolicyProperties` is added
+- Struct `GeoBackupPolicyListResult` is added
+- Struct `IntegrationRuntimeObjectMetadataRefreshFuture` is added
+- Struct `IntegrationRuntimesDisableInteractiveQueryFuture` is added
+- Struct `IntegrationRuntimesEnableInteractiveQueryFuture` is added
+- Struct `IntegrationRuntimesStartFuture` is added
+- Struct `IntegrationRuntimesStopFuture` is added
+- Struct `Key` is added
+- Struct `KeyInfoListResult` is added
+- Struct `KeyInfoListResultIterator` is added
+- Struct `KeyInfoListResultPage` is added
+- Struct `KeyProperties` is added
+- Struct `KeysClient` is added
+- Struct `ListSQLPoolSecurityAlertPolicies` is added
+- Struct `ListSQLPoolSecurityAlertPoliciesIterator` is added
+- Struct `ListSQLPoolSecurityAlertPoliciesPage` is added
+- Struct `ManagedVirtualNetworkSettings` is added
+- Struct `PrivateEndpointConnectionForPrivateLinkHub` is added
+- Struct `PrivateEndpointConnectionForPrivateLinkHubBasic` is added
+- Struct `PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse` is added
+- Struct `PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponseIterator` is added
+- Struct `PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponsePage` is added
+- Struct `PrivateEndpointConnectionsPrivateLinkHubClient` is added
+- Struct `PrivateLinkHubsDeleteFuture` is added
+- Struct `PurviewConfiguration` is added
+- Struct `RecoverableSQLPool` is added
+- Struct `RecoverableSQLPoolListResult` is added
+- Struct `RecoverableSQLPoolListResultIterator` is added
+- Struct `RecoverableSQLPoolListResultPage` is added
+- Struct `RecoverableSQLPoolProperties` is added
+- Struct `RestorableDroppedSQLPool` is added
+- Struct `RestorableDroppedSQLPoolListResult` is added
+- Struct `RestorableDroppedSQLPoolProperties` is added
+- Struct `RestorableDroppedSQLPoolsClient` is added
+- Struct `SQLPoolBlobAuditingPolicyListResult` is added
+- Struct `SQLPoolBlobAuditingPolicyListResultIterator` is added
+- Struct `SQLPoolBlobAuditingPolicyListResultPage` is added
+- Struct `SQLPoolColumnsClient` is added
+- Struct `SQLPoolWorkloadClassifierClient` is added
+- Struct `SQLPoolWorkloadClassifierCreateOrUpdateFuture` is added
+- Struct `SQLPoolWorkloadClassifierDeleteFuture` is added
+- Struct `SQLPoolWorkloadGroupClient` is added
+- Struct `SQLPoolWorkloadGroupCreateOrUpdateFuture` is added
+- Struct `SQLPoolWorkloadGroupDeleteFuture` is added
+- Struct `ServerBlobAuditingPolicy` is added
+- Struct `ServerBlobAuditingPolicyListResult` is added
+- Struct `ServerBlobAuditingPolicyListResultIterator` is added
+- Struct `ServerBlobAuditingPolicyListResultPage` is added
+- Struct `ServerBlobAuditingPolicyProperties` is added
+- Struct `ServerSecurityAlertPolicy` is added
+- Struct `ServerSecurityAlertPolicyListResult` is added
+- Struct `ServerSecurityAlertPolicyListResultIterator` is added
+- Struct `ServerSecurityAlertPolicyListResultPage` is added
+- Struct `ServerSecurityAlertPolicyProperties` is added
+- Struct `ServerUsage` is added
+- Struct `ServerUsageListResult` is added
+- Struct `ServerUsageListResultIterator` is added
+- Struct `ServerUsageListResultPage` is added
+- Struct `ServerVulnerabilityAssessment` is added
+- Struct `ServerVulnerabilityAssessmentListResult` is added
+- Struct `ServerVulnerabilityAssessmentListResultIterator` is added
+- Struct `ServerVulnerabilityAssessmentListResultPage` is added
+- Struct `ServerVulnerabilityAssessmentProperties` is added
+- Struct `TransparentDataEncryptionListResult` is added
+- Struct `TransparentDataEncryptionListResultIterator` is added
+- Struct `TransparentDataEncryptionListResultPage` is added
+- Struct `WorkloadClassifier` is added
+- Struct `WorkloadClassifierListResult` is added
+- Struct `WorkloadClassifierListResultIterator` is added
+- Struct `WorkloadClassifierListResultPage` is added
+- Struct `WorkloadClassifierProperties` is added
+- Struct `WorkloadGroup` is added
+- Struct `WorkloadGroupListResult` is added
+- Struct `WorkloadGroupListResultIterator` is added
+- Struct `WorkloadGroupListResultPage` is added
+- Struct `WorkloadGroupProperties` is added
+- Struct `WorkspaceKeyDetails` is added
+- Struct `WorkspaceManagedSQLServerBlobAuditingPoliciesClient` is added
+- Struct `WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdateFuture` is added
+- Struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient` is added
+- Struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdateFuture` is added
+- Struct `WorkspaceManagedSQLServerRecoverableSqlpoolsClient` is added
+- Struct `WorkspaceManagedSQLServerSecurityAlertPolicyClient` is added
+- Struct `WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdateFuture` is added
+- Struct `WorkspaceManagedSQLServerUsagesClient` is added
+- Struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsClient` is added
+- Struct `WorkspaceRepositoryConfiguration` is added
+- Struct `WorkspaceSQLAadAdminsClient` is added
+- Struct `WorkspaceSQLAadAdminsCreateOrUpdateFuture` is added
+- Struct `WorkspaceSQLAadAdminsDeleteFuture` is added
+- Anonymous field `autorest.Response` is added to struct `VulnerabilityAssessmentScanRecord`
+- Anonymous field `autorest.Response` is added to struct `SQLPoolTable`
+- Field `SyncIntervalInMinutes` is added to struct `MetadataSyncConfigProperties`
+- Field `NodeCommunicationChannelEncryptionMode` is added to struct `SelfHostedIntegrationRuntimeStatusTypeProperties`
+- Anonymous field `autorest.Response` is added to struct `ReplicationLink`
+- Anonymous field `autorest.Response` is added to struct `SQLPoolSchema`
+- Field `SessionLevelPackagesEnabled` is added to struct `BigDataPoolResourceProperties`
+- Field `HaveLibraryRequirementsChanged` is added to struct `BigDataPoolResourceProperties`
+- Field `SparkConfigProperties` is added to struct `BigDataPoolResourceProperties`
+- Anonymous field `autorest.Response` is added to struct `SQLPoolColumn`
+- Field `PurviewConfiguration` is added to struct `WorkspacePatchProperties`
+- Field `ManagedVirtualNetworkSettings` is added to struct `WorkspacePatchProperties`
+- Field `WorkspaceRepositoryConfiguration` is added to struct `WorkspacePatchProperties`
+- Field `PurviewConfiguration` is added to struct `WorkspaceProperties`
+- Field `Encryption` is added to struct `WorkspaceProperties`
+- Field `ManagedVirtualNetworkSettings` is added to struct `WorkspaceProperties`
+- Field `WorkspaceUID` is added to struct `WorkspaceProperties`
+- Field `WorkspaceRepositoryConfiguration` is added to struct `WorkspaceProperties`
+- Field `PrivateEndpointConnections` is added to struct `PrivateLinkHubProperties`
+

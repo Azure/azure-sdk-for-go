@@ -857,8 +857,8 @@ type SuggestedTagAndRegion struct {
 	PredictionUncertainty *float64 `json:"predictionUncertainty,omitempty"`
 }
 
-// SuggestedTagAndRegionQuery the array of result images and token containing session and continuation Ids for
-// the next query.
+// SuggestedTagAndRegionQuery the array of result images and token containing session and continuation Ids
+// for the next query.
 type SuggestedTagAndRegionQuery struct {
 	autorest.Response `json:"-"`
 	// Token - Contains properties we need to fetch suggested tags for.
@@ -876,10 +876,10 @@ func (starq SuggestedTagAndRegionQuery) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SuggestedTagAndRegionQueryToken contains properties we need to fetch suggested tags for. For the first call,
-// Session and continuation set to null.
-// Then on subsequent calls, uses the session/continuation from the previous SuggestedTagAndRegionQuery result
-// to fetch additional results.
+// SuggestedTagAndRegionQueryToken contains properties we need to fetch suggested tags for. For the first
+// call, Session and continuation set to null.
+// Then on subsequent calls, uses the session/continuation from the previous SuggestedTagAndRegionQuery
+// result to fetch additional results.
 type SuggestedTagAndRegionQueryToken struct {
 	// TagIds - Existing TagIds in project to filter suggested tags on.
 	TagIds *[]uuid.UUID `json:"tagIds,omitempty"`

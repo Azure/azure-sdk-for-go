@@ -1,0 +1,266 @@
+
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/b97299c968df5f99b724bd1231fd2161731d3b8f
+
+Code generator C:\Users\dapzhang\Documents\workspace\autorest.go
+
+## Breaking Changes
+
+- Const `BusinessCritical` type has been changed from `DatabaseEdition` to `ElasticPoolEdition`
+- Const `Premium` type has been changed from `DatabaseEdition` to `ElasticPoolEdition`
+- Const `System` type has been changed from `DatabaseEdition` to `OperationOrigin`
+- Const `Basic` type has been changed from `DatabaseEdition` to `ElasticPoolEdition`
+- Const `GeneralPurpose` type has been changed from `DatabaseEdition` to `ElasticPoolEdition`
+- Const `Standard` type has been changed from `DatabaseEdition` to `ElasticPoolEdition`
+- Function `NewManagedInstanceListResultPage` signature has been changed from `(func(context.Context, ManagedInstanceListResult) (ManagedInstanceListResult, error))` to `(ManagedInstanceListResult,func(context.Context, ManagedInstanceListResult) (ManagedInstanceListResult, error))`
+- Function `NewUsageListResultPage` signature has been changed from `(func(context.Context, UsageListResult) (UsageListResult, error))` to `(UsageListResult,func(context.Context, UsageListResult) (UsageListResult, error))`
+- Function `NewInstanceFailoverGroupListResultPage` signature has been changed from `(func(context.Context, InstanceFailoverGroupListResult) (InstanceFailoverGroupListResult, error))` to `(InstanceFailoverGroupListResult,func(context.Context, InstanceFailoverGroupListResult) (InstanceFailoverGroupListResult, error))`
+- Function `NewSyncFullSchemaPropertiesListResultPage` signature has been changed from `(func(context.Context, SyncFullSchemaPropertiesListResult) (SyncFullSchemaPropertiesListResult, error))` to `(SyncFullSchemaPropertiesListResult,func(context.Context, SyncFullSchemaPropertiesListResult) (SyncFullSchemaPropertiesListResult, error))`
+- Function `NewServerListResultPage` signature has been changed from `(func(context.Context, ServerListResult) (ServerListResult, error))` to `(ServerListResult,func(context.Context, ServerListResult) (ServerListResult, error))`
+- Function `NewRecoverableManagedDatabaseListResultPage` signature has been changed from `(func(context.Context, RecoverableManagedDatabaseListResult) (RecoverableManagedDatabaseListResult, error))` to `(RecoverableManagedDatabaseListResult,func(context.Context, RecoverableManagedDatabaseListResult) (RecoverableManagedDatabaseListResult, error))`
+- Function `NewLogicalServerSecurityAlertPolicyListResultPage` signature has been changed from `(func(context.Context, LogicalServerSecurityAlertPolicyListResult) (LogicalServerSecurityAlertPolicyListResult, error))` to `(LogicalServerSecurityAlertPolicyListResult,func(context.Context, LogicalServerSecurityAlertPolicyListResult) (LogicalServerSecurityAlertPolicyListResult, error))`
+- Function `NewManagedBackupShortTermRetentionPolicyListResultPage` signature has been changed from `(func(context.Context, ManagedBackupShortTermRetentionPolicyListResult) (ManagedBackupShortTermRetentionPolicyListResult, error))` to `(ManagedBackupShortTermRetentionPolicyListResult,func(context.Context, ManagedBackupShortTermRetentionPolicyListResult) (ManagedBackupShortTermRetentionPolicyListResult, error))`
+- Function `NewServerVulnerabilityAssessmentListResultPage` signature has been changed from `(func(context.Context, ServerVulnerabilityAssessmentListResult) (ServerVulnerabilityAssessmentListResult, error))` to `(ServerVulnerabilityAssessmentListResult,func(context.Context, ServerVulnerabilityAssessmentListResult) (ServerVulnerabilityAssessmentListResult, error))`
+- Function `NewElasticPoolListResultPage` signature has been changed from `(func(context.Context, ElasticPoolListResult) (ElasticPoolListResult, error))` to `(ElasticPoolListResult,func(context.Context, ElasticPoolListResult) (ElasticPoolListResult, error))`
+- Function `NewVirtualNetworkRuleListResultPage` signature has been changed from `(func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error))` to `(VirtualNetworkRuleListResult,func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error))`
+- Function `NewJobListResultPage` signature has been changed from `(func(context.Context, JobListResult) (JobListResult, error))` to `(JobListResult,func(context.Context, JobListResult) (JobListResult, error))`
+- Function `NewDatabaseBlobAuditingPolicyListResultPage` signature has been changed from `(func(context.Context, DatabaseBlobAuditingPolicyListResult) (DatabaseBlobAuditingPolicyListResult, error))` to `(DatabaseBlobAuditingPolicyListResult,func(context.Context, DatabaseBlobAuditingPolicyListResult) (DatabaseBlobAuditingPolicyListResult, error))`
+- Function `NewAdministratorListResultPage` signature has been changed from `(func(context.Context, AdministratorListResult) (AdministratorListResult, error))` to `(AdministratorListResult,func(context.Context, AdministratorListResult) (AdministratorListResult, error))`
+- Function `NewPrivateLinkResourceListResultPage` signature has been changed from `(func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error))` to `(PrivateLinkResourceListResult,func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error))`
+- Function `DatabasesClient.ExportResponder` return values have been changed from `(ImportExportResponse,error)` to `(ImportExportOperationResult,error)`
+- Function `NewManagedInstanceLongTermRetentionBackupListResultPage` signature has been changed from `(func(context.Context, ManagedInstanceLongTermRetentionBackupListResult) (ManagedInstanceLongTermRetentionBackupListResult, error))` to `(ManagedInstanceLongTermRetentionBackupListResult,func(context.Context, ManagedInstanceLongTermRetentionBackupListResult) (ManagedInstanceLongTermRetentionBackupListResult, error))`
+- Function `NewExtendedDatabaseBlobAuditingPolicyListResultPage` signature has been changed from `(func(context.Context, ExtendedDatabaseBlobAuditingPolicyListResult) (ExtendedDatabaseBlobAuditingPolicyListResult, error))` to `(ExtendedDatabaseBlobAuditingPolicyListResult,func(context.Context, ExtendedDatabaseBlobAuditingPolicyListResult) (ExtendedDatabaseBlobAuditingPolicyListResult, error))`
+- Function `NewSubscriptionUsageListResultPage` signature has been changed from `(func(context.Context, SubscriptionUsageListResult) (SubscriptionUsageListResult, error))` to `(SubscriptionUsageListResult,func(context.Context, SubscriptionUsageListResult) (SubscriptionUsageListResult, error))`
+- Function `NewPrivateEndpointConnectionListResultPage` signature has been changed from `(func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error))` to `(PrivateEndpointConnectionListResult,func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error))`
+- Function `NewJobCredentialListResultPage` signature has been changed from `(func(context.Context, JobCredentialListResult) (JobCredentialListResult, error))` to `(JobCredentialListResult,func(context.Context, JobCredentialListResult) (JobCredentialListResult, error))`
+- Function `*DatabasesExportFuture.Result` return values have been changed from `(ImportExportResponse,error)` to `(ImportExportOperationResult,error)`
+- Function `NewAzureADOnlyAuthListResultPage` signature has been changed from `(func(context.Context, AzureADOnlyAuthListResult) (AzureADOnlyAuthListResult, error))` to `(AzureADOnlyAuthListResult,func(context.Context, AzureADOnlyAuthListResult) (AzureADOnlyAuthListResult, error))`
+- Function `NewManagedInstanceVulnerabilityAssessmentListResultPage` signature has been changed from `(func(context.Context, ManagedInstanceVulnerabilityAssessmentListResult) (ManagedInstanceVulnerabilityAssessmentListResult, error))` to `(ManagedInstanceVulnerabilityAssessmentListResult,func(context.Context, ManagedInstanceVulnerabilityAssessmentListResult) (ManagedInstanceVulnerabilityAssessmentListResult, error))`
+- Function `NewEncryptionProtectorListResultPage` signature has been changed from `(func(context.Context, EncryptionProtectorListResult) (EncryptionProtectorListResult, error))` to `(EncryptionProtectorListResult,func(context.Context, EncryptionProtectorListResult) (EncryptionProtectorListResult, error))`
+- Function `NewDatabaseVulnerabilityAssessmentListResultPage` signature has been changed from `(func(context.Context, DatabaseVulnerabilityAssessmentListResult) (DatabaseVulnerabilityAssessmentListResult, error))` to `(DatabaseVulnerabilityAssessmentListResult,func(context.Context, DatabaseVulnerabilityAssessmentListResult) (DatabaseVulnerabilityAssessmentListResult, error))`
+- Function `NewWorkloadGroupListResultPage` signature has been changed from `(func(context.Context, WorkloadGroupListResult) (WorkloadGroupListResult, error))` to `(WorkloadGroupListResult,func(context.Context, WorkloadGroupListResult) (WorkloadGroupListResult, error))`
+- Function `NewManagedDatabaseSecurityAlertPolicyListResultPage` signature has been changed from `(func(context.Context, ManagedDatabaseSecurityAlertPolicyListResult) (ManagedDatabaseSecurityAlertPolicyListResult, error))` to `(ManagedDatabaseSecurityAlertPolicyListResult,func(context.Context, ManagedDatabaseSecurityAlertPolicyListResult) (ManagedDatabaseSecurityAlertPolicyListResult, error))`
+- Function `NewLongTermRetentionBackupListResultPage` signature has been changed from `(func(context.Context, LongTermRetentionBackupListResult) (LongTermRetentionBackupListResult, error))` to `(LongTermRetentionBackupListResult,func(context.Context, LongTermRetentionBackupListResult) (LongTermRetentionBackupListResult, error))`
+- Function `NewOperationListResultPage` signature has been changed from `(func(context.Context, OperationListResult) (OperationListResult, error))` to `(OperationListResult,func(context.Context, OperationListResult) (OperationListResult, error))`
+- Function `NewJobTargetGroupListResultPage` signature has been changed from `(func(context.Context, JobTargetGroupListResult) (JobTargetGroupListResult, error))` to `(JobTargetGroupListResult,func(context.Context, JobTargetGroupListResult) (JobTargetGroupListResult, error))`
+- Function `NewManagedInstanceEncryptionProtectorListResultPage` signature has been changed from `(func(context.Context, ManagedInstanceEncryptionProtectorListResult) (ManagedInstanceEncryptionProtectorListResult, error))` to `(ManagedInstanceEncryptionProtectorListResult,func(context.Context, ManagedInstanceEncryptionProtectorListResult) (ManagedInstanceEncryptionProtectorListResult, error))`
+- Function `NewSyncGroupListResultPage` signature has been changed from `(func(context.Context, SyncGroupListResult) (SyncGroupListResult, error))` to `(SyncGroupListResult,func(context.Context, SyncGroupListResult) (SyncGroupListResult, error))`
+- Function `NewElasticPoolOperationListResultPage` signature has been changed from `(func(context.Context, ElasticPoolOperationListResult) (ElasticPoolOperationListResult, error))` to `(ElasticPoolOperationListResult,func(context.Context, ElasticPoolOperationListResult) (ElasticPoolOperationListResult, error))`
+- Function `NewServerKeyListResultPage` signature has been changed from `(func(context.Context, ServerKeyListResult) (ServerKeyListResult, error))` to `(ServerKeyListResult,func(context.Context, ServerKeyListResult) (ServerKeyListResult, error))`
+- Function `NewSyncAgentLinkedDatabaseListResultPage` signature has been changed from `(func(context.Context, SyncAgentLinkedDatabaseListResult) (SyncAgentLinkedDatabaseListResult, error))` to `(SyncAgentLinkedDatabaseListResult,func(context.Context, SyncAgentLinkedDatabaseListResult) (SyncAgentLinkedDatabaseListResult, error))`
+- Function `NewExtendedServerBlobAuditingPolicyListResultPage` signature has been changed from `(func(context.Context, ExtendedServerBlobAuditingPolicyListResult) (ExtendedServerBlobAuditingPolicyListResult, error))` to `(ExtendedServerBlobAuditingPolicyListResult,func(context.Context, ExtendedServerBlobAuditingPolicyListResult) (ExtendedServerBlobAuditingPolicyListResult, error))`
+- Function `NewSyncDatabaseIDListResultPage` signature has been changed from `(func(context.Context, SyncDatabaseIDListResult) (SyncDatabaseIDListResult, error))` to `(SyncDatabaseIDListResult,func(context.Context, SyncDatabaseIDListResult) (SyncDatabaseIDListResult, error))`
+- Function `NewSyncMemberListResultPage` signature has been changed from `(func(context.Context, SyncMemberListResult) (SyncMemberListResult, error))` to `(SyncMemberListResult,func(context.Context, SyncMemberListResult) (SyncMemberListResult, error))`
+- Function `NewRestorableDroppedManagedDatabaseListResultPage` signature has been changed from `(func(context.Context, RestorableDroppedManagedDatabaseListResult) (RestorableDroppedManagedDatabaseListResult, error))` to `(RestorableDroppedManagedDatabaseListResult,func(context.Context, RestorableDroppedManagedDatabaseListResult) (RestorableDroppedManagedDatabaseListResult, error))`
+- Function `NewServerBlobAuditingPolicyListResultPage` signature has been changed from `(func(context.Context, ServerBlobAuditingPolicyListResult) (ServerBlobAuditingPolicyListResult, error))` to `(ServerBlobAuditingPolicyListResult,func(context.Context, ServerBlobAuditingPolicyListResult) (ServerBlobAuditingPolicyListResult, error))`
+- Function `NewManagedInstanceLongTermRetentionPolicyListResultPage` signature has been changed from `(func(context.Context, ManagedInstanceLongTermRetentionPolicyListResult) (ManagedInstanceLongTermRetentionPolicyListResult, error))` to `(ManagedInstanceLongTermRetentionPolicyListResult,func(context.Context, ManagedInstanceLongTermRetentionPolicyListResult) (ManagedInstanceLongTermRetentionPolicyListResult, error))`
+- Function `DatabasesClient.ExportPreparer` signature has been changed from `(context.Context,string,string,string,ExportRequest)` to `(context.Context,string,string,string,ExportDatabaseDefinition)`
+- Function `NewSyncGroupLogListResultPage` signature has been changed from `(func(context.Context, SyncGroupLogListResult) (SyncGroupLogListResult, error))` to `(SyncGroupLogListResult,func(context.Context, SyncGroupLogListResult) (SyncGroupLogListResult, error))`
+- Function `DatabasesClient.Export` signature has been changed from `(context.Context,string,string,string,ExportRequest)` to `(context.Context,string,string,string,ExportDatabaseDefinition)`
+- Function `NewVirtualClusterListResultPage` signature has been changed from `(func(context.Context, VirtualClusterListResult) (VirtualClusterListResult, error))` to `(VirtualClusterListResult,func(context.Context, VirtualClusterListResult) (VirtualClusterListResult, error))`
+- Function `NewFailoverGroupListResultPage` signature has been changed from `(func(context.Context, FailoverGroupListResult) (FailoverGroupListResult, error))` to `(FailoverGroupListResult,func(context.Context, FailoverGroupListResult) (FailoverGroupListResult, error))`
+- Function `NewVulnerabilityAssessmentScanRecordListResultPage` signature has been changed from `(func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error))` to `(VulnerabilityAssessmentScanRecordListResult,func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error))`
+- Function `NewDatabaseListResultPage` signature has been changed from `(func(context.Context, DatabaseListResult) (DatabaseListResult, error))` to `(DatabaseListResult,func(context.Context, DatabaseListResult) (DatabaseListResult, error))`
+- Function `NewManagedInstanceAdministratorListResultPage` signature has been changed from `(func(context.Context, ManagedInstanceAdministratorListResult) (ManagedInstanceAdministratorListResult, error))` to `(ManagedInstanceAdministratorListResult,func(context.Context, ManagedInstanceAdministratorListResult) (ManagedInstanceAdministratorListResult, error))`
+- Function `NewInstancePoolListResultPage` signature has been changed from `(func(context.Context, InstancePoolListResult) (InstancePoolListResult, error))` to `(InstancePoolListResult,func(context.Context, InstancePoolListResult) (InstancePoolListResult, error))`
+- Function `NewJobAgentListResultPage` signature has been changed from `(func(context.Context, JobAgentListResult) (JobAgentListResult, error))` to `(JobAgentListResult,func(context.Context, JobAgentListResult) (JobAgentListResult, error))`
+- Function `NewManagedServerSecurityAlertPolicyListResultPage` signature has been changed from `(func(context.Context, ManagedServerSecurityAlertPolicyListResult) (ManagedServerSecurityAlertPolicyListResult, error))` to `(ManagedServerSecurityAlertPolicyListResult,func(context.Context, ManagedServerSecurityAlertPolicyListResult) (ManagedServerSecurityAlertPolicyListResult, error))`
+- Function `NewJobStepListResultPage` signature has been changed from `(func(context.Context, JobStepListResult) (JobStepListResult, error))` to `(JobStepListResult,func(context.Context, JobStepListResult) (JobStepListResult, error))`
+- Function `NewJobExecutionListResultPage` signature has been changed from `(func(context.Context, JobExecutionListResult) (JobExecutionListResult, error))` to `(JobExecutionListResult,func(context.Context, JobExecutionListResult) (JobExecutionListResult, error))`
+- Function `NewManagedDatabaseListResultPage` signature has been changed from `(func(context.Context, ManagedDatabaseListResult) (ManagedDatabaseListResult, error))` to `(ManagedDatabaseListResult,func(context.Context, ManagedDatabaseListResult) (ManagedDatabaseListResult, error))`
+- Function `NewDatabaseOperationListResultPage` signature has been changed from `(func(context.Context, DatabaseOperationListResult) (DatabaseOperationListResult, error))` to `(DatabaseOperationListResult,func(context.Context, DatabaseOperationListResult) (DatabaseOperationListResult, error))`
+- Function `NewSyncAgentListResultPage` signature has been changed from `(func(context.Context, SyncAgentListResult) (SyncAgentListResult, error))` to `(SyncAgentListResult,func(context.Context, SyncAgentListResult) (SyncAgentListResult, error))`
+- Function `NewBackupShortTermRetentionPolicyListResultPage` signature has been changed from `(func(context.Context, BackupShortTermRetentionPolicyListResult) (BackupShortTermRetentionPolicyListResult, error))` to `(BackupShortTermRetentionPolicyListResult,func(context.Context, BackupShortTermRetentionPolicyListResult) (BackupShortTermRetentionPolicyListResult, error))`
+- Function `NewServerDNSAliasListResultPage` signature has been changed from `(func(context.Context, ServerDNSAliasListResult) (ServerDNSAliasListResult, error))` to `(ServerDNSAliasListResult,func(context.Context, ServerDNSAliasListResult) (ServerDNSAliasListResult, error))`
+- Function `NewManagedInstanceKeyListResultPage` signature has been changed from `(func(context.Context, ManagedInstanceKeyListResult) (ManagedInstanceKeyListResult, error))` to `(ManagedInstanceKeyListResult,func(context.Context, ManagedInstanceKeyListResult) (ManagedInstanceKeyListResult, error))`
+- Function `NewWorkloadClassifierListResultPage` signature has been changed from `(func(context.Context, WorkloadClassifierListResult) (WorkloadClassifierListResult, error))` to `(WorkloadClassifierListResult,func(context.Context, WorkloadClassifierListResult) (WorkloadClassifierListResult, error))`
+- Function `NewJobVersionListResultPage` signature has been changed from `(func(context.Context, JobVersionListResult) (JobVersionListResult, error))` to `(JobVersionListResult,func(context.Context, JobVersionListResult) (JobVersionListResult, error))`
+- Function `NewSensitivityLabelListResultPage` signature has been changed from `(func(context.Context, SensitivityLabelListResult) (SensitivityLabelListResult, error))` to `(SensitivityLabelListResult,func(context.Context, SensitivityLabelListResult) (SensitivityLabelListResult, error))`
+- Function `NewManagedInstanceOperationListResultPage` signature has been changed from `(func(context.Context, ManagedInstanceOperationListResult) (ManagedInstanceOperationListResult, error))` to `(ManagedInstanceOperationListResult,func(context.Context, ManagedInstanceOperationListResult) (ManagedInstanceOperationListResult, error))`
+- Type of `StorageCapability.StorageAccountType` has been changed from `StorageAccountType` to `StorageAccountType1`
+- Const `PremiumRS` has been removed
+- Const `Free` has been removed
+- Const `OperationOriginSystem` has been removed
+- Const `ElasticPoolEditionStandard` has been removed
+- Const `Stretch` has been removed
+- Const `DataWarehouse` has been removed
+- Const `ElasticPoolEditionPremium` has been removed
+- Const `ElasticPoolEditionBasic` has been removed
+- Const `Hyperscale` has been removed
+- Const `ADPassword` has been removed
+- Const `ElasticPoolEditionGeneralPurpose` has been removed
+- Const `SQL` has been removed
+- Const `OperationOriginUser` has been removed
+- Const `ElasticPoolEditionBusinessCritical` has been removed
+- Const `Business` has been removed
+- Const `System2` has been removed
+- Const `Web` has been removed
+- Function `DatabasesClient.CreateImportOperationPreparer` has been removed
+- Function `ImportExportResponse.MarshalJSON` has been removed
+- Function `*ImportExportResponse.UnmarshalJSON` has been removed
+- Function `DatabasesClient.ImportSender` has been removed
+- Function `*DatabasesCreateImportOperationFuture.Result` has been removed
+- Function `DatabasesClient.CreateImportOperation` has been removed
+- Function `PossibleAuthenticationTypeValues` has been removed
+- Function `DatabasesClient.CreateImportOperationSender` has been removed
+- Function `PossibleDatabaseEditionValues` has been removed
+- Function `*ImportExtensionRequest.UnmarshalJSON` has been removed
+- Function `DatabasesClient.CreateImportOperationResponder` has been removed
+- Function `DatabasesClient.ImportPreparer` has been removed
+- Function `ImportExtensionRequest.MarshalJSON` has been removed
+- Function `DatabasesClient.Import` has been removed
+- Function `*DatabasesImportFuture.Result` has been removed
+- Function `DatabasesClient.ImportResponder` has been removed
+- Struct `DatabasesCreateImportOperationFuture` has been removed
+- Struct `DatabasesImportFuture` has been removed
+- Struct `ExportRequest` has been removed
+- Struct `ImportExportResponse` has been removed
+- Struct `ImportExportResponseProperties` has been removed
+- Struct `ImportExtensionProperties` has been removed
+- Struct `ImportExtensionRequest` has been removed
+- Struct `ImportRequest` has been removed
+
+## New Content
+
+- Const `StorageAccountType1LRS` is added
+- Const `ProvisioningState1Creating` is added
+- Const `ProvisioningState1Updating` is added
+- Const `ProvisioningState1Unknown` is added
+- Const `User` is added
+- Const `StorageAccountType1ZRS` is added
+- Const `StorageAccountType1GRS` is added
+- Const `ProvisioningState1Failed` is added
+- Const `ProvisioningState1Succeeded` is added
+- Const `ProvisioningState1Deleting` is added
+- Function `ServerTrustGroupsClient.ListByInstancePreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `NewServerTrustGroupsClientWithBaseURI(string,string) ServerTrustGroupsClient` is added
+- Function `NewServerTrustGroupListResultPage(ServerTrustGroupListResult,func(context.Context, ServerTrustGroupListResult) (ServerTrustGroupListResult, error)) ServerTrustGroupListResultPage` is added
+- Function `ManagedInstanceAzureADOnlyAuthenticationsClient.ListByInstance(context.Context,string,string) (ManagedInstanceAzureADOnlyAuthListResultPage,error)` is added
+- Function `ManagedInstanceAzureADOnlyAuthenticationsClient.CreateOrUpdatePreparer(context.Context,string,string,ManagedInstanceAzureADOnlyAuthentication) (*http.Request,error)` is added
+- Function `NewManagedInstanceAzureADOnlyAuthenticationsClientWithBaseURI(string,string) ManagedInstanceAzureADOnlyAuthenticationsClient` is added
+- Function `ManagedInstanceAzureADOnlyAuthenticationsClient.ListByInstanceResponder(*http.Response) (ManagedInstanceAzureADOnlyAuthListResult,error)` is added
+- Function `ServerTrustGroupsClient.ListByInstanceResponder(*http.Response) (ServerTrustGroupListResult,error)` is added
+- Function `ServerTrustGroupsClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `NewServerTrustGroupListResultIterator(ServerTrustGroupListResultPage) ServerTrustGroupListResultIterator` is added
+- Function `ServerTrustGroupListResultIterator.NotDone() bool` is added
+- Function `ServerTrustGroupsClient.CreateOrUpdatePreparer(context.Context,string,string,string,ServerTrustGroup) (*http.Request,error)` is added
+- Function `ManagedInstanceAzureADOnlyAuthenticationsClient.DeleteSender(*http.Request) (ManagedInstanceAzureADOnlyAuthenticationsDeleteFuture,error)` is added
+- Function `*ManagedInstanceAzureADOnlyAuthListResultPage.NextWithContext(context.Context) error` is added
+- Function `ManagedInstanceAzureADOnlyAuthListResultIterator.NotDone() bool` is added
+- Function `ManagedInstanceAzureADOnlyAuthenticationsClient.CreateOrUpdateResponder(*http.Response) (ManagedInstanceAzureADOnlyAuthentication,error)` is added
+- Function `ServerTrustGroupsClient.GetPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `DatabasesClient.ListInaccessibleByServerComplete(context.Context,string,string) (DatabaseListResultIterator,error)` is added
+- Function `*ManagedInstanceAzureADOnlyAuthenticationsDeleteFuture.Result(ManagedInstanceAzureADOnlyAuthenticationsClient) (autorest.Response,error)` is added
+- Function `ManagedInstanceAzureADOnlyAuthenticationsClient.GetPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `ImportExportClient.ImportResponder(*http.Response) (ImportExportOperationResult,error)` is added
+- Function `*ServerTrustGroup.UnmarshalJSON([]byte) error` is added
+- Function `*ManagedInstanceAzureADOnlyAuthListResultIterator.NextWithContext(context.Context) error` is added
+- Function `ServerTrustGroupsClient.ListByLocationSender(*http.Request) (*http.Response,error)` is added
+- Function `ServerTrustGroupListResultPage.NotDone() bool` is added
+- Function `DatabasesClient.ListInaccessibleByServerPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `ManagedInstanceAzureADOnlyAuthenticationsClient.CreateOrUpdate(context.Context,string,string,ManagedInstanceAzureADOnlyAuthentication) (ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateFuture,error)` is added
+- Function `ServerTrustGroupsClient.DeleteResponder(*http.Response) (autorest.Response,error)` is added
+- Function `ManagedInstanceAzureADOnlyAuthListResultPage.Response() ManagedInstanceAzureADOnlyAuthListResult` is added
+- Function `ServerTrustGroupsClient.ListByLocationResponder(*http.Response) (ServerTrustGroupListResult,error)` is added
+- Function `ServerTrustGroupsClient.ListByLocation(context.Context,string,string) (ServerTrustGroupListResultPage,error)` is added
+- Function `ImportExportClient.ImportSender(*http.Request) (ImportExportImportFuture,error)` is added
+- Function `DatabasesClient.ListInaccessibleByServerResponder(*http.Response) (DatabaseListResult,error)` is added
+- Function `ServerTrustGroupsClient.ListByInstanceSender(*http.Request) (*http.Response,error)` is added
+- Function `*ServerTrustGroupListResultPage.Next() error` is added
+- Function `ServerTrustGroupListResult.IsEmpty() bool` is added
+- Function `ServerTrustGroupsClient.GetResponder(*http.Response) (ServerTrustGroup,error)` is added
+- Function `*ManagedInstanceAzureADOnlyAuthListResultPage.Next() error` is added
+- Function `*ServerTrustGroupListResultIterator.NextWithContext(context.Context) error` is added
+- Function `NewImportExportClient(string) ImportExportClient` is added
+- Function `ManagedInstanceAzureADOnlyAuthenticationsClient.ListByInstanceComplete(context.Context,string,string) (ManagedInstanceAzureADOnlyAuthListResultIterator,error)` is added
+- Function `ImportExportOperationResult.MarshalJSON() ([]byte,error)` is added
+- Function `*ServerTrustGroupListResultPage.NextWithContext(context.Context) error` is added
+- Function `ServerTrustGroupsClient.ListByInstance(context.Context,string,string) (ServerTrustGroupListResultPage,error)` is added
+- Function `ManagedInstanceAzureADOnlyAuthenticationsClient.ListByInstancePreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `*ImportExportImportFuture.Result(ImportExportClient) (ImportExportOperationResult,error)` is added
+- Function `ManagedInstanceAzureADOnlyAuthenticationsClient.Delete(context.Context,string,string) (ManagedInstanceAzureADOnlyAuthenticationsDeleteFuture,error)` is added
+- Function `ServerTrustGroupListResultPage.Values() []ServerTrustGroup` is added
+- Function `ServerTrustGroupsClient.CreateOrUpdate(context.Context,string,string,string,ServerTrustGroup) (ServerTrustGroupsCreateOrUpdateFuture,error)` is added
+- Function `ServerTrustGroup.MarshalJSON() ([]byte,error)` is added
+- Function `ServerTrustGroupListResultIterator.Response() ServerTrustGroupListResult` is added
+- Function `ManagedInstanceAzureADOnlyAuthenticationsClient.Get(context.Context,string,string) (ManagedInstanceAzureADOnlyAuthentication,error)` is added
+- Function `ServerTrustGroupListResultPage.Response() ServerTrustGroupListResult` is added
+- Function `ManagedInstanceAzureADOnlyAuthenticationsClient.DeleteResponder(*http.Response) (autorest.Response,error)` is added
+- Function `ManagedInstanceAzureADOnlyAuthenticationsClient.CreateOrUpdateSender(*http.Request) (ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateFuture,error)` is added
+- Function `ManagedInstanceAzureADOnlyAuthListResultIterator.Value() ManagedInstanceAzureADOnlyAuthentication` is added
+- Function `NewManagedInstanceAzureADOnlyAuthListResultPage(ManagedInstanceAzureADOnlyAuthListResult,func(context.Context, ManagedInstanceAzureADOnlyAuthListResult) (ManagedInstanceAzureADOnlyAuthListResult, error)) ManagedInstanceAzureADOnlyAuthListResultPage` is added
+- Function `*ServerTrustGroupsCreateOrUpdateFuture.Result(ServerTrustGroupsClient) (ServerTrustGroup,error)` is added
+- Function `PossibleProvisioningState1Values() []ProvisioningState1` is added
+- Function `NewImportExportClientWithBaseURI(string,string) ImportExportClient` is added
+- Function `*ServersImportDatabaseFuture.Result(ServersClient) (ImportExportOperationResult,error)` is added
+- Function `*ManagedInstanceAzureADOnlyAuthListResultIterator.Next() error` is added
+- Function `ServerTrustGroupsClient.Delete(context.Context,string,string,string) (ServerTrustGroupsDeleteFuture,error)` is added
+- Function `*ServerTrustGroupListResultIterator.Next() error` is added
+- Function `NewServerTrustGroupsClient(string) ServerTrustGroupsClient` is added
+- Function `ServersClient.ImportDatabaseResponder(*http.Response) (ImportExportOperationResult,error)` is added
+- Function `NewManagedInstanceAzureADOnlyAuthenticationsClient(string) ManagedInstanceAzureADOnlyAuthenticationsClient` is added
+- Function `ServerTrustGroupsClient.ListByInstanceComplete(context.Context,string,string) (ServerTrustGroupListResultIterator,error)` is added
+- Function `*ImportExportOperationResult.UnmarshalJSON([]byte) error` is added
+- Function `ServersClient.ImportDatabasePreparer(context.Context,string,string,ImportNewDatabaseDefinition) (*http.Request,error)` is added
+- Function `ManagedInstanceAzureADOnlyAuthListResult.IsEmpty() bool` is added
+- Function `PossibleStorageAccountType1Values() []StorageAccountType1` is added
+- Function `DatabasesClient.ListInaccessibleByServerSender(*http.Request) (*http.Response,error)` is added
+- Function `ManagedInstanceAzureADOnlyAuthenticationsClient.ListByInstanceSender(*http.Request) (*http.Response,error)` is added
+- Function `ServerTrustGroupsClient.Get(context.Context,string,string,string) (ServerTrustGroup,error)` is added
+- Function `ServerTrustGroupsClient.CreateOrUpdateSender(*http.Request) (ServerTrustGroupsCreateOrUpdateFuture,error)` is added
+- Function `ManagedInstanceAzureADOnlyAuthListResultIterator.Response() ManagedInstanceAzureADOnlyAuthListResult` is added
+- Function `ManagedInstanceAzureADOnlyAuthListResultPage.Values() []ManagedInstanceAzureADOnlyAuthentication` is added
+- Function `ServersClient.ImportDatabaseSender(*http.Request) (ServersImportDatabaseFuture,error)` is added
+- Function `ServerTrustGroupListResultIterator.Value() ServerTrustGroup` is added
+- Function `NewManagedInstanceAzureADOnlyAuthListResultIterator(ManagedInstanceAzureADOnlyAuthListResultPage) ManagedInstanceAzureADOnlyAuthListResultIterator` is added
+- Function `ManagedInstancePrivateLinkServiceConnectionStateProperty.MarshalJSON() ([]byte,error)` is added
+- Function `ManagedInstanceAzureADOnlyAuthenticationsClient.DeletePreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `ServerTrustGroupsClient.DeletePreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `ServerTrustGroupsClient.ListByLocationPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `*ServerTrustGroupsDeleteFuture.Result(ServerTrustGroupsClient) (autorest.Response,error)` is added
+- Function `ManagedInstanceAzureADOnlyAuthentication.MarshalJSON() ([]byte,error)` is added
+- Function `*ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateFuture.Result(ManagedInstanceAzureADOnlyAuthenticationsClient) (ManagedInstanceAzureADOnlyAuthentication,error)` is added
+- Function `ServerTrustGroupsClient.ListByLocationComplete(context.Context,string,string) (ServerTrustGroupListResultIterator,error)` is added
+- Function `ManagedInstanceAzureADOnlyAuthListResultPage.NotDone() bool` is added
+- Function `ServerTrustGroupsClient.CreateOrUpdateResponder(*http.Response) (ServerTrustGroup,error)` is added
+- Function `*ManagedInstanceAzureADOnlyAuthentication.UnmarshalJSON([]byte) error` is added
+- Function `ImportExportClient.ImportPreparer(context.Context,string,string,string,ImportExistingDatabaseDefinition) (*http.Request,error)` is added
+- Function `ServersClient.ImportDatabase(context.Context,string,string,ImportNewDatabaseDefinition) (ServersImportDatabaseFuture,error)` is added
+- Function `ManagedInstanceAzureADOnlyAuthenticationsClient.GetResponder(*http.Response) (ManagedInstanceAzureADOnlyAuthentication,error)` is added
+- Function `ImportExportClient.Import(context.Context,string,string,string,ImportExistingDatabaseDefinition) (ImportExportImportFuture,error)` is added
+- Function `DatabasesClient.ListInaccessibleByServer(context.Context,string,string) (DatabaseListResultPage,error)` is added
+- Function `ServerTrustGroupsClient.DeleteSender(*http.Request) (ServerTrustGroupsDeleteFuture,error)` is added
+- Function `ManagedInstanceAzureADOnlyAuthenticationsClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Struct `ExportDatabaseDefinition` is added
+- Struct `ImportExistingDatabaseDefinition` is added
+- Struct `ImportExportClient` is added
+- Struct `ImportExportImportFuture` is added
+- Struct `ImportExportOperationResult` is added
+- Struct `ImportExportOperationResultProperties` is added
+- Struct `ImportNewDatabaseDefinition` is added
+- Struct `ManagedInstanceAzureADOnlyAuthListResult` is added
+- Struct `ManagedInstanceAzureADOnlyAuthListResultIterator` is added
+- Struct `ManagedInstanceAzureADOnlyAuthListResultPage` is added
+- Struct `ManagedInstanceAzureADOnlyAuthProperties` is added
+- Struct `ManagedInstanceAzureADOnlyAuthentication` is added
+- Struct `ManagedInstanceAzureADOnlyAuthenticationsClient` is added
+- Struct `ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateFuture` is added
+- Struct `ManagedInstanceAzureADOnlyAuthenticationsDeleteFuture` is added
+- Struct `ManagedInstancePrivateLinkServiceConnectionStateProperty` is added
+- Struct `NetworkIsolationSettings` is added
+- Struct `PrivateEndpointConnectionRequestStatus` is added
+- Struct `ServerInfo` is added
+- Struct `ServerTrustGroup` is added
+- Struct `ServerTrustGroupListResult` is added
+- Struct `ServerTrustGroupListResultIterator` is added
+- Struct `ServerTrustGroupListResultPage` is added
+- Struct `ServerTrustGroupProperties` is added
+- Struct `ServerTrustGroupsClient` is added
+- Struct `ServerTrustGroupsCreateOrUpdateFuture` is added
+- Struct `ServerTrustGroupsDeleteFuture` is added
+- Struct `ServersImportDatabaseFuture` is added
+- Field `PrivateEndpointName` is added to struct `SyncMemberProperties`
+- Field `PrivateEndpointName` is added to struct `SyncGroupProperties`
+- Field `StorageAccountType` is added to struct `DatabaseProperties`
+- Field `ProvisioningState` is added to struct `ManagedInstanceProperties`
+- Field `StorageAccountType` is added to struct `ManagedInstanceProperties`
+

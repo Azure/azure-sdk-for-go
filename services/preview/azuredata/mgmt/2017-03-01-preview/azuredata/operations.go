@@ -26,20 +26,20 @@ import (
 )
 
 // OperationsClient is the the AzureData management API provides a RESTful set of web APIs to manage Azure Data
-// Resources. For example, register, delete and retrieve a SQL Server, SQL Server registration.
+// Resources.
 type OperationsClient struct {
 	BaseClient
 }
 
 // NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewOperationsClient(subscriptionID string, subscriptionID1 string) OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // List lists all of the available SQL Server Registration API operations.
@@ -72,13 +72,16 @@ func (client OperationsClient) List(ctx context.Context) (result OperationListRe
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.OperationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.olr.hasNextLink() && result.olr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
 func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2019-07-24-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -102,7 +105,6 @@ func (client OperationsClient) ListSender(req *http.Request) (*http.Response, er
 func (client OperationsClient) ListResponder(resp *http.Response) (result OperationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

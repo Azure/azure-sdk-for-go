@@ -31,6 +31,207 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/confluent/mgmt/2020-03-01-preview/confluent"
 
+// AgreementProperties terms properties for Marketplace and Confluent.
+type AgreementProperties struct {
+	// Publisher - Publisher identifier string.
+	Publisher *string `json:"publisher,omitempty"`
+	// Product - Product identifier string.
+	Product *string `json:"product,omitempty"`
+	// Plan - Plan identifier string.
+	Plan *string `json:"plan,omitempty"`
+	// LicenseTextLink - Link to HTML with Microsoft and Publisher terms.
+	LicenseTextLink *string `json:"licenseTextLink,omitempty"`
+	// PrivacyPolicyLink - Link to the privacy policy of the publisher.
+	PrivacyPolicyLink *string `json:"privacyPolicyLink,omitempty"`
+	// RetrieveDatetime - Date and time in UTC of when the terms were accepted. This is empty if Accepted is false.
+	RetrieveDatetime *date.Time `json:"retrieveDatetime,omitempty"`
+	// Signature - Terms signature.
+	Signature *string `json:"signature,omitempty"`
+	// Accepted - If any version of the terms have been accepted, otherwise false.
+	Accepted *bool `json:"accepted,omitempty"`
+}
+
+// AgreementResource agreement Terms definition
+type AgreementResource struct {
+	autorest.Response `json:"-"`
+	// ID - READ-ONLY; The ARM id of the resource.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the agreement.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the agreement.
+	Type *string `json:"type,omitempty"`
+	// Properties - Represents the properties of the resource.
+	Properties *AgreementProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AgreementResource.
+func (ar AgreementResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ar.Properties != nil {
+		objectMap["properties"] = ar.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
+// AgreementResourceListResponse response of a agreements operation.
+type AgreementResourceListResponse struct {
+	autorest.Response `json:"-"`
+	// Value - Results of a list operation.
+	Value *[]AgreementResource `json:"value,omitempty"`
+	// NextLink - Link to the next set of results, if any.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AgreementResourceListResponseIterator provides access to a complete listing of AgreementResource values.
+type AgreementResourceListResponseIterator struct {
+	i    int
+	page AgreementResourceListResponsePage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AgreementResourceListResponseIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AgreementResourceListResponseIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AgreementResourceListResponseIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AgreementResourceListResponseIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AgreementResourceListResponseIterator) Response() AgreementResourceListResponse {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AgreementResourceListResponseIterator) Value() AgreementResource {
+	if !iter.page.NotDone() {
+		return AgreementResource{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AgreementResourceListResponseIterator type.
+func NewAgreementResourceListResponseIterator(page AgreementResourceListResponsePage) AgreementResourceListResponseIterator {
+	return AgreementResourceListResponseIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (arlr AgreementResourceListResponse) IsEmpty() bool {
+	return arlr.Value == nil || len(*arlr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (arlr AgreementResourceListResponse) hasNextLink() bool {
+	return arlr.NextLink != nil && len(*arlr.NextLink) != 0
+}
+
+// agreementResourceListResponsePreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (arlr AgreementResourceListResponse) agreementResourceListResponsePreparer(ctx context.Context) (*http.Request, error) {
+	if !arlr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(arlr.NextLink)))
+}
+
+// AgreementResourceListResponsePage contains a page of AgreementResource values.
+type AgreementResourceListResponsePage struct {
+	fn   func(context.Context, AgreementResourceListResponse) (AgreementResourceListResponse, error)
+	arlr AgreementResourceListResponse
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AgreementResourceListResponsePage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AgreementResourceListResponsePage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.arlr)
+		if err != nil {
+			return err
+		}
+		page.arlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AgreementResourceListResponsePage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AgreementResourceListResponsePage) NotDone() bool {
+	return !page.arlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AgreementResourceListResponsePage) Response() AgreementResourceListResponse {
+	return page.arlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AgreementResourceListResponsePage) Values() []AgreementResource {
+	if page.arlr.IsEmpty() {
+		return nil
+	}
+	return *page.arlr.Value
+}
+
+// Creates a new instance of the AgreementResourceListResponsePage type.
+func NewAgreementResourceListResponsePage(cur AgreementResourceListResponse, getNextPage func(context.Context, AgreementResourceListResponse) (AgreementResourceListResponse, error)) AgreementResourceListResponsePage {
+	return AgreementResourceListResponsePage{
+		fn:   getNextPage,
+		arlr: cur,
+	}
+}
+
 // ErrorResponseBody response body of Error
 type ErrorResponseBody struct {
 	// Code - READ-ONLY; Error code
@@ -223,8 +424,11 @@ func (page OperationListResultPage) Values() []OperationResult {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationResult an Confluent REST API operation.
@@ -397,7 +601,8 @@ type OrganizationResourceListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// OrganizationResourceListResultIterator provides access to a complete listing of OrganizationResource values.
+// OrganizationResourceListResultIterator provides access to a complete listing of OrganizationResource
+// values.
 type OrganizationResourceListResultIterator struct {
 	i    int
 	page OrganizationResourceListResultPage
@@ -540,8 +745,11 @@ func (page OrganizationResourceListResultPage) Values() []OrganizationResource {
 }
 
 // Creates a new instance of the OrganizationResourceListResultPage type.
-func NewOrganizationResourceListResultPage(getNextPage func(context.Context, OrganizationResourceListResult) (OrganizationResourceListResult, error)) OrganizationResourceListResultPage {
-	return OrganizationResourceListResultPage{fn: getNextPage}
+func NewOrganizationResourceListResultPage(cur OrganizationResourceListResult, getNextPage func(context.Context, OrganizationResourceListResult) (OrganizationResourceListResult, error)) OrganizationResourceListResultPage {
+	return OrganizationResourceListResultPage{
+		fn:   getNextPage,
+		orlr: cur,
+	}
 }
 
 // OrganizationResourceProperties organization resource property

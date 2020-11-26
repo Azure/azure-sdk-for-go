@@ -41,9 +41,9 @@ type AppInsightsReference struct {
 	InstrumentationKeySecretReference *KeyVaultSecretReference `json:"instrumentationKeySecretReference,omitempty"`
 }
 
-// AutoScaleSettings auto-scale settings for the cluster. The system automatically scales the cluster up and
-// down (within minimumNodeCount and maximumNodeCount) based on the number of queued and running jobs assigned
-// to the cluster.
+// AutoScaleSettings auto-scale settings for the cluster. The system automatically scales the cluster up
+// and down (within minimumNodeCount and maximumNodeCount) based on the number of queued and running jobs
+// assigned to the cluster.
 type AutoScaleSettings struct {
 	// MinimumNodeCount - The minimum number of compute nodes the Batch AI service will try to allocate for the cluster. Note, the actual number of nodes can be less than the specified value if the subscription has not enough quota to fulfill the request.
 	MinimumNodeCount *int32 `json:"minimumNodeCount,omitempty"`
@@ -427,8 +427,11 @@ func (page ClusterListResultPage) Values() []Cluster {
 }
 
 // Creates a new instance of the ClusterListResultPage type.
-func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
-	return ClusterListResultPage{fn: getNextPage}
+func NewClusterListResultPage(cur ClusterListResult, getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return ClusterListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // ClusterProperties cluster properties.
@@ -492,7 +495,8 @@ func (cp ClusterProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ClustersCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ClustersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ClustersCreateFuture struct {
 	azure.Future
 }
@@ -520,7 +524,8 @@ func (future *ClustersCreateFuture) Result(client ClustersClient) (c Cluster, er
 	return
 }
 
-// ClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ClustersDeleteFuture struct {
 	azure.Future
 }
@@ -890,8 +895,11 @@ func (page ExperimentListResultPage) Values() []Experiment {
 }
 
 // Creates a new instance of the ExperimentListResultPage type.
-func NewExperimentListResultPage(getNextPage func(context.Context, ExperimentListResult) (ExperimentListResult, error)) ExperimentListResultPage {
-	return ExperimentListResultPage{fn: getNextPage}
+func NewExperimentListResultPage(cur ExperimentListResult, getNextPage func(context.Context, ExperimentListResult) (ExperimentListResult, error)) ExperimentListResultPage {
+	return ExperimentListResultPage{
+		fn:  getNextPage,
+		elr: cur,
+	}
 }
 
 // ExperimentProperties experiment properties.
@@ -1180,8 +1188,11 @@ func (page FileListResultPage) Values() []File {
 }
 
 // Creates a new instance of the FileListResultPage type.
-func NewFileListResultPage(getNextPage func(context.Context, FileListResult) (FileListResult, error)) FileListResultPage {
-	return FileListResultPage{fn: getNextPage}
+func NewFileListResultPage(cur FileListResult, getNextPage func(context.Context, FileListResult) (FileListResult, error)) FileListResultPage {
+	return FileListResultPage{
+		fn:  getNextPage,
+		flr: cur,
+	}
 }
 
 // FileProperties file properties.
@@ -1477,8 +1488,11 @@ func (page FileServerListResultPage) Values() []FileServer {
 }
 
 // Creates a new instance of the FileServerListResultPage type.
-func NewFileServerListResultPage(getNextPage func(context.Context, FileServerListResult) (FileServerListResult, error)) FileServerListResultPage {
-	return FileServerListResultPage{fn: getNextPage}
+func NewFileServerListResultPage(cur FileServerListResult, getNextPage func(context.Context, FileServerListResult) (FileServerListResult, error)) FileServerListResultPage {
+	return FileServerListResultPage{
+		fn:   getNextPage,
+		fslr: cur,
+	}
 }
 
 // FileServerProperties file Server properties.
@@ -1943,8 +1957,11 @@ func (page JobListResultPage) Values() []Job {
 }
 
 // Creates a new instance of the JobListResultPage type.
-func NewJobListResultPage(getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
-	return JobListResultPage{fn: getNextPage}
+func NewJobListResultPage(cur JobListResult, getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
+	return JobListResultPage{
+		fn:  getNextPage,
+		jlr: cur,
+	}
 }
 
 // JobPreparation job preparation settings.
@@ -2149,7 +2166,8 @@ func (future *JobsDeleteFuture) Result(client JobsClient) (ar autorest.Response,
 	return
 }
 
-// JobsTerminateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// JobsTerminateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type JobsTerminateFuture struct {
 	azure.Future
 }
@@ -2331,8 +2349,11 @@ func (page ListUsagesResultPage) Values() []Usage {
 }
 
 // Creates a new instance of the ListUsagesResultPage type.
-func NewListUsagesResultPage(getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
-	return ListUsagesResultPage{fn: getNextPage}
+func NewListUsagesResultPage(cur ListUsagesResult, getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
+	return ListUsagesResultPage{
+		fn:  getNextPage,
+		lur: cur,
+	}
 }
 
 // ManualScaleSettings manual scale settings for the cluster.
@@ -2584,8 +2605,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OutputDirectory output directory for the job.
@@ -2801,8 +2825,11 @@ func (page RemoteLoginInformationListResultPage) Values() []RemoteLoginInformati
 }
 
 // Creates a new instance of the RemoteLoginInformationListResultPage type.
-func NewRemoteLoginInformationListResultPage(getNextPage func(context.Context, RemoteLoginInformationListResult) (RemoteLoginInformationListResult, error)) RemoteLoginInformationListResultPage {
-	return RemoteLoginInformationListResultPage{fn: getNextPage}
+func NewRemoteLoginInformationListResultPage(cur RemoteLoginInformationListResult, getNextPage func(context.Context, RemoteLoginInformationListResult) (RemoteLoginInformationListResult, error)) RemoteLoginInformationListResultPage {
+	return RemoteLoginInformationListResultPage{
+		fn:    getNextPage,
+		rlilr: cur,
+	}
 }
 
 // Resource a definition of an Azure resource.
@@ -2832,8 +2859,8 @@ type ResourceID struct {
 }
 
 // ScaleSettings at least one of manual or autoScale settings must be specified. Only one of manual or
-// autoScale settings can be specified. If autoScale settings are specified, the system automatically scales
-// the cluster up and down (within the supplied limits) based on the pending jobs on the cluster.
+// autoScale settings can be specified. If autoScale settings are specified, the system automatically
+// scales the cluster up and down (within the supplied limits) based on the pending jobs on the cluster.
 type ScaleSettings struct {
 	// Manual - Manual scale settings for the cluster.
 	Manual *ManualScaleSettings `json:"manual,omitempty"`
@@ -3210,8 +3237,11 @@ func (page WorkspaceListResultPage) Values() []Workspace {
 }
 
 // Creates a new instance of the WorkspaceListResultPage type.
-func NewWorkspaceListResultPage(getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
-	return WorkspaceListResultPage{fn: getNextPage}
+func NewWorkspaceListResultPage(cur WorkspaceListResult, getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
+	return WorkspaceListResultPage{
+		fn:  getNextPage,
+		wlr: cur,
+	}
 }
 
 // WorkspaceProperties workspace specific properties.
@@ -3224,7 +3254,8 @@ type WorkspaceProperties struct {
 	ProvisioningStateTransitionTime *date.Time `json:"provisioningStateTransitionTime,omitempty"`
 }
 
-// WorkspacesCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// WorkspacesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type WorkspacesCreateFuture struct {
 	azure.Future
 }
@@ -3252,7 +3283,8 @@ func (future *WorkspacesCreateFuture) Result(client WorkspacesClient) (w Workspa
 	return
 }
 
-// WorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// WorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type WorkspacesDeleteFuture struct {
 	azure.Future
 }

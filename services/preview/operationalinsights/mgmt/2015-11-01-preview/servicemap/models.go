@@ -340,8 +340,8 @@ type AzureVMScaleSetConfiguration struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
-// ClientGroup represents a collection of clients of a resource. A client group can represent the clients of a
-// port, process, or a machine.
+// ClientGroup represents a collection of clients of a resource. A client group can represent the clients
+// of a port, process, or a machine.
 type ClientGroup struct {
 	autorest.Response `json:"-"`
 	// ClientGroupProperties - Resource properties.
@@ -712,8 +712,11 @@ func (page ClientGroupMembersCollectionPage) Values() []ClientGroupMember {
 }
 
 // Creates a new instance of the ClientGroupMembersCollectionPage type.
-func NewClientGroupMembersCollectionPage(getNextPage func(context.Context, ClientGroupMembersCollection) (ClientGroupMembersCollection, error)) ClientGroupMembersCollectionPage {
-	return ClientGroupMembersCollectionPage{fn: getNextPage}
+func NewClientGroupMembersCollectionPage(cur ClientGroupMembersCollection, getNextPage func(context.Context, ClientGroupMembersCollection) (ClientGroupMembersCollection, error)) ClientGroupMembersCollectionPage {
+	return ClientGroupMembersCollectionPage{
+		fn:   getNextPage,
+		cgmc: cur,
+	}
 }
 
 // ClientGroupMembersCount specifies the number of members in a client group.
@@ -1078,8 +1081,11 @@ func (page ConnectionCollectionPage) Values() []Connection {
 }
 
 // Creates a new instance of the ConnectionCollectionPage type.
-func NewConnectionCollectionPage(getNextPage func(context.Context, ConnectionCollection) (ConnectionCollection, error)) ConnectionCollectionPage {
-	return ConnectionCollectionPage{fn: getNextPage}
+func NewConnectionCollectionPage(cur ConnectionCollection, getNextPage func(context.Context, ConnectionCollection) (ConnectionCollection, error)) ConnectionCollectionPage {
+	return ConnectionCollectionPage{
+		fn: getNextPage,
+		cc: cur,
+	}
 }
 
 // ConnectionProperties properties for a connection resource.
@@ -1429,11 +1435,11 @@ type Liveness struct {
 }
 
 // Machine a machine resource represents a discovered computer system. It can be *monitored*, i.e., a
-// Dependency Agent is running on it, or *discovered*, i.e., its existence was inferred by observing the data
-// stream from monitored machines. As machines change, prior versions of the machine resource are preserved and
-// available for access. A machine is live during an interval of time, if either its Dependency Agent has
-// reported data during (parts) of that interval, or a Dependency agent running on other machines has reported
-// activity associated with the machine.
+// Dependency Agent is running on it, or *discovered*, i.e., its existence was inferred by observing the
+// data stream from monitored machines. As machines change, prior versions of the machine resource are
+// preserved and available for access. A machine is live during an interval of time, if either its
+// Dependency Agent has reported data during (parts) of that interval, or a Dependency agent running on
+// other machines has reported activity associated with the machine.
 type Machine struct {
 	autorest.Response `json:"-"`
 	// MachineProperties - Resource properties.
@@ -1722,8 +1728,11 @@ func (page MachineCollectionPage) Values() []Machine {
 }
 
 // Creates a new instance of the MachineCollectionPage type.
-func NewMachineCollectionPage(getNextPage func(context.Context, MachineCollection) (MachineCollection, error)) MachineCollectionPage {
-	return MachineCollectionPage{fn: getNextPage}
+func NewMachineCollectionPage(cur MachineCollection, getNextPage func(context.Context, MachineCollection) (MachineCollection, error)) MachineCollectionPage {
+	return MachineCollectionPage{
+		fn: getNextPage,
+		mc: cur,
+	}
 }
 
 // MachineCountsByOperatingSystem machines by operating system.
@@ -2023,8 +2032,11 @@ func (page MachineGroupCollectionPage) Values() []MachineGroup {
 }
 
 // Creates a new instance of the MachineGroupCollectionPage type.
-func NewMachineGroupCollectionPage(getNextPage func(context.Context, MachineGroupCollection) (MachineGroupCollection, error)) MachineGroupCollectionPage {
-	return MachineGroupCollectionPage{fn: getNextPage}
+func NewMachineGroupCollectionPage(cur MachineGroupCollection, getNextPage func(context.Context, MachineGroupCollection) (MachineGroupCollection, error)) MachineGroupCollectionPage {
+	return MachineGroupCollectionPage{
+		fn:  getNextPage,
+		mgc: cur,
+	}
 }
 
 // MachineGroupMapRequest specifies the computation of a machine group dependency map. A machine group
@@ -2952,10 +2964,10 @@ type OperatingSystemConfiguration struct {
 	Bitness Bitness `json:"bitness,omitempty"`
 }
 
-// Port a port resource represents a server port on a machine. The port may be actively *monitored*, i.e., a
-// Dependency Agent is running on its machine, or *discovered*, i.e., its existence was inferred by observing
-// the data stream from monitored machines. A port is live during an interval of time, if that port had
-// associated activity during (parts) of that interval.
+// Port a port resource represents a server port on a machine. The port may be actively *monitored*, i.e.,
+// a Dependency Agent is running on its machine, or *discovered*, i.e., its existence was inferred by
+// observing the data stream from monitored machines. A port is live during an interval of time, if that
+// port had associated activity during (parts) of that interval.
 type Port struct {
 	autorest.Response `json:"-"`
 	// PortProperties - Resource properties.
@@ -3244,8 +3256,11 @@ func (page PortCollectionPage) Values() []Port {
 }
 
 // Creates a new instance of the PortCollectionPage type.
-func NewPortCollectionPage(getNextPage func(context.Context, PortCollection) (PortCollection, error)) PortCollectionPage {
-	return PortCollectionPage{fn: getNextPage}
+func NewPortCollectionPage(cur PortCollection, getNextPage func(context.Context, PortCollection) (PortCollection, error)) PortCollectionPage {
+	return PortCollectionPage{
+		fn: getNextPage,
+		pc: cur,
+	}
 }
 
 // PortProperties resource properties.
@@ -3466,11 +3481,11 @@ func (pr PortReferenceProperties) MarshalJSON() ([]byte, error) {
 }
 
 // Process a process resource represents a process running on a machine. The process may be actively
-// *monitored*, i.e., a Dependency Agent is running on its machine, or *discovered*, i.e., its existence was
-// inferred by observing the data stream from monitored machines. A process resource represents a pool of
-// actual operating system resources that share command lines and metadata. As the process pool evolves over
-// time, prior versions of the process resource are preserved and available for access. A process is live
-// during an interval of time, if that process is executing during (parts) of that interval
+// *monitored*, i.e., a Dependency Agent is running on its machine, or *discovered*, i.e., its existence
+// was inferred by observing the data stream from monitored machines. A process resource represents a pool
+// of actual operating system resources that share command lines and metadata. As the process pool evolves
+// over time, prior versions of the process resource are preserved and available for access. A process is
+// live during an interval of time, if that process is executing during (parts) of that interval
 type Process struct {
 	autorest.Response `json:"-"`
 	// ProcessProperties - Resource properties.
@@ -3759,8 +3774,11 @@ func (page ProcessCollectionPage) Values() []Process {
 }
 
 // Creates a new instance of the ProcessCollectionPage type.
-func NewProcessCollectionPage(getNextPage func(context.Context, ProcessCollection) (ProcessCollection, error)) ProcessCollectionPage {
-	return ProcessCollectionPage{fn: getNextPage}
+func NewProcessCollectionPage(cur ProcessCollection, getNextPage func(context.Context, ProcessCollection) (ProcessCollection, error)) ProcessCollectionPage {
+	return ProcessCollectionPage{
+		fn: getNextPage,
+		pc: cur,
+	}
 }
 
 // ProcessDetails describes process metadata.

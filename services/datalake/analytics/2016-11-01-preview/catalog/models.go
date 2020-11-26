@@ -220,8 +220,11 @@ func (page ACLListPage) Values() []ACL {
 }
 
 // Creates a new instance of the ACLListPage type.
-func NewACLListPage(getNextPage func(context.Context, ACLList) (ACLList, error)) ACLListPage {
-	return ACLListPage{fn: getNextPage}
+func NewACLListPage(cur ACLList, getNextPage func(context.Context, ACLList) (ACLList, error)) ACLListPage {
+	return ACLListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // DataLakeAnalyticsCatalogCredentialCreateParameters data Lake Analytics catalog credential creation
@@ -242,7 +245,8 @@ type DataLakeAnalyticsCatalogCredentialDeleteParameters struct {
 	Password *string `json:"password,omitempty"`
 }
 
-// DataLakeAnalyticsCatalogCredentialUpdateParameters data Lake Analytics catalog credential update parameters.
+// DataLakeAnalyticsCatalogCredentialUpdateParameters data Lake Analytics catalog credential update
+// parameters.
 type DataLakeAnalyticsCatalogCredentialUpdateParameters struct {
 	// Password - the current password for the credential and user with access to the data source. This is required if the requester is not the account owner.
 	Password *string `json:"password,omitempty"`
@@ -528,8 +532,11 @@ func (page USQLAssemblyListPage) Values() []USQLAssemblyClr {
 }
 
 // Creates a new instance of the USQLAssemblyListPage type.
-func NewUSQLAssemblyListPage(getNextPage func(context.Context, USQLAssemblyList) (USQLAssemblyList, error)) USQLAssemblyListPage {
-	return USQLAssemblyListPage{fn: getNextPage}
+func NewUSQLAssemblyListPage(cur USQLAssemblyList, getNextPage func(context.Context, USQLAssemblyList) (USQLAssemblyList, error)) USQLAssemblyListPage {
+	return USQLAssemblyListPage{
+		fn:  getNextPage,
+		ual: cur,
+	}
 }
 
 // USQLCredential a Data Lake Analytics catalog U-SQL credential item.
@@ -704,8 +711,11 @@ func (page USQLCredentialListPage) Values() []USQLCredential {
 }
 
 // Creates a new instance of the USQLCredentialListPage type.
-func NewUSQLCredentialListPage(getNextPage func(context.Context, USQLCredentialList) (USQLCredentialList, error)) USQLCredentialListPage {
-	return USQLCredentialListPage{fn: getNextPage}
+func NewUSQLCredentialListPage(cur USQLCredentialList, getNextPage func(context.Context, USQLCredentialList) (USQLCredentialList, error)) USQLCredentialListPage {
+	return USQLCredentialListPage{
+		fn:  getNextPage,
+		ucl: cur,
+	}
 }
 
 // USQLDatabase a Data Lake Analytics catalog U-SQL database item.
@@ -880,8 +890,11 @@ func (page USQLDatabaseListPage) Values() []USQLDatabase {
 }
 
 // Creates a new instance of the USQLDatabaseListPage type.
-func NewUSQLDatabaseListPage(getNextPage func(context.Context, USQLDatabaseList) (USQLDatabaseList, error)) USQLDatabaseListPage {
-	return USQLDatabaseListPage{fn: getNextPage}
+func NewUSQLDatabaseListPage(cur USQLDatabaseList, getNextPage func(context.Context, USQLDatabaseList) (USQLDatabaseList, error)) USQLDatabaseListPage {
+	return USQLDatabaseListPage{
+		fn:  getNextPage,
+		udl: cur,
+	}
 }
 
 // USQLDirectedColumn a Data Lake Analytics catalog U-SQL directed column item.
@@ -941,7 +954,8 @@ func (usedsl USQLExternalDataSourceList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// USQLExternalDataSourceListIterator provides access to a complete listing of USQLExternalDataSource values.
+// USQLExternalDataSourceListIterator provides access to a complete listing of USQLExternalDataSource
+// values.
 type USQLExternalDataSourceListIterator struct {
 	i    int
 	page USQLExternalDataSourceListPage
@@ -1084,8 +1098,11 @@ func (page USQLExternalDataSourceListPage) Values() []USQLExternalDataSource {
 }
 
 // Creates a new instance of the USQLExternalDataSourceListPage type.
-func NewUSQLExternalDataSourceListPage(getNextPage func(context.Context, USQLExternalDataSourceList) (USQLExternalDataSourceList, error)) USQLExternalDataSourceListPage {
-	return USQLExternalDataSourceListPage{fn: getNextPage}
+func NewUSQLExternalDataSourceListPage(cur USQLExternalDataSourceList, getNextPage func(context.Context, USQLExternalDataSourceList) (USQLExternalDataSourceList, error)) USQLExternalDataSourceListPage {
+	return USQLExternalDataSourceListPage{
+		fn:    getNextPage,
+		uedsl: cur,
+	}
 }
 
 // USQLIndex a Data Lake Analytics catalog U-SQL table index item.
@@ -1290,8 +1307,11 @@ func (page USQLPackageListPage) Values() []USQLPackage {
 }
 
 // Creates a new instance of the USQLPackageListPage type.
-func NewUSQLPackageListPage(getNextPage func(context.Context, USQLPackageList) (USQLPackageList, error)) USQLPackageListPage {
-	return USQLPackageListPage{fn: getNextPage}
+func NewUSQLPackageListPage(cur USQLPackageList, getNextPage func(context.Context, USQLPackageList) (USQLPackageList, error)) USQLPackageListPage {
+	return USQLPackageListPage{
+		fn:  getNextPage,
+		upl: cur,
+	}
 }
 
 // USQLProcedure a Data Lake Analytics catalog U-SQL procedure item.
@@ -1472,8 +1492,11 @@ func (page USQLProcedureListPage) Values() []USQLProcedure {
 }
 
 // Creates a new instance of the USQLProcedureListPage type.
-func NewUSQLProcedureListPage(getNextPage func(context.Context, USQLProcedureList) (USQLProcedureList, error)) USQLProcedureListPage {
-	return USQLProcedureListPage{fn: getNextPage}
+func NewUSQLProcedureListPage(cur USQLProcedureList, getNextPage func(context.Context, USQLProcedureList) (USQLProcedureList, error)) USQLProcedureListPage {
+	return USQLProcedureListPage{
+		fn:  getNextPage,
+		upl: cur,
+	}
 }
 
 // USQLSchema a Data Lake Analytics catalog U-SQL schema item.
@@ -1650,8 +1673,11 @@ func (page USQLSchemaListPage) Values() []USQLSchema {
 }
 
 // Creates a new instance of the USQLSchemaListPage type.
-func NewUSQLSchemaListPage(getNextPage func(context.Context, USQLSchemaList) (USQLSchemaList, error)) USQLSchemaListPage {
-	return USQLSchemaListPage{fn: getNextPage}
+func NewUSQLSchemaListPage(cur USQLSchemaList, getNextPage func(context.Context, USQLSchemaList) (USQLSchemaList, error)) USQLSchemaListPage {
+	return USQLSchemaListPage{
+		fn:  getNextPage,
+		usl: cur,
+	}
 }
 
 // USQLSecret a Data Lake Analytics catalog U-SQL secret item.
@@ -1885,8 +1911,11 @@ func (page USQLTableFragmentListPage) Values() []USQLTableFragment {
 }
 
 // Creates a new instance of the USQLTableFragmentListPage type.
-func NewUSQLTableFragmentListPage(getNextPage func(context.Context, USQLTableFragmentList) (USQLTableFragmentList, error)) USQLTableFragmentListPage {
-	return USQLTableFragmentListPage{fn: getNextPage}
+func NewUSQLTableFragmentListPage(cur USQLTableFragmentList, getNextPage func(context.Context, USQLTableFragmentList) (USQLTableFragmentList, error)) USQLTableFragmentListPage {
+	return USQLTableFragmentListPage{
+		fn:   getNextPage,
+		utfl: cur,
+	}
 }
 
 // USQLTableList a Data Lake Analytics catalog U-SQL table item list.
@@ -2050,8 +2079,11 @@ func (page USQLTableListPage) Values() []USQLTable {
 }
 
 // Creates a new instance of the USQLTableListPage type.
-func NewUSQLTableListPage(getNextPage func(context.Context, USQLTableList) (USQLTableList, error)) USQLTableListPage {
-	return USQLTableListPage{fn: getNextPage}
+func NewUSQLTableListPage(cur USQLTableList, getNextPage func(context.Context, USQLTableList) (USQLTableList, error)) USQLTableListPage {
+	return USQLTableListPage{
+		fn:  getNextPage,
+		utl: cur,
+	}
 }
 
 // USQLTablePartition a Data Lake Analytics catalog U-SQL table partition item.
@@ -2238,8 +2270,11 @@ func (page USQLTablePartitionListPage) Values() []USQLTablePartition {
 }
 
 // Creates a new instance of the USQLTablePartitionListPage type.
-func NewUSQLTablePartitionListPage(getNextPage func(context.Context, USQLTablePartitionList) (USQLTablePartitionList, error)) USQLTablePartitionListPage {
-	return USQLTablePartitionListPage{fn: getNextPage}
+func NewUSQLTablePartitionListPage(cur USQLTablePartitionList, getNextPage func(context.Context, USQLTablePartitionList) (USQLTablePartitionList, error)) USQLTablePartitionListPage {
+	return USQLTablePartitionListPage{
+		fn:   getNextPage,
+		utpl: cur,
+	}
 }
 
 // USQLTablePreview a Data Lake Analytics catalog table or partition preview rows item.
@@ -2453,8 +2488,11 @@ func (page USQLTableStatisticsListPage) Values() []USQLTableStatistics {
 }
 
 // Creates a new instance of the USQLTableStatisticsListPage type.
-func NewUSQLTableStatisticsListPage(getNextPage func(context.Context, USQLTableStatisticsList) (USQLTableStatisticsList, error)) USQLTableStatisticsListPage {
-	return USQLTableStatisticsListPage{fn: getNextPage}
+func NewUSQLTableStatisticsListPage(cur USQLTableStatisticsList, getNextPage func(context.Context, USQLTableStatisticsList) (USQLTableStatisticsList, error)) USQLTableStatisticsListPage {
+	return USQLTableStatisticsListPage{
+		fn:   getNextPage,
+		utsl: cur,
+	}
 }
 
 // USQLTableType a Data Lake Analytics catalog U-SQL table type item.
@@ -2716,8 +2754,11 @@ func (page USQLTableTypeListPage) Values() []USQLTableType {
 }
 
 // Creates a new instance of the USQLTableTypeListPage type.
-func NewUSQLTableTypeListPage(getNextPage func(context.Context, USQLTableTypeList) (USQLTableTypeList, error)) USQLTableTypeListPage {
-	return USQLTableTypeListPage{fn: getNextPage}
+func NewUSQLTableTypeListPage(cur USQLTableTypeList, getNextPage func(context.Context, USQLTableTypeList) (USQLTableTypeList, error)) USQLTableTypeListPage {
+	return USQLTableTypeListPage{
+		fn:   getNextPage,
+		uttl: cur,
+	}
 }
 
 // USQLTableValuedFunction a Data Lake Analytics catalog U-SQL table valued function item.
@@ -2755,7 +2796,8 @@ func (ustvfl USQLTableValuedFunctionList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// USQLTableValuedFunctionListIterator provides access to a complete listing of USQLTableValuedFunction values.
+// USQLTableValuedFunctionListIterator provides access to a complete listing of USQLTableValuedFunction
+// values.
 type USQLTableValuedFunctionListIterator struct {
 	i    int
 	page USQLTableValuedFunctionListPage
@@ -2898,8 +2940,11 @@ func (page USQLTableValuedFunctionListPage) Values() []USQLTableValuedFunction {
 }
 
 // Creates a new instance of the USQLTableValuedFunctionListPage type.
-func NewUSQLTableValuedFunctionListPage(getNextPage func(context.Context, USQLTableValuedFunctionList) (USQLTableValuedFunctionList, error)) USQLTableValuedFunctionListPage {
-	return USQLTableValuedFunctionListPage{fn: getNextPage}
+func NewUSQLTableValuedFunctionListPage(cur USQLTableValuedFunctionList, getNextPage func(context.Context, USQLTableValuedFunctionList) (USQLTableValuedFunctionList, error)) USQLTableValuedFunctionListPage {
+	return USQLTableValuedFunctionListPage{
+		fn:    getNextPage,
+		utvfl: cur,
+	}
 }
 
 // USQLType a Data Lake Analytics catalog U-SQL type item.
@@ -3101,8 +3146,11 @@ func (page USQLTypeListPage) Values() []USQLType {
 }
 
 // Creates a new instance of the USQLTypeListPage type.
-func NewUSQLTypeListPage(getNextPage func(context.Context, USQLTypeList) (USQLTypeList, error)) USQLTypeListPage {
-	return USQLTypeListPage{fn: getNextPage}
+func NewUSQLTypeListPage(cur USQLTypeList, getNextPage func(context.Context, USQLTypeList) (USQLTypeList, error)) USQLTypeListPage {
+	return USQLTypeListPage{
+		fn:  getNextPage,
+		utl: cur,
+	}
 }
 
 // USQLView a Data Lake Analytics catalog U-SQL view item.
@@ -3283,6 +3331,9 @@ func (page USQLViewListPage) Values() []USQLView {
 }
 
 // Creates a new instance of the USQLViewListPage type.
-func NewUSQLViewListPage(getNextPage func(context.Context, USQLViewList) (USQLViewList, error)) USQLViewListPage {
-	return USQLViewListPage{fn: getNextPage}
+func NewUSQLViewListPage(cur USQLViewList, getNextPage func(context.Context, USQLViewList) (USQLViewList, error)) USQLViewListPage {
+	return USQLViewListPage{
+		fn:  getNextPage,
+		uvl: cur,
+	}
 }

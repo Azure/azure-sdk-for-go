@@ -197,8 +197,11 @@ func (page AvailabilityStatusListResultPage) Values() []AvailabilityStatus {
 }
 
 // Creates a new instance of the AvailabilityStatusListResultPage type.
-func NewAvailabilityStatusListResultPage(getNextPage func(context.Context, AvailabilityStatusListResult) (AvailabilityStatusListResult, error)) AvailabilityStatusListResultPage {
-	return AvailabilityStatusListResultPage{fn: getNextPage}
+func NewAvailabilityStatusListResultPage(cur AvailabilityStatusListResult, getNextPage func(context.Context, AvailabilityStatusListResult) (AvailabilityStatusListResult, error)) AvailabilityStatusListResultPage {
+	return AvailabilityStatusListResultPage{
+		fn:   getNextPage,
+		aslr: cur,
+	}
 }
 
 // AvailabilityStatusProperties properties of availability state.
@@ -237,8 +240,8 @@ type AvailabilityStatusProperties struct {
 	ServiceImpactingEvents *[]ServiceImpactingEvent `json:"serviceImpactingEvents,omitempty"`
 }
 
-// AvailabilityStatusPropertiesRecentlyResolvedState an annotation describing a change in the availabilityState
-// to Available from Unavailable with a reasonType of type Unplanned
+// AvailabilityStatusPropertiesRecentlyResolvedState an annotation describing a change in the
+// availabilityState to Available from Unavailable with a reasonType of type Unplanned
 type AvailabilityStatusPropertiesRecentlyResolvedState struct {
 	// UnavailableOccurredTime - Timestamp for when the availabilityState changed to Unavailable
 	UnavailableOccurredTime *date.Time `json:"unavailableOccurredTime,omitempty"`
@@ -248,15 +251,15 @@ type AvailabilityStatusPropertiesRecentlyResolvedState struct {
 	UnavailabilitySummary *string `json:"unavailabilitySummary,omitempty"`
 }
 
-// AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
+// AzureEntityResource the resource model definition for an Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.
 	Etag *string `json:"etag,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -432,8 +435,11 @@ func (page EmergingIssueListResultPage) Values() []EmergingIssuesGetResult {
 }
 
 // Creates a new instance of the EmergingIssueListResultPage type.
-func NewEmergingIssueListResultPage(getNextPage func(context.Context, EmergingIssueListResult) (EmergingIssueListResult, error)) EmergingIssueListResultPage {
-	return EmergingIssueListResultPage{fn: getNextPage}
+func NewEmergingIssueListResultPage(cur EmergingIssueListResult, getNextPage func(context.Context, EmergingIssueListResult) (EmergingIssueListResult, error)) EmergingIssueListResultPage {
+	return EmergingIssueListResultPage{
+		fn:   getNextPage,
+		eilr: cur,
+	}
 }
 
 // EmergingIssuesGetResult the Get EmergingIssues operation response.
@@ -441,11 +447,11 @@ type EmergingIssuesGetResult struct {
 	autorest.Response `json:"-"`
 	// EmergingIssue - The emerging issue entity properties.
 	*EmergingIssue `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -554,18 +560,19 @@ type OperationListResult struct {
 	Value *[]Operation `json:"value,omitempty"`
 }
 
-// ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
-// required location and tags
+// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
+// have tags and a location
 type ProxyResource struct {
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
-// RecommendedAction lists actions the user can take based on the current availabilityState of the resource.
+// RecommendedAction lists actions the user can take based on the current availabilityState of the
+// resource.
 type RecommendedAction struct {
 	// Action - Recommended action.
 	Action *string `json:"action,omitempty"`
@@ -575,17 +582,18 @@ type RecommendedAction struct {
 	ActionURLText *string `json:"actionUrlText,omitempty"`
 }
 
-// Resource ...
+// Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
-// ServiceImpactingEvent lists the service impacting events that may be affecting the health of the resource.
+// ServiceImpactingEvent lists the service impacting events that may be affecting the health of the
+// resource.
 type ServiceImpactingEvent struct {
 	// EventStartTime - Timestamp for when the event started.
 	EventStartTime *date.Time `json:"eventStartTime,omitempty"`
@@ -653,17 +661,18 @@ type StatusBanner struct {
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
 }
 
-// TrackedResource the resource model definition for a ARM tracked top level resource
+// TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
+// which has 'tags' and a 'location'
 type TrackedResource struct {
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 

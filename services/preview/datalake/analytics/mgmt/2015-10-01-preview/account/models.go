@@ -44,11 +44,11 @@ type AddStorageAccountParameters struct {
 }
 
 // AzureAsyncOperationResult the response body contains the status of the specified asynchronous operation,
-// indicating whether it has succeeded, is inprogress, or has failed. Note that this status is distinct from
-// the HTTP status code returned for the Get Operation Status operation itself. If the asynchronous operation
-// succeeded, the response body includes the HTTP status code for the successful request. If the asynchronous
-// operation failed, the response body includes the HTTP status code for the failed request and error
-// information regarding the failure.
+// indicating whether it has succeeded, is inprogress, or has failed. Note that this status is distinct
+// from the HTTP status code returned for the Get Operation Status operation itself. If the asynchronous
+// operation succeeded, the response body includes the HTTP status code for the successful request. If the
+// asynchronous operation failed, the response body includes the HTTP status code for the failed request
+// and error information regarding the failure.
 type AzureAsyncOperationResult struct {
 	// Status - READ-ONLY; the status of the AzureAsyncOperation. Possible values include: 'OperationStatusInProgress', 'OperationStatusSucceeded', 'OperationStatusFailed'
 	Status OperationStatus `json:"status,omitempty"`
@@ -103,8 +103,8 @@ func (future *CreateFuture) Result(client Client) (dlaa DataLakeAnalyticsAccount
 	return
 }
 
-// DataLakeAnalyticsAccount a Data Lake Analytics account object, containing all information associated with
-// the named Data Lake Analytics account.
+// DataLakeAnalyticsAccount a Data Lake Analytics account object, containing all information associated
+// with the named Data Lake Analytics account.
 type DataLakeAnalyticsAccount struct {
 	autorest.Response `json:"-"`
 	// Location - the account regional location.
@@ -294,8 +294,11 @@ func (page DataLakeAnalyticsAccountListDataLakeStoreResultPage) Values() []DataL
 }
 
 // Creates a new instance of the DataLakeAnalyticsAccountListDataLakeStoreResultPage type.
-func NewDataLakeAnalyticsAccountListDataLakeStoreResultPage(getNextPage func(context.Context, DataLakeAnalyticsAccountListDataLakeStoreResult) (DataLakeAnalyticsAccountListDataLakeStoreResult, error)) DataLakeAnalyticsAccountListDataLakeStoreResultPage {
-	return DataLakeAnalyticsAccountListDataLakeStoreResultPage{fn: getNextPage}
+func NewDataLakeAnalyticsAccountListDataLakeStoreResultPage(cur DataLakeAnalyticsAccountListDataLakeStoreResult, getNextPage func(context.Context, DataLakeAnalyticsAccountListDataLakeStoreResult) (DataLakeAnalyticsAccountListDataLakeStoreResult, error)) DataLakeAnalyticsAccountListDataLakeStoreResultPage {
+	return DataLakeAnalyticsAccountListDataLakeStoreResultPage{
+		fn:        getNextPage,
+		dlaaldlsr: cur,
+	}
 }
 
 // DataLakeAnalyticsAccountListResult dataLakeAnalytics Account list information.
@@ -307,8 +310,8 @@ type DataLakeAnalyticsAccountListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// DataLakeAnalyticsAccountListResultIterator provides access to a complete listing of DataLakeAnalyticsAccount
-// values.
+// DataLakeAnalyticsAccountListResultIterator provides access to a complete listing of
+// DataLakeAnalyticsAccount values.
 type DataLakeAnalyticsAccountListResultIterator struct {
 	i    int
 	page DataLakeAnalyticsAccountListResultPage
@@ -451,8 +454,11 @@ func (page DataLakeAnalyticsAccountListResultPage) Values() []DataLakeAnalyticsA
 }
 
 // Creates a new instance of the DataLakeAnalyticsAccountListResultPage type.
-func NewDataLakeAnalyticsAccountListResultPage(getNextPage func(context.Context, DataLakeAnalyticsAccountListResult) (DataLakeAnalyticsAccountListResult, error)) DataLakeAnalyticsAccountListResultPage {
-	return DataLakeAnalyticsAccountListResultPage{fn: getNextPage}
+func NewDataLakeAnalyticsAccountListResultPage(cur DataLakeAnalyticsAccountListResult, getNextPage func(context.Context, DataLakeAnalyticsAccountListResult) (DataLakeAnalyticsAccountListResult, error)) DataLakeAnalyticsAccountListResultPage {
+	return DataLakeAnalyticsAccountListResultPage{
+		fn:     getNextPage,
+		dlaalr: cur,
+	}
 }
 
 // DataLakeAnalyticsAccountListStorageAccountsResult azure Storage Account list information.
@@ -610,12 +616,15 @@ func (page DataLakeAnalyticsAccountListStorageAccountsResultPage) Values() []Sto
 }
 
 // Creates a new instance of the DataLakeAnalyticsAccountListStorageAccountsResultPage type.
-func NewDataLakeAnalyticsAccountListStorageAccountsResultPage(getNextPage func(context.Context, DataLakeAnalyticsAccountListStorageAccountsResult) (DataLakeAnalyticsAccountListStorageAccountsResult, error)) DataLakeAnalyticsAccountListStorageAccountsResultPage {
-	return DataLakeAnalyticsAccountListStorageAccountsResultPage{fn: getNextPage}
+func NewDataLakeAnalyticsAccountListStorageAccountsResultPage(cur DataLakeAnalyticsAccountListStorageAccountsResult, getNextPage func(context.Context, DataLakeAnalyticsAccountListStorageAccountsResult) (DataLakeAnalyticsAccountListStorageAccountsResult, error)) DataLakeAnalyticsAccountListStorageAccountsResultPage {
+	return DataLakeAnalyticsAccountListStorageAccountsResultPage{
+		fn:       getNextPage,
+		dlaalsar: cur,
+	}
 }
 
-// DataLakeAnalyticsAccountProperties the account specific properties that are associated with an underlying
-// Data Lake Analytics account.
+// DataLakeAnalyticsAccountProperties the account specific properties that are associated with an
+// underlying Data Lake Analytics account.
 type DataLakeAnalyticsAccountProperties struct {
 	// ProvisioningState - READ-ONLY; the provisioning status of the Data Lake Analytics account. Possible values include: 'Failed', 'Creating', 'Running', 'Succeeded', 'Patching', 'Suspending', 'Resuming', 'Deleting', 'Deleted'
 	ProvisioningState DataLakeAnalyticsAccountStatus `json:"provisioningState,omitempty"`
@@ -882,12 +891,15 @@ func (page ListBlobContainersResultPage) Values() []BlobContainer {
 }
 
 // Creates a new instance of the ListBlobContainersResultPage type.
-func NewListBlobContainersResultPage(getNextPage func(context.Context, ListBlobContainersResult) (ListBlobContainersResult, error)) ListBlobContainersResultPage {
-	return ListBlobContainersResultPage{fn: getNextPage}
+func NewListBlobContainersResultPage(cur ListBlobContainersResult, getNextPage func(context.Context, ListBlobContainersResult) (ListBlobContainersResult, error)) ListBlobContainersResultPage {
+	return ListBlobContainersResultPage{
+		fn:   getNextPage,
+		lbcr: cur,
+	}
 }
 
-// ListSasTokensResult the SAS response that contains the storage account, container and associated SAS token
-// for connection use.
+// ListSasTokensResult the SAS response that contains the storage account, container and associated SAS
+// token for connection use.
 type ListSasTokensResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY
@@ -1039,8 +1051,11 @@ func (page ListSasTokensResultPage) Values() []SasTokenInfo {
 }
 
 // Creates a new instance of the ListSasTokensResultPage type.
-func NewListSasTokensResultPage(getNextPage func(context.Context, ListSasTokensResult) (ListSasTokensResult, error)) ListSasTokensResultPage {
-	return ListSasTokensResultPage{fn: getNextPage}
+func NewListSasTokensResultPage(cur ListSasTokensResult, getNextPage func(context.Context, ListSasTokensResult) (ListSasTokensResult, error)) ListSasTokensResultPage {
+	return ListSasTokensResultPage{
+		fn:   getNextPage,
+		lstr: cur,
+	}
 }
 
 // SasTokenInfo SAS token information.

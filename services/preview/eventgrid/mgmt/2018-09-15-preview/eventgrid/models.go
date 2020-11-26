@@ -603,7 +603,8 @@ func (future *DomainsCreateOrUpdateFuture) Result(client DomainsClient) (d Domai
 	return
 }
 
-// DomainsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DomainsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DomainsDeleteFuture struct {
 	azure.Future
 }
@@ -641,7 +642,8 @@ type DomainsListResult struct {
 	Value *[]Domain `json:"value,omitempty"`
 }
 
-// DomainsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DomainsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DomainsUpdateFuture struct {
 	azure.Future
 }
@@ -702,7 +704,8 @@ func (dup DomainUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// EventHubEventSubscriptionDestination information about the event hub destination for an event subscription
+// EventHubEventSubscriptionDestination information about the event hub destination for an event
+// subscription
 type EventHubEventSubscriptionDestination struct {
 	// EventHubEventSubscriptionDestinationProperties - Event Hub Properties of the event subscription destination
 	*EventHubEventSubscriptionDestinationProperties `json:"properties,omitempty"`
@@ -1222,8 +1225,8 @@ func (future *EventSubscriptionsCreateOrUpdateFuture) Result(client EventSubscri
 	return
 }
 
-// EventSubscriptionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EventSubscriptionsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type EventSubscriptionsDeleteFuture struct {
 	azure.Future
 }
@@ -1252,8 +1255,8 @@ type EventSubscriptionsListResult struct {
 	Value *[]EventSubscription `json:"value,omitempty"`
 }
 
-// EventSubscriptionsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EventSubscriptionsUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type EventSubscriptionsUpdateFuture struct {
 	azure.Future
 }
@@ -1464,8 +1467,8 @@ type EventTypesListResult struct {
 	Value *[]EventType `json:"value,omitempty"`
 }
 
-// HybridConnectionEventSubscriptionDestination information about the HybridConnection destination for an event
-// subscription.
+// HybridConnectionEventSubscriptionDestination information about the HybridConnection destination for an
+// event subscription.
 type HybridConnectionEventSubscriptionDestination struct {
 	// HybridConnectionEventSubscriptionDestinationProperties - Hybrid connection Properties of the event subscription destination
 	*HybridConnectionEventSubscriptionDestinationProperties `json:"properties,omitempty"`
@@ -1549,7 +1552,8 @@ func (hcesd *HybridConnectionEventSubscriptionDestination) UnmarshalJSON(body []
 	return nil
 }
 
-// HybridConnectionEventSubscriptionDestinationProperties the properties for a hybrid connection destination.
+// HybridConnectionEventSubscriptionDestinationProperties the properties for a hybrid connection
+// destination.
 type HybridConnectionEventSubscriptionDestinationProperties struct {
 	// ResourceID - The Azure Resource ID of an hybrid connection that is the destination of an event subscription.
 	ResourceID *string `json:"resourceId,omitempty"`
@@ -1641,10 +1645,10 @@ type JSONField struct {
 	SourceField *string `json:"sourceField,omitempty"`
 }
 
-// JSONFieldWithDefault this is used to express the source of an input schema mapping for a single target field
-// in the Event Grid Event schema. This is currently used in the mappings for the 'subject','eventType' and
-// 'dataVersion' properties. This represents a field in the input event schema along with a default value to be
-// used, and at least one of these two properties should be provided.
+// JSONFieldWithDefault this is used to express the source of an input schema mapping for a single target
+// field in the Event Grid Event schema. This is currently used in the mappings for the
+// 'subject','eventType' and 'dataVersion' properties. This represents a field in the input event schema
+// along with a default value to be used, and at least one of these two properties should be provided.
 type JSONFieldWithDefault struct {
 	// SourceField - Name of a field in the input event schema that's to be used as the source of a mapping.
 	SourceField *string `json:"sourceField,omitempty"`
@@ -1652,8 +1656,8 @@ type JSONFieldWithDefault struct {
 	DefaultValue *string `json:"defaultValue,omitempty"`
 }
 
-// JSONInputSchemaMapping this enables publishing to Event Grid using a custom input schema. This can be used
-// to map properties from a custom input JSON schema to the Event Grid event schema.
+// JSONInputSchemaMapping this enables publishing to Event Grid using a custom input schema. This can be
+// used to map properties from a custom input JSON schema to the Event Grid event schema.
 type JSONInputSchemaMapping struct {
 	// JSONInputSchemaMappingProperties - JSON Properties of the input schema mapping
 	*JSONInputSchemaMappingProperties `json:"properties,omitempty"`
@@ -1722,8 +1726,8 @@ func (jism *JSONInputSchemaMapping) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// JSONInputSchemaMappingProperties this can be used to map properties of a source schema (or default values,
-// for certain supported properties) to properties of the EventGridEvent schema.
+// JSONInputSchemaMappingProperties this can be used to map properties of a source schema (or default
+// values, for certain supported properties) to properties of the EventGridEvent schema.
 type JSONInputSchemaMappingProperties struct {
 	// ID - The mapping information for the Id property of the Event Grid Event.
 	ID *JSONField `json:"id,omitempty"`
@@ -3509,8 +3513,8 @@ func (whesd *WebHookEventSubscriptionDestination) UnmarshalJSON(body []byte) err
 	return nil
 }
 
-// WebHookEventSubscriptionDestinationProperties information about the webhook destination properties for an
-// event subscription.
+// WebHookEventSubscriptionDestinationProperties information about the webhook destination properties for
+// an event subscription.
 type WebHookEventSubscriptionDestinationProperties struct {
 	// EndpointURL - The URL that represents the endpoint of the destination of an event subscription.
 	EndpointURL *string `json:"endpointUrl,omitempty"`

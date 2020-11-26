@@ -31,8 +31,8 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric"
 
-// ApplicationHealthPolicy defines a health policy used to evaluate the health of an application or one of its
-// children entities.
+// ApplicationHealthPolicy defines a health policy used to evaluate the health of an application or one of
+// its children entities.
 type ApplicationHealthPolicy struct {
 	// ConsiderWarningAsError - Indicates whether warnings are treated with the same severity as errors.
 	ConsiderWarningAsError *bool `json:"ConsiderWarningAsError,omitempty"`
@@ -45,8 +45,8 @@ type ApplicationHealthPolicy struct {
 	ServiceTypeHealthPolicyMap              *[]ServiceTypeHealthPolicyMapItem `json:"ServiceTypeHealthPolicyMap,omitempty"`
 }
 
-// ApplicationMetricDescription describes capacity information for a custom resource balancing metric. This can
-// be used to limit the total consumption of this metric by the services of this application.
+// ApplicationMetricDescription describes capacity information for a custom resource balancing metric. This
+// can be used to limit the total consumption of this metric by the services of this application.
 type ApplicationMetricDescription struct {
 	// Name - The name of the metric.
 	Name *string `json:"Name,omitempty"`
@@ -68,8 +68,8 @@ type ApplicationMetricDescription struct {
 	TotalApplicationCapacity *int64 `json:"TotalApplicationCapacity,omitempty"`
 }
 
-// ApplicationParameter describes an application parameter override to be applied when creating or upgrading an
-// application.
+// ApplicationParameter describes an application parameter override to be applied when creating or
+// upgrading an application.
 type ApplicationParameter struct {
 	// Key - The name of the parameter.
 	Key *string `json:"Key,omitempty"`
@@ -656,7 +656,8 @@ func (ccvr *ClusterCodeVersionsResult) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ClusterHealthPolicy defines a health policy used to evaluate the health of the cluster or of a cluster node.
+// ClusterHealthPolicy defines a health policy used to evaluate the health of the cluster or of a cluster
+// node.
 type ClusterHealthPolicy struct {
 	// MaxPercentUnhealthyNodes - The maximum allowed percentage of unhealthy nodes before reporting an error. For example, to allow 10% of nodes to be unhealthy, this value would be 10.
 	MaxPercentUnhealthyNodes *int32 `json:"maxPercentUnhealthyNodes,omitempty"`
@@ -773,8 +774,8 @@ func (cp ClusterProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ClusterPropertiesUpdateParameters describes the cluster resource properties that can be updated during PATCH
-// operation.
+// ClusterPropertiesUpdateParameters describes the cluster resource properties that can be updated during
+// PATCH operation.
 type ClusterPropertiesUpdateParameters struct {
 	// ReliabilityLevel - The reliability level sets the replica set size of system services. Learn about [ReliabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity). Possible values include: 'ReliabilityLevel1Bronze', 'ReliabilityLevel1Silver', 'ReliabilityLevel1Gold'
 	ReliabilityLevel ReliabilityLevel1 `json:"reliabilityLevel,omitempty"`
@@ -800,7 +801,8 @@ type ClusterPropertiesUpdateParameters struct {
 	AddOnFeatures *[]string `json:"addOnFeatures,omitempty"`
 }
 
-// ClustersCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ClustersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ClustersCreateFuture struct {
 	azure.Future
 }
@@ -828,7 +830,8 @@ func (future *ClustersCreateFuture) Result(client ClustersClient) (c Cluster, er
 	return
 }
 
-// ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ClustersUpdateFuture struct {
 	azure.Future
 }
@@ -950,7 +953,8 @@ type ClusterVersionDetails struct {
 	Environment Environment `json:"environment,omitempty"`
 }
 
-// DiagnosticsStorageAccountConfig the storage account information for storing Service Fabric diagnostic logs.
+// DiagnosticsStorageAccountConfig the storage account information for storing Service Fabric diagnostic
+// logs.
 type DiagnosticsStorageAccountConfig struct {
 	// StorageAccountName - The Azure storage account name.
 	StorageAccountName *string `json:"storageAccountName,omitempty"`
@@ -1031,8 +1035,8 @@ func (npsd NamedPartitionSchemeDescription) AsBasicPartitionSchemeDescription() 
 	return &npsd, true
 }
 
-// NodeTypeDescription describes a node type in the cluster, each node type represents sub set of nodes in the
-// cluster.
+// NodeTypeDescription describes a node type in the cluster, each node type represents sub set of nodes in
+// the cluster.
 type NodeTypeDescription struct {
 	// Name - The name of the node type.
 	Name *string `json:"name,omitempty"`
@@ -1258,8 +1262,11 @@ func (page OperationListResultPage) Values() []OperationResult {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationResult available operation list result
@@ -1963,8 +1970,8 @@ type ServiceTypeDeltaHealthPolicy struct {
 	MaxPercentDeltaUnhealthyServices *int32 `json:"maxPercentDeltaUnhealthyServices,omitempty"`
 }
 
-// ServiceTypeHealthPolicy represents the health policy used to evaluate the health of services belonging to a
-// service type.
+// ServiceTypeHealthPolicy represents the health policy used to evaluate the health of services belonging
+// to a service type.
 type ServiceTypeHealthPolicy struct {
 	// MaxPercentUnhealthyPartitionsPerService - The maximum allowed percentage of unhealthy partitions per service. Allowed values are Byte values from zero to 100
 	// The percentage represents the maximum tolerated percentage of partitions that can be unhealthy before the service is considered in error.

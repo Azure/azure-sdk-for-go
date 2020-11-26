@@ -1,0 +1,126 @@
+
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/b97299c968df5f99b724bd1231fd2161731d3b8f
+
+Code generator C:\Users\dapzhang\Documents\workspace\autorest.go
+
+## Breaking Changes
+
+- Function `NewCertificateIssuerListResultPage` signature has been changed from `(func(context.Context, CertificateIssuerListResult) (CertificateIssuerListResult, error))` to `(CertificateIssuerListResult,func(context.Context, CertificateIssuerListResult) (CertificateIssuerListResult, error))`
+- Function `NewDeletedStorageListResultPage` signature has been changed from `(func(context.Context, DeletedStorageListResult) (DeletedStorageListResult, error))` to `(DeletedStorageListResult,func(context.Context, DeletedStorageListResult) (DeletedStorageListResult, error))`
+- Function `NewRoleDefinitionListResultPage` signature has been changed from `(func(context.Context, RoleDefinitionListResult) (RoleDefinitionListResult, error))` to `(RoleDefinitionListResult,func(context.Context, RoleDefinitionListResult) (RoleDefinitionListResult, error))`
+- Function `NewStorageListResultPage` signature has been changed from `(func(context.Context, StorageListResult) (StorageListResult, error))` to `(StorageListResult,func(context.Context, StorageListResult) (StorageListResult, error))`
+- Function `NewDeletedSecretListResultPage` signature has been changed from `(func(context.Context, DeletedSecretListResult) (DeletedSecretListResult, error))` to `(DeletedSecretListResult,func(context.Context, DeletedSecretListResult) (DeletedSecretListResult, error))`
+- Function `BaseClient.FullBackupSender` return values have been changed from `(*http.Response,error)` to `(FullBackupFuture,error)`
+- Function `NewDeletedSasDefinitionListResultPage` signature has been changed from `(func(context.Context, DeletedSasDefinitionListResult) (DeletedSasDefinitionListResult, error))` to `(DeletedSasDefinitionListResult,func(context.Context, DeletedSasDefinitionListResult) (DeletedSasDefinitionListResult, error))`
+- Function `NewSecretListResultPage` signature has been changed from `(func(context.Context, SecretListResult) (SecretListResult, error))` to `(SecretListResult,func(context.Context, SecretListResult) (SecretListResult, error))`
+- Function `NewSasDefinitionListResultPage` signature has been changed from `(func(context.Context, SasDefinitionListResult) (SasDefinitionListResult, error))` to `(SasDefinitionListResult,func(context.Context, SasDefinitionListResult) (SasDefinitionListResult, error))`
+- Function `NewCertificateListResultPage` signature has been changed from `(func(context.Context, CertificateListResult) (CertificateListResult, error))` to `(CertificateListResult,func(context.Context, CertificateListResult) (CertificateListResult, error))`
+- Function `NewDeletedKeyListResultPage` signature has been changed from `(func(context.Context, DeletedKeyListResult) (DeletedKeyListResult, error))` to `(DeletedKeyListResult,func(context.Context, DeletedKeyListResult) (DeletedKeyListResult, error))`
+- Function `NewRoleAssignmentListResultPage` signature has been changed from `(func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error))` to `(RoleAssignmentListResult,func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error))`
+- Function `NewKeyListResultPage` signature has been changed from `(func(context.Context, KeyListResult) (KeyListResult, error))` to `(KeyListResult,func(context.Context, KeyListResult) (KeyListResult, error))`
+- Function `NewDeletedCertificateListResultPage` signature has been changed from `(func(context.Context, DeletedCertificateListResult) (DeletedCertificateListResult, error))` to `(DeletedCertificateListResult,func(context.Context, DeletedCertificateListResult) (DeletedCertificateListResult, error))`
+- Function `BaseClient.FullBackup` return values have been changed from `(FullBackupOperation,error)` to `(FullBackupFuture,error)`
+- Function `BaseClient.FullRestoreOperationMethodResponder` has been removed
+- Function `BaseClient.FullRestoreOperationMethod` has been removed
+- Function `BaseClient.FullRestoreOperationMethodSender` has been removed
+- Function `BaseClient.FullRestoreOperationMethodPreparer` has been removed
+- Function `BaseClient.FullRestoreStatusResponder` has been removed
+- Function `BaseClient.FullRestoreStatus` has been removed
+- Function `BaseClient.FullRestoreStatusSender` has been removed
+- Function `BaseClient.FullRestoreStatusPreparer` has been removed
+- Struct `FullRestoreOperation` has been removed
+
+## New Content
+
+- Const `A256CBCPAD` is added
+- Const `Failed` is added
+- Const `InProgress` is added
+- Const `Success` is added
+- Const `A128CBCPAD` is added
+- Const `A256CBC` is added
+- Const `Export` is added
+- Const `A128CBC` is added
+- Const `A192CBC` is added
+- Const `A192CBCPAD` is added
+- Function `HSMSecurityDomainClient.TransferKeyMethod(context.Context,string) (TransferKey,error)` is added
+- Function `BaseClient.SelectiveKeyRestoreOperationMethodPreparer(context.Context,string,string,*SelectiveKeyRestoreOperationParameters) (*http.Request,error)` is added
+- Function `CertificateOperation.MarshalJSON() ([]byte,error)` is added
+- Function `HSMSecurityDomainClient.UploadPending(context.Context,string) (SecurityDomainOperationStatus,error)` is added
+- Function `SecretAttributes.MarshalJSON() ([]byte,error)` is added
+- Function `*FullRestoreOperationFuture.Result(BaseClient) (RestoreOperation,error)` is added
+- Function `CertificateAttributes.MarshalJSON() ([]byte,error)` is added
+- Function `IssuerAttributes.MarshalJSON() ([]byte,error)` is added
+- Function `PossibleOperationStatusValues() []OperationStatus` is added
+- Function `*FullBackupFuture.Result(BaseClient) (FullBackupOperation,error)` is added
+- Function `HSMSecurityDomainClient.UploadSender(*http.Request) (HSMSecurityDomainUploadFuture,error)` is added
+- Function `HSMSecurityDomainClient.UploadResponder(*http.Response) (SecurityDomainOperationStatus,error)` is added
+- Function `HSMSecurityDomainClient.Upload(context.Context,string,SecurityDomainUploadObject) (HSMSecurityDomainUploadFuture,error)` is added
+- Function `HSMSecurityDomainClient.DownloadPreparer(context.Context,string,CertificateInfoObject) (*http.Request,error)` is added
+- Function `BaseClient.ExportKeyResponder(*http.Response) (KeyBundle,error)` is added
+- Function `HSMSecurityDomainClient.UploadPendingResponder(*http.Response) (SecurityDomainOperationStatus,error)` is added
+- Function `HSMSecurityDomainClient.TransferKeyMethodPreparer(context.Context,string) (*http.Request,error)` is added
+- Function `KeyAttributes.MarshalJSON() ([]byte,error)` is added
+- Function `IssuerBundle.MarshalJSON() ([]byte,error)` is added
+- Function `*SelectiveKeyRestoreOperationMethodFuture.Result(BaseClient) (SelectiveKeyRestoreOperation,error)` is added
+- Function `BaseClient.ExportKeyPreparer(context.Context,string,string,string,KeyExportParameters) (*http.Request,error)` is added
+- Function `HSMSecurityDomainClient.UploadPendingSender(*http.Request) (*http.Response,error)` is added
+- Function `CertificatePolicy.MarshalJSON() ([]byte,error)` is added
+- Function `Contacts.MarshalJSON() ([]byte,error)` is added
+- Function `BaseClient.ExportKey(context.Context,string,string,string,KeyExportParameters) (KeyBundle,error)` is added
+- Function `HSMSecurityDomainClient.DownloadSender(*http.Request) (*http.Response,error)` is added
+- Function `HSMSecurityDomainClient.TransferKeyMethodResponder(*http.Response) (TransferKey,error)` is added
+- Function `HSMSecurityDomainClient.Download(context.Context,string,CertificateInfoObject) (SecurityDomainObject,error)` is added
+- Function `BaseClient.FullRestoreOperation(context.Context,string,*RestoreOperationParameters) (FullRestoreOperationFuture,error)` is added
+- Function `BaseClient.FullRestoreOperationPreparer(context.Context,string,*RestoreOperationParameters) (*http.Request,error)` is added
+- Function `HSMSecurityDomainClient.UploadPreparer(context.Context,string,SecurityDomainUploadObject) (*http.Request,error)` is added
+- Function `BaseClient.RestoreStatusPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `BaseClient.SelectiveKeyRestoreOperationMethodSender(*http.Request) (SelectiveKeyRestoreOperationMethodFuture,error)` is added
+- Function `NewHSMSecurityDomainClient() HSMSecurityDomainClient` is added
+- Function `BaseClient.SelectiveKeyRestoreOperationMethod(context.Context,string,string,*SelectiveKeyRestoreOperationParameters) (SelectiveKeyRestoreOperationMethodFuture,error)` is added
+- Function `BaseClient.RestoreStatusSender(*http.Request) (*http.Response,error)` is added
+- Function `RoleAssignment.MarshalJSON() ([]byte,error)` is added
+- Function `BaseClient.SelectiveKeyRestoreOperationMethodResponder(*http.Response) (SelectiveKeyRestoreOperation,error)` is added
+- Function `BaseClient.RestoreStatus(context.Context,string,string) (RestoreOperation,error)` is added
+- Function `BaseClient.ExportKeySender(*http.Request) (*http.Response,error)` is added
+- Function `BaseClient.FullRestoreOperationResponder(*http.Response) (RestoreOperation,error)` is added
+- Function `HSMSecurityDomainClient.UploadPendingPreparer(context.Context,string) (*http.Request,error)` is added
+- Function `BaseClient.FullRestoreOperationSender(*http.Request) (FullRestoreOperationFuture,error)` is added
+- Function `BaseClient.RestoreStatusResponder(*http.Response) (RestoreOperation,error)` is added
+- Function `HSMSecurityDomainClient.TransferKeyMethodSender(*http.Request) (*http.Response,error)` is added
+- Function `StorageAccountAttributes.MarshalJSON() ([]byte,error)` is added
+- Function `*HSMSecurityDomainUploadFuture.Result(HSMSecurityDomainClient) (SecurityDomainOperationStatus,error)` is added
+- Function `Attributes.MarshalJSON() ([]byte,error)` is added
+- Function `HSMSecurityDomainClient.DownloadResponder(*http.Response) (SecurityDomainObject,error)` is added
+- Function `SasDefinitionAttributes.MarshalJSON() ([]byte,error)` is added
+- Struct `CertificateInfoObject` is added
+- Struct `EncDataSet` is added
+- Struct `EncDataSetItem` is added
+- Struct `FullBackupFuture` is added
+- Struct `FullRestoreOperationFuture` is added
+- Struct `HSMSecurityDomainClient` is added
+- Struct `HSMSecurityDomainUploadFuture` is added
+- Struct `Key` is added
+- Struct `KeyExportParameters` is added
+- Struct `KeyReleasePolicy` is added
+- Struct `RestoreOperation` is added
+- Struct `SecurityDomainCertificateItem` is added
+- Struct `SecurityDomainJSONWebKey` is added
+- Struct `SecurityDomainObject` is added
+- Struct `SecurityDomainObjectData` is added
+- Struct `SecurityDomainObjectDataSharedKeys` is added
+- Struct `SecurityDomainOperationStatus` is added
+- Struct `SecurityDomainUploadObject` is added
+- Struct `SecurityDomainUploadObjectValue` is added
+- Struct `SecurityDomainUploadObjectValueWrappedKey` is added
+- Struct `SelectiveKeyRestoreOperation` is added
+- Struct `SelectiveKeyRestoreOperationMethodFuture` is added
+- Struct `SelectiveKeyRestoreOperationParameters` is added
+- Struct `TransferKey` is added
+- Field `ReleasePolicy` is added to struct `DeletedKeyBundle`
+- Field `ReleasePolicy` is added to struct `KeyCreateParameters`
+- Field `PublicExponent` is added to struct `KeyCreateParameters`
+- Field `ReleasePolicy` is added to struct `KeyImportParameters`
+- Field `ReleasePolicy` is added to struct `KeyUpdateParameters`
+- Field `Exportable` is added to struct `KeyAttributes`
+- Field `ReleasePolicy` is added to struct `KeyBundle`
+

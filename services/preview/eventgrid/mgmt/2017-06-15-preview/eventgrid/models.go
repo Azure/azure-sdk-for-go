@@ -224,8 +224,8 @@ func (esp EventSubscriptionProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// EventSubscriptionsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EventSubscriptionsCreateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type EventSubscriptionsCreateFuture struct {
 	azure.Future
 }
@@ -253,8 +253,8 @@ func (future *EventSubscriptionsCreateFuture) Result(client EventSubscriptionsCl
 	return
 }
 
-// EventSubscriptionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EventSubscriptionsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type EventSubscriptionsDeleteFuture struct {
 	azure.Future
 }
@@ -283,8 +283,8 @@ type EventSubscriptionsListResult struct {
 	Value *[]EventSubscription `json:"value,omitempty"`
 }
 
-// EventSubscriptionsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EventSubscriptionsUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type EventSubscriptionsUpdateFuture struct {
 	azure.Future
 }

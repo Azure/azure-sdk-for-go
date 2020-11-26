@@ -345,8 +345,8 @@ func (cjp CreateJobProperties) AsBasicCreateJobProperties() (BasicCreateJobPrope
 	return &cjp, true
 }
 
-// CreateScopeJobParameters the parameters used to submit a new Data Lake Analytics Scope job. (Only for use
-// internally with Scope job type.)
+// CreateScopeJobParameters the parameters used to submit a new Data Lake Analytics Scope job. (Only for
+// use internally with Scope job type.)
 type CreateScopeJobParameters struct {
 	// Tags - The key-value pairs used to add additional metadata to the job information.
 	Tags map[string]*string `json:"tags"`
@@ -494,8 +494,8 @@ func (csjp *CreateScopeJobParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// CreateScopeJobProperties scope job properties used when submitting Scope jobs. (Only for use internally with
-// Scope job type.)
+// CreateScopeJobProperties scope job properties used when submitting Scope jobs. (Only for use internally
+// with Scope job type.)
 type CreateScopeJobProperties struct {
 	// Resources - The list of resources that are required by the job.
 	Resources *[]ScopeJobResource `json:"resources,omitempty"`
@@ -872,12 +872,15 @@ func (page InfoListResultPage) Values() []InformationBasic {
 }
 
 // Creates a new instance of the InfoListResultPage type.
-func NewInfoListResultPage(getNextPage func(context.Context, InfoListResult) (InfoListResult, error)) InfoListResultPage {
-	return InfoListResultPage{fn: getNextPage}
+func NewInfoListResultPage(cur InfoListResult, getNextPage func(context.Context, InfoListResult) (InfoListResult, error)) InfoListResultPage {
+	return InfoListResultPage{
+		fn:  getNextPage,
+		ilr: cur,
+	}
 }
 
-// Information the extended Data Lake Analytics job information properties returned when retrieving a specific
-// job.
+// Information the extended Data Lake Analytics job information properties returned when retrieving a
+// specific job.
 type Information struct {
 	autorest.Response `json:"-"`
 	// ErrorMessage - READ-ONLY; The error message details for the job, if the job failed.
@@ -1237,8 +1240,8 @@ type InnerError struct {
 	InnerError *InnerError `json:"innerError,omitempty"`
 }
 
-// PipelineInformation job Pipeline Information, showing the relationship of jobs and recurrences of those jobs
-// in a pipeline.
+// PipelineInformation job Pipeline Information, showing the relationship of jobs and recurrences of those
+// jobs in a pipeline.
 type PipelineInformation struct {
 	autorest.Response `json:"-"`
 	// PipelineID - READ-ONLY; The job relationship pipeline identifier (a GUID).
@@ -1276,7 +1279,8 @@ type PipelineInformationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// PipelineInformationListResultIterator provides access to a complete listing of PipelineInformation values.
+// PipelineInformationListResultIterator provides access to a complete listing of PipelineInformation
+// values.
 type PipelineInformationListResultIterator struct {
 	i    int
 	page PipelineInformationListResultPage
@@ -1419,8 +1423,11 @@ func (page PipelineInformationListResultPage) Values() []PipelineInformation {
 }
 
 // Creates a new instance of the PipelineInformationListResultPage type.
-func NewPipelineInformationListResultPage(getNextPage func(context.Context, PipelineInformationListResult) (PipelineInformationListResult, error)) PipelineInformationListResultPage {
-	return PipelineInformationListResultPage{fn: getNextPage}
+func NewPipelineInformationListResultPage(cur PipelineInformationListResult, getNextPage func(context.Context, PipelineInformationListResult) (PipelineInformationListResult, error)) PipelineInformationListResultPage {
+	return PipelineInformationListResultPage{
+		fn:   getNextPage,
+		pilr: cur,
+	}
 }
 
 // PipelineRunInformation run info for a specific job pipeline.
@@ -1711,12 +1718,15 @@ func (page RecurrenceInformationListResultPage) Values() []RecurrenceInformation
 }
 
 // Creates a new instance of the RecurrenceInformationListResultPage type.
-func NewRecurrenceInformationListResultPage(getNextPage func(context.Context, RecurrenceInformationListResult) (RecurrenceInformationListResult, error)) RecurrenceInformationListResultPage {
-	return RecurrenceInformationListResultPage{fn: getNextPage}
+func NewRecurrenceInformationListResultPage(cur RecurrenceInformationListResult, getNextPage func(context.Context, RecurrenceInformationListResult) (RecurrenceInformationListResult, error)) RecurrenceInformationListResultPage {
+	return RecurrenceInformationListResultPage{
+		fn:   getNextPage,
+		rilr: cur,
+	}
 }
 
-// RelationshipProperties job relationship information properties including pipeline information, correlation
-// information, etc.
+// RelationshipProperties job relationship information properties including pipeline information,
+// correlation information, etc.
 type RelationshipProperties struct {
 	// PipelineID - The job relationship pipeline identifier (a GUID).
 	PipelineID *uuid.UUID `json:"pipelineId,omitempty"`
@@ -1993,8 +2003,8 @@ func (future *UpdateFuture) Result(client Client) (i Information, err error) {
 	return
 }
 
-// UpdateJobParameters the parameters that can be used to update existing Data Lake Analytics job information
-// properties. (Only for use internally with Scope job type.)
+// UpdateJobParameters the parameters that can be used to update existing Data Lake Analytics job
+// information properties. (Only for use internally with Scope job type.)
 type UpdateJobParameters struct {
 	// DegreeOfParallelism - The degree of parallelism used for this job.
 	DegreeOfParallelism *int32 `json:"degreeOfParallelism,omitempty"`

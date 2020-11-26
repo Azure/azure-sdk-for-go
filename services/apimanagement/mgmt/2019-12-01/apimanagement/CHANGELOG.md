@@ -1,0 +1,131 @@
+
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/b97299c968df5f99b724bd1231fd2161731d3b8f
+
+Code generator C:\Users\dapzhang\Documents\workspace\autorest.go
+
+## Breaking Changes
+
+- Function `NewOpenIDConnectProviderCollectionPage` signature has been changed from `(func(context.Context, OpenIDConnectProviderCollection) (OpenIDConnectProviderCollection, error))` to `(OpenIDConnectProviderCollection,func(context.Context, OpenIDConnectProviderCollection) (OpenIDConnectProviderCollection, error))`
+- Function `NewAPICollectionPage` signature has been changed from `(func(context.Context, APICollection) (APICollection, error))` to `(APICollection,func(context.Context, APICollection) (APICollection, error))`
+- Function `NewAuthorizationServerCollectionPage` signature has been changed from `(func(context.Context, AuthorizationServerCollection) (AuthorizationServerCollection, error))` to `(AuthorizationServerCollection,func(context.Context, AuthorizationServerCollection) (AuthorizationServerCollection, error))`
+- Function `NewNotificationCollectionPage` signature has been changed from `(func(context.Context, NotificationCollection) (NotificationCollection, error))` to `(NotificationCollection,func(context.Context, NotificationCollection) (NotificationCollection, error))`
+- Function `NewEmailTemplateCollectionPage` signature has been changed from `(func(context.Context, EmailTemplateCollection) (EmailTemplateCollection, error))` to `(EmailTemplateCollection,func(context.Context, EmailTemplateCollection) (EmailTemplateCollection, error))`
+- Function `NewAPIReleaseCollectionPage` signature has been changed from `(func(context.Context, APIReleaseCollection) (APIReleaseCollection, error))` to `(APIReleaseCollection,func(context.Context, APIReleaseCollection) (APIReleaseCollection, error))`
+- Function `NewGroupCollectionPage` signature has been changed from `(func(context.Context, GroupCollection) (GroupCollection, error))` to `(GroupCollection,func(context.Context, GroupCollection) (GroupCollection, error))`
+- Function `NewIdentityProviderListPage` signature has been changed from `(func(context.Context, IdentityProviderList) (IdentityProviderList, error))` to `(IdentityProviderList,func(context.Context, IdentityProviderList) (IdentityProviderList, error))`
+- Function `NewCacheCollectionPage` signature has been changed from `(func(context.Context, CacheCollection) (CacheCollection, error))` to `(CacheCollection,func(context.Context, CacheCollection) (CacheCollection, error))`
+- Function `NewProductCollectionPage` signature has been changed from `(func(context.Context, ProductCollection) (ProductCollection, error))` to `(ProductCollection,func(context.Context, ProductCollection) (ProductCollection, error))`
+- Function `NewGatewayHostnameConfigurationCollectionPage` signature has been changed from `(func(context.Context, GatewayHostnameConfigurationCollection) (GatewayHostnameConfigurationCollection, error))` to `(GatewayHostnameConfigurationCollection,func(context.Context, GatewayHostnameConfigurationCollection) (GatewayHostnameConfigurationCollection, error))`
+- Function `NewReportCollectionPage` signature has been changed from `(func(context.Context, ReportCollection) (ReportCollection, error))` to `(ReportCollection,func(context.Context, ReportCollection) (ReportCollection, error))`
+- Function `NewTagResourceCollectionPage` signature has been changed from `(func(context.Context, TagResourceCollection) (TagResourceCollection, error))` to `(TagResourceCollection,func(context.Context, TagResourceCollection) (TagResourceCollection, error))`
+- Function `NewServiceListResultPage` signature has been changed from `(func(context.Context, ServiceListResult) (ServiceListResult, error))` to `(ServiceListResult,func(context.Context, ServiceListResult) (ServiceListResult, error))`
+- Function `NewCertificateCollectionPage` signature has been changed from `(func(context.Context, CertificateCollection) (CertificateCollection, error))` to `(CertificateCollection,func(context.Context, CertificateCollection) (CertificateCollection, error))`
+- Function `NewNamedValueCollectionPage` signature has been changed from `(func(context.Context, NamedValueCollection) (NamedValueCollection, error))` to `(NamedValueCollection,func(context.Context, NamedValueCollection) (NamedValueCollection, error))`
+- Function `NewSchemaCollectionPage` signature has been changed from `(func(context.Context, SchemaCollection) (SchemaCollection, error))` to `(SchemaCollection,func(context.Context, SchemaCollection) (SchemaCollection, error))`
+- Function `NewBackendCollectionPage` signature has been changed from `(func(context.Context, BackendCollection) (BackendCollection, error))` to `(BackendCollection,func(context.Context, BackendCollection) (BackendCollection, error))`
+- Function `NewRegionListResultPage` signature has been changed from `(func(context.Context, RegionListResult) (RegionListResult, error))` to `(RegionListResult,func(context.Context, RegionListResult) (RegionListResult, error))`
+- Function `NewTagCollectionPage` signature has been changed from `(func(context.Context, TagCollection) (TagCollection, error))` to `(TagCollection,func(context.Context, TagCollection) (TagCollection, error))`
+- Function `NewAPIRevisionCollectionPage` signature has been changed from `(func(context.Context, APIRevisionCollection) (APIRevisionCollection, error))` to `(APIRevisionCollection,func(context.Context, APIRevisionCollection) (APIRevisionCollection, error))`
+- Function `NewIssueAttachmentCollectionPage` signature has been changed from `(func(context.Context, IssueAttachmentCollection) (IssueAttachmentCollection, error))` to `(IssueAttachmentCollection,func(context.Context, IssueAttachmentCollection) (IssueAttachmentCollection, error))`
+- Function `NewUserCollectionPage` signature has been changed from `(func(context.Context, UserCollection) (UserCollection, error))` to `(UserCollection,func(context.Context, UserCollection) (UserCollection, error))`
+- Function `NewSubscriptionCollectionPage` signature has been changed from `(func(context.Context, SubscriptionCollection) (SubscriptionCollection, error))` to `(SubscriptionCollection,func(context.Context, SubscriptionCollection) (SubscriptionCollection, error))`
+- Function `NewGatewayCollectionPage` signature has been changed from `(func(context.Context, GatewayCollection) (GatewayCollection, error))` to `(GatewayCollection,func(context.Context, GatewayCollection) (GatewayCollection, error))`
+- Function `NewResourceSkuResultsPage` signature has been changed from `(func(context.Context, ResourceSkuResults) (ResourceSkuResults, error))` to `(ResourceSkuResults,func(context.Context, ResourceSkuResults) (ResourceSkuResults, error))`
+- Function `NewDiagnosticCollectionPage` signature has been changed from `(func(context.Context, DiagnosticCollection) (DiagnosticCollection, error))` to `(DiagnosticCollection,func(context.Context, DiagnosticCollection) (DiagnosticCollection, error))`
+- Function `NewIssueCollectionPage` signature has been changed from `(func(context.Context, IssueCollection) (IssueCollection, error))` to `(IssueCollection,func(context.Context, IssueCollection) (IssueCollection, error))`
+- Function `NewOperationCollectionPage` signature has been changed from `(func(context.Context, OperationCollection) (OperationCollection, error))` to `(OperationCollection,func(context.Context, OperationCollection) (OperationCollection, error))`
+- Function `NewTagDescriptionCollectionPage` signature has been changed from `(func(context.Context, TagDescriptionCollection) (TagDescriptionCollection, error))` to `(TagDescriptionCollection,func(context.Context, TagDescriptionCollection) (TagDescriptionCollection, error))`
+- Function `NewLoggerCollectionPage` signature has been changed from `(func(context.Context, LoggerCollection) (LoggerCollection, error))` to `(LoggerCollection,func(context.Context, LoggerCollection) (LoggerCollection, error))`
+- Function `NewUserIdentityCollectionPage` signature has been changed from `(func(context.Context, UserIdentityCollection) (UserIdentityCollection, error))` to `(UserIdentityCollection,func(context.Context, UserIdentityCollection) (UserIdentityCollection, error))`
+- Function `NewOperationListResultPage` signature has been changed from `(func(context.Context, OperationListResult) (OperationListResult, error))` to `(OperationListResult,func(context.Context, OperationListResult) (OperationListResult, error))`
+- Function `NewAPIVersionSetCollectionPage` signature has been changed from `(func(context.Context, APIVersionSetCollection) (APIVersionSetCollection, error))` to `(APIVersionSetCollection,func(context.Context, APIVersionSetCollection) (APIVersionSetCollection, error))`
+- Function `NewIssueCommentCollectionPage` signature has been changed from `(func(context.Context, IssueCommentCollection) (IssueCommentCollection, error))` to `(IssueCommentCollection,func(context.Context, IssueCommentCollection) (IssueCommentCollection, error))`
+
+## New Content
+
+- Function `ContentItemClient.ListByService(context.Context,string,string,string) (ContentItemCollectionPage,error)` is added
+- Function `ContentTypeClient.DeletePreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `NewContentTypesClient(string) ContentTypesClient` is added
+- Function `*ContentTypeCollectionPage.Next() error` is added
+- Function `ContentTypesClient.Get(context.Context,string,string,string) (ContentTypeContract,error)` is added
+- Function `ContentItemClient.Delete(context.Context,string,string,string,string) (autorest.Response,error)` is added
+- Function `ContentTypeClient.ListByServicePreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `ContentTypeCollectionPage.NotDone() bool` is added
+- Function `ContentItemClient.DeleteSender(*http.Request) (*http.Response,error)` is added
+- Function `ContentItemCollectionPage.Response() ContentItemCollection` is added
+- Function `ContentItemClient.GetEntityTagPreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `ContentTypeClient.CreateOrUpdatePreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `NewContentTypeClientWithBaseURI(string,string) ContentTypeClient` is added
+- Function `ContentItemClient.ListByServicePreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `ContentItemClient.ListByServiceResponder(*http.Response) (ContentItemCollection,error)` is added
+- Function `ContentItemCollectionPage.NotDone() bool` is added
+- Function `*ContentItemCollectionPage.Next() error` is added
+- Function `ContentItemClient.GetResponder(*http.Response) (ContentItemContract,error)` is added
+- Function `NewContentItemClient(string) ContentItemClient` is added
+- Function `ContentItemClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `ContentTypeClient.CreateOrUpdate(context.Context,string,string,string) (ContentTypeContract,error)` is added
+- Function `ContentTypesClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `ContentTypeClient.ListByServiceSender(*http.Request) (*http.Response,error)` is added
+- Function `ContentTypeCollectionIterator.Value() ContentTypeContract` is added
+- Function `NewContentItemClientWithBaseURI(string,string) ContentItemClient` is added
+- Function `ContentItemClient.GetEntityTag(context.Context,string,string,string,string) (autorest.Response,error)` is added
+- Function `ContentTypeClient.GetEntityTagPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `ContentTypeClient.DeleteResponder(*http.Response) (autorest.Response,error)` is added
+- Function `ContentItemCollectionIterator.NotDone() bool` is added
+- Function `NewContentTypeCollectionIterator(ContentTypeCollectionPage) ContentTypeCollectionIterator` is added
+- Function `ContentItemClient.CreateOrUpdatePreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `ContentItemClient.CreateOrUpdate(context.Context,string,string,string,string) (ContentItemContract,error)` is added
+- Function `ContentTypeCollectionIterator.Response() ContentTypeCollection` is added
+- Function `ContentTypeClient.GetEntityTag(context.Context,string,string,string) (autorest.Response,error)` is added
+- Function `*ContentTypeCollectionIterator.Next() error` is added
+- Function `ContentTypeClient.CreateOrUpdateResponder(*http.Response) (ContentTypeContract,error)` is added
+- Function `ContentItemClient.DeleteResponder(*http.Response) (autorest.Response,error)` is added
+- Function `*ContentItemCollectionIterator.NextWithContext(context.Context) error` is added
+- Function `ContentItemCollection.IsEmpty() bool` is added
+- Function `ContentItemClient.GetEntityTagResponder(*http.Response) (autorest.Response,error)` is added
+- Function `ContentItemClient.ListByServiceComplete(context.Context,string,string,string) (ContentItemCollectionIterator,error)` is added
+- Function `*ContentItemCollectionIterator.Next() error` is added
+- Function `NewContentTypeCollectionPage(ContentTypeCollection,func(context.Context, ContentTypeCollection) (ContentTypeCollection, error)) ContentTypeCollectionPage` is added
+- Function `ContentTypesClient.GetResponder(*http.Response) (ContentTypeContract,error)` is added
+- Function `ContentItemClient.CreateOrUpdateResponder(*http.Response) (ContentItemContract,error)` is added
+- Function `ContentItemClient.GetEntityTagSender(*http.Request) (*http.Response,error)` is added
+- Function `ContentItemClient.Get(context.Context,string,string,string,string) (ContentItemContract,error)` is added
+- Function `ContentTypeClient.ListByServiceResponder(*http.Response) (ContentTypeCollection,error)` is added
+- Function `ContentItemClient.DeletePreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `ContentTypeClient.DeleteSender(*http.Request) (*http.Response,error)` is added
+- Function `NewContentItemCollectionIterator(ContentItemCollectionPage) ContentItemCollectionIterator` is added
+- Function `ContentTypeClient.Delete(context.Context,string,string,string) (autorest.Response,error)` is added
+- Function `ContentTypeClient.ListByServiceComplete(context.Context,string,string) (ContentTypeCollectionIterator,error)` is added
+- Function `ContentTypeCollectionIterator.NotDone() bool` is added
+- Function `ContentTypeClient.ListByService(context.Context,string,string) (ContentTypeCollectionPage,error)` is added
+- Function `*ContentTypeCollectionIterator.NextWithContext(context.Context) error` is added
+- Function `ContentItemClient.CreateOrUpdateSender(*http.Request) (*http.Response,error)` is added
+- Function `*ContentTypeCollectionPage.NextWithContext(context.Context) error` is added
+- Function `ContentItemClient.GetPreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `ContentItemCollectionIterator.Response() ContentItemCollection` is added
+- Function `ContentItemClient.ListByServiceSender(*http.Request) (*http.Response,error)` is added
+- Function `ContentTypesClient.GetPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `NewContentTypesClientWithBaseURI(string,string) ContentTypesClient` is added
+- Function `ContentTypeClient.GetEntityTagSender(*http.Request) (*http.Response,error)` is added
+- Function `ContentTypeCollectionPage.Values() []ContentTypeContract` is added
+- Function `ContentTypeClient.GetEntityTagResponder(*http.Response) (autorest.Response,error)` is added
+- Function `ContentItemCollectionIterator.Value() ContentItemContract` is added
+- Function `ContentTypeClient.CreateOrUpdateSender(*http.Request) (*http.Response,error)` is added
+- Function `NewContentItemCollectionPage(ContentItemCollection,func(context.Context, ContentItemCollection) (ContentItemCollection, error)) ContentItemCollectionPage` is added
+- Function `*ContentItemCollectionPage.NextWithContext(context.Context) error` is added
+- Function `NewContentTypeClient(string) ContentTypeClient` is added
+- Function `ContentTypeCollectionPage.Response() ContentTypeCollection` is added
+- Function `ContentItemCollectionPage.Values() []ContentItemContract` is added
+- Function `ContentTypeCollection.IsEmpty() bool` is added
+- Struct `ContentItemClient` is added
+- Struct `ContentItemCollectionIterator` is added
+- Struct `ContentItemCollectionPage` is added
+- Struct `ContentTypeClient` is added
+- Struct `ContentTypeCollectionIterator` is added
+- Struct `ContentTypeCollectionPage` is added
+- Struct `ContentTypesClient` is added
+- Anonymous field `autorest.Response` is added to struct `ContentTypeContract`
+- Anonymous field `autorest.Response` is added to struct `ContentItemContract`
+- Anonymous field `autorest.Response` is added to struct `ContentItemCollection`
+- Anonymous field `autorest.Response` is added to struct `ContentTypeCollection`
+

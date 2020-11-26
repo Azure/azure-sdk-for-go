@@ -1,0 +1,440 @@
+
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/b97299c968df5f99b724bd1231fd2161731d3b8f
+
+Code generator C:\Users\dapzhang\Documents\workspace\autorest.go
+
+## Breaking Changes
+
+- Const `RuleTypeMqttD2CMessagesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeThresholdCustomAlertRule` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeMqttC2DMessagesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeMqttC2DRejectedMessagesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeTwinUpdatesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeHTTPD2CMessagesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeDenylistCustomAlertRule` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeProcessNotAllowed` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeUnauthorizedOperationsNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeAmqpD2CMessagesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeCustomAlertRule` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeFileUploadsNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeHTTPC2DMessagesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeConnectionToIPNotAllowed` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeAllowlistCustomAlertRule` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeLocalUserNotAllowed` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeQueuePurgesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeTimeWindowCustomAlertRule` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeAmqpC2DMessagesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeActiveConnectionsNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeFailedLocalLoginsNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `RuleTypeDirectMethodInvokesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `Standard` type has been changed from `PricingTier` to `DeviceCriticality`
+- Const `RuleTypeListCustomAlertRule` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Function `NewIotAlertListPage` signature has been changed from `(func(context.Context, IotAlertList) (IotAlertList, error))` to `(IotAlertList,func(context.Context, IotAlertList) (IotAlertList, error))`
+- Function `NewIotRecommendationListPage` signature has been changed from `(func(context.Context, IotRecommendationList) (IotRecommendationList, error))` to `(IotRecommendationList,func(context.Context, IotRecommendationList) (IotRecommendationList, error))`
+- Function `NewAssessmentListPage` signature has been changed from `(func(context.Context, AssessmentList) (AssessmentList, error))` to `(AssessmentList,func(context.Context, AssessmentList) (AssessmentList, error))`
+- Function `NewContactListPage` signature has been changed from `(func(context.Context, ContactList) (ContactList, error))` to `(ContactList,func(context.Context, ContactList) (ContactList, error))`
+- Function `NewConnectorSettingListPage` signature has been changed from `(func(context.Context, ConnectorSettingList) (ConnectorSettingList, error))` to `(ConnectorSettingList,func(context.Context, ConnectorSettingList) (ConnectorSettingList, error))`
+- Function `NewTaskListPage` signature has been changed from `(func(context.Context, TaskList) (TaskList, error))` to `(TaskList,func(context.Context, TaskList) (TaskList, error))`
+- Function `NewIoTSecurityAggregatedAlertListPage` signature has been changed from `(func(context.Context, IoTSecurityAggregatedAlertList) (IoTSecurityAggregatedAlertList, error))` to `(IoTSecurityAggregatedAlertList,func(context.Context, IoTSecurityAggregatedAlertList) (IoTSecurityAggregatedAlertList, error))`
+- Function `NewAlertListPage` signature has been changed from `(func(context.Context, AlertList) (AlertList, error))` to `(AlertList,func(context.Context, AlertList) (AlertList, error))`
+- Function `NewIoTSecurityAggregatedRecommendationListPage` signature has been changed from `(func(context.Context, IoTSecurityAggregatedRecommendationList) (IoTSecurityAggregatedRecommendationList, error))` to `(IoTSecurityAggregatedRecommendationList,func(context.Context, IoTSecurityAggregatedRecommendationList) (IoTSecurityAggregatedRecommendationList, error))`
+- Function `NewSettingsListPage` signature has been changed from `(func(context.Context, SettingsList) (SettingsList, error))` to `(SettingsList,func(context.Context, SettingsList) (SettingsList, error))`
+- Function `NewRegulatoryComplianceStandardListPage` signature has been changed from `(func(context.Context, RegulatoryComplianceStandardList) (RegulatoryComplianceStandardList, error))` to `(RegulatoryComplianceStandardList,func(context.Context, RegulatoryComplianceStandardList) (RegulatoryComplianceStandardList, error))`
+- Function `NewAllowedConnectionsListPage` signature has been changed from `(func(context.Context, AllowedConnectionsList) (AllowedConnectionsList, error))` to `(AllowedConnectionsList,func(context.Context, AllowedConnectionsList) (AllowedConnectionsList, error))`
+- Function `NewInformationProtectionPolicyListPage` signature has been changed from `(func(context.Context, InformationProtectionPolicyList) (InformationProtectionPolicyList, error))` to `(InformationProtectionPolicyList,func(context.Context, InformationProtectionPolicyList) (InformationProtectionPolicyList, error))`
+- Function `NewAssessmentMetadataListPage` signature has been changed from `(func(context.Context, AssessmentMetadataList) (AssessmentMetadataList, error))` to `(AssessmentMetadataList,func(context.Context, AssessmentMetadataList) (AssessmentMetadataList, error))`
+- Function `NewSecureScoresListPage` signature has been changed from `(func(context.Context, SecureScoresList) (SecureScoresList, error))` to `(SecureScoresList,func(context.Context, SecureScoresList) (SecureScoresList, error))`
+- Function `NewComplianceListPage` signature has been changed from `(func(context.Context, ComplianceList) (ComplianceList, error))` to `(ComplianceList,func(context.Context, ComplianceList) (ComplianceList, error))`
+- Function `NewAutomationListPage` signature has been changed from `(func(context.Context, AutomationList) (AutomationList, error))` to `(AutomationList,func(context.Context, AutomationList) (AutomationList, error))`
+- Function `NewJitNetworkAccessPoliciesListPage` signature has been changed from `(func(context.Context, JitNetworkAccessPoliciesList) (JitNetworkAccessPoliciesList, error))` to `(JitNetworkAccessPoliciesList,func(context.Context, JitNetworkAccessPoliciesList) (JitNetworkAccessPoliciesList, error))`
+- Function `NewSubAssessmentListPage` signature has been changed from `(func(context.Context, SubAssessmentList) (SubAssessmentList, error))` to `(SubAssessmentList,func(context.Context, SubAssessmentList) (SubAssessmentList, error))`
+- Function `NewDeviceSecurityGroupListPage` signature has been changed from `(func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error))` to `(DeviceSecurityGroupList,func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error))`
+- Function `NewTopologyListPage` signature has been changed from `(func(context.Context, TopologyList) (TopologyList, error))` to `(TopologyList,func(context.Context, TopologyList) (TopologyList, error))`
+- Function `NewExternalSecuritySolutionListPage` signature has been changed from `(func(context.Context, ExternalSecuritySolutionList) (ExternalSecuritySolutionList, error))` to `(ExternalSecuritySolutionList,func(context.Context, ExternalSecuritySolutionList) (ExternalSecuritySolutionList, error))`
+- Function `NewComplianceResultListPage` signature has been changed from `(func(context.Context, ComplianceResultList) (ComplianceResultList, error))` to `(ComplianceResultList,func(context.Context, ComplianceResultList) (ComplianceResultList, error))`
+- Function `NewSecureScoreControlDefinitionListPage` signature has been changed from `(func(context.Context, SecureScoreControlDefinitionList) (SecureScoreControlDefinitionList, error))` to `(SecureScoreControlDefinitionList,func(context.Context, SecureScoreControlDefinitionList) (SecureScoreControlDefinitionList, error))`
+- Function `NewDiscoveredSecuritySolutionListPage` signature has been changed from `(func(context.Context, DiscoveredSecuritySolutionList) (DiscoveredSecuritySolutionList, error))` to `(DiscoveredSecuritySolutionList,func(context.Context, DiscoveredSecuritySolutionList) (DiscoveredSecuritySolutionList, error))`
+- Function `NewIoTSecuritySolutionsListPage` signature has been changed from `(func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error))` to `(IoTSecuritySolutionsList,func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error))`
+- Function `NewRegulatoryComplianceControlListPage` signature has been changed from `(func(context.Context, RegulatoryComplianceControlList) (RegulatoryComplianceControlList, error))` to `(RegulatoryComplianceControlList,func(context.Context, RegulatoryComplianceControlList) (RegulatoryComplianceControlList, error))`
+- Function `NewSecureScoreControlListPage` signature has been changed from `(func(context.Context, SecureScoreControlList) (SecureScoreControlList, error))` to `(SecureScoreControlList,func(context.Context, SecureScoreControlList) (SecureScoreControlList, error))`
+- Function `NewAlertsSuppressionRulesListPage` signature has been changed from `(func(context.Context, AlertsSuppressionRulesList) (AlertsSuppressionRulesList, error))` to `(AlertsSuppressionRulesList,func(context.Context, AlertsSuppressionRulesList) (AlertsSuppressionRulesList, error))`
+- Function `NewAutoProvisioningSettingListPage` signature has been changed from `(func(context.Context, AutoProvisioningSettingList) (AutoProvisioningSettingList, error))` to `(AutoProvisioningSettingList,func(context.Context, AutoProvisioningSettingList) (AutoProvisioningSettingList, error))`
+- Function `NewWorkspaceSettingListPage` signature has been changed from `(func(context.Context, WorkspaceSettingList) (WorkspaceSettingList, error))` to `(WorkspaceSettingList,func(context.Context, WorkspaceSettingList) (WorkspaceSettingList, error))`
+- Function `NewRegulatoryComplianceAssessmentListPage` signature has been changed from `(func(context.Context, RegulatoryComplianceAssessmentList) (RegulatoryComplianceAssessmentList, error))` to `(RegulatoryComplianceAssessmentList,func(context.Context, RegulatoryComplianceAssessmentList) (RegulatoryComplianceAssessmentList, error))`
+- Function `NewSolutionListPage` signature has been changed from `(func(context.Context, SolutionList) (SolutionList, error))` to `(SolutionList,func(context.Context, SolutionList) (SolutionList, error))`
+- Function `NewOperationListPage` signature has been changed from `(func(context.Context, OperationList) (OperationList, error))` to `(OperationList,func(context.Context, OperationList) (OperationList, error))`
+- Function `NewAdaptiveNetworkHardeningsListPage` signature has been changed from `(func(context.Context, AdaptiveNetworkHardeningsList) (AdaptiveNetworkHardeningsList, error))` to `(AdaptiveNetworkHardeningsList,func(context.Context, AdaptiveNetworkHardeningsList) (AdaptiveNetworkHardeningsList, error))`
+- Function `NewAscLocationListPage` signature has been changed from `(func(context.Context, AscLocationList) (AscLocationList, error))` to `(AscLocationList,func(context.Context, AscLocationList) (AscLocationList, error))`
+- Type of `AmqpC2DMessagesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `AllowlistCustomAlertRule.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `TimeWindowCustomAlertRule.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `ListCustomAlertRule.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `FileUploadsNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `TwinUpdatesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `ThresholdCustomAlertRule.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `CustomAlertRule.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `LocalUserNotAllowed.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `PackageDownloads.ThreatIntelligence` has been changed from `*PackageDownloadsThreatIntelligence` to `*[]PackageDownloadInfo`
+- Type of `PackageDownloadsCentralManager.Upgrade` has been changed from `*[]PackageDownloadInfo` to `*[]UpgradePackageDownloadInfo`
+- Type of `ProcessNotAllowed.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `ConnectionToIPNotAllowed.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `FailedLocalLoginsNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `HTTPD2CMessagesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `MqttC2DMessagesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `MqttD2CMessagesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `PackageDownloadsSensor.Upgrade` has been changed from `*[]PackageDownloadInfo` to `*[]UpgradePackageDownloadInfo`
+- Type of `AmqpD2CMessagesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `HTTPC2DMessagesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `DirectMethodInvokesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `HTTPC2DRejectedMessagesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `MqttC2DRejectedMessagesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `DenylistCustomAlertRule.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `UnauthorizedOperationsNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `QueuePurgesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `ActiveConnectionsNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Type of `AmqpC2DRejectedMessagesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+- Const `Free` has been removed
+- Function `AlertsClient.ListResourceGroupLevelByRegionComplete` has been removed
+- Function `AlertsClient.UpdateResourceGroupLevelStateToActivateSender` has been removed
+- Function `AlertsClient.UpdateSubscriptionLevelStateToActivate` has been removed
+- Function `AlertsClient.UpdateResourceGroupLevelStateToDismissSender` has been removed
+- Function `AlertsClient.ListResourceGroupLevelByRegionResponder` has been removed
+- Function `AlertsClient.GetResourceGroupLevelResponder` has been removed
+- Function `AlertsClient.GetResourceGroupLevel` has been removed
+- Function `AlertsClient.GetSubscriptionLevelResponder` has been removed
+- Function `AlertsClient.UpdateSubscriptionLevelStateToActivateSender` has been removed
+- Function `AlertsClient.UpdateResourceGroupLevelStateToDismissPreparer` has been removed
+- Function `AlertsClient.UpdateResourceGroupLevelStateToActivatePreparer` has been removed
+- Function `AlertsClient.UpdateResourceGroupLevelStateToDismissResponder` has been removed
+- Function `AlertsClient.UpdateSubscriptionLevelStateToDismissSender` has been removed
+- Function `AlertsClient.GetResourceGroupLevelPreparer` has been removed
+- Function `AlertsClient.GetSubscriptionLevelSender` has been removed
+- Function `AlertsClient.UpdateResourceGroupLevelStateToDismiss` has been removed
+- Function `AlertsClient.GetSubscriptionLevel` has been removed
+- Function `AlertsClient.ListResourceGroupLevelByRegionPreparer` has been removed
+- Function `AlertsClient.UpdateSubscriptionLevelStateToDismiss` has been removed
+- Function `AlertsClient.ListSubscriptionLevelByRegionComplete` has been removed
+- Function `AlertsClient.UpdateResourceGroupLevelStateToActivateResponder` has been removed
+- Function `AlertsClient.ListSubscriptionLevelByRegionResponder` has been removed
+- Function `AlertsClient.GetSubscriptionLevelPreparer` has been removed
+- Function `AlertsClient.UpdateSubscriptionLevelStateToActivatePreparer` has been removed
+- Function `AlertsClient.UpdateSubscriptionLevelStateToActivateResponder` has been removed
+- Function `AlertsClient.ListSubscriptionLevelByRegion` has been removed
+- Function `AlertsClient.GetResourceGroupLevelSender` has been removed
+- Function `AlertsClient.ListSubscriptionLevelByRegionSender` has been removed
+- Function `AlertsClient.ListSubscriptionLevelByRegionPreparer` has been removed
+- Function `AlertsClient.UpdateSubscriptionLevelStateToDismissPreparer` has been removed
+- Function `AlertsClient.UpdateResourceGroupLevelStateToActivate` has been removed
+- Function `AlertsClient.UpdateSubscriptionLevelStateToDismissResponder` has been removed
+- Function `AlertsClient.ListResourceGroupLevelByRegion` has been removed
+- Function `AlertsClient.ListResourceGroupLevelByRegionSender` has been removed
+- Struct `PackageDownloadsThreatIntelligence` has been removed
+
+## New Content
+
+- Const `NonFinding` is added
+- Const `ScanStateInProgress` is added
+- Const `Authorized` is added
+- Const `Recurring` is added
+- Const `SecureScoreControls` is added
+- Const `SecureScores` is added
+- Const `Unauthorized` is added
+- Const `ScanStateFailed` is added
+- Const `OnDemand` is added
+- Const `ScanStateFailedToRun` is added
+- Const `ScanStatePassed` is added
+- Const `BaselineExpected` is added
+- Const `Finding` is added
+- Const `ScannerDevice` is added
+- Const `Primary` is added
+- Const `Secondary` is added
+- Const `PricingTierFree` is added
+- Const `Managed` is added
+- Const `NotProgrammingDevice` is added
+- Const `RuleSeverityObsolete` is added
+- Const `Guess` is added
+- Const `RuleSeverityInformational` is added
+- Const `Binary` is added
+- Const `Certain` is added
+- Const `PricingTierStandard` is added
+- Const `RuleSeverityLow` is added
+- Const `Unmanaged` is added
+- Const `NegativeList` is added
+- Const `RuleSeverityHigh` is added
+- Const `DeviceStatusRemoved` is added
+- Const `DeviceStatusActive` is added
+- Const `PositiveList` is added
+- Const `ProcessControl` is added
+- Const `Important` is added
+- Const `Enterprise` is added
+- Const `NotScannerDevice` is added
+- Const `ProgrammingDevice` is added
+- Const `InternalError` is added
+- Const `Supervisory` is added
+- Const `RuleSeverityMedium` is added
+- Function `Protocol1.MarshalJSON() ([]byte,error)` is added
+- Function `DeviceClient.GetResponder(*http.Response) (Device,error)` is added
+- Function `DeviceListIterator.Value() Device` is added
+- Function `AlertsClient.GetResourceGroupLevelAlertsSender(*http.Request) (*http.Response,error)` is added
+- Function `IotRecommendationTypesClient.List1Responder(*http.Response) (IotRecommendationTypeList,error)` is added
+- Function `IotRecommendationsClient.List1Sender(*http.Request) (*http.Response,error)` is added
+- Function `IotAlertsClient.List1(context.Context,string,string,string,string,ManagementState,string,*int32,string) (IotAlertListModelPage,error)` is added
+- Function `IotRecommendationTypesClient.List1Preparer(context.Context) (*http.Request,error)` is added
+- Function `IotAlertListModelPage.Values() []IotAlertModel` is added
+- Function `PossibleDeviceStatusValues() []DeviceStatus` is added
+- Function `Scan.MarshalJSON() ([]byte,error)` is added
+- Function `SQLVulnerabilityAssessmentScanResultsClient.ListPreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `DeviceListIterator.NotDone() bool` is added
+- Function `SQLVulnerabilityAssessmentScansClient.Get(context.Context,string,string,string,string) (Scan,error)` is added
+- Function `IotDefenderSettingsClient.DownloadManagerActivationSender(*http.Request) (*http.Response,error)` is added
+- Function `IotRecommendationTypesClient.Get1(context.Context,string) (IotRecommendationType,error)` is added
+- Function `NetworkInterface.MarshalJSON() ([]byte,error)` is added
+- Function `*IotAlertListModelPage.NextWithContext(context.Context) error` is added
+- Function `SQLVulnerabilityAssessmentScanResultsClient.GetPreparer(context.Context,string,string,string,string,string) (*http.Request,error)` is added
+- Function `IotRecommendationsClient.List1Complete(context.Context,string,string,string,*int32,string) (IotRecommendationListModelIterator,error)` is added
+- Function `DeviceList.MarshalJSON() ([]byte,error)` is added
+- Function `SQLVulnerabilityAssessmentBaselineRulesClient.Delete(context.Context,string,string,string,string) (autorest.Response,error)` is added
+- Function `AlertsClient.ListSubscriptionLevelAlertsByRegionComplete(context.Context) (AlertListIterator,error)` is added
+- Function `IotSensorsClient.DownloadResetPasswordSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLVulnerabilityAssessmentScanResultsClient.Get(context.Context,string,string,string,string,string) (ScanResult,error)` is added
+- Function `*IotRecommendationListModelPage.NextWithContext(context.Context) error` is added
+- Function `IotRecommendationListModelIterator.NotDone() bool` is added
+- Function `DevicesForHubClient.ListComplete(context.Context,string,*int32,string,ManagementState) (DeviceListIterator,error)` is added
+- Function `AlertsClient.UpdateSubscriptionLevelAlertStateToReactivateSender(*http.Request) (*http.Response,error)` is added
+- Function `IotAlertsClient.Get1Responder(*http.Response) (IotAlertModel,error)` is added
+- Function `NewSQLVulnerabilityAssessmentBaselineRulesClientWithBaseURI(string,string,string) SQLVulnerabilityAssessmentBaselineRulesClient` is added
+- Function `NewIotAlertListModelIterator(IotAlertListModelPage) IotAlertListModelIterator` is added
+- Function `IotAlertListModel.IsEmpty() bool` is added
+- Function `IotAlertTypesClient.Get1Responder(*http.Response) (IotAlertType,error)` is added
+- Function `SQLVulnerabilityAssessmentBaselineRulesClient.GetResponder(*http.Response) (RuleResults,error)` is added
+- Function `PossibleRelationToIPStatusValues() []RelationToIPStatus` is added
+- Function `AlertsClient.GetSubscriptionLevelAlertSender(*http.Request) (*http.Response,error)` is added
+- Function `NewSQLVulnerabilityAssessmentBaselineRulesClient(string,string) SQLVulnerabilityAssessmentBaselineRulesClient` is added
+- Function `IotRecommendationTypesClient.List1(context.Context) (IotRecommendationTypeList,error)` is added
+- Function `ScanResult.MarshalJSON() ([]byte,error)` is added
+- Function `IotRecommendationsClient.List1Preparer(context.Context,string,string,string,*int32,string) (*http.Request,error)` is added
+- Function `AlertsClient.UpdateSubscriptionLevelAlertStateToReactivateResponder(*http.Response) (autorest.Response,error)` is added
+- Function `NewDevicesForHubClientWithBaseURI(string,string,string) DevicesForHubClient` is added
+- Function `PossibleRuleSeverityValues() []RuleSeverity` is added
+- Function `SQLVulnerabilityAssessmentScansClient.ListPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `IotAlertListModelPage.Response() IotAlertListModel` is added
+- Function `PossibleProgrammingStateValues() []ProgrammingState` is added
+- Function `IotRecommendationListModelPage.Response() IotRecommendationListModel` is added
+- Function `OnPremiseIotSensorsClient.DownloadResetPasswordSender(*http.Request) (*http.Response,error)` is added
+- Function `AlertsClient.ListSubscriptionLevelAlertsByRegionResponder(*http.Response) (AlertList,error)` is added
+- Function `IotAlertsClient.Get1Sender(*http.Request) (*http.Response,error)` is added
+- Function `IotRecommendationListModelPage.Values() []IotRecommendationModel` is added
+- Function `NewIotRecommendationListModelPage(IotRecommendationListModel,func(context.Context, IotRecommendationListModel) (IotRecommendationListModel, error)) IotRecommendationListModelPage` is added
+- Function `IotAlertTypesClient.Get1(context.Context,string) (IotAlertType,error)` is added
+- Function `PossibleRuleTypeBasicCustomAlertRuleValues() []RuleTypeBasicCustomAlertRule` is added
+- Function `DevicesForSubscriptionClient.List(context.Context,*int32,string,ManagementState) (DeviceListPage,error)` is added
+- Function `SQLVulnerabilityAssessmentScanResultsClient.GetResponder(*http.Response) (ScanResult,error)` is added
+- Function `IotRecommendationPropertiesModel.MarshalJSON() ([]byte,error)` is added
+- Function `Device.MarshalJSON() ([]byte,error)` is added
+- Function `SQLVulnerabilityAssessmentBaselineRulesClient.CreateOrUpdateResponder(*http.Response) (RuleResults,error)` is added
+- Function `DeviceListPage.Values() []Device` is added
+- Function `AlertsClient.UpdateSubscriptionLevelAlertStateToDismiss(context.Context,string) (autorest.Response,error)` is added
+- Function `AlertsClient.UpdateResourceGroupLevelAlertStateToReactivate(context.Context,string,string) (autorest.Response,error)` is added
+- Function `IotRecommendationsClient.Get1Responder(*http.Response) (IotRecommendationModel,error)` is added
+- Function `PossibleAuthorizationStateValues() []AuthorizationState` is added
+- Function `AlertsClient.UpdateSubscriptionLevelAlertStateToDismissSender(*http.Request) (*http.Response,error)` is added
+- Function `NewDevicesForSubscriptionClient(string,string) DevicesForSubscriptionClient` is added
+- Function `SQLVulnerabilityAssessmentScanResultsClient.List(context.Context,string,string,string,string) (ScanResults,error)` is added
+- Function `IotRecommendationTypesClient.List1Sender(*http.Request) (*http.Response,error)` is added
+- Function `AlertsClient.UpdateResourceGroupLevelAlertStateToReactivatePreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `AlertsClient.GetResourceGroupLevelAlertsPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `NewSQLVulnerabilityAssessmentScanResultsClient(string,string) SQLVulnerabilityAssessmentScanResultsClient` is added
+- Function `IotAlertTypesClient.List1(context.Context) (IotAlertTypeList,error)` is added
+- Function `IotDefenderSettingsClient.DownloadManagerActivation(context.Context) (ReadCloser,error)` is added
+- Function `IotAlertTypesClient.List1Sender(*http.Request) (*http.Response,error)` is added
+- Function `DevicesForSubscriptionClient.ListComplete(context.Context,*int32,string,ManagementState) (DeviceListIterator,error)` is added
+- Function `*Device.UnmarshalJSON([]byte) error` is added
+- Function `IotRecommendationsClient.List1Responder(*http.Response) (IotRecommendationListModel,error)` is added
+- Function `SQLVulnerabilityAssessmentBaselineRulesClient.List(context.Context,string,string,string) (RulesResults,error)` is added
+- Function `*IotRecommendationModel.UnmarshalJSON([]byte) error` is added
+- Function `NewSQLVulnerabilityAssessmentScansClientWithBaseURI(string,string,string) SQLVulnerabilityAssessmentScansClient` is added
+- Function `AlertsClient.UpdateResourceGroupLevelAlertStateToDismiss(context.Context,string,string) (autorest.Response,error)` is added
+- Function `SQLVulnerabilityAssessmentBaselineRulesClient.CreateOrUpdatePreparer(context.Context,string,string,string,string,*RuleResultsInput) (*http.Request,error)` is added
+- Function `*IotAlertModel.UnmarshalJSON([]byte) error` is added
+- Function `IotAlertModel.MarshalJSON() ([]byte,error)` is added
+- Function `PossibleScanningFunctionalityValues() []ScanningFunctionality` is added
+- Function `IotRecommendationListModelIterator.Value() IotRecommendationModel` is added
+- Function `AlertsClient.ListResourceGroupLevelAlertsByRegion(context.Context,string) (AlertListPage,error)` is added
+- Function `AlertsClient.ListResourceGroupLevelAlertsByRegionSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLVulnerabilityAssessmentScansClient.GetResponder(*http.Response) (Scan,error)` is added
+- Function `RulesResultsInput.MarshalJSON() ([]byte,error)` is added
+- Function `*IotRecommendationListModelIterator.NextWithContext(context.Context) error` is added
+- Function `IotRecommendationListModelIterator.Response() IotRecommendationListModel` is added
+- Function `OnPremiseIotSensorsClient.DownloadResetPasswordResponder(*http.Response) (ReadCloser,error)` is added
+- Function `SQLVulnerabilityAssessmentBaselineRulesClient.AddSender(*http.Request) (*http.Response,error)` is added
+- Function `IotSensorsClient.DownloadResetPassword(context.Context,string,string,ResetPasswordInput) (ReadCloser,error)` is added
+- Function `OnPremiseIotSensorsClient.DownloadResetPassword(context.Context,string,ResetPasswordInput) (ReadCloser,error)` is added
+- Function `SQLVulnerabilityAssessmentBaselineRulesClient.DeletePreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `IotAlertsClient.List1Preparer(context.Context,string,string,string,string,ManagementState,string,*int32,string) (*http.Request,error)` is added
+- Function `IotAlertsClient.Get1(context.Context,string,string) (IotAlertModel,error)` is added
+- Function `DevicesForHubClient.ListResponder(*http.Response) (DeviceList,error)` is added
+- Function `DeviceProperties.MarshalJSON() ([]byte,error)` is added
+- Function `IotAlertTypesClient.Get1Sender(*http.Request) (*http.Response,error)` is added
+- Function `RuleResults.MarshalJSON() ([]byte,error)` is added
+- Function `IotAlertsClient.Get1Preparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `AlertsClient.UpdateSubscriptionLevelAlertStateToDismissResponder(*http.Response) (autorest.Response,error)` is added
+- Function `SQLVulnerabilityAssessmentBaselineRulesClient.Add(context.Context,string,string,string,*RulesResultsInput) (RulesResults,error)` is added
+- Function `IotSensorsClient.DownloadResetPasswordResponder(*http.Response) (ReadCloser,error)` is added
+- Function `IotDefenderSettingsClient.DownloadManagerActivationPreparer(context.Context) (*http.Request,error)` is added
+- Function `DeviceListPage.Response() DeviceList` is added
+- Function `IotAlertListModelPage.NotDone() bool` is added
+- Function `SQLVulnerabilityAssessmentBaselineRulesClient.CreateOrUpdate(context.Context,string,string,string,string,*RuleResultsInput) (RuleResults,error)` is added
+- Function `NewDeviceListPage(DeviceList,func(context.Context, DeviceList) (DeviceList, error)) DeviceListPage` is added
+- Function `PossibleScanStateValues() []ScanState` is added
+- Function `SQLVulnerabilityAssessmentBaselineRulesClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `AlertsClient.UpdateSubscriptionLevelAlertStateToReactivate(context.Context,string) (autorest.Response,error)` is added
+- Function `*IotRecommendationListModelIterator.Next() error` is added
+- Function `IotAlertListModelIterator.Response() IotAlertListModel` is added
+- Function `PossibleMacSignificanceValues() []MacSignificance` is added
+- Function `NewDevicesForSubscriptionClientWithBaseURI(string,string,string) DevicesForSubscriptionClient` is added
+- Function `IotAlertsClient.List1Complete(context.Context,string,string,string,string,ManagementState,string,*int32,string) (IotAlertListModelIterator,error)` is added
+- Function `SQLVulnerabilityAssessmentScanResultsClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `NewSQLVulnerabilityAssessmentScanResultsClientWithBaseURI(string,string,string) SQLVulnerabilityAssessmentScanResultsClient` is added
+- Function `IotAlertTypesClient.List1Preparer(context.Context) (*http.Request,error)` is added
+- Function `SQLVulnerabilityAssessmentScansClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `DeviceList.IsEmpty() bool` is added
+- Function `*IotRecommendationListModelPage.Next() error` is added
+- Function `AlertsClient.ListSubscriptionLevelAlertsByRegionSender(*http.Request) (*http.Response,error)` is added
+- Function `NewDeviceClient(string,string) DeviceClient` is added
+- Function `OnPremiseIotSensorsClient.DownloadResetPasswordPreparer(context.Context,string,ResetPasswordInput) (*http.Request,error)` is added
+- Function `SQLVulnerabilityAssessmentScansClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `AlertsClient.UpdateResourceGroupLevelAlertStateToReactivateResponder(*http.Response) (autorest.Response,error)` is added
+- Function `*IotAlertListModelIterator.NextWithContext(context.Context) error` is added
+- Function `SQLVulnerabilityAssessmentBaselineRulesClient.ListResponder(*http.Response) (RulesResults,error)` is added
+- Function `IotRecommendationsClient.List1(context.Context,string,string,string,*int32,string) (IotRecommendationListModelPage,error)` is added
+- Function `PossibleRuleStatusValues() []RuleStatus` is added
+- Function `AlertsClient.GetSubscriptionLevelAlert(context.Context,string) (Alert,error)` is added
+- Function `SQLVulnerabilityAssessmentBaselineRulesClient.ListPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `IotAlertTypesClient.List1Responder(*http.Response) (IotAlertTypeList,error)` is added
+- Function `IotRecommendationListModel.IsEmpty() bool` is added
+- Function `AlertsClient.ListResourceGroupLevelAlertsByRegionResponder(*http.Response) (AlertList,error)` is added
+- Function `AlertsClient.ListSubscriptionLevelAlertsByRegion(context.Context) (AlertListPage,error)` is added
+- Function `SQLVulnerabilityAssessmentBaselineRulesClient.GetPreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `DevicesForHubClient.ListPreparer(context.Context,string,*int32,string,ManagementState) (*http.Request,error)` is added
+- Function `IotAlertListModelIterator.NotDone() bool` is added
+- Function `NewDevicesForHubClient(string,string) DevicesForHubClient` is added
+- Function `NewDeviceListIterator(DeviceListPage) DeviceListIterator` is added
+- Function `NewIotAlertListModelPage(IotAlertListModel,func(context.Context, IotAlertListModel) (IotAlertListModel, error)) IotAlertListModelPage` is added
+- Function `NewSQLVulnerabilityAssessmentScansClient(string,string) SQLVulnerabilityAssessmentScansClient` is added
+- Function `IotRecommendationModel.MarshalJSON() ([]byte,error)` is added
+- Function `UpgradePackageDownloadInfo.MarshalJSON() ([]byte,error)` is added
+- Function `IotRecommendationTypesClient.Get1Responder(*http.Response) (IotRecommendationType,error)` is added
+- Function `AlertsClient.UpdateResourceGroupLevelAlertStateToDismissResponder(*http.Response) (autorest.Response,error)` is added
+- Function `IotSensorsClient.DownloadResetPasswordPreparer(context.Context,string,string,ResetPasswordInput) (*http.Request,error)` is added
+- Function `DevicesForSubscriptionClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `IotRecommendationListModelPage.NotDone() bool` is added
+- Function `SQLVulnerabilityAssessmentBaselineRulesClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `PossibleScanTriggerTypeValues() []ScanTriggerType` is added
+- Function `IotDefenderSettingsClient.DownloadManagerActivationResponder(*http.Response) (ReadCloser,error)` is added
+- Function `AlertsClient.ListResourceGroupLevelAlertsByRegionPreparer(context.Context,string) (*http.Request,error)` is added
+- Function `AlertsClient.UpdateSubscriptionLevelAlertStateToDismissPreparer(context.Context,string) (*http.Request,error)` is added
+- Function `NewDeviceClientWithBaseURI(string,string,string) DeviceClient` is added
+- Function `SQLVulnerabilityAssessmentBaselineRulesClient.CreateOrUpdateSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLVulnerabilityAssessmentScansClient.List(context.Context,string,string,string) (Scans,error)` is added
+- Function `IotRecommendationsClient.Get1Preparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `SQLVulnerabilityAssessmentBaselineRulesClient.AddResponder(*http.Response) (RulesResults,error)` is added
+- Function `*IotAlertListModelPage.Next() error` is added
+- Function `DevicesForSubscriptionClient.ListResponder(*http.Response) (DeviceList,error)` is added
+- Function `IotAlertTypesClient.Get1Preparer(context.Context,string) (*http.Request,error)` is added
+- Function `*DeviceListIterator.Next() error` is added
+- Function `AlertsClient.GetSubscriptionLevelAlertPreparer(context.Context,string) (*http.Request,error)` is added
+- Function `DeviceClient.Get(context.Context,string,string) (Device,error)` is added
+- Function `AlertsClient.UpdateResourceGroupLevelAlertStateToReactivateSender(*http.Request) (*http.Response,error)` is added
+- Function `AlertsClient.UpdateSubscriptionLevelAlertStateToReactivatePreparer(context.Context,string) (*http.Request,error)` is added
+- Function `*DeviceListPage.NextWithContext(context.Context) error` is added
+- Function `AlertsClient.GetSubscriptionLevelAlertResponder(*http.Response) (Alert,error)` is added
+- Function `IotRecommendationsClient.Get1Sender(*http.Request) (*http.Response,error)` is added
+- Function `DeviceClient.GetPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `SQLVulnerabilityAssessmentScanResultsClient.ListResponder(*http.Response) (ScanResults,error)` is added
+- Function `SQLVulnerabilityAssessmentBaselineRulesClient.Get(context.Context,string,string,string,string) (RuleResults,error)` is added
+- Function `SQLVulnerabilityAssessmentBaselineRulesClient.DeleteResponder(*http.Response) (autorest.Response,error)` is added
+- Function `*DeviceListIterator.NextWithContext(context.Context) error` is added
+- Function `AlertsClient.ListResourceGroupLevelAlertsByRegionComplete(context.Context,string) (AlertListIterator,error)` is added
+- Function `NewIotRecommendationListModelIterator(IotRecommendationListModelPage) IotRecommendationListModelIterator` is added
+- Function `PossibleManagementStateValues() []ManagementState` is added
+- Function `AlertsClient.UpdateResourceGroupLevelAlertStateToDismissPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `IotRecommendationTypesClient.Get1Preparer(context.Context,string) (*http.Request,error)` is added
+- Function `IotAlertListModelIterator.Value() IotAlertModel` is added
+- Function `AlertsClient.GetResourceGroupLevelAlertsResponder(*http.Response) (Alert,error)` is added
+- Function `DeviceListIterator.Response() DeviceList` is added
+- Function `PossiblePurdueLevelValues() []PurdueLevel` is added
+- Function `SQLVulnerabilityAssessmentScansClient.GetPreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `IotAlertsClient.List1Responder(*http.Response) (IotAlertListModel,error)` is added
+- Function `DeviceListPage.NotDone() bool` is added
+- Function `IotAlertsClient.List1Sender(*http.Request) (*http.Response,error)` is added
+- Function `SQLVulnerabilityAssessmentScanResultsClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `DevicesForHubClient.List(context.Context,string,*int32,string,ManagementState) (DeviceListPage,error)` is added
+- Function `PossibleDeviceCriticalityValues() []DeviceCriticality` is added
+- Function `SQLVulnerabilityAssessmentScansClient.ListResponder(*http.Response) (Scans,error)` is added
+- Function `DevicesForHubClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `DeviceClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLVulnerabilityAssessmentBaselineRulesClient.DeleteSender(*http.Request) (*http.Response,error)` is added
+- Function `IotRecommendationTypesClient.Get1Sender(*http.Request) (*http.Response,error)` is added
+- Function `AlertsClient.GetResourceGroupLevelAlerts(context.Context,string,string) (Alert,error)` is added
+- Function `AlertsClient.ListSubscriptionLevelAlertsByRegionPreparer(context.Context) (*http.Request,error)` is added
+- Function `AlertsClient.UpdateResourceGroupLevelAlertStateToDismissSender(*http.Request) (*http.Response,error)` is added
+- Function `DevicesForSubscriptionClient.ListPreparer(context.Context,*int32,string,ManagementState) (*http.Request,error)` is added
+- Function `IotAlertPropertiesModel.MarshalJSON() ([]byte,error)` is added
+- Function `SQLVulnerabilityAssessmentBaselineRulesClient.AddPreparer(context.Context,string,string,string,*RulesResultsInput) (*http.Request,error)` is added
+- Function `*IotAlertListModelIterator.Next() error` is added
+- Function `IotRecommendationsClient.Get1(context.Context,string,string) (IotRecommendationModel,error)` is added
+- Function `*DeviceListPage.Next() error` is added
+- Struct `Baseline` is added
+- Struct `BaselineAdjustedResult` is added
+- Struct `BenchmarkReference` is added
+- Struct `Device` is added
+- Struct `DeviceClient` is added
+- Struct `DeviceList` is added
+- Struct `DeviceListIterator` is added
+- Struct `DeviceListPage` is added
+- Struct `DeviceProperties` is added
+- Struct `DevicesForHubClient` is added
+- Struct `DevicesForSubscriptionClient` is added
+- Struct `Firmware` is added
+- Struct `IPAddress` is added
+- Struct `IotAlertListModel` is added
+- Struct `IotAlertListModelIterator` is added
+- Struct `IotAlertListModelPage` is added
+- Struct `IotAlertModel` is added
+- Struct `IotAlertPropertiesModel` is added
+- Struct `IotRecommendationListModel` is added
+- Struct `IotRecommendationListModelIterator` is added
+- Struct `IotRecommendationListModelPage` is added
+- Struct `IotRecommendationModel` is added
+- Struct `IotRecommendationPropertiesModel` is added
+- Struct `MacAddress` is added
+- Struct `NetworkInterface` is added
+- Struct `Protocol1` is added
+- Struct `QueryCheck` is added
+- Struct `Remediation` is added
+- Struct `ResetPasswordInput` is added
+- Struct `RuleResults` is added
+- Struct `RuleResultsInput` is added
+- Struct `RuleResultsProperties` is added
+- Struct `RulesResults` is added
+- Struct `RulesResultsInput` is added
+- Struct `SQLVulnerabilityAssessmentBaselineRulesClient` is added
+- Struct `SQLVulnerabilityAssessmentScanResultsClient` is added
+- Struct `SQLVulnerabilityAssessmentScansClient` is added
+- Struct `Scan` is added
+- Struct `ScanProperties` is added
+- Struct `ScanResult` is added
+- Struct `ScanResultProperties` is added
+- Struct `ScanResults` is added
+- Struct `Scans` is added
+- Struct `Sensor` is added
+- Struct `Site` is added
+- Struct `UpgradePackageDownloadInfo` is added
+- Struct `VaRule` is added
+- Field `AuthorizedDevicesImportTemplate` is added to struct `PackageDownloads`
+- Field `DeviceInformationUpdateImportTemplate` is added to struct `PackageDownloads`
+- Field `Snmp` is added to struct `PackageDownloads`
+- Field `WmiTool` is added to struct `PackageDownloads`
+

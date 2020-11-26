@@ -203,8 +203,11 @@ func (page APIOperationListResultPage) Values() []APIOperation {
 }
 
 // Creates a new instance of the APIOperationListResultPage type.
-func NewAPIOperationListResultPage(getNextPage func(context.Context, APIOperationListResult) (APIOperationListResult, error)) APIOperationListResultPage {
-	return APIOperationListResultPage{fn: getNextPage}
+func NewAPIOperationListResultPage(cur APIOperationListResult, getNextPage func(context.Context, APIOperationListResult) (APIOperationListResult, error)) APIOperationListResultPage {
+	return APIOperationListResultPage{
+		fn:   getNextPage,
+		aolr: cur,
+	}
 }
 
 // Cache a cache instance.  Follows Azure Resource Manager standards:
@@ -323,8 +326,8 @@ func (c *Cache) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// CacheHealth an indication of cache health.  Gives more information about health than just that related to
-// provisioning.
+// CacheHealth an indication of cache health.  Gives more information about health than just that related
+// to provisioning.
 type CacheHealth struct {
 	// State - List of cache health states. Possible values include: 'Unknown', 'Healthy', 'Degraded', 'Down', 'Transitioning', 'Stopping', 'Stopped', 'Upgrading', 'Flushing'
 	State HealthStateType `json:"state,omitempty"`
@@ -456,8 +459,8 @@ type CacheSku struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// CachesListResult result of the request to list caches. It contains a list of caches and a URL link to get
-// the next set of results.
+// CachesListResult result of the request to list caches. It contains a list of caches and a URL link to
+// get the next set of results.
 type CachesListResult struct {
 	autorest.Response `json:"-"`
 	// NextLink - URL to get the next set of cache list results if there are any.
@@ -609,8 +612,11 @@ func (page CachesListResultPage) Values() []Cache {
 }
 
 // Creates a new instance of the CachesListResultPage type.
-func NewCachesListResultPage(getNextPage func(context.Context, CachesListResult) (CachesListResult, error)) CachesListResultPage {
-	return CachesListResultPage{fn: getNextPage}
+func NewCachesListResultPage(cur CachesListResult, getNextPage func(context.Context, CachesListResult) (CachesListResult, error)) CachesListResultPage {
+	return CachesListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // CachesStartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -965,8 +971,11 @@ func (page ResourceSkusResultPage) Values() []ResourceSku {
 }
 
 // Creates a new instance of the ResourceSkusResultPage type.
-func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
-	return ResourceSkusResultPage{fn: getNextPage}
+func NewResourceSkusResultPage(cur ResourceSkusResult, getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
+	return ResourceSkusResultPage{
+		fn:  getNextPage,
+		rsr: cur,
+	}
 }
 
 // Restriction the restriction because of which SKU cannot be used.
@@ -1293,8 +1302,11 @@ func (page StorageTargetsResultPage) Values() []StorageTarget {
 }
 
 // Creates a new instance of the StorageTargetsResultPage type.
-func NewStorageTargetsResultPage(getNextPage func(context.Context, StorageTargetsResult) (StorageTargetsResult, error)) StorageTargetsResultPage {
-	return StorageTargetsResultPage{fn: getNextPage}
+func NewStorageTargetsResultPage(cur StorageTargetsResult, getNextPage func(context.Context, StorageTargetsResult) (StorageTargetsResult, error)) StorageTargetsResultPage {
+	return StorageTargetsResultPage{
+		fn:  getNextPage,
+		str: cur,
+	}
 }
 
 // UnknownTarget storage container for use as a Unknown StorageTarget.
@@ -1480,6 +1492,9 @@ func (page UsageModelsResultPage) Values() []UsageModel {
 }
 
 // Creates a new instance of the UsageModelsResultPage type.
-func NewUsageModelsResultPage(getNextPage func(context.Context, UsageModelsResult) (UsageModelsResult, error)) UsageModelsResultPage {
-	return UsageModelsResultPage{fn: getNextPage}
+func NewUsageModelsResultPage(cur UsageModelsResult, getNextPage func(context.Context, UsageModelsResult) (UsageModelsResult, error)) UsageModelsResultPage {
+	return UsageModelsResultPage{
+		fn:  getNextPage,
+		umr: cur,
+	}
 }

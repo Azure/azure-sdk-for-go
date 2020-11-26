@@ -1,0 +1,386 @@
+
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/b97299c968df5f99b724bd1231fd2161731d3b8f
+
+Code generator C:\Users\dapzhang\Documents\workspace\autorest.go
+
+## Breaking Changes
+
+- Function `NewEntityQueryListPage` signature has been changed from `(func(context.Context, EntityQueryList) (EntityQueryList, error))` to `(EntityQueryList,func(context.Context, EntityQueryList) (EntityQueryList, error))`
+- Function `NewBookmarkListPage` signature has been changed from `(func(context.Context, BookmarkList) (BookmarkList, error))` to `(BookmarkList,func(context.Context, BookmarkList) (BookmarkList, error))`
+- Function `NewCaseCommentListPage` signature has been changed from `(func(context.Context, CaseCommentList) (CaseCommentList, error))` to `(CaseCommentList,func(context.Context, CaseCommentList) (CaseCommentList, error))`
+- Function `NewAlertRulesListPage` signature has been changed from `(func(context.Context, AlertRulesList) (AlertRulesList, error))` to `(AlertRulesList,func(context.Context, AlertRulesList) (AlertRulesList, error))`
+- Function `NewIncidentCommentListPage` signature has been changed from `(func(context.Context, IncidentCommentList) (IncidentCommentList, error))` to `(IncidentCommentList,func(context.Context, IncidentCommentList) (IncidentCommentList, error))`
+- Function `NewActionsListPage` signature has been changed from `(func(context.Context, ActionsList) (ActionsList, error))` to `(ActionsList,func(context.Context, ActionsList) (ActionsList, error))`
+- Function `NewRelationListPage` signature has been changed from `(func(context.Context, RelationList) (RelationList, error))` to `(RelationList,func(context.Context, RelationList) (RelationList, error))`
+- Function `NewEntityListPage` signature has been changed from `(func(context.Context, EntityList) (EntityList, error))` to `(EntityList,func(context.Context, EntityList) (EntityList, error))`
+- Function `NewDataConnectorListPage` signature has been changed from `(func(context.Context, DataConnectorList) (DataConnectorList, error))` to `(DataConnectorList,func(context.Context, DataConnectorList) (DataConnectorList, error))`
+- Function `NewOperationsListPage` signature has been changed from `(func(context.Context, OperationsList) (OperationsList, error))` to `(OperationsList,func(context.Context, OperationsList) (OperationsList, error))`
+- Function `NewAlertRuleTemplatesListPage` signature has been changed from `(func(context.Context, AlertRuleTemplatesList) (AlertRuleTemplatesList, error))` to `(AlertRuleTemplatesList,func(context.Context, AlertRuleTemplatesList) (AlertRuleTemplatesList, error))`
+- Function `NewIncidentListPage` signature has been changed from `(func(context.Context, IncidentList) (IncidentList, error))` to `(IncidentList,func(context.Context, IncidentList) (IncidentList, error))`
+- Function `NewCaseListPage` signature has been changed from `(func(context.Context, CaseList) (CaseList, error))` to `(CaseList,func(context.Context, CaseList) (CaseList, error))`
+- Function `NewCaseRelationListPage` signature has been changed from `(func(context.Context, CaseRelationList) (CaseRelationList, error))` to `(CaseRelationList,func(context.Context, CaseRelationList) (CaseRelationList, error))`
+- Function `NewOfficeConsentListPage` signature has been changed from `(func(context.Context, OfficeConsentList) (OfficeConsentList, error))` to `(OfficeConsentList,func(context.Context, OfficeConsentList) (OfficeConsentList, error))`
+- Type of `SettingsKind.Kind` has been changed from `*string` to `SettingKind`
+
+## New Content
+
+- Const `KindEntityAnalytics` is added
+- Const `Remotestorage` is added
+- Const `Localfile` is added
+- Const `SettingKindEyesOn` is added
+- Const `EntityTimelineKindSecurityAlert` is added
+- Const `AuditLogs` is added
+- Const `KindBasicEntityTimelineItemKindSecurityAlert` is added
+- Const `SettingKindUeba` is added
+- Const `Office365AdvancedThreatProtection` is added
+- Const `SecurityEvent` is added
+- Const `AlertPerResult` is added
+- Const `KindOfficeATP` is added
+- Const `KindBasicEntityTimelineItemKindBookmark` is added
+- Const `SigninLogs` is added
+- Const `SingleAlert` is added
+- Const `MicrosoftDefenderAdvancedThreatProtection` is added
+- Const `KindBasicEntityTimelineItemKindActivity` is added
+- Const `AzureActivity` is added
+- Const `DataConnectorKindOfficeATP` is added
+- Const `EntityTimelineKindBookmark` is added
+- Const `EntityTimelineKindActivity` is added
+- Const `Descending` is added
+- Const `PreAttack` is added
+- Const `SettingKindEntityAnalytics` is added
+- Const `KindBasicDataConnectorsCheckRequirementsKindOfficeATP` is added
+- Const `KindUeba` is added
+- Const `KindBasicEntityTimelineItemKindEntityTimelineItem` is added
+- Const `Indicator` is added
+- Const `KindThreatIntelligenceInformation` is added
+- Const `Unsorted` is added
+- Const `KindIndicator` is added
+- Const `KindBookmark` is added
+- Const `Ascending` is added
+- Function `URLEntity.AsHuntingBookmark() (*HuntingBookmark,bool)` is added
+- Function `CloudApplicationEntity.AsHuntingBookmark() (*HuntingBookmark,bool)` is added
+- Function `ThreatIntelligenceIndicatorClient.Delete(context.Context,string,string,string,string) (autorest.Response,error)` is added
+- Function `HuntingBookmark.AsIPEntity() (*IPEntity,bool)` is added
+- Function `HuntingBookmark.AsFileEntity() (*FileEntity,bool)` is added
+- Function `HuntingBookmark.AsCloudApplicationEntity() (*CloudApplicationEntity,bool)` is added
+- Function `EntityTimelineItem.AsBasicEntityTimelineItem() (BasicEntityTimelineItem,bool)` is added
+- Function `RegistryValueEntity.AsHuntingBookmark() (*HuntingBookmark,bool)` is added
+- Function `OfficeATPDataConnector.MarshalJSON() ([]byte,error)` is added
+- Function `*WatchlistListIterator.Next() error` is added
+- Function `SecurityAlertTimelineItem.AsEntityTimelineItem() (*EntityTimelineItem,bool)` is added
+- Function `ThreatIntelligenceIndicatorClient.CreatePreparer(context.Context,string,string,string,string,ThreatIntelligenceIndicatorModelForRequestBody) (*http.Request,error)` is added
+- Function `ThreatIntelligenceIndicatorClient.QueryIndicatorsComplete(context.Context,string,string,string,ThreatIntelligenceFilteringCriteria) (ThreatIntelligenceInformationListIterator,error)` is added
+- Function `ThreatIntelligenceIndicatorClient.DeleteResponder(*http.Response) (autorest.Response,error)` is added
+- Function `OfficeATPCheckRequirements.AsMDATPCheckRequirements() (*MDATPCheckRequirements,bool)` is added
+- Function `WatchlistListPage.Values() []Watchlist` is added
+- Function `ThreatIntelligenceIndicatorClient.GetResponder(*http.Response) (ThreatIntelligenceInformationModel,error)` is added
+- Function `WatchlistsClient.CreateResponder(*http.Response) (Watchlist,error)` is added
+- Function `OfficeATPDataConnector.AsOfficeDataConnector() (*OfficeDataConnector,bool)` is added
+- Function `MCASDataConnector.AsOfficeATPDataConnector() (*OfficeATPDataConnector,bool)` is added
+- Function `HuntingBookmark.AsSecurityGroupEntity() (*SecurityGroupEntity,bool)` is added
+- Function `OfficeATPCheckRequirements.AsAwsCloudTrailCheckRequirements() (*AwsCloudTrailCheckRequirements,bool)` is added
+- Function `EntitiesGetTimelineClient.List(context.Context,string,string,string,string,EntityTimelineParameters) (EntityTimelineResponse,error)` is added
+- Function `HuntingBookmark.AsHuntingBookmark() (*HuntingBookmark,bool)` is added
+- Function `WatchlistListIterator.Response() WatchlistList` is added
+- Function `EntityAnalytics.AsBasicSettings() (BasicSettings,bool)` is added
+- Function `ThreatIntelligenceInformationList.MarshalJSON() ([]byte,error)` is added
+- Function `PossibleUebaDataSourcesValues() []UebaDataSources` is added
+- Function `AzureResourceEntity.AsHuntingBookmark() (*HuntingBookmark,bool)` is added
+- Function `OfficeATPDataConnector.AsBasicDataConnector() (BasicDataConnector,bool)` is added
+- Function `WatchlistsClient.DeletePreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `AATPDataConnector.AsOfficeATPDataConnector() (*OfficeATPDataConnector,bool)` is added
+- Function `ASCCheckRequirements.AsOfficeATPCheckRequirements() (*OfficeATPCheckRequirements,bool)` is added
+- Function `ThreatIntelligenceIndicatorClient.QueryIndicators(context.Context,string,string,string,ThreatIntelligenceFilteringCriteria) (ThreatIntelligenceInformationListPage,error)` is added
+- Function `ThreatIntelligenceIndicatorsClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `EntityAnalytics.AsUeba() (*Ueba,bool)` is added
+- Function `IncidentCommentsClient.DeleteComment(context.Context,string,string,string,string,string) (autorest.Response,error)` is added
+- Function `Watchlist.MarshalJSON() ([]byte,error)` is added
+- Function `ThreatIntelligenceIndicatorMetricsClient.ListResponder(*http.Response) (ThreatIntelligenceMetricsList,error)` is added
+- Function `*ThreatIntelligenceInformationListIterator.NextWithContext(context.Context) error` is added
+- Function `ActivityTimelineItem.AsEntityTimelineItem() (*EntityTimelineItem,bool)` is added
+- Function `Ueba.AsEyesOn() (*EyesOn,bool)` is added
+- Function `PossibleEventGroupingAggregationKindValues() []EventGroupingAggregationKind` is added
+- Function `ThreatIntelligenceInformation.MarshalJSON() ([]byte,error)` is added
+- Function `EntityTimelineItem.AsActivityTimelineItem() (*ActivityTimelineItem,bool)` is added
+- Function `OfficeATPDataConnector.AsTiTaxiiDataConnector() (*TiTaxiiDataConnector,bool)` is added
+- Function `Settings.AsEntityAnalytics() (*EntityAnalytics,bool)` is added
+- Function `EntityTimelineItem.AsBookmarkTimelineItem() (*BookmarkTimelineItem,bool)` is added
+- Function `EntityAnalytics.MarshalJSON() ([]byte,error)` is added
+- Function `ThreatIntelligenceInformationListPage.Values() []BasicThreatIntelligenceInformation` is added
+- Function `*OfficeATPCheckRequirements.UnmarshalJSON([]byte) error` is added
+- Function `ThreatIntelligenceIndicatorClient.ReplaceTagsPreparer(context.Context,string,string,string,string,ThreatIntelligenceIndicatorModelForRequestBody) (*http.Request,error)` is added
+- Function `ThreatIntelligenceIndicatorClient.ReplaceTagsResponder(*http.Response) (ThreatIntelligenceInformationModel,error)` is added
+- Function `ThreatIntelligenceIndicatorClient.DeletePreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `HuntingBookmark.AsSecurityAlert() (*SecurityAlert,bool)` is added
+- Function `ThreatIntelligenceIndicatorClient.ReplaceTagsSender(*http.Request) (*http.Response,error)` is added
+- Function `WatchlistList.IsEmpty() bool` is added
+- Function `NewWatchlistListPage(WatchlistList,func(context.Context, WatchlistList) (WatchlistList, error)) WatchlistListPage` is added
+- Function `ThreatIntelligenceIndicatorClient.AppendTags(context.Context,string,string,string,string,ThreatIntelligenceAppendTags) (autorest.Response,error)` is added
+- Function `OfficeATPCheckRequirements.AsAADCheckRequirements() (*AADCheckRequirements,bool)` is added
+- Function `ThreatIntelligenceIndicatorModelForRequestBody.MarshalJSON() ([]byte,error)` is added
+- Function `OfficeATPDataConnector.AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector,bool)` is added
+- Function `TIDataConnector.AsOfficeATPDataConnector() (*OfficeATPDataConnector,bool)` is added
+- Function `TICheckRequirements.AsOfficeATPCheckRequirements() (*OfficeATPCheckRequirements,bool)` is added
+- Function `HuntingBookmark.AsAzureResourceEntity() (*AzureResourceEntity,bool)` is added
+- Function `WatchlistsClient.ListResponder(*http.Response) (WatchlistList,error)` is added
+- Function `OfficeATPDataConnector.AsDataConnector() (*DataConnector,bool)` is added
+- Function `IncidentsClient.ListOfEntities(context.Context,string,string,string,string) (IncidentEntitiesResponse,error)` is added
+- Function `ThreatIntelligenceIndicatorModel.AsThreatIntelligenceIndicatorModel() (*ThreatIntelligenceIndicatorModel,bool)` is added
+- Function `OfficeATPCheckRequirements.AsOfficeATPCheckRequirements() (*OfficeATPCheckRequirements,bool)` is added
+- Function `Ueba.AsSettings() (*Settings,bool)` is added
+- Function `BookmarkTimelineItem.MarshalJSON() ([]byte,error)` is added
+- Function `ThreatIntelligenceIndicatorClient.Get(context.Context,string,string,string,string) (ThreatIntelligenceInformationModel,error)` is added
+- Function `SecurityGroupEntity.AsHuntingBookmark() (*HuntingBookmark,bool)` is added
+- Function `NewThreatIntelligenceIndicatorClient(string) ThreatIntelligenceIndicatorClient` is added
+- Function `WatchlistListIterator.NotDone() bool` is added
+- Function `NewEntitiesGetTimelineClient(string) EntitiesGetTimelineClient` is added
+- Function `ThreatIntelligenceInformationList.IsEmpty() bool` is added
+- Function `IncidentsClient.ListOfAlertsResponder(*http.Response) (IncidentAlertList,error)` is added
+- Function `HuntingBookmark.AsURLEntity() (*URLEntity,bool)` is added
+- Function `EntityAnalytics.AsSettings() (*Settings,bool)` is added
+- Function `AwsCloudTrailCheckRequirements.AsOfficeATPCheckRequirements() (*OfficeATPCheckRequirements,bool)` is added
+- Function `IncidentsClient.ListOfAlerts(context.Context,string,string,string,string) (IncidentAlertList,error)` is added
+- Function `OfficeATPCheckRequirements.AsMCASCheckRequirements() (*MCASCheckRequirements,bool)` is added
+- Function `ActivityTimelineItem.AsSecurityAlertTimelineItem() (*SecurityAlertTimelineItem,bool)` is added
+- Function `WatchlistsClient.Create(context.Context,string,string,string,string,Watchlist) (Watchlist,error)` is added
+- Function `*ThreatIntelligenceInformationListIterator.Next() error` is added
+- Function `MDATPCheckRequirements.AsOfficeATPCheckRequirements() (*OfficeATPCheckRequirements,bool)` is added
+- Function `ThreatIntelligenceIndicatorClient.QueryIndicatorsSender(*http.Request) (*http.Response,error)` is added
+- Function `ActivityTimelineItem.MarshalJSON() ([]byte,error)` is added
+- Function `NewThreatIntelligenceIndicatorsClientWithBaseURI(string,string) ThreatIntelligenceIndicatorsClient` is added
+- Function `NewWatchlistsClientWithBaseURI(string,string) WatchlistsClient` is added
+- Function `IncidentsClient.ListOfBookmarks(context.Context,string,string,string,string) (IncidentBookmarkList,error)` is added
+- Function `HuntingBookmark.AsAccountEntity() (*AccountEntity,bool)` is added
+- Function `*ThreatIntelligenceInformationList.UnmarshalJSON([]byte) error` is added
+- Function `BookmarkTimelineItem.AsEntityTimelineItem() (*EntityTimelineItem,bool)` is added
+- Function `ThreatIntelligenceInformationListIterator.Response() ThreatIntelligenceInformationList` is added
+- Function `HuntingBookmark.AsDNSEntity() (*DNSEntity,bool)` is added
+- Function `Entity.AsHuntingBookmark() (*HuntingBookmark,bool)` is added
+- Function `ThreatIntelligenceIndicatorClient.AppendTagsPreparer(context.Context,string,string,string,string,ThreatIntelligenceAppendTags) (*http.Request,error)` is added
+- Function `ASCDataConnector.AsOfficeATPDataConnector() (*OfficeATPDataConnector,bool)` is added
+- Function `*ThreatIntelligenceInformationListPage.Next() error` is added
+- Function `ActivityTimelineItem.AsActivityTimelineItem() (*ActivityTimelineItem,bool)` is added
+- Function `Ueba.AsUeba() (*Ueba,bool)` is added
+- Function `SecurityAlertTimelineItem.MarshalJSON() ([]byte,error)` is added
+- Function `PossibleEntityTimelineKindValues() []EntityTimelineKind` is added
+- Function `WatchlistsClient.ListComplete(context.Context,string,string,string) (WatchlistListIterator,error)` is added
+- Function `WatchlistsClient.Get(context.Context,string,string,string,string) (Watchlist,error)` is added
+- Function `BookmarkTimelineItem.AsActivityTimelineItem() (*ActivityTimelineItem,bool)` is added
+- Function `NewEntitiesGetTimelineClientWithBaseURI(string,string) EntitiesGetTimelineClient` is added
+- Function `WatchlistsClient.DeleteResponder(*http.Response) (autorest.Response,error)` is added
+- Function `EntitiesGetTimelineClient.ListResponder(*http.Response) (EntityTimelineResponse,error)` is added
+- Function `Ueba.MarshalJSON() ([]byte,error)` is added
+- Function `OfficeATPDataConnector.AsMDATPDataConnector() (*MDATPDataConnector,bool)` is added
+- Function `NewThreatIntelligenceIndicatorsClient(string) ThreatIntelligenceIndicatorsClient` is added
+- Function `WatchlistsClient.DeleteSender(*http.Request) (*http.Response,error)` is added
+- Function `ThreatIntelligenceIndicatorClient.QueryIndicatorsPreparer(context.Context,string,string,string,ThreatIntelligenceFilteringCriteria) (*http.Request,error)` is added
+- Function `Ueba.AsEntityAnalytics() (*EntityAnalytics,bool)` is added
+- Function `ThreatIntelligenceIndicatorClient.DeleteSender(*http.Request) (*http.Response,error)` is added
+- Function `ThreatIntelligenceIndicatorClient.CreateSender(*http.Request) (*http.Response,error)` is added
+- Function `NewWatchlistsClient(string) WatchlistsClient` is added
+- Function `*HuntingBookmark.UnmarshalJSON([]byte) error` is added
+- Function `WatchlistsClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `SecurityAlertTimelineItem.AsActivityTimelineItem() (*ActivityTimelineItem,bool)` is added
+- Function `ThreatIntelligenceIndicatorClient.AppendTagsResponder(*http.Response) (autorest.Response,error)` is added
+- Function `IncidentsClient.ListOfBookmarksPreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `BookmarkTimelineItem.AsSecurityAlertTimelineItem() (*SecurityAlertTimelineItem,bool)` is added
+- Function `HuntingBookmark.AsHostEntity() (*HostEntity,bool)` is added
+- Function `SecurityAlertTimelineItem.AsBookmarkTimelineItem() (*BookmarkTimelineItem,bool)` is added
+- Function `IncidentsClient.ListOfBookmarksResponder(*http.Response) (IncidentBookmarkList,error)` is added
+- Function `Settings.AsUeba() (*Ueba,bool)` is added
+- Function `ThreatIntelligenceIndicatorsClient.List(context.Context,string,string,string,string,*int32,string,string) (ThreatIntelligenceInformationListPage,error)` is added
+- Function `ThreatIntelligenceInformation.AsThreatIntelligenceInformation() (*ThreatIntelligenceInformation,bool)` is added
+- Function `HuntingBookmark.AsFileHashEntity() (*FileHashEntity,bool)` is added
+- Function `PossibleThreatIntelligenceSortingCriteriaValues() []ThreatIntelligenceSortingCriteria` is added
+- Function `IncidentsClient.ListOfEntitiesPreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `*OfficeATPDataConnector.UnmarshalJSON([]byte) error` is added
+- Function `HostEntity.AsHuntingBookmark() (*HuntingBookmark,bool)` is added
+- Function `ThreatIntelligenceInformationListIterator.NotDone() bool` is added
+- Function `*ThreatIntelligenceIndicatorModelForRequestBody.UnmarshalJSON([]byte) error` is added
+- Function `HuntingBookmark.AsMalwareEntity() (*MalwareEntity,bool)` is added
+- Function `HuntingBookmark.AsEntity() (*Entity,bool)` is added
+- Function `EntityTimelineItem.AsEntityTimelineItem() (*EntityTimelineItem,bool)` is added
+- Function `NewThreatIntelligenceIndicatorClientWithBaseURI(string,string) ThreatIntelligenceIndicatorClient` is added
+- Function `WatchlistList.MarshalJSON() ([]byte,error)` is added
+- Function `AADCheckRequirements.AsOfficeATPCheckRequirements() (*OfficeATPCheckRequirements,bool)` is added
+- Function `PossibleSourceValues() []Source` is added
+- Function `OfficeATPDataConnector.AsASCDataConnector() (*ASCDataConnector,bool)` is added
+- Function `AATPCheckRequirements.AsOfficeATPCheckRequirements() (*OfficeATPCheckRequirements,bool)` is added
+- Function `ThreatIntelligenceIndicatorClient.CreateIndicatorPreparer(context.Context,string,string,string,ThreatIntelligenceIndicatorModelForRequestBody) (*http.Request,error)` is added
+- Function `OfficeATPCheckRequirements.AsAATPCheckRequirements() (*AATPCheckRequirements,bool)` is added
+- Function `SecurityAlert.AsHuntingBookmark() (*HuntingBookmark,bool)` is added
+- Function `HuntingBookmark.AsBasicEntity() (BasicEntity,bool)` is added
+- Function `EntityTimelineItem.MarshalJSON() ([]byte,error)` is added
+- Function `IncidentsClient.ListOfEntitiesResponder(*http.Response) (IncidentEntitiesResponse,error)` is added
+- Function `*EntityTimelineResponse.UnmarshalJSON([]byte) error` is added
+- Function `ThreatIntelligenceIndicatorClient.GetPreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `HuntingBookmarkProperties.MarshalJSON() ([]byte,error)` is added
+- Function `WatchlistListPage.Response() WatchlistList` is added
+- Function `SecurityAlertTimelineItem.AsBasicEntityTimelineItem() (BasicEntityTimelineItem,bool)` is added
+- Function `RegistryKeyEntity.AsHuntingBookmark() (*HuntingBookmark,bool)` is added
+- Function `*Ueba.UnmarshalJSON([]byte) error` is added
+- Function `WatchlistsClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `MCASCheckRequirements.AsOfficeATPCheckRequirements() (*OfficeATPCheckRequirements,bool)` is added
+- Function `*ThreatIntelligenceInformationListPage.NextWithContext(context.Context) error` is added
+- Function `*WatchlistListPage.Next() error` is added
+- Function `ThreatIntelligenceIndicatorMetricsClient.List(context.Context,string,string,string) (ThreatIntelligenceMetricsList,error)` is added
+- Function `HuntingBookmark.AsRegistryValueEntity() (*RegistryValueEntity,bool)` is added
+- Function `OfficeATPDataConnector.AsTIDataConnector() (*TIDataConnector,bool)` is added
+- Function `OfficeATPCheckRequirements.AsDataConnectorsCheckRequirements() (*DataConnectorsCheckRequirements,bool)` is added
+- Function `EntitiesGetTimelineClient.ListPreparer(context.Context,string,string,string,string,EntityTimelineParameters) (*http.Request,error)` is added
+- Function `IncidentsClient.ListOfEntitiesSender(*http.Request) (*http.Response,error)` is added
+- Function `ThreatIntelligenceIndicatorMetricsClient.ListPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `WatchlistsClient.GetResponder(*http.Response) (Watchlist,error)` is added
+- Function `ThreatIntelligenceIndicatorClient.CreateResponder(*http.Response) (ThreatIntelligenceInformationModel,error)` is added
+- Function `IncidentCommentsClient.DeleteCommentSender(*http.Request) (*http.Response,error)` is added
+- Function `WatchlistListPage.NotDone() bool` is added
+- Function `OfficeATPDataConnector.AsOfficeATPDataConnector() (*OfficeATPDataConnector,bool)` is added
+- Function `OfficeDataConnector.AsOfficeATPDataConnector() (*OfficeATPDataConnector,bool)` is added
+- Function `IncidentsClient.ListOfBookmarksSender(*http.Request) (*http.Response,error)` is added
+- Function `OfficeATPCheckRequirements.AsTICheckRequirements() (*TICheckRequirements,bool)` is added
+- Function `*ThreatIntelligenceIndicatorModel.UnmarshalJSON([]byte) error` is added
+- Function `OfficeATPDataConnector.AsAADDataConnector() (*AADDataConnector,bool)` is added
+- Function `*EntityAnalytics.UnmarshalJSON([]byte) error` is added
+- Function `IncidentsClient.ListOfAlertsSender(*http.Request) (*http.Response,error)` is added
+- Function `MDATPDataConnector.AsOfficeATPDataConnector() (*OfficeATPDataConnector,bool)` is added
+- Function `HuntingBookmark.AsIoTDeviceEntity() (*IoTDeviceEntity,bool)` is added
+- Function `OfficeATPDataConnector.AsMCASDataConnector() (*MCASDataConnector,bool)` is added
+- Function `ThreatIntelligenceInformationListPage.Response() ThreatIntelligenceInformationList` is added
+- Function `ActivityTimelineItem.AsBasicEntityTimelineItem() (BasicEntityTimelineItem,bool)` is added
+- Function `WatchlistsClient.Delete(context.Context,string,string,string,string) (autorest.Response,error)` is added
+- Function `Ueba.AsBasicSettings() (BasicSettings,bool)` is added
+- Function `DNSEntity.AsHuntingBookmark() (*HuntingBookmark,bool)` is added
+- Function `ThreatIntelligenceIndicatorsClient.ListComplete(context.Context,string,string,string,string,*int32,string,string) (ThreatIntelligenceInformationListIterator,error)` is added
+- Function `OfficeATPDataConnector.AsAATPDataConnector() (*AATPDataConnector,bool)` is added
+- Function `OfficeATPCheckRequirements.MarshalJSON() ([]byte,error)` is added
+- Function `DataConnector.AsOfficeATPDataConnector() (*OfficeATPDataConnector,bool)` is added
+- Function `PossibleSettingKindValues() []SettingKind` is added
+- Function `NewThreatIntelligenceInformationListPage(ThreatIntelligenceInformationList,func(context.Context, ThreatIntelligenceInformationList) (ThreatIntelligenceInformationList, error)) ThreatIntelligenceInformationListPage` is added
+- Function `ThreatIntelligenceInformation.AsBasicThreatIntelligenceInformation() (BasicThreatIntelligenceInformation,bool)` is added
+- Function `ThreatIntelligenceIndicatorModel.AsBasicThreatIntelligenceInformation() (BasicThreatIntelligenceInformation,bool)` is added
+- Function `ThreatIntelligenceIndicatorProperties.MarshalJSON() ([]byte,error)` is added
+- Function `EyesOn.AsEntityAnalytics() (*EntityAnalytics,bool)` is added
+- Function `ThreatIntelligenceIndicatorClient.Create(context.Context,string,string,string,string,ThreatIntelligenceIndicatorModelForRequestBody) (ThreatIntelligenceInformationModel,error)` is added
+- Function `ThreatIntelligenceIndicatorMetricsClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `IoTDeviceEntity.AsHuntingBookmark() (*HuntingBookmark,bool)` is added
+- Function `TiTaxiiCheckRequirements.AsOfficeATPCheckRequirements() (*OfficeATPCheckRequirements,bool)` is added
+- Function `ThreatIntelligenceIndicatorClient.QueryIndicatorsResponder(*http.Response) (ThreatIntelligenceInformationList,error)` is added
+- Function `ThreatIntelligenceIndicatorsClient.ListPreparer(context.Context,string,string,string,string,*int32,string,string) (*http.Request,error)` is added
+- Function `WatchlistsClient.ListPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `WatchlistListIterator.Value() Watchlist` is added
+- Function `ThreatIntelligenceInformationListIterator.Value() BasicThreatIntelligenceInformation` is added
+- Function `OfficeATPCheckRequirements.AsASCCheckRequirements() (*ASCCheckRequirements,bool)` is added
+- Function `PossibleThreatIntelligenceResourceKindValues() []ThreatIntelligenceResourceKind` is added
+- Function `ThreatIntelligenceIndicatorsClient.ListResponder(*http.Response) (ThreatIntelligenceInformationList,error)` is added
+- Function `EntitiesGetTimelineClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `ThreatIntelligenceIndicatorClient.AppendTagsSender(*http.Request) (*http.Response,error)` is added
+- Function `IncidentCommentsClient.DeleteCommentResponder(*http.Response) (autorest.Response,error)` is added
+- Function `ThreatIntelligenceIndicatorClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `NewThreatIntelligenceInformationListIterator(ThreatIntelligenceInformationListPage) ThreatIntelligenceInformationListIterator` is added
+- Function `SecurityAlertTimelineItem.AsSecurityAlertTimelineItem() (*SecurityAlertTimelineItem,bool)` is added
+- Function `HuntingBookmark.AsRegistryKeyEntity() (*RegistryKeyEntity,bool)` is added
+- Function `AccountEntity.AsHuntingBookmark() (*HuntingBookmark,bool)` is added
+- Function `PossibleKindBasicThreatIntelligenceInformationValues() []KindBasicThreatIntelligenceInformation` is added
+- Function `ThreatIntelligenceInformation.AsThreatIntelligenceIndicatorModel() (*ThreatIntelligenceIndicatorModel,bool)` is added
+- Function `EntityTimelineItem.AsSecurityAlertTimelineItem() (*SecurityAlertTimelineItem,bool)` is added
+- Function `HuntingBookmark.MarshalJSON() ([]byte,error)` is added
+- Function `DataConnectorsCheckRequirements.AsOfficeATPCheckRequirements() (*OfficeATPCheckRequirements,bool)` is added
+- Function `ActivityTimelineItem.AsBookmarkTimelineItem() (*BookmarkTimelineItem,bool)` is added
+- Function `*Watchlist.UnmarshalJSON([]byte) error` is added
+- Function `IPEntity.AsHuntingBookmark() (*HuntingBookmark,bool)` is added
+- Function `*WatchlistListPage.NextWithContext(context.Context) error` is added
+- Function `AADDataConnector.AsOfficeATPDataConnector() (*OfficeATPDataConnector,bool)` is added
+- Function `WatchlistsClient.List(context.Context,string,string,string) (WatchlistListPage,error)` is added
+- Function `EntityAnalytics.AsEyesOn() (*EyesOn,bool)` is added
+- Function `FileHashEntity.AsHuntingBookmark() (*HuntingBookmark,bool)` is added
+- Function `ProcessEntity.AsHuntingBookmark() (*HuntingBookmark,bool)` is added
+- Function `MalwareEntity.AsHuntingBookmark() (*HuntingBookmark,bool)` is added
+- Function `BookmarkTimelineItem.AsBookmarkTimelineItem() (*BookmarkTimelineItem,bool)` is added
+- Function `NewThreatIntelligenceIndicatorMetricsClient(string) ThreatIntelligenceIndicatorMetricsClient` is added
+- Function `ThreatIntelligenceIndicatorClient.CreateIndicatorResponder(*http.Response) (ThreatIntelligenceInformationModel,error)` is added
+- Function `EyesOn.AsUeba() (*Ueba,bool)` is added
+- Function `*IncidentEntitiesResponse.UnmarshalJSON([]byte) error` is added
+- Function `ThreatIntelligenceIndicatorModel.MarshalJSON() ([]byte,error)` is added
+- Function `WatchlistsClient.CreatePreparer(context.Context,string,string,string,string,Watchlist) (*http.Request,error)` is added
+- Function `OfficeATPCheckRequirements.AsBasicDataConnectorsCheckRequirements() (BasicDataConnectorsCheckRequirements,bool)` is added
+- Function `BookmarkTimelineItem.AsBasicEntityTimelineItem() (BasicEntityTimelineItem,bool)` is added
+- Function `ThreatIntelligenceIndicatorModel.AsThreatIntelligenceInformation() (*ThreatIntelligenceInformation,bool)` is added
+- Function `HuntingBookmark.AsProcessEntity() (*ProcessEntity,bool)` is added
+- Function `ThreatIntelligenceIndicatorClient.CreateIndicatorSender(*http.Request) (*http.Response,error)` is added
+- Function `*WatchlistListIterator.NextWithContext(context.Context) error` is added
+- Function `EntityAnalytics.AsEntityAnalytics() (*EntityAnalytics,bool)` is added
+- Function `IncidentsClient.ListOfAlertsPreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `NewWatchlistListIterator(WatchlistListPage) WatchlistListIterator` is added
+- Function `FileEntity.AsHuntingBookmark() (*HuntingBookmark,bool)` is added
+- Function `AwsCloudTrailDataConnector.AsOfficeATPDataConnector() (*OfficeATPDataConnector,bool)` is added
+- Function `NewThreatIntelligenceIndicatorMetricsClientWithBaseURI(string,string) ThreatIntelligenceIndicatorMetricsClient` is added
+- Function `TiTaxiiDataConnector.AsOfficeATPDataConnector() (*OfficeATPDataConnector,bool)` is added
+- Function `ThreatIntelligenceIndicatorClient.ReplaceTags(context.Context,string,string,string,string,ThreatIntelligenceIndicatorModelForRequestBody) (ThreatIntelligenceInformationModel,error)` is added
+- Function `OfficeATPCheckRequirements.AsTiTaxiiCheckRequirements() (*TiTaxiiCheckRequirements,bool)` is added
+- Function `WatchlistsClient.CreateSender(*http.Request) (*http.Response,error)` is added
+- Function `ThreatIntelligenceIndicatorClient.CreateIndicator(context.Context,string,string,string,ThreatIntelligenceIndicatorModelForRequestBody) (ThreatIntelligenceInformationModel,error)` is added
+- Function `PossibleKindBasicEntityTimelineItemValues() []KindBasicEntityTimelineItem` is added
+- Function `*ThreatIntelligenceInformationModel.UnmarshalJSON([]byte) error` is added
+- Function `ThreatIntelligenceInformationListPage.NotDone() bool` is added
+- Function `WatchlistsClient.GetPreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `IncidentCommentsClient.DeleteCommentPreparer(context.Context,string,string,string,string,string) (*http.Request,error)` is added
+- Struct `ActivityTimelineItem` is added
+- Struct `BookmarkTimelineItem` is added
+- Struct `EntitiesGetTimelineClient` is added
+- Struct `EntityAnalytics` is added
+- Struct `EntityAnalyticsProperties` is added
+- Struct `EntityTimelineItem` is added
+- Struct `EntityTimelineParameters` is added
+- Struct `EntityTimelineResponse` is added
+- Struct `EventGroupingSettings` is added
+- Struct `HuntingBookmark` is added
+- Struct `HuntingBookmarkProperties` is added
+- Struct `IncidentAlertList` is added
+- Struct `IncidentBookmarkList` is added
+- Struct `IncidentEntitiesResponse` is added
+- Struct `IncidentEntitiesResultsMetadata` is added
+- Struct `OfficeATPCheckRequirements` is added
+- Struct `OfficeATPCheckRequirementsProperties` is added
+- Struct `OfficeATPDataConnector` is added
+- Struct `OfficeATPDataConnectorProperties` is added
+- Struct `OfficeDataConnectorDataTypesTeams` is added
+- Struct `SecurityAlertTimelineItem` is added
+- Struct `ThreatIntelligenceAppendTags` is added
+- Struct `ThreatIntelligenceFilteringCriteria` is added
+- Struct `ThreatIntelligenceGranularMarkingModel` is added
+- Struct `ThreatIntelligenceIndicatorClient` is added
+- Struct `ThreatIntelligenceIndicatorMetricsClient` is added
+- Struct `ThreatIntelligenceIndicatorModel` is added
+- Struct `ThreatIntelligenceIndicatorModelForRequestBody` is added
+- Struct `ThreatIntelligenceIndicatorProperties` is added
+- Struct `ThreatIntelligenceIndicatorsClient` is added
+- Struct `ThreatIntelligenceInformation` is added
+- Struct `ThreatIntelligenceInformationList` is added
+- Struct `ThreatIntelligenceInformationListIterator` is added
+- Struct `ThreatIntelligenceInformationListPage` is added
+- Struct `ThreatIntelligenceInformationModel` is added
+- Struct `ThreatIntelligenceKillChainPhase` is added
+- Struct `ThreatIntelligenceMetric` is added
+- Struct `ThreatIntelligenceMetricEntity` is added
+- Struct `ThreatIntelligenceMetrics` is added
+- Struct `ThreatIntelligenceMetricsList` is added
+- Struct `ThreatIntelligenceResourceKind1` is added
+- Struct `ThreatIntelligenceSortingCriteria1` is added
+- Struct `TimelineAggregation` is added
+- Struct `TimelineError` is added
+- Struct `TimelineResultsMetadata` is added
+- Struct `Ueba` is added
+- Struct `UebaProperties` is added
+- Struct `Watchlist` is added
+- Struct `WatchlistList` is added
+- Struct `WatchlistListIterator` is added
+- Struct `WatchlistListPage` is added
+- Struct `WatchlistProperties` is added
+- Struct `WatchlistsClient` is added
+- Field `LastModifiedTimeUtc` is added to struct `IncidentCommentProperties`
+- Field `EventGroupingSettings` is added to struct `ScheduledAlertRuleCommonProperties`
+- Field `Teams` is added to struct `OfficeDataConnectorDataTypes`
+- Field `EventGroupingSettings` is added to struct `ScheduledAlertRuleProperties`
+- Field `Etag` is added to struct `IncidentComment`
+- Field `EventGroupingSettings` is added to struct `ScheduledAlertRuleTemplateProperties`
+

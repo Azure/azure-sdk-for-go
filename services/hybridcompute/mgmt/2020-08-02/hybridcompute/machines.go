@@ -272,8 +272,7 @@ func (client MachinesClient) GetResponder(resp *http.Response) (result Machine, 
 	return
 }
 
-// ListByResourceGroup lists all the hybrid machines in the specified resource group. Use the nextLink property in the
-// response to get the next page of hybrid machines.
+// ListByResourceGroup lists all the hybrid machines in the specified resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 func (client MachinesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result MachineListResultPage, err error) {
@@ -387,8 +386,7 @@ func (client MachinesClient) ListByResourceGroupComplete(ctx context.Context, re
 	return
 }
 
-// ListBySubscription lists all the hybrid machines in the specified subscription. Use the nextLink property in the
-// response to get the next page of hybrid machines.
+// ListBySubscription lists all the hybrid machines in the specified subscription.
 func (client MachinesClient) ListBySubscription(ctx context.Context) (result MachineListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/MachinesClient.ListBySubscription")

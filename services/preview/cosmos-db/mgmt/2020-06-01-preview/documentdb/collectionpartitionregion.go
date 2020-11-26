@@ -26,7 +26,7 @@ import (
 	"net/http"
 )
 
-// CollectionPartitionRegionClient is the azure Cosmos DB Database Service Resource Provider REST API
+// CollectionPartitionRegionClient is the client for the CollectionPartitionRegion methods of the Documentdb service.
 type CollectionPartitionRegionClient struct {
 	BaseClient
 }

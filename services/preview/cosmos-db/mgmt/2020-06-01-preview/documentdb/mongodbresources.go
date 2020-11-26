@@ -26,7 +26,7 @@ import (
 	"net/http"
 )
 
-// MongoDBResourcesClient is the azure Cosmos DB Database Service Resource Provider REST API
+// MongoDBResourcesClient is the client for the MongoDBResources methods of the Documentdb service.
 type MongoDBResourcesClient struct {
 	BaseClient
 }

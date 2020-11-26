@@ -26,7 +26,7 @@ import (
 	"net/http"
 )
 
-// PartitionKeyRangeIDRegionClient is the azure Cosmos DB Database Service Resource Provider REST API
+// PartitionKeyRangeIDRegionClient is the client for the PartitionKeyRangeIDRegion methods of the Documentdb service.
 type PartitionKeyRangeIDRegionClient struct {
 	BaseClient
 }

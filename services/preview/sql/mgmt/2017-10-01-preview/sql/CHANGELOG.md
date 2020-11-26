@@ -1,0 +1,19 @@
+
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/b97299c968df5f99b724bd1231fd2161731d3b8f
+
+Code generator C:\Users\dapzhang\Documents\workspace\autorest.go
+
+## Breaking Changes
+
+- Function `NewElasticPoolOperationListResultPage` signature has been changed from `(func(context.Context, ElasticPoolOperationListResult) (ElasticPoolOperationListResult, error))` to `(ElasticPoolOperationListResult,func(context.Context, ElasticPoolOperationListResult) (ElasticPoolOperationListResult, error))`
+- Function `NewDatabaseVulnerabilityAssessmentListResultPage` signature has been changed from `(func(context.Context, DatabaseVulnerabilityAssessmentListResult) (DatabaseVulnerabilityAssessmentListResult, error))` to `(DatabaseVulnerabilityAssessmentListResult,func(context.Context, DatabaseVulnerabilityAssessmentListResult) (DatabaseVulnerabilityAssessmentListResult, error))`
+- Function `NewManagedInstanceKeyListResultPage` signature has been changed from `(func(context.Context, ManagedInstanceKeyListResult) (ManagedInstanceKeyListResult, error))` to `(ManagedInstanceKeyListResult,func(context.Context, ManagedInstanceKeyListResult) (ManagedInstanceKeyListResult, error))`
+- Function `NewDatabaseListResultPage` signature has been changed from `(func(context.Context, DatabaseListResult) (DatabaseListResult, error))` to `(DatabaseListResult,func(context.Context, DatabaseListResult) (DatabaseListResult, error))`
+- Function `NewElasticPoolListResultPage` signature has been changed from `(func(context.Context, ElasticPoolListResult) (ElasticPoolListResult, error))` to `(ElasticPoolListResult,func(context.Context, ElasticPoolListResult) (ElasticPoolListResult, error))`
+- Function `NewInstanceFailoverGroupListResultPage` signature has been changed from `(func(context.Context, InstanceFailoverGroupListResult) (InstanceFailoverGroupListResult, error))` to `(InstanceFailoverGroupListResult,func(context.Context, InstanceFailoverGroupListResult) (InstanceFailoverGroupListResult, error))`
+- Function `NewBackupShortTermRetentionPolicyListResultPage` signature has been changed from `(func(context.Context, BackupShortTermRetentionPolicyListResult) (BackupShortTermRetentionPolicyListResult, error))` to `(BackupShortTermRetentionPolicyListResult,func(context.Context, BackupShortTermRetentionPolicyListResult) (BackupShortTermRetentionPolicyListResult, error))`
+- Function `NewRecoverableManagedDatabaseListResultPage` signature has been changed from `(func(context.Context, RecoverableManagedDatabaseListResult) (RecoverableManagedDatabaseListResult, error))` to `(RecoverableManagedDatabaseListResult,func(context.Context, RecoverableManagedDatabaseListResult) (RecoverableManagedDatabaseListResult, error))`
+- Function `NewDatabaseOperationListResultPage` signature has been changed from `(func(context.Context, DatabaseOperationListResult) (DatabaseOperationListResult, error))` to `(DatabaseOperationListResult,func(context.Context, DatabaseOperationListResult) (DatabaseOperationListResult, error))`
+- Function `NewVulnerabilityAssessmentScanRecordListResultPage` signature has been changed from `(func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error))` to `(VulnerabilityAssessmentScanRecordListResult,func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error))`
+- Function `NewManagedInstanceEncryptionProtectorListResultPage` signature has been changed from `(func(context.Context, ManagedInstanceEncryptionProtectorListResult) (ManagedInstanceEncryptionProtectorListResult, error))` to `(ManagedInstanceEncryptionProtectorListResult,func(context.Context, ManagedInstanceEncryptionProtectorListResult) (ManagedInstanceEncryptionProtectorListResult, error))`
+

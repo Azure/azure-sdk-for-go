@@ -71,6 +71,9 @@ func (client RoleDefinitionsClient) List(ctx context.Context, vaultBaseURL strin
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.RoleDefinitionsClient", "List", resp, "Failure responding to request")
 	}
+	if result.rdlr.hasNextLink() && result.rdlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -112,7 +115,6 @@ func (client RoleDefinitionsClient) ListSender(req *http.Request) (*http.Respons
 func (client RoleDefinitionsClient) ListResponder(resp *http.Response) (result RoleDefinitionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -42,13 +42,13 @@ func NewDataFlowClient(endpoint string) DataFlowClient {
 // dataFlow - data flow resource definition.
 // ifMatch - eTag of the data flow entity. Should only be specified for update, for which it should match
 // existing entity or can be * for unconditional update.
-func (client DataFlowClient) CreateOrUpdateDataFlow(ctx context.Context, dataFlowName string, dataFlow DataFlowResource, ifMatch string) (result DataFlowResource, err error) {
+func (client DataFlowClient) CreateOrUpdateDataFlow(ctx context.Context, dataFlowName string, dataFlow DataFlowResource, ifMatch string) (result DataFlowCreateOrUpdateDataFlowFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataFlowClient.CreateOrUpdateDataFlow")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -69,16 +69,10 @@ func (client DataFlowClient) CreateOrUpdateDataFlow(ctx context.Context, dataFlo
 		return
 	}
 
-	resp, err := client.CreateOrUpdateDataFlowSender(req)
+	result, err = client.CreateOrUpdateDataFlowSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "CreateOrUpdateDataFlow", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "CreateOrUpdateDataFlow", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.CreateOrUpdateDataFlowResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "CreateOrUpdateDataFlow", resp, "Failure responding to request")
 	}
 
 	return
@@ -115,8 +109,14 @@ func (client DataFlowClient) CreateOrUpdateDataFlowPreparer(ctx context.Context,
 
 // CreateOrUpdateDataFlowSender sends the CreateOrUpdateDataFlow request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataFlowClient) CreateOrUpdateDataFlowSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+func (client DataFlowClient) CreateOrUpdateDataFlowSender(req *http.Request) (future DataFlowCreateOrUpdateDataFlowFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // CreateOrUpdateDataFlowResponder handles the response to the CreateOrUpdateDataFlow request. The method always
@@ -124,7 +124,7 @@ func (client DataFlowClient) CreateOrUpdateDataFlowSender(req *http.Request) (*h
 func (client DataFlowClient) CreateOrUpdateDataFlowResponder(resp *http.Response) (result DataFlowResource, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -134,13 +134,13 @@ func (client DataFlowClient) CreateOrUpdateDataFlowResponder(resp *http.Response
 // DeleteDataFlow deletes a data flow.
 // Parameters:
 // dataFlowName - the data flow name.
-func (client DataFlowClient) DeleteDataFlow(ctx context.Context, dataFlowName string) (result autorest.Response, err error) {
+func (client DataFlowClient) DeleteDataFlow(ctx context.Context, dataFlowName string) (result DataFlowDeleteDataFlowFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataFlowClient.DeleteDataFlow")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -159,16 +159,10 @@ func (client DataFlowClient) DeleteDataFlow(ctx context.Context, dataFlowName st
 		return
 	}
 
-	resp, err := client.DeleteDataFlowSender(req)
+	result, err = client.DeleteDataFlowSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "DeleteDataFlow", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "DeleteDataFlow", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.DeleteDataFlowResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "DeleteDataFlow", resp, "Failure responding to request")
 	}
 
 	return
@@ -199,8 +193,14 @@ func (client DataFlowClient) DeleteDataFlowPreparer(ctx context.Context, dataFlo
 
 // DeleteDataFlowSender sends the DeleteDataFlow request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataFlowClient) DeleteDataFlowSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+func (client DataFlowClient) DeleteDataFlowSender(req *http.Request) (future DataFlowDeleteDataFlowFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // DeleteDataFlowResponder handles the response to the DeleteDataFlow request. The method always
@@ -208,7 +208,7 @@ func (client DataFlowClient) DeleteDataFlowSender(req *http.Request) (*http.Resp
 func (client DataFlowClient) DeleteDataFlowResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -412,5 +412,97 @@ func (client DataFlowClient) GetDataFlowsByWorkspaceComplete(ctx context.Context
 		}()
 	}
 	result.page, err = client.GetDataFlowsByWorkspace(ctx)
+	return
+}
+
+// RenameDataFlow renames a dataflow.
+// Parameters:
+// dataFlowName - the data flow name.
+// request - proposed new name.
+func (client DataFlowClient) RenameDataFlow(ctx context.Context, dataFlowName string, request RenameRequest) (result DataFlowRenameDataFlowFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DataFlowClient.RenameDataFlow")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: dataFlowName,
+			Constraints: []validation.Constraint{{Target: "dataFlowName", Name: validation.MaxLength, Rule: 260, Chain: nil},
+				{Target: "dataFlowName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "dataFlowName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}},
+		{TargetValue: request,
+			Constraints: []validation.Constraint{{Target: "request.NewName", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "request.NewName", Name: validation.MaxLength, Rule: 260, Chain: nil},
+					{Target: "request.NewName", Name: validation.MinLength, Rule: 1, Chain: nil},
+					{Target: "request.NewName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("artifacts.DataFlowClient", "RenameDataFlow", err.Error())
+	}
+
+	req, err := client.RenameDataFlowPreparer(ctx, dataFlowName, request)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "RenameDataFlow", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.RenameDataFlowSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "RenameDataFlow", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// RenameDataFlowPreparer prepares the RenameDataFlow request.
+func (client DataFlowClient) RenameDataFlowPreparer(ctx context.Context, dataFlowName string, request RenameRequest) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"dataFlowName": autorest.Encode("path", dataFlowName),
+	}
+
+	const APIVersion = "2019-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{endpoint}", urlParameters),
+		autorest.WithPathParameters("/dataflows/{dataFlowName}/rename", pathParameters),
+		autorest.WithJSON(request),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// RenameDataFlowSender sends the RenameDataFlow request. The method will close the
+// http.Response Body if it receives an error.
+func (client DataFlowClient) RenameDataFlowSender(req *http.Request) (future DataFlowRenameDataFlowFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// RenameDataFlowResponder handles the response to the RenameDataFlow request. The method always
+// closes the http.Response Body.
+func (client DataFlowClient) RenameDataFlowResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
 	return
 }

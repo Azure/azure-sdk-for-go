@@ -1,0 +1,286 @@
+
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/b97299c968df5f99b724bd1231fd2161731d3b8f
+
+Code generator C:\Users\dapzhang\Documents\workspace\autorest.go
+
+## Breaking Changes
+
+- Function `NewVirtualNetworkRuleListResultPage` signature has been changed from `(func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error))` to `(VirtualNetworkRuleListResult,func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error))`
+
+## New Content
+
+- Function `*WaitStatisticsResultListPage.NextWithContext(context.Context) error` is added
+- Function `PrivateLinkResourcesClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `TopQueryStatisticsResultListPage.NotDone() bool` is added
+- Function `*WaitStatisticsResultListIterator.Next() error` is added
+- Function `PrivateEndpointConnectionsClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `*QueryText.UnmarshalJSON([]byte) error` is added
+- Function `PrivateEndpointConnectionsClient.ListByServerSender(*http.Request) (*http.Response,error)` is added
+- Function `AdvisorsClient.ListByServerSender(*http.Request) (*http.Response,error)` is added
+- Function `RecommendedActionsClient.ListByServerComplete(context.Context,string,string,string,string) (RecommendationActionsResultListIterator,error)` is added
+- Function `NewWaitStatisticsResultListPage(WaitStatisticsResultList,func(context.Context, WaitStatisticsResultList) (WaitStatisticsResultList, error)) WaitStatisticsResultListPage` is added
+- Function `NewRecommendedActionsClient(string) RecommendedActionsClient` is added
+- Function `WaitStatisticsClient.GetResponder(*http.Response) (WaitStatistic,error)` is added
+- Function `TopQueryStatisticsResultListPage.Values() []QueryStatistic` is added
+- Function `BaseClient.CreateRecommendedActionSessionResponder(*http.Response) (autorest.Response,error)` is added
+- Function `RecommendedActionsClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `WaitStatisticsClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `*RecommendationActionsResultListIterator.Next() error` is added
+- Function `PrivateLinkResourcesClient.ListByServerSender(*http.Request) (*http.Response,error)` is added
+- Function `LocationBasedRecommendedActionSessionsOperationStatusClient.GetResponder(*http.Response) (RecommendedActionSessionsOperationStatus,error)` is added
+- Function `PrivateEndpointConnectionsClient.UpdateTagsSender(*http.Request) (PrivateEndpointConnectionsUpdateTagsFuture,error)` is added
+- Function `PrivateEndpointConnectionsClient.GetPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `AdvisorsResultList.IsEmpty() bool` is added
+- Function `QueryTextsResultListIterator.NotDone() bool` is added
+- Function `AdvisorsClient.ListByServerComplete(context.Context,string,string) (AdvisorsResultListIterator,error)` is added
+- Function `RecommendationActionProperties.MarshalJSON() ([]byte,error)` is added
+- Function `NewTopQueryStatisticsResultListPage(TopQueryStatisticsResultList,func(context.Context, TopQueryStatisticsResultList) (TopQueryStatisticsResultList, error)) TopQueryStatisticsResultListPage` is added
+- Function `TopQueryStatisticsResultListIterator.Value() QueryStatistic` is added
+- Function `*AdvisorsResultListIterator.NextWithContext(context.Context) error` is added
+- Function `PrivateEndpointConnectionProperties.MarshalJSON() ([]byte,error)` is added
+- Function `*TopQueryStatisticsInput.UnmarshalJSON([]byte) error` is added
+- Function `AdvisorsResultListIterator.Value() Advisor` is added
+- Function `PrivateEndpointConnectionsClient.UpdateTagsResponder(*http.Response) (PrivateEndpointConnection,error)` is added
+- Function `PrivateLinkResourceListResultIterator.Value() PrivateLinkResource` is added
+- Function `*PrivateLinkResourceListResultPage.NextWithContext(context.Context) error` is added
+- Function `NewLocationBasedRecommendedActionSessionsResultClient(string) LocationBasedRecommendedActionSessionsResultClient` is added
+- Function `LocationBasedRecommendedActionSessionsOperationStatusClient.GetPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `NewWaitStatisticsResultListIterator(WaitStatisticsResultListPage) WaitStatisticsResultListIterator` is added
+- Function `WaitStatisticsResultListPage.NotDone() bool` is added
+- Function `*QueryStatistic.UnmarshalJSON([]byte) error` is added
+- Function `RecommendationActionsResultListPage.Response() RecommendationActionsResultList` is added
+- Function `RecommendationActionsResultList.IsEmpty() bool` is added
+- Function `NewPrivateLinkResourceListResultIterator(PrivateLinkResourceListResultPage) PrivateLinkResourceListResultIterator` is added
+- Function `QueryStatistic.MarshalJSON() ([]byte,error)` is added
+- Function `PrivateEndpointConnectionListResultPage.Response() PrivateEndpointConnectionListResult` is added
+- Function `NewLocationBasedRecommendedActionSessionsOperationStatusClientWithBaseURI(string,string) LocationBasedRecommendedActionSessionsOperationStatusClient` is added
+- Function `QueryTextsResultListIterator.Value() QueryText` is added
+- Function `LocationBasedRecommendedActionSessionsResultClient.ListPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `WaitStatisticsResultListIterator.Value() WaitStatistic` is added
+- Function `PrivateLinkResourcesClient.GetPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `*RecommendationAction.UnmarshalJSON([]byte) error` is added
+- Function `TopQueryStatisticsResultList.IsEmpty() bool` is added
+- Function `NewLocationBasedRecommendedActionSessionsResultClientWithBaseURI(string,string) LocationBasedRecommendedActionSessionsResultClient` is added
+- Function `*QueryTextsResultListPage.NextWithContext(context.Context) error` is added
+- Function `AdvisorsClient.ListByServerPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `NewPrivateEndpointConnectionsClientWithBaseURI(string,string) PrivateEndpointConnectionsClient` is added
+- Function `NewRecommendedActionsClientWithBaseURI(string,string) RecommendedActionsClient` is added
+- Function `PrivateEndpointConnectionsClient.ListByServer(context.Context,string,string) (PrivateEndpointConnectionListResultPage,error)` is added
+- Function `RecommendationActionsResultListIterator.NotDone() bool` is added
+- Function `WaitStatisticsClient.ListByServer(context.Context,string,string,WaitStatisticsInput) (WaitStatisticsResultListPage,error)` is added
+- Function `PrivateLinkResourceListResultPage.Response() PrivateLinkResourceListResult` is added
+- Function `*PrivateEndpointConnectionListResultPage.NextWithContext(context.Context) error` is added
+- Function `PrivateLinkResourcesClient.ListByServer(context.Context,string,string) (PrivateLinkResourceListResultPage,error)` is added
+- Function `PrivateEndpointConnectionsClient.ListByServerPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `PrivateEndpointConnectionsClient.CreateOrUpdateSender(*http.Request) (PrivateEndpointConnectionsCreateOrUpdateFuture,error)` is added
+- Function `*QueryTextsResultListIterator.NextWithContext(context.Context) error` is added
+- Function `QueryTextsClient.ListByServerPreparer(context.Context,string,string,[]string) (*http.Request,error)` is added
+- Function `TopQueryStatisticsResultListIterator.Response() TopQueryStatisticsResultList` is added
+- Function `QueryTextsClient.GetPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `TopQueryStatisticsClient.GetPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `QueryText.MarshalJSON() ([]byte,error)` is added
+- Function `AdvisorsResultListIterator.Response() AdvisorsResultList` is added
+- Function `*TopQueryStatisticsResultListIterator.NextWithContext(context.Context) error` is added
+- Function `TopQueryStatisticsResultListIterator.NotDone() bool` is added
+- Function `NewRecommendationActionsResultListPage(RecommendationActionsResultList,func(context.Context, RecommendationActionsResultList) (RecommendationActionsResultList, error)) RecommendationActionsResultListPage` is added
+- Function `PrivateEndpointConnectionsClient.ListByServerResponder(*http.Response) (PrivateEndpointConnectionListResult,error)` is added
+- Function `NewQueryTextsClient(string) QueryTextsClient` is added
+- Function `RecommendedActionsClient.ListByServer(context.Context,string,string,string,string) (RecommendationActionsResultListPage,error)` is added
+- Function `QueryTextsClient.ListByServerResponder(*http.Response) (QueryTextsResultList,error)` is added
+- Function `NewAdvisorsResultListIterator(AdvisorsResultListPage) AdvisorsResultListIterator` is added
+- Function `AdvisorsResultListPage.Response() AdvisorsResultList` is added
+- Function `AdvisorsClient.Get(context.Context,string,string,string) (Advisor,error)` is added
+- Function `*TopQueryStatisticsResultListPage.NextWithContext(context.Context) error` is added
+- Function `NewPrivateLinkResourceListResultPage(PrivateLinkResourceListResult,func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage` is added
+- Function `PrivateLinkResourcesClient.ListByServerComplete(context.Context,string,string) (PrivateLinkResourceListResultIterator,error)` is added
+- Function `WaitStatistic.MarshalJSON() ([]byte,error)` is added
+- Function `Advisor.MarshalJSON() ([]byte,error)` is added
+- Function `WaitStatisticsClient.ListByServerResponder(*http.Response) (WaitStatisticsResultList,error)` is added
+- Function `RecommendationActionsResultListIterator.Value() RecommendationAction` is added
+- Function `RecommendedActionsClient.ListByServerSender(*http.Request) (*http.Response,error)` is added
+- Function `PrivateEndpointConnectionListResultIterator.Response() PrivateEndpointConnectionListResult` is added
+- Function `QueryTextsResultList.IsEmpty() bool` is added
+- Function `QueryTextsClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `*PrivateEndpointConnectionsDeleteFuture.Result(PrivateEndpointConnectionsClient) (autorest.Response,error)` is added
+- Function `QueryTextsResultListPage.NotDone() bool` is added
+- Function `LocationBasedRecommendedActionSessionsResultClient.ListComplete(context.Context,string,string) (RecommendationActionsResultListIterator,error)` is added
+- Function `AdvisorsClient.ListByServerResponder(*http.Response) (AdvisorsResultList,error)` is added
+- Function `*TopQueryStatisticsResultListIterator.Next() error` is added
+- Function `NewTopQueryStatisticsClientWithBaseURI(string,string) TopQueryStatisticsClient` is added
+- Function `LocationBasedRecommendedActionSessionsResultClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `PrivateLinkResourcesClient.Get(context.Context,string,string,string) (PrivateLinkResource,error)` is added
+- Function `TopQueryStatisticsClient.ListByServerPreparer(context.Context,string,string,TopQueryStatisticsInput) (*http.Request,error)` is added
+- Function `RecommendationAction.MarshalJSON() ([]byte,error)` is added
+- Function `PrivateEndpointConnectionsClient.ListByServerComplete(context.Context,string,string) (PrivateEndpointConnectionListResultIterator,error)` is added
+- Function `NewAdvisorsClientWithBaseURI(string,string) AdvisorsClient` is added
+- Function `PrivateEndpointConnectionListResultPage.Values() []PrivateEndpointConnection` is added
+- Function `RecommendationActionsResultListPage.Values() []RecommendationAction` is added
+- Function `PrivateEndpointConnectionsClient.CreateOrUpdateResponder(*http.Response) (PrivateEndpointConnection,error)` is added
+- Function `NewWaitStatisticsClientWithBaseURI(string,string) WaitStatisticsClient` is added
+- Function `*CreateRecommendedActionSessionFuture.Result(BaseClient) (autorest.Response,error)` is added
+- Function `TagsObject.MarshalJSON() ([]byte,error)` is added
+- Function `NewPrivateEndpointConnectionListResultPage(PrivateEndpointConnectionListResult,func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage` is added
+- Function `PrivateEndpointConnectionsClient.UpdateTags(context.Context,string,string,string,TagsObject) (PrivateEndpointConnectionsUpdateTagsFuture,error)` is added
+- Function `WaitStatisticsClient.ListByServerComplete(context.Context,string,string,WaitStatisticsInput) (WaitStatisticsResultListIterator,error)` is added
+- Function `*RecommendationActionsResultListIterator.NextWithContext(context.Context) error` is added
+- Function `NewAdvisorsResultListPage(AdvisorsResultList,func(context.Context, AdvisorsResultList) (AdvisorsResultList, error)) AdvisorsResultListPage` is added
+- Function `BaseClient.CreateRecommendedActionSession(context.Context,string,string,string,string) (CreateRecommendedActionSessionFuture,error)` is added
+- Function `PrivateEndpointConnectionsClient.DeleteSender(*http.Request) (PrivateEndpointConnectionsDeleteFuture,error)` is added
+- Function `NewAdvisorsClient(string) AdvisorsClient` is added
+- Function `QueryTextsClient.GetResponder(*http.Response) (QueryText,error)` is added
+- Function `*WaitStatisticsResultListPage.Next() error` is added
+- Function `RecommendedActionsClient.Get(context.Context,string,string,string,string) (RecommendationAction,error)` is added
+- Function `PrivateEndpointConnectionListResult.IsEmpty() bool` is added
+- Function `WaitStatisticsResultListPage.Response() WaitStatisticsResultList` is added
+- Function `WaitStatisticsInput.MarshalJSON() ([]byte,error)` is added
+- Function `PrivateEndpointConnectionListResultIterator.Value() PrivateEndpointConnection` is added
+- Function `LocationBasedRecommendedActionSessionsResultClient.List(context.Context,string,string) (RecommendationActionsResultListPage,error)` is added
+- Function `AdvisorsResultListIterator.NotDone() bool` is added
+- Function `AdvisorsClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `PrivateEndpointConnectionListResultIterator.NotDone() bool` is added
+- Function `*PrivateEndpointConnectionListResultPage.Next() error` is added
+- Function `NewQueryTextsClientWithBaseURI(string,string) QueryTextsClient` is added
+- Function `PrivateEndpointConnectionListResultPage.NotDone() bool` is added
+- Function `WaitStatisticsClient.ListByServerPreparer(context.Context,string,string,WaitStatisticsInput) (*http.Request,error)` is added
+- Function `*WaitStatisticsInput.UnmarshalJSON([]byte) error` is added
+- Function `NewLocationBasedRecommendedActionSessionsOperationStatusClient(string) LocationBasedRecommendedActionSessionsOperationStatusClient` is added
+- Function `NewRecommendationActionsResultListIterator(RecommendationActionsResultListPage) RecommendationActionsResultListIterator` is added
+- Function `RecommendedActionsClient.GetPreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `NewQueryTextsResultListPage(QueryTextsResultList,func(context.Context, QueryTextsResultList) (QueryTextsResultList, error)) QueryTextsResultListPage` is added
+- Function `RecommendationActionsResultListPage.NotDone() bool` is added
+- Function `NewPrivateEndpointConnectionListResultIterator(PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator` is added
+- Function `TopQueryStatisticsClient.ListByServerResponder(*http.Response) (TopQueryStatisticsResultList,error)` is added
+- Function `AdvisorsClient.GetResponder(*http.Response) (Advisor,error)` is added
+- Function `*AdvisorsResultListPage.Next() error` is added
+- Function `RecommendedActionsClient.GetResponder(*http.Response) (RecommendationAction,error)` is added
+- Function `QueryTextsClient.Get(context.Context,string,string,string) (QueryText,error)` is added
+- Function `PrivateEndpointConnectionsClient.DeleteResponder(*http.Response) (autorest.Response,error)` is added
+- Function `WaitStatisticsClient.Get(context.Context,string,string,string) (WaitStatistic,error)` is added
+- Function `*WaitStatisticsResultListIterator.NextWithContext(context.Context) error` is added
+- Function `AdvisorsClient.GetPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `WaitStatisticsResultListIterator.Response() WaitStatisticsResultList` is added
+- Function `NewTopQueryStatisticsClient(string) TopQueryStatisticsClient` is added
+- Function `*AdvisorsResultListIterator.Next() error` is added
+- Function `NewTopQueryStatisticsResultListIterator(TopQueryStatisticsResultListPage) TopQueryStatisticsResultListIterator` is added
+- Function `PrivateEndpointConnectionsClient.CreateOrUpdatePreparer(context.Context,string,string,string,PrivateEndpointConnection) (*http.Request,error)` is added
+- Function `WaitStatisticsResultListIterator.NotDone() bool` is added
+- Function `PrivateLinkServiceConnectionStateProperty.MarshalJSON() ([]byte,error)` is added
+- Function `*RecommendationActionsResultListPage.Next() error` is added
+- Function `PrivateEndpointConnection.MarshalJSON() ([]byte,error)` is added
+- Function `NewPrivateEndpointConnectionsClient(string) PrivateEndpointConnectionsClient` is added
+- Function `PrivateLinkResourceListResultIterator.Response() PrivateLinkResourceListResult` is added
+- Function `RecommendationActionsResultListIterator.Response() RecommendationActionsResultList` is added
+- Function `RecommendedActionsClient.ListByServerPreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `WaitStatisticsClient.GetPreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `*PrivateEndpointConnectionListResultIterator.NextWithContext(context.Context) error` is added
+- Function `BaseClient.CreateRecommendedActionSessionPreparer(context.Context,string,string,string,string) (*http.Request,error)` is added
+- Function `PrivateEndpointConnectionsClient.CreateOrUpdate(context.Context,string,string,string,PrivateEndpointConnection) (PrivateEndpointConnectionsCreateOrUpdateFuture,error)` is added
+- Function `AdvisorsResultListPage.Values() []Advisor` is added
+- Function `QueryTextsClient.ListByServerComplete(context.Context,string,string,[]string) (QueryTextsResultListIterator,error)` is added
+- Function `PrivateLinkResourceListResultIterator.NotDone() bool` is added
+- Function `TopQueryStatisticsInput.MarshalJSON() ([]byte,error)` is added
+- Function `PrivateLinkResourceListResult.IsEmpty() bool` is added
+- Function `WaitStatisticsClient.ListByServerSender(*http.Request) (*http.Response,error)` is added
+- Function `*PrivateEndpointConnectionsCreateOrUpdateFuture.Result(PrivateEndpointConnectionsClient) (PrivateEndpointConnection,error)` is added
+- Function `*PrivateLinkResourceListResultPage.Next() error` is added
+- Function `QueryTextsClient.ListByServerSender(*http.Request) (*http.Response,error)` is added
+- Function `PrivateEndpointConnectionsClient.GetResponder(*http.Response) (PrivateEndpointConnection,error)` is added
+- Function `LocationBasedRecommendedActionSessionsResultClient.ListResponder(*http.Response) (RecommendationActionsResultList,error)` is added
+- Function `BaseClient.CreateRecommendedActionSessionSender(*http.Request) (CreateRecommendedActionSessionFuture,error)` is added
+- Function `QueryTextsResultListPage.Values() []QueryText` is added
+- Function `PrivateEndpointConnectionsClient.Delete(context.Context,string,string,string) (PrivateEndpointConnectionsDeleteFuture,error)` is added
+- Function `*TopQueryStatisticsResultListPage.Next() error` is added
+- Function `LocationBasedRecommendedActionSessionsOperationStatusClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `TopQueryStatisticsClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `*RecommendationActionsResultListPage.NextWithContext(context.Context) error` is added
+- Function `PrivateEndpointConnectionsClient.DeletePreparer(context.Context,string,string,string) (*http.Request,error)` is added
+- Function `PrivateLinkResourcesClient.ListByServerPreparer(context.Context,string,string) (*http.Request,error)` is added
+- Function `RecommendedActionsClient.ListByServerResponder(*http.Response) (RecommendationActionsResultList,error)` is added
+- Function `TopQueryStatisticsClient.ListByServerComplete(context.Context,string,string,TopQueryStatisticsInput) (TopQueryStatisticsResultListIterator,error)` is added
+- Function `PrivateLinkResourceListResultPage.Values() []PrivateLinkResource` is added
+- Function `*AdvisorsResultListPage.NextWithContext(context.Context) error` is added
+- Function `NewWaitStatisticsClient(string) WaitStatisticsClient` is added
+- Function `NewPrivateLinkResourcesClientWithBaseURI(string,string) PrivateLinkResourcesClient` is added
+- Function `*PrivateLinkResourceListResultIterator.Next() error` is added
+- Function `QueryTextsResultListPage.Response() QueryTextsResultList` is added
+- Function `PrivateLinkResourcesClient.GetResponder(*http.Response) (PrivateLinkResource,error)` is added
+- Function `*WaitStatistic.UnmarshalJSON([]byte) error` is added
+- Function `TopQueryStatisticsResultListPage.Response() TopQueryStatisticsResultList` is added
+- Function `TopQueryStatisticsClient.ListByServer(context.Context,string,string,TopQueryStatisticsInput) (TopQueryStatisticsResultListPage,error)` is added
+- Function `QueryTextsResultListIterator.Response() QueryTextsResultList` is added
+- Function `QueryTextsClient.ListByServer(context.Context,string,string,[]string) (QueryTextsResultListPage,error)` is added
+- Function `*PrivateEndpointConnectionListResultIterator.Next() error` is added
+- Function `TopQueryStatisticsClient.Get(context.Context,string,string,string) (QueryStatistic,error)` is added
+- Function `WaitStatisticsResultListPage.Values() []WaitStatistic` is added
+- Function `WaitStatisticsResultList.IsEmpty() bool` is added
+- Function `TopQueryStatisticsClient.GetResponder(*http.Response) (QueryStatistic,error)` is added
+- Function `*QueryTextsResultListIterator.Next() error` is added
+- Function `PrivateEndpointConnectionsClient.UpdateTagsPreparer(context.Context,string,string,string,TagsObject) (*http.Request,error)` is added
+- Function `AdvisorsClient.ListByServer(context.Context,string,string) (AdvisorsResultListPage,error)` is added
+- Function `LocationBasedRecommendedActionSessionsOperationStatusClient.Get(context.Context,string,string) (RecommendedActionSessionsOperationStatus,error)` is added
+- Function `NewPrivateLinkResourcesClient(string) PrivateLinkResourcesClient` is added
+- Function `AdvisorsResultListPage.NotDone() bool` is added
+- Function `PrivateLinkResourcesClient.ListByServerResponder(*http.Response) (PrivateLinkResourceListResult,error)` is added
+- Function `NewQueryTextsResultListIterator(QueryTextsResultListPage) QueryTextsResultListIterator` is added
+- Function `PrivateLinkResourceListResultPage.NotDone() bool` is added
+- Function `*PrivateEndpointConnectionsUpdateTagsFuture.Result(PrivateEndpointConnectionsClient) (PrivateEndpointConnection,error)` is added
+- Function `*PrivateLinkResourceListResultIterator.NextWithContext(context.Context) error` is added
+- Function `PrivateEndpointConnectionsClient.Get(context.Context,string,string,string) (PrivateEndpointConnection,error)` is added
+- Function `TopQueryStatisticsClient.ListByServerSender(*http.Request) (*http.Response,error)` is added
+- Function `*QueryTextsResultListPage.Next() error` is added
+- Function `*PrivateEndpointConnection.UnmarshalJSON([]byte) error` is added
+- Struct `Advisor` is added
+- Struct `AdvisorsClient` is added
+- Struct `AdvisorsResultList` is added
+- Struct `AdvisorsResultListIterator` is added
+- Struct `AdvisorsResultListPage` is added
+- Struct `CreateRecommendedActionSessionFuture` is added
+- Struct `LocationBasedRecommendedActionSessionsOperationStatusClient` is added
+- Struct `LocationBasedRecommendedActionSessionsResultClient` is added
+- Struct `PrivateEndpointConnection` is added
+- Struct `PrivateEndpointConnectionListResult` is added
+- Struct `PrivateEndpointConnectionListResultIterator` is added
+- Struct `PrivateEndpointConnectionListResultPage` is added
+- Struct `PrivateEndpointConnectionProperties` is added
+- Struct `PrivateEndpointConnectionsClient` is added
+- Struct `PrivateEndpointConnectionsCreateOrUpdateFuture` is added
+- Struct `PrivateEndpointConnectionsDeleteFuture` is added
+- Struct `PrivateEndpointConnectionsUpdateTagsFuture` is added
+- Struct `PrivateLinkResource` is added
+- Struct `PrivateLinkResourceListResult` is added
+- Struct `PrivateLinkResourceListResultIterator` is added
+- Struct `PrivateLinkResourceListResultPage` is added
+- Struct `PrivateLinkResourceProperties` is added
+- Struct `PrivateLinkResourcesClient` is added
+- Struct `PrivateLinkServiceConnectionStateProperty` is added
+- Struct `QueryStatistic` is added
+- Struct `QueryStatisticProperties` is added
+- Struct `QueryText` is added
+- Struct `QueryTextProperties` is added
+- Struct `QueryTextsClient` is added
+- Struct `QueryTextsResultList` is added
+- Struct `QueryTextsResultListIterator` is added
+- Struct `QueryTextsResultListPage` is added
+- Struct `RecommendationAction` is added
+- Struct `RecommendationActionProperties` is added
+- Struct `RecommendationActionsResultList` is added
+- Struct `RecommendationActionsResultListIterator` is added
+- Struct `RecommendationActionsResultListPage` is added
+- Struct `RecommendedActionSessionsOperationStatus` is added
+- Struct `RecommendedActionsClient` is added
+- Struct `TagsObject` is added
+- Struct `TopQueryStatisticsClient` is added
+- Struct `TopQueryStatisticsInput` is added
+- Struct `TopQueryStatisticsInputProperties` is added
+- Struct `TopQueryStatisticsResultList` is added
+- Struct `TopQueryStatisticsResultListIterator` is added
+- Struct `TopQueryStatisticsResultListPage` is added
+- Struct `WaitStatistic` is added
+- Struct `WaitStatisticProperties` is added
+- Struct `WaitStatisticsClient` is added
+- Struct `WaitStatisticsInput` is added
+- Struct `WaitStatisticsInputProperties` is added
+- Struct `WaitStatisticsResultList` is added
+- Struct `WaitStatisticsResultListIterator` is added
+- Struct `WaitStatisticsResultListPage` is added
+

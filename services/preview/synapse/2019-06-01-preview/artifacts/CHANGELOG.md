@@ -1,0 +1,746 @@
+
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/b97299c968df5f99b724bd1231fd2161731d3b8f
+
+Code generator C:\Users\dapzhang\Documents\workspace\autorest.go
+
+## Breaking Changes
+
+- Const `SetOfObjects` type has been changed from `JSONWriteFilePattern` to `JSONFormatFilePattern`
+- Const `ArrayOfObjects` type has been changed from `JSONWriteFilePattern` to `JSONFormatFilePattern`
+- Function `LinkedServiceClient.CreateOrUpdateLinkedService` return values have been changed from `(LinkedServiceResource,error)` to `(LinkedServiceCreateOrUpdateLinkedServiceFuture,error)`
+- Function `NotebookClient.CreateOrUpdateNotebook` return values have been changed from `(NotebookResource,error)` to `(NotebookCreateOrUpdateNotebookFuture,error)`
+- Function `DataFlowClient.CreateOrUpdateDataFlow` return values have been changed from `(DataFlowResource,error)` to `(DataFlowCreateOrUpdateDataFlowFuture,error)`
+- Function `LinkedServiceClient.DeleteLinkedService` return values have been changed from `(autorest.Response,error)` to `(LinkedServiceDeleteLinkedServiceFuture,error)`
+- Function `NewTriggerListResponsePage` signature has been changed from `(func(context.Context, TriggerListResponse) (TriggerListResponse, error))` to `(TriggerListResponse,func(context.Context, TriggerListResponse) (TriggerListResponse, error))`
+- Function `NotebookClient.CreateOrUpdateNotebookSender` return values have been changed from `(*http.Response,error)` to `(NotebookCreateOrUpdateNotebookFuture,error)`
+- Function `NewLinkedServiceListResponsePage` signature has been changed from `(func(context.Context, LinkedServiceListResponse) (LinkedServiceListResponse, error))` to `(LinkedServiceListResponse,func(context.Context, LinkedServiceListResponse) (LinkedServiceListResponse, error))`
+- Function `PipelineClient.CreateOrUpdatePipeline` return values have been changed from `(PipelineResource,error)` to `(PipelineCreateOrUpdatePipelineFuture,error)`
+- Function `PipelineClient.CreateOrUpdatePipelineSender` return values have been changed from `(*http.Response,error)` to `(PipelineCreateOrUpdatePipelineFuture,error)`
+- Function `NotebookClient.DeleteNotebookSender` return values have been changed from `(*http.Response,error)` to `(NotebookDeleteNotebookFuture,error)`
+- Function `TriggerClient.CreateOrUpdateTriggerSender` return values have been changed from `(*http.Response,error)` to `(TriggerCreateOrUpdateTriggerFuture,error)`
+- Function `NewQueryDataFlowDebugSessionsResponsePage` signature has been changed from `(func(context.Context, QueryDataFlowDebugSessionsResponse) (QueryDataFlowDebugSessionsResponse, error))` to `(QueryDataFlowDebugSessionsResponse,func(context.Context, QueryDataFlowDebugSessionsResponse) (QueryDataFlowDebugSessionsResponse, error))`
+- Function `DataFlowClient.DeleteDataFlow` return values have been changed from `(autorest.Response,error)` to `(DataFlowDeleteDataFlowFuture,error)`
+- Function `NotebookClient.DeleteNotebook` return values have been changed from `(autorest.Response,error)` to `(NotebookDeleteNotebookFuture,error)`
+- Function `NewSparkJobDefinitionsListResponsePage` signature has been changed from `(func(context.Context, SparkJobDefinitionsListResponse) (SparkJobDefinitionsListResponse, error))` to `(SparkJobDefinitionsListResponse,func(context.Context, SparkJobDefinitionsListResponse) (SparkJobDefinitionsListResponse, error))`
+- Function `NewPipelineListResponsePage` signature has been changed from `(func(context.Context, PipelineListResponse) (PipelineListResponse, error))` to `(PipelineListResponse,func(context.Context, PipelineListResponse) (PipelineListResponse, error))`
+- Function `LinkedServiceClient.CreateOrUpdateLinkedServiceSender` return values have been changed from `(*http.Response,error)` to `(LinkedServiceCreateOrUpdateLinkedServiceFuture,error)`
+- Function `TriggerClient.DeleteTriggerSender` return values have been changed from `(*http.Response,error)` to `(TriggerDeleteTriggerFuture,error)`
+- Function `TriggerClient.CreateOrUpdateTrigger` return values have been changed from `(TriggerResource,error)` to `(TriggerCreateOrUpdateTriggerFuture,error)`
+- Function `NewNotebookListResponsePage` signature has been changed from `(func(context.Context, NotebookListResponse) (NotebookListResponse, error))` to `(NotebookListResponse,func(context.Context, NotebookListResponse) (NotebookListResponse, error))`
+- Function `NewDataFlowListResponsePage` signature has been changed from `(func(context.Context, DataFlowListResponse) (DataFlowListResponse, error))` to `(DataFlowListResponse,func(context.Context, DataFlowListResponse) (DataFlowListResponse, error))`
+- Function `NewSQLScriptsListResponsePage` signature has been changed from `(func(context.Context, SQLScriptsListResponse) (SQLScriptsListResponse, error))` to `(SQLScriptsListResponse,func(context.Context, SQLScriptsListResponse) (SQLScriptsListResponse, error))`
+- Function `LinkedServiceClient.DeleteLinkedServiceSender` return values have been changed from `(*http.Response,error)` to `(LinkedServiceDeleteLinkedServiceFuture,error)`
+- Function `DatasetClient.DeleteDatasetSender` return values have been changed from `(*http.Response,error)` to `(DatasetDeleteDatasetFuture,error)`
+- Function `DatasetClient.DeleteDataset` return values have been changed from `(autorest.Response,error)` to `(DatasetDeleteDatasetFuture,error)`
+- Function `DatasetClient.CreateOrUpdateDataset` return values have been changed from `(DatasetResource,error)` to `(DatasetCreateOrUpdateDatasetFuture,error)`
+- Function `TriggerClient.DeleteTrigger` return values have been changed from `(autorest.Response,error)` to `(TriggerDeleteTriggerFuture,error)`
+- Function `DataFlowClient.DeleteDataFlowSender` return values have been changed from `(*http.Response,error)` to `(DataFlowDeleteDataFlowFuture,error)`
+- Function `PipelineClient.DeletePipeline` return values have been changed from `(autorest.Response,error)` to `(PipelineDeletePipelineFuture,error)`
+- Function `NewDatasetListResponsePage` signature has been changed from `(func(context.Context, DatasetListResponse) (DatasetListResponse, error))` to `(DatasetListResponse,func(context.Context, DatasetListResponse) (DatasetListResponse, error))`
+- Function `DatasetClient.CreateOrUpdateDatasetSender` return values have been changed from `(*http.Response,error)` to `(DatasetCreateOrUpdateDatasetFuture,error)`
+- Function `PipelineClient.DeletePipelineSender` return values have been changed from `(*http.Response,error)` to `(PipelineDeletePipelineFuture,error)`
+- Function `DataFlowClient.CreateOrUpdateDataFlowSender` return values have been changed from `(*http.Response,error)` to `(DataFlowCreateOrUpdateDataFlowFuture,error)`
+- Type of `RecurrenceSchedule.WeekDays` has been changed from `*[]DaysOfWeek` to `*[]DayOfWeek`
+- Type of `Workspace.Identity` has been changed from `*WorkspaceIdentity` to `*ManagedIdentity`
+- Const `DaysOfWeekFriday` has been removed
+- Const `DaysOfWeekSunday` has been removed
+- Const `DaysOfWeekMonday` has been removed
+- Const `SQLOnDemand` has been removed
+- Const `DaysOfWeekThursday` has been removed
+- Const `DaysOfWeekSaturday` has been removed
+- Const `DaysOfWeekTuesday` has been removed
+- Const `SQLPool` has been removed
+- Const `DaysOfWeekWednesday` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `PossibleDaysOfWeekValues` has been removed
+- Field `Tags` of struct `Resource` has been removed
+- Field `ETag` of struct `Resource` has been removed
+- Field `Location` of struct `Resource` has been removed
+- Field `DefaultSQLServer` of struct `WorkspaceProperties` has been removed
+- Field `CreateTime` of struct `WorkspaceProperties` has been removed
+- Field `Version` of struct `WorkspaceProperties` has been removed
+- Field `DefaultStorage` of struct `WorkspaceProperties` has been removed
+- Field `ETag` of struct `Workspace` has been removed
+- Field `AdditionalProperties` of struct `Workspace` has been removed
+
+## New Content
+
+- Const `FlattenHierarchy` is added
+- Const `ResourceIdentityTypeSystemAssigned` is added
+- Const `IntegrationRuntimeEntityReferenceTypeIntegrationRuntimeReference` is added
+- Const `IntegrationRuntimeSsisCatalogPricingTierPremium` is added
+- Const `IntegrationRuntimeSsisCatalogPricingTierStandard` is added
+- Const `MergeFiles` is added
+- Const `NodeSizeFamilyNone` is added
+- Const `LicenseIncluded` is added
+- Const `Standard` is added
+- Const `IntegrationRuntimeSsisCatalogPricingTierPremiumRS` is added
+- Const `NodeSizeXXXLarge` is added
+- Const `IntegrationRuntimeStateLimited` is added
+- Const `TypeComponentSetup` is added
+- Const `TypeIntegrationRuntime` is added
+- Const `NodeSizeLarge` is added
+- Const `TypeAvroFormat` is added
+- Const `NodeSizeFamilyMemoryOptimized` is added
+- Const `TypeEnvironmentVariableSetup` is added
+- Const `TypeDatasetStorageFormat` is added
+- Const `JSONWriteFilePatternArrayOfObjects` is added
+- Const `Enterprise` is added
+- Const `IntegrationRuntimeStateAccessDenied` is added
+- Const `IntegrationRuntimeStateOffline` is added
+- Const `NodeSizeXXLarge` is added
+- Const `SQLConnectionTypeSQLPool` is added
+- Const `IntegrationRuntimeStateInitial` is added
+- Const `TypeTabularTranslator` is added
+- Const `TypeCustomSetupBase` is added
+- Const `NodeSizeMedium` is added
+- Const `TypeTextFormat` is added
+- Const `AuthorizationTypeKey` is added
+- Const `TypeSynapseNotebook` is added
+- Const `IntegrationRuntimeStateNeedRegistration` is added
+- Const `PreserveHierarchy` is added
+- Const `TypeParquetFormat` is added
+- Const `IntegrationRuntimeStateStopped` is added
+- Const `IntegrationRuntimeStateStopping` is added
+- Const `NodeSizeSmall` is added
+- Const `JSONWriteFilePatternSetOfObjects` is added
+- Const `ResourceIdentityTypeNone` is added
+- Const `IntegrationRuntimeStateStarting` is added
+- Const `TypeJSONFormat` is added
+- Const `TypeCopyTranslator` is added
+- Const `SelfHosted` is added
+- Const `NodeSizeXLarge` is added
+- Const `TypeSQLPoolStoredProcedure` is added
+- Const `TypeSelfHosted` is added
+- Const `TypeManaged` is added
+- Const `IntegrationRuntimeSsisCatalogPricingTierBasic` is added
+- Const `TypeCmdkeySetup` is added
+- Const `AuthorizationTypeLinkedIntegrationRuntimeType` is added
+- Const `Managed` is added
+- Const `TypeOrcFormat` is added
+- Const `TypeSparkJob` is added
+- Const `SQLConnectionTypeSQLOnDemand` is added
+- Const `BasePrice` is added
+- Const `IntegrationRuntimeEntityReferenceTypeLinkedServiceReference` is added
+- Const `AuthorizationTypeRBAC` is added
+- Const `IntegrationRuntimeStateOnline` is added
+- Const `NodeSizeNone` is added
+- Const `IntegrationRuntimeStateStarted` is added
+- Function `NewSQLPoolsClient(string) SQLPoolsClient` is added
+- Function `SynapseSparkJobDefinitionActivity.AsWebActivity() (*WebActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsIfConditionActivity() (*IfConditionActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsExecutionActivity() (*ExecutionActivity,bool)` is added
+- Function `GetMetadataActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `CopyTranslator.AsBasicCopyTranslator() (BasicCopyTranslator,bool)` is added
+- Function `ManagedIntegrationRuntime.AsIntegrationRuntime() (*IntegrationRuntime,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsWebActivity() (*WebActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsFilterActivity() (*FilterActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsAzureMLUpdateResourceActivity() (*AzureMLUpdateResourceActivity,bool)` is added
+- Function `EnvironmentVariableSetup.AsCustomSetupBase() (*CustomSetupBase,bool)` is added
+- Function `ValidationActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsIfConditionActivity() (*IfConditionActivity,bool)` is added
+- Function `CopyActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `HDInsightMapReduceActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `SwitchActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `*ComponentSetup.UnmarshalJSON([]byte) error` is added
+- Function `SynapseNotebookActivity.AsValidationActivity() (*ValidationActivity,bool)` is added
+- Function `OrcFormat.AsParquetFormat() (*ParquetFormat,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsBasicActivity() (BasicActivity,bool)` is added
+- Function `SelfHostedIntegrationRuntime.AsSelfHostedIntegrationRuntime() (*SelfHostedIntegrationRuntime,bool)` is added
+- Function `AzureFunctionActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsExecutePipelineActivity() (*ExecutePipelineActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsCopyActivity() (*CopyActivity,bool)` is added
+- Function `LinkedIntegrationRuntimeKeyAuthorization.AsLinkedIntegrationRuntimeRbacAuthorization() (*LinkedIntegrationRuntimeRbacAuthorization,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity,bool)` is added
+- Function `OrcFormat.AsJSONFormat() (*JSONFormat,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsAzureDataExplorerCommandActivity() (*AzureDataExplorerCommandActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsExecuteDataFlowActivity() (*ExecuteDataFlowActivity,bool)` is added
+- Function `DatasetSchemaDataElement.MarshalJSON() ([]byte,error)` is added
+- Function `IntegrationRuntimeComputeProperties.MarshalJSON() ([]byte,error)` is added
+- Function `SQLPoolStoredProcedureActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `*LicensedComponentSetupTypeProperties.UnmarshalJSON([]byte) error` is added
+- Function `DeleteActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `*AvroFormat.UnmarshalJSON([]byte) error` is added
+- Function `NotebookClient.RenameNotebookResponder(*http.Response) (autorest.Response,error)` is added
+- Function `SQLPoolStoredProcedureActivity.AsHDInsightStreamingActivity() (*HDInsightStreamingActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsExecuteSSISPackageActivity() (*ExecuteSSISPackageActivity,bool)` is added
+- Function `NotebookClient.RenameNotebookPreparer(context.Context,string,RenameRequest) (*http.Request,error)` is added
+- Function `*IntegrationRuntimeDataFlowProperties.UnmarshalJSON([]byte) error` is added
+- Function `DatasetStorageFormat.MarshalJSON() ([]byte,error)` is added
+- Function `IntegrationRuntime.AsIntegrationRuntime() (*IntegrationRuntime,bool)` is added
+- Function `*PipelineRenamePipelineFuture.Result(PipelineClient) (autorest.Response,error)` is added
+- Function `SynapseNotebookActivity.AsHDInsightPigActivity() (*HDInsightPigActivity,bool)` is added
+- Function `IntegrationRuntimesClient.Get(context.Context,string) (IntegrationRuntimeResource,error)` is added
+- Function `OrcFormat.AsTextFormat() (*TextFormat,bool)` is added
+- Function `TextFormat.AsParquetFormat() (*ParquetFormat,bool)` is added
+- Function `BigDataPoolsClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLPoolStoredProcedureActivity.AsWebHookActivity() (*WebHookActivity,bool)` is added
+- Function `NewIntegrationRuntimesClient(string) IntegrationRuntimesClient` is added
+- Function `WebActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `IntegrationRuntimeVNetProperties.MarshalJSON() ([]byte,error)` is added
+- Function `SynapseNotebookActivity.AsDeleteActivity() (*DeleteActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `JSONFormat.AsParquetFormat() (*ParquetFormat,bool)` is added
+- Function `ManagedIntegrationRuntime.MarshalJSON() ([]byte,error)` is added
+- Function `PossibleTypeBasicCustomSetupBaseValues() []TypeBasicCustomSetupBase` is added
+- Function `SynapseSparkJobDefinitionActivity.AsAzureFunctionActivity() (*AzureFunctionActivity,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `CmdkeySetup.AsCustomSetupBase() (*CustomSetupBase,bool)` is added
+- Function `CopyTranslator.AsTabularTranslator() (*TabularTranslator,bool)` is added
+- Function `WorkspaceGitRepoManagementClient.GetGitHubAccessTokenPreparer(context.Context,string,GitHubAccessTokenRequest,string) (*http.Request,error)` is added
+- Function `LinkedIntegrationRuntimeRbacAuthorization.AsLinkedIntegrationRuntimeRbacAuthorization() (*LinkedIntegrationRuntimeRbacAuthorization,bool)` is added
+- Function `DataLakeAnalyticsUSQLActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `DatabricksNotebookActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsControlActivity() (*ControlActivity,bool)` is added
+- Function `CopyActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsAzureMLUpdateResourceActivity() (*AzureMLUpdateResourceActivity,bool)` is added
+- Function `ControlActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsGetMetadataActivity() (*GetMetadataActivity,bool)` is added
+- Function `PipelineClient.RenamePipelineResponder(*http.Response) (autorest.Response,error)` is added
+- Function `CopyActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `DataLakeAnalyticsUSQLActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `IntegrationRuntimeSsisProperties.MarshalJSON() ([]byte,error)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsAppendVariableActivity() (*AppendVariableActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity,bool)` is added
+- Function `IntegrationRuntimesClient.List(context.Context) (IntegrationRuntimeListResponse,error)` is added
+- Function `SetVariableActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `BigDataPoolsClient.ListResponder(*http.Response) (BigDataPoolResourceInfoListResult,error)` is added
+- Function `SynapseNotebookActivity.AsExecutionActivity() (*ExecutionActivity,bool)` is added
+- Function `*LinkedServiceCreateOrUpdateLinkedServiceFuture.Result(LinkedServiceClient) (LinkedServiceResource,error)` is added
+- Function `SQLPoolStoredProcedureActivity.AsExecuteDataFlowActivity() (*ExecuteDataFlowActivity,bool)` is added
+- Function `DeleteActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `PossibleTypeBasicDatasetStorageFormatValues() []TypeBasicDatasetStorageFormat` is added
+- Function `SQLPoolStoredProcedureActivity.AsAzureFunctionActivity() (*AzureFunctionActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsSQLServerStoredProcedureActivity() (*SQLServerStoredProcedureActivity,bool)` is added
+- Function `CustomActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `PossibleCopyBehaviorTypeValues() []CopyBehaviorType` is added
+- Function `WaitActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity,bool)` is added
+- Function `*SparkJobDefinitionRenameSparkJobDefinitionFuture.Result(SparkJobDefinitionClient) (autorest.Response,error)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsExecuteSSISPackageActivity() (*ExecuteSSISPackageActivity,bool)` is added
+- Function `WaitActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `NewWorkspaceClient(string) WorkspaceClient` is added
+- Function `WaitActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `IntegrationRuntimeDataFlowProperties.MarshalJSON() ([]byte,error)` is added
+- Function `SynapseNotebookActivity.AsSwitchActivity() (*SwitchActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsActivity() (*Activity,bool)` is added
+- Function `AzureFunctionActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `ValidationActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity,bool)` is added
+- Function `IntegrationRuntimeSsisCatalogInfo.MarshalJSON() ([]byte,error)` is added
+- Function `ComponentSetup.MarshalJSON() ([]byte,error)` is added
+- Function `HDInsightPigActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `ExecutionActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsDataLakeAnalyticsUSQLActivity() (*DataLakeAnalyticsUSQLActivity,bool)` is added
+- Function `DataFlowClient.RenameDataFlowResponder(*http.Response) (autorest.Response,error)` is added
+- Function `CustomSetupBase.AsCustomSetupBase() (*CustomSetupBase,bool)` is added
+- Function `ExecuteSSISPackageActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `CustomSetupBase.AsComponentSetup() (*ComponentSetup,bool)` is added
+- Function `WebHookActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `AzureDataExplorerCommandActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsGetMetadataActivity() (*GetMetadataActivity,bool)` is added
+- Function `*ParquetFormat.UnmarshalJSON([]byte) error` is added
+- Function `NewBigDataPoolsClient(string) BigDataPoolsClient` is added
+- Function `IntegrationRuntime.AsBasicIntegrationRuntime() (BasicIntegrationRuntime,bool)` is added
+- Function `CmdkeySetup.AsEnvironmentVariableSetup() (*EnvironmentVariableSetup,bool)` is added
+- Function `IntegrationRuntimeResource.MarshalJSON() ([]byte,error)` is added
+- Function `ValidationActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `ComponentSetup.AsComponentSetup() (*ComponentSetup,bool)` is added
+- Function `JSONFormat.AsDatasetStorageFormat() (*DatasetStorageFormat,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsForEachActivity() (*ForEachActivity,bool)` is added
+- Function `DatabricksSparkJarActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `AzureDataExplorerCommandActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `AzureMLExecutePipelineActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `LinkedIntegrationRuntimeKeyAuthorization.MarshalJSON() ([]byte,error)` is added
+- Function `PossibleNodeSizeValues() []NodeSize` is added
+- Function `HDInsightSparkActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `LinkedServiceClient.RenameLinkedServicePreparer(context.Context,string,RenameRequest) (*http.Request,error)` is added
+- Function `PrivateLinkServiceConnectionState.MarshalJSON() ([]byte,error)` is added
+- Function `SynapseNotebookActivity.AsDataLakeAnalyticsUSQLActivity() (*DataLakeAnalyticsUSQLActivity,bool)` is added
+- Function `TabularTranslator.AsCopyTranslator() (*CopyTranslator,bool)` is added
+- Function `EnvironmentVariableSetup.MarshalJSON() ([]byte,error)` is added
+- Function `PrivateEndpointConnectionProperties.MarshalJSON() ([]byte,error)` is added
+- Function `SetVariableActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `*DatasetStorageFormat.UnmarshalJSON([]byte) error` is added
+- Function `WorkspaceGitRepoManagementClient.GetGitHubAccessToken(context.Context,string,GitHubAccessTokenRequest,string) (GitHubAccessTokenResponse,error)` is added
+- Function `DatasetStorageFormat.AsJSONFormat() (*JSONFormat,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsHDInsightMapReduceActivity() (*HDInsightMapReduceActivity,bool)` is added
+- Function `AvroFormat.AsBasicDatasetStorageFormat() (BasicDatasetStorageFormat,bool)` is added
+- Function `PossibleIntegrationRuntimeStateValues() []IntegrationRuntimeState` is added
+- Function `SelfHostedIntegrationRuntime.AsIntegrationRuntime() (*IntegrationRuntime,bool)` is added
+- Function `SQLServerStoredProcedureActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `ExecutionActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsHDInsightPigActivity() (*HDInsightPigActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsGetMetadataActivity() (*GetMetadataActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsWebActivity() (*WebActivity,bool)` is added
+- Function `AzureMLBatchExecutionActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `SQLScriptClient.RenameSQLScriptSender(*http.Request) (SQLScriptRenameSQLScriptFuture,error)` is added
+- Function `BigDataPoolsClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLPoolsClient.ListResponder(*http.Response) (SQLPoolInfoListResult,error)` is added
+- Function `TextFormat.AsBasicDatasetStorageFormat() (BasicDatasetStorageFormat,bool)` is added
+- Function `AzureMLUpdateResourceActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `PrivateEndpointConnection.MarshalJSON() ([]byte,error)` is added
+- Function `AvroFormat.AsAvroFormat() (*AvroFormat,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsCopyActivity() (*CopyActivity,bool)` is added
+- Function `TextFormat.AsAvroFormat() (*AvroFormat,bool)` is added
+- Function `IntegrationRuntimesClient.ListResponder(*http.Response) (IntegrationRuntimeListResponse,error)` is added
+- Function `ExecutionActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `*ManagedIntegrationRuntime.UnmarshalJSON([]byte) error` is added
+- Function `SynapseNotebookActivity.AsControlActivity() (*ControlActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsBasicActivity() (BasicActivity,bool)` is added
+- Function `CmdkeySetup.AsComponentSetup() (*ComponentSetup,bool)` is added
+- Function `SynapseNotebookActivity.AsCopyActivity() (*CopyActivity,bool)` is added
+- Function `*DataFlowRenameDataFlowFuture.Result(DataFlowClient) (autorest.Response,error)` is added
+- Function `DeleteActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `CustomActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `TabularTranslator.MarshalJSON() ([]byte,error)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsAzureMLExecutePipelineActivity() (*AzureMLExecutePipelineActivity,bool)` is added
+- Function `ExecutePipelineActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `DatabricksSparkPythonActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `BigDataPoolsClient.GetPreparer(context.Context,string) (*http.Request,error)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsLookupActivity() (*LookupActivity,bool)` is added
+- Function `*PipelineCreateOrUpdatePipelineFuture.Result(PipelineClient) (PipelineResource,error)` is added
+- Function `SynapseNotebookActivity.AsDatabricksNotebookActivity() (*DatabricksNotebookActivity,bool)` is added
+- Function `HDInsightStreamingActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `LinkedIntegrationRuntimeRbacAuthorization.AsLinkedIntegrationRuntimeKeyAuthorization() (*LinkedIntegrationRuntimeKeyAuthorization,bool)` is added
+- Function `SQLPoolsClient.ListPreparer(context.Context) (*http.Request,error)` is added
+- Function `SelfHostedIntegrationRuntime.AsBasicIntegrationRuntime() (BasicIntegrationRuntime,bool)` is added
+- Function `EncryptionDetails.MarshalJSON() ([]byte,error)` is added
+- Function `SQLPoolStoredProcedureActivity.AsAppendVariableActivity() (*AppendVariableActivity,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsExecuteDataFlowActivity() (*ExecuteDataFlowActivity,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsControlActivity() (*ControlActivity,bool)` is added
+- Function `AzureMLExecutePipelineActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `*BigDataPoolResourceInfo.UnmarshalJSON([]byte) error` is added
+- Function `DatabricksNotebookActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `ForEachActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `PossibleIntegrationRuntimeLicenseTypeValues() []IntegrationRuntimeLicenseType` is added
+- Function `ControlActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `DatasetClient.RenameDataset(context.Context,string,RenameRequest) (DatasetRenameDatasetFuture,error)` is added
+- Function `PossibleIntegrationRuntimeEntityReferenceTypeValues() []IntegrationRuntimeEntityReferenceType` is added
+- Function `PossibleIntegrationRuntimeSsisCatalogPricingTierValues() []IntegrationRuntimeSsisCatalogPricingTier` is added
+- Function `LinkedIntegrationRuntimeKeyAuthorization.AsLinkedIntegrationRuntimeKeyAuthorization() (*LinkedIntegrationRuntimeKeyAuthorization,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsUntilActivity() (*UntilActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsHDInsightMapReduceActivity() (*HDInsightMapReduceActivity,bool)` is added
+- Function `LinkedIntegrationRuntimeType.AsLinkedIntegrationRuntimeKeyAuthorization() (*LinkedIntegrationRuntimeKeyAuthorization,bool)` is added
+- Function `ControlActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `JSONFormat.AsOrcFormat() (*OrcFormat,bool)` is added
+- Function `TextFormat.AsJSONFormat() (*JSONFormat,bool)` is added
+- Function `DataFlowClient.RenameDataFlow(context.Context,string,RenameRequest) (DataFlowRenameDataFlowFuture,error)` is added
+- Function `IfConditionActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsHDInsightMapReduceActivity() (*HDInsightMapReduceActivity,bool)` is added
+- Function `CustomSetupBase.MarshalJSON() ([]byte,error)` is added
+- Function `*SQLScriptRenameSQLScriptFuture.Result(SQLScriptClient) (autorest.Response,error)` is added
+- Function `*IntegrationRuntimeResource.UnmarshalJSON([]byte) error` is added
+- Function `SynapseNotebookActivityTypeProperties.MarshalJSON() ([]byte,error)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `CopyTranslator.MarshalJSON() ([]byte,error)` is added
+- Function `*IntegrationRuntimeVNetProperties.UnmarshalJSON([]byte) error` is added
+- Function `AzureMLUpdateResourceActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `CmdkeySetup.AsCmdkeySetup() (*CmdkeySetup,bool)` is added
+- Function `DatasetStorageFormat.AsBasicDatasetStorageFormat() (BasicDatasetStorageFormat,bool)` is added
+- Function `SynapseNotebookActivity.AsWebHookActivity() (*WebHookActivity,bool)` is added
+- Function `DataLakeAnalyticsUSQLActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `*EnvironmentVariableSetup.UnmarshalJSON([]byte) error` is added
+- Function `SwitchActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `BigDataPoolsClient.GetResponder(*http.Response) (BigDataPoolResourceInfo,error)` is added
+- Function `CustomSetupBase.AsEnvironmentVariableSetup() (*EnvironmentVariableSetup,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsHDInsightHiveActivity() (*HDInsightHiveActivity,bool)` is added
+- Function `EnvironmentVariableSetup.AsComponentSetup() (*ComponentSetup,bool)` is added
+- Function `AzureMLBatchExecutionActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `*CopyTranslator.UnmarshalJSON([]byte) error` is added
+- Function `PipelineClient.RenamePipelineSender(*http.Request) (PipelineRenamePipelineFuture,error)` is added
+- Function `IntegrationRuntimesClient.GetPreparer(context.Context,string) (*http.Request,error)` is added
+- Function `UntilActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsHDInsightSparkActivity() (*HDInsightSparkActivity,bool)` is added
+- Function `AppendVariableActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `AzureMLUpdateResourceActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `DatabricksSparkPythonActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `DatabricksSparkPythonActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `ParquetFormat.AsOrcFormat() (*OrcFormat,bool)` is added
+- Function `JSONFormat.AsBasicDatasetStorageFormat() (BasicDatasetStorageFormat,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsSQLServerStoredProcedureActivity() (*SQLServerStoredProcedureActivity,bool)` is added
+- Function `IfConditionActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `IntegrationRuntimesClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `LinkedIntegrationRuntimeRbacAuthorization.AsBasicLinkedIntegrationRuntimeType() (BasicLinkedIntegrationRuntimeType,bool)` is added
+- Function `AvroFormat.AsOrcFormat() (*OrcFormat,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsHDInsightSparkActivity() (*HDInsightSparkActivity,bool)` is added
+- Function `ExecuteSSISPackageActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `LookupActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `PipelineClient.RenamePipelinePreparer(context.Context,string,RenameRequest) (*http.Request,error)` is added
+- Function `UntilActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `*LinkedServiceDeleteLinkedServiceFuture.Result(LinkedServiceClient) (autorest.Response,error)` is added
+- Function `SynapseNotebookActivity.AsExecutePipelineActivity() (*ExecutePipelineActivity,bool)` is added
+- Function `LinkedIntegrationRuntimeType.MarshalJSON() ([]byte,error)` is added
+- Function `*TriggerCreateOrUpdateTriggerFuture.Result(TriggerClient) (TriggerResource,error)` is added
+- Function `CmdkeySetup.MarshalJSON() ([]byte,error)` is added
+- Function `*OrcFormat.UnmarshalJSON([]byte) error` is added
+- Function `SynapseSparkJobDefinitionActivity.AsActivity() (*Activity,bool)` is added
+- Function `AvroFormat.AsJSONFormat() (*JSONFormat,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsWaitActivity() (*WaitActivity,bool)` is added
+- Function `LinkedServiceClient.RenameLinkedServiceResponder(*http.Response) (autorest.Response,error)` is added
+- Function `OrcFormat.MarshalJSON() ([]byte,error)` is added
+- Function `*DatasetDeleteDatasetFuture.Result(DatasetClient) (autorest.Response,error)` is added
+- Function `CustomSetupBase.AsCmdkeySetup() (*CmdkeySetup,bool)` is added
+- Function `SynapseNotebookActivity.AsAzureFunctionActivity() (*AzureFunctionActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsDatabricksNotebookActivity() (*DatabricksNotebookActivity,bool)` is added
+- Function `PossibleIntegrationRuntimeEditionValues() []IntegrationRuntimeEdition` is added
+- Function `SQLPoolStoredProcedureActivity.AsLookupActivity() (*LookupActivity,bool)` is added
+- Function `DataFlowClient.RenameDataFlowPreparer(context.Context,string,RenameRequest) (*http.Request,error)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsForEachActivity() (*ForEachActivity,bool)` is added
+- Function `AzureFunctionActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `BigDataPoolsClient.Get(context.Context,string) (BigDataPoolResourceInfo,error)` is added
+- Function `*DataFlowDeleteDataFlowFuture.Result(DataFlowClient) (autorest.Response,error)` is added
+- Function `ForEachActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `*LinkedServiceRenameLinkedServiceFuture.Result(LinkedServiceClient) (autorest.Response,error)` is added
+- Function `ComponentSetup.AsBasicCustomSetupBase() (BasicCustomSetupBase,bool)` is added
+- Function `CustomSetupBase.AsBasicCustomSetupBase() (BasicCustomSetupBase,bool)` is added
+- Function `SQLScriptClient.RenameSQLScriptPreparer(context.Context,string,RenameRequest) (*http.Request,error)` is added
+- Function `WorkspaceGitRepoManagementClient.GetGitHubAccessTokenResponder(*http.Response) (GitHubAccessTokenResponse,error)` is added
+- Function `SwitchActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `PossibleIntegrationRuntimeTypeValues() []IntegrationRuntimeType` is added
+- Function `SynapseNotebookActivity.AsHDInsightHiveActivity() (*HDInsightHiveActivity,bool)` is added
+- Function `ManagedIntegrationRuntime.AsBasicIntegrationRuntime() (BasicIntegrationRuntime,bool)` is added
+- Function `SynapseNotebookActivity.AsAppendVariableActivity() (*AppendVariableActivity,bool)` is added
+- Function `HDInsightHiveActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `EnvironmentVariableSetup.AsCmdkeySetup() (*CmdkeySetup,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsExecutePipelineActivity() (*ExecutePipelineActivity,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsActivity() (*Activity,bool)` is added
+- Function `CmdkeySetup.AsBasicCustomSetupBase() (BasicCustomSetupBase,bool)` is added
+- Function `SQLPoolsClient.List(context.Context) (SQLPoolInfoListResult,error)` is added
+- Function `Activity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `*DataFlowCreateOrUpdateDataFlowFuture.Result(DataFlowClient) (DataFlowResource,error)` is added
+- Function `SparkJobDefinitionClient.RenameSparkJobDefinitionResponder(*http.Response) (autorest.Response,error)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsBasicExecutionActivity() (BasicExecutionActivity,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity,bool)` is added
+- Function `TextFormat.AsOrcFormat() (*OrcFormat,bool)` is added
+- Function `GetMetadataActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsCustomActivity() (*CustomActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsExecuteSSISPackageActivity() (*ExecuteSSISPackageActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsUntilActivity() (*UntilActivity,bool)` is added
+- Function `SQLPoolsClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `ExecuteDataFlowActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsBasicExecutionActivity() (BasicExecutionActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.MarshalJSON() ([]byte,error)` is added
+- Function `EnvironmentVariableSetup.AsEnvironmentVariableSetup() (*EnvironmentVariableSetup,bool)` is added
+- Function `ExecuteSSISPackageActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `AppendVariableActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsExecutionActivity() (*ExecutionActivity,bool)` is added
+- Function `DatasetClient.RenameDatasetResponder(*http.Response) (autorest.Response,error)` is added
+- Function `DatasetStorageFormat.AsTextFormat() (*TextFormat,bool)` is added
+- Function `PossibleAuthorizationTypeValues() []AuthorizationType` is added
+- Function `SynapseSparkJobDefinitionActivity.MarshalJSON() ([]byte,error)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsBasicControlActivity() (BasicControlActivity,bool)` is added
+- Function `IntegrationRuntimesClient.ListPreparer(context.Context) (*http.Request,error)` is added
+- Function `SynapseNotebookActivity.AsBasicActivity() (BasicActivity,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsDeleteActivity() (*DeleteActivity,bool)` is added
+- Function `DatabricksNotebookActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `DatasetClient.RenameDatasetPreparer(context.Context,string,RenameRequest) (*http.Request,error)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsValidationActivity() (*ValidationActivity,bool)` is added
+- Function `JSONFormat.AsTextFormat() (*TextFormat,bool)` is added
+- Function `SynapseNotebookActivity.AsAzureMLExecutePipelineActivity() (*AzureMLExecutePipelineActivity,bool)` is added
+- Function `NotebookClient.RenameNotebookSender(*http.Request) (NotebookRenameNotebookFuture,error)` is added
+- Function `*CmdkeySetupTypeProperties.UnmarshalJSON([]byte) error` is added
+- Function `SynapseSparkJobDefinitionActivity.AsWebHookActivity() (*WebHookActivity,bool)` is added
+- Function `LookupActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `WebActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `ExecuteDataFlowActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `ParquetFormat.AsBasicDatasetStorageFormat() (BasicDatasetStorageFormat,bool)` is added
+- Function `ParquetFormat.MarshalJSON() ([]byte,error)` is added
+- Function `LinkedIntegrationRuntimeType.AsLinkedIntegrationRuntimeType() (*LinkedIntegrationRuntimeType,bool)` is added
+- Function `HDInsightMapReduceActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsAzureMLBatchExecutionActivity() (*AzureMLBatchExecutionActivity,bool)` is added
+- Function `*DatasetRenameDatasetFuture.Result(DatasetClient) (autorest.Response,error)` is added
+- Function `AppendVariableActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `HDInsightMapReduceActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `*TriggerDeleteTriggerFuture.Result(TriggerClient) (autorest.Response,error)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsAzureMLBatchExecutionActivity() (*AzureMLBatchExecutionActivity,bool)` is added
+- Function `SQLPool.MarshalJSON() ([]byte,error)` is added
+- Function `ManagedIdentity.MarshalJSON() ([]byte,error)` is added
+- Function `ParquetFormat.AsJSONFormat() (*JSONFormat,bool)` is added
+- Function `SQLPoolsClient.ListSender(*http.Request) (*http.Response,error)` is added
+- Function `PossibleNodeSizeFamilyValues() []NodeSizeFamily` is added
+- Function `SparkJobDefinitionClient.RenameSparkJobDefinitionPreparer(context.Context,string,RenameRequest) (*http.Request,error)` is added
+- Function `WorkspaceClient.Get(context.Context) (Workspace,error)` is added
+- Function `PossibleJSONFormatFilePatternValues() []JSONFormatFilePattern` is added
+- Function `TextFormat.AsDatasetStorageFormat() (*DatasetStorageFormat,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsWaitActivity() (*WaitActivity,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsSetVariableActivity() (*SetVariableActivity,bool)` is added
+- Function `BigDataPoolResourceInfo.MarshalJSON() ([]byte,error)` is added
+- Function `*SelfHostedIntegrationRuntime.UnmarshalJSON([]byte) error` is added
+- Function `AzureDataExplorerCommandActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `BigDataPoolsClient.ListPreparer(context.Context) (*http.Request,error)` is added
+- Function `NotebookClient.RenameNotebook(context.Context,string,RenameRequest) (NotebookRenameNotebookFuture,error)` is added
+- Function `FilterActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `WorkspaceClient.GetResponder(*http.Response) (Workspace,error)` is added
+- Function `LinkedIntegrationRuntimeRbacAuthorization.AsLinkedIntegrationRuntimeType() (*LinkedIntegrationRuntimeType,bool)` is added
+- Function `DatabricksSparkJarActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsHDInsightHiveActivity() (*HDInsightHiveActivity,bool)` is added
+- Function `*CmdkeySetup.UnmarshalJSON([]byte) error` is added
+- Function `HDInsightPigActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsCustomActivity() (*CustomActivity,bool)` is added
+- Function `IntegrationRuntime.AsSelfHostedIntegrationRuntime() (*SelfHostedIntegrationRuntime,bool)` is added
+- Function `*IntegrationRuntimeSsisProperties.UnmarshalJSON([]byte) error` is added
+- Function `*NotebookCreateOrUpdateNotebookFuture.Result(NotebookClient) (NotebookResource,error)` is added
+- Function `*IntegrationRuntimeComputeProperties.UnmarshalJSON([]byte) error` is added
+- Function `OrcFormat.AsBasicDatasetStorageFormat() (BasicDatasetStorageFormat,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsDeleteActivity() (*DeleteActivity,bool)` is added
+- Function `HDInsightHiveActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `JSONFormat.AsJSONFormat() (*JSONFormat,bool)` is added
+- Function `HDInsightStreamingActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsHDInsightSparkActivity() (*HDInsightSparkActivity,bool)` is added
+- Function `SQLPoolsClient.GetPreparer(context.Context,string) (*http.Request,error)` is added
+- Function `SynapseNotebookActivity.MarshalJSON() ([]byte,error)` is added
+- Function `WebActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `NewWorkspaceGitRepoManagementClient(string) WorkspaceGitRepoManagementClient` is added
+- Function `DatasetStorageFormat.AsDatasetStorageFormat() (*DatasetStorageFormat,bool)` is added
+- Function `SynapseNotebookActivity.AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsAzureDataExplorerCommandActivity() (*AzureDataExplorerCommandActivity,bool)` is added
+- Function `DatasetStorageFormat.AsParquetFormat() (*ParquetFormat,bool)` is added
+- Function `AvroFormat.AsParquetFormat() (*ParquetFormat,bool)` is added
+- Function `LinkedIntegrationRuntimeKeyAuthorization.AsLinkedIntegrationRuntimeType() (*LinkedIntegrationRuntimeType,bool)` is added
+- Function `HDInsightSparkActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `OrcFormat.AsAvroFormat() (*AvroFormat,bool)` is added
+- Function `BigDataPoolsClient.List(context.Context) (BigDataPoolResourceInfoListResult,error)` is added
+- Function `SelfHostedIntegrationRuntime.MarshalJSON() ([]byte,error)` is added
+- Function `CustomerManagedKeyDetails.MarshalJSON() ([]byte,error)` is added
+- Function `Activity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `HDInsightSparkActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `SparkJobDefinitionClient.RenameSparkJobDefinition(context.Context,string,RenameRequest) (SparkJobDefinitionRenameSparkJobDefinitionFuture,error)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsDataLakeAnalyticsUSQLActivity() (*DataLakeAnalyticsUSQLActivity,bool)` is added
+- Function `*NotebookDeleteNotebookFuture.Result(NotebookClient) (autorest.Response,error)` is added
+- Function `ParquetFormat.AsTextFormat() (*TextFormat,bool)` is added
+- Function `LinkedServiceClient.RenameLinkedServiceSender(*http.Request) (LinkedServiceRenameLinkedServiceFuture,error)` is added
+- Function `HDInsightHiveActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `LinkedIntegrationRuntimeKeyAuthorization.AsBasicLinkedIntegrationRuntimeType() (BasicLinkedIntegrationRuntimeType,bool)` is added
+- Function `LibraryRequirements.MarshalJSON() ([]byte,error)` is added
+- Function `*SelfHostedIntegrationRuntimeTypeProperties.UnmarshalJSON([]byte) error` is added
+- Function `TextFormat.AsTextFormat() (*TextFormat,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsFilterActivity() (*FilterActivity,bool)` is added
+- Function `FilterActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `HDInsightPigActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `LinkedIntegrationRuntimeType.AsBasicLinkedIntegrationRuntimeType() (BasicLinkedIntegrationRuntimeType,bool)` is added
+- Function `TextFormat.MarshalJSON() ([]byte,error)` is added
+- Function `ManagedIntegrationRuntime.AsSelfHostedIntegrationRuntime() (*SelfHostedIntegrationRuntime,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsBasicControlActivity() (BasicControlActivity,bool)` is added
+- Function `ExecuteDataFlowActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `TabularTranslator.AsTabularTranslator() (*TabularTranslator,bool)` is added
+- Function `CopyTranslator.AsCopyTranslator() (*CopyTranslator,bool)` is added
+- Function `IntegrationRuntime.AsManagedIntegrationRuntime() (*ManagedIntegrationRuntime,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsAzureDataExplorerCommandActivity() (*AzureDataExplorerCommandActivity,bool)` is added
+- Function `DatasetStorageFormat.AsOrcFormat() (*OrcFormat,bool)` is added
+- Function `WebHookActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `*PrivateEndpointConnection.UnmarshalJSON([]byte) error` is added
+- Function `PossibleResourceIdentityTypeValues() []ResourceIdentityType` is added
+- Function `SynapseSparkJobDefinitionActivity.AsIfConditionActivity() (*IfConditionActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsSetVariableActivity() (*SetVariableActivity,bool)` is added
+- Function `ExecutePipelineActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `ParquetFormat.AsDatasetStorageFormat() (*DatasetStorageFormat,bool)` is added
+- Function `AvroFormat.AsTextFormat() (*TextFormat,bool)` is added
+- Function `OrcFormat.AsOrcFormat() (*OrcFormat,bool)` is added
+- Function `TabularTranslator.AsBasicCopyTranslator() (BasicCopyTranslator,bool)` is added
+- Function `*TextFormat.UnmarshalJSON([]byte) error` is added
+- Function `LinkedIntegrationRuntimeRbacAuthorization.MarshalJSON() ([]byte,error)` is added
+- Function `SynapseNotebookActivity.AsAzureMLBatchExecutionActivity() (*AzureMLBatchExecutionActivity,bool)` is added
+- Function `PipelineClient.RenamePipeline(context.Context,string,RenameRequest) (PipelineRenamePipelineFuture,error)` is added
+- Function `*SynapseNotebookActivity.UnmarshalJSON([]byte) error` is added
+- Function `WorkspaceClient.GetPreparer(context.Context) (*http.Request,error)` is added
+- Function `IfConditionActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `*SQLPoolStoredProcedureActivity.UnmarshalJSON([]byte) error` is added
+- Function `SynapseSparkJobDefinitionActivity.AsAzureMLUpdateResourceActivity() (*AzureMLUpdateResourceActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsValidationActivity() (*ValidationActivity,bool)` is added
+- Function `AzureMLExecutePipelineActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `PossibleTypeBasicIntegrationRuntimeValues() []TypeBasicIntegrationRuntime` is added
+- Function `DataFlowClient.RenameDataFlowSender(*http.Request) (DataFlowRenameDataFlowFuture,error)` is added
+- Function `*DatasetSchemaDataElement.UnmarshalJSON([]byte) error` is added
+- Function `*SQLPool.UnmarshalJSON([]byte) error` is added
+- Function `SynapseSparkJobDefinitionActivity.AsSQLServerStoredProcedureActivity() (*SQLServerStoredProcedureActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsUntilActivity() (*UntilActivity,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsHDInsightStreamingActivity() (*HDInsightStreamingActivity,bool)` is added
+- Function `ComponentSetup.AsEnvironmentVariableSetup() (*EnvironmentVariableSetup,bool)` is added
+- Function `SQLPoolsClient.Get(context.Context,string) (SQLPool,error)` is added
+- Function `AzureMLBatchExecutionActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `*NotebookRenameNotebookFuture.Result(NotebookClient) (autorest.Response,error)` is added
+- Function `*TabularTranslator.UnmarshalJSON([]byte) error` is added
+- Function `*JSONFormat.UnmarshalJSON([]byte) error` is added
+- Function `JSONFormat.AsAvroFormat() (*AvroFormat,bool)` is added
+- Function `SelfHostedIntegrationRuntime.AsManagedIntegrationRuntime() (*ManagedIntegrationRuntime,bool)` is added
+- Function `LookupActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `*IntegrationRuntime.UnmarshalJSON([]byte) error` is added
+- Function `HDInsightStreamingActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivityTypeProperties.MarshalJSON() ([]byte,error)` is added
+- Function `ParquetFormat.AsParquetFormat() (*ParquetFormat,bool)` is added
+- Function `LinkedIntegrationRuntimeType.AsLinkedIntegrationRuntimeRbacAuthorization() (*LinkedIntegrationRuntimeRbacAuthorization,bool)` is added
+- Function `AvroFormat.MarshalJSON() ([]byte,error)` is added
+- Function `AvroFormat.AsDatasetStorageFormat() (*DatasetStorageFormat,bool)` is added
+- Function `SQLServerStoredProcedureActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `LinkedServiceClient.RenameLinkedService(context.Context,string,RenameRequest) (LinkedServiceRenameLinkedServiceFuture,error)` is added
+- Function `IntegrationRuntimesClient.GetResponder(*http.Response) (IntegrationRuntimeResource,error)` is added
+- Function `GetMetadataActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `ExecutePipelineActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `PossibleTypeBasicCopyTranslatorValues() []TypeBasicCopyTranslator` is added
+- Function `CustomActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsHDInsightPigActivity() (*HDInsightPigActivity,bool)` is added
+- Function `Activity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsCustomActivity() (*CustomActivity,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsSwitchActivity() (*SwitchActivity,bool)` is added
+- Function `*IntegrationRuntimeSsisCatalogInfo.UnmarshalJSON([]byte) error` is added
+- Function `SQLPoolStoredProcedureActivity.AsAzureMLExecutePipelineActivity() (*AzureMLExecutePipelineActivity,bool)` is added
+- Function `SQLPoolsClient.GetResponder(*http.Response) (SQLPool,error)` is added
+- Function `JSONFormat.MarshalJSON() ([]byte,error)` is added
+- Function `ComponentSetup.AsCustomSetupBase() (*CustomSetupBase,bool)` is added
+- Function `*DatasetCreateOrUpdateDatasetFuture.Result(DatasetClient) (DatasetResource,error)` is added
+- Function `SynapseNotebookActivity.AsLookupActivity() (*LookupActivity,bool)` is added
+- Function `FilterActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `IntegrationRuntimesClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `SQLScriptClient.RenameSQLScript(context.Context,string,RenameRequest) (SQLScriptRenameSQLScriptFuture,error)` is added
+- Function `WebHookActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `SQLScriptClient.RenameSQLScriptResponder(*http.Response) (autorest.Response,error)` is added
+- Function `ManagedIntegrationRuntime.AsManagedIntegrationRuntime() (*ManagedIntegrationRuntime,bool)` is added
+- Function `OrcFormat.AsDatasetStorageFormat() (*DatasetStorageFormat,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsBasicExecutionActivity() (BasicExecutionActivity,bool)` is added
+- Function `SparkJobDefinitionClient.RenameSparkJobDefinitionSender(*http.Request) (SparkJobDefinitionRenameSparkJobDefinitionFuture,error)` is added
+- Function `SynapseNotebookActivity.AsWaitActivity() (*WaitActivity,bool)` is added
+- Function `EnvironmentVariableSetup.AsBasicCustomSetupBase() (BasicCustomSetupBase,bool)` is added
+- Function `ComponentSetup.AsCmdkeySetup() (*CmdkeySetup,bool)` is added
+- Function `ParquetFormat.AsAvroFormat() (*AvroFormat,bool)` is added
+- Function `SynapseNotebookActivity.AsForEachActivity() (*ForEachActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsSetVariableActivity() (*SetVariableActivity,bool)` is added
+- Function `SetVariableActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsBasicControlActivity() (BasicControlActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsSwitchActivity() (*SwitchActivity,bool)` is added
+- Function `*SynapseSparkJobDefinitionActivity.UnmarshalJSON([]byte) error` is added
+- Function `DatasetClient.RenameDatasetSender(*http.Request) (DatasetRenameDatasetFuture,error)` is added
+- Function `*PipelineDeletePipelineFuture.Result(PipelineClient) (autorest.Response,error)` is added
+- Function `DatasetStorageFormat.AsAvroFormat() (*AvroFormat,bool)` is added
+- Function `SynapseNotebookActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsDatabricksNotebookActivity() (*DatabricksNotebookActivity,bool)` is added
+- Function `SQLServerStoredProcedureActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `SynapseSparkJobDefinitionActivity.AsFilterActivity() (*FilterActivity,bool)` is added
+- Function `UntilActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity,bool)` is added
+- Function `TrackedResource.MarshalJSON() ([]byte,error)` is added
+- Function `WorkspaceGitRepoManagementClient.GetGitHubAccessTokenSender(*http.Request) (*http.Response,error)` is added
+- Function `WorkspaceClient.GetSender(*http.Request) (*http.Response,error)` is added
+- Function `ForEachActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Function `IntegrationRuntime.MarshalJSON() ([]byte,error)` is added
+- Function `DatabricksSparkJarActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity,bool)` is added
+- Function `SynapseNotebookActivity.AsHDInsightStreamingActivity() (*HDInsightStreamingActivity,bool)` is added
+- Function `SQLPoolStoredProcedureActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity,bool)` is added
+- Struct `AutoPauseProperties` is added
+- Struct `AutoScaleProperties` is added
+- Struct `AvroFormat` is added
+- Struct `AzureEntityResource` is added
+- Struct `BigDataPoolResourceInfo` is added
+- Struct `BigDataPoolResourceInfoListResult` is added
+- Struct `BigDataPoolResourceProperties` is added
+- Struct `BigDataPoolsClient` is added
+- Struct `CmdkeySetup` is added
+- Struct `CmdkeySetupTypeProperties` is added
+- Struct `ComponentSetup` is added
+- Struct `CopyTranslator` is added
+- Struct `CustomSetupBase` is added
+- Struct `CustomerManagedKeyDetails` is added
+- Struct `DataFlowCreateOrUpdateDataFlowFuture` is added
+- Struct `DataFlowDeleteDataFlowFuture` is added
+- Struct `DataFlowRenameDataFlowFuture` is added
+- Struct `DataLakeStorageAccountDetails` is added
+- Struct `DatasetCreateOrUpdateDatasetFuture` is added
+- Struct `DatasetDataElement` is added
+- Struct `DatasetDeleteDatasetFuture` is added
+- Struct `DatasetRenameDatasetFuture` is added
+- Struct `DatasetSchemaDataElement` is added
+- Struct `DatasetStorageFormat` is added
+- Struct `EncryptionDetails` is added
+- Struct `EntityReference` is added
+- Struct `EnvironmentVariableSetup` is added
+- Struct `EnvironmentVariableSetupTypeProperties` is added
+- Struct `ErrorAdditionalInfo` is added
+- Struct `ErrorContract` is added
+- Struct `ErrorResponse` is added
+- Struct `GitHubAccessTokenRequest` is added
+- Struct `GitHubAccessTokenResponse` is added
+- Struct `IntegrationRuntime` is added
+- Struct `IntegrationRuntimeComputeProperties` is added
+- Struct `IntegrationRuntimeCustomSetupScriptProperties` is added
+- Struct `IntegrationRuntimeDataFlowProperties` is added
+- Struct `IntegrationRuntimeDataProxyProperties` is added
+- Struct `IntegrationRuntimeListResponse` is added
+- Struct `IntegrationRuntimeResource` is added
+- Struct `IntegrationRuntimeSsisCatalogInfo` is added
+- Struct `IntegrationRuntimeSsisProperties` is added
+- Struct `IntegrationRuntimeVNetProperties` is added
+- Struct `IntegrationRuntimesClient` is added
+- Struct `JSONFormat` is added
+- Struct `LibraryRequirements` is added
+- Struct `LicensedComponentSetupTypeProperties` is added
+- Struct `LinkedIntegrationRuntimeKeyAuthorization` is added
+- Struct `LinkedIntegrationRuntimeRbacAuthorization` is added
+- Struct `LinkedIntegrationRuntimeType` is added
+- Struct `LinkedServiceCreateOrUpdateLinkedServiceFuture` is added
+- Struct `LinkedServiceDeleteLinkedServiceFuture` is added
+- Struct `LinkedServiceRenameLinkedServiceFuture` is added
+- Struct `ManagedIdentity` is added
+- Struct `ManagedIntegrationRuntime` is added
+- Struct `ManagedIntegrationRuntimeTypeProperties` is added
+- Struct `ManagedVirtualNetworkSettings` is added
+- Struct `NotebookCreateOrUpdateNotebookFuture` is added
+- Struct `NotebookDeleteNotebookFuture` is added
+- Struct `NotebookRenameNotebookFuture` is added
+- Struct `OrcFormat` is added
+- Struct `ParquetFormat` is added
+- Struct `PipelineCreateOrUpdatePipelineFuture` is added
+- Struct `PipelineDeletePipelineFuture` is added
+- Struct `PipelineRenamePipelineFuture` is added
+- Struct `PrivateEndpoint` is added
+- Struct `PrivateEndpointConnection` is added
+- Struct `PrivateEndpointConnectionProperties` is added
+- Struct `PrivateLinkServiceConnectionState` is added
+- Struct `ProxyResource` is added
+- Struct `PurviewConfiguration` is added
+- Struct `RenameRequest` is added
+- Struct `SQLPool` is added
+- Struct `SQLPoolInfoListResult` is added
+- Struct `SQLPoolReference` is added
+- Struct `SQLPoolResourceProperties` is added
+- Struct `SQLPoolStoredProcedureActivity` is added
+- Struct `SQLPoolStoredProcedureActivityTypeProperties` is added
+- Struct `SQLPoolsClient` is added
+- Struct `SQLScriptRenameSQLScriptFuture` is added
+- Struct `SelfHostedIntegrationRuntime` is added
+- Struct `SelfHostedIntegrationRuntimeTypeProperties` is added
+- Struct `Sku` is added
+- Struct `SparkJobDefinitionRenameSparkJobDefinitionFuture` is added
+- Struct `SynapseNotebookActivity` is added
+- Struct `SynapseNotebookActivityTypeProperties` is added
+- Struct `SynapseNotebookReference` is added
+- Struct `SynapseSparkJobActivityTypeProperties` is added
+- Struct `SynapseSparkJobDefinitionActivity` is added
+- Struct `SynapseSparkJobReference` is added
+- Struct `TabularTranslator` is added
+- Struct `TextFormat` is added
+- Struct `TrackedResource` is added
+- Struct `TriggerCreateOrUpdateTriggerFuture` is added
+- Struct `TriggerDeleteTriggerFuture` is added
+- Struct `VirtualNetworkProfile` is added
+- Struct `WorkspaceClient` is added
+- Struct `WorkspaceGitRepoManagementClient` is added
+- Struct `WorkspaceKeyDetails` is added
+- Struct `WorkspaceRepositoryConfiguration` is added
+- Anonymous field `autorest.Response` is added to struct `Workspace`
+- Field `ExtraProperties` is added to struct `WorkspaceProperties`
+- Field `ManagedVirtualNetworkSettings` is added to struct `WorkspaceProperties`
+- Field `WorkspaceUID` is added to struct `WorkspaceProperties`
+- Field `ConnectivityEndpoints` is added to struct `WorkspaceProperties`
+- Field `WorkspaceRepositoryConfiguration` is added to struct `WorkspaceProperties`
+- Field `DefaultDataLakeStorage` is added to struct `WorkspaceProperties`
+- Field `ManagedVirtualNetwork` is added to struct `WorkspaceProperties`
+- Field `Encryption` is added to struct `WorkspaceProperties`
+- Field `PurviewConfiguration` is added to struct `WorkspaceProperties`
+- Field `SQLAdministratorLogin` is added to struct `WorkspaceProperties`
+- Field `ManagedResourceGroupName` is added to struct `WorkspaceProperties`
+- Field `PrivateEndpointConnections` is added to struct `WorkspaceProperties`
+- Field `SQLAdministratorLoginPassword` is added to struct `WorkspaceProperties`
+- Field `VirtualNetworkProfile` is added to struct `WorkspaceProperties`
+

@@ -317,8 +317,11 @@ func (page DomainServiceListResultPage) Values() []DomainService {
 }
 
 // Creates a new instance of the DomainServiceListResultPage type.
-func NewDomainServiceListResultPage(getNextPage func(context.Context, DomainServiceListResult) (DomainServiceListResult, error)) DomainServiceListResultPage {
-	return DomainServiceListResultPage{fn: getNextPage}
+func NewDomainServiceListResultPage(cur DomainServiceListResult, getNextPage func(context.Context, DomainServiceListResult) (DomainServiceListResult, error)) DomainServiceListResultPage {
+	return DomainServiceListResultPage{
+		fn:   getNextPage,
+		dslr: cur,
+	}
 }
 
 // DomainServiceProperties properties of the Domain Service.
@@ -327,6 +330,8 @@ type DomainServiceProperties struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// DomainName - The name of the Azure domain that the user would like to deploy Domain Services to.
 	DomainName *string `json:"domainName,omitempty"`
+	// DeploymentID - READ-ONLY; Deployment Id
+	DeploymentID *string `json:"deploymentId,omitempty"`
 	// VnetSiteID - READ-ONLY; Virtual network site id
 	VnetSiteID *string `json:"vnetSiteId,omitempty"`
 	// SubnetID - The name of the virtual network that Domain Services will be deployed on. The id of the subnet that Domain Services will be deployed on. /virtualNetwork/vnetName/subnets/subnetName.
@@ -334,7 +339,7 @@ type DomainServiceProperties struct {
 	// LdapsSettings - Secure LDAP Settings
 	LdapsSettings *LdapsSettings `json:"ldapsSettings,omitempty"`
 	// HealthLastEvaluated - READ-ONLY; Last domain evaluation run DateTime
-	HealthLastEvaluated *date.Time `json:"healthLastEvaluated,omitempty"`
+	HealthLastEvaluated *date.TimeRFC1123 `json:"healthLastEvaluated,omitempty"`
 	// HealthMonitors - READ-ONLY; List of Domain Health Monitors
 	HealthMonitors *[]HealthMonitor `json:"healthMonitors,omitempty"`
 	// HealthAlerts - READ-ONLY; List of Domain Health Alerts
@@ -717,8 +722,11 @@ func (page OperationEntityListResultPage) Values() []OperationEntity {
 }
 
 // Creates a new instance of the OperationEntityListResultPage type.
-func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
-	return OperationEntityListResultPage{fn: getNextPage}
+func NewOperationEntityListResultPage(cur OperationEntityListResult, getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
+	return OperationEntityListResultPage{
+		fn:   getNextPage,
+		oelr: cur,
+	}
 }
 
 // Resource the Resource model definition.

@@ -32,15 +32,15 @@ type NotebookWorkspacesClient struct {
 }
 
 // NewNotebookWorkspacesClient creates an instance of the NotebookWorkspacesClient client.
-func NewNotebookWorkspacesClient(subscriptionID string, subscriptionID1 string) NotebookWorkspacesClient {
-	return NewNotebookWorkspacesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewNotebookWorkspacesClient(subscriptionID string) NotebookWorkspacesClient {
+	return NewNotebookWorkspacesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewNotebookWorkspacesClientWithBaseURI creates an instance of the NotebookWorkspacesClient client using a custom
 // endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
 // stack).
-func NewNotebookWorkspacesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) NotebookWorkspacesClient {
-	return NotebookWorkspacesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewNotebookWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) NotebookWorkspacesClient {
+	return NotebookWorkspacesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates the notebook workspace for a Cosmos DB account.

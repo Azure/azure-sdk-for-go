@@ -1,9 +1,9 @@
-package report
+package markdown
 
 import "testing"
 
 func TestMarkdownWriter_String(t *testing.T) {
-	md := MarkdownWriter{}
+	md := Writer{}
 	md.WriteHeader("Header1")
 	md.WriteSubheader("Sub-header1")
 	md.WriteLine("Foo")
@@ -29,8 +29,8 @@ Foo
 	}
 }
 
-func getTable() *MarkdownTable {
-	table := NewMarkdownTable("ll", "packages", "api-versions")
+func getTable() *Table {
+	table := NewTable("ll", "packages", "api-versions")
 	table.AddRow("compute", "2020-06-01")
 	table.AddRow("network", "2020-06-01")
 	table.AddRow("resources", "2020-09-01")

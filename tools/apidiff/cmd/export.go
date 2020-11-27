@@ -16,9 +16,10 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 var exportCmd = &cobra.Command{

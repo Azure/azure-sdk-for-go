@@ -18,7 +18,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 	"os"
 	"path/filepath"
 	"strings"
@@ -26,6 +25,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/ioext"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 )
 
 func printf(format string, a ...interface{}) {

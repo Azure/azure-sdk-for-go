@@ -17,10 +17,11 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 	"sort"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/markdown"
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 	"github.com/spf13/cobra"
 )
 
@@ -73,7 +74,7 @@ func theChangelogCmd(args []string) error {
 }
 
 func writePackageChangelog(pr report.PkgsReport) (string, error) {
-	md := &report.MarkdownWriter{}
+	md := &markdown.Writer{}
 	if err := reportAddedPkgs(pr, md); err != nil {
 		return "", fmt.Errorf("failed to write table for added packages: %+v", err)
 	}
@@ -89,7 +90,7 @@ func writePackageChangelog(pr report.PkgsReport) (string, error) {
 	return md.String(), nil
 }
 
-func reportAddedPkgs(pr report.PkgsReport, md *report.MarkdownWriter) error {
+func reportAddedPkgs(pr report.PkgsReport, md *markdown.Writer) error {
 	if len(pr.AddedPackages) == 0 {
 		return nil
 	}
@@ -102,7 +103,7 @@ func reportAddedPkgs(pr report.PkgsReport, md *report.MarkdownWriter) error {
 	return nil
 }
 
-func reportUpdatedPkgs(pr report.PkgsReport, md *report.MarkdownWriter) error {
+func reportUpdatedPkgs(pr report.PkgsReport, md *markdown.Writer) error {
 	if !pr.modPkgHasAdditions {
 		return nil
 	}
@@ -121,7 +122,7 @@ func reportUpdatedPkgs(pr report.PkgsReport, md *report.MarkdownWriter) error {
 	return nil
 }
 
-func reportBreakingPkgs(pr report.PkgsReport, md *report.MarkdownWriter) error {
+func reportBreakingPkgs(pr report.PkgsReport, md *markdown.Writer) error {
 	if !pr.modPkgHasBreaking {
 		return nil
 	}
@@ -140,7 +141,7 @@ func reportBreakingPkgs(pr report.PkgsReport, md *report.MarkdownWriter) error {
 	return nil
 }
 
-func reportRemovedPkgs(pr report.PkgsReport, md *report.MarkdownWriter) error {
+func reportRemovedPkgs(pr report.PkgsReport, md *markdown.Writer) error {
 	if len(pr.RemovedPackages) == 0 {
 		return nil
 	}
@@ -167,8 +168,8 @@ func convertFullPackagePathToPackageNameAndAPIVersion(packageName string) (strin
 	return segments[len(segments)-1], segments[len(segments)-2], nil
 }
 
-func createPackageTable(pkgs []string) (*report.MarkdownTable, error) {
-	t := report.NewMarkdownTable("rc", "Package Name", "API Version")
+func createPackageTable(pkgs []string) (*markdown.Table, error) {
+	t := markdown.NewTable("rc", "Package Name", "API Version")
 	rows, err := categorizePackageAPIVersions(pkgs)
 	if err != nil {
 		return nil, err

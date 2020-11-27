@@ -5,6 +5,8 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/markdown"
 )
 
 const apiDirSuffix = "api"
@@ -152,14 +154,14 @@ func (r *PkgsReport) ToMarkdown() string {
 	if r.IsEmpty() {
 		return ""
 	}
-	md := MarkdownWriter{}
+	md := markdown.Writer{}
 	r.writeAddedPackages(&md)
 	r.writeRemovedPackages(&md)
 	r.writeModifiedPackages(&md)
 	return md.String()
 }
 
-func (r *PkgsReport) writeAddedPackages(md *MarkdownWriter) {
+func (r *PkgsReport) writeAddedPackages(md *markdown.Writer) {
 	if len(r.AddedPackages) == 0 {
 		return
 	}
@@ -170,7 +172,7 @@ func (r *PkgsReport) writeAddedPackages(md *MarkdownWriter) {
 	}
 }
 
-func (r *PkgsReport) writeModifiedPackages(md *MarkdownWriter) {
+func (r *PkgsReport) writeModifiedPackages(md *markdown.Writer) {
 	if len(r.ModifiedPackages) == 0 {
 		return
 	}
@@ -186,7 +188,7 @@ func (r *PkgsReport) writeModifiedPackages(md *MarkdownWriter) {
 	}
 }
 
-func (r *PkgsReport) writeRemovedPackages(md *MarkdownWriter) {
+func (r *PkgsReport) writeRemovedPackages(md *markdown.Writer) {
 	if len(r.RemovedPackages) == 0 {
 		return
 	}

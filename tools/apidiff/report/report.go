@@ -16,10 +16,12 @@ package report
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/delta"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 	"sort"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/delta"
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/markdown"
 )
 
 // Package represents a per-package report that contains additive and breaking changes.
@@ -98,13 +100,13 @@ func (p Package) ToMarkdown() string {
 	if p.IsEmpty() {
 		return ""
 	}
-	md := MarkdownWriter{}
+	md := markdown.Writer{}
 	p.writeBreakingChanges(&md)
 	p.writeNewContent(&md)
 	return md.String()
 }
 
-func (p Package) writeBreakingChanges(md *MarkdownWriter) {
+func (p Package) writeBreakingChanges(md *markdown.Writer) {
 	if !p.HasBreakingChanges() {
 		return
 	}
@@ -113,7 +115,7 @@ func (p Package) writeBreakingChanges(md *MarkdownWriter) {
 	writeSigChanges(p.BreakingChanges, md)
 }
 
-func (p Package) writeNewContent(md *MarkdownWriter) {
+func (p Package) writeNewContent(md *markdown.Writer) {
 	if !p.HasAdditiveChanges() {
 		return
 	}
@@ -123,7 +125,7 @@ func (p Package) writeNewContent(md *MarkdownWriter) {
 }
 
 // writes the subset of breaking changes pertaining to removed content
-func writeRemovedContent(removed *delta.Content, md *MarkdownWriter) {
+func writeRemovedContent(removed *delta.Content, md *markdown.Writer) {
 	if removed == nil {
 		return
 	}
@@ -133,7 +135,7 @@ func writeRemovedContent(removed *delta.Content, md *MarkdownWriter) {
 }
 
 // writes the subset of breaking changes pertaining to signature changes
-func writeSigChanges(bc *BreakingChanges, md *MarkdownWriter) {
+func writeSigChanges(bc *BreakingChanges, md *markdown.Writer) {
 	if len(bc.Consts) == 0 && len(bc.Funcs) == 0 && len(bc.Structs) == 0 {
 		return
 	}
@@ -189,7 +191,7 @@ func writeSigChanges(bc *BreakingChanges, md *MarkdownWriter) {
 }
 
 // writes out const information formatted as TypeName.ConstName
-func writeConsts(co map[string]exports.Const, subheader string, md *MarkdownWriter) {
+func writeConsts(co map[string]exports.Const, subheader string, md *markdown.Writer) {
 	if len(co) == 0 {
 		return
 	}
@@ -207,7 +209,7 @@ func writeConsts(co map[string]exports.Const, subheader string, md *MarkdownWrit
 }
 
 // writes out func information formatted as [receiver].FuncName([params]) [returns]
-func writeFuncs(funcs map[string]exports.Func, subheader string, md *MarkdownWriter) {
+func writeFuncs(funcs map[string]exports.Func, subheader string, md *markdown.Writer) {
 	if len(funcs) == 0 {
 		return
 	}
@@ -238,7 +240,7 @@ func writeFuncs(funcs map[string]exports.Func, subheader string, md *MarkdownWri
 // writes out struct information
 // sheader1 is for added/removed struct types formatted as TypeName
 // sheader2 is for added/removed struct fields formatted as TypeName.FieldName
-func writeStructs(content *delta.Content, sheader1, sheader2 string, md *MarkdownWriter) {
+func writeStructs(content *delta.Content, sheader1, sheader2 string, md *markdown.Writer) {
 	if len(content.Structs) == 0 {
 		return
 	}

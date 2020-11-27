@@ -291,10 +291,10 @@ func getPkgsReport(lhs, rhs repoContent) PkgsReport {
 	rpt := PkgsReport{}
 
 	if !onlyBreakingChangesFlag {
-		rpt.AddedPackages = getPkgsList(lhs, rhs)
+		rpt.AddedPackages = getDiffPkgs(lhs, rhs)
 	}
 	if !onlyAdditionsFlag {
-		rpt.RemovedPackages = getPkgsList(rhs, lhs)
+		rpt.RemovedPackages = getDiffPkgs(rhs, lhs)
 	}
 
 	// diff packages
@@ -324,7 +324,7 @@ func getPkgsReport(lhs, rhs repoContent) PkgsReport {
 }
 
 // returns a list of packages in rhs that aren't in lhs
-func getPkgsList(lhs, rhs repoContent) PkgsList {
+func getDiffPkgs(lhs, rhs repoContent) PkgsList {
 	list := PkgsList{}
 	for rhsPkg := range rhs {
 		if _, ok := lhs[rhsPkg]; !ok {

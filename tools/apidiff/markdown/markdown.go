@@ -104,6 +104,11 @@ func (t *Table) Columns() int {
 	return len(t.headers)
 }
 
+// Rows returns the number of rows in this table
+func (t *Table) Rows() int {
+	return len(t.rows)
+}
+
 // AddRow adds a new row to the table
 func (t *Table) AddRow(items ...string) {
 	t.rows = append(t.rows, markdownTableRow{

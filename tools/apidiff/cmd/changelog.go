@@ -94,20 +94,21 @@ func reportAddedPkgs(pr report.PkgsReport, md *markdown.Writer) error {
 	if len(pr.AddedPackages) == 0 {
 		return nil
 	}
-	md.WriteSubheader("New Packages")
 	t, err := createPackageTable(pr.AddedPackages)
 	if err != nil {
 		return err
 	}
-	md.WriteTable(*t)
+	if t.Rows() > 0 {
+		md.WriteSubheader("New Packages")
+		md.WriteTable(*t)
+	}
 	return nil
 }
 
 func reportUpdatedPkgs(pr report.PkgsReport, md *markdown.Writer) error {
-	if !pr.modPkgHasAdditions {
+	if pr.ModifiedPackages == nil || !pr.ModifiedPackages.HasAdditiveChanges() {
 		return nil
 	}
-	md.WriteSubheader("Updated Packages")
 	var updated []string
 	for pkgName, pkgRpt := range pr.ModifiedPackages {
 		if pkgRpt.HasAdditiveChanges() && !pkgRpt.HasBreakingChanges() {
@@ -118,15 +119,17 @@ func reportUpdatedPkgs(pr report.PkgsReport, md *markdown.Writer) error {
 	if err != nil {
 		return err
 	}
-	md.WriteTable(*t)
+	if t.Rows() > 0 {
+		md.WriteSubheader("Updated Packages")
+		md.WriteTable(*t)
+	}
 	return nil
 }
 
 func reportBreakingPkgs(pr report.PkgsReport, md *markdown.Writer) error {
-	if !pr.modPkgHasBreaking {
+	if pr.ModifiedPackages == nil || !pr.ModifiedPackages.HasBreakingChanges() {
 		return nil
 	}
-	md.WriteSubheader("Breaking Changes")
 	var breaking []string
 	for pkgName, pkgRpt := range pr.ModifiedPackages {
 		if pkgRpt.HasBreakingChanges() {
@@ -137,7 +140,10 @@ func reportBreakingPkgs(pr report.PkgsReport, md *markdown.Writer) error {
 	if err != nil {
 		return err
 	}
-	md.WriteTable(*t)
+	if t.Rows() > 0 {
+		md.WriteSubheader("Breaking Changes")
+		md.WriteTable(*t)
+	}
 	return nil
 }
 
@@ -145,12 +151,14 @@ func reportRemovedPkgs(pr report.PkgsReport, md *markdown.Writer) error {
 	if len(pr.RemovedPackages) == 0 {
 		return nil
 	}
-	md.WriteSubheader("Removed Packages")
 	t, err := createPackageTable(pr.RemovedPackages)
 	if err != nil {
 		return err
 	}
-	md.WriteTable(*t)
+	if t.Rows() > 0 {
+		md.WriteSubheader("Removed Packages")
+		md.WriteTable(*t)
+	}
 	return nil
 }
 

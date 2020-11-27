@@ -72,7 +72,7 @@ func theChangelogCmd(args []string) error {
 	return nil
 }
 
-func writePackageChangelog(pr PkgsReport) (string, error) {
+func writePackageChangelog(pr report.PkgsReport) (string, error) {
 	md := &report.MarkdownWriter{}
 	if err := reportAddedPkgs(pr, md); err != nil {
 		return "", fmt.Errorf("failed to write table for added packages: %+v", err)
@@ -89,7 +89,7 @@ func writePackageChangelog(pr PkgsReport) (string, error) {
 	return md.String(), nil
 }
 
-func reportAddedPkgs(pr PkgsReport, md *report.MarkdownWriter) error {
+func reportAddedPkgs(pr report.PkgsReport, md *report.MarkdownWriter) error {
 	if len(pr.AddedPackages) == 0 {
 		return nil
 	}
@@ -102,7 +102,7 @@ func reportAddedPkgs(pr PkgsReport, md *report.MarkdownWriter) error {
 	return nil
 }
 
-func reportUpdatedPkgs(pr PkgsReport, md *report.MarkdownWriter) error {
+func reportUpdatedPkgs(pr report.PkgsReport, md *report.MarkdownWriter) error {
 	if !pr.modPkgHasAdditions {
 		return nil
 	}
@@ -121,7 +121,7 @@ func reportUpdatedPkgs(pr PkgsReport, md *report.MarkdownWriter) error {
 	return nil
 }
 
-func reportBreakingPkgs(pr PkgsReport, md *report.MarkdownWriter) error {
+func reportBreakingPkgs(pr report.PkgsReport, md *report.MarkdownWriter) error {
 	if !pr.modPkgHasBreaking {
 		return nil
 	}
@@ -140,7 +140,7 @@ func reportBreakingPkgs(pr PkgsReport, md *report.MarkdownWriter) error {
 	return nil
 }
 
-func reportRemovedPkgs(pr PkgsReport, md *report.MarkdownWriter) error {
+func reportRemovedPkgs(pr report.PkgsReport, md *report.MarkdownWriter) error {
 	if len(pr.RemovedPackages) == 0 {
 		return nil
 	}

@@ -18,6 +18,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 	"os"
 	"path/filepath"
 	"strings"
@@ -25,7 +26,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/ioext"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 )
 
 func printf(format string, a ...interface{}) {
@@ -62,42 +62,6 @@ func vprintln(a ...interface{}) {
 	if verboseFlag {
 		println(a...)
 	}
-}
-
-// represents a collection of per-package reports, one for each commit hash
-type CommitPkgReport struct {
-	BreakingChanges []string                  `json:"breakingChanges,omitempty"`
-	CommitsReports  map[string]report.Package `json:"deltas"`
-}
-
-// returns true if the report contains no data
-func (c CommitPkgReport) IsEmpty() bool {
-	for _, rpt := range c.CommitsReports {
-		if !rpt.IsEmpty() {
-			return false
-		}
-	}
-	return true
-}
-
-// returns true if the report contains breaking changes
-func (c CommitPkgReport) HasBreakingChanges() bool {
-	for _, r := range c.CommitsReports {
-		if r.HasBreakingChanges() {
-			return true
-		}
-	}
-	return false
-}
-
-// returns true if the report contains additive changes
-func (c CommitPkgReport) HasAdditiveChanges() bool {
-	for _, r := range c.CommitsReports {
-		if r.HasAdditiveChanges() {
-			return true
-		}
-	}
-	return false
 }
 
 func processArgsAndClone(args []string) (cln repo.WorkingTree, err error) {
@@ -204,15 +168,9 @@ func generateReports(args []string, cln repo.WorkingTree, fn reportGenFunc) erro
 	return nil
 }
 
-type ReportStatus interface {
-	IsEmpty() bool
-	HasBreakingChanges() bool
-	HasAdditiveChanges() bool
-}
-
 // compares report status with the desired report options (breaking/additions)
 // to determine if the program should terminate with a non-zero exit code.
-func evalReportStatus(r ReportStatus) {
+func evalReportStatus(r report.Status) {
 	if onlyBreakingChangesFlag && r.HasBreakingChanges() {
 		os.Exit(1)
 	}
@@ -221,7 +179,7 @@ func evalReportStatus(r ReportStatus) {
 	}
 }
 
-func PrintReport(r ReportStatus) error {
+func PrintReport(r report.Status) error {
 	if r.IsEmpty() {
 		println("no changes were found")
 		return nil

@@ -47,5 +47,5 @@ func exportCommand(searchingDir string) error {
 	if err != nil {
 		return err
 	}
-	return r.print(os.Stdout)
+	return r.Print(os.Stdout)
 }

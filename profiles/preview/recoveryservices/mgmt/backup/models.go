@@ -1218,14 +1218,14 @@ func NewBackupsClientWithBaseURI(baseURI string, subscriptionID string) BackupsC
 func NewClientDiscoveryResponseIterator(page ClientDiscoveryResponsePage) ClientDiscoveryResponseIterator {
 	return original.NewClientDiscoveryResponseIterator(page)
 }
-func NewClientDiscoveryResponsePage(getNextPage func(context.Context, ClientDiscoveryResponse) (ClientDiscoveryResponse, error)) ClientDiscoveryResponsePage {
-	return original.NewClientDiscoveryResponsePage(getNextPage)
+func NewClientDiscoveryResponsePage(cur ClientDiscoveryResponse, getNextPage func(context.Context, ClientDiscoveryResponse) (ClientDiscoveryResponse, error)) ClientDiscoveryResponsePage {
+	return original.NewClientDiscoveryResponsePage(cur, getNextPage)
 }
 func NewEngineBaseResourceListIterator(page EngineBaseResourceListPage) EngineBaseResourceListIterator {
 	return original.NewEngineBaseResourceListIterator(page)
 }
-func NewEngineBaseResourceListPage(getNextPage func(context.Context, EngineBaseResourceList) (EngineBaseResourceList, error)) EngineBaseResourceListPage {
-	return original.NewEngineBaseResourceListPage(getNextPage)
+func NewEngineBaseResourceListPage(cur EngineBaseResourceList, getNextPage func(context.Context, EngineBaseResourceList) (EngineBaseResourceList, error)) EngineBaseResourceListPage {
+	return original.NewEngineBaseResourceListPage(cur, getNextPage)
 }
 func NewEnginesClient(subscriptionID string) EnginesClient {
 	return original.NewEnginesClient(subscriptionID)
@@ -1272,8 +1272,8 @@ func NewJobOperationResultsClientWithBaseURI(baseURI string, subscriptionID stri
 func NewJobResourceListIterator(page JobResourceListPage) JobResourceListIterator {
 	return original.NewJobResourceListIterator(page)
 }
-func NewJobResourceListPage(getNextPage func(context.Context, JobResourceList) (JobResourceList, error)) JobResourceListPage {
-	return original.NewJobResourceListPage(getNextPage)
+func NewJobResourceListPage(cur JobResourceList, getNextPage func(context.Context, JobResourceList) (JobResourceList, error)) JobResourceListPage {
+	return original.NewJobResourceListPage(cur, getNextPage)
 }
 func NewJobsClient(subscriptionID string) JobsClient {
 	return original.NewJobsClient(subscriptionID)
@@ -1326,8 +1326,8 @@ func NewPrivateEndpointConnectionClientWithBaseURI(baseURI string, subscriptionI
 func NewProtectableContainerResourceListIterator(page ProtectableContainerResourceListPage) ProtectableContainerResourceListIterator {
 	return original.NewProtectableContainerResourceListIterator(page)
 }
-func NewProtectableContainerResourceListPage(getNextPage func(context.Context, ProtectableContainerResourceList) (ProtectableContainerResourceList, error)) ProtectableContainerResourceListPage {
-	return original.NewProtectableContainerResourceListPage(getNextPage)
+func NewProtectableContainerResourceListPage(cur ProtectableContainerResourceList, getNextPage func(context.Context, ProtectableContainerResourceList) (ProtectableContainerResourceList, error)) ProtectableContainerResourceListPage {
+	return original.NewProtectableContainerResourceListPage(cur, getNextPage)
 }
 func NewProtectableContainersClient(subscriptionID string) ProtectableContainersClient {
 	return original.NewProtectableContainersClient(subscriptionID)
@@ -1356,8 +1356,8 @@ func NewProtectedItemOperationStatusesClientWithBaseURI(baseURI string, subscrip
 func NewProtectedItemResourceListIterator(page ProtectedItemResourceListPage) ProtectedItemResourceListIterator {
 	return original.NewProtectedItemResourceListIterator(page)
 }
-func NewProtectedItemResourceListPage(getNextPage func(context.Context, ProtectedItemResourceList) (ProtectedItemResourceList, error)) ProtectedItemResourceListPage {
-	return original.NewProtectedItemResourceListPage(getNextPage)
+func NewProtectedItemResourceListPage(cur ProtectedItemResourceList, getNextPage func(context.Context, ProtectedItemResourceList) (ProtectedItemResourceList, error)) ProtectedItemResourceListPage {
+	return original.NewProtectedItemResourceListPage(cur, getNextPage)
 }
 func NewProtectedItemsClient(subscriptionID string) ProtectedItemsClient {
 	return original.NewProtectedItemsClient(subscriptionID)
@@ -1386,8 +1386,8 @@ func NewProtectionContainerRefreshOperationResultsClientWithBaseURI(baseURI stri
 func NewProtectionContainerResourceListIterator(page ProtectionContainerResourceListPage) ProtectionContainerResourceListIterator {
 	return original.NewProtectionContainerResourceListIterator(page)
 }
-func NewProtectionContainerResourceListPage(getNextPage func(context.Context, ProtectionContainerResourceList) (ProtectionContainerResourceList, error)) ProtectionContainerResourceListPage {
-	return original.NewProtectionContainerResourceListPage(getNextPage)
+func NewProtectionContainerResourceListPage(cur ProtectionContainerResourceList, getNextPage func(context.Context, ProtectionContainerResourceList) (ProtectionContainerResourceList, error)) ProtectionContainerResourceListPage {
+	return original.NewProtectionContainerResourceListPage(cur, getNextPage)
 }
 func NewProtectionContainersClient(subscriptionID string) ProtectionContainersClient {
 	return original.NewProtectionContainersClient(subscriptionID)
@@ -1416,8 +1416,8 @@ func NewProtectionIntentGroupClientWithBaseURI(baseURI string, subscriptionID st
 func NewProtectionIntentResourceListIterator(page ProtectionIntentResourceListPage) ProtectionIntentResourceListIterator {
 	return original.NewProtectionIntentResourceListIterator(page)
 }
-func NewProtectionIntentResourceListPage(getNextPage func(context.Context, ProtectionIntentResourceList) (ProtectionIntentResourceList, error)) ProtectionIntentResourceListPage {
-	return original.NewProtectionIntentResourceListPage(getNextPage)
+func NewProtectionIntentResourceListPage(cur ProtectionIntentResourceList, getNextPage func(context.Context, ProtectionIntentResourceList) (ProtectionIntentResourceList, error)) ProtectionIntentResourceListPage {
+	return original.NewProtectionIntentResourceListPage(cur, getNextPage)
 }
 func NewProtectionPoliciesClient(subscriptionID string) ProtectionPoliciesClient {
 	return original.NewProtectionPoliciesClient(subscriptionID)
@@ -1440,14 +1440,14 @@ func NewProtectionPolicyOperationStatusesClientWithBaseURI(baseURI string, subsc
 func NewProtectionPolicyResourceListIterator(page ProtectionPolicyResourceListPage) ProtectionPolicyResourceListIterator {
 	return original.NewProtectionPolicyResourceListIterator(page)
 }
-func NewProtectionPolicyResourceListPage(getNextPage func(context.Context, ProtectionPolicyResourceList) (ProtectionPolicyResourceList, error)) ProtectionPolicyResourceListPage {
-	return original.NewProtectionPolicyResourceListPage(getNextPage)
+func NewProtectionPolicyResourceListPage(cur ProtectionPolicyResourceList, getNextPage func(context.Context, ProtectionPolicyResourceList) (ProtectionPolicyResourceList, error)) ProtectionPolicyResourceListPage {
+	return original.NewProtectionPolicyResourceListPage(cur, getNextPage)
 }
 func NewRecoveryPointResourceListIterator(page RecoveryPointResourceListPage) RecoveryPointResourceListIterator {
 	return original.NewRecoveryPointResourceListIterator(page)
 }
-func NewRecoveryPointResourceListPage(getNextPage func(context.Context, RecoveryPointResourceList) (RecoveryPointResourceList, error)) RecoveryPointResourceListPage {
-	return original.NewRecoveryPointResourceListPage(getNextPage)
+func NewRecoveryPointResourceListPage(cur RecoveryPointResourceList, getNextPage func(context.Context, RecoveryPointResourceList) (RecoveryPointResourceList, error)) RecoveryPointResourceListPage {
+	return original.NewRecoveryPointResourceListPage(cur, getNextPage)
 }
 func NewRecoveryPointsClient(subscriptionID string) RecoveryPointsClient {
 	return original.NewRecoveryPointsClient(subscriptionID)
@@ -1497,8 +1497,8 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func NewWorkloadItemResourceListIterator(page WorkloadItemResourceListPage) WorkloadItemResourceListIterator {
 	return original.NewWorkloadItemResourceListIterator(page)
 }
-func NewWorkloadItemResourceListPage(getNextPage func(context.Context, WorkloadItemResourceList) (WorkloadItemResourceList, error)) WorkloadItemResourceListPage {
-	return original.NewWorkloadItemResourceListPage(getNextPage)
+func NewWorkloadItemResourceListPage(cur WorkloadItemResourceList, getNextPage func(context.Context, WorkloadItemResourceList) (WorkloadItemResourceList, error)) WorkloadItemResourceListPage {
+	return original.NewWorkloadItemResourceListPage(cur, getNextPage)
 }
 func NewWorkloadItemsClient(subscriptionID string) WorkloadItemsClient {
 	return original.NewWorkloadItemsClient(subscriptionID)
@@ -1509,8 +1509,8 @@ func NewWorkloadItemsClientWithBaseURI(baseURI string, subscriptionID string) Wo
 func NewWorkloadProtectableItemResourceListIterator(page WorkloadProtectableItemResourceListPage) WorkloadProtectableItemResourceListIterator {
 	return original.NewWorkloadProtectableItemResourceListIterator(page)
 }
-func NewWorkloadProtectableItemResourceListPage(getNextPage func(context.Context, WorkloadProtectableItemResourceList) (WorkloadProtectableItemResourceList, error)) WorkloadProtectableItemResourceListPage {
-	return original.NewWorkloadProtectableItemResourceListPage(getNextPage)
+func NewWorkloadProtectableItemResourceListPage(cur WorkloadProtectableItemResourceList, getNextPage func(context.Context, WorkloadProtectableItemResourceList) (WorkloadProtectableItemResourceList, error)) WorkloadProtectableItemResourceListPage {
+	return original.NewWorkloadProtectableItemResourceListPage(cur, getNextPage)
 }
 func PossibleAzureFileShareTypeValues() []AzureFileShareType {
 	return original.PossibleAzureFileShareTypeValues()

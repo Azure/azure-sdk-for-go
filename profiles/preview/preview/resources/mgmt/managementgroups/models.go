@@ -22,7 +22,7 @@ package managementgroups
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2020-05-01/managementgroups"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-03-01-preview/managementgroups"
 )
 
 const (
@@ -56,6 +56,12 @@ const (
 	Permissions1View     Permissions1 = original.Permissions1View
 )
 
+type ProvisioningState = original.ProvisioningState
+
+const (
+	Updating ProvisioningState = original.Updating
+)
+
 type Reason = original.Reason
 
 const (
@@ -77,24 +83,23 @@ const (
 type Type = original.Type
 
 const (
-	MicrosoftManagementmanagementGroups Type = original.MicrosoftManagementmanagementGroups
+	ProvidersMicrosoftManagementmanagementGroups Type = original.ProvidersMicrosoftManagementmanagementGroups
 )
 
 type Type1 = original.Type1
 
 const (
-	Type1MicrosoftManagementmanagementGroups Type1 = original.Type1MicrosoftManagementmanagementGroups
-	Type1Subscriptions                       Type1 = original.Type1Subscriptions
+	Type1ProvidersMicrosoftManagementmanagementGroups Type1 = original.Type1ProvidersMicrosoftManagementmanagementGroups
+	Type1Subscriptions                                Type1 = original.Type1Subscriptions
 )
 
 type Type2 = original.Type2
 
 const (
-	Type2MicrosoftManagementmanagementGroups Type2 = original.Type2MicrosoftManagementmanagementGroups
-	Type2Subscriptions                       Type2 = original.Type2Subscriptions
+	Type2ProvidersMicrosoftManagementmanagementGroups Type2 = original.Type2ProvidersMicrosoftManagementmanagementGroups
+	Type2Subscriptions                                Type2 = original.Type2Subscriptions
 )
 
-type AzureAsyncOperationResults = original.AzureAsyncOperationResults
 type BaseClient = original.BaseClient
 type CheckNameAvailabilityRequest = original.CheckNameAvailabilityRequest
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
@@ -105,8 +110,6 @@ type CreateManagementGroupDetails = original.CreateManagementGroupDetails
 type CreateManagementGroupProperties = original.CreateManagementGroupProperties
 type CreateManagementGroupRequest = original.CreateManagementGroupRequest
 type CreateOrUpdateFuture = original.CreateOrUpdateFuture
-type CreateOrUpdateSettingsProperties = original.CreateOrUpdateSettingsProperties
-type CreateOrUpdateSettingsRequest = original.CreateOrUpdateSettingsRequest
 type CreateParentGroupInfo = original.CreateParentGroupInfo
 type DeleteFuture = original.DeleteFuture
 type DescendantInfo = original.DescendantInfo
@@ -127,19 +130,11 @@ type EntityListResultPage = original.EntityListResultPage
 type EntityParentGroupInfo = original.EntityParentGroupInfo
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
-type HierarchySettings = original.HierarchySettings
-type HierarchySettingsClient = original.HierarchySettingsClient
-type HierarchySettingsInfo = original.HierarchySettingsInfo
-type HierarchySettingsList = original.HierarchySettingsList
-type HierarchySettingsProperties = original.HierarchySettingsProperties
 type Info = original.Info
 type InfoProperties = original.InfoProperties
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
-type ListSubscriptionUnderManagementGroup = original.ListSubscriptionUnderManagementGroup
-type ListSubscriptionUnderManagementGroupIterator = original.ListSubscriptionUnderManagementGroupIterator
-type ListSubscriptionUnderManagementGroupPage = original.ListSubscriptionUnderManagementGroupPage
 type ManagementGroup = original.ManagementGroup
 type Operation = original.Operation
 type OperationDisplayProperties = original.OperationDisplayProperties
@@ -147,82 +142,68 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationResults = original.OperationResults
+type OperationResultsProperties = original.OperationResultsProperties
 type OperationsClient = original.OperationsClient
 type ParentGroupInfo = original.ParentGroupInfo
 type PatchManagementGroupRequest = original.PatchManagementGroupRequest
-type PathElement = original.PathElement
 type Properties = original.Properties
 type SetObject = original.SetObject
-type SubscriptionUnderManagementGroup = original.SubscriptionUnderManagementGroup
-type SubscriptionUnderManagementGroupProperties = original.SubscriptionUnderManagementGroupProperties
 type SubscriptionsClient = original.SubscriptionsClient
 type TenantBackfillStatusResult = original.TenantBackfillStatusResult
 
-func New(operationResultID string, skip *int32, top *int32, skiptoken string) BaseClient {
-	return original.New(operationResultID, skip, top, skiptoken)
+func New() BaseClient {
+	return original.New()
 }
-func NewClient(operationResultID string, skip *int32, top *int32, skiptoken string) Client {
-	return original.NewClient(operationResultID, skip, top, skiptoken)
+func NewClient() Client {
+	return original.NewClient()
 }
-func NewClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) Client {
-	return original.NewClientWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
+func NewClientWithBaseURI(baseURI string) Client {
+	return original.NewClientWithBaseURI(baseURI)
 }
 func NewDescendantListResultIterator(page DescendantListResultPage) DescendantListResultIterator {
 	return original.NewDescendantListResultIterator(page)
 }
-func NewDescendantListResultPage(getNextPage func(context.Context, DescendantListResult) (DescendantListResult, error)) DescendantListResultPage {
-	return original.NewDescendantListResultPage(getNextPage)
+func NewDescendantListResultPage(cur DescendantListResult, getNextPage func(context.Context, DescendantListResult) (DescendantListResult, error)) DescendantListResultPage {
+	return original.NewDescendantListResultPage(cur, getNextPage)
 }
-func NewEntitiesClient(operationResultID string, skip *int32, top *int32, skiptoken string) EntitiesClient {
-	return original.NewEntitiesClient(operationResultID, skip, top, skiptoken)
+func NewEntitiesClient() EntitiesClient {
+	return original.NewEntitiesClient()
 }
-func NewEntitiesClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) EntitiesClient {
-	return original.NewEntitiesClientWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
+func NewEntitiesClientWithBaseURI(baseURI string) EntitiesClient {
+	return original.NewEntitiesClientWithBaseURI(baseURI)
 }
 func NewEntityListResultIterator(page EntityListResultPage) EntityListResultIterator {
 	return original.NewEntityListResultIterator(page)
 }
-func NewEntityListResultPage(getNextPage func(context.Context, EntityListResult) (EntityListResult, error)) EntityListResultPage {
-	return original.NewEntityListResultPage(getNextPage)
-}
-func NewHierarchySettingsClient(operationResultID string, skip *int32, top *int32, skiptoken string) HierarchySettingsClient {
-	return original.NewHierarchySettingsClient(operationResultID, skip, top, skiptoken)
-}
-func NewHierarchySettingsClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) HierarchySettingsClient {
-	return original.NewHierarchySettingsClientWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
+func NewEntityListResultPage(cur EntityListResult, getNextPage func(context.Context, EntityListResult) (EntityListResult, error)) EntityListResultPage {
+	return original.NewEntityListResultPage(cur, getNextPage)
 }
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
 }
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return original.NewListResultPage(getNextPage)
-}
-func NewListSubscriptionUnderManagementGroupIterator(page ListSubscriptionUnderManagementGroupPage) ListSubscriptionUnderManagementGroupIterator {
-	return original.NewListSubscriptionUnderManagementGroupIterator(page)
-}
-func NewListSubscriptionUnderManagementGroupPage(getNextPage func(context.Context, ListSubscriptionUnderManagementGroup) (ListSubscriptionUnderManagementGroup, error)) ListSubscriptionUnderManagementGroupPage {
-	return original.NewListSubscriptionUnderManagementGroupPage(getNextPage)
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(cur, getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
-func NewOperationsClient(operationResultID string, skip *int32, top *int32, skiptoken string) OperationsClient {
-	return original.NewOperationsClient(operationResultID, skip, top, skiptoken)
+func NewOperationsClient() OperationsClient {
+	return original.NewOperationsClient()
 }
-func NewOperationsClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
+func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI)
 }
-func NewSubscriptionsClient(operationResultID string, skip *int32, top *int32, skiptoken string) SubscriptionsClient {
-	return original.NewSubscriptionsClient(operationResultID, skip, top, skiptoken)
+func NewSubscriptionsClient() SubscriptionsClient {
+	return original.NewSubscriptionsClient()
 }
-func NewSubscriptionsClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) SubscriptionsClient {
-	return original.NewSubscriptionsClientWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
+func NewSubscriptionsClientWithBaseURI(baseURI string) SubscriptionsClient {
+	return original.NewSubscriptionsClientWithBaseURI(baseURI)
 }
-func NewWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) BaseClient {
-	return original.NewWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
 }
 func PossibleInheritedPermissionsValues() []InheritedPermissions {
 	return original.PossibleInheritedPermissionsValues()
@@ -232,6 +213,9 @@ func PossiblePermissions1Values() []Permissions1 {
 }
 func PossiblePermissionsValues() []Permissions {
 	return original.PossiblePermissionsValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
 }
 func PossibleReasonValues() []Reason {
 	return original.PossibleReasonValues()

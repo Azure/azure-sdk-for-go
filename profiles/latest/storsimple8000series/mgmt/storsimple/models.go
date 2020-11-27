@@ -644,8 +644,8 @@ func NewAccessControlRecordsClientWithBaseURI(baseURI string, subscriptionID str
 func NewAlertListIterator(page AlertListPage) AlertListIterator {
 	return original.NewAlertListIterator(page)
 }
-func NewAlertListPage(getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
-	return original.NewAlertListPage(getNextPage)
+func NewAlertListPage(cur AlertList, getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
+	return original.NewAlertListPage(cur, getNextPage)
 }
 func NewAlertsClient(subscriptionID string) AlertsClient {
 	return original.NewAlertsClient(subscriptionID)
@@ -656,14 +656,14 @@ func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsCli
 func NewAvailableProviderOperationListIterator(page AvailableProviderOperationListPage) AvailableProviderOperationListIterator {
 	return original.NewAvailableProviderOperationListIterator(page)
 }
-func NewAvailableProviderOperationListPage(getNextPage func(context.Context, AvailableProviderOperationList) (AvailableProviderOperationList, error)) AvailableProviderOperationListPage {
-	return original.NewAvailableProviderOperationListPage(getNextPage)
+func NewAvailableProviderOperationListPage(cur AvailableProviderOperationList, getNextPage func(context.Context, AvailableProviderOperationList) (AvailableProviderOperationList, error)) AvailableProviderOperationListPage {
+	return original.NewAvailableProviderOperationListPage(cur, getNextPage)
 }
 func NewBackupListIterator(page BackupListPage) BackupListIterator {
 	return original.NewBackupListIterator(page)
 }
-func NewBackupListPage(getNextPage func(context.Context, BackupList) (BackupList, error)) BackupListPage {
-	return original.NewBackupListPage(getNextPage)
+func NewBackupListPage(cur BackupList, getNextPage func(context.Context, BackupList) (BackupList, error)) BackupListPage {
+	return original.NewBackupListPage(cur, getNextPage)
 }
 func NewBackupPoliciesClient(subscriptionID string) BackupPoliciesClient {
 	return original.NewBackupPoliciesClient(subscriptionID)
@@ -716,8 +716,8 @@ func NewHardwareComponentGroupsClientWithBaseURI(baseURI string, subscriptionID 
 func NewJobListIterator(page JobListPage) JobListIterator {
 	return original.NewJobListIterator(page)
 }
-func NewJobListPage(getNextPage func(context.Context, JobList) (JobList, error)) JobListPage {
-	return original.NewJobListPage(getNextPage)
+func NewJobListPage(cur JobList, getNextPage func(context.Context, JobList) (JobList, error)) JobListPage {
+	return original.NewJobListPage(cur, getNextPage)
 }
 func NewJobsClient(subscriptionID string) JobsClient {
 	return original.NewJobsClient(subscriptionID)

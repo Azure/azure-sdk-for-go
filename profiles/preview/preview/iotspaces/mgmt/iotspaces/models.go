@@ -92,14 +92,14 @@ func NewClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) Client {
 func NewDescriptionListResultIterator(page DescriptionListResultPage) DescriptionListResultIterator {
 	return original.NewDescriptionListResultIterator(page)
 }
-func NewDescriptionListResultPage(getNextPage func(context.Context, DescriptionListResult) (DescriptionListResult, error)) DescriptionListResultPage {
-	return original.NewDescriptionListResultPage(getNextPage)
+func NewDescriptionListResultPage(cur DescriptionListResult, getNextPage func(context.Context, DescriptionListResult) (DescriptionListResult, error)) DescriptionListResultPage {
+	return original.NewDescriptionListResultPage(cur, getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID uuid.UUID) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

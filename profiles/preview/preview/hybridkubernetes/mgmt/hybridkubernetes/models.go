@@ -29,13 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type AuthenticationMethod = original.AuthenticationMethod
-
-const (
-	ClientCertificate AuthenticationMethod = original.ClientCertificate
-	Token             AuthenticationMethod = original.Token
-)
-
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -55,7 +48,6 @@ const (
 	SystemAssigned ResourceIdentityType = original.SystemAssigned
 )
 
-type AuthenticationCertificateDetails = original.AuthenticationCertificateDetails
 type AuthenticationDetails = original.AuthenticationDetails
 type AuthenticationDetailsValue = original.AuthenticationDetailsValue
 type AzureEntityResource = original.AzureEntityResource
@@ -74,7 +66,8 @@ type ConnectedClusterPatchProperties = original.ConnectedClusterPatchProperties
 type ConnectedClusterProperties = original.ConnectedClusterProperties
 type CredentialResult = original.CredentialResult
 type CredentialResults = original.CredentialResults
-type ErrorDetails = original.ErrorDetails
+type ErrorAdditionalInfo = original.ErrorAdditionalInfo
+type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -98,14 +91,14 @@ func NewConnectedClusterClientWithBaseURI(baseURI string, subscriptionID string)
 func NewConnectedClusterListIterator(page ConnectedClusterListPage) ConnectedClusterListIterator {
 	return original.NewConnectedClusterListIterator(page)
 }
-func NewConnectedClusterListPage(getNextPage func(context.Context, ConnectedClusterList) (ConnectedClusterList, error)) ConnectedClusterListPage {
-	return original.NewConnectedClusterListPage(getNextPage)
+func NewConnectedClusterListPage(cur ConnectedClusterList, getNextPage func(context.Context, ConnectedClusterList) (ConnectedClusterList, error)) ConnectedClusterListPage {
+	return original.NewConnectedClusterListPage(cur, getNextPage)
 }
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
 }
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return original.NewOperationListPage(getNextPage)
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -115,9 +108,6 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleAuthenticationMethodValues() []AuthenticationMethod {
-	return original.PossibleAuthenticationMethodValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

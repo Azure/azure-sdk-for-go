@@ -36,6 +36,14 @@ const (
 	MSAZR0148P OfferType = original.MSAZR0148P
 )
 
+type ProvisioningState = original.ProvisioningState
+
+const (
+	Accepted  ProvisioningState = original.Accepted
+	Failed    ProvisioningState = original.Failed
+	Succeeded ProvisioningState = original.Succeeded
+)
+
 type SpendingLimit = original.SpendingLimit
 
 const (
@@ -54,10 +62,18 @@ const (
 	Warned   State = original.Warned
 )
 
+type Workload = original.Workload
+
+const (
+	DevTest    Workload = original.DevTest
+	Production Workload = original.Production
+)
+
 type AdPrincipal = original.AdPrincipal
 type BaseClient = original.BaseClient
 type CanceledSubscriptionID = original.CanceledSubscriptionID
 type Client = original.Client
+type CreateAliasFuture = original.CreateAliasFuture
 type CreateCspSubscriptionFuture = original.CreateCspSubscriptionFuture
 type CreateSubscriptionFuture = original.CreateSubscriptionFuture
 type CreateSubscriptionInEnrollmentAccountFuture = original.CreateSubscriptionInEnrollmentAccountFuture
@@ -65,6 +81,7 @@ type CreationParameters = original.CreationParameters
 type CreationResult = original.CreationResult
 type EnabledSubscriptionID = original.EnabledSubscriptionID
 type ErrorResponse = original.ErrorResponse
+type ErrorResponseBody = original.ErrorResponseBody
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
@@ -80,6 +97,11 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationsClient = original.OperationsClient
 type Policies = original.Policies
+type PutAliasListResult = original.PutAliasListResult
+type PutAliasRequest = original.PutAliasRequest
+type PutAliasRequestProperties = original.PutAliasRequestProperties
+type PutAliasResponse = original.PutAliasResponse
+type PutAliasResponseProperties = original.PutAliasResponseProperties
 type RenamedSubscriptionID = original.RenamedSubscriptionID
 type SubscriptionsClient = original.SubscriptionsClient
 type TenantIDDescription = original.TenantIDDescription
@@ -100,8 +122,8 @@ func NewClientWithBaseURI(baseURI string) Client {
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
 }
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return original.NewListResultPage(getNextPage)
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(cur, getNextPage)
 }
 func NewOperationClient() OperationClient {
 	return original.NewOperationClient()
@@ -124,8 +146,8 @@ func NewSubscriptionsClientWithBaseURI(baseURI string) SubscriptionsClient {
 func NewTenantListResultIterator(page TenantListResultPage) TenantListResultIterator {
 	return original.NewTenantListResultIterator(page)
 }
-func NewTenantListResultPage(getNextPage func(context.Context, TenantListResult) (TenantListResult, error)) TenantListResultPage {
-	return original.NewTenantListResultPage(getNextPage)
+func NewTenantListResultPage(cur TenantListResult, getNextPage func(context.Context, TenantListResult) (TenantListResult, error)) TenantListResultPage {
+	return original.NewTenantListResultPage(cur, getNextPage)
 }
 func NewTenantsClient() TenantsClient {
 	return original.NewTenantsClient()
@@ -139,11 +161,17 @@ func NewWithBaseURI(baseURI string) BaseClient {
 func PossibleOfferTypeValues() []OfferType {
 	return original.PossibleOfferTypeValues()
 }
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
 func PossibleSpendingLimitValues() []SpendingLimit {
 	return original.PossibleSpendingLimitValues()
 }
 func PossibleStateValues() []State {
 	return original.PossibleStateValues()
+}
+func PossibleWorkloadValues() []Workload {
+	return original.PossibleWorkloadValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

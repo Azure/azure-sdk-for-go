@@ -22,7 +22,7 @@ package appconfiguration
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2019-11-01-preview/appconfiguration"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2020-07-01-preview/appconfiguration"
 )
 
 const (
@@ -90,16 +90,27 @@ type ConfigurationStoresCreateFuture = original.ConfigurationStoresCreateFuture
 type ConfigurationStoresDeleteFuture = original.ConfigurationStoresDeleteFuture
 type ConfigurationStoresUpdateFuture = original.ConfigurationStoresUpdateFuture
 type EncryptionProperties = original.EncryptionProperties
-type Error = original.Error
+type ErrorAdditionalInfo = original.ErrorAdditionalInfo
+type ErrorDetails = original.ErrorDetails
+type ErrorResponse = original.ErrorResponse
 type KeyValue = original.KeyValue
+type KeyValueListResult = original.KeyValueListResult
+type KeyValueListResultIterator = original.KeyValueListResultIterator
+type KeyValueListResultPage = original.KeyValueListResultPage
+type KeyValueProperties = original.KeyValueProperties
+type KeyValuesClient = original.KeyValuesClient
+type KeyValuesDeleteFuture = original.KeyValuesDeleteFuture
 type KeyVaultProperties = original.KeyVaultProperties
-type ListKeyValueParameters = original.ListKeyValueParameters
+type LogSpecification = original.LogSpecification
+type MetricDimension = original.MetricDimension
+type MetricSpecification = original.MetricSpecification
 type NameAvailabilityStatus = original.NameAvailabilityStatus
 type OperationDefinition = original.OperationDefinition
 type OperationDefinitionDisplay = original.OperationDefinitionDisplay
 type OperationDefinitionListResult = original.OperationDefinitionListResult
 type OperationDefinitionListResultIterator = original.OperationDefinitionListResultIterator
 type OperationDefinitionListResultPage = original.OperationDefinitionListResultPage
+type OperationProperties = original.OperationProperties
 type OperationsClient = original.OperationsClient
 type PrivateEndpoint = original.PrivateEndpoint
 type PrivateEndpointConnection = original.PrivateEndpointConnection
@@ -121,6 +132,7 @@ type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionSt
 type RegenerateKeyParameters = original.RegenerateKeyParameters
 type Resource = original.Resource
 type ResourceIdentity = original.ResourceIdentity
+type ServiceSpecification = original.ServiceSpecification
 type Sku = original.Sku
 type UserIdentity = original.UserIdentity
 
@@ -130,14 +142,14 @@ func New(subscriptionID string) BaseClient {
 func NewAPIKeyListResultIterator(page APIKeyListResultPage) APIKeyListResultIterator {
 	return original.NewAPIKeyListResultIterator(page)
 }
-func NewAPIKeyListResultPage(getNextPage func(context.Context, APIKeyListResult) (APIKeyListResult, error)) APIKeyListResultPage {
-	return original.NewAPIKeyListResultPage(getNextPage)
+func NewAPIKeyListResultPage(cur APIKeyListResult, getNextPage func(context.Context, APIKeyListResult) (APIKeyListResult, error)) APIKeyListResultPage {
+	return original.NewAPIKeyListResultPage(cur, getNextPage)
 }
 func NewConfigurationStoreListResultIterator(page ConfigurationStoreListResultPage) ConfigurationStoreListResultIterator {
 	return original.NewConfigurationStoreListResultIterator(page)
 }
-func NewConfigurationStoreListResultPage(getNextPage func(context.Context, ConfigurationStoreListResult) (ConfigurationStoreListResult, error)) ConfigurationStoreListResultPage {
-	return original.NewConfigurationStoreListResultPage(getNextPage)
+func NewConfigurationStoreListResultPage(cur ConfigurationStoreListResult, getNextPage func(context.Context, ConfigurationStoreListResult) (ConfigurationStoreListResult, error)) ConfigurationStoreListResultPage {
+	return original.NewConfigurationStoreListResultPage(cur, getNextPage)
 }
 func NewConfigurationStoresClient(subscriptionID string) ConfigurationStoresClient {
 	return original.NewConfigurationStoresClient(subscriptionID)
@@ -145,11 +157,23 @@ func NewConfigurationStoresClient(subscriptionID string) ConfigurationStoresClie
 func NewConfigurationStoresClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationStoresClient {
 	return original.NewConfigurationStoresClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewKeyValueListResultIterator(page KeyValueListResultPage) KeyValueListResultIterator {
+	return original.NewKeyValueListResultIterator(page)
+}
+func NewKeyValueListResultPage(cur KeyValueListResult, getNextPage func(context.Context, KeyValueListResult) (KeyValueListResult, error)) KeyValueListResultPage {
+	return original.NewKeyValueListResultPage(cur, getNextPage)
+}
+func NewKeyValuesClient(subscriptionID string) KeyValuesClient {
+	return original.NewKeyValuesClient(subscriptionID)
+}
+func NewKeyValuesClientWithBaseURI(baseURI string, subscriptionID string) KeyValuesClient {
+	return original.NewKeyValuesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationDefinitionListResultIterator(page OperationDefinitionListResultPage) OperationDefinitionListResultIterator {
 	return original.NewOperationDefinitionListResultIterator(page)
 }
-func NewOperationDefinitionListResultPage(getNextPage func(context.Context, OperationDefinitionListResult) (OperationDefinitionListResult, error)) OperationDefinitionListResultPage {
-	return original.NewOperationDefinitionListResultPage(getNextPage)
+func NewOperationDefinitionListResultPage(cur OperationDefinitionListResult, getNextPage func(context.Context, OperationDefinitionListResult) (OperationDefinitionListResult, error)) OperationDefinitionListResultPage {
+	return original.NewOperationDefinitionListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -160,8 +184,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
 	return original.NewPrivateEndpointConnectionListResultIterator(page)
 }
-func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
-	return original.NewPrivateEndpointConnectionListResultPage(getNextPage)
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return original.NewPrivateEndpointConnectionListResultPage(cur, getNextPage)
 }
 func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
 	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
@@ -172,8 +196,8 @@ func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscription
 func NewPrivateLinkResourceListResultIterator(page PrivateLinkResourceListResultPage) PrivateLinkResourceListResultIterator {
 	return original.NewPrivateLinkResourceListResultIterator(page)
 }
-func NewPrivateLinkResourceListResultPage(getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
-	return original.NewPrivateLinkResourceListResultPage(getNextPage)
+func NewPrivateLinkResourceListResultPage(cur PrivateLinkResourceListResult, getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
+	return original.NewPrivateLinkResourceListResultPage(cur, getNextPage)
 }
 func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
 	return original.NewPrivateLinkResourcesClient(subscriptionID)

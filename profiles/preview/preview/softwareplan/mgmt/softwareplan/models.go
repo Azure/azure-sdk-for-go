@@ -84,8 +84,8 @@ func NewHybridUseBenefitClientWithBaseURI(baseURI string, subscriptionID string)
 func NewHybridUseBenefitListResultIterator(page HybridUseBenefitListResultPage) HybridUseBenefitListResultIterator {
 	return original.NewHybridUseBenefitListResultIterator(page)
 }
-func NewHybridUseBenefitListResultPage(getNextPage func(context.Context, HybridUseBenefitListResult) (HybridUseBenefitListResult, error)) HybridUseBenefitListResultPage {
-	return original.NewHybridUseBenefitListResultPage(getNextPage)
+func NewHybridUseBenefitListResultPage(cur HybridUseBenefitListResult, getNextPage func(context.Context, HybridUseBenefitListResult) (HybridUseBenefitListResult, error)) HybridUseBenefitListResultPage {
+	return original.NewHybridUseBenefitListResultPage(cur, getNextPage)
 }
 func NewHybridUseBenefitRevisionClient(subscriptionID string) HybridUseBenefitRevisionClient {
 	return original.NewHybridUseBenefitRevisionClient(subscriptionID)
@@ -96,8 +96,8 @@ func NewHybridUseBenefitRevisionClientWithBaseURI(baseURI string, subscriptionID
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
 }
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return original.NewOperationListPage(getNextPage)
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

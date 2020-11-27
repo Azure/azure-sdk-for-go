@@ -395,8 +395,8 @@ func NewAPIClient() APIClient {
 func NewAPICollectionIterator(page APICollectionPage) APICollectionIterator {
 	return original.NewAPICollectionIterator(page)
 }
-func NewAPICollectionPage(getNextPage func(context.Context, APICollection) (APICollection, error)) APICollectionPage {
-	return original.NewAPICollectionPage(getNextPage)
+func NewAPICollectionPage(cur APICollection, getNextPage func(context.Context, APICollection) (APICollection, error)) APICollectionPage {
+	return original.NewAPICollectionPage(cur, getNextPage)
 }
 func NewAPIExportClient() APIExportClient {
 	return original.NewAPIExportClient()
@@ -422,8 +422,8 @@ func NewAuthorizationServerClient() AuthorizationServerClient {
 func NewAuthorizationServerCollectionIterator(page AuthorizationServerCollectionPage) AuthorizationServerCollectionIterator {
 	return original.NewAuthorizationServerCollectionIterator(page)
 }
-func NewAuthorizationServerCollectionPage(getNextPage func(context.Context, AuthorizationServerCollection) (AuthorizationServerCollection, error)) AuthorizationServerCollectionPage {
-	return original.NewAuthorizationServerCollectionPage(getNextPage)
+func NewAuthorizationServerCollectionPage(cur AuthorizationServerCollection, getNextPage func(context.Context, AuthorizationServerCollection) (AuthorizationServerCollection, error)) AuthorizationServerCollectionPage {
+	return original.NewAuthorizationServerCollectionPage(cur, getNextPage)
 }
 func NewBackendClient() BackendClient {
 	return original.NewBackendClient()
@@ -431,8 +431,8 @@ func NewBackendClient() BackendClient {
 func NewBackendCollectionIterator(page BackendCollectionPage) BackendCollectionIterator {
 	return original.NewBackendCollectionIterator(page)
 }
-func NewBackendCollectionPage(getNextPage func(context.Context, BackendCollection) (BackendCollection, error)) BackendCollectionPage {
-	return original.NewBackendCollectionPage(getNextPage)
+func NewBackendCollectionPage(cur BackendCollection, getNextPage func(context.Context, BackendCollection) (BackendCollection, error)) BackendCollectionPage {
+	return original.NewBackendCollectionPage(cur, getNextPage)
 }
 func NewCertificateClient() CertificateClient {
 	return original.NewCertificateClient()
@@ -440,8 +440,8 @@ func NewCertificateClient() CertificateClient {
 func NewCertificateCollectionIterator(page CertificateCollectionPage) CertificateCollectionIterator {
 	return original.NewCertificateCollectionIterator(page)
 }
-func NewCertificateCollectionPage(getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
-	return original.NewCertificateCollectionPage(getNextPage)
+func NewCertificateCollectionPage(cur CertificateCollection, getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
+	return original.NewCertificateCollectionPage(cur, getNextPage)
 }
 func NewDelegationSettingsClient() DelegationSettingsClient {
 	return original.NewDelegationSettingsClient()
@@ -452,8 +452,8 @@ func NewEmailTemplateClient() EmailTemplateClient {
 func NewEmailTemplateCollectionIterator(page EmailTemplateCollectionPage) EmailTemplateCollectionIterator {
 	return original.NewEmailTemplateCollectionIterator(page)
 }
-func NewEmailTemplateCollectionPage(getNextPage func(context.Context, EmailTemplateCollection) (EmailTemplateCollection, error)) EmailTemplateCollectionPage {
-	return original.NewEmailTemplateCollectionPage(getNextPage)
+func NewEmailTemplateCollectionPage(cur EmailTemplateCollection, getNextPage func(context.Context, EmailTemplateCollection) (EmailTemplateCollection, error)) EmailTemplateCollectionPage {
+	return original.NewEmailTemplateCollectionPage(cur, getNextPage)
 }
 func NewGroupClient() GroupClient {
 	return original.NewGroupClient()
@@ -461,8 +461,8 @@ func NewGroupClient() GroupClient {
 func NewGroupCollectionIterator(page GroupCollectionPage) GroupCollectionIterator {
 	return original.NewGroupCollectionIterator(page)
 }
-func NewGroupCollectionPage(getNextPage func(context.Context, GroupCollection) (GroupCollection, error)) GroupCollectionPage {
-	return original.NewGroupCollectionPage(getNextPage)
+func NewGroupCollectionPage(cur GroupCollection, getNextPage func(context.Context, GroupCollection) (GroupCollection, error)) GroupCollectionPage {
+	return original.NewGroupCollectionPage(cur, getNextPage)
 }
 func NewGroupUserClient() GroupUserClient {
 	return original.NewGroupUserClient()
@@ -476,8 +476,8 @@ func NewLoggerClient() LoggerClient {
 func NewLoggerCollectionIterator(page LoggerCollectionPage) LoggerCollectionIterator {
 	return original.NewLoggerCollectionIterator(page)
 }
-func NewLoggerCollectionPage(getNextPage func(context.Context, LoggerCollection) (LoggerCollection, error)) LoggerCollectionPage {
-	return original.NewLoggerCollectionPage(getNextPage)
+func NewLoggerCollectionPage(cur LoggerCollection, getNextPage func(context.Context, LoggerCollection) (LoggerCollection, error)) LoggerCollectionPage {
+	return original.NewLoggerCollectionPage(cur, getNextPage)
 }
 func NewOpenIDConnectProviderClient() OpenIDConnectProviderClient {
 	return original.NewOpenIDConnectProviderClient()
@@ -485,14 +485,14 @@ func NewOpenIDConnectProviderClient() OpenIDConnectProviderClient {
 func NewOpenIDConnectProviderCollectionIterator(page OpenIDConnectProviderCollectionPage) OpenIDConnectProviderCollectionIterator {
 	return original.NewOpenIDConnectProviderCollectionIterator(page)
 }
-func NewOpenIDConnectProviderCollectionPage(getNextPage func(context.Context, OpenIDConnectProviderCollection) (OpenIDConnectProviderCollection, error)) OpenIDConnectProviderCollectionPage {
-	return original.NewOpenIDConnectProviderCollectionPage(getNextPage)
+func NewOpenIDConnectProviderCollectionPage(cur OpenIDConnectProviderCollection, getNextPage func(context.Context, OpenIDConnectProviderCollection) (OpenIDConnectProviderCollection, error)) OpenIDConnectProviderCollectionPage {
+	return original.NewOpenIDConnectProviderCollectionPage(cur, getNextPage)
 }
 func NewOperationCollectionIterator(page OperationCollectionPage) OperationCollectionIterator {
 	return original.NewOperationCollectionIterator(page)
 }
-func NewOperationCollectionPage(getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
-	return original.NewOperationCollectionPage(getNextPage)
+func NewOperationCollectionPage(cur OperationCollection, getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
+	return original.NewOperationCollectionPage(cur, getNextPage)
 }
 func NewPolicyClient() PolicyClient {
 	return original.NewPolicyClient()
@@ -509,8 +509,8 @@ func NewProductClient() ProductClient {
 func NewProductCollectionIterator(page ProductCollectionPage) ProductCollectionIterator {
 	return original.NewProductCollectionIterator(page)
 }
-func NewProductCollectionPage(getNextPage func(context.Context, ProductCollection) (ProductCollection, error)) ProductCollectionPage {
-	return original.NewProductCollectionPage(getNextPage)
+func NewProductCollectionPage(cur ProductCollection, getNextPage func(context.Context, ProductCollection) (ProductCollection, error)) ProductCollectionPage {
+	return original.NewProductCollectionPage(cur, getNextPage)
 }
 func NewProductGroupClient() ProductGroupClient {
 	return original.NewProductGroupClient()
@@ -527,8 +527,8 @@ func NewPropertyClient() PropertyClient {
 func NewPropertyCollectionIterator(page PropertyCollectionPage) PropertyCollectionIterator {
 	return original.NewPropertyCollectionIterator(page)
 }
-func NewPropertyCollectionPage(getNextPage func(context.Context, PropertyCollection) (PropertyCollection, error)) PropertyCollectionPage {
-	return original.NewPropertyCollectionPage(getNextPage)
+func NewPropertyCollectionPage(cur PropertyCollection, getNextPage func(context.Context, PropertyCollection) (PropertyCollection, error)) PropertyCollectionPage {
+	return original.NewPropertyCollectionPage(cur, getNextPage)
 }
 func NewQuotaByCounterKeysClient() QuotaByCounterKeysClient {
 	return original.NewQuotaByCounterKeysClient()
@@ -542,8 +542,8 @@ func NewRegionsClient() RegionsClient {
 func NewReportCollectionIterator(page ReportCollectionPage) ReportCollectionIterator {
 	return original.NewReportCollectionIterator(page)
 }
-func NewReportCollectionPage(getNextPage func(context.Context, ReportCollection) (ReportCollection, error)) ReportCollectionPage {
-	return original.NewReportCollectionPage(getNextPage)
+func NewReportCollectionPage(cur ReportCollection, getNextPage func(context.Context, ReportCollection) (ReportCollection, error)) ReportCollectionPage {
+	return original.NewReportCollectionPage(cur, getNextPage)
 }
 func NewReportsClient() ReportsClient {
 	return original.NewReportsClient()
@@ -551,8 +551,8 @@ func NewReportsClient() ReportsClient {
 func NewSchemaCollectionIterator(page SchemaCollectionPage) SchemaCollectionIterator {
 	return original.NewSchemaCollectionIterator(page)
 }
-func NewSchemaCollectionPage(getNextPage func(context.Context, SchemaCollection) (SchemaCollection, error)) SchemaCollectionPage {
-	return original.NewSchemaCollectionPage(getNextPage)
+func NewSchemaCollectionPage(cur SchemaCollection, getNextPage func(context.Context, SchemaCollection) (SchemaCollection, error)) SchemaCollectionPage {
+	return original.NewSchemaCollectionPage(cur, getNextPage)
 }
 func NewSignInSettingsClient() SignInSettingsClient {
 	return original.NewSignInSettingsClient()
@@ -566,8 +566,8 @@ func NewSubscriptionClient() SubscriptionClient {
 func NewSubscriptionCollectionIterator(page SubscriptionCollectionPage) SubscriptionCollectionIterator {
 	return original.NewSubscriptionCollectionIterator(page)
 }
-func NewSubscriptionCollectionPage(getNextPage func(context.Context, SubscriptionCollection) (SubscriptionCollection, error)) SubscriptionCollectionPage {
-	return original.NewSubscriptionCollectionPage(getNextPage)
+func NewSubscriptionCollectionPage(cur SubscriptionCollection, getNextPage func(context.Context, SubscriptionCollection) (SubscriptionCollection, error)) SubscriptionCollectionPage {
+	return original.NewSubscriptionCollectionPage(cur, getNextPage)
 }
 func NewTenantAccessClient() TenantAccessClient {
 	return original.NewTenantAccessClient()
@@ -584,8 +584,8 @@ func NewUserClient() UserClient {
 func NewUserCollectionIterator(page UserCollectionPage) UserCollectionIterator {
 	return original.NewUserCollectionIterator(page)
 }
-func NewUserCollectionPage(getNextPage func(context.Context, UserCollection) (UserCollection, error)) UserCollectionPage {
-	return original.NewUserCollectionPage(getNextPage)
+func NewUserCollectionPage(cur UserCollection, getNextPage func(context.Context, UserCollection) (UserCollection, error)) UserCollectionPage {
+	return original.NewUserCollectionPage(cur, getNextPage)
 }
 func NewUserGroupClient() UserGroupClient {
 	return original.NewUserGroupClient()

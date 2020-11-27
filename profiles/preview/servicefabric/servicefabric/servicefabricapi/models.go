@@ -19,7 +19,7 @@
 
 package servicefabricapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/7.0/servicefabric/servicefabricapi"
+import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/7.2/servicefabric/servicefabricapi"
 
 type BaseClientAPI = original.BaseClientAPI
 type MeshApplicationClientAPI = original.MeshApplicationClientAPI

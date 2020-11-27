@@ -327,8 +327,8 @@ func NewAdvisorsClientWithBaseURI(baseURI string, subscriptionID string) Advisor
 func NewAdvisorsResultListIterator(page AdvisorsResultListPage) AdvisorsResultListIterator {
 	return original.NewAdvisorsResultListIterator(page)
 }
-func NewAdvisorsResultListPage(getNextPage func(context.Context, AdvisorsResultList) (AdvisorsResultList, error)) AdvisorsResultListPage {
-	return original.NewAdvisorsResultListPage(getNextPage)
+func NewAdvisorsResultListPage(cur AdvisorsResultList, getNextPage func(context.Context, AdvisorsResultList) (AdvisorsResultList, error)) AdvisorsResultListPage {
+	return original.NewAdvisorsResultListPage(cur, getNextPage)
 }
 func NewCheckNameAvailabilityClient(subscriptionID string) CheckNameAvailabilityClient {
 	return original.NewCheckNameAvailabilityClient(subscriptionID)
@@ -387,8 +387,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
 	return original.NewPrivateEndpointConnectionListResultIterator(page)
 }
-func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
-	return original.NewPrivateEndpointConnectionListResultPage(getNextPage)
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return original.NewPrivateEndpointConnectionListResultPage(cur, getNextPage)
 }
 func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
 	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
@@ -399,8 +399,8 @@ func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscription
 func NewPrivateLinkResourceListResultIterator(page PrivateLinkResourceListResultPage) PrivateLinkResourceListResultIterator {
 	return original.NewPrivateLinkResourceListResultIterator(page)
 }
-func NewPrivateLinkResourceListResultPage(getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
-	return original.NewPrivateLinkResourceListResultPage(getNextPage)
+func NewPrivateLinkResourceListResultPage(cur PrivateLinkResourceListResult, getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
+	return original.NewPrivateLinkResourceListResultPage(cur, getNextPage)
 }
 func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
 	return original.NewPrivateLinkResourcesClient(subscriptionID)
@@ -417,14 +417,14 @@ func NewQueryTextsClientWithBaseURI(baseURI string, subscriptionID string) Query
 func NewQueryTextsResultListIterator(page QueryTextsResultListPage) QueryTextsResultListIterator {
 	return original.NewQueryTextsResultListIterator(page)
 }
-func NewQueryTextsResultListPage(getNextPage func(context.Context, QueryTextsResultList) (QueryTextsResultList, error)) QueryTextsResultListPage {
-	return original.NewQueryTextsResultListPage(getNextPage)
+func NewQueryTextsResultListPage(cur QueryTextsResultList, getNextPage func(context.Context, QueryTextsResultList) (QueryTextsResultList, error)) QueryTextsResultListPage {
+	return original.NewQueryTextsResultListPage(cur, getNextPage)
 }
 func NewRecommendationActionsResultListIterator(page RecommendationActionsResultListPage) RecommendationActionsResultListIterator {
 	return original.NewRecommendationActionsResultListIterator(page)
 }
-func NewRecommendationActionsResultListPage(getNextPage func(context.Context, RecommendationActionsResultList) (RecommendationActionsResultList, error)) RecommendationActionsResultListPage {
-	return original.NewRecommendationActionsResultListPage(getNextPage)
+func NewRecommendationActionsResultListPage(cur RecommendationActionsResultList, getNextPage func(context.Context, RecommendationActionsResultList) (RecommendationActionsResultList, error)) RecommendationActionsResultListPage {
+	return original.NewRecommendationActionsResultListPage(cur, getNextPage)
 }
 func NewRecommendedActionsClient(subscriptionID string) RecommendedActionsClient {
 	return original.NewRecommendedActionsClient(subscriptionID)
@@ -447,8 +447,8 @@ func NewServerAdministratorsClientWithBaseURI(baseURI string, subscriptionID str
 func NewServerKeyListResultIterator(page ServerKeyListResultPage) ServerKeyListResultIterator {
 	return original.NewServerKeyListResultIterator(page)
 }
-func NewServerKeyListResultPage(getNextPage func(context.Context, ServerKeyListResult) (ServerKeyListResult, error)) ServerKeyListResultPage {
-	return original.NewServerKeyListResultPage(getNextPage)
+func NewServerKeyListResultPage(cur ServerKeyListResult, getNextPage func(context.Context, ServerKeyListResult) (ServerKeyListResult, error)) ServerKeyListResultPage {
+	return original.NewServerKeyListResultPage(cur, getNextPage)
 }
 func NewServerKeysClient(subscriptionID string) ServerKeysClient {
 	return original.NewServerKeysClient(subscriptionID)
@@ -477,14 +477,14 @@ func NewTopQueryStatisticsClientWithBaseURI(baseURI string, subscriptionID strin
 func NewTopQueryStatisticsResultListIterator(page TopQueryStatisticsResultListPage) TopQueryStatisticsResultListIterator {
 	return original.NewTopQueryStatisticsResultListIterator(page)
 }
-func NewTopQueryStatisticsResultListPage(getNextPage func(context.Context, TopQueryStatisticsResultList) (TopQueryStatisticsResultList, error)) TopQueryStatisticsResultListPage {
-	return original.NewTopQueryStatisticsResultListPage(getNextPage)
+func NewTopQueryStatisticsResultListPage(cur TopQueryStatisticsResultList, getNextPage func(context.Context, TopQueryStatisticsResultList) (TopQueryStatisticsResultList, error)) TopQueryStatisticsResultListPage {
+	return original.NewTopQueryStatisticsResultListPage(cur, getNextPage)
 }
 func NewVirtualNetworkRuleListResultIterator(page VirtualNetworkRuleListResultPage) VirtualNetworkRuleListResultIterator {
 	return original.NewVirtualNetworkRuleListResultIterator(page)
 }
-func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
-	return original.NewVirtualNetworkRuleListResultPage(getNextPage)
+func NewVirtualNetworkRuleListResultPage(cur VirtualNetworkRuleListResult, getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
+	return original.NewVirtualNetworkRuleListResultPage(cur, getNextPage)
 }
 func NewVirtualNetworkRulesClient(subscriptionID string) VirtualNetworkRulesClient {
 	return original.NewVirtualNetworkRulesClient(subscriptionID)
@@ -501,8 +501,8 @@ func NewWaitStatisticsClientWithBaseURI(baseURI string, subscriptionID string) W
 func NewWaitStatisticsResultListIterator(page WaitStatisticsResultListPage) WaitStatisticsResultListIterator {
 	return original.NewWaitStatisticsResultListIterator(page)
 }
-func NewWaitStatisticsResultListPage(getNextPage func(context.Context, WaitStatisticsResultList) (WaitStatisticsResultList, error)) WaitStatisticsResultListPage {
-	return original.NewWaitStatisticsResultListPage(getNextPage)
+func NewWaitStatisticsResultListPage(cur WaitStatisticsResultList, getNextPage func(context.Context, WaitStatisticsResultList) (WaitStatisticsResultList, error)) WaitStatisticsResultListPage {
+	return original.NewWaitStatisticsResultListPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

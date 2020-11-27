@@ -128,14 +128,14 @@ func New(subscriptionID string) BaseClient {
 func NewAuthorizationRuleListResultIterator(page AuthorizationRuleListResultPage) AuthorizationRuleListResultIterator {
 	return original.NewAuthorizationRuleListResultIterator(page)
 }
-func NewAuthorizationRuleListResultPage(getNextPage func(context.Context, AuthorizationRuleListResult) (AuthorizationRuleListResult, error)) AuthorizationRuleListResultPage {
-	return original.NewAuthorizationRuleListResultPage(getNextPage)
+func NewAuthorizationRuleListResultPage(cur AuthorizationRuleListResult, getNextPage func(context.Context, AuthorizationRuleListResult) (AuthorizationRuleListResult, error)) AuthorizationRuleListResultPage {
+	return original.NewAuthorizationRuleListResultPage(cur, getNextPage)
 }
 func NewHybridConnectionListResultIterator(page HybridConnectionListResultPage) HybridConnectionListResultIterator {
 	return original.NewHybridConnectionListResultIterator(page)
 }
-func NewHybridConnectionListResultPage(getNextPage func(context.Context, HybridConnectionListResult) (HybridConnectionListResult, error)) HybridConnectionListResultPage {
-	return original.NewHybridConnectionListResultPage(getNextPage)
+func NewHybridConnectionListResultPage(cur HybridConnectionListResult, getNextPage func(context.Context, HybridConnectionListResult) (HybridConnectionListResult, error)) HybridConnectionListResultPage {
+	return original.NewHybridConnectionListResultPage(cur, getNextPage)
 }
 func NewHybridConnectionsClient(subscriptionID string) HybridConnectionsClient {
 	return original.NewHybridConnectionsClient(subscriptionID)
@@ -146,8 +146,8 @@ func NewHybridConnectionsClientWithBaseURI(baseURI string, subscriptionID string
 func NewNamespaceListResultIterator(page NamespaceListResultPage) NamespaceListResultIterator {
 	return original.NewNamespaceListResultIterator(page)
 }
-func NewNamespaceListResultPage(getNextPage func(context.Context, NamespaceListResult) (NamespaceListResult, error)) NamespaceListResultPage {
-	return original.NewNamespaceListResultPage(getNextPage)
+func NewNamespaceListResultPage(cur NamespaceListResult, getNextPage func(context.Context, NamespaceListResult) (NamespaceListResult, error)) NamespaceListResultPage {
+	return original.NewNamespaceListResultPage(cur, getNextPage)
 }
 func NewNamespacesClient(subscriptionID string) NamespacesClient {
 	return original.NewNamespacesClient(subscriptionID)
@@ -158,8 +158,8 @@ func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) Names
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -176,8 +176,8 @@ func NewWCFRelaysClientWithBaseURI(baseURI string, subscriptionID string) WCFRel
 func NewWcfRelaysListResultIterator(page WcfRelaysListResultPage) WcfRelaysListResultIterator {
 	return original.NewWcfRelaysListResultIterator(page)
 }
-func NewWcfRelaysListResultPage(getNextPage func(context.Context, WcfRelaysListResult) (WcfRelaysListResult, error)) WcfRelaysListResultPage {
-	return original.NewWcfRelaysListResultPage(getNextPage)
+func NewWcfRelaysListResultPage(cur WcfRelaysListResult, getNextPage func(context.Context, WcfRelaysListResult) (WcfRelaysListResult, error)) WcfRelaysListResultPage {
+	return original.NewWcfRelaysListResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

@@ -173,6 +173,13 @@ const (
 	PointInTime RestoreMode = original.PointInTime
 )
 
+type RoleDefinitionType = original.RoleDefinitionType
+
+const (
+	BuiltInRole RoleDefinitionType = original.BuiltInRole
+	CustomRole  RoleDefinitionType = original.CustomRole
+)
+
 type ServerVersion = original.ServerVersion
 
 const (
@@ -274,6 +281,7 @@ type ConflictResolutionPolicy = original.ConflictResolutionPolicy
 type ConsistencyPolicy = original.ConsistencyPolicy
 type ContainerPartitionKey = original.ContainerPartitionKey
 type ContinuousModeBackupPolicy = original.ContinuousModeBackupPolicy
+type CorsPolicy = original.CorsPolicy
 type CreateUpdateOptions = original.CreateUpdateOptions
 type DatabaseAccountConnectionString = original.DatabaseAccountConnectionString
 type DatabaseAccountCreateUpdateParameters = original.DatabaseAccountCreateUpdateParameters
@@ -298,9 +306,9 @@ type DatabaseAccountsRegenerateKeyFuture = original.DatabaseAccountsRegenerateKe
 type DatabaseAccountsUpdateFuture = original.DatabaseAccountsUpdateFuture
 type DatabaseClient = original.DatabaseClient
 type DatabaseRestoreResource = original.DatabaseRestoreResource
+type DefaultErrorResponse = original.DefaultErrorResponse
 type DefaultRequestDatabaseAccountCreateUpdateProperties = original.DefaultRequestDatabaseAccountCreateUpdateProperties
 type ErrorResponse = original.ErrorResponse
-type ErrorResponseUpdatedFormat = original.ErrorResponseUpdatedFormat
 type ExcludedPath = original.ExcludedPath
 type ExtendedResourceProperties = original.ExtendedResourceProperties
 type FailoverPolicies = original.FailoverPolicies
@@ -334,6 +342,7 @@ type Indexes = original.Indexes
 type IndexingPolicy = original.IndexingPolicy
 type Location = original.Location
 type ManagedServiceIdentity = original.ManagedServiceIdentity
+type ManagedServiceIdentityUserAssignedIdentitiesValue = original.ManagedServiceIdentityUserAssignedIdentitiesValue
 type Metric = original.Metric
 type MetricAvailability = original.MetricAvailability
 type MetricDefinition = original.MetricDefinition
@@ -398,6 +407,7 @@ type PercentileSourceTargetClient = original.PercentileSourceTargetClient
 type PercentileTargetClient = original.PercentileTargetClient
 type PeriodicModeBackupPolicy = original.PeriodicModeBackupPolicy
 type PeriodicModeProperties = original.PeriodicModeProperties
+type Permission = original.Permission
 type PrivateEndpointConnection = original.PrivateEndpointConnection
 type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
 type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
@@ -438,16 +448,28 @@ type SQLDatabaseResource = original.SQLDatabaseResource
 type SQLResourcesClient = original.SQLResourcesClient
 type SQLResourcesCreateUpdateSQLContainerFuture = original.SQLResourcesCreateUpdateSQLContainerFuture
 type SQLResourcesCreateUpdateSQLDatabaseFuture = original.SQLResourcesCreateUpdateSQLDatabaseFuture
+type SQLResourcesCreateUpdateSQLRoleAssignmentFuture = original.SQLResourcesCreateUpdateSQLRoleAssignmentFuture
+type SQLResourcesCreateUpdateSQLRoleDefinitionFuture = original.SQLResourcesCreateUpdateSQLRoleDefinitionFuture
 type SQLResourcesCreateUpdateSQLStoredProcedureFuture = original.SQLResourcesCreateUpdateSQLStoredProcedureFuture
 type SQLResourcesCreateUpdateSQLTriggerFuture = original.SQLResourcesCreateUpdateSQLTriggerFuture
 type SQLResourcesCreateUpdateSQLUserDefinedFunctionFuture = original.SQLResourcesCreateUpdateSQLUserDefinedFunctionFuture
 type SQLResourcesDeleteSQLContainerFuture = original.SQLResourcesDeleteSQLContainerFuture
 type SQLResourcesDeleteSQLDatabaseFuture = original.SQLResourcesDeleteSQLDatabaseFuture
+type SQLResourcesDeleteSQLRoleAssignmentFuture = original.SQLResourcesDeleteSQLRoleAssignmentFuture
+type SQLResourcesDeleteSQLRoleDefinitionFuture = original.SQLResourcesDeleteSQLRoleDefinitionFuture
 type SQLResourcesDeleteSQLStoredProcedureFuture = original.SQLResourcesDeleteSQLStoredProcedureFuture
 type SQLResourcesDeleteSQLTriggerFuture = original.SQLResourcesDeleteSQLTriggerFuture
 type SQLResourcesDeleteSQLUserDefinedFunctionFuture = original.SQLResourcesDeleteSQLUserDefinedFunctionFuture
 type SQLResourcesUpdateSQLContainerThroughputFuture = original.SQLResourcesUpdateSQLContainerThroughputFuture
 type SQLResourcesUpdateSQLDatabaseThroughputFuture = original.SQLResourcesUpdateSQLDatabaseThroughputFuture
+type SQLRoleAssignmentCreateUpdateParameters = original.SQLRoleAssignmentCreateUpdateParameters
+type SQLRoleAssignmentGetResults = original.SQLRoleAssignmentGetResults
+type SQLRoleAssignmentListResult = original.SQLRoleAssignmentListResult
+type SQLRoleAssignmentResource = original.SQLRoleAssignmentResource
+type SQLRoleDefinitionCreateUpdateParameters = original.SQLRoleDefinitionCreateUpdateParameters
+type SQLRoleDefinitionGetResults = original.SQLRoleDefinitionGetResults
+type SQLRoleDefinitionListResult = original.SQLRoleDefinitionListResult
+type SQLRoleDefinitionResource = original.SQLRoleDefinitionResource
 type SQLStoredProcedureCreateUpdateParameters = original.SQLStoredProcedureCreateUpdateParameters
 type SQLStoredProcedureCreateUpdateProperties = original.SQLStoredProcedureCreateUpdateProperties
 type SQLStoredProcedureGetProperties = original.SQLStoredProcedureGetProperties
@@ -569,8 +591,8 @@ func NewNotebookWorkspacesClientWithBaseURI(baseURI string, subscriptionID strin
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -694,6 +716,9 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 }
 func PossibleRestoreModeValues() []RestoreMode {
 	return original.PossibleRestoreModeValues()
+}
+func PossibleRoleDefinitionTypeValues() []RoleDefinitionType {
+	return original.PossibleRoleDefinitionTypeValues()
 }
 func PossibleServerVersionValues() []ServerVersion {
 	return original.PossibleServerVersionValues()

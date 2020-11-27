@@ -104,8 +104,8 @@ func New(subscriptionID string) BaseClient {
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationResultsClient(subscriptionID string) OperationResultsClient {
 	return original.NewOperationResultsClient(subscriptionID)
@@ -128,8 +128,8 @@ func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) Service
 func NewServicesDescriptionListResultIterator(page ServicesDescriptionListResultPage) ServicesDescriptionListResultIterator {
 	return original.NewServicesDescriptionListResultIterator(page)
 }
-func NewServicesDescriptionListResultPage(getNextPage func(context.Context, ServicesDescriptionListResult) (ServicesDescriptionListResult, error)) ServicesDescriptionListResultPage {
-	return original.NewServicesDescriptionListResultPage(getNextPage)
+func NewServicesDescriptionListResultPage(cur ServicesDescriptionListResult, getNextPage func(context.Context, ServicesDescriptionListResult) (ServicesDescriptionListResult, error)) ServicesDescriptionListResultPage {
+	return original.NewServicesDescriptionListResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

@@ -110,8 +110,8 @@ func New(subscriptionID string) BaseClient {
 func NewApplianceDefinitionListResultIterator(page ApplianceDefinitionListResultPage) ApplianceDefinitionListResultIterator {
 	return original.NewApplianceDefinitionListResultIterator(page)
 }
-func NewApplianceDefinitionListResultPage(getNextPage func(context.Context, ApplianceDefinitionListResult) (ApplianceDefinitionListResult, error)) ApplianceDefinitionListResultPage {
-	return original.NewApplianceDefinitionListResultPage(getNextPage)
+func NewApplianceDefinitionListResultPage(cur ApplianceDefinitionListResult, getNextPage func(context.Context, ApplianceDefinitionListResult) (ApplianceDefinitionListResult, error)) ApplianceDefinitionListResultPage {
+	return original.NewApplianceDefinitionListResultPage(cur, getNextPage)
 }
 func NewApplianceDefinitionsClient(subscriptionID string) ApplianceDefinitionsClient {
 	return original.NewApplianceDefinitionsClient(subscriptionID)
@@ -122,8 +122,8 @@ func NewApplianceDefinitionsClientWithBaseURI(baseURI string, subscriptionID str
 func NewApplianceListResultIterator(page ApplianceListResultPage) ApplianceListResultIterator {
 	return original.NewApplianceListResultIterator(page)
 }
-func NewApplianceListResultPage(getNextPage func(context.Context, ApplianceListResult) (ApplianceListResult, error)) ApplianceListResultPage {
-	return original.NewApplianceListResultPage(getNextPage)
+func NewApplianceListResultPage(cur ApplianceListResult, getNextPage func(context.Context, ApplianceListResult) (ApplianceListResult, error)) ApplianceListResultPage {
+	return original.NewApplianceListResultPage(cur, getNextPage)
 }
 func NewAppliancesClient(subscriptionID string) AppliancesClient {
 	return original.NewAppliancesClient(subscriptionID)
@@ -134,8 +134,8 @@ func NewAppliancesClientWithBaseURI(baseURI string, subscriptionID string) Appli
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

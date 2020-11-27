@@ -82,6 +82,14 @@ const (
 	Incremental DeploymentMode = original.Incremental
 )
 
+type ExpressionEvaluationOptionsScopeType = original.ExpressionEvaluationOptionsScopeType
+
+const (
+	ExpressionEvaluationOptionsScopeTypeInner        ExpressionEvaluationOptionsScopeType = original.ExpressionEvaluationOptionsScopeTypeInner
+	ExpressionEvaluationOptionsScopeTypeNotSpecified ExpressionEvaluationOptionsScopeType = original.ExpressionEvaluationOptionsScopeTypeNotSpecified
+	ExpressionEvaluationOptionsScopeTypeOuter        ExpressionEvaluationOptionsScopeType = original.ExpressionEvaluationOptionsScopeTypeOuter
+)
+
 type OnErrorDeploymentType = original.OnErrorDeploymentType
 
 const (
@@ -211,6 +219,7 @@ type DeploymentsWhatIfFuture = original.DeploymentsWhatIfFuture
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorResponse = original.ErrorResponse
 type ExportTemplateRequest = original.ExportTemplateRequest
+type ExpressionEvaluationOptions = original.ExpressionEvaluationOptions
 type GenericResource = original.GenericResource
 type GenericResourceExpanded = original.GenericResourceExpanded
 type GenericResourceFilter = original.GenericResourceFilter
@@ -290,8 +299,8 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 func NewDeploymentListResultIterator(page DeploymentListResultPage) DeploymentListResultIterator {
 	return original.NewDeploymentListResultIterator(page)
 }
-func NewDeploymentListResultPage(getNextPage func(context.Context, DeploymentListResult) (DeploymentListResult, error)) DeploymentListResultPage {
-	return original.NewDeploymentListResultPage(getNextPage)
+func NewDeploymentListResultPage(cur DeploymentListResult, getNextPage func(context.Context, DeploymentListResult) (DeploymentListResult, error)) DeploymentListResultPage {
+	return original.NewDeploymentListResultPage(cur, getNextPage)
 }
 func NewDeploymentOperationsClient(subscriptionID string) DeploymentOperationsClient {
 	return original.NewDeploymentOperationsClient(subscriptionID)
@@ -302,8 +311,8 @@ func NewDeploymentOperationsClientWithBaseURI(baseURI string, subscriptionID str
 func NewDeploymentOperationsListResultIterator(page DeploymentOperationsListResultPage) DeploymentOperationsListResultIterator {
 	return original.NewDeploymentOperationsListResultIterator(page)
 }
-func NewDeploymentOperationsListResultPage(getNextPage func(context.Context, DeploymentOperationsListResult) (DeploymentOperationsListResult, error)) DeploymentOperationsListResultPage {
-	return original.NewDeploymentOperationsListResultPage(getNextPage)
+func NewDeploymentOperationsListResultPage(cur DeploymentOperationsListResult, getNextPage func(context.Context, DeploymentOperationsListResult) (DeploymentOperationsListResult, error)) DeploymentOperationsListResultPage {
+	return original.NewDeploymentOperationsListResultPage(cur, getNextPage)
 }
 func NewDeploymentsClient(subscriptionID string) DeploymentsClient {
 	return original.NewDeploymentsClient(subscriptionID)
@@ -314,8 +323,8 @@ func NewDeploymentsClientWithBaseURI(baseURI string, subscriptionID string) Depl
 func NewGroupListResultIterator(page GroupListResultPage) GroupListResultIterator {
 	return original.NewGroupListResultIterator(page)
 }
-func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
-	return original.NewGroupListResultPage(getNextPage)
+func NewGroupListResultPage(cur GroupListResult, getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
+	return original.NewGroupListResultPage(cur, getNextPage)
 }
 func NewGroupsClient(subscriptionID string) GroupsClient {
 	return original.NewGroupsClient(subscriptionID)
@@ -326,14 +335,14 @@ func NewGroupsClientWithBaseURI(baseURI string, subscriptionID string) GroupsCli
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
 }
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return original.NewListResultPage(getNextPage)
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(cur, getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -344,8 +353,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewProviderListResultIterator(page ProviderListResultPage) ProviderListResultIterator {
 	return original.NewProviderListResultIterator(page)
 }
-func NewProviderListResultPage(getNextPage func(context.Context, ProviderListResult) (ProviderListResult, error)) ProviderListResultPage {
-	return original.NewProviderListResultPage(getNextPage)
+func NewProviderListResultPage(cur ProviderListResult, getNextPage func(context.Context, ProviderListResult) (ProviderListResult, error)) ProviderListResultPage {
+	return original.NewProviderListResultPage(cur, getNextPage)
 }
 func NewProvidersClient(subscriptionID string) ProvidersClient {
 	return original.NewProvidersClient(subscriptionID)
@@ -362,8 +371,8 @@ func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient 
 func NewTagsListResultIterator(page TagsListResultPage) TagsListResultIterator {
 	return original.NewTagsListResultIterator(page)
 }
-func NewTagsListResultPage(getNextPage func(context.Context, TagsListResult) (TagsListResult, error)) TagsListResultPage {
-	return original.NewTagsListResultPage(getNextPage)
+func NewTagsListResultPage(cur TagsListResult, getNextPage func(context.Context, TagsListResult) (TagsListResult, error)) TagsListResultPage {
+	return original.NewTagsListResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
@@ -385,6 +394,9 @@ func PossibleChangeTypeValues() []ChangeType {
 }
 func PossibleDeploymentModeValues() []DeploymentMode {
 	return original.PossibleDeploymentModeValues()
+}
+func PossibleExpressionEvaluationOptionsScopeTypeValues() []ExpressionEvaluationOptionsScopeType {
+	return original.PossibleExpressionEvaluationOptionsScopeTypeValues()
 }
 func PossibleOnErrorDeploymentTypeValues() []OnErrorDeploymentType {
 	return original.PossibleOnErrorDeploymentTypeValues()

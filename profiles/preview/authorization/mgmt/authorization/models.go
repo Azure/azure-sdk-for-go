@@ -72,8 +72,8 @@ func New(subscriptionID string) BaseClient {
 func NewClassicAdministratorListResultIterator(page ClassicAdministratorListResultPage) ClassicAdministratorListResultIterator {
 	return original.NewClassicAdministratorListResultIterator(page)
 }
-func NewClassicAdministratorListResultPage(getNextPage func(context.Context, ClassicAdministratorListResult) (ClassicAdministratorListResult, error)) ClassicAdministratorListResultPage {
-	return original.NewClassicAdministratorListResultPage(getNextPage)
+func NewClassicAdministratorListResultPage(cur ClassicAdministratorListResult, getNextPage func(context.Context, ClassicAdministratorListResult) (ClassicAdministratorListResult, error)) ClassicAdministratorListResultPage {
+	return original.NewClassicAdministratorListResultPage(cur, getNextPage)
 }
 func NewClassicAdministratorsClient(subscriptionID string) ClassicAdministratorsClient {
 	return original.NewClassicAdministratorsClient(subscriptionID)
@@ -90,8 +90,8 @@ func NewGlobalAdministratorClientWithBaseURI(baseURI string, subscriptionID stri
 func NewPermissionGetResultIterator(page PermissionGetResultPage) PermissionGetResultIterator {
 	return original.NewPermissionGetResultIterator(page)
 }
-func NewPermissionGetResultPage(getNextPage func(context.Context, PermissionGetResult) (PermissionGetResult, error)) PermissionGetResultPage {
-	return original.NewPermissionGetResultPage(getNextPage)
+func NewPermissionGetResultPage(cur PermissionGetResult, getNextPage func(context.Context, PermissionGetResult) (PermissionGetResult, error)) PermissionGetResultPage {
+	return original.NewPermissionGetResultPage(cur, getNextPage)
 }
 func NewPermissionsClient(subscriptionID string) PermissionsClient {
 	return original.NewPermissionsClient(subscriptionID)
@@ -108,14 +108,14 @@ func NewProviderOperationsMetadataClientWithBaseURI(baseURI string, subscription
 func NewProviderOperationsMetadataListResultIterator(page ProviderOperationsMetadataListResultPage) ProviderOperationsMetadataListResultIterator {
 	return original.NewProviderOperationsMetadataListResultIterator(page)
 }
-func NewProviderOperationsMetadataListResultPage(getNextPage func(context.Context, ProviderOperationsMetadataListResult) (ProviderOperationsMetadataListResult, error)) ProviderOperationsMetadataListResultPage {
-	return original.NewProviderOperationsMetadataListResultPage(getNextPage)
+func NewProviderOperationsMetadataListResultPage(cur ProviderOperationsMetadataListResult, getNextPage func(context.Context, ProviderOperationsMetadataListResult) (ProviderOperationsMetadataListResult, error)) ProviderOperationsMetadataListResultPage {
+	return original.NewProviderOperationsMetadataListResultPage(cur, getNextPage)
 }
 func NewRoleAssignmentListResultIterator(page RoleAssignmentListResultPage) RoleAssignmentListResultIterator {
 	return original.NewRoleAssignmentListResultIterator(page)
 }
-func NewRoleAssignmentListResultPage(getNextPage func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)) RoleAssignmentListResultPage {
-	return original.NewRoleAssignmentListResultPage(getNextPage)
+func NewRoleAssignmentListResultPage(cur RoleAssignmentListResult, getNextPage func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)) RoleAssignmentListResultPage {
+	return original.NewRoleAssignmentListResultPage(cur, getNextPage)
 }
 func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
 	return original.NewRoleAssignmentsClient(subscriptionID)
@@ -126,8 +126,8 @@ func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewRoleDefinitionListResultIterator(page RoleDefinitionListResultPage) RoleDefinitionListResultIterator {
 	return original.NewRoleDefinitionListResultIterator(page)
 }
-func NewRoleDefinitionListResultPage(getNextPage func(context.Context, RoleDefinitionListResult) (RoleDefinitionListResult, error)) RoleDefinitionListResultPage {
-	return original.NewRoleDefinitionListResultPage(getNextPage)
+func NewRoleDefinitionListResultPage(cur RoleDefinitionListResult, getNextPage func(context.Context, RoleDefinitionListResult) (RoleDefinitionListResult, error)) RoleDefinitionListResultPage {
+	return original.NewRoleDefinitionListResultPage(cur, getNextPage)
 }
 func NewRoleDefinitionsClient(subscriptionID string) RoleDefinitionsClient {
 	return original.NewRoleDefinitionsClient(subscriptionID)

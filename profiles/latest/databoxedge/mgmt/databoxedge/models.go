@@ -593,8 +593,8 @@ func New(subscriptionID string) BaseClient {
 func NewAlertListIterator(page AlertListPage) AlertListIterator {
 	return original.NewAlertListIterator(page)
 }
-func NewAlertListPage(getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
-	return original.NewAlertListPage(getNextPage)
+func NewAlertListPage(cur AlertList, getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
+	return original.NewAlertListPage(cur, getNextPage)
 }
 func NewAlertsClient(subscriptionID string) AlertsClient {
 	return original.NewAlertsClient(subscriptionID)
@@ -611,14 +611,14 @@ func NewBandwidthSchedulesClientWithBaseURI(baseURI string, subscriptionID strin
 func NewBandwidthSchedulesListIterator(page BandwidthSchedulesListPage) BandwidthSchedulesListIterator {
 	return original.NewBandwidthSchedulesListIterator(page)
 }
-func NewBandwidthSchedulesListPage(getNextPage func(context.Context, BandwidthSchedulesList) (BandwidthSchedulesList, error)) BandwidthSchedulesListPage {
-	return original.NewBandwidthSchedulesListPage(getNextPage)
+func NewBandwidthSchedulesListPage(cur BandwidthSchedulesList, getNextPage func(context.Context, BandwidthSchedulesList) (BandwidthSchedulesList, error)) BandwidthSchedulesListPage {
+	return original.NewBandwidthSchedulesListPage(cur, getNextPage)
 }
 func NewContainerListIterator(page ContainerListPage) ContainerListIterator {
 	return original.NewContainerListIterator(page)
 }
-func NewContainerListPage(getNextPage func(context.Context, ContainerList) (ContainerList, error)) ContainerListPage {
-	return original.NewContainerListPage(getNextPage)
+func NewContainerListPage(cur ContainerList, getNextPage func(context.Context, ContainerList) (ContainerList, error)) ContainerListPage {
+	return original.NewContainerListPage(cur, getNextPage)
 }
 func NewContainersClient(subscriptionID string) ContainersClient {
 	return original.NewContainersClient(subscriptionID)
@@ -629,8 +629,8 @@ func NewContainersClientWithBaseURI(baseURI string, subscriptionID string) Conta
 func NewDeviceListIterator(page DeviceListPage) DeviceListIterator {
 	return original.NewDeviceListIterator(page)
 }
-func NewDeviceListPage(getNextPage func(context.Context, DeviceList) (DeviceList, error)) DeviceListPage {
-	return original.NewDeviceListPage(getNextPage)
+func NewDeviceListPage(cur DeviceList, getNextPage func(context.Context, DeviceList) (DeviceList, error)) DeviceListPage {
+	return original.NewDeviceListPage(cur, getNextPage)
 }
 func NewDevicesClient(subscriptionID string) DevicesClient {
 	return original.NewDevicesClient(subscriptionID)
@@ -659,8 +659,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewOperationsListIterator(page OperationsListPage) OperationsListIterator {
 	return original.NewOperationsListIterator(page)
 }
-func NewOperationsListPage(getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
-	return original.NewOperationsListPage(getNextPage)
+func NewOperationsListPage(cur OperationsList, getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
+	return original.NewOperationsListPage(cur, getNextPage)
 }
 func NewOperationsStatusClient(subscriptionID string) OperationsStatusClient {
 	return original.NewOperationsStatusClient(subscriptionID)
@@ -671,8 +671,8 @@ func NewOperationsStatusClientWithBaseURI(baseURI string, subscriptionID string)
 func NewOrderListIterator(page OrderListPage) OrderListIterator {
 	return original.NewOrderListIterator(page)
 }
-func NewOrderListPage(getNextPage func(context.Context, OrderList) (OrderList, error)) OrderListPage {
-	return original.NewOrderListPage(getNextPage)
+func NewOrderListPage(cur OrderList, getNextPage func(context.Context, OrderList) (OrderList, error)) OrderListPage {
+	return original.NewOrderListPage(cur, getNextPage)
 }
 func NewOrdersClient(subscriptionID string) OrdersClient {
 	return original.NewOrdersClient(subscriptionID)
@@ -683,8 +683,8 @@ func NewOrdersClientWithBaseURI(baseURI string, subscriptionID string) OrdersCli
 func NewRoleListIterator(page RoleListPage) RoleListIterator {
 	return original.NewRoleListIterator(page)
 }
-func NewRoleListPage(getNextPage func(context.Context, RoleList) (RoleList, error)) RoleListPage {
-	return original.NewRoleListPage(getNextPage)
+func NewRoleListPage(cur RoleList, getNextPage func(context.Context, RoleList) (RoleList, error)) RoleListPage {
+	return original.NewRoleListPage(cur, getNextPage)
 }
 func NewRolesClient(subscriptionID string) RolesClient {
 	return original.NewRolesClient(subscriptionID)
@@ -695,8 +695,8 @@ func NewRolesClientWithBaseURI(baseURI string, subscriptionID string) RolesClien
 func NewShareListIterator(page ShareListPage) ShareListIterator {
 	return original.NewShareListIterator(page)
 }
-func NewShareListPage(getNextPage func(context.Context, ShareList) (ShareList, error)) ShareListPage {
-	return original.NewShareListPage(getNextPage)
+func NewShareListPage(cur ShareList, getNextPage func(context.Context, ShareList) (ShareList, error)) ShareListPage {
+	return original.NewShareListPage(cur, getNextPage)
 }
 func NewSharesClient(subscriptionID string) SharesClient {
 	return original.NewSharesClient(subscriptionID)
@@ -713,8 +713,8 @@ func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient 
 func NewStorageAccountCredentialListIterator(page StorageAccountCredentialListPage) StorageAccountCredentialListIterator {
 	return original.NewStorageAccountCredentialListIterator(page)
 }
-func NewStorageAccountCredentialListPage(getNextPage func(context.Context, StorageAccountCredentialList) (StorageAccountCredentialList, error)) StorageAccountCredentialListPage {
-	return original.NewStorageAccountCredentialListPage(getNextPage)
+func NewStorageAccountCredentialListPage(cur StorageAccountCredentialList, getNextPage func(context.Context, StorageAccountCredentialList) (StorageAccountCredentialList, error)) StorageAccountCredentialListPage {
+	return original.NewStorageAccountCredentialListPage(cur, getNextPage)
 }
 func NewStorageAccountCredentialsClient(subscriptionID string) StorageAccountCredentialsClient {
 	return original.NewStorageAccountCredentialsClient(subscriptionID)
@@ -725,8 +725,8 @@ func NewStorageAccountCredentialsClientWithBaseURI(baseURI string, subscriptionI
 func NewStorageAccountListIterator(page StorageAccountListPage) StorageAccountListIterator {
 	return original.NewStorageAccountListIterator(page)
 }
-func NewStorageAccountListPage(getNextPage func(context.Context, StorageAccountList) (StorageAccountList, error)) StorageAccountListPage {
-	return original.NewStorageAccountListPage(getNextPage)
+func NewStorageAccountListPage(cur StorageAccountList, getNextPage func(context.Context, StorageAccountList) (StorageAccountList, error)) StorageAccountListPage {
+	return original.NewStorageAccountListPage(cur, getNextPage)
 }
 func NewStorageAccountsClient(subscriptionID string) StorageAccountsClient {
 	return original.NewStorageAccountsClient(subscriptionID)
@@ -737,8 +737,8 @@ func NewStorageAccountsClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewTriggerListIterator(page TriggerListPage) TriggerListIterator {
 	return original.NewTriggerListIterator(page)
 }
-func NewTriggerListPage(getNextPage func(context.Context, TriggerList) (TriggerList, error)) TriggerListPage {
-	return original.NewTriggerListPage(getNextPage)
+func NewTriggerListPage(cur TriggerList, getNextPage func(context.Context, TriggerList) (TriggerList, error)) TriggerListPage {
+	return original.NewTriggerListPage(cur, getNextPage)
 }
 func NewTriggersClient(subscriptionID string) TriggersClient {
 	return original.NewTriggersClient(subscriptionID)
@@ -749,8 +749,8 @@ func NewTriggersClientWithBaseURI(baseURI string, subscriptionID string) Trigger
 func NewUserListIterator(page UserListPage) UserListIterator {
 	return original.NewUserListIterator(page)
 }
-func NewUserListPage(getNextPage func(context.Context, UserList) (UserList, error)) UserListPage {
-	return original.NewUserListPage(getNextPage)
+func NewUserListPage(cur UserList, getNextPage func(context.Context, UserList) (UserList, error)) UserListPage {
+	return original.NewUserListPage(cur, getNextPage)
 }
 func NewUsersClient(subscriptionID string) UsersClient {
 	return original.NewUsersClient(subscriptionID)

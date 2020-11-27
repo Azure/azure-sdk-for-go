@@ -123,8 +123,8 @@ func New(subscriptionID string) BaseClient {
 func NewConsortiumMemberCollectionIterator(page ConsortiumMemberCollectionPage) ConsortiumMemberCollectionIterator {
 	return original.NewConsortiumMemberCollectionIterator(page)
 }
-func NewConsortiumMemberCollectionPage(getNextPage func(context.Context, ConsortiumMemberCollection) (ConsortiumMemberCollection, error)) ConsortiumMemberCollectionPage {
-	return original.NewConsortiumMemberCollectionPage(getNextPage)
+func NewConsortiumMemberCollectionPage(cur ConsortiumMemberCollection, getNextPage func(context.Context, ConsortiumMemberCollection) (ConsortiumMemberCollection, error)) ConsortiumMemberCollectionPage {
+	return original.NewConsortiumMemberCollectionPage(cur, getNextPage)
 }
 func NewLocationsClient(subscriptionID string) LocationsClient {
 	return original.NewLocationsClient(subscriptionID)
@@ -135,8 +135,8 @@ func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) Locati
 func NewMemberCollectionIterator(page MemberCollectionPage) MemberCollectionIterator {
 	return original.NewMemberCollectionIterator(page)
 }
-func NewMemberCollectionPage(getNextPage func(context.Context, MemberCollection) (MemberCollection, error)) MemberCollectionPage {
-	return original.NewMemberCollectionPage(getNextPage)
+func NewMemberCollectionPage(cur MemberCollection, getNextPage func(context.Context, MemberCollection) (MemberCollection, error)) MemberCollectionPage {
+	return original.NewMemberCollectionPage(cur, getNextPage)
 }
 func NewMemberOperationResultsClient(subscriptionID string) MemberOperationResultsClient {
 	return original.NewMemberOperationResultsClient(subscriptionID)
@@ -159,8 +159,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewResourceProviderOperationCollectionIterator(page ResourceProviderOperationCollectionPage) ResourceProviderOperationCollectionIterator {
 	return original.NewResourceProviderOperationCollectionIterator(page)
 }
-func NewResourceProviderOperationCollectionPage(getNextPage func(context.Context, ResourceProviderOperationCollection) (ResourceProviderOperationCollection, error)) ResourceProviderOperationCollectionPage {
-	return original.NewResourceProviderOperationCollectionPage(getNextPage)
+func NewResourceProviderOperationCollectionPage(cur ResourceProviderOperationCollection, getNextPage func(context.Context, ResourceProviderOperationCollection) (ResourceProviderOperationCollection, error)) ResourceProviderOperationCollectionPage {
+	return original.NewResourceProviderOperationCollectionPage(cur, getNextPage)
 }
 func NewSkusClient(subscriptionID string) SkusClient {
 	return original.NewSkusClient(subscriptionID)
@@ -171,8 +171,8 @@ func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient 
 func NewTransactionNodeCollectionIterator(page TransactionNodeCollectionPage) TransactionNodeCollectionIterator {
 	return original.NewTransactionNodeCollectionIterator(page)
 }
-func NewTransactionNodeCollectionPage(getNextPage func(context.Context, TransactionNodeCollection) (TransactionNodeCollection, error)) TransactionNodeCollectionPage {
-	return original.NewTransactionNodeCollectionPage(getNextPage)
+func NewTransactionNodeCollectionPage(cur TransactionNodeCollection, getNextPage func(context.Context, TransactionNodeCollection) (TransactionNodeCollection, error)) TransactionNodeCollectionPage {
+	return original.NewTransactionNodeCollectionPage(cur, getNextPage)
 }
 func NewTransactionNodesClient(subscriptionID string) TransactionNodesClient {
 	return original.NewTransactionNodesClient(subscriptionID)

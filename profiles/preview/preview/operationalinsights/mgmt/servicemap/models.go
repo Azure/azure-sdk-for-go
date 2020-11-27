@@ -305,8 +305,8 @@ func New(subscriptionID string) BaseClient {
 func NewClientGroupMembersCollectionIterator(page ClientGroupMembersCollectionPage) ClientGroupMembersCollectionIterator {
 	return original.NewClientGroupMembersCollectionIterator(page)
 }
-func NewClientGroupMembersCollectionPage(getNextPage func(context.Context, ClientGroupMembersCollection) (ClientGroupMembersCollection, error)) ClientGroupMembersCollectionPage {
-	return original.NewClientGroupMembersCollectionPage(getNextPage)
+func NewClientGroupMembersCollectionPage(cur ClientGroupMembersCollection, getNextPage func(context.Context, ClientGroupMembersCollection) (ClientGroupMembersCollection, error)) ClientGroupMembersCollectionPage {
+	return original.NewClientGroupMembersCollectionPage(cur, getNextPage)
 }
 func NewClientGroupsClient(subscriptionID string) ClientGroupsClient {
 	return original.NewClientGroupsClient(subscriptionID)
@@ -317,20 +317,20 @@ func NewClientGroupsClientWithBaseURI(baseURI string, subscriptionID string) Cli
 func NewConnectionCollectionIterator(page ConnectionCollectionPage) ConnectionCollectionIterator {
 	return original.NewConnectionCollectionIterator(page)
 }
-func NewConnectionCollectionPage(getNextPage func(context.Context, ConnectionCollection) (ConnectionCollection, error)) ConnectionCollectionPage {
-	return original.NewConnectionCollectionPage(getNextPage)
+func NewConnectionCollectionPage(cur ConnectionCollection, getNextPage func(context.Context, ConnectionCollection) (ConnectionCollection, error)) ConnectionCollectionPage {
+	return original.NewConnectionCollectionPage(cur, getNextPage)
 }
 func NewMachineCollectionIterator(page MachineCollectionPage) MachineCollectionIterator {
 	return original.NewMachineCollectionIterator(page)
 }
-func NewMachineCollectionPage(getNextPage func(context.Context, MachineCollection) (MachineCollection, error)) MachineCollectionPage {
-	return original.NewMachineCollectionPage(getNextPage)
+func NewMachineCollectionPage(cur MachineCollection, getNextPage func(context.Context, MachineCollection) (MachineCollection, error)) MachineCollectionPage {
+	return original.NewMachineCollectionPage(cur, getNextPage)
 }
 func NewMachineGroupCollectionIterator(page MachineGroupCollectionPage) MachineGroupCollectionIterator {
 	return original.NewMachineGroupCollectionIterator(page)
 }
-func NewMachineGroupCollectionPage(getNextPage func(context.Context, MachineGroupCollection) (MachineGroupCollection, error)) MachineGroupCollectionPage {
-	return original.NewMachineGroupCollectionPage(getNextPage)
+func NewMachineGroupCollectionPage(cur MachineGroupCollection, getNextPage func(context.Context, MachineGroupCollection) (MachineGroupCollection, error)) MachineGroupCollectionPage {
+	return original.NewMachineGroupCollectionPage(cur, getNextPage)
 }
 func NewMachineGroupsClient(subscriptionID string) MachineGroupsClient {
 	return original.NewMachineGroupsClient(subscriptionID)
@@ -353,8 +353,8 @@ func NewMapsClientWithBaseURI(baseURI string, subscriptionID string) MapsClient 
 func NewPortCollectionIterator(page PortCollectionPage) PortCollectionIterator {
 	return original.NewPortCollectionIterator(page)
 }
-func NewPortCollectionPage(getNextPage func(context.Context, PortCollection) (PortCollection, error)) PortCollectionPage {
-	return original.NewPortCollectionPage(getNextPage)
+func NewPortCollectionPage(cur PortCollection, getNextPage func(context.Context, PortCollection) (PortCollection, error)) PortCollectionPage {
+	return original.NewPortCollectionPage(cur, getNextPage)
 }
 func NewPortsClient(subscriptionID string) PortsClient {
 	return original.NewPortsClient(subscriptionID)
@@ -365,8 +365,8 @@ func NewPortsClientWithBaseURI(baseURI string, subscriptionID string) PortsClien
 func NewProcessCollectionIterator(page ProcessCollectionPage) ProcessCollectionIterator {
 	return original.NewProcessCollectionIterator(page)
 }
-func NewProcessCollectionPage(getNextPage func(context.Context, ProcessCollection) (ProcessCollection, error)) ProcessCollectionPage {
-	return original.NewProcessCollectionPage(getNextPage)
+func NewProcessCollectionPage(cur ProcessCollection, getNextPage func(context.Context, ProcessCollection) (ProcessCollection, error)) ProcessCollectionPage {
+	return original.NewProcessCollectionPage(cur, getNextPage)
 }
 func NewProcessesClient(subscriptionID string) ProcessesClient {
 	return original.NewProcessesClient(subscriptionID)

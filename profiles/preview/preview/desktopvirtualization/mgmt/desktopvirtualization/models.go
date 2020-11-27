@@ -22,7 +22,7 @@ package desktopvirtualization
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/desktopvirtualization/mgmt/2019-12-10-preview/desktopvirtualization"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/desktopvirtualization/mgmt/2020-11-02-preview/desktopvirtualization"
 )
 
 const (
@@ -89,6 +89,22 @@ const (
 	Update RegistrationTokenOperation = original.Update
 )
 
+type RemoteApplicationType = original.RemoteApplicationType
+
+const (
+	InBuilt         RemoteApplicationType = original.InBuilt
+	MsixApplication RemoteApplicationType = original.MsixApplication
+)
+
+type SSOSecretType = original.SSOSecretType
+
+const (
+	Certificate           SSOSecretType = original.Certificate
+	CertificateInKeyVault SSOSecretType = original.CertificateInKeyVault
+	SharedKey             SSOSecretType = original.SharedKey
+	SharedKeyInKeyVault   SSOSecretType = original.SharedKeyInKeyVault
+)
+
 type SessionState = original.SessionState
 
 const (
@@ -140,12 +156,18 @@ type ApplicationsClient = original.ApplicationsClient
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type CloudError = original.CloudError
+type CloudErrorProperties = original.CloudErrorProperties
 type Desktop = original.Desktop
 type DesktopList = original.DesktopList
 type DesktopPatch = original.DesktopPatch
 type DesktopPatchProperties = original.DesktopPatchProperties
 type DesktopProperties = original.DesktopProperties
 type DesktopsClient = original.DesktopsClient
+type ExpandMsixImage = original.ExpandMsixImage
+type ExpandMsixImageList = original.ExpandMsixImageList
+type ExpandMsixImageListIterator = original.ExpandMsixImageListIterator
+type ExpandMsixImageListPage = original.ExpandMsixImageListPage
+type ExpandMsixImageProperties = original.ExpandMsixImageProperties
 type HostPool = original.HostPool
 type HostPoolList = original.HostPoolList
 type HostPoolListIterator = original.HostPoolListIterator
@@ -154,6 +176,18 @@ type HostPoolPatch = original.HostPoolPatch
 type HostPoolPatchProperties = original.HostPoolPatchProperties
 type HostPoolProperties = original.HostPoolProperties
 type HostPoolsClient = original.HostPoolsClient
+type MSIXImageURI = original.MSIXImageURI
+type MSIXPackage = original.MSIXPackage
+type MSIXPackageList = original.MSIXPackageList
+type MSIXPackageListIterator = original.MSIXPackageListIterator
+type MSIXPackageListPage = original.MSIXPackageListPage
+type MSIXPackagePatch = original.MSIXPackagePatch
+type MSIXPackagePatchProperties = original.MSIXPackagePatchProperties
+type MSIXPackageProperties = original.MSIXPackageProperties
+type MSIXPackagesClient = original.MSIXPackagesClient
+type MsixImagesClient = original.MsixImagesClient
+type MsixPackageApplications = original.MsixPackageApplications
+type MsixPackageDependencies = original.MsixPackageDependencies
 type OperationsClient = original.OperationsClient
 type ProxyResource = original.ProxyResource
 type RegistrationInfo = original.RegistrationInfo
@@ -199,8 +233,8 @@ func New(subscriptionID string) BaseClient {
 func NewApplicationGroupListIterator(page ApplicationGroupListPage) ApplicationGroupListIterator {
 	return original.NewApplicationGroupListIterator(page)
 }
-func NewApplicationGroupListPage(getNextPage func(context.Context, ApplicationGroupList) (ApplicationGroupList, error)) ApplicationGroupListPage {
-	return original.NewApplicationGroupListPage(getNextPage)
+func NewApplicationGroupListPage(cur ApplicationGroupList, getNextPage func(context.Context, ApplicationGroupList) (ApplicationGroupList, error)) ApplicationGroupListPage {
+	return original.NewApplicationGroupListPage(cur, getNextPage)
 }
 func NewApplicationGroupsClient(subscriptionID string) ApplicationGroupsClient {
 	return original.NewApplicationGroupsClient(subscriptionID)
@@ -211,8 +245,8 @@ func NewApplicationGroupsClientWithBaseURI(baseURI string, subscriptionID string
 func NewApplicationListIterator(page ApplicationListPage) ApplicationListIterator {
 	return original.NewApplicationListIterator(page)
 }
-func NewApplicationListPage(getNextPage func(context.Context, ApplicationList) (ApplicationList, error)) ApplicationListPage {
-	return original.NewApplicationListPage(getNextPage)
+func NewApplicationListPage(cur ApplicationList, getNextPage func(context.Context, ApplicationList) (ApplicationList, error)) ApplicationListPage {
+	return original.NewApplicationListPage(cur, getNextPage)
 }
 func NewApplicationsClient(subscriptionID string) ApplicationsClient {
 	return original.NewApplicationsClient(subscriptionID)
@@ -226,17 +260,41 @@ func NewDesktopsClient(subscriptionID string) DesktopsClient {
 func NewDesktopsClientWithBaseURI(baseURI string, subscriptionID string) DesktopsClient {
 	return original.NewDesktopsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewExpandMsixImageListIterator(page ExpandMsixImageListPage) ExpandMsixImageListIterator {
+	return original.NewExpandMsixImageListIterator(page)
+}
+func NewExpandMsixImageListPage(cur ExpandMsixImageList, getNextPage func(context.Context, ExpandMsixImageList) (ExpandMsixImageList, error)) ExpandMsixImageListPage {
+	return original.NewExpandMsixImageListPage(cur, getNextPage)
+}
 func NewHostPoolListIterator(page HostPoolListPage) HostPoolListIterator {
 	return original.NewHostPoolListIterator(page)
 }
-func NewHostPoolListPage(getNextPage func(context.Context, HostPoolList) (HostPoolList, error)) HostPoolListPage {
-	return original.NewHostPoolListPage(getNextPage)
+func NewHostPoolListPage(cur HostPoolList, getNextPage func(context.Context, HostPoolList) (HostPoolList, error)) HostPoolListPage {
+	return original.NewHostPoolListPage(cur, getNextPage)
 }
 func NewHostPoolsClient(subscriptionID string) HostPoolsClient {
 	return original.NewHostPoolsClient(subscriptionID)
 }
 func NewHostPoolsClientWithBaseURI(baseURI string, subscriptionID string) HostPoolsClient {
 	return original.NewHostPoolsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMSIXPackageListIterator(page MSIXPackageListPage) MSIXPackageListIterator {
+	return original.NewMSIXPackageListIterator(page)
+}
+func NewMSIXPackageListPage(cur MSIXPackageList, getNextPage func(context.Context, MSIXPackageList) (MSIXPackageList, error)) MSIXPackageListPage {
+	return original.NewMSIXPackageListPage(cur, getNextPage)
+}
+func NewMSIXPackagesClient(subscriptionID string) MSIXPackagesClient {
+	return original.NewMSIXPackagesClient(subscriptionID)
+}
+func NewMSIXPackagesClientWithBaseURI(baseURI string, subscriptionID string) MSIXPackagesClient {
+	return original.NewMSIXPackagesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMsixImagesClient(subscriptionID string) MsixImagesClient {
+	return original.NewMsixImagesClient(subscriptionID)
+}
+func NewMsixImagesClientWithBaseURI(baseURI string, subscriptionID string) MsixImagesClient {
+	return original.NewMsixImagesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -247,8 +305,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewSessionHostListIterator(page SessionHostListPage) SessionHostListIterator {
 	return original.NewSessionHostListIterator(page)
 }
-func NewSessionHostListPage(getNextPage func(context.Context, SessionHostList) (SessionHostList, error)) SessionHostListPage {
-	return original.NewSessionHostListPage(getNextPage)
+func NewSessionHostListPage(cur SessionHostList, getNextPage func(context.Context, SessionHostList) (SessionHostList, error)) SessionHostListPage {
+	return original.NewSessionHostListPage(cur, getNextPage)
 }
 func NewSessionHostsClient(subscriptionID string) SessionHostsClient {
 	return original.NewSessionHostsClient(subscriptionID)
@@ -259,8 +317,8 @@ func NewSessionHostsClientWithBaseURI(baseURI string, subscriptionID string) Ses
 func NewStartMenuItemListIterator(page StartMenuItemListPage) StartMenuItemListIterator {
 	return original.NewStartMenuItemListIterator(page)
 }
-func NewStartMenuItemListPage(getNextPage func(context.Context, StartMenuItemList) (StartMenuItemList, error)) StartMenuItemListPage {
-	return original.NewStartMenuItemListPage(getNextPage)
+func NewStartMenuItemListPage(cur StartMenuItemList, getNextPage func(context.Context, StartMenuItemList) (StartMenuItemList, error)) StartMenuItemListPage {
+	return original.NewStartMenuItemListPage(cur, getNextPage)
 }
 func NewStartMenuItemsClient(subscriptionID string) StartMenuItemsClient {
 	return original.NewStartMenuItemsClient(subscriptionID)
@@ -271,8 +329,8 @@ func NewStartMenuItemsClientWithBaseURI(baseURI string, subscriptionID string) S
 func NewUserSessionListIterator(page UserSessionListPage) UserSessionListIterator {
 	return original.NewUserSessionListIterator(page)
 }
-func NewUserSessionListPage(getNextPage func(context.Context, UserSessionList) (UserSessionList, error)) UserSessionListPage {
-	return original.NewUserSessionListPage(getNextPage)
+func NewUserSessionListPage(cur UserSessionList, getNextPage func(context.Context, UserSessionList) (UserSessionList, error)) UserSessionListPage {
+	return original.NewUserSessionListPage(cur, getNextPage)
 }
 func NewUserSessionsClient(subscriptionID string) UserSessionsClient {
 	return original.NewUserSessionsClient(subscriptionID)
@@ -286,8 +344,8 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func NewWorkspaceListIterator(page WorkspaceListPage) WorkspaceListIterator {
 	return original.NewWorkspaceListIterator(page)
 }
-func NewWorkspaceListPage(getNextPage func(context.Context, WorkspaceList) (WorkspaceList, error)) WorkspaceListPage {
-	return original.NewWorkspaceListPage(getNextPage)
+func NewWorkspaceListPage(cur WorkspaceList, getNextPage func(context.Context, WorkspaceList) (WorkspaceList, error)) WorkspaceListPage {
+	return original.NewWorkspaceListPage(cur, getNextPage)
 }
 func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClient(subscriptionID)
@@ -318,6 +376,12 @@ func PossiblePreferredAppGroupTypeValues() []PreferredAppGroupType {
 }
 func PossibleRegistrationTokenOperationValues() []RegistrationTokenOperation {
 	return original.PossibleRegistrationTokenOperationValues()
+}
+func PossibleRemoteApplicationTypeValues() []RemoteApplicationType {
+	return original.PossibleRemoteApplicationTypeValues()
+}
+func PossibleSSOSecretTypeValues() []SSOSecretType {
+	return original.PossibleSSOSecretTypeValues()
 }
 func PossibleSessionStateValues() []SessionState {
 	return original.PossibleSessionStateValues()

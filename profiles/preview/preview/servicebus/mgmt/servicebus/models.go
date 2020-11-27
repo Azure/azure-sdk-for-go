@@ -29,11 +29,58 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type AccessRights = original.AccessRights
+
+const (
+	Listen        AccessRights = original.Listen
+	Manage        AccessRights = original.Manage
+	SendEnumValue AccessRights = original.SendEnumValue
+)
+
 type DefaultAction = original.DefaultAction
 
 const (
 	Allow DefaultAction = original.Allow
 	Deny  DefaultAction = original.Deny
+)
+
+type EncodingCaptureDescription = original.EncodingCaptureDescription
+
+const (
+	Avro        EncodingCaptureDescription = original.Avro
+	AvroDeflate EncodingCaptureDescription = original.AvroDeflate
+)
+
+type EndPointProvisioningState = original.EndPointProvisioningState
+
+const (
+	Canceled  EndPointProvisioningState = original.Canceled
+	Creating  EndPointProvisioningState = original.Creating
+	Deleting  EndPointProvisioningState = original.Deleting
+	Failed    EndPointProvisioningState = original.Failed
+	Succeeded EndPointProvisioningState = original.Succeeded
+	Updating  EndPointProvisioningState = original.Updating
+)
+
+type EntityStatus = original.EntityStatus
+
+const (
+	EntityStatusActive          EntityStatus = original.EntityStatusActive
+	EntityStatusCreating        EntityStatus = original.EntityStatusCreating
+	EntityStatusDeleting        EntityStatus = original.EntityStatusDeleting
+	EntityStatusDisabled        EntityStatus = original.EntityStatusDisabled
+	EntityStatusReceiveDisabled EntityStatus = original.EntityStatusReceiveDisabled
+	EntityStatusRenaming        EntityStatus = original.EntityStatusRenaming
+	EntityStatusRestoring       EntityStatus = original.EntityStatusRestoring
+	EntityStatusSendDisabled    EntityStatus = original.EntityStatusSendDisabled
+	EntityStatusUnknown         EntityStatus = original.EntityStatusUnknown
+)
+
+type FilterType = original.FilterType
+
+const (
+	FilterTypeCorrelationFilter FilterType = original.FilterTypeCorrelationFilter
+	FilterTypeSQLFilter         FilterType = original.FilterTypeSQLFilter
 )
 
 type IPAction = original.IPAction
@@ -55,10 +102,52 @@ const (
 	MicrosoftKeyVault KeySource = original.MicrosoftKeyVault
 )
 
+type KeyType = original.KeyType
+
+const (
+	PrimaryKey   KeyType = original.PrimaryKey
+	SecondaryKey KeyType = original.SecondaryKey
+)
+
+type NameSpaceType = original.NameSpaceType
+
+const (
+	EventHub        NameSpaceType = original.EventHub
+	Messaging       NameSpaceType = original.Messaging
+	Mixed           NameSpaceType = original.Mixed
+	NotificationHub NameSpaceType = original.NotificationHub
+	Relay           NameSpaceType = original.Relay
+)
+
 type NetworkRuleIPAction = original.NetworkRuleIPAction
 
 const (
 	NetworkRuleIPActionAllow NetworkRuleIPAction = original.NetworkRuleIPActionAllow
+)
+
+type PrivateLinkConnectionStatus = original.PrivateLinkConnectionStatus
+
+const (
+	Approved     PrivateLinkConnectionStatus = original.Approved
+	Disconnected PrivateLinkConnectionStatus = original.Disconnected
+	Pending      PrivateLinkConnectionStatus = original.Pending
+	Rejected     PrivateLinkConnectionStatus = original.Rejected
+)
+
+type ProvisioningStateDR = original.ProvisioningStateDR
+
+const (
+	ProvisioningStateDRAccepted  ProvisioningStateDR = original.ProvisioningStateDRAccepted
+	ProvisioningStateDRFailed    ProvisioningStateDR = original.ProvisioningStateDRFailed
+	ProvisioningStateDRSucceeded ProvisioningStateDR = original.ProvisioningStateDRSucceeded
+)
+
+type RoleDisasterRecovery = original.RoleDisasterRecovery
+
+const (
+	Primary               RoleDisasterRecovery = original.Primary
+	PrimaryNotReplicating RoleDisasterRecovery = original.PrimaryNotReplicating
+	Secondary             RoleDisasterRecovery = original.Secondary
 )
 
 type SkuName = original.SkuName
@@ -77,9 +166,45 @@ const (
 	SkuTierStandard SkuTier = original.SkuTierStandard
 )
 
+type UnavailableReason = original.UnavailableReason
+
+const (
+	InvalidName                           UnavailableReason = original.InvalidName
+	NameInLockdown                        UnavailableReason = original.NameInLockdown
+	NameInUse                             UnavailableReason = original.NameInUse
+	None                                  UnavailableReason = original.None
+	SubscriptionIsDisabled                UnavailableReason = original.SubscriptionIsDisabled
+	TooManyNamespaceInCurrentSubscription UnavailableReason = original.TooManyNamespaceInCurrentSubscription
+)
+
+type AccessKeys = original.AccessKeys
+type Action = original.Action
+type ArmDisasterRecovery = original.ArmDisasterRecovery
+type ArmDisasterRecoveryListResult = original.ArmDisasterRecoveryListResult
+type ArmDisasterRecoveryListResultIterator = original.ArmDisasterRecoveryListResultIterator
+type ArmDisasterRecoveryListResultPage = original.ArmDisasterRecoveryListResultPage
+type ArmDisasterRecoveryProperties = original.ArmDisasterRecoveryProperties
 type BaseClient = original.BaseClient
+type CaptureDescription = original.CaptureDescription
+type CheckNameAvailability = original.CheckNameAvailability
+type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
+type ConnectionState = original.ConnectionState
+type CorrelationFilter = original.CorrelationFilter
+type Destination = original.Destination
+type DestinationProperties = original.DestinationProperties
+type DisasterRecoveryConfigsClient = original.DisasterRecoveryConfigsClient
 type Encryption = original.Encryption
+type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorResponse = original.ErrorResponse
+type ErrorResponseError = original.ErrorResponseError
+type EventHubListResult = original.EventHubListResult
+type EventHubListResultIterator = original.EventHubListResultIterator
+type EventHubListResultPage = original.EventHubListResultPage
+type EventHubsClient = original.EventHubsClient
+type Eventhub = original.Eventhub
+type EventhubProperties = original.EventhubProperties
+type FailoverProperties = original.FailoverProperties
+type FailoverPropertiesProperties = original.FailoverPropertiesProperties
 type IPFilterRule = original.IPFilterRule
 type IPFilterRuleListResult = original.IPFilterRuleListResult
 type IPFilterRuleListResultIterator = original.IPFilterRuleListResultIterator
@@ -87,6 +212,14 @@ type IPFilterRuleListResultPage = original.IPFilterRuleListResultPage
 type IPFilterRuleProperties = original.IPFilterRuleProperties
 type Identity = original.Identity
 type KeyVaultProperties = original.KeyVaultProperties
+type MessageCountDetails = original.MessageCountDetails
+type MigrationConfigListResult = original.MigrationConfigListResult
+type MigrationConfigListResultIterator = original.MigrationConfigListResultIterator
+type MigrationConfigListResultPage = original.MigrationConfigListResultPage
+type MigrationConfigProperties = original.MigrationConfigProperties
+type MigrationConfigPropertiesProperties = original.MigrationConfigPropertiesProperties
+type MigrationConfigsClient = original.MigrationConfigsClient
+type MigrationConfigsCreateAndStartMigrationFuture = original.MigrationConfigsCreateAndStartMigrationFuture
 type NWRuleSetIPRules = original.NWRuleSetIPRules
 type NWRuleSetVirtualNetworkRules = original.NWRuleSetVirtualNetworkRules
 type NamespacesClient = original.NamespacesClient
@@ -100,16 +233,68 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
+type PremiumMessagingRegions = original.PremiumMessagingRegions
+type PremiumMessagingRegionsClient = original.PremiumMessagingRegionsClient
+type PremiumMessagingRegionsListResult = original.PremiumMessagingRegionsListResult
+type PremiumMessagingRegionsListResultIterator = original.PremiumMessagingRegionsListResultIterator
+type PremiumMessagingRegionsListResultPage = original.PremiumMessagingRegionsListResultPage
+type PremiumMessagingRegionsProperties = original.PremiumMessagingRegionsProperties
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionListResultIterator = original.PrivateEndpointConnectionListResultIterator
+type PrivateEndpointConnectionListResultPage = original.PrivateEndpointConnectionListResultPage
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkResourcesListResult = original.PrivateLinkResourcesListResult
+type QueuesClient = original.QueuesClient
+type RegenerateAccessKeyParameters = original.RegenerateAccessKeyParameters
+type RegionsClient = original.RegionsClient
 type Resource = original.Resource
 type ResourceNamespacePatch = original.ResourceNamespacePatch
+type Rule = original.Rule
+type RuleListResult = original.RuleListResult
+type RuleListResultIterator = original.RuleListResultIterator
+type RuleListResultPage = original.RuleListResultPage
+type Ruleproperties = original.Ruleproperties
+type RulesClient = original.RulesClient
+type SBAuthorizationRule = original.SBAuthorizationRule
+type SBAuthorizationRuleListResult = original.SBAuthorizationRuleListResult
+type SBAuthorizationRuleListResultIterator = original.SBAuthorizationRuleListResultIterator
+type SBAuthorizationRuleListResultPage = original.SBAuthorizationRuleListResultPage
+type SBAuthorizationRuleProperties = original.SBAuthorizationRuleProperties
 type SBNamespace = original.SBNamespace
 type SBNamespaceListResult = original.SBNamespaceListResult
 type SBNamespaceListResultIterator = original.SBNamespaceListResultIterator
 type SBNamespaceListResultPage = original.SBNamespaceListResultPage
+type SBNamespaceMigrate = original.SBNamespaceMigrate
 type SBNamespaceProperties = original.SBNamespaceProperties
 type SBNamespaceUpdateParameters = original.SBNamespaceUpdateParameters
+type SBQueue = original.SBQueue
+type SBQueueListResult = original.SBQueueListResult
+type SBQueueListResultIterator = original.SBQueueListResultIterator
+type SBQueueListResultPage = original.SBQueueListResultPage
+type SBQueueProperties = original.SBQueueProperties
 type SBSku = original.SBSku
+type SBSubscription = original.SBSubscription
+type SBSubscriptionListResult = original.SBSubscriptionListResult
+type SBSubscriptionListResultIterator = original.SBSubscriptionListResultIterator
+type SBSubscriptionListResultPage = original.SBSubscriptionListResultPage
+type SBSubscriptionProperties = original.SBSubscriptionProperties
+type SBTopic = original.SBTopic
+type SBTopicListResult = original.SBTopicListResult
+type SBTopicListResultIterator = original.SBTopicListResultIterator
+type SBTopicListResultPage = original.SBTopicListResultPage
+type SBTopicProperties = original.SBTopicProperties
+type SQLFilter = original.SQLFilter
+type SQLRuleAction = original.SQLRuleAction
 type Subnet = original.Subnet
+type SubscriptionsClient = original.SubscriptionsClient
+type TopicsClient = original.TopicsClient
 type TrackedResource = original.TrackedResource
 type VirtualNetworkRule = original.VirtualNetworkRule
 type VirtualNetworkRuleListResult = original.VirtualNetworkRuleListResult
@@ -120,11 +305,47 @@ type VirtualNetworkRuleProperties = original.VirtualNetworkRuleProperties
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
+func NewArmDisasterRecoveryListResultIterator(page ArmDisasterRecoveryListResultPage) ArmDisasterRecoveryListResultIterator {
+	return original.NewArmDisasterRecoveryListResultIterator(page)
+}
+func NewArmDisasterRecoveryListResultPage(cur ArmDisasterRecoveryListResult, getNextPage func(context.Context, ArmDisasterRecoveryListResult) (ArmDisasterRecoveryListResult, error)) ArmDisasterRecoveryListResultPage {
+	return original.NewArmDisasterRecoveryListResultPage(cur, getNextPage)
+}
+func NewDisasterRecoveryConfigsClient(subscriptionID string) DisasterRecoveryConfigsClient {
+	return original.NewDisasterRecoveryConfigsClient(subscriptionID)
+}
+func NewDisasterRecoveryConfigsClientWithBaseURI(baseURI string, subscriptionID string) DisasterRecoveryConfigsClient {
+	return original.NewDisasterRecoveryConfigsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewEventHubListResultIterator(page EventHubListResultPage) EventHubListResultIterator {
+	return original.NewEventHubListResultIterator(page)
+}
+func NewEventHubListResultPage(cur EventHubListResult, getNextPage func(context.Context, EventHubListResult) (EventHubListResult, error)) EventHubListResultPage {
+	return original.NewEventHubListResultPage(cur, getNextPage)
+}
+func NewEventHubsClient(subscriptionID string) EventHubsClient {
+	return original.NewEventHubsClient(subscriptionID)
+}
+func NewEventHubsClientWithBaseURI(baseURI string, subscriptionID string) EventHubsClient {
+	return original.NewEventHubsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewIPFilterRuleListResultIterator(page IPFilterRuleListResultPage) IPFilterRuleListResultIterator {
 	return original.NewIPFilterRuleListResultIterator(page)
 }
-func NewIPFilterRuleListResultPage(getNextPage func(context.Context, IPFilterRuleListResult) (IPFilterRuleListResult, error)) IPFilterRuleListResultPage {
-	return original.NewIPFilterRuleListResultPage(getNextPage)
+func NewIPFilterRuleListResultPage(cur IPFilterRuleListResult, getNextPage func(context.Context, IPFilterRuleListResult) (IPFilterRuleListResult, error)) IPFilterRuleListResultPage {
+	return original.NewIPFilterRuleListResultPage(cur, getNextPage)
+}
+func NewMigrationConfigListResultIterator(page MigrationConfigListResultPage) MigrationConfigListResultIterator {
+	return original.NewMigrationConfigListResultIterator(page)
+}
+func NewMigrationConfigListResultPage(cur MigrationConfigListResult, getNextPage func(context.Context, MigrationConfigListResult) (MigrationConfigListResult, error)) MigrationConfigListResultPage {
+	return original.NewMigrationConfigListResultPage(cur, getNextPage)
+}
+func NewMigrationConfigsClient(subscriptionID string) MigrationConfigsClient {
+	return original.NewMigrationConfigsClient(subscriptionID)
+}
+func NewMigrationConfigsClientWithBaseURI(baseURI string, subscriptionID string) MigrationConfigsClient {
+	return original.NewMigrationConfigsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewNamespacesClient(subscriptionID string) NamespacesClient {
 	return original.NewNamespacesClient(subscriptionID)
@@ -135,8 +356,8 @@ func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) Names
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -144,23 +365,128 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPremiumMessagingRegionsClient(subscriptionID string) PremiumMessagingRegionsClient {
+	return original.NewPremiumMessagingRegionsClient(subscriptionID)
+}
+func NewPremiumMessagingRegionsClientWithBaseURI(baseURI string, subscriptionID string) PremiumMessagingRegionsClient {
+	return original.NewPremiumMessagingRegionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPremiumMessagingRegionsListResultIterator(page PremiumMessagingRegionsListResultPage) PremiumMessagingRegionsListResultIterator {
+	return original.NewPremiumMessagingRegionsListResultIterator(page)
+}
+func NewPremiumMessagingRegionsListResultPage(cur PremiumMessagingRegionsListResult, getNextPage func(context.Context, PremiumMessagingRegionsListResult) (PremiumMessagingRegionsListResult, error)) PremiumMessagingRegionsListResultPage {
+	return original.NewPremiumMessagingRegionsListResultPage(cur, getNextPage)
+}
+func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
+	return original.NewPrivateEndpointConnectionListResultIterator(page)
+}
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return original.NewPrivateEndpointConnectionListResultPage(cur, getNextPage)
+}
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewQueuesClient(subscriptionID string) QueuesClient {
+	return original.NewQueuesClient(subscriptionID)
+}
+func NewQueuesClientWithBaseURI(baseURI string, subscriptionID string) QueuesClient {
+	return original.NewQueuesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRegionsClient(subscriptionID string) RegionsClient {
+	return original.NewRegionsClient(subscriptionID)
+}
+func NewRegionsClientWithBaseURI(baseURI string, subscriptionID string) RegionsClient {
+	return original.NewRegionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRuleListResultIterator(page RuleListResultPage) RuleListResultIterator {
+	return original.NewRuleListResultIterator(page)
+}
+func NewRuleListResultPage(cur RuleListResult, getNextPage func(context.Context, RuleListResult) (RuleListResult, error)) RuleListResultPage {
+	return original.NewRuleListResultPage(cur, getNextPage)
+}
+func NewRulesClient(subscriptionID string) RulesClient {
+	return original.NewRulesClient(subscriptionID)
+}
+func NewRulesClientWithBaseURI(baseURI string, subscriptionID string) RulesClient {
+	return original.NewRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSBAuthorizationRuleListResultIterator(page SBAuthorizationRuleListResultPage) SBAuthorizationRuleListResultIterator {
+	return original.NewSBAuthorizationRuleListResultIterator(page)
+}
+func NewSBAuthorizationRuleListResultPage(cur SBAuthorizationRuleListResult, getNextPage func(context.Context, SBAuthorizationRuleListResult) (SBAuthorizationRuleListResult, error)) SBAuthorizationRuleListResultPage {
+	return original.NewSBAuthorizationRuleListResultPage(cur, getNextPage)
+}
 func NewSBNamespaceListResultIterator(page SBNamespaceListResultPage) SBNamespaceListResultIterator {
 	return original.NewSBNamespaceListResultIterator(page)
 }
-func NewSBNamespaceListResultPage(getNextPage func(context.Context, SBNamespaceListResult) (SBNamespaceListResult, error)) SBNamespaceListResultPage {
-	return original.NewSBNamespaceListResultPage(getNextPage)
+func NewSBNamespaceListResultPage(cur SBNamespaceListResult, getNextPage func(context.Context, SBNamespaceListResult) (SBNamespaceListResult, error)) SBNamespaceListResultPage {
+	return original.NewSBNamespaceListResultPage(cur, getNextPage)
+}
+func NewSBQueueListResultIterator(page SBQueueListResultPage) SBQueueListResultIterator {
+	return original.NewSBQueueListResultIterator(page)
+}
+func NewSBQueueListResultPage(cur SBQueueListResult, getNextPage func(context.Context, SBQueueListResult) (SBQueueListResult, error)) SBQueueListResultPage {
+	return original.NewSBQueueListResultPage(cur, getNextPage)
+}
+func NewSBSubscriptionListResultIterator(page SBSubscriptionListResultPage) SBSubscriptionListResultIterator {
+	return original.NewSBSubscriptionListResultIterator(page)
+}
+func NewSBSubscriptionListResultPage(cur SBSubscriptionListResult, getNextPage func(context.Context, SBSubscriptionListResult) (SBSubscriptionListResult, error)) SBSubscriptionListResultPage {
+	return original.NewSBSubscriptionListResultPage(cur, getNextPage)
+}
+func NewSBTopicListResultIterator(page SBTopicListResultPage) SBTopicListResultIterator {
+	return original.NewSBTopicListResultIterator(page)
+}
+func NewSBTopicListResultPage(cur SBTopicListResult, getNextPage func(context.Context, SBTopicListResult) (SBTopicListResult, error)) SBTopicListResultPage {
+	return original.NewSBTopicListResultPage(cur, getNextPage)
+}
+func NewSubscriptionsClient(subscriptionID string) SubscriptionsClient {
+	return original.NewSubscriptionsClient(subscriptionID)
+}
+func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionsClient {
+	return original.NewSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTopicsClient(subscriptionID string) TopicsClient {
+	return original.NewTopicsClient(subscriptionID)
+}
+func NewTopicsClientWithBaseURI(baseURI string, subscriptionID string) TopicsClient {
+	return original.NewTopicsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVirtualNetworkRuleListResultIterator(page VirtualNetworkRuleListResultPage) VirtualNetworkRuleListResultIterator {
 	return original.NewVirtualNetworkRuleListResultIterator(page)
 }
-func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
-	return original.NewVirtualNetworkRuleListResultPage(getNextPage)
+func NewVirtualNetworkRuleListResultPage(cur VirtualNetworkRuleListResult, getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
+	return original.NewVirtualNetworkRuleListResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleAccessRightsValues() []AccessRights {
+	return original.PossibleAccessRightsValues()
+}
 func PossibleDefaultActionValues() []DefaultAction {
 	return original.PossibleDefaultActionValues()
+}
+func PossibleEncodingCaptureDescriptionValues() []EncodingCaptureDescription {
+	return original.PossibleEncodingCaptureDescriptionValues()
+}
+func PossibleEndPointProvisioningStateValues() []EndPointProvisioningState {
+	return original.PossibleEndPointProvisioningStateValues()
+}
+func PossibleEntityStatusValues() []EntityStatus {
+	return original.PossibleEntityStatusValues()
+}
+func PossibleFilterTypeValues() []FilterType {
+	return original.PossibleFilterTypeValues()
 }
 func PossibleIPActionValues() []IPAction {
 	return original.PossibleIPActionValues()
@@ -171,14 +497,32 @@ func PossibleIdentityTypeValues() []IdentityType {
 func PossibleKeySourceValues() []KeySource {
 	return original.PossibleKeySourceValues()
 }
+func PossibleKeyTypeValues() []KeyType {
+	return original.PossibleKeyTypeValues()
+}
+func PossibleNameSpaceTypeValues() []NameSpaceType {
+	return original.PossibleNameSpaceTypeValues()
+}
 func PossibleNetworkRuleIPActionValues() []NetworkRuleIPAction {
 	return original.PossibleNetworkRuleIPActionValues()
+}
+func PossiblePrivateLinkConnectionStatusValues() []PrivateLinkConnectionStatus {
+	return original.PossiblePrivateLinkConnectionStatusValues()
+}
+func PossibleProvisioningStateDRValues() []ProvisioningStateDR {
+	return original.PossibleProvisioningStateDRValues()
+}
+func PossibleRoleDisasterRecoveryValues() []RoleDisasterRecovery {
+	return original.PossibleRoleDisasterRecoveryValues()
 }
 func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
+}
+func PossibleUnavailableReasonValues() []UnavailableReason {
+	return original.PossibleUnavailableReasonValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

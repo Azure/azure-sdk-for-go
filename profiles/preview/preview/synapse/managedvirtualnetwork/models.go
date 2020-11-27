@@ -40,8 +40,8 @@ func New(endpoint string) BaseClient {
 func NewManagedPrivateEndpointListResponseIterator(page ManagedPrivateEndpointListResponsePage) ManagedPrivateEndpointListResponseIterator {
 	return original.NewManagedPrivateEndpointListResponseIterator(page)
 }
-func NewManagedPrivateEndpointListResponsePage(getNextPage func(context.Context, ManagedPrivateEndpointListResponse) (ManagedPrivateEndpointListResponse, error)) ManagedPrivateEndpointListResponsePage {
-	return original.NewManagedPrivateEndpointListResponsePage(getNextPage)
+func NewManagedPrivateEndpointListResponsePage(cur ManagedPrivateEndpointListResponse, getNextPage func(context.Context, ManagedPrivateEndpointListResponse) (ManagedPrivateEndpointListResponse, error)) ManagedPrivateEndpointListResponsePage {
+	return original.NewManagedPrivateEndpointListResponsePage(cur, getNextPage)
 }
 func NewManagedPrivateEndpointsClient(endpoint string) ManagedPrivateEndpointsClient {
 	return original.NewManagedPrivateEndpointsClient(endpoint)

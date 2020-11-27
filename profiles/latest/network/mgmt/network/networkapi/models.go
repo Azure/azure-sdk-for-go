@@ -61,6 +61,7 @@ type HubVirtualNetworkConnectionsClientAPI = original.HubVirtualNetworkConnectio
 type IPAllocationsClientAPI = original.IPAllocationsClientAPI
 type IPGroupsClientAPI = original.IPGroupsClientAPI
 type InboundNatRulesClientAPI = original.InboundNatRulesClientAPI
+type InboundSecurityRuleClientAPI = original.InboundSecurityRuleClientAPI
 type InterfaceIPConfigurationsClientAPI = original.InterfaceIPConfigurationsClientAPI
 type InterfaceLoadBalancersClientAPI = original.InterfaceLoadBalancersClientAPI
 type InterfaceTapConfigurationsClientAPI = original.InterfaceTapConfigurationsClientAPI

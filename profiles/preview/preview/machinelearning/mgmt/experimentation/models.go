@@ -78,8 +78,8 @@ func New(subscriptionID string) BaseClient {
 func NewAccountListResultIterator(page AccountListResultPage) AccountListResultIterator {
 	return original.NewAccountListResultIterator(page)
 }
-func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
-	return original.NewAccountListResultPage(getNextPage)
+func NewAccountListResultPage(cur AccountListResult, getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return original.NewAccountListResultPage(cur, getNextPage)
 }
 func NewAccountsClient(subscriptionID string) AccountsClient {
 	return original.NewAccountsClient(subscriptionID)
@@ -96,8 +96,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewProjectListResultIterator(page ProjectListResultPage) ProjectListResultIterator {
 	return original.NewProjectListResultIterator(page)
 }
-func NewProjectListResultPage(getNextPage func(context.Context, ProjectListResult) (ProjectListResult, error)) ProjectListResultPage {
-	return original.NewProjectListResultPage(getNextPage)
+func NewProjectListResultPage(cur ProjectListResult, getNextPage func(context.Context, ProjectListResult) (ProjectListResult, error)) ProjectListResultPage {
+	return original.NewProjectListResultPage(cur, getNextPage)
 }
 func NewProjectsClient(subscriptionID string) ProjectsClient {
 	return original.NewProjectsClient(subscriptionID)
@@ -111,8 +111,8 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func NewWorkspaceListResultIterator(page WorkspaceListResultPage) WorkspaceListResultIterator {
 	return original.NewWorkspaceListResultIterator(page)
 }
-func NewWorkspaceListResultPage(getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
-	return original.NewWorkspaceListResultPage(getNextPage)
+func NewWorkspaceListResultPage(cur WorkspaceListResult, getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
+	return original.NewWorkspaceListResultPage(cur, getNextPage)
 }
 func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClient(subscriptionID)

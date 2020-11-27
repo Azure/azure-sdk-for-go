@@ -237,8 +237,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewProviderOperationResultIterator(page ProviderOperationResultPage) ProviderOperationResultIterator {
 	return original.NewProviderOperationResultIterator(page)
 }
-func NewProviderOperationResultPage(getNextPage func(context.Context, ProviderOperationResult) (ProviderOperationResult, error)) ProviderOperationResultPage {
-	return original.NewProviderOperationResultPage(getNextPage)
+func NewProviderOperationResultPage(cur ProviderOperationResult, getNextPage func(context.Context, ProviderOperationResult) (ProviderOperationResult, error)) ProviderOperationResultPage {
+	return original.NewProviderOperationResultPage(cur, getNextPage)
 }
 func NewProviderOperationsClient(subscriptionID string) ProviderOperationsClient {
 	return original.NewProviderOperationsClient(subscriptionID)
@@ -249,38 +249,38 @@ func NewProviderOperationsClientWithBaseURI(baseURI string, subscriptionID strin
 func NewResponseWithContinuationEnvironmentIterator(page ResponseWithContinuationEnvironmentPage) ResponseWithContinuationEnvironmentIterator {
 	return original.NewResponseWithContinuationEnvironmentIterator(page)
 }
-func NewResponseWithContinuationEnvironmentPage(getNextPage func(context.Context, ResponseWithContinuationEnvironment) (ResponseWithContinuationEnvironment, error)) ResponseWithContinuationEnvironmentPage {
-	return original.NewResponseWithContinuationEnvironmentPage(getNextPage)
+func NewResponseWithContinuationEnvironmentPage(cur ResponseWithContinuationEnvironment, getNextPage func(context.Context, ResponseWithContinuationEnvironment) (ResponseWithContinuationEnvironment, error)) ResponseWithContinuationEnvironmentPage {
+	return original.NewResponseWithContinuationEnvironmentPage(cur, getNextPage)
 }
 func NewResponseWithContinuationEnvironmentSettingIterator(page ResponseWithContinuationEnvironmentSettingPage) ResponseWithContinuationEnvironmentSettingIterator {
 	return original.NewResponseWithContinuationEnvironmentSettingIterator(page)
 }
-func NewResponseWithContinuationEnvironmentSettingPage(getNextPage func(context.Context, ResponseWithContinuationEnvironmentSetting) (ResponseWithContinuationEnvironmentSetting, error)) ResponseWithContinuationEnvironmentSettingPage {
-	return original.NewResponseWithContinuationEnvironmentSettingPage(getNextPage)
+func NewResponseWithContinuationEnvironmentSettingPage(cur ResponseWithContinuationEnvironmentSetting, getNextPage func(context.Context, ResponseWithContinuationEnvironmentSetting) (ResponseWithContinuationEnvironmentSetting, error)) ResponseWithContinuationEnvironmentSettingPage {
+	return original.NewResponseWithContinuationEnvironmentSettingPage(cur, getNextPage)
 }
 func NewResponseWithContinuationGalleryImageIterator(page ResponseWithContinuationGalleryImagePage) ResponseWithContinuationGalleryImageIterator {
 	return original.NewResponseWithContinuationGalleryImageIterator(page)
 }
-func NewResponseWithContinuationGalleryImagePage(getNextPage func(context.Context, ResponseWithContinuationGalleryImage) (ResponseWithContinuationGalleryImage, error)) ResponseWithContinuationGalleryImagePage {
-	return original.NewResponseWithContinuationGalleryImagePage(getNextPage)
+func NewResponseWithContinuationGalleryImagePage(cur ResponseWithContinuationGalleryImage, getNextPage func(context.Context, ResponseWithContinuationGalleryImage) (ResponseWithContinuationGalleryImage, error)) ResponseWithContinuationGalleryImagePage {
+	return original.NewResponseWithContinuationGalleryImagePage(cur, getNextPage)
 }
 func NewResponseWithContinuationLabAccountIterator(page ResponseWithContinuationLabAccountPage) ResponseWithContinuationLabAccountIterator {
 	return original.NewResponseWithContinuationLabAccountIterator(page)
 }
-func NewResponseWithContinuationLabAccountPage(getNextPage func(context.Context, ResponseWithContinuationLabAccount) (ResponseWithContinuationLabAccount, error)) ResponseWithContinuationLabAccountPage {
-	return original.NewResponseWithContinuationLabAccountPage(getNextPage)
+func NewResponseWithContinuationLabAccountPage(cur ResponseWithContinuationLabAccount, getNextPage func(context.Context, ResponseWithContinuationLabAccount) (ResponseWithContinuationLabAccount, error)) ResponseWithContinuationLabAccountPage {
+	return original.NewResponseWithContinuationLabAccountPage(cur, getNextPage)
 }
 func NewResponseWithContinuationLabIterator(page ResponseWithContinuationLabPage) ResponseWithContinuationLabIterator {
 	return original.NewResponseWithContinuationLabIterator(page)
 }
-func NewResponseWithContinuationLabPage(getNextPage func(context.Context, ResponseWithContinuationLab) (ResponseWithContinuationLab, error)) ResponseWithContinuationLabPage {
-	return original.NewResponseWithContinuationLabPage(getNextPage)
+func NewResponseWithContinuationLabPage(cur ResponseWithContinuationLab, getNextPage func(context.Context, ResponseWithContinuationLab) (ResponseWithContinuationLab, error)) ResponseWithContinuationLabPage {
+	return original.NewResponseWithContinuationLabPage(cur, getNextPage)
 }
 func NewResponseWithContinuationUserIterator(page ResponseWithContinuationUserPage) ResponseWithContinuationUserIterator {
 	return original.NewResponseWithContinuationUserIterator(page)
 }
-func NewResponseWithContinuationUserPage(getNextPage func(context.Context, ResponseWithContinuationUser) (ResponseWithContinuationUser, error)) ResponseWithContinuationUserPage {
-	return original.NewResponseWithContinuationUserPage(getNextPage)
+func NewResponseWithContinuationUserPage(cur ResponseWithContinuationUser, getNextPage func(context.Context, ResponseWithContinuationUser) (ResponseWithContinuationUser, error)) ResponseWithContinuationUserPage {
+	return original.NewResponseWithContinuationUserPage(cur, getNextPage)
 }
 func NewUsersClient(subscriptionID string) UsersClient {
 	return original.NewUsersClient(subscriptionID)

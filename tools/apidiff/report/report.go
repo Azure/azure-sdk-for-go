@@ -59,10 +59,17 @@ func (bc BreakingChanges) IsEmpty() bool {
 		(bc.Removed == nil || bc.Removed.IsEmpty())
 }
 
+type GenerationOption struct {
+	OnlyBreakingChanges bool
+	OnlyAdditionChanges bool
+}
+
 // Generate generates a package report based on the delta between lhs and rhs.
 // onlyBreakingChanges - pass true to include only breaking changes in the report.
 // onlyAdditions - pass true to include only addition changes in the report.
-func Generate(lhs, rhs exports.Content, onlyBreakingChanges, onlyAdditions bool) Package {
+func Generate(lhs, rhs exports.Content, option *GenerationOption) Package {
+	onlyBreakingChanges := option != nil && option.OnlyAdditionChanges
+	onlyAdditions := option != nil && option.OnlyAdditionChanges
 	r := Package{}
 	if !onlyBreakingChanges {
 		if adds := delta.GetExports(lhs, rhs); !adds.IsEmpty() {

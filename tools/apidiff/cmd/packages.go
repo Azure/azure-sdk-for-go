@@ -302,7 +302,10 @@ func getPkgsReport(lhs, rhs repoContent) pkgsReport {
 		if _, ok := lhs[rhsPkg]; !ok {
 			continue
 		}
-		if r := report.Generate(lhs[rhsPkg], rhsCnt, onlyBreakingChangesFlag, onlyAdditionsFlag); !r.IsEmpty() {
+		if r := report.Generate(lhs[rhsPkg], rhsCnt, &report.GenerationOption{
+			OnlyBreakingChanges: onlyBreakingChangesFlag,
+			OnlyAdditionChanges: onlyAdditionsFlag,
+		}); !r.IsEmpty() {
 			if r.HasBreakingChanges() {
 				rpt.modPkgHasBreaking = true
 			}

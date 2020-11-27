@@ -76,7 +76,7 @@ func getChangelogForPackage(pkgDir string, lhs, rhs *exports.Content) (*Changelo
 		}, nil
 	}
 	// lhs and rhs are both non-nil
-	p := report.Generate(*lhs, *rhs, false, false)
+	p := report.Generate(*lhs, *rhs, nil)
 	return &Changelog{
 		PackageName: pkgDir,
 		Modified:    &p,

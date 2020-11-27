@@ -204,7 +204,7 @@ func (m module) NewModule() bool {
 
 // GenerateReport generates a package report for the module.
 func (m module) GenerateReport() report.Package {
-	return report.Generate(m.lhs, m.rhs, false, false)
+	return report.Generate(m.lhs, m.rhs, nil)
 }
 
 // IsValidModuleVersion returns true if the provided string is a valid module version (e.g. v1.2.3).

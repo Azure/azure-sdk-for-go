@@ -76,7 +76,10 @@ func thePackageCmd(args []string) (rs reportStatus, err error) {
 		if err != nil {
 			return err
 		}
-		r := report.Generate(lhs, rhs, onlyBreakingChangesFlag, onlyAdditionsFlag)
+		r := report.Generate(lhs, rhs, &report.GenerationOption{
+			OnlyBreakingChanges: onlyBreakingChangesFlag,
+			OnlyAdditionChanges: onlyAdditionsFlag,
+		})
 		if r.HasBreakingChanges() {
 			rpt.BreakingChanges = append(rpt.BreakingChanges, targetCommit)
 		}
@@ -125,7 +128,10 @@ func packageCmdDirMode(args []string) (rs reportStatus, err error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to get exports for package '%s': %s", args[1], err)
 	}
-	r := report.Generate(lhs, rhs, onlyBreakingChangesFlag, onlyAdditionsFlag)
+	r := report.Generate(lhs, rhs, &report.GenerationOption{
+		OnlyBreakingChanges: onlyBreakingChangesFlag,
+		OnlyAdditionChanges: onlyAdditionsFlag,
+	})
 	if asMarkdown && !suppressReport {
 		println(r.ToMarkdown())
 	} else {

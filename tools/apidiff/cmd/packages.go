@@ -70,7 +70,7 @@ func thePackagesCmd(args []string) (rpt CommitPkgsReport, err error) {
 		return
 	}
 
-	rpt.CommitsReports = map[string]pkgsReport{}
+	rpt.CommitsReports = map[string]PkgsReport{}
 	worker := func(rootDir string, cloneRepo repo.WorkingTree, baseCommit, targetCommit string) error {
 		vprintf("generating diff between %s and %s\n", baseCommit, targetCommit)
 		// get for lhs
@@ -88,7 +88,7 @@ func thePackagesCmd(args []string) (rpt CommitPkgsReport, err error) {
 		}
 		r := getPkgsReport(lhs, rhs)
 		rpt.updateAffectedPackages(targetCommit, r)
-		if r.hasBreakingChanges() {
+		if r.HasBreakingChanges() {
 			rpt.BreakingChanges = append(rpt.BreakingChanges, targetCommit)
 		}
 		rpt.CommitsReports[fmt.Sprintf("%s:%s", baseCommit, targetCommit)] = r
@@ -201,22 +201,22 @@ func (r *repoContent) print(o io.Writer) error {
 }
 
 // contains a collection of packages
-type pkgsList []string
+type PkgsList []string
 
 // contains a collection of package reports, it's structured as "package path":pkgReport
-type modifiedPackages map[string]report.Package
+type ModifiedPackages map[string]report.Package
 
 // CommitPkgsReport represents a collection of reports, one for each commit hash.
 type CommitPkgsReport struct {
-	AffectedPackages map[string]pkgsList   `json:"affectedPackages"`
+	AffectedPackages map[string]PkgsList   `json:"affectedPackages"`
 	BreakingChanges  []string              `json:"breakingChanges,omitempty"`
-	CommitsReports   map[string]pkgsReport `json:"deltas"`
+	CommitsReports   map[string]PkgsReport `json:"deltas"`
 }
 
 // IsEmpty returns true if the report contains no data.
 func (c CommitPkgsReport) IsEmpty() bool {
 	for _, r := range c.CommitsReports {
-		if !r.isEmpty() {
+		if !r.IsEmpty() {
 			return false
 		}
 	}
@@ -226,7 +226,7 @@ func (c CommitPkgsReport) IsEmpty() bool {
 // HasBreakingChanges returns true if the report contains breaking changes.
 func (c CommitPkgsReport) HasBreakingChanges() bool {
 	for _, r := range c.CommitsReports {
-		if r.hasBreakingChanges() {
+		if r.HasBreakingChanges() {
 			return true
 		}
 	}
@@ -236,7 +236,7 @@ func (c CommitPkgsReport) HasBreakingChanges() bool {
 // HasAdditiveChanges returns true if the package contains additive changes.
 func (c CommitPkgsReport) HasAdditiveChanges() bool {
 	for _, r := range c.CommitsReports {
-		if r.hasAdditiveChanges() {
+		if r.HasAdditiveChanges() {
 			return true
 		}
 	}
@@ -244,9 +244,9 @@ func (c CommitPkgsReport) HasAdditiveChanges() bool {
 }
 
 // updates the collection of affected packages with the packages that were touched in the specified commit
-func (c *CommitPkgsReport) updateAffectedPackages(commit string, r pkgsReport) {
+func (c *CommitPkgsReport) updateAffectedPackages(commit string, r PkgsReport) {
 	if c.AffectedPackages == nil {
-		c.AffectedPackages = map[string]pkgsList{}
+		c.AffectedPackages = map[string]PkgsList{}
 	}
 
 	for _, pkg := range r.AddedPackages {
@@ -263,32 +263,32 @@ func (c *CommitPkgsReport) updateAffectedPackages(commit string, r pkgsReport) {
 }
 
 // represents a complete report of added, removed, and modified packages
-type pkgsReport struct {
-	AddedPackages      pkgsList         `json:"added,omitempty"`
-	ModifiedPackages   modifiedPackages `json:"modified,omitempty"`
-	RemovedPackages    pkgsList         `json:"removed,omitempty"`
+type PkgsReport struct {
+	AddedPackages      PkgsList         `json:"added,omitempty"`
+	ModifiedPackages   ModifiedPackages `json:"modified,omitempty"`
+	RemovedPackages    PkgsList         `json:"removed,omitempty"`
 	modPkgHasAdditions bool
 	modPkgHasBreaking  bool
 }
 
 // returns true if the package report contains breaking changes
-func (r pkgsReport) hasBreakingChanges() bool {
+func (r PkgsReport) HasBreakingChanges() bool {
 	return len(r.RemovedPackages) > 0 || r.modPkgHasBreaking
 }
 
 // returns true if the package report contains additive changes
-func (r pkgsReport) hasAdditiveChanges() bool {
+func (r PkgsReport) HasAdditiveChanges() bool {
 	return len(r.AddedPackages) > 0 || r.modPkgHasAdditions
 }
 
 // returns true if the report contains no data
-func (r pkgsReport) isEmpty() bool {
+func (r PkgsReport) IsEmpty() bool {
 	return len(r.AddedPackages) == 0 && len(r.ModifiedPackages) == 0 && len(r.RemovedPackages) == 0
 }
 
-// generates a pkgsReport based on the delta between lhs and rhs
-func getPkgsReport(lhs, rhs repoContent) pkgsReport {
-	rpt := pkgsReport{}
+// generates a PkgsReport based on the delta between lhs and rhs
+func getPkgsReport(lhs, rhs repoContent) PkgsReport {
+	rpt := PkgsReport{}
 
 	if !onlyBreakingChangesFlag {
 		rpt.AddedPackages = getPkgsList(lhs, rhs)
@@ -314,7 +314,7 @@ func getPkgsReport(lhs, rhs repoContent) pkgsReport {
 			}
 			// only add an entry if the report contains data
 			if rpt.ModifiedPackages == nil {
-				rpt.ModifiedPackages = modifiedPackages{}
+				rpt.ModifiedPackages = ModifiedPackages{}
 			}
 			rpt.ModifiedPackages[rhsPkg] = r
 		}
@@ -324,8 +324,8 @@ func getPkgsReport(lhs, rhs repoContent) pkgsReport {
 }
 
 // returns a list of packages in rhs that aren't in lhs
-func getPkgsList(lhs, rhs repoContent) pkgsList {
-	list := pkgsList{}
+func getPkgsList(lhs, rhs repoContent) PkgsList {
+	list := PkgsList{}
 	for rhsPkg := range rhs {
 		if _, ok := lhs[rhsPkg]; !ok {
 			list = append(list, rhsPkg)
@@ -334,8 +334,8 @@ func getPkgsList(lhs, rhs repoContent) pkgsList {
 	return list
 }
 
-func (r *pkgsReport) toMarkdown() string {
-	if r.isEmpty() {
+func (r *PkgsReport) toMarkdown() string {
+	if r.IsEmpty() {
 		return ""
 	}
 	md := report.MarkdownWriter{}
@@ -345,7 +345,7 @@ func (r *pkgsReport) toMarkdown() string {
 	return md.String()
 }
 
-func (r *pkgsReport) writeAddedPackages(md *report.MarkdownWriter) {
+func (r *PkgsReport) writeAddedPackages(md *report.MarkdownWriter) {
 	if len(r.AddedPackages) == 0 {
 		return
 	}
@@ -356,7 +356,7 @@ func (r *pkgsReport) writeAddedPackages(md *report.MarkdownWriter) {
 	}
 }
 
-func (r *pkgsReport) writeModifiedPackages(md *report.MarkdownWriter) {
+func (r *PkgsReport) writeModifiedPackages(md *report.MarkdownWriter) {
 	if len(r.ModifiedPackages) == 0 {
 		return
 	}
@@ -372,7 +372,7 @@ func (r *pkgsReport) writeModifiedPackages(md *report.MarkdownWriter) {
 	}
 }
 
-func (r *pkgsReport) writeRemovedPackages(md *report.MarkdownWriter) {
+func (r *PkgsReport) writeRemovedPackages(md *report.MarkdownWriter) {
 	if len(r.RemovedPackages) == 0 {
 		return
 	}

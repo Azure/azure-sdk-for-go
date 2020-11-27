@@ -48,7 +48,7 @@ Commit sequences must be comma-delimited.`,
 }
 
 // split into its own func as we can't call os.Exit from it (the defer won't get executed)
-func thePackageCmd(args []string) (rs reportStatus, err error) {
+func thePackageCmd(args []string) (rs ReportStatus, err error) {
 	if dirMode {
 		return packageCmdDirMode(args)
 	}
@@ -75,7 +75,7 @@ func getContentForCommit(wt repo.WorkingTree, dir, commit string) (cnt exports.C
 	return
 }
 
-func packageCmdCommitMode(args []string) (rs reportStatus, err error) {
+func packageCmdCommitMode(args []string) (rs ReportStatus, err error) {
 	cloneRepo, err := processArgsAndClone(args)
 	if err != nil {
 		return
@@ -119,7 +119,7 @@ func packageCmdCommitMode(args []string) (rs reportStatus, err error) {
 	return
 }
 
-func packageCmdDirMode(args []string) (rs reportStatus, err error) {
+func packageCmdDirMode(args []string) (rs ReportStatus, err error) {
 	if len(args) != 2 {
 		return nil, errors.New("directories mode requires two arguments")
 	}

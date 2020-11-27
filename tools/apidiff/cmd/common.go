@@ -224,14 +224,14 @@ func generateReports(args []string, cln repo.WorkingTree, fn reportGenFunc) erro
 	return nil
 }
 
-type reportStatus interface {
+type ReportStatus interface {
 	HasBreakingChanges() bool
 	HasAdditiveChanges() bool
 }
 
 // compares report status with the desired report options (breaking/additions)
 // to determine if the program should terminate with a non-zero exit code.
-func evalReportStatus(r reportStatus) {
+func evalReportStatus(r ReportStatus) {
 	if onlyBreakingChangesFlag && r.HasBreakingChanges() {
 		os.Exit(1)
 	}

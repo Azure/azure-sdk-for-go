@@ -52,7 +52,30 @@ func thePackageCmd(args []string) (rs reportStatus, err error) {
 	if dirMode {
 		return packageCmdDirMode(args)
 	}
+	return packageCmdCommitMode(args)
+}
 
+func init() {
+	packageCmd.PersistentFlags().BoolVarP(&dirMode, "directories", "i", false, "compares packages in two different directories")
+	packageCmd.PersistentFlags().BoolVarP(&asMarkdown, "markdown", "m", false, "emits the report in markdown format")
+	rootCmd.AddCommand(packageCmd)
+}
+
+func getContentForCommit(wt repo.WorkingTree, dir, commit string) (cnt exports.Content, err error) {
+	err = wt.Checkout(commit)
+	if err != nil {
+		err = fmt.Errorf("failed to check out commit '%s': %s", commit, err)
+		return
+	}
+
+	cnt, err = exports.Get(dir)
+	if err != nil {
+		err = fmt.Errorf("failed to get exports for commit '%s': %s", commit, err)
+	}
+	return
+}
+
+func packageCmdCommitMode(args []string) (rs reportStatus, err error) {
 	cloneRepo, err := processArgsAndClone(args)
 	if err != nil {
 		return
@@ -93,26 +116,6 @@ func thePackageCmd(args []string) (rs reportStatus, err error) {
 	}
 
 	err = printReport(rpt)
-	return
-}
-
-func init() {
-	packageCmd.PersistentFlags().BoolVarP(&dirMode, "directories", "i", false, "compares packages in two different directories")
-	packageCmd.PersistentFlags().BoolVarP(&asMarkdown, "markdown", "m", false, "emits the report in markdown format")
-	rootCmd.AddCommand(packageCmd)
-}
-
-func getContentForCommit(wt repo.WorkingTree, dir, commit string) (cnt exports.Content, err error) {
-	err = wt.Checkout(commit)
-	if err != nil {
-		err = fmt.Errorf("failed to check out commit '%s': %s", commit, err)
-		return
-	}
-
-	cnt, err = exports.Get(dir)
-	if err != nil {
-		err = fmt.Errorf("failed to get exports for commit '%s': %s", commit, err)
-	}
 	return
 }
 

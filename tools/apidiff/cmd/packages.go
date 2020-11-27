@@ -44,7 +44,7 @@ Commit sequences must be comma-delimited.`,
 		if err != nil {
 			return err
 		}
-		err = printReport(rpt)
+		err = PrintReport(rpt)
 		if err != nil {
 			return err
 		}

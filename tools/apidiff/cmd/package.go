@@ -81,7 +81,7 @@ func packageCmdCommitMode(args []string) (rs ReportStatus, err error) {
 		return
 	}
 
-	var rpt commitPkgReport
+	var rpt CommitPkgReport
 	rpt.CommitsReports = map[string]report.Package{}
 	worker := func(pkgDir string, cloneRepo repo.WorkingTree, baseCommit, targetCommit string) error {
 		// lhs
@@ -115,7 +115,7 @@ func packageCmdCommitMode(args []string) (rs ReportStatus, err error) {
 		return
 	}
 
-	err = printReport(rpt)
+	err = PrintReport(rpt)
 	return
 }
 
@@ -138,7 +138,7 @@ func packageCmdDirMode(args []string) (rs ReportStatus, err error) {
 	if asMarkdown && !suppressReport {
 		println(r.ToMarkdown())
 	} else {
-		err = printReport(r)
+		err = PrintReport(r)
 	}
 	return r, err
 }

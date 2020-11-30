@@ -31,7 +31,7 @@ type ConnectedClusterClientAPI interface {
 	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result hybridkubernetes.ConnectedClusterListIterator, err error)
 	ListBySubscription(ctx context.Context) (result hybridkubernetes.ConnectedClusterListPage, err error)
 	ListBySubscriptionComplete(ctx context.Context) (result hybridkubernetes.ConnectedClusterListIterator, err error)
-	ListClusterUserCredentials(ctx context.Context, resourceGroupName string, clusterName string, clientAuthenticationDetails *hybridkubernetes.AuthenticationDetails) (result hybridkubernetes.CredentialResults, err error)
+	ListClusterUserCredentials(ctx context.Context, resourceGroupName string, clusterName string, clientProxy *bool, clientAuthenticationDetails *hybridkubernetes.AuthenticationDetails) (result hybridkubernetes.CredentialResults, err error)
 	Update(ctx context.Context, resourceGroupName string, clusterName string, connectedClusterPatch hybridkubernetes.ConnectedClusterPatch) (result hybridkubernetes.ConnectedCluster, err error)
 }
 

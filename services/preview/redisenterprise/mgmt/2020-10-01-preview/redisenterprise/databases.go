@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -197,6 +198,91 @@ func (client DatabasesClient) DeleteResponder(resp *http.Response) (result autor
 	return
 }
 
+// Export exports a database file from target database.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// clusterName - the name of the RedisEnterprise cluster.
+// databaseName - the name of the database.
+// parameters - storage information for exporting into the cluster
+func (client DatabasesClient) Export(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters ExportClusterParameters) (result DatabasesExportFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabasesClient.Export")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.SasURI", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("redisenterprise.DatabasesClient", "Export", err.Error())
+	}
+
+	req, err := client.ExportPreparer(ctx, resourceGroupName, clusterName, databaseName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Export", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.ExportSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Export", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// ExportPreparer prepares the Export request.
+func (client DatabasesClient) ExportPreparer(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters ExportClusterParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"clusterName":       autorest.Encode("path", clusterName),
+		"databaseName":      autorest.Encode("path", databaseName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-10-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/export", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ExportSender sends the Export request. The method will close the
+// http.Response Body if it receives an error.
+func (client DatabasesClient) ExportSender(req *http.Request) (future DatabasesExportFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// ExportResponder handles the response to the Export request. The method always
+// closes the http.Response Body.
+func (client DatabasesClient) ExportResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // GetMethod gets information about a database in a RedisEnterprise cluster.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -271,6 +357,91 @@ func (client DatabasesClient) GetMethodResponder(resp *http.Response) (result Da
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Import imports a database file to target database.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// clusterName - the name of the RedisEnterprise cluster.
+// databaseName - the name of the database.
+// parameters - storage information for importing into the cluster
+func (client DatabasesClient) Import(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters ImportClusterParameters) (result DatabasesImportFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabasesClient.Import")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.SasURI", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("redisenterprise.DatabasesClient", "Import", err.Error())
+	}
+
+	req, err := client.ImportPreparer(ctx, resourceGroupName, clusterName, databaseName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Import", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.ImportSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Import", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// ImportPreparer prepares the Import request.
+func (client DatabasesClient) ImportPreparer(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters ImportClusterParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"clusterName":       autorest.Encode("path", clusterName),
+		"databaseName":      autorest.Encode("path", databaseName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-10-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/import", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ImportSender sends the Import request. The method will close the
+// http.Response Body if it receives an error.
+func (client DatabasesClient) ImportSender(req *http.Request) (future DatabasesImportFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// ImportResponder handles the response to the Import request. The method always
+// closes the http.Response Body.
+func (client DatabasesClient) ImportResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
 	return
 }
 
@@ -387,6 +558,163 @@ func (client DatabasesClient) ListByClusterComplete(ctx context.Context, resourc
 		}()
 	}
 	result.page, err = client.ListByCluster(ctx, resourceGroupName, clusterName)
+	return
+}
+
+// ListKeys retrieves the access keys for the RedisEnterprise database.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// clusterName - the name of the RedisEnterprise cluster.
+// databaseName - the name of the database.
+func (client DatabasesClient) ListKeys(ctx context.Context, resourceGroupName string, clusterName string, databaseName string) (result AccessKeys, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabasesClient.ListKeys")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ListKeysPreparer(ctx, resourceGroupName, clusterName, databaseName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "ListKeys", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListKeysSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "ListKeys", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListKeysResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "ListKeys", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListKeysPreparer prepares the ListKeys request.
+func (client DatabasesClient) ListKeysPreparer(ctx context.Context, resourceGroupName string, clusterName string, databaseName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"clusterName":       autorest.Encode("path", clusterName),
+		"databaseName":      autorest.Encode("path", databaseName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-10-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/listKeys", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListKeysSender sends the ListKeys request. The method will close the
+// http.Response Body if it receives an error.
+func (client DatabasesClient) ListKeysSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListKeysResponder handles the response to the ListKeys request. The method always
+// closes the http.Response Body.
+func (client DatabasesClient) ListKeysResponder(resp *http.Response) (result AccessKeys, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// RegenerateKey regenerates the RedisEnterprise database's access keys.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// clusterName - the name of the RedisEnterprise cluster.
+// databaseName - the name of the database.
+// parameters - specifies which key to regenerate.
+func (client DatabasesClient) RegenerateKey(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters RegenerateKeyParameters) (result DatabasesRegenerateKeyFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabasesClient.RegenerateKey")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.RegenerateKeyPreparer(ctx, resourceGroupName, clusterName, databaseName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "RegenerateKey", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.RegenerateKeySender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "RegenerateKey", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// RegenerateKeyPreparer prepares the RegenerateKey request.
+func (client DatabasesClient) RegenerateKeyPreparer(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters RegenerateKeyParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"clusterName":       autorest.Encode("path", clusterName),
+		"databaseName":      autorest.Encode("path", databaseName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-10-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/regenerateKey", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// RegenerateKeySender sends the RegenerateKey request. The method will close the
+// http.Response Body if it receives an error.
+func (client DatabasesClient) RegenerateKeySender(req *http.Request) (future DatabasesRegenerateKeyFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// RegenerateKeyResponder handles the response to the RegenerateKey request. The method always
+// closes the http.Response Body.
+func (client DatabasesClient) RegenerateKeyResponder(resp *http.Response) (result AccessKeys, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 

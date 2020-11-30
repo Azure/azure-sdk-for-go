@@ -286,3 +286,89 @@ func (client ConfigServersClient) UpdatePutResponder(resp *http.Response) (resul
 	result.Response = autorest.Response{Response: resp}
 	return
 }
+
+// Validate check if the config server settings are valid.
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
+// from the Azure Resource Manager API or the portal.
+// serviceName - the name of the Service resource.
+// configServerSettings - config server settings to be validated
+func (client ConfigServersClient) Validate(ctx context.Context, resourceGroupName string, serviceName string, configServerSettings ConfigServerSettings) (result ConfigServersValidateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConfigServersClient.Validate")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: configServerSettings,
+			Constraints: []validation.Constraint{{Target: "configServerSettings.GitProperty", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "configServerSettings.GitProperty.URI", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewError("appplatform.ConfigServersClient", "Validate", err.Error())
+	}
+
+	req, err := client.ValidatePreparer(ctx, resourceGroupName, serviceName, configServerSettings)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "appplatform.ConfigServersClient", "Validate", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.ValidateSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "appplatform.ConfigServersClient", "Validate", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// ValidatePreparer prepares the Validate request.
+func (client ConfigServersClient) ValidatePreparer(ctx context.Context, resourceGroupName string, serviceName string, configServerSettings ConfigServerSettings) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serviceName":       autorest.Encode("path", serviceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-07-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/configServers/validate", pathParameters),
+		autorest.WithJSON(configServerSettings),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ValidateSender sends the Validate request. The method will close the
+// http.Response Body if it receives an error.
+func (client ConfigServersClient) ValidateSender(req *http.Request) (future ConfigServersValidateFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// ValidateResponder handles the response to the Validate request. The method always
+// closes the http.Response Body.
+func (client ConfigServersClient) ValidateResponder(resp *http.Response) (result ConfigServerSettingsValidateResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

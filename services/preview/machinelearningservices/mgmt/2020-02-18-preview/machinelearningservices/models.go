@@ -452,6 +452,14 @@ type AmlUserFeature struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// AssignedUser a user that can be assigned to a compute instance.
+type AssignedUser struct {
+	// ObjectID - User’s AAD Object Id.
+	ObjectID *string `json:"objectId,omitempty"`
+	// TenantID - User’s AAD Tenant Id.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
 // ClusterUpdateParameters amlCompute update parameters.
 type ClusterUpdateParameters struct {
 	// ClusterUpdateProperties - The properties of the amlCompute.
@@ -809,6 +817,10 @@ type ComputeInstanceProperties struct {
 	Errors *[]Error `json:"errors,omitempty"`
 	// State - READ-ONLY; The current state of this ComputeInstance. Possible values include: 'Creating', 'CreateFailed', 'Deleting', 'Running', 'Restarting', 'RestartFailed', 'JobRunning', 'SettingUp', 'Starting', 'StartFailed', 'StopFailed', 'Stopped', 'Stopping', 'UserSettingUp', 'Unknown', 'Unusable'
 	State ComputeInstanceState `json:"state,omitempty"`
+	// ComputeInstanceAuthorizationType - The Compute Instance Authorization type. Available values are personal (default). Possible values include: 'ComputeInstanceAuthorizationTypePersonal'
+	ComputeInstanceAuthorizationType ComputeInstanceAuthorizationType `json:"computeInstanceAuthorizationType,omitempty"`
+	// PersonalComputeInstanceSettings - Settings for a personal compute instance.
+	PersonalComputeInstanceSettings *PersonalComputeInstanceSettings `json:"personalComputeInstanceSettings,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ComputeInstanceProperties.
@@ -825,6 +837,12 @@ func (ci ComputeInstanceProperties) MarshalJSON() ([]byte, error) {
 	}
 	if ci.SSHSettings != nil {
 		objectMap["sshSettings"] = ci.SSHSettings
+	}
+	if ci.ComputeInstanceAuthorizationType != "" {
+		objectMap["computeInstanceAuthorizationType"] = ci.ComputeInstanceAuthorizationType
+	}
+	if ci.PersonalComputeInstanceSettings != nil {
+		objectMap["personalComputeInstanceSettings"] = ci.PersonalComputeInstanceSettings
 	}
 	return json.Marshal(objectMap)
 }
@@ -1826,8 +1844,11 @@ func (page ListAmlUserFeatureResultPage) Values() []AmlUserFeature {
 }
 
 // Creates a new instance of the ListAmlUserFeatureResultPage type.
-func NewListAmlUserFeatureResultPage(getNextPage func(context.Context, ListAmlUserFeatureResult) (ListAmlUserFeatureResult, error)) ListAmlUserFeatureResultPage {
-	return ListAmlUserFeatureResultPage{fn: getNextPage}
+func NewListAmlUserFeatureResultPage(cur ListAmlUserFeatureResult, getNextPage func(context.Context, ListAmlUserFeatureResult) (ListAmlUserFeatureResult, error)) ListAmlUserFeatureResultPage {
+	return ListAmlUserFeatureResultPage{
+		fn:    getNextPage,
+		laufr: cur,
+	}
 }
 
 // ListUsagesResult the List Usages operation response.
@@ -1982,8 +2003,11 @@ func (page ListUsagesResultPage) Values() []Usage {
 }
 
 // Creates a new instance of the ListUsagesResultPage type.
-func NewListUsagesResultPage(getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
-	return ListUsagesResultPage{fn: getNextPage}
+func NewListUsagesResultPage(cur ListUsagesResult, getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
+	return ListUsagesResultPage{
+		fn:  getNextPage,
+		lur: cur,
+	}
 }
 
 // ListWorkspaceKeysResult ...
@@ -2151,8 +2175,11 @@ func (page ListWorkspaceQuotasPage) Values() []ResourceQuota {
 }
 
 // Creates a new instance of the ListWorkspaceQuotasPage type.
-func NewListWorkspaceQuotasPage(getNextPage func(context.Context, ListWorkspaceQuotas) (ListWorkspaceQuotas, error)) ListWorkspaceQuotasPage {
-	return ListWorkspaceQuotasPage{fn: getNextPage}
+func NewListWorkspaceQuotasPage(cur ListWorkspaceQuotas, getNextPage func(context.Context, ListWorkspaceQuotas) (ListWorkspaceQuotas, error)) ListWorkspaceQuotasPage {
+	return ListWorkspaceQuotasPage{
+		fn:  getNextPage,
+		lwq: cur,
+	}
 }
 
 // MachineLearningComputeCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -2432,8 +2459,11 @@ func (page PaginatedComputeResourcesListPage) Values() []ComputeResource {
 }
 
 // Creates a new instance of the PaginatedComputeResourcesListPage type.
-func NewPaginatedComputeResourcesListPage(getNextPage func(context.Context, PaginatedComputeResourcesList) (PaginatedComputeResourcesList, error)) PaginatedComputeResourcesListPage {
-	return PaginatedComputeResourcesListPage{fn: getNextPage}
+func NewPaginatedComputeResourcesListPage(cur PaginatedComputeResourcesList, getNextPage func(context.Context, PaginatedComputeResourcesList) (PaginatedComputeResourcesList, error)) PaginatedComputeResourcesListPage {
+	return PaginatedComputeResourcesListPage{
+		fn:   getNextPage,
+		pcrl: cur,
+	}
 }
 
 // Password ...
@@ -2442,6 +2472,12 @@ type Password struct {
 	Name *string `json:"name,omitempty"`
 	// Value - READ-ONLY
 	Value *string `json:"value,omitempty"`
+}
+
+// PersonalComputeInstanceSettings settings for a personal compute instance.
+type PersonalComputeInstanceSettings struct {
+	// AssignedUser - A user explicitly assigned to a personal compute instance.
+	AssignedUser *AssignedUser `json:"assignedUser,omitempty"`
 }
 
 // PrivateEndpoint the Private Endpoint resource.
@@ -3076,8 +3112,11 @@ func (page SkuListResultPage) Values() []WorkspaceSku {
 }
 
 // Creates a new instance of the SkuListResultPage type.
-func NewSkuListResultPage(getNextPage func(context.Context, SkuListResult) (SkuListResult, error)) SkuListResultPage {
-	return SkuListResultPage{fn: getNextPage}
+func NewSkuListResultPage(cur SkuListResult, getNextPage func(context.Context, SkuListResult) (SkuListResult, error)) SkuListResultPage {
+	return SkuListResultPage{
+		fn:  getNextPage,
+		slr: cur,
+	}
 }
 
 // SslConfiguration the ssl configuration for scoring
@@ -3646,8 +3685,11 @@ func (page WorkspaceListResultPage) Values() []Workspace {
 }
 
 // Creates a new instance of the WorkspaceListResultPage type.
-func NewWorkspaceListResultPage(getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
-	return WorkspaceListResultPage{fn: getNextPage}
+func NewWorkspaceListResultPage(cur WorkspaceListResult, getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
+	return WorkspaceListResultPage{
+		fn:  getNextPage,
+		wlr: cur,
+	}
 }
 
 // WorkspaceProperties the properties of a machine learning workspace.
@@ -3722,8 +3764,8 @@ type WorkspacePropertiesUpdateParameters struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 }
 
-// WorkspacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// WorkspacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type WorkspacesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -3751,7 +3793,8 @@ func (future *WorkspacesCreateOrUpdateFuture) Result(client WorkspacesClient) (w
 	return
 }
 
-// WorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// WorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type WorkspacesDeleteFuture struct {
 	azure.Future
 }

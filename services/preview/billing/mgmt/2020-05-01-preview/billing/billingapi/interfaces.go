@@ -143,6 +143,8 @@ var _ ProductsClientAPI = (*billing.ProductsClient)(nil)
 type InvoicesClientAPI interface {
 	DownloadBillingSubscriptionInvoice(ctx context.Context, invoiceName string, downloadToken string) (result billing.InvoicesDownloadBillingSubscriptionInvoiceFuture, err error)
 	DownloadInvoice(ctx context.Context, billingAccountName string, invoiceName string, downloadToken string) (result billing.InvoicesDownloadInvoiceFuture, err error)
+	DownloadMultipleBillingProfileInvoices(ctx context.Context, billingAccountName string, downloadUrls []string) (result billing.InvoicesDownloadMultipleBillingProfileInvoicesFuture, err error)
+	DownloadMultipleBillingSubscriptionInvoices(ctx context.Context, downloadUrls []string) (result billing.InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture, err error)
 	Get(ctx context.Context, billingAccountName string, invoiceName string) (result billing.Invoice, err error)
 	GetByID(ctx context.Context, invoiceName string) (result billing.Invoice, err error)
 	GetBySubscriptionAndInvoiceID(ctx context.Context, invoiceName string) (result billing.Invoice, err error)

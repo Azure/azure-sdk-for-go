@@ -31,6 +31,73 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/domainservices/mgmt/2017-06-01/aad"
 
+// CloudError an error response from the Domain Services.
+type CloudError struct {
+	// Error - An error response from the Domain Services.
+	Error *CloudErrorBody `json:"error,omitempty"`
+}
+
+// CloudErrorBody an error response from the Domain Services.
+type CloudErrorBody struct {
+	// Code - An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
+	Code *string `json:"code,omitempty"`
+	// Message - A message describing the error, intended to be suitable for display in a user interface.
+	Message *string `json:"message,omitempty"`
+	// Target - The target of the particular error. For example, the name of the property in error.
+	Target *string `json:"target,omitempty"`
+	// Details - A list of additional details about the error.
+	Details *[]CloudErrorBody `json:"details,omitempty"`
+}
+
+// ContainerAccount container Account Description
+type ContainerAccount struct {
+	// AccountName - The account name
+	AccountName *string `json:"accountName,omitempty"`
+	// Spn - The account spn
+	Spn *string `json:"spn,omitempty"`
+	// Password - The account password
+	Password *string `json:"password,omitempty"`
+}
+
+// DefaultErrorResponse domain Service error response.
+type DefaultErrorResponse struct {
+	// Error - READ-ONLY; Error model.
+	Error *DefaultErrorResponseError `json:"error,omitempty"`
+}
+
+// DefaultErrorResponseError error model.
+type DefaultErrorResponseError struct {
+	// Code - READ-ONLY; Standardized string to programmatically identify the error.
+	Code *string `json:"code,omitempty"`
+	// Message - READ-ONLY; Detailed error description and debugging information.
+	Message *string `json:"message,omitempty"`
+	// Target - READ-ONLY; Detailed error description and debugging information.
+	Target *string `json:"target,omitempty"`
+	// Details - Error details.
+	Details *[]DefaultErrorResponseErrorDetailsItem `json:"details,omitempty"`
+	// Innererror - READ-ONLY; More information to debug error.
+	Innererror *string `json:"innererror,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DefaultErrorResponseError.
+func (der DefaultErrorResponseError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if der.Details != nil {
+		objectMap["details"] = der.Details
+	}
+	return json.Marshal(objectMap)
+}
+
+// DefaultErrorResponseErrorDetailsItem detailed errors.
+type DefaultErrorResponseErrorDetailsItem struct {
+	// Code - READ-ONLY; Standardized string to programmatically identify the error.
+	Code *string `json:"code,omitempty"`
+	// Message - READ-ONLY; Detailed error description and debugging information.
+	Message *string `json:"message,omitempty"`
+	// Target - READ-ONLY; Detailed error description and debugging information.
+	Target *string `json:"target,omitempty"`
+}
+
 // DomainSecuritySettings domain Security Settings
 type DomainSecuritySettings struct {
 	// NtlmV1 - A flag to determine whether or not NtlmV1 is enabled or disabled. Possible values include: 'NtlmV1Enabled', 'NtlmV1Disabled'
@@ -39,6 +106,10 @@ type DomainSecuritySettings struct {
 	TLSV1 TLSV1 `json:"tlsV1,omitempty"`
 	// SyncNtlmPasswords - A flag to determine whether or not SyncNtlmPasswords is enabled or disabled. Possible values include: 'SyncNtlmPasswordsEnabled', 'SyncNtlmPasswordsDisabled'
 	SyncNtlmPasswords SyncNtlmPasswords `json:"syncNtlmPasswords,omitempty"`
+	// SyncKerberosPasswords - A flag to determine whether or not SyncKerberosPasswords is enabled or disabled. Possible values include: 'SyncKerberosPasswordsEnabled', 'SyncKerberosPasswordsDisabled'
+	SyncKerberosPasswords SyncKerberosPasswords `json:"syncKerberosPasswords,omitempty"`
+	// SyncOnPremPasswords - A flag to determine whether or not SyncOnPremPasswords is enabled or disabled. Possible values include: 'SyncOnPremPasswordsEnabled', 'SyncOnPremPasswordsDisabled'
+	SyncOnPremPasswords SyncOnPremPasswords `json:"syncOnPremPasswords,omitempty"`
 }
 
 // DomainService domain service.
@@ -317,32 +388,45 @@ func (page DomainServiceListResultPage) Values() []DomainService {
 }
 
 // Creates a new instance of the DomainServiceListResultPage type.
-func NewDomainServiceListResultPage(getNextPage func(context.Context, DomainServiceListResult) (DomainServiceListResult, error)) DomainServiceListResultPage {
-	return DomainServiceListResultPage{fn: getNextPage}
+func NewDomainServiceListResultPage(cur DomainServiceListResult, getNextPage func(context.Context, DomainServiceListResult) (DomainServiceListResult, error)) DomainServiceListResultPage {
+	return DomainServiceListResultPage{
+		fn:   getNextPage,
+		dslr: cur,
+	}
 }
 
 // DomainServiceProperties properties of the Domain Service.
 type DomainServiceProperties struct {
-	// TenantID - READ-ONLY; Azure Active Directory tenant id
+	// Version - READ-ONLY; Data Model Version
+	Version *int32 `json:"version,omitempty"`
+	// TenantID - READ-ONLY; Azure Active Directory Tenant Id
 	TenantID *string `json:"tenantId,omitempty"`
 	// DomainName - The name of the Azure domain that the user would like to deploy Domain Services to.
 	DomainName *string `json:"domainName,omitempty"`
+	// DeploymentID - READ-ONLY; Deployment Id
+	DeploymentID *string `json:"deploymentId,omitempty"`
 	// VnetSiteID - READ-ONLY; Virtual network site id
 	VnetSiteID *string `json:"vnetSiteId,omitempty"`
 	// SubnetID - The name of the virtual network that Domain Services will be deployed on. The id of the subnet that Domain Services will be deployed on. /virtualNetwork/vnetName/subnets/subnetName.
 	SubnetID *string `json:"subnetId,omitempty"`
 	// LdapsSettings - Secure LDAP Settings
 	LdapsSettings *LdapsSettings `json:"ldapsSettings,omitempty"`
+	// DomainSecuritySettings - DomainSecurity Settings
+	DomainSecuritySettings *DomainSecuritySettings `json:"domainSecuritySettings,omitempty"`
+	// ResourceForestSettings - Resource Forest Settings
+	ResourceForestSettings *ResourceForestSettings `json:"resourceForestSettings,omitempty"`
+	// DomainConfigurationType - Domain Configuration Type
+	DomainConfigurationType *string `json:"domainConfigurationType,omitempty"`
+	// Sku - Sku Type
+	Sku *string `json:"sku,omitempty"`
 	// HealthLastEvaluated - READ-ONLY; Last domain evaluation run DateTime
-	HealthLastEvaluated *date.Time `json:"healthLastEvaluated,omitempty"`
+	HealthLastEvaluated *date.TimeRFC1123 `json:"healthLastEvaluated,omitempty"`
 	// HealthMonitors - READ-ONLY; List of Domain Health Monitors
 	HealthMonitors *[]HealthMonitor `json:"healthMonitors,omitempty"`
 	// HealthAlerts - READ-ONLY; List of Domain Health Alerts
 	HealthAlerts *[]HealthAlert `json:"healthAlerts,omitempty"`
 	// NotificationSettings - Notification Settings
 	NotificationSettings *NotificationSettings `json:"notificationSettings,omitempty"`
-	// DomainSecuritySettings - DomainSecurity Settings
-	DomainSecuritySettings *DomainSecuritySettings `json:"domainSecuritySettings,omitempty"`
 	// FilteredSync - Enabled or Disabled flag to turn on Group-based filtered sync. Possible values include: 'FilteredSyncEnabled', 'FilteredSyncDisabled'
 	FilteredSync FilteredSync `json:"filteredSync,omitempty"`
 	// DomainControllerIPAddress - READ-ONLY; List of Domain Controller IP Address
@@ -365,11 +449,20 @@ func (dsp DomainServiceProperties) MarshalJSON() ([]byte, error) {
 	if dsp.LdapsSettings != nil {
 		objectMap["ldapsSettings"] = dsp.LdapsSettings
 	}
-	if dsp.NotificationSettings != nil {
-		objectMap["notificationSettings"] = dsp.NotificationSettings
-	}
 	if dsp.DomainSecuritySettings != nil {
 		objectMap["domainSecuritySettings"] = dsp.DomainSecuritySettings
+	}
+	if dsp.ResourceForestSettings != nil {
+		objectMap["resourceForestSettings"] = dsp.ResourceForestSettings
+	}
+	if dsp.DomainConfigurationType != nil {
+		objectMap["domainConfigurationType"] = dsp.DomainConfigurationType
+	}
+	if dsp.Sku != nil {
+		objectMap["sku"] = dsp.Sku
+	}
+	if dsp.NotificationSettings != nil {
+		objectMap["notificationSettings"] = dsp.NotificationSettings
 	}
 	if dsp.FilteredSync != "" {
 		objectMap["filteredSync"] = dsp.FilteredSync
@@ -456,6 +549,20 @@ func (future *DomainServicesUpdateFuture) Result(client DomainServicesClient) (d
 		}
 	}
 	return
+}
+
+// ForestTrust forest Trust Setting
+type ForestTrust struct {
+	// TrustedDomainFqdn - Trusted Domain FQDN
+	TrustedDomainFqdn *string `json:"trustedDomainFqdn,omitempty"`
+	// TrustDirection - Trust Direction
+	TrustDirection *string `json:"trustDirection,omitempty"`
+	// FriendlyName - Friendly Name
+	FriendlyName *string `json:"friendlyName,omitempty"`
+	// RemoteDNSIps - Remote Dns ips
+	RemoteDNSIps *string `json:"remoteDnsIps,omitempty"`
+	// TrustPassword - Trust Password
+	TrustPassword *string `json:"trustPassword,omitempty"`
 }
 
 // HealthAlert health Alert Description
@@ -717,8 +824,404 @@ func (page OperationEntityListResultPage) Values() []OperationEntity {
 }
 
 // Creates a new instance of the OperationEntityListResultPage type.
-func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
-	return OperationEntityListResultPage{fn: getNextPage}
+func NewOperationEntityListResultPage(cur OperationEntityListResult, getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
+	return OperationEntityListResultPage{
+		fn:   getNextPage,
+		oelr: cur,
+	}
+}
+
+// OuContainer resource for OuContainer.
+type OuContainer struct {
+	autorest.Response `json:"-"`
+	// OuContainerProperties - OuContainer properties
+	*OuContainerProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+	// Etag - Resource etag
+	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OuContainer.
+func (oc OuContainer) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if oc.OuContainerProperties != nil {
+		objectMap["properties"] = oc.OuContainerProperties
+	}
+	if oc.Location != nil {
+		objectMap["location"] = oc.Location
+	}
+	if oc.Tags != nil {
+		objectMap["tags"] = oc.Tags
+	}
+	if oc.Etag != nil {
+		objectMap["etag"] = oc.Etag
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for OuContainer struct.
+func (oc *OuContainer) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var ouContainerProperties OuContainerProperties
+				err = json.Unmarshal(*v, &ouContainerProperties)
+				if err != nil {
+					return err
+				}
+				oc.OuContainerProperties = &ouContainerProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				oc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				oc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				oc.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				oc.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				oc.Tags = tags
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				oc.Etag = &etag
+			}
+		}
+	}
+
+	return nil
+}
+
+// OuContainerCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type OuContainerCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *OuContainerCreateFuture) Result(client OuContainerClient) (oc OuContainer, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "aad.OuContainerCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("aad.OuContainerCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if oc.Response.Response, err = future.GetResult(sender); err == nil && oc.Response.Response.StatusCode != http.StatusNoContent {
+		oc, err = client.CreateResponder(oc.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "aad.OuContainerCreateFuture", "Result", oc.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// OuContainerDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type OuContainerDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *OuContainerDeleteFuture) Result(client OuContainerClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "aad.OuContainerDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("aad.OuContainerDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// OuContainerListResult the response from the List OuContainer operation.
+type OuContainerListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of OuContainer.
+	Value *[]OuContainer `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The continuation token for the next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OuContainerListResult.
+func (oclr OuContainerListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if oclr.Value != nil {
+		objectMap["value"] = oclr.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// OuContainerListResultIterator provides access to a complete listing of OuContainer values.
+type OuContainerListResultIterator struct {
+	i    int
+	page OuContainerListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *OuContainerListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OuContainerListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *OuContainerListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter OuContainerListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter OuContainerListResultIterator) Response() OuContainerListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter OuContainerListResultIterator) Value() OuContainer {
+	if !iter.page.NotDone() {
+		return OuContainer{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the OuContainerListResultIterator type.
+func NewOuContainerListResultIterator(page OuContainerListResultPage) OuContainerListResultIterator {
+	return OuContainerListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (oclr OuContainerListResult) IsEmpty() bool {
+	return oclr.Value == nil || len(*oclr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (oclr OuContainerListResult) hasNextLink() bool {
+	return oclr.NextLink != nil && len(*oclr.NextLink) != 0
+}
+
+// ouContainerListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (oclr OuContainerListResult) ouContainerListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !oclr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(oclr.NextLink)))
+}
+
+// OuContainerListResultPage contains a page of OuContainer values.
+type OuContainerListResultPage struct {
+	fn   func(context.Context, OuContainerListResult) (OuContainerListResult, error)
+	oclr OuContainerListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *OuContainerListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OuContainerListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.oclr)
+		if err != nil {
+			return err
+		}
+		page.oclr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *OuContainerListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page OuContainerListResultPage) NotDone() bool {
+	return !page.oclr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page OuContainerListResultPage) Response() OuContainerListResult {
+	return page.oclr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page OuContainerListResultPage) Values() []OuContainer {
+	if page.oclr.IsEmpty() {
+		return nil
+	}
+	return *page.oclr.Value
+}
+
+// Creates a new instance of the OuContainerListResultPage type.
+func NewOuContainerListResultPage(cur OuContainerListResult, getNextPage func(context.Context, OuContainerListResult) (OuContainerListResult, error)) OuContainerListResultPage {
+	return OuContainerListResultPage{
+		fn:   getNextPage,
+		oclr: cur,
+	}
+}
+
+// OuContainerProperties properties of the OuContainer.
+type OuContainerProperties struct {
+	// TenantID - READ-ONLY; Azure Active Directory tenant id
+	TenantID *string `json:"tenantId,omitempty"`
+	// DomainName - READ-ONLY; The domain name of Domain Services.
+	DomainName *string `json:"domainName,omitempty"`
+	// DeploymentID - READ-ONLY; The Deployment id
+	DeploymentID *string `json:"deploymentId,omitempty"`
+	// ContainerID - READ-ONLY; The OuContainer name
+	ContainerID *string `json:"containerId,omitempty"`
+	// Accounts - The list of container accounts
+	Accounts *[]ContainerAccount `json:"accounts,omitempty"`
+	// ServiceStatus - READ-ONLY; Status of OuContainer instance
+	ServiceStatus *string `json:"serviceStatus,omitempty"`
+	// DistinguishedName - READ-ONLY; Distinguished Name of OuContainer instance
+	DistinguishedName *string `json:"distinguishedName,omitempty"`
+	// ProvisioningState - READ-ONLY; The current deployment or provisioning state, which only appears in the response.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OuContainerProperties.
+func (ocp OuContainerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ocp.Accounts != nil {
+		objectMap["accounts"] = ocp.Accounts
+	}
+	return json.Marshal(objectMap)
+}
+
+// OuContainerUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type OuContainerUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *OuContainerUpdateFuture) Result(client OuContainerClient) (oc OuContainer, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "aad.OuContainerUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("aad.OuContainerUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if oc.Response.Response, err = future.GetResult(sender); err == nil && oc.Response.Response.StatusCode != http.StatusNoContent {
+		oc, err = client.UpdateResponder(oc.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "aad.OuContainerUpdateFuture", "Result", oc.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // Resource the Resource model definition.
@@ -750,4 +1253,12 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 		objectMap["etag"] = r.Etag
 	}
 	return json.Marshal(objectMap)
+}
+
+// ResourceForestSettings settings for Resource Forest
+type ResourceForestSettings struct {
+	// Settings - List of settings for Resource Forest
+	Settings *[]ForestTrust `json:"settings,omitempty"`
+	// ResourceForest - Resource Forest
+	ResourceForest *string `json:"resourceForest,omitempty"`
 }

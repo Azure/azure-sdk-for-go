@@ -209,7 +209,7 @@ type QueryDTO struct {
 	Question *string `json:"question,omitempty"`
 	// Top - Max number of answers to be returned for the question.
 	Top *int32 `json:"top,omitempty"`
-	// UserID - Unique identifier for the user.
+	// UserID - Unique identifier for the user. Optional parameter for telemetry. For more information, refer <a href="http://aka.ms/qnamaker-analytics#user-traffic" target="blank">Analytics and Telemetry</a>.
 	UserID *string `json:"userId,omitempty"`
 	// IsTest - Query against the test index.
 	IsTest *bool `json:"isTest,omitempty"`

@@ -42,13 +42,13 @@ func NewLinkedServiceClient(endpoint string) LinkedServiceClient {
 // linkedService - linked service resource definition.
 // ifMatch - eTag of the linkedService entity.  Should only be specified for update, for which it should match
 // existing entity or can be * for unconditional update.
-func (client LinkedServiceClient) CreateOrUpdateLinkedService(ctx context.Context, linkedServiceName string, linkedService LinkedServiceResource, ifMatch string) (result LinkedServiceResource, err error) {
+func (client LinkedServiceClient) CreateOrUpdateLinkedService(ctx context.Context, linkedServiceName string, linkedService LinkedServiceResource, ifMatch string) (result LinkedServiceCreateOrUpdateLinkedServiceFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LinkedServiceClient.CreateOrUpdateLinkedService")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -74,16 +74,10 @@ func (client LinkedServiceClient) CreateOrUpdateLinkedService(ctx context.Contex
 		return
 	}
 
-	resp, err := client.CreateOrUpdateLinkedServiceSender(req)
+	result, err = client.CreateOrUpdateLinkedServiceSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceClient", "CreateOrUpdateLinkedService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceClient", "CreateOrUpdateLinkedService", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.CreateOrUpdateLinkedServiceResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceClient", "CreateOrUpdateLinkedService", resp, "Failure responding to request")
 	}
 
 	return
@@ -120,8 +114,14 @@ func (client LinkedServiceClient) CreateOrUpdateLinkedServicePreparer(ctx contex
 
 // CreateOrUpdateLinkedServiceSender sends the CreateOrUpdateLinkedService request. The method will close the
 // http.Response Body if it receives an error.
-func (client LinkedServiceClient) CreateOrUpdateLinkedServiceSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+func (client LinkedServiceClient) CreateOrUpdateLinkedServiceSender(req *http.Request) (future LinkedServiceCreateOrUpdateLinkedServiceFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // CreateOrUpdateLinkedServiceResponder handles the response to the CreateOrUpdateLinkedService request. The method always
@@ -129,7 +129,7 @@ func (client LinkedServiceClient) CreateOrUpdateLinkedServiceSender(req *http.Re
 func (client LinkedServiceClient) CreateOrUpdateLinkedServiceResponder(resp *http.Response) (result LinkedServiceResource, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -139,13 +139,13 @@ func (client LinkedServiceClient) CreateOrUpdateLinkedServiceResponder(resp *htt
 // DeleteLinkedService deletes a linked service.
 // Parameters:
 // linkedServiceName - the linked service name.
-func (client LinkedServiceClient) DeleteLinkedService(ctx context.Context, linkedServiceName string) (result autorest.Response, err error) {
+func (client LinkedServiceClient) DeleteLinkedService(ctx context.Context, linkedServiceName string) (result LinkedServiceDeleteLinkedServiceFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LinkedServiceClient.DeleteLinkedService")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -164,16 +164,10 @@ func (client LinkedServiceClient) DeleteLinkedService(ctx context.Context, linke
 		return
 	}
 
-	resp, err := client.DeleteLinkedServiceSender(req)
+	result, err = client.DeleteLinkedServiceSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceClient", "DeleteLinkedService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceClient", "DeleteLinkedService", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.DeleteLinkedServiceResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceClient", "DeleteLinkedService", resp, "Failure responding to request")
 	}
 
 	return
@@ -204,8 +198,14 @@ func (client LinkedServiceClient) DeleteLinkedServicePreparer(ctx context.Contex
 
 // DeleteLinkedServiceSender sends the DeleteLinkedService request. The method will close the
 // http.Response Body if it receives an error.
-func (client LinkedServiceClient) DeleteLinkedServiceSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+func (client LinkedServiceClient) DeleteLinkedServiceSender(req *http.Request) (future LinkedServiceDeleteLinkedServiceFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // DeleteLinkedServiceResponder handles the response to the DeleteLinkedService request. The method always
@@ -213,7 +213,7 @@ func (client LinkedServiceClient) DeleteLinkedServiceSender(req *http.Request) (
 func (client LinkedServiceClient) DeleteLinkedServiceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -417,5 +417,97 @@ func (client LinkedServiceClient) GetLinkedServicesByWorkspaceComplete(ctx conte
 		}()
 	}
 	result.page, err = client.GetLinkedServicesByWorkspace(ctx)
+	return
+}
+
+// RenameLinkedService renames a linked service.
+// Parameters:
+// linkedServiceName - the linked service name.
+// request - proposed new name.
+func (client LinkedServiceClient) RenameLinkedService(ctx context.Context, linkedServiceName string, request RenameRequest) (result LinkedServiceRenameLinkedServiceFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/LinkedServiceClient.RenameLinkedService")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: linkedServiceName,
+			Constraints: []validation.Constraint{{Target: "linkedServiceName", Name: validation.MaxLength, Rule: 260, Chain: nil},
+				{Target: "linkedServiceName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "linkedServiceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}},
+		{TargetValue: request,
+			Constraints: []validation.Constraint{{Target: "request.NewName", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "request.NewName", Name: validation.MaxLength, Rule: 260, Chain: nil},
+					{Target: "request.NewName", Name: validation.MinLength, Rule: 1, Chain: nil},
+					{Target: "request.NewName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("artifacts.LinkedServiceClient", "RenameLinkedService", err.Error())
+	}
+
+	req, err := client.RenameLinkedServicePreparer(ctx, linkedServiceName, request)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceClient", "RenameLinkedService", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.RenameLinkedServiceSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceClient", "RenameLinkedService", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// RenameLinkedServicePreparer prepares the RenameLinkedService request.
+func (client LinkedServiceClient) RenameLinkedServicePreparer(ctx context.Context, linkedServiceName string, request RenameRequest) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"linkedServiceName": autorest.Encode("path", linkedServiceName),
+	}
+
+	const APIVersion = "2019-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{endpoint}", urlParameters),
+		autorest.WithPathParameters("/linkedservices/{linkedServiceName}/rename", pathParameters),
+		autorest.WithJSON(request),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// RenameLinkedServiceSender sends the RenameLinkedService request. The method will close the
+// http.Response Body if it receives an error.
+func (client LinkedServiceClient) RenameLinkedServiceSender(req *http.Request) (future LinkedServiceRenameLinkedServiceFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// RenameLinkedServiceResponder handles the response to the RenameLinkedService request. The method always
+// closes the http.Response Body.
+func (client LinkedServiceClient) RenameLinkedServiceResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
 	return
 }

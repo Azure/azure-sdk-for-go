@@ -2665,11 +2665,11 @@ func (ig *ImageGallery) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ImageInsights the top-level object that the response includes when an image insights request succeeds. For
-// information about requesting image insights, see the
+// ImageInsights the top-level object that the response includes when an image insights request succeeds.
+// For information about requesting image insights, see the
 // [insightsToken](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#insightstoken)
-// query parameter. The modules query parameter affects the fields that Bing includes in the response. If you
-// set
+// query parameter. The modules query parameter affects the fields that Bing includes in the response. If
+// you set
 // [modules](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#modulesrequested)
 // to only Caption, then this object includes only the imageCaption field.
 type ImageInsights struct {
@@ -3676,8 +3676,8 @@ func (i Images) AsBasicResponseBase() (BasicResponseBase, bool) {
 	return &i, true
 }
 
-// ImagesImageMetadata defines a count of the number of websites where you can shop or perform other actions
-// related to the image.
+// ImagesImageMetadata defines a count of the number of websites where you can shop or perform other
+// actions related to the image.
 type ImagesImageMetadata struct {
 	// ShoppingSourcesCount - READ-ONLY; The number of websites that offer goods of the products seen in the image.
 	ShoppingSourcesCount *int32 `json:"shoppingSourcesCount,omitempty"`
@@ -4482,9 +4482,9 @@ func (mo *MediaObject) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// NormalizedRectangle defines a region of an image. The region is defined by the coordinates of the top, left
-// corner and bottom, right corner of the region. The coordinates are fractional values of the original image's
-// width and height in the range 0.0 through 1.0.
+// NormalizedRectangle defines a region of an image. The region is defined by the coordinates of the top,
+// left corner and bottom, right corner of the region. The coordinates are fractional values of the
+// original image's width and height in the range 0.0 through 1.0.
 type NormalizedRectangle struct {
 	// Left - The left coordinate.
 	Left *float64 `json:"left,omitempty"`
@@ -6414,8 +6414,8 @@ type RecognizedEntityGroup struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// RecognizedEntityRegion defines a region of the image where an entity was found and a list of entities that
-// might match it.
+// RecognizedEntityRegion defines a region of the image where an entity was found and a list of entities
+// that might match it.
 type RecognizedEntityRegion struct {
 	// Region - READ-ONLY; A region of the image that contains an entity. The values of the rectangle are relative to the width and height of the original image and are in the range 0.0 through 1.0. For example, if the image is 300x200 and the region's top, left corner is at point (10, 20) and the bottom, right corner is at point (290, 150), then the normalized rectangle is: Left = 0.0333333333333333, Top = 0.1, Right = 0.9666666666666667, Bottom = 0.75. For people, the region represents the person's face.
 	Region *NormalizedRectangle `json:"region,omitempty"`

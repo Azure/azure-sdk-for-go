@@ -458,8 +458,8 @@ type TrainSourceFilter struct {
 	IncludeSubFolders *bool `json:"includeSubFolders,omitempty"`
 }
 
-// UnderstandingResult a set of extracted fields corresponding to a semantic object, such as a receipt, in the
-// input document.
+// UnderstandingResult a set of extracted fields corresponding to a semantic object, such as a receipt, in
+// the input document.
 type UnderstandingResult struct {
 	// Pages - List of pages where the document is found.
 	Pages *[]int32 `json:"pages,omitempty"`

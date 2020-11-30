@@ -482,11 +482,13 @@ type ListSharesExpand string
 const (
 	// ListSharesExpandDeleted ...
 	ListSharesExpandDeleted ListSharesExpand = "deleted"
+	// ListSharesExpandSnapshots ...
+	ListSharesExpandSnapshots ListSharesExpand = "snapshots"
 )
 
 // PossibleListSharesExpandValues returns an array of possible values for the ListSharesExpand const type.
 func PossibleListSharesExpandValues() []ListSharesExpand {
-	return []ListSharesExpand{ListSharesExpandDeleted}
+	return []ListSharesExpand{ListSharesExpandDeleted, ListSharesExpandSnapshots}
 }
 
 // MinimumTLSVersion enumerates the values for minimum tls version.
@@ -615,6 +617,19 @@ const (
 // PossiblePublicAccessValues returns an array of possible values for the PublicAccess const type.
 func PossiblePublicAccessValues() []PublicAccess {
 	return []PublicAccess{PublicAccessBlob, PublicAccessContainer, PublicAccessNone}
+}
+
+// PutSharesExpand enumerates the values for put shares expand.
+type PutSharesExpand string
+
+const (
+	// Snapshots ...
+	Snapshots PutSharesExpand = "snapshots"
+)
+
+// PossiblePutSharesExpandValues returns an array of possible values for the PutSharesExpand const type.
+func PossiblePutSharesExpandValues() []PutSharesExpand {
+	return []PutSharesExpand{Snapshots}
 }
 
 // Reason enumerates the values for reason.

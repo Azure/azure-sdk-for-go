@@ -87,8 +87,6 @@ func (client JobsClient) Create(ctx context.Context, jobName string, resourceGro
 					{Target: "body.Properties.DeliveryPackage", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "body.Properties.DeliveryPackage.CarrierName", Name: validation.Null, Rule: true, Chain: nil},
 							{Target: "body.Properties.DeliveryPackage.TrackingNumber", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "body.Properties.DeliveryPackage.DriveCount", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "body.Properties.DeliveryPackage.ShipDate", Name: validation.Null, Rule: true, Chain: nil},
 						}},
 					{Target: "body.Properties.ReturnPackage", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "body.Properties.ReturnPackage.CarrierName", Name: validation.Null, Rule: true, Chain: nil},

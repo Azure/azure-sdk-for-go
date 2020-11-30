@@ -66,20 +66,22 @@ func (client MoveResourcesClient) Create(ctx context.Context, resourceGroupName 
 					Chain: []validation.Constraint{{Target: "body.Properties.SourceID", Name: validation.Null, Rule: true, Chain: nil},
 						{Target: "body.Properties.ResourceSettings", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "body.Properties.ResourceSettings.TargetResourceName", Name: validation.Null, Rule: true, Chain: nil}}},
+						{Target: "body.Properties.SourceResourceSettings", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "body.Properties.SourceResourceSettings.TargetResourceName", Name: validation.Null, Rule: true, Chain: nil}}},
 					}},
 				}}}}}); err != nil {
-		return result, validation.NewError("regionmove.MoveResourcesClient", "Create", err.Error())
+		return result, validation.NewError("resourcemover.MoveResourcesClient", "Create", err.Error())
 	}
 
 	req, err := client.CreatePreparer(ctx, resourceGroupName, moveCollectionName, moveResourceName, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveResourcesClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveResourcesClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -158,13 +160,13 @@ func (client MoveResourcesClient) Delete(ctx context.Context, resourceGroupName 
 	}
 	req, err := client.DeletePreparer(ctx, resourceGroupName, moveCollectionName, moveResourceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveResourcesClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveResourcesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -235,20 +237,20 @@ func (client MoveResourcesClient) Get(ctx context.Context, resourceGroupName str
 	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, moveCollectionName, moveResourceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveResourcesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "regionmove.MoveResourcesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveResourcesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -314,20 +316,20 @@ func (client MoveResourcesClient) List(ctx context.Context, resourceGroupName st
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, moveCollectionName, filter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveResourcesClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.mrc.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "regionmove.MoveResourcesClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.mrc, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveResourcesClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesClient", "List", resp, "Failure responding to request")
 	}
 	if result.mrc.hasNextLink() && result.mrc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -382,7 +384,7 @@ func (client MoveResourcesClient) ListResponder(resp *http.Response) (result Mov
 func (client MoveResourcesClient) listNextResults(ctx context.Context, lastResults MoveResourceCollection) (result MoveResourceCollection, err error) {
 	req, err := lastResults.moveResourceCollectionPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "regionmove.MoveResourcesClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "resourcemover.MoveResourcesClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -390,11 +392,11 @@ func (client MoveResourcesClient) listNextResults(ctx context.Context, lastResul
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "regionmove.MoveResourcesClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "resourcemover.MoveResourcesClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveResourcesClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }

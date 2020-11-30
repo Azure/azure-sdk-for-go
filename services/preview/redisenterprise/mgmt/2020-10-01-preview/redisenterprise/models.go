@@ -341,8 +341,11 @@ func (page ClusterListPage) Values() []Cluster {
 }
 
 // Creates a new instance of the ClusterListPage type.
-func NewClusterListPage(getNextPage func(context.Context, ClusterList) (ClusterList, error)) ClusterListPage {
-	return ClusterListPage{fn: getNextPage}
+func NewClusterListPage(cur ClusterList, getNextPage func(context.Context, ClusterList) (ClusterList, error)) ClusterListPage {
+	return ClusterListPage{
+		fn: getNextPage,
+		cl: cur,
+	}
 }
 
 // ClusterProperties properties of RedisEnterprise clusters, as opposed to general resource properties like
@@ -539,50 +542,6 @@ func (d *Database) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// DatabaseExportFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type DatabaseExportFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DatabaseExportFuture) Result(client DatabaseClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "redisenterprise.DatabaseExportFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("redisenterprise.DatabaseExportFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
-// DatabaseImportFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type DatabaseImportFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DatabaseImportFuture) Result(client DatabaseClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "redisenterprise.DatabaseImportFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("redisenterprise.DatabaseImportFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // DatabaseList the response of a list-all operation.
 type DatabaseList struct {
 	autorest.Response `json:"-"`
@@ -744,12 +703,15 @@ func (page DatabaseListPage) Values() []Database {
 }
 
 // Creates a new instance of the DatabaseListPage type.
-func NewDatabaseListPage(getNextPage func(context.Context, DatabaseList) (DatabaseList, error)) DatabaseListPage {
-	return DatabaseListPage{fn: getNextPage}
+func NewDatabaseListPage(cur DatabaseList, getNextPage func(context.Context, DatabaseList) (DatabaseList, error)) DatabaseListPage {
+	return DatabaseListPage{
+		fn: getNextPage,
+		dl: cur,
+	}
 }
 
-// DatabaseProperties properties of RedisEnterprise databases, as opposed to general resource properties like
-// location, tags
+// DatabaseProperties properties of RedisEnterprise databases, as opposed to general resource properties
+// like location, tags
 type DatabaseProperties struct {
 	// ClientProtocol - Specifies whether redis clients can connect using TLS-encrypted or plaintext redis protocols. Default is TLS-encrypted. Possible values include: 'Encrypted', 'Plaintext'
 	ClientProtocol Protocol `json:"clientProtocol,omitempty"`
@@ -788,36 +750,8 @@ func (dp DatabaseProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DatabaseRegenerateKeyFuture an abstraction for monitoring and retrieving the results of a long-running
+// DatabasesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type DatabaseRegenerateKeyFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DatabaseRegenerateKeyFuture) Result(client DatabaseClient) (ak AccessKeys, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "redisenterprise.DatabaseRegenerateKeyFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("redisenterprise.DatabaseRegenerateKeyFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ak.Response.Response, err = future.GetResult(sender); err == nil && ak.Response.Response.StatusCode != http.StatusNoContent {
-		ak, err = client.RegenerateKeyResponder(ak.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "redisenterprise.DatabaseRegenerateKeyFuture", "Result", ak.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// DatabasesCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DatabasesCreateFuture struct {
 	azure.Future
 }
@@ -845,7 +779,8 @@ func (future *DatabasesCreateFuture) Result(client DatabasesClient) (d Database,
 	return
 }
 
-// DatabasesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DatabasesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DatabasesDeleteFuture struct {
 	azure.Future
 }
@@ -867,7 +802,83 @@ func (future *DatabasesDeleteFuture) Result(client DatabasesClient) (ar autorest
 	return
 }
 
-// DatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DatabasesExportFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type DatabasesExportFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *DatabasesExportFuture) Result(client DatabasesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesExportFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("redisenterprise.DatabasesExportFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// DatabasesImportFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type DatabasesImportFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *DatabasesImportFuture) Result(client DatabasesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesImportFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("redisenterprise.DatabasesImportFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// DatabasesRegenerateKeyFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type DatabasesRegenerateKeyFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *DatabasesRegenerateKeyFuture) Result(client DatabasesClient) (ak AccessKeys, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesRegenerateKeyFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("redisenterprise.DatabasesRegenerateKeyFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ak.Response.Response, err = future.GetResult(sender); err == nil && ak.Response.Response.StatusCode != http.StatusNoContent {
+		ak, err = client.RegenerateKeyResponder(ak.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesRegenerateKeyFuture", "Result", ak.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// DatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DatabasesUpdateFuture struct {
 	azure.Future
 }
@@ -978,8 +989,8 @@ type ErrorDetail struct {
 	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
 }
 
-// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for failed
-// operations. (This also follows the OData error response format.).
+// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
+// failed operations. (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// Error - The error object.
 	Error *ErrorDetail `json:"error,omitempty"`
@@ -1054,8 +1065,8 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationListResult a list of REST API operations supported by an Azure Resource Provider. It contains an
-// URL link to get the next set of results.
+// OperationListResult a list of REST API operations supported by an Azure Resource Provider. It contains
+// an URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of operations supported by the resource provider
@@ -1207,8 +1218,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationStatus the status of a long-running operation.

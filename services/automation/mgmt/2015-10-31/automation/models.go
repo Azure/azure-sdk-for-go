@@ -388,8 +388,11 @@ func (page AccountListResultPage) Values() []Account {
 }
 
 // Creates a new instance of the AccountListResultPage type.
-func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
-	return AccountListResultPage{fn: getNextPage}
+func NewAccountListResultPage(cur AccountListResult, getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return AccountListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AccountProperties definition of the account property.
@@ -727,8 +730,11 @@ func (page ActivityListResultPage) Values() []Activity {
 }
 
 // Creates a new instance of the ActivityListResultPage type.
-func NewActivityListResultPage(getNextPage func(context.Context, ActivityListResult) (ActivityListResult, error)) ActivityListResultPage {
-	return ActivityListResultPage{fn: getNextPage}
+func NewActivityListResultPage(cur ActivityListResult, getNextPage func(context.Context, ActivityListResult) (ActivityListResult, error)) ActivityListResultPage {
+	return ActivityListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // ActivityOutputType definition of the activity output type.
@@ -935,8 +941,8 @@ func (c *Certificate) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// CertificateCreateOrUpdateParameters the parameters supplied to the create or update or replace certificate
-// operation.
+// CertificateCreateOrUpdateParameters the parameters supplied to the create or update or replace
+// certificate operation.
 type CertificateCreateOrUpdateParameters struct {
 	// Name - Gets or sets the name of the certificate.
 	Name *string `json:"name,omitempty"`
@@ -1153,8 +1159,11 @@ func (page CertificateListResultPage) Values() []Certificate {
 }
 
 // Creates a new instance of the CertificateListResultPage type.
-func NewCertificateListResultPage(getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
-	return CertificateListResultPage{fn: getNextPage}
+func NewCertificateListResultPage(cur CertificateListResult, getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
+	return CertificateListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // CertificateProperties properties of the certificate.
@@ -1544,8 +1553,11 @@ func (page ConnectionListResultPage) Values() []Connection {
 }
 
 // Creates a new instance of the ConnectionListResultPage type.
-func NewConnectionListResultPage(getNextPage func(context.Context, ConnectionListResult) (ConnectionListResult, error)) ConnectionListResultPage {
-	return ConnectionListResultPage{fn: getNextPage}
+func NewConnectionListResultPage(cur ConnectionListResult, getNextPage func(context.Context, ConnectionListResult) (ConnectionListResult, error)) ConnectionListResultPage {
+	return ConnectionListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // ConnectionProperties definition of the connection properties.
@@ -1879,8 +1891,11 @@ func (page ConnectionTypeListResultPage) Values() []ConnectionType {
 }
 
 // Creates a new instance of the ConnectionTypeListResultPage type.
-func NewConnectionTypeListResultPage(getNextPage func(context.Context, ConnectionTypeListResult) (ConnectionTypeListResult, error)) ConnectionTypeListResultPage {
-	return ConnectionTypeListResultPage{fn: getNextPage}
+func NewConnectionTypeListResultPage(cur ConnectionTypeListResult, getNextPage func(context.Context, ConnectionTypeListResult) (ConnectionTypeListResult, error)) ConnectionTypeListResultPage {
+	return ConnectionTypeListResultPage{
+		fn:   getNextPage,
+		ctlr: cur,
+	}
 }
 
 // ConnectionTypeProperties properties of the connection type.
@@ -2303,8 +2318,11 @@ func (page CredentialListResultPage) Values() []Credential {
 }
 
 // Creates a new instance of the CredentialListResultPage type.
-func NewCredentialListResultPage(getNextPage func(context.Context, CredentialListResult) (CredentialListResult, error)) CredentialListResultPage {
-	return CredentialListResultPage{fn: getNextPage}
+func NewCredentialListResultPage(cur CredentialListResult, getNextPage func(context.Context, CredentialListResult) (CredentialListResult, error)) CredentialListResultPage {
+	return CredentialListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // CredentialProperties definition of the credential properties
@@ -2722,8 +2740,11 @@ func (page DscCompilationJobListResultPage) Values() []DscCompilationJob {
 }
 
 // Creates a new instance of the DscCompilationJobListResultPage type.
-func NewDscCompilationJobListResultPage(getNextPage func(context.Context, DscCompilationJobListResult) (DscCompilationJobListResult, error)) DscCompilationJobListResultPage {
-	return DscCompilationJobListResultPage{fn: getNextPage}
+func NewDscCompilationJobListResultPage(cur DscCompilationJobListResult, getNextPage func(context.Context, DscCompilationJobListResult) (DscCompilationJobListResult, error)) DscCompilationJobListResultPage {
+	return DscCompilationJobListResultPage{
+		fn:    getNextPage,
+		dcjlr: cur,
+	}
 }
 
 // DscCompilationJobProperties definition of Dsc Compilation job properties.
@@ -3174,8 +3195,11 @@ func (page DscConfigurationListResultPage) Values() []DscConfiguration {
 }
 
 // Creates a new instance of the DscConfigurationListResultPage type.
-func NewDscConfigurationListResultPage(getNextPage func(context.Context, DscConfigurationListResult) (DscConfigurationListResult, error)) DscConfigurationListResultPage {
-	return DscConfigurationListResultPage{fn: getNextPage}
+func NewDscConfigurationListResultPage(cur DscConfigurationListResult, getNextPage func(context.Context, DscConfigurationListResult) (DscConfigurationListResult, error)) DscConfigurationListResultPage {
+	return DscConfigurationListResultPage{
+		fn:   getNextPage,
+		dclr: cur,
+	}
 }
 
 // DscConfigurationParameter definition of the configuration parameter type.
@@ -3250,7 +3274,8 @@ func (dcp DscConfigurationProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DscConfigurationUpdateParameters the parameters supplied to the create or update configuration operation.
+// DscConfigurationUpdateParameters the parameters supplied to the create or update configuration
+// operation.
 type DscConfigurationUpdateParameters struct {
 	// DscConfigurationCreateOrUpdateProperties - Gets or sets configuration create or update properties.
 	*DscConfigurationCreateOrUpdateProperties `json:"properties,omitempty"`
@@ -3457,7 +3482,8 @@ type DscNodeConfigurationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// DscNodeConfigurationListResultIterator provides access to a complete listing of DscNodeConfiguration values.
+// DscNodeConfigurationListResultIterator provides access to a complete listing of DscNodeConfiguration
+// values.
 type DscNodeConfigurationListResultIterator struct {
 	i    int
 	page DscNodeConfigurationListResultPage
@@ -3600,8 +3626,11 @@ func (page DscNodeConfigurationListResultPage) Values() []DscNodeConfiguration {
 }
 
 // Creates a new instance of the DscNodeConfigurationListResultPage type.
-func NewDscNodeConfigurationListResultPage(getNextPage func(context.Context, DscNodeConfigurationListResult) (DscNodeConfigurationListResult, error)) DscNodeConfigurationListResultPage {
-	return DscNodeConfigurationListResultPage{fn: getNextPage}
+func NewDscNodeConfigurationListResultPage(cur DscNodeConfigurationListResult, getNextPage func(context.Context, DscNodeConfigurationListResult) (DscNodeConfigurationListResult, error)) DscNodeConfigurationListResultPage {
+	return DscNodeConfigurationListResultPage{
+		fn:    getNextPage,
+		dnclr: cur,
+	}
 }
 
 // DscNodeExtensionHandlerAssociationProperty the dsc extensionHandler property associated with the node
@@ -3764,8 +3793,11 @@ func (page DscNodeListResultPage) Values() []DscNode {
 }
 
 // Creates a new instance of the DscNodeListResultPage type.
-func NewDscNodeListResultPage(getNextPage func(context.Context, DscNodeListResult) (DscNodeListResult, error)) DscNodeListResultPage {
-	return DscNodeListResultPage{fn: getNextPage}
+func NewDscNodeListResultPage(cur DscNodeListResult, getNextPage func(context.Context, DscNodeListResult) (DscNodeListResult, error)) DscNodeListResultPage {
+	return DscNodeListResultPage{
+		fn:   getNextPage,
+		dnlr: cur,
+	}
 }
 
 // DscNodeReport definition of the dsc node report type.
@@ -3963,8 +3995,11 @@ func (page DscNodeReportListResultPage) Values() []DscNodeReport {
 }
 
 // Creates a new instance of the DscNodeReportListResultPage type.
-func NewDscNodeReportListResultPage(getNextPage func(context.Context, DscNodeReportListResult) (DscNodeReportListResult, error)) DscNodeReportListResultPage {
-	return DscNodeReportListResultPage{fn: getNextPage}
+func NewDscNodeReportListResultPage(cur DscNodeReportListResult, getNextPage func(context.Context, DscNodeReportListResult) (DscNodeReportListResult, error)) DscNodeReportListResultPage {
+	return DscNodeReportListResultPage{
+		fn:    getNextPage,
+		dnrlr: cur,
+	}
 }
 
 // DscNodeUpdateParameters the parameters supplied to the update dsc node operation.
@@ -4219,8 +4254,11 @@ func (page HybridRunbookWorkerGroupsListResultPage) Values() []HybridRunbookWork
 }
 
 // Creates a new instance of the HybridRunbookWorkerGroupsListResultPage type.
-func NewHybridRunbookWorkerGroupsListResultPage(getNextPage func(context.Context, HybridRunbookWorkerGroupsListResult) (HybridRunbookWorkerGroupsListResult, error)) HybridRunbookWorkerGroupsListResultPage {
-	return HybridRunbookWorkerGroupsListResultPage{fn: getNextPage}
+func NewHybridRunbookWorkerGroupsListResultPage(cur HybridRunbookWorkerGroupsListResult, getNextPage func(context.Context, HybridRunbookWorkerGroupsListResult) (HybridRunbookWorkerGroupsListResult, error)) HybridRunbookWorkerGroupsListResultPage {
+	return HybridRunbookWorkerGroupsListResultPage{
+		fn:     getNextPage,
+		hrwglr: cur,
+	}
 }
 
 // HybridRunbookWorkerGroupUpdateParameters parameters supplied to the update operation.
@@ -4499,8 +4537,11 @@ func (page JobListResultPage) Values() []Job {
 }
 
 // Creates a new instance of the JobListResultPage type.
-func NewJobListResultPage(getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
-	return JobListResultPage{fn: getNextPage}
+func NewJobListResultPage(cur JobListResult, getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
+	return JobListResultPage{
+		fn:  getNextPage,
+		jlr: cur,
+	}
 }
 
 // JobProperties definition of job properties.
@@ -4887,8 +4928,11 @@ func (page JobScheduleListResultPage) Values() []JobSchedule {
 }
 
 // Creates a new instance of the JobScheduleListResultPage type.
-func NewJobScheduleListResultPage(getNextPage func(context.Context, JobScheduleListResult) (JobScheduleListResult, error)) JobScheduleListResultPage {
-	return JobScheduleListResultPage{fn: getNextPage}
+func NewJobScheduleListResultPage(cur JobScheduleListResult, getNextPage func(context.Context, JobScheduleListResult) (JobScheduleListResult, error)) JobScheduleListResultPage {
+	return JobScheduleListResultPage{
+		fn:   getNextPage,
+		jslr: cur,
+	}
 }
 
 // JobScheduleProperties definition of job schedule parameters.
@@ -5132,8 +5176,11 @@ func (page JobStreamListResultPage) Values() []JobStream {
 }
 
 // Creates a new instance of the JobStreamListResultPage type.
-func NewJobStreamListResultPage(getNextPage func(context.Context, JobStreamListResult) (JobStreamListResult, error)) JobStreamListResultPage {
-	return JobStreamListResultPage{fn: getNextPage}
+func NewJobStreamListResultPage(cur JobStreamListResult, getNextPage func(context.Context, JobStreamListResult) (JobStreamListResult, error)) JobStreamListResultPage {
+	return JobStreamListResultPage{
+		fn:   getNextPage,
+		jslr: cur,
+	}
 }
 
 // JobStreamProperties definition of the job stream.
@@ -5562,8 +5609,11 @@ func (page ModuleListResultPage) Values() []Module {
 }
 
 // Creates a new instance of the ModuleListResultPage type.
-func NewModuleListResultPage(getNextPage func(context.Context, ModuleListResult) (ModuleListResult, error)) ModuleListResultPage {
-	return ModuleListResultPage{fn: getNextPage}
+func NewModuleListResultPage(cur ModuleListResult, getNextPage func(context.Context, ModuleListResult) (ModuleListResult, error)) ModuleListResultPage {
+	return ModuleListResultPage{
+		fn:  getNextPage,
+		mlr: cur,
+	}
 }
 
 // ModuleProperties definition of the module property type.
@@ -6043,8 +6093,8 @@ func (future *RunbookDraftPublishFuture) Result(client RunbookDraftClient) (ar a
 	return
 }
 
-// RunbookDraftReplaceContentFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// RunbookDraftReplaceContentFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type RunbookDraftReplaceContentFuture struct {
 	azure.Future
 }
@@ -6232,8 +6282,11 @@ func (page RunbookListResultPage) Values() []Runbook {
 }
 
 // Creates a new instance of the RunbookListResultPage type.
-func NewRunbookListResultPage(getNextPage func(context.Context, RunbookListResult) (RunbookListResult, error)) RunbookListResultPage {
-	return RunbookListResultPage{fn: getNextPage}
+func NewRunbookListResultPage(cur RunbookListResult, getNextPage func(context.Context, RunbookListResult) (RunbookListResult, error)) RunbookListResultPage {
+	return RunbookListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // RunbookParameter definition of the runbook parameter type.
@@ -6728,8 +6781,11 @@ func (page ScheduleListResultPage) Values() []Schedule {
 }
 
 // Creates a new instance of the ScheduleListResultPage type.
-func NewScheduleListResultPage(getNextPage func(context.Context, ScheduleListResult) (ScheduleListResult, error)) ScheduleListResultPage {
-	return ScheduleListResultPage{fn: getNextPage}
+func NewScheduleListResultPage(cur ScheduleListResult, getNextPage func(context.Context, ScheduleListResult) (ScheduleListResult, error)) ScheduleListResultPage {
+	return ScheduleListResultPage{
+		fn:  getNextPage,
+		slr: cur,
+	}
 }
 
 // ScheduleProperties definition of schedule parameters.
@@ -7359,8 +7415,11 @@ func (page VariableListResultPage) Values() []Variable {
 }
 
 // Creates a new instance of the VariableListResultPage type.
-func NewVariableListResultPage(getNextPage func(context.Context, VariableListResult) (VariableListResult, error)) VariableListResultPage {
-	return VariableListResultPage{fn: getNextPage}
+func NewVariableListResultPage(cur VariableListResult, getNextPage func(context.Context, VariableListResult) (VariableListResult, error)) VariableListResultPage {
+	return VariableListResultPage{
+		fn:  getNextPage,
+		vlr: cur,
+	}
 }
 
 // VariableProperties definition of the variable properties
@@ -7756,8 +7815,11 @@ func (page WebhookListResultPage) Values() []Webhook {
 }
 
 // Creates a new instance of the WebhookListResultPage type.
-func NewWebhookListResultPage(getNextPage func(context.Context, WebhookListResult) (WebhookListResult, error)) WebhookListResultPage {
-	return WebhookListResultPage{fn: getNextPage}
+func NewWebhookListResultPage(cur WebhookListResult, getNextPage func(context.Context, WebhookListResult) (WebhookListResult, error)) WebhookListResultPage {
+	return WebhookListResultPage{
+		fn:  getNextPage,
+		wlr: cur,
+	}
 }
 
 // WebhookProperties definition of the webhook properties

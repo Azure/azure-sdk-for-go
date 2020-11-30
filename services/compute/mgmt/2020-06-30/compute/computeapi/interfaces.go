@@ -249,11 +249,11 @@ var _ VirtualMachineScaleSetRollingUpgradesClientAPI = (*compute.VirtualMachineS
 
 // VirtualMachineScaleSetVMExtensionsClientAPI contains the set of methods on the VirtualMachineScaleSetVMExtensionsClient type.
 type VirtualMachineScaleSetVMExtensionsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, VMExtensionName string, extensionParameters compute.VirtualMachineExtension) (result compute.VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, VMExtensionName string, extensionParameters compute.VirtualMachineScaleSetVMExtension) (result compute.VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, VMExtensionName string) (result compute.VirtualMachineScaleSetVMExtensionsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, VMExtensionName string, expand string) (result compute.VirtualMachineExtension, err error)
-	List(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, expand string) (result compute.VirtualMachineExtensionsListResult, err error)
-	Update(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, VMExtensionName string, extensionParameters compute.VirtualMachineExtensionUpdate) (result compute.VirtualMachineScaleSetVMExtensionsUpdateFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, VMExtensionName string, expand string) (result compute.VirtualMachineScaleSetVMExtension, err error)
+	List(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, expand string) (result compute.VirtualMachineScaleSetVMExtensionsListResult, err error)
+	Update(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, VMExtensionName string, extensionParameters compute.VirtualMachineScaleSetVMExtensionUpdate) (result compute.VirtualMachineScaleSetVMExtensionsUpdateFuture, err error)
 }
 
 var _ VirtualMachineScaleSetVMExtensionsClientAPI = (*compute.VirtualMachineScaleSetVMExtensionsClient)(nil)

@@ -123,7 +123,7 @@ func PossibleAssessedResourceTypeValues() []AssessedResourceType {
 type AuthenticationProvisioningState string
 
 const (
-	// Expired the connection is expired
+	// Expired the connection has expired
 	Expired AuthenticationProvisioningState = "Expired"
 	// IncorrectPolicy Incorrect policy of the connector
 	IncorrectPolicy AuthenticationProvisioningState = "IncorrectPolicy"
@@ -161,9 +161,9 @@ func PossibleAuthenticationTypeValues() []AuthenticationType {
 type AutoProvision string
 
 const (
-	// AutoProvisionOff Do not install Azure Arc agent on the VMs automatically
+	// AutoProvisionOff Do not install Azure Arc agent on the machines automatically
 	AutoProvisionOff AutoProvision = "Off"
-	// AutoProvisionOn Install missing Azure Arc agent on VMs automatically
+	// AutoProvisionOn Install missing Azure Arc agents on machines automatically
 	AutoProvisionOn AutoProvision = "On"
 )
 
@@ -339,13 +339,17 @@ const (
 	Alerts EventSource = "Alerts"
 	// Assessments ...
 	Assessments EventSource = "Assessments"
+	// SecureScoreControls ...
+	SecureScoreControls EventSource = "SecureScoreControls"
+	// SecureScores ...
+	SecureScores EventSource = "SecureScores"
 	// SubAssessments ...
 	SubAssessments EventSource = "SubAssessments"
 )
 
 // PossibleEventSourceValues returns an array of possible values for the EventSource const type.
 func PossibleEventSourceValues() []EventSource {
-	return []EventSource{Alerts, Assessments, SubAssessments}
+	return []EventSource{Alerts, Assessments, SecureScoreControls, SecureScores, SubAssessments}
 }
 
 // Exe enumerates the values for exe.
@@ -723,6 +727,27 @@ func PossibleReportedSeverityValues() []ReportedSeverity {
 	return []ReportedSeverity{High, Information, Low, Silent}
 }
 
+// RuleSeverity enumerates the values for rule severity.
+type RuleSeverity string
+
+const (
+	// RuleSeverityHigh High
+	RuleSeverityHigh RuleSeverity = "High"
+	// RuleSeverityInformational Informational
+	RuleSeverityInformational RuleSeverity = "Informational"
+	// RuleSeverityLow Low
+	RuleSeverityLow RuleSeverity = "Low"
+	// RuleSeverityMedium Medium
+	RuleSeverityMedium RuleSeverity = "Medium"
+	// RuleSeverityObsolete Obsolete
+	RuleSeverityObsolete RuleSeverity = "Obsolete"
+)
+
+// PossibleRuleSeverityValues returns an array of possible values for the RuleSeverity const type.
+func PossibleRuleSeverityValues() []RuleSeverity {
+	return []RuleSeverity{RuleSeverityHigh, RuleSeverityInformational, RuleSeverityLow, RuleSeverityMedium, RuleSeverityObsolete}
+}
+
 // RuleState enumerates the values for rule state.
 type RuleState string
 
@@ -740,65 +765,135 @@ func PossibleRuleStateValues() []RuleState {
 	return []RuleState{RuleStateDisabled, RuleStateEnabled, RuleStateExpired}
 }
 
+// RuleStatus enumerates the values for rule status.
+type RuleStatus string
+
+const (
+	// Finding Finding
+	Finding RuleStatus = "Finding"
+	// InternalError InternalError
+	InternalError RuleStatus = "InternalError"
+	// NonFinding NonFinding
+	NonFinding RuleStatus = "NonFinding"
+)
+
+// PossibleRuleStatusValues returns an array of possible values for the RuleStatus const type.
+func PossibleRuleStatusValues() []RuleStatus {
+	return []RuleStatus{Finding, InternalError, NonFinding}
+}
+
 // RuleType enumerates the values for rule type.
 type RuleType string
 
 const (
-	// RuleTypeActiveConnectionsNotInAllowedRange ...
-	RuleTypeActiveConnectionsNotInAllowedRange RuleType = "ActiveConnectionsNotInAllowedRange"
-	// RuleTypeAllowlistCustomAlertRule ...
-	RuleTypeAllowlistCustomAlertRule RuleType = "AllowlistCustomAlertRule"
-	// RuleTypeAmqpC2DMessagesNotInAllowedRange ...
-	RuleTypeAmqpC2DMessagesNotInAllowedRange RuleType = "AmqpC2DMessagesNotInAllowedRange"
-	// RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange ...
-	RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange RuleType = "AmqpC2DRejectedMessagesNotInAllowedRange"
-	// RuleTypeAmqpD2CMessagesNotInAllowedRange ...
-	RuleTypeAmqpD2CMessagesNotInAllowedRange RuleType = "AmqpD2CMessagesNotInAllowedRange"
-	// RuleTypeConnectionToIPNotAllowed ...
-	RuleTypeConnectionToIPNotAllowed RuleType = "ConnectionToIpNotAllowed"
-	// RuleTypeCustomAlertRule ...
-	RuleTypeCustomAlertRule RuleType = "CustomAlertRule"
-	// RuleTypeDenylistCustomAlertRule ...
-	RuleTypeDenylistCustomAlertRule RuleType = "DenylistCustomAlertRule"
-	// RuleTypeDirectMethodInvokesNotInAllowedRange ...
-	RuleTypeDirectMethodInvokesNotInAllowedRange RuleType = "DirectMethodInvokesNotInAllowedRange"
-	// RuleTypeFailedLocalLoginsNotInAllowedRange ...
-	RuleTypeFailedLocalLoginsNotInAllowedRange RuleType = "FailedLocalLoginsNotInAllowedRange"
-	// RuleTypeFileUploadsNotInAllowedRange ...
-	RuleTypeFileUploadsNotInAllowedRange RuleType = "FileUploadsNotInAllowedRange"
-	// RuleTypeHTTPC2DMessagesNotInAllowedRange ...
-	RuleTypeHTTPC2DMessagesNotInAllowedRange RuleType = "HttpC2DMessagesNotInAllowedRange"
-	// RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange ...
-	RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange RuleType = "HttpC2DRejectedMessagesNotInAllowedRange"
-	// RuleTypeHTTPD2CMessagesNotInAllowedRange ...
-	RuleTypeHTTPD2CMessagesNotInAllowedRange RuleType = "HttpD2CMessagesNotInAllowedRange"
-	// RuleTypeListCustomAlertRule ...
-	RuleTypeListCustomAlertRule RuleType = "ListCustomAlertRule"
-	// RuleTypeLocalUserNotAllowed ...
-	RuleTypeLocalUserNotAllowed RuleType = "LocalUserNotAllowed"
-	// RuleTypeMqttC2DMessagesNotInAllowedRange ...
-	RuleTypeMqttC2DMessagesNotInAllowedRange RuleType = "MqttC2DMessagesNotInAllowedRange"
-	// RuleTypeMqttC2DRejectedMessagesNotInAllowedRange ...
-	RuleTypeMqttC2DRejectedMessagesNotInAllowedRange RuleType = "MqttC2DRejectedMessagesNotInAllowedRange"
-	// RuleTypeMqttD2CMessagesNotInAllowedRange ...
-	RuleTypeMqttD2CMessagesNotInAllowedRange RuleType = "MqttD2CMessagesNotInAllowedRange"
-	// RuleTypeProcessNotAllowed ...
-	RuleTypeProcessNotAllowed RuleType = "ProcessNotAllowed"
-	// RuleTypeQueuePurgesNotInAllowedRange ...
-	RuleTypeQueuePurgesNotInAllowedRange RuleType = "QueuePurgesNotInAllowedRange"
-	// RuleTypeThresholdCustomAlertRule ...
-	RuleTypeThresholdCustomAlertRule RuleType = "ThresholdCustomAlertRule"
-	// RuleTypeTimeWindowCustomAlertRule ...
-	RuleTypeTimeWindowCustomAlertRule RuleType = "TimeWindowCustomAlertRule"
-	// RuleTypeTwinUpdatesNotInAllowedRange ...
-	RuleTypeTwinUpdatesNotInAllowedRange RuleType = "TwinUpdatesNotInAllowedRange"
-	// RuleTypeUnauthorizedOperationsNotInAllowedRange ...
-	RuleTypeUnauthorizedOperationsNotInAllowedRange RuleType = "UnauthorizedOperationsNotInAllowedRange"
+	// BaselineExpected BaselineExpected
+	BaselineExpected RuleType = "BaselineExpected"
+	// Binary Binary
+	Binary RuleType = "Binary"
+	// NegativeList NegativeList
+	NegativeList RuleType = "NegativeList"
+	// PositiveList PositiveList
+	PositiveList RuleType = "PositiveList"
 )
 
 // PossibleRuleTypeValues returns an array of possible values for the RuleType const type.
 func PossibleRuleTypeValues() []RuleType {
-	return []RuleType{RuleTypeActiveConnectionsNotInAllowedRange, RuleTypeAllowlistCustomAlertRule, RuleTypeAmqpC2DMessagesNotInAllowedRange, RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange, RuleTypeAmqpD2CMessagesNotInAllowedRange, RuleTypeConnectionToIPNotAllowed, RuleTypeCustomAlertRule, RuleTypeDenylistCustomAlertRule, RuleTypeDirectMethodInvokesNotInAllowedRange, RuleTypeFailedLocalLoginsNotInAllowedRange, RuleTypeFileUploadsNotInAllowedRange, RuleTypeHTTPC2DMessagesNotInAllowedRange, RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange, RuleTypeHTTPD2CMessagesNotInAllowedRange, RuleTypeListCustomAlertRule, RuleTypeLocalUserNotAllowed, RuleTypeMqttC2DMessagesNotInAllowedRange, RuleTypeMqttC2DRejectedMessagesNotInAllowedRange, RuleTypeMqttD2CMessagesNotInAllowedRange, RuleTypeProcessNotAllowed, RuleTypeQueuePurgesNotInAllowedRange, RuleTypeThresholdCustomAlertRule, RuleTypeTimeWindowCustomAlertRule, RuleTypeTwinUpdatesNotInAllowedRange, RuleTypeUnauthorizedOperationsNotInAllowedRange}
+	return []RuleType{BaselineExpected, Binary, NegativeList, PositiveList}
+}
+
+// RuleTypeBasicCustomAlertRule enumerates the values for rule type basic custom alert rule.
+type RuleTypeBasicCustomAlertRule string
+
+const (
+	// RuleTypeActiveConnectionsNotInAllowedRange ...
+	RuleTypeActiveConnectionsNotInAllowedRange RuleTypeBasicCustomAlertRule = "ActiveConnectionsNotInAllowedRange"
+	// RuleTypeAllowlistCustomAlertRule ...
+	RuleTypeAllowlistCustomAlertRule RuleTypeBasicCustomAlertRule = "AllowlistCustomAlertRule"
+	// RuleTypeAmqpC2DMessagesNotInAllowedRange ...
+	RuleTypeAmqpC2DMessagesNotInAllowedRange RuleTypeBasicCustomAlertRule = "AmqpC2DMessagesNotInAllowedRange"
+	// RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange ...
+	RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange RuleTypeBasicCustomAlertRule = "AmqpC2DRejectedMessagesNotInAllowedRange"
+	// RuleTypeAmqpD2CMessagesNotInAllowedRange ...
+	RuleTypeAmqpD2CMessagesNotInAllowedRange RuleTypeBasicCustomAlertRule = "AmqpD2CMessagesNotInAllowedRange"
+	// RuleTypeConnectionToIPNotAllowed ...
+	RuleTypeConnectionToIPNotAllowed RuleTypeBasicCustomAlertRule = "ConnectionToIpNotAllowed"
+	// RuleTypeCustomAlertRule ...
+	RuleTypeCustomAlertRule RuleTypeBasicCustomAlertRule = "CustomAlertRule"
+	// RuleTypeDenylistCustomAlertRule ...
+	RuleTypeDenylistCustomAlertRule RuleTypeBasicCustomAlertRule = "DenylistCustomAlertRule"
+	// RuleTypeDirectMethodInvokesNotInAllowedRange ...
+	RuleTypeDirectMethodInvokesNotInAllowedRange RuleTypeBasicCustomAlertRule = "DirectMethodInvokesNotInAllowedRange"
+	// RuleTypeFailedLocalLoginsNotInAllowedRange ...
+	RuleTypeFailedLocalLoginsNotInAllowedRange RuleTypeBasicCustomAlertRule = "FailedLocalLoginsNotInAllowedRange"
+	// RuleTypeFileUploadsNotInAllowedRange ...
+	RuleTypeFileUploadsNotInAllowedRange RuleTypeBasicCustomAlertRule = "FileUploadsNotInAllowedRange"
+	// RuleTypeHTTPC2DMessagesNotInAllowedRange ...
+	RuleTypeHTTPC2DMessagesNotInAllowedRange RuleTypeBasicCustomAlertRule = "HttpC2DMessagesNotInAllowedRange"
+	// RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange ...
+	RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange RuleTypeBasicCustomAlertRule = "HttpC2DRejectedMessagesNotInAllowedRange"
+	// RuleTypeHTTPD2CMessagesNotInAllowedRange ...
+	RuleTypeHTTPD2CMessagesNotInAllowedRange RuleTypeBasicCustomAlertRule = "HttpD2CMessagesNotInAllowedRange"
+	// RuleTypeListCustomAlertRule ...
+	RuleTypeListCustomAlertRule RuleTypeBasicCustomAlertRule = "ListCustomAlertRule"
+	// RuleTypeLocalUserNotAllowed ...
+	RuleTypeLocalUserNotAllowed RuleTypeBasicCustomAlertRule = "LocalUserNotAllowed"
+	// RuleTypeMqttC2DMessagesNotInAllowedRange ...
+	RuleTypeMqttC2DMessagesNotInAllowedRange RuleTypeBasicCustomAlertRule = "MqttC2DMessagesNotInAllowedRange"
+	// RuleTypeMqttC2DRejectedMessagesNotInAllowedRange ...
+	RuleTypeMqttC2DRejectedMessagesNotInAllowedRange RuleTypeBasicCustomAlertRule = "MqttC2DRejectedMessagesNotInAllowedRange"
+	// RuleTypeMqttD2CMessagesNotInAllowedRange ...
+	RuleTypeMqttD2CMessagesNotInAllowedRange RuleTypeBasicCustomAlertRule = "MqttD2CMessagesNotInAllowedRange"
+	// RuleTypeProcessNotAllowed ...
+	RuleTypeProcessNotAllowed RuleTypeBasicCustomAlertRule = "ProcessNotAllowed"
+	// RuleTypeQueuePurgesNotInAllowedRange ...
+	RuleTypeQueuePurgesNotInAllowedRange RuleTypeBasicCustomAlertRule = "QueuePurgesNotInAllowedRange"
+	// RuleTypeThresholdCustomAlertRule ...
+	RuleTypeThresholdCustomAlertRule RuleTypeBasicCustomAlertRule = "ThresholdCustomAlertRule"
+	// RuleTypeTimeWindowCustomAlertRule ...
+	RuleTypeTimeWindowCustomAlertRule RuleTypeBasicCustomAlertRule = "TimeWindowCustomAlertRule"
+	// RuleTypeTwinUpdatesNotInAllowedRange ...
+	RuleTypeTwinUpdatesNotInAllowedRange RuleTypeBasicCustomAlertRule = "TwinUpdatesNotInAllowedRange"
+	// RuleTypeUnauthorizedOperationsNotInAllowedRange ...
+	RuleTypeUnauthorizedOperationsNotInAllowedRange RuleTypeBasicCustomAlertRule = "UnauthorizedOperationsNotInAllowedRange"
+)
+
+// PossibleRuleTypeBasicCustomAlertRuleValues returns an array of possible values for the RuleTypeBasicCustomAlertRule const type.
+func PossibleRuleTypeBasicCustomAlertRuleValues() []RuleTypeBasicCustomAlertRule {
+	return []RuleTypeBasicCustomAlertRule{RuleTypeActiveConnectionsNotInAllowedRange, RuleTypeAllowlistCustomAlertRule, RuleTypeAmqpC2DMessagesNotInAllowedRange, RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange, RuleTypeAmqpD2CMessagesNotInAllowedRange, RuleTypeConnectionToIPNotAllowed, RuleTypeCustomAlertRule, RuleTypeDenylistCustomAlertRule, RuleTypeDirectMethodInvokesNotInAllowedRange, RuleTypeFailedLocalLoginsNotInAllowedRange, RuleTypeFileUploadsNotInAllowedRange, RuleTypeHTTPC2DMessagesNotInAllowedRange, RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange, RuleTypeHTTPD2CMessagesNotInAllowedRange, RuleTypeListCustomAlertRule, RuleTypeLocalUserNotAllowed, RuleTypeMqttC2DMessagesNotInAllowedRange, RuleTypeMqttC2DRejectedMessagesNotInAllowedRange, RuleTypeMqttD2CMessagesNotInAllowedRange, RuleTypeProcessNotAllowed, RuleTypeQueuePurgesNotInAllowedRange, RuleTypeThresholdCustomAlertRule, RuleTypeTimeWindowCustomAlertRule, RuleTypeTwinUpdatesNotInAllowedRange, RuleTypeUnauthorizedOperationsNotInAllowedRange}
+}
+
+// ScanState enumerates the values for scan state.
+type ScanState string
+
+const (
+	// ScanStateFailed Failed
+	ScanStateFailed ScanState = "Failed"
+	// ScanStateFailedToRun FailedToRun
+	ScanStateFailedToRun ScanState = "FailedToRun"
+	// ScanStateInProgress InProgress
+	ScanStateInProgress ScanState = "InProgress"
+	// ScanStatePassed Passed
+	ScanStatePassed ScanState = "Passed"
+)
+
+// PossibleScanStateValues returns an array of possible values for the ScanState const type.
+func PossibleScanStateValues() []ScanState {
+	return []ScanState{ScanStateFailed, ScanStateFailedToRun, ScanStateInProgress, ScanStatePassed}
+}
+
+// ScanTriggerType enumerates the values for scan trigger type.
+type ScanTriggerType string
+
+const (
+	// OnDemand OnDemand
+	OnDemand ScanTriggerType = "OnDemand"
+	// Recurring Recurring
+	Recurring ScanTriggerType = "Recurring"
+)
+
+// PossibleScanTriggerTypeValues returns an array of possible values for the ScanTriggerType const type.
+func PossibleScanTriggerTypeValues() []ScanTriggerType {
+	return []ScanTriggerType{OnDemand, Recurring}
 }
 
 // Script enumerates the values for script.

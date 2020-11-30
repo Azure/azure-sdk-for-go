@@ -36,7 +36,8 @@ type CorsSettings struct {
 	AllowedOrigins *[]string `json:"allowedOrigins,omitempty"`
 }
 
-// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type CreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -207,8 +208,8 @@ type MetricSpecification struct {
 	Dimensions *[]Dimension `json:"dimensions,omitempty"`
 }
 
-// NameAvailability result of the request to check name availability. It contains a flag and possible reason of
-// failure.
+// NameAvailability result of the request to check name availability. It contains a flag and possible
+// reason of failure.
 type NameAvailability struct {
 	autorest.Response `json:"-"`
 	// NameAvailable - Indicates whether the name is available or not.
@@ -424,8 +425,11 @@ func (page OperationListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListPage type.
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return OperationListPage{fn: getNextPage}
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // OperationProperties extra Operation properties.
@@ -640,8 +644,8 @@ func (plr *PrivateLinkResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PrivateLinkResourceList contains a list of AzSignalR.Models.Response.PrivateLink.PrivateLinkResource and a
-// possible link to query more results
+// PrivateLinkResourceList contains a list of AzSignalR.Models.Response.PrivateLink.PrivateLinkResource and
+// a possible link to query more results
 type PrivateLinkResourceList struct {
 	autorest.Response `json:"-"`
 	// Value - List of PrivateLinkResource
@@ -794,8 +798,11 @@ func (page PrivateLinkResourceListPage) Values() []PrivateLinkResource {
 }
 
 // Creates a new instance of the PrivateLinkResourceListPage type.
-func NewPrivateLinkResourceListPage(getNextPage func(context.Context, PrivateLinkResourceList) (PrivateLinkResourceList, error)) PrivateLinkResourceListPage {
-	return PrivateLinkResourceListPage{fn: getNextPage}
+func NewPrivateLinkResourceListPage(cur PrivateLinkResourceList, getNextPage func(context.Context, PrivateLinkResourceList) (PrivateLinkResourceList, error)) PrivateLinkResourceListPage {
+	return PrivateLinkResourceListPage{
+		fn:   getNextPage,
+		plrl: cur,
+	}
 }
 
 // PrivateLinkResourceProperties private link resource properties
@@ -818,8 +825,8 @@ type PrivateLinkServiceConnectionState struct {
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
 }
 
-// Properties a class that describes the properties of the SignalR service that should contain more read-only
-// properties than AzSignalR.Models.SignalRCreateOrUpdateProperties
+// Properties a class that describes the properties of the SignalR service that should contain more
+// read-only properties than AzSignalR.Models.SignalRCreateOrUpdateProperties
 type Properties struct {
 	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'Unknown', 'Succeeded', 'Failed', 'Canceled', 'Running', 'Creating', 'Updating', 'Deleting', 'Moving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
@@ -885,7 +892,8 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// RegenerateKeyFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// RegenerateKeyFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type RegenerateKeyFuture struct {
 	azure.Future
 }
@@ -1082,8 +1090,11 @@ func (page ResourceListPage) Values() []ResourceType {
 }
 
 // Creates a new instance of the ResourceListPage type.
-func NewResourceListPage(getNextPage func(context.Context, ResourceList) (ResourceList, error)) ResourceListPage {
-	return ResourceListPage{fn: getNextPage}
+func NewResourceListPage(cur ResourceList, getNextPage func(context.Context, ResourceList) (ResourceList, error)) ResourceListPage {
+	return ResourceListPage{
+		fn: getNextPage,
+		rl: cur,
+	}
 }
 
 // ResourceSku the billing information of the SignalR resource.
@@ -1328,8 +1339,8 @@ func (future *UpdateFuture) Result(client Client) (rt ResourceType, err error) {
 }
 
 // UpstreamTemplate upstream template item settings. It defines the Upstream URL of the incoming requests.
-// The template defines the pattern of the event, the hub or the category of the incoming request that matches
-// current URL template.
+// The template defines the pattern of the event, the hub or the category of the incoming request that
+// matches current URL template.
 type UpstreamTemplate struct {
 	// HubPattern - Gets or sets the matching pattern for hub names. If not set, it matches any hub.
 	// There are 3 kind of patterns supported:
@@ -1521,8 +1532,11 @@ func (page UsageListPage) Values() []Usage {
 }
 
 // Creates a new instance of the UsageListPage type.
-func NewUsageListPage(getNextPage func(context.Context, UsageList) (UsageList, error)) UsageListPage {
-	return UsageListPage{fn: getNextPage}
+func NewUsageListPage(cur UsageList, getNextPage func(context.Context, UsageList) (UsageList, error)) UsageListPage {
+	return UsageListPage{
+		fn: getNextPage,
+		ul: cur,
+	}
 }
 
 // UsageName localizable String object containing the name and a localized value.

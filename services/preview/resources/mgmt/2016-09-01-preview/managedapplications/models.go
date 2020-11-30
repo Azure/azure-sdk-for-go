@@ -363,7 +363,8 @@ type ApplianceDefinitionListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ApplianceDefinitionListResultIterator provides access to a complete listing of ApplianceDefinition values.
+// ApplianceDefinitionListResultIterator provides access to a complete listing of ApplianceDefinition
+// values.
 type ApplianceDefinitionListResultIterator struct {
 	i    int
 	page ApplianceDefinitionListResultPage
@@ -506,8 +507,11 @@ func (page ApplianceDefinitionListResultPage) Values() []ApplianceDefinition {
 }
 
 // Creates a new instance of the ApplianceDefinitionListResultPage type.
-func NewApplianceDefinitionListResultPage(getNextPage func(context.Context, ApplianceDefinitionListResult) (ApplianceDefinitionListResult, error)) ApplianceDefinitionListResultPage {
-	return ApplianceDefinitionListResultPage{fn: getNextPage}
+func NewApplianceDefinitionListResultPage(cur ApplianceDefinitionListResult, getNextPage func(context.Context, ApplianceDefinitionListResult) (ApplianceDefinitionListResult, error)) ApplianceDefinitionListResultPage {
+	return ApplianceDefinitionListResultPage{
+		fn:   getNextPage,
+		adlr: cur,
+	}
 }
 
 // ApplianceDefinitionProperties the appliance definition properties.
@@ -526,8 +530,8 @@ type ApplianceDefinitionProperties struct {
 	PackageFileURI *string `json:"packageFileUri,omitempty"`
 }
 
-// ApplianceDefinitionsCreateOrUpdateByIDFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ApplianceDefinitionsCreateOrUpdateByIDFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type ApplianceDefinitionsCreateOrUpdateByIDFuture struct {
 	azure.Future
 }
@@ -607,8 +611,8 @@ func (future *ApplianceDefinitionsDeleteByIDFuture) Result(client ApplianceDefin
 	return
 }
 
-// ApplianceDefinitionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ApplianceDefinitionsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ApplianceDefinitionsDeleteFuture struct {
 	azure.Future
 }
@@ -782,8 +786,11 @@ func (page ApplianceListResultPage) Values() []Appliance {
 }
 
 // Creates a new instance of the ApplianceListResultPage type.
-func NewApplianceListResultPage(getNextPage func(context.Context, ApplianceListResult) (ApplianceListResult, error)) ApplianceListResultPage {
-	return ApplianceListResultPage{fn: getNextPage}
+func NewApplianceListResultPage(cur ApplianceListResult, getNextPage func(context.Context, ApplianceListResult) (ApplianceListResult, error)) ApplianceListResultPage {
+	return ApplianceListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AppliancePatchable information about appliance.
@@ -1061,8 +1068,8 @@ func (future *AppliancesCreateOrUpdateByIDFuture) Result(client AppliancesClient
 	return
 }
 
-// AppliancesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// AppliancesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type AppliancesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -1113,7 +1120,8 @@ func (future *AppliancesDeleteByIDFuture) Result(client AppliancesClient) (ar au
 	return
 }
 
-// AppliancesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// AppliancesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AppliancesDeleteFuture struct {
 	azure.Future
 }
@@ -1135,8 +1143,8 @@ func (future *AppliancesDeleteFuture) Result(client AppliancesClient) (ar autore
 	return
 }
 
-// ErrorResponse error response indicates ARM appliance is not able to process the incoming request. The reason
-// is provided in the error message.
+// ErrorResponse error response indicates ARM appliance is not able to process the incoming request. The
+// reason is provided in the error message.
 type ErrorResponse struct {
 	// HTTPStatus - Http status code.
 	HTTPStatus *string `json:"httpStatus,omitempty"`
@@ -1377,8 +1385,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // Plan plan for the appliance.

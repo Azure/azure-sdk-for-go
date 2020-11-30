@@ -443,8 +443,11 @@ func (page BotResponseListPage) Values() []Bot {
 }
 
 // Creates a new instance of the BotResponseListPage type.
-func NewBotResponseListPage(getNextPage func(context.Context, BotResponseList) (BotResponseList, error)) BotResponseListPage {
-	return BotResponseListPage{fn: getNextPage}
+func NewBotResponseListPage(cur BotResponseList, getNextPage func(context.Context, BotResponseList) (BotResponseList, error)) BotResponseListPage {
+	return BotResponseListPage{
+		fn:  getNextPage,
+		brl: cur,
+	}
 }
 
 // BasicChannel channel definition
@@ -772,8 +775,11 @@ func (page ChannelResponseListPage) Values() []BotChannel {
 }
 
 // Creates a new instance of the ChannelResponseListPage type.
-func NewChannelResponseListPage(getNextPage func(context.Context, ChannelResponseList) (ChannelResponseList, error)) ChannelResponseListPage {
-	return ChannelResponseListPage{fn: getNextPage}
+func NewChannelResponseListPage(cur ChannelResponseList, getNextPage func(context.Context, ChannelResponseList) (ChannelResponseList, error)) ChannelResponseListPage {
+	return ChannelResponseListPage{
+		fn:  getNextPage,
+		crl: cur,
+	}
 }
 
 // CheckNameAvailabilityRequestBody the request body for a request to Bot Service Management to check
@@ -848,8 +854,8 @@ func (cs ConnectionSetting) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ConnectionSettingParameter extra Parameter in a Connection Setting Properties to indicate service provider
-// specific properties
+// ConnectionSettingParameter extra Parameter in a Connection Setting Properties to indicate service
+// provider specific properties
 type ConnectionSettingParameter struct {
 	// Key - Key for the Connection Setting Parameter.
 	Key *string `json:"key,omitempty"`
@@ -1060,8 +1066,11 @@ func (page ConnectionSettingResponseListPage) Values() []ConnectionSetting {
 }
 
 // Creates a new instance of the ConnectionSettingResponseListPage type.
-func NewConnectionSettingResponseListPage(getNextPage func(context.Context, ConnectionSettingResponseList) (ConnectionSettingResponseList, error)) ConnectionSettingResponseListPage {
-	return ConnectionSettingResponseListPage{fn: getNextPage}
+func NewConnectionSettingResponseListPage(cur ConnectionSettingResponseList, getNextPage func(context.Context, ConnectionSettingResponseList) (ConnectionSettingResponseList, error)) ConnectionSettingResponseListPage {
+	return ConnectionSettingResponseListPage{
+		fn:   getNextPage,
+		csrl: cur,
+	}
 }
 
 // DirectLineChannel direct Line channel definition
@@ -1781,8 +1790,11 @@ func (page OperationEntityListResultPage) Values() []OperationEntity {
 }
 
 // Creates a new instance of the OperationEntityListResultPage type.
-func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
-	return OperationEntityListResultPage{fn: getNextPage}
+func NewOperationEntityListResultPage(cur OperationEntityListResult, getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
+	return OperationEntityListResultPage{
+		fn:   getNextPage,
+		oelr: cur,
+	}
 }
 
 // Resource azure resource

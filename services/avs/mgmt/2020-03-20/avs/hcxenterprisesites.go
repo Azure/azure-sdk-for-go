@@ -49,7 +49,7 @@ func NewHcxEnterpriseSitesClientWithBaseURI(baseURI string, subscriptionID strin
 // privateCloudName - the name of the private cloud.
 // hcxEnterpriseSiteName - name of the HCX Enterprise Site in the private cloud
 // hcxEnterpriseSite - the HCX Enterprise Site
-func (client HcxEnterpriseSitesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, hcxEnterpriseSite interface{}) (result HcxEnterpriseSite, err error) {
+func (client HcxEnterpriseSitesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, hcxEnterpriseSite HcxEnterpriseSite) (result HcxEnterpriseSite, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/HcxEnterpriseSitesClient.CreateOrUpdate")
 		defer func() {
@@ -92,7 +92,7 @@ func (client HcxEnterpriseSitesClient) CreateOrUpdate(ctx context.Context, resou
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client HcxEnterpriseSitesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, hcxEnterpriseSite interface{}) (*http.Request, error) {
+func (client HcxEnterpriseSitesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, hcxEnterpriseSite HcxEnterpriseSite) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"hcxEnterpriseSiteName": autorest.Encode("path", hcxEnterpriseSiteName),
 		"privateCloudName":      autorest.Encode("path", privateCloudName),
@@ -105,6 +105,7 @@ func (client HcxEnterpriseSitesClient) CreateOrUpdatePreparer(ctx context.Contex
 		"api-version": APIVersion,
 	}
 
+	hcxEnterpriseSite.HcxEnterpriseSiteProperties = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

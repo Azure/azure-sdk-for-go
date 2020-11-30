@@ -1,0 +1,17 @@
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+
+Code generator @microsoft.azure/autorest.go@~2.1.161
+
+## Breaking Changes
+
+- Function `NewPrivateCloudListPage` parameter(s) have been changed from `(func(context.Context, PrivateCloudList) (PrivateCloudList, error))` to `(PrivateCloudList, func(context.Context, PrivateCloudList) (PrivateCloudList, error))`
+- Function `NewVirtualMachineTemplateListResponsePage` parameter(s) have been changed from `(func(context.Context, VirtualMachineTemplateListResponse) (VirtualMachineTemplateListResponse, error))` to `(VirtualMachineTemplateListResponse, func(context.Context, VirtualMachineTemplateListResponse) (VirtualMachineTemplateListResponse, error))`
+- Function `NewDedicatedCloudServiceListResponsePage` parameter(s) have been changed from `(func(context.Context, DedicatedCloudServiceListResponse) (DedicatedCloudServiceListResponse, error))` to `(DedicatedCloudServiceListResponse, func(context.Context, DedicatedCloudServiceListResponse) (DedicatedCloudServiceListResponse, error))`
+- Function `NewUsageListResponsePage` parameter(s) have been changed from `(func(context.Context, UsageListResponse) (UsageListResponse, error))` to `(UsageListResponse, func(context.Context, UsageListResponse) (UsageListResponse, error))`
+- Function `NewResourcePoolsListResponsePage` parameter(s) have been changed from `(func(context.Context, ResourcePoolsListResponse) (ResourcePoolsListResponse, error))` to `(ResourcePoolsListResponse, func(context.Context, ResourcePoolsListResponse) (ResourcePoolsListResponse, error))`
+- Function `NewAvailableOperationsListResponsePage` parameter(s) have been changed from `(func(context.Context, AvailableOperationsListResponse) (AvailableOperationsListResponse, error))` to `(AvailableOperationsListResponse, func(context.Context, AvailableOperationsListResponse) (AvailableOperationsListResponse, error))`
+- Function `NewCustomizationPoliciesListResponsePage` parameter(s) have been changed from `(func(context.Context, CustomizationPoliciesListResponse) (CustomizationPoliciesListResponse, error))` to `(CustomizationPoliciesListResponse, func(context.Context, CustomizationPoliciesListResponse) (CustomizationPoliciesListResponse, error))`
+- Function `NewDedicatedCloudNodeListResponsePage` parameter(s) have been changed from `(func(context.Context, DedicatedCloudNodeListResponse) (DedicatedCloudNodeListResponse, error))` to `(DedicatedCloudNodeListResponse, func(context.Context, DedicatedCloudNodeListResponse) (DedicatedCloudNodeListResponse, error))`
+- Function `NewVirtualNetworkListResponsePage` parameter(s) have been changed from `(func(context.Context, VirtualNetworkListResponse) (VirtualNetworkListResponse, error))` to `(VirtualNetworkListResponse, func(context.Context, VirtualNetworkListResponse) (VirtualNetworkListResponse, error))`
+- Function `NewSkuAvailabilityListResponsePage` parameter(s) have been changed from `(func(context.Context, SkuAvailabilityListResponse) (SkuAvailabilityListResponse, error))` to `(SkuAvailabilityListResponse, func(context.Context, SkuAvailabilityListResponse) (SkuAvailabilityListResponse, error))`
+- Function `NewVirtualMachineListResponsePage` parameter(s) have been changed from `(func(context.Context, VirtualMachineListResponse) (VirtualMachineListResponse, error))` to `(VirtualMachineListResponse, func(context.Context, VirtualMachineListResponse) (VirtualMachineListResponse, error))`

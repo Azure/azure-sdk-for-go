@@ -77,7 +77,8 @@ type AccessPolicyListResponse struct {
 	Value *[]AccessPolicyResource `json:"value,omitempty"`
 }
 
-// AccessPolicyMutableProperties an object that represents a set of mutable access policy resource properties.
+// AccessPolicyMutableProperties an object that represents a set of mutable access policy resource
+// properties.
 type AccessPolicyMutableProperties struct {
 	// Description - An description of the access policy.
 	Description *string `json:"description,omitempty"`
@@ -207,7 +208,8 @@ func (apup *AccessPolicyUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AzureEventSourceProperties properties of an event source that reads events from an event broker in Azure.
+// AzureEventSourceProperties properties of an event source that reads events from an event broker in
+// Azure.
 type AzureEventSourceProperties struct {
 	// EventSourceResourceID - The resource id of the event source in Azure Resource Manager.
 	EventSourceResourceID *string `json:"eventSourceResourceId,omitempty"`
@@ -252,8 +254,8 @@ type CloudErrorBody struct {
 	Details *[]CloudErrorBody `json:"details,omitempty"`
 }
 
-// CreateOrUpdateTrackedResourceProperties properties required to create any resource tracked by Azure Resource
-// Manager.
+// CreateOrUpdateTrackedResourceProperties properties required to create any resource tracked by Azure
+// Resource Manager.
 type CreateOrUpdateTrackedResourceProperties struct {
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -553,8 +555,8 @@ func (erp EnvironmentResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// EnvironmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EnvironmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type EnvironmentsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -806,8 +808,8 @@ func (ehescoup *EventHubEventSourceCreateOrUpdateParameters) UnmarshalJSON(body 
 	return nil
 }
 
-// EventHubEventSourceCreationProperties properties of the EventHub event source that are required on create or
-// update requests.
+// EventHubEventSourceCreationProperties properties of the EventHub event source that are required on
+// create or update requests.
 type EventHubEventSourceCreationProperties struct {
 	// SharedAccessKey - The value of the shared access key that grants the Time Series Insights service read access to the event hub. This property is not shown in event source responses.
 	SharedAccessKey *string `json:"sharedAccessKey,omitempty"`
@@ -1051,8 +1053,8 @@ func (ehesrp EventHubEventSourceResourceProperties) MarshalJSON() ([]byte, error
 	return json.Marshal(objectMap)
 }
 
-// EventHubEventSourceUpdateParameters parameters supplied to the Update Event Source operation to update an
-// EventHub event source.
+// EventHubEventSourceUpdateParameters parameters supplied to the Update Event Source operation to update
+// an EventHub event source.
 type EventHubEventSourceUpdateParameters struct {
 	// EventHubEventSourceMutableProperties - Properties of the EventHub event source.
 	*EventHubEventSourceMutableProperties `json:"properties,omitempty"`
@@ -1256,7 +1258,8 @@ func (eslr *EventSourceListResponse) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// EventSourceMutableProperties an object that represents a set of mutable event source resource properties.
+// EventSourceMutableProperties an object that represents a set of mutable event source resource
+// properties.
 type EventSourceMutableProperties struct {
 	// TimestampPropertyName - The event property that will be used as the event source's timestamp. If a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation time will be used.
 	TimestampPropertyName *string `json:"timestampPropertyName,omitempty"`
@@ -1451,8 +1454,8 @@ func (ithescp IoTHubEventSourceCommonProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// IoTHubEventSourceCreateOrUpdateParameters parameters supplied to the Create or Update Event Source operation
-// for an IoTHub event source.
+// IoTHubEventSourceCreateOrUpdateParameters parameters supplied to the Create or Update Event Source
+// operation for an IoTHub event source.
 type IoTHubEventSourceCreateOrUpdateParameters struct {
 	*IoTHubEventSourceCreationProperties `json:"properties,omitempty"`
 	// LocalTimestamp - An object that represents the local timestamp property. It contains the format of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
@@ -1615,8 +1618,8 @@ func (ithescp IoTHubEventSourceCreationProperties) MarshalJSON() ([]byte, error)
 	return json.Marshal(objectMap)
 }
 
-// IoTHubEventSourceMutableProperties an object that represents a set of mutable IoTHub event source resource
-// properties.
+// IoTHubEventSourceMutableProperties an object that represents a set of mutable IoTHub event source
+// resource properties.
 type IoTHubEventSourceMutableProperties struct {
 	// SharedAccessKey - The value of the shared access key that grants the Time Series Insights service read access to the iot hub. This property is not shown in event source responses.
 	SharedAccessKey *string `json:"sharedAccessKey,omitempty"`
@@ -1858,7 +1861,8 @@ func (ithesup *IoTHubEventSourceUpdateParameters) UnmarshalJSON(body []byte) err
 
 // LocalTimestamp an object that represents the local timestamp property. It contains the format of local
 // timestamp that needs to be used and the corresponding timezone offset information. If a value isn't
-// specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
+// specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the
+// events.
 type LocalTimestamp struct {
 	// Format - An enum that represents the format of the local timestamp property that needs to be set. Possible values include: 'Embedded'
 	Format LocalTimestampFormat `json:"format,omitempty"`
@@ -1866,8 +1870,8 @@ type LocalTimestamp struct {
 	TimeZoneOffset *LocalTimestampTimeZoneOffset `json:"timeZoneOffset,omitempty"`
 }
 
-// LocalTimestampTimeZoneOffset an object that represents the offset information for the local timestamp format
-// specified. Should not be specified for LocalTimestampFormat - Embedded.
+// LocalTimestampTimeZoneOffset an object that represents the offset information for the local timestamp
+// format specified. Should not be specified for LocalTimestampFormat - Embedded.
 type LocalTimestampTimeZoneOffset struct {
 	// PropertyName - The event property that will be contain the offset information to calculate the local timestamp. When the LocalTimestampFormat is Iana, the property name will contain the name of the column which contains IANA Timezone Name (eg: Americas/Los Angeles). When LocalTimestampFormat is Timespan, it contains the name of property which contains values representing the offset (eg: P1D or 1.00:00:00)
 	PropertyName *string `json:"propertyName,omitempty"`
@@ -2008,8 +2012,9 @@ type LongTermEnvironmentMutableProperties struct {
 	WarmStoreConfiguration *WarmStoreConfigurationProperties `json:"warmStoreConfiguration,omitempty"`
 }
 
-// LongTermEnvironmentResource an environment is a set of time-series data available for query, and is the top
-// level Azure Time Series Insights resource. LongTerm environments do not have set data retention limits.
+// LongTermEnvironmentResource an environment is a set of time-series data available for query, and is the
+// top level Azure Time Series Insights resource. LongTerm environments do not have set data retention
+// limits.
 type LongTermEnvironmentResource struct {
 	*LongTermEnvironmentResourceProperties `json:"properties,omitempty"`
 	// Sku - The sku determines the type of environment, either standard (S1 or S2) or long-term (L1). For standard environments the sku determines the capacity of the environment, the ingress rate, and the billing rate.
@@ -2252,8 +2257,8 @@ func (lteup *LongTermEnvironmentUpdateParameters) UnmarshalJSON(body []byte) err
 	return nil
 }
 
-// LongTermStorageConfigurationInput the storage configuration provides the connection details that allows the
-// Time Series Insights service to connect to the customer storage account that is used to store the
+// LongTermStorageConfigurationInput the storage configuration provides the connection details that allows
+// the Time Series Insights service to connect to the customer storage account that is used to store the
 // environment's data.
 type LongTermStorageConfigurationInput struct {
 	// AccountName - The name of the storage account that will hold the environment's long term data.
@@ -2262,9 +2267,9 @@ type LongTermStorageConfigurationInput struct {
 	ManagementKey *string `json:"managementKey,omitempty"`
 }
 
-// LongTermStorageConfigurationMutableProperties the storage configuration provides the connection details that
-// allows the Time Series Insights service to connect to the customer storage account that is used to store the
-// environment's data.
+// LongTermStorageConfigurationMutableProperties the storage configuration provides the connection details
+// that allows the Time Series Insights service to connect to the customer storage account that is used to
+// store the environment's data.
 type LongTermStorageConfigurationMutableProperties struct {
 	// ManagementKey - The value of the management key that grants the Time Series Insights service write access to the storage account. This property is not shown in environment responses.
 	ManagementKey *string `json:"managementKey,omitempty"`
@@ -2450,8 +2455,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // ReferenceDataSetCreateOrUpdateParameters ...
@@ -2544,9 +2552,10 @@ type ReferenceDataSetListResponse struct {
 	Value *[]ReferenceDataSetResource `json:"value,omitempty"`
 }
 
-// ReferenceDataSetResource a reference data set provides metadata about the events in an environment. Metadata
-// in the reference data set will be joined with events as they are read from event sources. The metadata that
-// makes up the reference data set is uploaded or modified through the Time Series Insights data plane APIs.
+// ReferenceDataSetResource a reference data set provides metadata about the events in an environment.
+// Metadata in the reference data set will be joined with events as they are read from event sources. The
+// metadata that makes up the reference data set is uploaded or modified through the Time Series Insights
+// data plane APIs.
 type ReferenceDataSetResource struct {
 	autorest.Response                   `json:"-"`
 	*ReferenceDataSetResourceProperties `json:"properties,omitempty"`
@@ -2715,8 +2724,9 @@ func (rp ResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Sku the sku determines the type of environment, either standard (S1 or S2) or long-term (L1). For standard
-// environments the sku determines the capacity of the environment, the ingress rate, and the billing rate.
+// Sku the sku determines the type of environment, either standard (S1 or S2) or long-term (L1). For
+// standard environments the sku determines the capacity of the environment, the ingress rate, and the
+// billing rate.
 type Sku struct {
 	// Name - The name of this SKU. Possible values include: 'S1', 'S2', 'P1', 'L1'
 	Name SkuName `json:"name,omitempty"`
@@ -2859,8 +2869,8 @@ type StandardEnvironmentMutableProperties struct {
 	StorageLimitExceededBehavior StorageLimitExceededBehavior `json:"storageLimitExceededBehavior,omitempty"`
 }
 
-// StandardEnvironmentResource an environment is a set of time-series data available for query, and is the top
-// level Azure Time Series Insights resource. Standard environments have data retention limits.
+// StandardEnvironmentResource an environment is a set of time-series data available for query, and is the
+// top level Azure Time Series Insights resource. Standard environments have data retention limits.
 type StandardEnvironmentResource struct {
 	*StandardEnvironmentResourceProperties `json:"properties,omitempty"`
 	// Sku - The sku determines the type of environment, either standard (S1 or S2) or long-term (L1). For standard environments the sku determines the capacity of the environment, the ingress rate, and the billing rate.
@@ -3117,8 +3127,8 @@ func (seup *StandardEnvironmentUpdateParameters) UnmarshalJSON(body []byte) erro
 	return nil
 }
 
-// TimeSeriesIDProperty the structure of the property that a time series id can have. An environment can have
-// multiple such properties.
+// TimeSeriesIDProperty the structure of the property that a time series id can have. An environment can
+// have multiple such properties.
 type TimeSeriesIDProperty struct {
 	// Name - The name of the property.
 	Name *string `json:"name,omitempty"`
@@ -3253,8 +3263,8 @@ type WarmStoragePropertiesUsageStateDetails struct {
 	MaxCount *int32 `json:"maxCount,omitempty"`
 }
 
-// WarmStoreConfigurationProperties the warm store configuration provides the details to create a warm store
-// cache that will retain a copy of the environment's data available for faster query.
+// WarmStoreConfigurationProperties the warm store configuration provides the details to create a warm
+// store cache that will retain a copy of the environment's data available for faster query.
 type WarmStoreConfigurationProperties struct {
 	// DataRetention - ISO8601 timespan specifying the number of days the environment's events will be available for query from the warm store.
 	DataRetention *string `json:"dataRetention,omitempty"`

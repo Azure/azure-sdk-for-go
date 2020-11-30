@@ -445,8 +445,8 @@ func (ocp OperationalizationClusterProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationalizationClustersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// OperationalizationClustersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type OperationalizationClustersCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -526,7 +526,8 @@ func (future *OperationalizationClustersUpdateSystemServicesFuture) Result(clien
 	return
 }
 
-// OperationalizationClusterUpdateParameters parameters for PATCH operation on an operationalization cluster
+// OperationalizationClusterUpdateParameters parameters for PATCH operation on an operationalization
+// cluster
 type OperationalizationClusterUpdateParameters struct {
 	// Tags - Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length than 256 characters.
 	Tags map[string]*string `json:"tags"`
@@ -694,8 +695,11 @@ func (page PaginatedOperationalizationClustersListPage) Values() []Operationaliz
 }
 
 // Creates a new instance of the PaginatedOperationalizationClustersListPage type.
-func NewPaginatedOperationalizationClustersListPage(getNextPage func(context.Context, PaginatedOperationalizationClustersList) (PaginatedOperationalizationClustersList, error)) PaginatedOperationalizationClustersListPage {
-	return PaginatedOperationalizationClustersListPage{fn: getNextPage}
+func NewPaginatedOperationalizationClustersListPage(cur PaginatedOperationalizationClustersList, getNextPage func(context.Context, PaginatedOperationalizationClustersList) (PaginatedOperationalizationClustersList, error)) PaginatedOperationalizationClustersListPage {
+	return PaginatedOperationalizationClustersListPage{
+		fn:   getNextPage,
+		pocl: cur,
+	}
 }
 
 // Resource azure resource
@@ -763,8 +767,8 @@ type ServicePrincipalProperties struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
-// SslConfiguration SSL configuration. If configured data-plane calls to user services will be exposed over SSL
-// only.
+// SslConfiguration SSL configuration. If configured data-plane calls to user services will be exposed over
+// SSL only.
 type SslConfiguration struct {
 	// Status - SSL status. Allowed values are Enabled and Disabled. Possible values include: 'Enabled', 'Disabled'
 	Status Status `json:"status,omitempty"`

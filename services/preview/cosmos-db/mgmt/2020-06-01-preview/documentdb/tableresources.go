@@ -26,7 +26,7 @@ import (
 	"net/http"
 )
 
-// TableResourcesClient is the azure Cosmos DB Database Service Resource Provider REST API
+// TableResourcesClient is the client for the TableResources methods of the Documentdb service.
 type TableResourcesClient struct {
 	BaseClient
 }

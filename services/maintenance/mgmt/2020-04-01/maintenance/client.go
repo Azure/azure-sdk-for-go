@@ -1,6 +1,6 @@
 // Package maintenance implements the Azure ARM Maintenance service API version 2020-04-01.
 //
-// Azure Maintenance Management Client
+// Maintenance Client
 package maintenance
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

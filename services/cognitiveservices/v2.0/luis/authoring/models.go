@@ -1291,8 +1291,8 @@ type PatternUpdateObject struct {
 	IsActive *bool `json:"isActive,omitempty"`
 }
 
-// PersonalAssistantsResponse response containing user's endpoint keys and the endpoint URLs of the prebuilt
-// Cortana applications.
+// PersonalAssistantsResponse response containing user's endpoint keys and the endpoint URLs of the
+// prebuilt Cortana applications.
 type PersonalAssistantsResponse struct {
 	autorest.Response `json:"-"`
 	EndpointKeys      *[]uuid.UUID       `json:"endpointKeys,omitempty"`
@@ -1358,14 +1358,15 @@ type PrebuiltDomain struct {
 	Entities    *[]PrebuiltDomainItem `json:"entities,omitempty"`
 }
 
-// PrebuiltDomainCreateBaseObject a model object containing the name of the custom prebuilt entity and the name
-// of the domain to which this model belongs.
+// PrebuiltDomainCreateBaseObject a model object containing the name of the custom prebuilt entity and the
+// name of the domain to which this model belongs.
 type PrebuiltDomainCreateBaseObject struct {
 	// DomainName - The domain name.
 	DomainName *string `json:"domainName,omitempty"`
 }
 
-// PrebuiltDomainCreateObject a prebuilt domain create object containing the name and culture of the domain.
+// PrebuiltDomainCreateObject a prebuilt domain create object containing the name and culture of the
+// domain.
 type PrebuiltDomainCreateObject struct {
 	// DomainName - The domain name.
 	DomainName *string `json:"domainName,omitempty"`
@@ -1380,8 +1381,8 @@ type PrebuiltDomainItem struct {
 	Examples    *string `json:"examples,omitempty"`
 }
 
-// PrebuiltDomainModelCreateObject a model object containing the name of the custom prebuilt intent or entity
-// and the name of the domain to which this model belongs.
+// PrebuiltDomainModelCreateObject a model object containing the name of the custom prebuilt intent or
+// entity and the name of the domain to which this model belongs.
 type PrebuiltDomainModelCreateObject struct {
 	// DomainName - The domain name.
 	DomainName *string `json:"domainName,omitempty"`

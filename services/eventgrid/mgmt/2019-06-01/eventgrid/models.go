@@ -545,7 +545,8 @@ func (future *DomainsCreateOrUpdateFuture) Result(client DomainsClient) (d Domai
 	return
 }
 
-// DomainsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DomainsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DomainsDeleteFuture struct {
 	azure.Future
 }
@@ -728,11 +729,15 @@ func (page DomainsListResultPage) Values() []Domain {
 }
 
 // Creates a new instance of the DomainsListResultPage type.
-func NewDomainsListResultPage(getNextPage func(context.Context, DomainsListResult) (DomainsListResult, error)) DomainsListResultPage {
-	return DomainsListResultPage{fn: getNextPage}
+func NewDomainsListResultPage(cur DomainsListResult, getNextPage func(context.Context, DomainsListResult) (DomainsListResult, error)) DomainsListResultPage {
+	return DomainsListResultPage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
-// DomainsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DomainsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DomainsUpdateFuture struct {
 	azure.Future
 }
@@ -839,8 +844,8 @@ type DomainTopicProperties struct {
 	ProvisioningState DomainTopicProvisioningState `json:"provisioningState,omitempty"`
 }
 
-// DomainTopicsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DomainTopicsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type DomainTopicsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -1043,8 +1048,11 @@ func (page DomainTopicsListResultPage) Values() []DomainTopic {
 }
 
 // Creates a new instance of the DomainTopicsListResultPage type.
-func NewDomainTopicsListResultPage(getNextPage func(context.Context, DomainTopicsListResult) (DomainTopicsListResult, error)) DomainTopicsListResultPage {
-	return DomainTopicsListResultPage{fn: getNextPage}
+func NewDomainTopicsListResultPage(cur DomainTopicsListResult, getNextPage func(context.Context, DomainTopicsListResult) (DomainTopicsListResult, error)) DomainTopicsListResultPage {
+	return DomainTopicsListResultPage{
+		fn:   getNextPage,
+		dtlr: cur,
+	}
 }
 
 // DomainUpdateParameters properties of the Domain update.
@@ -1062,7 +1070,8 @@ func (dup DomainUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// EventHubEventSubscriptionDestination information about the event hub destination for an event subscription
+// EventHubEventSubscriptionDestination information about the event hub destination for an event
+// subscription
 type EventHubEventSubscriptionDestination struct {
 	// EventHubEventSubscriptionDestinationProperties - Event Hub Properties of the event subscription destination
 	*EventHubEventSubscriptionDestinationProperties `json:"properties,omitempty"`
@@ -1582,8 +1591,8 @@ func (future *EventSubscriptionsCreateOrUpdateFuture) Result(client EventSubscri
 	return
 }
 
-// EventSubscriptionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EventSubscriptionsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type EventSubscriptionsDeleteFuture struct {
 	azure.Future
 }
@@ -1757,12 +1766,15 @@ func (page EventSubscriptionsListResultPage) Values() []EventSubscription {
 }
 
 // Creates a new instance of the EventSubscriptionsListResultPage type.
-func NewEventSubscriptionsListResultPage(getNextPage func(context.Context, EventSubscriptionsListResult) (EventSubscriptionsListResult, error)) EventSubscriptionsListResultPage {
-	return EventSubscriptionsListResultPage{fn: getNextPage}
+func NewEventSubscriptionsListResultPage(cur EventSubscriptionsListResult, getNextPage func(context.Context, EventSubscriptionsListResult) (EventSubscriptionsListResult, error)) EventSubscriptionsListResultPage {
+	return EventSubscriptionsListResultPage{
+		fn:   getNextPage,
+		eslr: cur,
+	}
 }
 
-// EventSubscriptionsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EventSubscriptionsUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type EventSubscriptionsUpdateFuture struct {
 	azure.Future
 }
@@ -1964,8 +1976,8 @@ type EventTypesListResult struct {
 	Value *[]EventType `json:"value,omitempty"`
 }
 
-// HybridConnectionEventSubscriptionDestination information about the HybridConnection destination for an event
-// subscription.
+// HybridConnectionEventSubscriptionDestination information about the HybridConnection destination for an
+// event subscription.
 type HybridConnectionEventSubscriptionDestination struct {
 	// HybridConnectionEventSubscriptionDestinationProperties - Hybrid connection Properties of the event subscription destination
 	*HybridConnectionEventSubscriptionDestinationProperties `json:"properties,omitempty"`
@@ -2054,7 +2066,8 @@ func (hcesd *HybridConnectionEventSubscriptionDestination) UnmarshalJSON(body []
 	return nil
 }
 
-// HybridConnectionEventSubscriptionDestinationProperties the properties for a hybrid connection destination.
+// HybridConnectionEventSubscriptionDestinationProperties the properties for a hybrid connection
+// destination.
 type HybridConnectionEventSubscriptionDestinationProperties struct {
 	// ResourceID - The Azure Resource ID of an hybrid connection that is the destination of an event subscription.
 	ResourceID *string `json:"resourceId,omitempty"`
@@ -3764,8 +3777,11 @@ func (page TopicsListResultPage) Values() []Topic {
 }
 
 // Creates a new instance of the TopicsListResultPage type.
-func NewTopicsListResultPage(getNextPage func(context.Context, TopicsListResult) (TopicsListResult, error)) TopicsListResultPage {
-	return TopicsListResultPage{fn: getNextPage}
+func NewTopicsListResultPage(cur TopicsListResult, getNextPage func(context.Context, TopicsListResult) (TopicsListResult, error)) TopicsListResultPage {
+	return TopicsListResultPage{
+		fn:  getNextPage,
+		tlr: cur,
+	}
 }
 
 // TopicsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -4022,8 +4038,8 @@ func (whesd *WebHookEventSubscriptionDestination) UnmarshalJSON(body []byte) err
 	return nil
 }
 
-// WebHookEventSubscriptionDestinationProperties information about the webhook destination properties for an
-// event subscription.
+// WebHookEventSubscriptionDestinationProperties information about the webhook destination properties for
+// an event subscription.
 type WebHookEventSubscriptionDestinationProperties struct {
 	// EndpointURL - The URL that represents the endpoint of the destination of an event subscription.
 	EndpointURL *string `json:"endpointUrl,omitempty"`

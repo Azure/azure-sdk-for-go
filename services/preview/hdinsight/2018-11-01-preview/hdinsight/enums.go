@@ -46,6 +46,39 @@ func PossibleApplicationStateValues() []ApplicationState {
 	return []ApplicationState{ACCEPTED, FAILED, FINISHED, FINISHING, KILLED, NEW, NEWSAVING, RUNNING, SUBMITTED}
 }
 
+// JobState enumerates the values for job state.
+type JobState string
+
+const (
+	// Busy ...
+	Busy JobState = "busy"
+	// Dead ...
+	Dead JobState = "dead"
+	// Error ...
+	Error JobState = "error"
+	// Idle ...
+	Idle JobState = "idle"
+	// Killed ...
+	Killed JobState = "killed"
+	// NotStarted ...
+	NotStarted JobState = "not_started"
+	// Recovering ...
+	Recovering JobState = "recovering"
+	// Running ...
+	Running JobState = "running"
+	// ShuttingDown ...
+	ShuttingDown JobState = "shutting_down"
+	// Starting ...
+	Starting JobState = "starting"
+	// Success ...
+	Success JobState = "success"
+)
+
+// PossibleJobStateValues returns an array of possible values for the JobState const type.
+func PossibleJobStateValues() []JobState {
+	return []JobState{Busy, Dead, Error, Idle, Killed, NotStarted, Recovering, Running, ShuttingDown, Starting, Success}
+}
+
 // SessionJobKind enumerates the values for session job kind.
 type SessionJobKind string
 
@@ -63,4 +96,44 @@ const (
 // PossibleSessionJobKindValues returns an array of possible values for the SessionJobKind const type.
 func PossibleSessionJobKindValues() []SessionJobKind {
 	return []SessionJobKind{Pyspark, Spark, Sparkr, SQL}
+}
+
+// StatementExecutionStatus enumerates the values for statement execution status.
+type StatementExecutionStatus string
+
+const (
+	// StatementExecutionStatusAbort ...
+	StatementExecutionStatusAbort StatementExecutionStatus = "abort"
+	// StatementExecutionStatusError ...
+	StatementExecutionStatusError StatementExecutionStatus = "error"
+	// StatementExecutionStatusOk ...
+	StatementExecutionStatusOk StatementExecutionStatus = "ok"
+)
+
+// PossibleStatementExecutionStatusValues returns an array of possible values for the StatementExecutionStatus const type.
+func PossibleStatementExecutionStatusValues() []StatementExecutionStatus {
+	return []StatementExecutionStatus{StatementExecutionStatusAbort, StatementExecutionStatusError, StatementExecutionStatusOk}
+}
+
+// StatementState enumerates the values for statement state.
+type StatementState string
+
+const (
+	// StatementStateAvailable ...
+	StatementStateAvailable StatementState = "available"
+	// StatementStateCancelled ...
+	StatementStateCancelled StatementState = "cancelled"
+	// StatementStateCancelling ...
+	StatementStateCancelling StatementState = "cancelling"
+	// StatementStateError ...
+	StatementStateError StatementState = "error"
+	// StatementStateRunning ...
+	StatementStateRunning StatementState = "running"
+	// StatementStateWaiting ...
+	StatementStateWaiting StatementState = "waiting"
+)
+
+// PossibleStatementStateValues returns an array of possible values for the StatementState const type.
+func PossibleStatementStateValues() []StatementState {
+	return []StatementState{StatementStateAvailable, StatementStateCancelled, StatementStateCancelling, StatementStateError, StatementStateRunning, StatementStateWaiting}
 }

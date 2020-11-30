@@ -613,8 +613,11 @@ func (page StorageInsightListResultPage) Values() []StorageInsight {
 }
 
 // Creates a new instance of the StorageInsightListResultPage type.
-func NewStorageInsightListResultPage(getNextPage func(context.Context, StorageInsightListResult) (StorageInsightListResult, error)) StorageInsightListResultPage {
-	return StorageInsightListResultPage{fn: getNextPage}
+func NewStorageInsightListResultPage(cur StorageInsightListResult, getNextPage func(context.Context, StorageInsightListResult) (StorageInsightListResult, error)) StorageInsightListResultPage {
+	return StorageInsightListResultPage{
+		fn:   getNextPage,
+		silr: cur,
+	}
 }
 
 // StorageInsightProperties storage insight properties.

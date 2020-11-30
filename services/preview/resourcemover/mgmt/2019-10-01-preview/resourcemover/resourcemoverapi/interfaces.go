@@ -24,12 +24,13 @@ import (
 
 // MoveCollectionsClientAPI contains the set of methods on the MoveCollectionsClient type.
 type MoveCollectionsClientAPI interface {
+	BulkRemove(ctx context.Context, resourceGroupName string, moveCollectionName string, body *resourcemover.BulkRemoveRequest) (result resourcemover.MoveCollectionsBulkRemoveFuture, err error)
 	Commit(ctx context.Context, resourceGroupName string, moveCollectionName string, body *resourcemover.CommitRequest) (result resourcemover.MoveCollectionsCommitFuture, err error)
 	Create(ctx context.Context, resourceGroupName string, moveCollectionName string, body *resourcemover.MoveCollection) (result resourcemover.MoveCollection, err error)
 	Delete(ctx context.Context, resourceGroupName string, moveCollectionName string) (result resourcemover.MoveCollectionsDeleteFuture, err error)
 	Discard(ctx context.Context, resourceGroupName string, moveCollectionName string, body *resourcemover.DiscardRequest) (result resourcemover.MoveCollectionsDiscardFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, moveCollectionName string) (result resourcemover.MoveCollection, err error)
-	InitiateMove(ctx context.Context, resourceGroupName string, moveCollectionName string, body *resourcemover.ResourceMoveRequest) (result resourcemover.MoveCollectionsInitiateMoveFuture, err error)
+	InitiateMove(ctx context.Context, resourceGroupName string, moveCollectionName string, body *resourcemover.ResourceMoveRequestType) (result resourcemover.MoveCollectionsInitiateMoveFuture, err error)
 	ListMoveCollectionsByResourceGroup(ctx context.Context, resourceGroupName string) (result resourcemover.MoveCollectionResultListPage, err error)
 	ListMoveCollectionsByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result resourcemover.MoveCollectionResultListIterator, err error)
 	ListMoveCollectionsBySubscription(ctx context.Context) (result resourcemover.MoveCollectionResultListPage, err error)

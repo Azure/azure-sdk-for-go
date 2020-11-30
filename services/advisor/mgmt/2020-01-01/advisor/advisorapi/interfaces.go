@@ -67,7 +67,7 @@ var _ OperationsClientAPI = (*advisor.OperationsClient)(nil)
 type SuppressionsClientAPI interface {
 	Create(ctx context.Context, resourceURI string, recommendationID string, name string, suppressionContract advisor.SuppressionContract) (result advisor.SuppressionContract, err error)
 	Delete(ctx context.Context, resourceURI string, recommendationID string, name string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceURI string, recommendationID string, name string) (result advisor.SuppressionContract, err error)
+	Get(ctx context.Context, resourceURI string, recommendationID string, name string) (result advisor.SetObject, err error)
 	List(ctx context.Context, top *int32, skipToken string) (result advisor.SuppressionContractListResultPage, err error)
 	ListComplete(ctx context.Context, top *int32, skipToken string) (result advisor.SuppressionContractListResultIterator, err error)
 }

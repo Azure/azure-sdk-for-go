@@ -32,14 +32,14 @@ type DatabaseClient struct {
 }
 
 // NewDatabaseClient creates an instance of the DatabaseClient client.
-func NewDatabaseClient(subscriptionID string, subscriptionID1 string) DatabaseClient {
-	return NewDatabaseClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewDatabaseClient(subscriptionID string) DatabaseClient {
+	return NewDatabaseClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewDatabaseClientWithBaseURI creates an instance of the DatabaseClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewDatabaseClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) DatabaseClient {
-	return DatabaseClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewDatabaseClientWithBaseURI(baseURI string, subscriptionID string) DatabaseClient {
+	return DatabaseClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListMetricDefinitions retrieves metric definitions for the given database.
@@ -59,6 +59,8 @@ func (client DatabaseClient) ListMetricDefinitions(ctx context.Context, resource
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -151,6 +153,8 @@ func (client DatabaseClient) ListMetrics(ctx context.Context, resourceGroupName 
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -243,6 +247,8 @@ func (client DatabaseClient) ListUsages(ctx context.Context, resourceGroupName s
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},

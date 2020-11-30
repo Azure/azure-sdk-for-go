@@ -22,6 +22,7 @@ import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
@@ -30,37 +31,29 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/hybridkubernetes/mgmt/2020-01-01-preview/hybridkubernetes"
 
-// AuthenticationCertificateDetails ...
-type AuthenticationCertificateDetails struct {
-	// CertificateData - Base64 encoded client certificate data.
-	CertificateData *string `json:"certificateData,omitempty"`
-	// KeyData - Base64 encoded key data.
-	KeyData *string `json:"keyData,omitempty"`
-}
-
-// AuthenticationDetails ...
+// AuthenticationDetails authentication details of the user
 type AuthenticationDetails struct {
-	// AuthenticationMethod - The mode of client authentication. Possible values include: 'Token', 'ClientCertificate'
-	AuthenticationMethod AuthenticationMethod        `json:"authenticationMethod,omitempty"`
-	Value                *AuthenticationDetailsValue `json:"value,omitempty"`
+	// AuthenticationMethod - The mode of client authentication.
+	AuthenticationMethod *string `json:"authenticationMethod,omitempty"`
+	// Value - Authentication token value.
+	Value *AuthenticationDetailsValue `json:"value,omitempty"`
 }
 
-// AuthenticationDetailsValue ...
+// AuthenticationDetailsValue authentication token value.
 type AuthenticationDetailsValue struct {
 	// Token - Authentication token.
-	Token             *string                           `json:"token,omitempty"`
-	ClientCertificate *AuthenticationCertificateDetails `json:"clientCertificate,omitempty"`
+	Token *string `json:"token,omitempty"`
 }
 
-// AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
+// AzureEntityResource the resource model definition for an Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.
 	Etag *string `json:"etag,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -75,11 +68,11 @@ type ConnectedCluster struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -179,7 +172,7 @@ func (cc *ConnectedCluster) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ConnectedClusterAADProfile ...
+// ConnectedClusterAADProfile AAD profile of the connected cluster
 type ConnectedClusterAADProfile struct {
 	// TenantID - The aad tenant id which is configured on target K8s cluster
 	TenantID *string `json:"tenantId,omitempty"`
@@ -412,8 +405,11 @@ func (page ConnectedClusterListPage) Values() []ConnectedCluster {
 }
 
 // Creates a new instance of the ConnectedClusterListPage type.
-func NewConnectedClusterListPage(getNextPage func(context.Context, ConnectedClusterList) (ConnectedClusterList, error)) ConnectedClusterListPage {
-	return ConnectedClusterListPage{fn: getNextPage}
+func NewConnectedClusterListPage(cur ConnectedClusterList, getNextPage func(context.Context, ConnectedClusterList) (ConnectedClusterList, error)) ConnectedClusterListPage {
+	return ConnectedClusterListPage{
+		fn:  getNextPage,
+		ccl: cur,
+	}
 }
 
 // ConnectedClusterPatch object containing updates for patch operations.
@@ -469,25 +465,40 @@ func (ccp *ConnectedClusterPatch) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ConnectedClusterPatchProperties ...
+// ConnectedClusterPatchProperties properties which can be patched on the connected cluster resource.
 type ConnectedClusterPatchProperties struct {
 	// AgentPublicKeyCertificate - Base64 encoded public certificate used by the agent to do the initial handshake to the backend services in Azure.
 	AgentPublicKeyCertificate *string `json:"agentPublicKeyCertificate,omitempty"`
 }
 
-// ConnectedClusterProperties ...
+// ConnectedClusterProperties properties of the connected cluster.
 type ConnectedClusterProperties struct {
 	// AgentPublicKeyCertificate - Base64 encoded public certificate used by the agent to do the initial handshake to the backend services in Azure.
-	AgentPublicKeyCertificate *string                     `json:"agentPublicKeyCertificate,omitempty"`
-	AadProfile                *ConnectedClusterAADProfile `json:"aadProfile,omitempty"`
+	AgentPublicKeyCertificate *string `json:"agentPublicKeyCertificate,omitempty"`
+	// AadProfile - AAD profile of the connected cluster.
+	AadProfile *ConnectedClusterAADProfile `json:"aadProfile,omitempty"`
 	// KubernetesVersion - READ-ONLY; The Kubernetes version of the connected cluster resource
 	KubernetesVersion *string `json:"kubernetesVersion,omitempty"`
 	// TotalNodeCount - READ-ONLY; Number of nodes present in the connected cluster resource
 	TotalNodeCount *int32 `json:"totalNodeCount,omitempty"`
+	// TotalCoreCount - READ-ONLY; Number of CPU cores present in the connected cluster resource
+	TotalCoreCount *int32 `json:"totalCoreCount,omitempty"`
 	// AgentVersion - READ-ONLY; Version of the agent running on the connected cluster resource
 	AgentVersion *string `json:"agentVersion,omitempty"`
-	// ProvisioningState - Possible values include: 'Succeeded', 'Failed', 'Canceled', 'Provisioning', 'Updating', 'Deleting', 'Accepted'
+	// ProvisioningState - Provisioning state of the connected cluster resource. Possible values include: 'Succeeded', 'Failed', 'Canceled', 'Provisioning', 'Updating', 'Deleting', 'Accepted'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// Distribution - The Kubernetes distribution running on this connected cluster.
+	Distribution *string `json:"distribution,omitempty"`
+	// Infrastructure - The infrastructure on which the Kubernetes cluster represented by this connected cluster is running on.
+	Infrastructure *string `json:"infrastructure,omitempty"`
+	// Offering - READ-ONLY; Connected cluster offering
+	Offering *string `json:"offering,omitempty"`
+	// ManagedIdentityCertificateExpirationTime - READ-ONLY; Expiration time of the managed identity certificate
+	ManagedIdentityCertificateExpirationTime *date.Time `json:"managedIdentityCertificateExpirationTime,omitempty"`
+	// LastConnectivityTime - READ-ONLY; Time representing the last instance when heart beat was received from the cluster
+	LastConnectivityTime *date.Time `json:"lastConnectivityTime,omitempty"`
+	// ConnectivityStatus - Represents the connectivity status of the connected cluster. Possible values include: 'Connecting', 'Connected', 'Offline', 'Expired'
+	ConnectivityStatus ConnectivityStatus `json:"connectivityStatus,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConnectedClusterProperties.
@@ -501,6 +512,15 @@ func (ccp ConnectedClusterProperties) MarshalJSON() ([]byte, error) {
 	}
 	if ccp.ProvisioningState != "" {
 		objectMap["provisioningState"] = ccp.ProvisioningState
+	}
+	if ccp.Distribution != nil {
+		objectMap["distribution"] = ccp.Distribution
+	}
+	if ccp.Infrastructure != nil {
+		objectMap["infrastructure"] = ccp.Infrastructure
+	}
+	if ccp.ConnectivityStatus != "" {
+		objectMap["connectivityStatus"] = ccp.ConnectivityStatus
 	}
 	return json.Marshal(objectMap)
 }
@@ -516,21 +536,51 @@ type CredentialResult struct {
 // CredentialResults the list of credential result response.
 type CredentialResults struct {
 	autorest.Response `json:"-"`
+	// HybridConnectionConfig - READ-ONLY; Contains the REP (rendezvous endpoint) and “Sender” access token.
+	HybridConnectionConfig *HybridConnectionConfig `json:"hybridConnectionConfig,omitempty"`
 	// Kubeconfigs - READ-ONLY; Base64-encoded Kubernetes configuration file.
 	Kubeconfigs *[]CredentialResult `json:"kubeconfigs,omitempty"`
 }
 
-// ErrorDetails the error response details containing error code and error message
-type ErrorDetails struct {
+// ErrorAdditionalInfo the resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// Type - READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty"`
+	// Info - READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty"`
+}
+
+// ErrorDetail the error detail.
+type ErrorDetail struct {
 	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; The error message.
 	Message *string `json:"message,omitempty"`
+	// Target - READ-ONLY; The error target.
+	Target *string `json:"target,omitempty"`
+	// Details - READ-ONLY; The error details.
+	Details *[]ErrorDetail `json:"details,omitempty"`
+	// AdditionalInfo - READ-ONLY; The error additional info.
+	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
 }
 
-// ErrorResponse the error response that indicates why an operation has failed.
+// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
+// failed operations. (This also follows the OData error response format.).
 type ErrorResponse struct {
-	Error *ErrorDetails `json:"error,omitempty"`
+	// Error - The error object.
+	Error *ErrorDetail `json:"error,omitempty"`
+}
+
+// HybridConnectionConfig contains the REP (rendezvous endpoint) and “Sender” access token.
+type HybridConnectionConfig struct {
+	// ExpirationTime - READ-ONLY; Timestamp when this token will be expired.
+	ExpirationTime *int64 `json:"expirationTime,omitempty"`
+	// HybridConnectionName - READ-ONLY; Name of the connection
+	HybridConnectionName *string `json:"hybridConnectionName,omitempty"`
+	// Relay - READ-ONLY; Name of the relay.
+	Relay *string `json:"relay,omitempty"`
+	// Token - READ-ONLY; Sender access token
+	Token *string `json:"token,omitempty"`
 }
 
 // Operation the Connected cluster API operation
@@ -714,42 +764,45 @@ func (page OperationListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListPage type.
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return OperationListPage{fn: getNextPage}
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
-// ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
-// required location and tags
+// ProxyResource the resource model definition for an Azure Resource Manager proxy resource. It will have
+// everything other than required location and tags
 type ProxyResource struct {
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
-// Resource ...
+// Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
-// TrackedResource the resource model definition for a ARM tracked top level resource
+// TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
 type TrackedResource struct {
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 

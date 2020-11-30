@@ -548,8 +548,11 @@ func (page JobCollectionListResultPage) Values() []JobCollectionDefinition {
 }
 
 // Creates a new instance of the JobCollectionListResultPage type.
-func NewJobCollectionListResultPage(getNextPage func(context.Context, JobCollectionListResult) (JobCollectionListResult, error)) JobCollectionListResultPage {
-	return JobCollectionListResultPage{fn: getNextPage}
+func NewJobCollectionListResultPage(cur JobCollectionListResult, getNextPage func(context.Context, JobCollectionListResult) (JobCollectionListResult, error)) JobCollectionListResultPage {
+	return JobCollectionListResultPage{
+		fn:   getNextPage,
+		jclr: cur,
+	}
 }
 
 // JobCollectionProperties ...
@@ -869,8 +872,11 @@ func (page JobHistoryListResultPage) Values() []JobHistoryDefinition {
 }
 
 // Creates a new instance of the JobHistoryListResultPage type.
-func NewJobHistoryListResultPage(getNextPage func(context.Context, JobHistoryListResult) (JobHistoryListResult, error)) JobHistoryListResultPage {
-	return JobHistoryListResultPage{fn: getNextPage}
+func NewJobHistoryListResultPage(cur JobHistoryListResult, getNextPage func(context.Context, JobHistoryListResult) (JobHistoryListResult, error)) JobHistoryListResultPage {
+	return JobHistoryListResultPage{
+		fn:   getNextPage,
+		jhlr: cur,
+	}
 }
 
 // JobListResult ...
@@ -1025,8 +1031,11 @@ func (page JobListResultPage) Values() []JobDefinition {
 }
 
 // Creates a new instance of the JobListResultPage type.
-func NewJobListResultPage(getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
-	return JobListResultPage{fn: getNextPage}
+func NewJobListResultPage(cur JobListResult, getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
+	return JobListResultPage{
+		fn:  getNextPage,
+		jlr: cur,
+	}
 }
 
 // JobMaxRecurrence ...

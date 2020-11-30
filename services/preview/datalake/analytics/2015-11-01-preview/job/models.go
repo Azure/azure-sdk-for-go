@@ -311,8 +311,11 @@ func (page InfoListResultPage) Values() []Information {
 }
 
 // Creates a new instance of the InfoListResultPage type.
-func NewInfoListResultPage(getNextPage func(context.Context, InfoListResult) (InfoListResult, error)) InfoListResultPage {
-	return InfoListResultPage{fn: getNextPage}
+func NewInfoListResultPage(cur InfoListResult, getNextPage func(context.Context, InfoListResult) (InfoListResult, error)) InfoListResultPage {
+	return InfoListResultPage{
+		fn:  getNextPage,
+		ilr: cur,
+	}
 }
 
 // Information the common Data Lake Analytics job information properties.
@@ -668,7 +671,8 @@ type Resource struct {
 	Type ResourceType `json:"type,omitempty"`
 }
 
-// StateAuditRecord the Data Lake Analytics U-SQL job state audit records for tracking the lifecycle of a job.
+// StateAuditRecord the Data Lake Analytics U-SQL job state audit records for tracking the lifecycle of a
+// job.
 type StateAuditRecord struct {
 	// NewState - READ-ONLY; Gets the new state the job is in.
 	NewState *string `json:"newState,omitempty"`

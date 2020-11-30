@@ -107,7 +107,8 @@ func (dld DeadLetterDestination) AsBasicDeadLetterDestination() (BasicDeadLetter
 	return &dld, true
 }
 
-// EventHubEventSubscriptionDestination information about the event hub destination for an event subscription
+// EventHubEventSubscriptionDestination information about the event hub destination for an event
+// subscription
 type EventHubEventSubscriptionDestination struct {
 	// EventHubEventSubscriptionDestinationProperties - Event Hub Properties of the event subscription destination
 	*EventHubEventSubscriptionDestinationProperties `json:"properties,omitempty"`
@@ -538,8 +539,8 @@ func (future *EventSubscriptionsCreateOrUpdateFuture) Result(client EventSubscri
 	return
 }
 
-// EventSubscriptionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EventSubscriptionsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type EventSubscriptionsDeleteFuture struct {
 	azure.Future
 }
@@ -568,8 +569,8 @@ type EventSubscriptionsListResult struct {
 	Value *[]EventSubscription `json:"value,omitempty"`
 }
 
-// EventSubscriptionsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EventSubscriptionsUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type EventSubscriptionsUpdateFuture struct {
 	azure.Future
 }
@@ -758,8 +759,8 @@ type EventTypesListResult struct {
 	Value *[]EventType `json:"value,omitempty"`
 }
 
-// HybridConnectionEventSubscriptionDestination information about the HybridConnection destination for an event
-// subscription.
+// HybridConnectionEventSubscriptionDestination information about the HybridConnection destination for an
+// event subscription.
 type HybridConnectionEventSubscriptionDestination struct {
 	// HybridConnectionEventSubscriptionDestinationProperties - Hybrid connection Properties of the event subscription destination
 	*HybridConnectionEventSubscriptionDestinationProperties `json:"properties,omitempty"`
@@ -843,7 +844,8 @@ func (hcesd *HybridConnectionEventSubscriptionDestination) UnmarshalJSON(body []
 	return nil
 }
 
-// HybridConnectionEventSubscriptionDestinationProperties the properties for a hybrid connection destination.
+// HybridConnectionEventSubscriptionDestinationProperties the properties for a hybrid connection
+// destination.
 type HybridConnectionEventSubscriptionDestinationProperties struct {
 	// ResourceID - The Azure Resource ID of an hybrid connection that is the destination of an event subscription.
 	ResourceID *string `json:"resourceId,omitempty"`
@@ -1499,8 +1501,8 @@ func (whesd *WebHookEventSubscriptionDestination) UnmarshalJSON(body []byte) err
 	return nil
 }
 
-// WebHookEventSubscriptionDestinationProperties information about the webhook destination properties for an
-// event subscription.
+// WebHookEventSubscriptionDestinationProperties information about the webhook destination properties for
+// an event subscription.
 type WebHookEventSubscriptionDestinationProperties struct {
 	// EndpointURL - The URL that represents the endpoint of the destination of an event subscription.
 	EndpointURL *string `json:"endpointUrl,omitempty"`

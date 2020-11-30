@@ -26,7 +26,7 @@ import (
 	"net/http"
 )
 
-// GremlinResourcesClient is the azure Cosmos DB Database Service Resource Provider REST API
+// GremlinResourcesClient is the client for the GremlinResources methods of the Documentdb service.
 type GremlinResourcesClient struct {
 	BaseClient
 }

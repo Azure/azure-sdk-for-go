@@ -936,8 +936,11 @@ func (page ActivityRunsListResponsePage) Values() []ActivityRun {
 }
 
 // Creates a new instance of the ActivityRunsListResponsePage type.
-func NewActivityRunsListResponsePage(getNextPage func(context.Context, ActivityRunsListResponse) (ActivityRunsListResponse, error)) ActivityRunsListResponsePage {
-	return ActivityRunsListResponsePage{fn: getNextPage}
+func NewActivityRunsListResponsePage(cur ActivityRunsListResponse, getNextPage func(context.Context, ActivityRunsListResponse) (ActivityRunsListResponse, error)) ActivityRunsListResponsePage {
+	return ActivityRunsListResponsePage{
+		fn:   getNextPage,
+		arlr: cur,
+	}
 }
 
 // AmazonMWSLinkedService amazon Marketplace Web Service linked service.
@@ -27735,8 +27738,11 @@ func (page DatasetListResponsePage) Values() []DatasetResource {
 }
 
 // Creates a new instance of the DatasetListResponsePage type.
-func NewDatasetListResponsePage(getNextPage func(context.Context, DatasetListResponse) (DatasetListResponse, error)) DatasetListResponsePage {
-	return DatasetListResponsePage{fn: getNextPage}
+func NewDatasetListResponsePage(cur DatasetListResponse, getNextPage func(context.Context, DatasetListResponse) (DatasetListResponse, error)) DatasetListResponsePage {
+	return DatasetListResponsePage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
 // DatasetReference dataset reference type.
@@ -35262,8 +35268,11 @@ func (page FactoryListResponsePage) Values() []Factory {
 }
 
 // Creates a new instance of the FactoryListResponsePage type.
-func NewFactoryListResponsePage(getNextPage func(context.Context, FactoryListResponse) (FactoryListResponse, error)) FactoryListResponsePage {
-	return FactoryListResponsePage{fn: getNextPage}
+func NewFactoryListResponsePage(cur FactoryListResponse, getNextPage func(context.Context, FactoryListResponse) (FactoryListResponse, error)) FactoryListResponsePage {
+	return FactoryListResponsePage{
+		fn:  getNextPage,
+		flr: cur,
+	}
 }
 
 // FactoryProperties factory resource properties.
@@ -50685,8 +50694,9 @@ func (hs *HubspotSource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// IfConditionActivity this activity evaluates a boolean expression and executes either the activities under
-// the ifTrueActivities property or the ifFalseActivities property depending on the result of the expression.
+// IfConditionActivity this activity evaluates a boolean expression and executes either the activities
+// under the ifTrueActivities property or the ifFalseActivities property depending on the result of the
+// expression.
 type IfConditionActivity struct {
 	// IfConditionActivityTypeProperties - IfCondition activity properties.
 	*IfConditionActivityTypeProperties `json:"typeProperties,omitempty"`
@@ -52774,8 +52784,8 @@ type IntegrationRuntimeListResponse struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// IntegrationRuntimeListResponseIterator provides access to a complete listing of IntegrationRuntimeResource
-// values.
+// IntegrationRuntimeListResponseIterator provides access to a complete listing of
+// IntegrationRuntimeResource values.
 type IntegrationRuntimeListResponseIterator struct {
 	i    int
 	page IntegrationRuntimeListResponsePage
@@ -52918,8 +52928,11 @@ func (page IntegrationRuntimeListResponsePage) Values() []IntegrationRuntimeReso
 }
 
 // Creates a new instance of the IntegrationRuntimeListResponsePage type.
-func NewIntegrationRuntimeListResponsePage(getNextPage func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error)) IntegrationRuntimeListResponsePage {
-	return IntegrationRuntimeListResponsePage{fn: getNextPage}
+func NewIntegrationRuntimeListResponsePage(cur IntegrationRuntimeListResponse, getNextPage func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error)) IntegrationRuntimeListResponsePage {
+	return IntegrationRuntimeListResponsePage{
+		fn:   getNextPage,
+		irlr: cur,
+	}
 }
 
 // IntegrationRuntimeMonitoringData get monitoring data response.
@@ -53446,8 +53459,8 @@ func (irsp *IntegrationRuntimeSsisProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// IntegrationRuntimesStartFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// IntegrationRuntimesStartFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type IntegrationRuntimesStartFuture struct {
 	azure.Future
 }
@@ -56538,8 +56551,11 @@ func (page LinkedServiceListResponsePage) Values() []LinkedServiceResource {
 }
 
 // Creates a new instance of the LinkedServiceListResponsePage type.
-func NewLinkedServiceListResponsePage(getNextPage func(context.Context, LinkedServiceListResponse) (LinkedServiceListResponse, error)) LinkedServiceListResponsePage {
-	return LinkedServiceListResponsePage{fn: getNextPage}
+func NewLinkedServiceListResponsePage(cur LinkedServiceListResponse, getNextPage func(context.Context, LinkedServiceListResponse) (LinkedServiceListResponse, error)) LinkedServiceListResponsePage {
+	return LinkedServiceListResponsePage{
+		fn:   getNextPage,
+		lslr: cur,
+	}
 }
 
 // LinkedServiceReference linked service reference type.
@@ -71223,8 +71239,11 @@ func (page PipelineListResponsePage) Values() []PipelineResource {
 }
 
 // Creates a new instance of the PipelineListResponsePage type.
-func NewPipelineListResponsePage(getNextPage func(context.Context, PipelineListResponse) (PipelineListResponse, error)) PipelineListResponsePage {
-	return PipelineListResponsePage{fn: getNextPage}
+func NewPipelineListResponsePage(cur PipelineListResponse, getNextPage func(context.Context, PipelineListResponse) (PipelineListResponse, error)) PipelineListResponsePage {
+	return PipelineListResponsePage{
+		fn:  getNextPage,
+		plr: cur,
+	}
 }
 
 // PipelineReference pipeline reference type.
@@ -75190,8 +75209,8 @@ func (rirs *RedirectIncompatibleRowSettings) UnmarshalJSON(body []byte) error {
 }
 
 // RedshiftUnloadSettings the Amazon S3 settings needed for the interim Amazon S3 when copying from Amazon
-// Redshift with unload. With this, data from Amazon Redshift source will be unloaded into S3 first and then
-// copied into the targeted sink from the interim S3.
+// Redshift with unload. With this, data from Amazon Redshift source will be unloaded into S3 first and
+// then copied into the targeted sink from the interim S3.
 type RedshiftUnloadSettings struct {
 	// S3LinkedServiceName - The name of the Amazon S3 linked service which will be used for the unload operation when copying from the Amazon Redshift source.
 	S3LinkedServiceName *LinkedServiceReference `json:"s3LinkedServiceName,omitempty"`
@@ -78403,7 +78422,8 @@ func (smcls *SalesforceMarketingCloudLinkedService) UnmarshalJSON(body []byte) e
 	return nil
 }
 
-// SalesforceMarketingCloudLinkedServiceTypeProperties salesforce Marketing Cloud linked service properties.
+// SalesforceMarketingCloudLinkedServiceTypeProperties salesforce Marketing Cloud linked service
+// properties.
 type SalesforceMarketingCloudLinkedServiceTypeProperties struct {
 	// ClientID - The client ID associated with the Salesforce Marketing Cloud application. Type: string (or Expression with resultType string).
 	ClientID interface{} `json:"clientId,omitempty"`
@@ -81814,7 +81834,8 @@ func (scfcrd *SapCloudForCustomerResourceDataset) UnmarshalJSON(body []byte) err
 	return nil
 }
 
-// SapCloudForCustomerResourceDatasetTypeProperties sap Cloud For Customer OData resource dataset properties.
+// SapCloudForCustomerResourceDatasetTypeProperties sap Cloud For Customer OData resource dataset
+// properties.
 type SapCloudForCustomerResourceDatasetTypeProperties struct {
 	// Path - The path of the SAP Cloud for Customer OData entity. Type: string (or Expression with resultType string).
 	Path interface{} `json:"path,omitempty"`
@@ -84642,8 +84663,8 @@ func (sb SecretBase) AsBasicSecretBase() (BasicSecretBase, bool) {
 	return &sb, true
 }
 
-// SecureString azure Data Factory secure string definition. The string value will be masked with asterisks '*'
-// during Get or List API calls.
+// SecureString azure Data Factory secure string definition. The string value will be masked with asterisks
+// '*' during Get or List API calls.
 type SecureString struct {
 	// Value - Value of secure string.
 	Value *string `json:"value,omitempty"`
@@ -95724,8 +95745,11 @@ func (page TriggerListResponsePage) Values() []TriggerResource {
 }
 
 // Creates a new instance of the TriggerListResponsePage type.
-func NewTriggerListResponsePage(getNextPage func(context.Context, TriggerListResponse) (TriggerListResponse, error)) TriggerListResponsePage {
-	return TriggerListResponsePage{fn: getNextPage}
+func NewTriggerListResponsePage(cur TriggerListResponse, getNextPage func(context.Context, TriggerListResponse) (TriggerListResponse, error)) TriggerListResponsePage {
+	return TriggerListResponsePage{
+		fn:  getNextPage,
+		tlr: cur,
+	}
 }
 
 // TriggerPipelineReference pipeline that needs to be triggered with the given parameters.
@@ -96111,11 +96135,15 @@ func (page TriggerRunListResponsePage) Values() []TriggerRun {
 }
 
 // Creates a new instance of the TriggerRunListResponsePage type.
-func NewTriggerRunListResponsePage(getNextPage func(context.Context, TriggerRunListResponse) (TriggerRunListResponse, error)) TriggerRunListResponsePage {
-	return TriggerRunListResponsePage{fn: getNextPage}
+func NewTriggerRunListResponsePage(cur TriggerRunListResponse, getNextPage func(context.Context, TriggerRunListResponse) (TriggerRunListResponse, error)) TriggerRunListResponsePage {
+	return TriggerRunListResponsePage{
+		fn:   getNextPage,
+		trlr: cur,
+	}
 }
 
-// TriggersStartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// TriggersStartFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type TriggersStartFuture struct {
 	azure.Future
 }
@@ -96159,8 +96187,8 @@ func (future *TriggersStopFuture) Result(client TriggersClient) (ar autorest.Res
 	return
 }
 
-// TumblingWindowTrigger trigger that schedules pipeline runs for all fixed time interval windows from a start
-// time without gaps and also supports backfill scenarios (when start time is in the past).
+// TumblingWindowTrigger trigger that schedules pipeline runs for all fixed time interval windows from a
+// start time without gaps and also supports backfill scenarios (when start time is in the past).
 type TumblingWindowTrigger struct {
 	// Pipeline - Pipeline for which runs are created when an event is fired for trigger window that is ready.
 	Pipeline *TriggerPipelineReference `json:"pipeline,omitempty"`
@@ -96328,8 +96356,8 @@ type TumblingWindowTriggerTypeProperties struct {
 	RetryPolicy *RetryPolicy `json:"retryPolicy,omitempty"`
 }
 
-// UntilActivity this activity executes inner activities until the specified boolean expression results to true
-// or timeout is reached, whichever is earlier.
+// UntilActivity this activity executes inner activities until the specified boolean expression results to
+// true or timeout is reached, whichever is earlier.
 type UntilActivity struct {
 	// UntilActivityTypeProperties - Until activity properties.
 	*UntilActivityTypeProperties `json:"typeProperties,omitempty"`
@@ -98475,8 +98503,8 @@ type WebActivityTypeProperties struct {
 	LinkedServices *[]LinkedServiceReference `json:"linkedServices,omitempty"`
 }
 
-// WebAnonymousAuthentication a WebLinkedService that uses anonymous authentication to communicate with an HTTP
-// endpoint.
+// WebAnonymousAuthentication a WebLinkedService that uses anonymous authentication to communicate with an
+// HTTP endpoint.
 type WebAnonymousAuthentication struct {
 	// URL - The URL of the web service endpoint, e.g. http://www.microsoft.com . Type: string (or Expression with resultType string).
 	URL interface{} `json:"url,omitempty"`
@@ -98627,9 +98655,9 @@ func (wba *WebBasicAuthentication) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// WebClientCertificateAuthentication a WebLinkedService that uses client certificate based authentication to
-// communicate with an HTTP endpoint. This scheme follows mutual authentication; the server must also provide
-// valid credentials to the client.
+// WebClientCertificateAuthentication a WebLinkedService that uses client certificate based authentication
+// to communicate with an HTTP endpoint. This scheme follows mutual authentication; the server must also
+// provide valid credentials to the client.
 type WebClientCertificateAuthentication struct {
 	// Pfx - Base64-encoded contents of a PFX file.
 	Pfx BasicSecretBase `json:"pfx,omitempty"`

@@ -335,8 +335,11 @@ func (page CommunicationsListResultPage) Values() []CommunicationDetails {
 }
 
 // Creates a new instance of the CommunicationsListResultPage type.
-func NewCommunicationsListResultPage(getNextPage func(context.Context, CommunicationsListResult) (CommunicationsListResult, error)) CommunicationsListResultPage {
-	return CommunicationsListResultPage{fn: getNextPage}
+func NewCommunicationsListResultPage(cur CommunicationsListResult, getNextPage func(context.Context, CommunicationsListResult) (CommunicationsListResult, error)) CommunicationsListResultPage {
+	return CommunicationsListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // ContactProfile contact information associated with support ticket.
@@ -505,7 +508,8 @@ type QuotaChangeRequest struct {
 
 // QuotaTicketDetails additional set of information required for quota increase support ticket for certain
 // quota types, e.g.: Virtual machine cores. Get complete details about Quota payload support request along
-// with examples at <a target='' href='https://aka.ms/supportrpquotarequestpayload'>Support quota request</a>.
+// with examples at <a target='' href='https://aka.ms/supportrpquotarequestpayload'>Support quota
+// request</a>.
 type QuotaTicketDetails struct {
 	// QuotaChangeRequestSubType - Required for certain quota types when there is a sub type that you are requesting quota increase for. Example: Batch
 	QuotaChangeRequestSubType *string `json:"quotaChangeRequestSubType,omitempty"`
@@ -827,7 +831,8 @@ func (tdp TicketDetailsProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TicketsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// TicketsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type TicketsCreateFuture struct {
 	azure.Future
 }
@@ -1007,8 +1012,11 @@ func (page TicketsListResultPage) Values() []TicketDetails {
 }
 
 // Creates a new instance of the TicketsListResultPage type.
-func NewTicketsListResultPage(getNextPage func(context.Context, TicketsListResult) (TicketsListResult, error)) TicketsListResultPage {
-	return TicketsListResultPage{fn: getNextPage}
+func NewTicketsListResultPage(cur TicketsListResult, getNextPage func(context.Context, TicketsListResult) (TicketsListResult, error)) TicketsListResultPage {
+	return TicketsListResultPage{
+		fn:  getNextPage,
+		tlr: cur,
+	}
 }
 
 // UpdateContactProfile contact information associated with the support ticket.

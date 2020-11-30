@@ -37,11 +37,11 @@ type AttachedDatabaseConfiguration struct {
 	Location *string `json:"location,omitempty"`
 	// AttachedDatabaseConfigurationProperties - The properties of the attached database configuration.
 	*AttachedDatabaseConfigurationProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -124,8 +124,8 @@ type AttachedDatabaseConfigurationListResult struct {
 	Value *[]AttachedDatabaseConfiguration `json:"value,omitempty"`
 }
 
-// AttachedDatabaseConfigurationProperties class representing the an attached database configuration properties
-// of kind specific.
+// AttachedDatabaseConfigurationProperties class representing the an attached database configuration
+// properties of kind specific.
 type AttachedDatabaseConfigurationProperties struct {
 	// ProvisioningState - READ-ONLY; The provisioned state of the resource. Possible values include: 'Running', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Moving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
@@ -154,8 +154,8 @@ func (adcp AttachedDatabaseConfigurationProperties) MarshalJSON() ([]byte, error
 	return json.Marshal(objectMap)
 }
 
-// AttachedDatabaseConfigurationsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// AttachedDatabaseConfigurationsCreateOrUpdateFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type AttachedDatabaseConfigurationsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -218,15 +218,15 @@ type AzureCapacity struct {
 	Default *int32 `json:"default,omitempty"`
 }
 
-// AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
+// AzureEntityResource the resource model definition for an Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.
 	Etag *string `json:"etag,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -304,11 +304,11 @@ type Cluster struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -452,11 +452,11 @@ type ClusterPrincipalAssignment struct {
 	autorest.Response `json:"-"`
 	// ClusterPrincipalProperties - The cluster principal.
 	*ClusterPrincipalProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -535,8 +535,8 @@ type ClusterPrincipalAssignmentListResult struct {
 	Value *[]ClusterPrincipalAssignment `json:"value,omitempty"`
 }
 
-// ClusterPrincipalAssignmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// ClusterPrincipalAssignmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type ClusterPrincipalAssignmentsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -737,7 +737,8 @@ func (future *ClustersCreateOrUpdateFuture) Result(client ClustersClient) (c Clu
 	return
 }
 
-// ClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ClustersDeleteFuture struct {
 	azure.Future
 }
@@ -834,7 +835,8 @@ func (future *ClustersRemoveLanguageExtensionsFuture) Result(client ClustersClie
 	return
 }
 
-// ClustersStartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ClustersStartFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ClustersStartFuture struct {
 	azure.Future
 }
@@ -878,7 +880,8 @@ func (future *ClustersStopFuture) Result(client ClustersClient) (ar autorest.Res
 	return
 }
 
-// ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ClustersUpdateFuture struct {
 	azure.Future
 }
@@ -918,11 +921,11 @@ type ClusterUpdate struct {
 	Identity *Identity `json:"identity,omitempty"`
 	// ClusterProperties - The cluster properties.
 	*ClusterProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1048,11 +1051,11 @@ type Database struct {
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindDatabase', 'KindReadWrite', 'KindReadOnlyFollowing'
 	Kind Kind `json:"kind,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1224,11 +1227,11 @@ type DatabasePrincipalAssignment struct {
 	autorest.Response `json:"-"`
 	// DatabasePrincipalProperties - The database principal.
 	*DatabasePrincipalProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1307,8 +1310,8 @@ type DatabasePrincipalAssignmentListResult struct {
 	Value *[]DatabasePrincipalAssignment `json:"value,omitempty"`
 }
 
-// DatabasePrincipalAssignmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// DatabasePrincipalAssignmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type DatabasePrincipalAssignmentsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -1437,7 +1440,8 @@ func (future *DatabasesCreateOrUpdateFuture) Result(client DatabasesClient) (dm 
 	return
 }
 
-// DatabasesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DatabasesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DatabasesDeleteFuture struct {
 	azure.Future
 }
@@ -1465,7 +1469,8 @@ type DatabaseStatistics struct {
 	Size *float64 `json:"size,omitempty"`
 }
 
-// DatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DatabasesUpdateFuture struct {
 	azure.Future
 }
@@ -1508,11 +1513,11 @@ type DataConnection struct {
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindDataConnection', 'KindEventHub', 'KindIotHub', 'KindEventGrid'
 	Kind KindBasicDataConnection `json:"kind,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1683,8 +1688,8 @@ func (future *DataConnectionsCreateOrUpdateFuture) Result(client DataConnections
 	return
 }
 
-// DataConnectionsDataConnectionValidationMethodFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// DataConnectionsDataConnectionValidationMethodFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type DataConnectionsDataConnectionValidationMethodFuture struct {
 	azure.Future
 }
@@ -1852,11 +1857,11 @@ type EventGridDataConnection struct {
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindDataConnection', 'KindEventHub', 'KindIotHub', 'KindEventGrid'
 	Kind KindBasicDataConnection `json:"kind,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1996,11 +2001,11 @@ type EventHubDataConnection struct {
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindDataConnection', 'KindEventHub', 'KindIotHub', 'KindEventGrid'
 	Kind KindBasicDataConnection `json:"kind,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2201,11 +2206,11 @@ type IotHubDataConnection struct {
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindDataConnection', 'KindEventHub', 'KindIotHub', 'KindEventGrid'
 	Kind KindBasicDataConnection `json:"kind,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2517,8 +2522,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OptimizedAutoscale a class that contains the optimized auto scale definition.
@@ -2533,14 +2541,14 @@ type OptimizedAutoscale struct {
 	Maximum *int32 `json:"maximum,omitempty"`
 }
 
-// ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
-// required location and tags
+// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
+// have tags and a location
 type ProxyResource struct {
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2552,11 +2560,11 @@ type ReadOnlyFollowingDatabase struct {
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindDatabase', 'KindReadWrite', 'KindReadOnlyFollowing'
 	Kind Kind `json:"kind,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2703,11 +2711,11 @@ type ReadWriteDatabase struct {
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindDatabase', 'KindReadWrite', 'KindReadOnlyFollowing'
 	Kind Kind `json:"kind,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2845,13 +2853,13 @@ func (rwdp ReadWriteDatabaseProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Resource ...
+// Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2886,17 +2894,18 @@ type SkuLocationInfoItem struct {
 	Zones *[]string `json:"zones,omitempty"`
 }
 
-// TrackedResource the resource model definition for a ARM tracked top level resource
+// TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
+// which has 'tags' and a 'location'
 type TrackedResource struct {
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 

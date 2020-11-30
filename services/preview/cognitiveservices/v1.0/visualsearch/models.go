@@ -1416,8 +1416,8 @@ func (cw *CreativeWork) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// CropArea a JSON object consisting of coordinates specifying the four corners of a cropped rectangle within
-// the input image.
+// CropArea a JSON object consisting of coordinates specifying the four corners of a cropped rectangle
+// within the input image.
 type CropArea struct {
 	// Top - The top coordinate of the region to be cropped. The coordinate is a fractional value of the original image's height and is measured from the top edge of the image. Specify the coordinate as a value from 0.0 through 1.0.
 	Top *float64 `json:"top,omitempty"`
@@ -1669,8 +1669,8 @@ func (er ErrorResponse) AsBasicResponseBase() (BasicResponseBase, bool) {
 	return &er, true
 }
 
-// Filters a key-value object consisting of filters that may be specified to limit the results returned by the
-// API. Current available filters: site.
+// Filters a key-value object consisting of filters that may be specified to limit the results returned by
+// the API. Current available filters: site.
 type Filters struct {
 	// Site - The URL of the site to return similar images and similar products from. (e.g., "www.bing.com", "bing.com").
 	Site *string `json:"site,omitempty"`
@@ -2951,8 +2951,8 @@ func (iea *ImageEntityAction) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ImageInfo a JSON object that identities the image to get insights of . It also includes the optional crop
-// area that you use to identify the region of interest in the image.
+// ImageInfo a JSON object that identities the image to get insights of . It also includes the optional
+// crop area that you use to identify the region of interest in the image.
 type ImageInfo struct {
 	// ImageInsightsToken - An image insights token. To get the insights token, call one of the Image Search APIs (for example, /images/search). In the search results, the [Image](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#image) object's [imageInsightsToken](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#image-imageinsightstoken) field contains the token. The imageInsightsToken and url fields mutually exclusive; do not specify both. Do not specify an insights token if the request includes the image form data.
 	ImageInsightsToken *string `json:"imageInsightsToken,omitempty"`
@@ -5412,8 +5412,8 @@ func (issa *ImageShoppingSourcesAction) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ImagesImageMetadata defines a count of the number of websites where you can shop or perform other actions
-// related to the image.
+// ImagesImageMetadata defines a count of the number of websites where you can shop or perform other
+// actions related to the image.
 type ImagesImageMetadata struct {
 	// ShoppingSourcesCount - READ-ONLY; The number of websites that sell the products seen in the image.
 	ShoppingSourcesCount *int32 `json:"shoppingSourcesCount,omitempty"`
@@ -6068,8 +6068,8 @@ func (i Intangible) AsBasicResponseBase() (BasicResponseBase, bool) {
 	return &i, true
 }
 
-// KnowledgeRequest a JSON object containing information about the request, such as filters for the resulting
-// actions.
+// KnowledgeRequest a JSON object containing information about the request, such as filters for the
+// resulting actions.
 type KnowledgeRequest struct {
 	// Filters - A key-value object consisting of filters that may be specified to limit the results returned by the API.
 	Filters *Filters `json:"filters,omitempty"`
@@ -6563,8 +6563,8 @@ func (mo *MediaObject) UnmarshalJSON(body []byte) error {
 }
 
 // NormalizedQuadrilateral defines a region of an image. The region is a convex quadrilateral defined by
-// coordinates of its top left, top right, bottom left, and bottom right points. The coordinates are fractional
-// values of the original image's width and height in the range 0.0 through 1.0.
+// coordinates of its top left, top right, bottom left, and bottom right points. The coordinates are
+// fractional values of the original image's width and height in the range 0.0 through 1.0.
 type NormalizedQuadrilateral struct {
 	// TopLeft - The top left corner coordinate.
 	TopLeft *Point2D `json:"topLeft,omitempty"`
@@ -8368,8 +8368,8 @@ type RelatedSearchesModule struct {
 	Value *[]Query `json:"value,omitempty"`
 }
 
-// Request a JSON object that contains information about the image to get insights of. Specify this object only
-// in a knowledgeRequest form data.
+// Request a JSON object that contains information about the image to get insights of. Specify this object
+// only in a knowledgeRequest form data.
 type Request struct {
 	// ImageInfo - A JSON object that identities the image to get insights of.
 	ImageInfo *ImageInfo `json:"imageInfo,omitempty"`

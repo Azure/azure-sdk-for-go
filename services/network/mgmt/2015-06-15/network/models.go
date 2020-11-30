@@ -30,8 +30,8 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2015-06-15/network"
 
-// AddressSpace addressSpace contains an array of IP address ranges that can be used by subnets of the virtual
-// network.
+// AddressSpace addressSpace contains an array of IP address ranges that can be used by subnets of the
+// virtual network.
 type AddressSpace struct {
 	// AddressPrefixes - A list of address blocks reserved for this virtual network in CIDR notation.
 	AddressPrefixes *[]string `json:"addressPrefixes,omitempty"`
@@ -242,8 +242,8 @@ func (agbap *ApplicationGatewayBackendAddressPool) UnmarshalJSON(body []byte) er
 	return nil
 }
 
-// ApplicationGatewayBackendAddressPoolPropertiesFormat properties of Backend Address Pool of an application
-// gateway.
+// ApplicationGatewayBackendAddressPoolPropertiesFormat properties of Backend Address Pool of an
+// application gateway.
 type ApplicationGatewayBackendAddressPoolPropertiesFormat struct {
 	// BackendIPConfigurations - Collection of references to IPs defined in network interfaces.
 	BackendIPConfigurations *[]InterfaceIPConfiguration `json:"backendIPConfigurations,omitempty"`
@@ -712,7 +712,8 @@ func (agic *ApplicationGatewayIPConfiguration) UnmarshalJSON(body []byte) error 
 	return nil
 }
 
-// ApplicationGatewayIPConfigurationPropertiesFormat properties of IP configuration of an application gateway.
+// ApplicationGatewayIPConfigurationPropertiesFormat properties of IP configuration of an application
+// gateway.
 type ApplicationGatewayIPConfigurationPropertiesFormat struct {
 	// Subnet - Reference of the subnet resource. A subnet from where application gateway gets its private address.
 	Subnet *SubResource `json:"subnet,omitempty"`
@@ -872,8 +873,11 @@ func (page ApplicationGatewayListResultPage) Values() []ApplicationGateway {
 }
 
 // Creates a new instance of the ApplicationGatewayListResultPage type.
-func NewApplicationGatewayListResultPage(getNextPage func(context.Context, ApplicationGatewayListResult) (ApplicationGatewayListResult, error)) ApplicationGatewayListResultPage {
-	return ApplicationGatewayListResultPage{fn: getNextPage}
+func NewApplicationGatewayListResultPage(cur ApplicationGatewayListResult, getNextPage func(context.Context, ApplicationGatewayListResult) (ApplicationGatewayListResult, error)) ApplicationGatewayListResultPage {
+	return ApplicationGatewayListResultPage{
+		fn:   getNextPage,
+		aglr: cur,
+	}
 }
 
 // ApplicationGatewayPathRule path rule of URL path map of an application gateway.
@@ -1223,8 +1227,8 @@ func (agrrr *ApplicationGatewayRequestRoutingRule) UnmarshalJSON(body []byte) er
 	return nil
 }
 
-// ApplicationGatewayRequestRoutingRulePropertiesFormat properties of request routing rule of the application
-// gateway.
+// ApplicationGatewayRequestRoutingRulePropertiesFormat properties of request routing rule of the
+// application gateway.
 type ApplicationGatewayRequestRoutingRulePropertiesFormat struct {
 	// RuleType - Rule type. Possible values are: 'Basic' and 'PathBasedRouting'. Possible values include: 'Basic', 'PathBasedRouting'
 	RuleType ApplicationGatewayRequestRoutingRuleType `json:"ruleType,omitempty"`
@@ -1269,8 +1273,8 @@ func (future *ApplicationGatewaysCreateOrUpdateFuture) Result(client Application
 	return
 }
 
-// ApplicationGatewaysDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ApplicationGatewaysDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ApplicationGatewaysDeleteFuture struct {
 	azure.Future
 }
@@ -1382,7 +1386,8 @@ func (agsc *ApplicationGatewaySslCertificate) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ApplicationGatewaySslCertificatePropertiesFormat properties of SSL certificates of an application gateway.
+// ApplicationGatewaySslCertificatePropertiesFormat properties of SSL certificates of an application
+// gateway.
 type ApplicationGatewaySslCertificatePropertiesFormat struct {
 	// Data - Base-64 encoded pfx certificate. Only applicable in PUT Request.
 	Data *string `json:"data,omitempty"`
@@ -1394,8 +1399,8 @@ type ApplicationGatewaySslCertificatePropertiesFormat struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// ApplicationGatewaysStartFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ApplicationGatewaysStartFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ApplicationGatewaysStartFuture struct {
 	azure.Future
 }
@@ -1533,8 +1538,8 @@ type ApplicationGatewayURLPathMapPropertiesFormat struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// AuthorizationListResult response for ListAuthorizations API service call retrieves all authorizations that
-// belongs to an ExpressRouteCircuit.
+// AuthorizationListResult response for ListAuthorizations API service call retrieves all authorizations
+// that belongs to an ExpressRouteCircuit.
 type AuthorizationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The authorizations in an ExpressRoute Circuit.
@@ -1543,8 +1548,8 @@ type AuthorizationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// AuthorizationListResultIterator provides access to a complete listing of ExpressRouteCircuitAuthorization
-// values.
+// AuthorizationListResultIterator provides access to a complete listing of
+// ExpressRouteCircuitAuthorization values.
 type AuthorizationListResultIterator struct {
 	i    int
 	page AuthorizationListResultPage
@@ -1687,8 +1692,11 @@ func (page AuthorizationListResultPage) Values() []ExpressRouteCircuitAuthorizat
 }
 
 // Creates a new instance of the AuthorizationListResultPage type.
-func NewAuthorizationListResultPage(getNextPage func(context.Context, AuthorizationListResult) (AuthorizationListResult, error)) AuthorizationListResultPage {
-	return AuthorizationListResultPage{fn: getNextPage}
+func NewAuthorizationListResultPage(cur AuthorizationListResult, getNextPage func(context.Context, AuthorizationListResult) (AuthorizationListResult, error)) AuthorizationListResultPage {
+	return AuthorizationListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AuthorizationPropertiesFormat ...
@@ -1702,11 +1710,11 @@ type AuthorizationPropertiesFormat struct {
 }
 
 // AzureAsyncOperationResult the response body contains the status of the specified asynchronous operation,
-// indicating whether it has succeeded, is in progress, or has failed. Note that this status is distinct from
-// the HTTP status code returned for the Get Operation Status operation itself. If the asynchronous operation
-// succeeded, the response body includes the HTTP status code for the successful request. If the asynchronous
-// operation failed, the response body includes the HTTP status code for the failed request and error
-// information regarding the failure.
+// indicating whether it has succeeded, is in progress, or has failed. Note that this status is distinct
+// from the HTTP status code returned for the Get Operation Status operation itself. If the asynchronous
+// operation succeeded, the response body includes the HTTP status code for the successful request. If the
+// asynchronous operation failed, the response body includes the HTTP status code for the failed request
+// and error information regarding the failure.
 type AzureAsyncOperationResult struct {
 	// Status - Status of the Azure async operation. Possible values are: 'InProgress', 'Succeeded', and 'Failed'. Possible values include: 'InProgress', 'Succeeded', 'Failed'
 	Status OperationStatus `json:"status,omitempty"`
@@ -1851,8 +1859,8 @@ type ConnectionSharedKeyResult struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// DhcpOptions dhcpOptions contains an array of DNS servers available to VMs deployed in the virtual network.
-// Standard DHCP option for a subnet overrides VNET DHCP options.
+// DhcpOptions dhcpOptions contains an array of DNS servers available to VMs deployed in the virtual
+// network. Standard DHCP option for a subnet overrides VNET DHCP options.
 type DhcpOptions struct {
 	// DNSServers - The list of DNS servers IP addresses.
 	DNSServers *[]string `json:"dnsServers,omitempty"`
@@ -2130,8 +2138,8 @@ func (future *ExpressRouteCircuitAuthorizationsCreateOrUpdateFuture) Result(clie
 	return
 }
 
-// ExpressRouteCircuitAuthorizationsDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ExpressRouteCircuitAuthorizationsDeleteFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type ExpressRouteCircuitAuthorizationsDeleteFuture struct {
 	azure.Future
 }
@@ -2162,7 +2170,8 @@ type ExpressRouteCircuitListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ExpressRouteCircuitListResultIterator provides access to a complete listing of ExpressRouteCircuit values.
+// ExpressRouteCircuitListResultIterator provides access to a complete listing of ExpressRouteCircuit
+// values.
 type ExpressRouteCircuitListResultIterator struct {
 	i    int
 	page ExpressRouteCircuitListResultPage
@@ -2305,8 +2314,11 @@ func (page ExpressRouteCircuitListResultPage) Values() []ExpressRouteCircuit {
 }
 
 // Creates a new instance of the ExpressRouteCircuitListResultPage type.
-func NewExpressRouteCircuitListResultPage(getNextPage func(context.Context, ExpressRouteCircuitListResult) (ExpressRouteCircuitListResult, error)) ExpressRouteCircuitListResultPage {
-	return ExpressRouteCircuitListResultPage{fn: getNextPage}
+func NewExpressRouteCircuitListResultPage(cur ExpressRouteCircuitListResult, getNextPage func(context.Context, ExpressRouteCircuitListResult) (ExpressRouteCircuitListResult, error)) ExpressRouteCircuitListResultPage {
+	return ExpressRouteCircuitListResultPage{
+		fn:    getNextPage,
+		erclr: cur,
+	}
 }
 
 // ExpressRouteCircuitPeering peering in an ExpressRouteCircuit resource.
@@ -2402,8 +2414,8 @@ type ExpressRouteCircuitPeeringConfig struct {
 	RoutingRegistryName *string `json:"routingRegistryName,omitempty"`
 }
 
-// ExpressRouteCircuitPeeringListResult response for ListPeering API service call retrieves all peerings that
-// belong to an ExpressRouteCircuit.
+// ExpressRouteCircuitPeeringListResult response for ListPeering API service call retrieves all peerings
+// that belong to an ExpressRouteCircuit.
 type ExpressRouteCircuitPeeringListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The peerings in an express route circuit.
@@ -2556,8 +2568,11 @@ func (page ExpressRouteCircuitPeeringListResultPage) Values() []ExpressRouteCirc
 }
 
 // Creates a new instance of the ExpressRouteCircuitPeeringListResultPage type.
-func NewExpressRouteCircuitPeeringListResultPage(getNextPage func(context.Context, ExpressRouteCircuitPeeringListResult) (ExpressRouteCircuitPeeringListResult, error)) ExpressRouteCircuitPeeringListResultPage {
-	return ExpressRouteCircuitPeeringListResultPage{fn: getNextPage}
+func NewExpressRouteCircuitPeeringListResultPage(cur ExpressRouteCircuitPeeringListResult, getNextPage func(context.Context, ExpressRouteCircuitPeeringListResult) (ExpressRouteCircuitPeeringListResult, error)) ExpressRouteCircuitPeeringListResultPage {
+	return ExpressRouteCircuitPeeringListResultPage{
+		fn:     getNextPage,
+		ercplr: cur,
+	}
 }
 
 // ExpressRouteCircuitPeeringPropertiesFormat ...
@@ -2590,8 +2605,8 @@ type ExpressRouteCircuitPeeringPropertiesFormat struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// ExpressRouteCircuitPeeringsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// ExpressRouteCircuitPeeringsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type ExpressRouteCircuitPeeringsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -2674,8 +2689,8 @@ type ExpressRouteCircuitRoutesTable struct {
 	AsPath *string `json:"asPath,omitempty"`
 }
 
-// ExpressRouteCircuitsArpTableListResult response for ListArpTable associated with the Express Route Circuits
-// API.
+// ExpressRouteCircuitsArpTableListResult response for ListArpTable associated with the Express Route
+// Circuits API.
 type ExpressRouteCircuitsArpTableListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Gets list of the ARP table.
@@ -2828,8 +2843,11 @@ func (page ExpressRouteCircuitsArpTableListResultPage) Values() []ExpressRouteCi
 }
 
 // Creates a new instance of the ExpressRouteCircuitsArpTableListResultPage type.
-func NewExpressRouteCircuitsArpTableListResultPage(getNextPage func(context.Context, ExpressRouteCircuitsArpTableListResult) (ExpressRouteCircuitsArpTableListResult, error)) ExpressRouteCircuitsArpTableListResultPage {
-	return ExpressRouteCircuitsArpTableListResultPage{fn: getNextPage}
+func NewExpressRouteCircuitsArpTableListResultPage(cur ExpressRouteCircuitsArpTableListResult, getNextPage func(context.Context, ExpressRouteCircuitsArpTableListResult) (ExpressRouteCircuitsArpTableListResult, error)) ExpressRouteCircuitsArpTableListResultPage {
+	return ExpressRouteCircuitsArpTableListResultPage{
+		fn:      getNextPage,
+		ercatlr: cur,
+	}
 }
 
 // ExpressRouteCircuitsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -2861,8 +2879,8 @@ func (future *ExpressRouteCircuitsCreateOrUpdateFuture) Result(client ExpressRou
 	return
 }
 
-// ExpressRouteCircuitsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ExpressRouteCircuitsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ExpressRouteCircuitsDeleteFuture struct {
 	azure.Future
 }
@@ -2884,7 +2902,8 @@ func (future *ExpressRouteCircuitsDeleteFuture) Result(client ExpressRouteCircui
 	return
 }
 
-// ExpressRouteCircuitServiceProviderProperties contains ServiceProviderProperties in an ExpressRouteCircuit.
+// ExpressRouteCircuitServiceProviderProperties contains ServiceProviderProperties in an
+// ExpressRouteCircuit.
 type ExpressRouteCircuitServiceProviderProperties struct {
 	// ServiceProviderName - The serviceProviderName.
 	ServiceProviderName *string `json:"serviceProviderName,omitempty"`
@@ -3058,8 +3077,11 @@ func (page ExpressRouteCircuitsRoutesTableListResultPage) Values() []ExpressRout
 }
 
 // Creates a new instance of the ExpressRouteCircuitsRoutesTableListResultPage type.
-func NewExpressRouteCircuitsRoutesTableListResultPage(getNextPage func(context.Context, ExpressRouteCircuitsRoutesTableListResult) (ExpressRouteCircuitsRoutesTableListResult, error)) ExpressRouteCircuitsRoutesTableListResultPage {
-	return ExpressRouteCircuitsRoutesTableListResultPage{fn: getNextPage}
+func NewExpressRouteCircuitsRoutesTableListResultPage(cur ExpressRouteCircuitsRoutesTableListResult, getNextPage func(context.Context, ExpressRouteCircuitsRoutesTableListResult) (ExpressRouteCircuitsRoutesTableListResult, error)) ExpressRouteCircuitsRoutesTableListResultPage {
+	return ExpressRouteCircuitsRoutesTableListResultPage{
+		fn:      getNextPage,
+		ercrtlr: cur,
+	}
 }
 
 // ExpressRouteCircuitsStatsListResult response for ListStats from Express Route Circuits Api service call
@@ -3215,8 +3237,11 @@ func (page ExpressRouteCircuitsStatsListResultPage) Values() []ExpressRouteCircu
 }
 
 // Creates a new instance of the ExpressRouteCircuitsStatsListResultPage type.
-func NewExpressRouteCircuitsStatsListResultPage(getNextPage func(context.Context, ExpressRouteCircuitsStatsListResult) (ExpressRouteCircuitsStatsListResult, error)) ExpressRouteCircuitsStatsListResultPage {
-	return ExpressRouteCircuitsStatsListResultPage{fn: getNextPage}
+func NewExpressRouteCircuitsStatsListResultPage(cur ExpressRouteCircuitsStatsListResult, getNextPage func(context.Context, ExpressRouteCircuitsStatsListResult) (ExpressRouteCircuitsStatsListResult, error)) ExpressRouteCircuitsStatsListResultPage {
+	return ExpressRouteCircuitsStatsListResultPage{
+		fn:     getNextPage,
+		ercslr: cur,
+	}
 }
 
 // ExpressRouteCircuitStats contains stats associated with the peering.
@@ -3491,8 +3516,11 @@ func (page ExpressRouteServiceProviderListResultPage) Values() []ExpressRouteSer
 }
 
 // Creates a new instance of the ExpressRouteServiceProviderListResultPage type.
-func NewExpressRouteServiceProviderListResultPage(getNextPage func(context.Context, ExpressRouteServiceProviderListResult) (ExpressRouteServiceProviderListResult, error)) ExpressRouteServiceProviderListResultPage {
-	return ExpressRouteServiceProviderListResultPage{fn: getNextPage}
+func NewExpressRouteServiceProviderListResultPage(cur ExpressRouteServiceProviderListResult, getNextPage func(context.Context, ExpressRouteServiceProviderListResult) (ExpressRouteServiceProviderListResult, error)) ExpressRouteServiceProviderListResultPage {
+	return ExpressRouteServiceProviderListResultPage{
+		fn:     getNextPage,
+		ersplr: cur,
+	}
 }
 
 // ExpressRouteServiceProviderPropertiesFormat properties of ExpressRouteServiceProvider.
@@ -4180,8 +4208,11 @@ func (page InterfaceListResultPage) Values() []Interface {
 }
 
 // Creates a new instance of the InterfaceListResultPage type.
-func NewInterfaceListResultPage(getNextPage func(context.Context, InterfaceListResult) (InterfaceListResult, error)) InterfaceListResultPage {
-	return InterfaceListResultPage{fn: getNextPage}
+func NewInterfaceListResultPage(cur InterfaceListResult, getNextPage func(context.Context, InterfaceListResult) (InterfaceListResult, error)) InterfaceListResultPage {
+	return InterfaceListResultPage{
+		fn:  getNextPage,
+		ilr: cur,
+	}
 }
 
 // InterfacePropertiesFormat networkInterface properties.
@@ -4206,8 +4237,8 @@ type InterfacePropertiesFormat struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// InterfacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// InterfacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type InterfacesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -4235,7 +4266,8 @@ func (future *InterfacesCreateOrUpdateFuture) Result(client InterfacesClient) (i
 	return
 }
 
-// InterfacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// InterfacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type InterfacesDeleteFuture struct {
 	azure.Future
 }
@@ -4620,8 +4652,11 @@ func (page LoadBalancerListResultPage) Values() []LoadBalancer {
 }
 
 // Creates a new instance of the LoadBalancerListResultPage type.
-func NewLoadBalancerListResultPage(getNextPage func(context.Context, LoadBalancerListResult) (LoadBalancerListResult, error)) LoadBalancerListResultPage {
-	return LoadBalancerListResultPage{fn: getNextPage}
+func NewLoadBalancerListResultPage(cur LoadBalancerListResult, getNextPage func(context.Context, LoadBalancerListResult) (LoadBalancerListResult, error)) LoadBalancerListResultPage {
+	return LoadBalancerListResultPage{
+		fn:   getNextPage,
+		lblr: cur,
+	}
 }
 
 // LoadBalancerPropertiesFormat properties of the load balancer.
@@ -4646,8 +4681,8 @@ type LoadBalancerPropertiesFormat struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// LoadBalancersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// LoadBalancersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type LoadBalancersCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -4928,7 +4963,8 @@ type LocalNetworkGatewayListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// LocalNetworkGatewayListResultIterator provides access to a complete listing of LocalNetworkGateway values.
+// LocalNetworkGatewayListResultIterator provides access to a complete listing of LocalNetworkGateway
+// values.
 type LocalNetworkGatewayListResultIterator struct {
 	i    int
 	page LocalNetworkGatewayListResultPage
@@ -5071,8 +5107,11 @@ func (page LocalNetworkGatewayListResultPage) Values() []LocalNetworkGateway {
 }
 
 // Creates a new instance of the LocalNetworkGatewayListResultPage type.
-func NewLocalNetworkGatewayListResultPage(getNextPage func(context.Context, LocalNetworkGatewayListResult) (LocalNetworkGatewayListResult, error)) LocalNetworkGatewayListResultPage {
-	return LocalNetworkGatewayListResultPage{fn: getNextPage}
+func NewLocalNetworkGatewayListResultPage(cur LocalNetworkGatewayListResult, getNextPage func(context.Context, LocalNetworkGatewayListResult) (LocalNetworkGatewayListResult, error)) LocalNetworkGatewayListResultPage {
+	return LocalNetworkGatewayListResultPage{
+		fn:    getNextPage,
+		lnglr: cur,
+	}
 }
 
 // LocalNetworkGatewayPropertiesFormat localNetworkGateway properties
@@ -5118,8 +5157,8 @@ func (future *LocalNetworkGatewaysCreateOrUpdateFuture) Result(client LocalNetwo
 	return
 }
 
-// LocalNetworkGatewaysDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// LocalNetworkGatewaysDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type LocalNetworkGatewaysDeleteFuture struct {
 	azure.Future
 }
@@ -5662,8 +5701,11 @@ func (page PublicIPAddressListResultPage) Values() []PublicIPAddress {
 }
 
 // Creates a new instance of the PublicIPAddressListResultPage type.
-func NewPublicIPAddressListResultPage(getNextPage func(context.Context, PublicIPAddressListResult) (PublicIPAddressListResult, error)) PublicIPAddressListResultPage {
-	return PublicIPAddressListResultPage{fn: getNextPage}
+func NewPublicIPAddressListResultPage(cur PublicIPAddressListResult, getNextPage func(context.Context, PublicIPAddressListResult) (PublicIPAddressListResult, error)) PublicIPAddressListResultPage {
+	return PublicIPAddressListResultPage{
+		fn:    getNextPage,
+		pialr: cur,
+	}
 }
 
 // PublicIPAddressPropertiesFormat public IP address properties.
@@ -5944,8 +5986,11 @@ func (page RouteListResultPage) Values() []Route {
 }
 
 // Creates a new instance of the RouteListResultPage type.
-func NewRouteListResultPage(getNextPage func(context.Context, RouteListResult) (RouteListResult, error)) RouteListResultPage {
-	return RouteListResultPage{fn: getNextPage}
+func NewRouteListResultPage(cur RouteListResult, getNextPage func(context.Context, RouteListResult) (RouteListResult, error)) RouteListResultPage {
+	return RouteListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // RoutePropertiesFormat route resource
@@ -6280,8 +6325,11 @@ func (page RouteTableListResultPage) Values() []RouteTable {
 }
 
 // Creates a new instance of the RouteTableListResultPage type.
-func NewRouteTableListResultPage(getNextPage func(context.Context, RouteTableListResult) (RouteTableListResult, error)) RouteTableListResultPage {
-	return RouteTableListResultPage{fn: getNextPage}
+func NewRouteTableListResultPage(cur RouteTableListResult, getNextPage func(context.Context, RouteTableListResult) (RouteTableListResult, error)) RouteTableListResultPage {
+	return RouteTableListResultPage{
+		fn:   getNextPage,
+		rtlr: cur,
+	}
 }
 
 // RouteTablePropertiesFormat route Table resource
@@ -6294,8 +6342,8 @@ type RouteTablePropertiesFormat struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// RouteTablesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// RouteTablesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type RouteTablesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -6615,8 +6663,11 @@ func (page SecurityGroupListResultPage) Values() []SecurityGroup {
 }
 
 // Creates a new instance of the SecurityGroupListResultPage type.
-func NewSecurityGroupListResultPage(getNextPage func(context.Context, SecurityGroupListResult) (SecurityGroupListResult, error)) SecurityGroupListResultPage {
-	return SecurityGroupListResultPage{fn: getNextPage}
+func NewSecurityGroupListResultPage(cur SecurityGroupListResult, getNextPage func(context.Context, SecurityGroupListResult) (SecurityGroupListResult, error)) SecurityGroupListResultPage {
+	return SecurityGroupListResultPage{
+		fn:   getNextPage,
+		sglr: cur,
+	}
 }
 
 // SecurityGroupPropertiesFormat network Security Group resource.
@@ -6921,8 +6972,11 @@ func (page SecurityRuleListResultPage) Values() []SecurityRule {
 }
 
 // Creates a new instance of the SecurityRuleListResultPage type.
-func NewSecurityRuleListResultPage(getNextPage func(context.Context, SecurityRuleListResult) (SecurityRuleListResult, error)) SecurityRuleListResultPage {
-	return SecurityRuleListResultPage{fn: getNextPage}
+func NewSecurityRuleListResultPage(cur SecurityRuleListResult, getNextPage func(context.Context, SecurityRuleListResult) (SecurityRuleListResult, error)) SecurityRuleListResultPage {
+	return SecurityRuleListResultPage{
+		fn:   getNextPage,
+		srlr: cur,
+	}
 }
 
 // SecurityRulePropertiesFormat ...
@@ -6949,8 +7003,8 @@ type SecurityRulePropertiesFormat struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// SecurityRulesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// SecurityRulesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type SecurityRulesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -7241,8 +7295,11 @@ func (page SubnetListResultPage) Values() []Subnet {
 }
 
 // Creates a new instance of the SubnetListResultPage type.
-func NewSubnetListResultPage(getNextPage func(context.Context, SubnetListResult) (SubnetListResult, error)) SubnetListResultPage {
-	return SubnetListResultPage{fn: getNextPage}
+func NewSubnetListResultPage(cur SubnetListResult, getNextPage func(context.Context, SubnetListResult) (SubnetListResult, error)) SubnetListResultPage {
+	return SubnetListResultPage{
+		fn:  getNextPage,
+		slr: cur,
+	}
 }
 
 // SubnetPropertiesFormat ...
@@ -7288,7 +7345,8 @@ func (future *SubnetsCreateOrUpdateFuture) Result(client SubnetsClient) (s Subne
 	return
 }
 
-// SubnetsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// SubnetsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SubnetsDeleteFuture struct {
 	azure.Future
 }
@@ -7488,8 +7546,11 @@ func (page UsagesListResultPage) Values() []Usage {
 }
 
 // Creates a new instance of the UsagesListResultPage type.
-func NewUsagesListResultPage(getNextPage func(context.Context, UsagesListResult) (UsagesListResult, error)) UsagesListResultPage {
-	return UsagesListResultPage{fn: getNextPage}
+func NewUsagesListResultPage(cur UsagesListResult, getNextPage func(context.Context, UsagesListResult) (UsagesListResult, error)) UsagesListResultPage {
+	return UsagesListResultPage{
+		fn:  getNextPage,
+		ulr: cur,
+	}
 }
 
 // VirtualNetwork virtual Network resource.
@@ -7843,8 +7904,8 @@ func (vngc *VirtualNetworkGatewayConnection) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// VirtualNetworkGatewayConnectionListResult response for the ListVirtualNetworkGatewayConnections API service
-// call
+// VirtualNetworkGatewayConnectionListResult response for the ListVirtualNetworkGatewayConnections API
+// service call
 type VirtualNetworkGatewayConnectionListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Gets a list of VirtualNetworkGatewayConnection resources that exists in a resource group.
@@ -7997,8 +8058,11 @@ func (page VirtualNetworkGatewayConnectionListResultPage) Values() []VirtualNetw
 }
 
 // Creates a new instance of the VirtualNetworkGatewayConnectionListResultPage type.
-func NewVirtualNetworkGatewayConnectionListResultPage(getNextPage func(context.Context, VirtualNetworkGatewayConnectionListResult) (VirtualNetworkGatewayConnectionListResult, error)) VirtualNetworkGatewayConnectionListResultPage {
-	return VirtualNetworkGatewayConnectionListResultPage{fn: getNextPage}
+func NewVirtualNetworkGatewayConnectionListResultPage(cur VirtualNetworkGatewayConnectionListResult, getNextPage func(context.Context, VirtualNetworkGatewayConnectionListResult) (VirtualNetworkGatewayConnectionListResult, error)) VirtualNetworkGatewayConnectionListResultPage {
+	return VirtualNetworkGatewayConnectionListResultPage{
+		fn:     getNextPage,
+		vngclr: cur,
+	}
 }
 
 // VirtualNetworkGatewayConnectionPropertiesFormat virtualNetworkGatewayConnection properties
@@ -8059,8 +8123,8 @@ func (future *VirtualNetworkGatewayConnectionsCreateOrUpdateFuture) Result(clien
 	return
 }
 
-// VirtualNetworkGatewayConnectionsDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// VirtualNetworkGatewayConnectionsDeleteFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type VirtualNetworkGatewayConnectionsDeleteFuture struct {
 	azure.Future
 }
@@ -8111,8 +8175,8 @@ func (future *VirtualNetworkGatewayConnectionsResetSharedKeyFuture) Result(clien
 	return
 }
 
-// VirtualNetworkGatewayConnectionsSetSharedKeyFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// VirtualNetworkGatewayConnectionsSetSharedKeyFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type VirtualNetworkGatewayConnectionsSetSharedKeyFuture struct {
 	azure.Future
 }
@@ -8387,8 +8451,11 @@ func (page VirtualNetworkGatewayListResultPage) Values() []VirtualNetworkGateway
 }
 
 // Creates a new instance of the VirtualNetworkGatewayListResultPage type.
-func NewVirtualNetworkGatewayListResultPage(getNextPage func(context.Context, VirtualNetworkGatewayListResult) (VirtualNetworkGatewayListResult, error)) VirtualNetworkGatewayListResultPage {
-	return VirtualNetworkGatewayListResultPage{fn: getNextPage}
+func NewVirtualNetworkGatewayListResultPage(cur VirtualNetworkGatewayListResult, getNextPage func(context.Context, VirtualNetworkGatewayListResult) (VirtualNetworkGatewayListResult, error)) VirtualNetworkGatewayListResultPage {
+	return VirtualNetworkGatewayListResultPage{
+		fn:    getNextPage,
+		vnglr: cur,
+	}
 }
 
 // VirtualNetworkGatewayPropertiesFormat virtualNetworkGateway properties
@@ -8506,8 +8573,8 @@ type VirtualNetworkGatewaySku struct {
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 
-// VirtualNetworkGatewaysResetFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// VirtualNetworkGatewaysResetFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type VirtualNetworkGatewaysResetFuture struct {
 	azure.Future
 }
@@ -8687,8 +8754,11 @@ func (page VirtualNetworkListResultPage) Values() []VirtualNetwork {
 }
 
 // Creates a new instance of the VirtualNetworkListResultPage type.
-func NewVirtualNetworkListResultPage(getNextPage func(context.Context, VirtualNetworkListResult) (VirtualNetworkListResult, error)) VirtualNetworkListResultPage {
-	return VirtualNetworkListResultPage{fn: getNextPage}
+func NewVirtualNetworkListResultPage(cur VirtualNetworkListResult, getNextPage func(context.Context, VirtualNetworkListResult) (VirtualNetworkListResult, error)) VirtualNetworkListResultPage {
+	return VirtualNetworkListResultPage{
+		fn:   getNextPage,
+		vnlr: cur,
+	}
 }
 
 // VirtualNetworkPropertiesFormat ...

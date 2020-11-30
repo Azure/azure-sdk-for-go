@@ -328,8 +328,8 @@ func (itd ImageTemplateDistributor) AsBasicImageTemplateDistributor() (BasicImag
 	return &itd, true
 }
 
-// ImageTemplateIsoSource describes an image source that is an installation ISO. Currently only supports Red
-// Hat Enterprise Linux 7.2-7.5 ISO's.
+// ImageTemplateIsoSource describes an image source that is an installation ISO. Currently only supports
+// Red Hat Enterprise Linux 7.2-7.5 ISO's.
 type ImageTemplateIsoSource struct {
 	// SourceURI - URL to get the ISO image. This URL has to be accessible to the resource provider at the time of the imageTemplate creation.
 	SourceURI *string `json:"sourceURI,omitempty"`
@@ -540,8 +540,11 @@ func (page ImageTemplateListResultPage) Values() []ImageTemplate {
 }
 
 // Creates a new instance of the ImageTemplateListResultPage type.
-func NewImageTemplateListResultPage(getNextPage func(context.Context, ImageTemplateListResult) (ImageTemplateListResult, error)) ImageTemplateListResultPage {
-	return ImageTemplateListResultPage{fn: getNextPage}
+func NewImageTemplateListResultPage(cur ImageTemplateListResult, getNextPage func(context.Context, ImageTemplateListResult) (ImageTemplateListResult, error)) ImageTemplateListResultPage {
+	return ImageTemplateListResultPage{
+		fn:   getNextPage,
+		itlr: cur,
+	}
 }
 
 // ImageTemplateManagedImageDistributor distribute as a Managed Disk Image.
@@ -1123,8 +1126,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // ProvisioningError ...
@@ -1387,8 +1393,11 @@ func (page RunOutputCollectionPage) Values() []RunOutput {
 }
 
 // Creates a new instance of the RunOutputCollectionPage type.
-func NewRunOutputCollectionPage(getNextPage func(context.Context, RunOutputCollection) (RunOutputCollection, error)) RunOutputCollectionPage {
-	return RunOutputCollectionPage{fn: getNextPage}
+func NewRunOutputCollectionPage(cur RunOutputCollection, getNextPage func(context.Context, RunOutputCollection) (RunOutputCollection, error)) RunOutputCollectionPage {
+	return RunOutputCollectionPage{
+		fn:  getNextPage,
+		roc: cur,
+	}
 }
 
 // RunOutputProperties ...
@@ -1427,8 +1436,8 @@ func (sr SubResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// VirtualMachineImageTemplateCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// VirtualMachineImageTemplateCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type VirtualMachineImageTemplateCreateOrUpdateFuture struct {
 	azure.Future
 }

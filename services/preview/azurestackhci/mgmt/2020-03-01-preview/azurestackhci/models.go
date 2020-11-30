@@ -30,15 +30,25 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/azurestackhci/mgmt/2020-03-01-preview/azurestackhci"
 
-// AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
+// AvailableOperations available operations of the service
+type AvailableOperations struct {
+	autorest.Response `json:"-"`
+	// Value - Collection of available operation details
+	Value *[]OperationDetail `json:"value,omitempty"`
+	// NextLink - URL client should use to fetch the next page (per server side paging).
+	// It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AzureEntityResource the resource model definition for an Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.
 	Etag *string `json:"etag,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -51,11 +61,11 @@ type Cluster struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -304,8 +314,11 @@ func (page ClusterListPage) Values() []Cluster {
 }
 
 // Creates a new instance of the ClusterListPage type.
-func NewClusterListPage(getNextPage func(context.Context, ClusterList) (ClusterList, error)) ClusterListPage {
-	return ClusterListPage{fn: getNextPage}
+func NewClusterListPage(cur ClusterList, getNextPage func(context.Context, ClusterList) (ClusterList, error)) ClusterListPage {
+	return ClusterListPage{
+		fn: getNextPage,
+		cl: cur,
+	}
 }
 
 // ClusterNode cluster node details.
@@ -334,7 +347,7 @@ type ClusterNode struct {
 type ClusterProperties struct {
 	// ProvisioningState - READ-ONLY; Provisioning state. Possible values include: 'Succeeded', 'Failed', 'Canceled', 'Accepted', 'Provisioning'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// Status - READ-ONLY; Status of the cluster agent. Possible values include: 'NeverConnected', 'ConnectedRecently', 'NotConnectedRecently', 'Expired', 'Error'
+	// Status - READ-ONLY; Status of the cluster agent. Possible values include: 'NotYetRegistered', 'ConnectedRecently', 'NotConnectedRecently', 'Disconnected', 'Error'
 	Status Status `json:"status,omitempty"`
 	// CloudID - READ-ONLY; Unique, immutable resource id.
 	CloudID *string `json:"cloudId,omitempty"`
@@ -348,6 +361,12 @@ type ClusterProperties struct {
 	TrialDaysRemaining *float64 `json:"trialDaysRemaining,omitempty"`
 	// BillingModel - READ-ONLY; Type of billing applied to the resource.
 	BillingModel *string `json:"billingModel,omitempty"`
+	// RegistrationTimestamp - READ-ONLY; First cluster sync timestamp.
+	RegistrationTimestamp *date.Time `json:"registrationTimestamp,omitempty"`
+	// LastSyncTimestamp - READ-ONLY; Most recent cluster sync timestamp.
+	LastSyncTimestamp *date.Time `json:"lastSyncTimestamp,omitempty"`
+	// LastBillingTimestamp - READ-ONLY; Most recent billing meter timestamp.
+	LastBillingTimestamp *date.Time `json:"lastBillingTimestamp,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ClusterProperties.
@@ -402,14 +421,8 @@ type ErrorAdditionalInfo struct {
 	Info interface{} `json:"info,omitempty"`
 }
 
-// ErrorResponse the resource management error response.
-type ErrorResponse struct {
-	// Error - The error object.
-	Error *ErrorResponseError `json:"error,omitempty"`
-}
-
-// ErrorResponseError the error object.
-type ErrorResponseError struct {
+// ErrorDetail the error detail.
+type ErrorDetail struct {
 	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; The error message.
@@ -417,90 +430,77 @@ type ErrorResponseError struct {
 	// Target - READ-ONLY; The error target.
 	Target *string `json:"target,omitempty"`
 	// Details - READ-ONLY; The error details.
-	Details *[]ErrorResponse `json:"details,omitempty"`
+	Details *[]ErrorDetail `json:"details,omitempty"`
 	// AdditionalInfo - READ-ONLY; The error additional info.
 	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
 }
 
-// Operation operation details.
-type Operation struct {
-	// Name - READ-ONLY; Name of the operation.
+// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
+// failed operations. (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// Error - The error object.
+	Error *ErrorDetail `json:"error,omitempty"`
+}
+
+// OperationDetail operation detail payload
+type OperationDetail struct {
+	// Name - Name of the operation
 	Name *string `json:"name,omitempty"`
-	// Display - Operation properties.
+	// IsDataAction - Indicates whether the operation is a data action
+	IsDataAction *bool `json:"isDataAction,omitempty"`
+	// Display - Display of the operation
 	Display *OperationDisplay `json:"display,omitempty"`
+	// Origin - Origin of the operation
+	Origin *string `json:"origin,omitempty"`
+	// Properties - Properties of the operation
+	Properties interface{} `json:"properties,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for Operation.
-func (o Operation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if o.Display != nil {
-		objectMap["display"] = o.Display
-	}
-	return json.Marshal(objectMap)
-}
-
-// OperationDisplay operation properties.
+// OperationDisplay operation display payload
 type OperationDisplay struct {
-	// Provider - Resource provider name.
+	// Provider - Resource provider of the operation
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource type name.
+	// Resource - Resource of the operation
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Operation name.
+	// Operation - Localized friendly name for the operation
 	Operation *string `json:"operation,omitempty"`
-	// Description - Operation description.
+	// Description - Localized friendly description for the operation
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationList list of available operations.
-type OperationList struct {
-	autorest.Response `json:"-"`
-	// Value - List of operations.
-	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - READ-ONLY; Link to the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for OperationList.
-func (ol OperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ol.Value != nil {
-		objectMap["value"] = ol.Value
-	}
-	return json.Marshal(objectMap)
-}
-
-// ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
-// required location and tags
+// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
+// have tags and a location
 type ProxyResource struct {
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
-// Resource ...
+// Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
-// TrackedResource the resource model definition for a ARM tracked top level resource
+// TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
+// which has 'tags' and a 'location'
 type TrackedResource struct {
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 

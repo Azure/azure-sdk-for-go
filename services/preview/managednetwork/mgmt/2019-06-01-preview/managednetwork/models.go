@@ -30,7 +30,8 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/managednetwork/mgmt/2019-06-01-preview/managednetwork"
 
-// ConnectivityCollection the collection of Connectivity related groups and policies within the Managed Network
+// ConnectivityCollection the collection of Connectivity related groups and policies within the Managed
+// Network
 type ConnectivityCollection struct {
 	// Groups - READ-ONLY; The collection of connectivity related Managed Network Groups within the Managed Network
 	Groups *[]Group `json:"groups,omitempty"`
@@ -147,8 +148,8 @@ func (g *Group) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// GroupListResult result of the request to list Managed Network Groups. It contains a list of groups and a URL
-// link to get the next set of results.
+// GroupListResult result of the request to list Managed Network Groups. It contains a list of groups and a
+// URL link to get the next set of results.
 type GroupListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Gets a page of ManagedNetworkGroup
@@ -300,8 +301,11 @@ func (page GroupListResultPage) Values() []Group {
 }
 
 // Creates a new instance of the GroupListResultPage type.
-func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
-	return GroupListResultPage{fn: getNextPage}
+func NewGroupListResultPage(cur GroupListResult, getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
+	return GroupListResultPage{
+		fn:  getNextPage,
+		glr: cur,
+	}
 }
 
 // GroupProperties properties of a Managed Network Group
@@ -423,8 +427,8 @@ func (hasppp HubAndSpokePeeringPolicyProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ListResult result of the request to list Managed Network. It contains a list of Managed Networks and a URL
-// link to get the next set of results.
+// ListResult result of the request to list Managed Network. It contains a list of Managed Networks and a
+// URL link to get the next set of results.
 type ListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Gets a page of ManagedNetworks
@@ -576,8 +580,11 @@ func (page ListResultPage) Values() []ManagedNetwork {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // ManagedNetwork the Managed Network resource
@@ -681,8 +688,8 @@ func (mn *ManagedNetwork) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ManagedNetworksDeleteFutureType an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ManagedNetworksDeleteFutureType an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ManagedNetworksDeleteFutureType struct {
 	azure.Future
 }
@@ -704,8 +711,8 @@ func (future *ManagedNetworksDeleteFutureType) Result(client ManagedNetworksClie
 	return
 }
 
-// ManagedNetworksUpdateFutureType an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ManagedNetworksUpdateFutureType an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ManagedNetworksUpdateFutureType struct {
 	azure.Future
 }
@@ -938,8 +945,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // PeeringPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -1021,8 +1031,8 @@ func (pp PeeringPolicy) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PeeringPolicyListResult result of the request to list Managed Network Peering Policies. It contains a list
-// of policies and a URL link to get the next set of results.
+// PeeringPolicyListResult result of the request to list Managed Network Peering Policies. It contains a
+// list of policies and a URL link to get the next set of results.
 type PeeringPolicyListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Gets a page of Peering Policies
@@ -1174,8 +1184,11 @@ func (page PeeringPolicyListResultPage) Values() []PeeringPolicy {
 }
 
 // Creates a new instance of the PeeringPolicyListResultPage type.
-func NewPeeringPolicyListResultPage(getNextPage func(context.Context, PeeringPolicyListResult) (PeeringPolicyListResult, error)) PeeringPolicyListResultPage {
-	return PeeringPolicyListResultPage{fn: getNextPage}
+func NewPeeringPolicyListResultPage(cur PeeringPolicyListResult, getNextPage func(context.Context, PeeringPolicyListResult) (PeeringPolicyListResult, error)) PeeringPolicyListResultPage {
+	return PeeringPolicyListResultPage{
+		fn:   getNextPage,
+		pplr: cur,
+	}
 }
 
 // PeeringPolicyProperties properties of a Managed Network Peering Policy
@@ -1389,8 +1402,8 @@ func (sa *ScopeAssignment) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ScopeAssignmentListResult result of the request to list ScopeAssignment. It contains a list of groups and a
-// URL link to get the next set of results.
+// ScopeAssignmentListResult result of the request to list ScopeAssignment. It contains a list of groups
+// and a URL link to get the next set of results.
 type ScopeAssignmentListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Gets a page of ScopeAssignment
@@ -1542,8 +1555,11 @@ func (page ScopeAssignmentListResultPage) Values() []ScopeAssignment {
 }
 
 // Creates a new instance of the ScopeAssignmentListResultPage type.
-func NewScopeAssignmentListResultPage(getNextPage func(context.Context, ScopeAssignmentListResult) (ScopeAssignmentListResult, error)) ScopeAssignmentListResultPage {
-	return ScopeAssignmentListResultPage{fn: getNextPage}
+func NewScopeAssignmentListResultPage(cur ScopeAssignmentListResult, getNextPage func(context.Context, ScopeAssignmentListResult) (ScopeAssignmentListResult, error)) ScopeAssignmentListResultPage {
+	return ScopeAssignmentListResultPage{
+		fn:   getNextPage,
+		salr: cur,
+	}
 }
 
 // ScopeAssignmentProperties properties of Managed Network

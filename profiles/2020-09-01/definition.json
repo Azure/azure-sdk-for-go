@@ -5,7 +5,6 @@
     "../../services/authorization/mgmt/2015-07-01/authorization",
     "../../services/preview/commerce/mgmt/2015-06-01-preview/commerce",
     "../../services/databoxedge/mgmt/2019-08-01/databoxedge",
-    "../../services/preview/iothub/mgmt/2019-07-01-preview/devices",
     "../../services/preview/monitor/mgmt/2019-06-01/insights",
     "../../services/keyvault/mgmt/2019-09-01/keyvault",
     "../../services/network/mgmt/2018-11-01/network",
@@ -18,8 +17,6 @@
   "pathOverride": {
     "github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce": "commerce/mgmt/commerce",
     "github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce/commerceapi": "commerce/mgmt/commerce/commerceapi",
-    "github.com/Azure/azure-sdk-for-go/services/preview/iothub/mgmt/2019-07-01-preview/devices": "iothub/mgmt/devices",
-    "github.com/Azure/azure-sdk-for-go/services/preview/iothub/mgmt/2019-07-01-preview/devices/devicesapi": "iothub/mgmt/devices/devicesapi",
     "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-06-01/insights": "monitor/mgmt/insights",
     "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-06-01/insights/insightsapi": "monitor/mgmt/insights/insightsapi"
   },

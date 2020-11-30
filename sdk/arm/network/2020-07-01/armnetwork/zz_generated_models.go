@@ -276,7 +276,7 @@ type ApplicationGatewayBackendHealthOnDemand struct {
 // type.
 type ApplicationGatewayBackendHealthOnDemandPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ApplicationGatewayBackendHealthOnDemandResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ApplicationGatewayBackendHealthOnDemandResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ApplicationGatewayBackendHealthOnDemandPoller
@@ -297,7 +297,7 @@ type ApplicationGatewayBackendHealthOnDemandResponse struct {
 // ApplicationGatewayBackendHealthPollerResponse is the response envelope for operations that asynchronously return a ApplicationGatewayBackendHealth type.
 type ApplicationGatewayBackendHealthPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ApplicationGatewayBackendHealthResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ApplicationGatewayBackendHealthResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ApplicationGatewayBackendHealthPoller
@@ -664,7 +664,7 @@ type ApplicationGatewayPathRulePropertiesFormat struct {
 // ApplicationGatewayPollerResponse is the response envelope for operations that asynchronously return a ApplicationGateway type.
 type ApplicationGatewayPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ApplicationGatewayResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ApplicationGatewayResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ApplicationGatewayPoller
@@ -712,7 +712,7 @@ type ApplicationGatewayPrivateEndpointConnectionListResultResponse struct {
 // type.
 type ApplicationGatewayPrivateEndpointConnectionPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ApplicationGatewayPrivateEndpointConnectionResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ApplicationGatewayPrivateEndpointConnectionResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ApplicationGatewayPrivateEndpointConnectionPoller
@@ -1710,7 +1710,7 @@ type ApplicationSecurityGroupListResultResponse struct {
 // ApplicationSecurityGroupPollerResponse is the response envelope for operations that asynchronously return a ApplicationSecurityGroup type.
 type ApplicationSecurityGroupPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ApplicationSecurityGroupResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ApplicationSecurityGroupResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ApplicationSecurityGroupPoller
@@ -1969,7 +1969,7 @@ type AvailableProvidersListParameters struct {
 // AvailableProvidersListPollerResponse is the response envelope for operations that asynchronously return a AvailableProvidersList type.
 type AvailableProvidersListPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*AvailableProvidersListResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (AvailableProvidersListResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller AvailableProvidersListPoller
@@ -2362,7 +2362,7 @@ type AzureFirewallNetworkRuleCollectionPropertiesFormat struct {
 // AzureFirewallPollerResponse is the response envelope for operations that asynchronously return a AzureFirewall type.
 type AzureFirewallPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*AzureFirewallResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (AzureFirewallResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller AzureFirewallPoller
@@ -2647,7 +2647,7 @@ func (a *AzureReachabilityReportParameters) UnmarshalJSON(data []byte) error {
 // AzureReachabilityReportPollerResponse is the response envelope for operations that asynchronously return a AzureReachabilityReport type.
 type AzureReachabilityReportPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*AzureReachabilityReportResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (AzureReachabilityReportResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller AzureReachabilityReportPoller
@@ -2735,7 +2735,7 @@ type BackendAddressPool struct {
 // BackendAddressPoolPollerResponse is the response envelope for operations that asynchronously return a BackendAddressPool type.
 type BackendAddressPoolPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*BackendAddressPoolResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (BackendAddressPoolResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller BackendAddressPoolPoller
@@ -2903,7 +2903,7 @@ type BastionHostListResultResponse struct {
 // BastionHostPollerResponse is the response envelope for operations that asynchronously return a BastionHost type.
 type BastionHostPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*BastionHostResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (BastionHostResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller BastionHostPoller
@@ -3080,7 +3080,7 @@ type BgpConnection struct {
 // BgpConnectionPollerResponse is the response envelope for operations that asynchronously return a BgpConnection type.
 type BgpConnectionPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*BgpConnectionResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (BgpConnectionResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller BgpConnectionPoller
@@ -3149,7 +3149,7 @@ type BgpPeerStatusListResult struct {
 // BgpPeerStatusListResultPollerResponse is the response envelope for operations that asynchronously return a BgpPeerStatusListResult type.
 type BgpPeerStatusListResultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*BgpPeerStatusListResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (BgpPeerStatusListResultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller BgpPeerStatusListResultPoller
@@ -3543,7 +3543,7 @@ type ConnectionMonitorQueryResult struct {
 // ConnectionMonitorQueryResultPollerResponse is the response envelope for operations that asynchronously return a ConnectionMonitorQueryResult type.
 type ConnectionMonitorQueryResultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ConnectionMonitorQueryResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ConnectionMonitorQueryResultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ConnectionMonitorQueryResultPoller
@@ -3588,7 +3588,7 @@ type ConnectionMonitorResult struct {
 // ConnectionMonitorResultPollerResponse is the response envelope for operations that asynchronously return a ConnectionMonitorResult type.
 type ConnectionMonitorResultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ConnectionMonitorResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ConnectionMonitorResultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ConnectionMonitorResultPoller
@@ -3810,7 +3810,7 @@ type ConnectionResetSharedKey struct {
 // ConnectionResetSharedKeyPollerResponse is the response envelope for operations that asynchronously return a ConnectionResetSharedKey type.
 type ConnectionResetSharedKeyPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ConnectionResetSharedKeyResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ConnectionResetSharedKeyResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ConnectionResetSharedKeyPoller
@@ -3838,7 +3838,7 @@ type ConnectionSharedKey struct {
 // ConnectionSharedKeyPollerResponse is the response envelope for operations that asynchronously return a ConnectionSharedKey type.
 type ConnectionSharedKeyPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ConnectionSharedKeyResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ConnectionSharedKeyResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ConnectionSharedKeyPoller
@@ -4065,7 +4065,7 @@ type ConnectivityInformation struct {
 // ConnectivityInformationPollerResponse is the response envelope for operations that asynchronously return a ConnectivityInformation type.
 type ConnectivityInformationPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ConnectivityInformationResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ConnectivityInformationResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ConnectivityInformationPoller
@@ -4253,7 +4253,7 @@ type CustomIPPrefixListResultResponse struct {
 // CustomIPPrefixPollerResponse is the response envelope for operations that asynchronously return a CustomIPPrefix type.
 type CustomIPPrefixPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*CustomIPPrefixResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (CustomIPPrefixResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller CustomIPPrefixPoller
@@ -4380,7 +4380,7 @@ type DdosCustomPolicy struct {
 // DdosCustomPolicyPollerResponse is the response envelope for operations that asynchronously return a DdosCustomPolicy type.
 type DdosCustomPolicyPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*DdosCustomPolicyResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DdosCustomPolicyResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller DdosCustomPolicyPoller
@@ -4459,7 +4459,7 @@ type DdosProtectionPlanListResultResponse struct {
 // DdosProtectionPlanPollerResponse is the response envelope for operations that asynchronously return a DdosProtectionPlan type.
 type DdosProtectionPlanPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*DdosProtectionPlanResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DdosProtectionPlanResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller DdosProtectionPlanPoller
@@ -4642,7 +4642,7 @@ type DscpConfigurationListResultResponse struct {
 // DscpConfigurationPollerResponse is the response envelope for operations that asynchronously return a DscpConfiguration type.
 type DscpConfigurationPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*DscpConfigurationResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DscpConfigurationResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller DscpConfigurationPoller
@@ -4730,7 +4730,7 @@ type EffectiveNetworkSecurityGroupListResult struct {
 // type.
 type EffectiveNetworkSecurityGroupListResultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*EffectiveNetworkSecurityGroupListResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (EffectiveNetworkSecurityGroupListResultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller EffectiveNetworkSecurityGroupListResultPoller
@@ -4835,7 +4835,7 @@ type EffectiveRouteListResult struct {
 // EffectiveRouteListResultPollerResponse is the response envelope for operations that asynchronously return a EffectiveRouteListResult type.
 type EffectiveRouteListResultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*EffectiveRouteListResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (EffectiveRouteListResultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller EffectiveRouteListResultPoller
@@ -5025,7 +5025,7 @@ type ExpressRouteCircuitAuthorization struct {
 // type.
 type ExpressRouteCircuitAuthorizationPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ExpressRouteCircuitAuthorizationResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitAuthorizationResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ExpressRouteCircuitAuthorizationPoller
@@ -5100,7 +5100,7 @@ type ExpressRouteCircuitConnectionListResultResponse struct {
 // ExpressRouteCircuitConnectionPollerResponse is the response envelope for operations that asynchronously return a ExpressRouteCircuitConnection type.
 type ExpressRouteCircuitConnectionPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ExpressRouteCircuitConnectionResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitConnectionResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ExpressRouteCircuitConnectionPoller
@@ -5244,7 +5244,7 @@ type ExpressRouteCircuitPeeringListResultResponse struct {
 // ExpressRouteCircuitPeeringPollerResponse is the response envelope for operations that asynchronously return a ExpressRouteCircuitPeering type.
 type ExpressRouteCircuitPeeringPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ExpressRouteCircuitPeeringResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitPeeringResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ExpressRouteCircuitPeeringPoller
@@ -5348,7 +5348,7 @@ type ExpressRouteCircuitPeeringsListOptions struct {
 // ExpressRouteCircuitPollerResponse is the response envelope for operations that asynchronously return a ExpressRouteCircuit type.
 type ExpressRouteCircuitPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ExpressRouteCircuitResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ExpressRouteCircuitPoller
@@ -5514,7 +5514,7 @@ type ExpressRouteCircuitsArpTableListResult struct {
 // type.
 type ExpressRouteCircuitsArpTableListResultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ExpressRouteCircuitsArpTableListResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitsArpTableListResultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ExpressRouteCircuitsArpTableListResultPoller
@@ -5595,7 +5595,7 @@ type ExpressRouteCircuitsRoutesTableListResult struct {
 // type.
 type ExpressRouteCircuitsRoutesTableListResultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ExpressRouteCircuitsRoutesTableListResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitsRoutesTableListResultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ExpressRouteCircuitsRoutesTableListResultPoller
@@ -5626,7 +5626,7 @@ type ExpressRouteCircuitsRoutesTableSummaryListResult struct {
 // type.
 type ExpressRouteCircuitsRoutesTableSummaryListResultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ExpressRouteCircuitsRoutesTableSummaryListResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitsRoutesTableSummaryListResultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ExpressRouteCircuitsRoutesTableSummaryListResultPoller
@@ -5684,7 +5684,7 @@ type ExpressRouteConnectionListResponse struct {
 // ExpressRouteConnectionPollerResponse is the response envelope for operations that asynchronously return a ExpressRouteConnection type.
 type ExpressRouteConnectionPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ExpressRouteConnectionResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ExpressRouteConnectionResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ExpressRouteConnectionPoller
@@ -5806,7 +5806,7 @@ type ExpressRouteCrossConnectionPeeringListResponse struct {
 // type.
 type ExpressRouteCrossConnectionPeeringPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ExpressRouteCrossConnectionPeeringResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ExpressRouteCrossConnectionPeeringResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ExpressRouteCrossConnectionPeeringPoller
@@ -5896,7 +5896,7 @@ type ExpressRouteCrossConnectionPeeringsListOptions struct {
 // ExpressRouteCrossConnectionPollerResponse is the response envelope for operations that asynchronously return a ExpressRouteCrossConnection type.
 type ExpressRouteCrossConnectionPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ExpressRouteCrossConnectionResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ExpressRouteCrossConnectionResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ExpressRouteCrossConnectionPoller
@@ -6011,7 +6011,7 @@ type ExpressRouteCrossConnectionsRoutesTableSummaryListResult struct {
 // type.
 type ExpressRouteCrossConnectionsRoutesTableSummaryListResultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ExpressRouteCrossConnectionsRoutesTableSummaryListResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ExpressRouteCrossConnectionsRoutesTableSummaryListResultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ExpressRouteCrossConnectionsRoutesTableSummaryListResultPoller
@@ -6063,7 +6063,7 @@ type ExpressRouteGatewayListResponse struct {
 // ExpressRouteGatewayPollerResponse is the response envelope for operations that asynchronously return a ExpressRouteGateway type.
 type ExpressRouteGatewayPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ExpressRouteGatewayResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ExpressRouteGatewayResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ExpressRouteGatewayPoller
@@ -6262,7 +6262,7 @@ type ExpressRoutePortListResultResponse struct {
 // ExpressRoutePortPollerResponse is the response envelope for operations that asynchronously return a ExpressRoutePort type.
 type ExpressRoutePortPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ExpressRoutePortResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ExpressRoutePortResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ExpressRoutePortPoller
@@ -6712,7 +6712,7 @@ type FirewallPolicyNatRuleCollectionAction struct {
 // FirewallPolicyPollerResponse is the response envelope for operations that asynchronously return a FirewallPolicy type.
 type FirewallPolicyPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*FirewallPolicyResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (FirewallPolicyResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller FirewallPolicyPoller
@@ -6962,7 +6962,7 @@ type FirewallPolicyRuleCollectionGroupListResultResponse struct {
 // type.
 type FirewallPolicyRuleCollectionGroupPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*FirewallPolicyRuleCollectionGroupResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (FirewallPolicyRuleCollectionGroupResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller FirewallPolicyRuleCollectionGroupPoller
@@ -7099,7 +7099,7 @@ type FlowLogInformation struct {
 // FlowLogInformationPollerResponse is the response envelope for operations that asynchronously return a FlowLogInformation type.
 type FlowLogInformationPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*FlowLogInformationResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (FlowLogInformationResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller FlowLogInformationPoller
@@ -7138,7 +7138,7 @@ type FlowLogListResultResponse struct {
 // FlowLogPollerResponse is the response envelope for operations that asynchronously return a FlowLog type.
 type FlowLogPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*FlowLogResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (FlowLogResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller FlowLogPoller
@@ -7326,7 +7326,7 @@ type GatewayRouteListResult struct {
 // GatewayRouteListResultPollerResponse is the response envelope for operations that asynchronously return a GatewayRouteListResult type.
 type GatewayRouteListResultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*GatewayRouteListResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (GatewayRouteListResultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller GatewayRouteListResultPoller
@@ -7468,7 +7468,7 @@ type HubIPConfiguration struct {
 // HubIPConfigurationPollerResponse is the response envelope for operations that asynchronously return a HubIPConfiguration type.
 type HubIPConfigurationPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*HubIPConfigurationResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (HubIPConfigurationResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller HubIPConfigurationPoller
@@ -7550,7 +7550,7 @@ type HubRouteTable struct {
 // HubRouteTablePollerResponse is the response envelope for operations that asynchronously return a HubRouteTable type.
 type HubRouteTablePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*HubRouteTableResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (HubRouteTableResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller HubRouteTablePoller
@@ -7622,7 +7622,7 @@ type HubVirtualNetworkConnection struct {
 // HubVirtualNetworkConnectionPollerResponse is the response envelope for operations that asynchronously return a HubVirtualNetworkConnection type.
 type HubVirtualNetworkConnectionPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*HubVirtualNetworkConnectionResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (HubVirtualNetworkConnectionResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller HubVirtualNetworkConnectionPoller
@@ -7730,7 +7730,7 @@ type IPAllocationListResultResponse struct {
 // IPAllocationPollerResponse is the response envelope for operations that asynchronously return a IPAllocation type.
 type IPAllocationPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*IPAllocationResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (IPAllocationResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller IPAllocationPoller
@@ -7908,7 +7908,7 @@ type IPGroupListResultResponse struct {
 // IPGroupPollerResponse is the response envelope for operations that asynchronously return a IPGroup type.
 type IPGroupPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*IPGroupResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (IPGroupResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller IPGroupPoller
@@ -8124,7 +8124,7 @@ type InboundNatRuleListResultResponse struct {
 // InboundNatRulePollerResponse is the response envelope for operations that asynchronously return a InboundNatRule type.
 type InboundNatRulePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*InboundNatRuleResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (InboundNatRuleResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller InboundNatRulePoller
@@ -8222,7 +8222,7 @@ type InboundSecurityRuleCreateOrUpdateOptions struct {
 // InboundSecurityRulePollerResponse is the response envelope for operations that asynchronously return a InboundSecurityRule type.
 type InboundSecurityRulePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*InboundSecurityRuleResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (InboundSecurityRuleResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller InboundSecurityRulePoller
@@ -8706,7 +8706,7 @@ type LoadBalancerOutboundRulesListOptions struct {
 // LoadBalancerPollerResponse is the response envelope for operations that asynchronously return a LoadBalancer type.
 type LoadBalancerPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*LoadBalancerResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (LoadBalancerResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller LoadBalancerPoller
@@ -8930,7 +8930,7 @@ type LocalNetworkGatewayListResultResponse struct {
 // LocalNetworkGatewayPollerResponse is the response envelope for operations that asynchronously return a LocalNetworkGateway type.
 type LocalNetworkGatewayPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*LocalNetworkGatewayResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (LocalNetworkGatewayResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller LocalNetworkGatewayPoller
@@ -9181,7 +9181,7 @@ type NatGatewayListResultResponse struct {
 // NatGatewayPollerResponse is the response envelope for operations that asynchronously return a NatGateway type.
 type NatGatewayPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*NatGatewayResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (NatGatewayResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller NatGatewayPoller
@@ -9413,7 +9413,7 @@ type NetworkConfigurationDiagnosticResponse struct {
 // type.
 type NetworkConfigurationDiagnosticResponsePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*NetworkConfigurationDiagnosticResponseResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (NetworkConfigurationDiagnosticResponseResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller NetworkConfigurationDiagnosticResponsePoller
@@ -9650,7 +9650,7 @@ type NetworkInterfaceLoadBalancersListOptions struct {
 // NetworkInterfacePollerResponse is the response envelope for operations that asynchronously return a NetworkInterface type.
 type NetworkInterfacePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*NetworkInterfaceResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (NetworkInterfaceResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller NetworkInterfacePoller
@@ -9751,7 +9751,7 @@ type NetworkInterfaceTapConfigurationListResultResponse struct {
 // type.
 type NetworkInterfaceTapConfigurationPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*NetworkInterfaceTapConfigurationResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (NetworkInterfaceTapConfigurationResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller NetworkInterfaceTapConfigurationPoller
@@ -10152,7 +10152,7 @@ type NetworkSecurityGroupListResultResponse struct {
 // NetworkSecurityGroupPollerResponse is the response envelope for operations that asynchronously return a NetworkSecurityGroup type.
 type NetworkSecurityGroupPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*NetworkSecurityGroupResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (NetworkSecurityGroupResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller NetworkSecurityGroupPoller
@@ -10289,7 +10289,7 @@ type NetworkVirtualApplianceListResultResponse struct {
 // NetworkVirtualAppliancePollerResponse is the response envelope for operations that asynchronously return a NetworkVirtualAppliance type.
 type NetworkVirtualAppliancePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*NetworkVirtualApplianceResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (NetworkVirtualApplianceResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller NetworkVirtualAppliancePoller
@@ -10612,7 +10612,7 @@ type NextHopResult struct {
 // NextHopResultPollerResponse is the response envelope for operations that asynchronously return a NextHopResult type.
 type NextHopResultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*NextHopResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (NextHopResultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller NextHopResultPoller
@@ -10821,7 +10821,7 @@ type P2SVpnConnectionHealth struct {
 // P2SVpnConnectionHealthPollerResponse is the response envelope for operations that asynchronously return a P2SVpnConnectionHealth type.
 type P2SVpnConnectionHealthPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*P2SVpnConnectionHealthResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (P2SVpnConnectionHealthResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller P2SVpnConnectionHealthPoller
@@ -10867,7 +10867,7 @@ type P2SVpnGateway struct {
 // P2SVpnGatewayPollerResponse is the response envelope for operations that asynchronously return a P2SVpnGateway type.
 type P2SVpnGatewayPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*P2SVpnGatewayResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (P2SVpnGatewayResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller P2SVpnGatewayPoller
@@ -11138,7 +11138,7 @@ func (p *PacketCaptureQueryStatusResult) UnmarshalJSON(data []byte) error {
 // PacketCaptureQueryStatusResultPollerResponse is the response envelope for operations that asynchronously return a PacketCaptureQueryStatusResult type.
 type PacketCaptureQueryStatusResultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*PacketCaptureQueryStatusResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (PacketCaptureQueryStatusResultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller PacketCaptureQueryStatusResultPoller
@@ -11174,7 +11174,7 @@ type PacketCaptureResult struct {
 // PacketCaptureResultPollerResponse is the response envelope for operations that asynchronously return a PacketCaptureResult type.
 type PacketCaptureResultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*PacketCaptureResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (PacketCaptureResultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller PacketCaptureResultPoller
@@ -11386,7 +11386,7 @@ type PeerRouteList struct {
 // PeerRouteListPollerResponse is the response envelope for operations that asynchronously return a PeerRouteList type.
 type PeerRouteListPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*PeerRouteListResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (PeerRouteListResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller PeerRouteListPoller
@@ -11474,7 +11474,7 @@ type PrivateDNSZoneGroupListResultResponse struct {
 // PrivateDNSZoneGroupPollerResponse is the response envelope for operations that asynchronously return a PrivateDNSZoneGroup type.
 type PrivateDNSZoneGroupPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*PrivateDNSZoneGroupResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (PrivateDNSZoneGroupResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller PrivateDNSZoneGroupPoller
@@ -11619,7 +11619,7 @@ type PrivateEndpointListResultResponse struct {
 // PrivateEndpointPollerResponse is the response envelope for operations that asynchronously return a PrivateEndpoint type.
 type PrivateEndpointPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*PrivateEndpointResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (PrivateEndpointResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller PrivateEndpointPoller
@@ -11799,7 +11799,7 @@ type PrivateLinkServiceListResultResponse struct {
 // PrivateLinkServicePollerResponse is the response envelope for operations that asynchronously return a PrivateLinkService type.
 type PrivateLinkServicePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*PrivateLinkServiceResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (PrivateLinkServiceResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller PrivateLinkServicePoller
@@ -11869,7 +11869,7 @@ type PrivateLinkServiceVisibility struct {
 // PrivateLinkServiceVisibilityPollerResponse is the response envelope for operations that asynchronously return a PrivateLinkServiceVisibility type.
 type PrivateLinkServiceVisibilityPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*PrivateLinkServiceVisibilityResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (PrivateLinkServiceVisibilityResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller PrivateLinkServiceVisibilityPoller
@@ -12106,7 +12106,7 @@ type PublicIPAddressListResultResponse struct {
 // PublicIPAddressPollerResponse is the response envelope for operations that asynchronously return a PublicIPAddress type.
 type PublicIPAddressPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*PublicIPAddressResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (PublicIPAddressResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller PublicIPAddressPoller
@@ -12277,7 +12277,7 @@ type PublicIPPrefixListResultResponse struct {
 // PublicIPPrefixPollerResponse is the response envelope for operations that asynchronously return a PublicIPPrefix type.
 type PublicIPPrefixPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*PublicIPPrefixResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (PublicIPPrefixResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller PublicIPPrefixPoller
@@ -12556,7 +12556,7 @@ type RouteFilterListResultResponse struct {
 // RouteFilterPollerResponse is the response envelope for operations that asynchronously return a RouteFilter type.
 type RouteFilterPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*RouteFilterResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (RouteFilterResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller RouteFilterPoller
@@ -12626,7 +12626,7 @@ type RouteFilterRuleListResultResponse struct {
 // RouteFilterRulePollerResponse is the response envelope for operations that asynchronously return a RouteFilterRule type.
 type RouteFilterRulePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*RouteFilterRuleResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (RouteFilterRuleResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller RouteFilterRulePoller
@@ -12731,7 +12731,7 @@ type RouteListResultResponse struct {
 // RoutePollerResponse is the response envelope for operations that asynchronously return a Route type.
 type RoutePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*RouteResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (RouteResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller RoutePoller
@@ -12795,7 +12795,7 @@ type RouteTableListResultResponse struct {
 // RouteTablePollerResponse is the response envelope for operations that asynchronously return a RouteTable type.
 type RouteTablePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*RouteTableResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (RouteTableResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller RouteTablePoller
@@ -12915,7 +12915,7 @@ type SecurityGroupViewResult struct {
 // SecurityGroupViewResultPollerResponse is the response envelope for operations that asynchronously return a SecurityGroupViewResult type.
 type SecurityGroupViewResultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*SecurityGroupViewResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (SecurityGroupViewResultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller SecurityGroupViewResultPoller
@@ -12964,7 +12964,7 @@ type SecurityPartnerProviderListResultResponse struct {
 // SecurityPartnerProviderPollerResponse is the response envelope for operations that asynchronously return a SecurityPartnerProvider type.
 type SecurityPartnerProviderPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*SecurityPartnerProviderResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (SecurityPartnerProviderResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller SecurityPartnerProviderPoller
@@ -13076,7 +13076,7 @@ type SecurityRuleListResultResponse struct {
 // SecurityRulePollerResponse is the response envelope for operations that asynchronously return a SecurityRule type.
 type SecurityRulePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*SecurityRuleResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (SecurityRuleResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller SecurityRulePoller
@@ -13316,7 +13316,7 @@ type ServiceEndpointPolicyDefinitionListResultResponse struct {
 // ServiceEndpointPolicyDefinitionPollerResponse is the response envelope for operations that asynchronously return a ServiceEndpointPolicyDefinition type.
 type ServiceEndpointPolicyDefinitionPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ServiceEndpointPolicyDefinitionResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ServiceEndpointPolicyDefinitionResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ServiceEndpointPolicyDefinitionPoller
@@ -13391,7 +13391,7 @@ type ServiceEndpointPolicyListResultResponse struct {
 // ServiceEndpointPolicyPollerResponse is the response envelope for operations that asynchronously return a ServiceEndpointPolicy type.
 type ServiceEndpointPolicyPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ServiceEndpointPolicyResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ServiceEndpointPolicyResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ServiceEndpointPolicyPoller
@@ -13531,7 +13531,7 @@ type StringArrayResponse struct {
 // StringPollerResponse is the response envelope for operations that asynchronously return a string type.
 type StringPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*StringResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (StringResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller StringPoller
@@ -13596,7 +13596,7 @@ type SubnetListResultResponse struct {
 // SubnetPollerResponse is the response envelope for operations that asynchronously return a Subnet type.
 type SubnetPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*SubnetResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (SubnetResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller SubnetPoller
@@ -13991,7 +13991,7 @@ func (t *TroubleshootingResult) UnmarshalJSON(data []byte) error {
 // TroubleshootingResultPollerResponse is the response envelope for operations that asynchronously return a TroubleshootingResult type.
 type TroubleshootingResultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*TroubleshootingResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (TroubleshootingResultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller TroubleshootingResultPoller
@@ -14127,7 +14127,7 @@ type VerificationIPFlowResult struct {
 // VerificationIPFlowResultPollerResponse is the response envelope for operations that asynchronously return a VerificationIPFlowResult type.
 type VerificationIPFlowResultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VerificationIPFlowResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VerificationIPFlowResultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller VerificationIPFlowResultPoller
@@ -14198,7 +14198,7 @@ type VirtualApplianceSite struct {
 // VirtualApplianceSitePollerResponse is the response envelope for operations that asynchronously return a VirtualApplianceSite type.
 type VirtualApplianceSitePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VirtualApplianceSiteResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualApplianceSiteResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller VirtualApplianceSitePoller
@@ -14342,7 +14342,7 @@ type VirtualHubIPConfigurationListOptions struct {
 // VirtualHubPollerResponse is the response envelope for operations that asynchronously return a VirtualHub type.
 type VirtualHubPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VirtualHubResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualHubResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller VirtualHubPoller
@@ -14448,7 +14448,7 @@ type VirtualHubRouteTableV2 struct {
 // VirtualHubRouteTableV2PollerResponse is the response envelope for operations that asynchronously return a VirtualHubRouteTableV2 type.
 type VirtualHubRouteTableV2PollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VirtualHubRouteTableV2Response, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualHubRouteTableV2Response, error)
 
 	// Poller contains an initialized poller.
 	Poller VirtualHubRouteTableV2Poller
@@ -14694,7 +14694,7 @@ type VirtualNetworkGatewayConnectionListResultResponse struct {
 // VirtualNetworkGatewayConnectionPollerResponse is the response envelope for operations that asynchronously return a VirtualNetworkGatewayConnection type.
 type VirtualNetworkGatewayConnectionPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VirtualNetworkGatewayConnectionResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualNetworkGatewayConnectionResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller VirtualNetworkGatewayConnectionPoller
@@ -14907,7 +14907,7 @@ type VirtualNetworkGatewayListResultResponse struct {
 // VirtualNetworkGatewayPollerResponse is the response envelope for operations that asynchronously return a VirtualNetworkGateway type.
 type VirtualNetworkGatewayPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VirtualNetworkGatewayResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualNetworkGatewayResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller VirtualNetworkGatewayPoller
@@ -15184,7 +15184,7 @@ type VirtualNetworkPeeringListResultResponse struct {
 // VirtualNetworkPeeringPollerResponse is the response envelope for operations that asynchronously return a VirtualNetworkPeering type.
 type VirtualNetworkPeeringPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VirtualNetworkPeeringResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualNetworkPeeringResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller VirtualNetworkPeeringPoller
@@ -15259,7 +15259,7 @@ type VirtualNetworkPeeringsListOptions struct {
 // VirtualNetworkPollerResponse is the response envelope for operations that asynchronously return a VirtualNetwork type.
 type VirtualNetworkPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VirtualNetworkResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualNetworkResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller VirtualNetworkPoller
@@ -15345,7 +15345,7 @@ type VirtualNetworkTapListResultResponse struct {
 // VirtualNetworkTapPollerResponse is the response envelope for operations that asynchronously return a VirtualNetworkTap type.
 type VirtualNetworkTapPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VirtualNetworkTapResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualNetworkTapResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller VirtualNetworkTapPoller
@@ -15547,7 +15547,7 @@ type VirtualRouterPeeringListResultResponse struct {
 // VirtualRouterPeeringPollerResponse is the response envelope for operations that asynchronously return a VirtualRouterPeering type.
 type VirtualRouterPeeringPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VirtualRouterPeeringResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualRouterPeeringResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller VirtualRouterPeeringPoller
@@ -15600,7 +15600,7 @@ type VirtualRouterPeeringsListOptions struct {
 // VirtualRouterPollerResponse is the response envelope for operations that asynchronously return a VirtualRouter type.
 type VirtualRouterPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VirtualRouterResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualRouterResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller VirtualRouterPoller
@@ -15678,7 +15678,7 @@ type VirtualWan struct {
 // VirtualWanPollerResponse is the response envelope for operations that asynchronously return a VirtualWan type.
 type VirtualWanPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VirtualWanResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualWanResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller VirtualWanPoller
@@ -15895,7 +15895,7 @@ type VpnClientConnectionHealthDetailListResult struct {
 // type.
 type VpnClientConnectionHealthDetailListResultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VpnClientConnectionHealthDetailListResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VpnClientConnectionHealthDetailListResultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller VpnClientConnectionHealthDetailListResultPoller
@@ -15943,7 +15943,7 @@ type VpnClientIPsecParameters struct {
 // VpnClientIPsecParametersPollerResponse is the response envelope for operations that asynchronously return a VpnClientIPsecParameters type.
 type VpnClientIPsecParametersPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VpnClientIPsecParametersResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VpnClientIPsecParametersResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller VpnClientIPsecParametersPoller
@@ -16057,7 +16057,7 @@ type VpnConnectionPacketCaptureStopParameters struct {
 // VpnConnectionPollerResponse is the response envelope for operations that asynchronously return a VpnConnection type.
 type VpnConnectionPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VpnConnectionResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VpnConnectionResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller VpnConnectionPoller
@@ -16213,7 +16213,7 @@ type VpnGatewayPacketCaptureStopParameters struct {
 // VpnGatewayPollerResponse is the response envelope for operations that asynchronously return a VpnGateway type.
 type VpnGatewayPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VpnGatewayResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VpnGatewayResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller VpnGatewayPoller
@@ -16346,7 +16346,7 @@ type VpnProfileResponse struct {
 // VpnProfileResponsePollerResponse is the response envelope for operations that asynchronously return a VpnProfileResponse type.
 type VpnProfileResponsePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VpnProfileResponseResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VpnProfileResponseResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller VpnProfileResponsePoller
@@ -16413,7 +16413,7 @@ type VpnServerConfiguration struct {
 // VpnServerConfigurationPollerResponse is the response envelope for operations that asynchronously return a VpnServerConfiguration type.
 type VpnServerConfigurationPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VpnServerConfigurationResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VpnServerConfigurationResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller VpnServerConfigurationPoller
@@ -16519,7 +16519,7 @@ type VpnServerConfigurationsResponse struct {
 // VpnServerConfigurationsResponsePollerResponse is the response envelope for operations that asynchronously return a VpnServerConfigurationsResponse type.
 type VpnServerConfigurationsResponsePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VpnServerConfigurationsResponseResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VpnServerConfigurationsResponseResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller VpnServerConfigurationsResponsePoller
@@ -16689,7 +16689,7 @@ type VpnSiteLinksListByVpnSiteOptions struct {
 // VpnSitePollerResponse is the response envelope for operations that asynchronously return a VpnSite type.
 type VpnSitePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VpnSiteResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VpnSiteResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller VpnSitePoller

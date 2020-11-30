@@ -35,24 +35,24 @@ func (client VirtualHubBgpConnectionClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-func (client VirtualHubBgpConnectionClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, parameters BgpConnection, options *VirtualHubBgpConnectionCreateOrUpdateOptions) (*BgpConnectionPollerResponse, error) {
+func (client VirtualHubBgpConnectionClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, parameters BgpConnection, options *VirtualHubBgpConnectionCreateOrUpdateOptions) (BgpConnectionPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, virtualHubName, connectionName, parameters, options)
 	if err != nil {
-		return nil, err
+		return BgpConnectionPollerResponse{}, err
 	}
-	result := &BgpConnectionPollerResponse{
+	result := BgpConnectionPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VirtualHubBgpConnectionClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return BgpConnectionPollerResponse{}, err
 	}
 	poller := &bgpConnectionPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*BgpConnectionResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (BgpConnectionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -107,9 +107,10 @@ func (client VirtualHubBgpConnectionClient) createOrUpdateCreateRequest(ctx cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client VirtualHubBgpConnectionClient) createOrUpdateHandleResponse(resp *azcore.Response) (*BgpConnectionResponse, error) {
+func (client VirtualHubBgpConnectionClient) createOrUpdateHandleResponse(resp *azcore.Response) (BgpConnectionResponse, error) {
 	result := BgpConnectionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.BgpConnection)
+	err := resp.UnmarshalAsJSON(&result.BgpConnection)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -122,17 +123,17 @@ func (client VirtualHubBgpConnectionClient) createOrUpdateHandleError(resp *azco
 }
 
 // BeginDelete - Deletes a VirtualHubBgpConnection.
-func (client VirtualHubBgpConnectionClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *VirtualHubBgpConnectionDeleteOptions) (*HTTPPollerResponse, error) {
+func (client VirtualHubBgpConnectionClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *VirtualHubBgpConnectionDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, virtualHubName, connectionName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VirtualHubBgpConnectionClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -203,21 +204,21 @@ func (client VirtualHubBgpConnectionClient) deleteHandleError(resp *azcore.Respo
 }
 
 // Get - Retrieves the details of a Virtual Hub Bgp Connection.
-func (client VirtualHubBgpConnectionClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *VirtualHubBgpConnectionGetOptions) (*BgpConnectionResponse, error) {
+func (client VirtualHubBgpConnectionClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *VirtualHubBgpConnectionGetOptions) (BgpConnectionResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualHubName, connectionName, options)
 	if err != nil {
-		return nil, err
+		return BgpConnectionResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return BgpConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return BgpConnectionResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return BgpConnectionResponse{}, err
 	}
 	return result, nil
 }
@@ -242,9 +243,10 @@ func (client VirtualHubBgpConnectionClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client VirtualHubBgpConnectionClient) getHandleResponse(resp *azcore.Response) (*BgpConnectionResponse, error) {
+func (client VirtualHubBgpConnectionClient) getHandleResponse(resp *azcore.Response) (BgpConnectionResponse, error) {
 	result := BgpConnectionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.BgpConnection)
+	err := resp.UnmarshalAsJSON(&result.BgpConnection)
+	return result, err
 }
 
 // getHandleError handles the Get error response.

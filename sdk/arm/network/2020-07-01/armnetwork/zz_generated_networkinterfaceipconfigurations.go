@@ -34,21 +34,21 @@ func (client NetworkInterfaceIPConfigurationsClient) Pipeline() azcore.Pipeline 
 }
 
 // Get - Gets the specified network interface ip configuration.
-func (client NetworkInterfaceIPConfigurationsClient) Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, ipConfigurationName string, options *NetworkInterfaceIPConfigurationsGetOptions) (*NetworkInterfaceIPConfigurationResponse, error) {
+func (client NetworkInterfaceIPConfigurationsClient) Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, ipConfigurationName string, options *NetworkInterfaceIPConfigurationsGetOptions) (NetworkInterfaceIPConfigurationResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkInterfaceName, ipConfigurationName, options)
 	if err != nil {
-		return nil, err
+		return NetworkInterfaceIPConfigurationResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return NetworkInterfaceIPConfigurationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return NetworkInterfaceIPConfigurationResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return NetworkInterfaceIPConfigurationResponse{}, err
 	}
 	return result, nil
 }
@@ -73,9 +73,10 @@ func (client NetworkInterfaceIPConfigurationsClient) getCreateRequest(ctx contex
 }
 
 // getHandleResponse handles the Get response.
-func (client NetworkInterfaceIPConfigurationsClient) getHandleResponse(resp *azcore.Response) (*NetworkInterfaceIPConfigurationResponse, error) {
+func (client NetworkInterfaceIPConfigurationsClient) getHandleResponse(resp *azcore.Response) (NetworkInterfaceIPConfigurationResponse, error) {
 	result := NetworkInterfaceIPConfigurationResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.NetworkInterfaceIPConfiguration)
+	err := resp.UnmarshalAsJSON(&result.NetworkInterfaceIPConfiguration)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -96,7 +97,7 @@ func (client NetworkInterfaceIPConfigurationsClient) List(resourceGroupName stri
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *NetworkInterfaceIPConfigurationListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp NetworkInterfaceIPConfigurationListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.NetworkInterfaceIPConfigurationListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -122,9 +123,10 @@ func (client NetworkInterfaceIPConfigurationsClient) listCreateRequest(ctx conte
 }
 
 // listHandleResponse handles the List response.
-func (client NetworkInterfaceIPConfigurationsClient) listHandleResponse(resp *azcore.Response) (*NetworkInterfaceIPConfigurationListResultResponse, error) {
+func (client NetworkInterfaceIPConfigurationsClient) listHandleResponse(resp *azcore.Response) (NetworkInterfaceIPConfigurationListResultResponse, error) {
 	result := NetworkInterfaceIPConfigurationListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.NetworkInterfaceIPConfigurationListResult)
+	err := resp.UnmarshalAsJSON(&result.NetworkInterfaceIPConfigurationListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

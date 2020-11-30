@@ -34,21 +34,21 @@ func (client ExpressRouteLinksClient) Pipeline() azcore.Pipeline {
 }
 
 // Get - Retrieves the specified ExpressRouteLink resource.
-func (client ExpressRouteLinksClient) Get(ctx context.Context, resourceGroupName string, expressRoutePortName string, linkName string, options *ExpressRouteLinksGetOptions) (*ExpressRouteLinkResponse, error) {
+func (client ExpressRouteLinksClient) Get(ctx context.Context, resourceGroupName string, expressRoutePortName string, linkName string, options *ExpressRouteLinksGetOptions) (ExpressRouteLinkResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, expressRoutePortName, linkName, options)
 	if err != nil {
-		return nil, err
+		return ExpressRouteLinkResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ExpressRouteLinkResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return ExpressRouteLinkResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ExpressRouteLinkResponse{}, err
 	}
 	return result, nil
 }
@@ -73,9 +73,10 @@ func (client ExpressRouteLinksClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client ExpressRouteLinksClient) getHandleResponse(resp *azcore.Response) (*ExpressRouteLinkResponse, error) {
+func (client ExpressRouteLinksClient) getHandleResponse(resp *azcore.Response) (ExpressRouteLinkResponse, error) {
 	result := ExpressRouteLinkResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteLink)
+	err := resp.UnmarshalAsJSON(&result.ExpressRouteLink)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -96,7 +97,7 @@ func (client ExpressRouteLinksClient) List(resourceGroupName string, expressRout
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *ExpressRouteLinkListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ExpressRouteLinkListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ExpressRouteLinkListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -122,9 +123,10 @@ func (client ExpressRouteLinksClient) listCreateRequest(ctx context.Context, res
 }
 
 // listHandleResponse handles the List response.
-func (client ExpressRouteLinksClient) listHandleResponse(resp *azcore.Response) (*ExpressRouteLinkListResultResponse, error) {
+func (client ExpressRouteLinksClient) listHandleResponse(resp *azcore.Response) (ExpressRouteLinkListResultResponse, error) {
 	result := ExpressRouteLinkListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteLinkListResult)
+	err := resp.UnmarshalAsJSON(&result.ExpressRouteLinkListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

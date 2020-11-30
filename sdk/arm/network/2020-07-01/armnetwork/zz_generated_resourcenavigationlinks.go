@@ -34,21 +34,21 @@ func (client ResourceNavigationLinksClient) Pipeline() azcore.Pipeline {
 }
 
 // List - Gets a list of resource navigation links for a subnet.
-func (client ResourceNavigationLinksClient) List(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *ResourceNavigationLinksListOptions) (*ResourceNavigationLinksListResultResponse, error) {
+func (client ResourceNavigationLinksClient) List(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *ResourceNavigationLinksListOptions) (ResourceNavigationLinksListResultResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, virtualNetworkName, subnetName, options)
 	if err != nil {
-		return nil, err
+		return ResourceNavigationLinksListResultResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ResourceNavigationLinksListResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listHandleError(resp)
+		return ResourceNavigationLinksListResultResponse{}, client.listHandleError(resp)
 	}
 	result, err := client.listHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ResourceNavigationLinksListResultResponse{}, err
 	}
 	return result, nil
 }
@@ -73,9 +73,10 @@ func (client ResourceNavigationLinksClient) listCreateRequest(ctx context.Contex
 }
 
 // listHandleResponse handles the List response.
-func (client ResourceNavigationLinksClient) listHandleResponse(resp *azcore.Response) (*ResourceNavigationLinksListResultResponse, error) {
+func (client ResourceNavigationLinksClient) listHandleResponse(resp *azcore.Response) (ResourceNavigationLinksListResultResponse, error) {
 	result := ResourceNavigationLinksListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ResourceNavigationLinksListResult)
+	err := resp.UnmarshalAsJSON(&result.ResourceNavigationLinksListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

@@ -35,24 +35,24 @@ func (client ExpressRouteCircuitConnectionsClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-func (client ExpressRouteCircuitConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, expressRouteCircuitConnectionParameters ExpressRouteCircuitConnection, options *ExpressRouteCircuitConnectionsCreateOrUpdateOptions) (*ExpressRouteCircuitConnectionPollerResponse, error) {
+func (client ExpressRouteCircuitConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, expressRouteCircuitConnectionParameters ExpressRouteCircuitConnection, options *ExpressRouteCircuitConnectionsCreateOrUpdateOptions) (ExpressRouteCircuitConnectionPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, circuitName, peeringName, connectionName, expressRouteCircuitConnectionParameters, options)
 	if err != nil {
-		return nil, err
+		return ExpressRouteCircuitConnectionPollerResponse{}, err
 	}
-	result := &ExpressRouteCircuitConnectionPollerResponse{
+	result := ExpressRouteCircuitConnectionPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ExpressRouteCircuitConnectionsClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return ExpressRouteCircuitConnectionPollerResponse{}, err
 	}
 	poller := &expressRouteCircuitConnectionPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*ExpressRouteCircuitConnectionResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitConnectionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -108,9 +108,10 @@ func (client ExpressRouteCircuitConnectionsClient) createOrUpdateCreateRequest(c
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client ExpressRouteCircuitConnectionsClient) createOrUpdateHandleResponse(resp *azcore.Response) (*ExpressRouteCircuitConnectionResponse, error) {
+func (client ExpressRouteCircuitConnectionsClient) createOrUpdateHandleResponse(resp *azcore.Response) (ExpressRouteCircuitConnectionResponse, error) {
 	result := ExpressRouteCircuitConnectionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteCircuitConnection)
+	err := resp.UnmarshalAsJSON(&result.ExpressRouteCircuitConnection)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -123,17 +124,17 @@ func (client ExpressRouteCircuitConnectionsClient) createOrUpdateHandleError(res
 }
 
 // BeginDelete - Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-func (client ExpressRouteCircuitConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, options *ExpressRouteCircuitConnectionsDeleteOptions) (*HTTPPollerResponse, error) {
+func (client ExpressRouteCircuitConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, options *ExpressRouteCircuitConnectionsDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, circuitName, peeringName, connectionName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ExpressRouteCircuitConnectionsClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -205,21 +206,21 @@ func (client ExpressRouteCircuitConnectionsClient) deleteHandleError(resp *azcor
 }
 
 // Get - Gets the specified Express Route Circuit Connection from the specified express route circuit.
-func (client ExpressRouteCircuitConnectionsClient) Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, options *ExpressRouteCircuitConnectionsGetOptions) (*ExpressRouteCircuitConnectionResponse, error) {
+func (client ExpressRouteCircuitConnectionsClient) Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, options *ExpressRouteCircuitConnectionsGetOptions) (ExpressRouteCircuitConnectionResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, circuitName, peeringName, connectionName, options)
 	if err != nil {
-		return nil, err
+		return ExpressRouteCircuitConnectionResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ExpressRouteCircuitConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return ExpressRouteCircuitConnectionResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ExpressRouteCircuitConnectionResponse{}, err
 	}
 	return result, nil
 }
@@ -245,9 +246,10 @@ func (client ExpressRouteCircuitConnectionsClient) getCreateRequest(ctx context.
 }
 
 // getHandleResponse handles the Get response.
-func (client ExpressRouteCircuitConnectionsClient) getHandleResponse(resp *azcore.Response) (*ExpressRouteCircuitConnectionResponse, error) {
+func (client ExpressRouteCircuitConnectionsClient) getHandleResponse(resp *azcore.Response) (ExpressRouteCircuitConnectionResponse, error) {
 	result := ExpressRouteCircuitConnectionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteCircuitConnection)
+	err := resp.UnmarshalAsJSON(&result.ExpressRouteCircuitConnection)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -268,7 +270,7 @@ func (client ExpressRouteCircuitConnectionsClient) List(resourceGroupName string
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *ExpressRouteCircuitConnectionListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ExpressRouteCircuitConnectionListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ExpressRouteCircuitConnectionListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -295,9 +297,10 @@ func (client ExpressRouteCircuitConnectionsClient) listCreateRequest(ctx context
 }
 
 // listHandleResponse handles the List response.
-func (client ExpressRouteCircuitConnectionsClient) listHandleResponse(resp *azcore.Response) (*ExpressRouteCircuitConnectionListResultResponse, error) {
+func (client ExpressRouteCircuitConnectionsClient) listHandleResponse(resp *azcore.Response) (ExpressRouteCircuitConnectionListResultResponse, error) {
 	result := ExpressRouteCircuitConnectionListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteCircuitConnectionListResult)
+	err := resp.UnmarshalAsJSON(&result.ExpressRouteCircuitConnectionListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

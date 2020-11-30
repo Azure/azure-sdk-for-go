@@ -35,24 +35,24 @@ func (client PublicIPPrefixesClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates or updates a static or dynamic public IP prefix.
-func (client PublicIPPrefixesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPPrefixName string, parameters PublicIPPrefix, options *PublicIPPrefixesCreateOrUpdateOptions) (*PublicIPPrefixPollerResponse, error) {
+func (client PublicIPPrefixesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPPrefixName string, parameters PublicIPPrefix, options *PublicIPPrefixesCreateOrUpdateOptions) (PublicIPPrefixPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, publicIPPrefixName, parameters, options)
 	if err != nil {
-		return nil, err
+		return PublicIPPrefixPollerResponse{}, err
 	}
-	result := &PublicIPPrefixPollerResponse{
+	result := PublicIPPrefixPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("PublicIPPrefixesClient.CreateOrUpdate", "location", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return PublicIPPrefixPollerResponse{}, err
 	}
 	poller := &publicIPPrefixPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*PublicIPPrefixResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PublicIPPrefixResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -106,9 +106,10 @@ func (client PublicIPPrefixesClient) createOrUpdateCreateRequest(ctx context.Con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client PublicIPPrefixesClient) createOrUpdateHandleResponse(resp *azcore.Response) (*PublicIPPrefixResponse, error) {
+func (client PublicIPPrefixesClient) createOrUpdateHandleResponse(resp *azcore.Response) (PublicIPPrefixResponse, error) {
 	result := PublicIPPrefixResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PublicIPPrefix)
+	err := resp.UnmarshalAsJSON(&result.PublicIPPrefix)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -121,17 +122,17 @@ func (client PublicIPPrefixesClient) createOrUpdateHandleError(resp *azcore.Resp
 }
 
 // BeginDelete - Deletes the specified public IP prefix.
-func (client PublicIPPrefixesClient) BeginDelete(ctx context.Context, resourceGroupName string, publicIPPrefixName string, options *PublicIPPrefixesDeleteOptions) (*HTTPPollerResponse, error) {
+func (client PublicIPPrefixesClient) BeginDelete(ctx context.Context, resourceGroupName string, publicIPPrefixName string, options *PublicIPPrefixesDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, publicIPPrefixName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("PublicIPPrefixesClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -201,21 +202,21 @@ func (client PublicIPPrefixesClient) deleteHandleError(resp *azcore.Response) er
 }
 
 // Get - Gets the specified public IP prefix in a specified resource group.
-func (client PublicIPPrefixesClient) Get(ctx context.Context, resourceGroupName string, publicIPPrefixName string, options *PublicIPPrefixesGetOptions) (*PublicIPPrefixResponse, error) {
+func (client PublicIPPrefixesClient) Get(ctx context.Context, resourceGroupName string, publicIPPrefixName string, options *PublicIPPrefixesGetOptions) (PublicIPPrefixResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, publicIPPrefixName, options)
 	if err != nil {
-		return nil, err
+		return PublicIPPrefixResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return PublicIPPrefixResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return PublicIPPrefixResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return PublicIPPrefixResponse{}, err
 	}
 	return result, nil
 }
@@ -242,9 +243,10 @@ func (client PublicIPPrefixesClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client PublicIPPrefixesClient) getHandleResponse(resp *azcore.Response) (*PublicIPPrefixResponse, error) {
+func (client PublicIPPrefixesClient) getHandleResponse(resp *azcore.Response) (PublicIPPrefixResponse, error) {
 	result := PublicIPPrefixResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PublicIPPrefix)
+	err := resp.UnmarshalAsJSON(&result.PublicIPPrefix)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -265,7 +267,7 @@ func (client PublicIPPrefixesClient) List(resourceGroupName string, options *Pub
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *PublicIPPrefixListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp PublicIPPrefixListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.PublicIPPrefixListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -290,9 +292,10 @@ func (client PublicIPPrefixesClient) listCreateRequest(ctx context.Context, reso
 }
 
 // listHandleResponse handles the List response.
-func (client PublicIPPrefixesClient) listHandleResponse(resp *azcore.Response) (*PublicIPPrefixListResultResponse, error) {
+func (client PublicIPPrefixesClient) listHandleResponse(resp *azcore.Response) (PublicIPPrefixListResultResponse, error) {
 	result := PublicIPPrefixListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PublicIPPrefixListResult)
+	err := resp.UnmarshalAsJSON(&result.PublicIPPrefixListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -313,7 +316,7 @@ func (client PublicIPPrefixesClient) ListAll(options *PublicIPPrefixesListAllOpt
 		},
 		responder: client.listAllHandleResponse,
 		errorer:   client.listAllHandleError,
-		advancer: func(ctx context.Context, resp *PublicIPPrefixListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp PublicIPPrefixListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.PublicIPPrefixListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -337,9 +340,10 @@ func (client PublicIPPrefixesClient) listAllCreateRequest(ctx context.Context, o
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client PublicIPPrefixesClient) listAllHandleResponse(resp *azcore.Response) (*PublicIPPrefixListResultResponse, error) {
+func (client PublicIPPrefixesClient) listAllHandleResponse(resp *azcore.Response) (PublicIPPrefixListResultResponse, error) {
 	result := PublicIPPrefixListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PublicIPPrefixListResult)
+	err := resp.UnmarshalAsJSON(&result.PublicIPPrefixListResult)
+	return result, err
 }
 
 // listAllHandleError handles the ListAll error response.
@@ -352,21 +356,21 @@ func (client PublicIPPrefixesClient) listAllHandleError(resp *azcore.Response) e
 }
 
 // UpdateTags - Updates public IP prefix tags.
-func (client PublicIPPrefixesClient) UpdateTags(ctx context.Context, resourceGroupName string, publicIPPrefixName string, parameters TagsObject, options *PublicIPPrefixesUpdateTagsOptions) (*PublicIPPrefixResponse, error) {
+func (client PublicIPPrefixesClient) UpdateTags(ctx context.Context, resourceGroupName string, publicIPPrefixName string, parameters TagsObject, options *PublicIPPrefixesUpdateTagsOptions) (PublicIPPrefixResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, publicIPPrefixName, parameters, options)
 	if err != nil {
-		return nil, err
+		return PublicIPPrefixResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return PublicIPPrefixResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.updateTagsHandleError(resp)
+		return PublicIPPrefixResponse{}, client.updateTagsHandleError(resp)
 	}
 	result, err := client.updateTagsHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return PublicIPPrefixResponse{}, err
 	}
 	return result, nil
 }
@@ -390,9 +394,10 @@ func (client PublicIPPrefixesClient) updateTagsCreateRequest(ctx context.Context
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client PublicIPPrefixesClient) updateTagsHandleResponse(resp *azcore.Response) (*PublicIPPrefixResponse, error) {
+func (client PublicIPPrefixesClient) updateTagsHandleResponse(resp *azcore.Response) (PublicIPPrefixResponse, error) {
 	result := PublicIPPrefixResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PublicIPPrefix)
+	err := resp.UnmarshalAsJSON(&result.PublicIPPrefix)
+	return result, err
 }
 
 // updateTagsHandleError handles the UpdateTags error response.

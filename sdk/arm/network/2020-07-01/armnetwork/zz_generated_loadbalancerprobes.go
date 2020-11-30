@@ -34,21 +34,21 @@ func (client LoadBalancerProbesClient) Pipeline() azcore.Pipeline {
 }
 
 // Get - Gets load balancer probe.
-func (client LoadBalancerProbesClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, probeName string, options *LoadBalancerProbesGetOptions) (*ProbeResponse, error) {
+func (client LoadBalancerProbesClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, probeName string, options *LoadBalancerProbesGetOptions) (ProbeResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, loadBalancerName, probeName, options)
 	if err != nil {
-		return nil, err
+		return ProbeResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ProbeResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return ProbeResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ProbeResponse{}, err
 	}
 	return result, nil
 }
@@ -73,9 +73,10 @@ func (client LoadBalancerProbesClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client LoadBalancerProbesClient) getHandleResponse(resp *azcore.Response) (*ProbeResponse, error) {
+func (client LoadBalancerProbesClient) getHandleResponse(resp *azcore.Response) (ProbeResponse, error) {
 	result := ProbeResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Probe)
+	err := resp.UnmarshalAsJSON(&result.Probe)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -96,7 +97,7 @@ func (client LoadBalancerProbesClient) List(resourceGroupName string, loadBalanc
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *LoadBalancerProbeListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp LoadBalancerProbeListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.LoadBalancerProbeListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -122,9 +123,10 @@ func (client LoadBalancerProbesClient) listCreateRequest(ctx context.Context, re
 }
 
 // listHandleResponse handles the List response.
-func (client LoadBalancerProbesClient) listHandleResponse(resp *azcore.Response) (*LoadBalancerProbeListResultResponse, error) {
+func (client LoadBalancerProbesClient) listHandleResponse(resp *azcore.Response) (LoadBalancerProbeListResultResponse, error) {
 	result := LoadBalancerProbeListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.LoadBalancerProbeListResult)
+	err := resp.UnmarshalAsJSON(&result.LoadBalancerProbeListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

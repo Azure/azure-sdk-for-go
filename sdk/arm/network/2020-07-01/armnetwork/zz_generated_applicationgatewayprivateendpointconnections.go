@@ -35,17 +35,17 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) Pipeline() azco
 }
 
 // BeginDelete - Deletes the specified private endpoint connection on application gateway.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsDeleteOptions) (*HTTPPollerResponse, error) {
+func (client ApplicationGatewayPrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, applicationGatewayName, connectionName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ApplicationGatewayPrivateEndpointConnectionsClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -116,21 +116,21 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) deleteHandleErr
 }
 
 // Get - Gets the specified private endpoint connection on application gateway.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsGetOptions) (*ApplicationGatewayPrivateEndpointConnectionResponse, error) {
+func (client ApplicationGatewayPrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsGetOptions) (ApplicationGatewayPrivateEndpointConnectionResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, applicationGatewayName, connectionName, options)
 	if err != nil {
-		return nil, err
+		return ApplicationGatewayPrivateEndpointConnectionResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ApplicationGatewayPrivateEndpointConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return ApplicationGatewayPrivateEndpointConnectionResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ApplicationGatewayPrivateEndpointConnectionResponse{}, err
 	}
 	return result, nil
 }
@@ -155,9 +155,10 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) getCreateReques
 }
 
 // getHandleResponse handles the Get response.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) getHandleResponse(resp *azcore.Response) (*ApplicationGatewayPrivateEndpointConnectionResponse, error) {
+func (client ApplicationGatewayPrivateEndpointConnectionsClient) getHandleResponse(resp *azcore.Response) (ApplicationGatewayPrivateEndpointConnectionResponse, error) {
 	result := ApplicationGatewayPrivateEndpointConnectionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ApplicationGatewayPrivateEndpointConnection)
+	err := resp.UnmarshalAsJSON(&result.ApplicationGatewayPrivateEndpointConnection)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -178,7 +179,7 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) List(resourceGr
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *ApplicationGatewayPrivateEndpointConnectionListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ApplicationGatewayPrivateEndpointConnectionListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ApplicationGatewayPrivateEndpointConnectionListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -204,9 +205,10 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) listCreateReque
 }
 
 // listHandleResponse handles the List response.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) listHandleResponse(resp *azcore.Response) (*ApplicationGatewayPrivateEndpointConnectionListResultResponse, error) {
+func (client ApplicationGatewayPrivateEndpointConnectionsClient) listHandleResponse(resp *azcore.Response) (ApplicationGatewayPrivateEndpointConnectionListResultResponse, error) {
 	result := ApplicationGatewayPrivateEndpointConnectionListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ApplicationGatewayPrivateEndpointConnectionListResult)
+	err := resp.UnmarshalAsJSON(&result.ApplicationGatewayPrivateEndpointConnectionListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -219,24 +221,24 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) listHandleError
 }
 
 // BeginUpdate - Updates the specified private endpoint connection on application gateway.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, parameters ApplicationGatewayPrivateEndpointConnection, options *ApplicationGatewayPrivateEndpointConnectionsUpdateOptions) (*ApplicationGatewayPrivateEndpointConnectionPollerResponse, error) {
+func (client ApplicationGatewayPrivateEndpointConnectionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, parameters ApplicationGatewayPrivateEndpointConnection, options *ApplicationGatewayPrivateEndpointConnectionsUpdateOptions) (ApplicationGatewayPrivateEndpointConnectionPollerResponse, error) {
 	resp, err := client.Update(ctx, resourceGroupName, applicationGatewayName, connectionName, parameters, options)
 	if err != nil {
-		return nil, err
+		return ApplicationGatewayPrivateEndpointConnectionPollerResponse{}, err
 	}
-	result := &ApplicationGatewayPrivateEndpointConnectionPollerResponse{
+	result := ApplicationGatewayPrivateEndpointConnectionPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ApplicationGatewayPrivateEndpointConnectionsClient.Update", "azure-async-operation", resp, client.updateHandleError)
 	if err != nil {
-		return nil, err
+		return ApplicationGatewayPrivateEndpointConnectionPollerResponse{}, err
 	}
 	poller := &applicationGatewayPrivateEndpointConnectionPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*ApplicationGatewayPrivateEndpointConnectionResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ApplicationGatewayPrivateEndpointConnectionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -291,9 +293,10 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) updateCreateReq
 }
 
 // updateHandleResponse handles the Update response.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) updateHandleResponse(resp *azcore.Response) (*ApplicationGatewayPrivateEndpointConnectionResponse, error) {
+func (client ApplicationGatewayPrivateEndpointConnectionsClient) updateHandleResponse(resp *azcore.Response) (ApplicationGatewayPrivateEndpointConnectionResponse, error) {
 	result := ApplicationGatewayPrivateEndpointConnectionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ApplicationGatewayPrivateEndpointConnection)
+	err := resp.UnmarshalAsJSON(&result.ApplicationGatewayPrivateEndpointConnection)
+	return result, err
 }
 
 // updateHandleError handles the Update error response.

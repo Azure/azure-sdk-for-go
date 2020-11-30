@@ -35,17 +35,17 @@ func (client VpnSitesConfigurationClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginDownload - Gives the sas-url to download the configurations for vpn-sites in a resource group.
-func (client VpnSitesConfigurationClient) BeginDownload(ctx context.Context, resourceGroupName string, virtualWanName string, request GetVpnSitesConfigurationRequest, options *VpnSitesConfigurationDownloadOptions) (*HTTPPollerResponse, error) {
+func (client VpnSitesConfigurationClient) BeginDownload(ctx context.Context, resourceGroupName string, virtualWanName string, request GetVpnSitesConfigurationRequest, options *VpnSitesConfigurationDownloadOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Download(ctx, resourceGroupName, virtualWanName, request, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VpnSitesConfigurationClient.Download", "location", resp, client.downloadHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,

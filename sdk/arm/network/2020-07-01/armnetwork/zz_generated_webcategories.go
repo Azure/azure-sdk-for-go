@@ -34,21 +34,21 @@ func (client WebCategoriesClient) Pipeline() azcore.Pipeline {
 }
 
 // Get - Gets the specified Azure Web Category.
-func (client WebCategoriesClient) Get(ctx context.Context, name string, options *WebCategoriesGetOptions) (*AzureWebCategoryResponse, error) {
+func (client WebCategoriesClient) Get(ctx context.Context, name string, options *WebCategoriesGetOptions) (AzureWebCategoryResponse, error) {
 	req, err := client.getCreateRequest(ctx, name, options)
 	if err != nil {
-		return nil, err
+		return AzureWebCategoryResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return AzureWebCategoryResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return AzureWebCategoryResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return AzureWebCategoryResponse{}, err
 	}
 	return result, nil
 }
@@ -74,9 +74,10 @@ func (client WebCategoriesClient) getCreateRequest(ctx context.Context, name str
 }
 
 // getHandleResponse handles the Get response.
-func (client WebCategoriesClient) getHandleResponse(resp *azcore.Response) (*AzureWebCategoryResponse, error) {
+func (client WebCategoriesClient) getHandleResponse(resp *azcore.Response) (AzureWebCategoryResponse, error) {
 	result := AzureWebCategoryResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.AzureWebCategory)
+	err := resp.UnmarshalAsJSON(&result.AzureWebCategory)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -97,7 +98,7 @@ func (client WebCategoriesClient) ListBySubscription(options *WebCategoriesListB
 		},
 		responder: client.listBySubscriptionHandleResponse,
 		errorer:   client.listBySubscriptionHandleError,
-		advancer: func(ctx context.Context, resp *AzureWebCategoryListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AzureWebCategoryListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AzureWebCategoryListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -121,9 +122,10 @@ func (client WebCategoriesClient) listBySubscriptionCreateRequest(ctx context.Co
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client WebCategoriesClient) listBySubscriptionHandleResponse(resp *azcore.Response) (*AzureWebCategoryListResultResponse, error) {
+func (client WebCategoriesClient) listBySubscriptionHandleResponse(resp *azcore.Response) (AzureWebCategoryListResultResponse, error) {
 	result := AzureWebCategoryListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.AzureWebCategoryListResult)
+	err := resp.UnmarshalAsJSON(&result.AzureWebCategoryListResult)
+	return result, err
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.

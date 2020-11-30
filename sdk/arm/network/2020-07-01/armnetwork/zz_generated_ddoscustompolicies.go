@@ -35,24 +35,24 @@ func (client DdosCustomPoliciesClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates or updates a DDoS custom policy.
-func (client DdosCustomPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, ddosCustomPolicyName string, parameters DdosCustomPolicy, options *DdosCustomPoliciesCreateOrUpdateOptions) (*DdosCustomPolicyPollerResponse, error) {
+func (client DdosCustomPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, ddosCustomPolicyName string, parameters DdosCustomPolicy, options *DdosCustomPoliciesCreateOrUpdateOptions) (DdosCustomPolicyPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, ddosCustomPolicyName, parameters, options)
 	if err != nil {
-		return nil, err
+		return DdosCustomPolicyPollerResponse{}, err
 	}
-	result := &DdosCustomPolicyPollerResponse{
+	result := DdosCustomPolicyPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("DdosCustomPoliciesClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return DdosCustomPolicyPollerResponse{}, err
 	}
 	poller := &ddosCustomPolicyPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*DdosCustomPolicyResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DdosCustomPolicyResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -106,9 +106,10 @@ func (client DdosCustomPoliciesClient) createOrUpdateCreateRequest(ctx context.C
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client DdosCustomPoliciesClient) createOrUpdateHandleResponse(resp *azcore.Response) (*DdosCustomPolicyResponse, error) {
+func (client DdosCustomPoliciesClient) createOrUpdateHandleResponse(resp *azcore.Response) (DdosCustomPolicyResponse, error) {
 	result := DdosCustomPolicyResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.DdosCustomPolicy)
+	err := resp.UnmarshalAsJSON(&result.DdosCustomPolicy)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -121,17 +122,17 @@ func (client DdosCustomPoliciesClient) createOrUpdateHandleError(resp *azcore.Re
 }
 
 // BeginDelete - Deletes the specified DDoS custom policy.
-func (client DdosCustomPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, ddosCustomPolicyName string, options *DdosCustomPoliciesDeleteOptions) (*HTTPPollerResponse, error) {
+func (client DdosCustomPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, ddosCustomPolicyName string, options *DdosCustomPoliciesDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, ddosCustomPolicyName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("DdosCustomPoliciesClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -201,21 +202,21 @@ func (client DdosCustomPoliciesClient) deleteHandleError(resp *azcore.Response) 
 }
 
 // Get - Gets information about the specified DDoS custom policy.
-func (client DdosCustomPoliciesClient) Get(ctx context.Context, resourceGroupName string, ddosCustomPolicyName string, options *DdosCustomPoliciesGetOptions) (*DdosCustomPolicyResponse, error) {
+func (client DdosCustomPoliciesClient) Get(ctx context.Context, resourceGroupName string, ddosCustomPolicyName string, options *DdosCustomPoliciesGetOptions) (DdosCustomPolicyResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, ddosCustomPolicyName, options)
 	if err != nil {
-		return nil, err
+		return DdosCustomPolicyResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return DdosCustomPolicyResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return DdosCustomPolicyResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return DdosCustomPolicyResponse{}, err
 	}
 	return result, nil
 }
@@ -239,9 +240,10 @@ func (client DdosCustomPoliciesClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client DdosCustomPoliciesClient) getHandleResponse(resp *azcore.Response) (*DdosCustomPolicyResponse, error) {
+func (client DdosCustomPoliciesClient) getHandleResponse(resp *azcore.Response) (DdosCustomPolicyResponse, error) {
 	result := DdosCustomPolicyResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.DdosCustomPolicy)
+	err := resp.UnmarshalAsJSON(&result.DdosCustomPolicy)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -254,21 +256,21 @@ func (client DdosCustomPoliciesClient) getHandleError(resp *azcore.Response) err
 }
 
 // UpdateTags - Update a DDoS custom policy tags.
-func (client DdosCustomPoliciesClient) UpdateTags(ctx context.Context, resourceGroupName string, ddosCustomPolicyName string, parameters TagsObject, options *DdosCustomPoliciesUpdateTagsOptions) (*DdosCustomPolicyResponse, error) {
+func (client DdosCustomPoliciesClient) UpdateTags(ctx context.Context, resourceGroupName string, ddosCustomPolicyName string, parameters TagsObject, options *DdosCustomPoliciesUpdateTagsOptions) (DdosCustomPolicyResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, ddosCustomPolicyName, parameters, options)
 	if err != nil {
-		return nil, err
+		return DdosCustomPolicyResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return DdosCustomPolicyResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.updateTagsHandleError(resp)
+		return DdosCustomPolicyResponse{}, client.updateTagsHandleError(resp)
 	}
 	result, err := client.updateTagsHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return DdosCustomPolicyResponse{}, err
 	}
 	return result, nil
 }
@@ -292,9 +294,10 @@ func (client DdosCustomPoliciesClient) updateTagsCreateRequest(ctx context.Conte
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client DdosCustomPoliciesClient) updateTagsHandleResponse(resp *azcore.Response) (*DdosCustomPolicyResponse, error) {
+func (client DdosCustomPoliciesClient) updateTagsHandleResponse(resp *azcore.Response) (DdosCustomPolicyResponse, error) {
 	result := DdosCustomPolicyResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.DdosCustomPolicy)
+	err := resp.UnmarshalAsJSON(&result.DdosCustomPolicy)
+	return result, err
 }
 
 // updateTagsHandleError handles the UpdateTags error response.

@@ -34,21 +34,21 @@ func (client DefaultSecurityRulesClient) Pipeline() azcore.Pipeline {
 }
 
 // Get - Get the specified default network security rule.
-func (client DefaultSecurityRulesClient) Get(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, defaultSecurityRuleName string, options *DefaultSecurityRulesGetOptions) (*SecurityRuleResponse, error) {
+func (client DefaultSecurityRulesClient) Get(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, defaultSecurityRuleName string, options *DefaultSecurityRulesGetOptions) (SecurityRuleResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkSecurityGroupName, defaultSecurityRuleName, options)
 	if err != nil {
-		return nil, err
+		return SecurityRuleResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return SecurityRuleResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return SecurityRuleResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return SecurityRuleResponse{}, err
 	}
 	return result, nil
 }
@@ -73,9 +73,10 @@ func (client DefaultSecurityRulesClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client DefaultSecurityRulesClient) getHandleResponse(resp *azcore.Response) (*SecurityRuleResponse, error) {
+func (client DefaultSecurityRulesClient) getHandleResponse(resp *azcore.Response) (SecurityRuleResponse, error) {
 	result := SecurityRuleResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.SecurityRule)
+	err := resp.UnmarshalAsJSON(&result.SecurityRule)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -96,7 +97,7 @@ func (client DefaultSecurityRulesClient) List(resourceGroupName string, networkS
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *SecurityRuleListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp SecurityRuleListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SecurityRuleListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -122,9 +123,10 @@ func (client DefaultSecurityRulesClient) listCreateRequest(ctx context.Context, 
 }
 
 // listHandleResponse handles the List response.
-func (client DefaultSecurityRulesClient) listHandleResponse(resp *azcore.Response) (*SecurityRuleListResultResponse, error) {
+func (client DefaultSecurityRulesClient) listHandleResponse(resp *azcore.Response) (SecurityRuleListResultResponse, error) {
 	result := SecurityRuleListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.SecurityRuleListResult)
+	err := resp.UnmarshalAsJSON(&result.SecurityRuleListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

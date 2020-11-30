@@ -35,24 +35,24 @@ func (client LoadBalancersClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates or updates a load balancer.
-func (client LoadBalancersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersCreateOrUpdateOptions) (*LoadBalancerPollerResponse, error) {
+func (client LoadBalancersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersCreateOrUpdateOptions) (LoadBalancerPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, loadBalancerName, parameters, options)
 	if err != nil {
-		return nil, err
+		return LoadBalancerPollerResponse{}, err
 	}
-	result := &LoadBalancerPollerResponse{
+	result := LoadBalancerPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("LoadBalancersClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return LoadBalancerPollerResponse{}, err
 	}
 	poller := &loadBalancerPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*LoadBalancerResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (LoadBalancerResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -106,9 +106,10 @@ func (client LoadBalancersClient) createOrUpdateCreateRequest(ctx context.Contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client LoadBalancersClient) createOrUpdateHandleResponse(resp *azcore.Response) (*LoadBalancerResponse, error) {
+func (client LoadBalancersClient) createOrUpdateHandleResponse(resp *azcore.Response) (LoadBalancerResponse, error) {
 	result := LoadBalancerResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.LoadBalancer)
+	err := resp.UnmarshalAsJSON(&result.LoadBalancer)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -121,17 +122,17 @@ func (client LoadBalancersClient) createOrUpdateHandleError(resp *azcore.Respons
 }
 
 // BeginDelete - Deletes the specified load balancer.
-func (client LoadBalancersClient) BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersDeleteOptions) (*HTTPPollerResponse, error) {
+func (client LoadBalancersClient) BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, loadBalancerName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("LoadBalancersClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -201,21 +202,21 @@ func (client LoadBalancersClient) deleteHandleError(resp *azcore.Response) error
 }
 
 // Get - Gets the specified load balancer.
-func (client LoadBalancersClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersGetOptions) (*LoadBalancerResponse, error) {
+func (client LoadBalancersClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersGetOptions) (LoadBalancerResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, loadBalancerName, options)
 	if err != nil {
-		return nil, err
+		return LoadBalancerResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return LoadBalancerResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return LoadBalancerResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return LoadBalancerResponse{}, err
 	}
 	return result, nil
 }
@@ -242,9 +243,10 @@ func (client LoadBalancersClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client LoadBalancersClient) getHandleResponse(resp *azcore.Response) (*LoadBalancerResponse, error) {
+func (client LoadBalancersClient) getHandleResponse(resp *azcore.Response) (LoadBalancerResponse, error) {
 	result := LoadBalancerResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.LoadBalancer)
+	err := resp.UnmarshalAsJSON(&result.LoadBalancer)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -265,7 +267,7 @@ func (client LoadBalancersClient) List(resourceGroupName string, options *LoadBa
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *LoadBalancerListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp LoadBalancerListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.LoadBalancerListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -290,9 +292,10 @@ func (client LoadBalancersClient) listCreateRequest(ctx context.Context, resourc
 }
 
 // listHandleResponse handles the List response.
-func (client LoadBalancersClient) listHandleResponse(resp *azcore.Response) (*LoadBalancerListResultResponse, error) {
+func (client LoadBalancersClient) listHandleResponse(resp *azcore.Response) (LoadBalancerListResultResponse, error) {
 	result := LoadBalancerListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.LoadBalancerListResult)
+	err := resp.UnmarshalAsJSON(&result.LoadBalancerListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -313,7 +316,7 @@ func (client LoadBalancersClient) ListAll(options *LoadBalancersListAllOptions) 
 		},
 		responder: client.listAllHandleResponse,
 		errorer:   client.listAllHandleError,
-		advancer: func(ctx context.Context, resp *LoadBalancerListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp LoadBalancerListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.LoadBalancerListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -337,9 +340,10 @@ func (client LoadBalancersClient) listAllCreateRequest(ctx context.Context, opti
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client LoadBalancersClient) listAllHandleResponse(resp *azcore.Response) (*LoadBalancerListResultResponse, error) {
+func (client LoadBalancersClient) listAllHandleResponse(resp *azcore.Response) (LoadBalancerListResultResponse, error) {
 	result := LoadBalancerListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.LoadBalancerListResult)
+	err := resp.UnmarshalAsJSON(&result.LoadBalancerListResult)
+	return result, err
 }
 
 // listAllHandleError handles the ListAll error response.
@@ -352,21 +356,21 @@ func (client LoadBalancersClient) listAllHandleError(resp *azcore.Response) erro
 }
 
 // UpdateTags - Updates a load balancer tags.
-func (client LoadBalancersClient) UpdateTags(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters TagsObject, options *LoadBalancersUpdateTagsOptions) (*LoadBalancerResponse, error) {
+func (client LoadBalancersClient) UpdateTags(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters TagsObject, options *LoadBalancersUpdateTagsOptions) (LoadBalancerResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, loadBalancerName, parameters, options)
 	if err != nil {
-		return nil, err
+		return LoadBalancerResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return LoadBalancerResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.updateTagsHandleError(resp)
+		return LoadBalancerResponse{}, client.updateTagsHandleError(resp)
 	}
 	result, err := client.updateTagsHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return LoadBalancerResponse{}, err
 	}
 	return result, nil
 }
@@ -390,9 +394,10 @@ func (client LoadBalancersClient) updateTagsCreateRequest(ctx context.Context, r
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client LoadBalancersClient) updateTagsHandleResponse(resp *azcore.Response) (*LoadBalancerResponse, error) {
+func (client LoadBalancersClient) updateTagsHandleResponse(resp *azcore.Response) (LoadBalancerResponse, error) {
 	result := LoadBalancerResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.LoadBalancer)
+	err := resp.UnmarshalAsJSON(&result.LoadBalancer)
+	return result, err
 }
 
 // updateTagsHandleError handles the UpdateTags error response.

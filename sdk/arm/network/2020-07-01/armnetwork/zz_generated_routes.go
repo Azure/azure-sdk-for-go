@@ -35,24 +35,24 @@ func (client RoutesClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates or updates a route in the specified route table.
-func (client RoutesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, routeParameters Route, options *RoutesCreateOrUpdateOptions) (*RoutePollerResponse, error) {
+func (client RoutesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, routeParameters Route, options *RoutesCreateOrUpdateOptions) (RoutePollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, routeTableName, routeName, routeParameters, options)
 	if err != nil {
-		return nil, err
+		return RoutePollerResponse{}, err
 	}
-	result := &RoutePollerResponse{
+	result := RoutePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("RoutesClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return RoutePollerResponse{}, err
 	}
 	poller := &routePoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*RouteResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RouteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -107,9 +107,10 @@ func (client RoutesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client RoutesClient) createOrUpdateHandleResponse(resp *azcore.Response) (*RouteResponse, error) {
+func (client RoutesClient) createOrUpdateHandleResponse(resp *azcore.Response) (RouteResponse, error) {
 	result := RouteResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Route)
+	err := resp.UnmarshalAsJSON(&result.Route)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -122,17 +123,17 @@ func (client RoutesClient) createOrUpdateHandleError(resp *azcore.Response) erro
 }
 
 // BeginDelete - Deletes the specified route from a route table.
-func (client RoutesClient) BeginDelete(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, options *RoutesDeleteOptions) (*HTTPPollerResponse, error) {
+func (client RoutesClient) BeginDelete(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, options *RoutesDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, routeTableName, routeName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("RoutesClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -203,21 +204,21 @@ func (client RoutesClient) deleteHandleError(resp *azcore.Response) error {
 }
 
 // Get - Gets the specified route from a route table.
-func (client RoutesClient) Get(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, options *RoutesGetOptions) (*RouteResponse, error) {
+func (client RoutesClient) Get(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, options *RoutesGetOptions) (RouteResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, routeTableName, routeName, options)
 	if err != nil {
-		return nil, err
+		return RouteResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return RouteResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return RouteResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return RouteResponse{}, err
 	}
 	return result, nil
 }
@@ -242,9 +243,10 @@ func (client RoutesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 }
 
 // getHandleResponse handles the Get response.
-func (client RoutesClient) getHandleResponse(resp *azcore.Response) (*RouteResponse, error) {
+func (client RoutesClient) getHandleResponse(resp *azcore.Response) (RouteResponse, error) {
 	result := RouteResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Route)
+	err := resp.UnmarshalAsJSON(&result.Route)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -265,7 +267,7 @@ func (client RoutesClient) List(resourceGroupName string, routeTableName string,
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *RouteListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp RouteListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.RouteListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -291,9 +293,10 @@ func (client RoutesClient) listCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // listHandleResponse handles the List response.
-func (client RoutesClient) listHandleResponse(resp *azcore.Response) (*RouteListResultResponse, error) {
+func (client RoutesClient) listHandleResponse(resp *azcore.Response) (RouteListResultResponse, error) {
 	result := RouteListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.RouteListResult)
+	err := resp.UnmarshalAsJSON(&result.RouteListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

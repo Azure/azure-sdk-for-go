@@ -35,24 +35,24 @@ func (client NetworkInterfaceTapConfigurationsClient) Pipeline() azcore.Pipeline
 }
 
 // BeginCreateOrUpdate - Creates or updates a Tap configuration in the specified NetworkInterface.
-func (client NetworkInterfaceTapConfigurationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string, tapConfigurationParameters NetworkInterfaceTapConfiguration, options *NetworkInterfaceTapConfigurationsCreateOrUpdateOptions) (*NetworkInterfaceTapConfigurationPollerResponse, error) {
+func (client NetworkInterfaceTapConfigurationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string, tapConfigurationParameters NetworkInterfaceTapConfiguration, options *NetworkInterfaceTapConfigurationsCreateOrUpdateOptions) (NetworkInterfaceTapConfigurationPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters, options)
 	if err != nil {
-		return nil, err
+		return NetworkInterfaceTapConfigurationPollerResponse{}, err
 	}
-	result := &NetworkInterfaceTapConfigurationPollerResponse{
+	result := NetworkInterfaceTapConfigurationPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NetworkInterfaceTapConfigurationsClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return NetworkInterfaceTapConfigurationPollerResponse{}, err
 	}
 	poller := &networkInterfaceTapConfigurationPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*NetworkInterfaceTapConfigurationResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NetworkInterfaceTapConfigurationResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -107,9 +107,10 @@ func (client NetworkInterfaceTapConfigurationsClient) createOrUpdateCreateReques
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client NetworkInterfaceTapConfigurationsClient) createOrUpdateHandleResponse(resp *azcore.Response) (*NetworkInterfaceTapConfigurationResponse, error) {
+func (client NetworkInterfaceTapConfigurationsClient) createOrUpdateHandleResponse(resp *azcore.Response) (NetworkInterfaceTapConfigurationResponse, error) {
 	result := NetworkInterfaceTapConfigurationResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.NetworkInterfaceTapConfiguration)
+	err := resp.UnmarshalAsJSON(&result.NetworkInterfaceTapConfiguration)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -122,17 +123,17 @@ func (client NetworkInterfaceTapConfigurationsClient) createOrUpdateHandleError(
 }
 
 // BeginDelete - Deletes the specified tap configuration from the NetworkInterface.
-func (client NetworkInterfaceTapConfigurationsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string, options *NetworkInterfaceTapConfigurationsDeleteOptions) (*HTTPPollerResponse, error) {
+func (client NetworkInterfaceTapConfigurationsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string, options *NetworkInterfaceTapConfigurationsDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, networkInterfaceName, tapConfigurationName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NetworkInterfaceTapConfigurationsClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -203,21 +204,21 @@ func (client NetworkInterfaceTapConfigurationsClient) deleteHandleError(resp *az
 }
 
 // Get - Get the specified tap configuration on a network interface.
-func (client NetworkInterfaceTapConfigurationsClient) Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string, options *NetworkInterfaceTapConfigurationsGetOptions) (*NetworkInterfaceTapConfigurationResponse, error) {
+func (client NetworkInterfaceTapConfigurationsClient) Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string, options *NetworkInterfaceTapConfigurationsGetOptions) (NetworkInterfaceTapConfigurationResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkInterfaceName, tapConfigurationName, options)
 	if err != nil {
-		return nil, err
+		return NetworkInterfaceTapConfigurationResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return NetworkInterfaceTapConfigurationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return NetworkInterfaceTapConfigurationResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return NetworkInterfaceTapConfigurationResponse{}, err
 	}
 	return result, nil
 }
@@ -242,9 +243,10 @@ func (client NetworkInterfaceTapConfigurationsClient) getCreateRequest(ctx conte
 }
 
 // getHandleResponse handles the Get response.
-func (client NetworkInterfaceTapConfigurationsClient) getHandleResponse(resp *azcore.Response) (*NetworkInterfaceTapConfigurationResponse, error) {
+func (client NetworkInterfaceTapConfigurationsClient) getHandleResponse(resp *azcore.Response) (NetworkInterfaceTapConfigurationResponse, error) {
 	result := NetworkInterfaceTapConfigurationResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.NetworkInterfaceTapConfiguration)
+	err := resp.UnmarshalAsJSON(&result.NetworkInterfaceTapConfiguration)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -265,7 +267,7 @@ func (client NetworkInterfaceTapConfigurationsClient) List(resourceGroupName str
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *NetworkInterfaceTapConfigurationListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp NetworkInterfaceTapConfigurationListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.NetworkInterfaceTapConfigurationListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -291,9 +293,10 @@ func (client NetworkInterfaceTapConfigurationsClient) listCreateRequest(ctx cont
 }
 
 // listHandleResponse handles the List response.
-func (client NetworkInterfaceTapConfigurationsClient) listHandleResponse(resp *azcore.Response) (*NetworkInterfaceTapConfigurationListResultResponse, error) {
+func (client NetworkInterfaceTapConfigurationsClient) listHandleResponse(resp *azcore.Response) (NetworkInterfaceTapConfigurationListResultResponse, error) {
 	result := NetworkInterfaceTapConfigurationListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.NetworkInterfaceTapConfigurationListResult)
+	err := resp.UnmarshalAsJSON(&result.NetworkInterfaceTapConfigurationListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

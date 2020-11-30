@@ -42,7 +42,7 @@ func (client ApplicationGatewayPrivateLinkResourcesClient) List(resourceGroupNam
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *ApplicationGatewayPrivateLinkResourceListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ApplicationGatewayPrivateLinkResourceListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ApplicationGatewayPrivateLinkResourceListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -68,9 +68,10 @@ func (client ApplicationGatewayPrivateLinkResourcesClient) listCreateRequest(ctx
 }
 
 // listHandleResponse handles the List response.
-func (client ApplicationGatewayPrivateLinkResourcesClient) listHandleResponse(resp *azcore.Response) (*ApplicationGatewayPrivateLinkResourceListResultResponse, error) {
+func (client ApplicationGatewayPrivateLinkResourcesClient) listHandleResponse(resp *azcore.Response) (ApplicationGatewayPrivateLinkResourceListResultResponse, error) {
 	result := ApplicationGatewayPrivateLinkResourceListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ApplicationGatewayPrivateLinkResourceListResult)
+	err := resp.UnmarshalAsJSON(&result.ApplicationGatewayPrivateLinkResourceListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

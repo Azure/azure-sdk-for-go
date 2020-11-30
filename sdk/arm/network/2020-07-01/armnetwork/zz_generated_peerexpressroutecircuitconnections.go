@@ -34,21 +34,21 @@ func (client PeerExpressRouteCircuitConnectionsClient) Pipeline() azcore.Pipelin
 }
 
 // Get - Gets the specified Peer Express Route Circuit Connection from the specified express route circuit.
-func (client PeerExpressRouteCircuitConnectionsClient) Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, options *PeerExpressRouteCircuitConnectionsGetOptions) (*PeerExpressRouteCircuitConnectionResponse, error) {
+func (client PeerExpressRouteCircuitConnectionsClient) Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, options *PeerExpressRouteCircuitConnectionsGetOptions) (PeerExpressRouteCircuitConnectionResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, circuitName, peeringName, connectionName, options)
 	if err != nil {
-		return nil, err
+		return PeerExpressRouteCircuitConnectionResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return PeerExpressRouteCircuitConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return PeerExpressRouteCircuitConnectionResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return PeerExpressRouteCircuitConnectionResponse{}, err
 	}
 	return result, nil
 }
@@ -74,9 +74,10 @@ func (client PeerExpressRouteCircuitConnectionsClient) getCreateRequest(ctx cont
 }
 
 // getHandleResponse handles the Get response.
-func (client PeerExpressRouteCircuitConnectionsClient) getHandleResponse(resp *azcore.Response) (*PeerExpressRouteCircuitConnectionResponse, error) {
+func (client PeerExpressRouteCircuitConnectionsClient) getHandleResponse(resp *azcore.Response) (PeerExpressRouteCircuitConnectionResponse, error) {
 	result := PeerExpressRouteCircuitConnectionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PeerExpressRouteCircuitConnection)
+	err := resp.UnmarshalAsJSON(&result.PeerExpressRouteCircuitConnection)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -97,7 +98,7 @@ func (client PeerExpressRouteCircuitConnectionsClient) List(resourceGroupName st
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *PeerExpressRouteCircuitConnectionListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp PeerExpressRouteCircuitConnectionListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.PeerExpressRouteCircuitConnectionListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -124,9 +125,10 @@ func (client PeerExpressRouteCircuitConnectionsClient) listCreateRequest(ctx con
 }
 
 // listHandleResponse handles the List response.
-func (client PeerExpressRouteCircuitConnectionsClient) listHandleResponse(resp *azcore.Response) (*PeerExpressRouteCircuitConnectionListResultResponse, error) {
+func (client PeerExpressRouteCircuitConnectionsClient) listHandleResponse(resp *azcore.Response) (PeerExpressRouteCircuitConnectionListResultResponse, error) {
 	result := PeerExpressRouteCircuitConnectionListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PeerExpressRouteCircuitConnectionListResult)
+	err := resp.UnmarshalAsJSON(&result.PeerExpressRouteCircuitConnectionListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

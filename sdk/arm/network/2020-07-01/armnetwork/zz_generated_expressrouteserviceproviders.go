@@ -42,7 +42,7 @@ func (client ExpressRouteServiceProvidersClient) List(options *ExpressRouteServi
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *ExpressRouteServiceProviderListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ExpressRouteServiceProviderListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ExpressRouteServiceProviderListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -66,9 +66,10 @@ func (client ExpressRouteServiceProvidersClient) listCreateRequest(ctx context.C
 }
 
 // listHandleResponse handles the List response.
-func (client ExpressRouteServiceProvidersClient) listHandleResponse(resp *azcore.Response) (*ExpressRouteServiceProviderListResultResponse, error) {
+func (client ExpressRouteServiceProvidersClient) listHandleResponse(resp *azcore.Response) (ExpressRouteServiceProviderListResultResponse, error) {
 	result := ExpressRouteServiceProviderListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteServiceProviderListResult)
+	err := resp.UnmarshalAsJSON(&result.ExpressRouteServiceProviderListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

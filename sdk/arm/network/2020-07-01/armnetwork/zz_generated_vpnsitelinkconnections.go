@@ -34,21 +34,21 @@ func (client VpnSiteLinkConnectionsClient) Pipeline() azcore.Pipeline {
 }
 
 // Get - Retrieves the details of a vpn site link connection.
-func (client VpnSiteLinkConnectionsClient) Get(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VpnSiteLinkConnectionsGetOptions) (*VpnSiteLinkConnectionResponse, error) {
+func (client VpnSiteLinkConnectionsClient) Get(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VpnSiteLinkConnectionsGetOptions) (VpnSiteLinkConnectionResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, linkConnectionName, options)
 	if err != nil {
-		return nil, err
+		return VpnSiteLinkConnectionResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return VpnSiteLinkConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return VpnSiteLinkConnectionResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return VpnSiteLinkConnectionResponse{}, err
 	}
 	return result, nil
 }
@@ -74,9 +74,10 @@ func (client VpnSiteLinkConnectionsClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client VpnSiteLinkConnectionsClient) getHandleResponse(resp *azcore.Response) (*VpnSiteLinkConnectionResponse, error) {
+func (client VpnSiteLinkConnectionsClient) getHandleResponse(resp *azcore.Response) (VpnSiteLinkConnectionResponse, error) {
 	result := VpnSiteLinkConnectionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VpnSiteLinkConnection)
+	err := resp.UnmarshalAsJSON(&result.VpnSiteLinkConnection)
+	return result, err
 }
 
 // getHandleError handles the Get error response.

@@ -34,21 +34,21 @@ func (client VirtualApplianceSKUsClient) Pipeline() azcore.Pipeline {
 }
 
 // Get - Retrieves a single available sku for network virtual appliance.
-func (client VirtualApplianceSKUsClient) Get(ctx context.Context, skuName string, options *VirtualApplianceSKUsGetOptions) (*NetworkVirtualApplianceSKUResponse, error) {
+func (client VirtualApplianceSKUsClient) Get(ctx context.Context, skuName string, options *VirtualApplianceSKUsGetOptions) (NetworkVirtualApplianceSKUResponse, error) {
 	req, err := client.getCreateRequest(ctx, skuName, options)
 	if err != nil {
-		return nil, err
+		return NetworkVirtualApplianceSKUResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return NetworkVirtualApplianceSKUResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return NetworkVirtualApplianceSKUResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return NetworkVirtualApplianceSKUResponse{}, err
 	}
 	return result, nil
 }
@@ -71,9 +71,10 @@ func (client VirtualApplianceSKUsClient) getCreateRequest(ctx context.Context, s
 }
 
 // getHandleResponse handles the Get response.
-func (client VirtualApplianceSKUsClient) getHandleResponse(resp *azcore.Response) (*NetworkVirtualApplianceSKUResponse, error) {
+func (client VirtualApplianceSKUsClient) getHandleResponse(resp *azcore.Response) (NetworkVirtualApplianceSKUResponse, error) {
 	result := NetworkVirtualApplianceSKUResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.NetworkVirtualApplianceSKU)
+	err := resp.UnmarshalAsJSON(&result.NetworkVirtualApplianceSKU)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -94,7 +95,7 @@ func (client VirtualApplianceSKUsClient) List(options *VirtualApplianceSKUsListO
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *NetworkVirtualApplianceSKUListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp NetworkVirtualApplianceSKUListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.NetworkVirtualApplianceSKUListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -118,9 +119,10 @@ func (client VirtualApplianceSKUsClient) listCreateRequest(ctx context.Context, 
 }
 
 // listHandleResponse handles the List response.
-func (client VirtualApplianceSKUsClient) listHandleResponse(resp *azcore.Response) (*NetworkVirtualApplianceSKUListResultResponse, error) {
+func (client VirtualApplianceSKUsClient) listHandleResponse(resp *azcore.Response) (NetworkVirtualApplianceSKUListResultResponse, error) {
 	result := NetworkVirtualApplianceSKUListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.NetworkVirtualApplianceSKUListResult)
+	err := resp.UnmarshalAsJSON(&result.NetworkVirtualApplianceSKUListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

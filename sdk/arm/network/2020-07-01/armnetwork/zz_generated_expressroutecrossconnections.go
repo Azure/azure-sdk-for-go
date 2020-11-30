@@ -35,24 +35,24 @@ func (client ExpressRouteCrossConnectionsClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Update the specified ExpressRouteCrossConnection.
-func (client ExpressRouteCrossConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters ExpressRouteCrossConnection, options *ExpressRouteCrossConnectionsCreateOrUpdateOptions) (*ExpressRouteCrossConnectionPollerResponse, error) {
+func (client ExpressRouteCrossConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters ExpressRouteCrossConnection, options *ExpressRouteCrossConnectionsCreateOrUpdateOptions) (ExpressRouteCrossConnectionPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, crossConnectionName, parameters, options)
 	if err != nil {
-		return nil, err
+		return ExpressRouteCrossConnectionPollerResponse{}, err
 	}
-	result := &ExpressRouteCrossConnectionPollerResponse{
+	result := ExpressRouteCrossConnectionPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ExpressRouteCrossConnectionsClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return ExpressRouteCrossConnectionPollerResponse{}, err
 	}
 	poller := &expressRouteCrossConnectionPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*ExpressRouteCrossConnectionResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteCrossConnectionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -106,9 +106,10 @@ func (client ExpressRouteCrossConnectionsClient) createOrUpdateCreateRequest(ctx
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client ExpressRouteCrossConnectionsClient) createOrUpdateHandleResponse(resp *azcore.Response) (*ExpressRouteCrossConnectionResponse, error) {
+func (client ExpressRouteCrossConnectionsClient) createOrUpdateHandleResponse(resp *azcore.Response) (ExpressRouteCrossConnectionResponse, error) {
 	result := ExpressRouteCrossConnectionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteCrossConnection)
+	err := resp.UnmarshalAsJSON(&result.ExpressRouteCrossConnection)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -121,21 +122,21 @@ func (client ExpressRouteCrossConnectionsClient) createOrUpdateHandleError(resp 
 }
 
 // Get - Gets details about the specified ExpressRouteCrossConnection.
-func (client ExpressRouteCrossConnectionsClient) Get(ctx context.Context, resourceGroupName string, crossConnectionName string, options *ExpressRouteCrossConnectionsGetOptions) (*ExpressRouteCrossConnectionResponse, error) {
+func (client ExpressRouteCrossConnectionsClient) Get(ctx context.Context, resourceGroupName string, crossConnectionName string, options *ExpressRouteCrossConnectionsGetOptions) (ExpressRouteCrossConnectionResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, crossConnectionName, options)
 	if err != nil {
-		return nil, err
+		return ExpressRouteCrossConnectionResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ExpressRouteCrossConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return ExpressRouteCrossConnectionResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ExpressRouteCrossConnectionResponse{}, err
 	}
 	return result, nil
 }
@@ -159,9 +160,10 @@ func (client ExpressRouteCrossConnectionsClient) getCreateRequest(ctx context.Co
 }
 
 // getHandleResponse handles the Get response.
-func (client ExpressRouteCrossConnectionsClient) getHandleResponse(resp *azcore.Response) (*ExpressRouteCrossConnectionResponse, error) {
+func (client ExpressRouteCrossConnectionsClient) getHandleResponse(resp *azcore.Response) (ExpressRouteCrossConnectionResponse, error) {
 	result := ExpressRouteCrossConnectionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteCrossConnection)
+	err := resp.UnmarshalAsJSON(&result.ExpressRouteCrossConnection)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -182,7 +184,7 @@ func (client ExpressRouteCrossConnectionsClient) List(options *ExpressRouteCross
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *ExpressRouteCrossConnectionListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ExpressRouteCrossConnectionListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ExpressRouteCrossConnectionListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -206,9 +208,10 @@ func (client ExpressRouteCrossConnectionsClient) listCreateRequest(ctx context.C
 }
 
 // listHandleResponse handles the List response.
-func (client ExpressRouteCrossConnectionsClient) listHandleResponse(resp *azcore.Response) (*ExpressRouteCrossConnectionListResultResponse, error) {
+func (client ExpressRouteCrossConnectionsClient) listHandleResponse(resp *azcore.Response) (ExpressRouteCrossConnectionListResultResponse, error) {
 	result := ExpressRouteCrossConnectionListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteCrossConnectionListResult)
+	err := resp.UnmarshalAsJSON(&result.ExpressRouteCrossConnectionListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -221,24 +224,24 @@ func (client ExpressRouteCrossConnectionsClient) listHandleError(resp *azcore.Re
 }
 
 // BeginListArpTable - Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-func (client ExpressRouteCrossConnectionsClient) BeginListArpTable(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, devicePath string, options *ExpressRouteCrossConnectionsListArpTableOptions) (*ExpressRouteCircuitsArpTableListResultPollerResponse, error) {
+func (client ExpressRouteCrossConnectionsClient) BeginListArpTable(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, devicePath string, options *ExpressRouteCrossConnectionsListArpTableOptions) (ExpressRouteCircuitsArpTableListResultPollerResponse, error) {
 	resp, err := client.ListArpTable(ctx, resourceGroupName, crossConnectionName, peeringName, devicePath, options)
 	if err != nil {
-		return nil, err
+		return ExpressRouteCircuitsArpTableListResultPollerResponse{}, err
 	}
-	result := &ExpressRouteCircuitsArpTableListResultPollerResponse{
+	result := ExpressRouteCircuitsArpTableListResultPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ExpressRouteCrossConnectionsClient.ListArpTable", "location", resp, client.listArpTableHandleError)
 	if err != nil {
-		return nil, err
+		return ExpressRouteCircuitsArpTableListResultPollerResponse{}, err
 	}
 	poller := &expressRouteCircuitsArpTableListResultPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*ExpressRouteCircuitsArpTableListResultResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitsArpTableListResultResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -294,9 +297,10 @@ func (client ExpressRouteCrossConnectionsClient) listArpTableCreateRequest(ctx c
 }
 
 // listArpTableHandleResponse handles the ListArpTable response.
-func (client ExpressRouteCrossConnectionsClient) listArpTableHandleResponse(resp *azcore.Response) (*ExpressRouteCircuitsArpTableListResultResponse, error) {
+func (client ExpressRouteCrossConnectionsClient) listArpTableHandleResponse(resp *azcore.Response) (ExpressRouteCircuitsArpTableListResultResponse, error) {
 	result := ExpressRouteCircuitsArpTableListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteCircuitsArpTableListResult)
+	err := resp.UnmarshalAsJSON(&result.ExpressRouteCircuitsArpTableListResult)
+	return result, err
 }
 
 // listArpTableHandleError handles the ListArpTable error response.
@@ -317,7 +321,7 @@ func (client ExpressRouteCrossConnectionsClient) ListByResourceGroup(resourceGro
 		},
 		responder: client.listByResourceGroupHandleResponse,
 		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp *ExpressRouteCrossConnectionListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ExpressRouteCrossConnectionListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ExpressRouteCrossConnectionListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -342,9 +346,10 @@ func (client ExpressRouteCrossConnectionsClient) listByResourceGroupCreateReques
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client ExpressRouteCrossConnectionsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (*ExpressRouteCrossConnectionListResultResponse, error) {
+func (client ExpressRouteCrossConnectionsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (ExpressRouteCrossConnectionListResultResponse, error) {
 	result := ExpressRouteCrossConnectionListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteCrossConnectionListResult)
+	err := resp.UnmarshalAsJSON(&result.ExpressRouteCrossConnectionListResult)
+	return result, err
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -357,24 +362,24 @@ func (client ExpressRouteCrossConnectionsClient) listByResourceGroupHandleError(
 }
 
 // BeginListRoutesTable - Gets the currently advertised routes table associated with the express route cross connection in a resource group.
-func (client ExpressRouteCrossConnectionsClient) BeginListRoutesTable(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, devicePath string, options *ExpressRouteCrossConnectionsListRoutesTableOptions) (*ExpressRouteCircuitsRoutesTableListResultPollerResponse, error) {
+func (client ExpressRouteCrossConnectionsClient) BeginListRoutesTable(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, devicePath string, options *ExpressRouteCrossConnectionsListRoutesTableOptions) (ExpressRouteCircuitsRoutesTableListResultPollerResponse, error) {
 	resp, err := client.ListRoutesTable(ctx, resourceGroupName, crossConnectionName, peeringName, devicePath, options)
 	if err != nil {
-		return nil, err
+		return ExpressRouteCircuitsRoutesTableListResultPollerResponse{}, err
 	}
-	result := &ExpressRouteCircuitsRoutesTableListResultPollerResponse{
+	result := ExpressRouteCircuitsRoutesTableListResultPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ExpressRouteCrossConnectionsClient.ListRoutesTable", "location", resp, client.listRoutesTableHandleError)
 	if err != nil {
-		return nil, err
+		return ExpressRouteCircuitsRoutesTableListResultPollerResponse{}, err
 	}
 	poller := &expressRouteCircuitsRoutesTableListResultPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*ExpressRouteCircuitsRoutesTableListResultResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitsRoutesTableListResultResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -430,9 +435,10 @@ func (client ExpressRouteCrossConnectionsClient) listRoutesTableCreateRequest(ct
 }
 
 // listRoutesTableHandleResponse handles the ListRoutesTable response.
-func (client ExpressRouteCrossConnectionsClient) listRoutesTableHandleResponse(resp *azcore.Response) (*ExpressRouteCircuitsRoutesTableListResultResponse, error) {
+func (client ExpressRouteCrossConnectionsClient) listRoutesTableHandleResponse(resp *azcore.Response) (ExpressRouteCircuitsRoutesTableListResultResponse, error) {
 	result := ExpressRouteCircuitsRoutesTableListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteCircuitsRoutesTableListResult)
+	err := resp.UnmarshalAsJSON(&result.ExpressRouteCircuitsRoutesTableListResult)
+	return result, err
 }
 
 // listRoutesTableHandleError handles the ListRoutesTable error response.
@@ -445,24 +451,24 @@ func (client ExpressRouteCrossConnectionsClient) listRoutesTableHandleError(resp
 }
 
 // BeginListRoutesTableSummary - Gets the route table summary associated with the express route cross connection in a resource group.
-func (client ExpressRouteCrossConnectionsClient) BeginListRoutesTableSummary(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, devicePath string, options *ExpressRouteCrossConnectionsListRoutesTableSummaryOptions) (*ExpressRouteCrossConnectionsRoutesTableSummaryListResultPollerResponse, error) {
+func (client ExpressRouteCrossConnectionsClient) BeginListRoutesTableSummary(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, devicePath string, options *ExpressRouteCrossConnectionsListRoutesTableSummaryOptions) (ExpressRouteCrossConnectionsRoutesTableSummaryListResultPollerResponse, error) {
 	resp, err := client.ListRoutesTableSummary(ctx, resourceGroupName, crossConnectionName, peeringName, devicePath, options)
 	if err != nil {
-		return nil, err
+		return ExpressRouteCrossConnectionsRoutesTableSummaryListResultPollerResponse{}, err
 	}
-	result := &ExpressRouteCrossConnectionsRoutesTableSummaryListResultPollerResponse{
+	result := ExpressRouteCrossConnectionsRoutesTableSummaryListResultPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ExpressRouteCrossConnectionsClient.ListRoutesTableSummary", "location", resp, client.listRoutesTableSummaryHandleError)
 	if err != nil {
-		return nil, err
+		return ExpressRouteCrossConnectionsRoutesTableSummaryListResultPollerResponse{}, err
 	}
 	poller := &expressRouteCrossConnectionsRoutesTableSummaryListResultPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*ExpressRouteCrossConnectionsRoutesTableSummaryListResultResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteCrossConnectionsRoutesTableSummaryListResultResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -518,9 +524,10 @@ func (client ExpressRouteCrossConnectionsClient) listRoutesTableSummaryCreateReq
 }
 
 // listRoutesTableSummaryHandleResponse handles the ListRoutesTableSummary response.
-func (client ExpressRouteCrossConnectionsClient) listRoutesTableSummaryHandleResponse(resp *azcore.Response) (*ExpressRouteCrossConnectionsRoutesTableSummaryListResultResponse, error) {
+func (client ExpressRouteCrossConnectionsClient) listRoutesTableSummaryHandleResponse(resp *azcore.Response) (ExpressRouteCrossConnectionsRoutesTableSummaryListResultResponse, error) {
 	result := ExpressRouteCrossConnectionsRoutesTableSummaryListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteCrossConnectionsRoutesTableSummaryListResult)
+	err := resp.UnmarshalAsJSON(&result.ExpressRouteCrossConnectionsRoutesTableSummaryListResult)
+	return result, err
 }
 
 // listRoutesTableSummaryHandleError handles the ListRoutesTableSummary error response.
@@ -533,21 +540,21 @@ func (client ExpressRouteCrossConnectionsClient) listRoutesTableSummaryHandleErr
 }
 
 // UpdateTags - Updates an express route cross connection tags.
-func (client ExpressRouteCrossConnectionsClient) UpdateTags(ctx context.Context, resourceGroupName string, crossConnectionName string, crossConnectionParameters TagsObject, options *ExpressRouteCrossConnectionsUpdateTagsOptions) (*ExpressRouteCrossConnectionResponse, error) {
+func (client ExpressRouteCrossConnectionsClient) UpdateTags(ctx context.Context, resourceGroupName string, crossConnectionName string, crossConnectionParameters TagsObject, options *ExpressRouteCrossConnectionsUpdateTagsOptions) (ExpressRouteCrossConnectionResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, crossConnectionName, crossConnectionParameters, options)
 	if err != nil {
-		return nil, err
+		return ExpressRouteCrossConnectionResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ExpressRouteCrossConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.updateTagsHandleError(resp)
+		return ExpressRouteCrossConnectionResponse{}, client.updateTagsHandleError(resp)
 	}
 	result, err := client.updateTagsHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ExpressRouteCrossConnectionResponse{}, err
 	}
 	return result, nil
 }
@@ -571,9 +578,10 @@ func (client ExpressRouteCrossConnectionsClient) updateTagsCreateRequest(ctx con
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client ExpressRouteCrossConnectionsClient) updateTagsHandleResponse(resp *azcore.Response) (*ExpressRouteCrossConnectionResponse, error) {
+func (client ExpressRouteCrossConnectionsClient) updateTagsHandleResponse(resp *azcore.Response) (ExpressRouteCrossConnectionResponse, error) {
 	result := ExpressRouteCrossConnectionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteCrossConnection)
+	err := resp.UnmarshalAsJSON(&result.ExpressRouteCrossConnection)
+	return result, err
 }
 
 // updateTagsHandleError handles the UpdateTags error response.

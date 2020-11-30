@@ -36,24 +36,24 @@ func (client NetworkWatchersClient) Pipeline() azcore.Pipeline {
 
 // BeginCheckConnectivity - Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint including another
 // VM or an arbitrary remote server.
-func (client NetworkWatchersClient) BeginCheckConnectivity(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters ConnectivityParameters, options *NetworkWatchersCheckConnectivityOptions) (*ConnectivityInformationPollerResponse, error) {
+func (client NetworkWatchersClient) BeginCheckConnectivity(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters ConnectivityParameters, options *NetworkWatchersCheckConnectivityOptions) (ConnectivityInformationPollerResponse, error) {
 	resp, err := client.CheckConnectivity(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
-		return nil, err
+		return ConnectivityInformationPollerResponse{}, err
 	}
-	result := &ConnectivityInformationPollerResponse{
+	result := ConnectivityInformationPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NetworkWatchersClient.CheckConnectivity", "location", resp, client.checkConnectivityHandleError)
 	if err != nil {
-		return nil, err
+		return ConnectivityInformationPollerResponse{}, err
 	}
 	poller := &connectivityInformationPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*ConnectivityInformationResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConnectivityInformationResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -108,9 +108,10 @@ func (client NetworkWatchersClient) checkConnectivityCreateRequest(ctx context.C
 }
 
 // checkConnectivityHandleResponse handles the CheckConnectivity response.
-func (client NetworkWatchersClient) checkConnectivityHandleResponse(resp *azcore.Response) (*ConnectivityInformationResponse, error) {
+func (client NetworkWatchersClient) checkConnectivityHandleResponse(resp *azcore.Response) (ConnectivityInformationResponse, error) {
 	result := ConnectivityInformationResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ConnectivityInformation)
+	err := resp.UnmarshalAsJSON(&result.ConnectivityInformation)
+	return result, err
 }
 
 // checkConnectivityHandleError handles the CheckConnectivity error response.
@@ -123,21 +124,21 @@ func (client NetworkWatchersClient) checkConnectivityHandleError(resp *azcore.Re
 }
 
 // CreateOrUpdate - Creates or updates a network watcher in the specified resource group.
-func (client NetworkWatchersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters NetworkWatcher, options *NetworkWatchersCreateOrUpdateOptions) (*NetworkWatcherResponse, error) {
+func (client NetworkWatchersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters NetworkWatcher, options *NetworkWatchersCreateOrUpdateOptions) (NetworkWatcherResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
-		return nil, err
+		return NetworkWatcherResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return NetworkWatcherResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return NetworkWatcherResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	result, err := client.createOrUpdateHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return NetworkWatcherResponse{}, err
 	}
 	return result, nil
 }
@@ -161,9 +162,10 @@ func (client NetworkWatchersClient) createOrUpdateCreateRequest(ctx context.Cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client NetworkWatchersClient) createOrUpdateHandleResponse(resp *azcore.Response) (*NetworkWatcherResponse, error) {
+func (client NetworkWatchersClient) createOrUpdateHandleResponse(resp *azcore.Response) (NetworkWatcherResponse, error) {
 	result := NetworkWatcherResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.NetworkWatcher)
+	err := resp.UnmarshalAsJSON(&result.NetworkWatcher)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -176,17 +178,17 @@ func (client NetworkWatchersClient) createOrUpdateHandleError(resp *azcore.Respo
 }
 
 // BeginDelete - Deletes the specified network watcher resource.
-func (client NetworkWatchersClient) BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, options *NetworkWatchersDeleteOptions) (*HTTPPollerResponse, error) {
+func (client NetworkWatchersClient) BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, options *NetworkWatchersDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, networkWatcherName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NetworkWatchersClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -256,21 +258,21 @@ func (client NetworkWatchersClient) deleteHandleError(resp *azcore.Response) err
 }
 
 // Get - Gets the specified network watcher by resource group.
-func (client NetworkWatchersClient) Get(ctx context.Context, resourceGroupName string, networkWatcherName string, options *NetworkWatchersGetOptions) (*NetworkWatcherResponse, error) {
+func (client NetworkWatchersClient) Get(ctx context.Context, resourceGroupName string, networkWatcherName string, options *NetworkWatchersGetOptions) (NetworkWatcherResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkWatcherName, options)
 	if err != nil {
-		return nil, err
+		return NetworkWatcherResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return NetworkWatcherResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return NetworkWatcherResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return NetworkWatcherResponse{}, err
 	}
 	return result, nil
 }
@@ -294,9 +296,10 @@ func (client NetworkWatchersClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client NetworkWatchersClient) getHandleResponse(resp *azcore.Response) (*NetworkWatcherResponse, error) {
+func (client NetworkWatchersClient) getHandleResponse(resp *azcore.Response) (NetworkWatcherResponse, error) {
 	result := NetworkWatcherResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.NetworkWatcher)
+	err := resp.UnmarshalAsJSON(&result.NetworkWatcher)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -310,24 +313,24 @@ func (client NetworkWatchersClient) getHandleError(resp *azcore.Response) error 
 
 // BeginGetAzureReachabilityReport - NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score for
 // internet service providers from a specified location to Azure regions.
-func (client NetworkWatchersClient) BeginGetAzureReachabilityReport(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters AzureReachabilityReportParameters, options *NetworkWatchersGetAzureReachabilityReportOptions) (*AzureReachabilityReportPollerResponse, error) {
+func (client NetworkWatchersClient) BeginGetAzureReachabilityReport(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters AzureReachabilityReportParameters, options *NetworkWatchersGetAzureReachabilityReportOptions) (AzureReachabilityReportPollerResponse, error) {
 	resp, err := client.GetAzureReachabilityReport(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
-		return nil, err
+		return AzureReachabilityReportPollerResponse{}, err
 	}
-	result := &AzureReachabilityReportPollerResponse{
+	result := AzureReachabilityReportPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NetworkWatchersClient.GetAzureReachabilityReport", "location", resp, client.getAzureReachabilityReportHandleError)
 	if err != nil {
-		return nil, err
+		return AzureReachabilityReportPollerResponse{}, err
 	}
 	poller := &azureReachabilityReportPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*AzureReachabilityReportResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AzureReachabilityReportResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -382,9 +385,10 @@ func (client NetworkWatchersClient) getAzureReachabilityReportCreateRequest(ctx 
 }
 
 // getAzureReachabilityReportHandleResponse handles the GetAzureReachabilityReport response.
-func (client NetworkWatchersClient) getAzureReachabilityReportHandleResponse(resp *azcore.Response) (*AzureReachabilityReportResponse, error) {
+func (client NetworkWatchersClient) getAzureReachabilityReportHandleResponse(resp *azcore.Response) (AzureReachabilityReportResponse, error) {
 	result := AzureReachabilityReportResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.AzureReachabilityReport)
+	err := resp.UnmarshalAsJSON(&result.AzureReachabilityReport)
+	return result, err
 }
 
 // getAzureReachabilityReportHandleError handles the GetAzureReachabilityReport error response.
@@ -397,24 +401,24 @@ func (client NetworkWatchersClient) getAzureReachabilityReportHandleError(resp *
 }
 
 // BeginGetFlowLogStatus - Queries status of flow log and traffic analytics (optional) on a specified resource.
-func (client NetworkWatchersClient) BeginGetFlowLogStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters FlowLogStatusParameters, options *NetworkWatchersGetFlowLogStatusOptions) (*FlowLogInformationPollerResponse, error) {
+func (client NetworkWatchersClient) BeginGetFlowLogStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters FlowLogStatusParameters, options *NetworkWatchersGetFlowLogStatusOptions) (FlowLogInformationPollerResponse, error) {
 	resp, err := client.GetFlowLogStatus(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
-		return nil, err
+		return FlowLogInformationPollerResponse{}, err
 	}
-	result := &FlowLogInformationPollerResponse{
+	result := FlowLogInformationPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NetworkWatchersClient.GetFlowLogStatus", "location", resp, client.getFlowLogStatusHandleError)
 	if err != nil {
-		return nil, err
+		return FlowLogInformationPollerResponse{}, err
 	}
 	poller := &flowLogInformationPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*FlowLogInformationResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FlowLogInformationResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -468,9 +472,10 @@ func (client NetworkWatchersClient) getFlowLogStatusCreateRequest(ctx context.Co
 }
 
 // getFlowLogStatusHandleResponse handles the GetFlowLogStatus response.
-func (client NetworkWatchersClient) getFlowLogStatusHandleResponse(resp *azcore.Response) (*FlowLogInformationResponse, error) {
+func (client NetworkWatchersClient) getFlowLogStatusHandleResponse(resp *azcore.Response) (FlowLogInformationResponse, error) {
 	result := FlowLogInformationResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.FlowLogInformation)
+	err := resp.UnmarshalAsJSON(&result.FlowLogInformation)
+	return result, err
 }
 
 // getFlowLogStatusHandleError handles the GetFlowLogStatus error response.
@@ -487,24 +492,24 @@ func (client NetworkWatchersClient) getFlowLogStatusHandleError(resp *azcore.Res
 // the result of evaluating these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns whether traffic
 // was allowed or denied, the rules evaluated for
 // the specified flow and the evaluation results.
-func (client NetworkWatchersClient) BeginGetNetworkConfigurationDiagnostic(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters NetworkConfigurationDiagnosticParameters, options *NetworkWatchersGetNetworkConfigurationDiagnosticOptions) (*NetworkConfigurationDiagnosticResponsePollerResponse, error) {
+func (client NetworkWatchersClient) BeginGetNetworkConfigurationDiagnostic(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters NetworkConfigurationDiagnosticParameters, options *NetworkWatchersGetNetworkConfigurationDiagnosticOptions) (NetworkConfigurationDiagnosticResponsePollerResponse, error) {
 	resp, err := client.GetNetworkConfigurationDiagnostic(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
-		return nil, err
+		return NetworkConfigurationDiagnosticResponsePollerResponse{}, err
 	}
-	result := &NetworkConfigurationDiagnosticResponsePollerResponse{
+	result := NetworkConfigurationDiagnosticResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NetworkWatchersClient.GetNetworkConfigurationDiagnostic", "location", resp, client.getNetworkConfigurationDiagnosticHandleError)
 	if err != nil {
-		return nil, err
+		return NetworkConfigurationDiagnosticResponsePollerResponse{}, err
 	}
 	poller := &networkConfigurationDiagnosticResponsePoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*NetworkConfigurationDiagnosticResponseResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NetworkConfigurationDiagnosticResponseResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -562,9 +567,10 @@ func (client NetworkWatchersClient) getNetworkConfigurationDiagnosticCreateReque
 }
 
 // getNetworkConfigurationDiagnosticHandleResponse handles the GetNetworkConfigurationDiagnostic response.
-func (client NetworkWatchersClient) getNetworkConfigurationDiagnosticHandleResponse(resp *azcore.Response) (*NetworkConfigurationDiagnosticResponseResponse, error) {
+func (client NetworkWatchersClient) getNetworkConfigurationDiagnosticHandleResponse(resp *azcore.Response) (NetworkConfigurationDiagnosticResponseResponse, error) {
 	result := NetworkConfigurationDiagnosticResponseResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.NetworkConfigurationDiagnosticResponse)
+	err := resp.UnmarshalAsJSON(&result.NetworkConfigurationDiagnosticResponse)
+	return result, err
 }
 
 // getNetworkConfigurationDiagnosticHandleError handles the GetNetworkConfigurationDiagnostic error response.
@@ -577,24 +583,24 @@ func (client NetworkWatchersClient) getNetworkConfigurationDiagnosticHandleError
 }
 
 // BeginGetNextHop - Gets the next hop from the specified VM.
-func (client NetworkWatchersClient) BeginGetNextHop(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters NextHopParameters, options *NetworkWatchersGetNextHopOptions) (*NextHopResultPollerResponse, error) {
+func (client NetworkWatchersClient) BeginGetNextHop(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters NextHopParameters, options *NetworkWatchersGetNextHopOptions) (NextHopResultPollerResponse, error) {
 	resp, err := client.GetNextHop(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
-		return nil, err
+		return NextHopResultPollerResponse{}, err
 	}
-	result := &NextHopResultPollerResponse{
+	result := NextHopResultPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NetworkWatchersClient.GetNextHop", "location", resp, client.getNextHopHandleError)
 	if err != nil {
-		return nil, err
+		return NextHopResultPollerResponse{}, err
 	}
 	poller := &nextHopResultPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*NextHopResultResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NextHopResultResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -648,9 +654,10 @@ func (client NetworkWatchersClient) getNextHopCreateRequest(ctx context.Context,
 }
 
 // getNextHopHandleResponse handles the GetNextHop response.
-func (client NetworkWatchersClient) getNextHopHandleResponse(resp *azcore.Response) (*NextHopResultResponse, error) {
+func (client NetworkWatchersClient) getNextHopHandleResponse(resp *azcore.Response) (NextHopResultResponse, error) {
 	result := NextHopResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.NextHopResult)
+	err := resp.UnmarshalAsJSON(&result.NextHopResult)
+	return result, err
 }
 
 // getNextHopHandleError handles the GetNextHop error response.
@@ -663,21 +670,21 @@ func (client NetworkWatchersClient) getNextHopHandleError(resp *azcore.Response)
 }
 
 // GetTopology - Gets the current network topology by resource group.
-func (client NetworkWatchersClient) GetTopology(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters TopologyParameters, options *NetworkWatchersGetTopologyOptions) (*TopologyResponse, error) {
+func (client NetworkWatchersClient) GetTopology(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters TopologyParameters, options *NetworkWatchersGetTopologyOptions) (TopologyResponse, error) {
 	req, err := client.getTopologyCreateRequest(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
-		return nil, err
+		return TopologyResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return TopologyResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getTopologyHandleError(resp)
+		return TopologyResponse{}, client.getTopologyHandleError(resp)
 	}
 	result, err := client.getTopologyHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return TopologyResponse{}, err
 	}
 	return result, nil
 }
@@ -701,9 +708,10 @@ func (client NetworkWatchersClient) getTopologyCreateRequest(ctx context.Context
 }
 
 // getTopologyHandleResponse handles the GetTopology response.
-func (client NetworkWatchersClient) getTopologyHandleResponse(resp *azcore.Response) (*TopologyResponse, error) {
+func (client NetworkWatchersClient) getTopologyHandleResponse(resp *azcore.Response) (TopologyResponse, error) {
 	result := TopologyResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Topology)
+	err := resp.UnmarshalAsJSON(&result.Topology)
+	return result, err
 }
 
 // getTopologyHandleError handles the GetTopology error response.
@@ -716,24 +724,24 @@ func (client NetworkWatchersClient) getTopologyHandleError(resp *azcore.Response
 }
 
 // BeginGetTroubleshooting - Initiate troubleshooting on a specified resource.
-func (client NetworkWatchersClient) BeginGetTroubleshooting(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters TroubleshootingParameters, options *NetworkWatchersGetTroubleshootingOptions) (*TroubleshootingResultPollerResponse, error) {
+func (client NetworkWatchersClient) BeginGetTroubleshooting(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters TroubleshootingParameters, options *NetworkWatchersGetTroubleshootingOptions) (TroubleshootingResultPollerResponse, error) {
 	resp, err := client.GetTroubleshooting(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
-		return nil, err
+		return TroubleshootingResultPollerResponse{}, err
 	}
-	result := &TroubleshootingResultPollerResponse{
+	result := TroubleshootingResultPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NetworkWatchersClient.GetTroubleshooting", "location", resp, client.getTroubleshootingHandleError)
 	if err != nil {
-		return nil, err
+		return TroubleshootingResultPollerResponse{}, err
 	}
 	poller := &troubleshootingResultPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*TroubleshootingResultResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TroubleshootingResultResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -787,9 +795,10 @@ func (client NetworkWatchersClient) getTroubleshootingCreateRequest(ctx context.
 }
 
 // getTroubleshootingHandleResponse handles the GetTroubleshooting response.
-func (client NetworkWatchersClient) getTroubleshootingHandleResponse(resp *azcore.Response) (*TroubleshootingResultResponse, error) {
+func (client NetworkWatchersClient) getTroubleshootingHandleResponse(resp *azcore.Response) (TroubleshootingResultResponse, error) {
 	result := TroubleshootingResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.TroubleshootingResult)
+	err := resp.UnmarshalAsJSON(&result.TroubleshootingResult)
+	return result, err
 }
 
 // getTroubleshootingHandleError handles the GetTroubleshooting error response.
@@ -802,24 +811,24 @@ func (client NetworkWatchersClient) getTroubleshootingHandleError(resp *azcore.R
 }
 
 // BeginGetTroubleshootingResult - Get the last completed troubleshooting result on a specified resource.
-func (client NetworkWatchersClient) BeginGetTroubleshootingResult(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters QueryTroubleshootingParameters, options *NetworkWatchersGetTroubleshootingResultOptions) (*TroubleshootingResultPollerResponse, error) {
+func (client NetworkWatchersClient) BeginGetTroubleshootingResult(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters QueryTroubleshootingParameters, options *NetworkWatchersGetTroubleshootingResultOptions) (TroubleshootingResultPollerResponse, error) {
 	resp, err := client.GetTroubleshootingResult(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
-		return nil, err
+		return TroubleshootingResultPollerResponse{}, err
 	}
-	result := &TroubleshootingResultPollerResponse{
+	result := TroubleshootingResultPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NetworkWatchersClient.GetTroubleshootingResult", "location", resp, client.getTroubleshootingResultHandleError)
 	if err != nil {
-		return nil, err
+		return TroubleshootingResultPollerResponse{}, err
 	}
 	poller := &troubleshootingResultPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*TroubleshootingResultResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TroubleshootingResultResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -873,9 +882,10 @@ func (client NetworkWatchersClient) getTroubleshootingResultCreateRequest(ctx co
 }
 
 // getTroubleshootingResultHandleResponse handles the GetTroubleshootingResult response.
-func (client NetworkWatchersClient) getTroubleshootingResultHandleResponse(resp *azcore.Response) (*TroubleshootingResultResponse, error) {
+func (client NetworkWatchersClient) getTroubleshootingResultHandleResponse(resp *azcore.Response) (TroubleshootingResultResponse, error) {
 	result := TroubleshootingResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.TroubleshootingResult)
+	err := resp.UnmarshalAsJSON(&result.TroubleshootingResult)
+	return result, err
 }
 
 // getTroubleshootingResultHandleError handles the GetTroubleshootingResult error response.
@@ -888,24 +898,24 @@ func (client NetworkWatchersClient) getTroubleshootingResultHandleError(resp *az
 }
 
 // BeginGetVMSecurityRules - Gets the configured and effective security group rules on the specified VM.
-func (client NetworkWatchersClient) BeginGetVMSecurityRules(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters SecurityGroupViewParameters, options *NetworkWatchersGetVMSecurityRulesOptions) (*SecurityGroupViewResultPollerResponse, error) {
+func (client NetworkWatchersClient) BeginGetVMSecurityRules(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters SecurityGroupViewParameters, options *NetworkWatchersGetVMSecurityRulesOptions) (SecurityGroupViewResultPollerResponse, error) {
 	resp, err := client.GetVMSecurityRules(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
-		return nil, err
+		return SecurityGroupViewResultPollerResponse{}, err
 	}
-	result := &SecurityGroupViewResultPollerResponse{
+	result := SecurityGroupViewResultPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NetworkWatchersClient.GetVMSecurityRules", "location", resp, client.getVMSecurityRulesHandleError)
 	if err != nil {
-		return nil, err
+		return SecurityGroupViewResultPollerResponse{}, err
 	}
 	poller := &securityGroupViewResultPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*SecurityGroupViewResultResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SecurityGroupViewResultResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -959,9 +969,10 @@ func (client NetworkWatchersClient) getVMSecurityRulesCreateRequest(ctx context.
 }
 
 // getVMSecurityRulesHandleResponse handles the GetVMSecurityRules response.
-func (client NetworkWatchersClient) getVMSecurityRulesHandleResponse(resp *azcore.Response) (*SecurityGroupViewResultResponse, error) {
+func (client NetworkWatchersClient) getVMSecurityRulesHandleResponse(resp *azcore.Response) (SecurityGroupViewResultResponse, error) {
 	result := SecurityGroupViewResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.SecurityGroupViewResult)
+	err := resp.UnmarshalAsJSON(&result.SecurityGroupViewResult)
+	return result, err
 }
 
 // getVMSecurityRulesHandleError handles the GetVMSecurityRules error response.
@@ -974,21 +985,21 @@ func (client NetworkWatchersClient) getVMSecurityRulesHandleError(resp *azcore.R
 }
 
 // List - Gets all network watchers by resource group.
-func (client NetworkWatchersClient) List(ctx context.Context, resourceGroupName string, options *NetworkWatchersListOptions) (*NetworkWatcherListResultResponse, error) {
+func (client NetworkWatchersClient) List(ctx context.Context, resourceGroupName string, options *NetworkWatchersListOptions) (NetworkWatcherListResultResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
-		return nil, err
+		return NetworkWatcherListResultResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return NetworkWatcherListResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listHandleError(resp)
+		return NetworkWatcherListResultResponse{}, client.listHandleError(resp)
 	}
 	result, err := client.listHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return NetworkWatcherListResultResponse{}, err
 	}
 	return result, nil
 }
@@ -1011,9 +1022,10 @@ func (client NetworkWatchersClient) listCreateRequest(ctx context.Context, resou
 }
 
 // listHandleResponse handles the List response.
-func (client NetworkWatchersClient) listHandleResponse(resp *azcore.Response) (*NetworkWatcherListResultResponse, error) {
+func (client NetworkWatchersClient) listHandleResponse(resp *azcore.Response) (NetworkWatcherListResultResponse, error) {
 	result := NetworkWatcherListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.NetworkWatcherListResult)
+	err := resp.UnmarshalAsJSON(&result.NetworkWatcherListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -1026,21 +1038,21 @@ func (client NetworkWatchersClient) listHandleError(resp *azcore.Response) error
 }
 
 // ListAll - Gets all network watchers by subscription.
-func (client NetworkWatchersClient) ListAll(ctx context.Context, options *NetworkWatchersListAllOptions) (*NetworkWatcherListResultResponse, error) {
+func (client NetworkWatchersClient) ListAll(ctx context.Context, options *NetworkWatchersListAllOptions) (NetworkWatcherListResultResponse, error) {
 	req, err := client.listAllCreateRequest(ctx, options)
 	if err != nil {
-		return nil, err
+		return NetworkWatcherListResultResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return NetworkWatcherListResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listAllHandleError(resp)
+		return NetworkWatcherListResultResponse{}, client.listAllHandleError(resp)
 	}
 	result, err := client.listAllHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return NetworkWatcherListResultResponse{}, err
 	}
 	return result, nil
 }
@@ -1062,9 +1074,10 @@ func (client NetworkWatchersClient) listAllCreateRequest(ctx context.Context, op
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client NetworkWatchersClient) listAllHandleResponse(resp *azcore.Response) (*NetworkWatcherListResultResponse, error) {
+func (client NetworkWatchersClient) listAllHandleResponse(resp *azcore.Response) (NetworkWatcherListResultResponse, error) {
 	result := NetworkWatcherListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.NetworkWatcherListResult)
+	err := resp.UnmarshalAsJSON(&result.NetworkWatcherListResult)
+	return result, err
 }
 
 // listAllHandleError handles the ListAll error response.
@@ -1078,24 +1091,24 @@ func (client NetworkWatchersClient) listAllHandleError(resp *azcore.Response) er
 
 // BeginListAvailableProviders - NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet service providers
 // for a specified Azure region.
-func (client NetworkWatchersClient) BeginListAvailableProviders(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters AvailableProvidersListParameters, options *NetworkWatchersListAvailableProvidersOptions) (*AvailableProvidersListPollerResponse, error) {
+func (client NetworkWatchersClient) BeginListAvailableProviders(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters AvailableProvidersListParameters, options *NetworkWatchersListAvailableProvidersOptions) (AvailableProvidersListPollerResponse, error) {
 	resp, err := client.ListAvailableProviders(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
-		return nil, err
+		return AvailableProvidersListPollerResponse{}, err
 	}
-	result := &AvailableProvidersListPollerResponse{
+	result := AvailableProvidersListPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NetworkWatchersClient.ListAvailableProviders", "location", resp, client.listAvailableProvidersHandleError)
 	if err != nil {
-		return nil, err
+		return AvailableProvidersListPollerResponse{}, err
 	}
 	poller := &availableProvidersListPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*AvailableProvidersListResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AvailableProvidersListResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -1150,9 +1163,10 @@ func (client NetworkWatchersClient) listAvailableProvidersCreateRequest(ctx cont
 }
 
 // listAvailableProvidersHandleResponse handles the ListAvailableProviders response.
-func (client NetworkWatchersClient) listAvailableProvidersHandleResponse(resp *azcore.Response) (*AvailableProvidersListResponse, error) {
+func (client NetworkWatchersClient) listAvailableProvidersHandleResponse(resp *azcore.Response) (AvailableProvidersListResponse, error) {
 	result := AvailableProvidersListResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.AvailableProvidersList)
+	err := resp.UnmarshalAsJSON(&result.AvailableProvidersList)
+	return result, err
 }
 
 // listAvailableProvidersHandleError handles the ListAvailableProviders error response.
@@ -1165,24 +1179,24 @@ func (client NetworkWatchersClient) listAvailableProvidersHandleError(resp *azco
 }
 
 // BeginSetFlowLogConfiguration - Configures flow log and traffic analytics (optional) on a specified resource.
-func (client NetworkWatchersClient) BeginSetFlowLogConfiguration(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters FlowLogInformation, options *NetworkWatchersSetFlowLogConfigurationOptions) (*FlowLogInformationPollerResponse, error) {
+func (client NetworkWatchersClient) BeginSetFlowLogConfiguration(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters FlowLogInformation, options *NetworkWatchersSetFlowLogConfigurationOptions) (FlowLogInformationPollerResponse, error) {
 	resp, err := client.SetFlowLogConfiguration(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
-		return nil, err
+		return FlowLogInformationPollerResponse{}, err
 	}
-	result := &FlowLogInformationPollerResponse{
+	result := FlowLogInformationPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NetworkWatchersClient.SetFlowLogConfiguration", "location", resp, client.setFlowLogConfigurationHandleError)
 	if err != nil {
-		return nil, err
+		return FlowLogInformationPollerResponse{}, err
 	}
 	poller := &flowLogInformationPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*FlowLogInformationResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FlowLogInformationResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -1236,9 +1250,10 @@ func (client NetworkWatchersClient) setFlowLogConfigurationCreateRequest(ctx con
 }
 
 // setFlowLogConfigurationHandleResponse handles the SetFlowLogConfiguration response.
-func (client NetworkWatchersClient) setFlowLogConfigurationHandleResponse(resp *azcore.Response) (*FlowLogInformationResponse, error) {
+func (client NetworkWatchersClient) setFlowLogConfigurationHandleResponse(resp *azcore.Response) (FlowLogInformationResponse, error) {
 	result := FlowLogInformationResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.FlowLogInformation)
+	err := resp.UnmarshalAsJSON(&result.FlowLogInformation)
+	return result, err
 }
 
 // setFlowLogConfigurationHandleError handles the SetFlowLogConfiguration error response.
@@ -1251,21 +1266,21 @@ func (client NetworkWatchersClient) setFlowLogConfigurationHandleError(resp *azc
 }
 
 // UpdateTags - Updates a network watcher tags.
-func (client NetworkWatchersClient) UpdateTags(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters TagsObject, options *NetworkWatchersUpdateTagsOptions) (*NetworkWatcherResponse, error) {
+func (client NetworkWatchersClient) UpdateTags(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters TagsObject, options *NetworkWatchersUpdateTagsOptions) (NetworkWatcherResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
-		return nil, err
+		return NetworkWatcherResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return NetworkWatcherResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.updateTagsHandleError(resp)
+		return NetworkWatcherResponse{}, client.updateTagsHandleError(resp)
 	}
 	result, err := client.updateTagsHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return NetworkWatcherResponse{}, err
 	}
 	return result, nil
 }
@@ -1289,9 +1304,10 @@ func (client NetworkWatchersClient) updateTagsCreateRequest(ctx context.Context,
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client NetworkWatchersClient) updateTagsHandleResponse(resp *azcore.Response) (*NetworkWatcherResponse, error) {
+func (client NetworkWatchersClient) updateTagsHandleResponse(resp *azcore.Response) (NetworkWatcherResponse, error) {
 	result := NetworkWatcherResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.NetworkWatcher)
+	err := resp.UnmarshalAsJSON(&result.NetworkWatcher)
+	return result, err
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
@@ -1304,24 +1320,24 @@ func (client NetworkWatchersClient) updateTagsHandleError(resp *azcore.Response)
 }
 
 // BeginVerifyIPFlow - Verify IP flow from the specified VM to a location given the currently configured NSG rules.
-func (client NetworkWatchersClient) BeginVerifyIPFlow(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters VerificationIPFlowParameters, options *NetworkWatchersVerifyIPFlowOptions) (*VerificationIPFlowResultPollerResponse, error) {
+func (client NetworkWatchersClient) BeginVerifyIPFlow(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters VerificationIPFlowParameters, options *NetworkWatchersVerifyIPFlowOptions) (VerificationIPFlowResultPollerResponse, error) {
 	resp, err := client.VerifyIPFlow(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
-		return nil, err
+		return VerificationIPFlowResultPollerResponse{}, err
 	}
-	result := &VerificationIPFlowResultPollerResponse{
+	result := VerificationIPFlowResultPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NetworkWatchersClient.VerifyIPFlow", "location", resp, client.verifyIPFlowHandleError)
 	if err != nil {
-		return nil, err
+		return VerificationIPFlowResultPollerResponse{}, err
 	}
 	poller := &verificationIPFlowResultPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*VerificationIPFlowResultResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VerificationIPFlowResultResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -1375,9 +1391,10 @@ func (client NetworkWatchersClient) verifyIPFlowCreateRequest(ctx context.Contex
 }
 
 // verifyIPFlowHandleResponse handles the VerifyIPFlow response.
-func (client NetworkWatchersClient) verifyIPFlowHandleResponse(resp *azcore.Response) (*VerificationIPFlowResultResponse, error) {
+func (client NetworkWatchersClient) verifyIPFlowHandleResponse(resp *azcore.Response) (VerificationIPFlowResultResponse, error) {
 	result := VerificationIPFlowResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VerificationIPFlowResult)
+	err := resp.UnmarshalAsJSON(&result.VerificationIPFlowResult)
+	return result, err
 }
 
 // verifyIPFlowHandleError handles the VerifyIPFlow error response.

@@ -35,24 +35,24 @@ func (client ServiceEndpointPolicyDefinitionsClient) Pipeline() azcore.Pipeline 
 }
 
 // BeginCreateOrUpdate - Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-func (client ServiceEndpointPolicyDefinitionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, serviceEndpointPolicyDefinitions ServiceEndpointPolicyDefinition, options *ServiceEndpointPolicyDefinitionsCreateOrUpdateOptions) (*ServiceEndpointPolicyDefinitionPollerResponse, error) {
+func (client ServiceEndpointPolicyDefinitionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, serviceEndpointPolicyDefinitions ServiceEndpointPolicyDefinition, options *ServiceEndpointPolicyDefinitionsCreateOrUpdateOptions) (ServiceEndpointPolicyDefinitionPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, serviceEndpointPolicyDefinitions, options)
 	if err != nil {
-		return nil, err
+		return ServiceEndpointPolicyDefinitionPollerResponse{}, err
 	}
-	result := &ServiceEndpointPolicyDefinitionPollerResponse{
+	result := ServiceEndpointPolicyDefinitionPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ServiceEndpointPolicyDefinitionsClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return ServiceEndpointPolicyDefinitionPollerResponse{}, err
 	}
 	poller := &serviceEndpointPolicyDefinitionPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*ServiceEndpointPolicyDefinitionResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ServiceEndpointPolicyDefinitionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -107,9 +107,10 @@ func (client ServiceEndpointPolicyDefinitionsClient) createOrUpdateCreateRequest
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client ServiceEndpointPolicyDefinitionsClient) createOrUpdateHandleResponse(resp *azcore.Response) (*ServiceEndpointPolicyDefinitionResponse, error) {
+func (client ServiceEndpointPolicyDefinitionsClient) createOrUpdateHandleResponse(resp *azcore.Response) (ServiceEndpointPolicyDefinitionResponse, error) {
 	result := ServiceEndpointPolicyDefinitionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ServiceEndpointPolicyDefinition)
+	err := resp.UnmarshalAsJSON(&result.ServiceEndpointPolicyDefinition)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -122,17 +123,17 @@ func (client ServiceEndpointPolicyDefinitionsClient) createOrUpdateHandleError(r
 }
 
 // BeginDelete - Deletes the specified ServiceEndpoint policy definitions.
-func (client ServiceEndpointPolicyDefinitionsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsDeleteOptions) (*HTTPPollerResponse, error) {
+func (client ServiceEndpointPolicyDefinitionsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ServiceEndpointPolicyDefinitionsClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -203,21 +204,21 @@ func (client ServiceEndpointPolicyDefinitionsClient) deleteHandleError(resp *azc
 }
 
 // Get - Get the specified service endpoint policy definitions from service endpoint policy.
-func (client ServiceEndpointPolicyDefinitionsClient) Get(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsGetOptions) (*ServiceEndpointPolicyDefinitionResponse, error) {
+func (client ServiceEndpointPolicyDefinitionsClient) Get(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsGetOptions) (ServiceEndpointPolicyDefinitionResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, options)
 	if err != nil {
-		return nil, err
+		return ServiceEndpointPolicyDefinitionResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ServiceEndpointPolicyDefinitionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return ServiceEndpointPolicyDefinitionResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ServiceEndpointPolicyDefinitionResponse{}, err
 	}
 	return result, nil
 }
@@ -242,9 +243,10 @@ func (client ServiceEndpointPolicyDefinitionsClient) getCreateRequest(ctx contex
 }
 
 // getHandleResponse handles the Get response.
-func (client ServiceEndpointPolicyDefinitionsClient) getHandleResponse(resp *azcore.Response) (*ServiceEndpointPolicyDefinitionResponse, error) {
+func (client ServiceEndpointPolicyDefinitionsClient) getHandleResponse(resp *azcore.Response) (ServiceEndpointPolicyDefinitionResponse, error) {
 	result := ServiceEndpointPolicyDefinitionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ServiceEndpointPolicyDefinition)
+	err := resp.UnmarshalAsJSON(&result.ServiceEndpointPolicyDefinition)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -265,7 +267,7 @@ func (client ServiceEndpointPolicyDefinitionsClient) ListByResourceGroup(resourc
 		},
 		responder: client.listByResourceGroupHandleResponse,
 		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp *ServiceEndpointPolicyDefinitionListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ServiceEndpointPolicyDefinitionListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ServiceEndpointPolicyDefinitionListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -291,9 +293,10 @@ func (client ServiceEndpointPolicyDefinitionsClient) listByResourceGroupCreateRe
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client ServiceEndpointPolicyDefinitionsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (*ServiceEndpointPolicyDefinitionListResultResponse, error) {
+func (client ServiceEndpointPolicyDefinitionsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (ServiceEndpointPolicyDefinitionListResultResponse, error) {
 	result := ServiceEndpointPolicyDefinitionListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ServiceEndpointPolicyDefinitionListResult)
+	err := resp.UnmarshalAsJSON(&result.ServiceEndpointPolicyDefinitionListResult)
+	return result, err
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.

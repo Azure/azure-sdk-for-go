@@ -35,24 +35,24 @@ func (client ExpressRouteGatewaysClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates or updates a ExpressRoute gateway in a specified resource group.
-func (client ExpressRouteGatewaysClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, putExpressRouteGatewayParameters ExpressRouteGateway, options *ExpressRouteGatewaysCreateOrUpdateOptions) (*ExpressRouteGatewayPollerResponse, error) {
+func (client ExpressRouteGatewaysClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, putExpressRouteGatewayParameters ExpressRouteGateway, options *ExpressRouteGatewaysCreateOrUpdateOptions) (ExpressRouteGatewayPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, expressRouteGatewayName, putExpressRouteGatewayParameters, options)
 	if err != nil {
-		return nil, err
+		return ExpressRouteGatewayPollerResponse{}, err
 	}
-	result := &ExpressRouteGatewayPollerResponse{
+	result := ExpressRouteGatewayPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ExpressRouteGatewaysClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return ExpressRouteGatewayPollerResponse{}, err
 	}
 	poller := &expressRouteGatewayPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*ExpressRouteGatewayResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteGatewayResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -106,9 +106,10 @@ func (client ExpressRouteGatewaysClient) createOrUpdateCreateRequest(ctx context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client ExpressRouteGatewaysClient) createOrUpdateHandleResponse(resp *azcore.Response) (*ExpressRouteGatewayResponse, error) {
+func (client ExpressRouteGatewaysClient) createOrUpdateHandleResponse(resp *azcore.Response) (ExpressRouteGatewayResponse, error) {
 	result := ExpressRouteGatewayResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteGateway)
+	err := resp.UnmarshalAsJSON(&result.ExpressRouteGateway)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -122,17 +123,17 @@ func (client ExpressRouteGatewaysClient) createOrUpdateHandleError(resp *azcore.
 
 // BeginDelete - Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can only be deleted when there are no
 // connection subresources.
-func (client ExpressRouteGatewaysClient) BeginDelete(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, options *ExpressRouteGatewaysDeleteOptions) (*HTTPPollerResponse, error) {
+func (client ExpressRouteGatewaysClient) BeginDelete(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, options *ExpressRouteGatewaysDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, expressRouteGatewayName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ExpressRouteGatewaysClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -203,21 +204,21 @@ func (client ExpressRouteGatewaysClient) deleteHandleError(resp *azcore.Response
 }
 
 // Get - Fetches the details of a ExpressRoute gateway in a resource group.
-func (client ExpressRouteGatewaysClient) Get(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, options *ExpressRouteGatewaysGetOptions) (*ExpressRouteGatewayResponse, error) {
+func (client ExpressRouteGatewaysClient) Get(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, options *ExpressRouteGatewaysGetOptions) (ExpressRouteGatewayResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, expressRouteGatewayName, options)
 	if err != nil {
-		return nil, err
+		return ExpressRouteGatewayResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ExpressRouteGatewayResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return ExpressRouteGatewayResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ExpressRouteGatewayResponse{}, err
 	}
 	return result, nil
 }
@@ -241,9 +242,10 @@ func (client ExpressRouteGatewaysClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client ExpressRouteGatewaysClient) getHandleResponse(resp *azcore.Response) (*ExpressRouteGatewayResponse, error) {
+func (client ExpressRouteGatewaysClient) getHandleResponse(resp *azcore.Response) (ExpressRouteGatewayResponse, error) {
 	result := ExpressRouteGatewayResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteGateway)
+	err := resp.UnmarshalAsJSON(&result.ExpressRouteGateway)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -256,21 +258,21 @@ func (client ExpressRouteGatewaysClient) getHandleError(resp *azcore.Response) e
 }
 
 // ListByResourceGroup - Lists ExpressRoute gateways in a given resource group.
-func (client ExpressRouteGatewaysClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *ExpressRouteGatewaysListByResourceGroupOptions) (*ExpressRouteGatewayListResponse, error) {
+func (client ExpressRouteGatewaysClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *ExpressRouteGatewaysListByResourceGroupOptions) (ExpressRouteGatewayListResponse, error) {
 	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
-		return nil, err
+		return ExpressRouteGatewayListResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ExpressRouteGatewayListResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listByResourceGroupHandleError(resp)
+		return ExpressRouteGatewayListResponse{}, client.listByResourceGroupHandleError(resp)
 	}
 	result, err := client.listByResourceGroupHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ExpressRouteGatewayListResponse{}, err
 	}
 	return result, nil
 }
@@ -293,9 +295,10 @@ func (client ExpressRouteGatewaysClient) listByResourceGroupCreateRequest(ctx co
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client ExpressRouteGatewaysClient) listByResourceGroupHandleResponse(resp *azcore.Response) (*ExpressRouteGatewayListResponse, error) {
+func (client ExpressRouteGatewaysClient) listByResourceGroupHandleResponse(resp *azcore.Response) (ExpressRouteGatewayListResponse, error) {
 	result := ExpressRouteGatewayListResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteGatewayList)
+	err := resp.UnmarshalAsJSON(&result.ExpressRouteGatewayList)
+	return result, err
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -308,21 +311,21 @@ func (client ExpressRouteGatewaysClient) listByResourceGroupHandleError(resp *az
 }
 
 // ListBySubscription - Lists ExpressRoute gateways under a given subscription.
-func (client ExpressRouteGatewaysClient) ListBySubscription(ctx context.Context, options *ExpressRouteGatewaysListBySubscriptionOptions) (*ExpressRouteGatewayListResponse, error) {
+func (client ExpressRouteGatewaysClient) ListBySubscription(ctx context.Context, options *ExpressRouteGatewaysListBySubscriptionOptions) (ExpressRouteGatewayListResponse, error) {
 	req, err := client.listBySubscriptionCreateRequest(ctx, options)
 	if err != nil {
-		return nil, err
+		return ExpressRouteGatewayListResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ExpressRouteGatewayListResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listBySubscriptionHandleError(resp)
+		return ExpressRouteGatewayListResponse{}, client.listBySubscriptionHandleError(resp)
 	}
 	result, err := client.listBySubscriptionHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ExpressRouteGatewayListResponse{}, err
 	}
 	return result, nil
 }
@@ -344,9 +347,10 @@ func (client ExpressRouteGatewaysClient) listBySubscriptionCreateRequest(ctx con
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client ExpressRouteGatewaysClient) listBySubscriptionHandleResponse(resp *azcore.Response) (*ExpressRouteGatewayListResponse, error) {
+func (client ExpressRouteGatewaysClient) listBySubscriptionHandleResponse(resp *azcore.Response) (ExpressRouteGatewayListResponse, error) {
 	result := ExpressRouteGatewayListResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteGatewayList)
+	err := resp.UnmarshalAsJSON(&result.ExpressRouteGatewayList)
+	return result, err
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.

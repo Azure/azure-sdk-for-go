@@ -35,24 +35,24 @@ func (client InboundSecurityRuleClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-func (client InboundSecurityRuleClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, ruleCollectionName string, parameters InboundSecurityRule, options *InboundSecurityRuleCreateOrUpdateOptions) (*InboundSecurityRulePollerResponse, error) {
+func (client InboundSecurityRuleClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, ruleCollectionName string, parameters InboundSecurityRule, options *InboundSecurityRuleCreateOrUpdateOptions) (InboundSecurityRulePollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, networkVirtualApplianceName, ruleCollectionName, parameters, options)
 	if err != nil {
-		return nil, err
+		return InboundSecurityRulePollerResponse{}, err
 	}
-	result := &InboundSecurityRulePollerResponse{
+	result := InboundSecurityRulePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("InboundSecurityRuleClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return InboundSecurityRulePollerResponse{}, err
 	}
 	poller := &inboundSecurityRulePoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*InboundSecurityRuleResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (InboundSecurityRuleResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -107,9 +107,10 @@ func (client InboundSecurityRuleClient) createOrUpdateCreateRequest(ctx context.
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client InboundSecurityRuleClient) createOrUpdateHandleResponse(resp *azcore.Response) (*InboundSecurityRuleResponse, error) {
+func (client InboundSecurityRuleClient) createOrUpdateHandleResponse(resp *azcore.Response) (InboundSecurityRuleResponse, error) {
 	result := InboundSecurityRuleResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.InboundSecurityRule)
+	err := resp.UnmarshalAsJSON(&result.InboundSecurityRule)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.

@@ -39,7 +39,7 @@ func (client OperationsClient) List(options *OperationsListOptions) OperationLis
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *OperationListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp OperationListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.OperationListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -62,9 +62,10 @@ func (client OperationsClient) listCreateRequest(ctx context.Context, options *O
 }
 
 // listHandleResponse handles the List response.
-func (client OperationsClient) listHandleResponse(resp *azcore.Response) (*OperationListResultResponse, error) {
+func (client OperationsClient) listHandleResponse(resp *azcore.Response) (OperationListResultResponse, error) {
 	result := OperationListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.OperationListResult)
+	err := resp.UnmarshalAsJSON(&result.OperationListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

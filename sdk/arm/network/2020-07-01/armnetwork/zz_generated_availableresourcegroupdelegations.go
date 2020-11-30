@@ -42,7 +42,7 @@ func (client AvailableResourceGroupDelegationsClient) List(location string, reso
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *AvailableDelegationsResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AvailableDelegationsResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AvailableDelegationsResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -68,9 +68,10 @@ func (client AvailableResourceGroupDelegationsClient) listCreateRequest(ctx cont
 }
 
 // listHandleResponse handles the List response.
-func (client AvailableResourceGroupDelegationsClient) listHandleResponse(resp *azcore.Response) (*AvailableDelegationsResultResponse, error) {
+func (client AvailableResourceGroupDelegationsClient) listHandleResponse(resp *azcore.Response) (AvailableDelegationsResultResponse, error) {
 	result := AvailableDelegationsResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.AvailableDelegationsResult)
+	err := resp.UnmarshalAsJSON(&result.AvailableDelegationsResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

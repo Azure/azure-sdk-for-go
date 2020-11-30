@@ -35,24 +35,24 @@ func (client VpnConnectionsClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-func (client VpnConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, vpnConnectionParameters VpnConnection, options *VpnConnectionsCreateOrUpdateOptions) (*VpnConnectionPollerResponse, error) {
+func (client VpnConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, vpnConnectionParameters VpnConnection, options *VpnConnectionsCreateOrUpdateOptions) (VpnConnectionPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, gatewayName, connectionName, vpnConnectionParameters, options)
 	if err != nil {
-		return nil, err
+		return VpnConnectionPollerResponse{}, err
 	}
-	result := &VpnConnectionPollerResponse{
+	result := VpnConnectionPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VpnConnectionsClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return VpnConnectionPollerResponse{}, err
 	}
 	poller := &vpnConnectionPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*VpnConnectionResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VpnConnectionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -107,9 +107,10 @@ func (client VpnConnectionsClient) createOrUpdateCreateRequest(ctx context.Conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client VpnConnectionsClient) createOrUpdateHandleResponse(resp *azcore.Response) (*VpnConnectionResponse, error) {
+func (client VpnConnectionsClient) createOrUpdateHandleResponse(resp *azcore.Response) (VpnConnectionResponse, error) {
 	result := VpnConnectionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VpnConnection)
+	err := resp.UnmarshalAsJSON(&result.VpnConnection)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -122,17 +123,17 @@ func (client VpnConnectionsClient) createOrUpdateHandleError(resp *azcore.Respon
 }
 
 // BeginDelete - Deletes a vpn connection.
-func (client VpnConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, options *VpnConnectionsDeleteOptions) (*HTTPPollerResponse, error) {
+func (client VpnConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, options *VpnConnectionsDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, gatewayName, connectionName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VpnConnectionsClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -203,21 +204,21 @@ func (client VpnConnectionsClient) deleteHandleError(resp *azcore.Response) erro
 }
 
 // Get - Retrieves the details of a vpn connection.
-func (client VpnConnectionsClient) Get(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, options *VpnConnectionsGetOptions) (*VpnConnectionResponse, error) {
+func (client VpnConnectionsClient) Get(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, options *VpnConnectionsGetOptions) (VpnConnectionResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, options)
 	if err != nil {
-		return nil, err
+		return VpnConnectionResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return VpnConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return VpnConnectionResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return VpnConnectionResponse{}, err
 	}
 	return result, nil
 }
@@ -242,9 +243,10 @@ func (client VpnConnectionsClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client VpnConnectionsClient) getHandleResponse(resp *azcore.Response) (*VpnConnectionResponse, error) {
+func (client VpnConnectionsClient) getHandleResponse(resp *azcore.Response) (VpnConnectionResponse, error) {
 	result := VpnConnectionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VpnConnection)
+	err := resp.UnmarshalAsJSON(&result.VpnConnection)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -265,7 +267,7 @@ func (client VpnConnectionsClient) ListByVpnGateway(resourceGroupName string, ga
 		},
 		responder: client.listByVpnGatewayHandleResponse,
 		errorer:   client.listByVpnGatewayHandleError,
-		advancer: func(ctx context.Context, resp *ListVpnConnectionsResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ListVpnConnectionsResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListVpnConnectionsResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -291,9 +293,10 @@ func (client VpnConnectionsClient) listByVpnGatewayCreateRequest(ctx context.Con
 }
 
 // listByVpnGatewayHandleResponse handles the ListByVpnGateway response.
-func (client VpnConnectionsClient) listByVpnGatewayHandleResponse(resp *azcore.Response) (*ListVpnConnectionsResultResponse, error) {
+func (client VpnConnectionsClient) listByVpnGatewayHandleResponse(resp *azcore.Response) (ListVpnConnectionsResultResponse, error) {
 	result := ListVpnConnectionsResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ListVpnConnectionsResult)
+	err := resp.UnmarshalAsJSON(&result.ListVpnConnectionsResult)
+	return result, err
 }
 
 // listByVpnGatewayHandleError handles the ListByVpnGateway error response.
@@ -306,24 +309,24 @@ func (client VpnConnectionsClient) listByVpnGatewayHandleError(resp *azcore.Resp
 }
 
 // BeginStartPacketCapture - Starts packet capture on Vpn connection in the specified resource group.
-func (client VpnConnectionsClient) BeginStartPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VpnConnectionsStartPacketCaptureOptions) (*StringPollerResponse, error) {
+func (client VpnConnectionsClient) BeginStartPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VpnConnectionsStartPacketCaptureOptions) (StringPollerResponse, error) {
 	resp, err := client.StartPacketCapture(ctx, resourceGroupName, gatewayName, vpnConnectionName, options)
 	if err != nil {
-		return nil, err
+		return StringPollerResponse{}, err
 	}
-	result := &StringPollerResponse{
+	result := StringPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VpnConnectionsClient.StartPacketCapture", "location", resp, client.startPacketCaptureHandleError)
 	if err != nil {
-		return nil, err
+		return StringPollerResponse{}, err
 	}
 	poller := &stringPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*StringResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StringResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -381,9 +384,10 @@ func (client VpnConnectionsClient) startPacketCaptureCreateRequest(ctx context.C
 }
 
 // startPacketCaptureHandleResponse handles the StartPacketCapture response.
-func (client VpnConnectionsClient) startPacketCaptureHandleResponse(resp *azcore.Response) (*StringResponse, error) {
+func (client VpnConnectionsClient) startPacketCaptureHandleResponse(resp *azcore.Response) (StringResponse, error) {
 	result := StringResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Value)
+	err := resp.UnmarshalAsJSON(&result.Value)
+	return result, err
 }
 
 // startPacketCaptureHandleError handles the StartPacketCapture error response.
@@ -396,24 +400,24 @@ func (client VpnConnectionsClient) startPacketCaptureHandleError(resp *azcore.Re
 }
 
 // BeginStopPacketCapture - Stops packet capture on Vpn connection in the specified resource group.
-func (client VpnConnectionsClient) BeginStopPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VpnConnectionsStopPacketCaptureOptions) (*StringPollerResponse, error) {
+func (client VpnConnectionsClient) BeginStopPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VpnConnectionsStopPacketCaptureOptions) (StringPollerResponse, error) {
 	resp, err := client.StopPacketCapture(ctx, resourceGroupName, gatewayName, vpnConnectionName, options)
 	if err != nil {
-		return nil, err
+		return StringPollerResponse{}, err
 	}
-	result := &StringPollerResponse{
+	result := StringPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VpnConnectionsClient.StopPacketCapture", "location", resp, client.stopPacketCaptureHandleError)
 	if err != nil {
-		return nil, err
+		return StringPollerResponse{}, err
 	}
 	poller := &stringPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*StringResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StringResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -471,9 +475,10 @@ func (client VpnConnectionsClient) stopPacketCaptureCreateRequest(ctx context.Co
 }
 
 // stopPacketCaptureHandleResponse handles the StopPacketCapture response.
-func (client VpnConnectionsClient) stopPacketCaptureHandleResponse(resp *azcore.Response) (*StringResponse, error) {
+func (client VpnConnectionsClient) stopPacketCaptureHandleResponse(resp *azcore.Response) (StringResponse, error) {
 	result := StringResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Value)
+	err := resp.UnmarshalAsJSON(&result.Value)
+	return result, err
 }
 
 // stopPacketCaptureHandleError handles the StopPacketCapture error response.

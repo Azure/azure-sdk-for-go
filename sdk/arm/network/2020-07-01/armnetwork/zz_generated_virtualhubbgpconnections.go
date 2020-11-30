@@ -43,7 +43,7 @@ func (client VirtualHubBgpConnectionsClient) List(resourceGroupName string, virt
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *ListVirtualHubBgpConnectionResultsResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ListVirtualHubBgpConnectionResultsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListVirtualHubBgpConnectionResults.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -69,9 +69,10 @@ func (client VirtualHubBgpConnectionsClient) listCreateRequest(ctx context.Conte
 }
 
 // listHandleResponse handles the List response.
-func (client VirtualHubBgpConnectionsClient) listHandleResponse(resp *azcore.Response) (*ListVirtualHubBgpConnectionResultsResponse, error) {
+func (client VirtualHubBgpConnectionsClient) listHandleResponse(resp *azcore.Response) (ListVirtualHubBgpConnectionResultsResponse, error) {
 	result := ListVirtualHubBgpConnectionResultsResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ListVirtualHubBgpConnectionResults)
+	err := resp.UnmarshalAsJSON(&result.ListVirtualHubBgpConnectionResults)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -84,24 +85,24 @@ func (client VirtualHubBgpConnectionsClient) listHandleError(resp *azcore.Respon
 }
 
 // BeginListAdvertisedRoutes - Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-func (client VirtualHubBgpConnectionsClient) BeginListAdvertisedRoutes(ctx context.Context, resourceGroupName string, hubName string, connectionName string, options *VirtualHubBgpConnectionsListAdvertisedRoutesOptions) (*PeerRouteListPollerResponse, error) {
+func (client VirtualHubBgpConnectionsClient) BeginListAdvertisedRoutes(ctx context.Context, resourceGroupName string, hubName string, connectionName string, options *VirtualHubBgpConnectionsListAdvertisedRoutesOptions) (PeerRouteListPollerResponse, error) {
 	resp, err := client.ListAdvertisedRoutes(ctx, resourceGroupName, hubName, connectionName, options)
 	if err != nil {
-		return nil, err
+		return PeerRouteListPollerResponse{}, err
 	}
-	result := &PeerRouteListPollerResponse{
+	result := PeerRouteListPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VirtualHubBgpConnectionsClient.ListAdvertisedRoutes", "location", resp, client.listAdvertisedRoutesHandleError)
 	if err != nil {
-		return nil, err
+		return PeerRouteListPollerResponse{}, err
 	}
 	poller := &peerRouteListPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*PeerRouteListResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PeerRouteListResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -156,9 +157,10 @@ func (client VirtualHubBgpConnectionsClient) listAdvertisedRoutesCreateRequest(c
 }
 
 // listAdvertisedRoutesHandleResponse handles the ListAdvertisedRoutes response.
-func (client VirtualHubBgpConnectionsClient) listAdvertisedRoutesHandleResponse(resp *azcore.Response) (*PeerRouteListResponse, error) {
+func (client VirtualHubBgpConnectionsClient) listAdvertisedRoutesHandleResponse(resp *azcore.Response) (PeerRouteListResponse, error) {
 	result := PeerRouteListResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PeerRouteList)
+	err := resp.UnmarshalAsJSON(&result.PeerRouteList)
+	return result, err
 }
 
 // listAdvertisedRoutesHandleError handles the ListAdvertisedRoutes error response.
@@ -171,24 +173,24 @@ func (client VirtualHubBgpConnectionsClient) listAdvertisedRoutesHandleError(res
 }
 
 // BeginListLearnedRoutes - Retrieves a list of routes the virtual hub bgp connection has learned.
-func (client VirtualHubBgpConnectionsClient) BeginListLearnedRoutes(ctx context.Context, resourceGroupName string, hubName string, connectionName string, options *VirtualHubBgpConnectionsListLearnedRoutesOptions) (*PeerRouteListPollerResponse, error) {
+func (client VirtualHubBgpConnectionsClient) BeginListLearnedRoutes(ctx context.Context, resourceGroupName string, hubName string, connectionName string, options *VirtualHubBgpConnectionsListLearnedRoutesOptions) (PeerRouteListPollerResponse, error) {
 	resp, err := client.ListLearnedRoutes(ctx, resourceGroupName, hubName, connectionName, options)
 	if err != nil {
-		return nil, err
+		return PeerRouteListPollerResponse{}, err
 	}
-	result := &PeerRouteListPollerResponse{
+	result := PeerRouteListPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VirtualHubBgpConnectionsClient.ListLearnedRoutes", "location", resp, client.listLearnedRoutesHandleError)
 	if err != nil {
-		return nil, err
+		return PeerRouteListPollerResponse{}, err
 	}
 	poller := &peerRouteListPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*PeerRouteListResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PeerRouteListResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -243,9 +245,10 @@ func (client VirtualHubBgpConnectionsClient) listLearnedRoutesCreateRequest(ctx 
 }
 
 // listLearnedRoutesHandleResponse handles the ListLearnedRoutes response.
-func (client VirtualHubBgpConnectionsClient) listLearnedRoutesHandleResponse(resp *azcore.Response) (*PeerRouteListResponse, error) {
+func (client VirtualHubBgpConnectionsClient) listLearnedRoutesHandleResponse(resp *azcore.Response) (PeerRouteListResponse, error) {
 	result := PeerRouteListResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PeerRouteList)
+	err := resp.UnmarshalAsJSON(&result.PeerRouteList)
+	return result, err
 }
 
 // listLearnedRoutesHandleError handles the ListLearnedRoutes error response.

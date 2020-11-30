@@ -34,21 +34,21 @@ func (client VpnSiteLinksClient) Pipeline() azcore.Pipeline {
 }
 
 // Get - Retrieves the details of a VPN site link.
-func (client VpnSiteLinksClient) Get(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteLinkName string, options *VpnSiteLinksGetOptions) (*VpnSiteLinkResponse, error) {
+func (client VpnSiteLinksClient) Get(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteLinkName string, options *VpnSiteLinksGetOptions) (VpnSiteLinkResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vpnSiteName, vpnSiteLinkName, options)
 	if err != nil {
-		return nil, err
+		return VpnSiteLinkResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return VpnSiteLinkResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return VpnSiteLinkResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return VpnSiteLinkResponse{}, err
 	}
 	return result, nil
 }
@@ -73,9 +73,10 @@ func (client VpnSiteLinksClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client VpnSiteLinksClient) getHandleResponse(resp *azcore.Response) (*VpnSiteLinkResponse, error) {
+func (client VpnSiteLinksClient) getHandleResponse(resp *azcore.Response) (VpnSiteLinkResponse, error) {
 	result := VpnSiteLinkResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VpnSiteLink)
+	err := resp.UnmarshalAsJSON(&result.VpnSiteLink)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -96,7 +97,7 @@ func (client VpnSiteLinksClient) ListByVpnSite(resourceGroupName string, vpnSite
 		},
 		responder: client.listByVpnSiteHandleResponse,
 		errorer:   client.listByVpnSiteHandleError,
-		advancer: func(ctx context.Context, resp *ListVpnSiteLinksResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ListVpnSiteLinksResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListVpnSiteLinksResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -122,9 +123,10 @@ func (client VpnSiteLinksClient) listByVpnSiteCreateRequest(ctx context.Context,
 }
 
 // listByVpnSiteHandleResponse handles the ListByVpnSite response.
-func (client VpnSiteLinksClient) listByVpnSiteHandleResponse(resp *azcore.Response) (*ListVpnSiteLinksResultResponse, error) {
+func (client VpnSiteLinksClient) listByVpnSiteHandleResponse(resp *azcore.Response) (ListVpnSiteLinksResultResponse, error) {
 	result := ListVpnSiteLinksResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ListVpnSiteLinksResult)
+	err := resp.UnmarshalAsJSON(&result.ListVpnSiteLinksResult)
+	return result, err
 }
 
 // listByVpnSiteHandleError handles the ListByVpnSite error response.

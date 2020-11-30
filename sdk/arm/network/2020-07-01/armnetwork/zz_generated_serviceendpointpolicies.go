@@ -35,24 +35,24 @@ func (client ServiceEndpointPoliciesClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates or updates a service Endpoint Policies.
-func (client ServiceEndpointPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters ServiceEndpointPolicy, options *ServiceEndpointPoliciesCreateOrUpdateOptions) (*ServiceEndpointPolicyPollerResponse, error) {
+func (client ServiceEndpointPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters ServiceEndpointPolicy, options *ServiceEndpointPoliciesCreateOrUpdateOptions) (ServiceEndpointPolicyPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, serviceEndpointPolicyName, parameters, options)
 	if err != nil {
-		return nil, err
+		return ServiceEndpointPolicyPollerResponse{}, err
 	}
-	result := &ServiceEndpointPolicyPollerResponse{
+	result := ServiceEndpointPolicyPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ServiceEndpointPoliciesClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return ServiceEndpointPolicyPollerResponse{}, err
 	}
 	poller := &serviceEndpointPolicyPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*ServiceEndpointPolicyResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ServiceEndpointPolicyResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -106,9 +106,10 @@ func (client ServiceEndpointPoliciesClient) createOrUpdateCreateRequest(ctx cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client ServiceEndpointPoliciesClient) createOrUpdateHandleResponse(resp *azcore.Response) (*ServiceEndpointPolicyResponse, error) {
+func (client ServiceEndpointPoliciesClient) createOrUpdateHandleResponse(resp *azcore.Response) (ServiceEndpointPolicyResponse, error) {
 	result := ServiceEndpointPolicyResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ServiceEndpointPolicy)
+	err := resp.UnmarshalAsJSON(&result.ServiceEndpointPolicy)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -121,17 +122,17 @@ func (client ServiceEndpointPoliciesClient) createOrUpdateHandleError(resp *azco
 }
 
 // BeginDelete - Deletes the specified service endpoint policy.
-func (client ServiceEndpointPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPoliciesDeleteOptions) (*HTTPPollerResponse, error) {
+func (client ServiceEndpointPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPoliciesDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, serviceEndpointPolicyName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ServiceEndpointPoliciesClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -201,21 +202,21 @@ func (client ServiceEndpointPoliciesClient) deleteHandleError(resp *azcore.Respo
 }
 
 // Get - Gets the specified service Endpoint Policies in a specified resource group.
-func (client ServiceEndpointPoliciesClient) Get(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPoliciesGetOptions) (*ServiceEndpointPolicyResponse, error) {
+func (client ServiceEndpointPoliciesClient) Get(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPoliciesGetOptions) (ServiceEndpointPolicyResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName, options)
 	if err != nil {
-		return nil, err
+		return ServiceEndpointPolicyResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ServiceEndpointPolicyResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return ServiceEndpointPolicyResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ServiceEndpointPolicyResponse{}, err
 	}
 	return result, nil
 }
@@ -242,9 +243,10 @@ func (client ServiceEndpointPoliciesClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client ServiceEndpointPoliciesClient) getHandleResponse(resp *azcore.Response) (*ServiceEndpointPolicyResponse, error) {
+func (client ServiceEndpointPoliciesClient) getHandleResponse(resp *azcore.Response) (ServiceEndpointPolicyResponse, error) {
 	result := ServiceEndpointPolicyResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ServiceEndpointPolicy)
+	err := resp.UnmarshalAsJSON(&result.ServiceEndpointPolicy)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -265,7 +267,7 @@ func (client ServiceEndpointPoliciesClient) List(options *ServiceEndpointPolicie
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *ServiceEndpointPolicyListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ServiceEndpointPolicyListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ServiceEndpointPolicyListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -289,9 +291,10 @@ func (client ServiceEndpointPoliciesClient) listCreateRequest(ctx context.Contex
 }
 
 // listHandleResponse handles the List response.
-func (client ServiceEndpointPoliciesClient) listHandleResponse(resp *azcore.Response) (*ServiceEndpointPolicyListResultResponse, error) {
+func (client ServiceEndpointPoliciesClient) listHandleResponse(resp *azcore.Response) (ServiceEndpointPolicyListResultResponse, error) {
 	result := ServiceEndpointPolicyListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ServiceEndpointPolicyListResult)
+	err := resp.UnmarshalAsJSON(&result.ServiceEndpointPolicyListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -312,7 +315,7 @@ func (client ServiceEndpointPoliciesClient) ListByResourceGroup(resourceGroupNam
 		},
 		responder: client.listByResourceGroupHandleResponse,
 		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp *ServiceEndpointPolicyListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ServiceEndpointPolicyListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ServiceEndpointPolicyListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -337,9 +340,10 @@ func (client ServiceEndpointPoliciesClient) listByResourceGroupCreateRequest(ctx
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client ServiceEndpointPoliciesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (*ServiceEndpointPolicyListResultResponse, error) {
+func (client ServiceEndpointPoliciesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (ServiceEndpointPolicyListResultResponse, error) {
 	result := ServiceEndpointPolicyListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ServiceEndpointPolicyListResult)
+	err := resp.UnmarshalAsJSON(&result.ServiceEndpointPolicyListResult)
+	return result, err
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -352,21 +356,21 @@ func (client ServiceEndpointPoliciesClient) listByResourceGroupHandleError(resp 
 }
 
 // UpdateTags - Updates tags of a service endpoint policy.
-func (client ServiceEndpointPoliciesClient) UpdateTags(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters TagsObject, options *ServiceEndpointPoliciesUpdateTagsOptions) (*ServiceEndpointPolicyResponse, error) {
+func (client ServiceEndpointPoliciesClient) UpdateTags(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters TagsObject, options *ServiceEndpointPoliciesUpdateTagsOptions) (ServiceEndpointPolicyResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName, parameters, options)
 	if err != nil {
-		return nil, err
+		return ServiceEndpointPolicyResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ServiceEndpointPolicyResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.updateTagsHandleError(resp)
+		return ServiceEndpointPolicyResponse{}, client.updateTagsHandleError(resp)
 	}
 	result, err := client.updateTagsHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ServiceEndpointPolicyResponse{}, err
 	}
 	return result, nil
 }
@@ -390,9 +394,10 @@ func (client ServiceEndpointPoliciesClient) updateTagsCreateRequest(ctx context.
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client ServiceEndpointPoliciesClient) updateTagsHandleResponse(resp *azcore.Response) (*ServiceEndpointPolicyResponse, error) {
+func (client ServiceEndpointPoliciesClient) updateTagsHandleResponse(resp *azcore.Response) (ServiceEndpointPolicyResponse, error) {
 	result := ServiceEndpointPolicyResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ServiceEndpointPolicy)
+	err := resp.UnmarshalAsJSON(&result.ServiceEndpointPolicy)
+	return result, err
 }
 
 // updateTagsHandleError handles the UpdateTags error response.

@@ -35,24 +35,24 @@ func (client FirewallPoliciesClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates or updates the specified Firewall Policy.
-func (client FirewallPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters FirewallPolicy, options *FirewallPoliciesCreateOrUpdateOptions) (*FirewallPolicyPollerResponse, error) {
+func (client FirewallPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters FirewallPolicy, options *FirewallPoliciesCreateOrUpdateOptions) (FirewallPolicyPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, firewallPolicyName, parameters, options)
 	if err != nil {
-		return nil, err
+		return FirewallPolicyPollerResponse{}, err
 	}
-	result := &FirewallPolicyPollerResponse{
+	result := FirewallPolicyPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("FirewallPoliciesClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return FirewallPolicyPollerResponse{}, err
 	}
 	poller := &firewallPolicyPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*FirewallPolicyResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FirewallPolicyResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -106,9 +106,10 @@ func (client FirewallPoliciesClient) createOrUpdateCreateRequest(ctx context.Con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client FirewallPoliciesClient) createOrUpdateHandleResponse(resp *azcore.Response) (*FirewallPolicyResponse, error) {
+func (client FirewallPoliciesClient) createOrUpdateHandleResponse(resp *azcore.Response) (FirewallPolicyResponse, error) {
 	result := FirewallPolicyResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.FirewallPolicy)
+	err := resp.UnmarshalAsJSON(&result.FirewallPolicy)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -121,17 +122,17 @@ func (client FirewallPoliciesClient) createOrUpdateHandleError(resp *azcore.Resp
 }
 
 // BeginDelete - Deletes the specified Firewall Policy.
-func (client FirewallPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPoliciesDeleteOptions) (*HTTPPollerResponse, error) {
+func (client FirewallPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPoliciesDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, firewallPolicyName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("FirewallPoliciesClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -201,21 +202,21 @@ func (client FirewallPoliciesClient) deleteHandleError(resp *azcore.Response) er
 }
 
 // Get - Gets the specified Firewall Policy.
-func (client FirewallPoliciesClient) Get(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPoliciesGetOptions) (*FirewallPolicyResponse, error) {
+func (client FirewallPoliciesClient) Get(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPoliciesGetOptions) (FirewallPolicyResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, firewallPolicyName, options)
 	if err != nil {
-		return nil, err
+		return FirewallPolicyResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return FirewallPolicyResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return FirewallPolicyResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return FirewallPolicyResponse{}, err
 	}
 	return result, nil
 }
@@ -242,9 +243,10 @@ func (client FirewallPoliciesClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client FirewallPoliciesClient) getHandleResponse(resp *azcore.Response) (*FirewallPolicyResponse, error) {
+func (client FirewallPoliciesClient) getHandleResponse(resp *azcore.Response) (FirewallPolicyResponse, error) {
 	result := FirewallPolicyResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.FirewallPolicy)
+	err := resp.UnmarshalAsJSON(&result.FirewallPolicy)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -265,7 +267,7 @@ func (client FirewallPoliciesClient) List(resourceGroupName string, options *Fir
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *FirewallPolicyListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp FirewallPolicyListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.FirewallPolicyListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -290,9 +292,10 @@ func (client FirewallPoliciesClient) listCreateRequest(ctx context.Context, reso
 }
 
 // listHandleResponse handles the List response.
-func (client FirewallPoliciesClient) listHandleResponse(resp *azcore.Response) (*FirewallPolicyListResultResponse, error) {
+func (client FirewallPoliciesClient) listHandleResponse(resp *azcore.Response) (FirewallPolicyListResultResponse, error) {
 	result := FirewallPolicyListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.FirewallPolicyListResult)
+	err := resp.UnmarshalAsJSON(&result.FirewallPolicyListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -313,7 +316,7 @@ func (client FirewallPoliciesClient) ListAll(options *FirewallPoliciesListAllOpt
 		},
 		responder: client.listAllHandleResponse,
 		errorer:   client.listAllHandleError,
-		advancer: func(ctx context.Context, resp *FirewallPolicyListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp FirewallPolicyListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.FirewallPolicyListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -337,9 +340,10 @@ func (client FirewallPoliciesClient) listAllCreateRequest(ctx context.Context, o
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client FirewallPoliciesClient) listAllHandleResponse(resp *azcore.Response) (*FirewallPolicyListResultResponse, error) {
+func (client FirewallPoliciesClient) listAllHandleResponse(resp *azcore.Response) (FirewallPolicyListResultResponse, error) {
 	result := FirewallPolicyListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.FirewallPolicyListResult)
+	err := resp.UnmarshalAsJSON(&result.FirewallPolicyListResult)
+	return result, err
 }
 
 // listAllHandleError handles the ListAll error response.

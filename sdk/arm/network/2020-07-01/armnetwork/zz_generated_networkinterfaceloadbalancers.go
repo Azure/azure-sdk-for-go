@@ -42,7 +42,7 @@ func (client NetworkInterfaceLoadBalancersClient) List(resourceGroupName string,
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *NetworkInterfaceLoadBalancerListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp NetworkInterfaceLoadBalancerListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.NetworkInterfaceLoadBalancerListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -68,9 +68,10 @@ func (client NetworkInterfaceLoadBalancersClient) listCreateRequest(ctx context.
 }
 
 // listHandleResponse handles the List response.
-func (client NetworkInterfaceLoadBalancersClient) listHandleResponse(resp *azcore.Response) (*NetworkInterfaceLoadBalancerListResultResponse, error) {
+func (client NetworkInterfaceLoadBalancersClient) listHandleResponse(resp *azcore.Response) (NetworkInterfaceLoadBalancerListResultResponse, error) {
 	result := NetworkInterfaceLoadBalancerListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.NetworkInterfaceLoadBalancerListResult)
+	err := resp.UnmarshalAsJSON(&result.NetworkInterfaceLoadBalancerListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

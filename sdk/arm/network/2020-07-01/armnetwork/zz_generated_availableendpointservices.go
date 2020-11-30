@@ -42,7 +42,7 @@ func (client AvailableEndpointServicesClient) List(location string, options *Ava
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *EndpointServicesListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp EndpointServicesListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.EndpointServicesListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -67,9 +67,10 @@ func (client AvailableEndpointServicesClient) listCreateRequest(ctx context.Cont
 }
 
 // listHandleResponse handles the List response.
-func (client AvailableEndpointServicesClient) listHandleResponse(resp *azcore.Response) (*EndpointServicesListResultResponse, error) {
+func (client AvailableEndpointServicesClient) listHandleResponse(resp *azcore.Response) (EndpointServicesListResultResponse, error) {
 	result := EndpointServicesListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.EndpointServicesListResult)
+	err := resp.UnmarshalAsJSON(&result.EndpointServicesListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

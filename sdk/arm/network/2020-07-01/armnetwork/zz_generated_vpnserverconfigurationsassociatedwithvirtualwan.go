@@ -35,24 +35,24 @@ func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) Pipeline() a
 }
 
 // BeginList - Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) BeginList(ctx context.Context, resourceGroupName string, virtualWanName string, options *VpnServerConfigurationsAssociatedWithVirtualWanListOptions) (*VpnServerConfigurationsResponsePollerResponse, error) {
+func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) BeginList(ctx context.Context, resourceGroupName string, virtualWanName string, options *VpnServerConfigurationsAssociatedWithVirtualWanListOptions) (VpnServerConfigurationsResponsePollerResponse, error) {
 	resp, err := client.List(ctx, resourceGroupName, virtualWanName, options)
 	if err != nil {
-		return nil, err
+		return VpnServerConfigurationsResponsePollerResponse{}, err
 	}
-	result := &VpnServerConfigurationsResponsePollerResponse{
+	result := VpnServerConfigurationsResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VpnServerConfigurationsAssociatedWithVirtualWanClient.List", "location", resp, client.listHandleError)
 	if err != nil {
-		return nil, err
+		return VpnServerConfigurationsResponsePollerResponse{}, err
 	}
 	poller := &vpnServerConfigurationsResponsePoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*VpnServerConfigurationsResponseResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VpnServerConfigurationsResponseResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -106,9 +106,10 @@ func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) listCreateRe
 }
 
 // listHandleResponse handles the List response.
-func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) listHandleResponse(resp *azcore.Response) (*VpnServerConfigurationsResponseResponse, error) {
+func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) listHandleResponse(resp *azcore.Response) (VpnServerConfigurationsResponseResponse, error) {
 	result := VpnServerConfigurationsResponseResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VpnServerConfigurationsResponse)
+	err := resp.UnmarshalAsJSON(&result.VpnServerConfigurationsResponse)
+	return result, err
 }
 
 // listHandleError handles the List error response.

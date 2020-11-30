@@ -7,131 +7,60 @@ package azblob
 
 import (
 	"fmt"
-	"net/url"
-	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 const scope = "https://storage.azure.com/.default"
 const telemetryInfo = "azsdk-go-generated/<version>"
-
 // clientOptions contains configuration settings for the default client's pipeline.
 type clientOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
 	HTTPClient azcore.Transport
-	// LogOptions configures the built-in request logging policy behavior.
-	LogOptions azcore.RequestLogOptions
 	// Retry configures the built-in retry policy behavior.
 	Retry azcore.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior.
 	Telemetry azcore.TelemetryOptions
-	// ApplicationID is an application-specific identification string used in telemetry.
-	// It has a maximum length of 24 characters and must not contain any spaces.
-	ApplicationID string
-	// DisableRPRegistration controls if an unregistered resource provider should
-	// automatically be registered. See https://aka.ms/rps-not-found for more information.
-	// The default value is false, meaning registration will be attempted.
-	DisableRPRegistration bool
 }
 
 // defaultClientOptions creates a clientOptions type initialized with default values.
 func defaultClientOptions() clientOptions {
 	return clientOptions{
-		HTTPClient: azcore.DefaultHTTPClientTransport(),
-		Retry:      azcore.DefaultRetryOptions(),
+		Retry: azcore.DefaultRetryOptions(),
+		Telemetry: azcore.DefaultTelemetryOptions(),
 	}
 }
 
-func (c *clientOptions) telemetryOptions() azcore.TelemetryOptions {
-	t := telemetryInfo
-	if c.ApplicationID != "" {
-		a := strings.ReplaceAll(c.ApplicationID, " ", "/")
-		if len(a) > 24 {
-			a = a[:24]
-		}
-		t = fmt.Sprintf("%s %s", a, telemetryInfo)
+func (c *clientOptions) telemetryOptions() *azcore.TelemetryOptions {
+	to := c.Telemetry
+	if to.Value == "" {
+		to.Value = telemetryInfo
+	} else {
+		to.Value = fmt.Sprintf("%s %s", telemetryInfo, to.Value)
 	}
-	if c.Telemetry.Value == "" {
-		return azcore.TelemetryOptions{Value: t}
-	}
-	return azcore.TelemetryOptions{Value: fmt.Sprintf("%s %s", c.Telemetry.Value, t)}
+	return &to
 }
 
 type client struct {
-	u *url.URL
+	u string
 	p azcore.Pipeline
 }
 
 // newClient creates an instance of the client type with the specified endpoint.
-func newClient(endpoint string, cred azcore.Credential, options *clientOptions) (*client, error) {
+func newClient(endpoint string, cred azcore.Credential, options *clientOptions) *client {
 	if options == nil {
 		o := defaultClientOptions()
 		options = &o
 	}
-	policies := []azcore.Policy{
+	p := azcore.NewPipeline(options.HTTPClient,
 		azcore.NewTelemetryPolicy(options.telemetryOptions()),
-		azcore.NewUniqueRequestIDPolicy(),
-	}
-	if !options.DisableRPRegistration {
-		rpOpts := armcore.DefaultRegistrationOptions()
-		rpOpts.HTTPClient = options.HTTPClient
-		rpOpts.LogOptions = options.LogOptions
-		rpOpts.Retry = options.Retry
-		policies = append(policies, armcore.NewRPRegistrationPolicy(cred, &rpOpts))
-	}
-	policies = append(policies,
 		azcore.NewRetryPolicy(&options.Retry),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
-		azcore.NewRequestLogPolicy(options.LogOptions))
-	p := azcore.NewPipeline(options.HTTPClient, policies...)
+		azcore.NewLogPolicy(nil))
 	return newClientWithPipeline(endpoint, p)
 }
 
 // newClientWithPipeline creates an instance of the client type with the specified endpoint and pipeline.
-func newClientWithPipeline(endpoint string, p azcore.Pipeline) (*client, error) {
-	u, err := url.Parse(endpoint)
-	if err != nil {
-		return nil, err
-	}
-	if u.Scheme == "" {
-		return nil, fmt.Errorf("no scheme detected in endpoint %s", endpoint)
-	}
-	return &client{u: u, p: p}, nil
+func newClientWithPipeline(endpoint string, p azcore.Pipeline) *client {
+	return &client{u: endpoint, p: p}
 }
 
-// ServiceOperations returns the ServiceOperations associated with this client.
-func (client *client) ServiceOperations() ServiceOperations {
-	return &serviceOperations{client: client}
-}
-
-// ContainerOperations returns the ContainerOperations associated with this client.
-func (client *client) ContainerOperations() ContainerOperations {
-	return &containerOperations{client: client}
-}
-
-// DirectoryOperations returns the DirectoryOperations associated with this client.
-func (client *client) DirectoryOperations(pathRenameMode *PathRenameMode) DirectoryOperations {
-	return &directoryOperations{client: client, pathRenameMode: pathRenameMode}
-}
-
-// BlobOperations returns the BlobOperations associated with this client.
-func (client *client) BlobOperations(pathRenameMode *PathRenameMode) BlobOperations {
-	return &blobOperations{client: client, pathRenameMode: pathRenameMode}
-}
-
-// PageBlobOperations returns the PageBlobOperations associated with this client.
-func (client *client) PageBlobOperations() PageBlobOperations {
-	return &pageBlobOperations{client: client}
-}
-
-// AppendBlobOperations returns the AppendBlobOperations associated with this client.
-func (client *client) AppendBlobOperations() AppendBlobOperations {
-	return &appendBlobOperations{client: client}
-}
-
-// BlockBlobOperations returns the BlockBlobOperations associated with this client.
-func (client *client) BlockBlobOperations() BlockBlobOperations {
-	return &blockBlobOperations{client: client}
-}

@@ -9,23 +9,23 @@ import (
 
 // A BlobClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
 type BlobClient struct {
-	client *client
+	client *blobClient
+	cred azcore.Credential // Can't really access this elsewhere, and it's necessary for WithSnapshot being convenient.
+	options *clientOptions
 }
 
 // NewBlobClient creates a BlobClient object using the specified URL and request policy pipeline.
-func NewBlobClient(blobURL string, cred azcore.Credential, options *clientOptions) (BlobClient, error) {
-	client, err := newClient(blobURL, cred, options)
+func NewBlobClient(blobURL string, cred azcore.Credential, pathRenameMode *PathRenameMode, options *clientOptions) BlobClient {
+	client := newClient(blobURL, cred, options)
 
-	if err != nil {
-		return BlobClient{}, err
-	}
-
-	return BlobClient{client: client}, err
+	return BlobClient{client: &blobClient{ client, pathRenameMode }}
 }
 
 // URL returns the URL endpoint used by the BlobClient object.
 func (b BlobClient) URL() url.URL {
-	return *b.client.u
+	url, _ := url.Parse(b.client.u)
+
+	return *url
 }
 
 // String returns the URL as a string.
@@ -35,14 +35,10 @@ func (b BlobClient) String() string {
 }
 
 // WithPipeline creates a new BlobClient object identical to the source but with the specified request policy pipeline.
-func (b BlobClient) WithPipeline(pipeline azcore.Pipeline) (BlobClient, error) {
-	client, err := newClientWithPipeline(b.client.u.String(), pipeline)
+func (b BlobClient) WithPipeline(pipeline azcore.Pipeline) BlobClient {
+	client := newClientWithPipeline(b.client.u, pipeline)
 
-	if err != nil {
-		return BlobClient{}, err
-	}
-
-	return BlobClient{client: client}, err
+	return BlobClient{client: &blobClient{ client, b.client.pathRenameMode}}
 }
 
 // WithSnapshot creates a new BlobClient object identical to the source but with the specified snapshot timestamp.
@@ -51,9 +47,12 @@ func (b BlobClient) WithSnapshot(snapshot string) BlobClient {
 	p := NewBlobURLParts(b.URL())
 	p.Snapshot = snapshot
 	snapshotURL := p.URL()
-	blobClient, _ := newClientWithPipeline(snapshotURL.String(), b.client.p)
+	client := newClientWithPipeline(snapshotURL.String(), b.client.p)
 	return BlobClient{
-		client: blobClient,
+		client: &blobClient{
+			client,
+			b.client.pathRenameMode,
+		},
 	}
 }
 
@@ -63,10 +62,12 @@ func (b BlobClient) WithSnapshot(snapshot string) BlobClient {
 //}
 //
 // ToBlockBlobURL creates a BlockBlobClient using the source's URL and pipeline.
-func (b BlobClient) ToBlockBlobURL() BlockBlobClient {
-	blockBlobClient, _ := newClientWithPipeline(b.String(), b.client.p)
+func (b BlobClient) ToBlockBlobClient() BlockBlobClient {
+	bbClient := newClientWithPipeline(b.String(), b.client.p)
 	return BlockBlobClient{
-		client: blockBlobClient,
+		client: &blockBlobClient{bbClient},
+		cred: b.cred,
+		options: b.options,
 	}
 }
 
@@ -76,14 +77,14 @@ func (b BlobClient) ToBlockBlobURL() BlockBlobClient {
 //}
 
 func (b BlobClient) GetAccountInfo(ctx context.Context) (*BlobGetAccountInfoResponse, error) {
-	return b.client.BlobOperations(nil).GetAccountInfo(ctx)
+	return b.client.GetAccountInfo(ctx, nil)
 }
 
 // DownloadBlob reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
 func (b BlobClient) Download(ctx context.Context, options *DownloadBlobOptions) (*DownloadResponse, error) {
 	o, lease, cpk, accessConditions := options.pointers()
-	dr, err := b.client.BlobOperations(nil).Download(ctx, o, lease, cpk, accessConditions)
+	dr, err := b.client.Download(ctx, o, lease, cpk, accessConditions)
 	if err != nil {
 		return nil, err
 	}
@@ -111,13 +112,13 @@ func (b BlobClient) Download(ctx context.Context, options *DownloadBlobOptions) 
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob.
 func (b BlobClient) Delete(ctx context.Context, options *DeleteBlobOptions) (*BlobDeleteResponse, error) {
 	basics, leaseInfo, accessConditions := options.pointers()
-	return b.client.BlobOperations(nil).Delete(ctx, basics, leaseInfo, accessConditions)
+	return b.client.Delete(ctx, basics, leaseInfo, accessConditions)
 }
 
 // Undelete restores the contents and metadata of a soft-deleted blob and any associated soft-deleted snapshots.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/undelete-blob.
 func (b BlobClient) Undelete(ctx context.Context) (*BlobUndeleteResponse, error) {
-	return b.client.BlobOperations(nil).Undelete(ctx, nil)
+	return b.client.Undelete(ctx, nil)
 }
 
 // SetTier operation sets the tier on a blob. The operation is allowed on a page
@@ -128,21 +129,21 @@ func (b BlobClient) Undelete(ctx context.Context) (*BlobUndeleteResponse, error)
 // For detailed information about block blob level tiering see https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.
 func (b BlobClient) SetTier(ctx context.Context, tier AccessTier, options *SetTierOptions) (*BlobSetTierResponse, error) {
 	basics, lease, accessConditions := options.pointers()
-	return b.client.BlobOperations(nil).SetTier(ctx, tier, basics, lease, accessConditions)
+	return b.client.SetTier(ctx, tier, basics, lease, accessConditions)
 }
 
 // GetBlobProperties returns the blob's properties.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-properties.
 func (b BlobClient) GetProperties(ctx context.Context, options *GetBlobPropertiesOptions) (*BlobGetPropertiesResponse, error) {
 	basics, lease, cpk, access := options.pointers()
-	return b.client.BlobOperations(nil).GetProperties(ctx, basics, lease, cpk, access)
+	return b.client.GetProperties(ctx, basics, lease, cpk, access)
 }
 
 // SetBlobHTTPHeaders changes a blob's HTTP headers.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-blob-properties.
 func (b BlobClient) SetHTTPHeaders(ctx context.Context, blobHttpHeaders BlobHttpHeaders, options *SetBlobHTTPHeadersOptions) (*BlobSetHTTPHeadersResponse, error) {
 	basics, lease, access := options.pointers()
-	return b.client.BlobOperations(nil).SetHTTPHeaders(ctx, basics, &blobHttpHeaders, lease, access)
+	return b.client.SetHTTPHeaders(ctx, basics, &blobHttpHeaders, lease, access)
 }
 
 // SetBlobMetadata changes a blob's metadata.
@@ -152,7 +153,7 @@ func (b BlobClient) SetMetadata(ctx context.Context, metadata map[string]string,
 	basics := BlobSetMetadataOptions{
 		Metadata: &metadata,
 	}
-	return b.client.BlobOperations(nil).SetMetadata(ctx, &basics, lease, cpk, cpkScope, access)
+	return b.client.SetMetadata(ctx, &basics, lease, cpk, cpkScope, access)
 }
 
 // CreateSnapshot creates a read-only snapshot of a blob.
@@ -162,7 +163,7 @@ func (b BlobClient) CreateSnapshot(ctx context.Context, options *CreateBlobSnaps
 	// because checking this would be a performance hit for a VERY unusual path and we don't think the common case should suffer this
 	// performance hit.
 	basics, cpk, cpkScope, access, lease := options.pointers()
-	return b.client.BlobOperations(nil).CreateSnapshot(ctx, basics, cpk, cpkScope, access, lease)
+	return b.client.CreateSnapshot(ctx, basics, cpk, cpkScope, access, lease)
 }
 
 // AcquireLease acquires a lease on the blob for write and delete operations. The lease duration must be between
@@ -170,21 +171,21 @@ func (b BlobClient) CreateSnapshot(ctx context.Context, options *CreateBlobSnaps
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (b BlobClient) AcquireLease(ctx context.Context, options *AcquireBlobLeaseOptions) (*BlobAcquireLeaseResponse, error) {
 	basics, access := options.pointers()
-	return b.client.BlobOperations(nil).AcquireLease(ctx, basics, access)
+	return b.client.AcquireLease(ctx, basics, access)
 }
 
 // RenewLease renews the blob's previously-acquired lease.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (b BlobClient) RenewLease(ctx context.Context, leaseID string, options *RenewBlobLeaseOptions) (*BlobRenewLeaseResponse, error) {
 	basics, access := options.pointers()
-	return b.client.BlobOperations(nil).RenewLease(ctx, leaseID, basics, access)
+	return b.client.RenewLease(ctx, leaseID, basics, access)
 }
 
 // ReleaseLease releases the blob's previously-acquired lease.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (b BlobClient) ReleaseLease(ctx context.Context, leaseID string, options *ReleaseBlobLeaseOptions) (*BlobReleaseLeaseResponse, error) {
 	basics, access := options.pointers()
-	return b.client.BlobOperations(nil).ReleaseLease(ctx, leaseID, basics, access)
+	return b.client.ReleaseLease(ctx, leaseID, basics, access)
 }
 
 // BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1)
@@ -192,14 +193,14 @@ func (b BlobClient) ReleaseLease(ctx context.Context, leaseID string, options *R
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (b BlobClient) BreakLease(ctx context.Context, options *BreakBlobLeaseOptions) (*BlobBreakLeaseResponse, error) {
 	basics, access := options.pointers()
-	return b.client.BlobOperations(nil).BreakLease(ctx, basics, access)
+	return b.client.BreakLease(ctx, basics, access)
 }
 
 // ChangeLease changes the blob's lease ID.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (b BlobClient) ChangeLease(ctx context.Context, leaseID string, proposedID string, options *ChangeBlobLeaseOptions) (*BlobChangeLeaseResponse, error) {
 	basics, access := options.pointers()
-	return b.client.BlobOperations(nil).ChangeLease(ctx, leaseID, proposedID, basics, access)
+	return b.client.ChangeLease(ctx, leaseID, proposedID, basics, access)
 }
 
 // StartCopyFromURL copies the data at the source URL to a blob.
@@ -207,12 +208,12 @@ func (b BlobClient) ChangeLease(ctx context.Context, leaseID string, proposedID 
 func (b BlobClient) StartCopyFromURL(ctx context.Context, copySource url.URL, options *StartCopyBlobOptions) (*BlobStartCopyFromURLResponse, error) {
 	basics, srcAccess, destAccess, lease := options.pointers()
 
-	return b.client.BlobOperations(nil).StartCopyFromURL(ctx, copySource, basics, srcAccess, destAccess, lease)
+	return b.client.StartCopyFromURL(ctx, copySource, basics, srcAccess, destAccess, lease)
 }
 
 // AbortCopyFromURL stops a pending copy that was previously started and leaves a destination blob with 0 length and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/abort-copy-blob.
 func (b BlobClient) AbortCopyFromURL(ctx context.Context, copyID string, options *AbortCopyBlobOptions) (*BlobAbortCopyFromURLResponse, error) {
 	basics, lease := options.pointers()
-	return b.client.BlobOperations(nil).AbortCopyFromURL(ctx, copyID, basics, lease)
+	return b.client.AbortCopyFromURL(ctx, copyID, basics, lease)
 }

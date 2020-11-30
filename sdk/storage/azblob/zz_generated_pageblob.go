@@ -8,69 +8,54 @@ package azblob
 import (
 	"context"
 	"encoding/base64"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// PageBlobOperations contains the methods for the PageBlob group.
-type PageBlobOperations interface {
-	// ClearPages - The Clear Pages operation clears a set of pages from a page blob
-	ClearPages(ctx context.Context, contentLength int64, pageBlobClearPagesOptions *PageBlobClearPagesOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*PageBlobClearPagesResponse, error)
-	// CopyIncremental - The Copy Incremental operation copies a snapshot of the source page blob to a destination page blob. The snapshot is copied such that only the differential changes between the previously copied snapshot are transferred to the destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as usual. This API is supported since REST version 2016-05-31.
-	CopyIncremental(ctx context.Context, copySource url.URL, pageBlobCopyIncrementalOptions *PageBlobCopyIncrementalOptions, modifiedAccessConditions *ModifiedAccessConditions) (*PageBlobCopyIncrementalResponse, error)
-	// Create - The Create operation creates a new page blob.
-	Create(ctx context.Context, contentLength int64, blobContentLength int64, pageBlobCreateOptions *PageBlobCreateOptions, blobHttpHeaders *BlobHttpHeaders, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (*PageBlobCreateResponse, error)
-	// GetPageRanges - The Get Page Ranges operation returns the list of valid page ranges for a page blob or snapshot of a page blob
-	GetPageRanges(ctx context.Context, pageBlobGetPageRangesOptions *PageBlobGetPageRangesOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*PageListResponse, error)
-	// GetPageRangesDiff - The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob that were changed between target blob and previous snapshot.
-	GetPageRangesDiff(ctx context.Context, pageBlobGetPageRangesDiffOptions *PageBlobGetPageRangesDiffOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*PageListResponse, error)
-	// Resize - Resize the Blob
-	Resize(ctx context.Context, blobContentLength int64, pageBlobResizeOptions *PageBlobResizeOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (*PageBlobResizeResponse, error)
-	// UpdateSequenceNumber - Update the sequence number of the blob
-	UpdateSequenceNumber(ctx context.Context, sequenceNumberAction SequenceNumberActionType, pageBlobUpdateSequenceNumberOptions *PageBlobUpdateSequenceNumberOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*PageBlobUpdateSequenceNumberResponse, error)
-	// UploadPages - The Upload Pages operation writes a range of pages to a page blob
-	UploadPages(ctx context.Context, contentLength int64, body azcore.ReadSeekCloser, pageBlobUploadPagesOptions *PageBlobUploadPagesOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*PageBlobUploadPagesResponse, error)
-	// UploadPagesFromURL - The Upload Pages operation writes a range of pages to a page blob where the contents are read from a URL
-	UploadPagesFromURL(ctx context.Context, sourceUrl url.URL, sourceRange string, contentLength int64, rangeParameter string, pageBlobUploadPagesFromUrlOptions *PageBlobUploadPagesFromURLOptions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, leaseAccessConditions *LeaseAccessConditions, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions) (*PageBlobUploadPagesFromURLResponse, error)
-}
-
-// pageBlobOperations implements the PageBlobOperations interface.
-type pageBlobOperations struct {
+type pageBlobClient struct {
 	*client
 }
 
-// ClearPages - The Clear Pages operation clears a set of pages from a page blob
-func (client *pageBlobOperations) ClearPages(ctx context.Context, contentLength int64, pageBlobClearPagesOptions *PageBlobClearPagesOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*PageBlobClearPagesResponse, error) {
-	req, err := client.clearPagesCreateRequest(contentLength, pageBlobClearPagesOptions, leaseAccessConditions, cpkInfo, cpkScopeInfo, sequenceNumberAccessConditions, modifiedAccessConditions)
+// Do invokes the Do() method on the pipeline associated with this client.
+func (client *pageBlobClient) Do(req *azcore.Request) (*azcore.Response, error) {
+	return client.p.Do(req)
+}
+
+// ClearPages - The Clear Pages operation clears a set of pages from a page blob 
+func (client *pageBlobClient) ClearPages(ctx context.Context, contentLength int64, pageBlobClearPagesOptions *PageBlobClearPagesOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*PageBlobClearPagesResponse, error) {
+	req, err := client.ClearPagesCreateRequest(ctx, contentLength, pageBlobClearPagesOptions, leaseAccessConditions, cpkInfo, cpkScopeInfo, sequenceNumberAccessConditions, modifiedAccessConditions)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.p.Do(ctx, req)
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	result, err := client.clearPagesHandleResponse(resp)
+	if !resp.HasStatusCode(http.StatusCreated) {
+		return nil, client.ClearPagesHandleError(resp)
+	}
+	result, err := client.ClearPagesHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// clearPagesCreateRequest creates the ClearPages request.
-func (client *pageBlobOperations) clearPagesCreateRequest(contentLength int64, pageBlobClearPagesOptions *PageBlobClearPagesOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	copy := *client.u
-	u := &copy
-	query := u.Query()
+// ClearPagesCreateRequest creates the ClearPages request.
+func (client *pageBlobClient) ClearPagesCreateRequest(ctx context.Context, contentLength int64, pageBlobClearPagesOptions *PageBlobClearPagesOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
+	req, err := azcore.NewRequest(ctx, http.MethodPut, client.u)
+	if err != nil {
+		return nil, err
+	}
+	query := req.URL.Query()
 	query.Set("comp", "page")
 	if pageBlobClearPagesOptions != nil && pageBlobClearPagesOptions.Timeout != nil {
 		query.Set("timeout", strconv.FormatInt(int64(*pageBlobClearPagesOptions.Timeout), 10))
 	}
-	u.RawQuery = query.Encode()
-	req := azcore.NewRequest(http.MethodPut, *u)
+	req.URL.RawQuery = query.Encode()
 	req.Header.Set("x-ms-page-write", "clear")
 	req.Header.Set("Content-Length", strconv.FormatInt(contentLength, 10))
 	if pageBlobClearPagesOptions != nil && pageBlobClearPagesOptions.RangeParameter != nil {
@@ -84,6 +69,9 @@ func (client *pageBlobOperations) clearPagesCreateRequest(contentLength int64, p
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionKeySha256 != nil {
 		req.Header.Set("x-ms-encryption-key-sha256", *cpkInfo.EncryptionKeySha256)
+	}
+	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
+		req.Header.Set("x-ms-encryption-algorithm", "AES256")
 	}
 	if cpkScopeInfo != nil && cpkScopeInfo.EncryptionScope != nil {
 		req.Header.Set("x-ms-encryption-scope", *cpkScopeInfo.EncryptionScope)
@@ -116,14 +104,12 @@ func (client *pageBlobOperations) clearPagesCreateRequest(contentLength int64, p
 	if pageBlobClearPagesOptions != nil && pageBlobClearPagesOptions.RequestId != nil {
 		req.Header.Set("x-ms-client-request-id", *pageBlobClearPagesOptions.RequestId)
 	}
+	req.Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
-// clearPagesHandleResponse handles the ClearPages response.
-func (client *pageBlobOperations) clearPagesHandleResponse(resp *azcore.Response) (*PageBlobClearPagesResponse, error) {
-	if !resp.HasStatusCode(http.StatusCreated) {
-		return nil, client.clearPagesHandleError(resp)
-	}
+// ClearPagesHandleResponse handles the ClearPages response.
+func (client *pageBlobClient) ClearPagesHandleResponse(resp *azcore.Response) (*PageBlobClearPagesResponse, error) {
 	result := PageBlobClearPagesResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
@@ -140,14 +126,14 @@ func (client *pageBlobOperations) clearPagesHandleResponse(resp *azcore.Response
 		if err != nil {
 			return nil, err
 		}
-		result.ContentMd5 = &contentMd5
+		result.ContentMD5 = &contentMd5
 	}
 	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
 		contentCrc64, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
 			return nil, err
 		}
-		result.ContentCrc64 = &contentCrc64
+		result.ContentCRC64 = &contentCrc64
 	}
 	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
 		blobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
@@ -157,10 +143,10 @@ func (client *pageBlobOperations) clearPagesHandleResponse(resp *azcore.Response
 		result.BlobSequenceNumber = &blobSequenceNumber
 	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.ClientRequestId = &val
+		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.RequestId = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
 		result.Version = &val
@@ -175,43 +161,47 @@ func (client *pageBlobOperations) clearPagesHandleResponse(resp *azcore.Response
 	return &result, nil
 }
 
-// clearPagesHandleError handles the ClearPages error response.
-func (client *pageBlobOperations) clearPagesHandleError(resp *azcore.Response) error {
-	var err StorageError
+// ClearPagesHandleError handles the ClearPages error response.
+func (client *pageBlobClient) ClearPagesHandleError(resp *azcore.Response) error {
+var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-// CopyIncremental - The Copy Incremental operation copies a snapshot of the source page blob to a destination page blob. The snapshot is copied such that only the differential changes between the previously copied snapshot are transferred to the destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as usual. This API is supported since REST version 2016-05-31.
-func (client *pageBlobOperations) CopyIncremental(ctx context.Context, copySource url.URL, pageBlobCopyIncrementalOptions *PageBlobCopyIncrementalOptions, modifiedAccessConditions *ModifiedAccessConditions) (*PageBlobCopyIncrementalResponse, error) {
-	req, err := client.copyIncrementalCreateRequest(copySource, pageBlobCopyIncrementalOptions, modifiedAccessConditions)
+// CopyIncremental - The Copy Incremental operation copies a snapshot of the source page blob to a destination page blob. The snapshot is copied such that only the differential changes between the previously copied snapshot are transferred to the destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as usual. This API is supported since REST version 2016-05-31. 
+func (client *pageBlobClient) CopyIncremental(ctx context.Context, copySource url.URL, pageBlobCopyIncrementalOptions *PageBlobCopyIncrementalOptions, modifiedAccessConditions *ModifiedAccessConditions) (*PageBlobCopyIncrementalResponse, error) {
+	req, err := client.CopyIncrementalCreateRequest(ctx, copySource, pageBlobCopyIncrementalOptions, modifiedAccessConditions)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.p.Do(ctx, req)
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	result, err := client.copyIncrementalHandleResponse(resp)
+	if !resp.HasStatusCode(http.StatusAccepted) {
+		return nil, client.CopyIncrementalHandleError(resp)
+	}
+	result, err := client.CopyIncrementalHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// copyIncrementalCreateRequest creates the CopyIncremental request.
-func (client *pageBlobOperations) copyIncrementalCreateRequest(copySource url.URL, pageBlobCopyIncrementalOptions *PageBlobCopyIncrementalOptions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	copy := *client.u
-	u := &copy
-	query := u.Query()
+// CopyIncrementalCreateRequest creates the CopyIncremental request.
+func (client *pageBlobClient) CopyIncrementalCreateRequest(ctx context.Context, copySource url.URL, pageBlobCopyIncrementalOptions *PageBlobCopyIncrementalOptions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
+	req, err := azcore.NewRequest(ctx, http.MethodPut, client.u)
+	if err != nil {
+		return nil, err
+	}
+	query := req.URL.Query()
 	query.Set("comp", "incrementalcopy")
 	if pageBlobCopyIncrementalOptions != nil && pageBlobCopyIncrementalOptions.Timeout != nil {
 		query.Set("timeout", strconv.FormatInt(int64(*pageBlobCopyIncrementalOptions.Timeout), 10))
 	}
-	u.RawQuery = query.Encode()
-	req := azcore.NewRequest(http.MethodPut, *u)
+	req.URL.RawQuery = query.Encode()
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
 		req.Header.Set("If-Modified-Since", modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123))
 	}
@@ -232,14 +222,12 @@ func (client *pageBlobOperations) copyIncrementalCreateRequest(copySource url.UR
 	if pageBlobCopyIncrementalOptions != nil && pageBlobCopyIncrementalOptions.RequestId != nil {
 		req.Header.Set("x-ms-client-request-id", *pageBlobCopyIncrementalOptions.RequestId)
 	}
+	req.Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
-// copyIncrementalHandleResponse handles the CopyIncremental response.
-func (client *pageBlobOperations) copyIncrementalHandleResponse(resp *azcore.Response) (*PageBlobCopyIncrementalResponse, error) {
-	if !resp.HasStatusCode(http.StatusAccepted) {
-		return nil, client.copyIncrementalHandleError(resp)
-	}
+// CopyIncrementalHandleResponse handles the CopyIncremental response.
+func (client *pageBlobClient) CopyIncrementalHandleResponse(resp *azcore.Response) (*PageBlobCopyIncrementalResponse, error) {
 	result := PageBlobCopyIncrementalResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
@@ -252,10 +240,10 @@ func (client *pageBlobOperations) copyIncrementalHandleResponse(resp *azcore.Res
 		result.LastModified = &lastModified
 	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.ClientRequestId = &val
+		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.RequestId = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
 		result.Version = &val
@@ -268,7 +256,7 @@ func (client *pageBlobOperations) copyIncrementalHandleResponse(resp *azcore.Res
 		result.Date = &date
 	}
 	if val := resp.Header.Get("x-ms-copy-id"); val != "" {
-		result.CopyId = &val
+		result.CopyID = &val
 	}
 	if val := resp.Header.Get("x-ms-copy-status"); val != "" {
 		result.CopyStatus = (*CopyStatusType)(&val)
@@ -276,42 +264,46 @@ func (client *pageBlobOperations) copyIncrementalHandleResponse(resp *azcore.Res
 	return &result, nil
 }
 
-// copyIncrementalHandleError handles the CopyIncremental error response.
-func (client *pageBlobOperations) copyIncrementalHandleError(resp *azcore.Response) error {
-	var err StorageError
+// CopyIncrementalHandleError handles the CopyIncremental error response.
+func (client *pageBlobClient) CopyIncrementalHandleError(resp *azcore.Response) error {
+var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-// Create - The Create operation creates a new page blob.
-func (client *pageBlobOperations) Create(ctx context.Context, contentLength int64, blobContentLength int64, pageBlobCreateOptions *PageBlobCreateOptions, blobHttpHeaders *BlobHttpHeaders, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (*PageBlobCreateResponse, error) {
-	req, err := client.createCreateRequest(contentLength, blobContentLength, pageBlobCreateOptions, blobHttpHeaders, leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions)
+// Create - The Create operation creates a new page blob. 
+func (client *pageBlobClient) Create(ctx context.Context, contentLength int64, blobContentLength int64, pageBlobCreateOptions *PageBlobCreateOptions, blobHttpHeaders *BlobHttpHeaders, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (*PageBlobCreateResponse, error) {
+	req, err := client.CreateCreateRequest(ctx, contentLength, blobContentLength, pageBlobCreateOptions, blobHttpHeaders, leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.p.Do(ctx, req)
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	result, err := client.createHandleResponse(resp)
+	if !resp.HasStatusCode(http.StatusCreated) {
+		return nil, client.CreateHandleError(resp)
+	}
+	result, err := client.CreateHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// createCreateRequest creates the Create request.
-func (client *pageBlobOperations) createCreateRequest(contentLength int64, blobContentLength int64, pageBlobCreateOptions *PageBlobCreateOptions, blobHttpHeaders *BlobHttpHeaders, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	copy := *client.u
-	u := &copy
-	query := u.Query()
+// CreateCreateRequest creates the Create request.
+func (client *pageBlobClient) CreateCreateRequest(ctx context.Context, contentLength int64, blobContentLength int64, pageBlobCreateOptions *PageBlobCreateOptions, blobHttpHeaders *BlobHttpHeaders, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
+	req, err := azcore.NewRequest(ctx, http.MethodPut, client.u)
+	if err != nil {
+		return nil, err
+	}
+	query := req.URL.Query()
 	if pageBlobCreateOptions != nil && pageBlobCreateOptions.Timeout != nil {
 		query.Set("timeout", strconv.FormatInt(int64(*pageBlobCreateOptions.Timeout), 10))
 	}
-	u.RawQuery = query.Encode()
-	req := azcore.NewRequest(http.MethodPut, *u)
+	req.URL.RawQuery = query.Encode()
 	req.Header.Set("x-ms-blob-type", "PageBlob")
 	req.Header.Set("Content-Length", strconv.FormatInt(contentLength, 10))
 	if pageBlobCreateOptions != nil && pageBlobCreateOptions.Tier != nil {
@@ -349,6 +341,9 @@ func (client *pageBlobOperations) createCreateRequest(contentLength int64, blobC
 	if cpkInfo != nil && cpkInfo.EncryptionKeySha256 != nil {
 		req.Header.Set("x-ms-encryption-key-sha256", *cpkInfo.EncryptionKeySha256)
 	}
+	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
+		req.Header.Set("x-ms-encryption-algorithm", "AES256")
+	}
 	if cpkScopeInfo != nil && cpkScopeInfo.EncryptionScope != nil {
 		req.Header.Set("x-ms-encryption-scope", *cpkScopeInfo.EncryptionScope)
 	}
@@ -378,14 +373,12 @@ func (client *pageBlobOperations) createCreateRequest(contentLength int64, blobC
 	if pageBlobCreateOptions != nil && pageBlobCreateOptions.BlobTagsString != nil {
 		req.Header.Set("x-ms-tags", *pageBlobCreateOptions.BlobTagsString)
 	}
+	req.Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
-// createHandleResponse handles the Create response.
-func (client *pageBlobOperations) createHandleResponse(resp *azcore.Response) (*PageBlobCreateResponse, error) {
-	if !resp.HasStatusCode(http.StatusCreated) {
-		return nil, client.createHandleError(resp)
-	}
+// CreateHandleResponse handles the Create response.
+func (client *pageBlobClient) CreateHandleResponse(resp *azcore.Response) (*PageBlobCreateResponse, error) {
 	result := PageBlobCreateResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
@@ -402,19 +395,19 @@ func (client *pageBlobOperations) createHandleResponse(resp *azcore.Response) (*
 		if err != nil {
 			return nil, err
 		}
-		result.ContentMd5 = &contentMd5
+		result.ContentMD5 = &contentMd5
 	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.ClientRequestId = &val
+		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.RequestId = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
 		result.Version = &val
 	}
 	if val := resp.Header.Get("x-ms-version-id"); val != "" {
-		result.VersionId = &val
+		result.VersionID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
@@ -424,14 +417,14 @@ func (client *pageBlobOperations) createHandleResponse(resp *azcore.Response) (*
 		result.Date = &date
 	}
 	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
-		requestServerEncrypted, err := strconv.ParseBool(val)
+		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return nil, err
 		}
-		result.RequestServerEncrypted = &requestServerEncrypted
+		result.IsServerEncrypted = &isServerEncrypted
 	}
 	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
-		result.EncryptionKeySha256 = &val
+		result.EncryptionKeySHA256 = &val
 	}
 	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
 		result.EncryptionScope = &val
@@ -439,37 +432,42 @@ func (client *pageBlobOperations) createHandleResponse(resp *azcore.Response) (*
 	return &result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *pageBlobOperations) createHandleError(resp *azcore.Response) error {
-	var err StorageError
+// CreateHandleError handles the Create error response.
+func (client *pageBlobClient) CreateHandleError(resp *azcore.Response) error {
+var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-// GetPageRanges - The Get Page Ranges operation returns the list of valid page ranges for a page blob or snapshot of a page blob
-func (client *pageBlobOperations) GetPageRanges(ctx context.Context, pageBlobGetPageRangesOptions *PageBlobGetPageRangesOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*PageListResponse, error) {
-	req, err := client.getPageRangesCreateRequest(pageBlobGetPageRangesOptions, leaseAccessConditions, modifiedAccessConditions)
+// GetPageRanges - The Get Page Ranges operation returns the list of valid page ranges for a page blob or snapshot of a page blob 
+func (client *pageBlobClient) GetPageRanges(ctx context.Context, pageBlobGetPageRangesOptions *PageBlobGetPageRangesOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*PageListResponse, error) {
+	req, err := client.GetPageRangesCreateRequest(ctx, pageBlobGetPageRangesOptions, leaseAccessConditions, modifiedAccessConditions)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.p.Do(ctx, req)
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	result, err := client.getPageRangesHandleResponse(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		return nil, client.GetPageRangesHandleError(resp)
+	}
+	result, err := client.GetPageRangesHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// getPageRangesCreateRequest creates the GetPageRanges request.
-func (client *pageBlobOperations) getPageRangesCreateRequest(pageBlobGetPageRangesOptions *PageBlobGetPageRangesOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	copy := *client.u
-	u := &copy
-	query := u.Query()
+// GetPageRangesCreateRequest creates the GetPageRanges request.
+func (client *pageBlobClient) GetPageRangesCreateRequest(ctx context.Context, pageBlobGetPageRangesOptions *PageBlobGetPageRangesOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
+	req, err := azcore.NewRequest(ctx, http.MethodGet, client.u)
+	if err != nil {
+		return nil, err
+	}
+	query := req.URL.Query()
 	query.Set("comp", "pagelist")
 	if pageBlobGetPageRangesOptions != nil && pageBlobGetPageRangesOptions.Snapshot != nil {
 		query.Set("snapshot", *pageBlobGetPageRangesOptions.Snapshot)
@@ -477,8 +475,7 @@ func (client *pageBlobOperations) getPageRangesCreateRequest(pageBlobGetPageRang
 	if pageBlobGetPageRangesOptions != nil && pageBlobGetPageRangesOptions.Timeout != nil {
 		query.Set("timeout", strconv.FormatInt(int64(*pageBlobGetPageRangesOptions.Timeout), 10))
 	}
-	u.RawQuery = query.Encode()
-	req := azcore.NewRequest(http.MethodGet, *u)
+	req.URL.RawQuery = query.Encode()
 	if pageBlobGetPageRangesOptions != nil && pageBlobGetPageRangesOptions.RangeParameter != nil {
 		req.Header.Set("x-ms-range", *pageBlobGetPageRangesOptions.RangeParameter)
 	}
@@ -504,14 +501,12 @@ func (client *pageBlobOperations) getPageRangesCreateRequest(pageBlobGetPageRang
 	if pageBlobGetPageRangesOptions != nil && pageBlobGetPageRangesOptions.RequestId != nil {
 		req.Header.Set("x-ms-client-request-id", *pageBlobGetPageRangesOptions.RequestId)
 	}
+	req.Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
-// getPageRangesHandleResponse handles the GetPageRanges response.
-func (client *pageBlobOperations) getPageRangesHandleResponse(resp *azcore.Response) (*PageListResponse, error) {
-	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getPageRangesHandleError(resp)
-	}
+// GetPageRangesHandleResponse handles the GetPageRanges response.
+func (client *pageBlobClient) GetPageRangesHandleResponse(resp *azcore.Response) (*PageListResponse, error) {
 	result := PageListResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -531,10 +526,10 @@ func (client *pageBlobOperations) getPageRangesHandleResponse(resp *azcore.Respo
 		result.BlobContentLength = &blobContentLength
 	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.ClientRequestId = &val
+		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.RequestId = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
 		result.Version = &val
@@ -549,37 +544,42 @@ func (client *pageBlobOperations) getPageRangesHandleResponse(resp *azcore.Respo
 	return &result, resp.UnmarshalAsXML(&result.PageList)
 }
 
-// getPageRangesHandleError handles the GetPageRanges error response.
-func (client *pageBlobOperations) getPageRangesHandleError(resp *azcore.Response) error {
-	var err StorageError
+// GetPageRangesHandleError handles the GetPageRanges error response.
+func (client *pageBlobClient) GetPageRangesHandleError(resp *azcore.Response) error {
+var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-// GetPageRangesDiff - The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob that were changed between target blob and previous snapshot.
-func (client *pageBlobOperations) GetPageRangesDiff(ctx context.Context, pageBlobGetPageRangesDiffOptions *PageBlobGetPageRangesDiffOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*PageListResponse, error) {
-	req, err := client.getPageRangesDiffCreateRequest(pageBlobGetPageRangesDiffOptions, leaseAccessConditions, modifiedAccessConditions)
+// GetPageRangesDiff - The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob that were changed between target blob and previous snapshot. 
+func (client *pageBlobClient) GetPageRangesDiff(ctx context.Context, pageBlobGetPageRangesDiffOptions *PageBlobGetPageRangesDiffOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*PageListResponse, error) {
+	req, err := client.GetPageRangesDiffCreateRequest(ctx, pageBlobGetPageRangesDiffOptions, leaseAccessConditions, modifiedAccessConditions)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.p.Do(ctx, req)
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	result, err := client.getPageRangesDiffHandleResponse(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		return nil, client.GetPageRangesDiffHandleError(resp)
+	}
+	result, err := client.GetPageRangesDiffHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// getPageRangesDiffCreateRequest creates the GetPageRangesDiff request.
-func (client *pageBlobOperations) getPageRangesDiffCreateRequest(pageBlobGetPageRangesDiffOptions *PageBlobGetPageRangesDiffOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	copy := *client.u
-	u := &copy
-	query := u.Query()
+// GetPageRangesDiffCreateRequest creates the GetPageRangesDiff request.
+func (client *pageBlobClient) GetPageRangesDiffCreateRequest(ctx context.Context, pageBlobGetPageRangesDiffOptions *PageBlobGetPageRangesDiffOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
+	req, err := azcore.NewRequest(ctx, http.MethodGet, client.u)
+	if err != nil {
+		return nil, err
+	}
+	query := req.URL.Query()
 	query.Set("comp", "pagelist")
 	if pageBlobGetPageRangesDiffOptions != nil && pageBlobGetPageRangesDiffOptions.Snapshot != nil {
 		query.Set("snapshot", *pageBlobGetPageRangesDiffOptions.Snapshot)
@@ -590,8 +590,7 @@ func (client *pageBlobOperations) getPageRangesDiffCreateRequest(pageBlobGetPage
 	if pageBlobGetPageRangesDiffOptions != nil && pageBlobGetPageRangesDiffOptions.Prevsnapshot != nil {
 		query.Set("prevsnapshot", *pageBlobGetPageRangesDiffOptions.Prevsnapshot)
 	}
-	u.RawQuery = query.Encode()
-	req := azcore.NewRequest(http.MethodGet, *u)
+	req.URL.RawQuery = query.Encode()
 	if pageBlobGetPageRangesDiffOptions != nil && pageBlobGetPageRangesDiffOptions.PrevSnapshotUrl != nil {
 		req.Header.Set("x-ms-previous-snapshot-url", pageBlobGetPageRangesDiffOptions.PrevSnapshotUrl.String())
 	}
@@ -620,14 +619,12 @@ func (client *pageBlobOperations) getPageRangesDiffCreateRequest(pageBlobGetPage
 	if pageBlobGetPageRangesDiffOptions != nil && pageBlobGetPageRangesDiffOptions.RequestId != nil {
 		req.Header.Set("x-ms-client-request-id", *pageBlobGetPageRangesDiffOptions.RequestId)
 	}
+	req.Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
-// getPageRangesDiffHandleResponse handles the GetPageRangesDiff response.
-func (client *pageBlobOperations) getPageRangesDiffHandleResponse(resp *azcore.Response) (*PageListResponse, error) {
-	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getPageRangesDiffHandleError(resp)
-	}
+// GetPageRangesDiffHandleResponse handles the GetPageRangesDiff response.
+func (client *pageBlobClient) GetPageRangesDiffHandleResponse(resp *azcore.Response) (*PageListResponse, error) {
 	result := PageListResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -647,10 +644,10 @@ func (client *pageBlobOperations) getPageRangesDiffHandleResponse(resp *azcore.R
 		result.BlobContentLength = &blobContentLength
 	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.ClientRequestId = &val
+		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.RequestId = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
 		result.Version = &val
@@ -665,43 +662,47 @@ func (client *pageBlobOperations) getPageRangesDiffHandleResponse(resp *azcore.R
 	return &result, resp.UnmarshalAsXML(&result.PageList)
 }
 
-// getPageRangesDiffHandleError handles the GetPageRangesDiff error response.
-func (client *pageBlobOperations) getPageRangesDiffHandleError(resp *azcore.Response) error {
-	var err StorageError
+// GetPageRangesDiffHandleError handles the GetPageRangesDiff error response.
+func (client *pageBlobClient) GetPageRangesDiffHandleError(resp *azcore.Response) error {
+var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-// Resize - Resize the Blob
-func (client *pageBlobOperations) Resize(ctx context.Context, blobContentLength int64, pageBlobResizeOptions *PageBlobResizeOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (*PageBlobResizeResponse, error) {
-	req, err := client.resizeCreateRequest(blobContentLength, pageBlobResizeOptions, leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions)
+// Resize - Resize the Blob 
+func (client *pageBlobClient) Resize(ctx context.Context, blobContentLength int64, pageBlobResizeOptions *PageBlobResizeOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (*PageBlobResizeResponse, error) {
+	req, err := client.ResizeCreateRequest(ctx, blobContentLength, pageBlobResizeOptions, leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.p.Do(ctx, req)
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	result, err := client.resizeHandleResponse(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		return nil, client.ResizeHandleError(resp)
+	}
+	result, err := client.ResizeHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// resizeCreateRequest creates the Resize request.
-func (client *pageBlobOperations) resizeCreateRequest(blobContentLength int64, pageBlobResizeOptions *PageBlobResizeOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	copy := *client.u
-	u := &copy
-	query := u.Query()
+// ResizeCreateRequest creates the Resize request.
+func (client *pageBlobClient) ResizeCreateRequest(ctx context.Context, blobContentLength int64, pageBlobResizeOptions *PageBlobResizeOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
+	req, err := azcore.NewRequest(ctx, http.MethodPut, client.u)
+	if err != nil {
+		return nil, err
+	}
+	query := req.URL.Query()
 	query.Set("comp", "properties")
 	if pageBlobResizeOptions != nil && pageBlobResizeOptions.Timeout != nil {
 		query.Set("timeout", strconv.FormatInt(int64(*pageBlobResizeOptions.Timeout), 10))
 	}
-	u.RawQuery = query.Encode()
-	req := azcore.NewRequest(http.MethodPut, *u)
+	req.URL.RawQuery = query.Encode()
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseId != nil {
 		req.Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseId)
 	}
@@ -710,6 +711,9 @@ func (client *pageBlobOperations) resizeCreateRequest(blobContentLength int64, p
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionKeySha256 != nil {
 		req.Header.Set("x-ms-encryption-key-sha256", *cpkInfo.EncryptionKeySha256)
+	}
+	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
+		req.Header.Set("x-ms-encryption-algorithm", "AES256")
 	}
 	if cpkScopeInfo != nil && cpkScopeInfo.EncryptionScope != nil {
 		req.Header.Set("x-ms-encryption-scope", *cpkScopeInfo.EncryptionScope)
@@ -734,14 +738,12 @@ func (client *pageBlobOperations) resizeCreateRequest(blobContentLength int64, p
 	if pageBlobResizeOptions != nil && pageBlobResizeOptions.RequestId != nil {
 		req.Header.Set("x-ms-client-request-id", *pageBlobResizeOptions.RequestId)
 	}
+	req.Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
-// resizeHandleResponse handles the Resize response.
-func (client *pageBlobOperations) resizeHandleResponse(resp *azcore.Response) (*PageBlobResizeResponse, error) {
-	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.resizeHandleError(resp)
-	}
+// ResizeHandleResponse handles the Resize response.
+func (client *pageBlobClient) ResizeHandleResponse(resp *azcore.Response) (*PageBlobResizeResponse, error) {
 	result := PageBlobResizeResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
@@ -761,10 +763,10 @@ func (client *pageBlobOperations) resizeHandleResponse(resp *azcore.Response) (*
 		result.BlobSequenceNumber = &blobSequenceNumber
 	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.ClientRequestId = &val
+		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.RequestId = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
 		result.Version = &val
@@ -779,43 +781,47 @@ func (client *pageBlobOperations) resizeHandleResponse(resp *azcore.Response) (*
 	return &result, nil
 }
 
-// resizeHandleError handles the Resize error response.
-func (client *pageBlobOperations) resizeHandleError(resp *azcore.Response) error {
-	var err StorageError
+// ResizeHandleError handles the Resize error response.
+func (client *pageBlobClient) ResizeHandleError(resp *azcore.Response) error {
+var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-// UpdateSequenceNumber - Update the sequence number of the blob
-func (client *pageBlobOperations) UpdateSequenceNumber(ctx context.Context, sequenceNumberAction SequenceNumberActionType, pageBlobUpdateSequenceNumberOptions *PageBlobUpdateSequenceNumberOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*PageBlobUpdateSequenceNumberResponse, error) {
-	req, err := client.updateSequenceNumberCreateRequest(sequenceNumberAction, pageBlobUpdateSequenceNumberOptions, leaseAccessConditions, modifiedAccessConditions)
+// UpdateSequenceNumber - Update the sequence number of the blob 
+func (client *pageBlobClient) UpdateSequenceNumber(ctx context.Context, sequenceNumberAction SequenceNumberActionType, pageBlobUpdateSequenceNumberOptions *PageBlobUpdateSequenceNumberOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*PageBlobUpdateSequenceNumberResponse, error) {
+	req, err := client.UpdateSequenceNumberCreateRequest(ctx, sequenceNumberAction, pageBlobUpdateSequenceNumberOptions, leaseAccessConditions, modifiedAccessConditions)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.p.Do(ctx, req)
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	result, err := client.updateSequenceNumberHandleResponse(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		return nil, client.UpdateSequenceNumberHandleError(resp)
+	}
+	result, err := client.UpdateSequenceNumberHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// updateSequenceNumberCreateRequest creates the UpdateSequenceNumber request.
-func (client *pageBlobOperations) updateSequenceNumberCreateRequest(sequenceNumberAction SequenceNumberActionType, pageBlobUpdateSequenceNumberOptions *PageBlobUpdateSequenceNumberOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	copy := *client.u
-	u := &copy
-	query := u.Query()
+// UpdateSequenceNumberCreateRequest creates the UpdateSequenceNumber request.
+func (client *pageBlobClient) UpdateSequenceNumberCreateRequest(ctx context.Context, sequenceNumberAction SequenceNumberActionType, pageBlobUpdateSequenceNumberOptions *PageBlobUpdateSequenceNumberOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
+	req, err := azcore.NewRequest(ctx, http.MethodPut, client.u)
+	if err != nil {
+		return nil, err
+	}
+	query := req.URL.Query()
 	query.Set("comp", "properties")
 	if pageBlobUpdateSequenceNumberOptions != nil && pageBlobUpdateSequenceNumberOptions.Timeout != nil {
 		query.Set("timeout", strconv.FormatInt(int64(*pageBlobUpdateSequenceNumberOptions.Timeout), 10))
 	}
-	u.RawQuery = query.Encode()
-	req := azcore.NewRequest(http.MethodPut, *u)
+	req.URL.RawQuery = query.Encode()
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseId != nil {
 		req.Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseId)
 	}
@@ -842,14 +848,12 @@ func (client *pageBlobOperations) updateSequenceNumberCreateRequest(sequenceNumb
 	if pageBlobUpdateSequenceNumberOptions != nil && pageBlobUpdateSequenceNumberOptions.RequestId != nil {
 		req.Header.Set("x-ms-client-request-id", *pageBlobUpdateSequenceNumberOptions.RequestId)
 	}
+	req.Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
-// updateSequenceNumberHandleResponse handles the UpdateSequenceNumber response.
-func (client *pageBlobOperations) updateSequenceNumberHandleResponse(resp *azcore.Response) (*PageBlobUpdateSequenceNumberResponse, error) {
-	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.updateSequenceNumberHandleError(resp)
-	}
+// UpdateSequenceNumberHandleResponse handles the UpdateSequenceNumber response.
+func (client *pageBlobClient) UpdateSequenceNumberHandleResponse(resp *azcore.Response) (*PageBlobUpdateSequenceNumberResponse, error) {
 	result := PageBlobUpdateSequenceNumberResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
@@ -869,10 +873,10 @@ func (client *pageBlobOperations) updateSequenceNumberHandleResponse(resp *azcor
 		result.BlobSequenceNumber = &blobSequenceNumber
 	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.ClientRequestId = &val
+		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.RequestId = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
 		result.Version = &val
@@ -887,43 +891,47 @@ func (client *pageBlobOperations) updateSequenceNumberHandleResponse(resp *azcor
 	return &result, nil
 }
 
-// updateSequenceNumberHandleError handles the UpdateSequenceNumber error response.
-func (client *pageBlobOperations) updateSequenceNumberHandleError(resp *azcore.Response) error {
-	var err StorageError
+// UpdateSequenceNumberHandleError handles the UpdateSequenceNumber error response.
+func (client *pageBlobClient) UpdateSequenceNumberHandleError(resp *azcore.Response) error {
+var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-// UploadPages - The Upload Pages operation writes a range of pages to a page blob
-func (client *pageBlobOperations) UploadPages(ctx context.Context, contentLength int64, body azcore.ReadSeekCloser, pageBlobUploadPagesOptions *PageBlobUploadPagesOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*PageBlobUploadPagesResponse, error) {
-	req, err := client.uploadPagesCreateRequest(contentLength, body, pageBlobUploadPagesOptions, leaseAccessConditions, cpkInfo, cpkScopeInfo, sequenceNumberAccessConditions, modifiedAccessConditions)
+// UploadPages - The Upload Pages operation writes a range of pages to a page blob 
+func (client *pageBlobClient) UploadPages(ctx context.Context, contentLength int64, body azcore.ReadSeekCloser, pageBlobUploadPagesOptions *PageBlobUploadPagesOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*PageBlobUploadPagesResponse, error) {
+	req, err := client.UploadPagesCreateRequest(ctx, contentLength, body, pageBlobUploadPagesOptions, leaseAccessConditions, cpkInfo, cpkScopeInfo, sequenceNumberAccessConditions, modifiedAccessConditions)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.p.Do(ctx, req)
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	result, err := client.uploadPagesHandleResponse(resp)
+	if !resp.HasStatusCode(http.StatusCreated) {
+		return nil, client.UploadPagesHandleError(resp)
+	}
+	result, err := client.UploadPagesHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// uploadPagesCreateRequest creates the UploadPages request.
-func (client *pageBlobOperations) uploadPagesCreateRequest(contentLength int64, body azcore.ReadSeekCloser, pageBlobUploadPagesOptions *PageBlobUploadPagesOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	copy := *client.u
-	u := &copy
-	query := u.Query()
+// UploadPagesCreateRequest creates the UploadPages request.
+func (client *pageBlobClient) UploadPagesCreateRequest(ctx context.Context, contentLength int64, body azcore.ReadSeekCloser, pageBlobUploadPagesOptions *PageBlobUploadPagesOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
+	req, err := azcore.NewRequest(ctx, http.MethodPut, client.u)
+	if err != nil {
+		return nil, err
+	}
+	query := req.URL.Query()
 	query.Set("comp", "page")
 	if pageBlobUploadPagesOptions != nil && pageBlobUploadPagesOptions.Timeout != nil {
 		query.Set("timeout", strconv.FormatInt(int64(*pageBlobUploadPagesOptions.Timeout), 10))
 	}
-	u.RawQuery = query.Encode()
-	req := azcore.NewRequest(http.MethodPut, *u)
+	req.URL.RawQuery = query.Encode()
 	req.Header.Set("x-ms-page-write", "update")
 	req.Header.Set("Content-Length", strconv.FormatInt(contentLength, 10))
 	if pageBlobUploadPagesOptions != nil && pageBlobUploadPagesOptions.TransactionalContentMd5 != nil {
@@ -943,6 +951,9 @@ func (client *pageBlobOperations) uploadPagesCreateRequest(contentLength int64, 
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionKeySha256 != nil {
 		req.Header.Set("x-ms-encryption-key-sha256", *cpkInfo.EncryptionKeySha256)
+	}
+	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
+		req.Header.Set("x-ms-encryption-algorithm", "AES256")
 	}
 	if cpkScopeInfo != nil && cpkScopeInfo.EncryptionScope != nil {
 		req.Header.Set("x-ms-encryption-scope", *cpkScopeInfo.EncryptionScope)
@@ -975,14 +986,12 @@ func (client *pageBlobOperations) uploadPagesCreateRequest(contentLength int64, 
 	if pageBlobUploadPagesOptions != nil && pageBlobUploadPagesOptions.RequestId != nil {
 		req.Header.Set("x-ms-client-request-id", *pageBlobUploadPagesOptions.RequestId)
 	}
-	return req, req.SetBody(body)
+	req.Header.Set("Accept", "application/xml")
+	return req, req.SetBody(body, "application/octet-stream")
 }
 
-// uploadPagesHandleResponse handles the UploadPages response.
-func (client *pageBlobOperations) uploadPagesHandleResponse(resp *azcore.Response) (*PageBlobUploadPagesResponse, error) {
-	if !resp.HasStatusCode(http.StatusCreated) {
-		return nil, client.uploadPagesHandleError(resp)
-	}
+// UploadPagesHandleResponse handles the UploadPages response.
+func (client *pageBlobClient) UploadPagesHandleResponse(resp *azcore.Response) (*PageBlobUploadPagesResponse, error) {
 	result := PageBlobUploadPagesResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
@@ -999,14 +1008,14 @@ func (client *pageBlobOperations) uploadPagesHandleResponse(resp *azcore.Respons
 		if err != nil {
 			return nil, err
 		}
-		result.ContentMd5 = &contentMd5
+		result.ContentMD5 = &contentMd5
 	}
 	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
 		contentCrc64, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
 			return nil, err
 		}
-		result.ContentCrc64 = &contentCrc64
+		result.ContentCRC64 = &contentCrc64
 	}
 	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
 		blobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
@@ -1016,10 +1025,10 @@ func (client *pageBlobOperations) uploadPagesHandleResponse(resp *azcore.Respons
 		result.BlobSequenceNumber = &blobSequenceNumber
 	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.ClientRequestId = &val
+		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.RequestId = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
 		result.Version = &val
@@ -1032,14 +1041,14 @@ func (client *pageBlobOperations) uploadPagesHandleResponse(resp *azcore.Respons
 		result.Date = &date
 	}
 	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
-		requestServerEncrypted, err := strconv.ParseBool(val)
+		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return nil, err
 		}
-		result.RequestServerEncrypted = &requestServerEncrypted
+		result.IsServerEncrypted = &isServerEncrypted
 	}
 	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
-		result.EncryptionKeySha256 = &val
+		result.EncryptionKeySHA256 = &val
 	}
 	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
 		result.EncryptionScope = &val
@@ -1047,43 +1056,47 @@ func (client *pageBlobOperations) uploadPagesHandleResponse(resp *azcore.Respons
 	return &result, nil
 }
 
-// uploadPagesHandleError handles the UploadPages error response.
-func (client *pageBlobOperations) uploadPagesHandleError(resp *azcore.Response) error {
-	var err StorageError
+// UploadPagesHandleError handles the UploadPages error response.
+func (client *pageBlobClient) UploadPagesHandleError(resp *azcore.Response) error {
+var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-// UploadPagesFromURL - The Upload Pages operation writes a range of pages to a page blob where the contents are read from a URL
-func (client *pageBlobOperations) UploadPagesFromURL(ctx context.Context, sourceUrl url.URL, sourceRange string, contentLength int64, rangeParameter string, pageBlobUploadPagesFromUrlOptions *PageBlobUploadPagesFromURLOptions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, leaseAccessConditions *LeaseAccessConditions, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions) (*PageBlobUploadPagesFromURLResponse, error) {
-	req, err := client.uploadPagesFromUrlCreateRequest(sourceUrl, sourceRange, contentLength, rangeParameter, pageBlobUploadPagesFromUrlOptions, cpkInfo, cpkScopeInfo, leaseAccessConditions, sequenceNumberAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions)
+// UploadPagesFromURL - The Upload Pages operation writes a range of pages to a page blob where the contents are read from a URL 
+func (client *pageBlobClient) UploadPagesFromURL(ctx context.Context, sourceUrl url.URL, sourceRange string, contentLength int64, rangeParameter string, pageBlobUploadPagesFromUrlOptions *PageBlobUploadPagesFromURLOptions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, leaseAccessConditions *LeaseAccessConditions, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions) (*PageBlobUploadPagesFromURLResponse, error) {
+	req, err := client.UploadPagesFromURLCreateRequest(ctx, sourceUrl, sourceRange, contentLength, rangeParameter, pageBlobUploadPagesFromUrlOptions, cpkInfo, cpkScopeInfo, leaseAccessConditions, sequenceNumberAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.p.Do(ctx, req)
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	result, err := client.uploadPagesFromUrlHandleResponse(resp)
+	if !resp.HasStatusCode(http.StatusCreated) {
+		return nil, client.UploadPagesFromURLHandleError(resp)
+	}
+	result, err := client.UploadPagesFromURLHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// uploadPagesFromUrlCreateRequest creates the UploadPagesFromURL request.
-func (client *pageBlobOperations) uploadPagesFromUrlCreateRequest(sourceUrl url.URL, sourceRange string, contentLength int64, rangeParameter string, pageBlobUploadPagesFromUrlOptions *PageBlobUploadPagesFromURLOptions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, leaseAccessConditions *LeaseAccessConditions, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions) (*azcore.Request, error) {
-	copy := *client.u
-	u := &copy
-	query := u.Query()
+// UploadPagesFromURLCreateRequest creates the UploadPagesFromURL request.
+func (client *pageBlobClient) UploadPagesFromURLCreateRequest(ctx context.Context, sourceUrl url.URL, sourceRange string, contentLength int64, rangeParameter string, pageBlobUploadPagesFromUrlOptions *PageBlobUploadPagesFromURLOptions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, leaseAccessConditions *LeaseAccessConditions, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions) (*azcore.Request, error) {
+	req, err := azcore.NewRequest(ctx, http.MethodPut, client.u)
+	if err != nil {
+		return nil, err
+	}
+	query := req.URL.Query()
 	query.Set("comp", "page")
 	if pageBlobUploadPagesFromUrlOptions != nil && pageBlobUploadPagesFromUrlOptions.Timeout != nil {
 		query.Set("timeout", strconv.FormatInt(int64(*pageBlobUploadPagesFromUrlOptions.Timeout), 10))
 	}
-	u.RawQuery = query.Encode()
-	req := azcore.NewRequest(http.MethodPut, *u)
+	req.URL.RawQuery = query.Encode()
 	req.Header.Set("x-ms-page-write", "update")
 	req.Header.Set("x-ms-copy-source", sourceUrl.String())
 	req.Header.Set("x-ms-source-range", sourceRange)
@@ -1100,6 +1113,9 @@ func (client *pageBlobOperations) uploadPagesFromUrlCreateRequest(sourceUrl url.
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionKeySha256 != nil {
 		req.Header.Set("x-ms-encryption-key-sha256", *cpkInfo.EncryptionKeySha256)
+	}
+	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
+		req.Header.Set("x-ms-encryption-algorithm", "AES256")
 	}
 	if cpkScopeInfo != nil && cpkScopeInfo.EncryptionScope != nil {
 		req.Header.Set("x-ms-encryption-scope", *cpkScopeInfo.EncryptionScope)
@@ -1147,14 +1163,12 @@ func (client *pageBlobOperations) uploadPagesFromUrlCreateRequest(sourceUrl url.
 	if pageBlobUploadPagesFromUrlOptions != nil && pageBlobUploadPagesFromUrlOptions.RequestId != nil {
 		req.Header.Set("x-ms-client-request-id", *pageBlobUploadPagesFromUrlOptions.RequestId)
 	}
+	req.Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
-// uploadPagesFromUrlHandleResponse handles the UploadPagesFromURL response.
-func (client *pageBlobOperations) uploadPagesFromUrlHandleResponse(resp *azcore.Response) (*PageBlobUploadPagesFromURLResponse, error) {
-	if !resp.HasStatusCode(http.StatusCreated) {
-		return nil, client.uploadPagesFromUrlHandleError(resp)
-	}
+// UploadPagesFromURLHandleResponse handles the UploadPagesFromURL response.
+func (client *pageBlobClient) UploadPagesFromURLHandleResponse(resp *azcore.Response) (*PageBlobUploadPagesFromURLResponse, error) {
 	result := PageBlobUploadPagesFromURLResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
@@ -1171,14 +1185,14 @@ func (client *pageBlobOperations) uploadPagesFromUrlHandleResponse(resp *azcore.
 		if err != nil {
 			return nil, err
 		}
-		result.ContentMd5 = &contentMd5
+		result.ContentMD5 = &contentMd5
 	}
 	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
 		contentCrc64, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
 			return nil, err
 		}
-		result.ContentCrc64 = &contentCrc64
+		result.ContentCRC64 = &contentCrc64
 	}
 	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
 		blobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
@@ -1188,7 +1202,7 @@ func (client *pageBlobOperations) uploadPagesFromUrlHandleResponse(resp *azcore.
 		result.BlobSequenceNumber = &blobSequenceNumber
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.RequestId = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
 		result.Version = &val
@@ -1201,14 +1215,14 @@ func (client *pageBlobOperations) uploadPagesFromUrlHandleResponse(resp *azcore.
 		result.Date = &date
 	}
 	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
-		requestServerEncrypted, err := strconv.ParseBool(val)
+		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return nil, err
 		}
-		result.RequestServerEncrypted = &requestServerEncrypted
+		result.IsServerEncrypted = &isServerEncrypted
 	}
 	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
-		result.EncryptionKeySha256 = &val
+		result.EncryptionKeySHA256 = &val
 	}
 	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
 		result.EncryptionScope = &val
@@ -1216,11 +1230,12 @@ func (client *pageBlobOperations) uploadPagesFromUrlHandleResponse(resp *azcore.
 	return &result, nil
 }
 
-// uploadPagesFromUrlHandleError handles the UploadPagesFromURL error response.
-func (client *pageBlobOperations) uploadPagesFromUrlHandleError(resp *azcore.Response) error {
-	var err StorageError
+// UploadPagesFromURLHandleError handles the UploadPagesFromURL error response.
+func (client *pageBlobClient) UploadPagesFromURLHandleError(resp *azcore.Response) error {
+var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
+

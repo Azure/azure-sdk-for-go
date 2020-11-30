@@ -10,6 +10,7 @@ import (
 	"strings"
 )
 
+
 type additionalProperties map[string]string
 
 // UnmarshalXML implements the xml.Unmarshaler interface for additionalProperties.

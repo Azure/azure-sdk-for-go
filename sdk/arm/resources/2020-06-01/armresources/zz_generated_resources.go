@@ -36,21 +36,21 @@ func (client ResourcesClient) Pipeline() azcore.Pipeline {
 }
 
 // CheckExistence - Checks whether a resource exists.
-func (client ResourcesClient) CheckExistence(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ResourcesCheckExistenceOptions) (*BooleanResponse, error) {
+func (client ResourcesClient) CheckExistence(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ResourcesCheckExistenceOptions) (BooleanResponse, error) {
 	req, err := client.checkExistenceCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, options)
 	if err != nil {
-		return nil, err
+		return BooleanResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return BooleanResponse{}, err
 	}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		return &BooleanResponse{RawResponse: resp.Response, Success: true}, nil
+		return BooleanResponse{RawResponse: resp.Response, Success: true}, nil
 	} else if resp.StatusCode >= 400 && resp.StatusCode < 500 {
-		return &BooleanResponse{RawResponse: resp.Response, Success: false}, nil
+		return BooleanResponse{RawResponse: resp.Response, Success: false}, nil
 	} else {
-		return nil, client.checkExistenceHandleError(resp)
+		return BooleanResponse{}, client.checkExistenceHandleError(resp)
 	}
 }
 
@@ -85,21 +85,21 @@ func (client ResourcesClient) checkExistenceHandleError(resp *azcore.Response) e
 }
 
 // CheckExistenceByID - Checks by ID whether a resource exists.
-func (client ResourcesClient) CheckExistenceByID(ctx context.Context, resourceId string, apiVersion string, options *ResourcesCheckExistenceByIDOptions) (*BooleanResponse, error) {
+func (client ResourcesClient) CheckExistenceByID(ctx context.Context, resourceId string, apiVersion string, options *ResourcesCheckExistenceByIDOptions) (BooleanResponse, error) {
 	req, err := client.checkExistenceByIdCreateRequest(ctx, resourceId, apiVersion, options)
 	if err != nil {
-		return nil, err
+		return BooleanResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return BooleanResponse{}, err
 	}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		return &BooleanResponse{RawResponse: resp.Response, Success: true}, nil
+		return BooleanResponse{RawResponse: resp.Response, Success: true}, nil
 	} else if resp.StatusCode >= 400 && resp.StatusCode < 500 {
-		return &BooleanResponse{RawResponse: resp.Response, Success: false}, nil
+		return BooleanResponse{RawResponse: resp.Response, Success: false}, nil
 	} else {
-		return nil, client.checkExistenceByIdHandleError(resp)
+		return BooleanResponse{}, client.checkExistenceByIdHandleError(resp)
 	}
 }
 
@@ -129,24 +129,24 @@ func (client ResourcesClient) checkExistenceByIdHandleError(resp *azcore.Respons
 }
 
 // BeginCreateOrUpdate - Creates a resource.
-func (client ResourcesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ResourcesCreateOrUpdateOptions) (*GenericResourcePollerResponse, error) {
+func (client ResourcesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ResourcesCreateOrUpdateOptions) (GenericResourcePollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
 	if err != nil {
-		return nil, err
+		return GenericResourcePollerResponse{}, err
 	}
-	result := &GenericResourcePollerResponse{
+	result := GenericResourcePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ResourcesClient.CreateOrUpdate", "", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return GenericResourcePollerResponse{}, err
 	}
 	poller := &genericResourcePoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*GenericResourceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -203,9 +203,10 @@ func (client ResourcesClient) createOrUpdateCreateRequest(ctx context.Context, r
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client ResourcesClient) createOrUpdateHandleResponse(resp *azcore.Response) (*GenericResourceResponse, error) {
+func (client ResourcesClient) createOrUpdateHandleResponse(resp *azcore.Response) (GenericResourceResponse, error) {
 	result := GenericResourceResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.GenericResource)
+	err := resp.UnmarshalAsJSON(&result.GenericResource)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -218,24 +219,24 @@ func (client ResourcesClient) createOrUpdateHandleError(resp *azcore.Response) e
 }
 
 // BeginCreateOrUpdateByID - Create a resource by ID.
-func (client ResourcesClient) BeginCreateOrUpdateByID(ctx context.Context, resourceId string, apiVersion string, parameters GenericResource, options *ResourcesCreateOrUpdateByIDOptions) (*GenericResourcePollerResponse, error) {
+func (client ResourcesClient) BeginCreateOrUpdateByID(ctx context.Context, resourceId string, apiVersion string, parameters GenericResource, options *ResourcesCreateOrUpdateByIDOptions) (GenericResourcePollerResponse, error) {
 	resp, err := client.CreateOrUpdateByID(ctx, resourceId, apiVersion, parameters, options)
 	if err != nil {
-		return nil, err
+		return GenericResourcePollerResponse{}, err
 	}
-	result := &GenericResourcePollerResponse{
+	result := GenericResourcePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ResourcesClient.CreateOrUpdateByID", "", resp, client.createOrUpdateByIdHandleError)
 	if err != nil {
-		return nil, err
+		return GenericResourcePollerResponse{}, err
 	}
 	poller := &genericResourcePoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*GenericResourceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -287,9 +288,10 @@ func (client ResourcesClient) createOrUpdateByIdCreateRequest(ctx context.Contex
 }
 
 // createOrUpdateByIdHandleResponse handles the CreateOrUpdateByID response.
-func (client ResourcesClient) createOrUpdateByIdHandleResponse(resp *azcore.Response) (*GenericResourceResponse, error) {
+func (client ResourcesClient) createOrUpdateByIdHandleResponse(resp *azcore.Response) (GenericResourceResponse, error) {
 	result := GenericResourceResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.GenericResource)
+	err := resp.UnmarshalAsJSON(&result.GenericResource)
+	return result, err
 }
 
 // createOrUpdateByIdHandleError handles the CreateOrUpdateByID error response.
@@ -302,17 +304,17 @@ func (client ResourcesClient) createOrUpdateByIdHandleError(resp *azcore.Respons
 }
 
 // BeginDelete - Deletes a resource.
-func (client ResourcesClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ResourcesDeleteOptions) (*HTTPPollerResponse, error) {
+func (client ResourcesClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ResourcesDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ResourcesClient.Delete", "", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -385,17 +387,17 @@ func (client ResourcesClient) deleteHandleError(resp *azcore.Response) error {
 }
 
 // BeginDeleteByID - Deletes a resource by ID.
-func (client ResourcesClient) BeginDeleteByID(ctx context.Context, resourceId string, apiVersion string, options *ResourcesDeleteByIDOptions) (*HTTPPollerResponse, error) {
+func (client ResourcesClient) BeginDeleteByID(ctx context.Context, resourceId string, apiVersion string, options *ResourcesDeleteByIDOptions) (HTTPPollerResponse, error) {
 	resp, err := client.DeleteByID(ctx, resourceId, apiVersion, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ResourcesClient.DeleteByID", "", resp, client.deleteByIdHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -463,21 +465,21 @@ func (client ResourcesClient) deleteByIdHandleError(resp *azcore.Response) error
 }
 
 // Get - Gets a resource.
-func (client ResourcesClient) Get(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ResourcesGetOptions) (*GenericResourceResponse, error) {
+func (client ResourcesClient) Get(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ResourcesGetOptions) (GenericResourceResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, options)
 	if err != nil {
-		return nil, err
+		return GenericResourceResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return GenericResourceResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return GenericResourceResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return GenericResourceResponse{}, err
 	}
 	return result, nil
 }
@@ -504,9 +506,10 @@ func (client ResourcesClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client ResourcesClient) getHandleResponse(resp *azcore.Response) (*GenericResourceResponse, error) {
+func (client ResourcesClient) getHandleResponse(resp *azcore.Response) (GenericResourceResponse, error) {
 	result := GenericResourceResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.GenericResource)
+	err := resp.UnmarshalAsJSON(&result.GenericResource)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -519,21 +522,21 @@ func (client ResourcesClient) getHandleError(resp *azcore.Response) error {
 }
 
 // GetByID - Gets a resource by ID.
-func (client ResourcesClient) GetByID(ctx context.Context, resourceId string, apiVersion string, options *ResourcesGetByIDOptions) (*GenericResourceResponse, error) {
+func (client ResourcesClient) GetByID(ctx context.Context, resourceId string, apiVersion string, options *ResourcesGetByIDOptions) (GenericResourceResponse, error) {
 	req, err := client.getByIdCreateRequest(ctx, resourceId, apiVersion, options)
 	if err != nil {
-		return nil, err
+		return GenericResourceResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return GenericResourceResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getByIdHandleError(resp)
+		return GenericResourceResponse{}, client.getByIdHandleError(resp)
 	}
 	result, err := client.getByIdHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return GenericResourceResponse{}, err
 	}
 	return result, nil
 }
@@ -555,9 +558,10 @@ func (client ResourcesClient) getByIdCreateRequest(ctx context.Context, resource
 }
 
 // getByIdHandleResponse handles the GetByID response.
-func (client ResourcesClient) getByIdHandleResponse(resp *azcore.Response) (*GenericResourceResponse, error) {
+func (client ResourcesClient) getByIdHandleResponse(resp *azcore.Response) (GenericResourceResponse, error) {
 	result := GenericResourceResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.GenericResource)
+	err := resp.UnmarshalAsJSON(&result.GenericResource)
+	return result, err
 }
 
 // getByIdHandleError handles the GetByID error response.
@@ -578,7 +582,7 @@ func (client ResourcesClient) List(options *ResourcesListOptions) ResourceListRe
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *ResourceListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ResourceListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -611,9 +615,10 @@ func (client ResourcesClient) listCreateRequest(ctx context.Context, options *Re
 }
 
 // listHandleResponse handles the List response.
-func (client ResourcesClient) listHandleResponse(resp *azcore.Response) (*ResourceListResultResponse, error) {
+func (client ResourcesClient) listHandleResponse(resp *azcore.Response) (ResourceListResultResponse, error) {
 	result := ResourceListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ResourceListResult)
+	err := resp.UnmarshalAsJSON(&result.ResourceListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -634,7 +639,7 @@ func (client ResourcesClient) ListByResourceGroup(resourceGroupName string, opti
 		},
 		responder: client.listByResourceGroupHandleResponse,
 		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp *ResourceListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ResourceListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -668,9 +673,10 @@ func (client ResourcesClient) listByResourceGroupCreateRequest(ctx context.Conte
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client ResourcesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (*ResourceListResultResponse, error) {
+func (client ResourcesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (ResourceListResultResponse, error) {
 	result := ResourceListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ResourceListResult)
+	err := resp.UnmarshalAsJSON(&result.ResourceListResult)
+	return result, err
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -685,17 +691,17 @@ func (client ResourcesClient) listByResourceGroupHandleError(resp *azcore.Respon
 // BeginMoveResources - The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When
 // moving resources, both the source group and the target group are
 // locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
-func (client ResourcesClient) BeginMoveResources(ctx context.Context, sourceResourceGroupName string, parameters ResourcesMoveInfo, options *ResourcesMoveResourcesOptions) (*HTTPPollerResponse, error) {
+func (client ResourcesClient) BeginMoveResources(ctx context.Context, sourceResourceGroupName string, parameters ResourcesMoveInfo, options *ResourcesMoveResourcesOptions) (HTTPPollerResponse, error) {
 	resp, err := client.MoveResources(ctx, sourceResourceGroupName, parameters, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ResourcesClient.MoveResources", "", resp, client.moveResourcesHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -766,24 +772,24 @@ func (client ResourcesClient) moveResourcesHandleError(resp *azcore.Response) er
 }
 
 // BeginUpdate - Updates a resource.
-func (client ResourcesClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ResourcesUpdateOptions) (*GenericResourcePollerResponse, error) {
+func (client ResourcesClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ResourcesUpdateOptions) (GenericResourcePollerResponse, error) {
 	resp, err := client.Update(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
 	if err != nil {
-		return nil, err
+		return GenericResourcePollerResponse{}, err
 	}
-	result := &GenericResourcePollerResponse{
+	result := GenericResourcePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ResourcesClient.Update", "", resp, client.updateHandleError)
 	if err != nil {
-		return nil, err
+		return GenericResourcePollerResponse{}, err
 	}
 	poller := &genericResourcePoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*GenericResourceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -840,9 +846,10 @@ func (client ResourcesClient) updateCreateRequest(ctx context.Context, resourceG
 }
 
 // updateHandleResponse handles the Update response.
-func (client ResourcesClient) updateHandleResponse(resp *azcore.Response) (*GenericResourceResponse, error) {
+func (client ResourcesClient) updateHandleResponse(resp *azcore.Response) (GenericResourceResponse, error) {
 	result := GenericResourceResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.GenericResource)
+	err := resp.UnmarshalAsJSON(&result.GenericResource)
+	return result, err
 }
 
 // updateHandleError handles the Update error response.
@@ -855,24 +862,24 @@ func (client ResourcesClient) updateHandleError(resp *azcore.Response) error {
 }
 
 // BeginUpdateByID - Updates a resource by ID.
-func (client ResourcesClient) BeginUpdateByID(ctx context.Context, resourceId string, apiVersion string, parameters GenericResource, options *ResourcesUpdateByIDOptions) (*GenericResourcePollerResponse, error) {
+func (client ResourcesClient) BeginUpdateByID(ctx context.Context, resourceId string, apiVersion string, parameters GenericResource, options *ResourcesUpdateByIDOptions) (GenericResourcePollerResponse, error) {
 	resp, err := client.UpdateByID(ctx, resourceId, apiVersion, parameters, options)
 	if err != nil {
-		return nil, err
+		return GenericResourcePollerResponse{}, err
 	}
-	result := &GenericResourcePollerResponse{
+	result := GenericResourcePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ResourcesClient.UpdateByID", "", resp, client.updateByIdHandleError)
 	if err != nil {
-		return nil, err
+		return GenericResourcePollerResponse{}, err
 	}
 	poller := &genericResourcePoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*GenericResourceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -924,9 +931,10 @@ func (client ResourcesClient) updateByIdCreateRequest(ctx context.Context, resou
 }
 
 // updateByIdHandleResponse handles the UpdateByID response.
-func (client ResourcesClient) updateByIdHandleResponse(resp *azcore.Response) (*GenericResourceResponse, error) {
+func (client ResourcesClient) updateByIdHandleResponse(resp *azcore.Response) (GenericResourceResponse, error) {
 	result := GenericResourceResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.GenericResource)
+	err := resp.UnmarshalAsJSON(&result.GenericResource)
+	return result, err
 }
 
 // updateByIdHandleError handles the UpdateByID error response.
@@ -943,17 +951,17 @@ func (client ResourcesClient) updateByIdHandleError(resp *azcore.Response) error
 // subscription. If validation succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409 (Conflict)
 // with an error message. Retrieve the URL in the
 // Location header value to check the result of the long-running operation.
-func (client ResourcesClient) BeginValidateMoveResources(ctx context.Context, sourceResourceGroupName string, parameters ResourcesMoveInfo, options *ResourcesValidateMoveResourcesOptions) (*HTTPPollerResponse, error) {
+func (client ResourcesClient) BeginValidateMoveResources(ctx context.Context, sourceResourceGroupName string, parameters ResourcesMoveInfo, options *ResourcesValidateMoveResourcesOptions) (HTTPPollerResponse, error) {
 	resp, err := client.ValidateMoveResources(ctx, sourceResourceGroupName, parameters, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ResourcesClient.ValidateMoveResources", "", resp, client.validateMoveResourcesHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,

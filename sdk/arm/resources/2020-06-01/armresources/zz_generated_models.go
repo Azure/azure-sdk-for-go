@@ -201,7 +201,7 @@ type DeploymentExtendedFilter struct {
 // DeploymentExtendedPollerResponse is the response envelope for operations that asynchronously return a DeploymentExtended type.
 type DeploymentExtendedPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*DeploymentExtendedResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DeploymentExtendedResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller DeploymentExtendedPoller
@@ -734,7 +734,7 @@ type DeploymentValidateResult struct {
 // DeploymentValidateResultPollerResponse is the response envelope for operations that asynchronously return a DeploymentValidateResult type.
 type DeploymentValidateResultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*DeploymentValidateResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DeploymentValidateResultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller DeploymentValidateResultPoller
@@ -1239,7 +1239,7 @@ type GenericResourceFilter struct {
 // GenericResourcePollerResponse is the response envelope for operations that asynchronously return a GenericResource type.
 type GenericResourcePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*GenericResourceResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller GenericResourcePoller
@@ -1622,7 +1622,7 @@ type ResourceGroupExportResult struct {
 // ResourceGroupExportResultPollerResponse is the response envelope for operations that asynchronously return a ResourceGroupExportResult type.
 type ResourceGroupExportResultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ResourceGroupExportResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ResourceGroupExportResultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller ResourceGroupExportResultPoller
@@ -2181,7 +2181,7 @@ type WhatIfOperationResult struct {
 // WhatIfOperationResultPollerResponse is the response envelope for operations that asynchronously return a WhatIfOperationResult type.
 type WhatIfOperationResultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*WhatIfOperationResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (WhatIfOperationResultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller WhatIfOperationResultPoller

@@ -19,7 +19,7 @@ import (
 type DeploymentExtendedPoller interface {
 	Done() bool
 	Poll(ctx context.Context) (*http.Response, error)
-	FinalResponse(ctx context.Context) (*DeploymentExtendedResponse, error)
+	FinalResponse(ctx context.Context) (DeploymentExtendedResponse, error)
 	ResumeToken() (string, error)
 }
 
@@ -39,11 +39,11 @@ func (p *deploymentExtendedPoller) Poll(ctx context.Context) (*http.Response, er
 	return p.pt.Poll(ctx, p.pipeline)
 }
 
-func (p *deploymentExtendedPoller) FinalResponse(ctx context.Context) (*DeploymentExtendedResponse, error) {
-	respType := &DeploymentExtendedResponse{DeploymentExtended: &DeploymentExtended{}}
+func (p *deploymentExtendedPoller) FinalResponse(ctx context.Context) (DeploymentExtendedResponse, error) {
+	respType := DeploymentExtendedResponse{DeploymentExtended: &DeploymentExtended{}}
 	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.DeploymentExtended)
 	if err != nil {
-		return nil, err
+		return DeploymentExtendedResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -55,11 +55,11 @@ func (p *deploymentExtendedPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *deploymentExtendedPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (*DeploymentExtendedResponse, error) {
-	respType := &DeploymentExtendedResponse{DeploymentExtended: &DeploymentExtended{}}
+func (p *deploymentExtendedPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (DeploymentExtendedResponse, error) {
+	respType := DeploymentExtendedResponse{DeploymentExtended: &DeploymentExtended{}}
 	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.DeploymentExtended)
 	if err != nil {
-		return nil, err
+		return DeploymentExtendedResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -69,7 +69,7 @@ func (p *deploymentExtendedPoller) pollUntilDone(ctx context.Context, frequency 
 type DeploymentValidateResultPoller interface {
 	Done() bool
 	Poll(ctx context.Context) (*http.Response, error)
-	FinalResponse(ctx context.Context) (*DeploymentValidateResultResponse, error)
+	FinalResponse(ctx context.Context) (DeploymentValidateResultResponse, error)
 	ResumeToken() (string, error)
 }
 
@@ -89,11 +89,11 @@ func (p *deploymentValidateResultPoller) Poll(ctx context.Context) (*http.Respon
 	return p.pt.Poll(ctx, p.pipeline)
 }
 
-func (p *deploymentValidateResultPoller) FinalResponse(ctx context.Context) (*DeploymentValidateResultResponse, error) {
-	respType := &DeploymentValidateResultResponse{DeploymentValidateResult: &DeploymentValidateResult{}}
+func (p *deploymentValidateResultPoller) FinalResponse(ctx context.Context) (DeploymentValidateResultResponse, error) {
+	respType := DeploymentValidateResultResponse{DeploymentValidateResult: &DeploymentValidateResult{}}
 	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.DeploymentValidateResult)
 	if err != nil {
-		return nil, err
+		return DeploymentValidateResultResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -105,11 +105,11 @@ func (p *deploymentValidateResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *deploymentValidateResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (*DeploymentValidateResultResponse, error) {
-	respType := &DeploymentValidateResultResponse{DeploymentValidateResult: &DeploymentValidateResult{}}
+func (p *deploymentValidateResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (DeploymentValidateResultResponse, error) {
+	respType := DeploymentValidateResultResponse{DeploymentValidateResult: &DeploymentValidateResult{}}
 	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.DeploymentValidateResult)
 	if err != nil {
-		return nil, err
+		return DeploymentValidateResultResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -119,7 +119,7 @@ func (p *deploymentValidateResultPoller) pollUntilDone(ctx context.Context, freq
 type GenericResourcePoller interface {
 	Done() bool
 	Poll(ctx context.Context) (*http.Response, error)
-	FinalResponse(ctx context.Context) (*GenericResourceResponse, error)
+	FinalResponse(ctx context.Context) (GenericResourceResponse, error)
 	ResumeToken() (string, error)
 }
 
@@ -139,11 +139,11 @@ func (p *genericResourcePoller) Poll(ctx context.Context) (*http.Response, error
 	return p.pt.Poll(ctx, p.pipeline)
 }
 
-func (p *genericResourcePoller) FinalResponse(ctx context.Context) (*GenericResourceResponse, error) {
-	respType := &GenericResourceResponse{GenericResource: &GenericResource{}}
+func (p *genericResourcePoller) FinalResponse(ctx context.Context) (GenericResourceResponse, error) {
+	respType := GenericResourceResponse{GenericResource: &GenericResource{}}
 	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.GenericResource)
 	if err != nil {
-		return nil, err
+		return GenericResourceResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -155,11 +155,11 @@ func (p *genericResourcePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *genericResourcePoller) pollUntilDone(ctx context.Context, frequency time.Duration) (*GenericResourceResponse, error) {
-	respType := &GenericResourceResponse{GenericResource: &GenericResource{}}
+func (p *genericResourcePoller) pollUntilDone(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
+	respType := GenericResourceResponse{GenericResource: &GenericResource{}}
 	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.GenericResource)
 	if err != nil {
-		return nil, err
+		return GenericResourceResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -207,7 +207,7 @@ func (p *httpPoller) pollUntilDone(ctx context.Context, frequency time.Duration)
 type ResourceGroupExportResultPoller interface {
 	Done() bool
 	Poll(ctx context.Context) (*http.Response, error)
-	FinalResponse(ctx context.Context) (*ResourceGroupExportResultResponse, error)
+	FinalResponse(ctx context.Context) (ResourceGroupExportResultResponse, error)
 	ResumeToken() (string, error)
 }
 
@@ -227,11 +227,11 @@ func (p *resourceGroupExportResultPoller) Poll(ctx context.Context) (*http.Respo
 	return p.pt.Poll(ctx, p.pipeline)
 }
 
-func (p *resourceGroupExportResultPoller) FinalResponse(ctx context.Context) (*ResourceGroupExportResultResponse, error) {
-	respType := &ResourceGroupExportResultResponse{ResourceGroupExportResult: &ResourceGroupExportResult{}}
+func (p *resourceGroupExportResultPoller) FinalResponse(ctx context.Context) (ResourceGroupExportResultResponse, error) {
+	respType := ResourceGroupExportResultResponse{ResourceGroupExportResult: &ResourceGroupExportResult{}}
 	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ResourceGroupExportResult)
 	if err != nil {
-		return nil, err
+		return ResourceGroupExportResultResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -243,11 +243,11 @@ func (p *resourceGroupExportResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *resourceGroupExportResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (*ResourceGroupExportResultResponse, error) {
-	respType := &ResourceGroupExportResultResponse{ResourceGroupExportResult: &ResourceGroupExportResult{}}
+func (p *resourceGroupExportResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ResourceGroupExportResultResponse, error) {
+	respType := ResourceGroupExportResultResponse{ResourceGroupExportResult: &ResourceGroupExportResult{}}
 	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ResourceGroupExportResult)
 	if err != nil {
-		return nil, err
+		return ResourceGroupExportResultResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -257,7 +257,7 @@ func (p *resourceGroupExportResultPoller) pollUntilDone(ctx context.Context, fre
 type WhatIfOperationResultPoller interface {
 	Done() bool
 	Poll(ctx context.Context) (*http.Response, error)
-	FinalResponse(ctx context.Context) (*WhatIfOperationResultResponse, error)
+	FinalResponse(ctx context.Context) (WhatIfOperationResultResponse, error)
 	ResumeToken() (string, error)
 }
 
@@ -277,11 +277,11 @@ func (p *whatIfOperationResultPoller) Poll(ctx context.Context) (*http.Response,
 	return p.pt.Poll(ctx, p.pipeline)
 }
 
-func (p *whatIfOperationResultPoller) FinalResponse(ctx context.Context) (*WhatIfOperationResultResponse, error) {
-	respType := &WhatIfOperationResultResponse{WhatIfOperationResult: &WhatIfOperationResult{}}
+func (p *whatIfOperationResultPoller) FinalResponse(ctx context.Context) (WhatIfOperationResultResponse, error) {
+	respType := WhatIfOperationResultResponse{WhatIfOperationResult: &WhatIfOperationResult{}}
 	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.WhatIfOperationResult)
 	if err != nil {
-		return nil, err
+		return WhatIfOperationResultResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -293,11 +293,11 @@ func (p *whatIfOperationResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *whatIfOperationResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (*WhatIfOperationResultResponse, error) {
-	respType := &WhatIfOperationResultResponse{WhatIfOperationResult: &WhatIfOperationResult{}}
+func (p *whatIfOperationResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (WhatIfOperationResultResponse, error) {
+	respType := WhatIfOperationResultResponse{WhatIfOperationResult: &WhatIfOperationResult{}}
 	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.WhatIfOperationResult)
 	if err != nil {
-		return nil, err
+		return WhatIfOperationResultResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil

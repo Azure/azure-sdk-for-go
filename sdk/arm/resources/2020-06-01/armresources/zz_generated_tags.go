@@ -36,21 +36,21 @@ func (client TagsClient) Pipeline() azcore.Pipeline {
 // CreateOrUpdate - This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name can have a maximum of
 // 512 characters and is case-insensitive. Tag names cannot have the
 // following prefixes which are reserved for Azure use: 'microsoft', 'azure', 'windows'.
-func (client TagsClient) CreateOrUpdate(ctx context.Context, tagName string, options *TagsCreateOrUpdateOptions) (*TagDetailsResponse, error) {
+func (client TagsClient) CreateOrUpdate(ctx context.Context, tagName string, options *TagsCreateOrUpdateOptions) (TagDetailsResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, tagName, options)
 	if err != nil {
-		return nil, err
+		return TagDetailsResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return TagDetailsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return TagDetailsResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	result, err := client.createOrUpdateHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return TagDetailsResponse{}, err
 	}
 	return result, nil
 }
@@ -73,9 +73,10 @@ func (client TagsClient) createOrUpdateCreateRequest(ctx context.Context, tagNam
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client TagsClient) createOrUpdateHandleResponse(resp *azcore.Response) (*TagDetailsResponse, error) {
+func (client TagsClient) createOrUpdateHandleResponse(resp *azcore.Response) (TagDetailsResponse, error) {
 	result := TagDetailsResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.TagDetails)
+	err := resp.UnmarshalAsJSON(&result.TagDetails)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -89,21 +90,21 @@ func (client TagsClient) createOrUpdateHandleError(resp *azcore.Response) error 
 
 // CreateOrUpdateAtScope - This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The specified entity
 // can have a maximum of 50 tags.
-func (client TagsClient) CreateOrUpdateAtScope(ctx context.Context, scope string, parameters TagsResource, options *TagsCreateOrUpdateAtScopeOptions) (*TagsResourceResponse, error) {
+func (client TagsClient) CreateOrUpdateAtScope(ctx context.Context, scope string, parameters TagsResource, options *TagsCreateOrUpdateAtScopeOptions) (TagsResourceResponse, error) {
 	req, err := client.createOrUpdateAtScopeCreateRequest(ctx, scope, parameters, options)
 	if err != nil {
-		return nil, err
+		return TagsResourceResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return TagsResourceResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.createOrUpdateAtScopeHandleError(resp)
+		return TagsResourceResponse{}, client.createOrUpdateAtScopeHandleError(resp)
 	}
 	result, err := client.createOrUpdateAtScopeHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return TagsResourceResponse{}, err
 	}
 	return result, nil
 }
@@ -125,9 +126,10 @@ func (client TagsClient) createOrUpdateAtScopeCreateRequest(ctx context.Context,
 }
 
 // createOrUpdateAtScopeHandleResponse handles the CreateOrUpdateAtScope response.
-func (client TagsClient) createOrUpdateAtScopeHandleResponse(resp *azcore.Response) (*TagsResourceResponse, error) {
+func (client TagsClient) createOrUpdateAtScopeHandleResponse(resp *azcore.Response) (TagsResourceResponse, error) {
 	result := TagsResourceResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.TagsResource)
+	err := resp.UnmarshalAsJSON(&result.TagsResource)
+	return result, err
 }
 
 // createOrUpdateAtScopeHandleError handles the CreateOrUpdateAtScope error response.
@@ -141,21 +143,21 @@ func (client TagsClient) createOrUpdateAtScopeHandleError(resp *azcore.Response)
 
 // CreateOrUpdateValue - This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag value can have
 // a maximum of 256 characters.
-func (client TagsClient) CreateOrUpdateValue(ctx context.Context, tagName string, tagValue string, options *TagsCreateOrUpdateValueOptions) (*TagValueResponse, error) {
+func (client TagsClient) CreateOrUpdateValue(ctx context.Context, tagName string, tagValue string, options *TagsCreateOrUpdateValueOptions) (TagValueResponse, error) {
 	req, err := client.createOrUpdateValueCreateRequest(ctx, tagName, tagValue, options)
 	if err != nil {
-		return nil, err
+		return TagValueResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return TagValueResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateValueHandleError(resp)
+		return TagValueResponse{}, client.createOrUpdateValueHandleError(resp)
 	}
 	result, err := client.createOrUpdateValueHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return TagValueResponse{}, err
 	}
 	return result, nil
 }
@@ -179,9 +181,10 @@ func (client TagsClient) createOrUpdateValueCreateRequest(ctx context.Context, t
 }
 
 // createOrUpdateValueHandleResponse handles the CreateOrUpdateValue response.
-func (client TagsClient) createOrUpdateValueHandleResponse(resp *azcore.Response) (*TagValueResponse, error) {
+func (client TagsClient) createOrUpdateValueHandleResponse(resp *azcore.Response) (TagValueResponse, error) {
 	result := TagValueResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.TagValue)
+	err := resp.UnmarshalAsJSON(&result.TagValue)
+	return result, err
 }
 
 // createOrUpdateValueHandleError handles the CreateOrUpdateValue error response.
@@ -324,21 +327,21 @@ func (client TagsClient) deleteValueHandleError(resp *azcore.Response) error {
 }
 
 // GetAtScope - Gets the entire set of tags on a resource or subscription.
-func (client TagsClient) GetAtScope(ctx context.Context, scope string, options *TagsGetAtScopeOptions) (*TagsResourceResponse, error) {
+func (client TagsClient) GetAtScope(ctx context.Context, scope string, options *TagsGetAtScopeOptions) (TagsResourceResponse, error) {
 	req, err := client.getAtScopeCreateRequest(ctx, scope, options)
 	if err != nil {
-		return nil, err
+		return TagsResourceResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return TagsResourceResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getAtScopeHandleError(resp)
+		return TagsResourceResponse{}, client.getAtScopeHandleError(resp)
 	}
 	result, err := client.getAtScopeHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return TagsResourceResponse{}, err
 	}
 	return result, nil
 }
@@ -360,9 +363,10 @@ func (client TagsClient) getAtScopeCreateRequest(ctx context.Context, scope stri
 }
 
 // getAtScopeHandleResponse handles the GetAtScope response.
-func (client TagsClient) getAtScopeHandleResponse(resp *azcore.Response) (*TagsResourceResponse, error) {
+func (client TagsClient) getAtScopeHandleResponse(resp *azcore.Response) (TagsResourceResponse, error) {
 	result := TagsResourceResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.TagsResource)
+	err := resp.UnmarshalAsJSON(&result.TagsResource)
+	return result, err
 }
 
 // getAtScopeHandleError handles the GetAtScope error response.
@@ -385,7 +389,7 @@ func (client TagsClient) List(options *TagsListOptions) TagsListResultPager {
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *TagsListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp TagsListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.TagsListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -409,9 +413,10 @@ func (client TagsClient) listCreateRequest(ctx context.Context, options *TagsLis
 }
 
 // listHandleResponse handles the List response.
-func (client TagsClient) listHandleResponse(resp *azcore.Response) (*TagsListResultResponse, error) {
+func (client TagsClient) listHandleResponse(resp *azcore.Response) (TagsListResultResponse, error) {
 	result := TagsListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.TagsListResult)
+	err := resp.UnmarshalAsJSON(&result.TagsListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -428,21 +433,21 @@ func (client TagsClient) listHandleError(resp *azcore.Response) error {
 // 'replace' option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the values
 // of tags with existing names. The 'delete' option
 // allows selectively deleting tags based on given names or name/value pairs.
-func (client TagsClient) UpdateAtScope(ctx context.Context, scope string, parameters TagsPatchResource, options *TagsUpdateAtScopeOptions) (*TagsResourceResponse, error) {
+func (client TagsClient) UpdateAtScope(ctx context.Context, scope string, parameters TagsPatchResource, options *TagsUpdateAtScopeOptions) (TagsResourceResponse, error) {
 	req, err := client.updateAtScopeCreateRequest(ctx, scope, parameters, options)
 	if err != nil {
-		return nil, err
+		return TagsResourceResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return TagsResourceResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.updateAtScopeHandleError(resp)
+		return TagsResourceResponse{}, client.updateAtScopeHandleError(resp)
 	}
 	result, err := client.updateAtScopeHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return TagsResourceResponse{}, err
 	}
 	return result, nil
 }
@@ -464,9 +469,10 @@ func (client TagsClient) updateAtScopeCreateRequest(ctx context.Context, scope s
 }
 
 // updateAtScopeHandleResponse handles the UpdateAtScope response.
-func (client TagsClient) updateAtScopeHandleResponse(resp *azcore.Response) (*TagsResourceResponse, error) {
+func (client TagsClient) updateAtScopeHandleResponse(resp *azcore.Response) (TagsResourceResponse, error) {
 	result := TagsResourceResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.TagsResource)
+	err := resp.UnmarshalAsJSON(&result.TagsResource)
+	return result, err
 }
 
 // updateAtScopeHandleError handles the UpdateAtScope error response.

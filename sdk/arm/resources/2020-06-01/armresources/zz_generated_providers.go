@@ -35,21 +35,21 @@ func (client ProvidersClient) Pipeline() azcore.Pipeline {
 }
 
 // Get - Gets the specified resource provider.
-func (client ProvidersClient) Get(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetOptions) (*ProviderResponse, error) {
+func (client ProvidersClient) Get(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetOptions) (ProviderResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
-		return nil, err
+		return ProviderResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ProviderResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return ProviderResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ProviderResponse{}, err
 	}
 	return result, nil
 }
@@ -75,9 +75,10 @@ func (client ProvidersClient) getCreateRequest(ctx context.Context, resourceProv
 }
 
 // getHandleResponse handles the Get response.
-func (client ProvidersClient) getHandleResponse(resp *azcore.Response) (*ProviderResponse, error) {
+func (client ProvidersClient) getHandleResponse(resp *azcore.Response) (ProviderResponse, error) {
 	result := ProviderResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Provider)
+	err := resp.UnmarshalAsJSON(&result.Provider)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -90,21 +91,21 @@ func (client ProvidersClient) getHandleError(resp *azcore.Response) error {
 }
 
 // GetAtTenantScope - Gets the specified resource provider at the tenant level.
-func (client ProvidersClient) GetAtTenantScope(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetAtTenantScopeOptions) (*ProviderResponse, error) {
+func (client ProvidersClient) GetAtTenantScope(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetAtTenantScopeOptions) (ProviderResponse, error) {
 	req, err := client.getAtTenantScopeCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
-		return nil, err
+		return ProviderResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ProviderResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getAtTenantScopeHandleError(resp)
+		return ProviderResponse{}, client.getAtTenantScopeHandleError(resp)
 	}
 	result, err := client.getAtTenantScopeHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ProviderResponse{}, err
 	}
 	return result, nil
 }
@@ -129,9 +130,10 @@ func (client ProvidersClient) getAtTenantScopeCreateRequest(ctx context.Context,
 }
 
 // getAtTenantScopeHandleResponse handles the GetAtTenantScope response.
-func (client ProvidersClient) getAtTenantScopeHandleResponse(resp *azcore.Response) (*ProviderResponse, error) {
+func (client ProvidersClient) getAtTenantScopeHandleResponse(resp *azcore.Response) (ProviderResponse, error) {
 	result := ProviderResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Provider)
+	err := resp.UnmarshalAsJSON(&result.Provider)
+	return result, err
 }
 
 // getAtTenantScopeHandleError handles the GetAtTenantScope error response.
@@ -152,7 +154,7 @@ func (client ProvidersClient) List(options *ProvidersListOptions) ProviderListRe
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *ProviderListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ProviderListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ProviderListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -182,9 +184,10 @@ func (client ProvidersClient) listCreateRequest(ctx context.Context, options *Pr
 }
 
 // listHandleResponse handles the List response.
-func (client ProvidersClient) listHandleResponse(resp *azcore.Response) (*ProviderListResultResponse, error) {
+func (client ProvidersClient) listHandleResponse(resp *azcore.Response) (ProviderListResultResponse, error) {
 	result := ProviderListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ProviderListResult)
+	err := resp.UnmarshalAsJSON(&result.ProviderListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -205,7 +208,7 @@ func (client ProvidersClient) ListAtTenantScope(options *ProvidersListAtTenantSc
 		},
 		responder: client.listAtTenantScopeHandleResponse,
 		errorer:   client.listAtTenantScopeHandleError,
-		advancer: func(ctx context.Context, resp *ProviderListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ProviderListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ProviderListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -234,9 +237,10 @@ func (client ProvidersClient) listAtTenantScopeCreateRequest(ctx context.Context
 }
 
 // listAtTenantScopeHandleResponse handles the ListAtTenantScope response.
-func (client ProvidersClient) listAtTenantScopeHandleResponse(resp *azcore.Response) (*ProviderListResultResponse, error) {
+func (client ProvidersClient) listAtTenantScopeHandleResponse(resp *azcore.Response) (ProviderListResultResponse, error) {
 	result := ProviderListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ProviderListResult)
+	err := resp.UnmarshalAsJSON(&result.ProviderListResult)
+	return result, err
 }
 
 // listAtTenantScopeHandleError handles the ListAtTenantScope error response.
@@ -249,21 +253,21 @@ func (client ProvidersClient) listAtTenantScopeHandleError(resp *azcore.Response
 }
 
 // Register - Registers a subscription with a resource provider.
-func (client ProvidersClient) Register(ctx context.Context, resourceProviderNamespace string, options *ProvidersRegisterOptions) (*ProviderResponse, error) {
+func (client ProvidersClient) Register(ctx context.Context, resourceProviderNamespace string, options *ProvidersRegisterOptions) (ProviderResponse, error) {
 	req, err := client.registerCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
-		return nil, err
+		return ProviderResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ProviderResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.registerHandleError(resp)
+		return ProviderResponse{}, client.registerHandleError(resp)
 	}
 	result, err := client.registerHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ProviderResponse{}, err
 	}
 	return result, nil
 }
@@ -286,9 +290,10 @@ func (client ProvidersClient) registerCreateRequest(ctx context.Context, resourc
 }
 
 // registerHandleResponse handles the Register response.
-func (client ProvidersClient) registerHandleResponse(resp *azcore.Response) (*ProviderResponse, error) {
+func (client ProvidersClient) registerHandleResponse(resp *azcore.Response) (ProviderResponse, error) {
 	result := ProviderResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Provider)
+	err := resp.UnmarshalAsJSON(&result.Provider)
+	return result, err
 }
 
 // registerHandleError handles the Register error response.
@@ -343,21 +348,21 @@ func (client ProvidersClient) registerAtManagementGroupScopeHandleError(resp *az
 }
 
 // Unregister - Unregisters a subscription from a resource provider.
-func (client ProvidersClient) Unregister(ctx context.Context, resourceProviderNamespace string, options *ProvidersUnregisterOptions) (*ProviderResponse, error) {
+func (client ProvidersClient) Unregister(ctx context.Context, resourceProviderNamespace string, options *ProvidersUnregisterOptions) (ProviderResponse, error) {
 	req, err := client.unregisterCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
-		return nil, err
+		return ProviderResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ProviderResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.unregisterHandleError(resp)
+		return ProviderResponse{}, client.unregisterHandleError(resp)
 	}
 	result, err := client.unregisterHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ProviderResponse{}, err
 	}
 	return result, nil
 }
@@ -380,9 +385,10 @@ func (client ProvidersClient) unregisterCreateRequest(ctx context.Context, resou
 }
 
 // unregisterHandleResponse handles the Unregister response.
-func (client ProvidersClient) unregisterHandleResponse(resp *azcore.Response) (*ProviderResponse, error) {
+func (client ProvidersClient) unregisterHandleResponse(resp *azcore.Response) (ProviderResponse, error) {
 	result := ProviderResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Provider)
+	err := resp.UnmarshalAsJSON(&result.Provider)
+	return result, err
 }
 
 // unregisterHandleError handles the Unregister error response.

@@ -36,21 +36,21 @@ func (client ResourceGroupsClient) Pipeline() azcore.Pipeline {
 }
 
 // CheckExistence - Checks whether a resource group exists.
-func (client ResourceGroupsClient) CheckExistence(ctx context.Context, resourceGroupName string, options *ResourceGroupsCheckExistenceOptions) (*BooleanResponse, error) {
+func (client ResourceGroupsClient) CheckExistence(ctx context.Context, resourceGroupName string, options *ResourceGroupsCheckExistenceOptions) (BooleanResponse, error) {
 	req, err := client.checkExistenceCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
-		return nil, err
+		return BooleanResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return BooleanResponse{}, err
 	}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		return &BooleanResponse{RawResponse: resp.Response, Success: true}, nil
+		return BooleanResponse{RawResponse: resp.Response, Success: true}, nil
 	} else if resp.StatusCode >= 400 && resp.StatusCode < 500 {
-		return &BooleanResponse{RawResponse: resp.Response, Success: false}, nil
+		return BooleanResponse{RawResponse: resp.Response, Success: false}, nil
 	} else {
-		return nil, client.checkExistenceHandleError(resp)
+		return BooleanResponse{}, client.checkExistenceHandleError(resp)
 	}
 }
 
@@ -81,21 +81,21 @@ func (client ResourceGroupsClient) checkExistenceHandleError(resp *azcore.Respon
 }
 
 // CreateOrUpdate - Creates or updates a resource group.
-func (client ResourceGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, parameters ResourceGroup, options *ResourceGroupsCreateOrUpdateOptions) (*ResourceGroupResponse, error) {
+func (client ResourceGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, parameters ResourceGroup, options *ResourceGroupsCreateOrUpdateOptions) (ResourceGroupResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, parameters, options)
 	if err != nil {
-		return nil, err
+		return ResourceGroupResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ResourceGroupResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return ResourceGroupResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	result, err := client.createOrUpdateHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ResourceGroupResponse{}, err
 	}
 	return result, nil
 }
@@ -118,9 +118,10 @@ func (client ResourceGroupsClient) createOrUpdateCreateRequest(ctx context.Conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client ResourceGroupsClient) createOrUpdateHandleResponse(resp *azcore.Response) (*ResourceGroupResponse, error) {
+func (client ResourceGroupsClient) createOrUpdateHandleResponse(resp *azcore.Response) (ResourceGroupResponse, error) {
 	result := ResourceGroupResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ResourceGroup)
+	err := resp.UnmarshalAsJSON(&result.ResourceGroup)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -134,17 +135,17 @@ func (client ResourceGroupsClient) createOrUpdateHandleError(resp *azcore.Respon
 
 // BeginDelete - When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of its template deployments
 // and currently stored operations.
-func (client ResourceGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, options *ResourceGroupsDeleteOptions) (*HTTPPollerResponse, error) {
+func (client ResourceGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, options *ResourceGroupsDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ResourceGroupsClient.Delete", "", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -214,24 +215,24 @@ func (client ResourceGroupsClient) deleteHandleError(resp *azcore.Response) erro
 }
 
 // BeginExportTemplate - Captures the specified resource group as a template.
-func (client ResourceGroupsClient) BeginExportTemplate(ctx context.Context, resourceGroupName string, parameters ExportTemplateRequest, options *ResourceGroupsExportTemplateOptions) (*ResourceGroupExportResultPollerResponse, error) {
+func (client ResourceGroupsClient) BeginExportTemplate(ctx context.Context, resourceGroupName string, parameters ExportTemplateRequest, options *ResourceGroupsExportTemplateOptions) (ResourceGroupExportResultPollerResponse, error) {
 	resp, err := client.ExportTemplate(ctx, resourceGroupName, parameters, options)
 	if err != nil {
-		return nil, err
+		return ResourceGroupExportResultPollerResponse{}, err
 	}
-	result := &ResourceGroupExportResultPollerResponse{
+	result := ResourceGroupExportResultPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ResourceGroupsClient.ExportTemplate", "location", resp, client.exportTemplateHandleError)
 	if err != nil {
-		return nil, err
+		return ResourceGroupExportResultPollerResponse{}, err
 	}
 	poller := &resourceGroupExportResultPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*ResourceGroupExportResultResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ResourceGroupExportResultResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -284,9 +285,10 @@ func (client ResourceGroupsClient) exportTemplateCreateRequest(ctx context.Conte
 }
 
 // exportTemplateHandleResponse handles the ExportTemplate response.
-func (client ResourceGroupsClient) exportTemplateHandleResponse(resp *azcore.Response) (*ResourceGroupExportResultResponse, error) {
+func (client ResourceGroupsClient) exportTemplateHandleResponse(resp *azcore.Response) (ResourceGroupExportResultResponse, error) {
 	result := ResourceGroupExportResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ResourceGroupExportResult)
+	err := resp.UnmarshalAsJSON(&result.ResourceGroupExportResult)
+	return result, err
 }
 
 // exportTemplateHandleError handles the ExportTemplate error response.
@@ -299,21 +301,21 @@ func (client ResourceGroupsClient) exportTemplateHandleError(resp *azcore.Respon
 }
 
 // Get - Gets a resource group.
-func (client ResourceGroupsClient) Get(ctx context.Context, resourceGroupName string, options *ResourceGroupsGetOptions) (*ResourceGroupResponse, error) {
+func (client ResourceGroupsClient) Get(ctx context.Context, resourceGroupName string, options *ResourceGroupsGetOptions) (ResourceGroupResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
-		return nil, err
+		return ResourceGroupResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ResourceGroupResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return ResourceGroupResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ResourceGroupResponse{}, err
 	}
 	return result, nil
 }
@@ -336,9 +338,10 @@ func (client ResourceGroupsClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client ResourceGroupsClient) getHandleResponse(resp *azcore.Response) (*ResourceGroupResponse, error) {
+func (client ResourceGroupsClient) getHandleResponse(resp *azcore.Response) (ResourceGroupResponse, error) {
 	result := ResourceGroupResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ResourceGroup)
+	err := resp.UnmarshalAsJSON(&result.ResourceGroup)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -359,7 +362,7 @@ func (client ResourceGroupsClient) List(options *ResourceGroupsListOptions) Reso
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *ResourceGroupListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ResourceGroupListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceGroupListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -389,9 +392,10 @@ func (client ResourceGroupsClient) listCreateRequest(ctx context.Context, option
 }
 
 // listHandleResponse handles the List response.
-func (client ResourceGroupsClient) listHandleResponse(resp *azcore.Response) (*ResourceGroupListResultResponse, error) {
+func (client ResourceGroupsClient) listHandleResponse(resp *azcore.Response) (ResourceGroupListResultResponse, error) {
 	result := ResourceGroupListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ResourceGroupListResult)
+	err := resp.UnmarshalAsJSON(&result.ResourceGroupListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -406,21 +410,21 @@ func (client ResourceGroupsClient) listHandleError(resp *azcore.Response) error 
 // Update - Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is the same as that for creating
 // a resource group. If a field is unspecified, the current
 // value is retained.
-func (client ResourceGroupsClient) Update(ctx context.Context, resourceGroupName string, parameters ResourceGroupPatchable, options *ResourceGroupsUpdateOptions) (*ResourceGroupResponse, error) {
+func (client ResourceGroupsClient) Update(ctx context.Context, resourceGroupName string, parameters ResourceGroupPatchable, options *ResourceGroupsUpdateOptions) (ResourceGroupResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, parameters, options)
 	if err != nil {
-		return nil, err
+		return ResourceGroupResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ResourceGroupResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.updateHandleError(resp)
+		return ResourceGroupResponse{}, client.updateHandleError(resp)
 	}
 	result, err := client.updateHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ResourceGroupResponse{}, err
 	}
 	return result, nil
 }
@@ -443,9 +447,10 @@ func (client ResourceGroupsClient) updateCreateRequest(ctx context.Context, reso
 }
 
 // updateHandleResponse handles the Update response.
-func (client ResourceGroupsClient) updateHandleResponse(resp *azcore.Response) (*ResourceGroupResponse, error) {
+func (client ResourceGroupsClient) updateHandleResponse(resp *azcore.Response) (ResourceGroupResponse, error) {
 	result := ResourceGroupResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ResourceGroup)
+	err := resp.UnmarshalAsJSON(&result.ResourceGroup)
+	return result, err
 }
 
 // updateHandleError handles the Update error response.

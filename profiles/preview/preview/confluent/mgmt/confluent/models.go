@@ -58,8 +58,14 @@ const (
 	SaaSOfferStatusUpdating                SaaSOfferStatus = original.SaaSOfferStatusUpdating
 )
 
+type AgreementProperties = original.AgreementProperties
+type AgreementResource = original.AgreementResource
+type AgreementResourceListResponse = original.AgreementResourceListResponse
+type AgreementResourceListResponseIterator = original.AgreementResourceListResponseIterator
+type AgreementResourceListResponsePage = original.AgreementResourceListResponsePage
 type BaseClient = original.BaseClient
 type ErrorResponseBody = original.ErrorResponseBody
+type MarketplaceAgreementsClient = original.MarketplaceAgreementsClient
 type OfferDetail = original.OfferDetail
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -85,11 +91,23 @@ type UserDetail = original.UserDetail
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
+func NewAgreementResourceListResponseIterator(page AgreementResourceListResponsePage) AgreementResourceListResponseIterator {
+	return original.NewAgreementResourceListResponseIterator(page)
+}
+func NewAgreementResourceListResponsePage(cur AgreementResourceListResponse, getNextPage func(context.Context, AgreementResourceListResponse) (AgreementResourceListResponse, error)) AgreementResourceListResponsePage {
+	return original.NewAgreementResourceListResponsePage(cur, getNextPage)
+}
+func NewMarketplaceAgreementsClient(subscriptionID string) MarketplaceAgreementsClient {
+	return original.NewMarketplaceAgreementsClient(subscriptionID)
+}
+func NewMarketplaceAgreementsClientWithBaseURI(baseURI string, subscriptionID string) MarketplaceAgreementsClient {
+	return original.NewMarketplaceAgreementsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOrganizationClient(subscriptionID string) OrganizationClient {
 	return original.NewOrganizationClient(subscriptionID)
@@ -106,8 +124,8 @@ func NewOrganizationOperationsClientWithBaseURI(baseURI string, subscriptionID s
 func NewOrganizationResourceListResultIterator(page OrganizationResourceListResultPage) OrganizationResourceListResultIterator {
 	return original.NewOrganizationResourceListResultIterator(page)
 }
-func NewOrganizationResourceListResultPage(getNextPage func(context.Context, OrganizationResourceListResult) (OrganizationResourceListResult, error)) OrganizationResourceListResultPage {
-	return original.NewOrganizationResourceListResultPage(getNextPage)
+func NewOrganizationResourceListResultPage(cur OrganizationResourceListResult, getNextPage func(context.Context, OrganizationResourceListResult) (OrganizationResourceListResult, error)) OrganizationResourceListResultPage {
+	return original.NewOrganizationResourceListResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

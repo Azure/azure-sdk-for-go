@@ -92,6 +92,11 @@ type APIKeyListResponse = original.APIKeyListResponse
 type APIKeyListResponseIterator = original.APIKeyListResponseIterator
 type APIKeyListResponsePage = original.APIKeyListResponsePage
 type APIKeysClient = original.APIKeysClient
+type AgreementProperties = original.AgreementProperties
+type AgreementResource = original.AgreementResource
+type AgreementResourceListResponse = original.AgreementResourceListResponse
+type AgreementResourceListResponseIterator = original.AgreementResourceListResponseIterator
+type AgreementResourceListResponsePage = original.AgreementResourceListResponsePage
 type BaseClient = original.BaseClient
 type ErrorResponseBody = original.ErrorResponseBody
 type FilteringTag = original.FilteringTag
@@ -110,6 +115,7 @@ type LinkedResourceListResponsePage = original.LinkedResourceListResponsePage
 type LinkedResourcesClient = original.LinkedResourcesClient
 type LogRules = original.LogRules
 type LogsAgent = original.LogsAgent
+type MarketplaceAgreementsClient = original.MarketplaceAgreementsClient
 type MetricRules = original.MetricRules
 type MonitorProperties = original.MonitorProperties
 type MonitorResource = original.MonitorResource
@@ -158,8 +164,8 @@ func New(subscriptionID string) BaseClient {
 func NewAPIKeyListResponseIterator(page APIKeyListResponsePage) APIKeyListResponseIterator {
 	return original.NewAPIKeyListResponseIterator(page)
 }
-func NewAPIKeyListResponsePage(getNextPage func(context.Context, APIKeyListResponse) (APIKeyListResponse, error)) APIKeyListResponsePage {
-	return original.NewAPIKeyListResponsePage(getNextPage)
+func NewAPIKeyListResponsePage(cur APIKeyListResponse, getNextPage func(context.Context, APIKeyListResponse) (APIKeyListResponse, error)) APIKeyListResponsePage {
+	return original.NewAPIKeyListResponsePage(cur, getNextPage)
 }
 func NewAPIKeysClient(subscriptionID string) APIKeysClient {
 	return original.NewAPIKeysClient(subscriptionID)
@@ -167,11 +173,17 @@ func NewAPIKeysClient(subscriptionID string) APIKeysClient {
 func NewAPIKeysClientWithBaseURI(baseURI string, subscriptionID string) APIKeysClient {
 	return original.NewAPIKeysClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewAgreementResourceListResponseIterator(page AgreementResourceListResponsePage) AgreementResourceListResponseIterator {
+	return original.NewAgreementResourceListResponseIterator(page)
+}
+func NewAgreementResourceListResponsePage(cur AgreementResourceListResponse, getNextPage func(context.Context, AgreementResourceListResponse) (AgreementResourceListResponse, error)) AgreementResourceListResponsePage {
+	return original.NewAgreementResourceListResponsePage(cur, getNextPage)
+}
 func NewHostListResponseIterator(page HostListResponsePage) HostListResponseIterator {
 	return original.NewHostListResponseIterator(page)
 }
-func NewHostListResponsePage(getNextPage func(context.Context, HostListResponse) (HostListResponse, error)) HostListResponsePage {
-	return original.NewHostListResponsePage(getNextPage)
+func NewHostListResponsePage(cur HostListResponse, getNextPage func(context.Context, HostListResponse) (HostListResponse, error)) HostListResponsePage {
+	return original.NewHostListResponsePage(cur, getNextPage)
 }
 func NewHostsClient(subscriptionID string) HostsClient {
 	return original.NewHostsClient(subscriptionID)
@@ -182,8 +194,8 @@ func NewHostsClientWithBaseURI(baseURI string, subscriptionID string) HostsClien
 func NewLinkedResourceListResponseIterator(page LinkedResourceListResponsePage) LinkedResourceListResponseIterator {
 	return original.NewLinkedResourceListResponseIterator(page)
 }
-func NewLinkedResourceListResponsePage(getNextPage func(context.Context, LinkedResourceListResponse) (LinkedResourceListResponse, error)) LinkedResourceListResponsePage {
-	return original.NewLinkedResourceListResponsePage(getNextPage)
+func NewLinkedResourceListResponsePage(cur LinkedResourceListResponse, getNextPage func(context.Context, LinkedResourceListResponse) (LinkedResourceListResponse, error)) LinkedResourceListResponsePage {
+	return original.NewLinkedResourceListResponsePage(cur, getNextPage)
 }
 func NewLinkedResourcesClient(subscriptionID string) LinkedResourcesClient {
 	return original.NewLinkedResourcesClient(subscriptionID)
@@ -191,17 +203,23 @@ func NewLinkedResourcesClient(subscriptionID string) LinkedResourcesClient {
 func NewLinkedResourcesClientWithBaseURI(baseURI string, subscriptionID string) LinkedResourcesClient {
 	return original.NewLinkedResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewMarketplaceAgreementsClient(subscriptionID string) MarketplaceAgreementsClient {
+	return original.NewMarketplaceAgreementsClient(subscriptionID)
+}
+func NewMarketplaceAgreementsClientWithBaseURI(baseURI string, subscriptionID string) MarketplaceAgreementsClient {
+	return original.NewMarketplaceAgreementsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewMonitorResourceListResponseIterator(page MonitorResourceListResponsePage) MonitorResourceListResponseIterator {
 	return original.NewMonitorResourceListResponseIterator(page)
 }
-func NewMonitorResourceListResponsePage(getNextPage func(context.Context, MonitorResourceListResponse) (MonitorResourceListResponse, error)) MonitorResourceListResponsePage {
-	return original.NewMonitorResourceListResponsePage(getNextPage)
+func NewMonitorResourceListResponsePage(cur MonitorResourceListResponse, getNextPage func(context.Context, MonitorResourceListResponse) (MonitorResourceListResponse, error)) MonitorResourceListResponsePage {
+	return original.NewMonitorResourceListResponsePage(cur, getNextPage)
 }
 func NewMonitoredResourceListResponseIterator(page MonitoredResourceListResponsePage) MonitoredResourceListResponseIterator {
 	return original.NewMonitoredResourceListResponseIterator(page)
 }
-func NewMonitoredResourceListResponsePage(getNextPage func(context.Context, MonitoredResourceListResponse) (MonitoredResourceListResponse, error)) MonitoredResourceListResponsePage {
-	return original.NewMonitoredResourceListResponsePage(getNextPage)
+func NewMonitoredResourceListResponsePage(cur MonitoredResourceListResponse, getNextPage func(context.Context, MonitoredResourceListResponse) (MonitoredResourceListResponse, error)) MonitoredResourceListResponsePage {
+	return original.NewMonitoredResourceListResponsePage(cur, getNextPage)
 }
 func NewMonitoredResourcesClient(subscriptionID string) MonitoredResourcesClient {
 	return original.NewMonitoredResourcesClient(subscriptionID)
@@ -212,8 +230,8 @@ func NewMonitoredResourcesClientWithBaseURI(baseURI string, subscriptionID strin
 func NewMonitoringTagRulesListResponseIterator(page MonitoringTagRulesListResponsePage) MonitoringTagRulesListResponseIterator {
 	return original.NewMonitoringTagRulesListResponseIterator(page)
 }
-func NewMonitoringTagRulesListResponsePage(getNextPage func(context.Context, MonitoringTagRulesListResponse) (MonitoringTagRulesListResponse, error)) MonitoringTagRulesListResponsePage {
-	return original.NewMonitoringTagRulesListResponsePage(getNextPage)
+func NewMonitoringTagRulesListResponsePage(cur MonitoringTagRulesListResponse, getNextPage func(context.Context, MonitoringTagRulesListResponse) (MonitoringTagRulesListResponse, error)) MonitoringTagRulesListResponsePage {
+	return original.NewMonitoringTagRulesListResponsePage(cur, getNextPage)
 }
 func NewMonitorsClient(subscriptionID string) MonitorsClient {
 	return original.NewMonitorsClient(subscriptionID)
@@ -224,8 +242,8 @@ func NewMonitorsClientWithBaseURI(baseURI string, subscriptionID string) Monitor
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -248,8 +266,8 @@ func NewSingleSignOnConfigurationsClientWithBaseURI(baseURI string, subscription
 func NewSingleSignOnResourceListResponseIterator(page SingleSignOnResourceListResponsePage) SingleSignOnResourceListResponseIterator {
 	return original.NewSingleSignOnResourceListResponseIterator(page)
 }
-func NewSingleSignOnResourceListResponsePage(getNextPage func(context.Context, SingleSignOnResourceListResponse) (SingleSignOnResourceListResponse, error)) SingleSignOnResourceListResponsePage {
-	return original.NewSingleSignOnResourceListResponsePage(getNextPage)
+func NewSingleSignOnResourceListResponsePage(cur SingleSignOnResourceListResponse, getNextPage func(context.Context, SingleSignOnResourceListResponse) (SingleSignOnResourceListResponse, error)) SingleSignOnResourceListResponsePage {
+	return original.NewSingleSignOnResourceListResponsePage(cur, getNextPage)
 }
 func NewTagRulesClient(subscriptionID string) TagRulesClient {
 	return original.NewTagRulesClient(subscriptionID)

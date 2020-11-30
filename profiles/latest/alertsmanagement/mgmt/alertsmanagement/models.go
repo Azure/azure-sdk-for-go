@@ -78,6 +78,13 @@ const (
 	AlertsSummaryGroupByFieldsSignalType       AlertsSummaryGroupByFields = original.AlertsSummaryGroupByFieldsSignalType
 )
 
+type MetadataIdentifier = original.MetadataIdentifier
+
+const (
+	MetadataIdentifierAlertsMetaDataProperties MetadataIdentifier = original.MetadataIdentifierAlertsMetaDataProperties
+	MetadataIdentifierMonitorServiceList       MetadataIdentifier = original.MetadataIdentifierMonitorServiceList
+)
+
 type MonitorCondition = original.MonitorCondition
 
 const (
@@ -174,15 +181,20 @@ type AlertsClient = original.AlertsClient
 type AlertsList = original.AlertsList
 type AlertsListIterator = original.AlertsListIterator
 type AlertsListPage = original.AlertsListPage
+type AlertsMetaData = original.AlertsMetaData
+type AlertsMetaDataProperties = original.AlertsMetaDataProperties
 type AlertsSummary = original.AlertsSummary
 type AlertsSummaryGroup = original.AlertsSummaryGroup
 type AlertsSummaryGroupItem = original.AlertsSummaryGroupItem
 type AzureResource = original.AzureResource
 type BaseClient = original.BaseClient
+type BasicAlertsMetaDataProperties = original.BasicAlertsMetaDataProperties
 type Detector = original.Detector
 type ErrorResponse = original.ErrorResponse
 type ErrorResponseBody = original.ErrorResponseBody
 type Essentials = original.Essentials
+type MonitorServiceDetails = original.MonitorServiceDetails
+type MonitorServiceList = original.MonitorServiceList
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationsClient = original.OperationsClient
@@ -198,7 +210,6 @@ type SmartGroupModification = original.SmartGroupModification
 type SmartGroupModificationItem = original.SmartGroupModificationItem
 type SmartGroupModificationProperties = original.SmartGroupModificationProperties
 type SmartGroupProperties = original.SmartGroupProperties
-type SmartGroupsClient = original.SmartGroupsClient
 type SmartGroupsList = original.SmartGroupsList
 type ThrottlingInformation = original.ThrottlingInformation
 
@@ -208,8 +219,8 @@ func New(scope string, subscriptionID string, subscriptionID1 string) BaseClient
 func NewAlertRulesListIterator(page AlertRulesListPage) AlertRulesListIterator {
 	return original.NewAlertRulesListIterator(page)
 }
-func NewAlertRulesListPage(getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
-	return original.NewAlertRulesListPage(getNextPage)
+func NewAlertRulesListPage(cur AlertRulesList, getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
+	return original.NewAlertRulesListPage(cur, getNextPage)
 }
 func NewAlertsClient(scope string, subscriptionID string, subscriptionID1 string) AlertsClient {
 	return original.NewAlertsClient(scope, subscriptionID, subscriptionID1)
@@ -220,8 +231,8 @@ func NewAlertsClientWithBaseURI(baseURI string, scope string, subscriptionID str
 func NewAlertsListIterator(page AlertsListPage) AlertsListIterator {
 	return original.NewAlertsListIterator(page)
 }
-func NewAlertsListPage(getNextPage func(context.Context, AlertsList) (AlertsList, error)) AlertsListPage {
-	return original.NewAlertsListPage(getNextPage)
+func NewAlertsListPage(cur AlertsList, getNextPage func(context.Context, AlertsList) (AlertsList, error)) AlertsListPage {
+	return original.NewAlertsListPage(cur, getNextPage)
 }
 func NewOperationsClient(scope string, subscriptionID string, subscriptionID1 string) OperationsClient {
 	return original.NewOperationsClient(scope, subscriptionID, subscriptionID1)
@@ -232,20 +243,14 @@ func NewOperationsClientWithBaseURI(baseURI string, scope string, subscriptionID
 func NewOperationsListIterator(page OperationsListPage) OperationsListIterator {
 	return original.NewOperationsListIterator(page)
 }
-func NewOperationsListPage(getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
-	return original.NewOperationsListPage(getNextPage)
+func NewOperationsListPage(cur OperationsList, getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
+	return original.NewOperationsListPage(cur, getNextPage)
 }
 func NewSmartDetectorAlertRulesClient(scope string, subscriptionID string, subscriptionID1 string) SmartDetectorAlertRulesClient {
 	return original.NewSmartDetectorAlertRulesClient(scope, subscriptionID, subscriptionID1)
 }
 func NewSmartDetectorAlertRulesClientWithBaseURI(baseURI string, scope string, subscriptionID string, subscriptionID1 string) SmartDetectorAlertRulesClient {
 	return original.NewSmartDetectorAlertRulesClientWithBaseURI(baseURI, scope, subscriptionID, subscriptionID1)
-}
-func NewSmartGroupsClient(scope string, subscriptionID string, subscriptionID1 string) SmartGroupsClient {
-	return original.NewSmartGroupsClient(scope, subscriptionID, subscriptionID1)
-}
-func NewSmartGroupsClientWithBaseURI(baseURI string, scope string, subscriptionID string, subscriptionID1 string) SmartGroupsClient {
-	return original.NewSmartGroupsClientWithBaseURI(baseURI, scope, subscriptionID, subscriptionID1)
 }
 func NewWithBaseURI(baseURI string, scope string, subscriptionID string, subscriptionID1 string) BaseClient {
 	return original.NewWithBaseURI(baseURI, scope, subscriptionID, subscriptionID1)
@@ -264,6 +269,9 @@ func PossibleAlertsSortByFieldsValues() []AlertsSortByFields {
 }
 func PossibleAlertsSummaryGroupByFieldsValues() []AlertsSummaryGroupByFields {
 	return original.PossibleAlertsSummaryGroupByFieldsValues()
+}
+func PossibleMetadataIdentifierValues() []MetadataIdentifier {
+	return original.PossibleMetadataIdentifierValues()
 }
 func PossibleMonitorConditionValues() []MonitorCondition {
 	return original.PossibleMonitorConditionValues()

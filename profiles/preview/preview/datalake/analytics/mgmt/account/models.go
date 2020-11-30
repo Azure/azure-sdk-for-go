@@ -106,32 +106,32 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 func NewDataLakeAnalyticsAccountListDataLakeStoreResultIterator(page DataLakeAnalyticsAccountListDataLakeStoreResultPage) DataLakeAnalyticsAccountListDataLakeStoreResultIterator {
 	return original.NewDataLakeAnalyticsAccountListDataLakeStoreResultIterator(page)
 }
-func NewDataLakeAnalyticsAccountListDataLakeStoreResultPage(getNextPage func(context.Context, DataLakeAnalyticsAccountListDataLakeStoreResult) (DataLakeAnalyticsAccountListDataLakeStoreResult, error)) DataLakeAnalyticsAccountListDataLakeStoreResultPage {
-	return original.NewDataLakeAnalyticsAccountListDataLakeStoreResultPage(getNextPage)
+func NewDataLakeAnalyticsAccountListDataLakeStoreResultPage(cur DataLakeAnalyticsAccountListDataLakeStoreResult, getNextPage func(context.Context, DataLakeAnalyticsAccountListDataLakeStoreResult) (DataLakeAnalyticsAccountListDataLakeStoreResult, error)) DataLakeAnalyticsAccountListDataLakeStoreResultPage {
+	return original.NewDataLakeAnalyticsAccountListDataLakeStoreResultPage(cur, getNextPage)
 }
 func NewDataLakeAnalyticsAccountListResultIterator(page DataLakeAnalyticsAccountListResultPage) DataLakeAnalyticsAccountListResultIterator {
 	return original.NewDataLakeAnalyticsAccountListResultIterator(page)
 }
-func NewDataLakeAnalyticsAccountListResultPage(getNextPage func(context.Context, DataLakeAnalyticsAccountListResult) (DataLakeAnalyticsAccountListResult, error)) DataLakeAnalyticsAccountListResultPage {
-	return original.NewDataLakeAnalyticsAccountListResultPage(getNextPage)
+func NewDataLakeAnalyticsAccountListResultPage(cur DataLakeAnalyticsAccountListResult, getNextPage func(context.Context, DataLakeAnalyticsAccountListResult) (DataLakeAnalyticsAccountListResult, error)) DataLakeAnalyticsAccountListResultPage {
+	return original.NewDataLakeAnalyticsAccountListResultPage(cur, getNextPage)
 }
 func NewDataLakeAnalyticsAccountListStorageAccountsResultIterator(page DataLakeAnalyticsAccountListStorageAccountsResultPage) DataLakeAnalyticsAccountListStorageAccountsResultIterator {
 	return original.NewDataLakeAnalyticsAccountListStorageAccountsResultIterator(page)
 }
-func NewDataLakeAnalyticsAccountListStorageAccountsResultPage(getNextPage func(context.Context, DataLakeAnalyticsAccountListStorageAccountsResult) (DataLakeAnalyticsAccountListStorageAccountsResult, error)) DataLakeAnalyticsAccountListStorageAccountsResultPage {
-	return original.NewDataLakeAnalyticsAccountListStorageAccountsResultPage(getNextPage)
+func NewDataLakeAnalyticsAccountListStorageAccountsResultPage(cur DataLakeAnalyticsAccountListStorageAccountsResult, getNextPage func(context.Context, DataLakeAnalyticsAccountListStorageAccountsResult) (DataLakeAnalyticsAccountListStorageAccountsResult, error)) DataLakeAnalyticsAccountListStorageAccountsResultPage {
+	return original.NewDataLakeAnalyticsAccountListStorageAccountsResultPage(cur, getNextPage)
 }
 func NewListBlobContainersResultIterator(page ListBlobContainersResultPage) ListBlobContainersResultIterator {
 	return original.NewListBlobContainersResultIterator(page)
 }
-func NewListBlobContainersResultPage(getNextPage func(context.Context, ListBlobContainersResult) (ListBlobContainersResult, error)) ListBlobContainersResultPage {
-	return original.NewListBlobContainersResultPage(getNextPage)
+func NewListBlobContainersResultPage(cur ListBlobContainersResult, getNextPage func(context.Context, ListBlobContainersResult) (ListBlobContainersResult, error)) ListBlobContainersResultPage {
+	return original.NewListBlobContainersResultPage(cur, getNextPage)
 }
 func NewListSasTokensResultIterator(page ListSasTokensResultPage) ListSasTokensResultIterator {
 	return original.NewListSasTokensResultIterator(page)
 }
-func NewListSasTokensResultPage(getNextPage func(context.Context, ListSasTokensResult) (ListSasTokensResult, error)) ListSasTokensResultPage {
-	return original.NewListSasTokensResultPage(getNextPage)
+func NewListSasTokensResultPage(cur ListSasTokensResult, getNextPage func(context.Context, ListSasTokensResult) (ListSasTokensResult, error)) ListSasTokensResultPage {
+	return original.NewListSasTokensResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

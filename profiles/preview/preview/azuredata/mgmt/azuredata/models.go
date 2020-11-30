@@ -45,14 +45,6 @@ const (
 	OperationOriginUser   OperationOrigin = original.OperationOriginUser
 )
 
-type RequestType = original.RequestType
-
-const (
-	Handshake   RequestType = original.Handshake
-	Unknown     RequestType = original.Unknown
-	UsageUpload RequestType = original.UsageUpload
-)
-
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
@@ -68,23 +60,13 @@ const (
 	Standard SkuTier = original.Standard
 )
 
-type UsageUploadStatus = original.UsageUploadStatus
-
-const (
-	UsageUploadStatusCompleted      UsageUploadStatus = original.UsageUploadStatusCompleted
-	UsageUploadStatusFailed         UsageUploadStatus = original.UsageUploadStatusFailed
-	UsageUploadStatusPartialSuccess UsageUploadStatus = original.UsageUploadStatusPartialSuccess
-	UsageUploadStatusUnknown        UsageUploadStatus = original.UsageUploadStatusUnknown
-)
-
-type AzureResource = original.AzureResource
 type BaseClient = original.BaseClient
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type DataControllerProperties = original.DataControllerProperties
 type DataControllerResource = original.DataControllerResource
+type DataControllerUpdate = original.DataControllerUpdate
 type DataControllersClient = original.DataControllersClient
-type HandshakeResponse = original.HandshakeResponse
 type Identity = original.Identity
 type ODataError = original.ODataError
 type OnPremiseProperty = original.OnPremiseProperty
@@ -142,9 +124,6 @@ type SQLServersClient = original.SQLServersClient
 type Sku = original.Sku
 type SystemData = original.SystemData
 type TrackedResource = original.TrackedResource
-type UsageRecord = original.UsageRecord
-type UsageUploadRequest = original.UsageUploadRequest
-type UsageUploadResponse = original.UsageUploadResponse
 
 func New(subscriptionID string, subscriptionID1 string) BaseClient {
 	return original.New(subscriptionID, subscriptionID1)
@@ -158,8 +137,8 @@ func NewDataControllersClientWithBaseURI(baseURI string, subscriptionID string, 
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string, subscriptionID1 string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID, subscriptionID1)
@@ -170,14 +149,14 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, subsc
 func NewPageOfDataControllerResourceIterator(page PageOfDataControllerResourcePage) PageOfDataControllerResourceIterator {
 	return original.NewPageOfDataControllerResourceIterator(page)
 }
-func NewPageOfDataControllerResourcePage(getNextPage func(context.Context, PageOfDataControllerResource) (PageOfDataControllerResource, error)) PageOfDataControllerResourcePage {
-	return original.NewPageOfDataControllerResourcePage(getNextPage)
+func NewPageOfDataControllerResourcePage(cur PageOfDataControllerResource, getNextPage func(context.Context, PageOfDataControllerResource) (PageOfDataControllerResource, error)) PageOfDataControllerResourcePage {
+	return original.NewPageOfDataControllerResourcePage(cur, getNextPage)
 }
 func NewPostgresInstanceListResultIterator(page PostgresInstanceListResultPage) PostgresInstanceListResultIterator {
 	return original.NewPostgresInstanceListResultIterator(page)
 }
-func NewPostgresInstanceListResultPage(getNextPage func(context.Context, PostgresInstanceListResult) (PostgresInstanceListResult, error)) PostgresInstanceListResultPage {
-	return original.NewPostgresInstanceListResultPage(getNextPage)
+func NewPostgresInstanceListResultPage(cur PostgresInstanceListResult, getNextPage func(context.Context, PostgresInstanceListResult) (PostgresInstanceListResult, error)) PostgresInstanceListResultPage {
+	return original.NewPostgresInstanceListResultPage(cur, getNextPage)
 }
 func NewPostgresInstancesClient(subscriptionID string, subscriptionID1 string) PostgresInstancesClient {
 	return original.NewPostgresInstancesClient(subscriptionID, subscriptionID1)
@@ -188,8 +167,8 @@ func NewPostgresInstancesClientWithBaseURI(baseURI string, subscriptionID string
 func NewSQLManagedInstanceListResultIterator(page SQLManagedInstanceListResultPage) SQLManagedInstanceListResultIterator {
 	return original.NewSQLManagedInstanceListResultIterator(page)
 }
-func NewSQLManagedInstanceListResultPage(getNextPage func(context.Context, SQLManagedInstanceListResult) (SQLManagedInstanceListResult, error)) SQLManagedInstanceListResultPage {
-	return original.NewSQLManagedInstanceListResultPage(getNextPage)
+func NewSQLManagedInstanceListResultPage(cur SQLManagedInstanceListResult, getNextPage func(context.Context, SQLManagedInstanceListResult) (SQLManagedInstanceListResult, error)) SQLManagedInstanceListResultPage {
+	return original.NewSQLManagedInstanceListResultPage(cur, getNextPage)
 }
 func NewSQLManagedInstancesClient(subscriptionID string, subscriptionID1 string) SQLManagedInstancesClient {
 	return original.NewSQLManagedInstancesClient(subscriptionID, subscriptionID1)
@@ -200,8 +179,8 @@ func NewSQLManagedInstancesClientWithBaseURI(baseURI string, subscriptionID stri
 func NewSQLServerInstanceListResultIterator(page SQLServerInstanceListResultPage) SQLServerInstanceListResultIterator {
 	return original.NewSQLServerInstanceListResultIterator(page)
 }
-func NewSQLServerInstanceListResultPage(getNextPage func(context.Context, SQLServerInstanceListResult) (SQLServerInstanceListResult, error)) SQLServerInstanceListResultPage {
-	return original.NewSQLServerInstanceListResultPage(getNextPage)
+func NewSQLServerInstanceListResultPage(cur SQLServerInstanceListResult, getNextPage func(context.Context, SQLServerInstanceListResult) (SQLServerInstanceListResult, error)) SQLServerInstanceListResultPage {
+	return original.NewSQLServerInstanceListResultPage(cur, getNextPage)
 }
 func NewSQLServerInstancesClient(subscriptionID string, subscriptionID1 string) SQLServerInstancesClient {
 	return original.NewSQLServerInstancesClient(subscriptionID, subscriptionID1)
@@ -212,14 +191,14 @@ func NewSQLServerInstancesClientWithBaseURI(baseURI string, subscriptionID strin
 func NewSQLServerListResultIterator(page SQLServerListResultPage) SQLServerListResultIterator {
 	return original.NewSQLServerListResultIterator(page)
 }
-func NewSQLServerListResultPage(getNextPage func(context.Context, SQLServerListResult) (SQLServerListResult, error)) SQLServerListResultPage {
-	return original.NewSQLServerListResultPage(getNextPage)
+func NewSQLServerListResultPage(cur SQLServerListResult, getNextPage func(context.Context, SQLServerListResult) (SQLServerListResult, error)) SQLServerListResultPage {
+	return original.NewSQLServerListResultPage(cur, getNextPage)
 }
 func NewSQLServerRegistrationListResultIterator(page SQLServerRegistrationListResultPage) SQLServerRegistrationListResultIterator {
 	return original.NewSQLServerRegistrationListResultIterator(page)
 }
-func NewSQLServerRegistrationListResultPage(getNextPage func(context.Context, SQLServerRegistrationListResult) (SQLServerRegistrationListResult, error)) SQLServerRegistrationListResultPage {
-	return original.NewSQLServerRegistrationListResultPage(getNextPage)
+func NewSQLServerRegistrationListResultPage(cur SQLServerRegistrationListResult, getNextPage func(context.Context, SQLServerRegistrationListResult) (SQLServerRegistrationListResult, error)) SQLServerRegistrationListResultPage {
+	return original.NewSQLServerRegistrationListResultPage(cur, getNextPage)
 }
 func NewSQLServerRegistrationsClient(subscriptionID string, subscriptionID1 string) SQLServerRegistrationsClient {
 	return original.NewSQLServerRegistrationsClient(subscriptionID, subscriptionID1)
@@ -242,17 +221,11 @@ func PossibleIdentityTypeValues() []IdentityType {
 func PossibleOperationOriginValues() []OperationOrigin {
 	return original.PossibleOperationOriginValues()
 }
-func PossibleRequestTypeValues() []RequestType {
-	return original.PossibleRequestTypeValues()
-}
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
 }
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
-}
-func PossibleUsageUploadStatusValues() []UsageUploadStatus {
-	return original.PossibleUsageUploadStatusValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

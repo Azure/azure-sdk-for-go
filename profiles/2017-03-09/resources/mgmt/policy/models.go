@@ -57,8 +57,8 @@ func New(subscriptionID string) BaseClient {
 func NewAssignmentListResultIterator(page AssignmentListResultPage) AssignmentListResultIterator {
 	return original.NewAssignmentListResultIterator(page)
 }
-func NewAssignmentListResultPage(getNextPage func(context.Context, AssignmentListResult) (AssignmentListResult, error)) AssignmentListResultPage {
-	return original.NewAssignmentListResultPage(getNextPage)
+func NewAssignmentListResultPage(cur AssignmentListResult, getNextPage func(context.Context, AssignmentListResult) (AssignmentListResult, error)) AssignmentListResultPage {
+	return original.NewAssignmentListResultPage(cur, getNextPage)
 }
 func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
 	return original.NewAssignmentsClient(subscriptionID)
@@ -69,8 +69,8 @@ func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) Assi
 func NewDefinitionListResultIterator(page DefinitionListResultPage) DefinitionListResultIterator {
 	return original.NewDefinitionListResultIterator(page)
 }
-func NewDefinitionListResultPage(getNextPage func(context.Context, DefinitionListResult) (DefinitionListResult, error)) DefinitionListResultPage {
-	return original.NewDefinitionListResultPage(getNextPage)
+func NewDefinitionListResultPage(cur DefinitionListResult, getNextPage func(context.Context, DefinitionListResult) (DefinitionListResult, error)) DefinitionListResultPage {
+	return original.NewDefinitionListResultPage(cur, getNextPage)
 }
 func NewDefinitionsClient(subscriptionID string) DefinitionsClient {
 	return original.NewDefinitionsClient(subscriptionID)

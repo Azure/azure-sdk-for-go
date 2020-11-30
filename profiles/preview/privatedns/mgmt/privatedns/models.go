@@ -106,8 +106,8 @@ func New(subscriptionID string) BaseClient {
 func NewPrivateZoneListResultIterator(page PrivateZoneListResultPage) PrivateZoneListResultIterator {
 	return original.NewPrivateZoneListResultIterator(page)
 }
-func NewPrivateZoneListResultPage(getNextPage func(context.Context, PrivateZoneListResult) (PrivateZoneListResult, error)) PrivateZoneListResultPage {
-	return original.NewPrivateZoneListResultPage(getNextPage)
+func NewPrivateZoneListResultPage(cur PrivateZoneListResult, getNextPage func(context.Context, PrivateZoneListResult) (PrivateZoneListResult, error)) PrivateZoneListResultPage {
+	return original.NewPrivateZoneListResultPage(cur, getNextPage)
 }
 func NewPrivateZonesClient(subscriptionID string) PrivateZonesClient {
 	return original.NewPrivateZonesClient(subscriptionID)
@@ -118,8 +118,8 @@ func NewPrivateZonesClientWithBaseURI(baseURI string, subscriptionID string) Pri
 func NewRecordSetListResultIterator(page RecordSetListResultPage) RecordSetListResultIterator {
 	return original.NewRecordSetListResultIterator(page)
 }
-func NewRecordSetListResultPage(getNextPage func(context.Context, RecordSetListResult) (RecordSetListResult, error)) RecordSetListResultPage {
-	return original.NewRecordSetListResultPage(getNextPage)
+func NewRecordSetListResultPage(cur RecordSetListResult, getNextPage func(context.Context, RecordSetListResult) (RecordSetListResult, error)) RecordSetListResultPage {
+	return original.NewRecordSetListResultPage(cur, getNextPage)
 }
 func NewRecordSetsClient(subscriptionID string) RecordSetsClient {
 	return original.NewRecordSetsClient(subscriptionID)
@@ -130,8 +130,8 @@ func NewRecordSetsClientWithBaseURI(baseURI string, subscriptionID string) Recor
 func NewVirtualNetworkLinkListResultIterator(page VirtualNetworkLinkListResultPage) VirtualNetworkLinkListResultIterator {
 	return original.NewVirtualNetworkLinkListResultIterator(page)
 }
-func NewVirtualNetworkLinkListResultPage(getNextPage func(context.Context, VirtualNetworkLinkListResult) (VirtualNetworkLinkListResult, error)) VirtualNetworkLinkListResultPage {
-	return original.NewVirtualNetworkLinkListResultPage(getNextPage)
+func NewVirtualNetworkLinkListResultPage(cur VirtualNetworkLinkListResult, getNextPage func(context.Context, VirtualNetworkLinkListResult) (VirtualNetworkLinkListResult, error)) VirtualNetworkLinkListResultPage {
+	return original.NewVirtualNetworkLinkListResultPage(cur, getNextPage)
 }
 func NewVirtualNetworkLinksClient(subscriptionID string) VirtualNetworkLinksClient {
 	return original.NewVirtualNetworkLinksClient(subscriptionID)

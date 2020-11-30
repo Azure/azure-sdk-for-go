@@ -599,8 +599,8 @@ func New(subscriptionID string) BaseClient {
 func NewIntegrationAccountAgreementListResultIterator(page IntegrationAccountAgreementListResultPage) IntegrationAccountAgreementListResultIterator {
 	return original.NewIntegrationAccountAgreementListResultIterator(page)
 }
-func NewIntegrationAccountAgreementListResultPage(getNextPage func(context.Context, IntegrationAccountAgreementListResult) (IntegrationAccountAgreementListResult, error)) IntegrationAccountAgreementListResultPage {
-	return original.NewIntegrationAccountAgreementListResultPage(getNextPage)
+func NewIntegrationAccountAgreementListResultPage(cur IntegrationAccountAgreementListResult, getNextPage func(context.Context, IntegrationAccountAgreementListResult) (IntegrationAccountAgreementListResult, error)) IntegrationAccountAgreementListResultPage {
+	return original.NewIntegrationAccountAgreementListResultPage(cur, getNextPage)
 }
 func NewIntegrationAccountAgreementsClient(subscriptionID string) IntegrationAccountAgreementsClient {
 	return original.NewIntegrationAccountAgreementsClient(subscriptionID)
@@ -623,8 +623,8 @@ func NewIntegrationAccountBatchConfigurationsClientWithBaseURI(baseURI string, s
 func NewIntegrationAccountCertificateListResultIterator(page IntegrationAccountCertificateListResultPage) IntegrationAccountCertificateListResultIterator {
 	return original.NewIntegrationAccountCertificateListResultIterator(page)
 }
-func NewIntegrationAccountCertificateListResultPage(getNextPage func(context.Context, IntegrationAccountCertificateListResult) (IntegrationAccountCertificateListResult, error)) IntegrationAccountCertificateListResultPage {
-	return original.NewIntegrationAccountCertificateListResultPage(getNextPage)
+func NewIntegrationAccountCertificateListResultPage(cur IntegrationAccountCertificateListResult, getNextPage func(context.Context, IntegrationAccountCertificateListResult) (IntegrationAccountCertificateListResult, error)) IntegrationAccountCertificateListResultPage {
+	return original.NewIntegrationAccountCertificateListResultPage(cur, getNextPage)
 }
 func NewIntegrationAccountCertificatesClient(subscriptionID string) IntegrationAccountCertificatesClient {
 	return original.NewIntegrationAccountCertificatesClient(subscriptionID)
@@ -635,14 +635,14 @@ func NewIntegrationAccountCertificatesClientWithBaseURI(baseURI string, subscrip
 func NewIntegrationAccountListResultIterator(page IntegrationAccountListResultPage) IntegrationAccountListResultIterator {
 	return original.NewIntegrationAccountListResultIterator(page)
 }
-func NewIntegrationAccountListResultPage(getNextPage func(context.Context, IntegrationAccountListResult) (IntegrationAccountListResult, error)) IntegrationAccountListResultPage {
-	return original.NewIntegrationAccountListResultPage(getNextPage)
+func NewIntegrationAccountListResultPage(cur IntegrationAccountListResult, getNextPage func(context.Context, IntegrationAccountListResult) (IntegrationAccountListResult, error)) IntegrationAccountListResultPage {
+	return original.NewIntegrationAccountListResultPage(cur, getNextPage)
 }
 func NewIntegrationAccountMapListResultIterator(page IntegrationAccountMapListResultPage) IntegrationAccountMapListResultIterator {
 	return original.NewIntegrationAccountMapListResultIterator(page)
 }
-func NewIntegrationAccountMapListResultPage(getNextPage func(context.Context, IntegrationAccountMapListResult) (IntegrationAccountMapListResult, error)) IntegrationAccountMapListResultPage {
-	return original.NewIntegrationAccountMapListResultPage(getNextPage)
+func NewIntegrationAccountMapListResultPage(cur IntegrationAccountMapListResult, getNextPage func(context.Context, IntegrationAccountMapListResult) (IntegrationAccountMapListResult, error)) IntegrationAccountMapListResultPage {
+	return original.NewIntegrationAccountMapListResultPage(cur, getNextPage)
 }
 func NewIntegrationAccountMapsClient(subscriptionID string) IntegrationAccountMapsClient {
 	return original.NewIntegrationAccountMapsClient(subscriptionID)
@@ -653,8 +653,8 @@ func NewIntegrationAccountMapsClientWithBaseURI(baseURI string, subscriptionID s
 func NewIntegrationAccountPartnerListResultIterator(page IntegrationAccountPartnerListResultPage) IntegrationAccountPartnerListResultIterator {
 	return original.NewIntegrationAccountPartnerListResultIterator(page)
 }
-func NewIntegrationAccountPartnerListResultPage(getNextPage func(context.Context, IntegrationAccountPartnerListResult) (IntegrationAccountPartnerListResult, error)) IntegrationAccountPartnerListResultPage {
-	return original.NewIntegrationAccountPartnerListResultPage(getNextPage)
+func NewIntegrationAccountPartnerListResultPage(cur IntegrationAccountPartnerListResult, getNextPage func(context.Context, IntegrationAccountPartnerListResult) (IntegrationAccountPartnerListResult, error)) IntegrationAccountPartnerListResultPage {
+	return original.NewIntegrationAccountPartnerListResultPage(cur, getNextPage)
 }
 func NewIntegrationAccountPartnersClient(subscriptionID string) IntegrationAccountPartnersClient {
 	return original.NewIntegrationAccountPartnersClient(subscriptionID)
@@ -665,8 +665,8 @@ func NewIntegrationAccountPartnersClientWithBaseURI(baseURI string, subscription
 func NewIntegrationAccountSchemaListResultIterator(page IntegrationAccountSchemaListResultPage) IntegrationAccountSchemaListResultIterator {
 	return original.NewIntegrationAccountSchemaListResultIterator(page)
 }
-func NewIntegrationAccountSchemaListResultPage(getNextPage func(context.Context, IntegrationAccountSchemaListResult) (IntegrationAccountSchemaListResult, error)) IntegrationAccountSchemaListResultPage {
-	return original.NewIntegrationAccountSchemaListResultPage(getNextPage)
+func NewIntegrationAccountSchemaListResultPage(cur IntegrationAccountSchemaListResult, getNextPage func(context.Context, IntegrationAccountSchemaListResult) (IntegrationAccountSchemaListResult, error)) IntegrationAccountSchemaListResultPage {
+	return original.NewIntegrationAccountSchemaListResultPage(cur, getNextPage)
 }
 func NewIntegrationAccountSchemasClient(subscriptionID string) IntegrationAccountSchemasClient {
 	return original.NewIntegrationAccountSchemasClient(subscriptionID)
@@ -677,8 +677,8 @@ func NewIntegrationAccountSchemasClientWithBaseURI(baseURI string, subscriptionI
 func NewIntegrationAccountSessionListResultIterator(page IntegrationAccountSessionListResultPage) IntegrationAccountSessionListResultIterator {
 	return original.NewIntegrationAccountSessionListResultIterator(page)
 }
-func NewIntegrationAccountSessionListResultPage(getNextPage func(context.Context, IntegrationAccountSessionListResult) (IntegrationAccountSessionListResult, error)) IntegrationAccountSessionListResultPage {
-	return original.NewIntegrationAccountSessionListResultPage(getNextPage)
+func NewIntegrationAccountSessionListResultPage(cur IntegrationAccountSessionListResult, getNextPage func(context.Context, IntegrationAccountSessionListResult) (IntegrationAccountSessionListResult, error)) IntegrationAccountSessionListResultPage {
+	return original.NewIntegrationAccountSessionListResultPage(cur, getNextPage)
 }
 func NewIntegrationAccountSessionsClient(subscriptionID string) IntegrationAccountSessionsClient {
 	return original.NewIntegrationAccountSessionsClient(subscriptionID)
@@ -695,8 +695,8 @@ func NewIntegrationAccountsClientWithBaseURI(baseURI string, subscriptionID stri
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -707,8 +707,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewRequestHistoryListResultIterator(page RequestHistoryListResultPage) RequestHistoryListResultIterator {
 	return original.NewRequestHistoryListResultIterator(page)
 }
-func NewRequestHistoryListResultPage(getNextPage func(context.Context, RequestHistoryListResult) (RequestHistoryListResult, error)) RequestHistoryListResultPage {
-	return original.NewRequestHistoryListResultPage(getNextPage)
+func NewRequestHistoryListResultPage(cur RequestHistoryListResult, getNextPage func(context.Context, RequestHistoryListResult) (RequestHistoryListResult, error)) RequestHistoryListResultPage {
+	return original.NewRequestHistoryListResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
@@ -716,14 +716,14 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func NewWorkflowListResultIterator(page WorkflowListResultPage) WorkflowListResultIterator {
 	return original.NewWorkflowListResultIterator(page)
 }
-func NewWorkflowListResultPage(getNextPage func(context.Context, WorkflowListResult) (WorkflowListResult, error)) WorkflowListResultPage {
-	return original.NewWorkflowListResultPage(getNextPage)
+func NewWorkflowListResultPage(cur WorkflowListResult, getNextPage func(context.Context, WorkflowListResult) (WorkflowListResult, error)) WorkflowListResultPage {
+	return original.NewWorkflowListResultPage(cur, getNextPage)
 }
 func NewWorkflowRunActionListResultIterator(page WorkflowRunActionListResultPage) WorkflowRunActionListResultIterator {
 	return original.NewWorkflowRunActionListResultIterator(page)
 }
-func NewWorkflowRunActionListResultPage(getNextPage func(context.Context, WorkflowRunActionListResult) (WorkflowRunActionListResult, error)) WorkflowRunActionListResultPage {
-	return original.NewWorkflowRunActionListResultPage(getNextPage)
+func NewWorkflowRunActionListResultPage(cur WorkflowRunActionListResult, getNextPage func(context.Context, WorkflowRunActionListResult) (WorkflowRunActionListResult, error)) WorkflowRunActionListResultPage {
+	return original.NewWorkflowRunActionListResultPage(cur, getNextPage)
 }
 func NewWorkflowRunActionRepetitionsClient(subscriptionID string) WorkflowRunActionRepetitionsClient {
 	return original.NewWorkflowRunActionRepetitionsClient(subscriptionID)
@@ -758,8 +758,8 @@ func NewWorkflowRunActionsClientWithBaseURI(baseURI string, subscriptionID strin
 func NewWorkflowRunListResultIterator(page WorkflowRunListResultPage) WorkflowRunListResultIterator {
 	return original.NewWorkflowRunListResultIterator(page)
 }
-func NewWorkflowRunListResultPage(getNextPage func(context.Context, WorkflowRunListResult) (WorkflowRunListResult, error)) WorkflowRunListResultPage {
-	return original.NewWorkflowRunListResultPage(getNextPage)
+func NewWorkflowRunListResultPage(cur WorkflowRunListResult, getNextPage func(context.Context, WorkflowRunListResult) (WorkflowRunListResult, error)) WorkflowRunListResultPage {
+	return original.NewWorkflowRunListResultPage(cur, getNextPage)
 }
 func NewWorkflowRunOperationsClient(subscriptionID string) WorkflowRunOperationsClient {
 	return original.NewWorkflowRunOperationsClient(subscriptionID)
@@ -782,14 +782,14 @@ func NewWorkflowTriggerHistoriesClientWithBaseURI(baseURI string, subscriptionID
 func NewWorkflowTriggerHistoryListResultIterator(page WorkflowTriggerHistoryListResultPage) WorkflowTriggerHistoryListResultIterator {
 	return original.NewWorkflowTriggerHistoryListResultIterator(page)
 }
-func NewWorkflowTriggerHistoryListResultPage(getNextPage func(context.Context, WorkflowTriggerHistoryListResult) (WorkflowTriggerHistoryListResult, error)) WorkflowTriggerHistoryListResultPage {
-	return original.NewWorkflowTriggerHistoryListResultPage(getNextPage)
+func NewWorkflowTriggerHistoryListResultPage(cur WorkflowTriggerHistoryListResult, getNextPage func(context.Context, WorkflowTriggerHistoryListResult) (WorkflowTriggerHistoryListResult, error)) WorkflowTriggerHistoryListResultPage {
+	return original.NewWorkflowTriggerHistoryListResultPage(cur, getNextPage)
 }
 func NewWorkflowTriggerListResultIterator(page WorkflowTriggerListResultPage) WorkflowTriggerListResultIterator {
 	return original.NewWorkflowTriggerListResultIterator(page)
 }
-func NewWorkflowTriggerListResultPage(getNextPage func(context.Context, WorkflowTriggerListResult) (WorkflowTriggerListResult, error)) WorkflowTriggerListResultPage {
-	return original.NewWorkflowTriggerListResultPage(getNextPage)
+func NewWorkflowTriggerListResultPage(cur WorkflowTriggerListResult, getNextPage func(context.Context, WorkflowTriggerListResult) (WorkflowTriggerListResult, error)) WorkflowTriggerListResultPage {
+	return original.NewWorkflowTriggerListResultPage(cur, getNextPage)
 }
 func NewWorkflowTriggersClient(subscriptionID string) WorkflowTriggersClient {
 	return original.NewWorkflowTriggersClient(subscriptionID)
@@ -800,8 +800,8 @@ func NewWorkflowTriggersClientWithBaseURI(baseURI string, subscriptionID string)
 func NewWorkflowVersionListResultIterator(page WorkflowVersionListResultPage) WorkflowVersionListResultIterator {
 	return original.NewWorkflowVersionListResultIterator(page)
 }
-func NewWorkflowVersionListResultPage(getNextPage func(context.Context, WorkflowVersionListResult) (WorkflowVersionListResult, error)) WorkflowVersionListResultPage {
-	return original.NewWorkflowVersionListResultPage(getNextPage)
+func NewWorkflowVersionListResultPage(cur WorkflowVersionListResult, getNextPage func(context.Context, WorkflowVersionListResult) (WorkflowVersionListResult, error)) WorkflowVersionListResultPage {
+	return original.NewWorkflowVersionListResultPage(cur, getNextPage)
 }
 func NewWorkflowVersionTriggersClient(subscriptionID string) WorkflowVersionTriggersClient {
 	return original.NewWorkflowVersionTriggersClient(subscriptionID)

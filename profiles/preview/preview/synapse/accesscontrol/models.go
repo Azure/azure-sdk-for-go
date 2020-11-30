@@ -44,8 +44,8 @@ func New(endpoint string) BaseClient {
 func NewRolesListResponseIterator(page RolesListResponsePage) RolesListResponseIterator {
 	return original.NewRolesListResponseIterator(page)
 }
-func NewRolesListResponsePage(getNextPage func(context.Context, RolesListResponse) (RolesListResponse, error)) RolesListResponsePage {
-	return original.NewRolesListResponsePage(getNextPage)
+func NewRolesListResponsePage(cur RolesListResponse, getNextPage func(context.Context, RolesListResponse) (RolesListResponse, error)) RolesListResponsePage {
+	return original.NewRolesListResponsePage(cur, getNextPage)
 }
 func NewWithoutDefaults(endpoint string) BaseClient {
 	return original.NewWithoutDefaults(endpoint)

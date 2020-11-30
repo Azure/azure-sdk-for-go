@@ -22,7 +22,7 @@ package databox
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/databox/mgmt/2019-09-01/databox"
+	original "github.com/Azure/azure-sdk-for-go/services/databox/mgmt/2020-11-01/databox"
 )
 
 const (
@@ -77,19 +77,33 @@ const (
 	UnsupportedData             CopyStatus = original.UnsupportedData
 )
 
-type DataDestinationType = original.DataDestinationType
+type DataAccountType = original.DataAccountType
 
 const (
-	ManagedDisk    DataDestinationType = original.ManagedDisk
-	StorageAccount DataDestinationType = original.StorageAccount
+	ManagedDisk    DataAccountType = original.ManagedDisk
+	StorageAccount DataAccountType = original.StorageAccount
 )
 
-type DataDestinationTypeBasicDestinationAccountDetails = original.DataDestinationTypeBasicDestinationAccountDetails
+type DataAccountTypeBasicDataAccountDetails = original.DataAccountTypeBasicDataAccountDetails
 
 const (
-	DataDestinationTypeDestinationAccountDetails DataDestinationTypeBasicDestinationAccountDetails = original.DataDestinationTypeDestinationAccountDetails
-	DataDestinationTypeManagedDisk               DataDestinationTypeBasicDestinationAccountDetails = original.DataDestinationTypeManagedDisk
-	DataDestinationTypeStorageAccount            DataDestinationTypeBasicDestinationAccountDetails = original.DataDestinationTypeStorageAccount
+	DataAccountTypeDataAccountDetails DataAccountTypeBasicDataAccountDetails = original.DataAccountTypeDataAccountDetails
+	DataAccountTypeManagedDisk        DataAccountTypeBasicDataAccountDetails = original.DataAccountTypeManagedDisk
+	DataAccountTypeStorageAccount     DataAccountTypeBasicDataAccountDetails = original.DataAccountTypeStorageAccount
+)
+
+type DoubleEncryption = original.DoubleEncryption
+
+const (
+	Disabled DoubleEncryption = original.Disabled
+	Enabled  DoubleEncryption = original.Enabled
+)
+
+type FilterFileType = original.FilterFileType
+
+const (
+	AzureBlob FilterFileType = original.AzureBlob
+	AzureFile FilterFileType = original.AzureFile
 )
 
 type JobDeliveryType = original.JobDeliveryType
@@ -117,6 +131,20 @@ const (
 	JobSecretsTypeJobSecrets   JobSecretsTypeEnum = original.JobSecretsTypeJobSecrets
 )
 
+type KekType = original.KekType
+
+const (
+	CustomerManaged  KekType = original.CustomerManaged
+	MicrosoftManaged KekType = original.MicrosoftManaged
+)
+
+type LogCollectionLevel = original.LogCollectionLevel
+
+const (
+	Error   LogCollectionLevel = original.Error
+	Verbose LogCollectionLevel = original.Verbose
+)
+
 type NotificationStageName = original.NotificationStageName
 
 const (
@@ -139,12 +167,13 @@ const (
 type ShareDestinationFormatType = original.ShareDestinationFormatType
 
 const (
-	ShareDestinationFormatTypeAzureFile   ShareDestinationFormatType = original.ShareDestinationFormatTypeAzureFile
-	ShareDestinationFormatTypeBlockBlob   ShareDestinationFormatType = original.ShareDestinationFormatTypeBlockBlob
-	ShareDestinationFormatTypeHCS         ShareDestinationFormatType = original.ShareDestinationFormatTypeHCS
-	ShareDestinationFormatTypeManagedDisk ShareDestinationFormatType = original.ShareDestinationFormatTypeManagedDisk
-	ShareDestinationFormatTypePageBlob    ShareDestinationFormatType = original.ShareDestinationFormatTypePageBlob
-	ShareDestinationFormatTypeUnknownType ShareDestinationFormatType = original.ShareDestinationFormatTypeUnknownType
+	ShareDestinationFormatTypeAzureFile         ShareDestinationFormatType = original.ShareDestinationFormatTypeAzureFile
+	ShareDestinationFormatTypeAzurePremiumFiles ShareDestinationFormatType = original.ShareDestinationFormatTypeAzurePremiumFiles
+	ShareDestinationFormatTypeBlockBlob         ShareDestinationFormatType = original.ShareDestinationFormatTypeBlockBlob
+	ShareDestinationFormatTypeHCS               ShareDestinationFormatType = original.ShareDestinationFormatTypeHCS
+	ShareDestinationFormatTypeManagedDisk       ShareDestinationFormatType = original.ShareDestinationFormatTypeManagedDisk
+	ShareDestinationFormatTypePageBlob          ShareDestinationFormatType = original.ShareDestinationFormatTypePageBlob
+	ShareDestinationFormatTypeUnknownType       ShareDestinationFormatType = original.ShareDestinationFormatTypeUnknownType
 )
 
 type SkuDisabledReason = original.SkuDisabledReason
@@ -199,20 +228,36 @@ const (
 type StageStatus = original.StageStatus
 
 const (
-	StageStatusCancelled           StageStatus = original.StageStatusCancelled
-	StageStatusCancelling          StageStatus = original.StageStatusCancelling
-	StageStatusFailed              StageStatus = original.StageStatusFailed
-	StageStatusInProgress          StageStatus = original.StageStatusInProgress
-	StageStatusNone                StageStatus = original.StageStatusNone
-	StageStatusSucceeded           StageStatus = original.StageStatusSucceeded
-	StageStatusSucceededWithErrors StageStatus = original.StageStatusSucceededWithErrors
+	StageStatusCancelled                StageStatus = original.StageStatusCancelled
+	StageStatusCancelling               StageStatus = original.StageStatusCancelling
+	StageStatusFailed                   StageStatus = original.StageStatusFailed
+	StageStatusInProgress               StageStatus = original.StageStatusInProgress
+	StageStatusNone                     StageStatus = original.StageStatusNone
+	StageStatusSucceeded                StageStatus = original.StageStatusSucceeded
+	StageStatusSucceededWithErrors      StageStatus = original.StageStatusSucceededWithErrors
+	StageStatusSucceededWithWarnings    StageStatus = original.StageStatusSucceededWithWarnings
+	StageStatusWaitingForCustomerAction StageStatus = original.StageStatusWaitingForCustomerAction
+)
+
+type TransferConfigurationType = original.TransferConfigurationType
+
+const (
+	TransferAll         TransferConfigurationType = original.TransferAll
+	TransferUsingFilter TransferConfigurationType = original.TransferUsingFilter
+)
+
+type TransferType = original.TransferType
+
+const (
+	ExportFromAzure TransferType = original.ExportFromAzure
+	ImportToAzure   TransferType = original.ImportToAzure
 )
 
 type TransportShipmentTypes = original.TransportShipmentTypes
 
 const (
-	CustomerManaged  TransportShipmentTypes = original.CustomerManaged
-	MicrosoftManaged TransportShipmentTypes = original.MicrosoftManaged
+	TransportShipmentTypesCustomerManaged  TransportShipmentTypes = original.TransportShipmentTypesCustomerManaged
+	TransportShipmentTypesMicrosoftManaged TransportShipmentTypes = original.TransportShipmentTypesMicrosoftManaged
 )
 
 type ValidationCategory = original.ValidationCategory
@@ -235,7 +280,7 @@ type ValidationType = original.ValidationType
 const (
 	ValidationTypeValidateAddress                          ValidationType = original.ValidationTypeValidateAddress
 	ValidationTypeValidateCreateOrderLimit                 ValidationType = original.ValidationTypeValidateCreateOrderLimit
-	ValidationTypeValidateDataDestinationDetails           ValidationType = original.ValidationTypeValidateDataDestinationDetails
+	ValidationTypeValidateDataTransferDetails              ValidationType = original.ValidationTypeValidateDataTransferDetails
 	ValidationTypeValidatePreferences                      ValidationType = original.ValidationTypeValidatePreferences
 	ValidationTypeValidateSkuAvailability                  ValidationType = original.ValidationTypeValidateSkuAvailability
 	ValidationTypeValidateSubscriptionIsAllowedToCreateJob ValidationType = original.ValidationTypeValidateSubscriptionIsAllowedToCreateJob
@@ -247,15 +292,17 @@ type ValidationTypeBasicValidationInputResponse = original.ValidationTypeBasicVa
 const (
 	ValidationTypeBasicValidationInputResponseValidationTypeValidateAddress                          ValidationTypeBasicValidationInputResponse = original.ValidationTypeBasicValidationInputResponseValidationTypeValidateAddress
 	ValidationTypeBasicValidationInputResponseValidationTypeValidateCreateOrderLimit                 ValidationTypeBasicValidationInputResponse = original.ValidationTypeBasicValidationInputResponseValidationTypeValidateCreateOrderLimit
-	ValidationTypeBasicValidationInputResponseValidationTypeValidateDataDestinationDetails           ValidationTypeBasicValidationInputResponse = original.ValidationTypeBasicValidationInputResponseValidationTypeValidateDataDestinationDetails
+	ValidationTypeBasicValidationInputResponseValidationTypeValidateDataTransferDetails              ValidationTypeBasicValidationInputResponse = original.ValidationTypeBasicValidationInputResponseValidationTypeValidateDataTransferDetails
 	ValidationTypeBasicValidationInputResponseValidationTypeValidatePreferences                      ValidationTypeBasicValidationInputResponse = original.ValidationTypeBasicValidationInputResponseValidationTypeValidatePreferences
 	ValidationTypeBasicValidationInputResponseValidationTypeValidateSkuAvailability                  ValidationTypeBasicValidationInputResponse = original.ValidationTypeBasicValidationInputResponseValidationTypeValidateSkuAvailability
 	ValidationTypeBasicValidationInputResponseValidationTypeValidateSubscriptionIsAllowedToCreateJob ValidationTypeBasicValidationInputResponse = original.ValidationTypeBasicValidationInputResponseValidationTypeValidateSubscriptionIsAllowedToCreateJob
 	ValidationTypeBasicValidationInputResponseValidationTypeValidationInputResponse                  ValidationTypeBasicValidationInputResponse = original.ValidationTypeBasicValidationInputResponseValidationTypeValidationInputResponse
 )
 
+type APIError = original.APIError
 type AccountCopyLogDetails = original.AccountCopyLogDetails
 type AccountCredentialDetails = original.AccountCredentialDetails
+type AdditionalErrorInfo = original.AdditionalErrorInfo
 type AddressValidationOutput = original.AddressValidationOutput
 type AddressValidationProperties = original.AddressValidationProperties
 type ApplianceNetworkConfiguration = original.ApplianceNetworkConfiguration
@@ -264,15 +311,17 @@ type AvailableSkuRequest = original.AvailableSkuRequest
 type AvailableSkusResult = original.AvailableSkusResult
 type AvailableSkusResultIterator = original.AvailableSkusResultIterator
 type AvailableSkusResultPage = original.AvailableSkusResultPage
+type AzureFileFilterDetails = original.AzureFileFilterDetails
 type BaseClient = original.BaseClient
 type BasicCopyLogDetails = original.BasicCopyLogDetails
-type BasicDestinationAccountDetails = original.BasicDestinationAccountDetails
+type BasicDataAccountDetails = original.BasicDataAccountDetails
 type BasicJobDetails = original.BasicJobDetails
 type BasicJobSecrets = original.BasicJobSecrets
 type BasicScheduleAvailabilityRequest = original.BasicScheduleAvailabilityRequest
 type BasicValidationInputRequest = original.BasicValidationInputRequest
 type BasicValidationInputResponse = original.BasicValidationInputResponse
 type BasicValidationRequest = original.BasicValidationRequest
+type BlobFilterDetails = original.BlobFilterDetails
 type CancellationReason = original.CancellationReason
 type CloudError = original.CloudError
 type ContactDetails = original.ContactDetails
@@ -281,29 +330,32 @@ type CopyProgress = original.CopyProgress
 type CreateJobValidations = original.CreateJobValidations
 type CreateOrderLimitForSubscriptionValidationRequest = original.CreateOrderLimitForSubscriptionValidationRequest
 type CreateOrderLimitForSubscriptionValidationResponseProperties = original.CreateOrderLimitForSubscriptionValidationResponseProperties
-type DataDestinationDetailsValidationRequest = original.DataDestinationDetailsValidationRequest
-type DataDestinationDetailsValidationResponseProperties = original.DataDestinationDetailsValidationResponseProperties
+type DataAccountDetails = original.DataAccountDetails
+type DataExportDetails = original.DataExportDetails
+type DataImportDetails = original.DataImportDetails
+type DataLocationToServiceLocationMap = original.DataLocationToServiceLocationMap
+type DataTransferDetailsValidationRequest = original.DataTransferDetailsValidationRequest
+type DataTransferDetailsValidationResponseProperties = original.DataTransferDetailsValidationResponseProperties
 type DcAccessSecurityCode = original.DcAccessSecurityCode
-type DestinationAccountDetails = original.DestinationAccountDetails
-type DestinationManagedDiskDetails = original.DestinationManagedDiskDetails
-type DestinationStorageAccountDetails = original.DestinationStorageAccountDetails
-type DestinationToServiceLocationMap = original.DestinationToServiceLocationMap
+type Details = original.Details
 type DiskCopyLogDetails = original.DiskCopyLogDetails
 type DiskCopyProgress = original.DiskCopyProgress
 type DiskJobDetails = original.DiskJobDetails
 type DiskJobSecrets = original.DiskJobSecrets
 type DiskScheduleAvailabilityRequest = original.DiskScheduleAvailabilityRequest
 type DiskSecret = original.DiskSecret
-type Error = original.Error
+type EncryptionPreferences = original.EncryptionPreferences
+type ErrorDetail = original.ErrorDetail
+type FilterFileDetails = original.FilterFileDetails
 type HeavyAccountCopyLogDetails = original.HeavyAccountCopyLogDetails
 type HeavyJobDetails = original.HeavyJobDetails
 type HeavyJobSecrets = original.HeavyJobSecrets
 type HeavyScheduleAvailabilityRequest = original.HeavyScheduleAvailabilityRequest
 type HeavySecret = original.HeavySecret
+type IdentityProperties = original.IdentityProperties
 type JobDeliveryInfo = original.JobDeliveryInfo
 type JobDetails = original.JobDetails
 type JobDetailsType = original.JobDetailsType
-type JobErrorDetails = original.JobErrorDetails
 type JobProperties = original.JobProperties
 type JobResource = original.JobResource
 type JobResourceList = original.JobResourceList
@@ -317,6 +369,8 @@ type JobsClient = original.JobsClient
 type JobsCreateFuture = original.JobsCreateFuture
 type JobsDeleteFuture = original.JobsDeleteFuture
 type JobsUpdateFuture = original.JobsUpdateFuture
+type KeyEncryptionKey = original.KeyEncryptionKey
+type ManagedDiskDetails = original.ManagedDiskDetails
 type NotificationPreference = original.NotificationPreference
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -331,6 +385,7 @@ type PreferencesValidationResponseProperties = original.PreferencesValidationRes
 type RegionConfigurationRequest = original.RegionConfigurationRequest
 type RegionConfigurationResponse = original.RegionConfigurationResponse
 type Resource = original.Resource
+type ResourceIdentity = original.ResourceIdentity
 type ScheduleAvailabilityRequest = original.ScheduleAvailabilityRequest
 type ScheduleAvailabilityRequestType = original.ScheduleAvailabilityRequestType
 type ScheduleAvailabilityResponse = original.ScheduleAvailabilityResponse
@@ -347,8 +402,14 @@ type SkuCapacity = original.SkuCapacity
 type SkuCost = original.SkuCost
 type SkuInformation = original.SkuInformation
 type SkuProperties = original.SkuProperties
+type StorageAccountDetails = original.StorageAccountDetails
 type SubscriptionIsAllowedToCreateJobValidationRequest = original.SubscriptionIsAllowedToCreateJobValidationRequest
 type SubscriptionIsAllowedToCreateJobValidationResponseProperties = original.SubscriptionIsAllowedToCreateJobValidationResponseProperties
+type TransferAllDetails = original.TransferAllDetails
+type TransferConfiguration = original.TransferConfiguration
+type TransferConfigurationTransferAllDetails = original.TransferConfigurationTransferAllDetails
+type TransferConfigurationTransferFilterDetails = original.TransferConfigurationTransferFilterDetails
+type TransferFilterDetails = original.TransferFilterDetails
 type TransportAvailabilityDetails = original.TransportAvailabilityDetails
 type TransportAvailabilityRequest = original.TransportAvailabilityRequest
 type TransportAvailabilityResponse = original.TransportAvailabilityResponse
@@ -357,6 +418,8 @@ type UnencryptedCredentials = original.UnencryptedCredentials
 type UnencryptedCredentialsList = original.UnencryptedCredentialsList
 type UpdateJobDetails = original.UpdateJobDetails
 type UpdateJobProperties = original.UpdateJobProperties
+type UserAssignedIdentity = original.UserAssignedIdentity
+type UserAssignedProperties = original.UserAssignedProperties
 type ValidateAddress = original.ValidateAddress
 type ValidationInputRequest = original.ValidationInputRequest
 type ValidationInputResponse = original.ValidationInputResponse
@@ -370,14 +433,14 @@ func New(subscriptionID string) BaseClient {
 func NewAvailableSkusResultIterator(page AvailableSkusResultPage) AvailableSkusResultIterator {
 	return original.NewAvailableSkusResultIterator(page)
 }
-func NewAvailableSkusResultPage(getNextPage func(context.Context, AvailableSkusResult) (AvailableSkusResult, error)) AvailableSkusResultPage {
-	return original.NewAvailableSkusResultPage(getNextPage)
+func NewAvailableSkusResultPage(cur AvailableSkusResult, getNextPage func(context.Context, AvailableSkusResult) (AvailableSkusResult, error)) AvailableSkusResultPage {
+	return original.NewAvailableSkusResultPage(cur, getNextPage)
 }
 func NewJobResourceListIterator(page JobResourceListPage) JobResourceListIterator {
 	return original.NewJobResourceListIterator(page)
 }
-func NewJobResourceListPage(getNextPage func(context.Context, JobResourceList) (JobResourceList, error)) JobResourceListPage {
-	return original.NewJobResourceListPage(getNextPage)
+func NewJobResourceListPage(cur JobResourceList, getNextPage func(context.Context, JobResourceList) (JobResourceList, error)) JobResourceListPage {
+	return original.NewJobResourceListPage(cur, getNextPage)
 }
 func NewJobsClient(subscriptionID string) JobsClient {
 	return original.NewJobsClient(subscriptionID)
@@ -388,8 +451,8 @@ func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient 
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
 }
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return original.NewOperationListPage(getNextPage)
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -421,11 +484,17 @@ func PossibleCopyLogDetailsTypeValues() []CopyLogDetailsType {
 func PossibleCopyStatusValues() []CopyStatus {
 	return original.PossibleCopyStatusValues()
 }
-func PossibleDataDestinationTypeBasicDestinationAccountDetailsValues() []DataDestinationTypeBasicDestinationAccountDetails {
-	return original.PossibleDataDestinationTypeBasicDestinationAccountDetailsValues()
+func PossibleDataAccountTypeBasicDataAccountDetailsValues() []DataAccountTypeBasicDataAccountDetails {
+	return original.PossibleDataAccountTypeBasicDataAccountDetailsValues()
 }
-func PossibleDataDestinationTypeValues() []DataDestinationType {
-	return original.PossibleDataDestinationTypeValues()
+func PossibleDataAccountTypeValues() []DataAccountType {
+	return original.PossibleDataAccountTypeValues()
+}
+func PossibleDoubleEncryptionValues() []DoubleEncryption {
+	return original.PossibleDoubleEncryptionValues()
+}
+func PossibleFilterFileTypeValues() []FilterFileType {
+	return original.PossibleFilterFileTypeValues()
 }
 func PossibleJobDeliveryTypeValues() []JobDeliveryType {
 	return original.PossibleJobDeliveryTypeValues()
@@ -435,6 +504,12 @@ func PossibleJobDetailsTypeEnumValues() []JobDetailsTypeEnum {
 }
 func PossibleJobSecretsTypeEnumValues() []JobSecretsTypeEnum {
 	return original.PossibleJobSecretsTypeEnumValues()
+}
+func PossibleKekTypeValues() []KekType {
+	return original.PossibleKekTypeValues()
+}
+func PossibleLogCollectionLevelValues() []LogCollectionLevel {
+	return original.PossibleLogCollectionLevelValues()
 }
 func PossibleNotificationStageNameValues() []NotificationStageName {
 	return original.PossibleNotificationStageNameValues()
@@ -459,6 +534,12 @@ func PossibleStageNameValues() []StageName {
 }
 func PossibleStageStatusValues() []StageStatus {
 	return original.PossibleStageStatusValues()
+}
+func PossibleTransferConfigurationTypeValues() []TransferConfigurationType {
+	return original.PossibleTransferConfigurationTypeValues()
+}
+func PossibleTransferTypeValues() []TransferType {
+	return original.PossibleTransferTypeValues()
 }
 func PossibleTransportShipmentTypesValues() []TransportShipmentTypes {
 	return original.PossibleTransportShipmentTypesValues()

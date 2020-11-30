@@ -268,8 +268,8 @@ func New(subscriptionID string) BaseClient {
 func NewAppResourceCollectionIterator(page AppResourceCollectionPage) AppResourceCollectionIterator {
 	return original.NewAppResourceCollectionIterator(page)
 }
-func NewAppResourceCollectionPage(getNextPage func(context.Context, AppResourceCollection) (AppResourceCollection, error)) AppResourceCollectionPage {
-	return original.NewAppResourceCollectionPage(getNextPage)
+func NewAppResourceCollectionPage(cur AppResourceCollection, getNextPage func(context.Context, AppResourceCollection) (AppResourceCollection, error)) AppResourceCollectionPage {
+	return original.NewAppResourceCollectionPage(cur, getNextPage)
 }
 func NewAppsClient(subscriptionID string) AppsClient {
 	return original.NewAppsClient(subscriptionID)
@@ -280,14 +280,14 @@ func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient 
 func NewAvailableOperationsIterator(page AvailableOperationsPage) AvailableOperationsIterator {
 	return original.NewAvailableOperationsIterator(page)
 }
-func NewAvailableOperationsPage(getNextPage func(context.Context, AvailableOperations) (AvailableOperations, error)) AvailableOperationsPage {
-	return original.NewAvailableOperationsPage(getNextPage)
+func NewAvailableOperationsPage(cur AvailableOperations, getNextPage func(context.Context, AvailableOperations) (AvailableOperations, error)) AvailableOperationsPage {
+	return original.NewAvailableOperationsPage(cur, getNextPage)
 }
 func NewBindingResourceCollectionIterator(page BindingResourceCollectionPage) BindingResourceCollectionIterator {
 	return original.NewBindingResourceCollectionIterator(page)
 }
-func NewBindingResourceCollectionPage(getNextPage func(context.Context, BindingResourceCollection) (BindingResourceCollection, error)) BindingResourceCollectionPage {
-	return original.NewBindingResourceCollectionPage(getNextPage)
+func NewBindingResourceCollectionPage(cur BindingResourceCollection, getNextPage func(context.Context, BindingResourceCollection) (BindingResourceCollection, error)) BindingResourceCollectionPage {
+	return original.NewBindingResourceCollectionPage(cur, getNextPage)
 }
 func NewBindingsClient(subscriptionID string) BindingsClient {
 	return original.NewBindingsClient(subscriptionID)
@@ -298,8 +298,8 @@ func NewBindingsClientWithBaseURI(baseURI string, subscriptionID string) Binding
 func NewCertificateResourceCollectionIterator(page CertificateResourceCollectionPage) CertificateResourceCollectionIterator {
 	return original.NewCertificateResourceCollectionIterator(page)
 }
-func NewCertificateResourceCollectionPage(getNextPage func(context.Context, CertificateResourceCollection) (CertificateResourceCollection, error)) CertificateResourceCollectionPage {
-	return original.NewCertificateResourceCollectionPage(getNextPage)
+func NewCertificateResourceCollectionPage(cur CertificateResourceCollection, getNextPage func(context.Context, CertificateResourceCollection) (CertificateResourceCollection, error)) CertificateResourceCollectionPage {
+	return original.NewCertificateResourceCollectionPage(cur, getNextPage)
 }
 func NewCertificatesClient(subscriptionID string) CertificatesClient {
 	return original.NewCertificatesClient(subscriptionID)
@@ -310,8 +310,8 @@ func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) Cer
 func NewCustomDomainResourceCollectionIterator(page CustomDomainResourceCollectionPage) CustomDomainResourceCollectionIterator {
 	return original.NewCustomDomainResourceCollectionIterator(page)
 }
-func NewCustomDomainResourceCollectionPage(getNextPage func(context.Context, CustomDomainResourceCollection) (CustomDomainResourceCollection, error)) CustomDomainResourceCollectionPage {
-	return original.NewCustomDomainResourceCollectionPage(getNextPage)
+func NewCustomDomainResourceCollectionPage(cur CustomDomainResourceCollection, getNextPage func(context.Context, CustomDomainResourceCollection) (CustomDomainResourceCollection, error)) CustomDomainResourceCollectionPage {
+	return original.NewCustomDomainResourceCollectionPage(cur, getNextPage)
 }
 func NewCustomDomainsClient(subscriptionID string) CustomDomainsClient {
 	return original.NewCustomDomainsClient(subscriptionID)
@@ -322,8 +322,8 @@ func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) Cu
 func NewDeploymentResourceCollectionIterator(page DeploymentResourceCollectionPage) DeploymentResourceCollectionIterator {
 	return original.NewDeploymentResourceCollectionIterator(page)
 }
-func NewDeploymentResourceCollectionPage(getNextPage func(context.Context, DeploymentResourceCollection) (DeploymentResourceCollection, error)) DeploymentResourceCollectionPage {
-	return original.NewDeploymentResourceCollectionPage(getNextPage)
+func NewDeploymentResourceCollectionPage(cur DeploymentResourceCollection, getNextPage func(context.Context, DeploymentResourceCollection) (DeploymentResourceCollection, error)) DeploymentResourceCollectionPage {
+	return original.NewDeploymentResourceCollectionPage(cur, getNextPage)
 }
 func NewDeploymentsClient(subscriptionID string) DeploymentsClient {
 	return original.NewDeploymentsClient(subscriptionID)
@@ -340,8 +340,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewResourceSkuCollectionIterator(page ResourceSkuCollectionPage) ResourceSkuCollectionIterator {
 	return original.NewResourceSkuCollectionIterator(page)
 }
-func NewResourceSkuCollectionPage(getNextPage func(context.Context, ResourceSkuCollection) (ResourceSkuCollection, error)) ResourceSkuCollectionPage {
-	return original.NewResourceSkuCollectionPage(getNextPage)
+func NewResourceSkuCollectionPage(cur ResourceSkuCollection, getNextPage func(context.Context, ResourceSkuCollection) (ResourceSkuCollection, error)) ResourceSkuCollectionPage {
+	return original.NewResourceSkuCollectionPage(cur, getNextPage)
 }
 func NewRuntimeVersionsClient(subscriptionID string) RuntimeVersionsClient {
 	return original.NewRuntimeVersionsClient(subscriptionID)
@@ -352,8 +352,8 @@ func NewRuntimeVersionsClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewServiceResourceListIterator(page ServiceResourceListPage) ServiceResourceListIterator {
 	return original.NewServiceResourceListIterator(page)
 }
-func NewServiceResourceListPage(getNextPage func(context.Context, ServiceResourceList) (ServiceResourceList, error)) ServiceResourceListPage {
-	return original.NewServiceResourceListPage(getNextPage)
+func NewServiceResourceListPage(cur ServiceResourceList, getNextPage func(context.Context, ServiceResourceList) (ServiceResourceList, error)) ServiceResourceListPage {
+	return original.NewServiceResourceListPage(cur, getNextPage)
 }
 func NewServicesClient(subscriptionID string) ServicesClient {
 	return original.NewServicesClient(subscriptionID)

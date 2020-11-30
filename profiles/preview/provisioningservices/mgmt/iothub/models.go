@@ -145,14 +145,14 @@ func NewIotDpsResourceClientWithBaseURI(baseURI string, subscriptionID string) I
 func NewIotDpsSkuDefinitionListResultIterator(page IotDpsSkuDefinitionListResultPage) IotDpsSkuDefinitionListResultIterator {
 	return original.NewIotDpsSkuDefinitionListResultIterator(page)
 }
-func NewIotDpsSkuDefinitionListResultPage(getNextPage func(context.Context, IotDpsSkuDefinitionListResult) (IotDpsSkuDefinitionListResult, error)) IotDpsSkuDefinitionListResultPage {
-	return original.NewIotDpsSkuDefinitionListResultPage(getNextPage)
+func NewIotDpsSkuDefinitionListResultPage(cur IotDpsSkuDefinitionListResult, getNextPage func(context.Context, IotDpsSkuDefinitionListResult) (IotDpsSkuDefinitionListResult, error)) IotDpsSkuDefinitionListResultPage {
+	return original.NewIotDpsSkuDefinitionListResultPage(cur, getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -163,14 +163,14 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewProvisioningServiceDescriptionListResultIterator(page ProvisioningServiceDescriptionListResultPage) ProvisioningServiceDescriptionListResultIterator {
 	return original.NewProvisioningServiceDescriptionListResultIterator(page)
 }
-func NewProvisioningServiceDescriptionListResultPage(getNextPage func(context.Context, ProvisioningServiceDescriptionListResult) (ProvisioningServiceDescriptionListResult, error)) ProvisioningServiceDescriptionListResultPage {
-	return original.NewProvisioningServiceDescriptionListResultPage(getNextPage)
+func NewProvisioningServiceDescriptionListResultPage(cur ProvisioningServiceDescriptionListResult, getNextPage func(context.Context, ProvisioningServiceDescriptionListResult) (ProvisioningServiceDescriptionListResult, error)) ProvisioningServiceDescriptionListResultPage {
+	return original.NewProvisioningServiceDescriptionListResultPage(cur, getNextPage)
 }
 func NewSharedAccessSignatureAuthorizationRuleListResultIterator(page SharedAccessSignatureAuthorizationRuleListResultPage) SharedAccessSignatureAuthorizationRuleListResultIterator {
 	return original.NewSharedAccessSignatureAuthorizationRuleListResultIterator(page)
 }
-func NewSharedAccessSignatureAuthorizationRuleListResultPage(getNextPage func(context.Context, SharedAccessSignatureAuthorizationRuleListResult) (SharedAccessSignatureAuthorizationRuleListResult, error)) SharedAccessSignatureAuthorizationRuleListResultPage {
-	return original.NewSharedAccessSignatureAuthorizationRuleListResultPage(getNextPage)
+func NewSharedAccessSignatureAuthorizationRuleListResultPage(cur SharedAccessSignatureAuthorizationRuleListResult, getNextPage func(context.Context, SharedAccessSignatureAuthorizationRuleListResult) (SharedAccessSignatureAuthorizationRuleListResult, error)) SharedAccessSignatureAuthorizationRuleListResultPage {
+	return original.NewSharedAccessSignatureAuthorizationRuleListResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

@@ -97,8 +97,8 @@ func NewContainerHostMappingsClientWithBaseURI(baseURI string, subscriptionID st
 func NewControllerListIterator(page ControllerListPage) ControllerListIterator {
 	return original.NewControllerListIterator(page)
 }
-func NewControllerListPage(getNextPage func(context.Context, ControllerList) (ControllerList, error)) ControllerListPage {
-	return original.NewControllerListPage(getNextPage)
+func NewControllerListPage(cur ControllerList, getNextPage func(context.Context, ControllerList) (ControllerList, error)) ControllerListPage {
+	return original.NewControllerListPage(cur, getNextPage)
 }
 func NewControllersClient(subscriptionID string) ControllersClient {
 	return original.NewControllersClient(subscriptionID)
@@ -115,8 +115,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewResourceProviderOperationListIterator(page ResourceProviderOperationListPage) ResourceProviderOperationListIterator {
 	return original.NewResourceProviderOperationListIterator(page)
 }
-func NewResourceProviderOperationListPage(getNextPage func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error)) ResourceProviderOperationListPage {
-	return original.NewResourceProviderOperationListPage(getNextPage)
+func NewResourceProviderOperationListPage(cur ResourceProviderOperationList, getNextPage func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error)) ResourceProviderOperationListPage {
+	return original.NewResourceProviderOperationListPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

@@ -94,19 +94,18 @@ const (
 type ResourceType = original.ResourceType
 
 const (
-	ResourceTypeMicrosoftComputeavailabilitySets             ResourceType = original.ResourceTypeMicrosoftComputeavailabilitySets
-	ResourceTypeMicrosoftComputevirtualMachines              ResourceType = original.ResourceTypeMicrosoftComputevirtualMachines
-	ResourceTypeMicrosoftNetworkloadBalancers                ResourceType = original.ResourceTypeMicrosoftNetworkloadBalancers
-	ResourceTypeMicrosoftNetworknetworkInterfaces            ResourceType = original.ResourceTypeMicrosoftNetworknetworkInterfaces
-	ResourceTypeMicrosoftNetworknetworkSecurityGroups        ResourceType = original.ResourceTypeMicrosoftNetworknetworkSecurityGroups
-	ResourceTypeMicrosoftNetworkpublicIPAddresses            ResourceType = original.ResourceTypeMicrosoftNetworkpublicIPAddresses
-	ResourceTypeMicrosoftNetworkvirtualNetworks              ResourceType = original.ResourceTypeMicrosoftNetworkvirtualNetworks
-	ResourceTypeMicrosoftSqlservers                          ResourceType = original.ResourceTypeMicrosoftSqlservers
-	ResourceTypeMicrosoftSqlserversdatabases                 ResourceType = original.ResourceTypeMicrosoftSqlserversdatabases
-	ResourceTypeMicrosoftSqlserverselasticPools              ResourceType = original.ResourceTypeMicrosoftSqlserverselasticPools
-	ResourceTypeMoveResourcePropertiesSourceResourceSettings ResourceType = original.ResourceTypeMoveResourcePropertiesSourceResourceSettings
-	ResourceTypeResourceGroups                               ResourceType = original.ResourceTypeResourceGroups
-	ResourceTypeResourceSettings                             ResourceType = original.ResourceTypeResourceSettings
+	ResourceTypeMicrosoftComputeavailabilitySets      ResourceType = original.ResourceTypeMicrosoftComputeavailabilitySets
+	ResourceTypeMicrosoftComputevirtualMachines       ResourceType = original.ResourceTypeMicrosoftComputevirtualMachines
+	ResourceTypeMicrosoftNetworkloadBalancers         ResourceType = original.ResourceTypeMicrosoftNetworkloadBalancers
+	ResourceTypeMicrosoftNetworknetworkInterfaces     ResourceType = original.ResourceTypeMicrosoftNetworknetworkInterfaces
+	ResourceTypeMicrosoftNetworknetworkSecurityGroups ResourceType = original.ResourceTypeMicrosoftNetworknetworkSecurityGroups
+	ResourceTypeMicrosoftNetworkpublicIPAddresses     ResourceType = original.ResourceTypeMicrosoftNetworkpublicIPAddresses
+	ResourceTypeMicrosoftNetworkvirtualNetworks       ResourceType = original.ResourceTypeMicrosoftNetworkvirtualNetworks
+	ResourceTypeMicrosoftSqlservers                   ResourceType = original.ResourceTypeMicrosoftSqlservers
+	ResourceTypeMicrosoftSqlserversdatabases          ResourceType = original.ResourceTypeMicrosoftSqlserversdatabases
+	ResourceTypeMicrosoftSqlserverselasticPools       ResourceType = original.ResourceTypeMicrosoftSqlserverselasticPools
+	ResourceTypeResourceGroups                        ResourceType = original.ResourceTypeResourceGroups
+	ResourceTypeResourceSettings                      ResourceType = original.ResourceTypeResourceSettings
 )
 
 type TargetAvailabilityZone = original.TargetAvailabilityZone
@@ -131,6 +130,7 @@ type AvailabilitySetResourceSettings = original.AvailabilitySetResourceSettings
 type AzureResourceReference = original.AzureResourceReference
 type BaseClient = original.BaseClient
 type BasicResourceSettings = original.BasicResourceSettings
+type BulkRemoveRequest = original.BulkRemoveRequest
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type CommitRequest = original.CommitRequest
@@ -149,6 +149,7 @@ type MoveCollectionProperties = original.MoveCollectionProperties
 type MoveCollectionResultList = original.MoveCollectionResultList
 type MoveCollectionResultListIterator = original.MoveCollectionResultListIterator
 type MoveCollectionResultListPage = original.MoveCollectionResultListPage
+type MoveCollectionsBulkRemoveFuture = original.MoveCollectionsBulkRemoveFuture
 type MoveCollectionsClient = original.MoveCollectionsClient
 type MoveCollectionsCommitFuture = original.MoveCollectionsCommitFuture
 type MoveCollectionsDeleteFuture = original.MoveCollectionsDeleteFuture
@@ -168,8 +169,8 @@ type MoveResourceErrorBody = original.MoveResourceErrorBody
 type MoveResourceFilter = original.MoveResourceFilter
 type MoveResourceFilterProperties = original.MoveResourceFilterProperties
 type MoveResourceProperties = original.MoveResourceProperties
+type MoveResourcePropertiesErrors = original.MoveResourcePropertiesErrors
 type MoveResourcePropertiesMoveStatus = original.MoveResourcePropertiesMoveStatus
-type MoveResourcePropertiesSourceResourceSettings = original.MoveResourcePropertiesSourceResourceSettings
 type MoveResourceStatus = original.MoveResourceStatus
 type MoveResourcesClient = original.MoveResourcesClient
 type MoveResourcesCreateFuture = original.MoveResourcesCreateFuture
@@ -188,13 +189,14 @@ type PrepareRequest = original.PrepareRequest
 type ProxyResourceReference = original.ProxyResourceReference
 type PublicIPAddressResourceSettings = original.PublicIPAddressResourceSettings
 type ResourceGroupResourceSettings = original.ResourceGroupResourceSettings
-type ResourceMoveRequest = original.ResourceMoveRequest
+type ResourceMoveRequestType = original.ResourceMoveRequestType
 type ResourceSettings = original.ResourceSettings
 type SQLDatabaseResourceSettings = original.SQLDatabaseResourceSettings
 type SQLElasticPoolResourceSettings = original.SQLElasticPoolResourceSettings
 type SQLServerResourceSettings = original.SQLServerResourceSettings
 type SubnetReference = original.SubnetReference
 type SubnetResourceSettings = original.SubnetResourceSettings
+type SummaryItem = original.SummaryItem
 type UnresolvedDependenciesClient = original.UnresolvedDependenciesClient
 type UnresolvedDependency = original.UnresolvedDependency
 type UnresolvedDependencyCollection = original.UnresolvedDependencyCollection
@@ -208,8 +210,8 @@ func New(subscriptionID string) BaseClient {
 func NewMoveCollectionResultListIterator(page MoveCollectionResultListPage) MoveCollectionResultListIterator {
 	return original.NewMoveCollectionResultListIterator(page)
 }
-func NewMoveCollectionResultListPage(getNextPage func(context.Context, MoveCollectionResultList) (MoveCollectionResultList, error)) MoveCollectionResultListPage {
-	return original.NewMoveCollectionResultListPage(getNextPage)
+func NewMoveCollectionResultListPage(cur MoveCollectionResultList, getNextPage func(context.Context, MoveCollectionResultList) (MoveCollectionResultList, error)) MoveCollectionResultListPage {
+	return original.NewMoveCollectionResultListPage(cur, getNextPage)
 }
 func NewMoveCollectionsClient(subscriptionID string) MoveCollectionsClient {
 	return original.NewMoveCollectionsClient(subscriptionID)
@@ -220,8 +222,8 @@ func NewMoveCollectionsClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewMoveResourceCollectionIterator(page MoveResourceCollectionPage) MoveResourceCollectionIterator {
 	return original.NewMoveResourceCollectionIterator(page)
 }
-func NewMoveResourceCollectionPage(getNextPage func(context.Context, MoveResourceCollection) (MoveResourceCollection, error)) MoveResourceCollectionPage {
-	return original.NewMoveResourceCollectionPage(getNextPage)
+func NewMoveResourceCollectionPage(cur MoveResourceCollection, getNextPage func(context.Context, MoveResourceCollection) (MoveResourceCollection, error)) MoveResourceCollectionPage {
+	return original.NewMoveResourceCollectionPage(cur, getNextPage)
 }
 func NewMoveResourcesClient(subscriptionID string) MoveResourcesClient {
 	return original.NewMoveResourcesClient(subscriptionID)

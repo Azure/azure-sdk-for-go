@@ -340,8 +340,8 @@ func New(subscriptionID string) BaseClient {
 func NewAvailabilitySetListResultIterator(page AvailabilitySetListResultPage) AvailabilitySetListResultIterator {
 	return original.NewAvailabilitySetListResultIterator(page)
 }
-func NewAvailabilitySetListResultPage(getNextPage func(context.Context, AvailabilitySetListResult) (AvailabilitySetListResult, error)) AvailabilitySetListResultPage {
-	return original.NewAvailabilitySetListResultPage(getNextPage)
+func NewAvailabilitySetListResultPage(cur AvailabilitySetListResult, getNextPage func(context.Context, AvailabilitySetListResult) (AvailabilitySetListResult, error)) AvailabilitySetListResultPage {
+	return original.NewAvailabilitySetListResultPage(cur, getNextPage)
 }
 func NewAvailabilitySetsClient(subscriptionID string) AvailabilitySetsClient {
 	return original.NewAvailabilitySetsClient(subscriptionID)
@@ -352,8 +352,8 @@ func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string)
 func NewListUsagesResultIterator(page ListUsagesResultPage) ListUsagesResultIterator {
 	return original.NewListUsagesResultIterator(page)
 }
-func NewListUsagesResultPage(getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
-	return original.NewListUsagesResultPage(getNextPage)
+func NewListUsagesResultPage(cur ListUsagesResult, getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
+	return original.NewListUsagesResultPage(cur, getNextPage)
 }
 func NewUsageClient(subscriptionID string) UsageClient {
 	return original.NewUsageClient(subscriptionID)
@@ -382,32 +382,32 @@ func NewVirtualMachineImagesClientWithBaseURI(baseURI string, subscriptionID str
 func NewVirtualMachineListResultIterator(page VirtualMachineListResultPage) VirtualMachineListResultIterator {
 	return original.NewVirtualMachineListResultIterator(page)
 }
-func NewVirtualMachineListResultPage(getNextPage func(context.Context, VirtualMachineListResult) (VirtualMachineListResult, error)) VirtualMachineListResultPage {
-	return original.NewVirtualMachineListResultPage(getNextPage)
+func NewVirtualMachineListResultPage(cur VirtualMachineListResult, getNextPage func(context.Context, VirtualMachineListResult) (VirtualMachineListResult, error)) VirtualMachineListResultPage {
+	return original.NewVirtualMachineListResultPage(cur, getNextPage)
 }
 func NewVirtualMachineScaleSetListResultIterator(page VirtualMachineScaleSetListResultPage) VirtualMachineScaleSetListResultIterator {
 	return original.NewVirtualMachineScaleSetListResultIterator(page)
 }
-func NewVirtualMachineScaleSetListResultPage(getNextPage func(context.Context, VirtualMachineScaleSetListResult) (VirtualMachineScaleSetListResult, error)) VirtualMachineScaleSetListResultPage {
-	return original.NewVirtualMachineScaleSetListResultPage(getNextPage)
+func NewVirtualMachineScaleSetListResultPage(cur VirtualMachineScaleSetListResult, getNextPage func(context.Context, VirtualMachineScaleSetListResult) (VirtualMachineScaleSetListResult, error)) VirtualMachineScaleSetListResultPage {
+	return original.NewVirtualMachineScaleSetListResultPage(cur, getNextPage)
 }
 func NewVirtualMachineScaleSetListSkusResultIterator(page VirtualMachineScaleSetListSkusResultPage) VirtualMachineScaleSetListSkusResultIterator {
 	return original.NewVirtualMachineScaleSetListSkusResultIterator(page)
 }
-func NewVirtualMachineScaleSetListSkusResultPage(getNextPage func(context.Context, VirtualMachineScaleSetListSkusResult) (VirtualMachineScaleSetListSkusResult, error)) VirtualMachineScaleSetListSkusResultPage {
-	return original.NewVirtualMachineScaleSetListSkusResultPage(getNextPage)
+func NewVirtualMachineScaleSetListSkusResultPage(cur VirtualMachineScaleSetListSkusResult, getNextPage func(context.Context, VirtualMachineScaleSetListSkusResult) (VirtualMachineScaleSetListSkusResult, error)) VirtualMachineScaleSetListSkusResultPage {
+	return original.NewVirtualMachineScaleSetListSkusResultPage(cur, getNextPage)
 }
 func NewVirtualMachineScaleSetListWithLinkResultIterator(page VirtualMachineScaleSetListWithLinkResultPage) VirtualMachineScaleSetListWithLinkResultIterator {
 	return original.NewVirtualMachineScaleSetListWithLinkResultIterator(page)
 }
-func NewVirtualMachineScaleSetListWithLinkResultPage(getNextPage func(context.Context, VirtualMachineScaleSetListWithLinkResult) (VirtualMachineScaleSetListWithLinkResult, error)) VirtualMachineScaleSetListWithLinkResultPage {
-	return original.NewVirtualMachineScaleSetListWithLinkResultPage(getNextPage)
+func NewVirtualMachineScaleSetListWithLinkResultPage(cur VirtualMachineScaleSetListWithLinkResult, getNextPage func(context.Context, VirtualMachineScaleSetListWithLinkResult) (VirtualMachineScaleSetListWithLinkResult, error)) VirtualMachineScaleSetListWithLinkResultPage {
+	return original.NewVirtualMachineScaleSetListWithLinkResultPage(cur, getNextPage)
 }
 func NewVirtualMachineScaleSetVMListResultIterator(page VirtualMachineScaleSetVMListResultPage) VirtualMachineScaleSetVMListResultIterator {
 	return original.NewVirtualMachineScaleSetVMListResultIterator(page)
 }
-func NewVirtualMachineScaleSetVMListResultPage(getNextPage func(context.Context, VirtualMachineScaleSetVMListResult) (VirtualMachineScaleSetVMListResult, error)) VirtualMachineScaleSetVMListResultPage {
-	return original.NewVirtualMachineScaleSetVMListResultPage(getNextPage)
+func NewVirtualMachineScaleSetVMListResultPage(cur VirtualMachineScaleSetVMListResult, getNextPage func(context.Context, VirtualMachineScaleSetVMListResult) (VirtualMachineScaleSetVMListResult, error)) VirtualMachineScaleSetVMListResultPage {
+	return original.NewVirtualMachineScaleSetVMListResultPage(cur, getNextPage)
 }
 func NewVirtualMachineScaleSetVMsClient(subscriptionID string) VirtualMachineScaleSetVMsClient {
 	return original.NewVirtualMachineScaleSetVMsClient(subscriptionID)

@@ -608,8 +608,8 @@ func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) Endpoi
 func NewExperimentListIterator(page ExperimentListPage) ExperimentListIterator {
 	return original.NewExperimentListIterator(page)
 }
-func NewExperimentListPage(getNextPage func(context.Context, ExperimentList) (ExperimentList, error)) ExperimentListPage {
-	return original.NewExperimentListPage(getNextPage)
+func NewExperimentListPage(cur ExperimentList, getNextPage func(context.Context, ExperimentList) (ExperimentList, error)) ExperimentListPage {
+	return original.NewExperimentListPage(cur, getNextPage)
 }
 func NewExperimentsClient(subscriptionID string) ExperimentsClient {
 	return original.NewExperimentsClient(subscriptionID)
@@ -632,20 +632,20 @@ func NewFrontendEndpointsClientWithBaseURI(baseURI string, subscriptionID string
 func NewFrontendEndpointsListResultIterator(page FrontendEndpointsListResultPage) FrontendEndpointsListResultIterator {
 	return original.NewFrontendEndpointsListResultIterator(page)
 }
-func NewFrontendEndpointsListResultPage(getNextPage func(context.Context, FrontendEndpointsListResult) (FrontendEndpointsListResult, error)) FrontendEndpointsListResultPage {
-	return original.NewFrontendEndpointsListResultPage(getNextPage)
+func NewFrontendEndpointsListResultPage(cur FrontendEndpointsListResult, getNextPage func(context.Context, FrontendEndpointsListResult) (FrontendEndpointsListResult, error)) FrontendEndpointsListResultPage {
+	return original.NewFrontendEndpointsListResultPage(cur, getNextPage)
 }
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
 }
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return original.NewListResultPage(getNextPage)
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(cur, getNextPage)
 }
 func NewManagedRuleSetDefinitionListIterator(page ManagedRuleSetDefinitionListPage) ManagedRuleSetDefinitionListIterator {
 	return original.NewManagedRuleSetDefinitionListIterator(page)
 }
-func NewManagedRuleSetDefinitionListPage(getNextPage func(context.Context, ManagedRuleSetDefinitionList) (ManagedRuleSetDefinitionList, error)) ManagedRuleSetDefinitionListPage {
-	return original.NewManagedRuleSetDefinitionListPage(getNextPage)
+func NewManagedRuleSetDefinitionListPage(cur ManagedRuleSetDefinitionList, getNextPage func(context.Context, ManagedRuleSetDefinitionList) (ManagedRuleSetDefinitionList, error)) ManagedRuleSetDefinitionListPage {
+	return original.NewManagedRuleSetDefinitionListPage(cur, getNextPage)
 }
 func NewManagedRuleSetsClient(subscriptionID string) ManagedRuleSetsClient {
 	return original.NewManagedRuleSetsClient(subscriptionID)
@@ -680,8 +680,8 @@ func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) Policie
 func NewPreconfiguredEndpointListIterator(page PreconfiguredEndpointListPage) PreconfiguredEndpointListIterator {
 	return original.NewPreconfiguredEndpointListIterator(page)
 }
-func NewPreconfiguredEndpointListPage(getNextPage func(context.Context, PreconfiguredEndpointList) (PreconfiguredEndpointList, error)) PreconfiguredEndpointListPage {
-	return original.NewPreconfiguredEndpointListPage(getNextPage)
+func NewPreconfiguredEndpointListPage(cur PreconfiguredEndpointList, getNextPage func(context.Context, PreconfiguredEndpointList) (PreconfiguredEndpointList, error)) PreconfiguredEndpointListPage {
+	return original.NewPreconfiguredEndpointListPage(cur, getNextPage)
 }
 func NewPreconfiguredEndpointsClient(subscriptionID string) PreconfiguredEndpointsClient {
 	return original.NewPreconfiguredEndpointsClient(subscriptionID)
@@ -692,8 +692,8 @@ func NewPreconfiguredEndpointsClientWithBaseURI(baseURI string, subscriptionID s
 func NewProfileListIterator(page ProfileListPage) ProfileListIterator {
 	return original.NewProfileListIterator(page)
 }
-func NewProfileListPage(getNextPage func(context.Context, ProfileList) (ProfileList, error)) ProfileListPage {
-	return original.NewProfileListPage(getNextPage)
+func NewProfileListPage(cur ProfileList, getNextPage func(context.Context, ProfileList) (ProfileList, error)) ProfileListPage {
+	return original.NewProfileListPage(cur, getNextPage)
 }
 func NewReportsClient(subscriptionID string) ReportsClient {
 	return original.NewReportsClient(subscriptionID)
@@ -704,8 +704,8 @@ func NewReportsClientWithBaseURI(baseURI string, subscriptionID string) ReportsC
 func NewRulesEngineListResultIterator(page RulesEngineListResultPage) RulesEngineListResultIterator {
 	return original.NewRulesEngineListResultIterator(page)
 }
-func NewRulesEngineListResultPage(getNextPage func(context.Context, RulesEngineListResult) (RulesEngineListResult, error)) RulesEngineListResultPage {
-	return original.NewRulesEngineListResultPage(getNextPage)
+func NewRulesEngineListResultPage(cur RulesEngineListResult, getNextPage func(context.Context, RulesEngineListResult) (RulesEngineListResult, error)) RulesEngineListResultPage {
+	return original.NewRulesEngineListResultPage(cur, getNextPage)
 }
 func NewRulesEnginesClient(subscriptionID string) RulesEnginesClient {
 	return original.NewRulesEnginesClient(subscriptionID)
@@ -716,8 +716,8 @@ func NewRulesEnginesClientWithBaseURI(baseURI string, subscriptionID string) Rul
 func NewWebApplicationFirewallPolicyListIterator(page WebApplicationFirewallPolicyListPage) WebApplicationFirewallPolicyListIterator {
 	return original.NewWebApplicationFirewallPolicyListIterator(page)
 }
-func NewWebApplicationFirewallPolicyListPage(getNextPage func(context.Context, WebApplicationFirewallPolicyList) (WebApplicationFirewallPolicyList, error)) WebApplicationFirewallPolicyListPage {
-	return original.NewWebApplicationFirewallPolicyListPage(getNextPage)
+func NewWebApplicationFirewallPolicyListPage(cur WebApplicationFirewallPolicyList, getNextPage func(context.Context, WebApplicationFirewallPolicyList) (WebApplicationFirewallPolicyList, error)) WebApplicationFirewallPolicyListPage {
+	return original.NewWebApplicationFirewallPolicyListPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

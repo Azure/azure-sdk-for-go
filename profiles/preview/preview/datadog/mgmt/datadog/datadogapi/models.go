@@ -24,6 +24,7 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/datadog/mgmt
 type APIKeysClientAPI = original.APIKeysClientAPI
 type HostsClientAPI = original.HostsClientAPI
 type LinkedResourcesClientAPI = original.LinkedResourcesClientAPI
+type MarketplaceAgreementsClientAPI = original.MarketplaceAgreementsClientAPI
 type MonitoredResourcesClientAPI = original.MonitoredResourcesClientAPI
 type MonitorsClientAPI = original.MonitorsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

@@ -109,8 +109,8 @@ func New(subscriptionID string) BaseClient {
 func NewOpenShiftClusterListIterator(page OpenShiftClusterListPage) OpenShiftClusterListIterator {
 	return original.NewOpenShiftClusterListIterator(page)
 }
-func NewOpenShiftClusterListPage(getNextPage func(context.Context, OpenShiftClusterList) (OpenShiftClusterList, error)) OpenShiftClusterListPage {
-	return original.NewOpenShiftClusterListPage(getNextPage)
+func NewOpenShiftClusterListPage(cur OpenShiftClusterList, getNextPage func(context.Context, OpenShiftClusterList) (OpenShiftClusterList, error)) OpenShiftClusterListPage {
+	return original.NewOpenShiftClusterListPage(cur, getNextPage)
 }
 func NewOpenShiftClustersClient(subscriptionID string) OpenShiftClustersClient {
 	return original.NewOpenShiftClustersClient(subscriptionID)
@@ -121,8 +121,8 @@ func NewOpenShiftClustersClientWithBaseURI(baseURI string, subscriptionID string
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
 }
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return original.NewOperationListPage(getNextPage)
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

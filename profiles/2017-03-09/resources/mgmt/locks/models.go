@@ -51,8 +51,8 @@ func New(subscriptionID string) BaseClient {
 func NewManagementLockListResultIterator(page ManagementLockListResultPage) ManagementLockListResultIterator {
 	return original.NewManagementLockListResultIterator(page)
 }
-func NewManagementLockListResultPage(getNextPage func(context.Context, ManagementLockListResult) (ManagementLockListResult, error)) ManagementLockListResultPage {
-	return original.NewManagementLockListResultPage(getNextPage)
+func NewManagementLockListResultPage(cur ManagementLockListResult, getNextPage func(context.Context, ManagementLockListResult) (ManagementLockListResult, error)) ManagementLockListResultPage {
+	return original.NewManagementLockListResultPage(cur, getNextPage)
 }
 func NewManagementLocksClient(subscriptionID string) ManagementLocksClient {
 	return original.NewManagementLocksClient(subscriptionID)

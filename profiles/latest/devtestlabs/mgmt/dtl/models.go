@@ -558,8 +558,8 @@ func New(subscriptionID string) BaseClient {
 func NewArmTemplateListIterator(page ArmTemplateListPage) ArmTemplateListIterator {
 	return original.NewArmTemplateListIterator(page)
 }
-func NewArmTemplateListPage(getNextPage func(context.Context, ArmTemplateList) (ArmTemplateList, error)) ArmTemplateListPage {
-	return original.NewArmTemplateListPage(getNextPage)
+func NewArmTemplateListPage(cur ArmTemplateList, getNextPage func(context.Context, ArmTemplateList) (ArmTemplateList, error)) ArmTemplateListPage {
+	return original.NewArmTemplateListPage(cur, getNextPage)
 }
 func NewArmTemplatesClient(subscriptionID string) ArmTemplatesClient {
 	return original.NewArmTemplatesClient(subscriptionID)
@@ -570,14 +570,14 @@ func NewArmTemplatesClientWithBaseURI(baseURI string, subscriptionID string) Arm
 func NewArtifactListIterator(page ArtifactListPage) ArtifactListIterator {
 	return original.NewArtifactListIterator(page)
 }
-func NewArtifactListPage(getNextPage func(context.Context, ArtifactList) (ArtifactList, error)) ArtifactListPage {
-	return original.NewArtifactListPage(getNextPage)
+func NewArtifactListPage(cur ArtifactList, getNextPage func(context.Context, ArtifactList) (ArtifactList, error)) ArtifactListPage {
+	return original.NewArtifactListPage(cur, getNextPage)
 }
 func NewArtifactSourceListIterator(page ArtifactSourceListPage) ArtifactSourceListIterator {
 	return original.NewArtifactSourceListIterator(page)
 }
-func NewArtifactSourceListPage(getNextPage func(context.Context, ArtifactSourceList) (ArtifactSourceList, error)) ArtifactSourceListPage {
-	return original.NewArtifactSourceListPage(getNextPage)
+func NewArtifactSourceListPage(cur ArtifactSourceList, getNextPage func(context.Context, ArtifactSourceList) (ArtifactSourceList, error)) ArtifactSourceListPage {
+	return original.NewArtifactSourceListPage(cur, getNextPage)
 }
 func NewArtifactSourcesClient(subscriptionID string) ArtifactSourcesClient {
 	return original.NewArtifactSourcesClient(subscriptionID)
@@ -600,8 +600,8 @@ func NewCostsClientWithBaseURI(baseURI string, subscriptionID string) CostsClien
 func NewCustomImageListIterator(page CustomImageListPage) CustomImageListIterator {
 	return original.NewCustomImageListIterator(page)
 }
-func NewCustomImageListPage(getNextPage func(context.Context, CustomImageList) (CustomImageList, error)) CustomImageListPage {
-	return original.NewCustomImageListPage(getNextPage)
+func NewCustomImageListPage(cur CustomImageList, getNextPage func(context.Context, CustomImageList) (CustomImageList, error)) CustomImageListPage {
+	return original.NewCustomImageListPage(cur, getNextPage)
 }
 func NewCustomImagesClient(subscriptionID string) CustomImagesClient {
 	return original.NewCustomImagesClient(subscriptionID)
@@ -612,8 +612,8 @@ func NewCustomImagesClientWithBaseURI(baseURI string, subscriptionID string) Cus
 func NewDiskListIterator(page DiskListPage) DiskListIterator {
 	return original.NewDiskListIterator(page)
 }
-func NewDiskListPage(getNextPage func(context.Context, DiskList) (DiskList, error)) DiskListPage {
-	return original.NewDiskListPage(getNextPage)
+func NewDiskListPage(cur DiskList, getNextPage func(context.Context, DiskList) (DiskList, error)) DiskListPage {
+	return original.NewDiskListPage(cur, getNextPage)
 }
 func NewDisksClient(subscriptionID string) DisksClient {
 	return original.NewDisksClient(subscriptionID)
@@ -624,8 +624,8 @@ func NewDisksClientWithBaseURI(baseURI string, subscriptionID string) DisksClien
 func NewEnvironmentListIterator(page EnvironmentListPage) EnvironmentListIterator {
 	return original.NewEnvironmentListIterator(page)
 }
-func NewEnvironmentListPage(getNextPage func(context.Context, EnvironmentList) (EnvironmentList, error)) EnvironmentListPage {
-	return original.NewEnvironmentListPage(getNextPage)
+func NewEnvironmentListPage(cur EnvironmentList, getNextPage func(context.Context, EnvironmentList) (EnvironmentList, error)) EnvironmentListPage {
+	return original.NewEnvironmentListPage(cur, getNextPage)
 }
 func NewEnvironmentsClient(subscriptionID string) EnvironmentsClient {
 	return original.NewEnvironmentsClient(subscriptionID)
@@ -636,8 +636,8 @@ func NewEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) Env
 func NewFormulaListIterator(page FormulaListPage) FormulaListIterator {
 	return original.NewFormulaListIterator(page)
 }
-func NewFormulaListPage(getNextPage func(context.Context, FormulaList) (FormulaList, error)) FormulaListPage {
-	return original.NewFormulaListPage(getNextPage)
+func NewFormulaListPage(cur FormulaList, getNextPage func(context.Context, FormulaList) (FormulaList, error)) FormulaListPage {
+	return original.NewFormulaListPage(cur, getNextPage)
 }
 func NewFormulasClient(subscriptionID string) FormulasClient {
 	return original.NewFormulasClient(subscriptionID)
@@ -648,8 +648,8 @@ func NewFormulasClientWithBaseURI(baseURI string, subscriptionID string) Formula
 func NewGalleryImageListIterator(page GalleryImageListPage) GalleryImageListIterator {
 	return original.NewGalleryImageListIterator(page)
 }
-func NewGalleryImageListPage(getNextPage func(context.Context, GalleryImageList) (GalleryImageList, error)) GalleryImageListPage {
-	return original.NewGalleryImageListPage(getNextPage)
+func NewGalleryImageListPage(cur GalleryImageList, getNextPage func(context.Context, GalleryImageList) (GalleryImageList, error)) GalleryImageListPage {
+	return original.NewGalleryImageListPage(cur, getNextPage)
 }
 func NewGalleryImagesClient(subscriptionID string) GalleryImagesClient {
 	return original.NewGalleryImagesClient(subscriptionID)
@@ -666,20 +666,20 @@ func NewGlobalSchedulesClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewLabListIterator(page LabListPage) LabListIterator {
 	return original.NewLabListIterator(page)
 }
-func NewLabListPage(getNextPage func(context.Context, LabList) (LabList, error)) LabListPage {
-	return original.NewLabListPage(getNextPage)
+func NewLabListPage(cur LabList, getNextPage func(context.Context, LabList) (LabList, error)) LabListPage {
+	return original.NewLabListPage(cur, getNextPage)
 }
 func NewLabVhdListIterator(page LabVhdListPage) LabVhdListIterator {
 	return original.NewLabVhdListIterator(page)
 }
-func NewLabVhdListPage(getNextPage func(context.Context, LabVhdList) (LabVhdList, error)) LabVhdListPage {
-	return original.NewLabVhdListPage(getNextPage)
+func NewLabVhdListPage(cur LabVhdList, getNextPage func(context.Context, LabVhdList) (LabVhdList, error)) LabVhdListPage {
+	return original.NewLabVhdListPage(cur, getNextPage)
 }
 func NewLabVirtualMachineListIterator(page LabVirtualMachineListPage) LabVirtualMachineListIterator {
 	return original.NewLabVirtualMachineListIterator(page)
 }
-func NewLabVirtualMachineListPage(getNextPage func(context.Context, LabVirtualMachineList) (LabVirtualMachineList, error)) LabVirtualMachineListPage {
-	return original.NewLabVirtualMachineListPage(getNextPage)
+func NewLabVirtualMachineListPage(cur LabVirtualMachineList, getNextPage func(context.Context, LabVirtualMachineList) (LabVirtualMachineList, error)) LabVirtualMachineListPage {
+	return original.NewLabVirtualMachineListPage(cur, getNextPage)
 }
 func NewLabsClient(subscriptionID string) LabsClient {
 	return original.NewLabsClient(subscriptionID)
@@ -690,8 +690,8 @@ func NewLabsClientWithBaseURI(baseURI string, subscriptionID string) LabsClient 
 func NewNotificationChannelListIterator(page NotificationChannelListPage) NotificationChannelListIterator {
 	return original.NewNotificationChannelListIterator(page)
 }
-func NewNotificationChannelListPage(getNextPage func(context.Context, NotificationChannelList) (NotificationChannelList, error)) NotificationChannelListPage {
-	return original.NewNotificationChannelListPage(getNextPage)
+func NewNotificationChannelListPage(cur NotificationChannelList, getNextPage func(context.Context, NotificationChannelList) (NotificationChannelList, error)) NotificationChannelListPage {
+	return original.NewNotificationChannelListPage(cur, getNextPage)
 }
 func NewNotificationChannelsClient(subscriptionID string) NotificationChannelsClient {
 	return original.NewNotificationChannelsClient(subscriptionID)
@@ -714,8 +714,8 @@ func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) Policie
 func NewPolicyListIterator(page PolicyListPage) PolicyListIterator {
 	return original.NewPolicyListIterator(page)
 }
-func NewPolicyListPage(getNextPage func(context.Context, PolicyList) (PolicyList, error)) PolicyListPage {
-	return original.NewPolicyListPage(getNextPage)
+func NewPolicyListPage(cur PolicyList, getNextPage func(context.Context, PolicyList) (PolicyList, error)) PolicyListPage {
+	return original.NewPolicyListPage(cur, getNextPage)
 }
 func NewPolicySetsClient(subscriptionID string) PolicySetsClient {
 	return original.NewPolicySetsClient(subscriptionID)
@@ -726,8 +726,8 @@ func NewPolicySetsClientWithBaseURI(baseURI string, subscriptionID string) Polic
 func NewProviderOperationResultIterator(page ProviderOperationResultPage) ProviderOperationResultIterator {
 	return original.NewProviderOperationResultIterator(page)
 }
-func NewProviderOperationResultPage(getNextPage func(context.Context, ProviderOperationResult) (ProviderOperationResult, error)) ProviderOperationResultPage {
-	return original.NewProviderOperationResultPage(getNextPage)
+func NewProviderOperationResultPage(cur ProviderOperationResult, getNextPage func(context.Context, ProviderOperationResult) (ProviderOperationResult, error)) ProviderOperationResultPage {
+	return original.NewProviderOperationResultPage(cur, getNextPage)
 }
 func NewProviderOperationsClient(subscriptionID string) ProviderOperationsClient {
 	return original.NewProviderOperationsClient(subscriptionID)
@@ -738,8 +738,8 @@ func NewProviderOperationsClientWithBaseURI(baseURI string, subscriptionID strin
 func NewScheduleListIterator(page ScheduleListPage) ScheduleListIterator {
 	return original.NewScheduleListIterator(page)
 }
-func NewScheduleListPage(getNextPage func(context.Context, ScheduleList) (ScheduleList, error)) ScheduleListPage {
-	return original.NewScheduleListPage(getNextPage)
+func NewScheduleListPage(cur ScheduleList, getNextPage func(context.Context, ScheduleList) (ScheduleList, error)) ScheduleListPage {
+	return original.NewScheduleListPage(cur, getNextPage)
 }
 func NewSchedulesClient(subscriptionID string) SchedulesClient {
 	return original.NewSchedulesClient(subscriptionID)
@@ -750,8 +750,8 @@ func NewSchedulesClientWithBaseURI(baseURI string, subscriptionID string) Schedu
 func NewSecretListIterator(page SecretListPage) SecretListIterator {
 	return original.NewSecretListIterator(page)
 }
-func NewSecretListPage(getNextPage func(context.Context, SecretList) (SecretList, error)) SecretListPage {
-	return original.NewSecretListPage(getNextPage)
+func NewSecretListPage(cur SecretList, getNextPage func(context.Context, SecretList) (SecretList, error)) SecretListPage {
+	return original.NewSecretListPage(cur, getNextPage)
 }
 func NewSecretsClient(subscriptionID string) SecretsClient {
 	return original.NewSecretsClient(subscriptionID)
@@ -762,8 +762,8 @@ func NewSecretsClientWithBaseURI(baseURI string, subscriptionID string) SecretsC
 func NewServiceFabricListIterator(page ServiceFabricListPage) ServiceFabricListIterator {
 	return original.NewServiceFabricListIterator(page)
 }
-func NewServiceFabricListPage(getNextPage func(context.Context, ServiceFabricList) (ServiceFabricList, error)) ServiceFabricListPage {
-	return original.NewServiceFabricListPage(getNextPage)
+func NewServiceFabricListPage(cur ServiceFabricList, getNextPage func(context.Context, ServiceFabricList) (ServiceFabricList, error)) ServiceFabricListPage {
+	return original.NewServiceFabricListPage(cur, getNextPage)
 }
 func NewServiceFabricSchedulesClient(subscriptionID string) ServiceFabricSchedulesClient {
 	return original.NewServiceFabricSchedulesClient(subscriptionID)
@@ -786,8 +786,8 @@ func NewServiceRunnersClientWithBaseURI(baseURI string, subscriptionID string) S
 func NewUserListIterator(page UserListPage) UserListIterator {
 	return original.NewUserListIterator(page)
 }
-func NewUserListPage(getNextPage func(context.Context, UserList) (UserList, error)) UserListPage {
-	return original.NewUserListPage(getNextPage)
+func NewUserListPage(cur UserList, getNextPage func(context.Context, UserList) (UserList, error)) UserListPage {
+	return original.NewUserListPage(cur, getNextPage)
 }
 func NewUsersClient(subscriptionID string) UsersClient {
 	return original.NewUsersClient(subscriptionID)
@@ -810,8 +810,8 @@ func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewVirtualNetworkListIterator(page VirtualNetworkListPage) VirtualNetworkListIterator {
 	return original.NewVirtualNetworkListIterator(page)
 }
-func NewVirtualNetworkListPage(getNextPage func(context.Context, VirtualNetworkList) (VirtualNetworkList, error)) VirtualNetworkListPage {
-	return original.NewVirtualNetworkListPage(getNextPage)
+func NewVirtualNetworkListPage(cur VirtualNetworkList, getNextPage func(context.Context, VirtualNetworkList) (VirtualNetworkList, error)) VirtualNetworkListPage {
+	return original.NewVirtualNetworkListPage(cur, getNextPage)
 }
 func NewVirtualNetworksClient(subscriptionID string) VirtualNetworksClient {
 	return original.NewVirtualNetworksClient(subscriptionID)

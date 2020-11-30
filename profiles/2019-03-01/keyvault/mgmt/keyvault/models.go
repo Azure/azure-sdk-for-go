@@ -173,14 +173,14 @@ func New(subscriptionID string) BaseClient {
 func NewDeletedVaultListResultIterator(page DeletedVaultListResultPage) DeletedVaultListResultIterator {
 	return original.NewDeletedVaultListResultIterator(page)
 }
-func NewDeletedVaultListResultPage(getNextPage func(context.Context, DeletedVaultListResult) (DeletedVaultListResult, error)) DeletedVaultListResultPage {
-	return original.NewDeletedVaultListResultPage(getNextPage)
+func NewDeletedVaultListResultPage(cur DeletedVaultListResult, getNextPage func(context.Context, DeletedVaultListResult) (DeletedVaultListResult, error)) DeletedVaultListResultPage {
+	return original.NewDeletedVaultListResultPage(cur, getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -191,14 +191,14 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewResourceListResultIterator(page ResourceListResultPage) ResourceListResultIterator {
 	return original.NewResourceListResultIterator(page)
 }
-func NewResourceListResultPage(getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
-	return original.NewResourceListResultPage(getNextPage)
+func NewResourceListResultPage(cur ResourceListResult, getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
+	return original.NewResourceListResultPage(cur, getNextPage)
 }
 func NewVaultListResultIterator(page VaultListResultPage) VaultListResultIterator {
 	return original.NewVaultListResultIterator(page)
 }
-func NewVaultListResultPage(getNextPage func(context.Context, VaultListResult) (VaultListResult, error)) VaultListResultPage {
-	return original.NewVaultListResultPage(getNextPage)
+func NewVaultListResultPage(cur VaultListResult, getNextPage func(context.Context, VaultListResult) (VaultListResult, error)) VaultListResultPage {
+	return original.NewVaultListResultPage(cur, getNextPage)
 }
 func NewVaultsClient(subscriptionID string) VaultsClient {
 	return original.NewVaultsClient(subscriptionID)

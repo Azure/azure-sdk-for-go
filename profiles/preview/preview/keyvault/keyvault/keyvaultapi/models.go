@@ -22,5 +22,6 @@ package keyvaultapi
 import original "github.com/Azure/azure-sdk-for-go/services/preview/keyvault/v7.2-preview/keyvault/keyvaultapi"
 
 type BaseClientAPI = original.BaseClientAPI
+type HSMSecurityDomainClientAPI = original.HSMSecurityDomainClientAPI
 type RoleAssignmentsClientAPI = original.RoleAssignmentsClientAPI
 type RoleDefinitionsClientAPI = original.RoleDefinitionsClientAPI

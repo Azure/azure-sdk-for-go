@@ -190,8 +190,8 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
 }
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return original.NewOperationListPage(getNextPage)
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -208,8 +208,8 @@ func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscription
 func NewPrivateLinkResourceListIterator(page PrivateLinkResourceListPage) PrivateLinkResourceListIterator {
 	return original.NewPrivateLinkResourceListIterator(page)
 }
-func NewPrivateLinkResourceListPage(getNextPage func(context.Context, PrivateLinkResourceList) (PrivateLinkResourceList, error)) PrivateLinkResourceListPage {
-	return original.NewPrivateLinkResourceListPage(getNextPage)
+func NewPrivateLinkResourceListPage(cur PrivateLinkResourceList, getNextPage func(context.Context, PrivateLinkResourceList) (PrivateLinkResourceList, error)) PrivateLinkResourceListPage {
+	return original.NewPrivateLinkResourceListPage(cur, getNextPage)
 }
 func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
 	return original.NewPrivateLinkResourcesClient(subscriptionID)
@@ -220,14 +220,14 @@ func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID str
 func NewResourceListIterator(page ResourceListPage) ResourceListIterator {
 	return original.NewResourceListIterator(page)
 }
-func NewResourceListPage(getNextPage func(context.Context, ResourceList) (ResourceList, error)) ResourceListPage {
-	return original.NewResourceListPage(getNextPage)
+func NewResourceListPage(cur ResourceList, getNextPage func(context.Context, ResourceList) (ResourceList, error)) ResourceListPage {
+	return original.NewResourceListPage(cur, getNextPage)
 }
 func NewUsageListIterator(page UsageListPage) UsageListIterator {
 	return original.NewUsageListIterator(page)
 }
-func NewUsageListPage(getNextPage func(context.Context, UsageList) (UsageList, error)) UsageListPage {
-	return original.NewUsageListPage(getNextPage)
+func NewUsageListPage(cur UsageList, getNextPage func(context.Context, UsageList) (UsageList, error)) UsageListPage {
+	return original.NewUsageListPage(cur, getNextPage)
 }
 func NewUsagesClient(subscriptionID string) UsagesClient {
 	return original.NewUsagesClient(subscriptionID)

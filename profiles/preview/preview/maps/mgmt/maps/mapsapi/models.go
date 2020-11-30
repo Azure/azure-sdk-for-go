@@ -23,4 +23,5 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/maps/mgmt/20
 
 type AccountsClientAPI = original.AccountsClientAPI
 type ClientAPI = original.ClientAPI
+type CreatorsClientAPI = original.CreatorsClientAPI
 type PrivateAtlasesClientAPI = original.PrivateAtlasesClientAPI

@@ -34,21 +34,21 @@ func (client SharedGalleryImageVersionsClient) Pipeline() azcore.Pipeline {
 }
 
 // Get - Get a shared gallery image version by subscription id or tenant id.
-func (client SharedGalleryImageVersionsClient) Get(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, galleryImageVersionName string, options *SharedGalleryImageVersionsGetOptions) (*SharedGalleryImageVersionResponse, error) {
+func (client SharedGalleryImageVersionsClient) Get(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, galleryImageVersionName string, options *SharedGalleryImageVersionsGetOptions) (SharedGalleryImageVersionResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, galleryUniqueName, galleryImageName, galleryImageVersionName, options)
 	if err != nil {
-		return nil, err
+		return SharedGalleryImageVersionResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return SharedGalleryImageVersionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return SharedGalleryImageVersionResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return SharedGalleryImageVersionResponse{}, err
 	}
 	return result, nil
 }
@@ -74,9 +74,10 @@ func (client SharedGalleryImageVersionsClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client SharedGalleryImageVersionsClient) getHandleResponse(resp *azcore.Response) (*SharedGalleryImageVersionResponse, error) {
+func (client SharedGalleryImageVersionsClient) getHandleResponse(resp *azcore.Response) (SharedGalleryImageVersionResponse, error) {
 	result := SharedGalleryImageVersionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.SharedGalleryImageVersion)
+	err := resp.UnmarshalAsJSON(&result.SharedGalleryImageVersion)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -97,7 +98,7 @@ func (client SharedGalleryImageVersionsClient) List(location string, galleryUniq
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *SharedGalleryImageVersionListResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp SharedGalleryImageVersionListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SharedGalleryImageVersionList.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -127,9 +128,10 @@ func (client SharedGalleryImageVersionsClient) listCreateRequest(ctx context.Con
 }
 
 // listHandleResponse handles the List response.
-func (client SharedGalleryImageVersionsClient) listHandleResponse(resp *azcore.Response) (*SharedGalleryImageVersionListResponse, error) {
+func (client SharedGalleryImageVersionsClient) listHandleResponse(resp *azcore.Response) (SharedGalleryImageVersionListResponse, error) {
 	result := SharedGalleryImageVersionListResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.SharedGalleryImageVersionList)
+	err := resp.UnmarshalAsJSON(&result.SharedGalleryImageVersionList)
+	return result, err
 }
 
 // listHandleError handles the List error response.

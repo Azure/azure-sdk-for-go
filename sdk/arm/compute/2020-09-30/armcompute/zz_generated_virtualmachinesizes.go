@@ -37,21 +37,21 @@ func (client VirtualMachineSizesClient) Pipeline() azcore.Pipeline {
 }
 
 // List - This API is deprecated. Use Resources Skus [https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list]
-func (client VirtualMachineSizesClient) List(ctx context.Context, location string, options *VirtualMachineSizesListOptions) (*VirtualMachineSizeListResultResponse, error) {
+func (client VirtualMachineSizesClient) List(ctx context.Context, location string, options *VirtualMachineSizesListOptions) (VirtualMachineSizeListResultResponse, error) {
 	req, err := client.listCreateRequest(ctx, location, options)
 	if err != nil {
-		return nil, err
+		return VirtualMachineSizeListResultResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return VirtualMachineSizeListResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listHandleError(resp)
+		return VirtualMachineSizeListResultResponse{}, client.listHandleError(resp)
 	}
 	result, err := client.listHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return VirtualMachineSizeListResultResponse{}, err
 	}
 	return result, nil
 }
@@ -74,9 +74,10 @@ func (client VirtualMachineSizesClient) listCreateRequest(ctx context.Context, l
 }
 
 // listHandleResponse handles the List response.
-func (client VirtualMachineSizesClient) listHandleResponse(resp *azcore.Response) (*VirtualMachineSizeListResultResponse, error) {
+func (client VirtualMachineSizesClient) listHandleResponse(resp *azcore.Response) (VirtualMachineSizeListResultResponse, error) {
 	result := VirtualMachineSizeListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualMachineSizeListResult)
+	err := resp.UnmarshalAsJSON(&result.VirtualMachineSizeListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

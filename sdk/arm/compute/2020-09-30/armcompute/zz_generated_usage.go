@@ -45,7 +45,7 @@ func (client UsageClient) List(location string, options *UsageListOptions) ListU
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *ListUsagesResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ListUsagesResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListUsagesResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -70,9 +70,10 @@ func (client UsageClient) listCreateRequest(ctx context.Context, location string
 }
 
 // listHandleResponse handles the List response.
-func (client UsageClient) listHandleResponse(resp *azcore.Response) (*ListUsagesResultResponse, error) {
+func (client UsageClient) listHandleResponse(resp *azcore.Response) (ListUsagesResultResponse, error) {
 	result := ListUsagesResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ListUsagesResult)
+	err := resp.UnmarshalAsJSON(&result.ListUsagesResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

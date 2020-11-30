@@ -38,21 +38,21 @@ func (client DedicatedHostGroupsClient) Pipeline() azcore.Pipeline {
 
 // CreateOrUpdate - Create or update a dedicated host group. For details of Dedicated Host and Dedicated Host Groups please see Dedicated Host Documentation
 // [https://go.microsoft.com/fwlink/?linkid=2082596]
-func (client DedicatedHostGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, parameters DedicatedHostGroup, options *DedicatedHostGroupsCreateOrUpdateOptions) (*DedicatedHostGroupResponse, error) {
+func (client DedicatedHostGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, parameters DedicatedHostGroup, options *DedicatedHostGroupsCreateOrUpdateOptions) (DedicatedHostGroupResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, hostGroupName, parameters, options)
 	if err != nil {
-		return nil, err
+		return DedicatedHostGroupResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return DedicatedHostGroupResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return DedicatedHostGroupResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	result, err := client.createOrUpdateHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return DedicatedHostGroupResponse{}, err
 	}
 	return result, nil
 }
@@ -76,9 +76,10 @@ func (client DedicatedHostGroupsClient) createOrUpdateCreateRequest(ctx context.
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client DedicatedHostGroupsClient) createOrUpdateHandleResponse(resp *azcore.Response) (*DedicatedHostGroupResponse, error) {
+func (client DedicatedHostGroupsClient) createOrUpdateHandleResponse(resp *azcore.Response) (DedicatedHostGroupResponse, error) {
 	result := DedicatedHostGroupResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.DedicatedHostGroup)
+	err := resp.UnmarshalAsJSON(&result.DedicatedHostGroup)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -139,21 +140,21 @@ func (client DedicatedHostGroupsClient) deleteHandleError(resp *azcore.Response)
 }
 
 // Get - Retrieves information about a dedicated host group.
-func (client DedicatedHostGroupsClient) Get(ctx context.Context, resourceGroupName string, hostGroupName string, options *DedicatedHostGroupsGetOptions) (*DedicatedHostGroupResponse, error) {
+func (client DedicatedHostGroupsClient) Get(ctx context.Context, resourceGroupName string, hostGroupName string, options *DedicatedHostGroupsGetOptions) (DedicatedHostGroupResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, hostGroupName, options)
 	if err != nil {
-		return nil, err
+		return DedicatedHostGroupResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return DedicatedHostGroupResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return DedicatedHostGroupResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return DedicatedHostGroupResponse{}, err
 	}
 	return result, nil
 }
@@ -180,9 +181,10 @@ func (client DedicatedHostGroupsClient) getCreateRequest(ctx context.Context, re
 }
 
 // getHandleResponse handles the Get response.
-func (client DedicatedHostGroupsClient) getHandleResponse(resp *azcore.Response) (*DedicatedHostGroupResponse, error) {
+func (client DedicatedHostGroupsClient) getHandleResponse(resp *azcore.Response) (DedicatedHostGroupResponse, error) {
 	result := DedicatedHostGroupResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.DedicatedHostGroup)
+	err := resp.UnmarshalAsJSON(&result.DedicatedHostGroup)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -207,7 +209,7 @@ func (client DedicatedHostGroupsClient) ListByResourceGroup(resourceGroupName st
 		},
 		responder: client.listByResourceGroupHandleResponse,
 		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp *DedicatedHostGroupListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DedicatedHostGroupListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DedicatedHostGroupListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -232,9 +234,10 @@ func (client DedicatedHostGroupsClient) listByResourceGroupCreateRequest(ctx con
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client DedicatedHostGroupsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (*DedicatedHostGroupListResultResponse, error) {
+func (client DedicatedHostGroupsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (DedicatedHostGroupListResultResponse, error) {
 	result := DedicatedHostGroupListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.DedicatedHostGroupListResult)
+	err := resp.UnmarshalAsJSON(&result.DedicatedHostGroupListResult)
+	return result, err
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -259,7 +262,7 @@ func (client DedicatedHostGroupsClient) ListBySubscription(options *DedicatedHos
 		},
 		responder: client.listBySubscriptionHandleResponse,
 		errorer:   client.listBySubscriptionHandleError,
-		advancer: func(ctx context.Context, resp *DedicatedHostGroupListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DedicatedHostGroupListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DedicatedHostGroupListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -283,9 +286,10 @@ func (client DedicatedHostGroupsClient) listBySubscriptionCreateRequest(ctx cont
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client DedicatedHostGroupsClient) listBySubscriptionHandleResponse(resp *azcore.Response) (*DedicatedHostGroupListResultResponse, error) {
+func (client DedicatedHostGroupsClient) listBySubscriptionHandleResponse(resp *azcore.Response) (DedicatedHostGroupListResultResponse, error) {
 	result := DedicatedHostGroupListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.DedicatedHostGroupListResult)
+	err := resp.UnmarshalAsJSON(&result.DedicatedHostGroupListResult)
+	return result, err
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
@@ -301,21 +305,21 @@ func (client DedicatedHostGroupsClient) listBySubscriptionHandleError(resp *azco
 }
 
 // Update - Update an dedicated host group.
-func (client DedicatedHostGroupsClient) Update(ctx context.Context, resourceGroupName string, hostGroupName string, parameters DedicatedHostGroupUpdate, options *DedicatedHostGroupsUpdateOptions) (*DedicatedHostGroupResponse, error) {
+func (client DedicatedHostGroupsClient) Update(ctx context.Context, resourceGroupName string, hostGroupName string, parameters DedicatedHostGroupUpdate, options *DedicatedHostGroupsUpdateOptions) (DedicatedHostGroupResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, hostGroupName, parameters, options)
 	if err != nil {
-		return nil, err
+		return DedicatedHostGroupResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return DedicatedHostGroupResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.updateHandleError(resp)
+		return DedicatedHostGroupResponse{}, client.updateHandleError(resp)
 	}
 	result, err := client.updateHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return DedicatedHostGroupResponse{}, err
 	}
 	return result, nil
 }
@@ -339,9 +343,10 @@ func (client DedicatedHostGroupsClient) updateCreateRequest(ctx context.Context,
 }
 
 // updateHandleResponse handles the Update response.
-func (client DedicatedHostGroupsClient) updateHandleResponse(resp *azcore.Response) (*DedicatedHostGroupResponse, error) {
+func (client DedicatedHostGroupsClient) updateHandleResponse(resp *azcore.Response) (DedicatedHostGroupResponse, error) {
 	result := DedicatedHostGroupResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.DedicatedHostGroup)
+	err := resp.UnmarshalAsJSON(&result.DedicatedHostGroup)
+	return result, err
 }
 
 // updateHandleError handles the Update error response.

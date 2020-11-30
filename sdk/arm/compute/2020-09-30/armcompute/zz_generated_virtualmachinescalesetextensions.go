@@ -38,24 +38,24 @@ func (client VirtualMachineScaleSetExtensionsClient) Pipeline() azcore.Pipeline 
 }
 
 // BeginCreateOrUpdate - The operation to create or update an extension.
-func (client VirtualMachineScaleSetExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, extensionParameters VirtualMachineScaleSetExtension, options *VirtualMachineScaleSetExtensionsCreateOrUpdateOptions) (*VirtualMachineScaleSetExtensionPollerResponse, error) {
+func (client VirtualMachineScaleSetExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, extensionParameters VirtualMachineScaleSetExtension, options *VirtualMachineScaleSetExtensionsCreateOrUpdateOptions) (VirtualMachineScaleSetExtensionPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters, options)
 	if err != nil {
-		return nil, err
+		return VirtualMachineScaleSetExtensionPollerResponse{}, err
 	}
-	result := &VirtualMachineScaleSetExtensionPollerResponse{
+	result := VirtualMachineScaleSetExtensionPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VirtualMachineScaleSetExtensionsClient.CreateOrUpdate", "", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return VirtualMachineScaleSetExtensionPollerResponse{}, err
 	}
 	poller := &virtualMachineScaleSetExtensionPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*VirtualMachineScaleSetExtensionResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetExtensionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -110,9 +110,10 @@ func (client VirtualMachineScaleSetExtensionsClient) createOrUpdateCreateRequest
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client VirtualMachineScaleSetExtensionsClient) createOrUpdateHandleResponse(resp *azcore.Response) (*VirtualMachineScaleSetExtensionResponse, error) {
+func (client VirtualMachineScaleSetExtensionsClient) createOrUpdateHandleResponse(resp *azcore.Response) (VirtualMachineScaleSetExtensionResponse, error) {
 	result := VirtualMachineScaleSetExtensionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualMachineScaleSetExtension)
+	err := resp.UnmarshalAsJSON(&result.VirtualMachineScaleSetExtension)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -128,17 +129,17 @@ func (client VirtualMachineScaleSetExtensionsClient) createOrUpdateHandleError(r
 }
 
 // BeginDelete - The operation to delete the extension.
-func (client VirtualMachineScaleSetExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, options *VirtualMachineScaleSetExtensionsDeleteOptions) (*HTTPPollerResponse, error) {
+func (client VirtualMachineScaleSetExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, options *VirtualMachineScaleSetExtensionsDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, vmScaleSetName, vmssExtensionName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VirtualMachineScaleSetExtensionsClient.Delete", "", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -211,21 +212,21 @@ func (client VirtualMachineScaleSetExtensionsClient) deleteHandleError(resp *azc
 }
 
 // Get - The operation to get the extension.
-func (client VirtualMachineScaleSetExtensionsClient) Get(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, options *VirtualMachineScaleSetExtensionsGetOptions) (*VirtualMachineScaleSetExtensionResponse, error) {
+func (client VirtualMachineScaleSetExtensionsClient) Get(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, options *VirtualMachineScaleSetExtensionsGetOptions) (VirtualMachineScaleSetExtensionResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vmScaleSetName, vmssExtensionName, options)
 	if err != nil {
-		return nil, err
+		return VirtualMachineScaleSetExtensionResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return VirtualMachineScaleSetExtensionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return VirtualMachineScaleSetExtensionResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return VirtualMachineScaleSetExtensionResponse{}, err
 	}
 	return result, nil
 }
@@ -253,9 +254,10 @@ func (client VirtualMachineScaleSetExtensionsClient) getCreateRequest(ctx contex
 }
 
 // getHandleResponse handles the Get response.
-func (client VirtualMachineScaleSetExtensionsClient) getHandleResponse(resp *azcore.Response) (*VirtualMachineScaleSetExtensionResponse, error) {
+func (client VirtualMachineScaleSetExtensionsClient) getHandleResponse(resp *azcore.Response) (VirtualMachineScaleSetExtensionResponse, error) {
 	result := VirtualMachineScaleSetExtensionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualMachineScaleSetExtension)
+	err := resp.UnmarshalAsJSON(&result.VirtualMachineScaleSetExtension)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -279,7 +281,7 @@ func (client VirtualMachineScaleSetExtensionsClient) List(resourceGroupName stri
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *VirtualMachineScaleSetExtensionListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp VirtualMachineScaleSetExtensionListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.VirtualMachineScaleSetExtensionListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -305,9 +307,10 @@ func (client VirtualMachineScaleSetExtensionsClient) listCreateRequest(ctx conte
 }
 
 // listHandleResponse handles the List response.
-func (client VirtualMachineScaleSetExtensionsClient) listHandleResponse(resp *azcore.Response) (*VirtualMachineScaleSetExtensionListResultResponse, error) {
+func (client VirtualMachineScaleSetExtensionsClient) listHandleResponse(resp *azcore.Response) (VirtualMachineScaleSetExtensionListResultResponse, error) {
 	result := VirtualMachineScaleSetExtensionListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualMachineScaleSetExtensionListResult)
+	err := resp.UnmarshalAsJSON(&result.VirtualMachineScaleSetExtensionListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -323,24 +326,24 @@ func (client VirtualMachineScaleSetExtensionsClient) listHandleError(resp *azcor
 }
 
 // BeginUpdate - The operation to update an extension.
-func (client VirtualMachineScaleSetExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, extensionParameters VirtualMachineScaleSetExtensionUpdate, options *VirtualMachineScaleSetExtensionsUpdateOptions) (*VirtualMachineScaleSetExtensionPollerResponse, error) {
+func (client VirtualMachineScaleSetExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, extensionParameters VirtualMachineScaleSetExtensionUpdate, options *VirtualMachineScaleSetExtensionsUpdateOptions) (VirtualMachineScaleSetExtensionPollerResponse, error) {
 	resp, err := client.Update(ctx, resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters, options)
 	if err != nil {
-		return nil, err
+		return VirtualMachineScaleSetExtensionPollerResponse{}, err
 	}
-	result := &VirtualMachineScaleSetExtensionPollerResponse{
+	result := VirtualMachineScaleSetExtensionPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VirtualMachineScaleSetExtensionsClient.Update", "", resp, client.updateHandleError)
 	if err != nil {
-		return nil, err
+		return VirtualMachineScaleSetExtensionPollerResponse{}, err
 	}
 	poller := &virtualMachineScaleSetExtensionPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*VirtualMachineScaleSetExtensionResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetExtensionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -395,9 +398,10 @@ func (client VirtualMachineScaleSetExtensionsClient) updateCreateRequest(ctx con
 }
 
 // updateHandleResponse handles the Update response.
-func (client VirtualMachineScaleSetExtensionsClient) updateHandleResponse(resp *azcore.Response) (*VirtualMachineScaleSetExtensionResponse, error) {
+func (client VirtualMachineScaleSetExtensionsClient) updateHandleResponse(resp *azcore.Response) (VirtualMachineScaleSetExtensionResponse, error) {
 	result := VirtualMachineScaleSetExtensionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualMachineScaleSetExtension)
+	err := resp.UnmarshalAsJSON(&result.VirtualMachineScaleSetExtension)
+	return result, err
 }
 
 // updateHandleError handles the Update error response.

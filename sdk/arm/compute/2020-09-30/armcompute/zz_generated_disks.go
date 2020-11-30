@@ -38,24 +38,24 @@ func (client DisksClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates or updates a disk.
-func (client DisksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskName string, disk Disk, options *DisksCreateOrUpdateOptions) (*DiskPollerResponse, error) {
+func (client DisksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskName string, disk Disk, options *DisksCreateOrUpdateOptions) (DiskPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, diskName, disk, options)
 	if err != nil {
-		return nil, err
+		return DiskPollerResponse{}, err
 	}
-	result := &DiskPollerResponse{
+	result := DiskPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("DisksClient.CreateOrUpdate", "", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return DiskPollerResponse{}, err
 	}
 	poller := &diskPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*DiskResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -109,9 +109,10 @@ func (client DisksClient) createOrUpdateCreateRequest(ctx context.Context, resou
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client DisksClient) createOrUpdateHandleResponse(resp *azcore.Response) (*DiskResponse, error) {
+func (client DisksClient) createOrUpdateHandleResponse(resp *azcore.Response) (DiskResponse, error) {
 	result := DiskResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Disk)
+	err := resp.UnmarshalAsJSON(&result.Disk)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -127,17 +128,17 @@ func (client DisksClient) createOrUpdateHandleError(resp *azcore.Response) error
 }
 
 // BeginDelete - Deletes a disk.
-func (client DisksClient) BeginDelete(ctx context.Context, resourceGroupName string, diskName string, options *DisksDeleteOptions) (*HTTPPollerResponse, error) {
+func (client DisksClient) BeginDelete(ctx context.Context, resourceGroupName string, diskName string, options *DisksDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, diskName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("DisksClient.Delete", "", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -209,21 +210,21 @@ func (client DisksClient) deleteHandleError(resp *azcore.Response) error {
 }
 
 // Get - Gets information about a disk.
-func (client DisksClient) Get(ctx context.Context, resourceGroupName string, diskName string, options *DisksGetOptions) (*DiskResponse, error) {
+func (client DisksClient) Get(ctx context.Context, resourceGroupName string, diskName string, options *DisksGetOptions) (DiskResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, diskName, options)
 	if err != nil {
-		return nil, err
+		return DiskResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return DiskResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return DiskResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return DiskResponse{}, err
 	}
 	return result, nil
 }
@@ -247,9 +248,10 @@ func (client DisksClient) getCreateRequest(ctx context.Context, resourceGroupNam
 }
 
 // getHandleResponse handles the Get response.
-func (client DisksClient) getHandleResponse(resp *azcore.Response) (*DiskResponse, error) {
+func (client DisksClient) getHandleResponse(resp *azcore.Response) (DiskResponse, error) {
 	result := DiskResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Disk)
+	err := resp.UnmarshalAsJSON(&result.Disk)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -265,24 +267,24 @@ func (client DisksClient) getHandleError(resp *azcore.Response) error {
 }
 
 // BeginGrantAccess - Grants access to a disk.
-func (client DisksClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, diskName string, grantAccessData GrantAccessData, options *DisksGrantAccessOptions) (*AccessURIPollerResponse, error) {
+func (client DisksClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, diskName string, grantAccessData GrantAccessData, options *DisksGrantAccessOptions) (AccessURIPollerResponse, error) {
 	resp, err := client.GrantAccess(ctx, resourceGroupName, diskName, grantAccessData, options)
 	if err != nil {
-		return nil, err
+		return AccessURIPollerResponse{}, err
 	}
-	result := &AccessURIPollerResponse{
+	result := AccessURIPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("DisksClient.GrantAccess", "location", resp, client.grantAccessHandleError)
 	if err != nil {
-		return nil, err
+		return AccessURIPollerResponse{}, err
 	}
 	poller := &accessUriPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*AccessURIResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AccessURIResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -336,9 +338,10 @@ func (client DisksClient) grantAccessCreateRequest(ctx context.Context, resource
 }
 
 // grantAccessHandleResponse handles the GrantAccess response.
-func (client DisksClient) grantAccessHandleResponse(resp *azcore.Response) (*AccessURIResponse, error) {
+func (client DisksClient) grantAccessHandleResponse(resp *azcore.Response) (AccessURIResponse, error) {
 	result := AccessURIResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.AccessURI)
+	err := resp.UnmarshalAsJSON(&result.AccessURI)
+	return result, err
 }
 
 // grantAccessHandleError handles the GrantAccess error response.
@@ -362,7 +365,7 @@ func (client DisksClient) List(options *DisksListOptions) DiskListPager {
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *DiskListResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DiskListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DiskList.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -386,9 +389,10 @@ func (client DisksClient) listCreateRequest(ctx context.Context, options *DisksL
 }
 
 // listHandleResponse handles the List response.
-func (client DisksClient) listHandleResponse(resp *azcore.Response) (*DiskListResponse, error) {
+func (client DisksClient) listHandleResponse(resp *azcore.Response) (DiskListResponse, error) {
 	result := DiskListResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.DiskList)
+	err := resp.UnmarshalAsJSON(&result.DiskList)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -412,7 +416,7 @@ func (client DisksClient) ListByResourceGroup(resourceGroupName string, options 
 		},
 		responder: client.listByResourceGroupHandleResponse,
 		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp *DiskListResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DiskListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DiskList.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -437,9 +441,10 @@ func (client DisksClient) listByResourceGroupCreateRequest(ctx context.Context, 
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client DisksClient) listByResourceGroupHandleResponse(resp *azcore.Response) (*DiskListResponse, error) {
+func (client DisksClient) listByResourceGroupHandleResponse(resp *azcore.Response) (DiskListResponse, error) {
 	result := DiskListResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.DiskList)
+	err := resp.UnmarshalAsJSON(&result.DiskList)
+	return result, err
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -455,17 +460,17 @@ func (client DisksClient) listByResourceGroupHandleError(resp *azcore.Response) 
 }
 
 // BeginRevokeAccess - Revokes access to a disk.
-func (client DisksClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, diskName string, options *DisksRevokeAccessOptions) (*HTTPPollerResponse, error) {
+func (client DisksClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, diskName string, options *DisksRevokeAccessOptions) (HTTPPollerResponse, error) {
 	resp, err := client.RevokeAccess(ctx, resourceGroupName, diskName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("DisksClient.RevokeAccess", "location", resp, client.revokeAccessHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -537,24 +542,24 @@ func (client DisksClient) revokeAccessHandleError(resp *azcore.Response) error {
 }
 
 // BeginUpdate - Updates (patches) a disk.
-func (client DisksClient) BeginUpdate(ctx context.Context, resourceGroupName string, diskName string, disk DiskUpdate, options *DisksUpdateOptions) (*DiskPollerResponse, error) {
+func (client DisksClient) BeginUpdate(ctx context.Context, resourceGroupName string, diskName string, disk DiskUpdate, options *DisksUpdateOptions) (DiskPollerResponse, error) {
 	resp, err := client.Update(ctx, resourceGroupName, diskName, disk, options)
 	if err != nil {
-		return nil, err
+		return DiskPollerResponse{}, err
 	}
-	result := &DiskPollerResponse{
+	result := DiskPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("DisksClient.Update", "", resp, client.updateHandleError)
 	if err != nil {
-		return nil, err
+		return DiskPollerResponse{}, err
 	}
 	poller := &diskPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*DiskResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -608,9 +613,10 @@ func (client DisksClient) updateCreateRequest(ctx context.Context, resourceGroup
 }
 
 // updateHandleResponse handles the Update response.
-func (client DisksClient) updateHandleResponse(resp *azcore.Response) (*DiskResponse, error) {
+func (client DisksClient) updateHandleResponse(resp *azcore.Response) (DiskResponse, error) {
 	result := DiskResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Disk)
+	err := resp.UnmarshalAsJSON(&result.Disk)
+	return result, err
 }
 
 // updateHandleError handles the Update error response.

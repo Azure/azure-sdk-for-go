@@ -35,24 +35,24 @@ func (client GalleryImageVersionsClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Create or update a gallery image version.
-func (client GalleryImageVersionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, galleryImageVersion GalleryImageVersion, options *GalleryImageVersionsCreateOrUpdateOptions) (*GalleryImageVersionPollerResponse, error) {
+func (client GalleryImageVersionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, galleryImageVersion GalleryImageVersion, options *GalleryImageVersionsCreateOrUpdateOptions) (GalleryImageVersionPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, galleryName, galleryImageName, galleryImageVersionName, galleryImageVersion, options)
 	if err != nil {
-		return nil, err
+		return GalleryImageVersionPollerResponse{}, err
 	}
-	result := &GalleryImageVersionPollerResponse{
+	result := GalleryImageVersionPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("GalleryImageVersionsClient.CreateOrUpdate", "", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return GalleryImageVersionPollerResponse{}, err
 	}
 	poller := &galleryImageVersionPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*GalleryImageVersionResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryImageVersionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -108,9 +108,10 @@ func (client GalleryImageVersionsClient) createOrUpdateCreateRequest(ctx context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client GalleryImageVersionsClient) createOrUpdateHandleResponse(resp *azcore.Response) (*GalleryImageVersionResponse, error) {
+func (client GalleryImageVersionsClient) createOrUpdateHandleResponse(resp *azcore.Response) (GalleryImageVersionResponse, error) {
 	result := GalleryImageVersionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.GalleryImageVersion)
+	err := resp.UnmarshalAsJSON(&result.GalleryImageVersion)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -123,17 +124,17 @@ func (client GalleryImageVersionsClient) createOrUpdateHandleError(resp *azcore.
 }
 
 // BeginDelete - Delete a gallery image version.
-func (client GalleryImageVersionsClient) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, options *GalleryImageVersionsDeleteOptions) (*HTTPPollerResponse, error) {
+func (client GalleryImageVersionsClient) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, options *GalleryImageVersionsDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, galleryName, galleryImageName, galleryImageVersionName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("GalleryImageVersionsClient.Delete", "", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -205,21 +206,21 @@ func (client GalleryImageVersionsClient) deleteHandleError(resp *azcore.Response
 }
 
 // Get - Retrieves information about a gallery image version.
-func (client GalleryImageVersionsClient) Get(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, options *GalleryImageVersionsGetOptions) (*GalleryImageVersionResponse, error) {
+func (client GalleryImageVersionsClient) Get(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, options *GalleryImageVersionsGetOptions) (GalleryImageVersionResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, galleryName, galleryImageName, galleryImageVersionName, options)
 	if err != nil {
-		return nil, err
+		return GalleryImageVersionResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return GalleryImageVersionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return GalleryImageVersionResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return GalleryImageVersionResponse{}, err
 	}
 	return result, nil
 }
@@ -248,9 +249,10 @@ func (client GalleryImageVersionsClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client GalleryImageVersionsClient) getHandleResponse(resp *azcore.Response) (*GalleryImageVersionResponse, error) {
+func (client GalleryImageVersionsClient) getHandleResponse(resp *azcore.Response) (GalleryImageVersionResponse, error) {
 	result := GalleryImageVersionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.GalleryImageVersion)
+	err := resp.UnmarshalAsJSON(&result.GalleryImageVersion)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -271,7 +273,7 @@ func (client GalleryImageVersionsClient) ListByGalleryImage(resourceGroupName st
 		},
 		responder: client.listByGalleryImageHandleResponse,
 		errorer:   client.listByGalleryImageHandleError,
-		advancer: func(ctx context.Context, resp *GalleryImageVersionListResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp GalleryImageVersionListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.GalleryImageVersionList.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -298,9 +300,10 @@ func (client GalleryImageVersionsClient) listByGalleryImageCreateRequest(ctx con
 }
 
 // listByGalleryImageHandleResponse handles the ListByGalleryImage response.
-func (client GalleryImageVersionsClient) listByGalleryImageHandleResponse(resp *azcore.Response) (*GalleryImageVersionListResponse, error) {
+func (client GalleryImageVersionsClient) listByGalleryImageHandleResponse(resp *azcore.Response) (GalleryImageVersionListResponse, error) {
 	result := GalleryImageVersionListResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.GalleryImageVersionList)
+	err := resp.UnmarshalAsJSON(&result.GalleryImageVersionList)
+	return result, err
 }
 
 // listByGalleryImageHandleError handles the ListByGalleryImage error response.
@@ -313,24 +316,24 @@ func (client GalleryImageVersionsClient) listByGalleryImageHandleError(resp *azc
 }
 
 // BeginUpdate - Update a gallery image version.
-func (client GalleryImageVersionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, galleryImageVersion GalleryImageVersionUpdate, options *GalleryImageVersionsUpdateOptions) (*GalleryImageVersionPollerResponse, error) {
+func (client GalleryImageVersionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, galleryImageVersion GalleryImageVersionUpdate, options *GalleryImageVersionsUpdateOptions) (GalleryImageVersionPollerResponse, error) {
 	resp, err := client.Update(ctx, resourceGroupName, galleryName, galleryImageName, galleryImageVersionName, galleryImageVersion, options)
 	if err != nil {
-		return nil, err
+		return GalleryImageVersionPollerResponse{}, err
 	}
-	result := &GalleryImageVersionPollerResponse{
+	result := GalleryImageVersionPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("GalleryImageVersionsClient.Update", "", resp, client.updateHandleError)
 	if err != nil {
-		return nil, err
+		return GalleryImageVersionPollerResponse{}, err
 	}
 	poller := &galleryImageVersionPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*GalleryImageVersionResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryImageVersionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -386,9 +389,10 @@ func (client GalleryImageVersionsClient) updateCreateRequest(ctx context.Context
 }
 
 // updateHandleResponse handles the Update response.
-func (client GalleryImageVersionsClient) updateHandleResponse(resp *azcore.Response) (*GalleryImageVersionResponse, error) {
+func (client GalleryImageVersionsClient) updateHandleResponse(resp *azcore.Response) (GalleryImageVersionResponse, error) {
 	result := GalleryImageVersionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.GalleryImageVersion)
+	err := resp.UnmarshalAsJSON(&result.GalleryImageVersion)
+	return result, err
 }
 
 // updateHandleError handles the Update error response.

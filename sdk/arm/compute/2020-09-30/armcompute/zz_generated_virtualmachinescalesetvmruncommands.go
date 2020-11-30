@@ -35,24 +35,24 @@ func (client VirtualMachineScaleSetVMRunCommandsClient) Pipeline() azcore.Pipeli
 }
 
 // BeginCreateOrUpdate - The operation to create or update the VMSS VM run command.
-func (client VirtualMachineScaleSetVMRunCommandsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, runCommand VirtualMachineRunCommand, options *VirtualMachineScaleSetVMRunCommandsCreateOrUpdateOptions) (*VirtualMachineRunCommandPollerResponse, error) {
+func (client VirtualMachineScaleSetVMRunCommandsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, runCommand VirtualMachineRunCommand, options *VirtualMachineScaleSetVMRunCommandsCreateOrUpdateOptions) (VirtualMachineRunCommandPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand, options)
 	if err != nil {
-		return nil, err
+		return VirtualMachineRunCommandPollerResponse{}, err
 	}
-	result := &VirtualMachineRunCommandPollerResponse{
+	result := VirtualMachineRunCommandPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VirtualMachineScaleSetVMRunCommandsClient.CreateOrUpdate", "", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return VirtualMachineRunCommandPollerResponse{}, err
 	}
 	poller := &virtualMachineRunCommandPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*VirtualMachineRunCommandResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineRunCommandResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -108,9 +108,10 @@ func (client VirtualMachineScaleSetVMRunCommandsClient) createOrUpdateCreateRequ
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client VirtualMachineScaleSetVMRunCommandsClient) createOrUpdateHandleResponse(resp *azcore.Response) (*VirtualMachineRunCommandResponse, error) {
+func (client VirtualMachineScaleSetVMRunCommandsClient) createOrUpdateHandleResponse(resp *azcore.Response) (VirtualMachineRunCommandResponse, error) {
 	result := VirtualMachineRunCommandResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualMachineRunCommand)
+	err := resp.UnmarshalAsJSON(&result.VirtualMachineRunCommand)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -123,17 +124,17 @@ func (client VirtualMachineScaleSetVMRunCommandsClient) createOrUpdateHandleErro
 }
 
 // BeginDelete - The operation to delete the VMSS VM run command.
-func (client VirtualMachineScaleSetVMRunCommandsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, options *VirtualMachineScaleSetVMRunCommandsDeleteOptions) (*HTTPPollerResponse, error) {
+func (client VirtualMachineScaleSetVMRunCommandsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, options *VirtualMachineScaleSetVMRunCommandsDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, vmScaleSetName, instanceId, runCommandName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VirtualMachineScaleSetVMRunCommandsClient.Delete", "", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -205,21 +206,21 @@ func (client VirtualMachineScaleSetVMRunCommandsClient) deleteHandleError(resp *
 }
 
 // Get - The operation to get the VMSS VM run command.
-func (client VirtualMachineScaleSetVMRunCommandsClient) Get(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, options *VirtualMachineScaleSetVMRunCommandsGetOptions) (*VirtualMachineRunCommandResponse, error) {
+func (client VirtualMachineScaleSetVMRunCommandsClient) Get(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, options *VirtualMachineScaleSetVMRunCommandsGetOptions) (VirtualMachineRunCommandResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceId, runCommandName, options)
 	if err != nil {
-		return nil, err
+		return VirtualMachineRunCommandResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return VirtualMachineRunCommandResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return VirtualMachineRunCommandResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return VirtualMachineRunCommandResponse{}, err
 	}
 	return result, nil
 }
@@ -248,9 +249,10 @@ func (client VirtualMachineScaleSetVMRunCommandsClient) getCreateRequest(ctx con
 }
 
 // getHandleResponse handles the Get response.
-func (client VirtualMachineScaleSetVMRunCommandsClient) getHandleResponse(resp *azcore.Response) (*VirtualMachineRunCommandResponse, error) {
+func (client VirtualMachineScaleSetVMRunCommandsClient) getHandleResponse(resp *azcore.Response) (VirtualMachineRunCommandResponse, error) {
 	result := VirtualMachineRunCommandResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualMachineRunCommand)
+	err := resp.UnmarshalAsJSON(&result.VirtualMachineRunCommand)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -271,7 +273,7 @@ func (client VirtualMachineScaleSetVMRunCommandsClient) List(resourceGroupName s
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *VirtualMachineRunCommandsListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp VirtualMachineRunCommandsListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.VirtualMachineRunCommandsListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -301,9 +303,10 @@ func (client VirtualMachineScaleSetVMRunCommandsClient) listCreateRequest(ctx co
 }
 
 // listHandleResponse handles the List response.
-func (client VirtualMachineScaleSetVMRunCommandsClient) listHandleResponse(resp *azcore.Response) (*VirtualMachineRunCommandsListResultResponse, error) {
+func (client VirtualMachineScaleSetVMRunCommandsClient) listHandleResponse(resp *azcore.Response) (VirtualMachineRunCommandsListResultResponse, error) {
 	result := VirtualMachineRunCommandsListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualMachineRunCommandsListResult)
+	err := resp.UnmarshalAsJSON(&result.VirtualMachineRunCommandsListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -316,24 +319,24 @@ func (client VirtualMachineScaleSetVMRunCommandsClient) listHandleError(resp *az
 }
 
 // BeginUpdate - The operation to update the VMSS VM run command.
-func (client VirtualMachineScaleSetVMRunCommandsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineScaleSetVMRunCommandsUpdateOptions) (*VirtualMachineRunCommandPollerResponse, error) {
+func (client VirtualMachineScaleSetVMRunCommandsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineScaleSetVMRunCommandsUpdateOptions) (VirtualMachineRunCommandPollerResponse, error) {
 	resp, err := client.Update(ctx, resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand, options)
 	if err != nil {
-		return nil, err
+		return VirtualMachineRunCommandPollerResponse{}, err
 	}
-	result := &VirtualMachineRunCommandPollerResponse{
+	result := VirtualMachineRunCommandPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VirtualMachineScaleSetVMRunCommandsClient.Update", "", resp, client.updateHandleError)
 	if err != nil {
-		return nil, err
+		return VirtualMachineRunCommandPollerResponse{}, err
 	}
 	poller := &virtualMachineRunCommandPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*VirtualMachineRunCommandResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineRunCommandResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -389,9 +392,10 @@ func (client VirtualMachineScaleSetVMRunCommandsClient) updateCreateRequest(ctx 
 }
 
 // updateHandleResponse handles the Update response.
-func (client VirtualMachineScaleSetVMRunCommandsClient) updateHandleResponse(resp *azcore.Response) (*VirtualMachineRunCommandResponse, error) {
+func (client VirtualMachineScaleSetVMRunCommandsClient) updateHandleResponse(resp *azcore.Response) (VirtualMachineRunCommandResponse, error) {
 	result := VirtualMachineRunCommandResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualMachineRunCommand)
+	err := resp.UnmarshalAsJSON(&result.VirtualMachineRunCommand)
+	return result, err
 }
 
 // updateHandleError handles the Update error response.

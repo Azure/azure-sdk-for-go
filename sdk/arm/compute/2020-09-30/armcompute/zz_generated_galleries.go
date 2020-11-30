@@ -35,24 +35,24 @@ func (client GalleriesClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Create or update a Shared Image Gallery.
-func (client GalleriesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery Gallery, options *GalleriesCreateOrUpdateOptions) (*GalleryPollerResponse, error) {
+func (client GalleriesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery Gallery, options *GalleriesCreateOrUpdateOptions) (GalleryPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, galleryName, gallery, options)
 	if err != nil {
-		return nil, err
+		return GalleryPollerResponse{}, err
 	}
-	result := &GalleryPollerResponse{
+	result := GalleryPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("GalleriesClient.CreateOrUpdate", "", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return GalleryPollerResponse{}, err
 	}
 	poller := &galleryPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*GalleryResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -106,9 +106,10 @@ func (client GalleriesClient) createOrUpdateCreateRequest(ctx context.Context, r
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client GalleriesClient) createOrUpdateHandleResponse(resp *azcore.Response) (*GalleryResponse, error) {
+func (client GalleriesClient) createOrUpdateHandleResponse(resp *azcore.Response) (GalleryResponse, error) {
 	result := GalleryResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Gallery)
+	err := resp.UnmarshalAsJSON(&result.Gallery)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -121,17 +122,17 @@ func (client GalleriesClient) createOrUpdateHandleError(resp *azcore.Response) e
 }
 
 // BeginDelete - Delete a Shared Image Gallery.
-func (client GalleriesClient) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, options *GalleriesDeleteOptions) (*HTTPPollerResponse, error) {
+func (client GalleriesClient) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, options *GalleriesDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, galleryName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("GalleriesClient.Delete", "", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -201,21 +202,21 @@ func (client GalleriesClient) deleteHandleError(resp *azcore.Response) error {
 }
 
 // Get - Retrieves information about a Shared Image Gallery.
-func (client GalleriesClient) Get(ctx context.Context, resourceGroupName string, galleryName string, options *GalleriesGetOptions) (*GalleryResponse, error) {
+func (client GalleriesClient) Get(ctx context.Context, resourceGroupName string, galleryName string, options *GalleriesGetOptions) (GalleryResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, galleryName, options)
 	if err != nil {
-		return nil, err
+		return GalleryResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return GalleryResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return GalleryResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return GalleryResponse{}, err
 	}
 	return result, nil
 }
@@ -242,9 +243,10 @@ func (client GalleriesClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client GalleriesClient) getHandleResponse(resp *azcore.Response) (*GalleryResponse, error) {
+func (client GalleriesClient) getHandleResponse(resp *azcore.Response) (GalleryResponse, error) {
 	result := GalleryResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Gallery)
+	err := resp.UnmarshalAsJSON(&result.Gallery)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -265,7 +267,7 @@ func (client GalleriesClient) List(options *GalleriesListOptions) GalleryListPag
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *GalleryListResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp GalleryListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.GalleryList.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -289,9 +291,10 @@ func (client GalleriesClient) listCreateRequest(ctx context.Context, options *Ga
 }
 
 // listHandleResponse handles the List response.
-func (client GalleriesClient) listHandleResponse(resp *azcore.Response) (*GalleryListResponse, error) {
+func (client GalleriesClient) listHandleResponse(resp *azcore.Response) (GalleryListResponse, error) {
 	result := GalleryListResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.GalleryList)
+	err := resp.UnmarshalAsJSON(&result.GalleryList)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -312,7 +315,7 @@ func (client GalleriesClient) ListByResourceGroup(resourceGroupName string, opti
 		},
 		responder: client.listByResourceGroupHandleResponse,
 		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp *GalleryListResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp GalleryListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.GalleryList.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -337,9 +340,10 @@ func (client GalleriesClient) listByResourceGroupCreateRequest(ctx context.Conte
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client GalleriesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (*GalleryListResponse, error) {
+func (client GalleriesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (GalleryListResponse, error) {
 	result := GalleryListResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.GalleryList)
+	err := resp.UnmarshalAsJSON(&result.GalleryList)
+	return result, err
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -352,24 +356,24 @@ func (client GalleriesClient) listByResourceGroupHandleError(resp *azcore.Respon
 }
 
 // BeginUpdate - Update a Shared Image Gallery.
-func (client GalleriesClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery GalleryUpdate, options *GalleriesUpdateOptions) (*GalleryPollerResponse, error) {
+func (client GalleriesClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery GalleryUpdate, options *GalleriesUpdateOptions) (GalleryPollerResponse, error) {
 	resp, err := client.Update(ctx, resourceGroupName, galleryName, gallery, options)
 	if err != nil {
-		return nil, err
+		return GalleryPollerResponse{}, err
 	}
-	result := &GalleryPollerResponse{
+	result := GalleryPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("GalleriesClient.Update", "", resp, client.updateHandleError)
 	if err != nil {
-		return nil, err
+		return GalleryPollerResponse{}, err
 	}
 	poller := &galleryPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*GalleryResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -423,9 +427,10 @@ func (client GalleriesClient) updateCreateRequest(ctx context.Context, resourceG
 }
 
 // updateHandleResponse handles the Update response.
-func (client GalleriesClient) updateHandleResponse(resp *azcore.Response) (*GalleryResponse, error) {
+func (client GalleriesClient) updateHandleResponse(resp *azcore.Response) (GalleryResponse, error) {
 	result := GalleryResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Gallery)
+	err := resp.UnmarshalAsJSON(&result.Gallery)
+	return result, err
 }
 
 // updateHandleError handles the Update error response.

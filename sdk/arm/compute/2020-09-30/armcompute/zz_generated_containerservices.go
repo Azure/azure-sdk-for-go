@@ -38,24 +38,24 @@ func (client ContainerServicesClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-func (client ContainerServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService, options *ContainerServicesCreateOrUpdateOptions) (*ContainerServicePollerResponse, error) {
+func (client ContainerServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService, options *ContainerServicesCreateOrUpdateOptions) (ContainerServicePollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, containerServiceName, parameters, options)
 	if err != nil {
-		return nil, err
+		return ContainerServicePollerResponse{}, err
 	}
-	result := &ContainerServicePollerResponse{
+	result := ContainerServicePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ContainerServicesClient.CreateOrUpdate", "", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return ContainerServicePollerResponse{}, err
 	}
 	poller := &containerServicePoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*ContainerServiceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ContainerServiceResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -109,9 +109,10 @@ func (client ContainerServicesClient) createOrUpdateCreateRequest(ctx context.Co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client ContainerServicesClient) createOrUpdateHandleResponse(resp *azcore.Response) (*ContainerServiceResponse, error) {
+func (client ContainerServicesClient) createOrUpdateHandleResponse(resp *azcore.Response) (ContainerServiceResponse, error) {
 	result := ContainerServiceResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ContainerService)
+	err := resp.UnmarshalAsJSON(&result.ContainerService)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -130,17 +131,17 @@ func (client ContainerServicesClient) createOrUpdateHandleError(resp *azcore.Res
 // created as part of creating a container service, including
 // storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can
 // be deleted individually.
-func (client ContainerServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, containerServiceName string, options *ContainerServicesDeleteOptions) (*HTTPPollerResponse, error) {
+func (client ContainerServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, containerServiceName string, options *ContainerServicesDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, containerServiceName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ContainerServicesClient.Delete", "", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -217,21 +218,21 @@ func (client ContainerServicesClient) deleteHandleError(resp *azcore.Response) e
 // Get - Gets the properties of the specified container service in the specified subscription and resource group. The operation returns the properties including
 // state, orchestrator, number of masters and
 // agents, and FQDNs of masters and agents.
-func (client ContainerServicesClient) Get(ctx context.Context, resourceGroupName string, containerServiceName string, options *ContainerServicesGetOptions) (*ContainerServiceResponse, error) {
+func (client ContainerServicesClient) Get(ctx context.Context, resourceGroupName string, containerServiceName string, options *ContainerServicesGetOptions) (ContainerServiceResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, containerServiceName, options)
 	if err != nil {
-		return nil, err
+		return ContainerServiceResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ContainerServiceResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return ContainerServiceResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ContainerServiceResponse{}, err
 	}
 	return result, nil
 }
@@ -255,9 +256,10 @@ func (client ContainerServicesClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client ContainerServicesClient) getHandleResponse(resp *azcore.Response) (*ContainerServiceResponse, error) {
+func (client ContainerServicesClient) getHandleResponse(resp *azcore.Response) (ContainerServiceResponse, error) {
 	result := ContainerServiceResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ContainerService)
+	err := resp.UnmarshalAsJSON(&result.ContainerService)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -283,7 +285,7 @@ func (client ContainerServicesClient) List(options *ContainerServicesListOptions
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *ContainerServiceListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ContainerServiceListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ContainerServiceListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -307,9 +309,10 @@ func (client ContainerServicesClient) listCreateRequest(ctx context.Context, opt
 }
 
 // listHandleResponse handles the List response.
-func (client ContainerServicesClient) listHandleResponse(resp *azcore.Response) (*ContainerServiceListResultResponse, error) {
+func (client ContainerServicesClient) listHandleResponse(resp *azcore.Response) (ContainerServiceListResultResponse, error) {
 	result := ContainerServiceListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ContainerServiceListResult)
+	err := resp.UnmarshalAsJSON(&result.ContainerServiceListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -335,7 +338,7 @@ func (client ContainerServicesClient) ListByResourceGroup(resourceGroupName stri
 		},
 		responder: client.listByResourceGroupHandleResponse,
 		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp *ContainerServiceListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ContainerServiceListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ContainerServiceListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -360,9 +363,10 @@ func (client ContainerServicesClient) listByResourceGroupCreateRequest(ctx conte
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client ContainerServicesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (*ContainerServiceListResultResponse, error) {
+func (client ContainerServicesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (ContainerServiceListResultResponse, error) {
 	result := ContainerServiceListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ContainerServiceListResult)
+	err := resp.UnmarshalAsJSON(&result.ContainerServiceListResult)
+	return result, err
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.

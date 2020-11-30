@@ -38,24 +38,24 @@ func (client ImagesClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Create or update an image.
-func (client ImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters Image, options *ImagesCreateOrUpdateOptions) (*ImagePollerResponse, error) {
+func (client ImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters Image, options *ImagesCreateOrUpdateOptions) (ImagePollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, imageName, parameters, options)
 	if err != nil {
-		return nil, err
+		return ImagePollerResponse{}, err
 	}
-	result := &ImagePollerResponse{
+	result := ImagePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ImagesClient.CreateOrUpdate", "", resp, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return ImagePollerResponse{}, err
 	}
 	poller := &imagePoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*ImageResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ImageResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -109,9 +109,10 @@ func (client ImagesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client ImagesClient) createOrUpdateHandleResponse(resp *azcore.Response) (*ImageResponse, error) {
+func (client ImagesClient) createOrUpdateHandleResponse(resp *azcore.Response) (ImageResponse, error) {
 	result := ImageResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Image)
+	err := resp.UnmarshalAsJSON(&result.Image)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -127,17 +128,17 @@ func (client ImagesClient) createOrUpdateHandleError(resp *azcore.Response) erro
 }
 
 // BeginDelete - Deletes an Image.
-func (client ImagesClient) BeginDelete(ctx context.Context, resourceGroupName string, imageName string, options *ImagesDeleteOptions) (*HTTPPollerResponse, error) {
+func (client ImagesClient) BeginDelete(ctx context.Context, resourceGroupName string, imageName string, options *ImagesDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, imageName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ImagesClient.Delete", "", resp, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -209,21 +210,21 @@ func (client ImagesClient) deleteHandleError(resp *azcore.Response) error {
 }
 
 // Get - Gets an image.
-func (client ImagesClient) Get(ctx context.Context, resourceGroupName string, imageName string, options *ImagesGetOptions) (*ImageResponse, error) {
+func (client ImagesClient) Get(ctx context.Context, resourceGroupName string, imageName string, options *ImagesGetOptions) (ImageResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, imageName, options)
 	if err != nil {
-		return nil, err
+		return ImageResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ImageResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return ImageResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ImageResponse{}, err
 	}
 	return result, nil
 }
@@ -250,9 +251,10 @@ func (client ImagesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 }
 
 // getHandleResponse handles the Get response.
-func (client ImagesClient) getHandleResponse(resp *azcore.Response) (*ImageResponse, error) {
+func (client ImagesClient) getHandleResponse(resp *azcore.Response) (ImageResponse, error) {
 	result := ImageResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Image)
+	err := resp.UnmarshalAsJSON(&result.Image)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -277,7 +279,7 @@ func (client ImagesClient) List(options *ImagesListOptions) ImageListResultPager
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *ImageListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ImageListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ImageListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -301,9 +303,10 @@ func (client ImagesClient) listCreateRequest(ctx context.Context, options *Image
 }
 
 // listHandleResponse handles the List response.
-func (client ImagesClient) listHandleResponse(resp *azcore.Response) (*ImageListResultResponse, error) {
+func (client ImagesClient) listHandleResponse(resp *azcore.Response) (ImageListResultResponse, error) {
 	result := ImageListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ImageListResult)
+	err := resp.UnmarshalAsJSON(&result.ImageListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -327,7 +330,7 @@ func (client ImagesClient) ListByResourceGroup(resourceGroupName string, options
 		},
 		responder: client.listByResourceGroupHandleResponse,
 		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp *ImageListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ImageListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ImageListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -352,9 +355,10 @@ func (client ImagesClient) listByResourceGroupCreateRequest(ctx context.Context,
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client ImagesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (*ImageListResultResponse, error) {
+func (client ImagesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (ImageListResultResponse, error) {
 	result := ImageListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ImageListResult)
+	err := resp.UnmarshalAsJSON(&result.ImageListResult)
+	return result, err
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -370,24 +374,24 @@ func (client ImagesClient) listByResourceGroupHandleError(resp *azcore.Response)
 }
 
 // BeginUpdate - Update an image.
-func (client ImagesClient) BeginUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters ImageUpdate, options *ImagesUpdateOptions) (*ImagePollerResponse, error) {
+func (client ImagesClient) BeginUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters ImageUpdate, options *ImagesUpdateOptions) (ImagePollerResponse, error) {
 	resp, err := client.Update(ctx, resourceGroupName, imageName, parameters, options)
 	if err != nil {
-		return nil, err
+		return ImagePollerResponse{}, err
 	}
-	result := &ImagePollerResponse{
+	result := ImagePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ImagesClient.Update", "", resp, client.updateHandleError)
 	if err != nil {
-		return nil, err
+		return ImagePollerResponse{}, err
 	}
 	poller := &imagePoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*ImageResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ImageResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -441,9 +445,10 @@ func (client ImagesClient) updateCreateRequest(ctx context.Context, resourceGrou
 }
 
 // updateHandleResponse handles the Update response.
-func (client ImagesClient) updateHandleResponse(resp *azcore.Response) (*ImageResponse, error) {
+func (client ImagesClient) updateHandleResponse(resp *azcore.Response) (ImageResponse, error) {
 	result := ImageResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Image)
+	err := resp.UnmarshalAsJSON(&result.Image)
+	return result, err
 }
 
 // updateHandleError handles the Update error response.

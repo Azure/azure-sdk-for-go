@@ -34,21 +34,21 @@ func (client OperationsClient) Pipeline() azcore.Pipeline {
 }
 
 // List - Gets a list of compute operations.
-func (client OperationsClient) List(ctx context.Context, options *OperationsListOptions) (*ComputeOperationListResultResponse, error) {
+func (client OperationsClient) List(ctx context.Context, options *OperationsListOptions) (ComputeOperationListResultResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return nil, err
+		return ComputeOperationListResultResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ComputeOperationListResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listHandleError(resp)
+		return ComputeOperationListResultResponse{}, client.listHandleError(resp)
 	}
 	result, err := client.listHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ComputeOperationListResultResponse{}, err
 	}
 	return result, nil
 }
@@ -69,9 +69,10 @@ func (client OperationsClient) listCreateRequest(ctx context.Context, options *O
 }
 
 // listHandleResponse handles the List response.
-func (client OperationsClient) listHandleResponse(resp *azcore.Response) (*ComputeOperationListResultResponse, error) {
+func (client OperationsClient) listHandleResponse(resp *azcore.Response) (ComputeOperationListResultResponse, error) {
 	result := ComputeOperationListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ComputeOperationListResult)
+	err := resp.UnmarshalAsJSON(&result.ComputeOperationListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

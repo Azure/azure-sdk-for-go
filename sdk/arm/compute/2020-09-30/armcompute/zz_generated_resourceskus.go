@@ -45,7 +45,7 @@ func (client ResourceSKUsClient) List(options *ResourceSKUsListOptions) Resource
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *ResourceSKUsResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ResourceSKUsResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceSKUsResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -72,9 +72,10 @@ func (client ResourceSKUsClient) listCreateRequest(ctx context.Context, options 
 }
 
 // listHandleResponse handles the List response.
-func (client ResourceSKUsClient) listHandleResponse(resp *azcore.Response) (*ResourceSKUsResultResponse, error) {
+func (client ResourceSKUsClient) listHandleResponse(resp *azcore.Response) (ResourceSKUsResultResponse, error) {
 	result := ResourceSKUsResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ResourceSKUsResult)
+	err := resp.UnmarshalAsJSON(&result.ResourceSKUsResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

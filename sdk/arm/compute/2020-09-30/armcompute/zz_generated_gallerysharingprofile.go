@@ -35,24 +35,24 @@ func (client GallerySharingProfileClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginUpdate - Update sharing profile of a gallery.
-func (client GallerySharingProfileClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileUpdateOptions) (*SharingUpdatePollerResponse, error) {
+func (client GallerySharingProfileClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileUpdateOptions) (SharingUpdatePollerResponse, error) {
 	resp, err := client.Update(ctx, resourceGroupName, galleryName, sharingUpdate, options)
 	if err != nil {
-		return nil, err
+		return SharingUpdatePollerResponse{}, err
 	}
-	result := &SharingUpdatePollerResponse{
+	result := SharingUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("GallerySharingProfileClient.Update", "", resp, client.updateHandleError)
 	if err != nil {
-		return nil, err
+		return SharingUpdatePollerResponse{}, err
 	}
 	poller := &sharingUpdatePoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*SharingUpdateResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SharingUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -106,9 +106,10 @@ func (client GallerySharingProfileClient) updateCreateRequest(ctx context.Contex
 }
 
 // updateHandleResponse handles the Update response.
-func (client GallerySharingProfileClient) updateHandleResponse(resp *azcore.Response) (*SharingUpdateResponse, error) {
+func (client GallerySharingProfileClient) updateHandleResponse(resp *azcore.Response) (SharingUpdateResponse, error) {
 	result := SharingUpdateResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.SharingUpdate)
+	err := resp.UnmarshalAsJSON(&result.SharingUpdate)
+	return result, err
 }
 
 // updateHandleError handles the Update error response.

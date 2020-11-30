@@ -38,21 +38,21 @@ func (client VirtualMachineImagesClient) Pipeline() azcore.Pipeline {
 }
 
 // Get - Gets a virtual machine image.
-func (client VirtualMachineImagesClient) Get(ctx context.Context, location string, publisherName string, offer string, skus string, version string, options *VirtualMachineImagesGetOptions) (*VirtualMachineImageResponse, error) {
+func (client VirtualMachineImagesClient) Get(ctx context.Context, location string, publisherName string, offer string, skus string, version string, options *VirtualMachineImagesGetOptions) (VirtualMachineImageResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, publisherName, offer, skus, version, options)
 	if err != nil {
-		return nil, err
+		return VirtualMachineImageResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return VirtualMachineImageResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return VirtualMachineImageResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return VirtualMachineImageResponse{}, err
 	}
 	return result, nil
 }
@@ -79,9 +79,10 @@ func (client VirtualMachineImagesClient) getCreateRequest(ctx context.Context, l
 }
 
 // getHandleResponse handles the Get response.
-func (client VirtualMachineImagesClient) getHandleResponse(resp *azcore.Response) (*VirtualMachineImageResponse, error) {
+func (client VirtualMachineImagesClient) getHandleResponse(resp *azcore.Response) (VirtualMachineImageResponse, error) {
 	result := VirtualMachineImageResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualMachineImage)
+	err := resp.UnmarshalAsJSON(&result.VirtualMachineImage)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -97,21 +98,21 @@ func (client VirtualMachineImagesClient) getHandleError(resp *azcore.Response) e
 }
 
 // List - Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
-func (client VirtualMachineImagesClient) List(ctx context.Context, location string, publisherName string, offer string, skus string, options *VirtualMachineImagesListOptions) (*VirtualMachineImageResourceArrayResponse, error) {
+func (client VirtualMachineImagesClient) List(ctx context.Context, location string, publisherName string, offer string, skus string, options *VirtualMachineImagesListOptions) (VirtualMachineImageResourceArrayResponse, error) {
 	req, err := client.listCreateRequest(ctx, location, publisherName, offer, skus, options)
 	if err != nil {
-		return nil, err
+		return VirtualMachineImageResourceArrayResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return VirtualMachineImageResourceArrayResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listHandleError(resp)
+		return VirtualMachineImageResourceArrayResponse{}, client.listHandleError(resp)
 	}
 	result, err := client.listHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return VirtualMachineImageResourceArrayResponse{}, err
 	}
 	return result, nil
 }
@@ -146,9 +147,10 @@ func (client VirtualMachineImagesClient) listCreateRequest(ctx context.Context, 
 }
 
 // listHandleResponse handles the List response.
-func (client VirtualMachineImagesClient) listHandleResponse(resp *azcore.Response) (*VirtualMachineImageResourceArrayResponse, error) {
+func (client VirtualMachineImagesClient) listHandleResponse(resp *azcore.Response) (VirtualMachineImageResourceArrayResponse, error) {
 	result := VirtualMachineImageResourceArrayResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualMachineImageResourceArray)
+	err := resp.UnmarshalAsJSON(&result.VirtualMachineImageResourceArray)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -164,21 +166,21 @@ func (client VirtualMachineImagesClient) listHandleError(resp *azcore.Response) 
 }
 
 // ListOffers - Gets a list of virtual machine image offers for the specified location and publisher.
-func (client VirtualMachineImagesClient) ListOffers(ctx context.Context, location string, publisherName string, options *VirtualMachineImagesListOffersOptions) (*VirtualMachineImageResourceArrayResponse, error) {
+func (client VirtualMachineImagesClient) ListOffers(ctx context.Context, location string, publisherName string, options *VirtualMachineImagesListOffersOptions) (VirtualMachineImageResourceArrayResponse, error) {
 	req, err := client.listOffersCreateRequest(ctx, location, publisherName, options)
 	if err != nil {
-		return nil, err
+		return VirtualMachineImageResourceArrayResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return VirtualMachineImageResourceArrayResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listOffersHandleError(resp)
+		return VirtualMachineImageResourceArrayResponse{}, client.listOffersHandleError(resp)
 	}
 	result, err := client.listOffersHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return VirtualMachineImageResourceArrayResponse{}, err
 	}
 	return result, nil
 }
@@ -202,9 +204,10 @@ func (client VirtualMachineImagesClient) listOffersCreateRequest(ctx context.Con
 }
 
 // listOffersHandleResponse handles the ListOffers response.
-func (client VirtualMachineImagesClient) listOffersHandleResponse(resp *azcore.Response) (*VirtualMachineImageResourceArrayResponse, error) {
+func (client VirtualMachineImagesClient) listOffersHandleResponse(resp *azcore.Response) (VirtualMachineImageResourceArrayResponse, error) {
 	result := VirtualMachineImageResourceArrayResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualMachineImageResourceArray)
+	err := resp.UnmarshalAsJSON(&result.VirtualMachineImageResourceArray)
+	return result, err
 }
 
 // listOffersHandleError handles the ListOffers error response.
@@ -220,21 +223,21 @@ func (client VirtualMachineImagesClient) listOffersHandleError(resp *azcore.Resp
 }
 
 // ListPublishers - Gets a list of virtual machine image publishers for the specified Azure location.
-func (client VirtualMachineImagesClient) ListPublishers(ctx context.Context, location string, options *VirtualMachineImagesListPublishersOptions) (*VirtualMachineImageResourceArrayResponse, error) {
+func (client VirtualMachineImagesClient) ListPublishers(ctx context.Context, location string, options *VirtualMachineImagesListPublishersOptions) (VirtualMachineImageResourceArrayResponse, error) {
 	req, err := client.listPublishersCreateRequest(ctx, location, options)
 	if err != nil {
-		return nil, err
+		return VirtualMachineImageResourceArrayResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return VirtualMachineImageResourceArrayResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listPublishersHandleError(resp)
+		return VirtualMachineImageResourceArrayResponse{}, client.listPublishersHandleError(resp)
 	}
 	result, err := client.listPublishersHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return VirtualMachineImageResourceArrayResponse{}, err
 	}
 	return result, nil
 }
@@ -257,9 +260,10 @@ func (client VirtualMachineImagesClient) listPublishersCreateRequest(ctx context
 }
 
 // listPublishersHandleResponse handles the ListPublishers response.
-func (client VirtualMachineImagesClient) listPublishersHandleResponse(resp *azcore.Response) (*VirtualMachineImageResourceArrayResponse, error) {
+func (client VirtualMachineImagesClient) listPublishersHandleResponse(resp *azcore.Response) (VirtualMachineImageResourceArrayResponse, error) {
 	result := VirtualMachineImageResourceArrayResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualMachineImageResourceArray)
+	err := resp.UnmarshalAsJSON(&result.VirtualMachineImageResourceArray)
+	return result, err
 }
 
 // listPublishersHandleError handles the ListPublishers error response.
@@ -275,21 +279,21 @@ func (client VirtualMachineImagesClient) listPublishersHandleError(resp *azcore.
 }
 
 // ListSKUs - Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
-func (client VirtualMachineImagesClient) ListSKUs(ctx context.Context, location string, publisherName string, offer string, options *VirtualMachineImagesListSKUsOptions) (*VirtualMachineImageResourceArrayResponse, error) {
+func (client VirtualMachineImagesClient) ListSKUs(ctx context.Context, location string, publisherName string, offer string, options *VirtualMachineImagesListSKUsOptions) (VirtualMachineImageResourceArrayResponse, error) {
 	req, err := client.listSkUsCreateRequest(ctx, location, publisherName, offer, options)
 	if err != nil {
-		return nil, err
+		return VirtualMachineImageResourceArrayResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return VirtualMachineImageResourceArrayResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listSkUsHandleError(resp)
+		return VirtualMachineImageResourceArrayResponse{}, client.listSkUsHandleError(resp)
 	}
 	result, err := client.listSkUsHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return VirtualMachineImageResourceArrayResponse{}, err
 	}
 	return result, nil
 }
@@ -314,9 +318,10 @@ func (client VirtualMachineImagesClient) listSkUsCreateRequest(ctx context.Conte
 }
 
 // listSkUsHandleResponse handles the ListSKUs response.
-func (client VirtualMachineImagesClient) listSkUsHandleResponse(resp *azcore.Response) (*VirtualMachineImageResourceArrayResponse, error) {
+func (client VirtualMachineImagesClient) listSkUsHandleResponse(resp *azcore.Response) (VirtualMachineImageResourceArrayResponse, error) {
 	result := VirtualMachineImageResourceArrayResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualMachineImageResourceArray)
+	err := resp.UnmarshalAsJSON(&result.VirtualMachineImageResourceArray)
+	return result, err
 }
 
 // listSkUsHandleError handles the ListSKUs error response.

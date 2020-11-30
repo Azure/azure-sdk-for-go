@@ -34,21 +34,21 @@ func (client ObjectReplicationPoliciesClient) Pipeline() azcore.Pipeline {
 }
 
 // CreateOrUpdate - Create or update the object replication policy of the storage account.
-func (client ObjectReplicationPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, properties ObjectReplicationPolicy, options *ObjectReplicationPoliciesCreateOrUpdateOptions) (*ObjectReplicationPolicyResponse, error) {
+func (client ObjectReplicationPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, properties ObjectReplicationPolicy, options *ObjectReplicationPoliciesCreateOrUpdateOptions) (ObjectReplicationPolicyResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, objectReplicationPolicyId, properties, options)
 	if err != nil {
-		return nil, err
+		return ObjectReplicationPolicyResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ObjectReplicationPolicyResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return ObjectReplicationPolicyResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	result, err := client.createOrUpdateHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ObjectReplicationPolicyResponse{}, err
 	}
 	return result, nil
 }
@@ -73,9 +73,10 @@ func (client ObjectReplicationPoliciesClient) createOrUpdateCreateRequest(ctx co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client ObjectReplicationPoliciesClient) createOrUpdateHandleResponse(resp *azcore.Response) (*ObjectReplicationPolicyResponse, error) {
+func (client ObjectReplicationPoliciesClient) createOrUpdateHandleResponse(resp *azcore.Response) (ObjectReplicationPolicyResponse, error) {
 	result := ObjectReplicationPolicyResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ObjectReplicationPolicy)
+	err := resp.UnmarshalAsJSON(&result.ObjectReplicationPolicy)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -132,21 +133,21 @@ func (client ObjectReplicationPoliciesClient) deleteHandleError(resp *azcore.Res
 }
 
 // Get - Get the object replication policy of the storage account by policy ID.
-func (client ObjectReplicationPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, options *ObjectReplicationPoliciesGetOptions) (*ObjectReplicationPolicyResponse, error) {
+func (client ObjectReplicationPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, options *ObjectReplicationPoliciesGetOptions) (ObjectReplicationPolicyResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, objectReplicationPolicyId, options)
 	if err != nil {
-		return nil, err
+		return ObjectReplicationPolicyResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ObjectReplicationPolicyResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return ObjectReplicationPolicyResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ObjectReplicationPolicyResponse{}, err
 	}
 	return result, nil
 }
@@ -171,9 +172,10 @@ func (client ObjectReplicationPoliciesClient) getCreateRequest(ctx context.Conte
 }
 
 // getHandleResponse handles the Get response.
-func (client ObjectReplicationPoliciesClient) getHandleResponse(resp *azcore.Response) (*ObjectReplicationPolicyResponse, error) {
+func (client ObjectReplicationPoliciesClient) getHandleResponse(resp *azcore.Response) (ObjectReplicationPolicyResponse, error) {
 	result := ObjectReplicationPolicyResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ObjectReplicationPolicy)
+	err := resp.UnmarshalAsJSON(&result.ObjectReplicationPolicy)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -186,21 +188,21 @@ func (client ObjectReplicationPoliciesClient) getHandleError(resp *azcore.Respon
 }
 
 // List - List the object replication policies associated with the storage account.
-func (client ObjectReplicationPoliciesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *ObjectReplicationPoliciesListOptions) (*ObjectReplicationPoliciesResponse, error) {
+func (client ObjectReplicationPoliciesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *ObjectReplicationPoliciesListOptions) (ObjectReplicationPoliciesResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return nil, err
+		return ObjectReplicationPoliciesResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ObjectReplicationPoliciesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listHandleError(resp)
+		return ObjectReplicationPoliciesResponse{}, client.listHandleError(resp)
 	}
 	result, err := client.listHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ObjectReplicationPoliciesResponse{}, err
 	}
 	return result, nil
 }
@@ -224,9 +226,10 @@ func (client ObjectReplicationPoliciesClient) listCreateRequest(ctx context.Cont
 }
 
 // listHandleResponse handles the List response.
-func (client ObjectReplicationPoliciesClient) listHandleResponse(resp *azcore.Response) (*ObjectReplicationPoliciesResponse, error) {
+func (client ObjectReplicationPoliciesClient) listHandleResponse(resp *azcore.Response) (ObjectReplicationPoliciesResponse, error) {
 	result := ObjectReplicationPoliciesResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ObjectReplicationPolicies)
+	err := resp.UnmarshalAsJSON(&result.ObjectReplicationPolicies)
+	return result, err
 }
 
 // listHandleError handles the List error response.

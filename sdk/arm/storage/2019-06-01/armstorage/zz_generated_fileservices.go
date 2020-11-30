@@ -34,21 +34,21 @@ func (client FileServicesClient) Pipeline() azcore.Pipeline {
 }
 
 // GetServiceProperties - Gets the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing) rules.
-func (client FileServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *FileServicesGetServicePropertiesOptions) (*FileServicePropertiesResponse, error) {
+func (client FileServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *FileServicesGetServicePropertiesOptions) (FileServicePropertiesResponse, error) {
 	req, err := client.getServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return nil, err
+		return FileServicePropertiesResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return FileServicePropertiesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getServicePropertiesHandleError(resp)
+		return FileServicePropertiesResponse{}, client.getServicePropertiesHandleError(resp)
 	}
 	result, err := client.getServicePropertiesHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return FileServicePropertiesResponse{}, err
 	}
 	return result, nil
 }
@@ -73,9 +73,10 @@ func (client FileServicesClient) getServicePropertiesCreateRequest(ctx context.C
 }
 
 // getServicePropertiesHandleResponse handles the GetServiceProperties response.
-func (client FileServicesClient) getServicePropertiesHandleResponse(resp *azcore.Response) (*FileServicePropertiesResponse, error) {
+func (client FileServicesClient) getServicePropertiesHandleResponse(resp *azcore.Response) (FileServicePropertiesResponse, error) {
 	result := FileServicePropertiesResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.FileServiceProperties)
+	err := resp.UnmarshalAsJSON(&result.FileServiceProperties)
+	return result, err
 }
 
 // getServicePropertiesHandleError handles the GetServiceProperties error response.
@@ -88,21 +89,21 @@ func (client FileServicesClient) getServicePropertiesHandleError(resp *azcore.Re
 }
 
 // List - List all file services in storage accounts
-func (client FileServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *FileServicesListOptions) (*FileServiceItemsResponse, error) {
+func (client FileServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *FileServicesListOptions) (FileServiceItemsResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return nil, err
+		return FileServiceItemsResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return FileServiceItemsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listHandleError(resp)
+		return FileServiceItemsResponse{}, client.listHandleError(resp)
 	}
 	result, err := client.listHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return FileServiceItemsResponse{}, err
 	}
 	return result, nil
 }
@@ -126,9 +127,10 @@ func (client FileServicesClient) listCreateRequest(ctx context.Context, resource
 }
 
 // listHandleResponse handles the List response.
-func (client FileServicesClient) listHandleResponse(resp *azcore.Response) (*FileServiceItemsResponse, error) {
+func (client FileServicesClient) listHandleResponse(resp *azcore.Response) (FileServiceItemsResponse, error) {
 	result := FileServiceItemsResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.FileServiceItems)
+	err := resp.UnmarshalAsJSON(&result.FileServiceItems)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -141,21 +143,21 @@ func (client FileServicesClient) listHandleError(resp *azcore.Response) error {
 }
 
 // SetServiceProperties - Sets the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing) rules.
-func (client FileServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters FileServiceProperties, options *FileServicesSetServicePropertiesOptions) (*FileServicePropertiesResponse, error) {
+func (client FileServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters FileServiceProperties, options *FileServicesSetServicePropertiesOptions) (FileServicePropertiesResponse, error) {
 	req, err := client.setServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
-		return nil, err
+		return FileServicePropertiesResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return FileServicePropertiesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.setServicePropertiesHandleError(resp)
+		return FileServicePropertiesResponse{}, client.setServicePropertiesHandleError(resp)
 	}
 	result, err := client.setServicePropertiesHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return FileServicePropertiesResponse{}, err
 	}
 	return result, nil
 }
@@ -180,9 +182,10 @@ func (client FileServicesClient) setServicePropertiesCreateRequest(ctx context.C
 }
 
 // setServicePropertiesHandleResponse handles the SetServiceProperties response.
-func (client FileServicesClient) setServicePropertiesHandleResponse(resp *azcore.Response) (*FileServicePropertiesResponse, error) {
+func (client FileServicesClient) setServicePropertiesHandleResponse(resp *azcore.Response) (FileServicePropertiesResponse, error) {
 	result := FileServicePropertiesResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.FileServiceProperties)
+	err := resp.UnmarshalAsJSON(&result.FileServiceProperties)
+	return result, err
 }
 
 // setServicePropertiesHandleError handles the SetServiceProperties error response.

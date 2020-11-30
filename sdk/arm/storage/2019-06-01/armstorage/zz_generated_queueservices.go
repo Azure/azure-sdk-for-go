@@ -35,21 +35,21 @@ func (client QueueServicesClient) Pipeline() azcore.Pipeline {
 
 // GetServiceProperties - Gets the properties of a storage account’s Queue service, including properties for Storage Analytics and CORS (Cross-Origin Resource
 // Sharing) rules.
-func (client QueueServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *QueueServicesGetServicePropertiesOptions) (*QueueServicePropertiesResponse, error) {
+func (client QueueServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *QueueServicesGetServicePropertiesOptions) (QueueServicePropertiesResponse, error) {
 	req, err := client.getServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return nil, err
+		return QueueServicePropertiesResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return QueueServicePropertiesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getServicePropertiesHandleError(resp)
+		return QueueServicePropertiesResponse{}, client.getServicePropertiesHandleError(resp)
 	}
 	result, err := client.getServicePropertiesHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return QueueServicePropertiesResponse{}, err
 	}
 	return result, nil
 }
@@ -74,9 +74,10 @@ func (client QueueServicesClient) getServicePropertiesCreateRequest(ctx context.
 }
 
 // getServicePropertiesHandleResponse handles the GetServiceProperties response.
-func (client QueueServicesClient) getServicePropertiesHandleResponse(resp *azcore.Response) (*QueueServicePropertiesResponse, error) {
+func (client QueueServicesClient) getServicePropertiesHandleResponse(resp *azcore.Response) (QueueServicePropertiesResponse, error) {
 	result := QueueServicePropertiesResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.QueueServiceProperties)
+	err := resp.UnmarshalAsJSON(&result.QueueServiceProperties)
+	return result, err
 }
 
 // getServicePropertiesHandleError handles the GetServiceProperties error response.
@@ -89,21 +90,21 @@ func (client QueueServicesClient) getServicePropertiesHandleError(resp *azcore.R
 }
 
 // List - List all queue services for the storage account
-func (client QueueServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *QueueServicesListOptions) (*ListQueueServicesResponse, error) {
+func (client QueueServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *QueueServicesListOptions) (ListQueueServicesResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return nil, err
+		return ListQueueServicesResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ListQueueServicesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listHandleError(resp)
+		return ListQueueServicesResponse{}, client.listHandleError(resp)
 	}
 	result, err := client.listHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ListQueueServicesResponse{}, err
 	}
 	return result, nil
 }
@@ -127,9 +128,10 @@ func (client QueueServicesClient) listCreateRequest(ctx context.Context, resourc
 }
 
 // listHandleResponse handles the List response.
-func (client QueueServicesClient) listHandleResponse(resp *azcore.Response) (*ListQueueServicesResponse, error) {
+func (client QueueServicesClient) listHandleResponse(resp *azcore.Response) (ListQueueServicesResponse, error) {
 	result := ListQueueServicesResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ListQueueServices)
+	err := resp.UnmarshalAsJSON(&result.ListQueueServices)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -143,21 +145,21 @@ func (client QueueServicesClient) listHandleError(resp *azcore.Response) error {
 
 // SetServiceProperties - Sets the properties of a storage account’s Queue service, including properties for Storage Analytics and CORS (Cross-Origin Resource
 // Sharing) rules.
-func (client QueueServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters QueueServiceProperties, options *QueueServicesSetServicePropertiesOptions) (*QueueServicePropertiesResponse, error) {
+func (client QueueServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters QueueServiceProperties, options *QueueServicesSetServicePropertiesOptions) (QueueServicePropertiesResponse, error) {
 	req, err := client.setServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
-		return nil, err
+		return QueueServicePropertiesResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return QueueServicePropertiesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.setServicePropertiesHandleError(resp)
+		return QueueServicePropertiesResponse{}, client.setServicePropertiesHandleError(resp)
 	}
 	result, err := client.setServicePropertiesHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return QueueServicePropertiesResponse{}, err
 	}
 	return result, nil
 }
@@ -182,9 +184,10 @@ func (client QueueServicesClient) setServicePropertiesCreateRequest(ctx context.
 }
 
 // setServicePropertiesHandleResponse handles the SetServiceProperties response.
-func (client QueueServicesClient) setServicePropertiesHandleResponse(resp *azcore.Response) (*QueueServicePropertiesResponse, error) {
+func (client QueueServicesClient) setServicePropertiesHandleResponse(resp *azcore.Response) (QueueServicePropertiesResponse, error) {
 	result := QueueServicePropertiesResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.QueueServiceProperties)
+	err := resp.UnmarshalAsJSON(&result.QueueServiceProperties)
+	return result, err
 }
 
 // setServicePropertiesHandleError handles the SetServiceProperties error response.

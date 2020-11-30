@@ -38,21 +38,21 @@ func (client BlobContainersClient) Pipeline() azcore.Pipeline {
 
 // ClearLegalHold - Clears legal hold tags. Clearing the same or non-existent tag results in an idempotent operation. ClearLegalHold clears out only the
 // specified tags in the request.
-func (client BlobContainersClient) ClearLegalHold(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold LegalHold, options *BlobContainersClearLegalHoldOptions) (*LegalHoldResponse, error) {
+func (client BlobContainersClient) ClearLegalHold(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold LegalHold, options *BlobContainersClearLegalHoldOptions) (LegalHoldResponse, error) {
 	req, err := client.clearLegalHoldCreateRequest(ctx, resourceGroupName, accountName, containerName, legalHold, options)
 	if err != nil {
-		return nil, err
+		return LegalHoldResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return LegalHoldResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.clearLegalHoldHandleError(resp)
+		return LegalHoldResponse{}, client.clearLegalHoldHandleError(resp)
 	}
 	result, err := client.clearLegalHoldHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return LegalHoldResponse{}, err
 	}
 	return result, nil
 }
@@ -77,9 +77,10 @@ func (client BlobContainersClient) clearLegalHoldCreateRequest(ctx context.Conte
 }
 
 // clearLegalHoldHandleResponse handles the ClearLegalHold response.
-func (client BlobContainersClient) clearLegalHoldHandleResponse(resp *azcore.Response) (*LegalHoldResponse, error) {
+func (client BlobContainersClient) clearLegalHoldHandleResponse(resp *azcore.Response) (LegalHoldResponse, error) {
 	result := LegalHoldResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.LegalHold)
+	err := resp.UnmarshalAsJSON(&result.LegalHold)
+	return result, err
 }
 
 // clearLegalHoldHandleError handles the ClearLegalHold error response.
@@ -97,21 +98,21 @@ func (client BlobContainersClient) clearLegalHoldHandleError(resp *azcore.Respon
 // Create - Creates a new container under the specified account as described by request body. The container resource includes metadata and properties for
 // that container. It does not include a list of the blobs
 // contained by the container.
-func (client BlobContainersClient) Create(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer BlobContainer, options *BlobContainersCreateOptions) (*BlobContainerResponse, error) {
+func (client BlobContainersClient) Create(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer BlobContainer, options *BlobContainersCreateOptions) (BlobContainerResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, containerName, blobContainer, options)
 	if err != nil {
-		return nil, err
+		return BlobContainerResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return BlobContainerResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.createHandleError(resp)
+		return BlobContainerResponse{}, client.createHandleError(resp)
 	}
 	result, err := client.createHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return BlobContainerResponse{}, err
 	}
 	return result, nil
 }
@@ -136,9 +137,10 @@ func (client BlobContainersClient) createCreateRequest(ctx context.Context, reso
 }
 
 // createHandleResponse handles the Create response.
-func (client BlobContainersClient) createHandleResponse(resp *azcore.Response) (*BlobContainerResponse, error) {
+func (client BlobContainersClient) createHandleResponse(resp *azcore.Response) (BlobContainerResponse, error) {
 	result := BlobContainerResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.BlobContainer)
+	err := resp.UnmarshalAsJSON(&result.BlobContainer)
+	return result, err
 }
 
 // createHandleError handles the Create error response.
@@ -155,21 +157,21 @@ func (client BlobContainersClient) createHandleError(resp *azcore.Response) erro
 
 // CreateOrUpdateImmutabilityPolicy - Creates or updates an unlocked immutability policy. ETag in If-Match is honored if given but not required for this
 // operation.
-func (client BlobContainersClient) CreateOrUpdateImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersCreateOrUpdateImmutabilityPolicyOptions) (*ImmutabilityPolicyResponse, error) {
+func (client BlobContainersClient) CreateOrUpdateImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersCreateOrUpdateImmutabilityPolicyOptions) (ImmutabilityPolicyResponse, error) {
 	req, err := client.createOrUpdateImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
-		return nil, err
+		return ImmutabilityPolicyResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ImmutabilityPolicyResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.createOrUpdateImmutabilityPolicyHandleError(resp)
+		return ImmutabilityPolicyResponse{}, client.createOrUpdateImmutabilityPolicyHandleError(resp)
 	}
 	result, err := client.createOrUpdateImmutabilityPolicyHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ImmutabilityPolicyResponse{}, err
 	}
 	return result, nil
 }
@@ -201,12 +203,13 @@ func (client BlobContainersClient) createOrUpdateImmutabilityPolicyCreateRequest
 }
 
 // createOrUpdateImmutabilityPolicyHandleResponse handles the CreateOrUpdateImmutabilityPolicy response.
-func (client BlobContainersClient) createOrUpdateImmutabilityPolicyHandleResponse(resp *azcore.Response) (*ImmutabilityPolicyResponse, error) {
+func (client BlobContainersClient) createOrUpdateImmutabilityPolicyHandleResponse(resp *azcore.Response) (ImmutabilityPolicyResponse, error) {
 	result := ImmutabilityPolicyResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	return &result, resp.UnmarshalAsJSON(&result.ImmutabilityPolicy)
+	err := resp.UnmarshalAsJSON(&result.ImmutabilityPolicy)
+	return result, err
 }
 
 // createOrUpdateImmutabilityPolicyHandleError handles the CreateOrUpdateImmutabilityPolicy error response.
@@ -270,21 +273,21 @@ func (client BlobContainersClient) deleteHandleError(resp *azcore.Response) erro
 // DeleteImmutabilityPolicy - Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to 0. ETag in
 // If-Match is required for this operation. Deleting a locked immutability
 // policy is not allowed, the only way is to delete the container after deleting all expired blobs inside the policy locked container.
-func (client BlobContainersClient) DeleteImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersDeleteImmutabilityPolicyOptions) (*ImmutabilityPolicyResponse, error) {
+func (client BlobContainersClient) DeleteImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersDeleteImmutabilityPolicyOptions) (ImmutabilityPolicyResponse, error) {
 	req, err := client.deleteImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, ifMatch, options)
 	if err != nil {
-		return nil, err
+		return ImmutabilityPolicyResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ImmutabilityPolicyResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.deleteImmutabilityPolicyHandleError(resp)
+		return ImmutabilityPolicyResponse{}, client.deleteImmutabilityPolicyHandleError(resp)
 	}
 	result, err := client.deleteImmutabilityPolicyHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ImmutabilityPolicyResponse{}, err
 	}
 	return result, nil
 }
@@ -311,12 +314,13 @@ func (client BlobContainersClient) deleteImmutabilityPolicyCreateRequest(ctx con
 }
 
 // deleteImmutabilityPolicyHandleResponse handles the DeleteImmutabilityPolicy response.
-func (client BlobContainersClient) deleteImmutabilityPolicyHandleResponse(resp *azcore.Response) (*ImmutabilityPolicyResponse, error) {
+func (client BlobContainersClient) deleteImmutabilityPolicyHandleResponse(resp *azcore.Response) (ImmutabilityPolicyResponse, error) {
 	result := ImmutabilityPolicyResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	return &result, resp.UnmarshalAsJSON(&result.ImmutabilityPolicy)
+	err := resp.UnmarshalAsJSON(&result.ImmutabilityPolicy)
+	return result, err
 }
 
 // deleteImmutabilityPolicyHandleError handles the DeleteImmutabilityPolicy error response.
@@ -333,21 +337,21 @@ func (client BlobContainersClient) deleteImmutabilityPolicyHandleError(resp *azc
 
 // ExtendImmutabilityPolicy - Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a Locked policy
 // will be this action. ETag in If-Match is required for this operation.
-func (client BlobContainersClient) ExtendImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersExtendImmutabilityPolicyOptions) (*ImmutabilityPolicyResponse, error) {
+func (client BlobContainersClient) ExtendImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersExtendImmutabilityPolicyOptions) (ImmutabilityPolicyResponse, error) {
 	req, err := client.extendImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, ifMatch, options)
 	if err != nil {
-		return nil, err
+		return ImmutabilityPolicyResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ImmutabilityPolicyResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.extendImmutabilityPolicyHandleError(resp)
+		return ImmutabilityPolicyResponse{}, client.extendImmutabilityPolicyHandleError(resp)
 	}
 	result, err := client.extendImmutabilityPolicyHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ImmutabilityPolicyResponse{}, err
 	}
 	return result, nil
 }
@@ -376,12 +380,13 @@ func (client BlobContainersClient) extendImmutabilityPolicyCreateRequest(ctx con
 }
 
 // extendImmutabilityPolicyHandleResponse handles the ExtendImmutabilityPolicy response.
-func (client BlobContainersClient) extendImmutabilityPolicyHandleResponse(resp *azcore.Response) (*ImmutabilityPolicyResponse, error) {
+func (client BlobContainersClient) extendImmutabilityPolicyHandleResponse(resp *azcore.Response) (ImmutabilityPolicyResponse, error) {
 	result := ImmutabilityPolicyResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	return &result, resp.UnmarshalAsJSON(&result.ImmutabilityPolicy)
+	err := resp.UnmarshalAsJSON(&result.ImmutabilityPolicy)
+	return result, err
 }
 
 // extendImmutabilityPolicyHandleError handles the ExtendImmutabilityPolicy error response.
@@ -397,21 +402,21 @@ func (client BlobContainersClient) extendImmutabilityPolicyHandleError(resp *azc
 }
 
 // Get - Gets properties of a specified container.
-func (client BlobContainersClient) Get(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersGetOptions) (*BlobContainerResponse, error) {
+func (client BlobContainersClient) Get(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersGetOptions) (BlobContainerResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
-		return nil, err
+		return BlobContainerResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return BlobContainerResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return BlobContainerResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return BlobContainerResponse{}, err
 	}
 	return result, nil
 }
@@ -436,9 +441,10 @@ func (client BlobContainersClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client BlobContainersClient) getHandleResponse(resp *azcore.Response) (*BlobContainerResponse, error) {
+func (client BlobContainersClient) getHandleResponse(resp *azcore.Response) (BlobContainerResponse, error) {
 	result := BlobContainerResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.BlobContainer)
+	err := resp.UnmarshalAsJSON(&result.BlobContainer)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -454,21 +460,21 @@ func (client BlobContainersClient) getHandleError(resp *azcore.Response) error {
 }
 
 // GetImmutabilityPolicy - Gets the existing immutability policy along with the corresponding ETag in response headers and body.
-func (client BlobContainersClient) GetImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersGetImmutabilityPolicyOptions) (*ImmutabilityPolicyResponse, error) {
+func (client BlobContainersClient) GetImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersGetImmutabilityPolicyOptions) (ImmutabilityPolicyResponse, error) {
 	req, err := client.getImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
-		return nil, err
+		return ImmutabilityPolicyResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ImmutabilityPolicyResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getImmutabilityPolicyHandleError(resp)
+		return ImmutabilityPolicyResponse{}, client.getImmutabilityPolicyHandleError(resp)
 	}
 	result, err := client.getImmutabilityPolicyHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ImmutabilityPolicyResponse{}, err
 	}
 	return result, nil
 }
@@ -497,12 +503,13 @@ func (client BlobContainersClient) getImmutabilityPolicyCreateRequest(ctx contex
 }
 
 // getImmutabilityPolicyHandleResponse handles the GetImmutabilityPolicy response.
-func (client BlobContainersClient) getImmutabilityPolicyHandleResponse(resp *azcore.Response) (*ImmutabilityPolicyResponse, error) {
+func (client BlobContainersClient) getImmutabilityPolicyHandleResponse(resp *azcore.Response) (ImmutabilityPolicyResponse, error) {
 	result := ImmutabilityPolicyResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	return &result, resp.UnmarshalAsJSON(&result.ImmutabilityPolicy)
+	err := resp.UnmarshalAsJSON(&result.ImmutabilityPolicy)
+	return result, err
 }
 
 // getImmutabilityPolicyHandleError handles the GetImmutabilityPolicy error response.
@@ -519,21 +526,21 @@ func (client BlobContainersClient) getImmutabilityPolicyHandleError(resp *azcore
 
 // Lease - The Lease Container operation establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds,
 // or can be infinite.
-func (client BlobContainersClient) Lease(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersLeaseOptions) (*LeaseContainerResponseResponse, error) {
+func (client BlobContainersClient) Lease(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersLeaseOptions) (LeaseContainerResponseResponse, error) {
 	req, err := client.leaseCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
-		return nil, err
+		return LeaseContainerResponseResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return LeaseContainerResponseResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.leaseHandleError(resp)
+		return LeaseContainerResponseResponse{}, client.leaseHandleError(resp)
 	}
 	result, err := client.leaseHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return LeaseContainerResponseResponse{}, err
 	}
 	return result, nil
 }
@@ -561,9 +568,10 @@ func (client BlobContainersClient) leaseCreateRequest(ctx context.Context, resou
 }
 
 // leaseHandleResponse handles the Lease response.
-func (client BlobContainersClient) leaseHandleResponse(resp *azcore.Response) (*LeaseContainerResponseResponse, error) {
+func (client BlobContainersClient) leaseHandleResponse(resp *azcore.Response) (LeaseContainerResponseResponse, error) {
 	result := LeaseContainerResponseResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.LeaseContainerResponse)
+	err := resp.UnmarshalAsJSON(&result.LeaseContainerResponse)
+	return result, err
 }
 
 // leaseHandleError handles the Lease error response.
@@ -587,7 +595,7 @@ func (client BlobContainersClient) List(resourceGroupName string, accountName st
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *ListContainerItemsResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ListContainerItemsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListContainerItems.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -622,9 +630,10 @@ func (client BlobContainersClient) listCreateRequest(ctx context.Context, resour
 }
 
 // listHandleResponse handles the List response.
-func (client BlobContainersClient) listHandleResponse(resp *azcore.Response) (*ListContainerItemsResponse, error) {
+func (client BlobContainersClient) listHandleResponse(resp *azcore.Response) (ListContainerItemsResponse, error) {
 	result := ListContainerItemsResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ListContainerItems)
+	err := resp.UnmarshalAsJSON(&result.ListContainerItems)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -641,21 +650,21 @@ func (client BlobContainersClient) listHandleError(resp *azcore.Response) error 
 
 // LockImmutabilityPolicy - Sets the ImmutabilityPolicy to Locked state. The only action allowed on a Locked policy is ExtendImmutabilityPolicy action.
 // ETag in If-Match is required for this operation.
-func (client BlobContainersClient) LockImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersLockImmutabilityPolicyOptions) (*ImmutabilityPolicyResponse, error) {
+func (client BlobContainersClient) LockImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersLockImmutabilityPolicyOptions) (ImmutabilityPolicyResponse, error) {
 	req, err := client.lockImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, ifMatch, options)
 	if err != nil {
-		return nil, err
+		return ImmutabilityPolicyResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ImmutabilityPolicyResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.lockImmutabilityPolicyHandleError(resp)
+		return ImmutabilityPolicyResponse{}, client.lockImmutabilityPolicyHandleError(resp)
 	}
 	result, err := client.lockImmutabilityPolicyHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ImmutabilityPolicyResponse{}, err
 	}
 	return result, nil
 }
@@ -681,12 +690,13 @@ func (client BlobContainersClient) lockImmutabilityPolicyCreateRequest(ctx conte
 }
 
 // lockImmutabilityPolicyHandleResponse handles the LockImmutabilityPolicy response.
-func (client BlobContainersClient) lockImmutabilityPolicyHandleResponse(resp *azcore.Response) (*ImmutabilityPolicyResponse, error) {
+func (client BlobContainersClient) lockImmutabilityPolicyHandleResponse(resp *azcore.Response) (ImmutabilityPolicyResponse, error) {
 	result := ImmutabilityPolicyResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	return &result, resp.UnmarshalAsJSON(&result.ImmutabilityPolicy)
+	err := resp.UnmarshalAsJSON(&result.ImmutabilityPolicy)
+	return result, err
 }
 
 // lockImmutabilityPolicyHandleError handles the LockImmutabilityPolicy error response.
@@ -703,21 +713,21 @@ func (client BlobContainersClient) lockImmutabilityPolicyHandleError(resp *azcor
 
 // SetLegalHold - Sets legal hold tags. Setting the same tag results in an idempotent operation. SetLegalHold follows an append pattern and does not clear
 // out the existing tags that are not specified in the request.
-func (client BlobContainersClient) SetLegalHold(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold LegalHold, options *BlobContainersSetLegalHoldOptions) (*LegalHoldResponse, error) {
+func (client BlobContainersClient) SetLegalHold(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold LegalHold, options *BlobContainersSetLegalHoldOptions) (LegalHoldResponse, error) {
 	req, err := client.setLegalHoldCreateRequest(ctx, resourceGroupName, accountName, containerName, legalHold, options)
 	if err != nil {
-		return nil, err
+		return LegalHoldResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return LegalHoldResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.setLegalHoldHandleError(resp)
+		return LegalHoldResponse{}, client.setLegalHoldHandleError(resp)
 	}
 	result, err := client.setLegalHoldHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return LegalHoldResponse{}, err
 	}
 	return result, nil
 }
@@ -742,9 +752,10 @@ func (client BlobContainersClient) setLegalHoldCreateRequest(ctx context.Context
 }
 
 // setLegalHoldHandleResponse handles the SetLegalHold response.
-func (client BlobContainersClient) setLegalHoldHandleResponse(resp *azcore.Response) (*LegalHoldResponse, error) {
+func (client BlobContainersClient) setLegalHoldHandleResponse(resp *azcore.Response) (LegalHoldResponse, error) {
 	result := LegalHoldResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.LegalHold)
+	err := resp.UnmarshalAsJSON(&result.LegalHold)
+	return result, err
 }
 
 // setLegalHoldHandleError handles the SetLegalHold error response.
@@ -761,21 +772,21 @@ func (client BlobContainersClient) setLegalHoldHandleError(resp *azcore.Response
 
 // Update - Updates container properties as specified in request body. Properties not mentioned in the request will be unchanged. Update fails if the specified
 // container doesn't already exist.
-func (client BlobContainersClient) Update(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer BlobContainer, options *BlobContainersUpdateOptions) (*BlobContainerResponse, error) {
+func (client BlobContainersClient) Update(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer BlobContainer, options *BlobContainersUpdateOptions) (BlobContainerResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, containerName, blobContainer, options)
 	if err != nil {
-		return nil, err
+		return BlobContainerResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return BlobContainerResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.updateHandleError(resp)
+		return BlobContainerResponse{}, client.updateHandleError(resp)
 	}
 	result, err := client.updateHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return BlobContainerResponse{}, err
 	}
 	return result, nil
 }
@@ -800,9 +811,10 @@ func (client BlobContainersClient) updateCreateRequest(ctx context.Context, reso
 }
 
 // updateHandleResponse handles the Update response.
-func (client BlobContainersClient) updateHandleResponse(resp *azcore.Response) (*BlobContainerResponse, error) {
+func (client BlobContainersClient) updateHandleResponse(resp *azcore.Response) (BlobContainerResponse, error) {
 	result := BlobContainerResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.BlobContainer)
+	err := resp.UnmarshalAsJSON(&result.BlobContainer)
+	return result, err
 }
 
 // updateHandleError handles the Update error response.

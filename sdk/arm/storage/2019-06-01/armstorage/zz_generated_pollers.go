@@ -19,7 +19,7 @@ import (
 type BlobRestoreStatusPoller interface {
 	Done() bool
 	Poll(ctx context.Context) (*http.Response, error)
-	FinalResponse(ctx context.Context) (*BlobRestoreStatusResponse, error)
+	FinalResponse(ctx context.Context) (BlobRestoreStatusResponse, error)
 	ResumeToken() (string, error)
 }
 
@@ -39,11 +39,11 @@ func (p *blobRestoreStatusPoller) Poll(ctx context.Context) (*http.Response, err
 	return p.pt.Poll(ctx, p.pipeline)
 }
 
-func (p *blobRestoreStatusPoller) FinalResponse(ctx context.Context) (*BlobRestoreStatusResponse, error) {
-	respType := &BlobRestoreStatusResponse{BlobRestoreStatus: &BlobRestoreStatus{}}
+func (p *blobRestoreStatusPoller) FinalResponse(ctx context.Context) (BlobRestoreStatusResponse, error) {
+	respType := BlobRestoreStatusResponse{BlobRestoreStatus: &BlobRestoreStatus{}}
 	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.BlobRestoreStatus)
 	if err != nil {
-		return nil, err
+		return BlobRestoreStatusResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -55,11 +55,11 @@ func (p *blobRestoreStatusPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *blobRestoreStatusPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (*BlobRestoreStatusResponse, error) {
-	respType := &BlobRestoreStatusResponse{BlobRestoreStatus: &BlobRestoreStatus{}}
+func (p *blobRestoreStatusPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (BlobRestoreStatusResponse, error) {
+	respType := BlobRestoreStatusResponse{BlobRestoreStatus: &BlobRestoreStatus{}}
 	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.BlobRestoreStatus)
 	if err != nil {
-		return nil, err
+		return BlobRestoreStatusResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -107,7 +107,7 @@ func (p *httpPoller) pollUntilDone(ctx context.Context, frequency time.Duration)
 type StorageAccountPoller interface {
 	Done() bool
 	Poll(ctx context.Context) (*http.Response, error)
-	FinalResponse(ctx context.Context) (*StorageAccountResponse, error)
+	FinalResponse(ctx context.Context) (StorageAccountResponse, error)
 	ResumeToken() (string, error)
 }
 
@@ -127,11 +127,11 @@ func (p *storageAccountPoller) Poll(ctx context.Context) (*http.Response, error)
 	return p.pt.Poll(ctx, p.pipeline)
 }
 
-func (p *storageAccountPoller) FinalResponse(ctx context.Context) (*StorageAccountResponse, error) {
-	respType := &StorageAccountResponse{StorageAccount: &StorageAccount{}}
+func (p *storageAccountPoller) FinalResponse(ctx context.Context) (StorageAccountResponse, error) {
+	respType := StorageAccountResponse{StorageAccount: &StorageAccount{}}
 	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.StorageAccount)
 	if err != nil {
-		return nil, err
+		return StorageAccountResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -143,11 +143,11 @@ func (p *storageAccountPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *storageAccountPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (*StorageAccountResponse, error) {
-	respType := &StorageAccountResponse{StorageAccount: &StorageAccount{}}
+func (p *storageAccountPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (StorageAccountResponse, error) {
+	respType := StorageAccountResponse{StorageAccount: &StorageAccount{}}
 	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.StorageAccount)
 	if err != nil {
-		return nil, err
+		return StorageAccountResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil

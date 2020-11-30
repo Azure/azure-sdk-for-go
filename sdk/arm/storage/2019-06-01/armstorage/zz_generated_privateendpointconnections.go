@@ -81,21 +81,21 @@ func (client PrivateEndpointConnectionsClient) deleteHandleError(resp *azcore.Re
 }
 
 // Get - Gets the specified private endpoint connection associated with the storage account.
-func (client PrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsGetOptions) (*PrivateEndpointConnectionResponse, error) {
+func (client PrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsGetOptions) (PrivateEndpointConnectionResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionName, options)
 	if err != nil {
-		return nil, err
+		return PrivateEndpointConnectionResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return PrivateEndpointConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return PrivateEndpointConnectionResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return PrivateEndpointConnectionResponse{}, err
 	}
 	return result, nil
 }
@@ -120,9 +120,10 @@ func (client PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client PrivateEndpointConnectionsClient) getHandleResponse(resp *azcore.Response) (*PrivateEndpointConnectionResponse, error) {
+func (client PrivateEndpointConnectionsClient) getHandleResponse(resp *azcore.Response) (PrivateEndpointConnectionResponse, error) {
 	result := PrivateEndpointConnectionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PrivateEndpointConnection)
+	err := resp.UnmarshalAsJSON(&result.PrivateEndpointConnection)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -135,21 +136,21 @@ func (client PrivateEndpointConnectionsClient) getHandleError(resp *azcore.Respo
 }
 
 // List - List all the private endpoint connections associated with the storage account.
-func (client PrivateEndpointConnectionsClient) List(ctx context.Context, resourceGroupName string, accountName string, options *PrivateEndpointConnectionsListOptions) (*PrivateEndpointConnectionListResultResponse, error) {
+func (client PrivateEndpointConnectionsClient) List(ctx context.Context, resourceGroupName string, accountName string, options *PrivateEndpointConnectionsListOptions) (PrivateEndpointConnectionListResultResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return nil, err
+		return PrivateEndpointConnectionListResultResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return PrivateEndpointConnectionListResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listHandleError(resp)
+		return PrivateEndpointConnectionListResultResponse{}, client.listHandleError(resp)
 	}
 	result, err := client.listHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return PrivateEndpointConnectionListResultResponse{}, err
 	}
 	return result, nil
 }
@@ -173,9 +174,10 @@ func (client PrivateEndpointConnectionsClient) listCreateRequest(ctx context.Con
 }
 
 // listHandleResponse handles the List response.
-func (client PrivateEndpointConnectionsClient) listHandleResponse(resp *azcore.Response) (*PrivateEndpointConnectionListResultResponse, error) {
+func (client PrivateEndpointConnectionsClient) listHandleResponse(resp *azcore.Response) (PrivateEndpointConnectionListResultResponse, error) {
 	result := PrivateEndpointConnectionListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PrivateEndpointConnectionListResult)
+	err := resp.UnmarshalAsJSON(&result.PrivateEndpointConnectionListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -191,21 +193,21 @@ func (client PrivateEndpointConnectionsClient) listHandleError(resp *azcore.Resp
 }
 
 // Put - Update the state of specified private endpoint connection associated with the storage account.
-func (client PrivateEndpointConnectionsClient) Put(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsPutOptions) (*PrivateEndpointConnectionResponse, error) {
+func (client PrivateEndpointConnectionsClient) Put(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsPutOptions) (PrivateEndpointConnectionResponse, error) {
 	req, err := client.putCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionName, properties, options)
 	if err != nil {
-		return nil, err
+		return PrivateEndpointConnectionResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return PrivateEndpointConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.putHandleError(resp)
+		return PrivateEndpointConnectionResponse{}, client.putHandleError(resp)
 	}
 	result, err := client.putHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return PrivateEndpointConnectionResponse{}, err
 	}
 	return result, nil
 }
@@ -230,9 +232,10 @@ func (client PrivateEndpointConnectionsClient) putCreateRequest(ctx context.Cont
 }
 
 // putHandleResponse handles the Put response.
-func (client PrivateEndpointConnectionsClient) putHandleResponse(resp *azcore.Response) (*PrivateEndpointConnectionResponse, error) {
+func (client PrivateEndpointConnectionsClient) putHandleResponse(resp *azcore.Response) (PrivateEndpointConnectionResponse, error) {
 	result := PrivateEndpointConnectionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PrivateEndpointConnection)
+	err := resp.UnmarshalAsJSON(&result.PrivateEndpointConnection)
+	return result, err
 }
 
 // putHandleError handles the Put error response.

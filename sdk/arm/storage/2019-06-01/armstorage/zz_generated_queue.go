@@ -34,21 +34,21 @@ func (client QueueClient) Pipeline() azcore.Pipeline {
 }
 
 // Create - Creates a new queue with the specified queue name, under the specified account.
-func (client QueueClient) Create(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue StorageQueue, options *QueueCreateOptions) (*StorageQueueResponse, error) {
+func (client QueueClient) Create(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue StorageQueue, options *QueueCreateOptions) (StorageQueueResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, queueName, queue, options)
 	if err != nil {
-		return nil, err
+		return StorageQueueResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return StorageQueueResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.createHandleError(resp)
+		return StorageQueueResponse{}, client.createHandleError(resp)
 	}
 	result, err := client.createHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return StorageQueueResponse{}, err
 	}
 	return result, nil
 }
@@ -73,9 +73,10 @@ func (client QueueClient) createCreateRequest(ctx context.Context, resourceGroup
 }
 
 // createHandleResponse handles the Create response.
-func (client QueueClient) createHandleResponse(resp *azcore.Response) (*StorageQueueResponse, error) {
+func (client QueueClient) createHandleResponse(resp *azcore.Response) (StorageQueueResponse, error) {
 	result := StorageQueueResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.StorageQueue)
+	err := resp.UnmarshalAsJSON(&result.StorageQueue)
+	return result, err
 }
 
 // createHandleError handles the Create error response.
@@ -132,21 +133,21 @@ func (client QueueClient) deleteHandleError(resp *azcore.Response) error {
 }
 
 // Get - Gets the queue with the specified queue name, under the specified account if it exists.
-func (client QueueClient) Get(ctx context.Context, resourceGroupName string, accountName string, queueName string, options *QueueGetOptions) (*StorageQueueResponse, error) {
+func (client QueueClient) Get(ctx context.Context, resourceGroupName string, accountName string, queueName string, options *QueueGetOptions) (StorageQueueResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, queueName, options)
 	if err != nil {
-		return nil, err
+		return StorageQueueResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return StorageQueueResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return StorageQueueResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return StorageQueueResponse{}, err
 	}
 	return result, nil
 }
@@ -171,9 +172,10 @@ func (client QueueClient) getCreateRequest(ctx context.Context, resourceGroupNam
 }
 
 // getHandleResponse handles the Get response.
-func (client QueueClient) getHandleResponse(resp *azcore.Response) (*StorageQueueResponse, error) {
+func (client QueueClient) getHandleResponse(resp *azcore.Response) (StorageQueueResponse, error) {
 	result := StorageQueueResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.StorageQueue)
+	err := resp.UnmarshalAsJSON(&result.StorageQueue)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -194,7 +196,7 @@ func (client QueueClient) List(resourceGroupName string, accountName string, opt
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *ListQueueResourceResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ListQueueResourceResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListQueueResource.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -226,9 +228,10 @@ func (client QueueClient) listCreateRequest(ctx context.Context, resourceGroupNa
 }
 
 // listHandleResponse handles the List response.
-func (client QueueClient) listHandleResponse(resp *azcore.Response) (*ListQueueResourceResponse, error) {
+func (client QueueClient) listHandleResponse(resp *azcore.Response) (ListQueueResourceResponse, error) {
 	result := ListQueueResourceResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ListQueueResource)
+	err := resp.UnmarshalAsJSON(&result.ListQueueResource)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -241,21 +244,21 @@ func (client QueueClient) listHandleError(resp *azcore.Response) error {
 }
 
 // Update - Creates a new queue with the specified queue name, under the specified account.
-func (client QueueClient) Update(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue StorageQueue, options *QueueUpdateOptions) (*StorageQueueResponse, error) {
+func (client QueueClient) Update(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue StorageQueue, options *QueueUpdateOptions) (StorageQueueResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, queueName, queue, options)
 	if err != nil {
-		return nil, err
+		return StorageQueueResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return StorageQueueResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.updateHandleError(resp)
+		return StorageQueueResponse{}, client.updateHandleError(resp)
 	}
 	result, err := client.updateHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return StorageQueueResponse{}, err
 	}
 	return result, nil
 }
@@ -280,9 +283,10 @@ func (client QueueClient) updateCreateRequest(ctx context.Context, resourceGroup
 }
 
 // updateHandleResponse handles the Update response.
-func (client QueueClient) updateHandleResponse(resp *azcore.Response) (*StorageQueueResponse, error) {
+func (client QueueClient) updateHandleResponse(resp *azcore.Response) (StorageQueueResponse, error) {
 	result := StorageQueueResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.StorageQueue)
+	err := resp.UnmarshalAsJSON(&result.StorageQueue)
+	return result, err
 }
 
 // updateHandleError handles the Update error response.

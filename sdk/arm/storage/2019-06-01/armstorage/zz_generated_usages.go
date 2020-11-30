@@ -37,21 +37,21 @@ func (client UsagesClient) Pipeline() azcore.Pipeline {
 }
 
 // ListByLocation - Gets the current usage count and the limit for the resources of the location under the subscription.
-func (client UsagesClient) ListByLocation(ctx context.Context, location string, options *UsagesListByLocationOptions) (*UsageListResultResponse, error) {
+func (client UsagesClient) ListByLocation(ctx context.Context, location string, options *UsagesListByLocationOptions) (UsageListResultResponse, error) {
 	req, err := client.listByLocationCreateRequest(ctx, location, options)
 	if err != nil {
-		return nil, err
+		return UsageListResultResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return UsageListResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listByLocationHandleError(resp)
+		return UsageListResultResponse{}, client.listByLocationHandleError(resp)
 	}
 	result, err := client.listByLocationHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return UsageListResultResponse{}, err
 	}
 	return result, nil
 }
@@ -74,9 +74,10 @@ func (client UsagesClient) listByLocationCreateRequest(ctx context.Context, loca
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client UsagesClient) listByLocationHandleResponse(resp *azcore.Response) (*UsageListResultResponse, error) {
+func (client UsagesClient) listByLocationHandleResponse(resp *azcore.Response) (UsageListResultResponse, error) {
 	result := UsageListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.UsageListResult)
+	err := resp.UnmarshalAsJSON(&result.UsageListResult)
+	return result, err
 }
 
 // listByLocationHandleError handles the ListByLocation error response.

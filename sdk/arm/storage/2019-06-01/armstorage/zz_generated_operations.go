@@ -34,21 +34,21 @@ func (client OperationsClient) Pipeline() azcore.Pipeline {
 }
 
 // List - Lists all of the available Storage Rest API operations.
-func (client OperationsClient) List(ctx context.Context, options *OperationsListOptions) (*OperationListResultResponse, error) {
+func (client OperationsClient) List(ctx context.Context, options *OperationsListOptions) (OperationListResultResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return nil, err
+		return OperationListResultResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return OperationListResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listHandleError(resp)
+		return OperationListResultResponse{}, client.listHandleError(resp)
 	}
 	result, err := client.listHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return OperationListResultResponse{}, err
 	}
 	return result, nil
 }
@@ -69,9 +69,10 @@ func (client OperationsClient) listCreateRequest(ctx context.Context, options *O
 }
 
 // listHandleResponse handles the List response.
-func (client OperationsClient) listHandleResponse(resp *azcore.Response) (*OperationListResultResponse, error) {
+func (client OperationsClient) listHandleResponse(resp *azcore.Response) (OperationListResultResponse, error) {
 	result := OperationListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.OperationListResult)
+	err := resp.UnmarshalAsJSON(&result.OperationListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

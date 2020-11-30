@@ -35,21 +35,21 @@ func (client TableServicesClient) Pipeline() azcore.Pipeline {
 
 // GetServiceProperties - Gets the properties of a storage account’s Table service, including properties for Storage Analytics and CORS (Cross-Origin Resource
 // Sharing) rules.
-func (client TableServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *TableServicesGetServicePropertiesOptions) (*TableServicePropertiesResponse, error) {
+func (client TableServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *TableServicesGetServicePropertiesOptions) (TableServicePropertiesResponse, error) {
 	req, err := client.getServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return nil, err
+		return TableServicePropertiesResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return TableServicePropertiesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getServicePropertiesHandleError(resp)
+		return TableServicePropertiesResponse{}, client.getServicePropertiesHandleError(resp)
 	}
 	result, err := client.getServicePropertiesHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return TableServicePropertiesResponse{}, err
 	}
 	return result, nil
 }
@@ -74,9 +74,10 @@ func (client TableServicesClient) getServicePropertiesCreateRequest(ctx context.
 }
 
 // getServicePropertiesHandleResponse handles the GetServiceProperties response.
-func (client TableServicesClient) getServicePropertiesHandleResponse(resp *azcore.Response) (*TableServicePropertiesResponse, error) {
+func (client TableServicesClient) getServicePropertiesHandleResponse(resp *azcore.Response) (TableServicePropertiesResponse, error) {
 	result := TableServicePropertiesResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.TableServiceProperties)
+	err := resp.UnmarshalAsJSON(&result.TableServiceProperties)
+	return result, err
 }
 
 // getServicePropertiesHandleError handles the GetServiceProperties error response.
@@ -89,21 +90,21 @@ func (client TableServicesClient) getServicePropertiesHandleError(resp *azcore.R
 }
 
 // List - List all table services for the storage account.
-func (client TableServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *TableServicesListOptions) (*ListTableServicesResponse, error) {
+func (client TableServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *TableServicesListOptions) (ListTableServicesResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return nil, err
+		return ListTableServicesResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ListTableServicesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listHandleError(resp)
+		return ListTableServicesResponse{}, client.listHandleError(resp)
 	}
 	result, err := client.listHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ListTableServicesResponse{}, err
 	}
 	return result, nil
 }
@@ -127,9 +128,10 @@ func (client TableServicesClient) listCreateRequest(ctx context.Context, resourc
 }
 
 // listHandleResponse handles the List response.
-func (client TableServicesClient) listHandleResponse(resp *azcore.Response) (*ListTableServicesResponse, error) {
+func (client TableServicesClient) listHandleResponse(resp *azcore.Response) (ListTableServicesResponse, error) {
 	result := ListTableServicesResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ListTableServices)
+	err := resp.UnmarshalAsJSON(&result.ListTableServices)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -143,21 +145,21 @@ func (client TableServicesClient) listHandleError(resp *azcore.Response) error {
 
 // SetServiceProperties - Sets the properties of a storage account’s Table service, including properties for Storage Analytics and CORS (Cross-Origin Resource
 // Sharing) rules.
-func (client TableServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters TableServiceProperties, options *TableServicesSetServicePropertiesOptions) (*TableServicePropertiesResponse, error) {
+func (client TableServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters TableServiceProperties, options *TableServicesSetServicePropertiesOptions) (TableServicePropertiesResponse, error) {
 	req, err := client.setServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
-		return nil, err
+		return TableServicePropertiesResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return TableServicePropertiesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.setServicePropertiesHandleError(resp)
+		return TableServicePropertiesResponse{}, client.setServicePropertiesHandleError(resp)
 	}
 	result, err := client.setServicePropertiesHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return TableServicePropertiesResponse{}, err
 	}
 	return result, nil
 }
@@ -182,9 +184,10 @@ func (client TableServicesClient) setServicePropertiesCreateRequest(ctx context.
 }
 
 // setServicePropertiesHandleResponse handles the SetServiceProperties response.
-func (client TableServicesClient) setServicePropertiesHandleResponse(resp *azcore.Response) (*TableServicePropertiesResponse, error) {
+func (client TableServicesClient) setServicePropertiesHandleResponse(resp *azcore.Response) (TableServicePropertiesResponse, error) {
 	result := TableServicePropertiesResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.TableServiceProperties)
+	err := resp.UnmarshalAsJSON(&result.TableServiceProperties)
+	return result, err
 }
 
 // setServicePropertiesHandleError handles the SetServiceProperties error response.

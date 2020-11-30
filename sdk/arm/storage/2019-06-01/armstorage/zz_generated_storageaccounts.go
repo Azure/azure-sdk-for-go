@@ -38,21 +38,21 @@ func (client StorageAccountsClient) Pipeline() azcore.Pipeline {
 }
 
 // CheckNameAvailability - Checks that the storage account name is valid and is not already in use.
-func (client StorageAccountsClient) CheckNameAvailability(ctx context.Context, accountName StorageAccountCheckNameAvailabilityParameters, options *StorageAccountsCheckNameAvailabilityOptions) (*CheckNameAvailabilityResultResponse, error) {
+func (client StorageAccountsClient) CheckNameAvailability(ctx context.Context, accountName StorageAccountCheckNameAvailabilityParameters, options *StorageAccountsCheckNameAvailabilityOptions) (CheckNameAvailabilityResultResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, accountName, options)
 	if err != nil {
-		return nil, err
+		return CheckNameAvailabilityResultResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return CheckNameAvailabilityResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.checkNameAvailabilityHandleError(resp)
+		return CheckNameAvailabilityResultResponse{}, client.checkNameAvailabilityHandleError(resp)
 	}
 	result, err := client.checkNameAvailabilityHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return CheckNameAvailabilityResultResponse{}, err
 	}
 	return result, nil
 }
@@ -74,9 +74,10 @@ func (client StorageAccountsClient) checkNameAvailabilityCreateRequest(ctx conte
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client StorageAccountsClient) checkNameAvailabilityHandleResponse(resp *azcore.Response) (*CheckNameAvailabilityResultResponse, error) {
+func (client StorageAccountsClient) checkNameAvailabilityHandleResponse(resp *azcore.Response) (CheckNameAvailabilityResultResponse, error) {
 	result := CheckNameAvailabilityResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.CheckNameAvailabilityResult)
+	err := resp.UnmarshalAsJSON(&result.CheckNameAvailabilityResult)
+	return result, err
 }
 
 // checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
@@ -95,24 +96,24 @@ func (client StorageAccountsClient) checkNameAvailabilityHandleError(resp *azcor
 // is issued with different properties, the account properties
 // will be updated. If an account is already created and a subsequent create or update request is issued with the exact same set of properties, the request
 // will succeed.
-func (client StorageAccountsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters, options *StorageAccountsCreateOptions) (*StorageAccountPollerResponse, error) {
+func (client StorageAccountsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters, options *StorageAccountsCreateOptions) (StorageAccountPollerResponse, error) {
 	resp, err := client.Create(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
-		return nil, err
+		return StorageAccountPollerResponse{}, err
 	}
-	result := &StorageAccountPollerResponse{
+	result := StorageAccountPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("StorageAccountsClient.Create", "", resp, client.createHandleError)
 	if err != nil {
-		return nil, err
+		return StorageAccountPollerResponse{}, err
 	}
 	poller := &storageAccountPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*StorageAccountResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StorageAccountResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -169,9 +170,10 @@ func (client StorageAccountsClient) createCreateRequest(ctx context.Context, res
 }
 
 // createHandleResponse handles the Create response.
-func (client StorageAccountsClient) createHandleResponse(resp *azcore.Response) (*StorageAccountResponse, error) {
+func (client StorageAccountsClient) createHandleResponse(resp *azcore.Response) (StorageAccountResponse, error) {
 	result := StorageAccountResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.StorageAccount)
+	err := resp.UnmarshalAsJSON(&result.StorageAccount)
+	return result, err
 }
 
 // createHandleError handles the Create error response.
@@ -234,17 +236,17 @@ func (client StorageAccountsClient) deleteHandleError(resp *azcore.Response) err
 // BeginFailover - Failover request can be triggered for a storage account in case of availability issues. The failover occurs from the storage account's
 // primary cluster to secondary cluster for RA-GRS accounts. The
 // secondary cluster will become primary after failover.
-func (client StorageAccountsClient) BeginFailover(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsFailoverOptions) (*HTTPPollerResponse, error) {
+func (client StorageAccountsClient) BeginFailover(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsFailoverOptions) (HTTPPollerResponse, error) {
 	resp, err := client.Failover(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	result := &HTTPPollerResponse{
+	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("StorageAccountsClient.Failover", "location", resp, client.failoverHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
 		pt:       pt,
@@ -319,21 +321,21 @@ func (client StorageAccountsClient) failoverHandleError(resp *azcore.Response) e
 
 // GetProperties - Returns the properties for the specified storage account including but not limited to name, SKU name, location, and account status. The
 // ListKeys operation should be used to retrieve storage keys.
-func (client StorageAccountsClient) GetProperties(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsGetPropertiesOptions) (*StorageAccountResponse, error) {
+func (client StorageAccountsClient) GetProperties(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsGetPropertiesOptions) (StorageAccountResponse, error) {
 	req, err := client.getPropertiesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return nil, err
+		return StorageAccountResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return StorageAccountResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getPropertiesHandleError(resp)
+		return StorageAccountResponse{}, client.getPropertiesHandleError(resp)
 	}
 	result, err := client.getPropertiesHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return StorageAccountResponse{}, err
 	}
 	return result, nil
 }
@@ -360,9 +362,10 @@ func (client StorageAccountsClient) getPropertiesCreateRequest(ctx context.Conte
 }
 
 // getPropertiesHandleResponse handles the GetProperties response.
-func (client StorageAccountsClient) getPropertiesHandleResponse(resp *azcore.Response) (*StorageAccountResponse, error) {
+func (client StorageAccountsClient) getPropertiesHandleResponse(resp *azcore.Response) (StorageAccountResponse, error) {
 	result := StorageAccountResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.StorageAccount)
+	err := resp.UnmarshalAsJSON(&result.StorageAccount)
+	return result, err
 }
 
 // getPropertiesHandleError handles the GetProperties error response.
@@ -386,7 +389,7 @@ func (client StorageAccountsClient) List(options *StorageAccountsListOptions) St
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *StorageAccountListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp StorageAccountListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.StorageAccountListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -410,9 +413,10 @@ func (client StorageAccountsClient) listCreateRequest(ctx context.Context, optio
 }
 
 // listHandleResponse handles the List response.
-func (client StorageAccountsClient) listHandleResponse(resp *azcore.Response) (*StorageAccountListResultResponse, error) {
+func (client StorageAccountsClient) listHandleResponse(resp *azcore.Response) (StorageAccountListResultResponse, error) {
 	result := StorageAccountListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.StorageAccountListResult)
+	err := resp.UnmarshalAsJSON(&result.StorageAccountListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -428,21 +432,21 @@ func (client StorageAccountsClient) listHandleError(resp *azcore.Response) error
 }
 
 // ListAccountSas - List SAS credentials of a storage account.
-func (client StorageAccountsClient) ListAccountSas(ctx context.Context, resourceGroupName string, accountName string, parameters AccountSasParameters, options *StorageAccountsListAccountSasOptions) (*ListAccountSasResponseResponse, error) {
+func (client StorageAccountsClient) ListAccountSas(ctx context.Context, resourceGroupName string, accountName string, parameters AccountSasParameters, options *StorageAccountsListAccountSasOptions) (ListAccountSasResponseResponse, error) {
 	req, err := client.listAccountSasCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
-		return nil, err
+		return ListAccountSasResponseResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ListAccountSasResponseResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listAccountSasHandleError(resp)
+		return ListAccountSasResponseResponse{}, client.listAccountSasHandleError(resp)
 	}
 	result, err := client.listAccountSasHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ListAccountSasResponseResponse{}, err
 	}
 	return result, nil
 }
@@ -466,9 +470,10 @@ func (client StorageAccountsClient) listAccountSasCreateRequest(ctx context.Cont
 }
 
 // listAccountSasHandleResponse handles the ListAccountSas response.
-func (client StorageAccountsClient) listAccountSasHandleResponse(resp *azcore.Response) (*ListAccountSasResponseResponse, error) {
+func (client StorageAccountsClient) listAccountSasHandleResponse(resp *azcore.Response) (ListAccountSasResponseResponse, error) {
 	result := ListAccountSasResponseResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ListAccountSasResponse)
+	err := resp.UnmarshalAsJSON(&result.ListAccountSasResponse)
+	return result, err
 }
 
 // listAccountSasHandleError handles the ListAccountSas error response.
@@ -485,21 +490,21 @@ func (client StorageAccountsClient) listAccountSasHandleError(resp *azcore.Respo
 
 // ListByResourceGroup - Lists all the storage accounts available under the given resource group. Note that storage keys are not returned; use the ListKeys
 // operation for this.
-func (client StorageAccountsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *StorageAccountsListByResourceGroupOptions) (*StorageAccountListResultResponse, error) {
+func (client StorageAccountsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *StorageAccountsListByResourceGroupOptions) (StorageAccountListResultResponse, error) {
 	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
-		return nil, err
+		return StorageAccountListResultResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return StorageAccountListResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listByResourceGroupHandleError(resp)
+		return StorageAccountListResultResponse{}, client.listByResourceGroupHandleError(resp)
 	}
 	result, err := client.listByResourceGroupHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return StorageAccountListResultResponse{}, err
 	}
 	return result, nil
 }
@@ -522,9 +527,10 @@ func (client StorageAccountsClient) listByResourceGroupCreateRequest(ctx context
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client StorageAccountsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (*StorageAccountListResultResponse, error) {
+func (client StorageAccountsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (StorageAccountListResultResponse, error) {
 	result := StorageAccountListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.StorageAccountListResult)
+	err := resp.UnmarshalAsJSON(&result.StorageAccountListResult)
+	return result, err
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -540,21 +546,21 @@ func (client StorageAccountsClient) listByResourceGroupHandleError(resp *azcore.
 }
 
 // ListKeys - Lists the access keys or Kerberos keys (if active directory enabled) for the specified storage account.
-func (client StorageAccountsClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsListKeysOptions) (*StorageAccountListKeysResultResponse, error) {
+func (client StorageAccountsClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsListKeysOptions) (StorageAccountListKeysResultResponse, error) {
 	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return nil, err
+		return StorageAccountListKeysResultResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return StorageAccountListKeysResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listKeysHandleError(resp)
+		return StorageAccountListKeysResultResponse{}, client.listKeysHandleError(resp)
 	}
 	result, err := client.listKeysHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return StorageAccountListKeysResultResponse{}, err
 	}
 	return result, nil
 }
@@ -581,9 +587,10 @@ func (client StorageAccountsClient) listKeysCreateRequest(ctx context.Context, r
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client StorageAccountsClient) listKeysHandleResponse(resp *azcore.Response) (*StorageAccountListKeysResultResponse, error) {
+func (client StorageAccountsClient) listKeysHandleResponse(resp *azcore.Response) (StorageAccountListKeysResultResponse, error) {
 	result := StorageAccountListKeysResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.StorageAccountListKeysResult)
+	err := resp.UnmarshalAsJSON(&result.StorageAccountListKeysResult)
+	return result, err
 }
 
 // listKeysHandleError handles the ListKeys error response.
@@ -599,21 +606,21 @@ func (client StorageAccountsClient) listKeysHandleError(resp *azcore.Response) e
 }
 
 // ListServiceSas - List service SAS credentials of a specific resource.
-func (client StorageAccountsClient) ListServiceSas(ctx context.Context, resourceGroupName string, accountName string, parameters ServiceSasParameters, options *StorageAccountsListServiceSasOptions) (*ListServiceSasResponseResponse, error) {
+func (client StorageAccountsClient) ListServiceSas(ctx context.Context, resourceGroupName string, accountName string, parameters ServiceSasParameters, options *StorageAccountsListServiceSasOptions) (ListServiceSasResponseResponse, error) {
 	req, err := client.listServiceSasCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
-		return nil, err
+		return ListServiceSasResponseResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ListServiceSasResponseResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listServiceSasHandleError(resp)
+		return ListServiceSasResponseResponse{}, client.listServiceSasHandleError(resp)
 	}
 	result, err := client.listServiceSasHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ListServiceSasResponseResponse{}, err
 	}
 	return result, nil
 }
@@ -637,9 +644,10 @@ func (client StorageAccountsClient) listServiceSasCreateRequest(ctx context.Cont
 }
 
 // listServiceSasHandleResponse handles the ListServiceSas response.
-func (client StorageAccountsClient) listServiceSasHandleResponse(resp *azcore.Response) (*ListServiceSasResponseResponse, error) {
+func (client StorageAccountsClient) listServiceSasHandleResponse(resp *azcore.Response) (ListServiceSasResponseResponse, error) {
 	result := ListServiceSasResponseResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ListServiceSasResponse)
+	err := resp.UnmarshalAsJSON(&result.ListServiceSasResponse)
+	return result, err
 }
 
 // listServiceSasHandleError handles the ListServiceSas error response.
@@ -655,21 +663,21 @@ func (client StorageAccountsClient) listServiceSasHandleError(resp *azcore.Respo
 }
 
 // RegenerateKey - Regenerates one of the access keys or Kerberos keys for the specified storage account.
-func (client StorageAccountsClient) RegenerateKey(ctx context.Context, resourceGroupName string, accountName string, regenerateKey StorageAccountRegenerateKeyParameters, options *StorageAccountsRegenerateKeyOptions) (*StorageAccountListKeysResultResponse, error) {
+func (client StorageAccountsClient) RegenerateKey(ctx context.Context, resourceGroupName string, accountName string, regenerateKey StorageAccountRegenerateKeyParameters, options *StorageAccountsRegenerateKeyOptions) (StorageAccountListKeysResultResponse, error) {
 	req, err := client.regenerateKeyCreateRequest(ctx, resourceGroupName, accountName, regenerateKey, options)
 	if err != nil {
-		return nil, err
+		return StorageAccountListKeysResultResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return StorageAccountListKeysResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.regenerateKeyHandleError(resp)
+		return StorageAccountListKeysResultResponse{}, client.regenerateKeyHandleError(resp)
 	}
 	result, err := client.regenerateKeyHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return StorageAccountListKeysResultResponse{}, err
 	}
 	return result, nil
 }
@@ -693,9 +701,10 @@ func (client StorageAccountsClient) regenerateKeyCreateRequest(ctx context.Conte
 }
 
 // regenerateKeyHandleResponse handles the RegenerateKey response.
-func (client StorageAccountsClient) regenerateKeyHandleResponse(resp *azcore.Response) (*StorageAccountListKeysResultResponse, error) {
+func (client StorageAccountsClient) regenerateKeyHandleResponse(resp *azcore.Response) (StorageAccountListKeysResultResponse, error) {
 	result := StorageAccountListKeysResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.StorageAccountListKeysResult)
+	err := resp.UnmarshalAsJSON(&result.StorageAccountListKeysResult)
+	return result, err
 }
 
 // regenerateKeyHandleError handles the RegenerateKey error response.
@@ -711,24 +720,24 @@ func (client StorageAccountsClient) regenerateKeyHandleError(resp *azcore.Respon
 }
 
 // BeginRestoreBlobRanges - Restore blobs in the specified blob ranges
-func (client StorageAccountsClient) BeginRestoreBlobRanges(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters, options *StorageAccountsRestoreBlobRangesOptions) (*BlobRestoreStatusPollerResponse, error) {
+func (client StorageAccountsClient) BeginRestoreBlobRanges(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters, options *StorageAccountsRestoreBlobRangesOptions) (BlobRestoreStatusPollerResponse, error) {
 	resp, err := client.RestoreBlobRanges(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
-		return nil, err
+		return BlobRestoreStatusPollerResponse{}, err
 	}
-	result := &BlobRestoreStatusPollerResponse{
+	result := BlobRestoreStatusPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("StorageAccountsClient.RestoreBlobRanges", "location", resp, client.restoreBlobRangesHandleError)
 	if err != nil {
-		return nil, err
+		return BlobRestoreStatusPollerResponse{}, err
 	}
 	poller := &blobRestoreStatusPoller{
 		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*BlobRestoreStatusResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (BlobRestoreStatusResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -782,9 +791,10 @@ func (client StorageAccountsClient) restoreBlobRangesCreateRequest(ctx context.C
 }
 
 // restoreBlobRangesHandleResponse handles the RestoreBlobRanges response.
-func (client StorageAccountsClient) restoreBlobRangesHandleResponse(resp *azcore.Response) (*BlobRestoreStatusResponse, error) {
+func (client StorageAccountsClient) restoreBlobRangesHandleResponse(resp *azcore.Response) (BlobRestoreStatusResponse, error) {
 	result := BlobRestoreStatusResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.BlobRestoreStatus)
+	err := resp.UnmarshalAsJSON(&result.BlobRestoreStatus)
+	return result, err
 }
 
 // restoreBlobRangesHandleError handles the RestoreBlobRanges error response.
@@ -851,21 +861,21 @@ func (client StorageAccountsClient) revokeUserDelegationKeysHandleError(resp *az
 // set. The update of multiple properties is supported. This call does not change the storage keys for the account. If you want to change the storage account
 // keys, use the regenerate keys operation. The
 // location and name of the storage account cannot be changed after creation.
-func (client StorageAccountsClient) Update(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountUpdateParameters, options *StorageAccountsUpdateOptions) (*StorageAccountResponse, error) {
+func (client StorageAccountsClient) Update(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountUpdateParameters, options *StorageAccountsUpdateOptions) (StorageAccountResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
-		return nil, err
+		return StorageAccountResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return StorageAccountResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.updateHandleError(resp)
+		return StorageAccountResponse{}, client.updateHandleError(resp)
 	}
 	result, err := client.updateHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return StorageAccountResponse{}, err
 	}
 	return result, nil
 }
@@ -889,9 +899,10 @@ func (client StorageAccountsClient) updateCreateRequest(ctx context.Context, res
 }
 
 // updateHandleResponse handles the Update response.
-func (client StorageAccountsClient) updateHandleResponse(resp *azcore.Response) (*StorageAccountResponse, error) {
+func (client StorageAccountsClient) updateHandleResponse(resp *azcore.Response) (StorageAccountResponse, error) {
 	result := StorageAccountResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.StorageAccount)
+	err := resp.UnmarshalAsJSON(&result.StorageAccount)
+	return result, err
 }
 
 // updateHandleError handles the Update error response.

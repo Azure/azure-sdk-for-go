@@ -37,21 +37,21 @@ func (client PrivateLinkResourcesClient) Pipeline() azcore.Pipeline {
 }
 
 // ListByStorageAccount - Gets the private link resources that need to be created for a storage account.
-func (client PrivateLinkResourcesClient) ListByStorageAccount(ctx context.Context, resourceGroupName string, accountName string, options *PrivateLinkResourcesListByStorageAccountOptions) (*PrivateLinkResourceListResultResponse, error) {
+func (client PrivateLinkResourcesClient) ListByStorageAccount(ctx context.Context, resourceGroupName string, accountName string, options *PrivateLinkResourcesListByStorageAccountOptions) (PrivateLinkResourceListResultResponse, error) {
 	req, err := client.listByStorageAccountCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return nil, err
+		return PrivateLinkResourceListResultResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return PrivateLinkResourceListResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listByStorageAccountHandleError(resp)
+		return PrivateLinkResourceListResultResponse{}, client.listByStorageAccountHandleError(resp)
 	}
 	result, err := client.listByStorageAccountHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return PrivateLinkResourceListResultResponse{}, err
 	}
 	return result, nil
 }
@@ -75,9 +75,10 @@ func (client PrivateLinkResourcesClient) listByStorageAccountCreateRequest(ctx c
 }
 
 // listByStorageAccountHandleResponse handles the ListByStorageAccount response.
-func (client PrivateLinkResourcesClient) listByStorageAccountHandleResponse(resp *azcore.Response) (*PrivateLinkResourceListResultResponse, error) {
+func (client PrivateLinkResourcesClient) listByStorageAccountHandleResponse(resp *azcore.Response) (PrivateLinkResourceListResultResponse, error) {
 	result := PrivateLinkResourceListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PrivateLinkResourceListResult)
+	err := resp.UnmarshalAsJSON(&result.PrivateLinkResourceListResult)
+	return result, err
 }
 
 // listByStorageAccountHandleError handles the ListByStorageAccount error response.

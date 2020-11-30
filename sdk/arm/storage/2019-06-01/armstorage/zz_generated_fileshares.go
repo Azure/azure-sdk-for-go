@@ -36,21 +36,21 @@ func (client FileSharesClient) Pipeline() azcore.Pipeline {
 // Create - Creates a new share under the specified account as described by request body. The share resource includes metadata and properties for that share.
 // It does not include a list of the files contained by
 // the share.
-func (client FileSharesClient) Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare, options *FileSharesCreateOptions) (*FileShareResponse, error) {
+func (client FileSharesClient) Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare, options *FileSharesCreateOptions) (FileShareResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, shareName, fileShare, options)
 	if err != nil {
-		return nil, err
+		return FileShareResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return FileShareResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.createHandleError(resp)
+		return FileShareResponse{}, client.createHandleError(resp)
 	}
 	result, err := client.createHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return FileShareResponse{}, err
 	}
 	return result, nil
 }
@@ -75,9 +75,10 @@ func (client FileSharesClient) createCreateRequest(ctx context.Context, resource
 }
 
 // createHandleResponse handles the Create response.
-func (client FileSharesClient) createHandleResponse(resp *azcore.Response) (*FileShareResponse, error) {
+func (client FileSharesClient) createHandleResponse(resp *azcore.Response) (FileShareResponse, error) {
 	result := FileShareResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.FileShare)
+	err := resp.UnmarshalAsJSON(&result.FileShare)
+	return result, err
 }
 
 // createHandleError handles the Create error response.
@@ -134,21 +135,21 @@ func (client FileSharesClient) deleteHandleError(resp *azcore.Response) error {
 }
 
 // Get - Gets properties of a specified share.
-func (client FileSharesClient) Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *FileSharesGetOptions) (*FileShareResponse, error) {
+func (client FileSharesClient) Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *FileSharesGetOptions) (FileShareResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
 	if err != nil {
-		return nil, err
+		return FileShareResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return FileShareResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return FileShareResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return FileShareResponse{}, err
 	}
 	return result, nil
 }
@@ -176,9 +177,10 @@ func (client FileSharesClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client FileSharesClient) getHandleResponse(resp *azcore.Response) (*FileShareResponse, error) {
+func (client FileSharesClient) getHandleResponse(resp *azcore.Response) (FileShareResponse, error) {
 	result := FileShareResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.FileShare)
+	err := resp.UnmarshalAsJSON(&result.FileShare)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -199,7 +201,7 @@ func (client FileSharesClient) List(resourceGroupName string, accountName string
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *FileShareItemsResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp FileShareItemsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.FileShareItems.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -234,9 +236,10 @@ func (client FileSharesClient) listCreateRequest(ctx context.Context, resourceGr
 }
 
 // listHandleResponse handles the List response.
-func (client FileSharesClient) listHandleResponse(resp *azcore.Response) (*FileShareItemsResponse, error) {
+func (client FileSharesClient) listHandleResponse(resp *azcore.Response) (FileShareItemsResponse, error) {
 	result := FileShareItemsResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.FileShareItems)
+	err := resp.UnmarshalAsJSON(&result.FileShareItems)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -294,21 +297,21 @@ func (client FileSharesClient) restoreHandleError(resp *azcore.Response) error {
 
 // Update - Updates share properties as specified in request body. Properties not mentioned in the request will not be changed. Update fails if the specified
 // share does not already exist.
-func (client FileSharesClient) Update(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare, options *FileSharesUpdateOptions) (*FileShareResponse, error) {
+func (client FileSharesClient) Update(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare, options *FileSharesUpdateOptions) (FileShareResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, shareName, fileShare, options)
 	if err != nil {
-		return nil, err
+		return FileShareResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return FileShareResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.updateHandleError(resp)
+		return FileShareResponse{}, client.updateHandleError(resp)
 	}
 	result, err := client.updateHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return FileShareResponse{}, err
 	}
 	return result, nil
 }
@@ -333,9 +336,10 @@ func (client FileSharesClient) updateCreateRequest(ctx context.Context, resource
 }
 
 // updateHandleResponse handles the Update response.
-func (client FileSharesClient) updateHandleResponse(resp *azcore.Response) (*FileShareResponse, error) {
+func (client FileSharesClient) updateHandleResponse(resp *azcore.Response) (FileShareResponse, error) {
 	result := FileShareResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.FileShare)
+	err := resp.UnmarshalAsJSON(&result.FileShare)
+	return result, err
 }
 
 // updateHandleError handles the Update error response.

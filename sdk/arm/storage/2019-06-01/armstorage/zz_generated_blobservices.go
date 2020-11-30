@@ -38,21 +38,21 @@ func (client BlobServicesClient) Pipeline() azcore.Pipeline {
 
 // GetServiceProperties - Gets the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS (Cross-Origin Resource
 // Sharing) rules.
-func (client BlobServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesGetServicePropertiesOptions) (*BlobServicePropertiesResponse, error) {
+func (client BlobServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesGetServicePropertiesOptions) (BlobServicePropertiesResponse, error) {
 	req, err := client.getServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return nil, err
+		return BlobServicePropertiesResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return BlobServicePropertiesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getServicePropertiesHandleError(resp)
+		return BlobServicePropertiesResponse{}, client.getServicePropertiesHandleError(resp)
 	}
 	result, err := client.getServicePropertiesHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return BlobServicePropertiesResponse{}, err
 	}
 	return result, nil
 }
@@ -77,9 +77,10 @@ func (client BlobServicesClient) getServicePropertiesCreateRequest(ctx context.C
 }
 
 // getServicePropertiesHandleResponse handles the GetServiceProperties response.
-func (client BlobServicesClient) getServicePropertiesHandleResponse(resp *azcore.Response) (*BlobServicePropertiesResponse, error) {
+func (client BlobServicesClient) getServicePropertiesHandleResponse(resp *azcore.Response) (BlobServicePropertiesResponse, error) {
 	result := BlobServicePropertiesResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.BlobServiceProperties)
+	err := resp.UnmarshalAsJSON(&result.BlobServiceProperties)
+	return result, err
 }
 
 // getServicePropertiesHandleError handles the GetServiceProperties error response.
@@ -95,21 +96,21 @@ func (client BlobServicesClient) getServicePropertiesHandleError(resp *azcore.Re
 }
 
 // List - List blob services of storage account. It returns a collection of one object named default.
-func (client BlobServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesListOptions) (*BlobServiceItemsResponse, error) {
+func (client BlobServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesListOptions) (BlobServiceItemsResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return nil, err
+		return BlobServiceItemsResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return BlobServiceItemsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listHandleError(resp)
+		return BlobServiceItemsResponse{}, client.listHandleError(resp)
 	}
 	result, err := client.listHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return BlobServiceItemsResponse{}, err
 	}
 	return result, nil
 }
@@ -133,9 +134,10 @@ func (client BlobServicesClient) listCreateRequest(ctx context.Context, resource
 }
 
 // listHandleResponse handles the List response.
-func (client BlobServicesClient) listHandleResponse(resp *azcore.Response) (*BlobServiceItemsResponse, error) {
+func (client BlobServicesClient) listHandleResponse(resp *azcore.Response) (BlobServiceItemsResponse, error) {
 	result := BlobServiceItemsResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.BlobServiceItems)
+	err := resp.UnmarshalAsJSON(&result.BlobServiceItems)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -152,21 +154,21 @@ func (client BlobServicesClient) listHandleError(resp *azcore.Response) error {
 
 // SetServiceProperties - Sets the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS (Cross-Origin Resource
 // Sharing) rules.
-func (client BlobServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties, options *BlobServicesSetServicePropertiesOptions) (*BlobServicePropertiesResponse, error) {
+func (client BlobServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties, options *BlobServicesSetServicePropertiesOptions) (BlobServicePropertiesResponse, error) {
 	req, err := client.setServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
-		return nil, err
+		return BlobServicePropertiesResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return BlobServicePropertiesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.setServicePropertiesHandleError(resp)
+		return BlobServicePropertiesResponse{}, client.setServicePropertiesHandleError(resp)
 	}
 	result, err := client.setServicePropertiesHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return BlobServicePropertiesResponse{}, err
 	}
 	return result, nil
 }
@@ -191,9 +193,10 @@ func (client BlobServicesClient) setServicePropertiesCreateRequest(ctx context.C
 }
 
 // setServicePropertiesHandleResponse handles the SetServiceProperties response.
-func (client BlobServicesClient) setServicePropertiesHandleResponse(resp *azcore.Response) (*BlobServicePropertiesResponse, error) {
+func (client BlobServicesClient) setServicePropertiesHandleResponse(resp *azcore.Response) (BlobServicePropertiesResponse, error) {
 	result := BlobServicePropertiesResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.BlobServiceProperties)
+	err := resp.UnmarshalAsJSON(&result.BlobServiceProperties)
+	return result, err
 }
 
 // setServicePropertiesHandleError handles the SetServiceProperties error response.

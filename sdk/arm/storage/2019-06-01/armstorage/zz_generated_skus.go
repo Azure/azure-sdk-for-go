@@ -37,21 +37,21 @@ func (client SKUsClient) Pipeline() azcore.Pipeline {
 }
 
 // List - Lists the available SKUs supported by Microsoft.Storage for given subscription.
-func (client SKUsClient) List(ctx context.Context, options *SKUsListOptions) (*StorageSKUListResultResponse, error) {
+func (client SKUsClient) List(ctx context.Context, options *SKUsListOptions) (StorageSKUListResultResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return nil, err
+		return StorageSKUListResultResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return StorageSKUListResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listHandleError(resp)
+		return StorageSKUListResultResponse{}, client.listHandleError(resp)
 	}
 	result, err := client.listHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return StorageSKUListResultResponse{}, err
 	}
 	return result, nil
 }
@@ -73,9 +73,10 @@ func (client SKUsClient) listCreateRequest(ctx context.Context, options *SKUsLis
 }
 
 // listHandleResponse handles the List response.
-func (client SKUsClient) listHandleResponse(resp *azcore.Response) (*StorageSKUListResultResponse, error) {
+func (client SKUsClient) listHandleResponse(resp *azcore.Response) (StorageSKUListResultResponse, error) {
 	result := StorageSKUListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.StorageSKUListResult)
+	err := resp.UnmarshalAsJSON(&result.StorageSKUListResult)
+	return result, err
 }
 
 // listHandleError handles the List error response.

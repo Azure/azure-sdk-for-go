@@ -346,7 +346,7 @@ type BlobRestoreStatus struct {
 // BlobRestoreStatusPollerResponse is the response envelope for operations that asynchronously return a BlobRestoreStatus type.
 type BlobRestoreStatusPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*BlobRestoreStatusResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (BlobRestoreStatusResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller BlobRestoreStatusPoller
@@ -2951,7 +2951,7 @@ type StorageAccountMicrosoftEndpoints struct {
 // StorageAccountPollerResponse is the response envelope for operations that asynchronously return a StorageAccount type.
 type StorageAccountPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*StorageAccountResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (StorageAccountResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller StorageAccountPoller

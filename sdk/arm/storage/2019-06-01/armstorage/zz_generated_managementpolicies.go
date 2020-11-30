@@ -37,21 +37,21 @@ func (client ManagementPoliciesClient) Pipeline() azcore.Pipeline {
 }
 
 // CreateOrUpdate - Sets the managementpolicy to the specified storage account.
-func (client ManagementPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, properties ManagementPolicy, options *ManagementPoliciesCreateOrUpdateOptions) (*ManagementPolicyResponse, error) {
+func (client ManagementPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, properties ManagementPolicy, options *ManagementPoliciesCreateOrUpdateOptions) (ManagementPolicyResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, properties, options)
 	if err != nil {
-		return nil, err
+		return ManagementPolicyResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ManagementPolicyResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return ManagementPolicyResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	result, err := client.createOrUpdateHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ManagementPolicyResponse{}, err
 	}
 	return result, nil
 }
@@ -76,9 +76,10 @@ func (client ManagementPoliciesClient) createOrUpdateCreateRequest(ctx context.C
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client ManagementPoliciesClient) createOrUpdateHandleResponse(resp *azcore.Response) (*ManagementPolicyResponse, error) {
+func (client ManagementPoliciesClient) createOrUpdateHandleResponse(resp *azcore.Response) (ManagementPolicyResponse, error) {
 	result := ManagementPolicyResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ManagementPolicy)
+	err := resp.UnmarshalAsJSON(&result.ManagementPolicy)
+	return result, err
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -140,21 +141,21 @@ func (client ManagementPoliciesClient) deleteHandleError(resp *azcore.Response) 
 }
 
 // Get - Gets the managementpolicy associated with the specified storage account.
-func (client ManagementPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesGetOptions) (*ManagementPolicyResponse, error) {
+func (client ManagementPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesGetOptions) (ManagementPolicyResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, options)
 	if err != nil {
-		return nil, err
+		return ManagementPolicyResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ManagementPolicyResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return ManagementPolicyResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return ManagementPolicyResponse{}, err
 	}
 	return result, nil
 }
@@ -179,9 +180,10 @@ func (client ManagementPoliciesClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client ManagementPoliciesClient) getHandleResponse(resp *azcore.Response) (*ManagementPolicyResponse, error) {
+func (client ManagementPoliciesClient) getHandleResponse(resp *azcore.Response) (ManagementPolicyResponse, error) {
 	result := ManagementPolicyResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ManagementPolicy)
+	err := resp.UnmarshalAsJSON(&result.ManagementPolicy)
+	return result, err
 }
 
 // getHandleError handles the Get error response.

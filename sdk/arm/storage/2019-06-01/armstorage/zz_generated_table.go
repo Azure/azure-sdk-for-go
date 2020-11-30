@@ -34,21 +34,21 @@ func (client TableClient) Pipeline() azcore.Pipeline {
 }
 
 // Create - Creates a new table with the specified table name, under the specified account.
-func (client TableClient) Create(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableCreateOptions) (*TableResponse, error) {
+func (client TableClient) Create(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableCreateOptions) (TableResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
-		return nil, err
+		return TableResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return TableResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.createHandleError(resp)
+		return TableResponse{}, client.createHandleError(resp)
 	}
 	result, err := client.createHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return TableResponse{}, err
 	}
 	return result, nil
 }
@@ -73,9 +73,10 @@ func (client TableClient) createCreateRequest(ctx context.Context, resourceGroup
 }
 
 // createHandleResponse handles the Create response.
-func (client TableClient) createHandleResponse(resp *azcore.Response) (*TableResponse, error) {
+func (client TableClient) createHandleResponse(resp *azcore.Response) (TableResponse, error) {
 	result := TableResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Table)
+	err := resp.UnmarshalAsJSON(&result.Table)
+	return result, err
 }
 
 // createHandleError handles the Create error response.
@@ -132,21 +133,21 @@ func (client TableClient) deleteHandleError(resp *azcore.Response) error {
 }
 
 // Get - Gets the table with the specified table name, under the specified account if it exists.
-func (client TableClient) Get(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableGetOptions) (*TableResponse, error) {
+func (client TableClient) Get(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableGetOptions) (TableResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
-		return nil, err
+		return TableResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return TableResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return TableResponse{}, client.getHandleError(resp)
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return TableResponse{}, err
 	}
 	return result, nil
 }
@@ -171,9 +172,10 @@ func (client TableClient) getCreateRequest(ctx context.Context, resourceGroupNam
 }
 
 // getHandleResponse handles the Get response.
-func (client TableClient) getHandleResponse(resp *azcore.Response) (*TableResponse, error) {
+func (client TableClient) getHandleResponse(resp *azcore.Response) (TableResponse, error) {
 	result := TableResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Table)
+	err := resp.UnmarshalAsJSON(&result.Table)
+	return result, err
 }
 
 // getHandleError handles the Get error response.
@@ -194,7 +196,7 @@ func (client TableClient) List(resourceGroupName string, accountName string, opt
 		},
 		responder: client.listHandleResponse,
 		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp *ListTableResourceResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ListTableResourceResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListTableResource.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
@@ -220,9 +222,10 @@ func (client TableClient) listCreateRequest(ctx context.Context, resourceGroupNa
 }
 
 // listHandleResponse handles the List response.
-func (client TableClient) listHandleResponse(resp *azcore.Response) (*ListTableResourceResponse, error) {
+func (client TableClient) listHandleResponse(resp *azcore.Response) (ListTableResourceResponse, error) {
 	result := ListTableResourceResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ListTableResource)
+	err := resp.UnmarshalAsJSON(&result.ListTableResource)
+	return result, err
 }
 
 // listHandleError handles the List error response.
@@ -235,21 +238,21 @@ func (client TableClient) listHandleError(resp *azcore.Response) error {
 }
 
 // Update - Creates a new table with the specified table name, under the specified account.
-func (client TableClient) Update(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableUpdateOptions) (*TableResponse, error) {
+func (client TableClient) Update(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableUpdateOptions) (TableResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
-		return nil, err
+		return TableResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return TableResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.updateHandleError(resp)
+		return TableResponse{}, client.updateHandleError(resp)
 	}
 	result, err := client.updateHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return TableResponse{}, err
 	}
 	return result, nil
 }
@@ -274,9 +277,10 @@ func (client TableClient) updateCreateRequest(ctx context.Context, resourceGroup
 }
 
 // updateHandleResponse handles the Update response.
-func (client TableClient) updateHandleResponse(resp *azcore.Response) (*TableResponse, error) {
+func (client TableClient) updateHandleResponse(resp *azcore.Response) (TableResponse, error) {
 	result := TableResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Table)
+	err := resp.UnmarshalAsJSON(&result.Table)
+	return result, err
 }
 
 // updateHandleError handles the Update error response.

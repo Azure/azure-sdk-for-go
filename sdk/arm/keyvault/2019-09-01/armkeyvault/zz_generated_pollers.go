@@ -57,7 +57,7 @@ func (p *httpPoller) pollUntilDone(ctx context.Context, frequency time.Duration)
 type PrivateEndpointConnectionPoller interface {
 	Done() bool
 	Poll(ctx context.Context) (*http.Response, error)
-	FinalResponse(ctx context.Context) (*PrivateEndpointConnectionResponse, error)
+	FinalResponse(ctx context.Context) (PrivateEndpointConnectionResponse, error)
 	ResumeToken() (string, error)
 }
 
@@ -77,11 +77,11 @@ func (p *privateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Respo
 	return p.pt.Poll(ctx, p.pipeline)
 }
 
-func (p *privateEndpointConnectionPoller) FinalResponse(ctx context.Context) (*PrivateEndpointConnectionResponse, error) {
-	respType := &PrivateEndpointConnectionResponse{PrivateEndpointConnection: &PrivateEndpointConnection{}}
+func (p *privateEndpointConnectionPoller) FinalResponse(ctx context.Context) (PrivateEndpointConnectionResponse, error) {
+	respType := PrivateEndpointConnectionResponse{PrivateEndpointConnection: &PrivateEndpointConnection{}}
 	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.PrivateEndpointConnection)
 	if err != nil {
-		return nil, err
+		return PrivateEndpointConnectionResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -93,11 +93,11 @@ func (p *privateEndpointConnectionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *privateEndpointConnectionPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (*PrivateEndpointConnectionResponse, error) {
-	respType := &PrivateEndpointConnectionResponse{PrivateEndpointConnection: &PrivateEndpointConnection{}}
+func (p *privateEndpointConnectionPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionResponse, error) {
+	respType := PrivateEndpointConnectionResponse{PrivateEndpointConnection: &PrivateEndpointConnection{}}
 	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.PrivateEndpointConnection)
 	if err != nil {
-		return nil, err
+		return PrivateEndpointConnectionResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -107,7 +107,7 @@ func (p *privateEndpointConnectionPoller) pollUntilDone(ctx context.Context, fre
 type VaultPoller interface {
 	Done() bool
 	Poll(ctx context.Context) (*http.Response, error)
-	FinalResponse(ctx context.Context) (*VaultResponse, error)
+	FinalResponse(ctx context.Context) (VaultResponse, error)
 	ResumeToken() (string, error)
 }
 
@@ -127,11 +127,11 @@ func (p *vaultPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
 
-func (p *vaultPoller) FinalResponse(ctx context.Context) (*VaultResponse, error) {
-	respType := &VaultResponse{Vault: &Vault{}}
+func (p *vaultPoller) FinalResponse(ctx context.Context) (VaultResponse, error) {
+	respType := VaultResponse{Vault: &Vault{}}
 	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.Vault)
 	if err != nil {
-		return nil, err
+		return VaultResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -143,11 +143,11 @@ func (p *vaultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *vaultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (*VaultResponse, error) {
-	respType := &VaultResponse{Vault: &Vault{}}
+func (p *vaultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VaultResponse, error) {
+	respType := VaultResponse{Vault: &Vault{}}
 	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.Vault)
 	if err != nil {
-		return nil, err
+		return VaultResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil

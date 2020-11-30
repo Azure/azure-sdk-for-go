@@ -466,7 +466,7 @@ type PrivateEndpointConnectionItem struct {
 // PrivateEndpointConnectionPollerResponse is the response envelope for operations that asynchronously return a PrivateEndpointConnection type.
 type PrivateEndpointConnectionPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*PrivateEndpointConnectionResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller PrivateEndpointConnectionPoller
@@ -771,7 +771,7 @@ type VaultPatchProperties struct {
 // VaultPollerResponse is the response envelope for operations that asynchronously return a Vault type.
 type VaultPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VaultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VaultResponse, error)
 
 	// Poller contains an initialized poller.
 	Poller VaultPoller

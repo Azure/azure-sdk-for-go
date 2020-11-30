@@ -34,21 +34,21 @@ func (client PrivateLinkResourcesClient) Pipeline() azcore.Pipeline {
 }
 
 // ListByVault - Gets the private link resources supported for the key vault.
-func (client PrivateLinkResourcesClient) ListByVault(ctx context.Context, resourceGroupName string, vaultName string, options *PrivateLinkResourcesListByVaultOptions) (*PrivateLinkResourceListResultResponse, error) {
+func (client PrivateLinkResourcesClient) ListByVault(ctx context.Context, resourceGroupName string, vaultName string, options *PrivateLinkResourcesListByVaultOptions) (PrivateLinkResourceListResultResponse, error) {
 	req, err := client.listByVaultCreateRequest(ctx, resourceGroupName, vaultName, options)
 	if err != nil {
-		return nil, err
+		return PrivateLinkResourceListResultResponse{}, err
 	}
 	resp, err := client.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return PrivateLinkResourceListResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listByVaultHandleError(resp)
+		return PrivateLinkResourceListResultResponse{}, client.listByVaultHandleError(resp)
 	}
 	result, err := client.listByVaultHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return PrivateLinkResourceListResultResponse{}, err
 	}
 	return result, nil
 }
@@ -72,9 +72,10 @@ func (client PrivateLinkResourcesClient) listByVaultCreateRequest(ctx context.Co
 }
 
 // listByVaultHandleResponse handles the ListByVault response.
-func (client PrivateLinkResourcesClient) listByVaultHandleResponse(resp *azcore.Response) (*PrivateLinkResourceListResultResponse, error) {
+func (client PrivateLinkResourcesClient) listByVaultHandleResponse(resp *azcore.Response) (PrivateLinkResourceListResultResponse, error) {
 	result := PrivateLinkResourceListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PrivateLinkResourceListResult)
+	err := resp.UnmarshalAsJSON(&result.PrivateLinkResourceListResult)
+	return result, err
 }
 
 // listByVaultHandleError handles the ListByVault error response.

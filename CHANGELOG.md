@@ -2,6 +2,8 @@
 
 ## `v49.0.0`
 
+**NOTE**: Due to the changes requested in [this issue](https://github.com/Azure/azure-sdk-for-go/issues/12834), we changed the constructor of all the pager structs, which leads to a very long list of breaking changes. Please check the details of the breaking changes by the link in the table. 
+
 ### New Packages
 
 - `github.com/Azure/azure-sdk-for-go/services/attestation/2018-09-01/attestation`

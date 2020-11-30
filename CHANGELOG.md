@@ -54,6 +54,29 @@
 - `github.com/Azure/azure-sdk-for-go/services/search/mgmt/2020-08-01/search`
 - `github.com/Azure/azure-sdk-for-go/services/servicefabric/7.2/servicefabric`
 
+### Removed Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0_preview.1/translatortext`
+- `github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-05-01-preview/containerregistry`
+- `github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-06-01-preview/containerregistry`
+- `github.com/Azure/azure-sdk-for-go/services/preview/alertsmanagement/mgmt/2019-05-05/alertsmanagement`
+- `github.com/Azure/azure-sdk-for-go/services/preview/attestation/mgmt/2018-09-01-preview/attestation`
+- `github.com/Azure/azure-sdk-for-go/services/preview/cdn/mgmt/2019-06-15-preview/cdn`
+- `github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v3.0-preview/computervision`
+- `github.com/Azure/azure-sdk-for-go/services/preview/costmanagement/mgmt/2019-10-01/costmanagement`
+- `github.com/Azure/azure-sdk-for-go/services/preview/digitaltwins/2020-05-31/digitaltwins`
+- `github.com/Azure/azure-sdk-for-go/services/preview/hybridcompute/mgmt/2019-03-18-preview/hybridcompute`
+- `github.com/Azure/azure-sdk-for-go/services/preview/management/2020-01-01-preview/hybridnetwork`
+- `github.com/Azure/azure-sdk-for-go/services/preview/migrate/mgmt/2020-01-01/migrate`
+- `github.com/Azure/azure-sdk-for-go/services/preview/personalizer/v1.0/personalizer`
+- `github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-08-09-preview/policyinsights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-10-17-preview/policyinsights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-12-12-preview/policyinsights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2019-11-01/managementgroups`
+- `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2020-02-01/managementgroups`
+- `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2020-05-01/managementgroups`
+- `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2017-07-01/backup`
+
 ### Updated Packages
 
 | Package Path | Changelog |

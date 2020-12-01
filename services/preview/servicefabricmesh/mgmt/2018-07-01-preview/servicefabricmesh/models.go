@@ -324,8 +324,11 @@ func (page ApplicationResourceDescriptionListPage) Values() []ApplicationResourc
 }
 
 // Creates a new instance of the ApplicationResourceDescriptionListPage type.
-func NewApplicationResourceDescriptionListPage(getNextPage func(context.Context, ApplicationResourceDescriptionList) (ApplicationResourceDescriptionList, error)) ApplicationResourceDescriptionListPage {
-	return ApplicationResourceDescriptionListPage{fn: getNextPage}
+func NewApplicationResourceDescriptionListPage(cur ApplicationResourceDescriptionList, getNextPage func(context.Context, ApplicationResourceDescriptionList) (ApplicationResourceDescriptionList, error)) ApplicationResourceDescriptionListPage {
+	return ApplicationResourceDescriptionListPage{
+		fn:   getNextPage,
+		ardl: cur,
+	}
 }
 
 // ApplicationResourceProperties this type describes properties of an application resource.
@@ -800,9 +803,9 @@ type Layer4IngressConfig struct {
 	EndpointName *string `json:"endpointName,omitempty"`
 }
 
-// ManagedProxyResource the resource model definition for Azure Resource Manager proxy resource. It will have
-// everything other than required location and tags. This proxy resource is explicitly created or updated by
-// including it in the parent resource.
+// ManagedProxyResource the resource model definition for Azure Resource Manager proxy resource. It will
+// have everything other than required location and tags. This proxy resource is explicitly created or
+// updated by including it in the parent resource.
 type ManagedProxyResource struct {
 	// ID - READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -947,8 +950,8 @@ type NetworkResourceDescriptionList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// NetworkResourceDescriptionListIterator provides access to a complete listing of NetworkResourceDescription
-// values.
+// NetworkResourceDescriptionListIterator provides access to a complete listing of
+// NetworkResourceDescription values.
 type NetworkResourceDescriptionListIterator struct {
 	i    int
 	page NetworkResourceDescriptionListPage
@@ -1091,8 +1094,11 @@ func (page NetworkResourceDescriptionListPage) Values() []NetworkResourceDescrip
 }
 
 // Creates a new instance of the NetworkResourceDescriptionListPage type.
-func NewNetworkResourceDescriptionListPage(getNextPage func(context.Context, NetworkResourceDescriptionList) (NetworkResourceDescriptionList, error)) NetworkResourceDescriptionListPage {
-	return NetworkResourceDescriptionListPage{fn: getNextPage}
+func NewNetworkResourceDescriptionListPage(cur NetworkResourceDescriptionList, getNextPage func(context.Context, NetworkResourceDescriptionList) (NetworkResourceDescriptionList, error)) NetworkResourceDescriptionListPage {
+	return NetworkResourceDescriptionListPage{
+		fn:   getNextPage,
+		nrdl: cur,
+	}
 }
 
 // NetworkResourceProperties describes properties of a network resource.
@@ -1283,8 +1289,11 @@ func (page OperationListResultPage) Values() []OperationResult {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationResult list of operations available at the listed Azure resource provider.
@@ -1348,8 +1357,8 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ResourceLimits this type describes the resource limits for a given container. It describes the most amount
-// of resources a container is allowed to use before being restarted.
+// ResourceLimits this type describes the resource limits for a given container. It describes the most
+// amount of resources a container is allowed to use before being restarted.
 type ResourceLimits struct {
 	// MemoryInGB - The memory limit in GB.
 	MemoryInGB *float64 `json:"memoryInGB,omitempty"`
@@ -1357,9 +1366,10 @@ type ResourceLimits struct {
 	CPU *float64 `json:"cpu,omitempty"`
 }
 
-// ResourceRequests this type describes the requested resources for a given container. It describes the least
-// amount of resources required for the container. A container can consume more than requested resources up to
-// the specified limits before being restarted. Currently, the requested resources are treated as limits.
+// ResourceRequests this type describes the requested resources for a given container. It describes the
+// least amount of resources required for the container. A container can consume more than requested
+// resources up to the specified limits before being restarted. Currently, the requested resources are
+// treated as limits.
 type ResourceRequests struct {
 	// MemoryInGB - The memory request in GB for this container.
 	MemoryInGB *float64 `json:"memoryInGB,omitempty"`
@@ -1527,8 +1537,11 @@ func (page ServiceListPage) Values() []ServiceResourceDescription {
 }
 
 // Creates a new instance of the ServiceListPage type.
-func NewServiceListPage(getNextPage func(context.Context, ServiceList) (ServiceList, error)) ServiceListPage {
-	return ServiceListPage{fn: getNextPage}
+func NewServiceListPage(cur ServiceList, getNextPage func(context.Context, ServiceList) (ServiceList, error)) ServiceListPage {
+	return ServiceListPage{
+		fn: getNextPage,
+		sl: cur,
+	}
 }
 
 // ServiceReplicaDescription this type describes a replica of a service resource.
@@ -1699,8 +1712,11 @@ func (page ServiceReplicaListPage) Values() []ServiceReplicaDescription {
 }
 
 // Creates a new instance of the ServiceReplicaListPage type.
-func NewServiceReplicaListPage(getNextPage func(context.Context, ServiceReplicaList) (ServiceReplicaList, error)) ServiceReplicaListPage {
-	return ServiceReplicaListPage{fn: getNextPage}
+func NewServiceReplicaListPage(cur ServiceReplicaList, getNextPage func(context.Context, ServiceReplicaList) (ServiceReplicaList, error)) ServiceReplicaListPage {
+	return ServiceReplicaListPage{
+		fn:  getNextPage,
+		srl: cur,
+	}
 }
 
 // ServiceReplicaProperties describes the properties of a service replica.
@@ -2148,8 +2164,11 @@ func (page VolumeResourceDescriptionListPage) Values() []VolumeResourceDescripti
 }
 
 // Creates a new instance of the VolumeResourceDescriptionListPage type.
-func NewVolumeResourceDescriptionListPage(getNextPage func(context.Context, VolumeResourceDescriptionList) (VolumeResourceDescriptionList, error)) VolumeResourceDescriptionListPage {
-	return VolumeResourceDescriptionListPage{fn: getNextPage}
+func NewVolumeResourceDescriptionListPage(cur VolumeResourceDescriptionList, getNextPage func(context.Context, VolumeResourceDescriptionList) (VolumeResourceDescriptionList, error)) VolumeResourceDescriptionListPage {
+	return VolumeResourceDescriptionListPage{
+		fn:   getNextPage,
+		vrdl: cur,
+	}
 }
 
 // VolumeResourceProperties describes properties of a volume resource.

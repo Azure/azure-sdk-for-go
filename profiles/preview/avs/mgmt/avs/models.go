@@ -131,12 +131,16 @@ type HcxEnterpriseSiteProperties = original.HcxEnterpriseSiteProperties
 type HcxEnterpriseSitesClient = original.HcxEnterpriseSitesClient
 type IdentitySource = original.IdentitySource
 type LocationsClient = original.LocationsClient
+type LogSpecification = original.LogSpecification
 type ManagementCluster = original.ManagementCluster
+type MetricDimension = original.MetricDimension
+type MetricSpecification = original.MetricSpecification
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationList = original.OperationList
 type OperationListIterator = original.OperationListIterator
 type OperationListPage = original.OperationListPage
+type OperationProperties = original.OperationProperties
 type OperationsClient = original.OperationsClient
 type PrivateCloud = original.PrivateCloud
 type PrivateCloudList = original.PrivateCloudList
@@ -151,6 +155,7 @@ type PrivateCloudsDeleteFuture = original.PrivateCloudsDeleteFuture
 type PrivateCloudsUpdateFuture = original.PrivateCloudsUpdateFuture
 type Quota = original.Quota
 type Resource = original.Resource
+type ServiceSpecification = original.ServiceSpecification
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
 type Trial = original.Trial
@@ -167,8 +172,8 @@ func NewAuthorizationsClientWithBaseURI(baseURI string, subscriptionID string) A
 func NewClusterListIterator(page ClusterListPage) ClusterListIterator {
 	return original.NewClusterListIterator(page)
 }
-func NewClusterListPage(getNextPage func(context.Context, ClusterList) (ClusterList, error)) ClusterListPage {
-	return original.NewClusterListPage(getNextPage)
+func NewClusterListPage(cur ClusterList, getNextPage func(context.Context, ClusterList) (ClusterList, error)) ClusterListPage {
+	return original.NewClusterListPage(cur, getNextPage)
 }
 func NewClustersClient(subscriptionID string) ClustersClient {
 	return original.NewClustersClient(subscriptionID)
@@ -179,14 +184,14 @@ func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) Cluster
 func NewExpressRouteAuthorizationListIterator(page ExpressRouteAuthorizationListPage) ExpressRouteAuthorizationListIterator {
 	return original.NewExpressRouteAuthorizationListIterator(page)
 }
-func NewExpressRouteAuthorizationListPage(getNextPage func(context.Context, ExpressRouteAuthorizationList) (ExpressRouteAuthorizationList, error)) ExpressRouteAuthorizationListPage {
-	return original.NewExpressRouteAuthorizationListPage(getNextPage)
+func NewExpressRouteAuthorizationListPage(cur ExpressRouteAuthorizationList, getNextPage func(context.Context, ExpressRouteAuthorizationList) (ExpressRouteAuthorizationList, error)) ExpressRouteAuthorizationListPage {
+	return original.NewExpressRouteAuthorizationListPage(cur, getNextPage)
 }
 func NewHcxEnterpriseSiteListIterator(page HcxEnterpriseSiteListPage) HcxEnterpriseSiteListIterator {
 	return original.NewHcxEnterpriseSiteListIterator(page)
 }
-func NewHcxEnterpriseSiteListPage(getNextPage func(context.Context, HcxEnterpriseSiteList) (HcxEnterpriseSiteList, error)) HcxEnterpriseSiteListPage {
-	return original.NewHcxEnterpriseSiteListPage(getNextPage)
+func NewHcxEnterpriseSiteListPage(cur HcxEnterpriseSiteList, getNextPage func(context.Context, HcxEnterpriseSiteList) (HcxEnterpriseSiteList, error)) HcxEnterpriseSiteListPage {
+	return original.NewHcxEnterpriseSiteListPage(cur, getNextPage)
 }
 func NewHcxEnterpriseSitesClient(subscriptionID string) HcxEnterpriseSitesClient {
 	return original.NewHcxEnterpriseSitesClient(subscriptionID)
@@ -203,8 +208,8 @@ func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) Locati
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
 }
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return original.NewOperationListPage(getNextPage)
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -215,8 +220,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewPrivateCloudListIterator(page PrivateCloudListPage) PrivateCloudListIterator {
 	return original.NewPrivateCloudListIterator(page)
 }
-func NewPrivateCloudListPage(getNextPage func(context.Context, PrivateCloudList) (PrivateCloudList, error)) PrivateCloudListPage {
-	return original.NewPrivateCloudListPage(getNextPage)
+func NewPrivateCloudListPage(cur PrivateCloudList, getNextPage func(context.Context, PrivateCloudList) (PrivateCloudList, error)) PrivateCloudListPage {
+	return original.NewPrivateCloudListPage(cur, getNextPage)
 }
 func NewPrivateCloudsClient(subscriptionID string) PrivateCloudsClient {
 	return original.NewPrivateCloudsClient(subscriptionID)

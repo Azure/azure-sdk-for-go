@@ -59,13 +59,13 @@ func NewWithoutDefaults(endpoint string) BaseClient {
 	}
 }
 
-// ChangePointDetect evaluate change point score of every series point
+// DetectChangePoint evaluate change point score of every series point
 // Parameters:
 // body - time series points and granularity is needed. Advanced model parameters can also be set in the
 // request if needed.
-func (client BaseClient) ChangePointDetect(ctx context.Context, body ChangePointDetectRequest) (result ChangePointDetectResponse, err error) {
+func (client BaseClient) DetectChangePoint(ctx context.Context, body ChangePointDetectRequest) (result ChangePointDetectResponse, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.ChangePointDetect")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.DetectChangePoint")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -77,32 +77,32 @@ func (client BaseClient) ChangePointDetect(ctx context.Context, body ChangePoint
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: body,
 			Constraints: []validation.Constraint{{Target: "body.Series", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("anomalydetector.BaseClient", "ChangePointDetect", err.Error())
+		return result, validation.NewError("anomalydetector.BaseClient", "DetectChangePoint", err.Error())
 	}
 
-	req, err := client.ChangePointDetectPreparer(ctx, body)
+	req, err := client.DetectChangePointPreparer(ctx, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "ChangePointDetect", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "DetectChangePoint", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ChangePointDetectSender(req)
+	resp, err := client.DetectChangePointSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "ChangePointDetect", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "DetectChangePoint", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ChangePointDetectResponder(resp)
+	result, err = client.DetectChangePointResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "ChangePointDetect", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "DetectChangePoint", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ChangePointDetectPreparer prepares the ChangePointDetect request.
-func (client BaseClient) ChangePointDetectPreparer(ctx context.Context, body ChangePointDetectRequest) (*http.Request, error) {
+// DetectChangePointPreparer prepares the DetectChangePoint request.
+func (client BaseClient) DetectChangePointPreparer(ctx context.Context, body ChangePointDetectRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -111,20 +111,20 @@ func (client BaseClient) ChangePointDetectPreparer(ctx context.Context, body Cha
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/anomalydetector/v1.0", urlParameters),
-		autorest.WithPath("/timeseries/changePoint/detect"),
+		autorest.WithPath("/timeseries/changepoint/detect"),
 		autorest.WithJSON(body))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ChangePointDetectSender sends the ChangePointDetect request. The method will close the
+// DetectChangePointSender sends the DetectChangePoint request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) ChangePointDetectSender(req *http.Request) (*http.Response, error) {
+func (client BaseClient) DetectChangePointSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// ChangePointDetectResponder handles the response to the ChangePointDetect request. The method always
+// DetectChangePointResponder handles the response to the DetectChangePoint request. The method always
 // closes the http.Response Body.
-func (client BaseClient) ChangePointDetectResponder(resp *http.Response) (result ChangePointDetectResponse, err error) {
+func (client BaseClient) DetectChangePointResponder(resp *http.Response) (result ChangePointDetectResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -134,14 +134,14 @@ func (client BaseClient) ChangePointDetectResponder(resp *http.Response) (result
 	return
 }
 
-// EntireDetect this operation generates a model using an entire series, each point is detected with the same model.
-// With this method, points before and after a certain point are used to determine whether it is an anomaly. The entire
-// detection can give user an overall status of the time series.
+// DetectEntireSeries this operation generates a model using an entire series, each point is detected with the same
+// model. With this method, points before and after a certain point are used to determine whether it is an anomaly. The
+// entire detection can give user an overall status of the time series.
 // Parameters:
 // body - time series points and period if needed. Advanced model parameters can also be set in the request.
-func (client BaseClient) EntireDetect(ctx context.Context, body Request) (result EntireDetectResponse, err error) {
+func (client BaseClient) DetectEntireSeries(ctx context.Context, body DetectRequest) (result EntireDetectResponse, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.EntireDetect")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.DetectEntireSeries")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -153,32 +153,32 @@ func (client BaseClient) EntireDetect(ctx context.Context, body Request) (result
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: body,
 			Constraints: []validation.Constraint{{Target: "body.Series", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("anomalydetector.BaseClient", "EntireDetect", err.Error())
+		return result, validation.NewError("anomalydetector.BaseClient", "DetectEntireSeries", err.Error())
 	}
 
-	req, err := client.EntireDetectPreparer(ctx, body)
+	req, err := client.DetectEntireSeriesPreparer(ctx, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "EntireDetect", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "DetectEntireSeries", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.EntireDetectSender(req)
+	resp, err := client.DetectEntireSeriesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "EntireDetect", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "DetectEntireSeries", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.EntireDetectResponder(resp)
+	result, err = client.DetectEntireSeriesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "EntireDetect", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "DetectEntireSeries", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// EntireDetectPreparer prepares the EntireDetect request.
-func (client BaseClient) EntireDetectPreparer(ctx context.Context, body Request) (*http.Request, error) {
+// DetectEntireSeriesPreparer prepares the DetectEntireSeries request.
+func (client BaseClient) DetectEntireSeriesPreparer(ctx context.Context, body DetectRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -192,15 +192,15 @@ func (client BaseClient) EntireDetectPreparer(ctx context.Context, body Request)
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// EntireDetectSender sends the EntireDetect request. The method will close the
+// DetectEntireSeriesSender sends the DetectEntireSeries request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) EntireDetectSender(req *http.Request) (*http.Response, error) {
+func (client BaseClient) DetectEntireSeriesSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// EntireDetectResponder handles the response to the EntireDetect request. The method always
+// DetectEntireSeriesResponder handles the response to the DetectEntireSeries request. The method always
 // closes the http.Response Body.
-func (client BaseClient) EntireDetectResponder(resp *http.Response) (result EntireDetectResponse, err error) {
+func (client BaseClient) DetectEntireSeriesResponder(resp *http.Response) (result EntireDetectResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -210,14 +210,14 @@ func (client BaseClient) EntireDetectResponder(resp *http.Response) (result Enti
 	return
 }
 
-// LastDetect this operation generates a model using points before the latest one. With this method, only historical
-// points are used to determine whether the target point is an anomaly. The latest point detecting operation matches
-// the scenario of real-time monitoring of business metrics.
+// DetectLastPoint this operation generates a model using points before the latest one. With this method, only
+// historical points are used to determine whether the target point is an anomaly. The latest point detecting operation
+// matches the scenario of real-time monitoring of business metrics.
 // Parameters:
 // body - time series points and period if needed. Advanced model parameters can also be set in the request.
-func (client BaseClient) LastDetect(ctx context.Context, body Request) (result LastDetectResponse, err error) {
+func (client BaseClient) DetectLastPoint(ctx context.Context, body DetectRequest) (result LastDetectResponse, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.LastDetect")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.DetectLastPoint")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -229,32 +229,32 @@ func (client BaseClient) LastDetect(ctx context.Context, body Request) (result L
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: body,
 			Constraints: []validation.Constraint{{Target: "body.Series", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("anomalydetector.BaseClient", "LastDetect", err.Error())
+		return result, validation.NewError("anomalydetector.BaseClient", "DetectLastPoint", err.Error())
 	}
 
-	req, err := client.LastDetectPreparer(ctx, body)
+	req, err := client.DetectLastPointPreparer(ctx, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "LastDetect", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "DetectLastPoint", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.LastDetectSender(req)
+	resp, err := client.DetectLastPointSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "LastDetect", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "DetectLastPoint", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.LastDetectResponder(resp)
+	result, err = client.DetectLastPointResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "LastDetect", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "DetectLastPoint", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// LastDetectPreparer prepares the LastDetect request.
-func (client BaseClient) LastDetectPreparer(ctx context.Context, body Request) (*http.Request, error) {
+// DetectLastPointPreparer prepares the DetectLastPoint request.
+func (client BaseClient) DetectLastPointPreparer(ctx context.Context, body DetectRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -268,15 +268,15 @@ func (client BaseClient) LastDetectPreparer(ctx context.Context, body Request) (
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// LastDetectSender sends the LastDetect request. The method will close the
+// DetectLastPointSender sends the DetectLastPoint request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) LastDetectSender(req *http.Request) (*http.Response, error) {
+func (client BaseClient) DetectLastPointSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// LastDetectResponder handles the response to the LastDetect request. The method always
+// DetectLastPointResponder handles the response to the DetectLastPoint request. The method always
 // closes the http.Response Body.
-func (client BaseClient) LastDetectResponder(resp *http.Response) (result LastDetectResponse, err error) {
+func (client BaseClient) DetectLastPointResponder(resp *http.Response) (result LastDetectResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

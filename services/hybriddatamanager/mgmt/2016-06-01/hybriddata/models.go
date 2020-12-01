@@ -47,11 +47,12 @@ type AvailableProviderOperation struct {
 	Properties interface{} `json:"properties,omitempty"`
 }
 
-// AvailableProviderOperationDisplay contains the localized display information for this particular operation /
-// action.
+// AvailableProviderOperationDisplay contains the localized display information for this particular
+// operation / action.
 // These value will be used by several clients for
 // (1) custom role definitions for RBAC;
-// (2) complex query filters for the event service; and (3) audit history / records for management operations.
+// (2) complex query filters for the event service; and (3) audit history / records for management
+// operations.
 type AvailableProviderOperationDisplay struct {
 	// Provider - Gets or sets Provider
 	// The localized friendly form of the resource provider name – it is expected to also include the publisher/company responsible.
@@ -71,7 +72,8 @@ type AvailableProviderOperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// AvailableProviderOperations class for set of operations used for discovery of available provider operations.
+// AvailableProviderOperations class for set of operations used for discovery of available provider
+// operations.
 type AvailableProviderOperations struct {
 	autorest.Response `json:"-"`
 	// Value - List of operations.
@@ -224,8 +226,11 @@ func (page AvailableProviderOperationsPage) Values() []AvailableProviderOperatio
 }
 
 // Creates a new instance of the AvailableProviderOperationsPage type.
-func NewAvailableProviderOperationsPage(getNextPage func(context.Context, AvailableProviderOperations) (AvailableProviderOperations, error)) AvailableProviderOperationsPage {
-	return AvailableProviderOperationsPage{fn: getNextPage}
+func NewAvailableProviderOperationsPage(cur AvailableProviderOperations, getNextPage func(context.Context, AvailableProviderOperations) (AvailableProviderOperations, error)) AvailableProviderOperationsPage {
+	return AvailableProviderOperationsPage{
+		fn:  getNextPage,
+		apo: cur,
+	}
 }
 
 // CustomerSecret the pair of customer secret.
@@ -614,8 +619,11 @@ func (page DataServiceListPage) Values() []DataService {
 }
 
 // Creates a new instance of the DataServiceListPage type.
-func NewDataServiceListPage(getNextPage func(context.Context, DataServiceList) (DataServiceList, error)) DataServiceListPage {
-	return DataServiceListPage{fn: getNextPage}
+func NewDataServiceListPage(cur DataServiceList, getNextPage func(context.Context, DataServiceList) (DataServiceList, error)) DataServiceListPage {
+	return DataServiceListPage{
+		fn:  getNextPage,
+		dsl: cur,
+	}
 }
 
 // DataServiceProperties data Service properties.
@@ -859,8 +867,11 @@ func (page DataStoreListPage) Values() []DataStore {
 }
 
 // Creates a new instance of the DataStoreListPage type.
-func NewDataStoreListPage(getNextPage func(context.Context, DataStoreList) (DataStoreList, error)) DataStoreListPage {
-	return DataStoreListPage{fn: getNextPage}
+func NewDataStoreListPage(cur DataStoreList, getNextPage func(context.Context, DataStoreList) (DataStoreList, error)) DataStoreListPage {
+	return DataStoreListPage{
+		fn:  getNextPage,
+		dsl: cur,
+	}
 }
 
 // DataStoreProperties data Store for sources and sinks
@@ -877,8 +888,8 @@ type DataStoreProperties struct {
 	CustomerSecrets *[]CustomerSecret `json:"customerSecrets,omitempty"`
 }
 
-// DataStoresCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DataStoresCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type DataStoresCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -906,7 +917,8 @@ func (future *DataStoresCreateOrUpdateFuture) Result(client DataStoresClient) (d
 	return
 }
 
-// DataStoresDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DataStoresDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DataStoresDeleteFuture struct {
 	azure.Future
 }
@@ -1153,8 +1165,11 @@ func (page DataStoreTypeListPage) Values() []DataStoreType {
 }
 
 // Creates a new instance of the DataStoreTypeListPage type.
-func NewDataStoreTypeListPage(getNextPage func(context.Context, DataStoreTypeList) (DataStoreTypeList, error)) DataStoreTypeListPage {
-	return DataStoreTypeListPage{fn: getNextPage}
+func NewDataStoreTypeListPage(cur DataStoreTypeList, getNextPage func(context.Context, DataStoreTypeList) (DataStoreTypeList, error)) DataStoreTypeListPage {
+	return DataStoreTypeListPage{
+		fn:   getNextPage,
+		dstl: cur,
+	}
 }
 
 // DataStoreTypeProperties data Store Type properties.
@@ -1563,8 +1578,11 @@ func (page JobDefinitionListPage) Values() []JobDefinition {
 }
 
 // Creates a new instance of the JobDefinitionListPage type.
-func NewJobDefinitionListPage(getNextPage func(context.Context, JobDefinitionList) (JobDefinitionList, error)) JobDefinitionListPage {
-	return JobDefinitionListPage{fn: getNextPage}
+func NewJobDefinitionListPage(cur JobDefinitionList, getNextPage func(context.Context, JobDefinitionList) (JobDefinitionList, error)) JobDefinitionListPage {
+	return JobDefinitionListPage{
+		fn:  getNextPage,
+		jdl: cur,
+	}
 }
 
 // JobDefinitionProperties job Definition
@@ -1836,8 +1854,11 @@ func (page JobListPage) Values() []Job {
 }
 
 // Creates a new instance of the JobListPage type.
-func NewJobListPage(getNextPage func(context.Context, JobList) (JobList, error)) JobListPage {
-	return JobListPage{fn: getNextPage}
+func NewJobListPage(cur JobList, getNextPage func(context.Context, JobList) (JobList, error)) JobListPage {
+	return JobListPage{
+		fn: getNextPage,
+		jl: cur,
+	}
 }
 
 // JobProperties job Properties
@@ -2151,8 +2172,11 @@ func (page PublicKeyListPage) Values() []PublicKey {
 }
 
 // Creates a new instance of the PublicKeyListPage type.
-func NewPublicKeyListPage(getNextPage func(context.Context, PublicKeyList) (PublicKeyList, error)) PublicKeyListPage {
-	return PublicKeyListPage{fn: getNextPage}
+func NewPublicKeyListPage(cur PublicKeyList, getNextPage func(context.Context, PublicKeyList) (PublicKeyList, error)) PublicKeyListPage {
+	return PublicKeyListPage{
+		fn:  getNextPage,
+		pkl: cur,
+	}
 }
 
 // PublicKeyProperties publicKey Properties

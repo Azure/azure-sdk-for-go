@@ -29,6 +29,19 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2020-08-01/storageimportexport"
 
+// DeliveryPackageInformation contains information about the delivery package being shipped by the customer
+// to the Microsoft data center.
+type DeliveryPackageInformation struct {
+	// CarrierName - The name of the carrier that is used to ship the import or export drives.
+	CarrierName *string `json:"carrierName,omitempty"`
+	// TrackingNumber - The tracking number of the package.
+	TrackingNumber *string `json:"trackingNumber,omitempty"`
+	// DriveCount - The number of drives included in the package.
+	DriveCount *int64 `json:"driveCount,omitempty"`
+	// ShipDate - The date when the package is shipped.
+	ShipDate *string `json:"shipDate,omitempty"`
+}
+
 // DriveBitLockerKey bitLocker recovery key or password to the specified drive
 type DriveBitLockerKey struct {
 	// BitLockerKey - BitLocker recovery key or password
@@ -138,8 +151,8 @@ type ErrorResponseErrorDetailsItem struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// Export a property containing information about the blobs to be exported for an export job. This property is
-// required for export jobs, but must not be specified for import jobs.
+// Export a property containing information about the blobs to be exported for an export job. This property
+// is required for export jobs, but must not be specified for import jobs.
 type Export struct {
 	// ExportBlobList - A list of the blobs to be exported.
 	*ExportBlobList `json:"blobList,omitempty"`
@@ -239,7 +252,7 @@ type JobDetails struct {
 	// ShippingInformation - Contains information about the Microsoft datacenter to which the drives should be shipped.
 	ShippingInformation *ShippingInformation `json:"shippingInformation,omitempty"`
 	// DeliveryPackage - Contains information about the package being shipped by the customer to the Microsoft data center.
-	DeliveryPackage *PackageInformation `json:"deliveryPackage,omitempty"`
+	DeliveryPackage *DeliveryPackageInformation `json:"deliveryPackage,omitempty"`
 	// ReturnPackage - Contains information about the package being shipped from the Microsoft data center to the customer to return the drives. The format is the same as the deliveryPackage property above. This property is not included if the drives have not yet been returned.
 	ReturnPackage *PackageInformation `json:"returnPackage,omitempty"`
 	// DiagnosticsPath - The virtual blob directory to which the copy logs and backups of drive manifest files (if enabled) will be stored.
@@ -455,8 +468,11 @@ func (page ListJobsResponsePage) Values() []JobResponse {
 }
 
 // Creates a new instance of the ListJobsResponsePage type.
-func NewListJobsResponsePage(getNextPage func(context.Context, ListJobsResponse) (ListJobsResponse, error)) ListJobsResponsePage {
-	return ListJobsResponsePage{fn: getNextPage}
+func NewListJobsResponsePage(cur ListJobsResponse, getNextPage func(context.Context, ListJobsResponse) (ListJobsResponse, error)) ListJobsResponsePage {
+	return ListJobsResponsePage{
+		fn:  getNextPage,
+		ljr: cur,
+	}
 }
 
 // ListOperationsResponse list operations response
@@ -814,7 +830,7 @@ type UpdateJobParametersProperties struct {
 	// ReturnShipping - Specifies the return carrier and customer's account with the carrier.
 	ReturnShipping *ReturnShipping `json:"returnShipping,omitempty"`
 	// DeliveryPackage - Contains information about the package being shipped by the customer to the Microsoft data center.
-	DeliveryPackage *PackageInformation `json:"deliveryPackage,omitempty"`
+	DeliveryPackage *DeliveryPackageInformation `json:"deliveryPackage,omitempty"`
 	// LogLevel - Indicates whether error logging or verbose logging is enabled.
 	LogLevel *string `json:"logLevel,omitempty"`
 	// BackupDriveManifest - Indicates whether the manifest files on the drives should be copied to block blobs.

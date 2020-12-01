@@ -207,20 +207,20 @@ func NewComputePoliciesClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewComputePolicyListResultIterator(page ComputePolicyListResultPage) ComputePolicyListResultIterator {
 	return original.NewComputePolicyListResultIterator(page)
 }
-func NewComputePolicyListResultPage(getNextPage func(context.Context, ComputePolicyListResult) (ComputePolicyListResult, error)) ComputePolicyListResultPage {
-	return original.NewComputePolicyListResultPage(getNextPage)
+func NewComputePolicyListResultPage(cur ComputePolicyListResult, getNextPage func(context.Context, ComputePolicyListResult) (ComputePolicyListResult, error)) ComputePolicyListResultPage {
+	return original.NewComputePolicyListResultPage(cur, getNextPage)
 }
 func NewDataLakeAnalyticsAccountListResultIterator(page DataLakeAnalyticsAccountListResultPage) DataLakeAnalyticsAccountListResultIterator {
 	return original.NewDataLakeAnalyticsAccountListResultIterator(page)
 }
-func NewDataLakeAnalyticsAccountListResultPage(getNextPage func(context.Context, DataLakeAnalyticsAccountListResult) (DataLakeAnalyticsAccountListResult, error)) DataLakeAnalyticsAccountListResultPage {
-	return original.NewDataLakeAnalyticsAccountListResultPage(getNextPage)
+func NewDataLakeAnalyticsAccountListResultPage(cur DataLakeAnalyticsAccountListResult, getNextPage func(context.Context, DataLakeAnalyticsAccountListResult) (DataLakeAnalyticsAccountListResult, error)) DataLakeAnalyticsAccountListResultPage {
+	return original.NewDataLakeAnalyticsAccountListResultPage(cur, getNextPage)
 }
 func NewDataLakeStoreAccountInformationListResultIterator(page DataLakeStoreAccountInformationListResultPage) DataLakeStoreAccountInformationListResultIterator {
 	return original.NewDataLakeStoreAccountInformationListResultIterator(page)
 }
-func NewDataLakeStoreAccountInformationListResultPage(getNextPage func(context.Context, DataLakeStoreAccountInformationListResult) (DataLakeStoreAccountInformationListResult, error)) DataLakeStoreAccountInformationListResultPage {
-	return original.NewDataLakeStoreAccountInformationListResultPage(getNextPage)
+func NewDataLakeStoreAccountInformationListResultPage(cur DataLakeStoreAccountInformationListResult, getNextPage func(context.Context, DataLakeStoreAccountInformationListResult) (DataLakeStoreAccountInformationListResult, error)) DataLakeStoreAccountInformationListResultPage {
+	return original.NewDataLakeStoreAccountInformationListResultPage(cur, getNextPage)
 }
 func NewDataLakeStoreAccountsClient(subscriptionID string) DataLakeStoreAccountsClient {
 	return original.NewDataLakeStoreAccountsClient(subscriptionID)
@@ -231,8 +231,8 @@ func NewDataLakeStoreAccountsClientWithBaseURI(baseURI string, subscriptionID st
 func NewFirewallRuleListResultIterator(page FirewallRuleListResultPage) FirewallRuleListResultIterator {
 	return original.NewFirewallRuleListResultIterator(page)
 }
-func NewFirewallRuleListResultPage(getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
-	return original.NewFirewallRuleListResultPage(getNextPage)
+func NewFirewallRuleListResultPage(cur FirewallRuleListResult, getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
+	return original.NewFirewallRuleListResultPage(cur, getNextPage)
 }
 func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
 	return original.NewFirewallRulesClient(subscriptionID)
@@ -255,14 +255,14 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewSasTokenInformationListResultIterator(page SasTokenInformationListResultPage) SasTokenInformationListResultIterator {
 	return original.NewSasTokenInformationListResultIterator(page)
 }
-func NewSasTokenInformationListResultPage(getNextPage func(context.Context, SasTokenInformationListResult) (SasTokenInformationListResult, error)) SasTokenInformationListResultPage {
-	return original.NewSasTokenInformationListResultPage(getNextPage)
+func NewSasTokenInformationListResultPage(cur SasTokenInformationListResult, getNextPage func(context.Context, SasTokenInformationListResult) (SasTokenInformationListResult, error)) SasTokenInformationListResultPage {
+	return original.NewSasTokenInformationListResultPage(cur, getNextPage)
 }
 func NewStorageAccountInformationListResultIterator(page StorageAccountInformationListResultPage) StorageAccountInformationListResultIterator {
 	return original.NewStorageAccountInformationListResultIterator(page)
 }
-func NewStorageAccountInformationListResultPage(getNextPage func(context.Context, StorageAccountInformationListResult) (StorageAccountInformationListResult, error)) StorageAccountInformationListResultPage {
-	return original.NewStorageAccountInformationListResultPage(getNextPage)
+func NewStorageAccountInformationListResultPage(cur StorageAccountInformationListResult, getNextPage func(context.Context, StorageAccountInformationListResult) (StorageAccountInformationListResult, error)) StorageAccountInformationListResultPage {
+	return original.NewStorageAccountInformationListResultPage(cur, getNextPage)
 }
 func NewStorageAccountsClient(subscriptionID string) StorageAccountsClient {
 	return original.NewStorageAccountsClient(subscriptionID)
@@ -273,8 +273,8 @@ func NewStorageAccountsClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewStorageContainerListResultIterator(page StorageContainerListResultPage) StorageContainerListResultIterator {
 	return original.NewStorageContainerListResultIterator(page)
 }
-func NewStorageContainerListResultPage(getNextPage func(context.Context, StorageContainerListResult) (StorageContainerListResult, error)) StorageContainerListResultPage {
-	return original.NewStorageContainerListResultPage(getNextPage)
+func NewStorageContainerListResultPage(cur StorageContainerListResult, getNextPage func(context.Context, StorageContainerListResult) (StorageContainerListResult, error)) StorageContainerListResultPage {
+	return original.NewStorageContainerListResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

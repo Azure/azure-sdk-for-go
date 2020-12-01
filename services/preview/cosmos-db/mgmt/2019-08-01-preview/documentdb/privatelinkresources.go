@@ -32,15 +32,15 @@ type PrivateLinkResourcesClient struct {
 }
 
 // NewPrivateLinkResourcesClient creates an instance of the PrivateLinkResourcesClient client.
-func NewPrivateLinkResourcesClient(subscriptionID string, subscriptionID1 string) PrivateLinkResourcesClient {
-	return NewPrivateLinkResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return NewPrivateLinkResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewPrivateLinkResourcesClientWithBaseURI creates an instance of the PrivateLinkResourcesClient client using a custom
 // endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
 // stack).
-func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PrivateLinkResourcesClient {
-	return PrivateLinkResourcesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return PrivateLinkResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets the private link resources that need to be created for a Cosmos DB account.

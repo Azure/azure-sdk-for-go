@@ -82,8 +82,8 @@ func New(subscriptionID string) BaseClient {
 func NewMultipleActivationKeyListIterator(page MultipleActivationKeyListPage) MultipleActivationKeyListIterator {
 	return original.NewMultipleActivationKeyListIterator(page)
 }
-func NewMultipleActivationKeyListPage(getNextPage func(context.Context, MultipleActivationKeyList) (MultipleActivationKeyList, error)) MultipleActivationKeyListPage {
-	return original.NewMultipleActivationKeyListPage(getNextPage)
+func NewMultipleActivationKeyListPage(cur MultipleActivationKeyList, getNextPage func(context.Context, MultipleActivationKeyList) (MultipleActivationKeyList, error)) MultipleActivationKeyListPage {
+	return original.NewMultipleActivationKeyListPage(cur, getNextPage)
 }
 func NewMultipleActivationKeysClient(subscriptionID string) MultipleActivationKeysClient {
 	return original.NewMultipleActivationKeysClient(subscriptionID)
@@ -94,8 +94,8 @@ func NewMultipleActivationKeysClientWithBaseURI(baseURI string, subscriptionID s
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
 }
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return original.NewOperationListPage(getNextPage)
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

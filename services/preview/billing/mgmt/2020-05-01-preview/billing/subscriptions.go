@@ -32,14 +32,14 @@ type SubscriptionsClient struct {
 }
 
 // NewSubscriptionsClient creates an instance of the SubscriptionsClient client.
-func NewSubscriptionsClient(subscriptionID string, subscriptionID1 string) SubscriptionsClient {
-	return NewSubscriptionsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewSubscriptionsClient(subscriptionID string) SubscriptionsClient {
+	return NewSubscriptionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewSubscriptionsClientWithBaseURI creates an instance of the SubscriptionsClient client using a custom endpoint.
 // Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) SubscriptionsClient {
-	return SubscriptionsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionsClient {
+	return SubscriptionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets a subscription by its ID. The operation is supported for billing accounts with agreement type Microsoft

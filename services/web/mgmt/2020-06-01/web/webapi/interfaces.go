@@ -698,6 +698,7 @@ type StaticSitesClientAPI interface {
 	ListStaticSiteSecrets(ctx context.Context, resourceGroupName string, name string) (result web.StringDictionary, err error)
 	ListStaticSiteUsers(ctx context.Context, resourceGroupName string, name string, authprovider string) (result web.StaticSiteUserCollectionPage, err error)
 	ListStaticSiteUsersComplete(ctx context.Context, resourceGroupName string, name string, authprovider string) (result web.StaticSiteUserCollectionIterator, err error)
+	PreviewWorkflow(ctx context.Context, location string, staticSitesWorkflowPreviewRequest web.StaticSitesWorkflowPreviewRequest) (result web.StaticSitesWorkflowPreview, err error)
 	ResetStaticSiteAPIKey(ctx context.Context, resourceGroupName string, name string, resetPropertiesEnvelope web.StaticSiteResetPropertiesARMResource) (result autorest.Response, err error)
 	UpdateStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteEnvelope web.StaticSitePatchResource) (result web.StaticSiteARMResource, err error)
 	UpdateStaticSiteUser(ctx context.Context, resourceGroupName string, name string, authprovider string, userid string, staticSiteUserEnvelope web.StaticSiteUserARMResource) (result web.StaticSiteUserARMResource, err error)

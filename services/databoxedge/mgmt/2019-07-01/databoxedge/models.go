@@ -281,8 +281,11 @@ func (page AlertListPage) Values() []Alert {
 }
 
 // Creates a new instance of the AlertListPage type.
-func NewAlertListPage(getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
-	return AlertListPage{fn: getNextPage}
+func NewAlertListPage(cur AlertList, getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
+	return AlertListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // AlertProperties properties of alert.
@@ -459,8 +462,8 @@ func (future *BandwidthSchedulesCreateOrUpdateFuture) Result(client BandwidthSch
 	return
 }
 
-// BandwidthSchedulesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// BandwidthSchedulesDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type BandwidthSchedulesDeleteFuture struct {
 	azure.Future
 }
@@ -634,12 +637,15 @@ func (page BandwidthSchedulesListPage) Values() []BandwidthSchedule {
 }
 
 // Creates a new instance of the BandwidthSchedulesListPage type.
-func NewBandwidthSchedulesListPage(getNextPage func(context.Context, BandwidthSchedulesList) (BandwidthSchedulesList, error)) BandwidthSchedulesListPage {
-	return BandwidthSchedulesListPage{fn: getNextPage}
+func NewBandwidthSchedulesListPage(cur BandwidthSchedulesList, getNextPage func(context.Context, BandwidthSchedulesList) (BandwidthSchedulesList, error)) BandwidthSchedulesListPage {
+	return BandwidthSchedulesListPage{
+		fn:  getNextPage,
+		bsl: cur,
+	}
 }
 
-// ClientAccessRight the mapping between a particular client IP and the type of access client has on the NFS
-// share.
+// ClientAccessRight the mapping between a particular client IP and the type of access client has on the
+// NFS share.
 type ClientAccessRight struct {
 	// Client - IP of the client.
 	Client *string `json:"client,omitempty"`
@@ -1051,8 +1057,11 @@ func (page DeviceListPage) Values() []Device {
 }
 
 // Creates a new instance of the DeviceListPage type.
-func NewDeviceListPage(getNextPage func(context.Context, DeviceList) (DeviceList, error)) DeviceListPage {
-	return DeviceListPage{fn: getNextPage}
+func NewDeviceListPage(cur DeviceList, getNextPage func(context.Context, DeviceList) (DeviceList, error)) DeviceListPage {
+	return DeviceListPage{
+		fn: getNextPage,
+		dl: cur,
+	}
 }
 
 // DevicePatch the Data Box Edge/Gateway device patch.
@@ -1149,8 +1158,8 @@ func (future *DevicesCreateOrUpdateFuture) Result(client DevicesClient) (d Devic
 	return
 }
 
-// DevicesCreateOrUpdateSecuritySettingsFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DevicesCreateOrUpdateSecuritySettingsFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type DevicesCreateOrUpdateSecuritySettingsFuture struct {
 	azure.Future
 }
@@ -1172,7 +1181,8 @@ func (future *DevicesCreateOrUpdateSecuritySettingsFuture) Result(client Devices
 	return
 }
 
-// DevicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DevicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DevicesDeleteFuture struct {
 	azure.Future
 }
@@ -2242,8 +2252,11 @@ func (page OperationsListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationsListPage type.
-func NewOperationsListPage(getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
-	return OperationsListPage{fn: getNextPage}
+func NewOperationsListPage(cur OperationsList, getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
+	return OperationsListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // Order the order details.
@@ -2471,8 +2484,11 @@ func (page OrderListPage) Values() []Order {
 }
 
 // Creates a new instance of the OrderListPage type.
-func NewOrderListPage(getNextPage func(context.Context, OrderList) (OrderList, error)) OrderListPage {
-	return OrderListPage{fn: getNextPage}
+func NewOrderListPage(cur OrderList, getNextPage func(context.Context, OrderList) (OrderList, error)) OrderListPage {
+	return OrderListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // OrderProperties order properties.
@@ -2993,8 +3009,11 @@ func (page RoleListPage) Values() []BasicRole {
 }
 
 // Creates a new instance of the RoleListPage type.
-func NewRoleListPage(getNextPage func(context.Context, RoleList) (RoleList, error)) RoleListPage {
-	return RoleListPage{fn: getNextPage}
+func NewRoleListPage(cur RoleList, getNextPage func(context.Context, RoleList) (RoleList, error)) RoleListPage {
+	return RoleListPage{
+		fn: getNextPage,
+		rl: cur,
+	}
 }
 
 // RoleModel ...
@@ -3228,8 +3247,8 @@ func (s *Share) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ShareAccessRight specifies the mapping between this particular user and the type of access he has on shares
-// on this device.
+// ShareAccessRight specifies the mapping between this particular user and the type of access he has on
+// shares on this device.
 type ShareAccessRight struct {
 	// ShareID - The share ID.
 	ShareID *string `json:"shareId,omitempty"`
@@ -3389,8 +3408,11 @@ func (page ShareListPage) Values() []Share {
 }
 
 // Creates a new instance of the ShareListPage type.
-func NewShareListPage(getNextPage func(context.Context, ShareList) (ShareList, error)) ShareListPage {
-	return ShareListPage{fn: getNextPage}
+func NewShareListPage(cur ShareList, getNextPage func(context.Context, ShareList) (ShareList, error)) ShareListPage {
+	return ShareListPage{
+		fn: getNextPage,
+		sl: cur,
+	}
 }
 
 // ShareProperties the share properties.
@@ -3501,7 +3523,8 @@ func (future *SharesDeleteFuture) Result(client SharesClient) (ar autorest.Respo
 	return
 }
 
-// SharesRefreshFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// SharesRefreshFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SharesRefreshFuture struct {
 	azure.Future
 }
@@ -3757,8 +3780,11 @@ func (page StorageAccountCredentialListPage) Values() []StorageAccountCredential
 }
 
 // Creates a new instance of the StorageAccountCredentialListPage type.
-func NewStorageAccountCredentialListPage(getNextPage func(context.Context, StorageAccountCredentialList) (StorageAccountCredentialList, error)) StorageAccountCredentialListPage {
-	return StorageAccountCredentialListPage{fn: getNextPage}
+func NewStorageAccountCredentialListPage(cur StorageAccountCredentialList, getNextPage func(context.Context, StorageAccountCredentialList) (StorageAccountCredentialList, error)) StorageAccountCredentialListPage {
+	return StorageAccountCredentialListPage{
+		fn:   getNextPage,
+		sacl: cur,
+	}
 }
 
 // StorageAccountCredentialProperties the storage account credential properties.
@@ -3781,8 +3807,8 @@ type StorageAccountCredentialProperties struct {
 	StorageAccountID *string `json:"storageAccountId,omitempty"`
 }
 
-// StorageAccountCredentialsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// StorageAccountCredentialsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type StorageAccountCredentialsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -4126,8 +4152,11 @@ func (page TriggerListPage) Values() []BasicTrigger {
 }
 
 // Creates a new instance of the TriggerListPage type.
-func NewTriggerListPage(getNextPage func(context.Context, TriggerList) (TriggerList, error)) TriggerListPage {
-	return TriggerListPage{fn: getNextPage}
+func NewTriggerListPage(cur TriggerList, getNextPage func(context.Context, TriggerList) (TriggerList, error)) TriggerListPage {
+	return TriggerListPage{
+		fn: getNextPage,
+		tl: cur,
+	}
 }
 
 // TriggerModel ...
@@ -4176,7 +4205,8 @@ func (future *TriggersCreateOrUpdateFuture) Result(client TriggersClient) (tm Tr
 	return
 }
 
-// TriggersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// TriggersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type TriggersDeleteFuture struct {
 	azure.Future
 }
@@ -4644,8 +4674,11 @@ func (page UserListPage) Values() []User {
 }
 
 // Creates a new instance of the UserListPage type.
-func NewUserListPage(getNextPage func(context.Context, UserList) (UserList, error)) UserListPage {
-	return UserListPage{fn: getNextPage}
+func NewUserListPage(cur UserList, getNextPage func(context.Context, UserList) (UserList, error)) UserListPage {
+	return UserListPage{
+		fn: getNextPage,
+		ul: cur,
+	}
 }
 
 // UserProperties the user properties.

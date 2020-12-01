@@ -187,20 +187,20 @@ func New(subscriptionID string) BaseClient {
 func NewCachedImagesListResultIterator(page CachedImagesListResultPage) CachedImagesListResultIterator {
 	return original.NewCachedImagesListResultIterator(page)
 }
-func NewCachedImagesListResultPage(getNextPage func(context.Context, CachedImagesListResult) (CachedImagesListResult, error)) CachedImagesListResultPage {
-	return original.NewCachedImagesListResultPage(getNextPage)
+func NewCachedImagesListResultPage(cur CachedImagesListResult, getNextPage func(context.Context, CachedImagesListResult) (CachedImagesListResult, error)) CachedImagesListResultPage {
+	return original.NewCachedImagesListResultPage(cur, getNextPage)
 }
 func NewCapabilitiesListResultIterator(page CapabilitiesListResultPage) CapabilitiesListResultIterator {
 	return original.NewCapabilitiesListResultIterator(page)
 }
-func NewCapabilitiesListResultPage(getNextPage func(context.Context, CapabilitiesListResult) (CapabilitiesListResult, error)) CapabilitiesListResultPage {
-	return original.NewCapabilitiesListResultPage(getNextPage)
+func NewCapabilitiesListResultPage(cur CapabilitiesListResult, getNextPage func(context.Context, CapabilitiesListResult) (CapabilitiesListResult, error)) CapabilitiesListResultPage {
+	return original.NewCapabilitiesListResultPage(cur, getNextPage)
 }
 func NewContainerGroupListResultIterator(page ContainerGroupListResultPage) ContainerGroupListResultIterator {
 	return original.NewContainerGroupListResultIterator(page)
 }
-func NewContainerGroupListResultPage(getNextPage func(context.Context, ContainerGroupListResult) (ContainerGroupListResult, error)) ContainerGroupListResultPage {
-	return original.NewContainerGroupListResultPage(getNextPage)
+func NewContainerGroupListResultPage(cur ContainerGroupListResult, getNextPage func(context.Context, ContainerGroupListResult) (ContainerGroupListResult, error)) ContainerGroupListResultPage {
+	return original.NewContainerGroupListResultPage(cur, getNextPage)
 }
 func NewContainerGroupsClient(subscriptionID string) ContainerGroupsClient {
 	return original.NewContainerGroupsClient(subscriptionID)
@@ -223,8 +223,8 @@ func NewLocationClientWithBaseURI(baseURI string, subscriptionID string) Locatio
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

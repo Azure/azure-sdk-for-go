@@ -26,7 +26,7 @@ import (
 	"net/http"
 )
 
-// RestorableDatabaseAccountsClient is the azure Cosmos DB Database Service Resource Provider REST API
+// RestorableDatabaseAccountsClient is the client for the RestorableDatabaseAccounts methods of the Documentdb service.
 type RestorableDatabaseAccountsClient struct {
 	BaseClient
 }

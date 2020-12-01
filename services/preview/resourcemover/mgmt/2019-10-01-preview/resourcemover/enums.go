@@ -172,8 +172,6 @@ const (
 	ResourceTypeMicrosoftSqlserversdatabases ResourceType = "Microsoft.Sql/servers/databases"
 	// ResourceTypeMicrosoftSqlserverselasticPools ...
 	ResourceTypeMicrosoftSqlserverselasticPools ResourceType = "Microsoft.Sql/servers/elasticPools"
-	// ResourceTypeMoveResourcePropertiesSourceResourceSettings ...
-	ResourceTypeMoveResourcePropertiesSourceResourceSettings ResourceType = "MoveResourceProperties_sourceResourceSettings"
 	// ResourceTypeResourceGroups ...
 	ResourceTypeResourceGroups ResourceType = "resourceGroups"
 	// ResourceTypeResourceSettings ...
@@ -182,7 +180,7 @@ const (
 
 // PossibleResourceTypeValues returns an array of possible values for the ResourceType const type.
 func PossibleResourceTypeValues() []ResourceType {
-	return []ResourceType{ResourceTypeMicrosoftComputeavailabilitySets, ResourceTypeMicrosoftComputevirtualMachines, ResourceTypeMicrosoftNetworkloadBalancers, ResourceTypeMicrosoftNetworknetworkInterfaces, ResourceTypeMicrosoftNetworknetworkSecurityGroups, ResourceTypeMicrosoftNetworkpublicIPAddresses, ResourceTypeMicrosoftNetworkvirtualNetworks, ResourceTypeMicrosoftSqlservers, ResourceTypeMicrosoftSqlserversdatabases, ResourceTypeMicrosoftSqlserverselasticPools, ResourceTypeMoveResourcePropertiesSourceResourceSettings, ResourceTypeResourceGroups, ResourceTypeResourceSettings}
+	return []ResourceType{ResourceTypeMicrosoftComputeavailabilitySets, ResourceTypeMicrosoftComputevirtualMachines, ResourceTypeMicrosoftNetworkloadBalancers, ResourceTypeMicrosoftNetworknetworkInterfaces, ResourceTypeMicrosoftNetworknetworkSecurityGroups, ResourceTypeMicrosoftNetworkpublicIPAddresses, ResourceTypeMicrosoftNetworkvirtualNetworks, ResourceTypeMicrosoftSqlservers, ResourceTypeMicrosoftSqlserversdatabases, ResourceTypeMicrosoftSqlserverselasticPools, ResourceTypeResourceGroups, ResourceTypeResourceSettings}
 }
 
 // TargetAvailabilityZone enumerates the values for target availability zone.

@@ -71,6 +71,24 @@ type NamespacesClientAPI interface {
 
 var _ NamespacesClientAPI = (*eventhub.NamespacesClient)(nil)
 
+// PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
+type PrivateEndpointConnectionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, privateEndpointConnectionName string, parameters eventhub.PrivateEndpointConnection) (result eventhub.PrivateEndpointConnection, err error)
+	Delete(ctx context.Context, resourceGroupName string, namespaceName string, privateEndpointConnectionName string) (result eventhub.PrivateEndpointConnectionsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, namespaceName string, privateEndpointConnectionName string) (result eventhub.PrivateEndpointConnection, err error)
+	List(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.PrivateEndpointConnectionListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.PrivateEndpointConnectionListResultIterator, err error)
+}
+
+var _ PrivateEndpointConnectionsClientAPI = (*eventhub.PrivateEndpointConnectionsClient)(nil)
+
+// PrivateLinkResourcesClientAPI contains the set of methods on the PrivateLinkResourcesClient type.
+type PrivateLinkResourcesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.PrivateLinkResourcesListResult, err error)
+}
+
+var _ PrivateLinkResourcesClientAPI = (*eventhub.PrivateLinkResourcesClient)(nil)
+
 // ConfigurationClientAPI contains the set of methods on the ConfigurationClient type.
 type ConfigurationClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, clusterName string) (result eventhub.ClusterQuotaConfigurationProperties, err error)

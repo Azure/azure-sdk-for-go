@@ -40,6 +40,7 @@ const (
 type CertificatePermissions = original.CertificatePermissions
 
 const (
+	All            CertificatePermissions = original.All
 	Backup         CertificatePermissions = original.Backup
 	Create         CertificatePermissions = original.Create
 	Delete         CertificatePermissions = original.Delete
@@ -65,9 +66,49 @@ const (
 	CreateModeRecover CreateMode = original.CreateModeRecover
 )
 
+type DeletionRecoveryLevel = original.DeletionRecoveryLevel
+
+const (
+	Purgeable                        DeletionRecoveryLevel = original.Purgeable
+	Recoverable                      DeletionRecoveryLevel = original.Recoverable
+	RecoverableProtectedSubscription DeletionRecoveryLevel = original.RecoverableProtectedSubscription
+	RecoverablePurgeable             DeletionRecoveryLevel = original.RecoverablePurgeable
+)
+
+type JSONWebKeyCurveName = original.JSONWebKeyCurveName
+
+const (
+	P256  JSONWebKeyCurveName = original.P256
+	P256K JSONWebKeyCurveName = original.P256K
+	P384  JSONWebKeyCurveName = original.P384
+	P521  JSONWebKeyCurveName = original.P521
+)
+
+type JSONWebKeyOperation = original.JSONWebKeyOperation
+
+const (
+	JSONWebKeyOperationDecrypt   JSONWebKeyOperation = original.JSONWebKeyOperationDecrypt
+	JSONWebKeyOperationEncrypt   JSONWebKeyOperation = original.JSONWebKeyOperationEncrypt
+	JSONWebKeyOperationImport    JSONWebKeyOperation = original.JSONWebKeyOperationImport
+	JSONWebKeyOperationSign      JSONWebKeyOperation = original.JSONWebKeyOperationSign
+	JSONWebKeyOperationUnwrapKey JSONWebKeyOperation = original.JSONWebKeyOperationUnwrapKey
+	JSONWebKeyOperationVerify    JSONWebKeyOperation = original.JSONWebKeyOperationVerify
+	JSONWebKeyOperationWrapKey   JSONWebKeyOperation = original.JSONWebKeyOperationWrapKey
+)
+
+type JSONWebKeyType = original.JSONWebKeyType
+
+const (
+	EC     JSONWebKeyType = original.EC
+	ECHSM  JSONWebKeyType = original.ECHSM
+	RSA    JSONWebKeyType = original.RSA
+	RSAHSM JSONWebKeyType = original.RSAHSM
+)
+
 type KeyPermissions = original.KeyPermissions
 
 const (
+	KeyPermissionsAll       KeyPermissions = original.KeyPermissionsAll
 	KeyPermissionsBackup    KeyPermissions = original.KeyPermissionsBackup
 	KeyPermissionsCreate    KeyPermissions = original.KeyPermissionsCreate
 	KeyPermissionsDecrypt   KeyPermissions = original.KeyPermissionsDecrypt
@@ -130,6 +171,7 @@ const (
 type SecretPermissions = original.SecretPermissions
 
 const (
+	SecretPermissionsAll     SecretPermissions = original.SecretPermissionsAll
 	SecretPermissionsBackup  SecretPermissions = original.SecretPermissionsBackup
 	SecretPermissionsDelete  SecretPermissions = original.SecretPermissionsDelete
 	SecretPermissionsGet     SecretPermissions = original.SecretPermissionsGet
@@ -150,6 +192,7 @@ const (
 type StoragePermissions = original.StoragePermissions
 
 const (
+	StoragePermissionsAll           StoragePermissions = original.StoragePermissionsAll
 	StoragePermissionsBackup        StoragePermissions = original.StoragePermissionsBackup
 	StoragePermissionsDelete        StoragePermissions = original.StoragePermissionsDelete
 	StoragePermissionsDeletesas     StoragePermissions = original.StoragePermissionsDeletesas
@@ -167,6 +210,7 @@ const (
 )
 
 type AccessPolicyEntry = original.AccessPolicyEntry
+type Attributes = original.Attributes
 type BaseClient = original.BaseClient
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
 type CloudError = original.CloudError
@@ -177,6 +221,14 @@ type DeletedVaultListResultIterator = original.DeletedVaultListResultIterator
 type DeletedVaultListResultPage = original.DeletedVaultListResultPage
 type DeletedVaultProperties = original.DeletedVaultProperties
 type IPRule = original.IPRule
+type Key = original.Key
+type KeyAttributes = original.KeyAttributes
+type KeyCreateParameters = original.KeyCreateParameters
+type KeyListResult = original.KeyListResult
+type KeyListResultIterator = original.KeyListResultIterator
+type KeyListResultPage = original.KeyListResultPage
+type KeyProperties = original.KeyProperties
+type KeysClient = original.KeysClient
 type LogSpecification = original.LogSpecification
 type NetworkRuleSet = original.NetworkRuleSet
 type Operation = original.Operation
@@ -226,14 +278,26 @@ func New(subscriptionID string) BaseClient {
 func NewDeletedVaultListResultIterator(page DeletedVaultListResultPage) DeletedVaultListResultIterator {
 	return original.NewDeletedVaultListResultIterator(page)
 }
-func NewDeletedVaultListResultPage(getNextPage func(context.Context, DeletedVaultListResult) (DeletedVaultListResult, error)) DeletedVaultListResultPage {
-	return original.NewDeletedVaultListResultPage(getNextPage)
+func NewDeletedVaultListResultPage(cur DeletedVaultListResult, getNextPage func(context.Context, DeletedVaultListResult) (DeletedVaultListResult, error)) DeletedVaultListResultPage {
+	return original.NewDeletedVaultListResultPage(cur, getNextPage)
+}
+func NewKeyListResultIterator(page KeyListResultPage) KeyListResultIterator {
+	return original.NewKeyListResultIterator(page)
+}
+func NewKeyListResultPage(cur KeyListResult, getNextPage func(context.Context, KeyListResult) (KeyListResult, error)) KeyListResultPage {
+	return original.NewKeyListResultPage(cur, getNextPage)
+}
+func NewKeysClient(subscriptionID string) KeysClient {
+	return original.NewKeysClient(subscriptionID)
+}
+func NewKeysClientWithBaseURI(baseURI string, subscriptionID string) KeysClient {
+	return original.NewKeysClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -256,14 +320,14 @@ func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID str
 func NewResourceListResultIterator(page ResourceListResultPage) ResourceListResultIterator {
 	return original.NewResourceListResultIterator(page)
 }
-func NewResourceListResultPage(getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
-	return original.NewResourceListResultPage(getNextPage)
+func NewResourceListResultPage(cur ResourceListResult, getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
+	return original.NewResourceListResultPage(cur, getNextPage)
 }
 func NewVaultListResultIterator(page VaultListResultPage) VaultListResultIterator {
 	return original.NewVaultListResultIterator(page)
 }
-func NewVaultListResultPage(getNextPage func(context.Context, VaultListResult) (VaultListResult, error)) VaultListResultPage {
-	return original.NewVaultListResultPage(getNextPage)
+func NewVaultListResultPage(cur VaultListResult, getNextPage func(context.Context, VaultListResult) (VaultListResult, error)) VaultListResultPage {
+	return original.NewVaultListResultPage(cur, getNextPage)
 }
 func NewVaultsClient(subscriptionID string) VaultsClient {
 	return original.NewVaultsClient(subscriptionID)
@@ -282,6 +346,18 @@ func PossibleCertificatePermissionsValues() []CertificatePermissions {
 }
 func PossibleCreateModeValues() []CreateMode {
 	return original.PossibleCreateModeValues()
+}
+func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
+	return original.PossibleDeletionRecoveryLevelValues()
+}
+func PossibleJSONWebKeyCurveNameValues() []JSONWebKeyCurveName {
+	return original.PossibleJSONWebKeyCurveNameValues()
+}
+func PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation {
+	return original.PossibleJSONWebKeyOperationValues()
+}
+func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
+	return original.PossibleJSONWebKeyTypeValues()
 }
 func PossibleKeyPermissionsValues() []KeyPermissions {
 	return original.PossibleKeyPermissionsValues()

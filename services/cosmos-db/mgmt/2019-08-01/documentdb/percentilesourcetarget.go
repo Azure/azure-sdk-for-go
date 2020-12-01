@@ -32,15 +32,15 @@ type PercentileSourceTargetClient struct {
 }
 
 // NewPercentileSourceTargetClient creates an instance of the PercentileSourceTargetClient client.
-func NewPercentileSourceTargetClient(subscriptionID string, subscriptionID1 string) PercentileSourceTargetClient {
-	return NewPercentileSourceTargetClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewPercentileSourceTargetClient(subscriptionID string) PercentileSourceTargetClient {
+	return NewPercentileSourceTargetClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewPercentileSourceTargetClientWithBaseURI creates an instance of the PercentileSourceTargetClient client using a
 // custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
 // Azure stack).
-func NewPercentileSourceTargetClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PercentileSourceTargetClient {
-	return PercentileSourceTargetClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewPercentileSourceTargetClientWithBaseURI(baseURI string, subscriptionID string) PercentileSourceTargetClient {
+	return PercentileSourceTargetClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListMetrics retrieves the metrics determined by the given filter for the given account, source and target region.
@@ -67,6 +67,8 @@ func (client PercentileSourceTargetClient) ListMetrics(ctx context.Context, reso
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},

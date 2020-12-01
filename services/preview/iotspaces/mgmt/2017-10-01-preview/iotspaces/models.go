@@ -30,7 +30,8 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/iotspaces/mgmt/2017-10-01-preview/iotspaces"
 
-// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type CreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -275,8 +276,11 @@ func (page DescriptionListResultPage) Values() []Description {
 }
 
 // Creates a new instance of the DescriptionListResultPage type.
-func NewDescriptionListResultPage(getNextPage func(context.Context, DescriptionListResult) (DescriptionListResult, error)) DescriptionListResultPage {
-	return DescriptionListResultPage{fn: getNextPage}
+func NewDescriptionListResultPage(cur DescriptionListResult, getNextPage func(context.Context, DescriptionListResult) (DescriptionListResult, error)) DescriptionListResultPage {
+	return DescriptionListResultPage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
 // ErrorDetails error details.
@@ -343,8 +347,8 @@ type OperationInputs struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// OperationListResult a list of IoTSpaces service operations. It contains a list of operations and a URL link
-// to get the next set of results.
+// OperationListResult a list of IoTSpaces service operations. It contains a list of operations and a URL
+// link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// NextLink - The link used to get the next page of IoTSpaces description objects.
@@ -505,8 +509,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // PatchDescription the description of the IoTSpaces service.

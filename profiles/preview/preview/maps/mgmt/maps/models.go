@@ -51,7 +51,14 @@ type AccountsClient = original.AccountsClient
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type Client = original.Client
+type Creator = original.Creator
+type CreatorCreateParameters = original.CreatorCreateParameters
+type CreatorList = original.CreatorList
+type CreatorProperties = original.CreatorProperties
+type CreatorUpdateParameters = original.CreatorUpdateParameters
+type CreatorsClient = original.CreatorsClient
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
+type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
 type KeySpecification = original.KeySpecification
 type Operations = original.Operations
@@ -83,6 +90,12 @@ func NewClient(subscriptionID string) Client {
 }
 func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 	return original.NewClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCreatorsClient(subscriptionID string) CreatorsClient {
+	return original.NewCreatorsClient(subscriptionID)
+}
+func NewCreatorsClientWithBaseURI(baseURI string, subscriptionID string) CreatorsClient {
+	return original.NewCreatorsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewPrivateAtlasesClient(subscriptionID string) PrivateAtlasesClient {
 	return original.NewPrivateAtlasesClient(subscriptionID)

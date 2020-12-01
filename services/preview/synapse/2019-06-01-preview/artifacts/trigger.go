@@ -42,13 +42,13 @@ func NewTriggerClient(endpoint string) TriggerClient {
 // trigger - trigger resource definition.
 // ifMatch - eTag of the trigger entity.  Should only be specified for update, for which it should match
 // existing entity or can be * for unconditional update.
-func (client TriggerClient) CreateOrUpdateTrigger(ctx context.Context, triggerName string, trigger TriggerResource, ifMatch string) (result TriggerResource, err error) {
+func (client TriggerClient) CreateOrUpdateTrigger(ctx context.Context, triggerName string, trigger TriggerResource, ifMatch string) (result TriggerCreateOrUpdateTriggerFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TriggerClient.CreateOrUpdateTrigger")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -69,16 +69,10 @@ func (client TriggerClient) CreateOrUpdateTrigger(ctx context.Context, triggerNa
 		return
 	}
 
-	resp, err := client.CreateOrUpdateTriggerSender(req)
+	result, err = client.CreateOrUpdateTriggerSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "CreateOrUpdateTrigger", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "CreateOrUpdateTrigger", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.CreateOrUpdateTriggerResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "CreateOrUpdateTrigger", resp, "Failure responding to request")
 	}
 
 	return
@@ -115,8 +109,14 @@ func (client TriggerClient) CreateOrUpdateTriggerPreparer(ctx context.Context, t
 
 // CreateOrUpdateTriggerSender sends the CreateOrUpdateTrigger request. The method will close the
 // http.Response Body if it receives an error.
-func (client TriggerClient) CreateOrUpdateTriggerSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+func (client TriggerClient) CreateOrUpdateTriggerSender(req *http.Request) (future TriggerCreateOrUpdateTriggerFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // CreateOrUpdateTriggerResponder handles the response to the CreateOrUpdateTrigger request. The method always
@@ -124,7 +124,7 @@ func (client TriggerClient) CreateOrUpdateTriggerSender(req *http.Request) (*htt
 func (client TriggerClient) CreateOrUpdateTriggerResponder(resp *http.Response) (result TriggerResource, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -134,13 +134,13 @@ func (client TriggerClient) CreateOrUpdateTriggerResponder(resp *http.Response) 
 // DeleteTrigger deletes a trigger.
 // Parameters:
 // triggerName - the trigger name.
-func (client TriggerClient) DeleteTrigger(ctx context.Context, triggerName string) (result autorest.Response, err error) {
+func (client TriggerClient) DeleteTrigger(ctx context.Context, triggerName string) (result TriggerDeleteTriggerFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TriggerClient.DeleteTrigger")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -159,16 +159,10 @@ func (client TriggerClient) DeleteTrigger(ctx context.Context, triggerName strin
 		return
 	}
 
-	resp, err := client.DeleteTriggerSender(req)
+	result, err = client.DeleteTriggerSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "DeleteTrigger", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "DeleteTrigger", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.DeleteTriggerResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "DeleteTrigger", resp, "Failure responding to request")
 	}
 
 	return
@@ -199,8 +193,14 @@ func (client TriggerClient) DeleteTriggerPreparer(ctx context.Context, triggerNa
 
 // DeleteTriggerSender sends the DeleteTrigger request. The method will close the
 // http.Response Body if it receives an error.
-func (client TriggerClient) DeleteTriggerSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+func (client TriggerClient) DeleteTriggerSender(req *http.Request) (future TriggerDeleteTriggerFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // DeleteTriggerResponder handles the response to the DeleteTrigger request. The method always
@@ -208,7 +208,7 @@ func (client TriggerClient) DeleteTriggerSender(req *http.Request) (*http.Respon
 func (client TriggerClient) DeleteTriggerResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return

@@ -28,8 +28,8 @@ const (
 type ConfigurationProfile = original.ConfigurationProfile
 
 const (
-	AzureBestPracticesProd    ConfigurationProfile = original.AzureBestPracticesProd
-	AzureBestPracticesTestDev ConfigurationProfile = original.AzureBestPracticesTestDev
+	AzurevirtualmachinebestpracticesDevTest    ConfigurationProfile = original.AzurevirtualmachinebestpracticesDevTest
+	AzurevirtualmachinebestpracticesProduction ConfigurationProfile = original.AzurevirtualmachinebestpracticesProduction
 )
 
 type EnableRealTimeProtection = original.EnableRealTimeProtection
@@ -39,12 +39,12 @@ const (
 	True  EnableRealTimeProtection = original.True
 )
 
-type ProvisioningStatus = original.ProvisioningStatus
+type ProvisioningState = original.ProvisioningState
 
 const (
-	Created   ProvisioningStatus = original.Created
-	Failed    ProvisioningStatus = original.Failed
-	Succeeded ProvisioningStatus = original.Succeeded
+	Created   ProvisioningState = original.Created
+	Failed    ProvisioningState = original.Failed
+	Succeeded ProvisioningState = original.Succeeded
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
@@ -79,7 +79,9 @@ const (
 type Account = original.Account
 type AccountIdentity = original.AccountIdentity
 type AccountList = original.AccountList
+type AccountUpdate = original.AccountUpdate
 type AccountsClient = original.AccountsClient
+type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type ConfigurationProfileAssignment = original.ConfigurationProfileAssignment
 type ConfigurationProfileAssignmentCompliance = original.ConfigurationProfileAssignmentCompliance
@@ -91,10 +93,12 @@ type ConfigurationProfilePreference = original.ConfigurationProfilePreference
 type ConfigurationProfilePreferenceAntiMalware = original.ConfigurationProfilePreferenceAntiMalware
 type ConfigurationProfilePreferenceList = original.ConfigurationProfilePreferenceList
 type ConfigurationProfilePreferenceProperties = original.ConfigurationProfilePreferenceProperties
+type ConfigurationProfilePreferenceUpdate = original.ConfigurationProfilePreferenceUpdate
 type ConfigurationProfilePreferenceVMBackup = original.ConfigurationProfilePreferenceVMBackup
 type ConfigurationProfilePreferencesClient = original.ConfigurationProfilePreferencesClient
+type ErrorAdditionalInfo = original.ErrorAdditionalInfo
+type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
-type ErrorResponseBody = original.ErrorResponseBody
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationList = original.OperationList
@@ -103,6 +107,7 @@ type OperationsClient = original.OperationsClient
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
 type TrackedResource = original.TrackedResource
+type UpdateResource = original.UpdateResource
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -140,8 +145,8 @@ func PossibleConfigurationProfileValues() []ConfigurationProfile {
 func PossibleEnableRealTimeProtectionValues() []EnableRealTimeProtection {
 	return original.PossibleEnableRealTimeProtectionValues()
 }
-func PossibleProvisioningStatusValues() []ProvisioningStatus {
-	return original.PossibleProvisioningStatusValues()
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()

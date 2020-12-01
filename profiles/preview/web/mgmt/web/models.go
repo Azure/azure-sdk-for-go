@@ -1305,6 +1305,10 @@ type StaticSiteUserInvitationRequestResourceProperties = original.StaticSiteUser
 type StaticSiteUserInvitationResponseResource = original.StaticSiteUserInvitationResponseResource
 type StaticSiteUserInvitationResponseResourceProperties = original.StaticSiteUserInvitationResponseResourceProperties
 type StaticSitesClient = original.StaticSitesClient
+type StaticSitesWorkflowPreview = original.StaticSitesWorkflowPreview
+type StaticSitesWorkflowPreviewProperties = original.StaticSitesWorkflowPreviewProperties
+type StaticSitesWorkflowPreviewRequest = original.StaticSitesWorkflowPreviewRequest
+type StaticSitesWorkflowPreviewRequestProperties = original.StaticSitesWorkflowPreviewRequestProperties
 type StatusCodesBasedTrigger = original.StatusCodesBasedTrigger
 type StorageMigrationOptions = original.StorageMigrationOptions
 type StorageMigrationOptionsProperties = original.StorageMigrationOptionsProperties
@@ -1382,26 +1386,26 @@ func New(subscriptionID string) BaseClient {
 func NewAppCollectionIterator(page AppCollectionPage) AppCollectionIterator {
 	return original.NewAppCollectionIterator(page)
 }
-func NewAppCollectionPage(getNextPage func(context.Context, AppCollection) (AppCollection, error)) AppCollectionPage {
-	return original.NewAppCollectionPage(getNextPage)
+func NewAppCollectionPage(cur AppCollection, getNextPage func(context.Context, AppCollection) (AppCollection, error)) AppCollectionPage {
+	return original.NewAppCollectionPage(cur, getNextPage)
 }
 func NewAppInstanceStatusCollectionIterator(page AppInstanceStatusCollectionPage) AppInstanceStatusCollectionIterator {
 	return original.NewAppInstanceStatusCollectionIterator(page)
 }
-func NewAppInstanceStatusCollectionPage(getNextPage func(context.Context, AppInstanceStatusCollection) (AppInstanceStatusCollection, error)) AppInstanceStatusCollectionPage {
-	return original.NewAppInstanceStatusCollectionPage(getNextPage)
+func NewAppInstanceStatusCollectionPage(cur AppInstanceStatusCollection, getNextPage func(context.Context, AppInstanceStatusCollection) (AppInstanceStatusCollection, error)) AppInstanceStatusCollectionPage {
+	return original.NewAppInstanceStatusCollectionPage(cur, getNextPage)
 }
 func NewAppServiceCertificateCollectionIterator(page AppServiceCertificateCollectionPage) AppServiceCertificateCollectionIterator {
 	return original.NewAppServiceCertificateCollectionIterator(page)
 }
-func NewAppServiceCertificateCollectionPage(getNextPage func(context.Context, AppServiceCertificateCollection) (AppServiceCertificateCollection, error)) AppServiceCertificateCollectionPage {
-	return original.NewAppServiceCertificateCollectionPage(getNextPage)
+func NewAppServiceCertificateCollectionPage(cur AppServiceCertificateCollection, getNextPage func(context.Context, AppServiceCertificateCollection) (AppServiceCertificateCollection, error)) AppServiceCertificateCollectionPage {
+	return original.NewAppServiceCertificateCollectionPage(cur, getNextPage)
 }
 func NewAppServiceCertificateOrderCollectionIterator(page AppServiceCertificateOrderCollectionPage) AppServiceCertificateOrderCollectionIterator {
 	return original.NewAppServiceCertificateOrderCollectionIterator(page)
 }
-func NewAppServiceCertificateOrderCollectionPage(getNextPage func(context.Context, AppServiceCertificateOrderCollection) (AppServiceCertificateOrderCollection, error)) AppServiceCertificateOrderCollectionPage {
-	return original.NewAppServiceCertificateOrderCollectionPage(getNextPage)
+func NewAppServiceCertificateOrderCollectionPage(cur AppServiceCertificateOrderCollection, getNextPage func(context.Context, AppServiceCertificateOrderCollection) (AppServiceCertificateOrderCollection, error)) AppServiceCertificateOrderCollectionPage {
+	return original.NewAppServiceCertificateOrderCollectionPage(cur, getNextPage)
 }
 func NewAppServiceCertificateOrdersClient(subscriptionID string) AppServiceCertificateOrdersClient {
 	return original.NewAppServiceCertificateOrdersClient(subscriptionID)
@@ -1412,8 +1416,8 @@ func NewAppServiceCertificateOrdersClientWithBaseURI(baseURI string, subscriptio
 func NewAppServiceEnvironmentCollectionIterator(page AppServiceEnvironmentCollectionPage) AppServiceEnvironmentCollectionIterator {
 	return original.NewAppServiceEnvironmentCollectionIterator(page)
 }
-func NewAppServiceEnvironmentCollectionPage(getNextPage func(context.Context, AppServiceEnvironmentCollection) (AppServiceEnvironmentCollection, error)) AppServiceEnvironmentCollectionPage {
-	return original.NewAppServiceEnvironmentCollectionPage(getNextPage)
+func NewAppServiceEnvironmentCollectionPage(cur AppServiceEnvironmentCollection, getNextPage func(context.Context, AppServiceEnvironmentCollection) (AppServiceEnvironmentCollection, error)) AppServiceEnvironmentCollectionPage {
+	return original.NewAppServiceEnvironmentCollectionPage(cur, getNextPage)
 }
 func NewAppServiceEnvironmentsClient(subscriptionID string) AppServiceEnvironmentsClient {
 	return original.NewAppServiceEnvironmentsClient(subscriptionID)
@@ -1424,8 +1428,8 @@ func NewAppServiceEnvironmentsClientWithBaseURI(baseURI string, subscriptionID s
 func NewAppServicePlanCollectionIterator(page AppServicePlanCollectionPage) AppServicePlanCollectionIterator {
 	return original.NewAppServicePlanCollectionIterator(page)
 }
-func NewAppServicePlanCollectionPage(getNextPage func(context.Context, AppServicePlanCollection) (AppServicePlanCollection, error)) AppServicePlanCollectionPage {
-	return original.NewAppServicePlanCollectionPage(getNextPage)
+func NewAppServicePlanCollectionPage(cur AppServicePlanCollection, getNextPage func(context.Context, AppServicePlanCollection) (AppServicePlanCollection, error)) AppServicePlanCollectionPage {
+	return original.NewAppServicePlanCollectionPage(cur, getNextPage)
 }
 func NewAppServicePlansClient(subscriptionID string) AppServicePlansClient {
 	return original.NewAppServicePlansClient(subscriptionID)
@@ -1436,8 +1440,8 @@ func NewAppServicePlansClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewApplicationStackCollectionIterator(page ApplicationStackCollectionPage) ApplicationStackCollectionIterator {
 	return original.NewApplicationStackCollectionIterator(page)
 }
-func NewApplicationStackCollectionPage(getNextPage func(context.Context, ApplicationStackCollection) (ApplicationStackCollection, error)) ApplicationStackCollectionPage {
-	return original.NewApplicationStackCollectionPage(getNextPage)
+func NewApplicationStackCollectionPage(cur ApplicationStackCollection, getNextPage func(context.Context, ApplicationStackCollection) (ApplicationStackCollection, error)) ApplicationStackCollectionPage {
+	return original.NewApplicationStackCollectionPage(cur, getNextPage)
 }
 func NewAppsClient(subscriptionID string) AppsClient {
 	return original.NewAppsClient(subscriptionID)
@@ -1448,20 +1452,20 @@ func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient 
 func NewBackupItemCollectionIterator(page BackupItemCollectionPage) BackupItemCollectionIterator {
 	return original.NewBackupItemCollectionIterator(page)
 }
-func NewBackupItemCollectionPage(getNextPage func(context.Context, BackupItemCollection) (BackupItemCollection, error)) BackupItemCollectionPage {
-	return original.NewBackupItemCollectionPage(getNextPage)
+func NewBackupItemCollectionPage(cur BackupItemCollection, getNextPage func(context.Context, BackupItemCollection) (BackupItemCollection, error)) BackupItemCollectionPage {
+	return original.NewBackupItemCollectionPage(cur, getNextPage)
 }
 func NewBillingMeterCollectionIterator(page BillingMeterCollectionPage) BillingMeterCollectionIterator {
 	return original.NewBillingMeterCollectionIterator(page)
 }
-func NewBillingMeterCollectionPage(getNextPage func(context.Context, BillingMeterCollection) (BillingMeterCollection, error)) BillingMeterCollectionPage {
-	return original.NewBillingMeterCollectionPage(getNextPage)
+func NewBillingMeterCollectionPage(cur BillingMeterCollection, getNextPage func(context.Context, BillingMeterCollection) (BillingMeterCollection, error)) BillingMeterCollectionPage {
+	return original.NewBillingMeterCollectionPage(cur, getNextPage)
 }
 func NewCertificateCollectionIterator(page CertificateCollectionPage) CertificateCollectionIterator {
 	return original.NewCertificateCollectionIterator(page)
 }
-func NewCertificateCollectionPage(getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
-	return original.NewCertificateCollectionPage(getNextPage)
+func NewCertificateCollectionPage(cur CertificateCollection, getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
+	return original.NewCertificateCollectionPage(cur, getNextPage)
 }
 func NewCertificateRegistrationProviderClient(subscriptionID string) CertificateRegistrationProviderClient {
 	return original.NewCertificateRegistrationProviderClient(subscriptionID)
@@ -1478,26 +1482,26 @@ func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) Cer
 func NewContinuousWebJobCollectionIterator(page ContinuousWebJobCollectionPage) ContinuousWebJobCollectionIterator {
 	return original.NewContinuousWebJobCollectionIterator(page)
 }
-func NewContinuousWebJobCollectionPage(getNextPage func(context.Context, ContinuousWebJobCollection) (ContinuousWebJobCollection, error)) ContinuousWebJobCollectionPage {
-	return original.NewContinuousWebJobCollectionPage(getNextPage)
+func NewContinuousWebJobCollectionPage(cur ContinuousWebJobCollection, getNextPage func(context.Context, ContinuousWebJobCollection) (ContinuousWebJobCollection, error)) ContinuousWebJobCollectionPage {
+	return original.NewContinuousWebJobCollectionPage(cur, getNextPage)
 }
 func NewCsmOperationCollectionIterator(page CsmOperationCollectionPage) CsmOperationCollectionIterator {
 	return original.NewCsmOperationCollectionIterator(page)
 }
-func NewCsmOperationCollectionPage(getNextPage func(context.Context, CsmOperationCollection) (CsmOperationCollection, error)) CsmOperationCollectionPage {
-	return original.NewCsmOperationCollectionPage(getNextPage)
+func NewCsmOperationCollectionPage(cur CsmOperationCollection, getNextPage func(context.Context, CsmOperationCollection) (CsmOperationCollection, error)) CsmOperationCollectionPage {
+	return original.NewCsmOperationCollectionPage(cur, getNextPage)
 }
 func NewCsmUsageQuotaCollectionIterator(page CsmUsageQuotaCollectionPage) CsmUsageQuotaCollectionIterator {
 	return original.NewCsmUsageQuotaCollectionIterator(page)
 }
-func NewCsmUsageQuotaCollectionPage(getNextPage func(context.Context, CsmUsageQuotaCollection) (CsmUsageQuotaCollection, error)) CsmUsageQuotaCollectionPage {
-	return original.NewCsmUsageQuotaCollectionPage(getNextPage)
+func NewCsmUsageQuotaCollectionPage(cur CsmUsageQuotaCollection, getNextPage func(context.Context, CsmUsageQuotaCollection) (CsmUsageQuotaCollection, error)) CsmUsageQuotaCollectionPage {
+	return original.NewCsmUsageQuotaCollectionPage(cur, getNextPage)
 }
 func NewDeletedWebAppCollectionIterator(page DeletedWebAppCollectionPage) DeletedWebAppCollectionIterator {
 	return original.NewDeletedWebAppCollectionIterator(page)
 }
-func NewDeletedWebAppCollectionPage(getNextPage func(context.Context, DeletedWebAppCollection) (DeletedWebAppCollection, error)) DeletedWebAppCollectionPage {
-	return original.NewDeletedWebAppCollectionPage(getNextPage)
+func NewDeletedWebAppCollectionPage(cur DeletedWebAppCollection, getNextPage func(context.Context, DeletedWebAppCollection) (DeletedWebAppCollection, error)) DeletedWebAppCollectionPage {
+	return original.NewDeletedWebAppCollectionPage(cur, getNextPage)
 }
 func NewDeletedWebAppsClient(subscriptionID string) DeletedWebAppsClient {
 	return original.NewDeletedWebAppsClient(subscriptionID)
@@ -1508,32 +1512,32 @@ func NewDeletedWebAppsClientWithBaseURI(baseURI string, subscriptionID string) D
 func NewDeploymentCollectionIterator(page DeploymentCollectionPage) DeploymentCollectionIterator {
 	return original.NewDeploymentCollectionIterator(page)
 }
-func NewDeploymentCollectionPage(getNextPage func(context.Context, DeploymentCollection) (DeploymentCollection, error)) DeploymentCollectionPage {
-	return original.NewDeploymentCollectionPage(getNextPage)
+func NewDeploymentCollectionPage(cur DeploymentCollection, getNextPage func(context.Context, DeploymentCollection) (DeploymentCollection, error)) DeploymentCollectionPage {
+	return original.NewDeploymentCollectionPage(cur, getNextPage)
 }
 func NewDetectorResponseCollectionIterator(page DetectorResponseCollectionPage) DetectorResponseCollectionIterator {
 	return original.NewDetectorResponseCollectionIterator(page)
 }
-func NewDetectorResponseCollectionPage(getNextPage func(context.Context, DetectorResponseCollection) (DetectorResponseCollection, error)) DetectorResponseCollectionPage {
-	return original.NewDetectorResponseCollectionPage(getNextPage)
+func NewDetectorResponseCollectionPage(cur DetectorResponseCollection, getNextPage func(context.Context, DetectorResponseCollection) (DetectorResponseCollection, error)) DetectorResponseCollectionPage {
+	return original.NewDetectorResponseCollectionPage(cur, getNextPage)
 }
 func NewDiagnosticAnalysisCollectionIterator(page DiagnosticAnalysisCollectionPage) DiagnosticAnalysisCollectionIterator {
 	return original.NewDiagnosticAnalysisCollectionIterator(page)
 }
-func NewDiagnosticAnalysisCollectionPage(getNextPage func(context.Context, DiagnosticAnalysisCollection) (DiagnosticAnalysisCollection, error)) DiagnosticAnalysisCollectionPage {
-	return original.NewDiagnosticAnalysisCollectionPage(getNextPage)
+func NewDiagnosticAnalysisCollectionPage(cur DiagnosticAnalysisCollection, getNextPage func(context.Context, DiagnosticAnalysisCollection) (DiagnosticAnalysisCollection, error)) DiagnosticAnalysisCollectionPage {
+	return original.NewDiagnosticAnalysisCollectionPage(cur, getNextPage)
 }
 func NewDiagnosticCategoryCollectionIterator(page DiagnosticCategoryCollectionPage) DiagnosticCategoryCollectionIterator {
 	return original.NewDiagnosticCategoryCollectionIterator(page)
 }
-func NewDiagnosticCategoryCollectionPage(getNextPage func(context.Context, DiagnosticCategoryCollection) (DiagnosticCategoryCollection, error)) DiagnosticCategoryCollectionPage {
-	return original.NewDiagnosticCategoryCollectionPage(getNextPage)
+func NewDiagnosticCategoryCollectionPage(cur DiagnosticCategoryCollection, getNextPage func(context.Context, DiagnosticCategoryCollection) (DiagnosticCategoryCollection, error)) DiagnosticCategoryCollectionPage {
+	return original.NewDiagnosticCategoryCollectionPage(cur, getNextPage)
 }
 func NewDiagnosticDetectorCollectionIterator(page DiagnosticDetectorCollectionPage) DiagnosticDetectorCollectionIterator {
 	return original.NewDiagnosticDetectorCollectionIterator(page)
 }
-func NewDiagnosticDetectorCollectionPage(getNextPage func(context.Context, DiagnosticDetectorCollection) (DiagnosticDetectorCollection, error)) DiagnosticDetectorCollectionPage {
-	return original.NewDiagnosticDetectorCollectionPage(getNextPage)
+func NewDiagnosticDetectorCollectionPage(cur DiagnosticDetectorCollection, getNextPage func(context.Context, DiagnosticDetectorCollection) (DiagnosticDetectorCollection, error)) DiagnosticDetectorCollectionPage {
+	return original.NewDiagnosticDetectorCollectionPage(cur, getNextPage)
 }
 func NewDiagnosticsClient(subscriptionID string) DiagnosticsClient {
 	return original.NewDiagnosticsClient(subscriptionID)
@@ -1544,14 +1548,14 @@ func NewDiagnosticsClientWithBaseURI(baseURI string, subscriptionID string) Diag
 func NewDomainCollectionIterator(page DomainCollectionPage) DomainCollectionIterator {
 	return original.NewDomainCollectionIterator(page)
 }
-func NewDomainCollectionPage(getNextPage func(context.Context, DomainCollection) (DomainCollection, error)) DomainCollectionPage {
-	return original.NewDomainCollectionPage(getNextPage)
+func NewDomainCollectionPage(cur DomainCollection, getNextPage func(context.Context, DomainCollection) (DomainCollection, error)) DomainCollectionPage {
+	return original.NewDomainCollectionPage(cur, getNextPage)
 }
 func NewDomainOwnershipIdentifierCollectionIterator(page DomainOwnershipIdentifierCollectionPage) DomainOwnershipIdentifierCollectionIterator {
 	return original.NewDomainOwnershipIdentifierCollectionIterator(page)
 }
-func NewDomainOwnershipIdentifierCollectionPage(getNextPage func(context.Context, DomainOwnershipIdentifierCollection) (DomainOwnershipIdentifierCollection, error)) DomainOwnershipIdentifierCollectionPage {
-	return original.NewDomainOwnershipIdentifierCollectionPage(getNextPage)
+func NewDomainOwnershipIdentifierCollectionPage(cur DomainOwnershipIdentifierCollection, getNextPage func(context.Context, DomainOwnershipIdentifierCollection) (DomainOwnershipIdentifierCollection, error)) DomainOwnershipIdentifierCollectionPage {
+	return original.NewDomainOwnershipIdentifierCollectionPage(cur, getNextPage)
 }
 func NewDomainRegistrationProviderClient(subscriptionID string) DomainRegistrationProviderClient {
 	return original.NewDomainRegistrationProviderClient(subscriptionID)
@@ -1568,86 +1572,86 @@ func NewDomainsClientWithBaseURI(baseURI string, subscriptionID string) DomainsC
 func NewFunctionEnvelopeCollectionIterator(page FunctionEnvelopeCollectionPage) FunctionEnvelopeCollectionIterator {
 	return original.NewFunctionEnvelopeCollectionIterator(page)
 }
-func NewFunctionEnvelopeCollectionPage(getNextPage func(context.Context, FunctionEnvelopeCollection) (FunctionEnvelopeCollection, error)) FunctionEnvelopeCollectionPage {
-	return original.NewFunctionEnvelopeCollectionPage(getNextPage)
+func NewFunctionEnvelopeCollectionPage(cur FunctionEnvelopeCollection, getNextPage func(context.Context, FunctionEnvelopeCollection) (FunctionEnvelopeCollection, error)) FunctionEnvelopeCollectionPage {
+	return original.NewFunctionEnvelopeCollectionPage(cur, getNextPage)
 }
 func NewGeoRegionCollectionIterator(page GeoRegionCollectionPage) GeoRegionCollectionIterator {
 	return original.NewGeoRegionCollectionIterator(page)
 }
-func NewGeoRegionCollectionPage(getNextPage func(context.Context, GeoRegionCollection) (GeoRegionCollection, error)) GeoRegionCollectionPage {
-	return original.NewGeoRegionCollectionPage(getNextPage)
+func NewGeoRegionCollectionPage(cur GeoRegionCollection, getNextPage func(context.Context, GeoRegionCollection) (GeoRegionCollection, error)) GeoRegionCollectionPage {
+	return original.NewGeoRegionCollectionPage(cur, getNextPage)
 }
 func NewHostNameBindingCollectionIterator(page HostNameBindingCollectionPage) HostNameBindingCollectionIterator {
 	return original.NewHostNameBindingCollectionIterator(page)
 }
-func NewHostNameBindingCollectionPage(getNextPage func(context.Context, HostNameBindingCollection) (HostNameBindingCollection, error)) HostNameBindingCollectionPage {
-	return original.NewHostNameBindingCollectionPage(getNextPage)
+func NewHostNameBindingCollectionPage(cur HostNameBindingCollection, getNextPage func(context.Context, HostNameBindingCollection) (HostNameBindingCollection, error)) HostNameBindingCollectionPage {
+	return original.NewHostNameBindingCollectionPage(cur, getNextPage)
 }
 func NewHybridConnectionCollectionIterator(page HybridConnectionCollectionPage) HybridConnectionCollectionIterator {
 	return original.NewHybridConnectionCollectionIterator(page)
 }
-func NewHybridConnectionCollectionPage(getNextPage func(context.Context, HybridConnectionCollection) (HybridConnectionCollection, error)) HybridConnectionCollectionPage {
-	return original.NewHybridConnectionCollectionPage(getNextPage)
+func NewHybridConnectionCollectionPage(cur HybridConnectionCollection, getNextPage func(context.Context, HybridConnectionCollection) (HybridConnectionCollection, error)) HybridConnectionCollectionPage {
+	return original.NewHybridConnectionCollectionPage(cur, getNextPage)
 }
 func NewIdentifierCollectionIterator(page IdentifierCollectionPage) IdentifierCollectionIterator {
 	return original.NewIdentifierCollectionIterator(page)
 }
-func NewIdentifierCollectionPage(getNextPage func(context.Context, IdentifierCollection) (IdentifierCollection, error)) IdentifierCollectionPage {
-	return original.NewIdentifierCollectionPage(getNextPage)
+func NewIdentifierCollectionPage(cur IdentifierCollection, getNextPage func(context.Context, IdentifierCollection) (IdentifierCollection, error)) IdentifierCollectionPage {
+	return original.NewIdentifierCollectionPage(cur, getNextPage)
 }
 func NewInboundEnvironmentEndpointCollectionIterator(page InboundEnvironmentEndpointCollectionPage) InboundEnvironmentEndpointCollectionIterator {
 	return original.NewInboundEnvironmentEndpointCollectionIterator(page)
 }
-func NewInboundEnvironmentEndpointCollectionPage(getNextPage func(context.Context, InboundEnvironmentEndpointCollection) (InboundEnvironmentEndpointCollection, error)) InboundEnvironmentEndpointCollectionPage {
-	return original.NewInboundEnvironmentEndpointCollectionPage(getNextPage)
+func NewInboundEnvironmentEndpointCollectionPage(cur InboundEnvironmentEndpointCollection, getNextPage func(context.Context, InboundEnvironmentEndpointCollection) (InboundEnvironmentEndpointCollection, error)) InboundEnvironmentEndpointCollectionPage {
+	return original.NewInboundEnvironmentEndpointCollectionPage(cur, getNextPage)
 }
 func NewJobCollectionIterator(page JobCollectionPage) JobCollectionIterator {
 	return original.NewJobCollectionIterator(page)
 }
-func NewJobCollectionPage(getNextPage func(context.Context, JobCollection) (JobCollection, error)) JobCollectionPage {
-	return original.NewJobCollectionPage(getNextPage)
+func NewJobCollectionPage(cur JobCollection, getNextPage func(context.Context, JobCollection) (JobCollection, error)) JobCollectionPage {
+	return original.NewJobCollectionPage(cur, getNextPage)
 }
 func NewNameIdentifierCollectionIterator(page NameIdentifierCollectionPage) NameIdentifierCollectionIterator {
 	return original.NewNameIdentifierCollectionIterator(page)
 }
-func NewNameIdentifierCollectionPage(getNextPage func(context.Context, NameIdentifierCollection) (NameIdentifierCollection, error)) NameIdentifierCollectionPage {
-	return original.NewNameIdentifierCollectionPage(getNextPage)
+func NewNameIdentifierCollectionPage(cur NameIdentifierCollection, getNextPage func(context.Context, NameIdentifierCollection) (NameIdentifierCollection, error)) NameIdentifierCollectionPage {
+	return original.NewNameIdentifierCollectionPage(cur, getNextPage)
 }
 func NewOutboundEnvironmentEndpointCollectionIterator(page OutboundEnvironmentEndpointCollectionPage) OutboundEnvironmentEndpointCollectionIterator {
 	return original.NewOutboundEnvironmentEndpointCollectionIterator(page)
 }
-func NewOutboundEnvironmentEndpointCollectionPage(getNextPage func(context.Context, OutboundEnvironmentEndpointCollection) (OutboundEnvironmentEndpointCollection, error)) OutboundEnvironmentEndpointCollectionPage {
-	return original.NewOutboundEnvironmentEndpointCollectionPage(getNextPage)
+func NewOutboundEnvironmentEndpointCollectionPage(cur OutboundEnvironmentEndpointCollection, getNextPage func(context.Context, OutboundEnvironmentEndpointCollection) (OutboundEnvironmentEndpointCollection, error)) OutboundEnvironmentEndpointCollectionPage {
+	return original.NewOutboundEnvironmentEndpointCollectionPage(cur, getNextPage)
 }
 func NewPerfMonCounterCollectionIterator(page PerfMonCounterCollectionPage) PerfMonCounterCollectionIterator {
 	return original.NewPerfMonCounterCollectionIterator(page)
 }
-func NewPerfMonCounterCollectionPage(getNextPage func(context.Context, PerfMonCounterCollection) (PerfMonCounterCollection, error)) PerfMonCounterCollectionPage {
-	return original.NewPerfMonCounterCollectionPage(getNextPage)
+func NewPerfMonCounterCollectionPage(cur PerfMonCounterCollection, getNextPage func(context.Context, PerfMonCounterCollection) (PerfMonCounterCollection, error)) PerfMonCounterCollectionPage {
+	return original.NewPerfMonCounterCollectionPage(cur, getNextPage)
 }
 func NewPremierAddOnOfferCollectionIterator(page PremierAddOnOfferCollectionPage) PremierAddOnOfferCollectionIterator {
 	return original.NewPremierAddOnOfferCollectionIterator(page)
 }
-func NewPremierAddOnOfferCollectionPage(getNextPage func(context.Context, PremierAddOnOfferCollection) (PremierAddOnOfferCollection, error)) PremierAddOnOfferCollectionPage {
-	return original.NewPremierAddOnOfferCollectionPage(getNextPage)
+func NewPremierAddOnOfferCollectionPage(cur PremierAddOnOfferCollection, getNextPage func(context.Context, PremierAddOnOfferCollection) (PremierAddOnOfferCollection, error)) PremierAddOnOfferCollectionPage {
+	return original.NewPremierAddOnOfferCollectionPage(cur, getNextPage)
 }
 func NewProcessInfoCollectionIterator(page ProcessInfoCollectionPage) ProcessInfoCollectionIterator {
 	return original.NewProcessInfoCollectionIterator(page)
 }
-func NewProcessInfoCollectionPage(getNextPage func(context.Context, ProcessInfoCollection) (ProcessInfoCollection, error)) ProcessInfoCollectionPage {
-	return original.NewProcessInfoCollectionPage(getNextPage)
+func NewProcessInfoCollectionPage(cur ProcessInfoCollection, getNextPage func(context.Context, ProcessInfoCollection) (ProcessInfoCollection, error)) ProcessInfoCollectionPage {
+	return original.NewProcessInfoCollectionPage(cur, getNextPage)
 }
 func NewProcessModuleInfoCollectionIterator(page ProcessModuleInfoCollectionPage) ProcessModuleInfoCollectionIterator {
 	return original.NewProcessModuleInfoCollectionIterator(page)
 }
-func NewProcessModuleInfoCollectionPage(getNextPage func(context.Context, ProcessModuleInfoCollection) (ProcessModuleInfoCollection, error)) ProcessModuleInfoCollectionPage {
-	return original.NewProcessModuleInfoCollectionPage(getNextPage)
+func NewProcessModuleInfoCollectionPage(cur ProcessModuleInfoCollection, getNextPage func(context.Context, ProcessModuleInfoCollection) (ProcessModuleInfoCollection, error)) ProcessModuleInfoCollectionPage {
+	return original.NewProcessModuleInfoCollectionPage(cur, getNextPage)
 }
 func NewProcessThreadInfoCollectionIterator(page ProcessThreadInfoCollectionPage) ProcessThreadInfoCollectionIterator {
 	return original.NewProcessThreadInfoCollectionIterator(page)
 }
-func NewProcessThreadInfoCollectionPage(getNextPage func(context.Context, ProcessThreadInfoCollection) (ProcessThreadInfoCollection, error)) ProcessThreadInfoCollectionPage {
-	return original.NewProcessThreadInfoCollectionPage(getNextPage)
+func NewProcessThreadInfoCollectionPage(cur ProcessThreadInfoCollection, getNextPage func(context.Context, ProcessThreadInfoCollection) (ProcessThreadInfoCollection, error)) ProcessThreadInfoCollectionPage {
+	return original.NewProcessThreadInfoCollectionPage(cur, getNextPage)
 }
 func NewProviderClient(subscriptionID string) ProviderClient {
 	return original.NewProviderClient(subscriptionID)
@@ -1658,14 +1662,14 @@ func NewProviderClientWithBaseURI(baseURI string, subscriptionID string) Provide
 func NewPublicCertificateCollectionIterator(page PublicCertificateCollectionPage) PublicCertificateCollectionIterator {
 	return original.NewPublicCertificateCollectionIterator(page)
 }
-func NewPublicCertificateCollectionPage(getNextPage func(context.Context, PublicCertificateCollection) (PublicCertificateCollection, error)) PublicCertificateCollectionPage {
-	return original.NewPublicCertificateCollectionPage(getNextPage)
+func NewPublicCertificateCollectionPage(cur PublicCertificateCollection, getNextPage func(context.Context, PublicCertificateCollection) (PublicCertificateCollection, error)) PublicCertificateCollectionPage {
+	return original.NewPublicCertificateCollectionPage(cur, getNextPage)
 }
 func NewRecommendationCollectionIterator(page RecommendationCollectionPage) RecommendationCollectionIterator {
 	return original.NewRecommendationCollectionIterator(page)
 }
-func NewRecommendationCollectionPage(getNextPage func(context.Context, RecommendationCollection) (RecommendationCollection, error)) RecommendationCollectionPage {
-	return original.NewRecommendationCollectionPage(getNextPage)
+func NewRecommendationCollectionPage(cur RecommendationCollection, getNextPage func(context.Context, RecommendationCollection) (RecommendationCollection, error)) RecommendationCollectionPage {
+	return original.NewRecommendationCollectionPage(cur, getNextPage)
 }
 func NewRecommendationsClient(subscriptionID string) RecommendationsClient {
 	return original.NewRecommendationsClient(subscriptionID)
@@ -1676,8 +1680,8 @@ func NewRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewResourceCollectionIterator(page ResourceCollectionPage) ResourceCollectionIterator {
 	return original.NewResourceCollectionIterator(page)
 }
-func NewResourceCollectionPage(getNextPage func(context.Context, ResourceCollection) (ResourceCollection, error)) ResourceCollectionPage {
-	return original.NewResourceCollectionPage(getNextPage)
+func NewResourceCollectionPage(cur ResourceCollection, getNextPage func(context.Context, ResourceCollection) (ResourceCollection, error)) ResourceCollectionPage {
+	return original.NewResourceCollectionPage(cur, getNextPage)
 }
 func NewResourceHealthMetadataClient(subscriptionID string) ResourceHealthMetadataClient {
 	return original.NewResourceHealthMetadataClient(subscriptionID)
@@ -1688,92 +1692,92 @@ func NewResourceHealthMetadataClientWithBaseURI(baseURI string, subscriptionID s
 func NewResourceHealthMetadataCollectionIterator(page ResourceHealthMetadataCollectionPage) ResourceHealthMetadataCollectionIterator {
 	return original.NewResourceHealthMetadataCollectionIterator(page)
 }
-func NewResourceHealthMetadataCollectionPage(getNextPage func(context.Context, ResourceHealthMetadataCollection) (ResourceHealthMetadataCollection, error)) ResourceHealthMetadataCollectionPage {
-	return original.NewResourceHealthMetadataCollectionPage(getNextPage)
+func NewResourceHealthMetadataCollectionPage(cur ResourceHealthMetadataCollection, getNextPage func(context.Context, ResourceHealthMetadataCollection) (ResourceHealthMetadataCollection, error)) ResourceHealthMetadataCollectionPage {
+	return original.NewResourceHealthMetadataCollectionPage(cur, getNextPage)
 }
 func NewResourceMetricDefinitionCollectionIterator(page ResourceMetricDefinitionCollectionPage) ResourceMetricDefinitionCollectionIterator {
 	return original.NewResourceMetricDefinitionCollectionIterator(page)
 }
-func NewResourceMetricDefinitionCollectionPage(getNextPage func(context.Context, ResourceMetricDefinitionCollection) (ResourceMetricDefinitionCollection, error)) ResourceMetricDefinitionCollectionPage {
-	return original.NewResourceMetricDefinitionCollectionPage(getNextPage)
+func NewResourceMetricDefinitionCollectionPage(cur ResourceMetricDefinitionCollection, getNextPage func(context.Context, ResourceMetricDefinitionCollection) (ResourceMetricDefinitionCollection, error)) ResourceMetricDefinitionCollectionPage {
+	return original.NewResourceMetricDefinitionCollectionPage(cur, getNextPage)
 }
 func NewSiteConfigResourceCollectionIterator(page SiteConfigResourceCollectionPage) SiteConfigResourceCollectionIterator {
 	return original.NewSiteConfigResourceCollectionIterator(page)
 }
-func NewSiteConfigResourceCollectionPage(getNextPage func(context.Context, SiteConfigResourceCollection) (SiteConfigResourceCollection, error)) SiteConfigResourceCollectionPage {
-	return original.NewSiteConfigResourceCollectionPage(getNextPage)
+func NewSiteConfigResourceCollectionPage(cur SiteConfigResourceCollection, getNextPage func(context.Context, SiteConfigResourceCollection) (SiteConfigResourceCollection, error)) SiteConfigResourceCollectionPage {
+	return original.NewSiteConfigResourceCollectionPage(cur, getNextPage)
 }
 func NewSiteConfigurationSnapshotInfoCollectionIterator(page SiteConfigurationSnapshotInfoCollectionPage) SiteConfigurationSnapshotInfoCollectionIterator {
 	return original.NewSiteConfigurationSnapshotInfoCollectionIterator(page)
 }
-func NewSiteConfigurationSnapshotInfoCollectionPage(getNextPage func(context.Context, SiteConfigurationSnapshotInfoCollection) (SiteConfigurationSnapshotInfoCollection, error)) SiteConfigurationSnapshotInfoCollectionPage {
-	return original.NewSiteConfigurationSnapshotInfoCollectionPage(getNextPage)
+func NewSiteConfigurationSnapshotInfoCollectionPage(cur SiteConfigurationSnapshotInfoCollection, getNextPage func(context.Context, SiteConfigurationSnapshotInfoCollection) (SiteConfigurationSnapshotInfoCollection, error)) SiteConfigurationSnapshotInfoCollectionPage {
+	return original.NewSiteConfigurationSnapshotInfoCollectionPage(cur, getNextPage)
 }
 func NewSiteExtensionInfoCollectionIterator(page SiteExtensionInfoCollectionPage) SiteExtensionInfoCollectionIterator {
 	return original.NewSiteExtensionInfoCollectionIterator(page)
 }
-func NewSiteExtensionInfoCollectionPage(getNextPage func(context.Context, SiteExtensionInfoCollection) (SiteExtensionInfoCollection, error)) SiteExtensionInfoCollectionPage {
-	return original.NewSiteExtensionInfoCollectionPage(getNextPage)
+func NewSiteExtensionInfoCollectionPage(cur SiteExtensionInfoCollection, getNextPage func(context.Context, SiteExtensionInfoCollection) (SiteExtensionInfoCollection, error)) SiteExtensionInfoCollectionPage {
+	return original.NewSiteExtensionInfoCollectionPage(cur, getNextPage)
 }
 func NewSkuInfoCollectionIterator(page SkuInfoCollectionPage) SkuInfoCollectionIterator {
 	return original.NewSkuInfoCollectionIterator(page)
 }
-func NewSkuInfoCollectionPage(getNextPage func(context.Context, SkuInfoCollection) (SkuInfoCollection, error)) SkuInfoCollectionPage {
-	return original.NewSkuInfoCollectionPage(getNextPage)
+func NewSkuInfoCollectionPage(cur SkuInfoCollection, getNextPage func(context.Context, SkuInfoCollection) (SkuInfoCollection, error)) SkuInfoCollectionPage {
+	return original.NewSkuInfoCollectionPage(cur, getNextPage)
 }
 func NewSlotDifferenceCollectionIterator(page SlotDifferenceCollectionPage) SlotDifferenceCollectionIterator {
 	return original.NewSlotDifferenceCollectionIterator(page)
 }
-func NewSlotDifferenceCollectionPage(getNextPage func(context.Context, SlotDifferenceCollection) (SlotDifferenceCollection, error)) SlotDifferenceCollectionPage {
-	return original.NewSlotDifferenceCollectionPage(getNextPage)
+func NewSlotDifferenceCollectionPage(cur SlotDifferenceCollection, getNextPage func(context.Context, SlotDifferenceCollection) (SlotDifferenceCollection, error)) SlotDifferenceCollectionPage {
+	return original.NewSlotDifferenceCollectionPage(cur, getNextPage)
 }
 func NewSnapshotCollectionIterator(page SnapshotCollectionPage) SnapshotCollectionIterator {
 	return original.NewSnapshotCollectionIterator(page)
 }
-func NewSnapshotCollectionPage(getNextPage func(context.Context, SnapshotCollection) (SnapshotCollection, error)) SnapshotCollectionPage {
-	return original.NewSnapshotCollectionPage(getNextPage)
+func NewSnapshotCollectionPage(cur SnapshotCollection, getNextPage func(context.Context, SnapshotCollection) (SnapshotCollection, error)) SnapshotCollectionPage {
+	return original.NewSnapshotCollectionPage(cur, getNextPage)
 }
 func NewSourceControlCollectionIterator(page SourceControlCollectionPage) SourceControlCollectionIterator {
 	return original.NewSourceControlCollectionIterator(page)
 }
-func NewSourceControlCollectionPage(getNextPage func(context.Context, SourceControlCollection) (SourceControlCollection, error)) SourceControlCollectionPage {
-	return original.NewSourceControlCollectionPage(getNextPage)
+func NewSourceControlCollectionPage(cur SourceControlCollection, getNextPage func(context.Context, SourceControlCollection) (SourceControlCollection, error)) SourceControlCollectionPage {
+	return original.NewSourceControlCollectionPage(cur, getNextPage)
 }
 func NewStampCapacityCollectionIterator(page StampCapacityCollectionPage) StampCapacityCollectionIterator {
 	return original.NewStampCapacityCollectionIterator(page)
 }
-func NewStampCapacityCollectionPage(getNextPage func(context.Context, StampCapacityCollection) (StampCapacityCollection, error)) StampCapacityCollectionPage {
-	return original.NewStampCapacityCollectionPage(getNextPage)
+func NewStampCapacityCollectionPage(cur StampCapacityCollection, getNextPage func(context.Context, StampCapacityCollection) (StampCapacityCollection, error)) StampCapacityCollectionPage {
+	return original.NewStampCapacityCollectionPage(cur, getNextPage)
 }
 func NewStaticSiteBuildCollectionIterator(page StaticSiteBuildCollectionPage) StaticSiteBuildCollectionIterator {
 	return original.NewStaticSiteBuildCollectionIterator(page)
 }
-func NewStaticSiteBuildCollectionPage(getNextPage func(context.Context, StaticSiteBuildCollection) (StaticSiteBuildCollection, error)) StaticSiteBuildCollectionPage {
-	return original.NewStaticSiteBuildCollectionPage(getNextPage)
+func NewStaticSiteBuildCollectionPage(cur StaticSiteBuildCollection, getNextPage func(context.Context, StaticSiteBuildCollection) (StaticSiteBuildCollection, error)) StaticSiteBuildCollectionPage {
+	return original.NewStaticSiteBuildCollectionPage(cur, getNextPage)
 }
 func NewStaticSiteCollectionIterator(page StaticSiteCollectionPage) StaticSiteCollectionIterator {
 	return original.NewStaticSiteCollectionIterator(page)
 }
-func NewStaticSiteCollectionPage(getNextPage func(context.Context, StaticSiteCollection) (StaticSiteCollection, error)) StaticSiteCollectionPage {
-	return original.NewStaticSiteCollectionPage(getNextPage)
+func NewStaticSiteCollectionPage(cur StaticSiteCollection, getNextPage func(context.Context, StaticSiteCollection) (StaticSiteCollection, error)) StaticSiteCollectionPage {
+	return original.NewStaticSiteCollectionPage(cur, getNextPage)
 }
 func NewStaticSiteCustomDomainOverviewCollectionIterator(page StaticSiteCustomDomainOverviewCollectionPage) StaticSiteCustomDomainOverviewCollectionIterator {
 	return original.NewStaticSiteCustomDomainOverviewCollectionIterator(page)
 }
-func NewStaticSiteCustomDomainOverviewCollectionPage(getNextPage func(context.Context, StaticSiteCustomDomainOverviewCollection) (StaticSiteCustomDomainOverviewCollection, error)) StaticSiteCustomDomainOverviewCollectionPage {
-	return original.NewStaticSiteCustomDomainOverviewCollectionPage(getNextPage)
+func NewStaticSiteCustomDomainOverviewCollectionPage(cur StaticSiteCustomDomainOverviewCollection, getNextPage func(context.Context, StaticSiteCustomDomainOverviewCollection) (StaticSiteCustomDomainOverviewCollection, error)) StaticSiteCustomDomainOverviewCollectionPage {
+	return original.NewStaticSiteCustomDomainOverviewCollectionPage(cur, getNextPage)
 }
 func NewStaticSiteFunctionOverviewCollectionIterator(page StaticSiteFunctionOverviewCollectionPage) StaticSiteFunctionOverviewCollectionIterator {
 	return original.NewStaticSiteFunctionOverviewCollectionIterator(page)
 }
-func NewStaticSiteFunctionOverviewCollectionPage(getNextPage func(context.Context, StaticSiteFunctionOverviewCollection) (StaticSiteFunctionOverviewCollection, error)) StaticSiteFunctionOverviewCollectionPage {
-	return original.NewStaticSiteFunctionOverviewCollectionPage(getNextPage)
+func NewStaticSiteFunctionOverviewCollectionPage(cur StaticSiteFunctionOverviewCollection, getNextPage func(context.Context, StaticSiteFunctionOverviewCollection) (StaticSiteFunctionOverviewCollection, error)) StaticSiteFunctionOverviewCollectionPage {
+	return original.NewStaticSiteFunctionOverviewCollectionPage(cur, getNextPage)
 }
 func NewStaticSiteUserCollectionIterator(page StaticSiteUserCollectionPage) StaticSiteUserCollectionIterator {
 	return original.NewStaticSiteUserCollectionIterator(page)
 }
-func NewStaticSiteUserCollectionPage(getNextPage func(context.Context, StaticSiteUserCollection) (StaticSiteUserCollection, error)) StaticSiteUserCollectionPage {
-	return original.NewStaticSiteUserCollectionPage(getNextPage)
+func NewStaticSiteUserCollectionPage(cur StaticSiteUserCollection, getNextPage func(context.Context, StaticSiteUserCollection) (StaticSiteUserCollection, error)) StaticSiteUserCollectionPage {
+	return original.NewStaticSiteUserCollectionPage(cur, getNextPage)
 }
 func NewStaticSitesClient(subscriptionID string) StaticSitesClient {
 	return original.NewStaticSitesClient(subscriptionID)
@@ -1784,14 +1788,14 @@ func NewStaticSitesClientWithBaseURI(baseURI string, subscriptionID string) Stat
 func NewTldLegalAgreementCollectionIterator(page TldLegalAgreementCollectionPage) TldLegalAgreementCollectionIterator {
 	return original.NewTldLegalAgreementCollectionIterator(page)
 }
-func NewTldLegalAgreementCollectionPage(getNextPage func(context.Context, TldLegalAgreementCollection) (TldLegalAgreementCollection, error)) TldLegalAgreementCollectionPage {
-	return original.NewTldLegalAgreementCollectionPage(getNextPage)
+func NewTldLegalAgreementCollectionPage(cur TldLegalAgreementCollection, getNextPage func(context.Context, TldLegalAgreementCollection) (TldLegalAgreementCollection, error)) TldLegalAgreementCollectionPage {
+	return original.NewTldLegalAgreementCollectionPage(cur, getNextPage)
 }
 func NewTopLevelDomainCollectionIterator(page TopLevelDomainCollectionPage) TopLevelDomainCollectionIterator {
 	return original.NewTopLevelDomainCollectionIterator(page)
 }
-func NewTopLevelDomainCollectionPage(getNextPage func(context.Context, TopLevelDomainCollection) (TopLevelDomainCollection, error)) TopLevelDomainCollectionPage {
-	return original.NewTopLevelDomainCollectionPage(getNextPage)
+func NewTopLevelDomainCollectionPage(cur TopLevelDomainCollection, getNextPage func(context.Context, TopLevelDomainCollection) (TopLevelDomainCollection, error)) TopLevelDomainCollectionPage {
+	return original.NewTopLevelDomainCollectionPage(cur, getNextPage)
 }
 func NewTopLevelDomainsClient(subscriptionID string) TopLevelDomainsClient {
 	return original.NewTopLevelDomainsClient(subscriptionID)
@@ -1802,20 +1806,20 @@ func NewTopLevelDomainsClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewTriggeredJobHistoryCollectionIterator(page TriggeredJobHistoryCollectionPage) TriggeredJobHistoryCollectionIterator {
 	return original.NewTriggeredJobHistoryCollectionIterator(page)
 }
-func NewTriggeredJobHistoryCollectionPage(getNextPage func(context.Context, TriggeredJobHistoryCollection) (TriggeredJobHistoryCollection, error)) TriggeredJobHistoryCollectionPage {
-	return original.NewTriggeredJobHistoryCollectionPage(getNextPage)
+func NewTriggeredJobHistoryCollectionPage(cur TriggeredJobHistoryCollection, getNextPage func(context.Context, TriggeredJobHistoryCollection) (TriggeredJobHistoryCollection, error)) TriggeredJobHistoryCollectionPage {
+	return original.NewTriggeredJobHistoryCollectionPage(cur, getNextPage)
 }
 func NewTriggeredWebJobCollectionIterator(page TriggeredWebJobCollectionPage) TriggeredWebJobCollectionIterator {
 	return original.NewTriggeredWebJobCollectionIterator(page)
 }
-func NewTriggeredWebJobCollectionPage(getNextPage func(context.Context, TriggeredWebJobCollection) (TriggeredWebJobCollection, error)) TriggeredWebJobCollectionPage {
-	return original.NewTriggeredWebJobCollectionPage(getNextPage)
+func NewTriggeredWebJobCollectionPage(cur TriggeredWebJobCollection, getNextPage func(context.Context, TriggeredWebJobCollection) (TriggeredWebJobCollection, error)) TriggeredWebJobCollectionPage {
+	return original.NewTriggeredWebJobCollectionPage(cur, getNextPage)
 }
 func NewUsageCollectionIterator(page UsageCollectionPage) UsageCollectionIterator {
 	return original.NewUsageCollectionIterator(page)
 }
-func NewUsageCollectionPage(getNextPage func(context.Context, UsageCollection) (UsageCollection, error)) UsageCollectionPage {
-	return original.NewUsageCollectionPage(getNextPage)
+func NewUsageCollectionPage(cur UsageCollection, getNextPage func(context.Context, UsageCollection) (UsageCollection, error)) UsageCollectionPage {
+	return original.NewUsageCollectionPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
@@ -1823,8 +1827,8 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func NewWorkerPoolCollectionIterator(page WorkerPoolCollectionPage) WorkerPoolCollectionIterator {
 	return original.NewWorkerPoolCollectionIterator(page)
 }
-func NewWorkerPoolCollectionPage(getNextPage func(context.Context, WorkerPoolCollection) (WorkerPoolCollection, error)) WorkerPoolCollectionPage {
-	return original.NewWorkerPoolCollectionPage(getNextPage)
+func NewWorkerPoolCollectionPage(cur WorkerPoolCollection, getNextPage func(context.Context, WorkerPoolCollection) (WorkerPoolCollection, error)) WorkerPoolCollectionPage {
+	return original.NewWorkerPoolCollectionPage(cur, getNextPage)
 }
 func PossibleAccessControlEntryActionValues() []AccessControlEntryAction {
 	return original.PossibleAccessControlEntryActionValues()

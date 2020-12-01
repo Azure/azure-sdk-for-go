@@ -305,8 +305,11 @@ func (page NamespaceListResultPage) Values() []NamespaceResource {
 }
 
 // Creates a new instance of the NamespaceListResultPage type.
-func NewNamespaceListResultPage(getNextPage func(context.Context, NamespaceListResult) (NamespaceListResult, error)) NamespaceListResultPage {
-	return NamespaceListResultPage{fn: getNextPage}
+func NewNamespaceListResultPage(cur NamespaceListResult, getNextPage func(context.Context, NamespaceListResult) (NamespaceListResult, error)) NamespaceListResultPage {
+	return NamespaceListResultPage{
+		fn:  getNextPage,
+		nlr: cur,
+	}
 }
 
 // NamespaceProperties properties of the namespace.
@@ -455,8 +458,8 @@ func (nr *NamespaceResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// NamespacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// NamespacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type NamespacesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -484,7 +487,8 @@ func (future *NamespacesCreateOrUpdateFuture) Result(client NamespacesClient) (n
 	return
 }
 
-// NamespacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// NamespacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type NamespacesDeleteFuture struct {
 	azure.Future
 }
@@ -553,8 +557,8 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result of the request to list ServiceBus operations. It contains a list of operations
-// and a URL link to get the next set of results.
+// OperationListResult result of the request to list ServiceBus operations. It contains a list of
+// operations and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of ServiceBus operations supported by the Microsoft.ServiceBus resource provider.
@@ -706,8 +710,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // QueueCreateOrUpdateParameters parameters supplied to the Create Or Update Queue operation.
@@ -928,8 +935,11 @@ func (page QueueListResultPage) Values() []QueueResource {
 }
 
 // Creates a new instance of the QueueListResultPage type.
-func NewQueueListResultPage(getNextPage func(context.Context, QueueListResult) (QueueListResult, error)) QueueListResultPage {
-	return QueueListResultPage{fn: getNextPage}
+func NewQueueListResultPage(cur QueueListResult, getNextPage func(context.Context, QueueListResult) (QueueListResult, error)) QueueListResultPage {
+	return QueueListResultPage{
+		fn:  getNextPage,
+		qlr: cur,
+	}
 }
 
 // QueueProperties the Queue Properties definition.
@@ -1324,7 +1334,8 @@ func (saarlr SharedAccessAuthorizationRuleListResult) sharedAccessAuthorizationR
 		autorest.WithBaseURL(to.String(saarlr.NextLink)))
 }
 
-// SharedAccessAuthorizationRuleListResultPage contains a page of SharedAccessAuthorizationRuleResource values.
+// SharedAccessAuthorizationRuleListResultPage contains a page of SharedAccessAuthorizationRuleResource
+// values.
 type SharedAccessAuthorizationRuleListResultPage struct {
 	fn     func(context.Context, SharedAccessAuthorizationRuleListResult) (SharedAccessAuthorizationRuleListResult, error)
 	saarlr SharedAccessAuthorizationRuleListResult
@@ -1382,8 +1393,11 @@ func (page SharedAccessAuthorizationRuleListResultPage) Values() []SharedAccessA
 }
 
 // Creates a new instance of the SharedAccessAuthorizationRuleListResultPage type.
-func NewSharedAccessAuthorizationRuleListResultPage(getNextPage func(context.Context, SharedAccessAuthorizationRuleListResult) (SharedAccessAuthorizationRuleListResult, error)) SharedAccessAuthorizationRuleListResultPage {
-	return SharedAccessAuthorizationRuleListResultPage{fn: getNextPage}
+func NewSharedAccessAuthorizationRuleListResultPage(cur SharedAccessAuthorizationRuleListResult, getNextPage func(context.Context, SharedAccessAuthorizationRuleListResult) (SharedAccessAuthorizationRuleListResult, error)) SharedAccessAuthorizationRuleListResultPage {
+	return SharedAccessAuthorizationRuleListResultPage{
+		fn:     getNextPage,
+		saarlr: cur,
+	}
 }
 
 // SharedAccessAuthorizationRuleProperties sharedAccessAuthorizationRule properties.
@@ -1706,8 +1720,11 @@ func (page SubscriptionListResultPage) Values() []SubscriptionResource {
 }
 
 // Creates a new instance of the SubscriptionListResultPage type.
-func NewSubscriptionListResultPage(getNextPage func(context.Context, SubscriptionListResult) (SubscriptionListResult, error)) SubscriptionListResultPage {
-	return SubscriptionListResultPage{fn: getNextPage}
+func NewSubscriptionListResultPage(cur SubscriptionListResult, getNextPage func(context.Context, SubscriptionListResult) (SubscriptionListResult, error)) SubscriptionListResultPage {
+	return SubscriptionListResultPage{
+		fn:  getNextPage,
+		slr: cur,
+	}
 }
 
 // SubscriptionProperties description of Subscription Resource.
@@ -2089,8 +2106,11 @@ func (page TopicListResultPage) Values() []TopicResource {
 }
 
 // Creates a new instance of the TopicListResultPage type.
-func NewTopicListResultPage(getNextPage func(context.Context, TopicListResult) (TopicListResult, error)) TopicListResultPage {
-	return TopicListResultPage{fn: getNextPage}
+func NewTopicListResultPage(cur TopicListResult, getNextPage func(context.Context, TopicListResult) (TopicListResult, error)) TopicListResultPage {
+	return TopicListResultPage{
+		fn:  getNextPage,
+		tlr: cur,
+	}
 }
 
 // TopicProperties the Topic Properties definition.

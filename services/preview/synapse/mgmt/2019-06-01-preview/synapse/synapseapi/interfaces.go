@@ -38,7 +38,7 @@ var _ BigDataPoolsClientAPI = (*synapse.BigDataPoolsClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	CheckNameAvailability(ctx context.Context, request synapse.CheckNameAvailabilityRequest) (result synapse.CheckNameAvailabilityResponse, err error)
-	GetAzureAsyncHeaderResult(ctx context.Context, resourceGroupName string, workspaceName string, operationID string) (result synapse.SetObject, err error)
+	GetAzureAsyncHeaderResult(ctx context.Context, resourceGroupName string, workspaceName string, operationID string) (result synapse.OperationResource, err error)
 	GetLocationHeaderResult(ctx context.Context, resourceGroupName string, workspaceName string, operationID string) (result autorest.Response, err error)
 	List(ctx context.Context) (result synapse.ListAvailableRpOperation, err error)
 }
@@ -65,7 +65,6 @@ type SQLPoolsClientAPI interface {
 	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.SQLPoolInfoListResultPage, err error)
 	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.SQLPoolInfoListResultIterator, err error)
 	Pause(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.SQLPoolsPauseFuture, err error)
-	Rename(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters synapse.ResourceMoveDefinition) (result autorest.Response, err error)
 	Resume(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.SQLPoolsResumeFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, SQLPoolInfo synapse.SQLPoolPatchInfo) (result synapse.SQLPool, err error)
 }
@@ -90,6 +89,7 @@ var _ SQLPoolOperationResultsClientAPI = (*synapse.SQLPoolOperationResultsClient
 // SQLPoolGeoBackupPoliciesClientAPI contains the set of methods on the SQLPoolGeoBackupPoliciesClient type.
 type SQLPoolGeoBackupPoliciesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.GeoBackupPolicy, err error)
+	List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.GeoBackupPolicyListResult, err error)
 }
 
 var _ SQLPoolGeoBackupPoliciesClientAPI = (*synapse.SQLPoolGeoBackupPoliciesClient)(nil)
@@ -104,6 +104,8 @@ var _ SQLPoolDataWarehouseUserActivitiesClientAPI = (*synapse.SQLPoolDataWarehou
 // SQLPoolRestorePointsClientAPI contains the set of methods on the SQLPoolRestorePointsClient type.
 type SQLPoolRestorePointsClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters synapse.CreateSQLPoolRestorePointDefinition) (result synapse.SQLPoolRestorePointsCreateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, restorePointName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, restorePointName string) (result synapse.RestorePoint, err error)
 	List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.RestorePointListResultPage, err error)
 	ListComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.RestorePointListResultIterator, err error)
 }
@@ -112,6 +114,7 @@ var _ SQLPoolRestorePointsClientAPI = (*synapse.SQLPoolRestorePointsClient)(nil)
 
 // SQLPoolReplicationLinksClientAPI contains the set of methods on the SQLPoolReplicationLinksClient type.
 type SQLPoolReplicationLinksClientAPI interface {
+	GetByName(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, linkID string) (result synapse.ReplicationLink, err error)
 	List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.ReplicationLinkListResultPage, err error)
 	ListComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.ReplicationLinkListResultIterator, err error)
 }
@@ -122,6 +125,8 @@ var _ SQLPoolReplicationLinksClientAPI = (*synapse.SQLPoolReplicationLinksClient
 type SQLPoolTransparentDataEncryptionsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters synapse.TransparentDataEncryption) (result synapse.TransparentDataEncryption, err error)
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.TransparentDataEncryption, err error)
+	List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.TransparentDataEncryptionListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.TransparentDataEncryptionListResultIterator, err error)
 }
 
 var _ SQLPoolTransparentDataEncryptionsClientAPI = (*synapse.SQLPoolTransparentDataEncryptionsClient)(nil)
@@ -130,6 +135,8 @@ var _ SQLPoolTransparentDataEncryptionsClientAPI = (*synapse.SQLPoolTransparentD
 type SQLPoolBlobAuditingPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters synapse.SQLPoolBlobAuditingPolicy) (result synapse.SQLPoolBlobAuditingPolicy, err error)
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.SQLPoolBlobAuditingPolicy, err error)
+	ListBySQLPool(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.SQLPoolBlobAuditingPolicyListResultPage, err error)
+	ListBySQLPoolComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.SQLPoolBlobAuditingPolicyListResultIterator, err error)
 }
 
 var _ SQLPoolBlobAuditingPoliciesClientAPI = (*synapse.SQLPoolBlobAuditingPoliciesClient)(nil)
@@ -156,6 +163,7 @@ type SQLPoolSensitivityLabelsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error)
 	DisableRecommendation(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error)
 	EnableRecommendation(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, schemaName string, tableName string, columnName string, sensitivityLabelSource synapse.SensitivityLabelSource) (result synapse.SensitivityLabel, err error)
 	ListCurrent(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, filter string) (result synapse.SensitivityLabelListResultPage, err error)
 	ListCurrentComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, filter string) (result synapse.SensitivityLabelListResultIterator, err error)
 	ListRecommended(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, includeDisabledRecommendations *bool, skipToken string, filter string) (result synapse.SensitivityLabelListResultPage, err error)
@@ -166,6 +174,7 @@ var _ SQLPoolSensitivityLabelsClientAPI = (*synapse.SQLPoolSensitivityLabelsClie
 
 // SQLPoolSchemasClientAPI contains the set of methods on the SQLPoolSchemasClient type.
 type SQLPoolSchemasClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, schemaName string) (result synapse.SQLPoolSchema, err error)
 	List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, filter string) (result synapse.SQLPoolSchemaListResultPage, err error)
 	ListComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, filter string) (result synapse.SQLPoolSchemaListResultIterator, err error)
 }
@@ -174,6 +183,7 @@ var _ SQLPoolSchemasClientAPI = (*synapse.SQLPoolSchemasClient)(nil)
 
 // SQLPoolTablesClientAPI contains the set of methods on the SQLPoolTablesClient type.
 type SQLPoolTablesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, schemaName string, tableName string) (result synapse.SQLPoolTable, err error)
 	ListBySchema(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, schemaName string, filter string) (result synapse.SQLPoolTableListResultPage, err error)
 	ListBySchemaComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, schemaName string, filter string) (result synapse.SQLPoolTableListResultIterator, err error)
 }
@@ -209,6 +219,7 @@ var _ SQLPoolVulnerabilityAssessmentsClientAPI = (*synapse.SQLPoolVulnerabilityA
 // SQLPoolVulnerabilityAssessmentScansClientAPI contains the set of methods on the SQLPoolVulnerabilityAssessmentScansClient type.
 type SQLPoolVulnerabilityAssessmentScansClientAPI interface {
 	Export(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, scanID string) (result synapse.SQLPoolVulnerabilityAssessmentScansExport, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, scanID string) (result synapse.VulnerabilityAssessmentScanRecord, err error)
 	InitiateScan(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, scanID string) (result synapse.SQLPoolVulnerabilityAssessmentScansInitiateScanFuture, err error)
 	List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.VulnerabilityAssessmentScanRecordListResultPage, err error)
 	ListComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.VulnerabilityAssessmentScanRecordListResultIterator, err error)
@@ -220,6 +231,8 @@ var _ SQLPoolVulnerabilityAssessmentScansClientAPI = (*synapse.SQLPoolVulnerabil
 type SQLPoolSecurityAlertPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters synapse.SQLPoolSecurityAlertPolicy) (result synapse.SQLPoolSecurityAlertPolicy, err error)
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.SQLPoolSecurityAlertPolicy, err error)
+	List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.ListSQLPoolSecurityAlertPoliciesPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.ListSQLPoolSecurityAlertPoliciesIterator, err error)
 }
 
 var _ SQLPoolSecurityAlertPoliciesClientAPI = (*synapse.SQLPoolSecurityAlertPoliciesClient)(nil)
@@ -228,9 +241,65 @@ var _ SQLPoolSecurityAlertPoliciesClientAPI = (*synapse.SQLPoolSecurityAlertPoli
 type SQLPoolVulnerabilityAssessmentRuleBaselinesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, ruleID string, baselineName synapse.VulnerabilityAssessmentPolicyBaselineName, parameters synapse.SQLPoolVulnerabilityAssessmentRuleBaseline) (result synapse.SQLPoolVulnerabilityAssessmentRuleBaseline, err error)
 	Delete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, ruleID string, baselineName synapse.VulnerabilityAssessmentPolicyBaselineName) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, ruleID string, baselineName synapse.VulnerabilityAssessmentPolicyBaselineName) (result synapse.SQLPoolVulnerabilityAssessmentRuleBaseline, err error)
 }
 
 var _ SQLPoolVulnerabilityAssessmentRuleBaselinesClientAPI = (*synapse.SQLPoolVulnerabilityAssessmentRuleBaselinesClient)(nil)
+
+// ExtendedSQLPoolBlobAuditingPoliciesClientAPI contains the set of methods on the ExtendedSQLPoolBlobAuditingPoliciesClient type.
+type ExtendedSQLPoolBlobAuditingPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters synapse.ExtendedSQLPoolBlobAuditingPolicy) (result synapse.ExtendedSQLPoolBlobAuditingPolicy, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.ExtendedSQLPoolBlobAuditingPolicy, err error)
+	ListBySQLPool(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.ExtendedSQLPoolBlobAuditingPolicyListResultPage, err error)
+	ListBySQLPoolComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.ExtendedSQLPoolBlobAuditingPolicyListResultIterator, err error)
+}
+
+var _ ExtendedSQLPoolBlobAuditingPoliciesClientAPI = (*synapse.ExtendedSQLPoolBlobAuditingPoliciesClient)(nil)
+
+// DataMaskingPoliciesClientAPI contains the set of methods on the DataMaskingPoliciesClient type.
+type DataMaskingPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters synapse.DataMaskingPolicy) (result synapse.DataMaskingPolicy, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.DataMaskingPolicy, err error)
+}
+
+var _ DataMaskingPoliciesClientAPI = (*synapse.DataMaskingPoliciesClient)(nil)
+
+// DataMaskingRulesClientAPI contains the set of methods on the DataMaskingRulesClient type.
+type DataMaskingRulesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, dataMaskingRuleName string, parameters synapse.DataMaskingRule) (result synapse.DataMaskingRule, err error)
+	ListBySQLPool(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.DataMaskingRuleListResult, err error)
+}
+
+var _ DataMaskingRulesClientAPI = (*synapse.DataMaskingRulesClient)(nil)
+
+// SQLPoolColumnsClientAPI contains the set of methods on the SQLPoolColumnsClient type.
+type SQLPoolColumnsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, schemaName string, tableName string, columnName string) (result synapse.SQLPoolColumn, err error)
+}
+
+var _ SQLPoolColumnsClientAPI = (*synapse.SQLPoolColumnsClient)(nil)
+
+// SQLPoolWorkloadGroupClientAPI contains the set of methods on the SQLPoolWorkloadGroupClient type.
+type SQLPoolWorkloadGroupClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, workloadGroupName string, parameters synapse.WorkloadGroup) (result synapse.SQLPoolWorkloadGroupCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, workloadGroupName string) (result synapse.SQLPoolWorkloadGroupDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, workloadGroupName string) (result synapse.WorkloadGroup, err error)
+	List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.WorkloadGroupListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.WorkloadGroupListResultIterator, err error)
+}
+
+var _ SQLPoolWorkloadGroupClientAPI = (*synapse.SQLPoolWorkloadGroupClient)(nil)
+
+// SQLPoolWorkloadClassifierClientAPI contains the set of methods on the SQLPoolWorkloadClassifierClient type.
+type SQLPoolWorkloadClassifierClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, workloadGroupName string, workloadClassifierName string, parameters synapse.WorkloadClassifier) (result synapse.SQLPoolWorkloadClassifierCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, workloadGroupName string, workloadClassifierName string) (result synapse.SQLPoolWorkloadClassifierDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, workloadGroupName string, workloadClassifierName string) (result synapse.WorkloadClassifier, err error)
+	List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, workloadGroupName string) (result synapse.WorkloadClassifierListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, workloadGroupName string) (result synapse.WorkloadClassifierListResultIterator, err error)
+}
+
+var _ SQLPoolWorkloadClassifierClientAPI = (*synapse.SQLPoolWorkloadClassifierClient)(nil)
 
 // WorkspacesClientAPI contains the set of methods on the WorkspacesClient type.
 type WorkspacesClientAPI interface {
@@ -255,6 +324,15 @@ type WorkspaceAadAdminsClientAPI interface {
 
 var _ WorkspaceAadAdminsClientAPI = (*synapse.WorkspaceAadAdminsClient)(nil)
 
+// WorkspaceSQLAadAdminsClientAPI contains the set of methods on the WorkspaceSQLAadAdminsClient type.
+type WorkspaceSQLAadAdminsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, aadAdminInfo synapse.WorkspaceAadAdminInfo) (result synapse.WorkspaceSQLAadAdminsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.WorkspaceSQLAadAdminsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.WorkspaceAadAdminInfo, err error)
+}
+
+var _ WorkspaceSQLAadAdminsClientAPI = (*synapse.WorkspaceSQLAadAdminsClient)(nil)
+
 // WorkspaceManagedIdentitySQLControlSettingsClientAPI contains the set of methods on the WorkspaceManagedIdentitySQLControlSettingsClient type.
 type WorkspaceManagedIdentitySQLControlSettingsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, managedIdentitySQLControlSettings synapse.ManagedIdentitySQLControlSettingsModel) (result synapse.ManagedIdentitySQLControlSettingsModel, err error)
@@ -263,15 +341,25 @@ type WorkspaceManagedIdentitySQLControlSettingsClientAPI interface {
 
 var _ WorkspaceManagedIdentitySQLControlSettingsClientAPI = (*synapse.WorkspaceManagedIdentitySQLControlSettingsClient)(nil)
 
+// RestorableDroppedSQLPoolsClientAPI contains the set of methods on the RestorableDroppedSQLPoolsClient type.
+type RestorableDroppedSQLPoolsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, restorableDroppedSQLPoolID string) (result synapse.RestorableDroppedSQLPool, err error)
+	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.RestorableDroppedSQLPoolListResult, err error)
+}
+
+var _ RestorableDroppedSQLPoolsClientAPI = (*synapse.RestorableDroppedSQLPoolsClient)(nil)
+
 // IntegrationRuntimesClientAPI contains the set of methods on the IntegrationRuntimesClient type.
 type IntegrationRuntimesClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, integrationRuntime synapse.IntegrationRuntimeResource, ifMatch string) (result synapse.IntegrationRuntimesCreateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result synapse.IntegrationRuntimesDeleteFuture, err error)
+	DisableInteractiveQuery(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result synapse.IntegrationRuntimesDisableInteractiveQueryFuture, err error)
+	EnableInteractiveQuery(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result synapse.IntegrationRuntimesEnableInteractiveQueryFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, ifNoneMatch string) (result synapse.IntegrationRuntimeResource, err error)
 	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.IntegrationRuntimeListResponsePage, err error)
 	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.IntegrationRuntimeListResponseIterator, err error)
-	Start(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result synapse.IntegrationRuntimeStatusResponse, err error)
-	Stop(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result autorest.Response, err error)
+	Start(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result synapse.IntegrationRuntimesStartFuture, err error)
+	Stop(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result synapse.IntegrationRuntimesStopFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, updateIntegrationRuntimeRequest synapse.UpdateIntegrationRuntimeRequest) (result synapse.IntegrationRuntimeResource, err error)
 	Upgrade(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result autorest.Response, err error)
 }
@@ -287,8 +375,8 @@ var _ IntegrationRuntimeNodeIPAddressClientAPI = (*synapse.IntegrationRuntimeNod
 
 // IntegrationRuntimeObjectMetadataClientAPI contains the set of methods on the IntegrationRuntimeObjectMetadataClient type.
 type IntegrationRuntimeObjectMetadataClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, getMetadataRequest *synapse.GetSsisObjectMetadataRequest) (result synapse.SsisObjectMetadataListResponse, err error)
-	Refresh(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result synapse.SsisObjectMetadataStatusResponse, err error)
+	List(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, getMetadataRequest *synapse.GetSsisObjectMetadataRequest) (result synapse.SsisObjectMetadataListResponse, err error)
+	Refresh(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result synapse.IntegrationRuntimeObjectMetadataRefreshFuture, err error)
 }
 
 var _ IntegrationRuntimeObjectMetadataClientAPI = (*synapse.IntegrationRuntimeObjectMetadataClient)(nil)
@@ -326,7 +414,7 @@ var _ IntegrationRuntimeAuthKeysClientAPI = (*synapse.IntegrationRuntimeAuthKeys
 
 // IntegrationRuntimeMonitoringDataClientAPI contains the set of methods on the IntegrationRuntimeMonitoringDataClient type.
 type IntegrationRuntimeMonitoringDataClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result synapse.IntegrationRuntimeMonitoringData, err error)
+	List(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result synapse.IntegrationRuntimeMonitoringData, err error)
 }
 
 var _ IntegrationRuntimeMonitoringDataClientAPI = (*synapse.IntegrationRuntimeMonitoringDataClient)(nil)
@@ -349,7 +437,7 @@ var _ PrivateLinkResourcesClientAPI = (*synapse.PrivateLinkResourcesClient)(nil)
 
 // PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
 type PrivateEndpointConnectionsClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string) (result synapse.PrivateEndpointConnectionsCreateFuture, err error)
+	Create(ctx context.Context, request synapse.PrivateEndpointConnection, resourceGroupName string, workspaceName string, privateEndpointConnectionName string) (result synapse.PrivateEndpointConnectionsCreateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string) (result synapse.PrivateEndpointConnectionsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string) (result synapse.PrivateEndpointConnection, err error)
 	List(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.PrivateEndpointConnectionListPage, err error)
@@ -360,14 +448,91 @@ var _ PrivateEndpointConnectionsClientAPI = (*synapse.PrivateEndpointConnections
 
 // PrivateLinkHubsClientAPI contains the set of methods on the PrivateLinkHubsClient type.
 type PrivateLinkHubsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, privateLinkHubName string, privateLinkHubInfo synapse.PrivateLinkHub) (result synapse.PrivateLinkHub, err error)
-	Delete(ctx context.Context, resourceGroupName string, privateLinkHubName string) (result autorest.Response, err error)
+	CreateOrUpdate(ctx context.Context, privateLinkHubInfo synapse.PrivateLinkHub, resourceGroupName string, privateLinkHubName string) (result synapse.PrivateLinkHub, err error)
+	Delete(ctx context.Context, resourceGroupName string, privateLinkHubName string) (result synapse.PrivateLinkHubsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, privateLinkHubName string) (result synapse.PrivateLinkHub, err error)
 	List(ctx context.Context) (result synapse.PrivateLinkHubInfoListResultPage, err error)
 	ListComplete(ctx context.Context) (result synapse.PrivateLinkHubInfoListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result synapse.PrivateLinkHubInfoListResultPage, err error)
 	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result synapse.PrivateLinkHubInfoListResultIterator, err error)
-	Update(ctx context.Context, resourceGroupName string, privateLinkHubName string, privateLinkHubPatchInfo synapse.PrivateLinkHubPatchInfo) (result synapse.PrivateLinkHub, err error)
+	Update(ctx context.Context, privateLinkHubPatchInfo synapse.PrivateLinkHubPatchInfo, resourceGroupName string, privateLinkHubName string) (result synapse.PrivateLinkHub, err error)
 }
 
 var _ PrivateLinkHubsClientAPI = (*synapse.PrivateLinkHubsClient)(nil)
+
+// PrivateEndpointConnectionsPrivateLinkHubClientAPI contains the set of methods on the PrivateEndpointConnectionsPrivateLinkHubClient type.
+type PrivateEndpointConnectionsPrivateLinkHubClientAPI interface {
+	List(ctx context.Context, resourceGroupName string, privateLinkHubName string) (result synapse.PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponsePage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, privateLinkHubName string) (result synapse.PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponseIterator, err error)
+}
+
+var _ PrivateEndpointConnectionsPrivateLinkHubClientAPI = (*synapse.PrivateEndpointConnectionsPrivateLinkHubClient)(nil)
+
+// WorkspaceManagedSQLServerBlobAuditingPoliciesClientAPI contains the set of methods on the WorkspaceManagedSQLServerBlobAuditingPoliciesClient type.
+type WorkspaceManagedSQLServerBlobAuditingPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, parameters synapse.ServerBlobAuditingPolicy) (result synapse.WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdateFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.ServerBlobAuditingPolicy, err error)
+	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.ServerBlobAuditingPolicyListResultPage, err error)
+	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.ServerBlobAuditingPolicyListResultIterator, err error)
+}
+
+var _ WorkspaceManagedSQLServerBlobAuditingPoliciesClientAPI = (*synapse.WorkspaceManagedSQLServerBlobAuditingPoliciesClient)(nil)
+
+// WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientAPI contains the set of methods on the WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient type.
+type WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, parameters synapse.ExtendedServerBlobAuditingPolicy) (result synapse.WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdateFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.ExtendedServerBlobAuditingPolicy, err error)
+	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.ExtendedServerBlobAuditingPolicyListResultPage, err error)
+	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.ExtendedServerBlobAuditingPolicyListResultIterator, err error)
+}
+
+var _ WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientAPI = (*synapse.WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient)(nil)
+
+// WorkspaceManagedSQLServerSecurityAlertPolicyClientAPI contains the set of methods on the WorkspaceManagedSQLServerSecurityAlertPolicyClient type.
+type WorkspaceManagedSQLServerSecurityAlertPolicyClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, parameters synapse.ServerSecurityAlertPolicy) (result synapse.WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdateFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.ServerSecurityAlertPolicy, err error)
+	List(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.ServerSecurityAlertPolicyListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.ServerSecurityAlertPolicyListResultIterator, err error)
+}
+
+var _ WorkspaceManagedSQLServerSecurityAlertPolicyClientAPI = (*synapse.WorkspaceManagedSQLServerSecurityAlertPolicyClient)(nil)
+
+// WorkspaceManagedSQLServerVulnerabilityAssessmentsClientAPI contains the set of methods on the WorkspaceManagedSQLServerVulnerabilityAssessmentsClient type.
+type WorkspaceManagedSQLServerVulnerabilityAssessmentsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, parameters synapse.ServerVulnerabilityAssessment) (result synapse.ServerVulnerabilityAssessment, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.ServerVulnerabilityAssessment, err error)
+	List(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.ServerVulnerabilityAssessmentListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.ServerVulnerabilityAssessmentListResultIterator, err error)
+}
+
+var _ WorkspaceManagedSQLServerVulnerabilityAssessmentsClientAPI = (*synapse.WorkspaceManagedSQLServerVulnerabilityAssessmentsClient)(nil)
+
+// WorkspaceManagedSQLServerUsagesClientAPI contains the set of methods on the WorkspaceManagedSQLServerUsagesClient type.
+type WorkspaceManagedSQLServerUsagesClientAPI interface {
+	List(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.ServerUsageListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.ServerUsageListResultIterator, err error)
+}
+
+var _ WorkspaceManagedSQLServerUsagesClientAPI = (*synapse.WorkspaceManagedSQLServerUsagesClient)(nil)
+
+// WorkspaceManagedSQLServerRecoverableSqlpoolsClientAPI contains the set of methods on the WorkspaceManagedSQLServerRecoverableSqlpoolsClient type.
+type WorkspaceManagedSQLServerRecoverableSqlpoolsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLComputeName string) (result synapse.RecoverableSQLPool, err error)
+	List(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.RecoverableSQLPoolListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.RecoverableSQLPoolListResultIterator, err error)
+}
+
+var _ WorkspaceManagedSQLServerRecoverableSqlpoolsClientAPI = (*synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient)(nil)
+
+// KeysClientAPI contains the set of methods on the KeysClient type.
+type KeysClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, keyName string, keyProperties synapse.Key) (result synapse.Key, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, keyName string) (result synapse.Key, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, keyName string) (result synapse.Key, err error)
+	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.KeyInfoListResultPage, err error)
+	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.KeyInfoListResultIterator, err error)
+}
+
+var _ KeysClientAPI = (*synapse.KeysClient)(nil)

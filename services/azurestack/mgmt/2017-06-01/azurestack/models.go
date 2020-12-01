@@ -397,8 +397,11 @@ func (page CustomerSubscriptionListPage) Values() []CustomerSubscription {
 }
 
 // Creates a new instance of the CustomerSubscriptionListPage type.
-func NewCustomerSubscriptionListPage(getNextPage func(context.Context, CustomerSubscriptionList) (CustomerSubscriptionList, error)) CustomerSubscriptionListPage {
-	return CustomerSubscriptionListPage{fn: getNextPage}
+func NewCustomerSubscriptionListPage(cur CustomerSubscriptionList, getNextPage func(context.Context, CustomerSubscriptionList) (CustomerSubscriptionList, error)) CustomerSubscriptionListPage {
+	return CustomerSubscriptionListPage{
+		fn:  getNextPage,
+		csl: cur,
+	}
 }
 
 // CustomerSubscriptionProperties customer subscription properties.
@@ -823,8 +826,11 @@ func (page OperationListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListPage type.
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return OperationListPage{fn: getNextPage}
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // OsDiskImage OS disk image.
@@ -1082,8 +1088,11 @@ func (page ProductListPage) Values() []Product {
 }
 
 // Creates a new instance of the ProductListPage type.
-func NewProductListPage(getNextPage func(context.Context, ProductList) (ProductList, error)) ProductListPage {
-	return ProductListPage{fn: getNextPage}
+func NewProductListPage(cur ProductList, getNextPage func(context.Context, ProductList) (ProductList, error)) ProductListPage {
+	return ProductListPage{
+		fn: getNextPage,
+		pl: cur,
+	}
 }
 
 // ProductLog product action log.
@@ -1426,8 +1435,11 @@ func (page RegistrationListPage) Values() []Registration {
 }
 
 // Creates a new instance of the RegistrationListPage type.
-func NewRegistrationListPage(getNextPage func(context.Context, RegistrationList) (RegistrationList, error)) RegistrationListPage {
-	return RegistrationListPage{fn: getNextPage}
+func NewRegistrationListPage(cur RegistrationList, getNextPage func(context.Context, RegistrationList) (RegistrationList, error)) RegistrationListPage {
+	return RegistrationListPage{
+		fn: getNextPage,
+		rl: cur,
+	}
 }
 
 // RegistrationParameter registration resource

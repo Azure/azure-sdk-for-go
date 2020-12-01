@@ -46,6 +46,7 @@ func NewSingleSignOnConfigurationsClientWithBaseURI(baseURI string, subscription
 // Parameters:
 // resourceGroupName - the name of the resource group to which the Datadog resource belongs.
 // monitorName - monitor resource name
+// configurationName - configuration name
 func (client SingleSignOnConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, body *SingleSignOnResource) (result SingleSignOnConfigurationsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SingleSignOnConfigurationsClient.CreateOrUpdate")
@@ -130,6 +131,7 @@ func (client SingleSignOnConfigurationsClient) CreateOrUpdateResponder(resp *htt
 // Parameters:
 // resourceGroupName - the name of the resource group to which the Datadog resource belongs.
 // monitorName - monitor resource name
+// configurationName - configuration name
 func (client SingleSignOnConfigurationsClient) Get(ctx context.Context, resourceGroupName string, monitorName string, configurationName string) (result SingleSignOnResource, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SingleSignOnConfigurationsClient.Get")

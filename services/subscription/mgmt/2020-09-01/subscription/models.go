@@ -80,8 +80,8 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// ErrorResponseBody error response indicates that the service is not able to process the incoming request. The
-// reason is provided in the error message.
+// ErrorResponseBody error response indicates that the service is not able to process the incoming request.
+// The reason is provided in the error message.
 type ErrorResponseBody struct {
 	// Error - The details of the error.
 	Error *ErrorResponse `json:"error,omitempty"`
@@ -239,8 +239,11 @@ func (page ListResultPage) Values() []Model {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // Location location information.
@@ -364,6 +367,8 @@ type PutAliasRequestProperties struct {
 	BillingScope *string `json:"billingScope,omitempty"`
 	// SubscriptionID - This parameter can be used to create alias for existing subscription Id
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	// ResellerID - Reseller ID, basically MPN Id
+	ResellerID *string `json:"resellerId,omitempty"`
 }
 
 // PutAliasResponse subscription Information with the alias.
@@ -572,6 +577,9 @@ func (page TenantListResultPage) Values() []TenantIDDescription {
 }
 
 // Creates a new instance of the TenantListResultPage type.
-func NewTenantListResultPage(getNextPage func(context.Context, TenantListResult) (TenantListResult, error)) TenantListResultPage {
-	return TenantListResultPage{fn: getNextPage}
+func NewTenantListResultPage(cur TenantListResult, getNextPage func(context.Context, TenantListResult) (TenantListResult, error)) TenantListResultPage {
+	return TenantListResultPage{
+		fn:  getNextPage,
+		tlr: cur,
+	}
 }

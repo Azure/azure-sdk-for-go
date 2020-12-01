@@ -507,8 +507,11 @@ func (page ApplicationDefinitionListResultPage) Values() []ApplicationDefinition
 }
 
 // Creates a new instance of the ApplicationDefinitionListResultPage type.
-func NewApplicationDefinitionListResultPage(getNextPage func(context.Context, ApplicationDefinitionListResult) (ApplicationDefinitionListResult, error)) ApplicationDefinitionListResultPage {
-	return ApplicationDefinitionListResultPage{fn: getNextPage}
+func NewApplicationDefinitionListResultPage(cur ApplicationDefinitionListResult, getNextPage func(context.Context, ApplicationDefinitionListResult) (ApplicationDefinitionListResult, error)) ApplicationDefinitionListResultPage {
+	return ApplicationDefinitionListResultPage{
+		fn:   getNextPage,
+		adlr: cur,
+	}
 }
 
 // ApplicationDefinitionProperties the managed application definition properties.
@@ -533,8 +536,8 @@ type ApplicationDefinitionProperties struct {
 	CreateUIDefinition interface{} `json:"createUiDefinition,omitempty"`
 }
 
-// ApplicationDefinitionsCreateOrUpdateByIDFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ApplicationDefinitionsCreateOrUpdateByIDFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type ApplicationDefinitionsCreateOrUpdateByIDFuture struct {
 	azure.Future
 }
@@ -789,8 +792,11 @@ func (page ApplicationListResultPage) Values() []Application {
 }
 
 // Creates a new instance of the ApplicationListResultPage type.
-func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
-	return ApplicationListResultPage{fn: getNextPage}
+func NewApplicationListResultPage(cur ApplicationListResult, getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
+	return ApplicationListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // ApplicationPatchable information about managed application.
@@ -1068,8 +1074,8 @@ func (future *ApplicationsCreateOrUpdateByIDFuture) Result(client ApplicationsCl
 	return
 }
 
-// ApplicationsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ApplicationsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ApplicationsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -1143,8 +1149,8 @@ func (future *ApplicationsDeleteFuture) Result(client ApplicationsClient) (ar au
 	return
 }
 
-// ErrorResponse error response indicates managed application is not able to process the incoming request. The
-// reason is provided in the error message.
+// ErrorResponse error response indicates managed application is not able to process the incoming request.
+// The reason is provided in the error message.
 type ErrorResponse struct {
 	// HTTPStatus - Http status code.
 	HTTPStatus *string `json:"httpStatus,omitempty"`

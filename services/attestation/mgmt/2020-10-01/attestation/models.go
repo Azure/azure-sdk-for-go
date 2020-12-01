@@ -292,8 +292,8 @@ func (plr ProviderListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not have
-// tags and a location
+// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
+// have tags and a location
 type ProxyResource struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -338,7 +338,8 @@ func (scp ServiceCreationParams) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ServiceCreationSpecificParams client supplied parameters used to create a new attestation service instance.
+// ServiceCreationSpecificParams client supplied parameters used to create a new attestation service
+// instance.
 type ServiceCreationSpecificParams struct {
 	// PolicySigningCertificates - JSON Web Key Set defining a set of X.509 Certificates that will represent the parent certificate for the signing certificate used for policy operations
 	PolicySigningCertificates *JSONWebKeySet `json:"policySigningCertificates,omitempty"`
@@ -385,8 +386,8 @@ type SystemData struct {
 	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
 }
 
-// TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource which
-// has 'tags' and a 'location'
+// TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
+// which has 'tags' and a 'location'
 type TrackedResource struct {
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`

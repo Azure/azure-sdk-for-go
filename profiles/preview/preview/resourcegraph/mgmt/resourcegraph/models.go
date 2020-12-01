@@ -121,14 +121,14 @@ func NewGraphQueryClientWithBaseURI(baseURI string, subscriptionID string) Graph
 func NewGraphQueryListResultIterator(page GraphQueryListResultPage) GraphQueryListResultIterator {
 	return original.NewGraphQueryListResultIterator(page)
 }
-func NewGraphQueryListResultPage(getNextPage func(context.Context, GraphQueryListResult) (GraphQueryListResult, error)) GraphQueryListResultPage {
-	return original.NewGraphQueryListResultPage(getNextPage)
+func NewGraphQueryListResultPage(cur GraphQueryListResult, getNextPage func(context.Context, GraphQueryListResult) (GraphQueryListResult, error)) GraphQueryListResultPage {
+	return original.NewGraphQueryListResultPage(cur, getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

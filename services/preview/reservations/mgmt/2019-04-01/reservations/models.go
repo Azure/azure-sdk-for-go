@@ -115,6 +115,17 @@ type AppliedReservationsProperties struct {
 	ReservationOrderIds *AppliedReservationList `json:"reservationOrderIds,omitempty"`
 }
 
+// AvailableScopeRequest ...
+type AvailableScopeRequest struct {
+	Properties *AvailableScopeRequestProperties `json:"properties,omitempty"`
+}
+
+// AvailableScopeRequestProperties list of scopes for which availability should be checked
+type AvailableScopeRequestProperties struct {
+	// Scopes - Scopes to be checked for availability
+	Scopes *[]string `json:"scopes,omitempty"`
+}
+
 // CalculatePriceResponse ...
 type CalculatePriceResponse struct {
 	autorest.Response `json:"-"`
@@ -138,8 +149,8 @@ type CalculatePriceResponseProperties struct {
 	PaymentSchedule      *[]PaymentDetail                                      `json:"paymentSchedule,omitempty"`
 }
 
-// CalculatePriceResponsePropertiesBillingCurrencyTotal currency and amount that customer will be charged in
-// customer's local currency. Tax is not included.
+// CalculatePriceResponsePropertiesBillingCurrencyTotal currency and amount that customer will be charged
+// in customer's local currency. Tax is not included.
 type CalculatePriceResponsePropertiesBillingCurrencyTotal struct {
 	CurrencyCode *string  `json:"currencyCode,omitempty"`
 	Amount       *float64 `json:"amount,omitempty"`
@@ -356,8 +367,11 @@ func (page ListPage) Values() []Response {
 }
 
 // Creates a new instance of the ListPage type.
-func NewListPage(getNextPage func(context.Context, List) (List, error)) ListPage {
-	return ListPage{fn: getNextPage}
+func NewListPage(cur List, getNextPage func(context.Context, List) (List, error)) ListPage {
+	return ListPage{
+		fn: getNextPage,
+		l:  cur,
+	}
 }
 
 // ListResponse ...
@@ -577,8 +591,11 @@ func (page OperationListPage) Values() []OperationResponse {
 }
 
 // Creates a new instance of the OperationListPage type.
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return OperationListPage{fn: getNextPage}
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // OperationResponse ...
@@ -750,8 +767,11 @@ func (page OrderListPage) Values() []OrderResponse {
 }
 
 // Creates a new instance of the OrderListPage type.
-func NewOrderListPage(getNextPage func(context.Context, OrderList) (OrderList, error)) OrderListPage {
-	return OrderListPage{fn: getNextPage}
+func NewOrderListPage(cur OrderList, getNextPage func(context.Context, OrderList) (OrderList, error)) OrderListPage {
+	return OrderListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // OrderProperties ...
@@ -775,7 +795,8 @@ type OrderProperties struct {
 	ReservationsProperty *[]Response                  `json:"reservations,omitempty"`
 }
 
-// OrderPurchaseFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// OrderPurchaseFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type OrderPurchaseFuture struct {
 	azure.Future
 }
@@ -976,7 +997,7 @@ type Properties struct {
 
 // PropertiesType ...
 type PropertiesType struct {
-	// ReservedResourceType - Possible values include: 'VirtualMachines', 'SQLDatabases', 'SuseLinux', 'CosmosDb', 'RedHat', 'SQLDataWarehouse', 'VMwareCloudSimple', 'RedHatOsa'
+	// ReservedResourceType - Possible values include: 'VirtualMachines', 'SQLDatabases', 'SuseLinux', 'CosmosDb', 'RedHat', 'SQLDataWarehouse', 'VMwareCloudSimple', 'RedHatOsa', 'Databricks', 'AppService', 'ManagedDisk', 'BlockBlob', 'RedisCache', 'AzureDataExplorer', 'MySQL', 'MariaDb', 'PostgreSQL', 'DedicatedHost', 'SapHana', 'SQLAzureHybridBenefit'
 	ReservedResourceType ReservedResourceType `json:"reservedResourceType,omitempty"`
 	// InstanceFlexibility - Possible values include: 'On', 'Off'
 	InstanceFlexibility InstanceFlexibility `json:"instanceFlexibility,omitempty"`
@@ -1145,7 +1166,7 @@ func (pr *PurchaseRequest) UnmarshalJSON(body []byte) error {
 
 // PurchaseRequestProperties ...
 type PurchaseRequestProperties struct {
-	// ReservedResourceType - Possible values include: 'VirtualMachines', 'SQLDatabases', 'SuseLinux', 'CosmosDb', 'RedHat', 'SQLDataWarehouse', 'VMwareCloudSimple', 'RedHatOsa'
+	// ReservedResourceType - Possible values include: 'VirtualMachines', 'SQLDatabases', 'SuseLinux', 'CosmosDb', 'RedHat', 'SQLDataWarehouse', 'VMwareCloudSimple', 'RedHatOsa', 'Databricks', 'AppService', 'ManagedDisk', 'BlockBlob', 'RedisCache', 'AzureDataExplorer', 'MySQL', 'MariaDb', 'PostgreSQL', 'DedicatedHost', 'SapHana', 'SQLAzureHybridBenefit'
 	ReservedResourceType ReservedResourceType `json:"reservedResourceType,omitempty"`
 	BillingScopeID       *string              `json:"billingScopeId,omitempty"`
 	// Term - Possible values include: 'P1Y', 'P3Y'
@@ -1163,8 +1184,8 @@ type PurchaseRequestProperties struct {
 	ReservedResourceProperties *PurchaseRequestPropertiesReservedResourceProperties `json:"reservedResourceProperties,omitempty"`
 }
 
-// PurchaseRequestPropertiesReservedResourceProperties properties specific to each reserved resource type. Not
-// required if not applicable.
+// PurchaseRequestPropertiesReservedResourceProperties properties specific to each reserved resource type.
+// Not required if not applicable.
 type PurchaseRequestPropertiesReservedResourceProperties struct {
 	// InstanceFlexibility - Possible values include: 'On', 'Off'
 	InstanceFlexibility InstanceFlexibility `json:"instanceFlexibility,omitempty"`
@@ -1179,22 +1200,22 @@ type RenewPropertiesResponse struct {
 	BillingCurrencyTotal *RenewPropertiesResponseBillingCurrencyTotal `json:"billingCurrencyTotal,omitempty"`
 }
 
-// RenewPropertiesResponseBillingCurrencyTotal currency and amount that customer will be charged in customer's
-// local currency for renewal purchase. Tax is not included.
+// RenewPropertiesResponseBillingCurrencyTotal currency and amount that customer will be charged in
+// customer's local currency for renewal purchase. Tax is not included.
 type RenewPropertiesResponseBillingCurrencyTotal struct {
 	CurrencyCode *string  `json:"currencyCode,omitempty"`
 	Amount       *float64 `json:"amount,omitempty"`
 }
 
-// RenewPropertiesResponsePricingCurrencyTotal amount that Microsoft uses for record. Used during refund for
-// calculating refund limit. Tax is not included. This is locked price 30 days before expiry.
+// RenewPropertiesResponsePricingCurrencyTotal amount that Microsoft uses for record. Used during refund
+// for calculating refund limit. Tax is not included. This is locked price 30 days before expiry.
 type RenewPropertiesResponsePricingCurrencyTotal struct {
 	CurrencyCode *string  `json:"currencyCode,omitempty"`
 	Amount       *float64 `json:"amount,omitempty"`
 }
 
-// ReservationAvailableScopesFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ReservationAvailableScopesFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ReservationAvailableScopesFuture struct {
 	azure.Future
 }
@@ -1222,7 +1243,8 @@ func (future *ReservationAvailableScopesFuture) Result(client Client) (p Propert
 	return
 }
 
-// ReservationMergeFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ReservationMergeFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ReservationMergeFuture struct {
 	azure.Future
 }

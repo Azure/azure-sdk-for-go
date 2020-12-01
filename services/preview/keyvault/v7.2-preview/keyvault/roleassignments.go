@@ -121,7 +121,6 @@ func (client RoleAssignmentsClient) CreateSender(req *http.Request) (*http.Respo
 func (client RoleAssignmentsClient) CreateResponder(resp *http.Response) (result RoleAssignment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -201,7 +200,6 @@ func (client RoleAssignmentsClient) DeleteSender(req *http.Request) (*http.Respo
 func (client RoleAssignmentsClient) DeleteResponder(resp *http.Response) (result RoleAssignment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -281,7 +279,6 @@ func (client RoleAssignmentsClient) GetSender(req *http.Request) (*http.Response
 func (client RoleAssignmentsClient) GetResponder(resp *http.Response) (result RoleAssignment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -325,6 +322,9 @@ func (client RoleAssignmentsClient) ListForScope(ctx context.Context, vaultBaseU
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.RoleAssignmentsClient", "ListForScope", resp, "Failure responding to request")
 	}
+	if result.ralr.hasNextLink() && result.ralr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -366,7 +366,6 @@ func (client RoleAssignmentsClient) ListForScopeSender(req *http.Request) (*http
 func (client RoleAssignmentsClient) ListForScopeResponder(resp *http.Response) (result RoleAssignmentListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

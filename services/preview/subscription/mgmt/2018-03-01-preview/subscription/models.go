@@ -81,8 +81,8 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// FactoryCreateSubscriptionInEnrollmentAccountFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// FactoryCreateSubscriptionInEnrollmentAccountFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type FactoryCreateSubscriptionInEnrollmentAccountFuture struct {
 	azure.Future
 }
@@ -262,8 +262,11 @@ func (page ListResultPage) Values() []Model {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // Location location information.
@@ -517,6 +520,9 @@ func (page TenantListResultPage) Values() []TenantIDDescription {
 }
 
 // Creates a new instance of the TenantListResultPage type.
-func NewTenantListResultPage(getNextPage func(context.Context, TenantListResult) (TenantListResult, error)) TenantListResultPage {
-	return TenantListResultPage{fn: getNextPage}
+func NewTenantListResultPage(cur TenantListResult, getNextPage func(context.Context, TenantListResult) (TenantListResult, error)) TenantListResultPage {
+	return TenantListResultPage{
+		fn:  getNextPage,
+		tlr: cur,
+	}
 }

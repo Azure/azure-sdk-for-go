@@ -199,8 +199,8 @@ func NewBotConnectionClientWithBaseURI(baseURI string, subscriptionID string) Bo
 func NewBotResponseListIterator(page BotResponseListPage) BotResponseListIterator {
 	return original.NewBotResponseListIterator(page)
 }
-func NewBotResponseListPage(getNextPage func(context.Context, BotResponseList) (BotResponseList, error)) BotResponseListPage {
-	return original.NewBotResponseListPage(getNextPage)
+func NewBotResponseListPage(cur BotResponseList, getNextPage func(context.Context, BotResponseList) (BotResponseList, error)) BotResponseListPage {
+	return original.NewBotResponseListPage(cur, getNextPage)
 }
 func NewBotsClient(subscriptionID string) BotsClient {
 	return original.NewBotsClient(subscriptionID)
@@ -211,8 +211,8 @@ func NewBotsClientWithBaseURI(baseURI string, subscriptionID string) BotsClient 
 func NewChannelResponseListIterator(page ChannelResponseListPage) ChannelResponseListIterator {
 	return original.NewChannelResponseListIterator(page)
 }
-func NewChannelResponseListPage(getNextPage func(context.Context, ChannelResponseList) (ChannelResponseList, error)) ChannelResponseListPage {
-	return original.NewChannelResponseListPage(getNextPage)
+func NewChannelResponseListPage(cur ChannelResponseList, getNextPage func(context.Context, ChannelResponseList) (ChannelResponseList, error)) ChannelResponseListPage {
+	return original.NewChannelResponseListPage(cur, getNextPage)
 }
 func NewChannelsClient(subscriptionID string) ChannelsClient {
 	return original.NewChannelsClient(subscriptionID)
@@ -223,14 +223,14 @@ func NewChannelsClientWithBaseURI(baseURI string, subscriptionID string) Channel
 func NewConnectionSettingResponseListIterator(page ConnectionSettingResponseListPage) ConnectionSettingResponseListIterator {
 	return original.NewConnectionSettingResponseListIterator(page)
 }
-func NewConnectionSettingResponseListPage(getNextPage func(context.Context, ConnectionSettingResponseList) (ConnectionSettingResponseList, error)) ConnectionSettingResponseListPage {
-	return original.NewConnectionSettingResponseListPage(getNextPage)
+func NewConnectionSettingResponseListPage(cur ConnectionSettingResponseList, getNextPage func(context.Context, ConnectionSettingResponseList) (ConnectionSettingResponseList, error)) ConnectionSettingResponseListPage {
+	return original.NewConnectionSettingResponseListPage(cur, getNextPage)
 }
 func NewEnterpriseChannelResponseListIterator(page EnterpriseChannelResponseListPage) EnterpriseChannelResponseListIterator {
 	return original.NewEnterpriseChannelResponseListIterator(page)
 }
-func NewEnterpriseChannelResponseListPage(getNextPage func(context.Context, EnterpriseChannelResponseList) (EnterpriseChannelResponseList, error)) EnterpriseChannelResponseListPage {
-	return original.NewEnterpriseChannelResponseListPage(getNextPage)
+func NewEnterpriseChannelResponseListPage(cur EnterpriseChannelResponseList, getNextPage func(context.Context, EnterpriseChannelResponseList) (EnterpriseChannelResponseList, error)) EnterpriseChannelResponseListPage {
+	return original.NewEnterpriseChannelResponseListPage(cur, getNextPage)
 }
 func NewEnterpriseChannelsClient(subscriptionID string) EnterpriseChannelsClient {
 	return original.NewEnterpriseChannelsClient(subscriptionID)
@@ -241,8 +241,8 @@ func NewEnterpriseChannelsClientWithBaseURI(baseURI string, subscriptionID strin
 func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
 	return original.NewOperationEntityListResultIterator(page)
 }
-func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
-	return original.NewOperationEntityListResultPage(getNextPage)
+func NewOperationEntityListResultPage(cur OperationEntityListResult, getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
+	return original.NewOperationEntityListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

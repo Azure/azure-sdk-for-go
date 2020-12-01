@@ -146,8 +146,8 @@ func (future *AccessControlRecordsCreateOrUpdateFuture) Result(client AccessCont
 	return
 }
 
-// AccessControlRecordsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// AccessControlRecordsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type AccessControlRecordsDeleteFuture struct {
 	azure.Future
 }
@@ -417,8 +417,11 @@ func (page AlertListPage) Values() []Alert {
 }
 
 // Creates a new instance of the AlertListPage type.
-func NewAlertListPage(getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
-	return AlertListPage{fn: getNextPage}
+func NewAlertListPage(cur AlertList, getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
+	return AlertListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // AlertProperties properties of alert
@@ -596,10 +599,10 @@ type AlertSource struct {
 	AlertSourceType AlertSourceType `json:"alertSourceType,omitempty"`
 }
 
-// AsymmetricEncryptedSecret this class can be used as the Type for any secret entity represented as Password,
-// CertThumbprint, Algorithm. This class is intended to be used when the secret is encrypted with an asymmetric
-// key pair. The encryptionAlgorithm field is mainly for future usage to potentially allow different entities
-// encrypted using different algorithms.
+// AsymmetricEncryptedSecret this class can be used as the Type for any secret entity represented as
+// Password, CertThumbprint, Algorithm. This class is intended to be used when the secret is encrypted with
+// an asymmetric key pair. The encryptionAlgorithm field is mainly for future usage to potentially allow
+// different entities encrypted using different algorithms.
 type AsymmetricEncryptedSecret struct {
 	// Value - The value of the secret itself. If the secret is in plaintext then EncryptionAlgorithm will be none and EncryptionCertThumbprint will be null.
 	Value *string `json:"value,omitempty"`
@@ -628,11 +631,12 @@ type AvailableProviderOperation struct {
 	Properties interface{} `json:"properties,omitempty"`
 }
 
-// AvailableProviderOperationDisplay contains the localized display information for this particular operation /
-// action.
+// AvailableProviderOperationDisplay contains the localized display information for this particular
+// operation / action.
 // These value will be used by several clients for
 // (1) custom role definitions for RBAC;
-// (2) complex query filters for the event service; and (3) audit history / records for management operations.
+// (2) complex query filters for the event service; and (3) audit history / records for management
+// operations.
 type AvailableProviderOperationDisplay struct {
 	// Provider - Gets or sets Provider
 	// The localized friendly form of the resource provider name – it is expected to also include the publisher/company responsible.
@@ -652,7 +656,8 @@ type AvailableProviderOperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// AvailableProviderOperations class for set of operations used for discovery of available provider operations.
+// AvailableProviderOperations class for set of operations used for discovery of available provider
+// operations.
 type AvailableProviderOperations struct {
 	autorest.Response `json:"-"`
 	// Value - The value.
@@ -805,8 +810,11 @@ func (page AvailableProviderOperationsPage) Values() []AvailableProviderOperatio
 }
 
 // Creates a new instance of the AvailableProviderOperationsPage type.
-func NewAvailableProviderOperationsPage(getNextPage func(context.Context, AvailableProviderOperations) (AvailableProviderOperations, error)) AvailableProviderOperationsPage {
-	return AvailableProviderOperationsPage{fn: getNextPage}
+func NewAvailableProviderOperationsPage(cur AvailableProviderOperations, getNextPage func(context.Context, AvailableProviderOperations) (AvailableProviderOperations, error)) AvailableProviderOperationsPage {
+	return AvailableProviderOperationsPage{
+		fn:  getNextPage,
+		apo: cur,
+	}
 }
 
 // Backup the backup.
@@ -1123,8 +1131,11 @@ func (page BackupListPage) Values() []Backup {
 }
 
 // Creates a new instance of the BackupListPage type.
-func NewBackupListPage(getNextPage func(context.Context, BackupList) (BackupList, error)) BackupListPage {
-	return BackupListPage{fn: getNextPage}
+func NewBackupListPage(cur BackupList, getNextPage func(context.Context, BackupList) (BackupList, error)) BackupListPage {
+	return BackupListPage{
+		fn: getNextPage,
+		bl: cur,
+	}
 }
 
 // BackupProperties class represents Backup properties
@@ -1262,8 +1273,8 @@ func (future *BackupScheduleGroupsCreateOrUpdateFuture) Result(client BackupSche
 	return
 }
 
-// BackupScheduleGroupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// BackupScheduleGroupsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type BackupScheduleGroupsDeleteFuture struct {
 	azure.Future
 }
@@ -1307,7 +1318,8 @@ func (future *BackupsCloneFuture) Result(client BackupsClient) (ar autorest.Resp
 	return
 }
 
-// BackupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// BackupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type BackupsDeleteFuture struct {
 	azure.Future
 }
@@ -1418,8 +1430,8 @@ func (cs *ChapSettings) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ChapSettingsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ChapSettingsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ChapSettingsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -1708,8 +1720,8 @@ func (future *DevicesCreateOrUpdateAlertSettingsFuture) Result(client DevicesCli
 	return
 }
 
-// DevicesCreateOrUpdateSecuritySettingsFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DevicesCreateOrUpdateSecuritySettingsFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type DevicesCreateOrUpdateSecuritySettingsFuture struct {
 	azure.Future
 }
@@ -1754,7 +1766,8 @@ func (future *DevicesDeactivateFuture) Result(client DevicesClient) (ar autorest
 	return
 }
 
-// DevicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DevicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DevicesDeleteFuture struct {
 	azure.Future
 }
@@ -1799,7 +1812,8 @@ func (future *DevicesDownloadUpdatesFuture) Result(client DevicesClient) (ar aut
 	return
 }
 
-// DevicesFailoverFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DevicesFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DevicesFailoverFuture struct {
 	azure.Future
 }
@@ -2106,8 +2120,8 @@ func (future *FileServersBackupNowFuture) Result(client FileServersClient) (ar a
 	return
 }
 
-// FileServersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// FileServersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type FileServersCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -2282,8 +2296,8 @@ func (fsp FileShareProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// FileSharesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// FileSharesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type FileSharesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -2311,7 +2325,8 @@ func (future *FileSharesCreateOrUpdateFuture) Result(client FileSharesClient) (f
 	return
 }
 
-// FileSharesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// FileSharesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type FileSharesDeleteFuture struct {
 	azure.Future
 }
@@ -2467,8 +2482,8 @@ func (idp ISCSIDiskProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// IscsiDisksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// IscsiDisksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type IscsiDisksCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -2496,7 +2511,8 @@ func (future *IscsiDisksCreateOrUpdateFuture) Result(client IscsiDisksClient) (I
 	return
 }
 
-// IscsiDisksDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// IscsiDisksDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type IscsiDisksDeleteFuture struct {
 	azure.Future
 }
@@ -2635,8 +2651,8 @@ func (future *IscsiServersBackupNowFuture) Result(client IscsiServersClient) (ar
 	return
 }
 
-// IscsiServersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// IscsiServersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type IscsiServersCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -3018,8 +3034,11 @@ func (page JobListPage) Values() []Job {
 }
 
 // Creates a new instance of the JobListPage type.
-func NewJobListPage(getNextPage func(context.Context, JobList) (JobList, error)) JobListPage {
-	return JobListPage{fn: getNextPage}
+func NewJobListPage(cur JobList, getNextPage func(context.Context, JobList) (JobList, error)) JobListPage {
+	return JobListPage{
+		fn: getNextPage,
+		jl: cur,
+	}
 }
 
 // JobProperties properties for the job
@@ -3354,8 +3373,8 @@ type Message struct {
 	Value    *string `json:"value,omitempty"`
 }
 
-// MetricAvailablity metric availability specifies the time grain (aggregation interval or frequency) and the
-// retention period for that time grain
+// MetricAvailablity metric availability specifies the time grain (aggregation interval or frequency) and
+// the retention period for that time grain
 type MetricAvailablity struct {
 	// TimeGrain - The time grain, specifies the aggregation interval for the metric.
 	TimeGrain *string `json:"timeGrain,omitempty"`
@@ -3818,8 +3837,8 @@ type StorageAccountCredentialProperties struct {
 	AccessKey *AsymmetricEncryptedSecret `json:"accessKey,omitempty"`
 }
 
-// StorageAccountCredentialsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// StorageAccountCredentialsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type StorageAccountCredentialsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -4013,9 +4032,9 @@ func (future *StorageDomainsDeleteFuture) Result(client StorageDomainsClient) (a
 }
 
 // SymmetricEncryptedSecret this class can be used as the Type for any secret entity represented as Value,
-// ValueCertificateThumbprint, EncryptionAlgorithm. In this case, "Value" is a secret and the "valueThumbprint"
-// represents the certificate thumbprint of the value. The algorithm field is mainly for future usage to
-// potentially allow different entities encrypted using different algorithms.
+// ValueCertificateThumbprint, EncryptionAlgorithm. In this case, "Value" is a secret and the
+// "valueThumbprint" represents the certificate thumbprint of the value. The algorithm field is mainly for
+// future usage to potentially allow different entities encrypted using different algorithms.
 type SymmetricEncryptedSecret struct {
 	autorest.Response `json:"-"`
 	// Value - The value of the secret itself. If the secret is in plaintext or null then EncryptionAlgorithm will be none

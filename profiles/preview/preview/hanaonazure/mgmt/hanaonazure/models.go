@@ -154,8 +154,8 @@ func NewHanaInstancesClientWithBaseURI(baseURI string, subscriptionID string) Ha
 func NewHanaInstancesListResultIterator(page HanaInstancesListResultPage) HanaInstancesListResultIterator {
 	return original.NewHanaInstancesListResultIterator(page)
 }
-func NewHanaInstancesListResultPage(getNextPage func(context.Context, HanaInstancesListResult) (HanaInstancesListResult, error)) HanaInstancesListResultPage {
-	return original.NewHanaInstancesListResultPage(getNextPage)
+func NewHanaInstancesListResultPage(cur HanaInstancesListResult, getNextPage func(context.Context, HanaInstancesListResult) (HanaInstancesListResult, error)) HanaInstancesListResultPage {
+	return original.NewHanaInstancesListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -166,8 +166,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewSapMonitorListResultIterator(page SapMonitorListResultPage) SapMonitorListResultIterator {
 	return original.NewSapMonitorListResultIterator(page)
 }
-func NewSapMonitorListResultPage(getNextPage func(context.Context, SapMonitorListResult) (SapMonitorListResult, error)) SapMonitorListResultPage {
-	return original.NewSapMonitorListResultPage(getNextPage)
+func NewSapMonitorListResultPage(cur SapMonitorListResult, getNextPage func(context.Context, SapMonitorListResult) (SapMonitorListResult, error)) SapMonitorListResultPage {
+	return original.NewSapMonitorListResultPage(cur, getNextPage)
 }
 func NewSapMonitorsClient(subscriptionID string) SapMonitorsClient {
 	return original.NewSapMonitorsClient(subscriptionID)

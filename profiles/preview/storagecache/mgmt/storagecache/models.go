@@ -36,6 +36,15 @@ const (
 	SystemAssigned CacheIdentityType = original.SystemAssigned
 )
 
+type CreatedByType = original.CreatedByType
+
+const (
+	Application     CreatedByType = original.Application
+	Key             CreatedByType = original.Key
+	ManagedIdentity CreatedByType = original.ManagedIdentity
+	User            CreatedByType = original.User
+)
+
 type FirmwareStatusType = original.FirmwareStatusType
 
 const (
@@ -55,6 +64,18 @@ const (
 	Transitioning HealthStateType = original.Transitioning
 	Unknown       HealthStateType = original.Unknown
 	Upgrading     HealthStateType = original.Upgrading
+)
+
+type MetricAggregationType = original.MetricAggregationType
+
+const (
+	MetricAggregationTypeAverage      MetricAggregationType = original.MetricAggregationTypeAverage
+	MetricAggregationTypeCount        MetricAggregationType = original.MetricAggregationTypeCount
+	MetricAggregationTypeMaximum      MetricAggregationType = original.MetricAggregationTypeMaximum
+	MetricAggregationTypeMinimum      MetricAggregationType = original.MetricAggregationTypeMinimum
+	MetricAggregationTypeNone         MetricAggregationType = original.MetricAggregationTypeNone
+	MetricAggregationTypeNotSpecified MetricAggregationType = original.MetricAggregationTypeNotSpecified
+	MetricAggregationTypeTotal        MetricAggregationType = original.MetricAggregationTypeTotal
 )
 
 type ProvisioningStateType = original.ProvisioningStateType
@@ -89,6 +110,8 @@ type APIOperationDisplay = original.APIOperationDisplay
 type APIOperationListResult = original.APIOperationListResult
 type APIOperationListResultIterator = original.APIOperationListResultIterator
 type APIOperationListResultPage = original.APIOperationListResultPage
+type APIOperationProperties = original.APIOperationProperties
+type APIOperationPropertiesServiceSpecification = original.APIOperationPropertiesServiceSpecification
 type AscOperation = original.AscOperation
 type AscOperationsClient = original.AscOperationsClient
 type BaseClient = original.BaseClient
@@ -119,6 +142,8 @@ type CloudErrorBody = original.CloudErrorBody
 type ErrorResponse = original.ErrorResponse
 type KeyVaultKeyReference = original.KeyVaultKeyReference
 type KeyVaultKeyReferenceSourceVault = original.KeyVaultKeyReferenceSourceVault
+type MetricDimension = original.MetricDimension
+type MetricSpecification = original.MetricSpecification
 type NamespaceJunction = original.NamespaceJunction
 type Nfs3Target = original.Nfs3Target
 type Nfs3TargetProperties = original.Nfs3TargetProperties
@@ -141,6 +166,7 @@ type StorageTargetsDeleteFuture = original.StorageTargetsDeleteFuture
 type StorageTargetsResult = original.StorageTargetsResult
 type StorageTargetsResultIterator = original.StorageTargetsResultIterator
 type StorageTargetsResultPage = original.StorageTargetsResultPage
+type SystemData = original.SystemData
 type UnknownTarget = original.UnknownTarget
 type UnknownTargetProperties = original.UnknownTargetProperties
 type UsageModel = original.UsageModel
@@ -156,8 +182,8 @@ func New(subscriptionID string) BaseClient {
 func NewAPIOperationListResultIterator(page APIOperationListResultPage) APIOperationListResultIterator {
 	return original.NewAPIOperationListResultIterator(page)
 }
-func NewAPIOperationListResultPage(getNextPage func(context.Context, APIOperationListResult) (APIOperationListResult, error)) APIOperationListResultPage {
-	return original.NewAPIOperationListResultPage(getNextPage)
+func NewAPIOperationListResultPage(cur APIOperationListResult, getNextPage func(context.Context, APIOperationListResult) (APIOperationListResult, error)) APIOperationListResultPage {
+	return original.NewAPIOperationListResultPage(cur, getNextPage)
 }
 func NewAscOperationsClient(subscriptionID string) AscOperationsClient {
 	return original.NewAscOperationsClient(subscriptionID)
@@ -174,8 +200,8 @@ func NewCachesClientWithBaseURI(baseURI string, subscriptionID string) CachesCli
 func NewCachesListResultIterator(page CachesListResultPage) CachesListResultIterator {
 	return original.NewCachesListResultIterator(page)
 }
-func NewCachesListResultPage(getNextPage func(context.Context, CachesListResult) (CachesListResult, error)) CachesListResultPage {
-	return original.NewCachesListResultPage(getNextPage)
+func NewCachesListResultPage(cur CachesListResult, getNextPage func(context.Context, CachesListResult) (CachesListResult, error)) CachesListResultPage {
+	return original.NewCachesListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -186,8 +212,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewResourceSkusResultIterator(page ResourceSkusResultPage) ResourceSkusResultIterator {
 	return original.NewResourceSkusResultIterator(page)
 }
-func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
-	return original.NewResourceSkusResultPage(getNextPage)
+func NewResourceSkusResultPage(cur ResourceSkusResult, getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
+	return original.NewResourceSkusResultPage(cur, getNextPage)
 }
 func NewSkusClient(subscriptionID string) SkusClient {
 	return original.NewSkusClient(subscriptionID)
@@ -204,8 +230,8 @@ func NewStorageTargetsClientWithBaseURI(baseURI string, subscriptionID string) S
 func NewStorageTargetsResultIterator(page StorageTargetsResultPage) StorageTargetsResultIterator {
 	return original.NewStorageTargetsResultIterator(page)
 }
-func NewStorageTargetsResultPage(getNextPage func(context.Context, StorageTargetsResult) (StorageTargetsResult, error)) StorageTargetsResultPage {
-	return original.NewStorageTargetsResultPage(getNextPage)
+func NewStorageTargetsResultPage(cur StorageTargetsResult, getNextPage func(context.Context, StorageTargetsResult) (StorageTargetsResult, error)) StorageTargetsResultPage {
+	return original.NewStorageTargetsResultPage(cur, getNextPage)
 }
 func NewUsageModelsClient(subscriptionID string) UsageModelsClient {
 	return original.NewUsageModelsClient(subscriptionID)
@@ -216,8 +242,8 @@ func NewUsageModelsClientWithBaseURI(baseURI string, subscriptionID string) Usag
 func NewUsageModelsResultIterator(page UsageModelsResultPage) UsageModelsResultIterator {
 	return original.NewUsageModelsResultIterator(page)
 }
-func NewUsageModelsResultPage(getNextPage func(context.Context, UsageModelsResult) (UsageModelsResult, error)) UsageModelsResultPage {
-	return original.NewUsageModelsResultPage(getNextPage)
+func NewUsageModelsResultPage(cur UsageModelsResult, getNextPage func(context.Context, UsageModelsResult) (UsageModelsResult, error)) UsageModelsResultPage {
+	return original.NewUsageModelsResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
@@ -225,11 +251,17 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleCacheIdentityTypeValues() []CacheIdentityType {
 	return original.PossibleCacheIdentityTypeValues()
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
 func PossibleFirmwareStatusTypeValues() []FirmwareStatusType {
 	return original.PossibleFirmwareStatusTypeValues()
 }
 func PossibleHealthStateTypeValues() []HealthStateType {
 	return original.PossibleHealthStateTypeValues()
+}
+func PossibleMetricAggregationTypeValues() []MetricAggregationType {
+	return original.PossibleMetricAggregationTypeValues()
 }
 func PossibleProvisioningStateTypeValues() []ProvisioningStateType {
 	return original.PossibleProvisioningStateTypeValues()

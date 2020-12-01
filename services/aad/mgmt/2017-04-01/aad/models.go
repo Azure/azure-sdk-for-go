@@ -207,9 +207,9 @@ type DiagnosticSettingsResourceCollection struct {
 	Value *[]DiagnosticSettingsResource `json:"value,omitempty"`
 }
 
-// Display contains the localized display information for this particular operation / action. These value will
-// be used by several clients for (1) custom role definitions for RBAC; (2) complex query filters for the event
-// service; and (3) audit history / records for management operations.
+// Display contains the localized display information for this particular operation / action. These value
+// will be used by several clients for (1) custom role definitions for RBAC; (2) complex query filters for
+// the event service; and (3) audit history / records for management operations.
 type Display struct {
 	// Publisher - The publisher. The localized friendly form of the resource publisher name.
 	Publisher *string `json:"publisher,omitempty"`

@@ -31,48 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/azuredata/mgmt/2019-07-24-preview/azuredata"
 
-// AzureResource ...
-type AzureResource struct {
-	Etag     *string            `json:"etag,omitempty"`
-	ID       *string            `json:"id,omitempty"`
-	Kind     *string            `json:"kind,omitempty"`
-	Location *string            `json:"location,omitempty"`
-	Name     *string            `json:"name,omitempty"`
-	Sku      *ResourceSku       `json:"sku,omitempty"`
-	Tags     map[string]*string `json:"tags"`
-	Type     *string            `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AzureResource.
-func (ar AzureResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ar.Etag != nil {
-		objectMap["etag"] = ar.Etag
-	}
-	if ar.ID != nil {
-		objectMap["id"] = ar.ID
-	}
-	if ar.Kind != nil {
-		objectMap["kind"] = ar.Kind
-	}
-	if ar.Location != nil {
-		objectMap["location"] = ar.Location
-	}
-	if ar.Name != nil {
-		objectMap["name"] = ar.Name
-	}
-	if ar.Sku != nil {
-		objectMap["sku"] = ar.Sku
-	}
-	if ar.Tags != nil {
-		objectMap["tags"] = ar.Tags
-	}
-	if ar.Type != nil {
-		objectMap["type"] = ar.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // CloudError an error response from the Azure Data service.
 type CloudError struct {
 	// Error - null
@@ -94,12 +52,6 @@ type CloudErrorBody struct {
 // DataControllerProperties the data controller properties.
 type DataControllerProperties struct {
 	OnPremiseProperty *OnPremiseProperty `json:"onPremiseProperty,omitempty"`
-	// RequestType - Possible values include: 'Unknown', 'Handshake', 'UsageUpload'
-	RequestType       RequestType          `json:"requestType,omitempty"`
-	UploadRequest     *UsageUploadRequest  `json:"uploadRequest,omitempty"`
-	UploadResponse    *UsageUploadResponse `json:"uploadResponse,omitempty"`
-	HandshakeRequest  interface{}          `json:"handshakeRequest,omitempty"`
-	HandshakeResponse *HandshakeResponse   `json:"handshakeResponse,omitempty"`
 }
 
 // DataControllerResource data controller resource
@@ -214,10 +166,19 @@ func (dcr *DataControllerResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// HandshakeResponse ...
-type HandshakeResponse struct {
-	UsageUploadURL *string `json:"usageUploadUrl,omitempty"`
-	UsageResultURL *string `json:"usageResultUrl,omitempty"`
+// DataControllerUpdate used for updating a data controller resource.
+type DataControllerUpdate struct {
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for DataControllerUpdate.
+func (dcu DataControllerUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dcu.Tags != nil {
+		objectMap["tags"] = dcu.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // Identity identity for the resource.
@@ -443,8 +404,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // PageOfDataControllerResource ...
@@ -455,7 +419,8 @@ type PageOfDataControllerResource struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// PageOfDataControllerResourceIterator provides access to a complete listing of DataControllerResource values.
+// PageOfDataControllerResourceIterator provides access to a complete listing of DataControllerResource
+// values.
 type PageOfDataControllerResourceIterator struct {
 	i    int
 	page PageOfDataControllerResourcePage
@@ -598,8 +563,11 @@ func (page PageOfDataControllerResourcePage) Values() []DataControllerResource {
 }
 
 // Creates a new instance of the PageOfDataControllerResourcePage type.
-func NewPageOfDataControllerResourcePage(getNextPage func(context.Context, PageOfDataControllerResource) (PageOfDataControllerResource, error)) PageOfDataControllerResourcePage {
-	return PageOfDataControllerResourcePage{fn: getNextPage}
+func NewPageOfDataControllerResourcePage(cur PageOfDataControllerResource, getNextPage func(context.Context, PageOfDataControllerResource) (PageOfDataControllerResource, error)) PageOfDataControllerResourcePage {
+	return PageOfDataControllerResourcePage{
+		fn:    getNextPage,
+		podcr: cur,
+	}
 }
 
 // Plan plan for the resource.
@@ -880,8 +848,11 @@ func (page PostgresInstanceListResultPage) Values() []PostgresInstance {
 }
 
 // Creates a new instance of the PostgresInstanceListResultPage type.
-func NewPostgresInstanceListResultPage(getNextPage func(context.Context, PostgresInstanceListResult) (PostgresInstanceListResult, error)) PostgresInstanceListResultPage {
-	return PostgresInstanceListResultPage{fn: getNextPage}
+func NewPostgresInstanceListResultPage(cur PostgresInstanceListResult, getNextPage func(context.Context, PostgresInstanceListResult) (PostgresInstanceListResult, error)) PostgresInstanceListResultPage {
+	return PostgresInstanceListResultPage{
+		fn:   getNextPage,
+		pilr: cur,
+	}
 }
 
 // PostgresInstanceProperties postgres Instance properties.
@@ -932,7 +903,8 @@ type Resource struct {
 }
 
 // ResourceModelWithAllowedPropertySet the resource model definition containing the full set of allowed
-// properties for a resource. Except properties bag, there cannot be a top level property outside of this set.
+// properties for a resource. Except properties bag, there cannot be a top level property outside of this
+// set.
 type ResourceModelWithAllowedPropertySet struct {
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -1316,14 +1288,27 @@ func (page SQLManagedInstanceListResultPage) Values() []SQLManagedInstance {
 }
 
 // Creates a new instance of the SQLManagedInstanceListResultPage type.
-func NewSQLManagedInstanceListResultPage(getNextPage func(context.Context, SQLManagedInstanceListResult) (SQLManagedInstanceListResult, error)) SQLManagedInstanceListResultPage {
-	return SQLManagedInstanceListResultPage{fn: getNextPage}
+func NewSQLManagedInstanceListResultPage(cur SQLManagedInstanceListResult, getNextPage func(context.Context, SQLManagedInstanceListResult) (SQLManagedInstanceListResult, error)) SQLManagedInstanceListResultPage {
+	return SQLManagedInstanceListResultPage{
+		fn:    getNextPage,
+		smilr: cur,
+	}
 }
 
 // SQLManagedInstanceProperties properties of sqlManagedInstance.
 type SQLManagedInstanceProperties struct {
 	// DataControllerID - null
 	DataControllerID *string `json:"dataControllerId,omitempty"`
+	// InstanceEndpoint - The on premise instance endpoint
+	InstanceEndpoint *string `json:"instanceEndpoint,omitempty"`
+	// Admin - The instance admin user
+	Admin *string `json:"admin,omitempty"`
+	// StartTime - The instance start time
+	StartTime *string `json:"startTime,omitempty"`
+	// EndTime - The instance end time
+	EndTime *string `json:"endTime,omitempty"`
+	// VCore - The instance vCore
+	VCore *string `json:"vCore,omitempty"`
 }
 
 // SQLManagedInstanceUpdate an update to a SQL Managed Instance.
@@ -1678,8 +1663,11 @@ func (page SQLServerInstanceListResultPage) Values() []SQLServerInstance {
 }
 
 // Creates a new instance of the SQLServerInstanceListResultPage type.
-func NewSQLServerInstanceListResultPage(getNextPage func(context.Context, SQLServerInstanceListResult) (SQLServerInstanceListResult, error)) SQLServerInstanceListResultPage {
-	return SQLServerInstanceListResultPage{fn: getNextPage}
+func NewSQLServerInstanceListResultPage(cur SQLServerInstanceListResult, getNextPage func(context.Context, SQLServerInstanceListResult) (SQLServerInstanceListResult, error)) SQLServerInstanceListResultPage {
+	return SQLServerInstanceListResultPage{
+		fn:    getNextPage,
+		ssilr: cur,
+	}
 }
 
 // SQLServerInstanceProperties properties of SqlServerInstance.
@@ -1888,8 +1876,11 @@ func (page SQLServerListResultPage) Values() []SQLServer {
 }
 
 // Creates a new instance of the SQLServerListResultPage type.
-func NewSQLServerListResultPage(getNextPage func(context.Context, SQLServerListResult) (SQLServerListResult, error)) SQLServerListResultPage {
-	return SQLServerListResultPage{fn: getNextPage}
+func NewSQLServerListResultPage(cur SQLServerListResult, getNextPage func(context.Context, SQLServerListResult) (SQLServerListResult, error)) SQLServerListResultPage {
+	return SQLServerListResultPage{
+		fn:   getNextPage,
+		sslr: cur,
+	}
 }
 
 // SQLServerProperties the SQL server properties.
@@ -2171,8 +2162,11 @@ func (page SQLServerRegistrationListResultPage) Values() []SQLServerRegistration
 }
 
 // Creates a new instance of the SQLServerRegistrationListResultPage type.
-func NewSQLServerRegistrationListResultPage(getNextPage func(context.Context, SQLServerRegistrationListResult) (SQLServerRegistrationListResult, error)) SQLServerRegistrationListResultPage {
-	return SQLServerRegistrationListResultPage{fn: getNextPage}
+func NewSQLServerRegistrationListResultPage(cur SQLServerRegistrationListResult, getNextPage func(context.Context, SQLServerRegistrationListResult) (SQLServerRegistrationListResult, error)) SQLServerRegistrationListResultPage {
+	return SQLServerRegistrationListResultPage{
+		fn:    getNextPage,
+		ssrlr: cur,
+	}
 }
 
 // SQLServerRegistrationProperties the SQL server Registration properties.
@@ -2242,36 +2236,4 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 		objectMap["location"] = tr.Location
 	}
 	return json.Marshal(objectMap)
-}
-
-// UsageRecord ...
-type UsageRecord struct {
-	ID             *uuid.UUID `json:"id,omitempty"`
-	EventSeq       *int64     `json:"eventSeq,omitempty"`
-	EventID        *uuid.UUID `json:"eventId,omitempty"`
-	Namespace      *string    `json:"namespace,omitempty"`
-	Type           *string    `json:"type,omitempty"`
-	SubscriptionID *uuid.UUID `json:"subscriptionId,omitempty"`
-	ResourceGroup  *string    `json:"resourceGroup,omitempty"`
-	Name           *string    `json:"name,omitempty"`
-	Location       *string    `json:"location,omitempty"`
-	StartTime      *date.Time `json:"startTime,omitempty"`
-	EndTime        *date.Time `json:"endTime,omitempty"`
-	Quantity       *float64   `json:"quantity,omitempty"`
-	Tags           *string    `json:"tags,omitempty"`
-}
-
-// UsageUploadRequest ...
-type UsageUploadRequest struct {
-	ExportType    *string        `json:"exportType,omitempty"`
-	DataTimestamp *date.Time     `json:"dataTimestamp,omitempty"`
-	Data          *[]UsageRecord `json:"data,omitempty"`
-	Signature     *string        `json:"signature,omitempty"`
-}
-
-// UsageUploadResponse ...
-type UsageUploadResponse struct {
-	// UsageUploadStatus - Possible values include: 'UsageUploadStatusUnknown', 'UsageUploadStatusFailed', 'UsageUploadStatusPartialSuccess', 'UsageUploadStatusCompleted'
-	UsageUploadStatus UsageUploadStatus `json:"usageUploadStatus,omitempty"`
-	UsageWaterMark    *int64            `json:"usageWaterMark,omitempty"`
 }

@@ -487,8 +487,8 @@ func New(subscriptionID string) BaseClient {
 func NewApplicationGatewayListResultIterator(page ApplicationGatewayListResultPage) ApplicationGatewayListResultIterator {
 	return original.NewApplicationGatewayListResultIterator(page)
 }
-func NewApplicationGatewayListResultPage(getNextPage func(context.Context, ApplicationGatewayListResult) (ApplicationGatewayListResult, error)) ApplicationGatewayListResultPage {
-	return original.NewApplicationGatewayListResultPage(getNextPage)
+func NewApplicationGatewayListResultPage(cur ApplicationGatewayListResult, getNextPage func(context.Context, ApplicationGatewayListResult) (ApplicationGatewayListResult, error)) ApplicationGatewayListResultPage {
+	return original.NewApplicationGatewayListResultPage(cur, getNextPage)
 }
 func NewApplicationGatewaysClient(subscriptionID string) ApplicationGatewaysClient {
 	return original.NewApplicationGatewaysClient(subscriptionID)
@@ -499,8 +499,8 @@ func NewApplicationGatewaysClientWithBaseURI(baseURI string, subscriptionID stri
 func NewAuthorizationListResultIterator(page AuthorizationListResultPage) AuthorizationListResultIterator {
 	return original.NewAuthorizationListResultIterator(page)
 }
-func NewAuthorizationListResultPage(getNextPage func(context.Context, AuthorizationListResult) (AuthorizationListResult, error)) AuthorizationListResultPage {
-	return original.NewAuthorizationListResultPage(getNextPage)
+func NewAuthorizationListResultPage(cur AuthorizationListResult, getNextPage func(context.Context, AuthorizationListResult) (AuthorizationListResult, error)) AuthorizationListResultPage {
+	return original.NewAuthorizationListResultPage(cur, getNextPage)
 }
 func NewExpressRouteCircuitAuthorizationsClient(subscriptionID string) ExpressRouteCircuitAuthorizationsClient {
 	return original.NewExpressRouteCircuitAuthorizationsClient(subscriptionID)
@@ -511,14 +511,14 @@ func NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI string, subsc
 func NewExpressRouteCircuitListResultIterator(page ExpressRouteCircuitListResultPage) ExpressRouteCircuitListResultIterator {
 	return original.NewExpressRouteCircuitListResultIterator(page)
 }
-func NewExpressRouteCircuitListResultPage(getNextPage func(context.Context, ExpressRouteCircuitListResult) (ExpressRouteCircuitListResult, error)) ExpressRouteCircuitListResultPage {
-	return original.NewExpressRouteCircuitListResultPage(getNextPage)
+func NewExpressRouteCircuitListResultPage(cur ExpressRouteCircuitListResult, getNextPage func(context.Context, ExpressRouteCircuitListResult) (ExpressRouteCircuitListResult, error)) ExpressRouteCircuitListResultPage {
+	return original.NewExpressRouteCircuitListResultPage(cur, getNextPage)
 }
 func NewExpressRouteCircuitPeeringListResultIterator(page ExpressRouteCircuitPeeringListResultPage) ExpressRouteCircuitPeeringListResultIterator {
 	return original.NewExpressRouteCircuitPeeringListResultIterator(page)
 }
-func NewExpressRouteCircuitPeeringListResultPage(getNextPage func(context.Context, ExpressRouteCircuitPeeringListResult) (ExpressRouteCircuitPeeringListResult, error)) ExpressRouteCircuitPeeringListResultPage {
-	return original.NewExpressRouteCircuitPeeringListResultPage(getNextPage)
+func NewExpressRouteCircuitPeeringListResultPage(cur ExpressRouteCircuitPeeringListResult, getNextPage func(context.Context, ExpressRouteCircuitPeeringListResult) (ExpressRouteCircuitPeeringListResult, error)) ExpressRouteCircuitPeeringListResultPage {
+	return original.NewExpressRouteCircuitPeeringListResultPage(cur, getNextPage)
 }
 func NewExpressRouteCircuitPeeringsClient(subscriptionID string) ExpressRouteCircuitPeeringsClient {
 	return original.NewExpressRouteCircuitPeeringsClient(subscriptionID)
@@ -529,8 +529,8 @@ func NewExpressRouteCircuitPeeringsClientWithBaseURI(baseURI string, subscriptio
 func NewExpressRouteCircuitsArpTableListResultIterator(page ExpressRouteCircuitsArpTableListResultPage) ExpressRouteCircuitsArpTableListResultIterator {
 	return original.NewExpressRouteCircuitsArpTableListResultIterator(page)
 }
-func NewExpressRouteCircuitsArpTableListResultPage(getNextPage func(context.Context, ExpressRouteCircuitsArpTableListResult) (ExpressRouteCircuitsArpTableListResult, error)) ExpressRouteCircuitsArpTableListResultPage {
-	return original.NewExpressRouteCircuitsArpTableListResultPage(getNextPage)
+func NewExpressRouteCircuitsArpTableListResultPage(cur ExpressRouteCircuitsArpTableListResult, getNextPage func(context.Context, ExpressRouteCircuitsArpTableListResult) (ExpressRouteCircuitsArpTableListResult, error)) ExpressRouteCircuitsArpTableListResultPage {
+	return original.NewExpressRouteCircuitsArpTableListResultPage(cur, getNextPage)
 }
 func NewExpressRouteCircuitsClient(subscriptionID string) ExpressRouteCircuitsClient {
 	return original.NewExpressRouteCircuitsClient(subscriptionID)
@@ -541,20 +541,20 @@ func NewExpressRouteCircuitsClientWithBaseURI(baseURI string, subscriptionID str
 func NewExpressRouteCircuitsRoutesTableListResultIterator(page ExpressRouteCircuitsRoutesTableListResultPage) ExpressRouteCircuitsRoutesTableListResultIterator {
 	return original.NewExpressRouteCircuitsRoutesTableListResultIterator(page)
 }
-func NewExpressRouteCircuitsRoutesTableListResultPage(getNextPage func(context.Context, ExpressRouteCircuitsRoutesTableListResult) (ExpressRouteCircuitsRoutesTableListResult, error)) ExpressRouteCircuitsRoutesTableListResultPage {
-	return original.NewExpressRouteCircuitsRoutesTableListResultPage(getNextPage)
+func NewExpressRouteCircuitsRoutesTableListResultPage(cur ExpressRouteCircuitsRoutesTableListResult, getNextPage func(context.Context, ExpressRouteCircuitsRoutesTableListResult) (ExpressRouteCircuitsRoutesTableListResult, error)) ExpressRouteCircuitsRoutesTableListResultPage {
+	return original.NewExpressRouteCircuitsRoutesTableListResultPage(cur, getNextPage)
 }
 func NewExpressRouteCircuitsStatsListResultIterator(page ExpressRouteCircuitsStatsListResultPage) ExpressRouteCircuitsStatsListResultIterator {
 	return original.NewExpressRouteCircuitsStatsListResultIterator(page)
 }
-func NewExpressRouteCircuitsStatsListResultPage(getNextPage func(context.Context, ExpressRouteCircuitsStatsListResult) (ExpressRouteCircuitsStatsListResult, error)) ExpressRouteCircuitsStatsListResultPage {
-	return original.NewExpressRouteCircuitsStatsListResultPage(getNextPage)
+func NewExpressRouteCircuitsStatsListResultPage(cur ExpressRouteCircuitsStatsListResult, getNextPage func(context.Context, ExpressRouteCircuitsStatsListResult) (ExpressRouteCircuitsStatsListResult, error)) ExpressRouteCircuitsStatsListResultPage {
+	return original.NewExpressRouteCircuitsStatsListResultPage(cur, getNextPage)
 }
 func NewExpressRouteServiceProviderListResultIterator(page ExpressRouteServiceProviderListResultPage) ExpressRouteServiceProviderListResultIterator {
 	return original.NewExpressRouteServiceProviderListResultIterator(page)
 }
-func NewExpressRouteServiceProviderListResultPage(getNextPage func(context.Context, ExpressRouteServiceProviderListResult) (ExpressRouteServiceProviderListResult, error)) ExpressRouteServiceProviderListResultPage {
-	return original.NewExpressRouteServiceProviderListResultPage(getNextPage)
+func NewExpressRouteServiceProviderListResultPage(cur ExpressRouteServiceProviderListResult, getNextPage func(context.Context, ExpressRouteServiceProviderListResult) (ExpressRouteServiceProviderListResult, error)) ExpressRouteServiceProviderListResultPage {
+	return original.NewExpressRouteServiceProviderListResultPage(cur, getNextPage)
 }
 func NewExpressRouteServiceProvidersClient(subscriptionID string) ExpressRouteServiceProvidersClient {
 	return original.NewExpressRouteServiceProvidersClient(subscriptionID)
@@ -565,8 +565,8 @@ func NewExpressRouteServiceProvidersClientWithBaseURI(baseURI string, subscripti
 func NewInterfaceListResultIterator(page InterfaceListResultPage) InterfaceListResultIterator {
 	return original.NewInterfaceListResultIterator(page)
 }
-func NewInterfaceListResultPage(getNextPage func(context.Context, InterfaceListResult) (InterfaceListResult, error)) InterfaceListResultPage {
-	return original.NewInterfaceListResultPage(getNextPage)
+func NewInterfaceListResultPage(cur InterfaceListResult, getNextPage func(context.Context, InterfaceListResult) (InterfaceListResult, error)) InterfaceListResultPage {
+	return original.NewInterfaceListResultPage(cur, getNextPage)
 }
 func NewInterfacesClient(subscriptionID string) InterfacesClient {
 	return original.NewInterfacesClient(subscriptionID)
@@ -577,8 +577,8 @@ func NewInterfacesClientWithBaseURI(baseURI string, subscriptionID string) Inter
 func NewLoadBalancerListResultIterator(page LoadBalancerListResultPage) LoadBalancerListResultIterator {
 	return original.NewLoadBalancerListResultIterator(page)
 }
-func NewLoadBalancerListResultPage(getNextPage func(context.Context, LoadBalancerListResult) (LoadBalancerListResult, error)) LoadBalancerListResultPage {
-	return original.NewLoadBalancerListResultPage(getNextPage)
+func NewLoadBalancerListResultPage(cur LoadBalancerListResult, getNextPage func(context.Context, LoadBalancerListResult) (LoadBalancerListResult, error)) LoadBalancerListResultPage {
+	return original.NewLoadBalancerListResultPage(cur, getNextPage)
 }
 func NewLoadBalancersClient(subscriptionID string) LoadBalancersClient {
 	return original.NewLoadBalancersClient(subscriptionID)
@@ -589,8 +589,8 @@ func NewLoadBalancersClientWithBaseURI(baseURI string, subscriptionID string) Lo
 func NewLocalNetworkGatewayListResultIterator(page LocalNetworkGatewayListResultPage) LocalNetworkGatewayListResultIterator {
 	return original.NewLocalNetworkGatewayListResultIterator(page)
 }
-func NewLocalNetworkGatewayListResultPage(getNextPage func(context.Context, LocalNetworkGatewayListResult) (LocalNetworkGatewayListResult, error)) LocalNetworkGatewayListResultPage {
-	return original.NewLocalNetworkGatewayListResultPage(getNextPage)
+func NewLocalNetworkGatewayListResultPage(cur LocalNetworkGatewayListResult, getNextPage func(context.Context, LocalNetworkGatewayListResult) (LocalNetworkGatewayListResult, error)) LocalNetworkGatewayListResultPage {
+	return original.NewLocalNetworkGatewayListResultPage(cur, getNextPage)
 }
 func NewLocalNetworkGatewaysClient(subscriptionID string) LocalNetworkGatewaysClient {
 	return original.NewLocalNetworkGatewaysClient(subscriptionID)
@@ -601,8 +601,8 @@ func NewLocalNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID str
 func NewPublicIPAddressListResultIterator(page PublicIPAddressListResultPage) PublicIPAddressListResultIterator {
 	return original.NewPublicIPAddressListResultIterator(page)
 }
-func NewPublicIPAddressListResultPage(getNextPage func(context.Context, PublicIPAddressListResult) (PublicIPAddressListResult, error)) PublicIPAddressListResultPage {
-	return original.NewPublicIPAddressListResultPage(getNextPage)
+func NewPublicIPAddressListResultPage(cur PublicIPAddressListResult, getNextPage func(context.Context, PublicIPAddressListResult) (PublicIPAddressListResult, error)) PublicIPAddressListResultPage {
+	return original.NewPublicIPAddressListResultPage(cur, getNextPage)
 }
 func NewPublicIPAddressesClient(subscriptionID string) PublicIPAddressesClient {
 	return original.NewPublicIPAddressesClient(subscriptionID)
@@ -613,14 +613,14 @@ func NewPublicIPAddressesClientWithBaseURI(baseURI string, subscriptionID string
 func NewRouteListResultIterator(page RouteListResultPage) RouteListResultIterator {
 	return original.NewRouteListResultIterator(page)
 }
-func NewRouteListResultPage(getNextPage func(context.Context, RouteListResult) (RouteListResult, error)) RouteListResultPage {
-	return original.NewRouteListResultPage(getNextPage)
+func NewRouteListResultPage(cur RouteListResult, getNextPage func(context.Context, RouteListResult) (RouteListResult, error)) RouteListResultPage {
+	return original.NewRouteListResultPage(cur, getNextPage)
 }
 func NewRouteTableListResultIterator(page RouteTableListResultPage) RouteTableListResultIterator {
 	return original.NewRouteTableListResultIterator(page)
 }
-func NewRouteTableListResultPage(getNextPage func(context.Context, RouteTableListResult) (RouteTableListResult, error)) RouteTableListResultPage {
-	return original.NewRouteTableListResultPage(getNextPage)
+func NewRouteTableListResultPage(cur RouteTableListResult, getNextPage func(context.Context, RouteTableListResult) (RouteTableListResult, error)) RouteTableListResultPage {
+	return original.NewRouteTableListResultPage(cur, getNextPage)
 }
 func NewRouteTablesClient(subscriptionID string) RouteTablesClient {
 	return original.NewRouteTablesClient(subscriptionID)
@@ -637,8 +637,8 @@ func NewRoutesClientWithBaseURI(baseURI string, subscriptionID string) RoutesCli
 func NewSecurityGroupListResultIterator(page SecurityGroupListResultPage) SecurityGroupListResultIterator {
 	return original.NewSecurityGroupListResultIterator(page)
 }
-func NewSecurityGroupListResultPage(getNextPage func(context.Context, SecurityGroupListResult) (SecurityGroupListResult, error)) SecurityGroupListResultPage {
-	return original.NewSecurityGroupListResultPage(getNextPage)
+func NewSecurityGroupListResultPage(cur SecurityGroupListResult, getNextPage func(context.Context, SecurityGroupListResult) (SecurityGroupListResult, error)) SecurityGroupListResultPage {
+	return original.NewSecurityGroupListResultPage(cur, getNextPage)
 }
 func NewSecurityGroupsClient(subscriptionID string) SecurityGroupsClient {
 	return original.NewSecurityGroupsClient(subscriptionID)
@@ -649,8 +649,8 @@ func NewSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string) S
 func NewSecurityRuleListResultIterator(page SecurityRuleListResultPage) SecurityRuleListResultIterator {
 	return original.NewSecurityRuleListResultIterator(page)
 }
-func NewSecurityRuleListResultPage(getNextPage func(context.Context, SecurityRuleListResult) (SecurityRuleListResult, error)) SecurityRuleListResultPage {
-	return original.NewSecurityRuleListResultPage(getNextPage)
+func NewSecurityRuleListResultPage(cur SecurityRuleListResult, getNextPage func(context.Context, SecurityRuleListResult) (SecurityRuleListResult, error)) SecurityRuleListResultPage {
+	return original.NewSecurityRuleListResultPage(cur, getNextPage)
 }
 func NewSecurityRulesClient(subscriptionID string) SecurityRulesClient {
 	return original.NewSecurityRulesClient(subscriptionID)
@@ -661,8 +661,8 @@ func NewSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string) Se
 func NewSubnetListResultIterator(page SubnetListResultPage) SubnetListResultIterator {
 	return original.NewSubnetListResultIterator(page)
 }
-func NewSubnetListResultPage(getNextPage func(context.Context, SubnetListResult) (SubnetListResult, error)) SubnetListResultPage {
-	return original.NewSubnetListResultPage(getNextPage)
+func NewSubnetListResultPage(cur SubnetListResult, getNextPage func(context.Context, SubnetListResult) (SubnetListResult, error)) SubnetListResultPage {
+	return original.NewSubnetListResultPage(cur, getNextPage)
 }
 func NewSubnetsClient(subscriptionID string) SubnetsClient {
 	return original.NewSubnetsClient(subscriptionID)
@@ -679,14 +679,14 @@ func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesCli
 func NewUsagesListResultIterator(page UsagesListResultPage) UsagesListResultIterator {
 	return original.NewUsagesListResultIterator(page)
 }
-func NewUsagesListResultPage(getNextPage func(context.Context, UsagesListResult) (UsagesListResult, error)) UsagesListResultPage {
-	return original.NewUsagesListResultPage(getNextPage)
+func NewUsagesListResultPage(cur UsagesListResult, getNextPage func(context.Context, UsagesListResult) (UsagesListResult, error)) UsagesListResultPage {
+	return original.NewUsagesListResultPage(cur, getNextPage)
 }
 func NewVirtualNetworkGatewayConnectionListResultIterator(page VirtualNetworkGatewayConnectionListResultPage) VirtualNetworkGatewayConnectionListResultIterator {
 	return original.NewVirtualNetworkGatewayConnectionListResultIterator(page)
 }
-func NewVirtualNetworkGatewayConnectionListResultPage(getNextPage func(context.Context, VirtualNetworkGatewayConnectionListResult) (VirtualNetworkGatewayConnectionListResult, error)) VirtualNetworkGatewayConnectionListResultPage {
-	return original.NewVirtualNetworkGatewayConnectionListResultPage(getNextPage)
+func NewVirtualNetworkGatewayConnectionListResultPage(cur VirtualNetworkGatewayConnectionListResult, getNextPage func(context.Context, VirtualNetworkGatewayConnectionListResult) (VirtualNetworkGatewayConnectionListResult, error)) VirtualNetworkGatewayConnectionListResultPage {
+	return original.NewVirtualNetworkGatewayConnectionListResultPage(cur, getNextPage)
 }
 func NewVirtualNetworkGatewayConnectionsClient(subscriptionID string) VirtualNetworkGatewayConnectionsClient {
 	return original.NewVirtualNetworkGatewayConnectionsClient(subscriptionID)
@@ -697,8 +697,8 @@ func NewVirtualNetworkGatewayConnectionsClientWithBaseURI(baseURI string, subscr
 func NewVirtualNetworkGatewayListResultIterator(page VirtualNetworkGatewayListResultPage) VirtualNetworkGatewayListResultIterator {
 	return original.NewVirtualNetworkGatewayListResultIterator(page)
 }
-func NewVirtualNetworkGatewayListResultPage(getNextPage func(context.Context, VirtualNetworkGatewayListResult) (VirtualNetworkGatewayListResult, error)) VirtualNetworkGatewayListResultPage {
-	return original.NewVirtualNetworkGatewayListResultPage(getNextPage)
+func NewVirtualNetworkGatewayListResultPage(cur VirtualNetworkGatewayListResult, getNextPage func(context.Context, VirtualNetworkGatewayListResult) (VirtualNetworkGatewayListResult, error)) VirtualNetworkGatewayListResultPage {
+	return original.NewVirtualNetworkGatewayListResultPage(cur, getNextPage)
 }
 func NewVirtualNetworkGatewaysClient(subscriptionID string) VirtualNetworkGatewaysClient {
 	return original.NewVirtualNetworkGatewaysClient(subscriptionID)
@@ -709,8 +709,8 @@ func NewVirtualNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID s
 func NewVirtualNetworkListResultIterator(page VirtualNetworkListResultPage) VirtualNetworkListResultIterator {
 	return original.NewVirtualNetworkListResultIterator(page)
 }
-func NewVirtualNetworkListResultPage(getNextPage func(context.Context, VirtualNetworkListResult) (VirtualNetworkListResult, error)) VirtualNetworkListResultPage {
-	return original.NewVirtualNetworkListResultPage(getNextPage)
+func NewVirtualNetworkListResultPage(cur VirtualNetworkListResult, getNextPage func(context.Context, VirtualNetworkListResult) (VirtualNetworkListResult, error)) VirtualNetworkListResultPage {
+	return original.NewVirtualNetworkListResultPage(cur, getNextPage)
 }
 func NewVirtualNetworksClient(subscriptionID string) VirtualNetworksClient {
 	return original.NewVirtualNetworksClient(subscriptionID)

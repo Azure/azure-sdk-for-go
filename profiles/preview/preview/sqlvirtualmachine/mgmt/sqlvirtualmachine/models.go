@@ -211,8 +211,8 @@ func New(subscriptionID string) BaseClient {
 func NewAvailabilityGroupListenerListResultIterator(page AvailabilityGroupListenerListResultPage) AvailabilityGroupListenerListResultIterator {
 	return original.NewAvailabilityGroupListenerListResultIterator(page)
 }
-func NewAvailabilityGroupListenerListResultPage(getNextPage func(context.Context, AvailabilityGroupListenerListResult) (AvailabilityGroupListenerListResult, error)) AvailabilityGroupListenerListResultPage {
-	return original.NewAvailabilityGroupListenerListResultPage(getNextPage)
+func NewAvailabilityGroupListenerListResultPage(cur AvailabilityGroupListenerListResult, getNextPage func(context.Context, AvailabilityGroupListenerListResult) (AvailabilityGroupListenerListResult, error)) AvailabilityGroupListenerListResultPage {
+	return original.NewAvailabilityGroupListenerListResultPage(cur, getNextPage)
 }
 func NewAvailabilityGroupListenersClient(subscriptionID string) AvailabilityGroupListenersClient {
 	return original.NewAvailabilityGroupListenersClient(subscriptionID)
@@ -223,8 +223,8 @@ func NewAvailabilityGroupListenersClientWithBaseURI(baseURI string, subscription
 func NewGroupListResultIterator(page GroupListResultPage) GroupListResultIterator {
 	return original.NewGroupListResultIterator(page)
 }
-func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
-	return original.NewGroupListResultPage(getNextPage)
+func NewGroupListResultPage(cur GroupListResult, getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
+	return original.NewGroupListResultPage(cur, getNextPage)
 }
 func NewGroupsClient(subscriptionID string) GroupsClient {
 	return original.NewGroupsClient(subscriptionID)
@@ -235,14 +235,14 @@ func NewGroupsClientWithBaseURI(baseURI string, subscriptionID string) GroupsCli
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
 }
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return original.NewListResultPage(getNextPage)
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(cur, getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

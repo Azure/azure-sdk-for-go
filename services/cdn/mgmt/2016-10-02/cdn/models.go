@@ -310,8 +310,11 @@ func (page CustomDomainListResultPage) Values() []CustomDomain {
 }
 
 // Creates a new instance of the CustomDomainListResultPage type.
-func NewCustomDomainListResultPage(getNextPage func(context.Context, CustomDomainListResult) (CustomDomainListResult, error)) CustomDomainListResultPage {
-	return CustomDomainListResultPage{fn: getNextPage}
+func NewCustomDomainListResultPage(cur CustomDomainListResult, getNextPage func(context.Context, CustomDomainListResult) (CustomDomainListResult, error)) CustomDomainListResultPage {
+	return CustomDomainListResultPage{
+		fn:   getNextPage,
+		cdlr: cur,
+	}
 }
 
 // CustomDomainParameters the customDomain JSON object required for custom domain creation or update.
@@ -610,8 +613,8 @@ type EdgeNodeProperties struct {
 	IPAddressGroups *[]IPAddressGroup `json:"ipAddressGroups,omitempty"`
 }
 
-// EdgenodeResult result of the request to list CDN edgenodes. It contains a list of ip address group and a URL
-// link to get the next set of results.
+// EdgenodeResult result of the request to list CDN edgenodes. It contains a list of ip address group and a
+// URL link to get the next set of results.
 type EdgenodeResult struct {
 	autorest.Response `json:"-"`
 	// Value - Edge node of CDN service.
@@ -763,8 +766,11 @@ func (page EdgenodeResultPage) Values() []EdgeNode {
 }
 
 // Creates a new instance of the EdgenodeResultPage type.
-func NewEdgenodeResultPage(getNextPage func(context.Context, EdgenodeResult) (EdgenodeResult, error)) EdgenodeResultPage {
-	return EdgenodeResultPage{fn: getNextPage}
+func NewEdgenodeResultPage(cur EdgenodeResult, getNextPage func(context.Context, EdgenodeResult) (EdgenodeResult, error)) EdgenodeResultPage {
+	return EdgenodeResultPage{
+		fn: getNextPage,
+		er: cur,
+	}
 }
 
 // Endpoint CDN endpoint is the entity within a CDN profile containing configuration information such as
@@ -869,8 +875,8 @@ func (e *Endpoint) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// EndpointListResult result of the request to list endpoints. It contains a list of endpoint objects and a URL
-// link to get the next set of results.
+// EndpointListResult result of the request to list endpoints. It contains a list of endpoint objects and a
+// URL link to get the next set of results.
 type EndpointListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of CDN endpoints within a profile
@@ -1022,8 +1028,11 @@ func (page EndpointListResultPage) Values() []Endpoint {
 }
 
 // Creates a new instance of the EndpointListResultPage type.
-func NewEndpointListResultPage(getNextPage func(context.Context, EndpointListResult) (EndpointListResult, error)) EndpointListResultPage {
-	return EndpointListResultPage{fn: getNextPage}
+func NewEndpointListResultPage(cur EndpointListResult, getNextPage func(context.Context, EndpointListResult) (EndpointListResult, error)) EndpointListResultPage {
+	return EndpointListResultPage{
+		fn:  getNextPage,
+		elr: cur,
+	}
 }
 
 // EndpointProperties the JSON object that contains the properties required to create an endpoint.
@@ -1092,8 +1101,8 @@ func (ep EndpointProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// EndpointPropertiesUpdateParameters result of the request to list endpoints. It contains a list of endpoints
-// and a URL link to get the next set of results.
+// EndpointPropertiesUpdateParameters result of the request to list endpoints. It contains a list of
+// endpoints and a URL link to get the next set of results.
 type EndpointPropertiesUpdateParameters struct {
 	// OriginHostHeader - The host header CDN sends along with content requests to origin. The default value is the host name of the origin.
 	OriginHostHeader *string `json:"originHostHeader,omitempty"`
@@ -1115,7 +1124,8 @@ type EndpointPropertiesUpdateParameters struct {
 	GeoFilters *[]GeoFilter `json:"geoFilters,omitempty"`
 }
 
-// EndpointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// EndpointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type EndpointsCreateFuture struct {
 	azure.Future
 }
@@ -1143,7 +1153,8 @@ func (future *EndpointsCreateFuture) Result(client EndpointsClient) (e Endpoint,
 	return
 }
 
-// EndpointsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// EndpointsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type EndpointsDeleteFuture struct {
 	azure.Future
 }
@@ -1211,7 +1222,8 @@ func (future *EndpointsPurgeContentFuture) Result(client EndpointsClient) (ar au
 	return
 }
 
-// EndpointsStartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// EndpointsStartFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type EndpointsStartFuture struct {
 	azure.Future
 }
@@ -1239,7 +1251,8 @@ func (future *EndpointsStartFuture) Result(client EndpointsClient) (e Endpoint, 
 	return
 }
 
-// EndpointsStopFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// EndpointsStopFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type EndpointsStopFuture struct {
 	azure.Future
 }
@@ -1267,7 +1280,8 @@ func (future *EndpointsStopFuture) Result(client EndpointsClient) (e Endpoint, e
 	return
 }
 
-// EndpointsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// EndpointsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type EndpointsUpdateFuture struct {
 	azure.Future
 }
@@ -1347,8 +1361,8 @@ func (eup *EndpointUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ErrorResponse error response indicates CDN service is not able to process the incoming request. The reason
-// is provided in the error message.
+// ErrorResponse error response indicates CDN service is not able to process the incoming request. The
+// reason is provided in the error message.
 type ErrorResponse struct {
 	// Code - Error code.
 	Code *string `json:"code,omitempty"`
@@ -1400,8 +1414,8 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result of the request to list CDN operations. It contains a list of operations and a URL
-// link to get the next set of results.
+// OperationListResult result of the request to list CDN operations. It contains a list of operations and a
+// URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of CDN operations supported by the CDN resource provider.
@@ -1553,13 +1567,16 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
-// Origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
-// an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
-// configured origins.
+// Origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented
+// by an endpoint do not have the requested content cached, they attempt to fetch it from one or more of
+// the configured origins.
 type Origin struct {
 	autorest.Response `json:"-"`
 	*OriginProperties `json:"properties,omitempty"`
@@ -1659,8 +1676,8 @@ func (o *Origin) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// OriginListResult result of the request to list origins. It contains a list of origin objects and a URL link
-// to get the next set of results.
+// OriginListResult result of the request to list origins. It contains a list of origin objects and a URL
+// link to get the next set of results.
 type OriginListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of CDN origins within an endpoint
@@ -1812,8 +1829,11 @@ func (page OriginListResultPage) Values() []Origin {
 }
 
 // Creates a new instance of the OriginListResultPage type.
-func NewOriginListResultPage(getNextPage func(context.Context, OriginListResult) (OriginListResult, error)) OriginListResultPage {
-	return OriginListResultPage{fn: getNextPage}
+func NewOriginListResultPage(cur OriginListResult, getNextPage func(context.Context, OriginListResult) (OriginListResult, error)) OriginListResultPage {
+	return OriginListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OriginProperties the JSON object that contains the properties of the origin to create.
@@ -1855,7 +1875,8 @@ type OriginPropertiesParameters struct {
 	HTTPSPort *int32 `json:"httpsPort,omitempty"`
 }
 
-// OriginsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// OriginsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type OriginsUpdateFuture struct {
 	azure.Future
 }
@@ -1922,8 +1943,8 @@ func (oup *OriginUpdateParameters) UnmarshalJSON(body []byte) error {
 }
 
 // Profile CDN profile represents the top level resource and the entry point into the CDN API. This allows
-// users to set up a logical grouping of endpoints in addition to creating shared configuration settings and
-// selecting pricing tiers and providers.
+// users to set up a logical grouping of endpoints in addition to creating shared configuration settings
+// and selecting pricing tiers and providers.
 type Profile struct {
 	autorest.Response `json:"-"`
 	// Sku - The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile.
@@ -2037,8 +2058,8 @@ func (p *Profile) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ProfileListResult result of the request to list profiles. It contains a list of profile objects and a URL
-// link to get the next set of results.
+// ProfileListResult result of the request to list profiles. It contains a list of profile objects and a
+// URL link to get the next set of results.
 type ProfileListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of CDN profiles within a resource group.
@@ -2190,8 +2211,11 @@ func (page ProfileListResultPage) Values() []Profile {
 }
 
 // Creates a new instance of the ProfileListResultPage type.
-func NewProfileListResultPage(getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
-	return ProfileListResultPage{fn: getNextPage}
+func NewProfileListResultPage(cur ProfileListResult, getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
+	return ProfileListResultPage{
+		fn:  getNextPage,
+		plr: cur,
+	}
 }
 
 // ProfileProperties the JSON object that contains the properties required to create a profile.
@@ -2202,7 +2226,8 @@ type ProfileProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// ProfilesCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ProfilesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ProfilesCreateFuture struct {
 	azure.Future
 }
@@ -2230,7 +2255,8 @@ func (future *ProfilesCreateFuture) Result(client ProfilesClient) (p Profile, er
 	return
 }
 
-// ProfilesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ProfilesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ProfilesDeleteFuture struct {
 	azure.Future
 }
@@ -2252,7 +2278,8 @@ func (future *ProfilesDeleteFuture) Result(client ProfilesClient) (ar autorest.R
 	return
 }
 
-// ProfilesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ProfilesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ProfilesUpdateFuture struct {
 	azure.Future
 }
@@ -2491,8 +2518,11 @@ func (page ResourceUsageListResultPage) Values() []ResourceUsage {
 }
 
 // Creates a new instance of the ResourceUsageListResultPage type.
-func NewResourceUsageListResultPage(getNextPage func(context.Context, ResourceUsageListResult) (ResourceUsageListResult, error)) ResourceUsageListResultPage {
-	return ResourceUsageListResultPage{fn: getNextPage}
+func NewResourceUsageListResultPage(cur ResourceUsageListResult, getNextPage func(context.Context, ResourceUsageListResult) (ResourceUsageListResult, error)) ResourceUsageListResultPage {
+	return ResourceUsageListResultPage{
+		fn:   getNextPage,
+		rulr: cur,
+	}
 }
 
 // Sku the pricing tier (defines a CDN provider, feature list and rate) of the CDN profile.

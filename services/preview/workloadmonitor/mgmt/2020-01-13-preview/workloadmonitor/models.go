@@ -278,8 +278,11 @@ func (page HealthMonitorListPage) Values() []HealthMonitor {
 }
 
 // Creates a new instance of the HealthMonitorListPage type.
-func NewHealthMonitorListPage(getNextPage func(context.Context, HealthMonitorList) (HealthMonitorList, error)) HealthMonitorListPage {
-	return HealthMonitorListPage{fn: getNextPage}
+func NewHealthMonitorListPage(cur HealthMonitorList, getNextPage func(context.Context, HealthMonitorList) (HealthMonitorList, error)) HealthMonitorListPage {
+	return HealthMonitorListPage{
+		fn:  getNextPage,
+		hml: cur,
+	}
 }
 
 // HealthMonitorProperties properties of the monitor.
@@ -534,8 +537,11 @@ func (page HealthMonitorStateChangeListPage) Values() []HealthMonitorStateChange
 }
 
 // Creates a new instance of the HealthMonitorStateChangeListPage type.
-func NewHealthMonitorStateChangeListPage(getNextPage func(context.Context, HealthMonitorStateChangeList) (HealthMonitorStateChangeList, error)) HealthMonitorStateChangeListPage {
-	return HealthMonitorStateChangeListPage{fn: getNextPage}
+func NewHealthMonitorStateChangeListPage(cur HealthMonitorStateChangeList, getNextPage func(context.Context, HealthMonitorStateChangeList) (HealthMonitorStateChangeList, error)) HealthMonitorStateChangeListPage {
+	return HealthMonitorStateChangeListPage{
+		fn:    getNextPage,
+		hmscl: cur,
+	}
 }
 
 // HealthMonitorStateChangeProperties properties of the monitor.
@@ -734,8 +740,11 @@ func (page OperationListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListPage type.
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return OperationListPage{fn: getNextPage}
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // Resource the resource model definition for the ARM proxy resource, 'microsoft.workloadmonitor/monitors'.

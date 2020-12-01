@@ -263,8 +263,11 @@ func (page EnrollmentAccountListResultPage) Values() []EnrollmentAccount {
 }
 
 // Creates a new instance of the EnrollmentAccountListResultPage type.
-func NewEnrollmentAccountListResultPage(getNextPage func(context.Context, EnrollmentAccountListResult) (EnrollmentAccountListResult, error)) EnrollmentAccountListResultPage {
-	return EnrollmentAccountListResultPage{fn: getNextPage}
+func NewEnrollmentAccountListResultPage(cur EnrollmentAccountListResult, getNextPage func(context.Context, EnrollmentAccountListResult) (EnrollmentAccountListResult, error)) EnrollmentAccountListResultPage {
+	return EnrollmentAccountListResultPage{
+		fn:   getNextPage,
+		ealr: cur,
+	}
 }
 
 // EnrollmentAccountProperties the properties of the enrollment account.
@@ -537,8 +540,11 @@ func (page InvoicesListResultPage) Values() []Invoice {
 }
 
 // Creates a new instance of the InvoicesListResultPage type.
-func NewInvoicesListResultPage(getNextPage func(context.Context, InvoicesListResult) (InvoicesListResult, error)) InvoicesListResultPage {
-	return InvoicesListResultPage{fn: getNextPage}
+func NewInvoicesListResultPage(cur InvoicesListResult, getNextPage func(context.Context, InvoicesListResult) (InvoicesListResult, error)) InvoicesListResultPage {
+	return InvoicesListResultPage{
+		fn:  getNextPage,
+		ilr: cur,
+	}
 }
 
 // Operation a Billing REST API operation.
@@ -568,8 +574,8 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result listing billing operations. It contains a list of operations and a URL link to
-// get the next set of results.
+// OperationListResult result listing billing operations. It contains a list of operations and a URL link
+// to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of billing operations supported by the Microsoft.Billing resource provider.
@@ -721,8 +727,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // Period a billing period resource.
@@ -961,8 +970,11 @@ func (page PeriodsListResultPage) Values() []Period {
 }
 
 // Creates a new instance of the PeriodsListResultPage type.
-func NewPeriodsListResultPage(getNextPage func(context.Context, PeriodsListResult) (PeriodsListResult, error)) PeriodsListResultPage {
-	return PeriodsListResultPage{fn: getNextPage}
+func NewPeriodsListResultPage(cur PeriodsListResult, getNextPage func(context.Context, PeriodsListResult) (PeriodsListResult, error)) PeriodsListResultPage {
+	return PeriodsListResultPage{
+		fn:  getNextPage,
+		plr: cur,
+	}
 }
 
 // Resource the Resource model definition.

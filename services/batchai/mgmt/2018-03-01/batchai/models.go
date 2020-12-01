@@ -31,7 +31,8 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/batchai/mgmt/2018-03-01/batchai"
 
-// AppInsightsReference specifies Azure Application Insights information for performance counters reporting.
+// AppInsightsReference specifies Azure Application Insights information for performance counters
+// reporting.
 type AppInsightsReference struct {
 	Component          *ResourceID `json:"component,omitempty"`
 	InstrumentationKey *string     `json:"instrumentationKey,omitempty"`
@@ -47,8 +48,8 @@ type AutoScaleSettings struct {
 	InitialNodeCount *int32 `json:"initialNodeCount,omitempty"`
 }
 
-// AzureBlobFileSystemReference provides required information, for the service to be able to mount Azure Blob
-// Storage container on the cluster nodes.
+// AzureBlobFileSystemReference provides required information, for the service to be able to mount Azure
+// Blob Storage container on the cluster nodes.
 type AzureBlobFileSystemReference struct {
 	AccountName   *string                      `json:"accountName,omitempty"`
 	ContainerName *string                      `json:"containerName,omitempty"`
@@ -453,8 +454,11 @@ func (page ClusterListResultPage) Values() []Cluster {
 }
 
 // Creates a new instance of the ClusterListResultPage type.
-func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
-	return ClusterListResultPage{fn: getNextPage}
+func NewClusterListResultPage(cur ClusterListResult, getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return ClusterListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // ClusterProperties job specific properties.
@@ -516,7 +520,8 @@ func (cp ClusterProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ClustersCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ClustersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ClustersCreateFuture struct {
 	azure.Future
 }
@@ -544,7 +549,8 @@ func (future *ClustersCreateFuture) Result(client ClustersClient) (c Cluster, er
 	return
 }
 
-// ClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ClustersDeleteFuture struct {
 	azure.Future
 }
@@ -924,8 +930,11 @@ func (page FileListResultPage) Values() []File {
 }
 
 // Creates a new instance of the FileListResultPage type.
-func NewFileListResultPage(getNextPage func(context.Context, FileListResult) (FileListResult, error)) FileListResultPage {
-	return FileListResultPage{fn: getNextPage}
+func NewFileListResultPage(cur FileListResult, getNextPage func(context.Context, FileListResult) (FileListResult, error)) FileListResultPage {
+	return FileListResultPage{
+		fn:  getNextPage,
+		flr: cur,
+	}
 }
 
 // FileProperties file specific properties.
@@ -1259,8 +1268,11 @@ func (page FileServerListResultPage) Values() []FileServer {
 }
 
 // Creates a new instance of the FileServerListResultPage type.
-func NewFileServerListResultPage(getNextPage func(context.Context, FileServerListResult) (FileServerListResult, error)) FileServerListResultPage {
-	return FileServerListResultPage{fn: getNextPage}
+func NewFileServerListResultPage(cur FileServerListResult, getNextPage func(context.Context, FileServerListResult) (FileServerListResult, error)) FileServerListResultPage {
+	return FileServerListResultPage{
+		fn:   getNextPage,
+		fslr: cur,
+	}
 }
 
 // FileServerProperties file server specific properties.
@@ -1298,8 +1310,8 @@ func (fsp FileServerProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// FileServerReference provides required information, for the service to be able to mount Azure FileShare on
-// the cluster nodes.
+// FileServerReference provides required information, for the service to be able to mount Azure FileShare
+// on the cluster nodes.
 type FileServerReference struct {
 	FileServer *ResourceID `json:"fileServer,omitempty"`
 	// SourceDirectory - If this property is not specified, the entire File Server will be mounted.
@@ -1739,8 +1751,11 @@ func (page JobListResultPage) Values() []Job {
 }
 
 // Creates a new instance of the JobListResultPage type.
-func NewJobListResultPage(getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
-	return JobListResultPage{fn: getNextPage}
+func NewJobListResultPage(cur JobListResult, getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
+	return JobListResultPage{
+		fn:  getNextPage,
+		jlr: cur,
+	}
 }
 
 // JobPreparation specifies the settings for job preparation.
@@ -1940,7 +1955,8 @@ func (future *JobsDeleteFuture) Result(client JobsClient) (ar autorest.Response,
 	return
 }
 
-// JobsTerminateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// JobsTerminateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type JobsTerminateFuture struct {
 	azure.Future
 }
@@ -2126,8 +2142,11 @@ func (page ListUsagesResultPage) Values() []Usage {
 }
 
 // Creates a new instance of the ListUsagesResultPage type.
-func NewListUsagesResultPage(getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
-	return ListUsagesResultPage{fn: getNextPage}
+func NewListUsagesResultPage(cur ListUsagesResult, getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
+	return ListUsagesResultPage{
+		fn:  getNextPage,
+		lur: cur,
+	}
 }
 
 // LocalDataVolume represents mapping of host directories to directories in the container.
@@ -2169,8 +2188,8 @@ type NameValuePair struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// NodeSetup use this to prepare the VM. NOTE: The volumes specified in mountVolumes are mounted first and then
-// the setupTask is run. Therefore the setup task can use local mountPaths in its execution.
+// NodeSetup use this to prepare the VM. NOTE: The volumes specified in mountVolumes are mounted first and
+// then the setupTask is run. Therefore the setup task can use local mountPaths in its execution.
 type NodeSetup struct {
 	SetupTask *SetupTask `json:"setupTask,omitempty"`
 	// MountVolumes - Specified mount volumes will be available to all jobs executing on the cluster. The volumes will be mounted at location specified by $AZ_BATCHAI_MOUNT_ROOT environment variable.
@@ -2356,8 +2375,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OutputDirectory output directory for the job.
@@ -2562,8 +2584,11 @@ func (page RemoteLoginInformationListResultPage) Values() []RemoteLoginInformati
 }
 
 // Creates a new instance of the RemoteLoginInformationListResultPage type.
-func NewRemoteLoginInformationListResultPage(getNextPage func(context.Context, RemoteLoginInformationListResult) (RemoteLoginInformationListResult, error)) RemoteLoginInformationListResultPage {
-	return RemoteLoginInformationListResultPage{fn: getNextPage}
+func NewRemoteLoginInformationListResultPage(cur RemoteLoginInformationListResult, getNextPage func(context.Context, RemoteLoginInformationListResult) (RemoteLoginInformationListResult, error)) RemoteLoginInformationListResultPage {
+	return RemoteLoginInformationListResultPage{
+		fn:    getNextPage,
+		rlilr: cur,
+	}
 }
 
 // Resource a definition of an Azure resource.
@@ -2593,8 +2618,8 @@ type ResourceID struct {
 }
 
 // ScaleSettings at least one of manual or autoScale settings must be specified. Only one of manual or
-// autoScale settings can be specified. If autoScale settings are specified, the system automatically scales
-// the cluster up and down (within the supplied limits) based on the pending jobs on the cluster.
+// autoScale settings can be specified. If autoScale settings are specified, the system automatically
+// scales the cluster up and down (within the supplied limits) based on the pending jobs on the cluster.
 type ScaleSettings struct {
 	Manual    *ManualScaleSettings `json:"manual,omitempty"`
 	AutoScale *AutoScaleSettings   `json:"autoScale,omitempty"`

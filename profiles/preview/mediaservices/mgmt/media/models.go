@@ -824,8 +824,8 @@ func New(subscriptionID string) BaseClient {
 func NewAccountFilterCollectionIterator(page AccountFilterCollectionPage) AccountFilterCollectionIterator {
 	return original.NewAccountFilterCollectionIterator(page)
 }
-func NewAccountFilterCollectionPage(getNextPage func(context.Context, AccountFilterCollection) (AccountFilterCollection, error)) AccountFilterCollectionPage {
-	return original.NewAccountFilterCollectionPage(getNextPage)
+func NewAccountFilterCollectionPage(cur AccountFilterCollection, getNextPage func(context.Context, AccountFilterCollection) (AccountFilterCollection, error)) AccountFilterCollectionPage {
+	return original.NewAccountFilterCollectionPage(cur, getNextPage)
 }
 func NewAccountFiltersClient(subscriptionID string) AccountFiltersClient {
 	return original.NewAccountFiltersClient(subscriptionID)
@@ -836,14 +836,14 @@ func NewAccountFiltersClientWithBaseURI(baseURI string, subscriptionID string) A
 func NewAssetCollectionIterator(page AssetCollectionPage) AssetCollectionIterator {
 	return original.NewAssetCollectionIterator(page)
 }
-func NewAssetCollectionPage(getNextPage func(context.Context, AssetCollection) (AssetCollection, error)) AssetCollectionPage {
-	return original.NewAssetCollectionPage(getNextPage)
+func NewAssetCollectionPage(cur AssetCollection, getNextPage func(context.Context, AssetCollection) (AssetCollection, error)) AssetCollectionPage {
+	return original.NewAssetCollectionPage(cur, getNextPage)
 }
 func NewAssetFilterCollectionIterator(page AssetFilterCollectionPage) AssetFilterCollectionIterator {
 	return original.NewAssetFilterCollectionIterator(page)
 }
-func NewAssetFilterCollectionPage(getNextPage func(context.Context, AssetFilterCollection) (AssetFilterCollection, error)) AssetFilterCollectionPage {
-	return original.NewAssetFilterCollectionPage(getNextPage)
+func NewAssetFilterCollectionPage(cur AssetFilterCollection, getNextPage func(context.Context, AssetFilterCollection) (AssetFilterCollection, error)) AssetFilterCollectionPage {
+	return original.NewAssetFilterCollectionPage(cur, getNextPage)
 }
 func NewAssetFiltersClient(subscriptionID string) AssetFiltersClient {
 	return original.NewAssetFiltersClient(subscriptionID)
@@ -866,14 +866,14 @@ func NewContentKeyPoliciesClientWithBaseURI(baseURI string, subscriptionID strin
 func NewContentKeyPolicyCollectionIterator(page ContentKeyPolicyCollectionPage) ContentKeyPolicyCollectionIterator {
 	return original.NewContentKeyPolicyCollectionIterator(page)
 }
-func NewContentKeyPolicyCollectionPage(getNextPage func(context.Context, ContentKeyPolicyCollection) (ContentKeyPolicyCollection, error)) ContentKeyPolicyCollectionPage {
-	return original.NewContentKeyPolicyCollectionPage(getNextPage)
+func NewContentKeyPolicyCollectionPage(cur ContentKeyPolicyCollection, getNextPage func(context.Context, ContentKeyPolicyCollection) (ContentKeyPolicyCollection, error)) ContentKeyPolicyCollectionPage {
+	return original.NewContentKeyPolicyCollectionPage(cur, getNextPage)
 }
 func NewJobCollectionIterator(page JobCollectionPage) JobCollectionIterator {
 	return original.NewJobCollectionIterator(page)
 }
-func NewJobCollectionPage(getNextPage func(context.Context, JobCollection) (JobCollection, error)) JobCollectionPage {
-	return original.NewJobCollectionPage(getNextPage)
+func NewJobCollectionPage(cur JobCollection, getNextPage func(context.Context, JobCollection) (JobCollection, error)) JobCollectionPage {
+	return original.NewJobCollectionPage(cur, getNextPage)
 }
 func NewJobsClient(subscriptionID string) JobsClient {
 	return original.NewJobsClient(subscriptionID)
@@ -884,8 +884,8 @@ func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient 
 func NewLiveEventListResultIterator(page LiveEventListResultPage) LiveEventListResultIterator {
 	return original.NewLiveEventListResultIterator(page)
 }
-func NewLiveEventListResultPage(getNextPage func(context.Context, LiveEventListResult) (LiveEventListResult, error)) LiveEventListResultPage {
-	return original.NewLiveEventListResultPage(getNextPage)
+func NewLiveEventListResultPage(cur LiveEventListResult, getNextPage func(context.Context, LiveEventListResult) (LiveEventListResult, error)) LiveEventListResultPage {
+	return original.NewLiveEventListResultPage(cur, getNextPage)
 }
 func NewLiveEventsClient(subscriptionID string) LiveEventsClient {
 	return original.NewLiveEventsClient(subscriptionID)
@@ -896,8 +896,8 @@ func NewLiveEventsClientWithBaseURI(baseURI string, subscriptionID string) LiveE
 func NewLiveOutputListResultIterator(page LiveOutputListResultPage) LiveOutputListResultIterator {
 	return original.NewLiveOutputListResultIterator(page)
 }
-func NewLiveOutputListResultPage(getNextPage func(context.Context, LiveOutputListResult) (LiveOutputListResult, error)) LiveOutputListResultPage {
-	return original.NewLiveOutputListResultPage(getNextPage)
+func NewLiveOutputListResultPage(cur LiveOutputListResult, getNextPage func(context.Context, LiveOutputListResult) (LiveOutputListResult, error)) LiveOutputListResultPage {
+	return original.NewLiveOutputListResultPage(cur, getNextPage)
 }
 func NewLiveOutputsClient(subscriptionID string) LiveOutputsClient {
 	return original.NewLiveOutputsClient(subscriptionID)
@@ -920,8 +920,8 @@ func NewMediaservicesClientWithBaseURI(baseURI string, subscriptionID string) Me
 func NewOperationCollectionIterator(page OperationCollectionPage) OperationCollectionIterator {
 	return original.NewOperationCollectionIterator(page)
 }
-func NewOperationCollectionPage(getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
-	return original.NewOperationCollectionPage(getNextPage)
+func NewOperationCollectionPage(cur OperationCollection, getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
+	return original.NewOperationCollectionPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -944,14 +944,14 @@ func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID str
 func NewServiceCollectionIterator(page ServiceCollectionPage) ServiceCollectionIterator {
 	return original.NewServiceCollectionIterator(page)
 }
-func NewServiceCollectionPage(getNextPage func(context.Context, ServiceCollection) (ServiceCollection, error)) ServiceCollectionPage {
-	return original.NewServiceCollectionPage(getNextPage)
+func NewServiceCollectionPage(cur ServiceCollection, getNextPage func(context.Context, ServiceCollection) (ServiceCollection, error)) ServiceCollectionPage {
+	return original.NewServiceCollectionPage(cur, getNextPage)
 }
 func NewStreamingEndpointListResultIterator(page StreamingEndpointListResultPage) StreamingEndpointListResultIterator {
 	return original.NewStreamingEndpointListResultIterator(page)
 }
-func NewStreamingEndpointListResultPage(getNextPage func(context.Context, StreamingEndpointListResult) (StreamingEndpointListResult, error)) StreamingEndpointListResultPage {
-	return original.NewStreamingEndpointListResultPage(getNextPage)
+func NewStreamingEndpointListResultPage(cur StreamingEndpointListResult, getNextPage func(context.Context, StreamingEndpointListResult) (StreamingEndpointListResult, error)) StreamingEndpointListResultPage {
+	return original.NewStreamingEndpointListResultPage(cur, getNextPage)
 }
 func NewStreamingEndpointsClient(subscriptionID string) StreamingEndpointsClient {
 	return original.NewStreamingEndpointsClient(subscriptionID)
@@ -962,8 +962,8 @@ func NewStreamingEndpointsClientWithBaseURI(baseURI string, subscriptionID strin
 func NewStreamingLocatorCollectionIterator(page StreamingLocatorCollectionPage) StreamingLocatorCollectionIterator {
 	return original.NewStreamingLocatorCollectionIterator(page)
 }
-func NewStreamingLocatorCollectionPage(getNextPage func(context.Context, StreamingLocatorCollection) (StreamingLocatorCollection, error)) StreamingLocatorCollectionPage {
-	return original.NewStreamingLocatorCollectionPage(getNextPage)
+func NewStreamingLocatorCollectionPage(cur StreamingLocatorCollection, getNextPage func(context.Context, StreamingLocatorCollection) (StreamingLocatorCollection, error)) StreamingLocatorCollectionPage {
+	return original.NewStreamingLocatorCollectionPage(cur, getNextPage)
 }
 func NewStreamingLocatorsClient(subscriptionID string) StreamingLocatorsClient {
 	return original.NewStreamingLocatorsClient(subscriptionID)
@@ -980,14 +980,14 @@ func NewStreamingPoliciesClientWithBaseURI(baseURI string, subscriptionID string
 func NewStreamingPolicyCollectionIterator(page StreamingPolicyCollectionPage) StreamingPolicyCollectionIterator {
 	return original.NewStreamingPolicyCollectionIterator(page)
 }
-func NewStreamingPolicyCollectionPage(getNextPage func(context.Context, StreamingPolicyCollection) (StreamingPolicyCollection, error)) StreamingPolicyCollectionPage {
-	return original.NewStreamingPolicyCollectionPage(getNextPage)
+func NewStreamingPolicyCollectionPage(cur StreamingPolicyCollection, getNextPage func(context.Context, StreamingPolicyCollection) (StreamingPolicyCollection, error)) StreamingPolicyCollectionPage {
+	return original.NewStreamingPolicyCollectionPage(cur, getNextPage)
 }
 func NewTransformCollectionIterator(page TransformCollectionPage) TransformCollectionIterator {
 	return original.NewTransformCollectionIterator(page)
 }
-func NewTransformCollectionPage(getNextPage func(context.Context, TransformCollection) (TransformCollection, error)) TransformCollectionPage {
-	return original.NewTransformCollectionPage(getNextPage)
+func NewTransformCollectionPage(cur TransformCollection, getNextPage func(context.Context, TransformCollection) (TransformCollection, error)) TransformCollectionPage {
+	return original.NewTransformCollectionPage(cur, getNextPage)
 }
 func NewTransformsClient(subscriptionID string) TransformsClient {
 	return original.NewTransformsClient(subscriptionID)

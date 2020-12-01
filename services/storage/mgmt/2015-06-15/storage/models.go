@@ -129,8 +129,8 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AccountCheckNameAvailabilityParameters the parameters used to check the availability of the storage account
-// name.
+// AccountCheckNameAvailabilityParameters the parameters used to check the availability of the storage
+// account name.
 type AccountCheckNameAvailabilityParameters struct {
 	Name *string `json:"name,omitempty"`
 	Type *string `json:"type,omitempty"`
@@ -263,7 +263,8 @@ type AccountRegenerateKeyParameters struct {
 	KeyName *string `json:"keyName,omitempty"`
 }
 
-// AccountsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// AccountsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AccountsCreateFuture struct {
 	azure.Future
 }

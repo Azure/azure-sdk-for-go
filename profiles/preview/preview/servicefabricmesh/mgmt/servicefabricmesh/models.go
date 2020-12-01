@@ -314,8 +314,8 @@ func NewApplicationClientWithBaseURI(baseURI string, subscriptionID string) Appl
 func NewApplicationResourceDescriptionListIterator(page ApplicationResourceDescriptionListPage) ApplicationResourceDescriptionListIterator {
 	return original.NewApplicationResourceDescriptionListIterator(page)
 }
-func NewApplicationResourceDescriptionListPage(getNextPage func(context.Context, ApplicationResourceDescriptionList) (ApplicationResourceDescriptionList, error)) ApplicationResourceDescriptionListPage {
-	return original.NewApplicationResourceDescriptionListPage(getNextPage)
+func NewApplicationResourceDescriptionListPage(cur ApplicationResourceDescriptionList, getNextPage func(context.Context, ApplicationResourceDescriptionList) (ApplicationResourceDescriptionList, error)) ApplicationResourceDescriptionListPage {
+	return original.NewApplicationResourceDescriptionListPage(cur, getNextPage)
 }
 func NewCodePackageClient(subscriptionID string) CodePackageClient {
 	return original.NewCodePackageClient(subscriptionID)
@@ -332,8 +332,8 @@ func NewGatewayClientWithBaseURI(baseURI string, subscriptionID string) GatewayC
 func NewGatewayResourceDescriptionListIterator(page GatewayResourceDescriptionListPage) GatewayResourceDescriptionListIterator {
 	return original.NewGatewayResourceDescriptionListIterator(page)
 }
-func NewGatewayResourceDescriptionListPage(getNextPage func(context.Context, GatewayResourceDescriptionList) (GatewayResourceDescriptionList, error)) GatewayResourceDescriptionListPage {
-	return original.NewGatewayResourceDescriptionListPage(getNextPage)
+func NewGatewayResourceDescriptionListPage(cur GatewayResourceDescriptionList, getNextPage func(context.Context, GatewayResourceDescriptionList) (GatewayResourceDescriptionList, error)) GatewayResourceDescriptionListPage {
+	return original.NewGatewayResourceDescriptionListPage(cur, getNextPage)
 }
 func NewNetworkClient(subscriptionID string) NetworkClient {
 	return original.NewNetworkClient(subscriptionID)
@@ -344,14 +344,14 @@ func NewNetworkClientWithBaseURI(baseURI string, subscriptionID string) NetworkC
 func NewNetworkResourceDescriptionListIterator(page NetworkResourceDescriptionListPage) NetworkResourceDescriptionListIterator {
 	return original.NewNetworkResourceDescriptionListIterator(page)
 }
-func NewNetworkResourceDescriptionListPage(getNextPage func(context.Context, NetworkResourceDescriptionList) (NetworkResourceDescriptionList, error)) NetworkResourceDescriptionListPage {
-	return original.NewNetworkResourceDescriptionListPage(getNextPage)
+func NewNetworkResourceDescriptionListPage(cur NetworkResourceDescriptionList, getNextPage func(context.Context, NetworkResourceDescriptionList) (NetworkResourceDescriptionList, error)) NetworkResourceDescriptionListPage {
+	return original.NewNetworkResourceDescriptionListPage(cur, getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -368,8 +368,8 @@ func NewSecretClientWithBaseURI(baseURI string, subscriptionID string) SecretCli
 func NewSecretResourceDescriptionListIterator(page SecretResourceDescriptionListPage) SecretResourceDescriptionListIterator {
 	return original.NewSecretResourceDescriptionListIterator(page)
 }
-func NewSecretResourceDescriptionListPage(getNextPage func(context.Context, SecretResourceDescriptionList) (SecretResourceDescriptionList, error)) SecretResourceDescriptionListPage {
-	return original.NewSecretResourceDescriptionListPage(getNextPage)
+func NewSecretResourceDescriptionListPage(cur SecretResourceDescriptionList, getNextPage func(context.Context, SecretResourceDescriptionList) (SecretResourceDescriptionList, error)) SecretResourceDescriptionListPage {
+	return original.NewSecretResourceDescriptionListPage(cur, getNextPage)
 }
 func NewSecretValueClient(subscriptionID string) SecretValueClient {
 	return original.NewSecretValueClient(subscriptionID)
@@ -380,8 +380,8 @@ func NewSecretValueClientWithBaseURI(baseURI string, subscriptionID string) Secr
 func NewSecretValueResourceDescriptionListIterator(page SecretValueResourceDescriptionListPage) SecretValueResourceDescriptionListIterator {
 	return original.NewSecretValueResourceDescriptionListIterator(page)
 }
-func NewSecretValueResourceDescriptionListPage(getNextPage func(context.Context, SecretValueResourceDescriptionList) (SecretValueResourceDescriptionList, error)) SecretValueResourceDescriptionListPage {
-	return original.NewSecretValueResourceDescriptionListPage(getNextPage)
+func NewSecretValueResourceDescriptionListPage(cur SecretValueResourceDescriptionList, getNextPage func(context.Context, SecretValueResourceDescriptionList) (SecretValueResourceDescriptionList, error)) SecretValueResourceDescriptionListPage {
+	return original.NewSecretValueResourceDescriptionListPage(cur, getNextPage)
 }
 func NewServiceClient(subscriptionID string) ServiceClient {
 	return original.NewServiceClient(subscriptionID)
@@ -398,14 +398,14 @@ func NewServiceReplicaClientWithBaseURI(baseURI string, subscriptionID string) S
 func NewServiceReplicaDescriptionListIterator(page ServiceReplicaDescriptionListPage) ServiceReplicaDescriptionListIterator {
 	return original.NewServiceReplicaDescriptionListIterator(page)
 }
-func NewServiceReplicaDescriptionListPage(getNextPage func(context.Context, ServiceReplicaDescriptionList) (ServiceReplicaDescriptionList, error)) ServiceReplicaDescriptionListPage {
-	return original.NewServiceReplicaDescriptionListPage(getNextPage)
+func NewServiceReplicaDescriptionListPage(cur ServiceReplicaDescriptionList, getNextPage func(context.Context, ServiceReplicaDescriptionList) (ServiceReplicaDescriptionList, error)) ServiceReplicaDescriptionListPage {
+	return original.NewServiceReplicaDescriptionListPage(cur, getNextPage)
 }
 func NewServiceResourceDescriptionListIterator(page ServiceResourceDescriptionListPage) ServiceResourceDescriptionListIterator {
 	return original.NewServiceResourceDescriptionListIterator(page)
 }
-func NewServiceResourceDescriptionListPage(getNextPage func(context.Context, ServiceResourceDescriptionList) (ServiceResourceDescriptionList, error)) ServiceResourceDescriptionListPage {
-	return original.NewServiceResourceDescriptionListPage(getNextPage)
+func NewServiceResourceDescriptionListPage(cur ServiceResourceDescriptionList, getNextPage func(context.Context, ServiceResourceDescriptionList) (ServiceResourceDescriptionList, error)) ServiceResourceDescriptionListPage {
+	return original.NewServiceResourceDescriptionListPage(cur, getNextPage)
 }
 func NewVolumeClient(subscriptionID string) VolumeClient {
 	return original.NewVolumeClient(subscriptionID)
@@ -416,8 +416,8 @@ func NewVolumeClientWithBaseURI(baseURI string, subscriptionID string) VolumeCli
 func NewVolumeResourceDescriptionListIterator(page VolumeResourceDescriptionListPage) VolumeResourceDescriptionListIterator {
 	return original.NewVolumeResourceDescriptionListIterator(page)
 }
-func NewVolumeResourceDescriptionListPage(getNextPage func(context.Context, VolumeResourceDescriptionList) (VolumeResourceDescriptionList, error)) VolumeResourceDescriptionListPage {
-	return original.NewVolumeResourceDescriptionListPage(getNextPage)
+func NewVolumeResourceDescriptionListPage(cur VolumeResourceDescriptionList, getNextPage func(context.Context, VolumeResourceDescriptionList) (VolumeResourceDescriptionList, error)) VolumeResourceDescriptionListPage {
+	return original.NewVolumeResourceDescriptionListPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

@@ -47,6 +47,19 @@ func PossibleApplicationSharingPolicyValues() []ApplicationSharingPolicy {
 	return []ApplicationSharingPolicy{Personal, Shared}
 }
 
+// ComputeInstanceAuthorizationType enumerates the values for compute instance authorization type.
+type ComputeInstanceAuthorizationType string
+
+const (
+	// ComputeInstanceAuthorizationTypePersonal ...
+	ComputeInstanceAuthorizationTypePersonal ComputeInstanceAuthorizationType = "personal"
+)
+
+// PossibleComputeInstanceAuthorizationTypeValues returns an array of possible values for the ComputeInstanceAuthorizationType const type.
+func PossibleComputeInstanceAuthorizationTypeValues() []ComputeInstanceAuthorizationType {
+	return []ComputeInstanceAuthorizationType{ComputeInstanceAuthorizationTypePersonal}
+}
+
 // ComputeInstanceState enumerates the values for compute instance state.
 type ComputeInstanceState string
 

@@ -19,9 +19,13 @@
 
 package avsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/avs/mgmt/2019-08-09-preview/avs/avsapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/avs/mgmt/2020-07-17-preview/avs/avsapi"
 
+type AuthorizationsClientAPI = original.AuthorizationsClientAPI
 type ClustersClientAPI = original.ClustersClientAPI
+type GlobalReachConnectionsClientAPI = original.GlobalReachConnectionsClientAPI
+type HcxEnterpriseSitesClientAPI = original.HcxEnterpriseSitesClientAPI
 type LocationsClientAPI = original.LocationsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PrivateCloudsClientAPI = original.PrivateCloudsClientAPI
+type WorkloadNetworksClientAPI = original.WorkloadNetworksClientAPI

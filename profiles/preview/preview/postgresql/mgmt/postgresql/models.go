@@ -167,6 +167,7 @@ const (
 	VirtualNetworkRuleStateUnknown      VirtualNetworkRuleState = original.VirtualNetworkRuleStateUnknown
 )
 
+type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type BasicServerPropertiesForCreate = original.BasicServerPropertiesForCreate
 type CheckNameAvailabilityClient = original.CheckNameAvailabilityClient
@@ -208,6 +209,7 @@ type PrivateEndpointProperty = original.PrivateEndpointProperty
 type PrivateLinkServiceConnectionStateProperty = original.PrivateLinkServiceConnectionStateProperty
 type ProxyResource = original.ProxyResource
 type ReplicasClient = original.ReplicasClient
+type Resource = original.Resource
 type ResourceIdentity = original.ResourceIdentity
 type SecurityAlertPolicyProperties = original.SecurityAlertPolicyProperties
 type Server = original.Server
@@ -320,8 +322,8 @@ func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersC
 func NewVirtualNetworkRuleListResultIterator(page VirtualNetworkRuleListResultPage) VirtualNetworkRuleListResultIterator {
 	return original.NewVirtualNetworkRuleListResultIterator(page)
 }
-func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
-	return original.NewVirtualNetworkRuleListResultPage(getNextPage)
+func NewVirtualNetworkRuleListResultPage(cur VirtualNetworkRuleListResult, getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
+	return original.NewVirtualNetworkRuleListResultPage(cur, getNextPage)
 }
 func NewVirtualNetworkRulesClient(subscriptionID string) VirtualNetworkRulesClient {
 	return original.NewVirtualNetworkRulesClient(subscriptionID)

@@ -320,8 +320,8 @@ func NewAvailableServiceTiersClientWithBaseURI(baseURI string, subscriptionID st
 func NewClusterListResultIterator(page ClusterListResultPage) ClusterListResultIterator {
 	return original.NewClusterListResultIterator(page)
 }
-func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
-	return original.NewClusterListResultPage(getNextPage)
+func NewClusterListResultPage(cur ClusterListResult, getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return original.NewClusterListResultPage(cur, getNextPage)
 }
 func NewClustersClient(subscriptionID string) ClustersClient {
 	return original.NewClustersClient(subscriptionID)
@@ -344,8 +344,8 @@ func NewDataExportsClientWithBaseURI(baseURI string, subscriptionID string) Data
 func NewDataSourceListResultIterator(page DataSourceListResultPage) DataSourceListResultIterator {
 	return original.NewDataSourceListResultIterator(page)
 }
-func NewDataSourceListResultPage(getNextPage func(context.Context, DataSourceListResult) (DataSourceListResult, error)) DataSourceListResultPage {
-	return original.NewDataSourceListResultPage(getNextPage)
+func NewDataSourceListResultPage(cur DataSourceListResult, getNextPage func(context.Context, DataSourceListResult) (DataSourceListResult, error)) DataSourceListResultPage {
+	return original.NewDataSourceListResultPage(cur, getNextPage)
 }
 func NewDataSourcesClient(subscriptionID string) DataSourcesClient {
 	return original.NewDataSourcesClient(subscriptionID)
@@ -392,8 +392,8 @@ func NewManagementGroupsClientWithBaseURI(baseURI string, subscriptionID string)
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationStatusesClient(subscriptionID string) OperationStatusesClient {
 	return original.NewOperationStatusesClient(subscriptionID)
@@ -434,8 +434,8 @@ func NewStorageInsightConfigsClientWithBaseURI(baseURI string, subscriptionID st
 func NewStorageInsightListResultIterator(page StorageInsightListResultPage) StorageInsightListResultIterator {
 	return original.NewStorageInsightListResultIterator(page)
 }
-func NewStorageInsightListResultPage(getNextPage func(context.Context, StorageInsightListResult) (StorageInsightListResult, error)) StorageInsightListResultPage {
-	return original.NewStorageInsightListResultPage(getNextPage)
+func NewStorageInsightListResultPage(cur StorageInsightListResult, getNextPage func(context.Context, StorageInsightListResult) (StorageInsightListResult, error)) StorageInsightListResultPage {
+	return original.NewStorageInsightListResultPage(cur, getNextPage)
 }
 func NewTablesClient(subscriptionID string) TablesClient {
 	return original.NewTablesClient(subscriptionID)

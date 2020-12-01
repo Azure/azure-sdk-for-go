@@ -281,8 +281,8 @@ func New(subscriptionID string) BaseClient {
 func NewFunctionListResultIterator(page FunctionListResultPage) FunctionListResultIterator {
 	return original.NewFunctionListResultIterator(page)
 }
-func NewFunctionListResultPage(getNextPage func(context.Context, FunctionListResult) (FunctionListResult, error)) FunctionListResultPage {
-	return original.NewFunctionListResultPage(getNextPage)
+func NewFunctionListResultPage(cur FunctionListResult, getNextPage func(context.Context, FunctionListResult) (FunctionListResult, error)) FunctionListResultPage {
+	return original.NewFunctionListResultPage(cur, getNextPage)
 }
 func NewFunctionsClient(subscriptionID string) FunctionsClient {
 	return original.NewFunctionsClient(subscriptionID)
@@ -293,8 +293,8 @@ func NewFunctionsClientWithBaseURI(baseURI string, subscriptionID string) Functi
 func NewInputListResultIterator(page InputListResultPage) InputListResultIterator {
 	return original.NewInputListResultIterator(page)
 }
-func NewInputListResultPage(getNextPage func(context.Context, InputListResult) (InputListResult, error)) InputListResultPage {
-	return original.NewInputListResultPage(getNextPage)
+func NewInputListResultPage(cur InputListResult, getNextPage func(context.Context, InputListResult) (InputListResult, error)) InputListResultPage {
+	return original.NewInputListResultPage(cur, getNextPage)
 }
 func NewInputsClient(subscriptionID string) InputsClient {
 	return original.NewInputsClient(subscriptionID)
@@ -305,8 +305,8 @@ func NewInputsClientWithBaseURI(baseURI string, subscriptionID string) InputsCli
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -317,8 +317,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewOutputListResultIterator(page OutputListResultPage) OutputListResultIterator {
 	return original.NewOutputListResultIterator(page)
 }
-func NewOutputListResultPage(getNextPage func(context.Context, OutputListResult) (OutputListResult, error)) OutputListResultPage {
-	return original.NewOutputListResultPage(getNextPage)
+func NewOutputListResultPage(cur OutputListResult, getNextPage func(context.Context, OutputListResult) (OutputListResult, error)) OutputListResultPage {
+	return original.NewOutputListResultPage(cur, getNextPage)
 }
 func NewOutputsClient(subscriptionID string) OutputsClient {
 	return original.NewOutputsClient(subscriptionID)
@@ -329,8 +329,8 @@ func NewOutputsClientWithBaseURI(baseURI string, subscriptionID string) OutputsC
 func NewStreamingJobListResultIterator(page StreamingJobListResultPage) StreamingJobListResultIterator {
 	return original.NewStreamingJobListResultIterator(page)
 }
-func NewStreamingJobListResultPage(getNextPage func(context.Context, StreamingJobListResult) (StreamingJobListResult, error)) StreamingJobListResultPage {
-	return original.NewStreamingJobListResultPage(getNextPage)
+func NewStreamingJobListResultPage(cur StreamingJobListResult, getNextPage func(context.Context, StreamingJobListResult) (StreamingJobListResult, error)) StreamingJobListResultPage {
+	return original.NewStreamingJobListResultPage(cur, getNextPage)
 }
 func NewStreamingJobsClient(subscriptionID string) StreamingJobsClient {
 	return original.NewStreamingJobsClient(subscriptionID)

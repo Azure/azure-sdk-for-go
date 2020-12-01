@@ -218,14 +218,14 @@ func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) Account
 func NewDataLakeStoreAccountListResultIterator(page DataLakeStoreAccountListResultPage) DataLakeStoreAccountListResultIterator {
 	return original.NewDataLakeStoreAccountListResultIterator(page)
 }
-func NewDataLakeStoreAccountListResultPage(getNextPage func(context.Context, DataLakeStoreAccountListResult) (DataLakeStoreAccountListResult, error)) DataLakeStoreAccountListResultPage {
-	return original.NewDataLakeStoreAccountListResultPage(getNextPage)
+func NewDataLakeStoreAccountListResultPage(cur DataLakeStoreAccountListResult, getNextPage func(context.Context, DataLakeStoreAccountListResult) (DataLakeStoreAccountListResult, error)) DataLakeStoreAccountListResultPage {
+	return original.NewDataLakeStoreAccountListResultPage(cur, getNextPage)
 }
 func NewFirewallRuleListResultIterator(page FirewallRuleListResultPage) FirewallRuleListResultIterator {
 	return original.NewFirewallRuleListResultIterator(page)
 }
-func NewFirewallRuleListResultPage(getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
-	return original.NewFirewallRuleListResultPage(getNextPage)
+func NewFirewallRuleListResultPage(cur FirewallRuleListResult, getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
+	return original.NewFirewallRuleListResultPage(cur, getNextPage)
 }
 func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
 	return original.NewFirewallRulesClient(subscriptionID)
@@ -248,8 +248,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewTrustedIDProviderListResultIterator(page TrustedIDProviderListResultPage) TrustedIDProviderListResultIterator {
 	return original.NewTrustedIDProviderListResultIterator(page)
 }
-func NewTrustedIDProviderListResultPage(getNextPage func(context.Context, TrustedIDProviderListResult) (TrustedIDProviderListResult, error)) TrustedIDProviderListResultPage {
-	return original.NewTrustedIDProviderListResultPage(getNextPage)
+func NewTrustedIDProviderListResultPage(cur TrustedIDProviderListResult, getNextPage func(context.Context, TrustedIDProviderListResult) (TrustedIDProviderListResult, error)) TrustedIDProviderListResultPage {
+	return original.NewTrustedIDProviderListResultPage(cur, getNextPage)
 }
 func NewTrustedIDProvidersClient(subscriptionID string) TrustedIDProvidersClient {
 	return original.NewTrustedIDProvidersClient(subscriptionID)
@@ -260,8 +260,8 @@ func NewTrustedIDProvidersClientWithBaseURI(baseURI string, subscriptionID strin
 func NewVirtualNetworkRuleListResultIterator(page VirtualNetworkRuleListResultPage) VirtualNetworkRuleListResultIterator {
 	return original.NewVirtualNetworkRuleListResultIterator(page)
 }
-func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
-	return original.NewVirtualNetworkRuleListResultPage(getNextPage)
+func NewVirtualNetworkRuleListResultPage(cur VirtualNetworkRuleListResult, getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
+	return original.NewVirtualNetworkRuleListResultPage(cur, getNextPage)
 }
 func NewVirtualNetworkRulesClient(subscriptionID string) VirtualNetworkRulesClient {
 	return original.NewVirtualNetworkRulesClient(subscriptionID)

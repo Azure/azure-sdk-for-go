@@ -28,4 +28,6 @@ type DisasterRecoveryConfigsClientAPI = original.DisasterRecoveryConfigsClientAP
 type EventHubsClientAPI = original.EventHubsClientAPI
 type NamespacesClientAPI = original.NamespacesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
 type RegionsClientAPI = original.RegionsClientAPI

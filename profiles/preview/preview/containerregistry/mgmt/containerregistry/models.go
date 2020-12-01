@@ -22,7 +22,7 @@ package containerregistry
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2019-12-01-preview/containerregistry"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2020-11-01-preview/containerregistry"
 )
 
 const (
@@ -42,6 +42,13 @@ const (
 	Recreate ActionsRequired = original.Recreate
 )
 
+type ActivationStatus = original.ActivationStatus
+
+const (
+	Active   ActivationStatus = original.Active
+	Inactive ActivationStatus = original.Inactive
+)
+
 type Architecture = original.Architecture
 
 const (
@@ -50,6 +57,13 @@ const (
 	Arm64         Architecture = original.Arm64
 	ThreeEightSix Architecture = original.ThreeEightSix
 	X86           Architecture = original.X86
+)
+
+type AuditLogStatus = original.AuditLogStatus
+
+const (
+	Disabled AuditLogStatus = original.Disabled
+	Enabled  AuditLogStatus = original.Enabled
 )
 
 type BaseImageDependencyType = original.BaseImageDependencyType
@@ -66,6 +80,28 @@ const (
 	Runtime BaseImageTriggerType = original.Runtime
 )
 
+type CertificateType = original.CertificateType
+
+const (
+	LocalDirectory CertificateType = original.LocalDirectory
+)
+
+type ConnectedRegistryMode = original.ConnectedRegistryMode
+
+const (
+	ConnectedRegistryModeMirror   ConnectedRegistryMode = original.ConnectedRegistryModeMirror
+	ConnectedRegistryModeRegistry ConnectedRegistryMode = original.ConnectedRegistryModeRegistry
+)
+
+type ConnectionState = original.ConnectionState
+
+const (
+	Offline   ConnectionState = original.Offline
+	Online    ConnectionState = original.Online
+	Syncing   ConnectionState = original.Syncing
+	Unhealthy ConnectionState = original.Unhealthy
+)
+
 type ConnectionStatus = original.ConnectionStatus
 
 const (
@@ -73,6 +109,15 @@ const (
 	Disconnected ConnectionStatus = original.Disconnected
 	Pending      ConnectionStatus = original.Pending
 	Rejected     ConnectionStatus = original.Rejected
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	Application     CreatedByType = original.Application
+	Key             CreatedByType = original.Key
+	ManagedIdentity CreatedByType = original.ManagedIdentity
+	User            CreatedByType = original.User
 )
 
 type DefaultAction = original.DefaultAction
@@ -85,8 +130,8 @@ const (
 type EncryptionStatus = original.EncryptionStatus
 
 const (
-	Disabled EncryptionStatus = original.Disabled
-	Enabled  EncryptionStatus = original.Enabled
+	EncryptionStatusDisabled EncryptionStatus = original.EncryptionStatusDisabled
+	EncryptionStatusEnabled  EncryptionStatus = original.EncryptionStatusEnabled
 )
 
 type ImportMode = original.ImportMode
@@ -94,6 +139,32 @@ type ImportMode = original.ImportMode
 const (
 	Force   ImportMode = original.Force
 	NoForce ImportMode = original.NoForce
+)
+
+type LastModifiedByType = original.LastModifiedByType
+
+const (
+	LastModifiedByTypeApplication     LastModifiedByType = original.LastModifiedByTypeApplication
+	LastModifiedByTypeKey             LastModifiedByType = original.LastModifiedByTypeKey
+	LastModifiedByTypeManagedIdentity LastModifiedByType = original.LastModifiedByTypeManagedIdentity
+	LastModifiedByTypeUser            LastModifiedByType = original.LastModifiedByTypeUser
+)
+
+type LogLevel = original.LogLevel
+
+const (
+	LogLevelDebug       LogLevel = original.LogLevelDebug
+	LogLevelError       LogLevel = original.LogLevelError
+	LogLevelInformation LogLevel = original.LogLevelInformation
+	LogLevelNone        LogLevel = original.LogLevelNone
+	LogLevelWarning     LogLevel = original.LogLevelWarning
+)
+
+type NetworkRuleBypassOptions = original.NetworkRuleBypassOptions
+
+const (
+	NetworkRuleBypassOptionsAzureServices NetworkRuleBypassOptions = original.NetworkRuleBypassOptionsAzureServices
+	NetworkRuleBypassOptionsNone          NetworkRuleBypassOptions = original.NetworkRuleBypassOptionsNone
 )
 
 type OS = original.OS
@@ -246,6 +317,13 @@ const (
 	Pullrequest SourceTriggerEvent = original.Pullrequest
 )
 
+type TLSStatus = original.TLSStatus
+
+const (
+	TLSStatusDisabled TLSStatus = original.TLSStatusDisabled
+	TLSStatusEnabled  TLSStatus = original.TLSStatusEnabled
+)
+
 type TaskStatus = original.TaskStatus
 
 const (
@@ -354,6 +432,14 @@ const (
 	WebhookStatusEnabled  WebhookStatus = original.WebhookStatusEnabled
 )
 
+type ZoneRedundancy = original.ZoneRedundancy
+
+const (
+	ZoneRedundancyDisabled ZoneRedundancy = original.ZoneRedundancyDisabled
+	ZoneRedundancyEnabled  ZoneRedundancy = original.ZoneRedundancyEnabled
+)
+
+type ActivationProperties = original.ActivationProperties
 type ActiveDirectoryObject = original.ActiveDirectoryObject
 type Actor = original.Actor
 type AgentPool = original.AgentPool
@@ -380,6 +466,18 @@ type BasicRunRequest = original.BasicRunRequest
 type BasicTaskStepProperties = original.BasicTaskStepProperties
 type BasicTaskStepUpdateParameters = original.BasicTaskStepUpdateParameters
 type CallbackConfig = original.CallbackConfig
+type ConnectedRegistriesClient = original.ConnectedRegistriesClient
+type ConnectedRegistriesCreateFuture = original.ConnectedRegistriesCreateFuture
+type ConnectedRegistriesDeactivateFuture = original.ConnectedRegistriesDeactivateFuture
+type ConnectedRegistriesDeleteFuture = original.ConnectedRegistriesDeleteFuture
+type ConnectedRegistriesUpdateFuture = original.ConnectedRegistriesUpdateFuture
+type ConnectedRegistry = original.ConnectedRegistry
+type ConnectedRegistryListResult = original.ConnectedRegistryListResult
+type ConnectedRegistryListResultIterator = original.ConnectedRegistryListResultIterator
+type ConnectedRegistryListResultPage = original.ConnectedRegistryListResultPage
+type ConnectedRegistryProperties = original.ConnectedRegistryProperties
+type ConnectedRegistryUpdateParameters = original.ConnectedRegistryUpdateParameters
+type ConnectedRegistryUpdateProperties = original.ConnectedRegistryUpdateProperties
 type Credentials = original.Credentials
 type CustomRegistryCredentials = original.CustomRegistryCredentials
 type DockerBuildRequest = original.DockerBuildRequest
@@ -431,6 +529,8 @@ type ImportSource = original.ImportSource
 type ImportSourceCredentials = original.ImportSourceCredentials
 type InnerErrorDescription = original.InnerErrorDescription
 type KeyVaultProperties = original.KeyVaultProperties
+type LoggingProperties = original.LoggingProperties
+type LoginServerProperties = original.LoginServerProperties
 type NetworkRuleSet = original.NetworkRuleSet
 type OperationDefinition = original.OperationDefinition
 type OperationDisplayDefinition = original.OperationDisplayDefinition
@@ -442,6 +542,7 @@ type OperationPropertiesDefinition = original.OperationPropertiesDefinition
 type OperationServiceSpecificationDefinition = original.OperationServiceSpecificationDefinition
 type OperationsClient = original.OperationsClient
 type OverrideTaskStepProperties = original.OverrideTaskStepProperties
+type ParentProperties = original.ParentProperties
 type PipelineRun = original.PipelineRun
 type PipelineRunListResult = original.PipelineRunListResult
 type PipelineRunListResultIterator = original.PipelineRunListResultIterator
@@ -549,7 +650,13 @@ type SourceTriggerUpdateParameters = original.SourceTriggerUpdateParameters
 type SourceUpdateParameters = original.SourceUpdateParameters
 type SourceUploadDefinition = original.SourceUploadDefinition
 type Status = original.Status
+type StatusDetailProperties = original.StatusDetailProperties
 type StorageAccountProperties = original.StorageAccountProperties
+type SyncProperties = original.SyncProperties
+type SyncUpdateProperties = original.SyncUpdateProperties
+type SystemData = original.SystemData
+type TLSCertificateProperties = original.TLSCertificateProperties
+type TLSProperties = original.TLSProperties
 type Target = original.Target
 type Task = original.Task
 type TaskListResult = original.TaskListResult
@@ -618,8 +725,8 @@ func New(subscriptionID string) BaseClient {
 func NewAgentPoolListResultIterator(page AgentPoolListResultPage) AgentPoolListResultIterator {
 	return original.NewAgentPoolListResultIterator(page)
 }
-func NewAgentPoolListResultPage(getNextPage func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)) AgentPoolListResultPage {
-	return original.NewAgentPoolListResultPage(getNextPage)
+func NewAgentPoolListResultPage(cur AgentPoolListResult, getNextPage func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)) AgentPoolListResultPage {
+	return original.NewAgentPoolListResultPage(cur, getNextPage)
 }
 func NewAgentPoolsClient(subscriptionID string) AgentPoolsClient {
 	return original.NewAgentPoolsClient(subscriptionID)
@@ -627,17 +734,29 @@ func NewAgentPoolsClient(subscriptionID string) AgentPoolsClient {
 func NewAgentPoolsClientWithBaseURI(baseURI string, subscriptionID string) AgentPoolsClient {
 	return original.NewAgentPoolsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewConnectedRegistriesClient(subscriptionID string) ConnectedRegistriesClient {
+	return original.NewConnectedRegistriesClient(subscriptionID)
+}
+func NewConnectedRegistriesClientWithBaseURI(baseURI string, subscriptionID string) ConnectedRegistriesClient {
+	return original.NewConnectedRegistriesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewConnectedRegistryListResultIterator(page ConnectedRegistryListResultPage) ConnectedRegistryListResultIterator {
+	return original.NewConnectedRegistryListResultIterator(page)
+}
+func NewConnectedRegistryListResultPage(cur ConnectedRegistryListResult, getNextPage func(context.Context, ConnectedRegistryListResult) (ConnectedRegistryListResult, error)) ConnectedRegistryListResultPage {
+	return original.NewConnectedRegistryListResultPage(cur, getNextPage)
+}
 func NewEventListResultIterator(page EventListResultPage) EventListResultIterator {
 	return original.NewEventListResultIterator(page)
 }
-func NewEventListResultPage(getNextPage func(context.Context, EventListResult) (EventListResult, error)) EventListResultPage {
-	return original.NewEventListResultPage(getNextPage)
+func NewEventListResultPage(cur EventListResult, getNextPage func(context.Context, EventListResult) (EventListResult, error)) EventListResultPage {
+	return original.NewEventListResultPage(cur, getNextPage)
 }
 func NewExportPipelineListResultIterator(page ExportPipelineListResultPage) ExportPipelineListResultIterator {
 	return original.NewExportPipelineListResultIterator(page)
 }
-func NewExportPipelineListResultPage(getNextPage func(context.Context, ExportPipelineListResult) (ExportPipelineListResult, error)) ExportPipelineListResultPage {
-	return original.NewExportPipelineListResultPage(getNextPage)
+func NewExportPipelineListResultPage(cur ExportPipelineListResult, getNextPage func(context.Context, ExportPipelineListResult) (ExportPipelineListResult, error)) ExportPipelineListResultPage {
+	return original.NewExportPipelineListResultPage(cur, getNextPage)
 }
 func NewExportPipelinesClient(subscriptionID string) ExportPipelinesClient {
 	return original.NewExportPipelinesClient(subscriptionID)
@@ -648,8 +767,8 @@ func NewExportPipelinesClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewImportPipelineListResultIterator(page ImportPipelineListResultPage) ImportPipelineListResultIterator {
 	return original.NewImportPipelineListResultIterator(page)
 }
-func NewImportPipelineListResultPage(getNextPage func(context.Context, ImportPipelineListResult) (ImportPipelineListResult, error)) ImportPipelineListResultPage {
-	return original.NewImportPipelineListResultPage(getNextPage)
+func NewImportPipelineListResultPage(cur ImportPipelineListResult, getNextPage func(context.Context, ImportPipelineListResult) (ImportPipelineListResult, error)) ImportPipelineListResultPage {
+	return original.NewImportPipelineListResultPage(cur, getNextPage)
 }
 func NewImportPipelinesClient(subscriptionID string) ImportPipelinesClient {
 	return original.NewImportPipelinesClient(subscriptionID)
@@ -660,8 +779,8 @@ func NewImportPipelinesClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -672,8 +791,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewPipelineRunListResultIterator(page PipelineRunListResultPage) PipelineRunListResultIterator {
 	return original.NewPipelineRunListResultIterator(page)
 }
-func NewPipelineRunListResultPage(getNextPage func(context.Context, PipelineRunListResult) (PipelineRunListResult, error)) PipelineRunListResultPage {
-	return original.NewPipelineRunListResultPage(getNextPage)
+func NewPipelineRunListResultPage(cur PipelineRunListResult, getNextPage func(context.Context, PipelineRunListResult) (PipelineRunListResult, error)) PipelineRunListResultPage {
+	return original.NewPipelineRunListResultPage(cur, getNextPage)
 }
 func NewPipelineRunsClient(subscriptionID string) PipelineRunsClient {
 	return original.NewPipelineRunsClient(subscriptionID)
@@ -684,8 +803,8 @@ func NewPipelineRunsClientWithBaseURI(baseURI string, subscriptionID string) Pip
 func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
 	return original.NewPrivateEndpointConnectionListResultIterator(page)
 }
-func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
-	return original.NewPrivateEndpointConnectionListResultPage(getNextPage)
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return original.NewPrivateEndpointConnectionListResultPage(cur, getNextPage)
 }
 func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
 	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
@@ -696,8 +815,8 @@ func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscription
 func NewPrivateLinkResourceListResultIterator(page PrivateLinkResourceListResultPage) PrivateLinkResourceListResultIterator {
 	return original.NewPrivateLinkResourceListResultIterator(page)
 }
-func NewPrivateLinkResourceListResultPage(getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
-	return original.NewPrivateLinkResourceListResultPage(getNextPage)
+func NewPrivateLinkResourceListResultPage(cur PrivateLinkResourceListResult, getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
+	return original.NewPrivateLinkResourceListResultPage(cur, getNextPage)
 }
 func NewRegistriesClient(subscriptionID string) RegistriesClient {
 	return original.NewRegistriesClient(subscriptionID)
@@ -708,14 +827,14 @@ func NewRegistriesClientWithBaseURI(baseURI string, subscriptionID string) Regis
 func NewRegistryListResultIterator(page RegistryListResultPage) RegistryListResultIterator {
 	return original.NewRegistryListResultIterator(page)
 }
-func NewRegistryListResultPage(getNextPage func(context.Context, RegistryListResult) (RegistryListResult, error)) RegistryListResultPage {
-	return original.NewRegistryListResultPage(getNextPage)
+func NewRegistryListResultPage(cur RegistryListResult, getNextPage func(context.Context, RegistryListResult) (RegistryListResult, error)) RegistryListResultPage {
+	return original.NewRegistryListResultPage(cur, getNextPage)
 }
 func NewReplicationListResultIterator(page ReplicationListResultPage) ReplicationListResultIterator {
 	return original.NewReplicationListResultIterator(page)
 }
-func NewReplicationListResultPage(getNextPage func(context.Context, ReplicationListResult) (ReplicationListResult, error)) ReplicationListResultPage {
-	return original.NewReplicationListResultPage(getNextPage)
+func NewReplicationListResultPage(cur ReplicationListResult, getNextPage func(context.Context, ReplicationListResult) (ReplicationListResult, error)) ReplicationListResultPage {
+	return original.NewReplicationListResultPage(cur, getNextPage)
 }
 func NewReplicationsClient(subscriptionID string) ReplicationsClient {
 	return original.NewReplicationsClient(subscriptionID)
@@ -726,8 +845,8 @@ func NewReplicationsClientWithBaseURI(baseURI string, subscriptionID string) Rep
 func NewRunListResultIterator(page RunListResultPage) RunListResultIterator {
 	return original.NewRunListResultIterator(page)
 }
-func NewRunListResultPage(getNextPage func(context.Context, RunListResult) (RunListResult, error)) RunListResultPage {
-	return original.NewRunListResultPage(getNextPage)
+func NewRunListResultPage(cur RunListResult, getNextPage func(context.Context, RunListResult) (RunListResult, error)) RunListResultPage {
+	return original.NewRunListResultPage(cur, getNextPage)
 }
 func NewRunsClient(subscriptionID string) RunsClient {
 	return original.NewRunsClient(subscriptionID)
@@ -738,8 +857,8 @@ func NewRunsClientWithBaseURI(baseURI string, subscriptionID string) RunsClient 
 func NewScopeMapListResultIterator(page ScopeMapListResultPage) ScopeMapListResultIterator {
 	return original.NewScopeMapListResultIterator(page)
 }
-func NewScopeMapListResultPage(getNextPage func(context.Context, ScopeMapListResult) (ScopeMapListResult, error)) ScopeMapListResultPage {
-	return original.NewScopeMapListResultPage(getNextPage)
+func NewScopeMapListResultPage(cur ScopeMapListResult, getNextPage func(context.Context, ScopeMapListResult) (ScopeMapListResult, error)) ScopeMapListResultPage {
+	return original.NewScopeMapListResultPage(cur, getNextPage)
 }
 func NewScopeMapsClient(subscriptionID string) ScopeMapsClient {
 	return original.NewScopeMapsClient(subscriptionID)
@@ -750,14 +869,14 @@ func NewScopeMapsClientWithBaseURI(baseURI string, subscriptionID string) ScopeM
 func NewTaskListResultIterator(page TaskListResultPage) TaskListResultIterator {
 	return original.NewTaskListResultIterator(page)
 }
-func NewTaskListResultPage(getNextPage func(context.Context, TaskListResult) (TaskListResult, error)) TaskListResultPage {
-	return original.NewTaskListResultPage(getNextPage)
+func NewTaskListResultPage(cur TaskListResult, getNextPage func(context.Context, TaskListResult) (TaskListResult, error)) TaskListResultPage {
+	return original.NewTaskListResultPage(cur, getNextPage)
 }
 func NewTaskRunListResultIterator(page TaskRunListResultPage) TaskRunListResultIterator {
 	return original.NewTaskRunListResultIterator(page)
 }
-func NewTaskRunListResultPage(getNextPage func(context.Context, TaskRunListResult) (TaskRunListResult, error)) TaskRunListResultPage {
-	return original.NewTaskRunListResultPage(getNextPage)
+func NewTaskRunListResultPage(cur TaskRunListResult, getNextPage func(context.Context, TaskRunListResult) (TaskRunListResult, error)) TaskRunListResultPage {
+	return original.NewTaskRunListResultPage(cur, getNextPage)
 }
 func NewTaskRunsClient(subscriptionID string) TaskRunsClient {
 	return original.NewTaskRunsClient(subscriptionID)
@@ -774,8 +893,8 @@ func NewTasksClientWithBaseURI(baseURI string, subscriptionID string) TasksClien
 func NewTokenListResultIterator(page TokenListResultPage) TokenListResultIterator {
 	return original.NewTokenListResultIterator(page)
 }
-func NewTokenListResultPage(getNextPage func(context.Context, TokenListResult) (TokenListResult, error)) TokenListResultPage {
-	return original.NewTokenListResultPage(getNextPage)
+func NewTokenListResultPage(cur TokenListResult, getNextPage func(context.Context, TokenListResult) (TokenListResult, error)) TokenListResultPage {
+	return original.NewTokenListResultPage(cur, getNextPage)
 }
 func NewTokensClient(subscriptionID string) TokensClient {
 	return original.NewTokensClient(subscriptionID)
@@ -786,8 +905,8 @@ func NewTokensClientWithBaseURI(baseURI string, subscriptionID string) TokensCli
 func NewWebhookListResultIterator(page WebhookListResultPage) WebhookListResultIterator {
 	return original.NewWebhookListResultIterator(page)
 }
-func NewWebhookListResultPage(getNextPage func(context.Context, WebhookListResult) (WebhookListResult, error)) WebhookListResultPage {
-	return original.NewWebhookListResultPage(getNextPage)
+func NewWebhookListResultPage(cur WebhookListResult, getNextPage func(context.Context, WebhookListResult) (WebhookListResult, error)) WebhookListResultPage {
+	return original.NewWebhookListResultPage(cur, getNextPage)
 }
 func NewWebhooksClient(subscriptionID string) WebhooksClient {
 	return original.NewWebhooksClient(subscriptionID)
@@ -804,8 +923,14 @@ func PossibleActionValues() []Action {
 func PossibleActionsRequiredValues() []ActionsRequired {
 	return original.PossibleActionsRequiredValues()
 }
+func PossibleActivationStatusValues() []ActivationStatus {
+	return original.PossibleActivationStatusValues()
+}
 func PossibleArchitectureValues() []Architecture {
 	return original.PossibleArchitectureValues()
+}
+func PossibleAuditLogStatusValues() []AuditLogStatus {
+	return original.PossibleAuditLogStatusValues()
 }
 func PossibleBaseImageDependencyTypeValues() []BaseImageDependencyType {
 	return original.PossibleBaseImageDependencyTypeValues()
@@ -813,8 +938,20 @@ func PossibleBaseImageDependencyTypeValues() []BaseImageDependencyType {
 func PossibleBaseImageTriggerTypeValues() []BaseImageTriggerType {
 	return original.PossibleBaseImageTriggerTypeValues()
 }
+func PossibleCertificateTypeValues() []CertificateType {
+	return original.PossibleCertificateTypeValues()
+}
+func PossibleConnectedRegistryModeValues() []ConnectedRegistryMode {
+	return original.PossibleConnectedRegistryModeValues()
+}
+func PossibleConnectionStateValues() []ConnectionState {
+	return original.PossibleConnectionStateValues()
+}
 func PossibleConnectionStatusValues() []ConnectionStatus {
 	return original.PossibleConnectionStatusValues()
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
 }
 func PossibleDefaultActionValues() []DefaultAction {
 	return original.PossibleDefaultActionValues()
@@ -824,6 +961,15 @@ func PossibleEncryptionStatusValues() []EncryptionStatus {
 }
 func PossibleImportModeValues() []ImportMode {
 	return original.PossibleImportModeValues()
+}
+func PossibleLastModifiedByTypeValues() []LastModifiedByType {
+	return original.PossibleLastModifiedByTypeValues()
+}
+func PossibleLogLevelValues() []LogLevel {
+	return original.PossibleLogLevelValues()
+}
+func PossibleNetworkRuleBypassOptionsValues() []NetworkRuleBypassOptions {
+	return original.PossibleNetworkRuleBypassOptionsValues()
 }
 func PossibleOSValues() []OS {
 	return original.PossibleOSValues()
@@ -882,6 +1028,9 @@ func PossibleSourceRegistryLoginModeValues() []SourceRegistryLoginMode {
 func PossibleSourceTriggerEventValues() []SourceTriggerEvent {
 	return original.PossibleSourceTriggerEventValues()
 }
+func PossibleTLSStatusValues() []TLSStatus {
+	return original.PossibleTLSStatusValues()
+}
 func PossibleTaskStatusValues() []TaskStatus {
 	return original.PossibleTaskStatusValues()
 }
@@ -923,6 +1072,9 @@ func PossibleWebhookActionValues() []WebhookAction {
 }
 func PossibleWebhookStatusValues() []WebhookStatus {
 	return original.PossibleWebhookStatusValues()
+}
+func PossibleZoneRedundancyValues() []ZoneRedundancy {
+	return original.PossibleZoneRedundancyValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

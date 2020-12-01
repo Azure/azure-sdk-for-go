@@ -32,15 +32,15 @@ type PartitionKeyRangeIDRegionClient struct {
 }
 
 // NewPartitionKeyRangeIDRegionClient creates an instance of the PartitionKeyRangeIDRegionClient client.
-func NewPartitionKeyRangeIDRegionClient(subscriptionID string, subscriptionID1 string) PartitionKeyRangeIDRegionClient {
-	return NewPartitionKeyRangeIDRegionClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewPartitionKeyRangeIDRegionClient(subscriptionID string) PartitionKeyRangeIDRegionClient {
+	return NewPartitionKeyRangeIDRegionClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewPartitionKeyRangeIDRegionClientWithBaseURI creates an instance of the PartitionKeyRangeIDRegionClient client
 // using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
 // clouds, Azure stack).
-func NewPartitionKeyRangeIDRegionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PartitionKeyRangeIDRegionClient {
-	return PartitionKeyRangeIDRegionClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewPartitionKeyRangeIDRegionClientWithBaseURI(baseURI string, subscriptionID string) PartitionKeyRangeIDRegionClient {
+	return PartitionKeyRangeIDRegionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListMetrics retrieves the metrics determined by the given filter for the given partition key range id and region.
@@ -66,6 +66,8 @@ func (client PartitionKeyRangeIDRegionClient) ListMetrics(ctx context.Context, r
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},

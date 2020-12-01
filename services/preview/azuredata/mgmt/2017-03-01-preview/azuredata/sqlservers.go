@@ -26,20 +26,20 @@ import (
 )
 
 // SQLServersClient is the the AzureData management API provides a RESTful set of web APIs to manage Azure Data
-// Resources. For example, register, delete and retrieve a SQL Server, SQL Server registration.
+// Resources.
 type SQLServersClient struct {
 	BaseClient
 }
 
 // NewSQLServersClient creates an instance of the SQLServersClient client.
-func NewSQLServersClient(subscriptionID string) SQLServersClient {
-	return NewSQLServersClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewSQLServersClient(subscriptionID string, subscriptionID1 string) SQLServersClient {
+	return NewSQLServersClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewSQLServersClientWithBaseURI creates an instance of the SQLServersClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewSQLServersClientWithBaseURI(baseURI string, subscriptionID string) SQLServersClient {
-	return SQLServersClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewSQLServersClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) SQLServersClient {
+	return SQLServersClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // CreateOrUpdate creates or updates a SQL Server.
@@ -90,7 +90,7 @@ func (client SQLServersClient) CreateOrUpdatePreparer(ctx context.Context, resou
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2019-07-24-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -116,7 +116,6 @@ func (client SQLServersClient) CreateOrUpdateSender(req *http.Request) (*http.Re
 func (client SQLServersClient) CreateOrUpdateResponder(resp *http.Response) (result SQLServer, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -171,7 +170,7 @@ func (client SQLServersClient) DeletePreparer(ctx context.Context, resourceGroup
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2019-07-24-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -195,7 +194,6 @@ func (client SQLServersClient) DeleteSender(req *http.Request) (*http.Response, 
 func (client SQLServersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -250,7 +248,7 @@ func (client SQLServersClient) GetPreparer(ctx context.Context, resourceGroupNam
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2019-07-24-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -277,7 +275,6 @@ func (client SQLServersClient) GetSender(req *http.Request) (*http.Response, err
 func (client SQLServersClient) GetResponder(resp *http.Response) (result SQLServer, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -320,6 +317,9 @@ func (client SQLServersClient) ListByResourceGroup(ctx context.Context, resource
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.SQLServersClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.sslr.hasNextLink() && result.sslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -332,7 +332,7 @@ func (client SQLServersClient) ListByResourceGroupPreparer(ctx context.Context, 
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2019-07-24-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -359,7 +359,6 @@ func (client SQLServersClient) ListByResourceGroupSender(req *http.Request) (*ht
 func (client SQLServersClient) ListByResourceGroupResponder(resp *http.Response) (result SQLServerListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

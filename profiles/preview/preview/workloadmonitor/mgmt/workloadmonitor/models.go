@@ -69,14 +69,14 @@ func New() BaseClient {
 func NewHealthMonitorListIterator(page HealthMonitorListPage) HealthMonitorListIterator {
 	return original.NewHealthMonitorListIterator(page)
 }
-func NewHealthMonitorListPage(getNextPage func(context.Context, HealthMonitorList) (HealthMonitorList, error)) HealthMonitorListPage {
-	return original.NewHealthMonitorListPage(getNextPage)
+func NewHealthMonitorListPage(cur HealthMonitorList, getNextPage func(context.Context, HealthMonitorList) (HealthMonitorList, error)) HealthMonitorListPage {
+	return original.NewHealthMonitorListPage(cur, getNextPage)
 }
 func NewHealthMonitorStateChangeListIterator(page HealthMonitorStateChangeListPage) HealthMonitorStateChangeListIterator {
 	return original.NewHealthMonitorStateChangeListIterator(page)
 }
-func NewHealthMonitorStateChangeListPage(getNextPage func(context.Context, HealthMonitorStateChangeList) (HealthMonitorStateChangeList, error)) HealthMonitorStateChangeListPage {
-	return original.NewHealthMonitorStateChangeListPage(getNextPage)
+func NewHealthMonitorStateChangeListPage(cur HealthMonitorStateChangeList, getNextPage func(context.Context, HealthMonitorStateChangeList) (HealthMonitorStateChangeList, error)) HealthMonitorStateChangeListPage {
+	return original.NewHealthMonitorStateChangeListPage(cur, getNextPage)
 }
 func NewHealthMonitorsClient() HealthMonitorsClient {
 	return original.NewHealthMonitorsClient()
@@ -87,8 +87,8 @@ func NewHealthMonitorsClientWithBaseURI(baseURI string) HealthMonitorsClient {
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
 }
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return original.NewOperationListPage(getNextPage)
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(cur, getNextPage)
 }
 func NewOperationsClient() OperationsClient {
 	return original.NewOperationsClient()

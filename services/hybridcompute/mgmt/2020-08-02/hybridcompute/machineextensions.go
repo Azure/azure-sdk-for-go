@@ -395,7 +395,7 @@ func (client MachineExtensionsClient) ListComplete(ctx context.Context, resource
 	return
 }
 
-// Update the operation to create or update the extension.
+// Update the operation to update the extension.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // name - the name of the machine where the extension should be created or updated.

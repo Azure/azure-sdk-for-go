@@ -58,6 +58,7 @@ const (
 
 type BaseClient = original.BaseClient
 type BitLockerKeysClient = original.BitLockerKeysClient
+type DeliveryPackageInformation = original.DeliveryPackageInformation
 type DriveBitLockerKey = original.DriveBitLockerKey
 type DriveStatus = original.DriveStatus
 type EncryptionKeyDetails = original.EncryptionKeyDetails
@@ -108,8 +109,8 @@ func NewJobsClientWithBaseURI(baseURI string, subscriptionID string, acceptLangu
 func NewListJobsResponseIterator(page ListJobsResponsePage) ListJobsResponseIterator {
 	return original.NewListJobsResponseIterator(page)
 }
-func NewListJobsResponsePage(getNextPage func(context.Context, ListJobsResponse) (ListJobsResponse, error)) ListJobsResponsePage {
-	return original.NewListJobsResponsePage(getNextPage)
+func NewListJobsResponsePage(cur ListJobsResponse, getNextPage func(context.Context, ListJobsResponse) (ListJobsResponse, error)) ListJobsResponsePage {
+	return original.NewListJobsResponsePage(cur, getNextPage)
 }
 func NewLocationsClient(subscriptionID string, acceptLanguage string) LocationsClient {
 	return original.NewLocationsClient(subscriptionID, acceptLanguage)

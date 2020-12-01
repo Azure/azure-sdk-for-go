@@ -230,7 +230,8 @@ type ImageURL struct {
 	URL *string `json:"url,omitempty"`
 }
 
-// Landmarks a collection of 27-point face landmarks pointing to the important positions of face components.
+// Landmarks a collection of 27-point face landmarks pointing to the important positions of face
+// components.
 type Landmarks struct {
 	PupilLeft           *Coordinate `json:"pupilLeft,omitempty"`
 	PupilRight          *Coordinate `json:"pupilRight,omitempty"`
@@ -370,8 +371,8 @@ type Makeup struct {
 	LipMakeup *bool `json:"lipMakeup,omitempty"`
 }
 
-// MetaDataContract a combination of user defined name and user specified data and recognition model name for
-// largePersonGroup/personGroup, and largeFaceList/faceList.
+// MetaDataContract a combination of user defined name and user specified data and recognition model name
+// for largePersonGroup/personGroup, and largeFaceList/faceList.
 type MetaDataContract struct {
 	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02', 'Recognition03'
 	RecognitionModel RecognitionModel `json:"recognitionModel,omitempty"`
@@ -408,8 +409,8 @@ type Occlusion struct {
 	MouthOccluded *bool `json:"mouthOccluded,omitempty"`
 }
 
-// OperationStatus operation status object. Operation refers to the asynchronous backend task including taking
-// a snapshot and applying a snapshot.
+// OperationStatus operation status object. Operation refers to the asynchronous backend task including
+// taking a snapshot and applying a snapshot.
 type OperationStatus struct {
 	autorest.Response `json:"-"`
 	// Status - Operation status: notstarted, running, succeeded, failed. If the operation is requested and waiting to perform, the status is notstarted. If the operation is ongoing in backend, the status is running. Status succeeded means the operation is completed successfully, specifically for snapshot taking operation, it illustrates the snapshot is well taken and ready to apply, and for snapshot applying operation, it presents the target object has finished creating by the snapshot and ready to be used. Status failed is often caused by editing the source object while taking the snapshot or editing the target object while applying the snapshot before completion, see the field "message" to check the failure reason. Possible values include: 'Notstarted', 'Running', 'Succeeded', 'Failed'
@@ -533,8 +534,8 @@ type UpdateFaceRequest struct {
 	UserData *string `json:"userData,omitempty"`
 }
 
-// UpdateSnapshotRequest request body for updating a snapshot, with a combination of user defined apply scope
-// and user specified data.
+// UpdateSnapshotRequest request body for updating a snapshot, with a combination of user defined apply
+// scope and user specified data.
 type UpdateSnapshotRequest struct {
 	// ApplyScope - Array of the target Face subscription ids for the snapshot, specified by the user who created the snapshot when calling Snapshot - Take. For each snapshot, only subscriptions included in the applyScope of Snapshot - Take can apply it.
 	ApplyScope *[]uuid.UUID `json:"applyScope,omitempty"`

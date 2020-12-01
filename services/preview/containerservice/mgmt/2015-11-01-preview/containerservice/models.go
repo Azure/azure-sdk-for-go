@@ -160,7 +160,8 @@ func (cs *ContainerService) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type CreateOrUpdateFuture struct {
 	azure.Future
 }

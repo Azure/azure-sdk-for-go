@@ -26,7 +26,7 @@ import (
 	"net/http"
 )
 
-// PartitionKeyRangeIDClient is the azure Cosmos DB Database Service Resource Provider REST API
+// PartitionKeyRangeIDClient is the client for the PartitionKeyRangeID methods of the Documentdb service.
 type PartitionKeyRangeIDClient struct {
 	BaseClient
 }

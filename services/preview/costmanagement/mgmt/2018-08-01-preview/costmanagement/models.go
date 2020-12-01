@@ -265,8 +265,11 @@ func (page AlertListResultPage) Values() []Alert {
 }
 
 // Creates a new instance of the AlertListResultPage type.
-func NewAlertListResultPage(getNextPage func(context.Context, AlertListResult) (AlertListResult, error)) AlertListResultPage {
-	return AlertListResultPage{fn: getNextPage}
+func NewAlertListResultPage(cur AlertListResult, getNextPage func(context.Context, AlertListResult) (AlertListResult, error)) AlertListResultPage {
+	return AlertListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AlertProperties the properties of an Alert.
@@ -680,8 +683,8 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result of listing CostManagement operations. It contains a list of operations and a URL
-// link to get the next set of results.
+// OperationListResult result of listing CostManagement operations. It contains a list of operations and a
+// URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of CostManagement operations supported by the Microsoft.CostManagement resource provider.
@@ -833,8 +836,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // Query ...
@@ -1240,7 +1246,8 @@ type ReportGrouping struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// ReportListResult result of listing reports. It contains a list of available reports in the scope provided.
+// ReportListResult result of listing reports. It contains a list of available reports in the scope
+// provided.
 type ReportListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of reports.

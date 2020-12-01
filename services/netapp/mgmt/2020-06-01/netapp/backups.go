@@ -76,7 +76,13 @@ func (client BackupsClient) Create(ctx context.Context, resourceGroupName string
 				{Target: "volumeName", Name: validation.Pattern, Rule: `^[a-zA-Z][a-zA-Z0-9\-_]{0,63}$`, Chain: nil}}},
 		{TargetValue: body,
 			Constraints: []validation.Constraint{{Target: "body.Location", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "body.BackupProperties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "body.BackupProperties", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "body.BackupProperties.BackupID", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "body.BackupProperties.BackupID", Name: validation.MaxLength, Rule: 36, Chain: nil},
+							{Target: "body.BackupProperties.BackupID", Name: validation.MinLength, Rule: 36, Chain: nil},
+							{Target: "body.BackupProperties.BackupID", Name: validation.Pattern, Rule: `^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$`, Chain: nil},
+						}},
+					}}}}}); err != nil {
 		return result, validation.NewError("netapp.BackupsClient", "Create", err.Error())
 	}
 

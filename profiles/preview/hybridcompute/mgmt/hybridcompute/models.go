@@ -109,14 +109,14 @@ func NewMachineExtensionsClientWithBaseURI(baseURI string, subscriptionID string
 func NewMachineExtensionsListResultIterator(page MachineExtensionsListResultPage) MachineExtensionsListResultIterator {
 	return original.NewMachineExtensionsListResultIterator(page)
 }
-func NewMachineExtensionsListResultPage(getNextPage func(context.Context, MachineExtensionsListResult) (MachineExtensionsListResult, error)) MachineExtensionsListResultPage {
-	return original.NewMachineExtensionsListResultPage(getNextPage)
+func NewMachineExtensionsListResultPage(cur MachineExtensionsListResult, getNextPage func(context.Context, MachineExtensionsListResult) (MachineExtensionsListResult, error)) MachineExtensionsListResultPage {
+	return original.NewMachineExtensionsListResultPage(cur, getNextPage)
 }
 func NewMachineListResultIterator(page MachineListResultPage) MachineListResultIterator {
 	return original.NewMachineListResultIterator(page)
 }
-func NewMachineListResultPage(getNextPage func(context.Context, MachineListResult) (MachineListResult, error)) MachineListResultPage {
-	return original.NewMachineListResultPage(getNextPage)
+func NewMachineListResultPage(cur MachineListResult, getNextPage func(context.Context, MachineListResult) (MachineListResult, error)) MachineListResultPage {
+	return original.NewMachineListResultPage(cur, getNextPage)
 }
 func NewMachinesClient(subscriptionID string) MachinesClient {
 	return original.NewMachinesClient(subscriptionID)

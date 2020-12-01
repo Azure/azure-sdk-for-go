@@ -493,9 +493,9 @@ type OCIManifest struct {
 	SchemaVersion *int32 `json:"schemaVersion,omitempty"`
 }
 
-// Platform the platform object describes the platform which the image in the manifest runs on. A full list of
-// valid operating system and architecture values are listed in the Go language documentation for $GOOS and
-// $GOARCH
+// Platform the platform object describes the platform which the image in the manifest runs on. A full list
+// of valid operating system and architecture values are listed in the Go language documentation for $GOOS
+// and $GOARCH
 type Platform struct {
 	// Architecture - Specifies the CPU architecture, for example amd64 or ppc64le.
 	Architecture *string `json:"architecture,omitempty"`

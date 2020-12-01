@@ -14,7 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/arm/compute/2020-09-30/armcompute"
 	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
@@ -46,7 +45,7 @@ func ExampleVirtualMachineExtensionsClient_BeginCreateOrUpdate() {
 					"KeyEncryptionAlgorithm":    "RSA-OAEP",
 					"KeyEncryptionKeyAlgorithm": "<key ID>",
 					"KeyVaultURL":               fmt.Sprintf("https://%s.%s/", "<vault name>", "<keyvault DNS suffix>"),
-					"SequenceVersion":           uuid.New().String(),
+					"SequenceVersion":           "<UUID string>",
 					"VolumeType":                "ALL",
 				},
 				Type:               to.StringPtr("AzureDiskEncryptionForLinux"),

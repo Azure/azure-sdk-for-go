@@ -35,8 +35,8 @@ func (client AzureFirewallsClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates or updates the specified Azure Firewall.
-func (client AzureFirewallsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters AzureFirewall, options *AzureFirewallsCreateOrUpdateOptions) (AzureFirewallPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, azureFirewallName, parameters, options)
+func (client AzureFirewallsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters AzureFirewall, options *AzureFirewallsBeginCreateOrUpdateOptions) (AzureFirewallPollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, azureFirewallName, parameters, options)
 	if err != nil {
 		return AzureFirewallPollerResponse{}, err
 	}
@@ -72,7 +72,7 @@ func (client AzureFirewallsClient) ResumeCreateOrUpdate(token string) (AzureFire
 }
 
 // CreateOrUpdate - Creates or updates the specified Azure Firewall.
-func (client AzureFirewallsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters AzureFirewall, options *AzureFirewallsCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client AzureFirewallsClient) createOrUpdate(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters AzureFirewall, options *AzureFirewallsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, azureFirewallName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (client AzureFirewallsClient) CreateOrUpdate(ctx context.Context, resourceG
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client AzureFirewallsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters AzureFirewall, options *AzureFirewallsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client AzureFirewallsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters AzureFirewall, options *AzureFirewallsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/azureFirewalls/{azureFirewallName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{azureFirewallName}", url.PathEscape(azureFirewallName))
@@ -122,8 +122,8 @@ func (client AzureFirewallsClient) createOrUpdateHandleError(resp *azcore.Respon
 }
 
 // BeginDelete - Deletes the specified Azure Firewall.
-func (client AzureFirewallsClient) BeginDelete(ctx context.Context, resourceGroupName string, azureFirewallName string, options *AzureFirewallsDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, azureFirewallName, options)
+func (client AzureFirewallsClient) BeginDelete(ctx context.Context, resourceGroupName string, azureFirewallName string, options *AzureFirewallsBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, azureFirewallName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -159,7 +159,7 @@ func (client AzureFirewallsClient) ResumeDelete(token string) (HTTPPoller, error
 }
 
 // Delete - Deletes the specified Azure Firewall.
-func (client AzureFirewallsClient) Delete(ctx context.Context, resourceGroupName string, azureFirewallName string, options *AzureFirewallsDeleteOptions) (*azcore.Response, error) {
+func (client AzureFirewallsClient) delete(ctx context.Context, resourceGroupName string, azureFirewallName string, options *AzureFirewallsBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, azureFirewallName, options)
 	if err != nil {
 		return nil, err
@@ -175,7 +175,7 @@ func (client AzureFirewallsClient) Delete(ctx context.Context, resourceGroupName
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client AzureFirewallsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, azureFirewallName string, options *AzureFirewallsDeleteOptions) (*azcore.Request, error) {
+func (client AzureFirewallsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, azureFirewallName string, options *AzureFirewallsBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/azureFirewalls/{azureFirewallName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{azureFirewallName}", url.PathEscape(azureFirewallName))
@@ -353,8 +353,8 @@ func (client AzureFirewallsClient) listAllHandleError(resp *azcore.Response) err
 }
 
 // BeginUpdateTags - Updates tags of an Azure Firewall resource.
-func (client AzureFirewallsClient) BeginUpdateTags(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters TagsObject, options *AzureFirewallsUpdateTagsOptions) (AzureFirewallPollerResponse, error) {
-	resp, err := client.UpdateTags(ctx, resourceGroupName, azureFirewallName, parameters, options)
+func (client AzureFirewallsClient) BeginUpdateTags(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters TagsObject, options *AzureFirewallsBeginUpdateTagsOptions) (AzureFirewallPollerResponse, error) {
+	resp, err := client.updateTags(ctx, resourceGroupName, azureFirewallName, parameters, options)
 	if err != nil {
 		return AzureFirewallPollerResponse{}, err
 	}
@@ -390,7 +390,7 @@ func (client AzureFirewallsClient) ResumeUpdateTags(token string) (AzureFirewall
 }
 
 // UpdateTags - Updates tags of an Azure Firewall resource.
-func (client AzureFirewallsClient) UpdateTags(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters TagsObject, options *AzureFirewallsUpdateTagsOptions) (*azcore.Response, error) {
+func (client AzureFirewallsClient) updateTags(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters TagsObject, options *AzureFirewallsBeginUpdateTagsOptions) (*azcore.Response, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, azureFirewallName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -406,7 +406,7 @@ func (client AzureFirewallsClient) UpdateTags(ctx context.Context, resourceGroup
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
-func (client AzureFirewallsClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters TagsObject, options *AzureFirewallsUpdateTagsOptions) (*azcore.Request, error) {
+func (client AzureFirewallsClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters TagsObject, options *AzureFirewallsBeginUpdateTagsOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/azureFirewalls/{azureFirewallName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{azureFirewallName}", url.PathEscape(azureFirewallName))

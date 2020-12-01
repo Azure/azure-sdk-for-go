@@ -35,8 +35,8 @@ func (client LoadBalancersClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates or updates a load balancer.
-func (client LoadBalancersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersCreateOrUpdateOptions) (LoadBalancerPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, loadBalancerName, parameters, options)
+func (client LoadBalancersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersBeginCreateOrUpdateOptions) (LoadBalancerPollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, loadBalancerName, parameters, options)
 	if err != nil {
 		return LoadBalancerPollerResponse{}, err
 	}
@@ -72,7 +72,7 @@ func (client LoadBalancersClient) ResumeCreateOrUpdate(token string) (LoadBalanc
 }
 
 // CreateOrUpdate - Creates or updates a load balancer.
-func (client LoadBalancersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client LoadBalancersClient) createOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, loadBalancerName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (client LoadBalancersClient) CreateOrUpdate(ctx context.Context, resourceGr
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client LoadBalancersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client LoadBalancersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -122,8 +122,8 @@ func (client LoadBalancersClient) createOrUpdateHandleError(resp *azcore.Respons
 }
 
 // BeginDelete - Deletes the specified load balancer.
-func (client LoadBalancersClient) BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, loadBalancerName, options)
+func (client LoadBalancersClient) BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, loadBalancerName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -159,7 +159,7 @@ func (client LoadBalancersClient) ResumeDelete(token string) (HTTPPoller, error)
 }
 
 // Delete - Deletes the specified load balancer.
-func (client LoadBalancersClient) Delete(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersDeleteOptions) (*azcore.Response, error) {
+func (client LoadBalancersClient) delete(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, loadBalancerName, options)
 	if err != nil {
 		return nil, err
@@ -175,7 +175,7 @@ func (client LoadBalancersClient) Delete(ctx context.Context, resourceGroupName 
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client LoadBalancersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersDeleteOptions) (*azcore.Request, error) {
+func (client LoadBalancersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))

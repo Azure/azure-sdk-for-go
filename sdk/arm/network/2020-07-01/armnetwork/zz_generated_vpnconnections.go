@@ -35,8 +35,8 @@ func (client VpnConnectionsClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-func (client VpnConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, vpnConnectionParameters VpnConnection, options *VpnConnectionsCreateOrUpdateOptions) (VpnConnectionPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, gatewayName, connectionName, vpnConnectionParameters, options)
+func (client VpnConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, vpnConnectionParameters VpnConnection, options *VpnConnectionsBeginCreateOrUpdateOptions) (VpnConnectionPollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, gatewayName, connectionName, vpnConnectionParameters, options)
 	if err != nil {
 		return VpnConnectionPollerResponse{}, err
 	}
@@ -72,7 +72,7 @@ func (client VpnConnectionsClient) ResumeCreateOrUpdate(token string) (VpnConnec
 }
 
 // CreateOrUpdate - Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-func (client VpnConnectionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, vpnConnectionParameters VpnConnection, options *VpnConnectionsCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client VpnConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, vpnConnectionParameters VpnConnection, options *VpnConnectionsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, vpnConnectionParameters, options)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (client VpnConnectionsClient) CreateOrUpdate(ctx context.Context, resourceG
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client VpnConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, vpnConnectionParameters VpnConnection, options *VpnConnectionsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client VpnConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, vpnConnectionParameters VpnConnection, options *VpnConnectionsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{connectionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -123,8 +123,8 @@ func (client VpnConnectionsClient) createOrUpdateHandleError(resp *azcore.Respon
 }
 
 // BeginDelete - Deletes a vpn connection.
-func (client VpnConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, options *VpnConnectionsDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, gatewayName, connectionName, options)
+func (client VpnConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, options *VpnConnectionsBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, gatewayName, connectionName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -160,7 +160,7 @@ func (client VpnConnectionsClient) ResumeDelete(token string) (HTTPPoller, error
 }
 
 // Delete - Deletes a vpn connection.
-func (client VpnConnectionsClient) Delete(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, options *VpnConnectionsDeleteOptions) (*azcore.Response, error) {
+func (client VpnConnectionsClient) delete(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, options *VpnConnectionsBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, options)
 	if err != nil {
 		return nil, err
@@ -176,7 +176,7 @@ func (client VpnConnectionsClient) Delete(ctx context.Context, resourceGroupName
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client VpnConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, options *VpnConnectionsDeleteOptions) (*azcore.Request, error) {
+func (client VpnConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, options *VpnConnectionsBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{connectionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -309,8 +309,8 @@ func (client VpnConnectionsClient) listByVpnGatewayHandleError(resp *azcore.Resp
 }
 
 // BeginStartPacketCapture - Starts packet capture on Vpn connection in the specified resource group.
-func (client VpnConnectionsClient) BeginStartPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VpnConnectionsStartPacketCaptureOptions) (StringPollerResponse, error) {
-	resp, err := client.StartPacketCapture(ctx, resourceGroupName, gatewayName, vpnConnectionName, options)
+func (client VpnConnectionsClient) BeginStartPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VpnConnectionsBeginStartPacketCaptureOptions) (StringPollerResponse, error) {
+	resp, err := client.startPacketCapture(ctx, resourceGroupName, gatewayName, vpnConnectionName, options)
 	if err != nil {
 		return StringPollerResponse{}, err
 	}
@@ -346,7 +346,7 @@ func (client VpnConnectionsClient) ResumeStartPacketCapture(token string) (Strin
 }
 
 // StartPacketCapture - Starts packet capture on Vpn connection in the specified resource group.
-func (client VpnConnectionsClient) StartPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VpnConnectionsStartPacketCaptureOptions) (*azcore.Response, error) {
+func (client VpnConnectionsClient) startPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VpnConnectionsBeginStartPacketCaptureOptions) (*azcore.Response, error) {
 	req, err := client.startPacketCaptureCreateRequest(ctx, resourceGroupName, gatewayName, vpnConnectionName, options)
 	if err != nil {
 		return nil, err
@@ -362,7 +362,7 @@ func (client VpnConnectionsClient) StartPacketCapture(ctx context.Context, resou
 }
 
 // startPacketCaptureCreateRequest creates the StartPacketCapture request.
-func (client VpnConnectionsClient) startPacketCaptureCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VpnConnectionsStartPacketCaptureOptions) (*azcore.Request, error) {
+func (client VpnConnectionsClient) startPacketCaptureCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VpnConnectionsBeginStartPacketCaptureOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{vpnConnectionName}/startpacketcapture"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{gatewayName}", url.PathEscape(gatewayName))
@@ -400,8 +400,8 @@ func (client VpnConnectionsClient) startPacketCaptureHandleError(resp *azcore.Re
 }
 
 // BeginStopPacketCapture - Stops packet capture on Vpn connection in the specified resource group.
-func (client VpnConnectionsClient) BeginStopPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VpnConnectionsStopPacketCaptureOptions) (StringPollerResponse, error) {
-	resp, err := client.StopPacketCapture(ctx, resourceGroupName, gatewayName, vpnConnectionName, options)
+func (client VpnConnectionsClient) BeginStopPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VpnConnectionsBeginStopPacketCaptureOptions) (StringPollerResponse, error) {
+	resp, err := client.stopPacketCapture(ctx, resourceGroupName, gatewayName, vpnConnectionName, options)
 	if err != nil {
 		return StringPollerResponse{}, err
 	}
@@ -437,7 +437,7 @@ func (client VpnConnectionsClient) ResumeStopPacketCapture(token string) (String
 }
 
 // StopPacketCapture - Stops packet capture on Vpn connection in the specified resource group.
-func (client VpnConnectionsClient) StopPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VpnConnectionsStopPacketCaptureOptions) (*azcore.Response, error) {
+func (client VpnConnectionsClient) stopPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VpnConnectionsBeginStopPacketCaptureOptions) (*azcore.Response, error) {
 	req, err := client.stopPacketCaptureCreateRequest(ctx, resourceGroupName, gatewayName, vpnConnectionName, options)
 	if err != nil {
 		return nil, err
@@ -453,7 +453,7 @@ func (client VpnConnectionsClient) StopPacketCapture(ctx context.Context, resour
 }
 
 // stopPacketCaptureCreateRequest creates the StopPacketCapture request.
-func (client VpnConnectionsClient) stopPacketCaptureCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VpnConnectionsStopPacketCaptureOptions) (*azcore.Request, error) {
+func (client VpnConnectionsClient) stopPacketCaptureCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VpnConnectionsBeginStopPacketCaptureOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{vpnConnectionName}/stoppacketcapture"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{gatewayName}", url.PathEscape(gatewayName))

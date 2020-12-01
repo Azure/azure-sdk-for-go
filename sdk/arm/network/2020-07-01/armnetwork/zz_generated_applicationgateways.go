@@ -35,8 +35,8 @@ func (client ApplicationGatewaysClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginBackendHealth - Gets the backend health of the specified application gateway in a resource group.
-func (client ApplicationGatewaysClient) BeginBackendHealth(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysBackendHealthOptions) (ApplicationGatewayBackendHealthPollerResponse, error) {
-	resp, err := client.BackendHealth(ctx, resourceGroupName, applicationGatewayName, options)
+func (client ApplicationGatewaysClient) BeginBackendHealth(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysBeginBackendHealthOptions) (ApplicationGatewayBackendHealthPollerResponse, error) {
+	resp, err := client.backendHealth(ctx, resourceGroupName, applicationGatewayName, options)
 	if err != nil {
 		return ApplicationGatewayBackendHealthPollerResponse{}, err
 	}
@@ -72,7 +72,7 @@ func (client ApplicationGatewaysClient) ResumeBackendHealth(token string) (Appli
 }
 
 // BackendHealth - Gets the backend health of the specified application gateway in a resource group.
-func (client ApplicationGatewaysClient) BackendHealth(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysBackendHealthOptions) (*azcore.Response, error) {
+func (client ApplicationGatewaysClient) backendHealth(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysBeginBackendHealthOptions) (*azcore.Response, error) {
 	req, err := client.backendHealthCreateRequest(ctx, resourceGroupName, applicationGatewayName, options)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (client ApplicationGatewaysClient) BackendHealth(ctx context.Context, resou
 }
 
 // backendHealthCreateRequest creates the BackendHealth request.
-func (client ApplicationGatewaysClient) backendHealthCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysBackendHealthOptions) (*azcore.Request, error) {
+func (client ApplicationGatewaysClient) backendHealthCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysBeginBackendHealthOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendhealth"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{applicationGatewayName}", url.PathEscape(applicationGatewayName))
@@ -126,8 +126,8 @@ func (client ApplicationGatewaysClient) backendHealthHandleError(resp *azcore.Re
 
 // BeginBackendHealthOnDemand - Gets the backend health for given combination of backend pool and http setting of the specified application gateway in a
 // resource group.
-func (client ApplicationGatewaysClient) BeginBackendHealthOnDemand(ctx context.Context, resourceGroupName string, applicationGatewayName string, probeRequest ApplicationGatewayOnDemandProbe, options *ApplicationGatewaysBackendHealthOnDemandOptions) (ApplicationGatewayBackendHealthOnDemandPollerResponse, error) {
-	resp, err := client.BackendHealthOnDemand(ctx, resourceGroupName, applicationGatewayName, probeRequest, options)
+func (client ApplicationGatewaysClient) BeginBackendHealthOnDemand(ctx context.Context, resourceGroupName string, applicationGatewayName string, probeRequest ApplicationGatewayOnDemandProbe, options *ApplicationGatewaysBeginBackendHealthOnDemandOptions) (ApplicationGatewayBackendHealthOnDemandPollerResponse, error) {
+	resp, err := client.backendHealthOnDemand(ctx, resourceGroupName, applicationGatewayName, probeRequest, options)
 	if err != nil {
 		return ApplicationGatewayBackendHealthOnDemandPollerResponse{}, err
 	}
@@ -164,7 +164,7 @@ func (client ApplicationGatewaysClient) ResumeBackendHealthOnDemand(token string
 
 // BackendHealthOnDemand - Gets the backend health for given combination of backend pool and http setting of the specified application gateway in a resource
 // group.
-func (client ApplicationGatewaysClient) BackendHealthOnDemand(ctx context.Context, resourceGroupName string, applicationGatewayName string, probeRequest ApplicationGatewayOnDemandProbe, options *ApplicationGatewaysBackendHealthOnDemandOptions) (*azcore.Response, error) {
+func (client ApplicationGatewaysClient) backendHealthOnDemand(ctx context.Context, resourceGroupName string, applicationGatewayName string, probeRequest ApplicationGatewayOnDemandProbe, options *ApplicationGatewaysBeginBackendHealthOnDemandOptions) (*azcore.Response, error) {
 	req, err := client.backendHealthOnDemandCreateRequest(ctx, resourceGroupName, applicationGatewayName, probeRequest, options)
 	if err != nil {
 		return nil, err
@@ -180,7 +180,7 @@ func (client ApplicationGatewaysClient) BackendHealthOnDemand(ctx context.Contex
 }
 
 // backendHealthOnDemandCreateRequest creates the BackendHealthOnDemand request.
-func (client ApplicationGatewaysClient) backendHealthOnDemandCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, probeRequest ApplicationGatewayOnDemandProbe, options *ApplicationGatewaysBackendHealthOnDemandOptions) (*azcore.Request, error) {
+func (client ApplicationGatewaysClient) backendHealthOnDemandCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, probeRequest ApplicationGatewayOnDemandProbe, options *ApplicationGatewaysBeginBackendHealthOnDemandOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/getBackendHealthOnDemand"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{applicationGatewayName}", url.PathEscape(applicationGatewayName))
@@ -217,8 +217,8 @@ func (client ApplicationGatewaysClient) backendHealthOnDemandHandleError(resp *a
 }
 
 // BeginCreateOrUpdate - Creates or updates the specified application gateway.
-func (client ApplicationGatewaysClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway, options *ApplicationGatewaysCreateOrUpdateOptions) (ApplicationGatewayPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, applicationGatewayName, parameters, options)
+func (client ApplicationGatewaysClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway, options *ApplicationGatewaysBeginCreateOrUpdateOptions) (ApplicationGatewayPollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, applicationGatewayName, parameters, options)
 	if err != nil {
 		return ApplicationGatewayPollerResponse{}, err
 	}
@@ -254,7 +254,7 @@ func (client ApplicationGatewaysClient) ResumeCreateOrUpdate(token string) (Appl
 }
 
 // CreateOrUpdate - Creates or updates the specified application gateway.
-func (client ApplicationGatewaysClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway, options *ApplicationGatewaysCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client ApplicationGatewaysClient) createOrUpdate(ctx context.Context, resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway, options *ApplicationGatewaysBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, applicationGatewayName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -270,7 +270,7 @@ func (client ApplicationGatewaysClient) CreateOrUpdate(ctx context.Context, reso
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client ApplicationGatewaysClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway, options *ApplicationGatewaysCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client ApplicationGatewaysClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway, options *ApplicationGatewaysBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{applicationGatewayName}", url.PathEscape(applicationGatewayName))
@@ -304,8 +304,8 @@ func (client ApplicationGatewaysClient) createOrUpdateHandleError(resp *azcore.R
 }
 
 // BeginDelete - Deletes the specified application gateway.
-func (client ApplicationGatewaysClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, applicationGatewayName, options)
+func (client ApplicationGatewaysClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, applicationGatewayName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -341,7 +341,7 @@ func (client ApplicationGatewaysClient) ResumeDelete(token string) (HTTPPoller, 
 }
 
 // Delete - Deletes the specified application gateway.
-func (client ApplicationGatewaysClient) Delete(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysDeleteOptions) (*azcore.Response, error) {
+func (client ApplicationGatewaysClient) delete(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, applicationGatewayName, options)
 	if err != nil {
 		return nil, err
@@ -357,7 +357,7 @@ func (client ApplicationGatewaysClient) Delete(ctx context.Context, resourceGrou
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client ApplicationGatewaysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysDeleteOptions) (*azcore.Request, error) {
+func (client ApplicationGatewaysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{applicationGatewayName}", url.PathEscape(applicationGatewayName))
@@ -896,8 +896,8 @@ func (client ApplicationGatewaysClient) listAvailableWafRuleSetsHandleError(resp
 }
 
 // BeginStart - Starts the specified application gateway.
-func (client ApplicationGatewaysClient) BeginStart(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysStartOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Start(ctx, resourceGroupName, applicationGatewayName, options)
+func (client ApplicationGatewaysClient) BeginStart(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysBeginStartOptions) (HTTPPollerResponse, error) {
+	resp, err := client.start(ctx, resourceGroupName, applicationGatewayName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -933,7 +933,7 @@ func (client ApplicationGatewaysClient) ResumeStart(token string) (HTTPPoller, e
 }
 
 // Start - Starts the specified application gateway.
-func (client ApplicationGatewaysClient) Start(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysStartOptions) (*azcore.Response, error) {
+func (client ApplicationGatewaysClient) start(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysBeginStartOptions) (*azcore.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, applicationGatewayName, options)
 	if err != nil {
 		return nil, err
@@ -949,7 +949,7 @@ func (client ApplicationGatewaysClient) Start(ctx context.Context, resourceGroup
 }
 
 // startCreateRequest creates the Start request.
-func (client ApplicationGatewaysClient) startCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysStartOptions) (*azcore.Request, error) {
+func (client ApplicationGatewaysClient) startCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysBeginStartOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/start"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{applicationGatewayName}", url.PathEscape(applicationGatewayName))
@@ -976,8 +976,8 @@ func (client ApplicationGatewaysClient) startHandleError(resp *azcore.Response) 
 }
 
 // BeginStop - Stops the specified application gateway in a resource group.
-func (client ApplicationGatewaysClient) BeginStop(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysStopOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Stop(ctx, resourceGroupName, applicationGatewayName, options)
+func (client ApplicationGatewaysClient) BeginStop(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysBeginStopOptions) (HTTPPollerResponse, error) {
+	resp, err := client.stop(ctx, resourceGroupName, applicationGatewayName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -1013,7 +1013,7 @@ func (client ApplicationGatewaysClient) ResumeStop(token string) (HTTPPoller, er
 }
 
 // Stop - Stops the specified application gateway in a resource group.
-func (client ApplicationGatewaysClient) Stop(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysStopOptions) (*azcore.Response, error) {
+func (client ApplicationGatewaysClient) stop(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysBeginStopOptions) (*azcore.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, applicationGatewayName, options)
 	if err != nil {
 		return nil, err
@@ -1029,7 +1029,7 @@ func (client ApplicationGatewaysClient) Stop(ctx context.Context, resourceGroupN
 }
 
 // stopCreateRequest creates the Stop request.
-func (client ApplicationGatewaysClient) stopCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysStopOptions) (*azcore.Request, error) {
+func (client ApplicationGatewaysClient) stopCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysBeginStopOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/stop"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{applicationGatewayName}", url.PathEscape(applicationGatewayName))

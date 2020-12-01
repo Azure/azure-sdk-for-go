@@ -35,8 +35,8 @@ func (client ExpressRouteCircuitAuthorizationsClient) Pipeline() azcore.Pipeline
 }
 
 // BeginCreateOrUpdate - Creates or updates an authorization in the specified express route circuit.
-func (client ExpressRouteCircuitAuthorizationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization, options *ExpressRouteCircuitAuthorizationsCreateOrUpdateOptions) (ExpressRouteCircuitAuthorizationPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, circuitName, authorizationName, authorizationParameters, options)
+func (client ExpressRouteCircuitAuthorizationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization, options *ExpressRouteCircuitAuthorizationsBeginCreateOrUpdateOptions) (ExpressRouteCircuitAuthorizationPollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, circuitName, authorizationName, authorizationParameters, options)
 	if err != nil {
 		return ExpressRouteCircuitAuthorizationPollerResponse{}, err
 	}
@@ -72,7 +72,7 @@ func (client ExpressRouteCircuitAuthorizationsClient) ResumeCreateOrUpdate(token
 }
 
 // CreateOrUpdate - Creates or updates an authorization in the specified express route circuit.
-func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization, options *ExpressRouteCircuitAuthorizationsCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client ExpressRouteCircuitAuthorizationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization, options *ExpressRouteCircuitAuthorizationsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, circuitName, authorizationName, authorizationParameters, options)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdate(ctx context
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client ExpressRouteCircuitAuthorizationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization, options *ExpressRouteCircuitAuthorizationsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client ExpressRouteCircuitAuthorizationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization, options *ExpressRouteCircuitAuthorizationsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/authorizations/{authorizationName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{circuitName}", url.PathEscape(circuitName))
@@ -123,8 +123,8 @@ func (client ExpressRouteCircuitAuthorizationsClient) createOrUpdateHandleError(
 }
 
 // BeginDelete - Deletes the specified authorization from the specified express route circuit.
-func (client ExpressRouteCircuitAuthorizationsClient) BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, options *ExpressRouteCircuitAuthorizationsDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, circuitName, authorizationName, options)
+func (client ExpressRouteCircuitAuthorizationsClient) BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, options *ExpressRouteCircuitAuthorizationsBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, circuitName, authorizationName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -160,7 +160,7 @@ func (client ExpressRouteCircuitAuthorizationsClient) ResumeDelete(token string)
 }
 
 // Delete - Deletes the specified authorization from the specified express route circuit.
-func (client ExpressRouteCircuitAuthorizationsClient) Delete(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, options *ExpressRouteCircuitAuthorizationsDeleteOptions) (*azcore.Response, error) {
+func (client ExpressRouteCircuitAuthorizationsClient) delete(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, options *ExpressRouteCircuitAuthorizationsBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, circuitName, authorizationName, options)
 	if err != nil {
 		return nil, err
@@ -176,7 +176,7 @@ func (client ExpressRouteCircuitAuthorizationsClient) Delete(ctx context.Context
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client ExpressRouteCircuitAuthorizationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, options *ExpressRouteCircuitAuthorizationsDeleteOptions) (*azcore.Request, error) {
+func (client ExpressRouteCircuitAuthorizationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, options *ExpressRouteCircuitAuthorizationsBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/authorizations/{authorizationName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{circuitName}", url.PathEscape(circuitName))

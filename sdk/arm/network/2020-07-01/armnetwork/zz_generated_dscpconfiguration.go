@@ -35,8 +35,8 @@ func (client DscpConfigurationClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates or updates a DSCP Configuration.
-func (client DscpConfigurationClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationCreateOrUpdateOptions) (DscpConfigurationPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, dscpConfigurationName, parameters, options)
+func (client DscpConfigurationClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationBeginCreateOrUpdateOptions) (DscpConfigurationPollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, dscpConfigurationName, parameters, options)
 	if err != nil {
 		return DscpConfigurationPollerResponse{}, err
 	}
@@ -72,7 +72,7 @@ func (client DscpConfigurationClient) ResumeCreateOrUpdate(token string) (DscpCo
 }
 
 // CreateOrUpdate - Creates or updates a DSCP Configuration.
-func (client DscpConfigurationClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client DscpConfigurationClient) createOrUpdate(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, dscpConfigurationName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (client DscpConfigurationClient) CreateOrUpdate(ctx context.Context, resour
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client DscpConfigurationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client DscpConfigurationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dscpConfigurations/{dscpConfigurationName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{dscpConfigurationName}", url.PathEscape(dscpConfigurationName))
@@ -122,8 +122,8 @@ func (client DscpConfigurationClient) createOrUpdateHandleError(resp *azcore.Res
 }
 
 // BeginDelete - Deletes a DSCP Configuration.
-func (client DscpConfigurationClient) BeginDelete(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, dscpConfigurationName, options)
+func (client DscpConfigurationClient) BeginDelete(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, dscpConfigurationName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -159,7 +159,7 @@ func (client DscpConfigurationClient) ResumeDelete(token string) (HTTPPoller, er
 }
 
 // Delete - Deletes a DSCP Configuration.
-func (client DscpConfigurationClient) Delete(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationDeleteOptions) (*azcore.Response, error) {
+func (client DscpConfigurationClient) delete(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, dscpConfigurationName, options)
 	if err != nil {
 		return nil, err
@@ -175,7 +175,7 @@ func (client DscpConfigurationClient) Delete(ctx context.Context, resourceGroupN
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client DscpConfigurationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationDeleteOptions) (*azcore.Request, error) {
+func (client DscpConfigurationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dscpConfigurations/{dscpConfigurationName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{dscpConfigurationName}", url.PathEscape(dscpConfigurationName))

@@ -35,8 +35,8 @@ func (client RouteTablesClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Create or updates a route table in a specified resource group.
-func (client RouteTablesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeTableName string, parameters RouteTable, options *RouteTablesCreateOrUpdateOptions) (RouteTablePollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, routeTableName, parameters, options)
+func (client RouteTablesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeTableName string, parameters RouteTable, options *RouteTablesBeginCreateOrUpdateOptions) (RouteTablePollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, routeTableName, parameters, options)
 	if err != nil {
 		return RouteTablePollerResponse{}, err
 	}
@@ -72,7 +72,7 @@ func (client RouteTablesClient) ResumeCreateOrUpdate(token string) (RouteTablePo
 }
 
 // CreateOrUpdate - Create or updates a route table in a specified resource group.
-func (client RouteTablesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, routeTableName string, parameters RouteTable, options *RouteTablesCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client RouteTablesClient) createOrUpdate(ctx context.Context, resourceGroupName string, routeTableName string, parameters RouteTable, options *RouteTablesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, routeTableName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (client RouteTablesClient) CreateOrUpdate(ctx context.Context, resourceGrou
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client RouteTablesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, routeTableName string, parameters RouteTable, options *RouteTablesCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client RouteTablesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, routeTableName string, parameters RouteTable, options *RouteTablesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{routeTableName}", url.PathEscape(routeTableName))
@@ -122,8 +122,8 @@ func (client RouteTablesClient) createOrUpdateHandleError(resp *azcore.Response)
 }
 
 // BeginDelete - Deletes the specified route table.
-func (client RouteTablesClient) BeginDelete(ctx context.Context, resourceGroupName string, routeTableName string, options *RouteTablesDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, routeTableName, options)
+func (client RouteTablesClient) BeginDelete(ctx context.Context, resourceGroupName string, routeTableName string, options *RouteTablesBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, routeTableName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -159,7 +159,7 @@ func (client RouteTablesClient) ResumeDelete(token string) (HTTPPoller, error) {
 }
 
 // Delete - Deletes the specified route table.
-func (client RouteTablesClient) Delete(ctx context.Context, resourceGroupName string, routeTableName string, options *RouteTablesDeleteOptions) (*azcore.Response, error) {
+func (client RouteTablesClient) delete(ctx context.Context, resourceGroupName string, routeTableName string, options *RouteTablesBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, routeTableName, options)
 	if err != nil {
 		return nil, err
@@ -175,7 +175,7 @@ func (client RouteTablesClient) Delete(ctx context.Context, resourceGroupName st
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client RouteTablesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, routeTableName string, options *RouteTablesDeleteOptions) (*azcore.Request, error) {
+func (client RouteTablesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, routeTableName string, options *RouteTablesBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{routeTableName}", url.PathEscape(routeTableName))

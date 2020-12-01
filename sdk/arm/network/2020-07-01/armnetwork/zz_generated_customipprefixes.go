@@ -35,8 +35,8 @@ func (client CustomIPPrefixesClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates or updates a custom IP prefix.
-func (client CustomIPPrefixesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, customIPPrefixName string, parameters CustomIPPrefix, options *CustomIPPrefixesCreateOrUpdateOptions) (CustomIPPrefixPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, customIPPrefixName, parameters, options)
+func (client CustomIPPrefixesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, customIPPrefixName string, parameters CustomIPPrefix, options *CustomIPPrefixesBeginCreateOrUpdateOptions) (CustomIPPrefixPollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, customIPPrefixName, parameters, options)
 	if err != nil {
 		return CustomIPPrefixPollerResponse{}, err
 	}
@@ -72,7 +72,7 @@ func (client CustomIPPrefixesClient) ResumeCreateOrUpdate(token string) (CustomI
 }
 
 // CreateOrUpdate - Creates or updates a custom IP prefix.
-func (client CustomIPPrefixesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, customIPPrefixName string, parameters CustomIPPrefix, options *CustomIPPrefixesCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client CustomIPPrefixesClient) createOrUpdate(ctx context.Context, resourceGroupName string, customIPPrefixName string, parameters CustomIPPrefix, options *CustomIPPrefixesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, customIPPrefixName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (client CustomIPPrefixesClient) CreateOrUpdate(ctx context.Context, resourc
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client CustomIPPrefixesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, customIPPrefixName string, parameters CustomIPPrefix, options *CustomIPPrefixesCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client CustomIPPrefixesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, customIPPrefixName string, parameters CustomIPPrefix, options *CustomIPPrefixesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/customIpPrefixes/{customIpPrefixName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{customIpPrefixName}", url.PathEscape(customIPPrefixName))
@@ -122,8 +122,8 @@ func (client CustomIPPrefixesClient) createOrUpdateHandleError(resp *azcore.Resp
 }
 
 // BeginDelete - Deletes the specified custom IP prefix.
-func (client CustomIPPrefixesClient) BeginDelete(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, customIPPrefixName, options)
+func (client CustomIPPrefixesClient) BeginDelete(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, customIPPrefixName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -159,7 +159,7 @@ func (client CustomIPPrefixesClient) ResumeDelete(token string) (HTTPPoller, err
 }
 
 // Delete - Deletes the specified custom IP prefix.
-func (client CustomIPPrefixesClient) Delete(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesDeleteOptions) (*azcore.Response, error) {
+func (client CustomIPPrefixesClient) delete(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, customIPPrefixName, options)
 	if err != nil {
 		return nil, err
@@ -175,7 +175,7 @@ func (client CustomIPPrefixesClient) Delete(ctx context.Context, resourceGroupNa
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client CustomIPPrefixesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesDeleteOptions) (*azcore.Request, error) {
+func (client CustomIPPrefixesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/customIpPrefixes/{customIpPrefixName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{customIpPrefixName}", url.PathEscape(customIPPrefixName))

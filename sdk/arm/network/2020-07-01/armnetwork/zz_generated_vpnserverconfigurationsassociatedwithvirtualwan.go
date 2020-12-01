@@ -35,8 +35,8 @@ func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) Pipeline() a
 }
 
 // BeginList - Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) BeginList(ctx context.Context, resourceGroupName string, virtualWanName string, options *VpnServerConfigurationsAssociatedWithVirtualWanListOptions) (VpnServerConfigurationsResponsePollerResponse, error) {
-	resp, err := client.List(ctx, resourceGroupName, virtualWanName, options)
+func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) BeginList(ctx context.Context, resourceGroupName string, virtualWanName string, options *VpnServerConfigurationsAssociatedWithVirtualWanBeginListOptions) (VpnServerConfigurationsResponsePollerResponse, error) {
+	resp, err := client.list(ctx, resourceGroupName, virtualWanName, options)
 	if err != nil {
 		return VpnServerConfigurationsResponsePollerResponse{}, err
 	}
@@ -72,7 +72,7 @@ func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) ResumeList(t
 }
 
 // List - Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) List(ctx context.Context, resourceGroupName string, virtualWanName string, options *VpnServerConfigurationsAssociatedWithVirtualWanListOptions) (*azcore.Response, error) {
+func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) list(ctx context.Context, resourceGroupName string, virtualWanName string, options *VpnServerConfigurationsAssociatedWithVirtualWanBeginListOptions) (*azcore.Response, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, virtualWanName, options)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) List(ctx con
 }
 
 // listCreateRequest creates the List request.
-func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) listCreateRequest(ctx context.Context, resourceGroupName string, virtualWanName string, options *VpnServerConfigurationsAssociatedWithVirtualWanListOptions) (*azcore.Request, error) {
+func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) listCreateRequest(ctx context.Context, resourceGroupName string, virtualWanName string, options *VpnServerConfigurationsAssociatedWithVirtualWanBeginListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{virtualWANName}/vpnServerConfigurations"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))

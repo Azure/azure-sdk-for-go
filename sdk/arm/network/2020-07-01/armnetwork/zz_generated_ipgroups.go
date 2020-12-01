@@ -35,8 +35,8 @@ func (client IPGroupsClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates or updates an ipGroups in a specified resource group.
-func (client IPGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, ipGroupsName string, parameters IPGroup, options *IPGroupsCreateOrUpdateOptions) (IPGroupPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, ipGroupsName, parameters, options)
+func (client IPGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, ipGroupsName string, parameters IPGroup, options *IPGroupsBeginCreateOrUpdateOptions) (IPGroupPollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, ipGroupsName, parameters, options)
 	if err != nil {
 		return IPGroupPollerResponse{}, err
 	}
@@ -72,7 +72,7 @@ func (client IPGroupsClient) ResumeCreateOrUpdate(token string) (IPGroupPoller, 
 }
 
 // CreateOrUpdate - Creates or updates an ipGroups in a specified resource group.
-func (client IPGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, ipGroupsName string, parameters IPGroup, options *IPGroupsCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client IPGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, ipGroupsName string, parameters IPGroup, options *IPGroupsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, ipGroupsName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (client IPGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client IPGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, ipGroupsName string, parameters IPGroup, options *IPGroupsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client IPGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, ipGroupsName string, parameters IPGroup, options *IPGroupsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ipGroups/{ipGroupsName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{ipGroupsName}", url.PathEscape(ipGroupsName))
@@ -122,8 +122,8 @@ func (client IPGroupsClient) createOrUpdateHandleError(resp *azcore.Response) er
 }
 
 // BeginDelete - Deletes the specified ipGroups.
-func (client IPGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, ipGroupsName string, options *IPGroupsDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, ipGroupsName, options)
+func (client IPGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, ipGroupsName string, options *IPGroupsBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, ipGroupsName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -159,7 +159,7 @@ func (client IPGroupsClient) ResumeDelete(token string) (HTTPPoller, error) {
 }
 
 // Delete - Deletes the specified ipGroups.
-func (client IPGroupsClient) Delete(ctx context.Context, resourceGroupName string, ipGroupsName string, options *IPGroupsDeleteOptions) (*azcore.Response, error) {
+func (client IPGroupsClient) delete(ctx context.Context, resourceGroupName string, ipGroupsName string, options *IPGroupsBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, ipGroupsName, options)
 	if err != nil {
 		return nil, err
@@ -175,7 +175,7 @@ func (client IPGroupsClient) Delete(ctx context.Context, resourceGroupName strin
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client IPGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, ipGroupsName string, options *IPGroupsDeleteOptions) (*azcore.Request, error) {
+func (client IPGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, ipGroupsName string, options *IPGroupsBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ipGroups/{ipGroupsName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{ipGroupsName}", url.PathEscape(ipGroupsName))

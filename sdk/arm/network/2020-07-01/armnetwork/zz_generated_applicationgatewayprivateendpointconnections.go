@@ -35,8 +35,8 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) Pipeline() azco
 }
 
 // BeginDelete - Deletes the specified private endpoint connection on application gateway.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, applicationGatewayName, connectionName, options)
+func (client ApplicationGatewayPrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, applicationGatewayName, connectionName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -72,7 +72,7 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) ResumeDelete(to
 }
 
 // Delete - Deletes the specified private endpoint connection on application gateway.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) Delete(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsDeleteOptions) (*azcore.Response, error) {
+func (client ApplicationGatewayPrivateEndpointConnectionsClient) delete(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, applicationGatewayName, connectionName, options)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) Delete(ctx cont
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsDeleteOptions) (*azcore.Request, error) {
+func (client ApplicationGatewayPrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/privateEndpointConnections/{connectionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{applicationGatewayName}", url.PathEscape(applicationGatewayName))
@@ -221,8 +221,8 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) listHandleError
 }
 
 // BeginUpdate - Updates the specified private endpoint connection on application gateway.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, parameters ApplicationGatewayPrivateEndpointConnection, options *ApplicationGatewayPrivateEndpointConnectionsUpdateOptions) (ApplicationGatewayPrivateEndpointConnectionPollerResponse, error) {
-	resp, err := client.Update(ctx, resourceGroupName, applicationGatewayName, connectionName, parameters, options)
+func (client ApplicationGatewayPrivateEndpointConnectionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, parameters ApplicationGatewayPrivateEndpointConnection, options *ApplicationGatewayPrivateEndpointConnectionsBeginUpdateOptions) (ApplicationGatewayPrivateEndpointConnectionPollerResponse, error) {
+	resp, err := client.update(ctx, resourceGroupName, applicationGatewayName, connectionName, parameters, options)
 	if err != nil {
 		return ApplicationGatewayPrivateEndpointConnectionPollerResponse{}, err
 	}
@@ -258,7 +258,7 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) ResumeUpdate(to
 }
 
 // Update - Updates the specified private endpoint connection on application gateway.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) Update(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, parameters ApplicationGatewayPrivateEndpointConnection, options *ApplicationGatewayPrivateEndpointConnectionsUpdateOptions) (*azcore.Response, error) {
+func (client ApplicationGatewayPrivateEndpointConnectionsClient) update(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, parameters ApplicationGatewayPrivateEndpointConnection, options *ApplicationGatewayPrivateEndpointConnectionsBeginUpdateOptions) (*azcore.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, applicationGatewayName, connectionName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -274,7 +274,7 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) Update(ctx cont
 }
 
 // updateCreateRequest creates the Update request.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, parameters ApplicationGatewayPrivateEndpointConnection, options *ApplicationGatewayPrivateEndpointConnectionsUpdateOptions) (*azcore.Request, error) {
+func (client ApplicationGatewayPrivateEndpointConnectionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, parameters ApplicationGatewayPrivateEndpointConnection, options *ApplicationGatewayPrivateEndpointConnectionsBeginUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/privateEndpointConnections/{connectionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{applicationGatewayName}", url.PathEscape(applicationGatewayName))

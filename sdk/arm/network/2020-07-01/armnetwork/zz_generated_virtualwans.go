@@ -35,8 +35,8 @@ func (client VirtualWansClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-func (client VirtualWansClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualWanName string, wanParameters VirtualWan, options *VirtualWansCreateOrUpdateOptions) (VirtualWanPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, virtualWanName, wanParameters, options)
+func (client VirtualWansClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualWanName string, wanParameters VirtualWan, options *VirtualWansBeginCreateOrUpdateOptions) (VirtualWanPollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualWanName, wanParameters, options)
 	if err != nil {
 		return VirtualWanPollerResponse{}, err
 	}
@@ -72,7 +72,7 @@ func (client VirtualWansClient) ResumeCreateOrUpdate(token string) (VirtualWanPo
 }
 
 // CreateOrUpdate - Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-func (client VirtualWansClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualWanName string, wanParameters VirtualWan, options *VirtualWansCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client VirtualWansClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualWanName string, wanParameters VirtualWan, options *VirtualWansBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualWanName, wanParameters, options)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (client VirtualWansClient) CreateOrUpdate(ctx context.Context, resourceGrou
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client VirtualWansClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualWanName string, wanParameters VirtualWan, options *VirtualWansCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client VirtualWansClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualWanName string, wanParameters VirtualWan, options *VirtualWansBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{VirtualWANName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -122,8 +122,8 @@ func (client VirtualWansClient) createOrUpdateHandleError(resp *azcore.Response)
 }
 
 // BeginDelete - Deletes a VirtualWAN.
-func (client VirtualWansClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualWanName string, options *VirtualWansDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, virtualWanName, options)
+func (client VirtualWansClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualWanName string, options *VirtualWansBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, virtualWanName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -159,7 +159,7 @@ func (client VirtualWansClient) ResumeDelete(token string) (HTTPPoller, error) {
 }
 
 // Delete - Deletes a VirtualWAN.
-func (client VirtualWansClient) Delete(ctx context.Context, resourceGroupName string, virtualWanName string, options *VirtualWansDeleteOptions) (*azcore.Response, error) {
+func (client VirtualWansClient) delete(ctx context.Context, resourceGroupName string, virtualWanName string, options *VirtualWansBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualWanName, options)
 	if err != nil {
 		return nil, err
@@ -175,7 +175,7 @@ func (client VirtualWansClient) Delete(ctx context.Context, resourceGroupName st
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client VirtualWansClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualWanName string, options *VirtualWansDeleteOptions) (*azcore.Request, error) {
+func (client VirtualWansClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualWanName string, options *VirtualWansBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{VirtualWANName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))

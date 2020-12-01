@@ -90,8 +90,8 @@ func (client VirtualNetworksClient) checkIPAddressAvailabilityHandleError(resp *
 }
 
 // BeginCreateOrUpdate - Creates or updates a virtual network in the specified resource group.
-func (client VirtualNetworksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, parameters VirtualNetwork, options *VirtualNetworksCreateOrUpdateOptions) (VirtualNetworkPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, virtualNetworkName, parameters, options)
+func (client VirtualNetworksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, parameters VirtualNetwork, options *VirtualNetworksBeginCreateOrUpdateOptions) (VirtualNetworkPollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualNetworkName, parameters, options)
 	if err != nil {
 		return VirtualNetworkPollerResponse{}, err
 	}
@@ -127,7 +127,7 @@ func (client VirtualNetworksClient) ResumeCreateOrUpdate(token string) (VirtualN
 }
 
 // CreateOrUpdate - Creates or updates a virtual network in the specified resource group.
-func (client VirtualNetworksClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, parameters VirtualNetwork, options *VirtualNetworksCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client VirtualNetworksClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, parameters VirtualNetwork, options *VirtualNetworksBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualNetworkName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -143,7 +143,7 @@ func (client VirtualNetworksClient) CreateOrUpdate(ctx context.Context, resource
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client VirtualNetworksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, parameters VirtualNetwork, options *VirtualNetworksCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client VirtualNetworksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, parameters VirtualNetwork, options *VirtualNetworksBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkName}", url.PathEscape(virtualNetworkName))
@@ -177,8 +177,8 @@ func (client VirtualNetworksClient) createOrUpdateHandleError(resp *azcore.Respo
 }
 
 // BeginDelete - Deletes the specified virtual network.
-func (client VirtualNetworksClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *VirtualNetworksDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, virtualNetworkName, options)
+func (client VirtualNetworksClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *VirtualNetworksBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, virtualNetworkName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -214,7 +214,7 @@ func (client VirtualNetworksClient) ResumeDelete(token string) (HTTPPoller, erro
 }
 
 // Delete - Deletes the specified virtual network.
-func (client VirtualNetworksClient) Delete(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *VirtualNetworksDeleteOptions) (*azcore.Response, error) {
+func (client VirtualNetworksClient) delete(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *VirtualNetworksBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualNetworkName, options)
 	if err != nil {
 		return nil, err
@@ -230,7 +230,7 @@ func (client VirtualNetworksClient) Delete(ctx context.Context, resourceGroupNam
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client VirtualNetworksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *VirtualNetworksDeleteOptions) (*azcore.Request, error) {
+func (client VirtualNetworksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *VirtualNetworksBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkName}", url.PathEscape(virtualNetworkName))

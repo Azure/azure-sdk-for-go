@@ -85,8 +85,8 @@ func (client VirtualHubBgpConnectionsClient) listHandleError(resp *azcore.Respon
 }
 
 // BeginListAdvertisedRoutes - Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-func (client VirtualHubBgpConnectionsClient) BeginListAdvertisedRoutes(ctx context.Context, resourceGroupName string, hubName string, connectionName string, options *VirtualHubBgpConnectionsListAdvertisedRoutesOptions) (PeerRouteListPollerResponse, error) {
-	resp, err := client.ListAdvertisedRoutes(ctx, resourceGroupName, hubName, connectionName, options)
+func (client VirtualHubBgpConnectionsClient) BeginListAdvertisedRoutes(ctx context.Context, resourceGroupName string, hubName string, connectionName string, options *VirtualHubBgpConnectionsBeginListAdvertisedRoutesOptions) (PeerRouteListPollerResponse, error) {
+	resp, err := client.listAdvertisedRoutes(ctx, resourceGroupName, hubName, connectionName, options)
 	if err != nil {
 		return PeerRouteListPollerResponse{}, err
 	}
@@ -122,7 +122,7 @@ func (client VirtualHubBgpConnectionsClient) ResumeListAdvertisedRoutes(token st
 }
 
 // ListAdvertisedRoutes - Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-func (client VirtualHubBgpConnectionsClient) ListAdvertisedRoutes(ctx context.Context, resourceGroupName string, hubName string, connectionName string, options *VirtualHubBgpConnectionsListAdvertisedRoutesOptions) (*azcore.Response, error) {
+func (client VirtualHubBgpConnectionsClient) listAdvertisedRoutes(ctx context.Context, resourceGroupName string, hubName string, connectionName string, options *VirtualHubBgpConnectionsBeginListAdvertisedRoutesOptions) (*azcore.Response, error) {
 	req, err := client.listAdvertisedRoutesCreateRequest(ctx, resourceGroupName, hubName, connectionName, options)
 	if err != nil {
 		return nil, err
@@ -138,7 +138,7 @@ func (client VirtualHubBgpConnectionsClient) ListAdvertisedRoutes(ctx context.Co
 }
 
 // listAdvertisedRoutesCreateRequest creates the ListAdvertisedRoutes request.
-func (client VirtualHubBgpConnectionsClient) listAdvertisedRoutesCreateRequest(ctx context.Context, resourceGroupName string, hubName string, connectionName string, options *VirtualHubBgpConnectionsListAdvertisedRoutesOptions) (*azcore.Request, error) {
+func (client VirtualHubBgpConnectionsClient) listAdvertisedRoutesCreateRequest(ctx context.Context, resourceGroupName string, hubName string, connectionName string, options *VirtualHubBgpConnectionsBeginListAdvertisedRoutesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{hubName}/bgpConnections/{connectionName}/advertisedRoutes"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{hubName}", url.PathEscape(hubName))
@@ -173,8 +173,8 @@ func (client VirtualHubBgpConnectionsClient) listAdvertisedRoutesHandleError(res
 }
 
 // BeginListLearnedRoutes - Retrieves a list of routes the virtual hub bgp connection has learned.
-func (client VirtualHubBgpConnectionsClient) BeginListLearnedRoutes(ctx context.Context, resourceGroupName string, hubName string, connectionName string, options *VirtualHubBgpConnectionsListLearnedRoutesOptions) (PeerRouteListPollerResponse, error) {
-	resp, err := client.ListLearnedRoutes(ctx, resourceGroupName, hubName, connectionName, options)
+func (client VirtualHubBgpConnectionsClient) BeginListLearnedRoutes(ctx context.Context, resourceGroupName string, hubName string, connectionName string, options *VirtualHubBgpConnectionsBeginListLearnedRoutesOptions) (PeerRouteListPollerResponse, error) {
+	resp, err := client.listLearnedRoutes(ctx, resourceGroupName, hubName, connectionName, options)
 	if err != nil {
 		return PeerRouteListPollerResponse{}, err
 	}
@@ -210,7 +210,7 @@ func (client VirtualHubBgpConnectionsClient) ResumeListLearnedRoutes(token strin
 }
 
 // ListLearnedRoutes - Retrieves a list of routes the virtual hub bgp connection has learned.
-func (client VirtualHubBgpConnectionsClient) ListLearnedRoutes(ctx context.Context, resourceGroupName string, hubName string, connectionName string, options *VirtualHubBgpConnectionsListLearnedRoutesOptions) (*azcore.Response, error) {
+func (client VirtualHubBgpConnectionsClient) listLearnedRoutes(ctx context.Context, resourceGroupName string, hubName string, connectionName string, options *VirtualHubBgpConnectionsBeginListLearnedRoutesOptions) (*azcore.Response, error) {
 	req, err := client.listLearnedRoutesCreateRequest(ctx, resourceGroupName, hubName, connectionName, options)
 	if err != nil {
 		return nil, err
@@ -226,7 +226,7 @@ func (client VirtualHubBgpConnectionsClient) ListLearnedRoutes(ctx context.Conte
 }
 
 // listLearnedRoutesCreateRequest creates the ListLearnedRoutes request.
-func (client VirtualHubBgpConnectionsClient) listLearnedRoutesCreateRequest(ctx context.Context, resourceGroupName string, hubName string, connectionName string, options *VirtualHubBgpConnectionsListLearnedRoutesOptions) (*azcore.Request, error) {
+func (client VirtualHubBgpConnectionsClient) listLearnedRoutesCreateRequest(ctx context.Context, resourceGroupName string, hubName string, connectionName string, options *VirtualHubBgpConnectionsBeginListLearnedRoutesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{hubName}/bgpConnections/{connectionName}/learnedRoutes"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{hubName}", url.PathEscape(hubName))

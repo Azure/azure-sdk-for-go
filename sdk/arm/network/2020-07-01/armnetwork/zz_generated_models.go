@@ -746,9 +746,15 @@ type ApplicationGatewayPrivateEndpointConnectionResponse struct {
 	RawResponse *http.Response
 }
 
-// ApplicationGatewayPrivateEndpointConnectionsDeleteOptions contains the optional parameters for the ApplicationGatewayPrivateEndpointConnections.Delete
+// ApplicationGatewayPrivateEndpointConnectionsBeginDeleteOptions contains the optional parameters for the ApplicationGatewayPrivateEndpointConnections.BeginDelete
 // method.
-type ApplicationGatewayPrivateEndpointConnectionsDeleteOptions struct {
+type ApplicationGatewayPrivateEndpointConnectionsBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ApplicationGatewayPrivateEndpointConnectionsBeginUpdateOptions contains the optional parameters for the ApplicationGatewayPrivateEndpointConnections.BeginUpdate
+// method.
+type ApplicationGatewayPrivateEndpointConnectionsBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -759,12 +765,6 @@ type ApplicationGatewayPrivateEndpointConnectionsGetOptions struct {
 
 // ApplicationGatewayPrivateEndpointConnectionsListOptions contains the optional parameters for the ApplicationGatewayPrivateEndpointConnections.List method.
 type ApplicationGatewayPrivateEndpointConnectionsListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ApplicationGatewayPrivateEndpointConnectionsUpdateOptions contains the optional parameters for the ApplicationGatewayPrivateEndpointConnections.Update
-// method.
-type ApplicationGatewayPrivateEndpointConnectionsUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1465,25 +1465,35 @@ type ApplicationGatewayWebApplicationFirewallConfiguration struct {
 	RuleSetVersion *string `json:"ruleSetVersion,omitempty"`
 }
 
-// ApplicationGatewaysBackendHealthOnDemandOptions contains the optional parameters for the ApplicationGateways.BackendHealthOnDemand method.
-type ApplicationGatewaysBackendHealthOnDemandOptions struct {
+// ApplicationGatewaysBeginBackendHealthOnDemandOptions contains the optional parameters for the ApplicationGateways.BeginBackendHealthOnDemand method.
+type ApplicationGatewaysBeginBackendHealthOnDemandOptions struct {
 	// Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
 	Expand *string
 }
 
-// ApplicationGatewaysBackendHealthOptions contains the optional parameters for the ApplicationGateways.BackendHealth method.
-type ApplicationGatewaysBackendHealthOptions struct {
+// ApplicationGatewaysBeginBackendHealthOptions contains the optional parameters for the ApplicationGateways.BeginBackendHealth method.
+type ApplicationGatewaysBeginBackendHealthOptions struct {
 	// Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
 	Expand *string
 }
 
-// ApplicationGatewaysCreateOrUpdateOptions contains the optional parameters for the ApplicationGateways.CreateOrUpdate method.
-type ApplicationGatewaysCreateOrUpdateOptions struct {
+// ApplicationGatewaysBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationGateways.BeginCreateOrUpdate method.
+type ApplicationGatewaysBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationGatewaysDeleteOptions contains the optional parameters for the ApplicationGateways.Delete method.
-type ApplicationGatewaysDeleteOptions struct {
+// ApplicationGatewaysBeginDeleteOptions contains the optional parameters for the ApplicationGateways.BeginDelete method.
+type ApplicationGatewaysBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ApplicationGatewaysBeginStartOptions contains the optional parameters for the ApplicationGateways.BeginStart method.
+type ApplicationGatewaysBeginStartOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ApplicationGatewaysBeginStopOptions contains the optional parameters for the ApplicationGateways.BeginStop method.
+type ApplicationGatewaysBeginStopOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1535,16 +1545,6 @@ type ApplicationGatewaysListAvailableWafRuleSetsOptions struct {
 
 // ApplicationGatewaysListOptions contains the optional parameters for the ApplicationGateways.List method.
 type ApplicationGatewaysListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ApplicationGatewaysStartOptions contains the optional parameters for the ApplicationGateways.Start method.
-type ApplicationGatewaysStartOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ApplicationGatewaysStopOptions contains the optional parameters for the ApplicationGateways.Stop method.
-type ApplicationGatewaysStopOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1739,13 +1739,13 @@ type ApplicationSecurityGroupResponse struct {
 	RawResponse *http.Response
 }
 
-// ApplicationSecurityGroupsCreateOrUpdateOptions contains the optional parameters for the ApplicationSecurityGroups.CreateOrUpdate method.
-type ApplicationSecurityGroupsCreateOrUpdateOptions struct {
+// ApplicationSecurityGroupsBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationSecurityGroups.BeginCreateOrUpdate method.
+type ApplicationSecurityGroupsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationSecurityGroupsDeleteOptions contains the optional parameters for the ApplicationSecurityGroups.Delete method.
-type ApplicationSecurityGroupsDeleteOptions struct {
+// ApplicationSecurityGroupsBeginDeleteOptions contains the optional parameters for the ApplicationSecurityGroups.BeginDelete method.
+type ApplicationSecurityGroupsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2443,13 +2443,18 @@ type AzureFirewallSKU struct {
 	Tier *AzureFirewallSKUTier `json:"tier,omitempty"`
 }
 
-// AzureFirewallsCreateOrUpdateOptions contains the optional parameters for the AzureFirewalls.CreateOrUpdate method.
-type AzureFirewallsCreateOrUpdateOptions struct {
+// AzureFirewallsBeginCreateOrUpdateOptions contains the optional parameters for the AzureFirewalls.BeginCreateOrUpdate method.
+type AzureFirewallsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AzureFirewallsDeleteOptions contains the optional parameters for the AzureFirewalls.Delete method.
-type AzureFirewallsDeleteOptions struct {
+// AzureFirewallsBeginDeleteOptions contains the optional parameters for the AzureFirewalls.BeginDelete method.
+type AzureFirewallsBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureFirewallsBeginUpdateTagsOptions contains the optional parameters for the AzureFirewalls.BeginUpdateTags method.
+type AzureFirewallsBeginUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2465,11 +2470,6 @@ type AzureFirewallsListAllOptions struct {
 
 // AzureFirewallsListOptions contains the optional parameters for the AzureFirewalls.List method.
 type AzureFirewallsListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AzureFirewallsUpdateTagsOptions contains the optional parameters for the AzureFirewalls.UpdateTags method.
-type AzureFirewallsUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2933,13 +2933,13 @@ type BastionHostResponse struct {
 	RawResponse *http.Response
 }
 
-// BastionHostsCreateOrUpdateOptions contains the optional parameters for the BastionHosts.CreateOrUpdate method.
-type BastionHostsCreateOrUpdateOptions struct {
+// BastionHostsBeginCreateOrUpdateOptions contains the optional parameters for the BastionHosts.BeginCreateOrUpdate method.
+type BastionHostsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BastionHostsDeleteOptions contains the optional parameters for the BastionHosts.Delete method.
-type BastionHostsDeleteOptions struct {
+// BastionHostsBeginDeleteOptions contains the optional parameters for the BastionHosts.BeginDelete method.
+type BastionHostsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3760,14 +3760,29 @@ type ConnectionMonitorWorkspaceSettings struct {
 	WorkspaceResourceID *string `json:"workspaceResourceId,omitempty"`
 }
 
-// ConnectionMonitorsCreateOrUpdateOptions contains the optional parameters for the ConnectionMonitors.CreateOrUpdate method.
-type ConnectionMonitorsCreateOrUpdateOptions struct {
+// ConnectionMonitorsBeginCreateOrUpdateOptions contains the optional parameters for the ConnectionMonitors.BeginCreateOrUpdate method.
+type ConnectionMonitorsBeginCreateOrUpdateOptions struct {
 	// Value indicating whether connection monitor V1 should be migrated to V2 format.
 	Migrate *string
 }
 
-// ConnectionMonitorsDeleteOptions contains the optional parameters for the ConnectionMonitors.Delete method.
-type ConnectionMonitorsDeleteOptions struct {
+// ConnectionMonitorsBeginDeleteOptions contains the optional parameters for the ConnectionMonitors.BeginDelete method.
+type ConnectionMonitorsBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectionMonitorsBeginQueryOptions contains the optional parameters for the ConnectionMonitors.BeginQuery method.
+type ConnectionMonitorsBeginQueryOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectionMonitorsBeginStartOptions contains the optional parameters for the ConnectionMonitors.BeginStart method.
+type ConnectionMonitorsBeginStartOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectionMonitorsBeginStopOptions contains the optional parameters for the ConnectionMonitors.BeginStop method.
+type ConnectionMonitorsBeginStopOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3778,21 +3793,6 @@ type ConnectionMonitorsGetOptions struct {
 
 // ConnectionMonitorsListOptions contains the optional parameters for the ConnectionMonitors.List method.
 type ConnectionMonitorsListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectionMonitorsQueryOptions contains the optional parameters for the ConnectionMonitors.Query method.
-type ConnectionMonitorsQueryOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectionMonitorsStartOptions contains the optional parameters for the ConnectionMonitors.Start method.
-type ConnectionMonitorsStartOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectionMonitorsStopOptions contains the optional parameters for the ConnectionMonitors.Stop method.
-type ConnectionMonitorsStopOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4289,13 +4289,13 @@ type CustomIPPrefixResponse struct {
 	RawResponse *http.Response
 }
 
-// CustomIPPrefixesCreateOrUpdateOptions contains the optional parameters for the CustomIPPrefixes.CreateOrUpdate method.
-type CustomIPPrefixesCreateOrUpdateOptions struct {
+// CustomIPPrefixesBeginCreateOrUpdateOptions contains the optional parameters for the CustomIPPrefixes.BeginCreateOrUpdate method.
+type CustomIPPrefixesBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomIPPrefixesDeleteOptions contains the optional parameters for the CustomIPPrefixes.Delete method.
-type CustomIPPrefixesDeleteOptions struct {
+// CustomIPPrefixesBeginDeleteOptions contains the optional parameters for the CustomIPPrefixes.BeginDelete method.
+type CustomIPPrefixesBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4347,13 +4347,13 @@ type DNSSettings struct {
 	Servers *[]string `json:"servers,omitempty"`
 }
 
-// DdosCustomPoliciesCreateOrUpdateOptions contains the optional parameters for the DdosCustomPolicies.CreateOrUpdate method.
-type DdosCustomPoliciesCreateOrUpdateOptions struct {
+// DdosCustomPoliciesBeginCreateOrUpdateOptions contains the optional parameters for the DdosCustomPolicies.BeginCreateOrUpdate method.
+type DdosCustomPoliciesBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DdosCustomPoliciesDeleteOptions contains the optional parameters for the DdosCustomPolicies.Delete method.
-type DdosCustomPoliciesDeleteOptions struct {
+// DdosCustomPoliciesBeginDeleteOptions contains the optional parameters for the DdosCustomPolicies.BeginDelete method.
+type DdosCustomPoliciesBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4490,13 +4490,13 @@ type DdosProtectionPlanResponse struct {
 	RawResponse *http.Response
 }
 
-// DdosProtectionPlansCreateOrUpdateOptions contains the optional parameters for the DdosProtectionPlans.CreateOrUpdate method.
-type DdosProtectionPlansCreateOrUpdateOptions struct {
+// DdosProtectionPlansBeginCreateOrUpdateOptions contains the optional parameters for the DdosProtectionPlans.BeginCreateOrUpdate method.
+type DdosProtectionPlansBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DdosProtectionPlansDeleteOptions contains the optional parameters for the DdosProtectionPlans.Delete method.
-type DdosProtectionPlansDeleteOptions struct {
+// DdosProtectionPlansBeginDeleteOptions contains the optional parameters for the DdosProtectionPlans.BeginDelete method.
+type DdosProtectionPlansBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4596,13 +4596,13 @@ type DscpConfiguration struct {
 	Properties *DscpConfigurationPropertiesFormat `json:"properties,omitempty"`
 }
 
-// DscpConfigurationCreateOrUpdateOptions contains the optional parameters for the DscpConfiguration.CreateOrUpdate method.
-type DscpConfigurationCreateOrUpdateOptions struct {
+// DscpConfigurationBeginCreateOrUpdateOptions contains the optional parameters for the DscpConfiguration.BeginCreateOrUpdate method.
+type DscpConfigurationBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DscpConfigurationDeleteOptions contains the optional parameters for the DscpConfiguration.Delete method.
-type DscpConfigurationDeleteOptions struct {
+// DscpConfigurationBeginDeleteOptions contains the optional parameters for the DscpConfiguration.BeginDelete method.
+type DscpConfigurationBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5043,13 +5043,14 @@ type ExpressRouteCircuitAuthorizationResponse struct {
 	RawResponse *http.Response
 }
 
-// ExpressRouteCircuitAuthorizationsCreateOrUpdateOptions contains the optional parameters for the ExpressRouteCircuitAuthorizations.CreateOrUpdate method.
-type ExpressRouteCircuitAuthorizationsCreateOrUpdateOptions struct {
+// ExpressRouteCircuitAuthorizationsBeginCreateOrUpdateOptions contains the optional parameters for the ExpressRouteCircuitAuthorizations.BeginCreateOrUpdate
+// method.
+type ExpressRouteCircuitAuthorizationsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRouteCircuitAuthorizationsDeleteOptions contains the optional parameters for the ExpressRouteCircuitAuthorizations.Delete method.
-type ExpressRouteCircuitAuthorizationsDeleteOptions struct {
+// ExpressRouteCircuitAuthorizationsBeginDeleteOptions contains the optional parameters for the ExpressRouteCircuitAuthorizations.BeginDelete method.
+type ExpressRouteCircuitAuthorizationsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5142,13 +5143,14 @@ type ExpressRouteCircuitConnectionResponse struct {
 	RawResponse *http.Response
 }
 
-// ExpressRouteCircuitConnectionsCreateOrUpdateOptions contains the optional parameters for the ExpressRouteCircuitConnections.CreateOrUpdate method.
-type ExpressRouteCircuitConnectionsCreateOrUpdateOptions struct {
+// ExpressRouteCircuitConnectionsBeginCreateOrUpdateOptions contains the optional parameters for the ExpressRouteCircuitConnections.BeginCreateOrUpdate
+// method.
+type ExpressRouteCircuitConnectionsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRouteCircuitConnectionsDeleteOptions contains the optional parameters for the ExpressRouteCircuitConnections.Delete method.
-type ExpressRouteCircuitConnectionsDeleteOptions struct {
+// ExpressRouteCircuitConnectionsBeginDeleteOptions contains the optional parameters for the ExpressRouteCircuitConnections.BeginDelete method.
+type ExpressRouteCircuitConnectionsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5325,13 +5327,13 @@ type ExpressRouteCircuitPeeringResponse struct {
 	RawResponse *http.Response
 }
 
-// ExpressRouteCircuitPeeringsCreateOrUpdateOptions contains the optional parameters for the ExpressRouteCircuitPeerings.CreateOrUpdate method.
-type ExpressRouteCircuitPeeringsCreateOrUpdateOptions struct {
+// ExpressRouteCircuitPeeringsBeginCreateOrUpdateOptions contains the optional parameters for the ExpressRouteCircuitPeerings.BeginCreateOrUpdate method.
+type ExpressRouteCircuitPeeringsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRouteCircuitPeeringsDeleteOptions contains the optional parameters for the ExpressRouteCircuitPeerings.Delete method.
-type ExpressRouteCircuitPeeringsDeleteOptions struct {
+// ExpressRouteCircuitPeeringsBeginDeleteOptions contains the optional parameters for the ExpressRouteCircuitPeerings.BeginDelete method.
+type ExpressRouteCircuitPeeringsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5532,13 +5534,28 @@ type ExpressRouteCircuitsArpTableListResultResponse struct {
 	RawResponse *http.Response
 }
 
-// ExpressRouteCircuitsCreateOrUpdateOptions contains the optional parameters for the ExpressRouteCircuits.CreateOrUpdate method.
-type ExpressRouteCircuitsCreateOrUpdateOptions struct {
+// ExpressRouteCircuitsBeginCreateOrUpdateOptions contains the optional parameters for the ExpressRouteCircuits.BeginCreateOrUpdate method.
+type ExpressRouteCircuitsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRouteCircuitsDeleteOptions contains the optional parameters for the ExpressRouteCircuits.Delete method.
-type ExpressRouteCircuitsDeleteOptions struct {
+// ExpressRouteCircuitsBeginDeleteOptions contains the optional parameters for the ExpressRouteCircuits.BeginDelete method.
+type ExpressRouteCircuitsBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExpressRouteCircuitsBeginListArpTableOptions contains the optional parameters for the ExpressRouteCircuits.BeginListArpTable method.
+type ExpressRouteCircuitsBeginListArpTableOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExpressRouteCircuitsBeginListRoutesTableOptions contains the optional parameters for the ExpressRouteCircuits.BeginListRoutesTable method.
+type ExpressRouteCircuitsBeginListRoutesTableOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExpressRouteCircuitsBeginListRoutesTableSummaryOptions contains the optional parameters for the ExpressRouteCircuits.BeginListRoutesTableSummary method.
+type ExpressRouteCircuitsBeginListRoutesTableSummaryOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5562,23 +5579,8 @@ type ExpressRouteCircuitsListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRouteCircuitsListArpTableOptions contains the optional parameters for the ExpressRouteCircuits.ListArpTable method.
-type ExpressRouteCircuitsListArpTableOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ExpressRouteCircuitsListOptions contains the optional parameters for the ExpressRouteCircuits.List method.
 type ExpressRouteCircuitsListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ExpressRouteCircuitsListRoutesTableOptions contains the optional parameters for the ExpressRouteCircuits.ListRoutesTable method.
-type ExpressRouteCircuitsListRoutesTableOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ExpressRouteCircuitsListRoutesTableSummaryOptions contains the optional parameters for the ExpressRouteCircuits.ListRoutesTableSummary method.
-type ExpressRouteCircuitsListRoutesTableSummaryOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5723,13 +5725,13 @@ type ExpressRouteConnectionResponse struct {
 	RawResponse *http.Response
 }
 
-// ExpressRouteConnectionsCreateOrUpdateOptions contains the optional parameters for the ExpressRouteConnections.CreateOrUpdate method.
-type ExpressRouteConnectionsCreateOrUpdateOptions struct {
+// ExpressRouteConnectionsBeginCreateOrUpdateOptions contains the optional parameters for the ExpressRouteConnections.BeginCreateOrUpdate method.
+type ExpressRouteConnectionsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRouteConnectionsDeleteOptions contains the optional parameters for the ExpressRouteConnections.Delete method.
-type ExpressRouteConnectionsDeleteOptions struct {
+// ExpressRouteConnectionsBeginDeleteOptions contains the optional parameters for the ExpressRouteConnections.BeginDelete method.
+type ExpressRouteConnectionsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5872,14 +5874,14 @@ type ExpressRouteCrossConnectionPeeringResponse struct {
 	RawResponse *http.Response
 }
 
-// ExpressRouteCrossConnectionPeeringsCreateOrUpdateOptions contains the optional parameters for the ExpressRouteCrossConnectionPeerings.CreateOrUpdate
+// ExpressRouteCrossConnectionPeeringsBeginCreateOrUpdateOptions contains the optional parameters for the ExpressRouteCrossConnectionPeerings.BeginCreateOrUpdate
 // method.
-type ExpressRouteCrossConnectionPeeringsCreateOrUpdateOptions struct {
+type ExpressRouteCrossConnectionPeeringsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRouteCrossConnectionPeeringsDeleteOptions contains the optional parameters for the ExpressRouteCrossConnectionPeerings.Delete method.
-type ExpressRouteCrossConnectionPeeringsDeleteOptions struct {
+// ExpressRouteCrossConnectionPeeringsBeginDeleteOptions contains the optional parameters for the ExpressRouteCrossConnectionPeerings.BeginDelete method.
+type ExpressRouteCrossConnectionPeeringsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5962,18 +5964,29 @@ type ExpressRouteCrossConnectionRoutesTableSummary struct {
 	UpDown *string `json:"upDown,omitempty"`
 }
 
-// ExpressRouteCrossConnectionsCreateOrUpdateOptions contains the optional parameters for the ExpressRouteCrossConnections.CreateOrUpdate method.
-type ExpressRouteCrossConnectionsCreateOrUpdateOptions struct {
+// ExpressRouteCrossConnectionsBeginCreateOrUpdateOptions contains the optional parameters for the ExpressRouteCrossConnections.BeginCreateOrUpdate method.
+type ExpressRouteCrossConnectionsBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExpressRouteCrossConnectionsBeginListArpTableOptions contains the optional parameters for the ExpressRouteCrossConnections.BeginListArpTable method.
+type ExpressRouteCrossConnectionsBeginListArpTableOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExpressRouteCrossConnectionsBeginListRoutesTableOptions contains the optional parameters for the ExpressRouteCrossConnections.BeginListRoutesTable method.
+type ExpressRouteCrossConnectionsBeginListRoutesTableOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExpressRouteCrossConnectionsBeginListRoutesTableSummaryOptions contains the optional parameters for the ExpressRouteCrossConnections.BeginListRoutesTableSummary
+// method.
+type ExpressRouteCrossConnectionsBeginListRoutesTableSummaryOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ExpressRouteCrossConnectionsGetOptions contains the optional parameters for the ExpressRouteCrossConnections.Get method.
 type ExpressRouteCrossConnectionsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ExpressRouteCrossConnectionsListArpTableOptions contains the optional parameters for the ExpressRouteCrossConnections.ListArpTable method.
-type ExpressRouteCrossConnectionsListArpTableOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5984,17 +5997,6 @@ type ExpressRouteCrossConnectionsListByResourceGroupOptions struct {
 
 // ExpressRouteCrossConnectionsListOptions contains the optional parameters for the ExpressRouteCrossConnections.List method.
 type ExpressRouteCrossConnectionsListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ExpressRouteCrossConnectionsListRoutesTableOptions contains the optional parameters for the ExpressRouteCrossConnections.ListRoutesTable method.
-type ExpressRouteCrossConnectionsListRoutesTableOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ExpressRouteCrossConnectionsListRoutesTableSummaryOptions contains the optional parameters for the ExpressRouteCrossConnections.ListRoutesTableSummary
-// method.
-type ExpressRouteCrossConnectionsListRoutesTableSummaryOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -6111,13 +6113,13 @@ type ExpressRouteGatewayResponse struct {
 	RawResponse *http.Response
 }
 
-// ExpressRouteGatewaysCreateOrUpdateOptions contains the optional parameters for the ExpressRouteGateways.CreateOrUpdate method.
-type ExpressRouteGatewaysCreateOrUpdateOptions struct {
+// ExpressRouteGatewaysBeginCreateOrUpdateOptions contains the optional parameters for the ExpressRouteGateways.BeginCreateOrUpdate method.
+type ExpressRouteGatewaysBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRouteGatewaysDeleteOptions contains the optional parameters for the ExpressRouteGateways.Delete method.
-type ExpressRouteGatewaysDeleteOptions struct {
+// ExpressRouteGatewaysBeginDeleteOptions contains the optional parameters for the ExpressRouteGateways.BeginDelete method.
+type ExpressRouteGatewaysBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -6316,13 +6318,13 @@ type ExpressRoutePortResponse struct {
 	RawResponse *http.Response
 }
 
-// ExpressRoutePortsCreateOrUpdateOptions contains the optional parameters for the ExpressRoutePorts.CreateOrUpdate method.
-type ExpressRoutePortsCreateOrUpdateOptions struct {
+// ExpressRoutePortsBeginCreateOrUpdateOptions contains the optional parameters for the ExpressRoutePorts.BeginCreateOrUpdate method.
+type ExpressRoutePortsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRoutePortsDeleteOptions contains the optional parameters for the ExpressRoutePorts.Delete method.
-type ExpressRoutePortsDeleteOptions struct {
+// ExpressRoutePortsBeginDeleteOptions contains the optional parameters for the ExpressRoutePorts.BeginDelete method.
+type ExpressRoutePortsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -6479,13 +6481,13 @@ type ExtendedLocation struct {
 	Type *ExtendedLocationTypes `json:"type,omitempty"`
 }
 
-// FirewallPoliciesCreateOrUpdateOptions contains the optional parameters for the FirewallPolicies.CreateOrUpdate method.
-type FirewallPoliciesCreateOrUpdateOptions struct {
+// FirewallPoliciesBeginCreateOrUpdateOptions contains the optional parameters for the FirewallPolicies.BeginCreateOrUpdate method.
+type FirewallPoliciesBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirewallPoliciesDeleteOptions contains the optional parameters for the FirewallPolicies.Delete method.
-type FirewallPoliciesDeleteOptions struct {
+// FirewallPoliciesBeginDeleteOptions contains the optional parameters for the FirewallPolicies.BeginDelete method.
+type FirewallPoliciesBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -7024,13 +7026,14 @@ type FirewallPolicyRuleCollectionGroupResponse struct {
 	RawResponse *http.Response
 }
 
-// FirewallPolicyRuleCollectionGroupsCreateOrUpdateOptions contains the optional parameters for the FirewallPolicyRuleCollectionGroups.CreateOrUpdate method.
-type FirewallPolicyRuleCollectionGroupsCreateOrUpdateOptions struct {
+// FirewallPolicyRuleCollectionGroupsBeginCreateOrUpdateOptions contains the optional parameters for the FirewallPolicyRuleCollectionGroups.BeginCreateOrUpdate
+// method.
+type FirewallPolicyRuleCollectionGroupsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirewallPolicyRuleCollectionGroupsDeleteOptions contains the optional parameters for the FirewallPolicyRuleCollectionGroups.Delete method.
-type FirewallPolicyRuleCollectionGroupsDeleteOptions struct {
+// FirewallPolicyRuleCollectionGroupsBeginDeleteOptions contains the optional parameters for the FirewallPolicyRuleCollectionGroups.BeginDelete method.
+type FirewallPolicyRuleCollectionGroupsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -7204,13 +7207,13 @@ type FlowLogStatusParameters struct {
 	TargetResourceID *string `json:"targetResourceId,omitempty"`
 }
 
-// FlowLogsCreateOrUpdateOptions contains the optional parameters for the FlowLogs.CreateOrUpdate method.
-type FlowLogsCreateOrUpdateOptions struct {
+// FlowLogsBeginCreateOrUpdateOptions contains the optional parameters for the FlowLogs.BeginCreateOrUpdate method.
+type FlowLogsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FlowLogsDeleteOptions contains the optional parameters for the FlowLogs.Delete method.
-type FlowLogsDeleteOptions struct {
+// FlowLogsBeginDeleteOptions contains the optional parameters for the FlowLogs.BeginDelete method.
+type FlowLogsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -7586,13 +7589,13 @@ type HubRouteTableResponse struct {
 	RawResponse *http.Response
 }
 
-// HubRouteTablesCreateOrUpdateOptions contains the optional parameters for the HubRouteTables.CreateOrUpdate method.
-type HubRouteTablesCreateOrUpdateOptions struct {
+// HubRouteTablesBeginCreateOrUpdateOptions contains the optional parameters for the HubRouteTables.BeginCreateOrUpdate method.
+type HubRouteTablesBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HubRouteTablesDeleteOptions contains the optional parameters for the HubRouteTables.Delete method.
-type HubRouteTablesDeleteOptions struct {
+// HubRouteTablesBeginDeleteOptions contains the optional parameters for the HubRouteTables.BeginDelete method.
+type HubRouteTablesBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -7661,13 +7664,13 @@ type HubVirtualNetworkConnectionResponse struct {
 	RawResponse *http.Response
 }
 
-// HubVirtualNetworkConnectionsCreateOrUpdateOptions contains the optional parameters for the HubVirtualNetworkConnections.CreateOrUpdate method.
-type HubVirtualNetworkConnectionsCreateOrUpdateOptions struct {
+// HubVirtualNetworkConnectionsBeginCreateOrUpdateOptions contains the optional parameters for the HubVirtualNetworkConnections.BeginCreateOrUpdate method.
+type HubVirtualNetworkConnectionsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HubVirtualNetworkConnectionsDeleteOptions contains the optional parameters for the HubVirtualNetworkConnections.Delete method.
-type HubVirtualNetworkConnectionsDeleteOptions struct {
+// HubVirtualNetworkConnectionsBeginDeleteOptions contains the optional parameters for the HubVirtualNetworkConnections.BeginDelete method.
+type HubVirtualNetworkConnectionsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -7775,13 +7778,13 @@ type IPAllocationResponse struct {
 	RawResponse *http.Response
 }
 
-// IPAllocationsCreateOrUpdateOptions contains the optional parameters for the IPAllocations.CreateOrUpdate method.
-type IPAllocationsCreateOrUpdateOptions struct {
+// IPAllocationsBeginCreateOrUpdateOptions contains the optional parameters for the IPAllocations.BeginCreateOrUpdate method.
+type IPAllocationsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IPAllocationsDeleteOptions contains the optional parameters for the IPAllocations.Delete method.
-type IPAllocationsDeleteOptions struct {
+// IPAllocationsBeginDeleteOptions contains the optional parameters for the IPAllocations.BeginDelete method.
+type IPAllocationsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -7941,13 +7944,13 @@ type IPGroupResponse struct {
 	RawResponse *http.Response
 }
 
-// IPGroupsCreateOrUpdateOptions contains the optional parameters for the IPGroups.CreateOrUpdate method.
-type IPGroupsCreateOrUpdateOptions struct {
+// IPGroupsBeginCreateOrUpdateOptions contains the optional parameters for the IPGroups.BeginCreateOrUpdate method.
+type IPGroupsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IPGroupsDeleteOptions contains the optional parameters for the IPGroups.Delete method.
-type IPGroupsDeleteOptions struct {
+// IPGroupsBeginDeleteOptions contains the optional parameters for the IPGroups.BeginDelete method.
+type IPGroupsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -8177,13 +8180,13 @@ type InboundNatRuleResponse struct {
 	RawResponse *http.Response
 }
 
-// InboundNatRulesCreateOrUpdateOptions contains the optional parameters for the InboundNatRules.CreateOrUpdate method.
-type InboundNatRulesCreateOrUpdateOptions struct {
+// InboundNatRulesBeginCreateOrUpdateOptions contains the optional parameters for the InboundNatRules.BeginCreateOrUpdate method.
+type InboundNatRulesBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InboundNatRulesDeleteOptions contains the optional parameters for the InboundNatRules.Delete method.
-type InboundNatRulesDeleteOptions struct {
+// InboundNatRulesBeginDeleteOptions contains the optional parameters for the InboundNatRules.BeginDelete method.
+type InboundNatRulesBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -8214,8 +8217,8 @@ type InboundSecurityRule struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// InboundSecurityRuleCreateOrUpdateOptions contains the optional parameters for the InboundSecurityRule.CreateOrUpdate method.
-type InboundSecurityRuleCreateOrUpdateOptions struct {
+// InboundSecurityRuleBeginCreateOrUpdateOptions contains the optional parameters for the InboundSecurityRule.BeginCreateOrUpdate method.
+type InboundSecurityRuleBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -8560,13 +8563,14 @@ type LoadBalancerBackendAddressPoolListResultResponse struct {
 	RawResponse *http.Response
 }
 
-// LoadBalancerBackendAddressPoolsCreateOrUpdateOptions contains the optional parameters for the LoadBalancerBackendAddressPools.CreateOrUpdate method.
-type LoadBalancerBackendAddressPoolsCreateOrUpdateOptions struct {
+// LoadBalancerBackendAddressPoolsBeginCreateOrUpdateOptions contains the optional parameters for the LoadBalancerBackendAddressPools.BeginCreateOrUpdate
+// method.
+type LoadBalancerBackendAddressPoolsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LoadBalancerBackendAddressPoolsDeleteOptions contains the optional parameters for the LoadBalancerBackendAddressPools.Delete method.
-type LoadBalancerBackendAddressPoolsDeleteOptions struct {
+// LoadBalancerBackendAddressPoolsBeginDeleteOptions contains the optional parameters for the LoadBalancerBackendAddressPools.BeginDelete method.
+type LoadBalancerBackendAddressPoolsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -8799,13 +8803,13 @@ type LoadBalancerSKU struct {
 	Tier *LoadBalancerSKUTier `json:"tier,omitempty"`
 }
 
-// LoadBalancersCreateOrUpdateOptions contains the optional parameters for the LoadBalancers.CreateOrUpdate method.
-type LoadBalancersCreateOrUpdateOptions struct {
+// LoadBalancersBeginCreateOrUpdateOptions contains the optional parameters for the LoadBalancers.BeginCreateOrUpdate method.
+type LoadBalancersBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LoadBalancersDeleteOptions contains the optional parameters for the LoadBalancers.Delete method.
-type LoadBalancersDeleteOptions struct {
+// LoadBalancersBeginDeleteOptions contains the optional parameters for the LoadBalancers.BeginDelete method.
+type LoadBalancersBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -8969,13 +8973,13 @@ type LocalNetworkGatewayResponse struct {
 	RawResponse *http.Response
 }
 
-// LocalNetworkGatewaysCreateOrUpdateOptions contains the optional parameters for the LocalNetworkGateways.CreateOrUpdate method.
-type LocalNetworkGatewaysCreateOrUpdateOptions struct {
+// LocalNetworkGatewaysBeginCreateOrUpdateOptions contains the optional parameters for the LocalNetworkGateways.BeginCreateOrUpdate method.
+type LocalNetworkGatewaysBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocalNetworkGatewaysDeleteOptions contains the optional parameters for the LocalNetworkGateways.Delete method.
-type LocalNetworkGatewaysDeleteOptions struct {
+// LocalNetworkGatewaysBeginDeleteOptions contains the optional parameters for the LocalNetworkGateways.BeginDelete method.
+type LocalNetworkGatewaysBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -9226,13 +9230,13 @@ type NatGatewaySKU struct {
 	Name *NatGatewaySKUName `json:"name,omitempty"`
 }
 
-// NatGatewaysCreateOrUpdateOptions contains the optional parameters for the NatGateways.CreateOrUpdate method.
-type NatGatewaysCreateOrUpdateOptions struct {
+// NatGatewaysBeginCreateOrUpdateOptions contains the optional parameters for the NatGateways.BeginCreateOrUpdate method.
+type NatGatewaysBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NatGatewaysDeleteOptions contains the optional parameters for the NatGateways.Delete method.
-type NatGatewaysDeleteOptions struct {
+// NatGatewaysBeginDeleteOptions contains the optional parameters for the NatGateways.BeginDelete method.
+type NatGatewaysBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -9778,13 +9782,14 @@ type NetworkInterfaceTapConfigurationResponse struct {
 	RawResponse *http.Response
 }
 
-// NetworkInterfaceTapConfigurationsCreateOrUpdateOptions contains the optional parameters for the NetworkInterfaceTapConfigurations.CreateOrUpdate method.
-type NetworkInterfaceTapConfigurationsCreateOrUpdateOptions struct {
+// NetworkInterfaceTapConfigurationsBeginCreateOrUpdateOptions contains the optional parameters for the NetworkInterfaceTapConfigurations.BeginCreateOrUpdate
+// method.
+type NetworkInterfaceTapConfigurationsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkInterfaceTapConfigurationsDeleteOptions contains the optional parameters for the NetworkInterfaceTapConfigurations.Delete method.
-type NetworkInterfaceTapConfigurationsDeleteOptions struct {
+// NetworkInterfaceTapConfigurationsBeginDeleteOptions contains the optional parameters for the NetworkInterfaceTapConfigurations.BeginDelete method.
+type NetworkInterfaceTapConfigurationsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -9798,13 +9803,24 @@ type NetworkInterfaceTapConfigurationsListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkInterfacesCreateOrUpdateOptions contains the optional parameters for the NetworkInterfaces.CreateOrUpdate method.
-type NetworkInterfacesCreateOrUpdateOptions struct {
+// NetworkInterfacesBeginCreateOrUpdateOptions contains the optional parameters for the NetworkInterfaces.BeginCreateOrUpdate method.
+type NetworkInterfacesBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkInterfacesDeleteOptions contains the optional parameters for the NetworkInterfaces.Delete method.
-type NetworkInterfacesDeleteOptions struct {
+// NetworkInterfacesBeginDeleteOptions contains the optional parameters for the NetworkInterfaces.BeginDelete method.
+type NetworkInterfacesBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkInterfacesBeginGetEffectiveRouteTableOptions contains the optional parameters for the NetworkInterfaces.BeginGetEffectiveRouteTable method.
+type NetworkInterfacesBeginGetEffectiveRouteTableOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkInterfacesBeginListEffectiveNetworkSecurityGroupsOptions contains the optional parameters for the NetworkInterfaces.BeginListEffectiveNetworkSecurityGroups
+// method.
+type NetworkInterfacesBeginListEffectiveNetworkSecurityGroupsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -9812,11 +9828,6 @@ type NetworkInterfacesDeleteOptions struct {
 type NetworkInterfacesGetCloudServiceNetworkInterfaceOptions struct {
 	// Expands referenced resources.
 	Expand *string
-}
-
-// NetworkInterfacesGetEffectiveRouteTableOptions contains the optional parameters for the NetworkInterfaces.GetEffectiveRouteTable method.
-type NetworkInterfacesGetEffectiveRouteTableOptions struct {
-	// placeholder for future optional parameters
 }
 
 // NetworkInterfacesGetOptions contains the optional parameters for the NetworkInterfaces.Get method.
@@ -9856,12 +9867,6 @@ type NetworkInterfacesListCloudServiceRoleInstanceNetworkInterfacesOptions struc
 	// placeholder for future optional parameters
 }
 
-// NetworkInterfacesListEffectiveNetworkSecurityGroupsOptions contains the optional parameters for the NetworkInterfaces.ListEffectiveNetworkSecurityGroups
-// method.
-type NetworkInterfacesListEffectiveNetworkSecurityGroupsOptions struct {
-	// placeholder for future optional parameters
-}
-
 // NetworkInterfacesListOptions contains the optional parameters for the NetworkInterfaces.List method.
 type NetworkInterfacesListOptions struct {
 	// placeholder for future optional parameters
@@ -9891,14 +9896,31 @@ type NetworkInterfacesUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkManagementClientCheckDNSNameAvailabilityOptions contains the optional parameters for the NetworkManagementClient.CheckDNSNameAvailability method.
-type NetworkManagementClientCheckDNSNameAvailabilityOptions struct {
+// NetworkManagementClientBeginDeleteBastionShareableLinkOptions contains the optional parameters for the NetworkManagementClient.BeginDeleteBastionShareableLink
+// method.
+type NetworkManagementClientBeginDeleteBastionShareableLinkOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkManagementClientDeleteBastionShareableLinkOptions contains the optional parameters for the NetworkManagementClient.DeleteBastionShareableLink
+// NetworkManagementClientBeginGeneratevirtualwanvpnserverconfigurationvpnprofileOptions contains the optional parameters for the NetworkManagementClient.BeginGeneratevirtualwanvpnserverconfigurationvpnprofile
 // method.
-type NetworkManagementClientDeleteBastionShareableLinkOptions struct {
+type NetworkManagementClientBeginGeneratevirtualwanvpnserverconfigurationvpnprofileOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkManagementClientBeginGetActiveSessionsOptions contains the optional parameters for the NetworkManagementClient.BeginGetActiveSessions method.
+type NetworkManagementClientBeginGetActiveSessionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkManagementClientBeginPutBastionShareableLinkOptions contains the optional parameters for the NetworkManagementClient.BeginPutBastionShareableLink
+// method.
+type NetworkManagementClientBeginPutBastionShareableLinkOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkManagementClientCheckDNSNameAvailabilityOptions contains the optional parameters for the NetworkManagementClient.CheckDNSNameAvailability method.
+type NetworkManagementClientCheckDNSNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -9907,24 +9929,8 @@ type NetworkManagementClientDisconnectActiveSessionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileOptions contains the optional parameters for the NetworkManagementClient.Generatevirtualwanvpnserverconfigurationvpnprofile
-// method.
-type NetworkManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NetworkManagementClientGetActiveSessionsOptions contains the optional parameters for the NetworkManagementClient.GetActiveSessions method.
-type NetworkManagementClientGetActiveSessionsOptions struct {
-	// placeholder for future optional parameters
-}
-
 // NetworkManagementClientGetBastionShareableLinkOptions contains the optional parameters for the NetworkManagementClient.GetBastionShareableLink method.
 type NetworkManagementClientGetBastionShareableLinkOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NetworkManagementClientPutBastionShareableLinkOptions contains the optional parameters for the NetworkManagementClient.PutBastionShareableLink method.
-type NetworkManagementClientPutBastionShareableLinkOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -9986,13 +9992,13 @@ type NetworkProfileResponse struct {
 	RawResponse *http.Response
 }
 
-// NetworkProfilesCreateOrUpdateOptions contains the optional parameters for the NetworkProfiles.CreateOrUpdate method.
-type NetworkProfilesCreateOrUpdateOptions struct {
+// NetworkProfilesBeginDeleteOptions contains the optional parameters for the NetworkProfiles.BeginDelete method.
+type NetworkProfilesBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkProfilesDeleteOptions contains the optional parameters for the NetworkProfiles.Delete method.
-type NetworkProfilesDeleteOptions struct {
+// NetworkProfilesCreateOrUpdateOptions contains the optional parameters for the NetworkProfiles.CreateOrUpdate method.
+type NetworkProfilesCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -10203,13 +10209,13 @@ type NetworkSecurityGroupResult struct {
 	SecurityRuleAccessResult *SecurityRuleAccess `json:"securityRuleAccessResult,omitempty"`
 }
 
-// NetworkSecurityGroupsCreateOrUpdateOptions contains the optional parameters for the NetworkSecurityGroups.CreateOrUpdate method.
-type NetworkSecurityGroupsCreateOrUpdateOptions struct {
+// NetworkSecurityGroupsBeginCreateOrUpdateOptions contains the optional parameters for the NetworkSecurityGroups.BeginCreateOrUpdate method.
+type NetworkSecurityGroupsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkSecurityGroupsDeleteOptions contains the optional parameters for the NetworkSecurityGroups.Delete method.
-type NetworkSecurityGroupsDeleteOptions struct {
+// NetworkSecurityGroupsBeginDeleteOptions contains the optional parameters for the NetworkSecurityGroups.BeginDelete method.
+type NetworkSecurityGroupsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -10419,13 +10425,13 @@ type NetworkVirtualApplianceSiteListResultResponse struct {
 	RawResponse *http.Response
 }
 
-// NetworkVirtualAppliancesCreateOrUpdateOptions contains the optional parameters for the NetworkVirtualAppliances.CreateOrUpdate method.
-type NetworkVirtualAppliancesCreateOrUpdateOptions struct {
+// NetworkVirtualAppliancesBeginCreateOrUpdateOptions contains the optional parameters for the NetworkVirtualAppliances.BeginCreateOrUpdate method.
+type NetworkVirtualAppliancesBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkVirtualAppliancesDeleteOptions contains the optional parameters for the NetworkVirtualAppliances.Delete method.
-type NetworkVirtualAppliancesDeleteOptions struct {
+// NetworkVirtualAppliancesBeginDeleteOptions contains the optional parameters for the NetworkVirtualAppliances.BeginDelete method.
+type NetworkVirtualAppliancesBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -10490,38 +10496,69 @@ type NetworkWatcherResponse struct {
 	RawResponse *http.Response
 }
 
-// NetworkWatchersCheckConnectivityOptions contains the optional parameters for the NetworkWatchers.CheckConnectivity method.
-type NetworkWatchersCheckConnectivityOptions struct {
+// NetworkWatchersBeginCheckConnectivityOptions contains the optional parameters for the NetworkWatchers.BeginCheckConnectivity method.
+type NetworkWatchersBeginCheckConnectivityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkWatchersBeginDeleteOptions contains the optional parameters for the NetworkWatchers.BeginDelete method.
+type NetworkWatchersBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkWatchersBeginGetAzureReachabilityReportOptions contains the optional parameters for the NetworkWatchers.BeginGetAzureReachabilityReport method.
+type NetworkWatchersBeginGetAzureReachabilityReportOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkWatchersBeginGetFlowLogStatusOptions contains the optional parameters for the NetworkWatchers.BeginGetFlowLogStatus method.
+type NetworkWatchersBeginGetFlowLogStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkWatchersBeginGetNetworkConfigurationDiagnosticOptions contains the optional parameters for the NetworkWatchers.BeginGetNetworkConfigurationDiagnostic
+// method.
+type NetworkWatchersBeginGetNetworkConfigurationDiagnosticOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkWatchersBeginGetNextHopOptions contains the optional parameters for the NetworkWatchers.BeginGetNextHop method.
+type NetworkWatchersBeginGetNextHopOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkWatchersBeginGetTroubleshootingOptions contains the optional parameters for the NetworkWatchers.BeginGetTroubleshooting method.
+type NetworkWatchersBeginGetTroubleshootingOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkWatchersBeginGetTroubleshootingResultOptions contains the optional parameters for the NetworkWatchers.BeginGetTroubleshootingResult method.
+type NetworkWatchersBeginGetTroubleshootingResultOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkWatchersBeginGetVMSecurityRulesOptions contains the optional parameters for the NetworkWatchers.BeginGetVMSecurityRules method.
+type NetworkWatchersBeginGetVMSecurityRulesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkWatchersBeginListAvailableProvidersOptions contains the optional parameters for the NetworkWatchers.BeginListAvailableProviders method.
+type NetworkWatchersBeginListAvailableProvidersOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkWatchersBeginSetFlowLogConfigurationOptions contains the optional parameters for the NetworkWatchers.BeginSetFlowLogConfiguration method.
+type NetworkWatchersBeginSetFlowLogConfigurationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkWatchersBeginVerifyIPFlowOptions contains the optional parameters for the NetworkWatchers.BeginVerifyIPFlow method.
+type NetworkWatchersBeginVerifyIPFlowOptions struct {
 	// placeholder for future optional parameters
 }
 
 // NetworkWatchersCreateOrUpdateOptions contains the optional parameters for the NetworkWatchers.CreateOrUpdate method.
 type NetworkWatchersCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NetworkWatchersDeleteOptions contains the optional parameters for the NetworkWatchers.Delete method.
-type NetworkWatchersDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NetworkWatchersGetAzureReachabilityReportOptions contains the optional parameters for the NetworkWatchers.GetAzureReachabilityReport method.
-type NetworkWatchersGetAzureReachabilityReportOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NetworkWatchersGetFlowLogStatusOptions contains the optional parameters for the NetworkWatchers.GetFlowLogStatus method.
-type NetworkWatchersGetFlowLogStatusOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NetworkWatchersGetNetworkConfigurationDiagnosticOptions contains the optional parameters for the NetworkWatchers.GetNetworkConfigurationDiagnostic method.
-type NetworkWatchersGetNetworkConfigurationDiagnosticOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NetworkWatchersGetNextHopOptions contains the optional parameters for the NetworkWatchers.GetNextHop method.
-type NetworkWatchersGetNextHopOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -10535,28 +10572,8 @@ type NetworkWatchersGetTopologyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkWatchersGetTroubleshootingOptions contains the optional parameters for the NetworkWatchers.GetTroubleshooting method.
-type NetworkWatchersGetTroubleshootingOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NetworkWatchersGetTroubleshootingResultOptions contains the optional parameters for the NetworkWatchers.GetTroubleshootingResult method.
-type NetworkWatchersGetTroubleshootingResultOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NetworkWatchersGetVMSecurityRulesOptions contains the optional parameters for the NetworkWatchers.GetVMSecurityRules method.
-type NetworkWatchersGetVMSecurityRulesOptions struct {
-	// placeholder for future optional parameters
-}
-
 // NetworkWatchersListAllOptions contains the optional parameters for the NetworkWatchers.ListAll method.
 type NetworkWatchersListAllOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NetworkWatchersListAvailableProvidersOptions contains the optional parameters for the NetworkWatchers.ListAvailableProviders method.
-type NetworkWatchersListAvailableProvidersOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -10565,18 +10582,8 @@ type NetworkWatchersListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkWatchersSetFlowLogConfigurationOptions contains the optional parameters for the NetworkWatchers.SetFlowLogConfiguration method.
-type NetworkWatchersSetFlowLogConfigurationOptions struct {
-	// placeholder for future optional parameters
-}
-
 // NetworkWatchersUpdateTagsOptions contains the optional parameters for the NetworkWatchers.UpdateTags method.
 type NetworkWatchersUpdateTagsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NetworkWatchersVerifyIPFlowOptions contains the optional parameters for the NetworkWatchers.VerifyIPFlow method.
-type NetworkWatchersVerifyIPFlowOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -10912,38 +10919,49 @@ type P2SVpnGatewayResponse struct {
 	RawResponse *http.Response
 }
 
-// P2SVpnGatewaysCreateOrUpdateOptions contains the optional parameters for the P2SVpnGateways.CreateOrUpdate method.
-type P2SVpnGatewaysCreateOrUpdateOptions struct {
+// P2SVpnGatewaysBeginCreateOrUpdateOptions contains the optional parameters for the P2SVpnGateways.BeginCreateOrUpdate method.
+type P2SVpnGatewaysBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// P2SVpnGatewaysDeleteOptions contains the optional parameters for the P2SVpnGateways.Delete method.
-type P2SVpnGatewaysDeleteOptions struct {
+// P2SVpnGatewaysBeginDeleteOptions contains the optional parameters for the P2SVpnGateways.BeginDelete method.
+type P2SVpnGatewaysBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// P2SVpnGatewaysDisconnectP2SVpnConnectionsOptions contains the optional parameters for the P2SVpnGateways.DisconnectP2SVpnConnections method.
-type P2SVpnGatewaysDisconnectP2SVpnConnectionsOptions struct {
+// P2SVpnGatewaysBeginDisconnectP2SVpnConnectionsOptions contains the optional parameters for the P2SVpnGateways.BeginDisconnectP2SVpnConnections method.
+type P2SVpnGatewaysBeginDisconnectP2SVpnConnectionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// P2SVpnGatewaysGenerateVpnProfileOptions contains the optional parameters for the P2SVpnGateways.GenerateVpnProfile method.
-type P2SVpnGatewaysGenerateVpnProfileOptions struct {
+// P2SVpnGatewaysBeginGenerateVpnProfileOptions contains the optional parameters for the P2SVpnGateways.BeginGenerateVpnProfile method.
+type P2SVpnGatewaysBeginGenerateVpnProfileOptions struct {
+	// placeholder for future optional parameters
+}
+
+// P2SVpnGatewaysBeginGetP2SVpnConnectionHealthDetailedOptions contains the optional parameters for the P2SVpnGateways.BeginGetP2SVpnConnectionHealthDetailed
+// method.
+type P2SVpnGatewaysBeginGetP2SVpnConnectionHealthDetailedOptions struct {
+	// placeholder for future optional parameters
+}
+
+// P2SVpnGatewaysBeginGetP2SVpnConnectionHealthOptions contains the optional parameters for the P2SVpnGateways.BeginGetP2SVpnConnectionHealth method.
+type P2SVpnGatewaysBeginGetP2SVpnConnectionHealthOptions struct {
+	// placeholder for future optional parameters
+}
+
+// P2SVpnGatewaysBeginResetOptions contains the optional parameters for the P2SVpnGateways.BeginReset method.
+type P2SVpnGatewaysBeginResetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// P2SVpnGatewaysBeginUpdateTagsOptions contains the optional parameters for the P2SVpnGateways.BeginUpdateTags method.
+type P2SVpnGatewaysBeginUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
 // P2SVpnGatewaysGetOptions contains the optional parameters for the P2SVpnGateways.Get method.
 type P2SVpnGatewaysGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// P2SVpnGatewaysGetP2SVpnConnectionHealthDetailedOptions contains the optional parameters for the P2SVpnGateways.GetP2SVpnConnectionHealthDetailed method.
-type P2SVpnGatewaysGetP2SVpnConnectionHealthDetailedOptions struct {
-	// placeholder for future optional parameters
-}
-
-// P2SVpnGatewaysGetP2SVpnConnectionHealthOptions contains the optional parameters for the P2SVpnGateways.GetP2SVpnConnectionHealth method.
-type P2SVpnGatewaysGetP2SVpnConnectionHealthOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -10954,16 +10972,6 @@ type P2SVpnGatewaysListByResourceGroupOptions struct {
 
 // P2SVpnGatewaysListOptions contains the optional parameters for the P2SVpnGateways.List method.
 type P2SVpnGatewaysListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// P2SVpnGatewaysResetOptions contains the optional parameters for the P2SVpnGateways.Reset method.
-type P2SVpnGatewaysResetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// P2SVpnGatewaysUpdateTagsOptions contains the optional parameters for the P2SVpnGateways.UpdateTags method.
-type P2SVpnGatewaysUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -11213,13 +11221,23 @@ type PacketCaptureStorageLocation struct {
 	StoragePath *string `json:"storagePath,omitempty"`
 }
 
-// PacketCapturesCreateOptions contains the optional parameters for the PacketCaptures.Create method.
-type PacketCapturesCreateOptions struct {
+// PacketCapturesBeginCreateOptions contains the optional parameters for the PacketCaptures.BeginCreate method.
+type PacketCapturesBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PacketCapturesDeleteOptions contains the optional parameters for the PacketCaptures.Delete method.
-type PacketCapturesDeleteOptions struct {
+// PacketCapturesBeginDeleteOptions contains the optional parameters for the PacketCaptures.BeginDelete method.
+type PacketCapturesBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PacketCapturesBeginGetStatusOptions contains the optional parameters for the PacketCaptures.BeginGetStatus method.
+type PacketCapturesBeginGetStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PacketCapturesBeginStopOptions contains the optional parameters for the PacketCaptures.BeginStop method.
+type PacketCapturesBeginStopOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -11228,18 +11246,8 @@ type PacketCapturesGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PacketCapturesGetStatusOptions contains the optional parameters for the PacketCaptures.GetStatus method.
-type PacketCapturesGetStatusOptions struct {
-	// placeholder for future optional parameters
-}
-
 // PacketCapturesListOptions contains the optional parameters for the PacketCaptures.List method.
 type PacketCapturesListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PacketCapturesStopOptions contains the optional parameters for the PacketCaptures.Stop method.
-type PacketCapturesStopOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -11501,13 +11509,13 @@ type PrivateDNSZoneGroupResponse struct {
 	RawResponse *http.Response
 }
 
-// PrivateDNSZoneGroupsCreateOrUpdateOptions contains the optional parameters for the PrivateDNSZoneGroups.CreateOrUpdate method.
-type PrivateDNSZoneGroupsCreateOrUpdateOptions struct {
+// PrivateDNSZoneGroupsBeginCreateOrUpdateOptions contains the optional parameters for the PrivateDNSZoneGroups.BeginCreateOrUpdate method.
+type PrivateDNSZoneGroupsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateDNSZoneGroupsDeleteOptions contains the optional parameters for the PrivateDNSZoneGroups.Delete method.
-type PrivateDNSZoneGroupsDeleteOptions struct {
+// PrivateDNSZoneGroupsBeginDeleteOptions contains the optional parameters for the PrivateDNSZoneGroups.BeginDelete method.
+type PrivateDNSZoneGroupsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -11659,13 +11667,13 @@ type PrivateEndpointResponse struct {
 	RawResponse *http.Response
 }
 
-// PrivateEndpointsCreateOrUpdateOptions contains the optional parameters for the PrivateEndpoints.CreateOrUpdate method.
-type PrivateEndpointsCreateOrUpdateOptions struct {
+// PrivateEndpointsBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpoints.BeginCreateOrUpdate method.
+type PrivateEndpointsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointsDeleteOptions contains the optional parameters for the PrivateEndpoints.Delete method.
-type PrivateEndpointsDeleteOptions struct {
+// PrivateEndpointsBeginDeleteOptions contains the optional parameters for the PrivateEndpoints.BeginDelete method.
+type PrivateEndpointsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -11887,31 +11895,31 @@ type PrivateLinkServiceVisibilityResponse struct {
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesCheckPrivateLinkServiceVisibilityByResourceGroupOptions contains the optional parameters for the PrivateLinkServices.CheckPrivateLinkServiceVisibilityByResourceGroup
+// PrivateLinkServicesBeginCheckPrivateLinkServiceVisibilityByResourceGroupOptions contains the optional parameters for the PrivateLinkServices.BeginCheckPrivateLinkServiceVisibilityByResourceGroup
 // method.
-type PrivateLinkServicesCheckPrivateLinkServiceVisibilityByResourceGroupOptions struct {
+type PrivateLinkServicesBeginCheckPrivateLinkServiceVisibilityByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesCheckPrivateLinkServiceVisibilityOptions contains the optional parameters for the PrivateLinkServices.CheckPrivateLinkServiceVisibility
+// PrivateLinkServicesBeginCheckPrivateLinkServiceVisibilityOptions contains the optional parameters for the PrivateLinkServices.BeginCheckPrivateLinkServiceVisibility
 // method.
-type PrivateLinkServicesCheckPrivateLinkServiceVisibilityOptions struct {
+type PrivateLinkServicesBeginCheckPrivateLinkServiceVisibilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServices.CreateOrUpdate method.
-type PrivateLinkServicesCreateOrUpdateOptions struct {
+// PrivateLinkServicesBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServices.BeginCreateOrUpdate method.
+type PrivateLinkServicesBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesDeleteOptions contains the optional parameters for the PrivateLinkServices.Delete method.
-type PrivateLinkServicesDeleteOptions struct {
+// PrivateLinkServicesBeginDeleteOptions contains the optional parameters for the PrivateLinkServices.BeginDelete method.
+type PrivateLinkServicesBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesDeletePrivateEndpointConnectionOptions contains the optional parameters for the PrivateLinkServices.DeletePrivateEndpointConnection
+// PrivateLinkServicesBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the PrivateLinkServices.BeginDeletePrivateEndpointConnection
 // method.
-type PrivateLinkServicesDeletePrivateEndpointConnectionOptions struct {
+type PrivateLinkServicesBeginDeletePrivateEndpointConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -12169,13 +12177,13 @@ type PublicIPAddressSKU struct {
 	Tier *PublicIPAddressSKUTier `json:"tier,omitempty"`
 }
 
-// PublicIPAddressesCreateOrUpdateOptions contains the optional parameters for the PublicIPAddresses.CreateOrUpdate method.
-type PublicIPAddressesCreateOrUpdateOptions struct {
+// PublicIPAddressesBeginCreateOrUpdateOptions contains the optional parameters for the PublicIPAddresses.BeginCreateOrUpdate method.
+type PublicIPAddressesBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PublicIPAddressesDeleteOptions contains the optional parameters for the PublicIPAddresses.Delete method.
-type PublicIPAddressesDeleteOptions struct {
+// PublicIPAddressesBeginDeleteOptions contains the optional parameters for the PublicIPAddresses.BeginDelete method.
+type PublicIPAddressesBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -12334,13 +12342,13 @@ type PublicIPPrefixSKU struct {
 	Tier *PublicIPPrefixSKUTier `json:"tier,omitempty"`
 }
 
-// PublicIPPrefixesCreateOrUpdateOptions contains the optional parameters for the PublicIPPrefixes.CreateOrUpdate method.
-type PublicIPPrefixesCreateOrUpdateOptions struct {
+// PublicIPPrefixesBeginCreateOrUpdateOptions contains the optional parameters for the PublicIPPrefixes.BeginCreateOrUpdate method.
+type PublicIPPrefixesBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PublicIPPrefixesDeleteOptions contains the optional parameters for the PublicIPPrefixes.Delete method.
-type PublicIPPrefixesDeleteOptions struct {
+// PublicIPPrefixesBeginDeleteOptions contains the optional parameters for the PublicIPPrefixes.BeginDelete method.
+type PublicIPPrefixesBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -12659,13 +12667,13 @@ type RouteFilterRuleResponse struct {
 	RouteFilterRule *RouteFilterRule
 }
 
-// RouteFilterRulesCreateOrUpdateOptions contains the optional parameters for the RouteFilterRules.CreateOrUpdate method.
-type RouteFilterRulesCreateOrUpdateOptions struct {
+// RouteFilterRulesBeginCreateOrUpdateOptions contains the optional parameters for the RouteFilterRules.BeginCreateOrUpdate method.
+type RouteFilterRulesBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RouteFilterRulesDeleteOptions contains the optional parameters for the RouteFilterRules.Delete method.
-type RouteFilterRulesDeleteOptions struct {
+// RouteFilterRulesBeginDeleteOptions contains the optional parameters for the RouteFilterRules.BeginDelete method.
+type RouteFilterRulesBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -12679,13 +12687,13 @@ type RouteFilterRulesListByRouteFilterOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RouteFiltersCreateOrUpdateOptions contains the optional parameters for the RouteFilters.CreateOrUpdate method.
-type RouteFiltersCreateOrUpdateOptions struct {
+// RouteFiltersBeginCreateOrUpdateOptions contains the optional parameters for the RouteFilters.BeginCreateOrUpdate method.
+type RouteFiltersBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RouteFiltersDeleteOptions contains the optional parameters for the RouteFilters.Delete method.
-type RouteFiltersDeleteOptions struct {
+// RouteFiltersBeginDeleteOptions contains the optional parameters for the RouteFilters.BeginDelete method.
+type RouteFiltersBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -12828,13 +12836,13 @@ type RouteTableResponse struct {
 	RouteTable *RouteTable
 }
 
-// RouteTablesCreateOrUpdateOptions contains the optional parameters for the RouteTables.CreateOrUpdate method.
-type RouteTablesCreateOrUpdateOptions struct {
+// RouteTablesBeginCreateOrUpdateOptions contains the optional parameters for the RouteTables.BeginCreateOrUpdate method.
+type RouteTablesBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RouteTablesDeleteOptions contains the optional parameters for the RouteTables.Delete method.
-type RouteTablesDeleteOptions struct {
+// RouteTablesBeginDeleteOptions contains the optional parameters for the RouteTables.BeginDelete method.
+type RouteTablesBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -12859,13 +12867,13 @@ type RouteTablesUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoutesCreateOrUpdateOptions contains the optional parameters for the Routes.CreateOrUpdate method.
-type RoutesCreateOrUpdateOptions struct {
+// RoutesBeginCreateOrUpdateOptions contains the optional parameters for the Routes.BeginCreateOrUpdate method.
+type RoutesBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoutesDeleteOptions contains the optional parameters for the Routes.Delete method.
-type RoutesDeleteOptions struct {
+// RoutesBeginDeleteOptions contains the optional parameters for the Routes.BeginDelete method.
+type RoutesBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -12997,13 +13005,13 @@ type SecurityPartnerProviderResponse struct {
 	SecurityPartnerProvider *SecurityPartnerProvider
 }
 
-// SecurityPartnerProvidersCreateOrUpdateOptions contains the optional parameters for the SecurityPartnerProviders.CreateOrUpdate method.
-type SecurityPartnerProvidersCreateOrUpdateOptions struct {
+// SecurityPartnerProvidersBeginCreateOrUpdateOptions contains the optional parameters for the SecurityPartnerProviders.BeginCreateOrUpdate method.
+type SecurityPartnerProvidersBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SecurityPartnerProvidersDeleteOptions contains the optional parameters for the SecurityPartnerProviders.Delete method.
-type SecurityPartnerProvidersDeleteOptions struct {
+// SecurityPartnerProvidersBeginDeleteOptions contains the optional parameters for the SecurityPartnerProviders.BeginDelete method.
+type SecurityPartnerProvidersBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -13150,13 +13158,13 @@ type SecurityRuleResponse struct {
 	SecurityRule *SecurityRule
 }
 
-// SecurityRulesCreateOrUpdateOptions contains the optional parameters for the SecurityRules.CreateOrUpdate method.
-type SecurityRulesCreateOrUpdateOptions struct {
+// SecurityRulesBeginCreateOrUpdateOptions contains the optional parameters for the SecurityRules.BeginCreateOrUpdate method.
+type SecurityRulesBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SecurityRulesDeleteOptions contains the optional parameters for the SecurityRules.Delete method.
-type SecurityRulesDeleteOptions struct {
+// SecurityRulesBeginDeleteOptions contains the optional parameters for the SecurityRules.BeginDelete method.
+type SecurityRulesBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -13239,13 +13247,13 @@ type ServiceDelegationPropertiesFormat struct {
 	ServiceName *string `json:"serviceName,omitempty"`
 }
 
-// ServiceEndpointPoliciesCreateOrUpdateOptions contains the optional parameters for the ServiceEndpointPolicies.CreateOrUpdate method.
-type ServiceEndpointPoliciesCreateOrUpdateOptions struct {
+// ServiceEndpointPoliciesBeginCreateOrUpdateOptions contains the optional parameters for the ServiceEndpointPolicies.BeginCreateOrUpdate method.
+type ServiceEndpointPoliciesBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServiceEndpointPoliciesDeleteOptions contains the optional parameters for the ServiceEndpointPolicies.Delete method.
-type ServiceEndpointPoliciesDeleteOptions struct {
+// ServiceEndpointPoliciesBeginDeleteOptions contains the optional parameters for the ServiceEndpointPolicies.BeginDelete method.
+type ServiceEndpointPoliciesBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -13349,13 +13357,14 @@ type ServiceEndpointPolicyDefinitionResponse struct {
 	ServiceEndpointPolicyDefinition *ServiceEndpointPolicyDefinition
 }
 
-// ServiceEndpointPolicyDefinitionsCreateOrUpdateOptions contains the optional parameters for the ServiceEndpointPolicyDefinitions.CreateOrUpdate method.
-type ServiceEndpointPolicyDefinitionsCreateOrUpdateOptions struct {
+// ServiceEndpointPolicyDefinitionsBeginCreateOrUpdateOptions contains the optional parameters for the ServiceEndpointPolicyDefinitions.BeginCreateOrUpdate
+// method.
+type ServiceEndpointPolicyDefinitionsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServiceEndpointPolicyDefinitionsDeleteOptions contains the optional parameters for the ServiceEndpointPolicyDefinitions.Delete method.
-type ServiceEndpointPolicyDefinitionsDeleteOptions struct {
+// ServiceEndpointPolicyDefinitionsBeginDeleteOptions contains the optional parameters for the ServiceEndpointPolicyDefinitions.BeginDelete method.
+type ServiceEndpointPolicyDefinitionsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -13671,13 +13680,23 @@ type SubnetResponse struct {
 	Subnet *Subnet
 }
 
-// SubnetsCreateOrUpdateOptions contains the optional parameters for the Subnets.CreateOrUpdate method.
-type SubnetsCreateOrUpdateOptions struct {
+// SubnetsBeginCreateOrUpdateOptions contains the optional parameters for the Subnets.BeginCreateOrUpdate method.
+type SubnetsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SubnetsDeleteOptions contains the optional parameters for the Subnets.Delete method.
-type SubnetsDeleteOptions struct {
+// SubnetsBeginDeleteOptions contains the optional parameters for the Subnets.BeginDelete method.
+type SubnetsBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubnetsBeginPrepareNetworkPoliciesOptions contains the optional parameters for the Subnets.BeginPrepareNetworkPolicies method.
+type SubnetsBeginPrepareNetworkPoliciesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubnetsBeginUnprepareNetworkPoliciesOptions contains the optional parameters for the Subnets.BeginUnprepareNetworkPolicies method.
+type SubnetsBeginUnprepareNetworkPoliciesOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -13689,16 +13708,6 @@ type SubnetsGetOptions struct {
 
 // SubnetsListOptions contains the optional parameters for the Subnets.List method.
 type SubnetsListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SubnetsPrepareNetworkPoliciesOptions contains the optional parameters for the Subnets.PrepareNetworkPolicies method.
-type SubnetsPrepareNetworkPoliciesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SubnetsUnprepareNetworkPoliciesOptions contains the optional parameters for the Subnets.UnprepareNetworkPolicies method.
-type SubnetsUnprepareNetworkPoliciesOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -14228,13 +14237,13 @@ type VirtualApplianceSiteResponse struct {
 	VirtualApplianceSite *VirtualApplianceSite
 }
 
-// VirtualApplianceSitesCreateOrUpdateOptions contains the optional parameters for the VirtualApplianceSites.CreateOrUpdate method.
-type VirtualApplianceSitesCreateOrUpdateOptions struct {
+// VirtualApplianceSitesBeginCreateOrUpdateOptions contains the optional parameters for the VirtualApplianceSites.BeginCreateOrUpdate method.
+type VirtualApplianceSitesBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualApplianceSitesDeleteOptions contains the optional parameters for the VirtualApplianceSites.Delete method.
-type VirtualApplianceSitesDeleteOptions struct {
+// VirtualApplianceSitesBeginDeleteOptions contains the optional parameters for the VirtualApplianceSites.BeginDelete method.
+type VirtualApplianceSitesBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -14258,13 +14267,13 @@ type VirtualHub struct {
 	Properties *VirtualHubProperties `json:"properties,omitempty"`
 }
 
-// VirtualHubBgpConnectionCreateOrUpdateOptions contains the optional parameters for the VirtualHubBgpConnection.CreateOrUpdate method.
-type VirtualHubBgpConnectionCreateOrUpdateOptions struct {
+// VirtualHubBgpConnectionBeginCreateOrUpdateOptions contains the optional parameters for the VirtualHubBgpConnection.BeginCreateOrUpdate method.
+type VirtualHubBgpConnectionBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualHubBgpConnectionDeleteOptions contains the optional parameters for the VirtualHubBgpConnection.Delete method.
-type VirtualHubBgpConnectionDeleteOptions struct {
+// VirtualHubBgpConnectionBeginDeleteOptions contains the optional parameters for the VirtualHubBgpConnection.BeginDelete method.
+type VirtualHubBgpConnectionBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -14273,13 +14282,14 @@ type VirtualHubBgpConnectionGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualHubBgpConnectionsListAdvertisedRoutesOptions contains the optional parameters for the VirtualHubBgpConnections.ListAdvertisedRoutes method.
-type VirtualHubBgpConnectionsListAdvertisedRoutesOptions struct {
+// VirtualHubBgpConnectionsBeginListAdvertisedRoutesOptions contains the optional parameters for the VirtualHubBgpConnections.BeginListAdvertisedRoutes
+// method.
+type VirtualHubBgpConnectionsBeginListAdvertisedRoutesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualHubBgpConnectionsListLearnedRoutesOptions contains the optional parameters for the VirtualHubBgpConnections.ListLearnedRoutes method.
-type VirtualHubBgpConnectionsListLearnedRoutesOptions struct {
+// VirtualHubBgpConnectionsBeginListLearnedRoutesOptions contains the optional parameters for the VirtualHubBgpConnections.BeginListLearnedRoutes method.
+type VirtualHubBgpConnectionsBeginListLearnedRoutesOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -14319,13 +14329,13 @@ type VirtualHubID struct {
 	ID *string `json:"id,omitempty"`
 }
 
-// VirtualHubIPConfigurationCreateOrUpdateOptions contains the optional parameters for the VirtualHubIPConfiguration.CreateOrUpdate method.
-type VirtualHubIPConfigurationCreateOrUpdateOptions struct {
+// VirtualHubIPConfigurationBeginCreateOrUpdateOptions contains the optional parameters for the VirtualHubIPConfiguration.BeginCreateOrUpdate method.
+type VirtualHubIPConfigurationBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualHubIPConfigurationDeleteOptions contains the optional parameters for the VirtualHubIPConfiguration.Delete method.
-type VirtualHubIPConfigurationDeleteOptions struct {
+// VirtualHubIPConfigurationBeginDeleteOptions contains the optional parameters for the VirtualHubIPConfiguration.BeginDelete method.
+type VirtualHubIPConfigurationBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -14478,13 +14488,13 @@ type VirtualHubRouteTableV2Response struct {
 	VirtualHubRouteTableV2 *VirtualHubRouteTableV2
 }
 
-// VirtualHubRouteTableV2SCreateOrUpdateOptions contains the optional parameters for the VirtualHubRouteTableV2S.CreateOrUpdate method.
-type VirtualHubRouteTableV2SCreateOrUpdateOptions struct {
+// VirtualHubRouteTableV2SBeginCreateOrUpdateOptions contains the optional parameters for the VirtualHubRouteTableV2S.BeginCreateOrUpdate method.
+type VirtualHubRouteTableV2SBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualHubRouteTableV2SDeleteOptions contains the optional parameters for the VirtualHubRouteTableV2S.Delete method.
-type VirtualHubRouteTableV2SDeleteOptions struct {
+// VirtualHubRouteTableV2SBeginDeleteOptions contains the optional parameters for the VirtualHubRouteTableV2S.BeginDelete method.
+type VirtualHubRouteTableV2SBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -14513,18 +14523,18 @@ type VirtualHubRouteV2 struct {
 	NextHops *[]string `json:"nextHops,omitempty"`
 }
 
-// VirtualHubsCreateOrUpdateOptions contains the optional parameters for the VirtualHubs.CreateOrUpdate method.
-type VirtualHubsCreateOrUpdateOptions struct {
+// VirtualHubsBeginCreateOrUpdateOptions contains the optional parameters for the VirtualHubs.BeginCreateOrUpdate method.
+type VirtualHubsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualHubsDeleteOptions contains the optional parameters for the VirtualHubs.Delete method.
-type VirtualHubsDeleteOptions struct {
+// VirtualHubsBeginDeleteOptions contains the optional parameters for the VirtualHubs.BeginDelete method.
+type VirtualHubsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualHubsGetEffectiveVirtualHubRoutesOptions contains the optional parameters for the VirtualHubs.GetEffectiveVirtualHubRoutes method.
-type VirtualHubsGetEffectiveVirtualHubRoutesOptions struct {
+// VirtualHubsBeginGetEffectiveVirtualHubRoutesOptions contains the optional parameters for the VirtualHubs.BeginGetEffectiveVirtualHubRoutes method.
+type VirtualHubsBeginGetEffectiveVirtualHubRoutesOptions struct {
 	// Parameters supplied to get the effective routes for a specific resource.
 	EffectiveRoutesParameters *EffectiveRoutesParameters
 }
@@ -14784,13 +14794,44 @@ type VirtualNetworkGatewayConnectionResponse struct {
 	VirtualNetworkGatewayConnection *VirtualNetworkGatewayConnection
 }
 
-// VirtualNetworkGatewayConnectionsCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkGatewayConnections.CreateOrUpdate method.
-type VirtualNetworkGatewayConnectionsCreateOrUpdateOptions struct {
+// VirtualNetworkGatewayConnectionsBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkGatewayConnections.BeginCreateOrUpdate
+// method.
+type VirtualNetworkGatewayConnectionsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkGatewayConnectionsDeleteOptions contains the optional parameters for the VirtualNetworkGatewayConnections.Delete method.
-type VirtualNetworkGatewayConnectionsDeleteOptions struct {
+// VirtualNetworkGatewayConnectionsBeginDeleteOptions contains the optional parameters for the VirtualNetworkGatewayConnections.BeginDelete method.
+type VirtualNetworkGatewayConnectionsBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkGatewayConnectionsBeginResetSharedKeyOptions contains the optional parameters for the VirtualNetworkGatewayConnections.BeginResetSharedKey
+// method.
+type VirtualNetworkGatewayConnectionsBeginResetSharedKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkGatewayConnectionsBeginSetSharedKeyOptions contains the optional parameters for the VirtualNetworkGatewayConnections.BeginSetSharedKey
+// method.
+type VirtualNetworkGatewayConnectionsBeginSetSharedKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkGatewayConnectionsBeginStartPacketCaptureOptions contains the optional parameters for the VirtualNetworkGatewayConnections.BeginStartPacketCapture
+// method.
+type VirtualNetworkGatewayConnectionsBeginStartPacketCaptureOptions struct {
+	// Virtual network gateway packet capture parameters supplied to start packet capture on gateway connection.
+	Parameters *VpnPacketCaptureStartParameters
+}
+
+// VirtualNetworkGatewayConnectionsBeginStopPacketCaptureOptions contains the optional parameters for the VirtualNetworkGatewayConnections.BeginStopPacketCapture
+// method.
+type VirtualNetworkGatewayConnectionsBeginStopPacketCaptureOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkGatewayConnectionsBeginUpdateTagsOptions contains the optional parameters for the VirtualNetworkGatewayConnections.BeginUpdateTags method.
+type VirtualNetworkGatewayConnectionsBeginUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -14806,34 +14847,6 @@ type VirtualNetworkGatewayConnectionsGetSharedKeyOptions struct {
 
 // VirtualNetworkGatewayConnectionsListOptions contains the optional parameters for the VirtualNetworkGatewayConnections.List method.
 type VirtualNetworkGatewayConnectionsListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VirtualNetworkGatewayConnectionsResetSharedKeyOptions contains the optional parameters for the VirtualNetworkGatewayConnections.ResetSharedKey method.
-type VirtualNetworkGatewayConnectionsResetSharedKeyOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VirtualNetworkGatewayConnectionsSetSharedKeyOptions contains the optional parameters for the VirtualNetworkGatewayConnections.SetSharedKey method.
-type VirtualNetworkGatewayConnectionsSetSharedKeyOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VirtualNetworkGatewayConnectionsStartPacketCaptureOptions contains the optional parameters for the VirtualNetworkGatewayConnections.StartPacketCapture
-// method.
-type VirtualNetworkGatewayConnectionsStartPacketCaptureOptions struct {
-	// Virtual network gateway packet capture parameters supplied to start packet capture on gateway connection.
-	Parameters *VpnPacketCaptureStartParameters
-}
-
-// VirtualNetworkGatewayConnectionsStopPacketCaptureOptions contains the optional parameters for the VirtualNetworkGatewayConnections.StopPacketCapture
-// method.
-type VirtualNetworkGatewayConnectionsStopPacketCaptureOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VirtualNetworkGatewayConnectionsUpdateTagsOptions contains the optional parameters for the VirtualNetworkGatewayConnections.UpdateTags method.
-type VirtualNetworkGatewayConnectionsUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -14996,67 +15009,103 @@ type VirtualNetworkGatewaySKU struct {
 	Tier *VirtualNetworkGatewaySKUTier `json:"tier,omitempty"`
 }
 
-// VirtualNetworkGatewaysCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkGateways.CreateOrUpdate method.
-type VirtualNetworkGatewaysCreateOrUpdateOptions struct {
+// VirtualNetworkGatewaysBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkGateways.BeginCreateOrUpdate method.
+type VirtualNetworkGatewaysBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkGatewaysDeleteOptions contains the optional parameters for the VirtualNetworkGateways.Delete method.
-type VirtualNetworkGatewaysDeleteOptions struct {
+// VirtualNetworkGatewaysBeginDeleteOptions contains the optional parameters for the VirtualNetworkGateways.BeginDelete method.
+type VirtualNetworkGatewaysBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkGatewaysDisconnectVirtualNetworkGatewayVpnConnectionsOptions contains the optional parameters for the VirtualNetworkGateways.DisconnectVirtualNetworkGatewayVpnConnections
+// VirtualNetworkGatewaysBeginDisconnectVirtualNetworkGatewayVpnConnectionsOptions contains the optional parameters for the VirtualNetworkGateways.BeginDisconnectVirtualNetworkGatewayVpnConnections
 // method.
-type VirtualNetworkGatewaysDisconnectVirtualNetworkGatewayVpnConnectionsOptions struct {
+type VirtualNetworkGatewaysBeginDisconnectVirtualNetworkGatewayVpnConnectionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkGatewaysGenerateVpnProfileOptions contains the optional parameters for the VirtualNetworkGateways.GenerateVpnProfile method.
-type VirtualNetworkGatewaysGenerateVpnProfileOptions struct {
+// VirtualNetworkGatewaysBeginGenerateVpnProfileOptions contains the optional parameters for the VirtualNetworkGateways.BeginGenerateVpnProfile method.
+type VirtualNetworkGatewaysBeginGenerateVpnProfileOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkGatewaysGeneratevpnclientpackageOptions contains the optional parameters for the VirtualNetworkGateways.Generatevpnclientpackage method.
-type VirtualNetworkGatewaysGeneratevpnclientpackageOptions struct {
+// VirtualNetworkGatewaysBeginGeneratevpnclientpackageOptions contains the optional parameters for the VirtualNetworkGateways.BeginGeneratevpnclientpackage
+// method.
+type VirtualNetworkGatewaysBeginGeneratevpnclientpackageOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkGatewaysGetAdvertisedRoutesOptions contains the optional parameters for the VirtualNetworkGateways.GetAdvertisedRoutes method.
-type VirtualNetworkGatewaysGetAdvertisedRoutesOptions struct {
+// VirtualNetworkGatewaysBeginGetAdvertisedRoutesOptions contains the optional parameters for the VirtualNetworkGateways.BeginGetAdvertisedRoutes method.
+type VirtualNetworkGatewaysBeginGetAdvertisedRoutesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkGatewaysGetBgpPeerStatusOptions contains the optional parameters for the VirtualNetworkGateways.GetBgpPeerStatus method.
-type VirtualNetworkGatewaysGetBgpPeerStatusOptions struct {
+// VirtualNetworkGatewaysBeginGetBgpPeerStatusOptions contains the optional parameters for the VirtualNetworkGateways.BeginGetBgpPeerStatus method.
+type VirtualNetworkGatewaysBeginGetBgpPeerStatusOptions struct {
 	// The IP address of the peer to retrieve the status of.
 	Peer *string
 }
 
-// VirtualNetworkGatewaysGetLearnedRoutesOptions contains the optional parameters for the VirtualNetworkGateways.GetLearnedRoutes method.
-type VirtualNetworkGatewaysGetLearnedRoutesOptions struct {
+// VirtualNetworkGatewaysBeginGetLearnedRoutesOptions contains the optional parameters for the VirtualNetworkGateways.BeginGetLearnedRoutes method.
+type VirtualNetworkGatewaysBeginGetLearnedRoutesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkGatewaysBeginGetVpnProfilePackageURLOptions contains the optional parameters for the VirtualNetworkGateways.BeginGetVpnProfilePackageURL
+// method.
+type VirtualNetworkGatewaysBeginGetVpnProfilePackageURLOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkGatewaysBeginGetVpnclientConnectionHealthOptions contains the optional parameters for the VirtualNetworkGateways.BeginGetVpnclientConnectionHealth
+// method.
+type VirtualNetworkGatewaysBeginGetVpnclientConnectionHealthOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkGatewaysBeginGetVpnclientIPsecParametersOptions contains the optional parameters for the VirtualNetworkGateways.BeginGetVpnclientIPsecParameters
+// method.
+type VirtualNetworkGatewaysBeginGetVpnclientIPsecParametersOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkGatewaysBeginResetOptions contains the optional parameters for the VirtualNetworkGateways.BeginReset method.
+type VirtualNetworkGatewaysBeginResetOptions struct {
+	// Virtual network gateway vip address supplied to the begin reset of the active-active feature enabled gateway.
+	GatewayVip *string
+}
+
+// VirtualNetworkGatewaysBeginResetVpnClientSharedKeyOptions contains the optional parameters for the VirtualNetworkGateways.BeginResetVpnClientSharedKey
+// method.
+type VirtualNetworkGatewaysBeginResetVpnClientSharedKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkGatewaysBeginSetVpnclientIPsecParametersOptions contains the optional parameters for the VirtualNetworkGateways.BeginSetVpnclientIPsecParameters
+// method.
+type VirtualNetworkGatewaysBeginSetVpnclientIPsecParametersOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkGatewaysBeginStartPacketCaptureOptions contains the optional parameters for the VirtualNetworkGateways.BeginStartPacketCapture method.
+type VirtualNetworkGatewaysBeginStartPacketCaptureOptions struct {
+	// Virtual network gateway packet capture parameters supplied to start packet capture on gateway.
+	Parameters *VpnPacketCaptureStartParameters
+}
+
+// VirtualNetworkGatewaysBeginStopPacketCaptureOptions contains the optional parameters for the VirtualNetworkGateways.BeginStopPacketCapture method.
+type VirtualNetworkGatewaysBeginStopPacketCaptureOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkGatewaysBeginUpdateTagsOptions contains the optional parameters for the VirtualNetworkGateways.BeginUpdateTags method.
+type VirtualNetworkGatewaysBeginUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
 // VirtualNetworkGatewaysGetOptions contains the optional parameters for the VirtualNetworkGateways.Get method.
 type VirtualNetworkGatewaysGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VirtualNetworkGatewaysGetVpnProfilePackageURLOptions contains the optional parameters for the VirtualNetworkGateways.GetVpnProfilePackageURL method.
-type VirtualNetworkGatewaysGetVpnProfilePackageURLOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VirtualNetworkGatewaysGetVpnclientConnectionHealthOptions contains the optional parameters for the VirtualNetworkGateways.GetVpnclientConnectionHealth
-// method.
-type VirtualNetworkGatewaysGetVpnclientConnectionHealthOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VirtualNetworkGatewaysGetVpnclientIPsecParametersOptions contains the optional parameters for the VirtualNetworkGateways.GetVpnclientIPsecParameters
-// method.
-type VirtualNetworkGatewaysGetVpnclientIPsecParametersOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -15070,41 +15119,8 @@ type VirtualNetworkGatewaysListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkGatewaysResetOptions contains the optional parameters for the VirtualNetworkGateways.Reset method.
-type VirtualNetworkGatewaysResetOptions struct {
-	// Virtual network gateway vip address supplied to the begin reset of the active-active feature enabled gateway.
-	GatewayVip *string
-}
-
-// VirtualNetworkGatewaysResetVpnClientSharedKeyOptions contains the optional parameters for the VirtualNetworkGateways.ResetVpnClientSharedKey method.
-type VirtualNetworkGatewaysResetVpnClientSharedKeyOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VirtualNetworkGatewaysSetVpnclientIPsecParametersOptions contains the optional parameters for the VirtualNetworkGateways.SetVpnclientIPsecParameters
-// method.
-type VirtualNetworkGatewaysSetVpnclientIPsecParametersOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VirtualNetworkGatewaysStartPacketCaptureOptions contains the optional parameters for the VirtualNetworkGateways.StartPacketCapture method.
-type VirtualNetworkGatewaysStartPacketCaptureOptions struct {
-	// Virtual network gateway packet capture parameters supplied to start packet capture on gateway.
-	Parameters *VpnPacketCaptureStartParameters
-}
-
-// VirtualNetworkGatewaysStopPacketCaptureOptions contains the optional parameters for the VirtualNetworkGateways.StopPacketCapture method.
-type VirtualNetworkGatewaysStopPacketCaptureOptions struct {
-	// placeholder for future optional parameters
-}
-
 // VirtualNetworkGatewaysSupportedVpnDevicesOptions contains the optional parameters for the VirtualNetworkGateways.SupportedVpnDevices method.
 type VirtualNetworkGatewaysSupportedVpnDevicesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VirtualNetworkGatewaysUpdateTagsOptions contains the optional parameters for the VirtualNetworkGateways.UpdateTags method.
-type VirtualNetworkGatewaysUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -15236,13 +15252,13 @@ type VirtualNetworkPeeringResponse struct {
 	VirtualNetworkPeering *VirtualNetworkPeering
 }
 
-// VirtualNetworkPeeringsCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkPeerings.CreateOrUpdate method.
-type VirtualNetworkPeeringsCreateOrUpdateOptions struct {
+// VirtualNetworkPeeringsBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkPeerings.BeginCreateOrUpdate method.
+type VirtualNetworkPeeringsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkPeeringsDeleteOptions contains the optional parameters for the VirtualNetworkPeerings.Delete method.
-type VirtualNetworkPeeringsDeleteOptions struct {
+// VirtualNetworkPeeringsBeginDeleteOptions contains the optional parameters for the VirtualNetworkPeerings.BeginDelete method.
+type VirtualNetworkPeeringsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -15384,13 +15400,13 @@ type VirtualNetworkTapResponse struct {
 	VirtualNetworkTap *VirtualNetworkTap
 }
 
-// VirtualNetworkTapsCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkTaps.CreateOrUpdate method.
-type VirtualNetworkTapsCreateOrUpdateOptions struct {
+// VirtualNetworkTapsBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkTaps.BeginCreateOrUpdate method.
+type VirtualNetworkTapsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkTapsDeleteOptions contains the optional parameters for the VirtualNetworkTaps.Delete method.
-type VirtualNetworkTapsDeleteOptions struct {
+// VirtualNetworkTapsBeginDeleteOptions contains the optional parameters for the VirtualNetworkTaps.BeginDelete method.
+type VirtualNetworkTapsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -15441,18 +15457,18 @@ type VirtualNetworkUsageName struct {
 	Value *string `json:"value,omitempty" azure:"ro"`
 }
 
+// VirtualNetworksBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworks.BeginCreateOrUpdate method.
+type VirtualNetworksBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworksBeginDeleteOptions contains the optional parameters for the VirtualNetworks.BeginDelete method.
+type VirtualNetworksBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
 // VirtualNetworksCheckIPAddressAvailabilityOptions contains the optional parameters for the VirtualNetworks.CheckIPAddressAvailability method.
 type VirtualNetworksCheckIPAddressAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VirtualNetworksCreateOrUpdateOptions contains the optional parameters for the VirtualNetworks.CreateOrUpdate method.
-type VirtualNetworksCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VirtualNetworksDeleteOptions contains the optional parameters for the VirtualNetworks.Delete method.
-type VirtualNetworksDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -15577,13 +15593,13 @@ type VirtualRouterPeeringResponse struct {
 	VirtualRouterPeering *VirtualRouterPeering
 }
 
-// VirtualRouterPeeringsCreateOrUpdateOptions contains the optional parameters for the VirtualRouterPeerings.CreateOrUpdate method.
-type VirtualRouterPeeringsCreateOrUpdateOptions struct {
+// VirtualRouterPeeringsBeginCreateOrUpdateOptions contains the optional parameters for the VirtualRouterPeerings.BeginCreateOrUpdate method.
+type VirtualRouterPeeringsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualRouterPeeringsDeleteOptions contains the optional parameters for the VirtualRouterPeerings.Delete method.
-type VirtualRouterPeeringsDeleteOptions struct {
+// VirtualRouterPeeringsBeginDeleteOptions contains the optional parameters for the VirtualRouterPeerings.BeginDelete method.
+type VirtualRouterPeeringsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -15639,13 +15655,13 @@ type VirtualRouterResponse struct {
 	VirtualRouter *VirtualRouter
 }
 
-// VirtualRoutersCreateOrUpdateOptions contains the optional parameters for the VirtualRouters.CreateOrUpdate method.
-type VirtualRoutersCreateOrUpdateOptions struct {
+// VirtualRoutersBeginCreateOrUpdateOptions contains the optional parameters for the VirtualRouters.BeginCreateOrUpdate method.
+type VirtualRoutersBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualRoutersDeleteOptions contains the optional parameters for the VirtualRouters.Delete method.
-type VirtualRoutersDeleteOptions struct {
+// VirtualRoutersBeginDeleteOptions contains the optional parameters for the VirtualRouters.BeginDelete method.
+type VirtualRoutersBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -15759,13 +15775,13 @@ type VirtualWanVpnProfileParameters struct {
 	VpnServerConfigurationResourceID *string `json:"vpnServerConfigurationResourceId,omitempty"`
 }
 
-// VirtualWansCreateOrUpdateOptions contains the optional parameters for the VirtualWans.CreateOrUpdate method.
-type VirtualWansCreateOrUpdateOptions struct {
+// VirtualWansBeginCreateOrUpdateOptions contains the optional parameters for the VirtualWans.BeginCreateOrUpdate method.
+type VirtualWansBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualWansDeleteOptions contains the optional parameters for the VirtualWans.Delete method.
-type VirtualWansDeleteOptions struct {
+// VirtualWansBeginDeleteOptions contains the optional parameters for the VirtualWans.BeginDelete method.
+type VirtualWansBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -16132,14 +16148,26 @@ type VpnConnectionResponse struct {
 	VpnConnection *VpnConnection
 }
 
-// VpnConnectionsCreateOrUpdateOptions contains the optional parameters for the VpnConnections.CreateOrUpdate method.
-type VpnConnectionsCreateOrUpdateOptions struct {
+// VpnConnectionsBeginCreateOrUpdateOptions contains the optional parameters for the VpnConnections.BeginCreateOrUpdate method.
+type VpnConnectionsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VpnConnectionsDeleteOptions contains the optional parameters for the VpnConnections.Delete method.
-type VpnConnectionsDeleteOptions struct {
+// VpnConnectionsBeginDeleteOptions contains the optional parameters for the VpnConnections.BeginDelete method.
+type VpnConnectionsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
+}
+
+// VpnConnectionsBeginStartPacketCaptureOptions contains the optional parameters for the VpnConnections.BeginStartPacketCapture method.
+type VpnConnectionsBeginStartPacketCaptureOptions struct {
+	// Vpn Connection packet capture parameters supplied to start packet capture on gateway connection.
+	Parameters *VpnConnectionPacketCaptureStartParameters
+}
+
+// VpnConnectionsBeginStopPacketCaptureOptions contains the optional parameters for the VpnConnections.BeginStopPacketCapture method.
+type VpnConnectionsBeginStopPacketCaptureOptions struct {
+	// Vpn Connection packet capture parameters supplied to stop packet capture on gateway connection.
+	Parameters *VpnConnectionPacketCaptureStopParameters
 }
 
 // VpnConnectionsGetOptions contains the optional parameters for the VpnConnections.Get method.
@@ -16150,18 +16178,6 @@ type VpnConnectionsGetOptions struct {
 // VpnConnectionsListByVpnGatewayOptions contains the optional parameters for the VpnConnections.ListByVpnGateway method.
 type VpnConnectionsListByVpnGatewayOptions struct {
 	// placeholder for future optional parameters
-}
-
-// VpnConnectionsStartPacketCaptureOptions contains the optional parameters for the VpnConnections.StartPacketCapture method.
-type VpnConnectionsStartPacketCaptureOptions struct {
-	// Vpn Connection packet capture parameters supplied to start packet capture on gateway connection.
-	Parameters *VpnConnectionPacketCaptureStartParameters
-}
-
-// VpnConnectionsStopPacketCaptureOptions contains the optional parameters for the VpnConnections.StopPacketCapture method.
-type VpnConnectionsStopPacketCaptureOptions struct {
-	// Vpn Connection packet capture parameters supplied to stop packet capture on gateway connection.
-	Parameters *VpnConnectionPacketCaptureStopParameters
 }
 
 // Vpn device configuration script generation parameters.
@@ -16255,13 +16271,35 @@ type VpnGatewayResponse struct {
 	VpnGateway *VpnGateway
 }
 
-// VpnGatewaysCreateOrUpdateOptions contains the optional parameters for the VpnGateways.CreateOrUpdate method.
-type VpnGatewaysCreateOrUpdateOptions struct {
+// VpnGatewaysBeginCreateOrUpdateOptions contains the optional parameters for the VpnGateways.BeginCreateOrUpdate method.
+type VpnGatewaysBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VpnGatewaysDeleteOptions contains the optional parameters for the VpnGateways.Delete method.
-type VpnGatewaysDeleteOptions struct {
+// VpnGatewaysBeginDeleteOptions contains the optional parameters for the VpnGateways.BeginDelete method.
+type VpnGatewaysBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VpnGatewaysBeginResetOptions contains the optional parameters for the VpnGateways.BeginReset method.
+type VpnGatewaysBeginResetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VpnGatewaysBeginStartPacketCaptureOptions contains the optional parameters for the VpnGateways.BeginStartPacketCapture method.
+type VpnGatewaysBeginStartPacketCaptureOptions struct {
+	// Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
+	Parameters *VpnGatewayPacketCaptureStartParameters
+}
+
+// VpnGatewaysBeginStopPacketCaptureOptions contains the optional parameters for the VpnGateways.BeginStopPacketCapture method.
+type VpnGatewaysBeginStopPacketCaptureOptions struct {
+	// Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
+	Parameters *VpnGatewayPacketCaptureStopParameters
+}
+
+// VpnGatewaysBeginUpdateTagsOptions contains the optional parameters for the VpnGateways.BeginUpdateTags method.
+type VpnGatewaysBeginUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -16277,28 +16315,6 @@ type VpnGatewaysListByResourceGroupOptions struct {
 
 // VpnGatewaysListOptions contains the optional parameters for the VpnGateways.List method.
 type VpnGatewaysListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VpnGatewaysResetOptions contains the optional parameters for the VpnGateways.Reset method.
-type VpnGatewaysResetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VpnGatewaysStartPacketCaptureOptions contains the optional parameters for the VpnGateways.StartPacketCapture method.
-type VpnGatewaysStartPacketCaptureOptions struct {
-	// Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
-	Parameters *VpnGatewayPacketCaptureStartParameters
-}
-
-// VpnGatewaysStopPacketCaptureOptions contains the optional parameters for the VpnGateways.StopPacketCapture method.
-type VpnGatewaysStopPacketCaptureOptions struct {
-	// Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
-	Parameters *VpnGatewayPacketCaptureStopParameters
-}
-
-// VpnGatewaysUpdateTagsOptions contains the optional parameters for the VpnGateways.UpdateTags method.
-type VpnGatewaysUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -16479,19 +16495,19 @@ type VpnServerConfigurationResponse struct {
 	VpnServerConfiguration *VpnServerConfiguration
 }
 
-// VpnServerConfigurationsAssociatedWithVirtualWanListOptions contains the optional parameters for the VpnServerConfigurationsAssociatedWithVirtualWan.List
+// VpnServerConfigurationsAssociatedWithVirtualWanBeginListOptions contains the optional parameters for the VpnServerConfigurationsAssociatedWithVirtualWan.BeginList
 // method.
-type VpnServerConfigurationsAssociatedWithVirtualWanListOptions struct {
+type VpnServerConfigurationsAssociatedWithVirtualWanBeginListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VpnServerConfigurationsCreateOrUpdateOptions contains the optional parameters for the VpnServerConfigurations.CreateOrUpdate method.
-type VpnServerConfigurationsCreateOrUpdateOptions struct {
+// VpnServerConfigurationsBeginCreateOrUpdateOptions contains the optional parameters for the VpnServerConfigurations.BeginCreateOrUpdate method.
+type VpnServerConfigurationsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VpnServerConfigurationsDeleteOptions contains the optional parameters for the VpnServerConfigurations.Delete method.
-type VpnServerConfigurationsDeleteOptions struct {
+// VpnServerConfigurationsBeginDeleteOptions contains the optional parameters for the VpnServerConfigurations.BeginDelete method.
+type VpnServerConfigurationsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -16740,18 +16756,18 @@ type VpnSiteResponse struct {
 	VpnSite *VpnSite
 }
 
-// VpnSitesConfigurationDownloadOptions contains the optional parameters for the VpnSitesConfiguration.Download method.
-type VpnSitesConfigurationDownloadOptions struct {
+// VpnSitesBeginCreateOrUpdateOptions contains the optional parameters for the VpnSites.BeginCreateOrUpdate method.
+type VpnSitesBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VpnSitesCreateOrUpdateOptions contains the optional parameters for the VpnSites.CreateOrUpdate method.
-type VpnSitesCreateOrUpdateOptions struct {
+// VpnSitesBeginDeleteOptions contains the optional parameters for the VpnSites.BeginDelete method.
+type VpnSitesBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VpnSitesDeleteOptions contains the optional parameters for the VpnSites.Delete method.
-type VpnSitesDeleteOptions struct {
+// VpnSitesConfigurationBeginDownloadOptions contains the optional parameters for the VpnSitesConfiguration.BeginDownload method.
+type VpnSitesConfigurationBeginDownloadOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -16796,13 +16812,13 @@ type WebApplicationFirewallCustomRule struct {
 	RuleType *WebApplicationFirewallRuleType `json:"ruleType,omitempty"`
 }
 
-// WebApplicationFirewallPoliciesCreateOrUpdateOptions contains the optional parameters for the WebApplicationFirewallPolicies.CreateOrUpdate method.
-type WebApplicationFirewallPoliciesCreateOrUpdateOptions struct {
+// WebApplicationFirewallPoliciesBeginDeleteOptions contains the optional parameters for the WebApplicationFirewallPolicies.BeginDelete method.
+type WebApplicationFirewallPoliciesBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebApplicationFirewallPoliciesDeleteOptions contains the optional parameters for the WebApplicationFirewallPolicies.Delete method.
-type WebApplicationFirewallPoliciesDeleteOptions struct {
+// WebApplicationFirewallPoliciesCreateOrUpdateOptions contains the optional parameters for the WebApplicationFirewallPolicies.CreateOrUpdate method.
+type WebApplicationFirewallPoliciesCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 

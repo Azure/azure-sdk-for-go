@@ -35,8 +35,8 @@ func (client BastionHostsClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates or updates the specified Bastion Host.
-func (client BastionHostsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost, options *BastionHostsCreateOrUpdateOptions) (BastionHostPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, bastionHostName, parameters, options)
+func (client BastionHostsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost, options *BastionHostsBeginCreateOrUpdateOptions) (BastionHostPollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, bastionHostName, parameters, options)
 	if err != nil {
 		return BastionHostPollerResponse{}, err
 	}
@@ -72,7 +72,7 @@ func (client BastionHostsClient) ResumeCreateOrUpdate(token string) (BastionHost
 }
 
 // CreateOrUpdate - Creates or updates the specified Bastion Host.
-func (client BastionHostsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost, options *BastionHostsCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client BastionHostsClient) createOrUpdate(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost, options *BastionHostsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, bastionHostName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (client BastionHostsClient) CreateOrUpdate(ctx context.Context, resourceGro
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client BastionHostsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost, options *BastionHostsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client BastionHostsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost, options *BastionHostsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{bastionHostName}", url.PathEscape(bastionHostName))
@@ -122,8 +122,8 @@ func (client BastionHostsClient) createOrUpdateHandleError(resp *azcore.Response
 }
 
 // BeginDelete - Deletes the specified Bastion Host.
-func (client BastionHostsClient) BeginDelete(ctx context.Context, resourceGroupName string, bastionHostName string, options *BastionHostsDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, bastionHostName, options)
+func (client BastionHostsClient) BeginDelete(ctx context.Context, resourceGroupName string, bastionHostName string, options *BastionHostsBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, bastionHostName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -159,7 +159,7 @@ func (client BastionHostsClient) ResumeDelete(token string) (HTTPPoller, error) 
 }
 
 // Delete - Deletes the specified Bastion Host.
-func (client BastionHostsClient) Delete(ctx context.Context, resourceGroupName string, bastionHostName string, options *BastionHostsDeleteOptions) (*azcore.Response, error) {
+func (client BastionHostsClient) delete(ctx context.Context, resourceGroupName string, bastionHostName string, options *BastionHostsBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, bastionHostName, options)
 	if err != nil {
 		return nil, err
@@ -175,7 +175,7 @@ func (client BastionHostsClient) Delete(ctx context.Context, resourceGroupName s
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client BastionHostsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, bastionHostName string, options *BastionHostsDeleteOptions) (*azcore.Request, error) {
+func (client BastionHostsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, bastionHostName string, options *BastionHostsBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{bastionHostName}", url.PathEscape(bastionHostName))

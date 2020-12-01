@@ -89,8 +89,8 @@ func (client WebApplicationFirewallPoliciesClient) createOrUpdateHandleError(res
 }
 
 // BeginDelete - Deletes Policy.
-func (client WebApplicationFirewallPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, policyName, options)
+func (client WebApplicationFirewallPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, policyName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -126,7 +126,7 @@ func (client WebApplicationFirewallPoliciesClient) ResumeDelete(token string) (H
 }
 
 // Delete - Deletes Policy.
-func (client WebApplicationFirewallPoliciesClient) Delete(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesDeleteOptions) (*azcore.Response, error) {
+func (client WebApplicationFirewallPoliciesClient) delete(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, policyName, options)
 	if err != nil {
 		return nil, err
@@ -142,7 +142,7 @@ func (client WebApplicationFirewallPoliciesClient) Delete(ctx context.Context, r
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client WebApplicationFirewallPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesDeleteOptions) (*azcore.Request, error) {
+func (client WebApplicationFirewallPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/{policyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{policyName}", url.PathEscape(policyName))

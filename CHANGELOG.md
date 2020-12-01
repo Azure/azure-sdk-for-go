@@ -26,7 +26,6 @@
 - `github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2020-10-01/operationalinsights`
 - `github.com/Azure/azure-sdk-for-go/services/peering/mgmt/2020-10-01/peering`
 - `github.com/Azure/azure-sdk-for-go/services/personalizer/v1.0/personalizer`
-- `github.com/Azure/azure-sdk-for-go/services/preview/adp/mgmt/2019-07-01-preview/adpapi`
 - `github.com/Azure/azure-sdk-for-go/services/preview/alertsmanagement/mgmt/2019-05-05-preview/alertsmanagement`
 - `github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2020-07-01-preview/appconfiguration`
 - `github.com/Azure/azure-sdk-for-go/services/preview/avs/mgmt/2020-07-17-preview/avs`

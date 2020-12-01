@@ -5,25 +5,24 @@ import (
 	"time"
 )
 
-
 type listBlobsFlatSegmentAutoPager struct {
-	pager ListBlobsFlatSegmentResponsePager
+	pager   ListBlobsFlatSegmentResponsePager
 	channel chan BlobItemInternal
-	ctx context.Context
+	ctx     context.Context
 
 	// Set to 0 for no time-out
 	timeout time.Duration
-	timer *time.Timer
+	timer   *time.Timer
 }
 
 type listBlobsHierarchySegmentAutoPager struct {
-	pager ListBlobsHierarchySegmentResponsePager
+	pager   ListBlobsHierarchySegmentResponsePager
 	channel chan BlobItemInternal
-	ctx context.Context
+	ctx     context.Context
 
 	// Set to 0 for no time-out
 	timeout time.Duration
-	timer *time.Timer
+	timer   *time.Timer
 }
 
 func (p listBlobsFlatSegmentAutoPager) Go() {
@@ -32,7 +31,7 @@ func (p listBlobsFlatSegmentAutoPager) Go() {
 	for {
 		resp := p.pager.PageResponse()
 
-		if resp != nil {
+		if resp.RawResponse != nil {
 			for _, v := range *resp.EnumerationResults.Segment.BlobItems {
 				p.timer.Reset(p.timeout)
 
@@ -65,7 +64,7 @@ func (p listBlobsHierarchySegmentAutoPager) Go() {
 	for {
 		resp := p.pager.PageResponse()
 
-		if resp != nil {
+		if resp.RawResponse != nil {
 			for _, v := range *resp.EnumerationResults.Segment.BlobItems {
 				if p.timeout != 0 {
 					p.timer.Reset(p.timeout)
@@ -87,4 +86,3 @@ func (p listBlobsHierarchySegmentAutoPager) Go() {
 		}
 	}
 }
-

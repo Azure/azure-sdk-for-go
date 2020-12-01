@@ -5,7 +5,6 @@ package azblob
 
 import (
 	"bytes"
-	"context"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
@@ -163,7 +162,7 @@ func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, er
 
 // AuthenticationPolicy implements the Credential interface on SharedKeyCredential.
 func (c *SharedKeyCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions) azcore.Policy {
-	return azcore.PolicyFunc(func(ctx context.Context, req *azcore.Request) (*azcore.Response, error) {
+	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
 		// Add a x-ms-date header if it doesn't already exist
 		if d := req.Request.Header.Get(azcore.HeaderXmsDate); d == "" {
 			req.Request.Header.Set(azcore.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
@@ -176,10 +175,10 @@ func (c *SharedKeyCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOp
 		authHeader := strings.Join([]string{"SharedKey ", c.AccountName(), ":", signature}, "")
 		req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
 
-		response, err := req.Next(ctx)
+		response, err := req.Next()
 		if err != nil && response != nil && response.StatusCode == http.StatusForbidden {
 			// Service failed to authenticate request, log it
-			azcore.Log().Write(azcore.LogError, "===== HTTP Forbidden status, String-to-Sign:\n"+stringToSign+"\n===============================\n")
+			azcore.Log().Write(azcore.LogResponse, "===== HTTP Forbidden status, String-to-Sign:\n"+stringToSign+"\n===============================\n")
 		}
 		return response, err
 	})

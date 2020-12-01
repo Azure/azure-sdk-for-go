@@ -15,7 +15,7 @@ func (bgpr BlobGetPropertiesResponse) NewHTTPHeaders() BlobHttpHeaders {
 		BlobContentLanguage:    bgpr.ContentLanguage,
 		BlobContentDisposition: bgpr.ContentDisposition,
 		BlobCacheControl:       bgpr.CacheControl,
-		BlobContentMd5:         bgpr.ContentMd5,
+		BlobContentMd5:         bgpr.ContentMD5,
 	}
 }
 
@@ -29,7 +29,7 @@ func (dr BlobDownloadResponse) NewHTTPHeaders() BlobHttpHeaders {
 		BlobContentLanguage:    dr.ContentLanguage,
 		BlobContentDisposition: dr.ContentDisposition,
 		BlobCacheControl:       dr.CacheControl,
-		BlobContentMd5:         dr.ContentMd5,
+		BlobContentMd5:         dr.ContentMD5,
 	}
 }
 
@@ -37,7 +37,7 @@ func (dr BlobDownloadResponse) NewHTTPHeaders() BlobHttpHeaders {
 
 // DownloadResponse wraps AutoRest generated DownloadResponse and helps to provide info for retry.
 type DownloadResponse struct {
-	r       *BlobDownloadResponse
+	r       BlobDownloadResponse
 	ctx     context.Context
 	b       BlobClient
 	getInfo HTTPGetterInfo
@@ -80,12 +80,12 @@ func (r DownloadResponse) NewHTTPHeaders() BlobHttpHeaders {
 
 // BlobContentMD5 returns the value for header x-ms-blob-content-md5.
 func (r DownloadResponse) BlobContentMD5() *[]byte {
-	return r.r.BlobContentMd5
+	return r.r.BlobContentMD5
 }
 
 // ContentMD5 returns the value for header Content-MD5.
 func (r DownloadResponse) ContentMD5() *[]byte {
-	return r.r.ContentMd5
+	return r.r.ContentMD5
 }
 
 // StatusCode returns the HTTP status code of the response, e.g. 200.
@@ -160,7 +160,7 @@ func (r DownloadResponse) CopyCompletionTime() *time.Time {
 
 // CopyID returns the value for header x-ms-copy-id.
 func (r DownloadResponse) CopyID() *string {
-	return r.r.CopyId
+	return r.r.CopyID
 }
 
 // CopyProgress returns the value for header x-ms-copy-progress.
@@ -195,7 +195,7 @@ func (r DownloadResponse) ETag() *string {
 
 // IsServerEncrypted returns the value for header x-ms-server-encrypted.
 func (r DownloadResponse) IsServerEncrypted() *bool {
-	return r.r.ServerEncrypted
+	return r.r.IsServerEncrypted
 }
 
 // LastModified returns the value for header Last-Modified.
@@ -220,7 +220,7 @@ func (r DownloadResponse) LeaseStatus() *LeaseStatusType {
 
 // RequestID returns the value for header x-ms-request-id.
 func (r DownloadResponse) RequestID() *string {
-	return r.r.RequestId
+	return r.r.RequestID
 }
 
 // Version returns the value for header x-ms-version.

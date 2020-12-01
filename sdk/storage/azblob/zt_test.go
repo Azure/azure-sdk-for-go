@@ -69,7 +69,7 @@ func newTestPipeline() azcore.Pipeline {
 }
 
 func newTestPolicy() azcore.Policy {
-	return azcore.PolicyFunc(func(ctx context.Context, req *azcore.Request) (*azcore.Response, error) {
+	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
 		return nil, errors.New(testPipelineMessage)
 	})
 }

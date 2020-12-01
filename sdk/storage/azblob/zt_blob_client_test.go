@@ -17,7 +17,7 @@ import (
 	chk "gopkg.in/check.v1" // go get gopkg.in/check.v1
 )
 
-func (s *aztestsSuite) TestCreateblobClient(c *chk.C) {
+func (s *aztestsSuite) TestCreateBlobClient(c *chk.C) {
 	bsu := getBSU()
 	containerClient, containerName := getContainerClient(c, bsu)
 	testURL, testName := getBlockBlobClient(c, containerClient)
@@ -31,7 +31,7 @@ func (s *aztestsSuite) TestCreateblobClient(c *chk.C) {
 	c.Assert(temp.String(), chk.Equals, correctURL)
 }
 
-func (s *aztestsSuite) TestCreateblobClientWithSnapshotAndSAS(c *chk.C) {
+func (s *aztestsSuite) TestCreateBlobClientWithSnapshotAndSAS(c *chk.C) {
 	bsu := getBSU()
 	containerClient, containerName := getContainerClient(c, bsu)
 	blobClient, blobName := getBlockBlobClient(c, containerClient)
@@ -69,16 +69,15 @@ func (s *aztestsSuite) TestBlobWithNewPipeline(c *chk.C) {
 	containerClient, _ := getContainerClient(c, bsu)
 	blobClient := containerClient.NewBlockBlobClient(blobPrefix)
 
-	newBlobClient, err := blobClient.WithPipeline(newTestPipeline())
-	c.Assert(err, chk.IsNil)
+	newBlobClient := blobClient.WithPipeline(newTestPipeline())
 
 	// exercise the new pipeline
-	_, err = newBlobClient.GetAccountInfo(ctx)
+	_, err := newBlobClient.GetAccountInfo(ctx)
 	c.Assert(err, chk.NotNil)
 	c.Assert(err.Error(), chk.Equals, testPipelineMessage)
 }
 
-func waitForCopy(c *chk.C, copyBlobClient BlockBlobClient, blobCopyResponse *BlobStartCopyFromURLResponse) {
+func waitForCopy(c *chk.C, copyBlobClient BlockBlobClient, blobCopyResponse BlobStartCopyFromURLResponse) {
 	status := *blobCopyResponse.CopyStatus
 	// Wait for the copy to finish. If the copy takes longer than a minute, we will fail
 	start := time.Now()

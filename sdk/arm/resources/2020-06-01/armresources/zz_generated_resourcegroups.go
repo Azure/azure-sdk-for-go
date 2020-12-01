@@ -135,8 +135,8 @@ func (client ResourceGroupsClient) createOrUpdateHandleError(resp *azcore.Respon
 
 // BeginDelete - When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of its template deployments
 // and currently stored operations.
-func (client ResourceGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, options *ResourceGroupsDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, options)
+func (client ResourceGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, options *ResourceGroupsBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -173,7 +173,7 @@ func (client ResourceGroupsClient) ResumeDelete(token string) (HTTPPoller, error
 
 // Delete - When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of its template deployments and
 // currently stored operations.
-func (client ResourceGroupsClient) Delete(ctx context.Context, resourceGroupName string, options *ResourceGroupsDeleteOptions) (*azcore.Response, error) {
+func (client ResourceGroupsClient) delete(ctx context.Context, resourceGroupName string, options *ResourceGroupsBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
 		return nil, err
@@ -189,7 +189,7 @@ func (client ResourceGroupsClient) Delete(ctx context.Context, resourceGroupName
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client ResourceGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, options *ResourceGroupsDeleteOptions) (*azcore.Request, error) {
+func (client ResourceGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, options *ResourceGroupsBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -215,8 +215,8 @@ func (client ResourceGroupsClient) deleteHandleError(resp *azcore.Response) erro
 }
 
 // BeginExportTemplate - Captures the specified resource group as a template.
-func (client ResourceGroupsClient) BeginExportTemplate(ctx context.Context, resourceGroupName string, parameters ExportTemplateRequest, options *ResourceGroupsExportTemplateOptions) (ResourceGroupExportResultPollerResponse, error) {
-	resp, err := client.ExportTemplate(ctx, resourceGroupName, parameters, options)
+func (client ResourceGroupsClient) BeginExportTemplate(ctx context.Context, resourceGroupName string, parameters ExportTemplateRequest, options *ResourceGroupsBeginExportTemplateOptions) (ResourceGroupExportResultPollerResponse, error) {
+	resp, err := client.exportTemplate(ctx, resourceGroupName, parameters, options)
 	if err != nil {
 		return ResourceGroupExportResultPollerResponse{}, err
 	}
@@ -252,7 +252,7 @@ func (client ResourceGroupsClient) ResumeExportTemplate(token string) (ResourceG
 }
 
 // ExportTemplate - Captures the specified resource group as a template.
-func (client ResourceGroupsClient) ExportTemplate(ctx context.Context, resourceGroupName string, parameters ExportTemplateRequest, options *ResourceGroupsExportTemplateOptions) (*azcore.Response, error) {
+func (client ResourceGroupsClient) exportTemplate(ctx context.Context, resourceGroupName string, parameters ExportTemplateRequest, options *ResourceGroupsBeginExportTemplateOptions) (*azcore.Response, error) {
 	req, err := client.exportTemplateCreateRequest(ctx, resourceGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -268,7 +268,7 @@ func (client ResourceGroupsClient) ExportTemplate(ctx context.Context, resourceG
 }
 
 // exportTemplateCreateRequest creates the ExportTemplate request.
-func (client ResourceGroupsClient) exportTemplateCreateRequest(ctx context.Context, resourceGroupName string, parameters ExportTemplateRequest, options *ResourceGroupsExportTemplateOptions) (*azcore.Request, error) {
+func (client ResourceGroupsClient) exportTemplateCreateRequest(ctx context.Context, resourceGroupName string, parameters ExportTemplateRequest, options *ResourceGroupsBeginExportTemplateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/exportTemplate"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))

@@ -532,8 +532,8 @@ func (client DeploymentsClient) checkExistenceAtTenantScopeHandleError(resp *azc
 }
 
 // BeginCreateOrUpdate - You can provide the template and parameters directly in the request or link to JSON files.
-func (client DeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment, options *DeploymentsCreateOrUpdateOptions) (DeploymentExtendedPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, deploymentName, parameters, options)
+func (client DeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment, options *DeploymentsBeginCreateOrUpdateOptions) (DeploymentExtendedPollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, deploymentName, parameters, options)
 	if err != nil {
 		return DeploymentExtendedPollerResponse{}, err
 	}
@@ -569,7 +569,7 @@ func (client DeploymentsClient) ResumeCreateOrUpdate(token string) (DeploymentEx
 }
 
 // CreateOrUpdate - You can provide the template and parameters directly in the request or link to JSON files.
-func (client DeploymentsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment, options *DeploymentsCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client DeploymentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment, options *DeploymentsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, deploymentName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -585,7 +585,7 @@ func (client DeploymentsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment, options *DeploymentsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment, options *DeploymentsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -619,8 +619,8 @@ func (client DeploymentsClient) createOrUpdateHandleError(resp *azcore.Response)
 }
 
 // BeginCreateOrUpdateAtManagementGroupScope - You can provide the template and parameters directly in the request or link to JSON files.
-func (client DeploymentsClient) BeginCreateOrUpdateAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, parameters ScopedDeployment, options *DeploymentsCreateOrUpdateAtManagementGroupScopeOptions) (DeploymentExtendedPollerResponse, error) {
-	resp, err := client.CreateOrUpdateAtManagementGroupScope(ctx, groupId, deploymentName, parameters, options)
+func (client DeploymentsClient) BeginCreateOrUpdateAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, parameters ScopedDeployment, options *DeploymentsBeginCreateOrUpdateAtManagementGroupScopeOptions) (DeploymentExtendedPollerResponse, error) {
+	resp, err := client.createOrUpdateAtManagementGroupScope(ctx, groupId, deploymentName, parameters, options)
 	if err != nil {
 		return DeploymentExtendedPollerResponse{}, err
 	}
@@ -656,7 +656,7 @@ func (client DeploymentsClient) ResumeCreateOrUpdateAtManagementGroupScope(token
 }
 
 // CreateOrUpdateAtManagementGroupScope - You can provide the template and parameters directly in the request or link to JSON files.
-func (client DeploymentsClient) CreateOrUpdateAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, parameters ScopedDeployment, options *DeploymentsCreateOrUpdateAtManagementGroupScopeOptions) (*azcore.Response, error) {
+func (client DeploymentsClient) createOrUpdateAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, parameters ScopedDeployment, options *DeploymentsBeginCreateOrUpdateAtManagementGroupScopeOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateAtManagementGroupScopeCreateRequest(ctx, groupId, deploymentName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -672,7 +672,7 @@ func (client DeploymentsClient) CreateOrUpdateAtManagementGroupScope(ctx context
 }
 
 // createOrUpdateAtManagementGroupScopeCreateRequest creates the CreateOrUpdateAtManagementGroupScope request.
-func (client DeploymentsClient) createOrUpdateAtManagementGroupScopeCreateRequest(ctx context.Context, groupId string, deploymentName string, parameters ScopedDeployment, options *DeploymentsCreateOrUpdateAtManagementGroupScopeOptions) (*azcore.Request, error) {
+func (client DeploymentsClient) createOrUpdateAtManagementGroupScopeCreateRequest(ctx context.Context, groupId string, deploymentName string, parameters ScopedDeployment, options *DeploymentsBeginCreateOrUpdateAtManagementGroupScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupId))
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -705,8 +705,8 @@ func (client DeploymentsClient) createOrUpdateAtManagementGroupScopeHandleError(
 }
 
 // BeginCreateOrUpdateAtScope - You can provide the template and parameters directly in the request or link to JSON files.
-func (client DeploymentsClient) BeginCreateOrUpdateAtScope(ctx context.Context, scope string, deploymentName string, parameters Deployment, options *DeploymentsCreateOrUpdateAtScopeOptions) (DeploymentExtendedPollerResponse, error) {
-	resp, err := client.CreateOrUpdateAtScope(ctx, scope, deploymentName, parameters, options)
+func (client DeploymentsClient) BeginCreateOrUpdateAtScope(ctx context.Context, scope string, deploymentName string, parameters Deployment, options *DeploymentsBeginCreateOrUpdateAtScopeOptions) (DeploymentExtendedPollerResponse, error) {
+	resp, err := client.createOrUpdateAtScope(ctx, scope, deploymentName, parameters, options)
 	if err != nil {
 		return DeploymentExtendedPollerResponse{}, err
 	}
@@ -742,7 +742,7 @@ func (client DeploymentsClient) ResumeCreateOrUpdateAtScope(token string) (Deplo
 }
 
 // CreateOrUpdateAtScope - You can provide the template and parameters directly in the request or link to JSON files.
-func (client DeploymentsClient) CreateOrUpdateAtScope(ctx context.Context, scope string, deploymentName string, parameters Deployment, options *DeploymentsCreateOrUpdateAtScopeOptions) (*azcore.Response, error) {
+func (client DeploymentsClient) createOrUpdateAtScope(ctx context.Context, scope string, deploymentName string, parameters Deployment, options *DeploymentsBeginCreateOrUpdateAtScopeOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateAtScopeCreateRequest(ctx, scope, deploymentName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -758,7 +758,7 @@ func (client DeploymentsClient) CreateOrUpdateAtScope(ctx context.Context, scope
 }
 
 // createOrUpdateAtScopeCreateRequest creates the CreateOrUpdateAtScope request.
-func (client DeploymentsClient) createOrUpdateAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, parameters Deployment, options *DeploymentsCreateOrUpdateAtScopeOptions) (*azcore.Request, error) {
+func (client DeploymentsClient) createOrUpdateAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, parameters Deployment, options *DeploymentsBeginCreateOrUpdateAtScopeOptions) (*azcore.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -791,8 +791,8 @@ func (client DeploymentsClient) createOrUpdateAtScopeHandleError(resp *azcore.Re
 }
 
 // BeginCreateOrUpdateAtSubscriptionScope - You can provide the template and parameters directly in the request or link to JSON files.
-func (client DeploymentsClient) BeginCreateOrUpdateAtSubscriptionScope(ctx context.Context, deploymentName string, parameters Deployment, options *DeploymentsCreateOrUpdateAtSubscriptionScopeOptions) (DeploymentExtendedPollerResponse, error) {
-	resp, err := client.CreateOrUpdateAtSubscriptionScope(ctx, deploymentName, parameters, options)
+func (client DeploymentsClient) BeginCreateOrUpdateAtSubscriptionScope(ctx context.Context, deploymentName string, parameters Deployment, options *DeploymentsBeginCreateOrUpdateAtSubscriptionScopeOptions) (DeploymentExtendedPollerResponse, error) {
+	resp, err := client.createOrUpdateAtSubscriptionScope(ctx, deploymentName, parameters, options)
 	if err != nil {
 		return DeploymentExtendedPollerResponse{}, err
 	}
@@ -828,7 +828,7 @@ func (client DeploymentsClient) ResumeCreateOrUpdateAtSubscriptionScope(token st
 }
 
 // CreateOrUpdateAtSubscriptionScope - You can provide the template and parameters directly in the request or link to JSON files.
-func (client DeploymentsClient) CreateOrUpdateAtSubscriptionScope(ctx context.Context, deploymentName string, parameters Deployment, options *DeploymentsCreateOrUpdateAtSubscriptionScopeOptions) (*azcore.Response, error) {
+func (client DeploymentsClient) createOrUpdateAtSubscriptionScope(ctx context.Context, deploymentName string, parameters Deployment, options *DeploymentsBeginCreateOrUpdateAtSubscriptionScopeOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateAtSubscriptionScopeCreateRequest(ctx, deploymentName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -844,7 +844,7 @@ func (client DeploymentsClient) CreateOrUpdateAtSubscriptionScope(ctx context.Co
 }
 
 // createOrUpdateAtSubscriptionScopeCreateRequest creates the CreateOrUpdateAtSubscriptionScope request.
-func (client DeploymentsClient) createOrUpdateAtSubscriptionScopeCreateRequest(ctx context.Context, deploymentName string, parameters Deployment, options *DeploymentsCreateOrUpdateAtSubscriptionScopeOptions) (*azcore.Request, error) {
+func (client DeploymentsClient) createOrUpdateAtSubscriptionScopeCreateRequest(ctx context.Context, deploymentName string, parameters Deployment, options *DeploymentsBeginCreateOrUpdateAtSubscriptionScopeOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -877,8 +877,8 @@ func (client DeploymentsClient) createOrUpdateAtSubscriptionScopeHandleError(res
 }
 
 // BeginCreateOrUpdateAtTenantScope - You can provide the template and parameters directly in the request or link to JSON files.
-func (client DeploymentsClient) BeginCreateOrUpdateAtTenantScope(ctx context.Context, deploymentName string, parameters ScopedDeployment, options *DeploymentsCreateOrUpdateAtTenantScopeOptions) (DeploymentExtendedPollerResponse, error) {
-	resp, err := client.CreateOrUpdateAtTenantScope(ctx, deploymentName, parameters, options)
+func (client DeploymentsClient) BeginCreateOrUpdateAtTenantScope(ctx context.Context, deploymentName string, parameters ScopedDeployment, options *DeploymentsBeginCreateOrUpdateAtTenantScopeOptions) (DeploymentExtendedPollerResponse, error) {
+	resp, err := client.createOrUpdateAtTenantScope(ctx, deploymentName, parameters, options)
 	if err != nil {
 		return DeploymentExtendedPollerResponse{}, err
 	}
@@ -914,7 +914,7 @@ func (client DeploymentsClient) ResumeCreateOrUpdateAtTenantScope(token string) 
 }
 
 // CreateOrUpdateAtTenantScope - You can provide the template and parameters directly in the request or link to JSON files.
-func (client DeploymentsClient) CreateOrUpdateAtTenantScope(ctx context.Context, deploymentName string, parameters ScopedDeployment, options *DeploymentsCreateOrUpdateAtTenantScopeOptions) (*azcore.Response, error) {
+func (client DeploymentsClient) createOrUpdateAtTenantScope(ctx context.Context, deploymentName string, parameters ScopedDeployment, options *DeploymentsBeginCreateOrUpdateAtTenantScopeOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateAtTenantScopeCreateRequest(ctx, deploymentName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -930,7 +930,7 @@ func (client DeploymentsClient) CreateOrUpdateAtTenantScope(ctx context.Context,
 }
 
 // createOrUpdateAtTenantScopeCreateRequest creates the CreateOrUpdateAtTenantScope request.
-func (client DeploymentsClient) createOrUpdateAtTenantScopeCreateRequest(ctx context.Context, deploymentName string, parameters ScopedDeployment, options *DeploymentsCreateOrUpdateAtTenantScopeOptions) (*azcore.Request, error) {
+func (client DeploymentsClient) createOrUpdateAtTenantScopeCreateRequest(ctx context.Context, deploymentName string, parameters ScopedDeployment, options *DeploymentsBeginCreateOrUpdateAtTenantScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Resources/deployments/{deploymentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -968,8 +968,8 @@ func (client DeploymentsClient) createOrUpdateAtTenantScopeHandleError(resp *azc
 // to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process
 // finishes, the URI in the Location header returns a
 // status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-func (client DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, deploymentName, options)
+func (client DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, deploymentName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -1011,7 +1011,7 @@ func (client DeploymentsClient) ResumeDelete(token string) (HTTPPoller, error) {
 // to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process
 // finishes, the URI in the Location header returns a
 // status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-func (client DeploymentsClient) Delete(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsDeleteOptions) (*azcore.Response, error) {
+func (client DeploymentsClient) delete(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, deploymentName, options)
 	if err != nil {
 		return nil, err
@@ -1027,7 +1027,7 @@ func (client DeploymentsClient) Delete(ctx context.Context, resourceGroupName st
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client DeploymentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsDeleteOptions) (*azcore.Request, error) {
+func (client DeploymentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -1060,8 +1060,8 @@ func (client DeploymentsClient) deleteHandleError(resp *azcore.Response) error {
 // the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success.
 // If the asynchronous request failed, the URI in the
 // Location header returns an error-level status code.
-func (client DeploymentsClient) BeginDeleteAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, options *DeploymentsDeleteAtManagementGroupScopeOptions) (HTTPPollerResponse, error) {
-	resp, err := client.DeleteAtManagementGroupScope(ctx, groupId, deploymentName, options)
+func (client DeploymentsClient) BeginDeleteAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, options *DeploymentsBeginDeleteAtManagementGroupScopeOptions) (HTTPPollerResponse, error) {
+	resp, err := client.deleteAtManagementGroupScope(ctx, groupId, deploymentName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -1103,7 +1103,7 @@ func (client DeploymentsClient) ResumeDeleteAtManagementGroupScope(token string)
 // the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success.
 // If the asynchronous request failed, the URI in the
 // Location header returns an error-level status code.
-func (client DeploymentsClient) DeleteAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, options *DeploymentsDeleteAtManagementGroupScopeOptions) (*azcore.Response, error) {
+func (client DeploymentsClient) deleteAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, options *DeploymentsBeginDeleteAtManagementGroupScopeOptions) (*azcore.Response, error) {
 	req, err := client.deleteAtManagementGroupScopeCreateRequest(ctx, groupId, deploymentName, options)
 	if err != nil {
 		return nil, err
@@ -1119,7 +1119,7 @@ func (client DeploymentsClient) DeleteAtManagementGroupScope(ctx context.Context
 }
 
 // deleteAtManagementGroupScopeCreateRequest creates the DeleteAtManagementGroupScope request.
-func (client DeploymentsClient) deleteAtManagementGroupScopeCreateRequest(ctx context.Context, groupId string, deploymentName string, options *DeploymentsDeleteAtManagementGroupScopeOptions) (*azcore.Request, error) {
+func (client DeploymentsClient) deleteAtManagementGroupScopeCreateRequest(ctx context.Context, groupId string, deploymentName string, options *DeploymentsBeginDeleteAtManagementGroupScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupId))
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -1151,8 +1151,8 @@ func (client DeploymentsClient) deleteAtManagementGroupScopeHandleError(resp *az
 // the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success.
 // If the asynchronous request failed, the URI in the
 // Location header returns an error-level status code.
-func (client DeploymentsClient) BeginDeleteAtScope(ctx context.Context, scope string, deploymentName string, options *DeploymentsDeleteAtScopeOptions) (HTTPPollerResponse, error) {
-	resp, err := client.DeleteAtScope(ctx, scope, deploymentName, options)
+func (client DeploymentsClient) BeginDeleteAtScope(ctx context.Context, scope string, deploymentName string, options *DeploymentsBeginDeleteAtScopeOptions) (HTTPPollerResponse, error) {
+	resp, err := client.deleteAtScope(ctx, scope, deploymentName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -1194,7 +1194,7 @@ func (client DeploymentsClient) ResumeDeleteAtScope(token string) (HTTPPoller, e
 // the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success.
 // If the asynchronous request failed, the URI in the
 // Location header returns an error-level status code.
-func (client DeploymentsClient) DeleteAtScope(ctx context.Context, scope string, deploymentName string, options *DeploymentsDeleteAtScopeOptions) (*azcore.Response, error) {
+func (client DeploymentsClient) deleteAtScope(ctx context.Context, scope string, deploymentName string, options *DeploymentsBeginDeleteAtScopeOptions) (*azcore.Response, error) {
 	req, err := client.deleteAtScopeCreateRequest(ctx, scope, deploymentName, options)
 	if err != nil {
 		return nil, err
@@ -1210,7 +1210,7 @@ func (client DeploymentsClient) DeleteAtScope(ctx context.Context, scope string,
 }
 
 // deleteAtScopeCreateRequest creates the DeleteAtScope request.
-func (client DeploymentsClient) deleteAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, options *DeploymentsDeleteAtScopeOptions) (*azcore.Request, error) {
+func (client DeploymentsClient) deleteAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, options *DeploymentsBeginDeleteAtScopeOptions) (*azcore.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -1242,8 +1242,8 @@ func (client DeploymentsClient) deleteAtScopeHandleError(resp *azcore.Response) 
 // the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success.
 // If the asynchronous request failed, the URI in the
 // Location header returns an error-level status code.
-func (client DeploymentsClient) BeginDeleteAtSubscriptionScope(ctx context.Context, deploymentName string, options *DeploymentsDeleteAtSubscriptionScopeOptions) (HTTPPollerResponse, error) {
-	resp, err := client.DeleteAtSubscriptionScope(ctx, deploymentName, options)
+func (client DeploymentsClient) BeginDeleteAtSubscriptionScope(ctx context.Context, deploymentName string, options *DeploymentsBeginDeleteAtSubscriptionScopeOptions) (HTTPPollerResponse, error) {
+	resp, err := client.deleteAtSubscriptionScope(ctx, deploymentName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -1285,7 +1285,7 @@ func (client DeploymentsClient) ResumeDeleteAtSubscriptionScope(token string) (H
 // the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success.
 // If the asynchronous request failed, the URI in the
 // Location header returns an error-level status code.
-func (client DeploymentsClient) DeleteAtSubscriptionScope(ctx context.Context, deploymentName string, options *DeploymentsDeleteAtSubscriptionScopeOptions) (*azcore.Response, error) {
+func (client DeploymentsClient) deleteAtSubscriptionScope(ctx context.Context, deploymentName string, options *DeploymentsBeginDeleteAtSubscriptionScopeOptions) (*azcore.Response, error) {
 	req, err := client.deleteAtSubscriptionScopeCreateRequest(ctx, deploymentName, options)
 	if err != nil {
 		return nil, err
@@ -1301,7 +1301,7 @@ func (client DeploymentsClient) DeleteAtSubscriptionScope(ctx context.Context, d
 }
 
 // deleteAtSubscriptionScopeCreateRequest creates the DeleteAtSubscriptionScope request.
-func (client DeploymentsClient) deleteAtSubscriptionScopeCreateRequest(ctx context.Context, deploymentName string, options *DeploymentsDeleteAtSubscriptionScopeOptions) (*azcore.Request, error) {
+func (client DeploymentsClient) deleteAtSubscriptionScopeCreateRequest(ctx context.Context, deploymentName string, options *DeploymentsBeginDeleteAtSubscriptionScopeOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -1333,8 +1333,8 @@ func (client DeploymentsClient) deleteAtSubscriptionScopeHandleError(resp *azcor
 // the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success.
 // If the asynchronous request failed, the URI in the
 // Location header returns an error-level status code.
-func (client DeploymentsClient) BeginDeleteAtTenantScope(ctx context.Context, deploymentName string, options *DeploymentsDeleteAtTenantScopeOptions) (HTTPPollerResponse, error) {
-	resp, err := client.DeleteAtTenantScope(ctx, deploymentName, options)
+func (client DeploymentsClient) BeginDeleteAtTenantScope(ctx context.Context, deploymentName string, options *DeploymentsBeginDeleteAtTenantScopeOptions) (HTTPPollerResponse, error) {
+	resp, err := client.deleteAtTenantScope(ctx, deploymentName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -1376,7 +1376,7 @@ func (client DeploymentsClient) ResumeDeleteAtTenantScope(token string) (HTTPPol
 // the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success.
 // If the asynchronous request failed, the URI in the
 // Location header returns an error-level status code.
-func (client DeploymentsClient) DeleteAtTenantScope(ctx context.Context, deploymentName string, options *DeploymentsDeleteAtTenantScopeOptions) (*azcore.Response, error) {
+func (client DeploymentsClient) deleteAtTenantScope(ctx context.Context, deploymentName string, options *DeploymentsBeginDeleteAtTenantScopeOptions) (*azcore.Response, error) {
 	req, err := client.deleteAtTenantScopeCreateRequest(ctx, deploymentName, options)
 	if err != nil {
 		return nil, err
@@ -1392,7 +1392,7 @@ func (client DeploymentsClient) DeleteAtTenantScope(ctx context.Context, deploym
 }
 
 // deleteAtTenantScopeCreateRequest creates the DeleteAtTenantScope request.
-func (client DeploymentsClient) deleteAtTenantScopeCreateRequest(ctx context.Context, deploymentName string, options *DeploymentsDeleteAtTenantScopeOptions) (*azcore.Request, error) {
+func (client DeploymentsClient) deleteAtTenantScopeCreateRequest(ctx context.Context, deploymentName string, options *DeploymentsBeginDeleteAtTenantScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Resources/deployments/{deploymentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -2217,8 +2217,8 @@ func (client DeploymentsClient) listByResourceGroupHandleError(resp *azcore.Resp
 }
 
 // BeginValidate - Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-func (client DeploymentsClient) BeginValidate(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment, options *DeploymentsValidateOptions) (DeploymentValidateResultPollerResponse, error) {
-	resp, err := client.Validate(ctx, resourceGroupName, deploymentName, parameters, options)
+func (client DeploymentsClient) BeginValidate(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment, options *DeploymentsBeginValidateOptions) (DeploymentValidateResultPollerResponse, error) {
+	resp, err := client.validate(ctx, resourceGroupName, deploymentName, parameters, options)
 	if err != nil {
 		return DeploymentValidateResultPollerResponse{}, err
 	}
@@ -2254,7 +2254,7 @@ func (client DeploymentsClient) ResumeValidate(token string) (DeploymentValidate
 }
 
 // Validate - Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-func (client DeploymentsClient) Validate(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment, options *DeploymentsValidateOptions) (*azcore.Response, error) {
+func (client DeploymentsClient) validate(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment, options *DeploymentsBeginValidateOptions) (*azcore.Response, error) {
 	req, err := client.validateCreateRequest(ctx, resourceGroupName, deploymentName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -2270,7 +2270,7 @@ func (client DeploymentsClient) Validate(ctx context.Context, resourceGroupName 
 }
 
 // validateCreateRequest creates the Validate request.
-func (client DeploymentsClient) validateCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment, options *DeploymentsValidateOptions) (*azcore.Request, error) {
+func (client DeploymentsClient) validateCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment, options *DeploymentsBeginValidateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/validate"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -2304,8 +2304,8 @@ func (client DeploymentsClient) validateHandleError(resp *azcore.Response) error
 }
 
 // BeginValidateAtManagementGroupScope - Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-func (client DeploymentsClient) BeginValidateAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, parameters ScopedDeployment, options *DeploymentsValidateAtManagementGroupScopeOptions) (DeploymentValidateResultPollerResponse, error) {
-	resp, err := client.ValidateAtManagementGroupScope(ctx, groupId, deploymentName, parameters, options)
+func (client DeploymentsClient) BeginValidateAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, parameters ScopedDeployment, options *DeploymentsBeginValidateAtManagementGroupScopeOptions) (DeploymentValidateResultPollerResponse, error) {
+	resp, err := client.validateAtManagementGroupScope(ctx, groupId, deploymentName, parameters, options)
 	if err != nil {
 		return DeploymentValidateResultPollerResponse{}, err
 	}
@@ -2341,7 +2341,7 @@ func (client DeploymentsClient) ResumeValidateAtManagementGroupScope(token strin
 }
 
 // ValidateAtManagementGroupScope - Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-func (client DeploymentsClient) ValidateAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, parameters ScopedDeployment, options *DeploymentsValidateAtManagementGroupScopeOptions) (*azcore.Response, error) {
+func (client DeploymentsClient) validateAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, parameters ScopedDeployment, options *DeploymentsBeginValidateAtManagementGroupScopeOptions) (*azcore.Response, error) {
 	req, err := client.validateAtManagementGroupScopeCreateRequest(ctx, groupId, deploymentName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -2357,7 +2357,7 @@ func (client DeploymentsClient) ValidateAtManagementGroupScope(ctx context.Conte
 }
 
 // validateAtManagementGroupScopeCreateRequest creates the ValidateAtManagementGroupScope request.
-func (client DeploymentsClient) validateAtManagementGroupScopeCreateRequest(ctx context.Context, groupId string, deploymentName string, parameters ScopedDeployment, options *DeploymentsValidateAtManagementGroupScopeOptions) (*azcore.Request, error) {
+func (client DeploymentsClient) validateAtManagementGroupScopeCreateRequest(ctx context.Context, groupId string, deploymentName string, parameters ScopedDeployment, options *DeploymentsBeginValidateAtManagementGroupScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}/validate"
 	urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupId))
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -2390,8 +2390,8 @@ func (client DeploymentsClient) validateAtManagementGroupScopeHandleError(resp *
 }
 
 // BeginValidateAtScope - Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-func (client DeploymentsClient) BeginValidateAtScope(ctx context.Context, scope string, deploymentName string, parameters Deployment, options *DeploymentsValidateAtScopeOptions) (DeploymentValidateResultPollerResponse, error) {
-	resp, err := client.ValidateAtScope(ctx, scope, deploymentName, parameters, options)
+func (client DeploymentsClient) BeginValidateAtScope(ctx context.Context, scope string, deploymentName string, parameters Deployment, options *DeploymentsBeginValidateAtScopeOptions) (DeploymentValidateResultPollerResponse, error) {
+	resp, err := client.validateAtScope(ctx, scope, deploymentName, parameters, options)
 	if err != nil {
 		return DeploymentValidateResultPollerResponse{}, err
 	}
@@ -2427,7 +2427,7 @@ func (client DeploymentsClient) ResumeValidateAtScope(token string) (DeploymentV
 }
 
 // ValidateAtScope - Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-func (client DeploymentsClient) ValidateAtScope(ctx context.Context, scope string, deploymentName string, parameters Deployment, options *DeploymentsValidateAtScopeOptions) (*azcore.Response, error) {
+func (client DeploymentsClient) validateAtScope(ctx context.Context, scope string, deploymentName string, parameters Deployment, options *DeploymentsBeginValidateAtScopeOptions) (*azcore.Response, error) {
 	req, err := client.validateAtScopeCreateRequest(ctx, scope, deploymentName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -2443,7 +2443,7 @@ func (client DeploymentsClient) ValidateAtScope(ctx context.Context, scope strin
 }
 
 // validateAtScopeCreateRequest creates the ValidateAtScope request.
-func (client DeploymentsClient) validateAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, parameters Deployment, options *DeploymentsValidateAtScopeOptions) (*azcore.Request, error) {
+func (client DeploymentsClient) validateAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, parameters Deployment, options *DeploymentsBeginValidateAtScopeOptions) (*azcore.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/validate"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -2476,8 +2476,8 @@ func (client DeploymentsClient) validateAtScopeHandleError(resp *azcore.Response
 }
 
 // BeginValidateAtSubscriptionScope - Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-func (client DeploymentsClient) BeginValidateAtSubscriptionScope(ctx context.Context, deploymentName string, parameters Deployment, options *DeploymentsValidateAtSubscriptionScopeOptions) (DeploymentValidateResultPollerResponse, error) {
-	resp, err := client.ValidateAtSubscriptionScope(ctx, deploymentName, parameters, options)
+func (client DeploymentsClient) BeginValidateAtSubscriptionScope(ctx context.Context, deploymentName string, parameters Deployment, options *DeploymentsBeginValidateAtSubscriptionScopeOptions) (DeploymentValidateResultPollerResponse, error) {
+	resp, err := client.validateAtSubscriptionScope(ctx, deploymentName, parameters, options)
 	if err != nil {
 		return DeploymentValidateResultPollerResponse{}, err
 	}
@@ -2513,7 +2513,7 @@ func (client DeploymentsClient) ResumeValidateAtSubscriptionScope(token string) 
 }
 
 // ValidateAtSubscriptionScope - Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-func (client DeploymentsClient) ValidateAtSubscriptionScope(ctx context.Context, deploymentName string, parameters Deployment, options *DeploymentsValidateAtSubscriptionScopeOptions) (*azcore.Response, error) {
+func (client DeploymentsClient) validateAtSubscriptionScope(ctx context.Context, deploymentName string, parameters Deployment, options *DeploymentsBeginValidateAtSubscriptionScopeOptions) (*azcore.Response, error) {
 	req, err := client.validateAtSubscriptionScopeCreateRequest(ctx, deploymentName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -2529,7 +2529,7 @@ func (client DeploymentsClient) ValidateAtSubscriptionScope(ctx context.Context,
 }
 
 // validateAtSubscriptionScopeCreateRequest creates the ValidateAtSubscriptionScope request.
-func (client DeploymentsClient) validateAtSubscriptionScopeCreateRequest(ctx context.Context, deploymentName string, parameters Deployment, options *DeploymentsValidateAtSubscriptionScopeOptions) (*azcore.Request, error) {
+func (client DeploymentsClient) validateAtSubscriptionScopeCreateRequest(ctx context.Context, deploymentName string, parameters Deployment, options *DeploymentsBeginValidateAtSubscriptionScopeOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/validate"
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -2562,8 +2562,8 @@ func (client DeploymentsClient) validateAtSubscriptionScopeHandleError(resp *azc
 }
 
 // BeginValidateAtTenantScope - Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-func (client DeploymentsClient) BeginValidateAtTenantScope(ctx context.Context, deploymentName string, parameters ScopedDeployment, options *DeploymentsValidateAtTenantScopeOptions) (DeploymentValidateResultPollerResponse, error) {
-	resp, err := client.ValidateAtTenantScope(ctx, deploymentName, parameters, options)
+func (client DeploymentsClient) BeginValidateAtTenantScope(ctx context.Context, deploymentName string, parameters ScopedDeployment, options *DeploymentsBeginValidateAtTenantScopeOptions) (DeploymentValidateResultPollerResponse, error) {
+	resp, err := client.validateAtTenantScope(ctx, deploymentName, parameters, options)
 	if err != nil {
 		return DeploymentValidateResultPollerResponse{}, err
 	}
@@ -2599,7 +2599,7 @@ func (client DeploymentsClient) ResumeValidateAtTenantScope(token string) (Deplo
 }
 
 // ValidateAtTenantScope - Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-func (client DeploymentsClient) ValidateAtTenantScope(ctx context.Context, deploymentName string, parameters ScopedDeployment, options *DeploymentsValidateAtTenantScopeOptions) (*azcore.Response, error) {
+func (client DeploymentsClient) validateAtTenantScope(ctx context.Context, deploymentName string, parameters ScopedDeployment, options *DeploymentsBeginValidateAtTenantScopeOptions) (*azcore.Response, error) {
 	req, err := client.validateAtTenantScopeCreateRequest(ctx, deploymentName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -2615,7 +2615,7 @@ func (client DeploymentsClient) ValidateAtTenantScope(ctx context.Context, deplo
 }
 
 // validateAtTenantScopeCreateRequest creates the ValidateAtTenantScope request.
-func (client DeploymentsClient) validateAtTenantScopeCreateRequest(ctx context.Context, deploymentName string, parameters ScopedDeployment, options *DeploymentsValidateAtTenantScopeOptions) (*azcore.Request, error) {
+func (client DeploymentsClient) validateAtTenantScopeCreateRequest(ctx context.Context, deploymentName string, parameters ScopedDeployment, options *DeploymentsBeginValidateAtTenantScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Resources/deployments/{deploymentName}/validate"
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -2647,8 +2647,8 @@ func (client DeploymentsClient) validateAtTenantScopeHandleError(resp *azcore.Re
 }
 
 // BeginWhatIf - Returns changes that will be made by the deployment if executed at the scope of the resource group.
-func (client DeploymentsClient) BeginWhatIf(ctx context.Context, resourceGroupName string, deploymentName string, parameters DeploymentWhatIf, options *DeploymentsWhatIfOptions) (WhatIfOperationResultPollerResponse, error) {
-	resp, err := client.WhatIf(ctx, resourceGroupName, deploymentName, parameters, options)
+func (client DeploymentsClient) BeginWhatIf(ctx context.Context, resourceGroupName string, deploymentName string, parameters DeploymentWhatIf, options *DeploymentsBeginWhatIfOptions) (WhatIfOperationResultPollerResponse, error) {
+	resp, err := client.whatIf(ctx, resourceGroupName, deploymentName, parameters, options)
 	if err != nil {
 		return WhatIfOperationResultPollerResponse{}, err
 	}
@@ -2684,7 +2684,7 @@ func (client DeploymentsClient) ResumeWhatIf(token string) (WhatIfOperationResul
 }
 
 // WhatIf - Returns changes that will be made by the deployment if executed at the scope of the resource group.
-func (client DeploymentsClient) WhatIf(ctx context.Context, resourceGroupName string, deploymentName string, parameters DeploymentWhatIf, options *DeploymentsWhatIfOptions) (*azcore.Response, error) {
+func (client DeploymentsClient) whatIf(ctx context.Context, resourceGroupName string, deploymentName string, parameters DeploymentWhatIf, options *DeploymentsBeginWhatIfOptions) (*azcore.Response, error) {
 	req, err := client.whatIfCreateRequest(ctx, resourceGroupName, deploymentName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -2700,7 +2700,7 @@ func (client DeploymentsClient) WhatIf(ctx context.Context, resourceGroupName st
 }
 
 // whatIfCreateRequest creates the WhatIf request.
-func (client DeploymentsClient) whatIfCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, parameters DeploymentWhatIf, options *DeploymentsWhatIfOptions) (*azcore.Request, error) {
+func (client DeploymentsClient) whatIfCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, parameters DeploymentWhatIf, options *DeploymentsBeginWhatIfOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/whatIf"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -2734,8 +2734,8 @@ func (client DeploymentsClient) whatIfHandleError(resp *azcore.Response) error {
 }
 
 // BeginWhatIfAtManagementGroupScope - Returns changes that will be made by the deployment if executed at the scope of the management group.
-func (client DeploymentsClient) BeginWhatIfAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, parameters ScopedDeploymentWhatIf, options *DeploymentsWhatIfAtManagementGroupScopeOptions) (WhatIfOperationResultPollerResponse, error) {
-	resp, err := client.WhatIfAtManagementGroupScope(ctx, groupId, deploymentName, parameters, options)
+func (client DeploymentsClient) BeginWhatIfAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, parameters ScopedDeploymentWhatIf, options *DeploymentsBeginWhatIfAtManagementGroupScopeOptions) (WhatIfOperationResultPollerResponse, error) {
+	resp, err := client.whatIfAtManagementGroupScope(ctx, groupId, deploymentName, parameters, options)
 	if err != nil {
 		return WhatIfOperationResultPollerResponse{}, err
 	}
@@ -2771,7 +2771,7 @@ func (client DeploymentsClient) ResumeWhatIfAtManagementGroupScope(token string)
 }
 
 // WhatIfAtManagementGroupScope - Returns changes that will be made by the deployment if executed at the scope of the management group.
-func (client DeploymentsClient) WhatIfAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, parameters ScopedDeploymentWhatIf, options *DeploymentsWhatIfAtManagementGroupScopeOptions) (*azcore.Response, error) {
+func (client DeploymentsClient) whatIfAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, parameters ScopedDeploymentWhatIf, options *DeploymentsBeginWhatIfAtManagementGroupScopeOptions) (*azcore.Response, error) {
 	req, err := client.whatIfAtManagementGroupScopeCreateRequest(ctx, groupId, deploymentName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -2787,7 +2787,7 @@ func (client DeploymentsClient) WhatIfAtManagementGroupScope(ctx context.Context
 }
 
 // whatIfAtManagementGroupScopeCreateRequest creates the WhatIfAtManagementGroupScope request.
-func (client DeploymentsClient) whatIfAtManagementGroupScopeCreateRequest(ctx context.Context, groupId string, deploymentName string, parameters ScopedDeploymentWhatIf, options *DeploymentsWhatIfAtManagementGroupScopeOptions) (*azcore.Request, error) {
+func (client DeploymentsClient) whatIfAtManagementGroupScopeCreateRequest(ctx context.Context, groupId string, deploymentName string, parameters ScopedDeploymentWhatIf, options *DeploymentsBeginWhatIfAtManagementGroupScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}/whatIf"
 	urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupId))
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -2820,8 +2820,8 @@ func (client DeploymentsClient) whatIfAtManagementGroupScopeHandleError(resp *az
 }
 
 // BeginWhatIfAtSubscriptionScope - Returns changes that will be made by the deployment if executed at the scope of the subscription.
-func (client DeploymentsClient) BeginWhatIfAtSubscriptionScope(ctx context.Context, deploymentName string, parameters DeploymentWhatIf, options *DeploymentsWhatIfAtSubscriptionScopeOptions) (WhatIfOperationResultPollerResponse, error) {
-	resp, err := client.WhatIfAtSubscriptionScope(ctx, deploymentName, parameters, options)
+func (client DeploymentsClient) BeginWhatIfAtSubscriptionScope(ctx context.Context, deploymentName string, parameters DeploymentWhatIf, options *DeploymentsBeginWhatIfAtSubscriptionScopeOptions) (WhatIfOperationResultPollerResponse, error) {
+	resp, err := client.whatIfAtSubscriptionScope(ctx, deploymentName, parameters, options)
 	if err != nil {
 		return WhatIfOperationResultPollerResponse{}, err
 	}
@@ -2857,7 +2857,7 @@ func (client DeploymentsClient) ResumeWhatIfAtSubscriptionScope(token string) (W
 }
 
 // WhatIfAtSubscriptionScope - Returns changes that will be made by the deployment if executed at the scope of the subscription.
-func (client DeploymentsClient) WhatIfAtSubscriptionScope(ctx context.Context, deploymentName string, parameters DeploymentWhatIf, options *DeploymentsWhatIfAtSubscriptionScopeOptions) (*azcore.Response, error) {
+func (client DeploymentsClient) whatIfAtSubscriptionScope(ctx context.Context, deploymentName string, parameters DeploymentWhatIf, options *DeploymentsBeginWhatIfAtSubscriptionScopeOptions) (*azcore.Response, error) {
 	req, err := client.whatIfAtSubscriptionScopeCreateRequest(ctx, deploymentName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -2873,7 +2873,7 @@ func (client DeploymentsClient) WhatIfAtSubscriptionScope(ctx context.Context, d
 }
 
 // whatIfAtSubscriptionScopeCreateRequest creates the WhatIfAtSubscriptionScope request.
-func (client DeploymentsClient) whatIfAtSubscriptionScopeCreateRequest(ctx context.Context, deploymentName string, parameters DeploymentWhatIf, options *DeploymentsWhatIfAtSubscriptionScopeOptions) (*azcore.Request, error) {
+func (client DeploymentsClient) whatIfAtSubscriptionScopeCreateRequest(ctx context.Context, deploymentName string, parameters DeploymentWhatIf, options *DeploymentsBeginWhatIfAtSubscriptionScopeOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/whatIf"
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -2906,8 +2906,8 @@ func (client DeploymentsClient) whatIfAtSubscriptionScopeHandleError(resp *azcor
 }
 
 // BeginWhatIfAtTenantScope - Returns changes that will be made by the deployment if executed at the scope of the tenant group.
-func (client DeploymentsClient) BeginWhatIfAtTenantScope(ctx context.Context, deploymentName string, parameters ScopedDeploymentWhatIf, options *DeploymentsWhatIfAtTenantScopeOptions) (WhatIfOperationResultPollerResponse, error) {
-	resp, err := client.WhatIfAtTenantScope(ctx, deploymentName, parameters, options)
+func (client DeploymentsClient) BeginWhatIfAtTenantScope(ctx context.Context, deploymentName string, parameters ScopedDeploymentWhatIf, options *DeploymentsBeginWhatIfAtTenantScopeOptions) (WhatIfOperationResultPollerResponse, error) {
+	resp, err := client.whatIfAtTenantScope(ctx, deploymentName, parameters, options)
 	if err != nil {
 		return WhatIfOperationResultPollerResponse{}, err
 	}
@@ -2943,7 +2943,7 @@ func (client DeploymentsClient) ResumeWhatIfAtTenantScope(token string) (WhatIfO
 }
 
 // WhatIfAtTenantScope - Returns changes that will be made by the deployment if executed at the scope of the tenant group.
-func (client DeploymentsClient) WhatIfAtTenantScope(ctx context.Context, deploymentName string, parameters ScopedDeploymentWhatIf, options *DeploymentsWhatIfAtTenantScopeOptions) (*azcore.Response, error) {
+func (client DeploymentsClient) whatIfAtTenantScope(ctx context.Context, deploymentName string, parameters ScopedDeploymentWhatIf, options *DeploymentsBeginWhatIfAtTenantScopeOptions) (*azcore.Response, error) {
 	req, err := client.whatIfAtTenantScopeCreateRequest(ctx, deploymentName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -2959,7 +2959,7 @@ func (client DeploymentsClient) WhatIfAtTenantScope(ctx context.Context, deploym
 }
 
 // whatIfAtTenantScopeCreateRequest creates the WhatIfAtTenantScope request.
-func (client DeploymentsClient) whatIfAtTenantScopeCreateRequest(ctx context.Context, deploymentName string, parameters ScopedDeploymentWhatIf, options *DeploymentsWhatIfAtTenantScopeOptions) (*azcore.Request, error) {
+func (client DeploymentsClient) whatIfAtTenantScopeCreateRequest(ctx context.Context, deploymentName string, parameters ScopedDeploymentWhatIf, options *DeploymentsBeginWhatIfAtTenantScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Resources/deployments/{deploymentName}/whatIf"
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))

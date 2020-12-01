@@ -774,6 +774,103 @@ type DeploymentWhatIfSettings struct {
 	ResultFormat *WhatIfResultFormat `json:"resultFormat,omitempty"`
 }
 
+// DeploymentsBeginCreateOrUpdateAtManagementGroupScopeOptions contains the optional parameters for the Deployments.BeginCreateOrUpdateAtManagementGroupScope
+// method.
+type DeploymentsBeginCreateOrUpdateAtManagementGroupScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginCreateOrUpdateAtScopeOptions contains the optional parameters for the Deployments.BeginCreateOrUpdateAtScope method.
+type DeploymentsBeginCreateOrUpdateAtScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginCreateOrUpdateAtSubscriptionScopeOptions contains the optional parameters for the Deployments.BeginCreateOrUpdateAtSubscriptionScope
+// method.
+type DeploymentsBeginCreateOrUpdateAtSubscriptionScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginCreateOrUpdateAtTenantScopeOptions contains the optional parameters for the Deployments.BeginCreateOrUpdateAtTenantScope method.
+type DeploymentsBeginCreateOrUpdateAtTenantScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginCreateOrUpdateOptions contains the optional parameters for the Deployments.BeginCreateOrUpdate method.
+type DeploymentsBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginDeleteAtManagementGroupScopeOptions contains the optional parameters for the Deployments.BeginDeleteAtManagementGroupScope method.
+type DeploymentsBeginDeleteAtManagementGroupScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginDeleteAtScopeOptions contains the optional parameters for the Deployments.BeginDeleteAtScope method.
+type DeploymentsBeginDeleteAtScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginDeleteAtSubscriptionScopeOptions contains the optional parameters for the Deployments.BeginDeleteAtSubscriptionScope method.
+type DeploymentsBeginDeleteAtSubscriptionScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginDeleteAtTenantScopeOptions contains the optional parameters for the Deployments.BeginDeleteAtTenantScope method.
+type DeploymentsBeginDeleteAtTenantScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginDeleteOptions contains the optional parameters for the Deployments.BeginDelete method.
+type DeploymentsBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginValidateAtManagementGroupScopeOptions contains the optional parameters for the Deployments.BeginValidateAtManagementGroupScope method.
+type DeploymentsBeginValidateAtManagementGroupScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginValidateAtScopeOptions contains the optional parameters for the Deployments.BeginValidateAtScope method.
+type DeploymentsBeginValidateAtScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginValidateAtSubscriptionScopeOptions contains the optional parameters for the Deployments.BeginValidateAtSubscriptionScope method.
+type DeploymentsBeginValidateAtSubscriptionScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginValidateAtTenantScopeOptions contains the optional parameters for the Deployments.BeginValidateAtTenantScope method.
+type DeploymentsBeginValidateAtTenantScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginValidateOptions contains the optional parameters for the Deployments.BeginValidate method.
+type DeploymentsBeginValidateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginWhatIfAtManagementGroupScopeOptions contains the optional parameters for the Deployments.BeginWhatIfAtManagementGroupScope method.
+type DeploymentsBeginWhatIfAtManagementGroupScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginWhatIfAtSubscriptionScopeOptions contains the optional parameters for the Deployments.BeginWhatIfAtSubscriptionScope method.
+type DeploymentsBeginWhatIfAtSubscriptionScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginWhatIfAtTenantScopeOptions contains the optional parameters for the Deployments.BeginWhatIfAtTenantScope method.
+type DeploymentsBeginWhatIfAtTenantScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginWhatIfOptions contains the optional parameters for the Deployments.BeginWhatIf method.
+type DeploymentsBeginWhatIfOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DeploymentsCalculateTemplateHashOptions contains the optional parameters for the Deployments.CalculateTemplateHash method.
 type DeploymentsCalculateTemplateHashOptions struct {
 	// placeholder for future optional parameters
@@ -826,56 +923,6 @@ type DeploymentsCheckExistenceAtTenantScopeOptions struct {
 
 // DeploymentsCheckExistenceOptions contains the optional parameters for the Deployments.CheckExistence method.
 type DeploymentsCheckExistenceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentsCreateOrUpdateAtManagementGroupScopeOptions contains the optional parameters for the Deployments.CreateOrUpdateAtManagementGroupScope method.
-type DeploymentsCreateOrUpdateAtManagementGroupScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentsCreateOrUpdateAtScopeOptions contains the optional parameters for the Deployments.CreateOrUpdateAtScope method.
-type DeploymentsCreateOrUpdateAtScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentsCreateOrUpdateAtSubscriptionScopeOptions contains the optional parameters for the Deployments.CreateOrUpdateAtSubscriptionScope method.
-type DeploymentsCreateOrUpdateAtSubscriptionScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentsCreateOrUpdateAtTenantScopeOptions contains the optional parameters for the Deployments.CreateOrUpdateAtTenantScope method.
-type DeploymentsCreateOrUpdateAtTenantScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentsCreateOrUpdateOptions contains the optional parameters for the Deployments.CreateOrUpdate method.
-type DeploymentsCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentsDeleteAtManagementGroupScopeOptions contains the optional parameters for the Deployments.DeleteAtManagementGroupScope method.
-type DeploymentsDeleteAtManagementGroupScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentsDeleteAtScopeOptions contains the optional parameters for the Deployments.DeleteAtScope method.
-type DeploymentsDeleteAtScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentsDeleteAtSubscriptionScopeOptions contains the optional parameters for the Deployments.DeleteAtSubscriptionScope method.
-type DeploymentsDeleteAtSubscriptionScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentsDeleteAtTenantScopeOptions contains the optional parameters for the Deployments.DeleteAtTenantScope method.
-type DeploymentsDeleteAtTenantScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentsDeleteOptions contains the optional parameters for the Deployments.Delete method.
-type DeploymentsDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -967,51 +1014,6 @@ type DeploymentsListByResourceGroupOptions struct {
 	Filter *string
 	// The number of results to get. If null is passed, returns all deployments.
 	Top *int32
-}
-
-// DeploymentsValidateAtManagementGroupScopeOptions contains the optional parameters for the Deployments.ValidateAtManagementGroupScope method.
-type DeploymentsValidateAtManagementGroupScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentsValidateAtScopeOptions contains the optional parameters for the Deployments.ValidateAtScope method.
-type DeploymentsValidateAtScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentsValidateAtSubscriptionScopeOptions contains the optional parameters for the Deployments.ValidateAtSubscriptionScope method.
-type DeploymentsValidateAtSubscriptionScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentsValidateAtTenantScopeOptions contains the optional parameters for the Deployments.ValidateAtTenantScope method.
-type DeploymentsValidateAtTenantScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentsValidateOptions contains the optional parameters for the Deployments.Validate method.
-type DeploymentsValidateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentsWhatIfAtManagementGroupScopeOptions contains the optional parameters for the Deployments.WhatIfAtManagementGroupScope method.
-type DeploymentsWhatIfAtManagementGroupScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentsWhatIfAtSubscriptionScopeOptions contains the optional parameters for the Deployments.WhatIfAtSubscriptionScope method.
-type DeploymentsWhatIfAtSubscriptionScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentsWhatIfAtTenantScopeOptions contains the optional parameters for the Deployments.WhatIfAtTenantScope method.
-type DeploymentsWhatIfAtTenantScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentsWhatIfOptions contains the optional parameters for the Deployments.WhatIf method.
-type DeploymentsWhatIfOptions struct {
-	// placeholder for future optional parameters
 }
 
 // The resource management error additional info.
@@ -1697,6 +1699,16 @@ type ResourceGroupResponse struct {
 	ResourceGroup *ResourceGroup
 }
 
+// ResourceGroupsBeginDeleteOptions contains the optional parameters for the ResourceGroups.BeginDelete method.
+type ResourceGroupsBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceGroupsBeginExportTemplateOptions contains the optional parameters for the ResourceGroups.BeginExportTemplate method.
+type ResourceGroupsBeginExportTemplateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ResourceGroupsCheckExistenceOptions contains the optional parameters for the ResourceGroups.CheckExistence method.
 type ResourceGroupsCheckExistenceOptions struct {
 	// placeholder for future optional parameters
@@ -1704,16 +1716,6 @@ type ResourceGroupsCheckExistenceOptions struct {
 
 // ResourceGroupsCreateOrUpdateOptions contains the optional parameters for the ResourceGroups.CreateOrUpdate method.
 type ResourceGroupsCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceGroupsDeleteOptions contains the optional parameters for the ResourceGroups.Delete method.
-type ResourceGroupsDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceGroupsExportTemplateOptions contains the optional parameters for the ResourceGroups.ExportTemplate method.
-type ResourceGroupsExportTemplateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1778,6 +1780,46 @@ type ResourceReference struct {
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
+// ResourcesBeginCreateOrUpdateByIDOptions contains the optional parameters for the Resources.BeginCreateOrUpdateByID method.
+type ResourcesBeginCreateOrUpdateByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourcesBeginCreateOrUpdateOptions contains the optional parameters for the Resources.BeginCreateOrUpdate method.
+type ResourcesBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourcesBeginDeleteByIDOptions contains the optional parameters for the Resources.BeginDeleteByID method.
+type ResourcesBeginDeleteByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourcesBeginDeleteOptions contains the optional parameters for the Resources.BeginDelete method.
+type ResourcesBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourcesBeginMoveResourcesOptions contains the optional parameters for the Resources.BeginMoveResources method.
+type ResourcesBeginMoveResourcesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourcesBeginUpdateByIDOptions contains the optional parameters for the Resources.BeginUpdateByID method.
+type ResourcesBeginUpdateByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourcesBeginUpdateOptions contains the optional parameters for the Resources.BeginUpdate method.
+type ResourcesBeginUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourcesBeginValidateMoveResourcesOptions contains the optional parameters for the Resources.BeginValidateMoveResources method.
+type ResourcesBeginValidateMoveResourcesOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ResourcesCheckExistenceByIDOptions contains the optional parameters for the Resources.CheckExistenceByID method.
 type ResourcesCheckExistenceByIDOptions struct {
 	// placeholder for future optional parameters
@@ -1785,26 +1827,6 @@ type ResourcesCheckExistenceByIDOptions struct {
 
 // ResourcesCheckExistenceOptions contains the optional parameters for the Resources.CheckExistence method.
 type ResourcesCheckExistenceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourcesCreateOrUpdateByIDOptions contains the optional parameters for the Resources.CreateOrUpdateByID method.
-type ResourcesCreateOrUpdateByIDOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourcesCreateOrUpdateOptions contains the optional parameters for the Resources.CreateOrUpdate method.
-type ResourcesCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourcesDeleteByIDOptions contains the optional parameters for the Resources.DeleteByID method.
-type ResourcesDeleteByIDOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourcesDeleteOptions contains the optional parameters for the Resources.Delete method.
-type ResourcesDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1861,26 +1883,6 @@ type ResourcesMoveInfo struct {
 
 	// The target resource group.
 	TargetResourceGroup *string `json:"targetResourceGroup,omitempty"`
-}
-
-// ResourcesMoveResourcesOptions contains the optional parameters for the Resources.MoveResources method.
-type ResourcesMoveResourcesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourcesUpdateByIDOptions contains the optional parameters for the Resources.UpdateByID method.
-type ResourcesUpdateByIDOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourcesUpdateOptions contains the optional parameters for the Resources.Update method.
-type ResourcesUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourcesValidateMoveResourcesOptions contains the optional parameters for the Resources.ValidateMoveResources method.
-type ResourcesValidateMoveResourcesOptions struct {
-	// placeholder for future optional parameters
 }
 
 // SKU for the resource.

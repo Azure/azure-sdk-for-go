@@ -123,8 +123,8 @@ func New(subscriptionID string) BaseClient {
 func NewConfigurationListResultIterator(page ConfigurationListResultPage) ConfigurationListResultIterator {
 	return original.NewConfigurationListResultIterator(page)
 }
-func NewConfigurationListResultPage(getNextPage func(context.Context, ConfigurationListResult) (ConfigurationListResult, error)) ConfigurationListResultPage {
-	return original.NewConfigurationListResultPage(getNextPage)
+func NewConfigurationListResultPage(cur ConfigurationListResult, getNextPage func(context.Context, ConfigurationListResult) (ConfigurationListResult, error)) ConfigurationListResultPage {
+	return original.NewConfigurationListResultPage(cur, getNextPage)
 }
 func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
 	return original.NewConfigurationsClient(subscriptionID)
@@ -135,14 +135,14 @@ func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) C
 func NewMetadataEntityListResultIterator(page MetadataEntityListResultPage) MetadataEntityListResultIterator {
 	return original.NewMetadataEntityListResultIterator(page)
 }
-func NewMetadataEntityListResultPage(getNextPage func(context.Context, MetadataEntityListResult) (MetadataEntityListResult, error)) MetadataEntityListResultPage {
-	return original.NewMetadataEntityListResultPage(getNextPage)
+func NewMetadataEntityListResultPage(cur MetadataEntityListResult, getNextPage func(context.Context, MetadataEntityListResult) (MetadataEntityListResult, error)) MetadataEntityListResultPage {
+	return original.NewMetadataEntityListResultPage(cur, getNextPage)
 }
 func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
 	return original.NewOperationEntityListResultIterator(page)
 }
-func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
-	return original.NewOperationEntityListResultPage(getNextPage)
+func NewOperationEntityListResultPage(cur OperationEntityListResult, getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
+	return original.NewOperationEntityListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -165,14 +165,14 @@ func NewRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewResourceRecommendationBaseListResultIterator(page ResourceRecommendationBaseListResultPage) ResourceRecommendationBaseListResultIterator {
 	return original.NewResourceRecommendationBaseListResultIterator(page)
 }
-func NewResourceRecommendationBaseListResultPage(getNextPage func(context.Context, ResourceRecommendationBaseListResult) (ResourceRecommendationBaseListResult, error)) ResourceRecommendationBaseListResultPage {
-	return original.NewResourceRecommendationBaseListResultPage(getNextPage)
+func NewResourceRecommendationBaseListResultPage(cur ResourceRecommendationBaseListResult, getNextPage func(context.Context, ResourceRecommendationBaseListResult) (ResourceRecommendationBaseListResult, error)) ResourceRecommendationBaseListResultPage {
+	return original.NewResourceRecommendationBaseListResultPage(cur, getNextPage)
 }
 func NewSuppressionContractListResultIterator(page SuppressionContractListResultPage) SuppressionContractListResultIterator {
 	return original.NewSuppressionContractListResultIterator(page)
 }
-func NewSuppressionContractListResultPage(getNextPage func(context.Context, SuppressionContractListResult) (SuppressionContractListResult, error)) SuppressionContractListResultPage {
-	return original.NewSuppressionContractListResultPage(getNextPage)
+func NewSuppressionContractListResultPage(cur SuppressionContractListResult, getNextPage func(context.Context, SuppressionContractListResult) (SuppressionContractListResult, error)) SuppressionContractListResultPage {
+	return original.NewSuppressionContractListResultPage(cur, getNextPage)
 }
 func NewSuppressionsClient(subscriptionID string) SuppressionsClient {
 	return original.NewSuppressionsClient(subscriptionID)

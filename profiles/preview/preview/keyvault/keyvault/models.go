@@ -56,10 +56,16 @@ const (
 type JSONWebKeyEncryptionAlgorithm = original.JSONWebKeyEncryptionAlgorithm
 
 const (
+	A128CBC    JSONWebKeyEncryptionAlgorithm = original.A128CBC
+	A128CBCPAD JSONWebKeyEncryptionAlgorithm = original.A128CBCPAD
 	A128GCM    JSONWebKeyEncryptionAlgorithm = original.A128GCM
 	A128KW     JSONWebKeyEncryptionAlgorithm = original.A128KW
+	A192CBC    JSONWebKeyEncryptionAlgorithm = original.A192CBC
+	A192CBCPAD JSONWebKeyEncryptionAlgorithm = original.A192CBCPAD
 	A192GCM    JSONWebKeyEncryptionAlgorithm = original.A192GCM
 	A192KW     JSONWebKeyEncryptionAlgorithm = original.A192KW
+	A256CBC    JSONWebKeyEncryptionAlgorithm = original.A256CBC
+	A256CBCPAD JSONWebKeyEncryptionAlgorithm = original.A256CBCPAD
 	A256GCM    JSONWebKeyEncryptionAlgorithm = original.A256GCM
 	A256KW     JSONWebKeyEncryptionAlgorithm = original.A256KW
 	RSA15      JSONWebKeyEncryptionAlgorithm = original.RSA15
@@ -72,6 +78,7 @@ type JSONWebKeyOperation = original.JSONWebKeyOperation
 const (
 	Decrypt   JSONWebKeyOperation = original.Decrypt
 	Encrypt   JSONWebKeyOperation = original.Encrypt
+	Export    JSONWebKeyOperation = original.Export
 	Import    JSONWebKeyOperation = original.Import
 	Sign      JSONWebKeyOperation = original.Sign
 	UnwrapKey JSONWebKeyOperation = original.UnwrapKey
@@ -120,6 +127,14 @@ const (
 	NonRepudiation   KeyUsageType = original.NonRepudiation
 )
 
+type OperationStatus = original.OperationStatus
+
+const (
+	Failed     OperationStatus = original.Failed
+	InProgress OperationStatus = original.InProgress
+	Success    OperationStatus = original.Success
+)
+
 type SasTokenType = original.SasTokenType
 
 const (
@@ -139,6 +154,7 @@ type CertificateAttributes = original.CertificateAttributes
 type CertificateBundle = original.CertificateBundle
 type CertificateCreateParameters = original.CertificateCreateParameters
 type CertificateImportParameters = original.CertificateImportParameters
+type CertificateInfoObject = original.CertificateInfoObject
 type CertificateIssuerItem = original.CertificateIssuerItem
 type CertificateIssuerListResult = original.CertificateIssuerListResult
 type CertificateIssuerListResultIterator = original.CertificateIssuerListResultIterator
@@ -182,18 +198,25 @@ type DeletedStorageBundle = original.DeletedStorageBundle
 type DeletedStorageListResult = original.DeletedStorageListResult
 type DeletedStorageListResultIterator = original.DeletedStorageListResultIterator
 type DeletedStorageListResultPage = original.DeletedStorageListResultPage
+type EncDataSet = original.EncDataSet
+type EncDataSetItem = original.EncDataSetItem
 type Error = original.Error
 type ErrorType = original.ErrorType
+type FullBackupFuture = original.FullBackupFuture
 type FullBackupOperation = original.FullBackupOperation
-type FullRestoreOperation = original.FullRestoreOperation
+type FullRestoreOperationFuture = original.FullRestoreOperationFuture
+type HSMSecurityDomainClient = original.HSMSecurityDomainClient
+type HSMSecurityDomainUploadFuture = original.HSMSecurityDomainUploadFuture
 type IssuerAttributes = original.IssuerAttributes
 type IssuerBundle = original.IssuerBundle
 type IssuerCredentials = original.IssuerCredentials
 type IssuerParameters = original.IssuerParameters
 type JSONWebKey = original.JSONWebKey
+type Key = original.Key
 type KeyAttributes = original.KeyAttributes
 type KeyBundle = original.KeyBundle
 type KeyCreateParameters = original.KeyCreateParameters
+type KeyExportParameters = original.KeyExportParameters
 type KeyImportParameters = original.KeyImportParameters
 type KeyItem = original.KeyItem
 type KeyListResult = original.KeyListResult
@@ -202,6 +225,7 @@ type KeyListResultPage = original.KeyListResultPage
 type KeyOperationResult = original.KeyOperationResult
 type KeyOperationsParameters = original.KeyOperationsParameters
 type KeyProperties = original.KeyProperties
+type KeyReleasePolicy = original.KeyReleasePolicy
 type KeyRestoreParameters = original.KeyRestoreParameters
 type KeySignParameters = original.KeySignParameters
 type KeyUpdateParameters = original.KeyUpdateParameters
@@ -211,6 +235,7 @@ type LifetimeAction = original.LifetimeAction
 type OrganizationDetails = original.OrganizationDetails
 type PendingCertificateSigningRequestResult = original.PendingCertificateSigningRequestResult
 type Permission = original.Permission
+type RestoreOperation = original.RestoreOperation
 type RestoreOperationParameters = original.RestoreOperationParameters
 type RoleAssignment = original.RoleAssignment
 type RoleAssignmentCreateParameters = original.RoleAssignmentCreateParameters
@@ -247,6 +272,18 @@ type SecretProperties = original.SecretProperties
 type SecretRestoreParameters = original.SecretRestoreParameters
 type SecretSetParameters = original.SecretSetParameters
 type SecretUpdateParameters = original.SecretUpdateParameters
+type SecurityDomainCertificateItem = original.SecurityDomainCertificateItem
+type SecurityDomainJSONWebKey = original.SecurityDomainJSONWebKey
+type SecurityDomainObject = original.SecurityDomainObject
+type SecurityDomainObjectData = original.SecurityDomainObjectData
+type SecurityDomainObjectDataSharedKeys = original.SecurityDomainObjectDataSharedKeys
+type SecurityDomainOperationStatus = original.SecurityDomainOperationStatus
+type SecurityDomainUploadObject = original.SecurityDomainUploadObject
+type SecurityDomainUploadObjectValue = original.SecurityDomainUploadObjectValue
+type SecurityDomainUploadObjectValueWrappedKey = original.SecurityDomainUploadObjectValueWrappedKey
+type SelectiveKeyRestoreOperation = original.SelectiveKeyRestoreOperation
+type SelectiveKeyRestoreOperationMethodFuture = original.SelectiveKeyRestoreOperationMethodFuture
+type SelectiveKeyRestoreOperationParameters = original.SelectiveKeyRestoreOperationParameters
 type StorageAccountAttributes = original.StorageAccountAttributes
 type StorageAccountCreateParameters = original.StorageAccountCreateParameters
 type StorageAccountItem = original.StorageAccountItem
@@ -258,6 +295,7 @@ type StorageListResultIterator = original.StorageListResultIterator
 type StorageListResultPage = original.StorageListResultPage
 type StorageRestoreParameters = original.StorageRestoreParameters
 type SubjectAlternativeNames = original.SubjectAlternativeNames
+type TransferKey = original.TransferKey
 type Trigger = original.Trigger
 type X509CertificateProperties = original.X509CertificateProperties
 
@@ -267,56 +305,59 @@ func New() BaseClient {
 func NewCertificateIssuerListResultIterator(page CertificateIssuerListResultPage) CertificateIssuerListResultIterator {
 	return original.NewCertificateIssuerListResultIterator(page)
 }
-func NewCertificateIssuerListResultPage(getNextPage func(context.Context, CertificateIssuerListResult) (CertificateIssuerListResult, error)) CertificateIssuerListResultPage {
-	return original.NewCertificateIssuerListResultPage(getNextPage)
+func NewCertificateIssuerListResultPage(cur CertificateIssuerListResult, getNextPage func(context.Context, CertificateIssuerListResult) (CertificateIssuerListResult, error)) CertificateIssuerListResultPage {
+	return original.NewCertificateIssuerListResultPage(cur, getNextPage)
 }
 func NewCertificateListResultIterator(page CertificateListResultPage) CertificateListResultIterator {
 	return original.NewCertificateListResultIterator(page)
 }
-func NewCertificateListResultPage(getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
-	return original.NewCertificateListResultPage(getNextPage)
+func NewCertificateListResultPage(cur CertificateListResult, getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
+	return original.NewCertificateListResultPage(cur, getNextPage)
 }
 func NewDeletedCertificateListResultIterator(page DeletedCertificateListResultPage) DeletedCertificateListResultIterator {
 	return original.NewDeletedCertificateListResultIterator(page)
 }
-func NewDeletedCertificateListResultPage(getNextPage func(context.Context, DeletedCertificateListResult) (DeletedCertificateListResult, error)) DeletedCertificateListResultPage {
-	return original.NewDeletedCertificateListResultPage(getNextPage)
+func NewDeletedCertificateListResultPage(cur DeletedCertificateListResult, getNextPage func(context.Context, DeletedCertificateListResult) (DeletedCertificateListResult, error)) DeletedCertificateListResultPage {
+	return original.NewDeletedCertificateListResultPage(cur, getNextPage)
 }
 func NewDeletedKeyListResultIterator(page DeletedKeyListResultPage) DeletedKeyListResultIterator {
 	return original.NewDeletedKeyListResultIterator(page)
 }
-func NewDeletedKeyListResultPage(getNextPage func(context.Context, DeletedKeyListResult) (DeletedKeyListResult, error)) DeletedKeyListResultPage {
-	return original.NewDeletedKeyListResultPage(getNextPage)
+func NewDeletedKeyListResultPage(cur DeletedKeyListResult, getNextPage func(context.Context, DeletedKeyListResult) (DeletedKeyListResult, error)) DeletedKeyListResultPage {
+	return original.NewDeletedKeyListResultPage(cur, getNextPage)
 }
 func NewDeletedSasDefinitionListResultIterator(page DeletedSasDefinitionListResultPage) DeletedSasDefinitionListResultIterator {
 	return original.NewDeletedSasDefinitionListResultIterator(page)
 }
-func NewDeletedSasDefinitionListResultPage(getNextPage func(context.Context, DeletedSasDefinitionListResult) (DeletedSasDefinitionListResult, error)) DeletedSasDefinitionListResultPage {
-	return original.NewDeletedSasDefinitionListResultPage(getNextPage)
+func NewDeletedSasDefinitionListResultPage(cur DeletedSasDefinitionListResult, getNextPage func(context.Context, DeletedSasDefinitionListResult) (DeletedSasDefinitionListResult, error)) DeletedSasDefinitionListResultPage {
+	return original.NewDeletedSasDefinitionListResultPage(cur, getNextPage)
 }
 func NewDeletedSecretListResultIterator(page DeletedSecretListResultPage) DeletedSecretListResultIterator {
 	return original.NewDeletedSecretListResultIterator(page)
 }
-func NewDeletedSecretListResultPage(getNextPage func(context.Context, DeletedSecretListResult) (DeletedSecretListResult, error)) DeletedSecretListResultPage {
-	return original.NewDeletedSecretListResultPage(getNextPage)
+func NewDeletedSecretListResultPage(cur DeletedSecretListResult, getNextPage func(context.Context, DeletedSecretListResult) (DeletedSecretListResult, error)) DeletedSecretListResultPage {
+	return original.NewDeletedSecretListResultPage(cur, getNextPage)
 }
 func NewDeletedStorageListResultIterator(page DeletedStorageListResultPage) DeletedStorageListResultIterator {
 	return original.NewDeletedStorageListResultIterator(page)
 }
-func NewDeletedStorageListResultPage(getNextPage func(context.Context, DeletedStorageListResult) (DeletedStorageListResult, error)) DeletedStorageListResultPage {
-	return original.NewDeletedStorageListResultPage(getNextPage)
+func NewDeletedStorageListResultPage(cur DeletedStorageListResult, getNextPage func(context.Context, DeletedStorageListResult) (DeletedStorageListResult, error)) DeletedStorageListResultPage {
+	return original.NewDeletedStorageListResultPage(cur, getNextPage)
+}
+func NewHSMSecurityDomainClient() HSMSecurityDomainClient {
+	return original.NewHSMSecurityDomainClient()
 }
 func NewKeyListResultIterator(page KeyListResultPage) KeyListResultIterator {
 	return original.NewKeyListResultIterator(page)
 }
-func NewKeyListResultPage(getNextPage func(context.Context, KeyListResult) (KeyListResult, error)) KeyListResultPage {
-	return original.NewKeyListResultPage(getNextPage)
+func NewKeyListResultPage(cur KeyListResult, getNextPage func(context.Context, KeyListResult) (KeyListResult, error)) KeyListResultPage {
+	return original.NewKeyListResultPage(cur, getNextPage)
 }
 func NewRoleAssignmentListResultIterator(page RoleAssignmentListResultPage) RoleAssignmentListResultIterator {
 	return original.NewRoleAssignmentListResultIterator(page)
 }
-func NewRoleAssignmentListResultPage(getNextPage func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)) RoleAssignmentListResultPage {
-	return original.NewRoleAssignmentListResultPage(getNextPage)
+func NewRoleAssignmentListResultPage(cur RoleAssignmentListResult, getNextPage func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)) RoleAssignmentListResultPage {
+	return original.NewRoleAssignmentListResultPage(cur, getNextPage)
 }
 func NewRoleAssignmentsClient() RoleAssignmentsClient {
 	return original.NewRoleAssignmentsClient()
@@ -324,8 +365,8 @@ func NewRoleAssignmentsClient() RoleAssignmentsClient {
 func NewRoleDefinitionListResultIterator(page RoleDefinitionListResultPage) RoleDefinitionListResultIterator {
 	return original.NewRoleDefinitionListResultIterator(page)
 }
-func NewRoleDefinitionListResultPage(getNextPage func(context.Context, RoleDefinitionListResult) (RoleDefinitionListResult, error)) RoleDefinitionListResultPage {
-	return original.NewRoleDefinitionListResultPage(getNextPage)
+func NewRoleDefinitionListResultPage(cur RoleDefinitionListResult, getNextPage func(context.Context, RoleDefinitionListResult) (RoleDefinitionListResult, error)) RoleDefinitionListResultPage {
+	return original.NewRoleDefinitionListResultPage(cur, getNextPage)
 }
 func NewRoleDefinitionsClient() RoleDefinitionsClient {
 	return original.NewRoleDefinitionsClient()
@@ -333,20 +374,20 @@ func NewRoleDefinitionsClient() RoleDefinitionsClient {
 func NewSasDefinitionListResultIterator(page SasDefinitionListResultPage) SasDefinitionListResultIterator {
 	return original.NewSasDefinitionListResultIterator(page)
 }
-func NewSasDefinitionListResultPage(getNextPage func(context.Context, SasDefinitionListResult) (SasDefinitionListResult, error)) SasDefinitionListResultPage {
-	return original.NewSasDefinitionListResultPage(getNextPage)
+func NewSasDefinitionListResultPage(cur SasDefinitionListResult, getNextPage func(context.Context, SasDefinitionListResult) (SasDefinitionListResult, error)) SasDefinitionListResultPage {
+	return original.NewSasDefinitionListResultPage(cur, getNextPage)
 }
 func NewSecretListResultIterator(page SecretListResultPage) SecretListResultIterator {
 	return original.NewSecretListResultIterator(page)
 }
-func NewSecretListResultPage(getNextPage func(context.Context, SecretListResult) (SecretListResult, error)) SecretListResultPage {
-	return original.NewSecretListResultPage(getNextPage)
+func NewSecretListResultPage(cur SecretListResult, getNextPage func(context.Context, SecretListResult) (SecretListResult, error)) SecretListResultPage {
+	return original.NewSecretListResultPage(cur, getNextPage)
 }
 func NewStorageListResultIterator(page StorageListResultPage) StorageListResultIterator {
 	return original.NewStorageListResultIterator(page)
 }
-func NewStorageListResultPage(getNextPage func(context.Context, StorageListResult) (StorageListResult, error)) StorageListResultPage {
-	return original.NewStorageListResultPage(getNextPage)
+func NewStorageListResultPage(cur StorageListResult, getNextPage func(context.Context, StorageListResult) (StorageListResult, error)) StorageListResultPage {
+	return original.NewStorageListResultPage(cur, getNextPage)
 }
 func NewWithoutDefaults() BaseClient {
 	return original.NewWithoutDefaults()
@@ -374,6 +415,9 @@ func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
 }
 func PossibleKeyUsageTypeValues() []KeyUsageType {
 	return original.PossibleKeyUsageTypeValues()
+}
+func PossibleOperationStatusValues() []OperationStatus {
+	return original.PossibleOperationStatusValues()
 }
 func PossibleSasTokenTypeValues() []SasTokenType {
 	return original.PossibleSasTokenTypeValues()

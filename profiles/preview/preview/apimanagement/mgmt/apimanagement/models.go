@@ -834,8 +834,8 @@ func NewAPIClientWithBaseURI(baseURI string, subscriptionID string) APIClient {
 func NewAPICollectionIterator(page APICollectionPage) APICollectionIterator {
 	return original.NewAPICollectionIterator(page)
 }
-func NewAPICollectionPage(getNextPage func(context.Context, APICollection) (APICollection, error)) APICollectionPage {
-	return original.NewAPICollectionPage(getNextPage)
+func NewAPICollectionPage(cur APICollection, getNextPage func(context.Context, APICollection) (APICollection, error)) APICollectionPage {
+	return original.NewAPICollectionPage(cur, getNextPage)
 }
 func NewAPIDiagnosticClient(subscriptionID string) APIDiagnosticClient {
 	return original.NewAPIDiagnosticClient(subscriptionID)
@@ -900,8 +900,8 @@ func NewAPIReleaseClientWithBaseURI(baseURI string, subscriptionID string) APIRe
 func NewAPIReleaseCollectionIterator(page APIReleaseCollectionPage) APIReleaseCollectionIterator {
 	return original.NewAPIReleaseCollectionIterator(page)
 }
-func NewAPIReleaseCollectionPage(getNextPage func(context.Context, APIReleaseCollection) (APIReleaseCollection, error)) APIReleaseCollectionPage {
-	return original.NewAPIReleaseCollectionPage(getNextPage)
+func NewAPIReleaseCollectionPage(cur APIReleaseCollection, getNextPage func(context.Context, APIReleaseCollection) (APIReleaseCollection, error)) APIReleaseCollectionPage {
+	return original.NewAPIReleaseCollectionPage(cur, getNextPage)
 }
 func NewAPIRevisionClient(subscriptionID string) APIRevisionClient {
 	return original.NewAPIRevisionClient(subscriptionID)
@@ -912,8 +912,8 @@ func NewAPIRevisionClientWithBaseURI(baseURI string, subscriptionID string) APIR
 func NewAPIRevisionCollectionIterator(page APIRevisionCollectionPage) APIRevisionCollectionIterator {
 	return original.NewAPIRevisionCollectionIterator(page)
 }
-func NewAPIRevisionCollectionPage(getNextPage func(context.Context, APIRevisionCollection) (APIRevisionCollection, error)) APIRevisionCollectionPage {
-	return original.NewAPIRevisionCollectionPage(getNextPage)
+func NewAPIRevisionCollectionPage(cur APIRevisionCollection, getNextPage func(context.Context, APIRevisionCollection) (APIRevisionCollection, error)) APIRevisionCollectionPage {
+	return original.NewAPIRevisionCollectionPage(cur, getNextPage)
 }
 func NewAPISchemaClient(subscriptionID string) APISchemaClient {
 	return original.NewAPISchemaClient(subscriptionID)
@@ -936,8 +936,8 @@ func NewAPIVersionSetClientWithBaseURI(baseURI string, subscriptionID string) AP
 func NewAPIVersionSetCollectionIterator(page APIVersionSetCollectionPage) APIVersionSetCollectionIterator {
 	return original.NewAPIVersionSetCollectionIterator(page)
 }
-func NewAPIVersionSetCollectionPage(getNextPage func(context.Context, APIVersionSetCollection) (APIVersionSetCollection, error)) APIVersionSetCollectionPage {
-	return original.NewAPIVersionSetCollectionPage(getNextPage)
+func NewAPIVersionSetCollectionPage(cur APIVersionSetCollection, getNextPage func(context.Context, APIVersionSetCollection) (APIVersionSetCollection, error)) APIVersionSetCollectionPage {
+	return original.NewAPIVersionSetCollectionPage(cur, getNextPage)
 }
 func NewAuthorizationServerClient(subscriptionID string) AuthorizationServerClient {
 	return original.NewAuthorizationServerClient(subscriptionID)
@@ -948,8 +948,8 @@ func NewAuthorizationServerClientWithBaseURI(baseURI string, subscriptionID stri
 func NewAuthorizationServerCollectionIterator(page AuthorizationServerCollectionPage) AuthorizationServerCollectionIterator {
 	return original.NewAuthorizationServerCollectionIterator(page)
 }
-func NewAuthorizationServerCollectionPage(getNextPage func(context.Context, AuthorizationServerCollection) (AuthorizationServerCollection, error)) AuthorizationServerCollectionPage {
-	return original.NewAuthorizationServerCollectionPage(getNextPage)
+func NewAuthorizationServerCollectionPage(cur AuthorizationServerCollection, getNextPage func(context.Context, AuthorizationServerCollection) (AuthorizationServerCollection, error)) AuthorizationServerCollectionPage {
+	return original.NewAuthorizationServerCollectionPage(cur, getNextPage)
 }
 func NewBackendClient(subscriptionID string) BackendClient {
 	return original.NewBackendClient(subscriptionID)
@@ -960,8 +960,8 @@ func NewBackendClientWithBaseURI(baseURI string, subscriptionID string) BackendC
 func NewBackendCollectionIterator(page BackendCollectionPage) BackendCollectionIterator {
 	return original.NewBackendCollectionIterator(page)
 }
-func NewBackendCollectionPage(getNextPage func(context.Context, BackendCollection) (BackendCollection, error)) BackendCollectionPage {
-	return original.NewBackendCollectionPage(getNextPage)
+func NewBackendCollectionPage(cur BackendCollection, getNextPage func(context.Context, BackendCollection) (BackendCollection, error)) BackendCollectionPage {
+	return original.NewBackendCollectionPage(cur, getNextPage)
 }
 func NewCacheClient(subscriptionID string) CacheClient {
 	return original.NewCacheClient(subscriptionID)
@@ -972,8 +972,8 @@ func NewCacheClientWithBaseURI(baseURI string, subscriptionID string) CacheClien
 func NewCacheCollectionIterator(page CacheCollectionPage) CacheCollectionIterator {
 	return original.NewCacheCollectionIterator(page)
 }
-func NewCacheCollectionPage(getNextPage func(context.Context, CacheCollection) (CacheCollection, error)) CacheCollectionPage {
-	return original.NewCacheCollectionPage(getNextPage)
+func NewCacheCollectionPage(cur CacheCollection, getNextPage func(context.Context, CacheCollection) (CacheCollection, error)) CacheCollectionPage {
+	return original.NewCacheCollectionPage(cur, getNextPage)
 }
 func NewCertificateClient(subscriptionID string) CertificateClient {
 	return original.NewCertificateClient(subscriptionID)
@@ -984,8 +984,8 @@ func NewCertificateClientWithBaseURI(baseURI string, subscriptionID string) Cert
 func NewCertificateCollectionIterator(page CertificateCollectionPage) CertificateCollectionIterator {
 	return original.NewCertificateCollectionIterator(page)
 }
-func NewCertificateCollectionPage(getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
-	return original.NewCertificateCollectionPage(getNextPage)
+func NewCertificateCollectionPage(cur CertificateCollection, getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
+	return original.NewCertificateCollectionPage(cur, getNextPage)
 }
 func NewDelegationSettingsClient(subscriptionID string) DelegationSettingsClient {
 	return original.NewDelegationSettingsClient(subscriptionID)
@@ -1002,8 +1002,8 @@ func NewDiagnosticClientWithBaseURI(baseURI string, subscriptionID string) Diagn
 func NewDiagnosticCollectionIterator(page DiagnosticCollectionPage) DiagnosticCollectionIterator {
 	return original.NewDiagnosticCollectionIterator(page)
 }
-func NewDiagnosticCollectionPage(getNextPage func(context.Context, DiagnosticCollection) (DiagnosticCollection, error)) DiagnosticCollectionPage {
-	return original.NewDiagnosticCollectionPage(getNextPage)
+func NewDiagnosticCollectionPage(cur DiagnosticCollection, getNextPage func(context.Context, DiagnosticCollection) (DiagnosticCollection, error)) DiagnosticCollectionPage {
+	return original.NewDiagnosticCollectionPage(cur, getNextPage)
 }
 func NewEmailTemplateClient(subscriptionID string) EmailTemplateClient {
 	return original.NewEmailTemplateClient(subscriptionID)
@@ -1014,8 +1014,8 @@ func NewEmailTemplateClientWithBaseURI(baseURI string, subscriptionID string) Em
 func NewEmailTemplateCollectionIterator(page EmailTemplateCollectionPage) EmailTemplateCollectionIterator {
 	return original.NewEmailTemplateCollectionIterator(page)
 }
-func NewEmailTemplateCollectionPage(getNextPage func(context.Context, EmailTemplateCollection) (EmailTemplateCollection, error)) EmailTemplateCollectionPage {
-	return original.NewEmailTemplateCollectionPage(getNextPage)
+func NewEmailTemplateCollectionPage(cur EmailTemplateCollection, getNextPage func(context.Context, EmailTemplateCollection) (EmailTemplateCollection, error)) EmailTemplateCollectionPage {
+	return original.NewEmailTemplateCollectionPage(cur, getNextPage)
 }
 func NewGatewayAPIClient(subscriptionID string) GatewayAPIClient {
 	return original.NewGatewayAPIClient(subscriptionID)
@@ -1032,8 +1032,8 @@ func NewGatewayClientWithBaseURI(baseURI string, subscriptionID string) GatewayC
 func NewGatewayCollectionIterator(page GatewayCollectionPage) GatewayCollectionIterator {
 	return original.NewGatewayCollectionIterator(page)
 }
-func NewGatewayCollectionPage(getNextPage func(context.Context, GatewayCollection) (GatewayCollection, error)) GatewayCollectionPage {
-	return original.NewGatewayCollectionPage(getNextPage)
+func NewGatewayCollectionPage(cur GatewayCollection, getNextPage func(context.Context, GatewayCollection) (GatewayCollection, error)) GatewayCollectionPage {
+	return original.NewGatewayCollectionPage(cur, getNextPage)
 }
 func NewGatewayHostnameConfigurationClient(subscriptionID string) GatewayHostnameConfigurationClient {
 	return original.NewGatewayHostnameConfigurationClient(subscriptionID)
@@ -1044,8 +1044,8 @@ func NewGatewayHostnameConfigurationClientWithBaseURI(baseURI string, subscripti
 func NewGatewayHostnameConfigurationCollectionIterator(page GatewayHostnameConfigurationCollectionPage) GatewayHostnameConfigurationCollectionIterator {
 	return original.NewGatewayHostnameConfigurationCollectionIterator(page)
 }
-func NewGatewayHostnameConfigurationCollectionPage(getNextPage func(context.Context, GatewayHostnameConfigurationCollection) (GatewayHostnameConfigurationCollection, error)) GatewayHostnameConfigurationCollectionPage {
-	return original.NewGatewayHostnameConfigurationCollectionPage(getNextPage)
+func NewGatewayHostnameConfigurationCollectionPage(cur GatewayHostnameConfigurationCollection, getNextPage func(context.Context, GatewayHostnameConfigurationCollection) (GatewayHostnameConfigurationCollection, error)) GatewayHostnameConfigurationCollectionPage {
+	return original.NewGatewayHostnameConfigurationCollectionPage(cur, getNextPage)
 }
 func NewGroupClient(subscriptionID string) GroupClient {
 	return original.NewGroupClient(subscriptionID)
@@ -1056,8 +1056,8 @@ func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClien
 func NewGroupCollectionIterator(page GroupCollectionPage) GroupCollectionIterator {
 	return original.NewGroupCollectionIterator(page)
 }
-func NewGroupCollectionPage(getNextPage func(context.Context, GroupCollection) (GroupCollection, error)) GroupCollectionPage {
-	return original.NewGroupCollectionPage(getNextPage)
+func NewGroupCollectionPage(cur GroupCollection, getNextPage func(context.Context, GroupCollection) (GroupCollection, error)) GroupCollectionPage {
+	return original.NewGroupCollectionPage(cur, getNextPage)
 }
 func NewGroupUserClient(subscriptionID string) GroupUserClient {
 	return original.NewGroupUserClient(subscriptionID)
@@ -1074,14 +1074,14 @@ func NewIdentityProviderClientWithBaseURI(baseURI string, subscriptionID string)
 func NewIdentityProviderListIterator(page IdentityProviderListPage) IdentityProviderListIterator {
 	return original.NewIdentityProviderListIterator(page)
 }
-func NewIdentityProviderListPage(getNextPage func(context.Context, IdentityProviderList) (IdentityProviderList, error)) IdentityProviderListPage {
-	return original.NewIdentityProviderListPage(getNextPage)
+func NewIdentityProviderListPage(cur IdentityProviderList, getNextPage func(context.Context, IdentityProviderList) (IdentityProviderList, error)) IdentityProviderListPage {
+	return original.NewIdentityProviderListPage(cur, getNextPage)
 }
 func NewIssueAttachmentCollectionIterator(page IssueAttachmentCollectionPage) IssueAttachmentCollectionIterator {
 	return original.NewIssueAttachmentCollectionIterator(page)
 }
-func NewIssueAttachmentCollectionPage(getNextPage func(context.Context, IssueAttachmentCollection) (IssueAttachmentCollection, error)) IssueAttachmentCollectionPage {
-	return original.NewIssueAttachmentCollectionPage(getNextPage)
+func NewIssueAttachmentCollectionPage(cur IssueAttachmentCollection, getNextPage func(context.Context, IssueAttachmentCollection) (IssueAttachmentCollection, error)) IssueAttachmentCollectionPage {
+	return original.NewIssueAttachmentCollectionPage(cur, getNextPage)
 }
 func NewIssueClient(subscriptionID string) IssueClient {
 	return original.NewIssueClient(subscriptionID)
@@ -1092,14 +1092,14 @@ func NewIssueClientWithBaseURI(baseURI string, subscriptionID string) IssueClien
 func NewIssueCollectionIterator(page IssueCollectionPage) IssueCollectionIterator {
 	return original.NewIssueCollectionIterator(page)
 }
-func NewIssueCollectionPage(getNextPage func(context.Context, IssueCollection) (IssueCollection, error)) IssueCollectionPage {
-	return original.NewIssueCollectionPage(getNextPage)
+func NewIssueCollectionPage(cur IssueCollection, getNextPage func(context.Context, IssueCollection) (IssueCollection, error)) IssueCollectionPage {
+	return original.NewIssueCollectionPage(cur, getNextPage)
 }
 func NewIssueCommentCollectionIterator(page IssueCommentCollectionPage) IssueCommentCollectionIterator {
 	return original.NewIssueCommentCollectionIterator(page)
 }
-func NewIssueCommentCollectionPage(getNextPage func(context.Context, IssueCommentCollection) (IssueCommentCollection, error)) IssueCommentCollectionPage {
-	return original.NewIssueCommentCollectionPage(getNextPage)
+func NewIssueCommentCollectionPage(cur IssueCommentCollection, getNextPage func(context.Context, IssueCommentCollection) (IssueCommentCollection, error)) IssueCommentCollectionPage {
+	return original.NewIssueCommentCollectionPage(cur, getNextPage)
 }
 func NewLoggerClient(subscriptionID string) LoggerClient {
 	return original.NewLoggerClient(subscriptionID)
@@ -1110,8 +1110,8 @@ func NewLoggerClientWithBaseURI(baseURI string, subscriptionID string) LoggerCli
 func NewLoggerCollectionIterator(page LoggerCollectionPage) LoggerCollectionIterator {
 	return original.NewLoggerCollectionIterator(page)
 }
-func NewLoggerCollectionPage(getNextPage func(context.Context, LoggerCollection) (LoggerCollection, error)) LoggerCollectionPage {
-	return original.NewLoggerCollectionPage(getNextPage)
+func NewLoggerCollectionPage(cur LoggerCollection, getNextPage func(context.Context, LoggerCollection) (LoggerCollection, error)) LoggerCollectionPage {
+	return original.NewLoggerCollectionPage(cur, getNextPage)
 }
 func NewNamedValueClient(subscriptionID string) NamedValueClient {
 	return original.NewNamedValueClient(subscriptionID)
@@ -1122,8 +1122,8 @@ func NewNamedValueClientWithBaseURI(baseURI string, subscriptionID string) Named
 func NewNamedValueCollectionIterator(page NamedValueCollectionPage) NamedValueCollectionIterator {
 	return original.NewNamedValueCollectionIterator(page)
 }
-func NewNamedValueCollectionPage(getNextPage func(context.Context, NamedValueCollection) (NamedValueCollection, error)) NamedValueCollectionPage {
-	return original.NewNamedValueCollectionPage(getNextPage)
+func NewNamedValueCollectionPage(cur NamedValueCollection, getNextPage func(context.Context, NamedValueCollection) (NamedValueCollection, error)) NamedValueCollectionPage {
+	return original.NewNamedValueCollectionPage(cur, getNextPage)
 }
 func NewNetworkStatusClient(subscriptionID string) NetworkStatusClient {
 	return original.NewNetworkStatusClient(subscriptionID)
@@ -1140,8 +1140,8 @@ func NewNotificationClientWithBaseURI(baseURI string, subscriptionID string) Not
 func NewNotificationCollectionIterator(page NotificationCollectionPage) NotificationCollectionIterator {
 	return original.NewNotificationCollectionIterator(page)
 }
-func NewNotificationCollectionPage(getNextPage func(context.Context, NotificationCollection) (NotificationCollection, error)) NotificationCollectionPage {
-	return original.NewNotificationCollectionPage(getNextPage)
+func NewNotificationCollectionPage(cur NotificationCollection, getNextPage func(context.Context, NotificationCollection) (NotificationCollection, error)) NotificationCollectionPage {
+	return original.NewNotificationCollectionPage(cur, getNextPage)
 }
 func NewNotificationRecipientEmailClient(subscriptionID string) NotificationRecipientEmailClient {
 	return original.NewNotificationRecipientEmailClient(subscriptionID)
@@ -1164,8 +1164,8 @@ func NewOpenIDConnectProviderClientWithBaseURI(baseURI string, subscriptionID st
 func NewOpenIDConnectProviderCollectionIterator(page OpenIDConnectProviderCollectionPage) OpenIDConnectProviderCollectionIterator {
 	return original.NewOpenIDConnectProviderCollectionIterator(page)
 }
-func NewOpenIDConnectProviderCollectionPage(getNextPage func(context.Context, OpenIDConnectProviderCollection) (OpenIDConnectProviderCollection, error)) OpenIDConnectProviderCollectionPage {
-	return original.NewOpenIDConnectProviderCollectionPage(getNextPage)
+func NewOpenIDConnectProviderCollectionPage(cur OpenIDConnectProviderCollection, getNextPage func(context.Context, OpenIDConnectProviderCollection) (OpenIDConnectProviderCollection, error)) OpenIDConnectProviderCollectionPage {
+	return original.NewOpenIDConnectProviderCollectionPage(cur, getNextPage)
 }
 func NewOperationClient(subscriptionID string) OperationClient {
 	return original.NewOperationClient(subscriptionID)
@@ -1176,14 +1176,14 @@ func NewOperationClientWithBaseURI(baseURI string, subscriptionID string) Operat
 func NewOperationCollectionIterator(page OperationCollectionPage) OperationCollectionIterator {
 	return original.NewOperationCollectionIterator(page)
 }
-func NewOperationCollectionPage(getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
-	return original.NewOperationCollectionPage(getNextPage)
+func NewOperationCollectionPage(cur OperationCollection, getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
+	return original.NewOperationCollectionPage(cur, getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -1218,8 +1218,8 @@ func NewProductClientWithBaseURI(baseURI string, subscriptionID string) ProductC
 func NewProductCollectionIterator(page ProductCollectionPage) ProductCollectionIterator {
 	return original.NewProductCollectionIterator(page)
 }
-func NewProductCollectionPage(getNextPage func(context.Context, ProductCollection) (ProductCollection, error)) ProductCollectionPage {
-	return original.NewProductCollectionPage(getNextPage)
+func NewProductCollectionPage(cur ProductCollection, getNextPage func(context.Context, ProductCollection) (ProductCollection, error)) ProductCollectionPage {
+	return original.NewProductCollectionPage(cur, getNextPage)
 }
 func NewProductGroupClient(subscriptionID string) ProductGroupClient {
 	return original.NewProductGroupClient(subscriptionID)
@@ -1260,14 +1260,14 @@ func NewRegionClientWithBaseURI(baseURI string, subscriptionID string) RegionCli
 func NewRegionListResultIterator(page RegionListResultPage) RegionListResultIterator {
 	return original.NewRegionListResultIterator(page)
 }
-func NewRegionListResultPage(getNextPage func(context.Context, RegionListResult) (RegionListResult, error)) RegionListResultPage {
-	return original.NewRegionListResultPage(getNextPage)
+func NewRegionListResultPage(cur RegionListResult, getNextPage func(context.Context, RegionListResult) (RegionListResult, error)) RegionListResultPage {
+	return original.NewRegionListResultPage(cur, getNextPage)
 }
 func NewReportCollectionIterator(page ReportCollectionPage) ReportCollectionIterator {
 	return original.NewReportCollectionIterator(page)
 }
-func NewReportCollectionPage(getNextPage func(context.Context, ReportCollection) (ReportCollection, error)) ReportCollectionPage {
-	return original.NewReportCollectionPage(getNextPage)
+func NewReportCollectionPage(cur ReportCollection, getNextPage func(context.Context, ReportCollection) (ReportCollection, error)) ReportCollectionPage {
+	return original.NewReportCollectionPage(cur, getNextPage)
 }
 func NewReportsClient(subscriptionID string) ReportsClient {
 	return original.NewReportsClient(subscriptionID)
@@ -1278,14 +1278,14 @@ func NewReportsClientWithBaseURI(baseURI string, subscriptionID string) ReportsC
 func NewResourceSkuResultsIterator(page ResourceSkuResultsPage) ResourceSkuResultsIterator {
 	return original.NewResourceSkuResultsIterator(page)
 }
-func NewResourceSkuResultsPage(getNextPage func(context.Context, ResourceSkuResults) (ResourceSkuResults, error)) ResourceSkuResultsPage {
-	return original.NewResourceSkuResultsPage(getNextPage)
+func NewResourceSkuResultsPage(cur ResourceSkuResults, getNextPage func(context.Context, ResourceSkuResults) (ResourceSkuResults, error)) ResourceSkuResultsPage {
+	return original.NewResourceSkuResultsPage(cur, getNextPage)
 }
 func NewSchemaCollectionIterator(page SchemaCollectionPage) SchemaCollectionIterator {
 	return original.NewSchemaCollectionIterator(page)
 }
-func NewSchemaCollectionPage(getNextPage func(context.Context, SchemaCollection) (SchemaCollection, error)) SchemaCollectionPage {
-	return original.NewSchemaCollectionPage(getNextPage)
+func NewSchemaCollectionPage(cur SchemaCollection, getNextPage func(context.Context, SchemaCollection) (SchemaCollection, error)) SchemaCollectionPage {
+	return original.NewSchemaCollectionPage(cur, getNextPage)
 }
 func NewServiceClient(subscriptionID string) ServiceClient {
 	return original.NewServiceClient(subscriptionID)
@@ -1296,8 +1296,8 @@ func NewServiceClientWithBaseURI(baseURI string, subscriptionID string) ServiceC
 func NewServiceListResultIterator(page ServiceListResultPage) ServiceListResultIterator {
 	return original.NewServiceListResultIterator(page)
 }
-func NewServiceListResultPage(getNextPage func(context.Context, ServiceListResult) (ServiceListResult, error)) ServiceListResultPage {
-	return original.NewServiceListResultPage(getNextPage)
+func NewServiceListResultPage(cur ServiceListResult, getNextPage func(context.Context, ServiceListResult) (ServiceListResult, error)) ServiceListResultPage {
+	return original.NewServiceListResultPage(cur, getNextPage)
 }
 func NewServiceSkusClient(subscriptionID string) ServiceSkusClient {
 	return original.NewServiceSkusClient(subscriptionID)
@@ -1326,8 +1326,8 @@ func NewSubscriptionClientWithBaseURI(baseURI string, subscriptionID string) Sub
 func NewSubscriptionCollectionIterator(page SubscriptionCollectionPage) SubscriptionCollectionIterator {
 	return original.NewSubscriptionCollectionIterator(page)
 }
-func NewSubscriptionCollectionPage(getNextPage func(context.Context, SubscriptionCollection) (SubscriptionCollection, error)) SubscriptionCollectionPage {
-	return original.NewSubscriptionCollectionPage(getNextPage)
+func NewSubscriptionCollectionPage(cur SubscriptionCollection, getNextPage func(context.Context, SubscriptionCollection) (SubscriptionCollection, error)) SubscriptionCollectionPage {
+	return original.NewSubscriptionCollectionPage(cur, getNextPage)
 }
 func NewTagClient(subscriptionID string) TagClient {
 	return original.NewTagClient(subscriptionID)
@@ -1338,14 +1338,14 @@ func NewTagClientWithBaseURI(baseURI string, subscriptionID string) TagClient {
 func NewTagCollectionIterator(page TagCollectionPage) TagCollectionIterator {
 	return original.NewTagCollectionIterator(page)
 }
-func NewTagCollectionPage(getNextPage func(context.Context, TagCollection) (TagCollection, error)) TagCollectionPage {
-	return original.NewTagCollectionPage(getNextPage)
+func NewTagCollectionPage(cur TagCollection, getNextPage func(context.Context, TagCollection) (TagCollection, error)) TagCollectionPage {
+	return original.NewTagCollectionPage(cur, getNextPage)
 }
 func NewTagDescriptionCollectionIterator(page TagDescriptionCollectionPage) TagDescriptionCollectionIterator {
 	return original.NewTagDescriptionCollectionIterator(page)
 }
-func NewTagDescriptionCollectionPage(getNextPage func(context.Context, TagDescriptionCollection) (TagDescriptionCollection, error)) TagDescriptionCollectionPage {
-	return original.NewTagDescriptionCollectionPage(getNextPage)
+func NewTagDescriptionCollectionPage(cur TagDescriptionCollection, getNextPage func(context.Context, TagDescriptionCollection) (TagDescriptionCollection, error)) TagDescriptionCollectionPage {
+	return original.NewTagDescriptionCollectionPage(cur, getNextPage)
 }
 func NewTagResourceClient(subscriptionID string) TagResourceClient {
 	return original.NewTagResourceClient(subscriptionID)
@@ -1356,8 +1356,8 @@ func NewTagResourceClientWithBaseURI(baseURI string, subscriptionID string) TagR
 func NewTagResourceCollectionIterator(page TagResourceCollectionPage) TagResourceCollectionIterator {
 	return original.NewTagResourceCollectionIterator(page)
 }
-func NewTagResourceCollectionPage(getNextPage func(context.Context, TagResourceCollection) (TagResourceCollection, error)) TagResourceCollectionPage {
-	return original.NewTagResourceCollectionPage(getNextPage)
+func NewTagResourceCollectionPage(cur TagResourceCollection, getNextPage func(context.Context, TagResourceCollection) (TagResourceCollection, error)) TagResourceCollectionPage {
+	return original.NewTagResourceCollectionPage(cur, getNextPage)
 }
 func NewTenantAccessClient(subscriptionID string) TenantAccessClient {
 	return original.NewTenantAccessClient(subscriptionID)
@@ -1386,8 +1386,8 @@ func NewUserClientWithBaseURI(baseURI string, subscriptionID string) UserClient 
 func NewUserCollectionIterator(page UserCollectionPage) UserCollectionIterator {
 	return original.NewUserCollectionIterator(page)
 }
-func NewUserCollectionPage(getNextPage func(context.Context, UserCollection) (UserCollection, error)) UserCollectionPage {
-	return original.NewUserCollectionPage(getNextPage)
+func NewUserCollectionPage(cur UserCollection, getNextPage func(context.Context, UserCollection) (UserCollection, error)) UserCollectionPage {
+	return original.NewUserCollectionPage(cur, getNextPage)
 }
 func NewUserConfirmationPasswordClient(subscriptionID string) UserConfirmationPasswordClient {
 	return original.NewUserConfirmationPasswordClient(subscriptionID)
@@ -1410,8 +1410,8 @@ func NewUserIdentitiesClientWithBaseURI(baseURI string, subscriptionID string) U
 func NewUserIdentityCollectionIterator(page UserIdentityCollectionPage) UserIdentityCollectionIterator {
 	return original.NewUserIdentityCollectionIterator(page)
 }
-func NewUserIdentityCollectionPage(getNextPage func(context.Context, UserIdentityCollection) (UserIdentityCollection, error)) UserIdentityCollectionPage {
-	return original.NewUserIdentityCollectionPage(getNextPage)
+func NewUserIdentityCollectionPage(cur UserIdentityCollection, getNextPage func(context.Context, UserIdentityCollection) (UserIdentityCollection, error)) UserIdentityCollectionPage {
+	return original.NewUserIdentityCollectionPage(cur, getNextPage)
 }
 func NewUserSubscriptionClient(subscriptionID string) UserSubscriptionClient {
 	return original.NewUserSubscriptionClient(subscriptionID)

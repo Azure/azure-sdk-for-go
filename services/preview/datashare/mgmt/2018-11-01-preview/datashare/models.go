@@ -298,8 +298,11 @@ func (page AccountListPage) Values() []Account {
 }
 
 // Creates a new instance of the AccountListPage type.
-func NewAccountListPage(getNextPage func(context.Context, AccountList) (AccountList, error)) AccountListPage {
-	return AccountListPage{fn: getNextPage}
+func NewAccountListPage(cur AccountList, getNextPage func(context.Context, AccountList) (AccountList, error)) AccountListPage {
+	return AccountListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // AccountProperties account property bag.
@@ -314,7 +317,8 @@ type AccountProperties struct {
 	UserName *string `json:"userName,omitempty"`
 }
 
-// AccountsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// AccountsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AccountsCreateFuture struct {
 	azure.Future
 }
@@ -342,7 +346,8 @@ func (future *AccountsCreateFuture) Result(client AccountsClient) (a Account, er
 	return
 }
 
-// AccountsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// AccountsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AccountsDeleteFuture struct {
 	azure.Future
 }
@@ -3293,8 +3298,11 @@ func (page ConsumerInvitationListPage) Values() []ConsumerInvitation {
 }
 
 // Creates a new instance of the ConsumerInvitationListPage type.
-func NewConsumerInvitationListPage(getNextPage func(context.Context, ConsumerInvitationList) (ConsumerInvitationList, error)) ConsumerInvitationListPage {
-	return ConsumerInvitationListPage{fn: getNextPage}
+func NewConsumerInvitationListPage(cur ConsumerInvitationList, getNextPage func(context.Context, ConsumerInvitationList) (ConsumerInvitationList, error)) ConsumerInvitationListPage {
+	return ConsumerInvitationListPage{
+		fn:  getNextPage,
+		cil: cur,
+	}
 }
 
 // ConsumerInvitationProperties properties of consumer invitation
@@ -3562,8 +3570,11 @@ func (page ConsumerSourceDataSetListPage) Values() []ConsumerSourceDataSet {
 }
 
 // Creates a new instance of the ConsumerSourceDataSetListPage type.
-func NewConsumerSourceDataSetListPage(getNextPage func(context.Context, ConsumerSourceDataSetList) (ConsumerSourceDataSetList, error)) ConsumerSourceDataSetListPage {
-	return ConsumerSourceDataSetListPage{fn: getNextPage}
+func NewConsumerSourceDataSetListPage(cur ConsumerSourceDataSetList, getNextPage func(context.Context, ConsumerSourceDataSetList) (ConsumerSourceDataSetList, error)) ConsumerSourceDataSetListPage {
+	return ConsumerSourceDataSetListPage{
+		fn:    getNextPage,
+		csdsl: cur,
+	}
 }
 
 // ConsumerSourceDataSetProperties properties of consumer source dataSet
@@ -3955,8 +3966,11 @@ func (page DataSetListPage) Values() []BasicDataSet {
 }
 
 // Creates a new instance of the DataSetListPage type.
-func NewDataSetListPage(getNextPage func(context.Context, DataSetList) (DataSetList, error)) DataSetListPage {
-	return DataSetListPage{fn: getNextPage}
+func NewDataSetListPage(cur DataSetList, getNextPage func(context.Context, DataSetList) (DataSetList, error)) DataSetListPage {
+	return DataSetListPage{
+		fn:  getNextPage,
+		dsl: cur,
+	}
 }
 
 // BasicDataSetMapping a data set mapping data transfer object.
@@ -4314,8 +4328,11 @@ func (page DataSetMappingListPage) Values() []BasicDataSetMapping {
 }
 
 // Creates a new instance of the DataSetMappingListPage type.
-func NewDataSetMappingListPage(getNextPage func(context.Context, DataSetMappingList) (DataSetMappingList, error)) DataSetMappingListPage {
-	return DataSetMappingListPage{fn: getNextPage}
+func NewDataSetMappingListPage(cur DataSetMappingList, getNextPage func(context.Context, DataSetMappingList) (DataSetMappingList, error)) DataSetMappingListPage {
+	return DataSetMappingListPage{
+		fn:   getNextPage,
+		dsml: cur,
+	}
 }
 
 // DataSetMappingModel ...
@@ -4352,7 +4369,8 @@ func (dsm *DataSetModel) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// DataSetsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DataSetsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DataSetsDeleteFuture struct {
 	azure.Future
 }
@@ -4670,8 +4688,11 @@ func (page InvitationListPage) Values() []Invitation {
 }
 
 // Creates a new instance of the InvitationListPage type.
-func NewInvitationListPage(getNextPage func(context.Context, InvitationList) (InvitationList, error)) InvitationListPage {
-	return InvitationListPage{fn: getNextPage}
+func NewInvitationListPage(cur InvitationList, getNextPage func(context.Context, InvitationList) (InvitationList, error)) InvitationListPage {
+	return InvitationListPage{
+		fn: getNextPage,
+		il: cur,
+	}
 }
 
 // InvitationProperties invitation property bag.
@@ -5567,8 +5588,11 @@ func (page OperationListPage) Values() []OperationModel {
 }
 
 // Creates a new instance of the OperationListPage type.
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return OperationListPage{fn: getNextPage}
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // OperationMetaLogSpecification log specifications for operation api
@@ -5953,8 +5977,11 @@ func (page ProviderShareSubscriptionListPage) Values() []ProviderShareSubscripti
 }
 
 // Creates a new instance of the ProviderShareSubscriptionListPage type.
-func NewProviderShareSubscriptionListPage(getNextPage func(context.Context, ProviderShareSubscriptionList) (ProviderShareSubscriptionList, error)) ProviderShareSubscriptionListPage {
-	return ProviderShareSubscriptionListPage{fn: getNextPage}
+func NewProviderShareSubscriptionListPage(cur ProviderShareSubscriptionList, getNextPage func(context.Context, ProviderShareSubscriptionList) (ProviderShareSubscriptionList, error)) ProviderShareSubscriptionListPage {
+	return ProviderShareSubscriptionListPage{
+		fn:   getNextPage,
+		pssl: cur,
+	}
 }
 
 // ProviderShareSubscriptionProperties provider share subscription properties
@@ -6584,8 +6611,11 @@ func (page ShareListPage) Values() []Share {
 }
 
 // Creates a new instance of the ShareListPage type.
-func NewShareListPage(getNextPage func(context.Context, ShareList) (ShareList, error)) ShareListPage {
-	return ShareListPage{fn: getNextPage}
+func NewShareListPage(cur ShareList, getNextPage func(context.Context, ShareList) (ShareList, error)) ShareListPage {
+	return ShareListPage{
+		fn: getNextPage,
+		sl: cur,
+	}
 }
 
 // ShareProperties share property bag.
@@ -6874,8 +6904,11 @@ func (page ShareSubscriptionListPage) Values() []ShareSubscription {
 }
 
 // Creates a new instance of the ShareSubscriptionListPage type.
-func NewShareSubscriptionListPage(getNextPage func(context.Context, ShareSubscriptionList) (ShareSubscriptionList, error)) ShareSubscriptionListPage {
-	return ShareSubscriptionListPage{fn: getNextPage}
+func NewShareSubscriptionListPage(cur ShareSubscriptionList, getNextPage func(context.Context, ShareSubscriptionList) (ShareSubscriptionList, error)) ShareSubscriptionListPage {
+	return ShareSubscriptionListPage{
+		fn:  getNextPage,
+		ssl: cur,
+	}
 }
 
 // ShareSubscriptionProperties share subscription property bag.
@@ -6917,8 +6950,8 @@ func (ssp ShareSubscriptionProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ShareSubscriptionsCancelSynchronizationFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ShareSubscriptionsCancelSynchronizationFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type ShareSubscriptionsCancelSynchronizationFuture struct {
 	azure.Future
 }
@@ -6946,8 +6979,8 @@ func (future *ShareSubscriptionsCancelSynchronizationFuture) Result(client Share
 	return
 }
 
-// ShareSubscriptionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ShareSubscriptionsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ShareSubscriptionsDeleteFuture struct {
 	azure.Future
 }
@@ -7185,8 +7218,11 @@ func (page ShareSubscriptionSynchronizationListPage) Values() []ShareSubscriptio
 }
 
 // Creates a new instance of the ShareSubscriptionSynchronizationListPage type.
-func NewShareSubscriptionSynchronizationListPage(getNextPage func(context.Context, ShareSubscriptionSynchronizationList) (ShareSubscriptionSynchronizationList, error)) ShareSubscriptionSynchronizationListPage {
-	return ShareSubscriptionSynchronizationListPage{fn: getNextPage}
+func NewShareSubscriptionSynchronizationListPage(cur ShareSubscriptionSynchronizationList, getNextPage func(context.Context, ShareSubscriptionSynchronizationList) (ShareSubscriptionSynchronizationList, error)) ShareSubscriptionSynchronizationListPage {
+	return ShareSubscriptionSynchronizationListPage{
+		fn:   getNextPage,
+		sssl: cur,
+	}
 }
 
 // ShareSynchronization a ShareSynchronization data transfer object.
@@ -7398,8 +7434,11 @@ func (page ShareSynchronizationListPage) Values() []ShareSynchronization {
 }
 
 // Creates a new instance of the ShareSynchronizationListPage type.
-func NewShareSynchronizationListPage(getNextPage func(context.Context, ShareSynchronizationList) (ShareSynchronizationList, error)) ShareSynchronizationListPage {
-	return ShareSynchronizationListPage{fn: getNextPage}
+func NewShareSynchronizationListPage(cur ShareSynchronizationList, getNextPage func(context.Context, ShareSynchronizationList) (ShareSynchronizationList, error)) ShareSynchronizationListPage {
+	return ShareSynchronizationListPage{
+		fn:  getNextPage,
+		ssl: cur,
+	}
 }
 
 // BasicSourceShareSynchronizationSetting a view of synchronization setting added by the provider
@@ -7603,7 +7642,8 @@ func (ssssl SourceShareSynchronizationSettingList) sourceShareSynchronizationSet
 		autorest.WithBaseURL(to.String(ssssl.NextLink)))
 }
 
-// SourceShareSynchronizationSettingListPage contains a page of BasicSourceShareSynchronizationSetting values.
+// SourceShareSynchronizationSettingListPage contains a page of BasicSourceShareSynchronizationSetting
+// values.
 type SourceShareSynchronizationSettingListPage struct {
 	fn    func(context.Context, SourceShareSynchronizationSettingList) (SourceShareSynchronizationSettingList, error)
 	ssssl SourceShareSynchronizationSettingList
@@ -7661,8 +7701,11 @@ func (page SourceShareSynchronizationSettingListPage) Values() []BasicSourceShar
 }
 
 // Creates a new instance of the SourceShareSynchronizationSettingListPage type.
-func NewSourceShareSynchronizationSettingListPage(getNextPage func(context.Context, SourceShareSynchronizationSettingList) (SourceShareSynchronizationSettingList, error)) SourceShareSynchronizationSettingListPage {
-	return SourceShareSynchronizationSettingListPage{fn: getNextPage}
+func NewSourceShareSynchronizationSettingListPage(cur SourceShareSynchronizationSettingList, getNextPage func(context.Context, SourceShareSynchronizationSettingList) (SourceShareSynchronizationSettingList, error)) SourceShareSynchronizationSettingListPage {
+	return SourceShareSynchronizationSettingListPage{
+		fn:    getNextPage,
+		ssssl: cur,
+	}
 }
 
 // SQLDBTableDataSet a SQL DB table data set.
@@ -8458,7 +8501,8 @@ type SynchronizationDetailsList struct {
 	Value *[]SynchronizationDetails `json:"value,omitempty"`
 }
 
-// SynchronizationDetailsListIterator provides access to a complete listing of SynchronizationDetails values.
+// SynchronizationDetailsListIterator provides access to a complete listing of SynchronizationDetails
+// values.
 type SynchronizationDetailsListIterator struct {
 	i    int
 	page SynchronizationDetailsListPage
@@ -8601,8 +8645,11 @@ func (page SynchronizationDetailsListPage) Values() []SynchronizationDetails {
 }
 
 // Creates a new instance of the SynchronizationDetailsListPage type.
-func NewSynchronizationDetailsListPage(getNextPage func(context.Context, SynchronizationDetailsList) (SynchronizationDetailsList, error)) SynchronizationDetailsListPage {
-	return SynchronizationDetailsListPage{fn: getNextPage}
+func NewSynchronizationDetailsListPage(cur SynchronizationDetailsList, getNextPage func(context.Context, SynchronizationDetailsList) (SynchronizationDetailsList, error)) SynchronizationDetailsListPage {
+	return SynchronizationDetailsListPage{
+		fn:  getNextPage,
+		sdl: cur,
+	}
 }
 
 // BasicSynchronizationSetting a Synchronization Setting data transfer object.
@@ -8727,7 +8774,8 @@ func (ssl *SynchronizationSettingList) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SynchronizationSettingListIterator provides access to a complete listing of SynchronizationSetting values.
+// SynchronizationSettingListIterator provides access to a complete listing of SynchronizationSetting
+// values.
 type SynchronizationSettingListIterator struct {
 	i    int
 	page SynchronizationSettingListPage
@@ -8870,8 +8918,11 @@ func (page SynchronizationSettingListPage) Values() []BasicSynchronizationSettin
 }
 
 // Creates a new instance of the SynchronizationSettingListPage type.
-func NewSynchronizationSettingListPage(getNextPage func(context.Context, SynchronizationSettingList) (SynchronizationSettingList, error)) SynchronizationSettingListPage {
-	return SynchronizationSettingListPage{fn: getNextPage}
+func NewSynchronizationSettingListPage(cur SynchronizationSettingList, getNextPage func(context.Context, SynchronizationSettingList) (SynchronizationSettingList, error)) SynchronizationSettingListPage {
+	return SynchronizationSettingListPage{
+		fn:  getNextPage,
+		ssl: cur,
+	}
 }
 
 // SynchronizationSettingModel ...
@@ -9191,8 +9242,11 @@ func (page TriggerListPage) Values() []BasicTrigger {
 }
 
 // Creates a new instance of the TriggerListPage type.
-func NewTriggerListPage(getNextPage func(context.Context, TriggerList) (TriggerList, error)) TriggerListPage {
-	return TriggerListPage{fn: getNextPage}
+func NewTriggerListPage(cur TriggerList, getNextPage func(context.Context, TriggerList) (TriggerList, error)) TriggerListPage {
+	return TriggerListPage{
+		fn: getNextPage,
+		tl: cur,
+	}
 }
 
 // TriggerModel ...
@@ -9212,7 +9266,8 @@ func (tm *TriggerModel) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// TriggersCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// TriggersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type TriggersCreateFuture struct {
 	azure.Future
 }
@@ -9240,7 +9295,8 @@ func (future *TriggersCreateFuture) Result(client TriggersClient) (tm TriggerMod
 	return
 }
 
-// TriggersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// TriggersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type TriggersDeleteFuture struct {
 	azure.Future
 }

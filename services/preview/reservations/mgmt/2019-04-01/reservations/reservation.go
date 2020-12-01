@@ -21,7 +21,6 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -42,11 +41,85 @@ func NewClientWithBaseURI(baseURI string) Client {
 	return Client{NewWithBaseURI(baseURI)}
 }
 
+// Archive archiving a `Reservation` moves it to `Archived` state.
+// Parameters:
+// reservationOrderID - order Id of the reservation
+// reservationID - id of the Reservation Item
+func (client Client) Archive(ctx context.Context, reservationOrderID string, reservationID string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Archive")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ArchivePreparer(ctx, reservationOrderID, reservationID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "reservations.Client", "Archive", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ArchiveSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "reservations.Client", "Archive", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ArchiveResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "reservations.Client", "Archive", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ArchivePreparer prepares the Archive request.
+func (client Client) ArchivePreparer(ctx context.Context, reservationOrderID string, reservationID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"reservationId":      autorest.Encode("path", reservationID),
+		"reservationOrderId": autorest.Encode("path", reservationOrderID),
+	}
+
+	const APIVersion = "2019-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/archive", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ArchiveSender sends the Archive request. The method will close the
+// http.Response Body if it receives an error.
+func (client Client) ArchiveSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ArchiveResponder handles the response to the Archive request. The method always
+// closes the http.Response Body.
+func (client Client) ArchiveResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // AvailableScopes get Available Scopes for `Reservation`.
 // Parameters:
 // reservationOrderID - order Id of the reservation
 // reservationID - id of the Reservation Item
-func (client Client) AvailableScopes(ctx context.Context, reservationOrderID string, reservationID string, body []string) (result ReservationAvailableScopesFuture, err error) {
+// body - parameter for listing the available scopes
+func (client Client) AvailableScopes(ctx context.Context, reservationOrderID string, reservationID string, body AvailableScopeRequest) (result ReservationAvailableScopesFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.AvailableScopes")
 		defer func() {
@@ -57,12 +130,6 @@ func (client Client) AvailableScopes(ctx context.Context, reservationOrderID str
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: body,
-			Constraints: []validation.Constraint{{Target: "body", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("reservations.Client", "AvailableScopes", err.Error())
-	}
-
 	req, err := client.AvailableScopesPreparer(ctx, reservationOrderID, reservationID, body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.Client", "AvailableScopes", nil, "Failure preparing request")
@@ -79,7 +146,7 @@ func (client Client) AvailableScopes(ctx context.Context, reservationOrderID str
 }
 
 // AvailableScopesPreparer prepares the AvailableScopes request.
-func (client Client) AvailableScopesPreparer(ctx context.Context, reservationOrderID string, reservationID string, body []string) (*http.Request, error) {
+func (client Client) AvailableScopesPreparer(ctx context.Context, reservationOrderID string, reservationID string, body AvailableScopeRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"reservationId":      autorest.Encode("path", reservationID),
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
@@ -578,6 +645,79 @@ func (client Client) SplitResponder(resp *http.Response) (result ListResponse, e
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Unarchive unarchiving a `Reservation` moves it to the state it was before archiving.
+// Parameters:
+// reservationOrderID - order Id of the reservation
+// reservationID - id of the Reservation Item
+func (client Client) Unarchive(ctx context.Context, reservationOrderID string, reservationID string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Unarchive")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.UnarchivePreparer(ctx, reservationOrderID, reservationID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "reservations.Client", "Unarchive", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UnarchiveSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "reservations.Client", "Unarchive", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UnarchiveResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "reservations.Client", "Unarchive", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UnarchivePreparer prepares the Unarchive request.
+func (client Client) UnarchivePreparer(ctx context.Context, reservationOrderID string, reservationID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"reservationId":      autorest.Encode("path", reservationID),
+		"reservationOrderId": autorest.Encode("path", reservationOrderID),
+	}
+
+	const APIVersion = "2019-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/unarchive", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UnarchiveSender sends the Unarchive request. The method will close the
+// http.Response Body if it receives an error.
+func (client Client) UnarchiveSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// UnarchiveResponder handles the response to the Unarchive request. The method always
+// closes the http.Response Body.
+func (client Client) UnarchiveResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
 	return
 }
 

@@ -271,8 +271,8 @@ func (abe ApplicationBackupEntity) AsBasicBackupEntity() (BasicBackupEntity, boo
 // description can be used for describing the following.
 // - Reserving the capacity for the services on the nodes
 // - Limiting the total number of nodes that services of this application can run on
-// - Limiting the custom capacity metrics to limit the total consumption of this metric by the services of this
-// application
+// - Limiting the custom capacity metrics to limit the total consumption of this metric by the services of
+// this application
 type ApplicationCapacityDescription struct {
 	// MinimumNodes - The minimum number of nodes where Service Fabric will reserve capacity for this application. Note that this does not mean that the services of this application will be placed on all of those nodes. If this property is set to zero, no capacity will be reserved. The value of this property cannot be more than the value of the MaximumNodes property.
 	MinimumNodes *int64 `json:"MinimumNodes,omitempty"`
@@ -2096,8 +2096,8 @@ func (ae ApplicationEvent) AsBasicFabricEvent() (BasicFabricEvent, bool) {
 	return &ae, true
 }
 
-// ApplicationHealth represents the health of the application. Contains the application aggregated health state
-// and the service and deployed application health states.
+// ApplicationHealth represents the health of the application. Contains the application aggregated health
+// state and the service and deployed application health states.
 type ApplicationHealth struct {
 	autorest.Response `json:"-"`
 	// Name - The name of the application, including the 'fabric:' URI scheme.
@@ -2118,8 +2118,8 @@ type ApplicationHealth struct {
 	HealthStatistics *HealthStatistics `json:"HealthStatistics,omitempty"`
 }
 
-// ApplicationHealthEvaluation represents health evaluation for an application, containing information about
-// the data and the algorithm used by the health store to evaluate health.
+// ApplicationHealthEvaluation represents health evaluation for an application, containing information
+// about the data and the algorithm used by the health store to evaluate health.
 type ApplicationHealthEvaluation struct {
 	// ApplicationName - The name of the application, including the 'fabric:' URI scheme.
 	ApplicationName *string `json:"ApplicationName,omitempty"`
@@ -2272,8 +2272,8 @@ type ApplicationHealthPolicies struct {
 	ApplicationHealthPolicyMap *[]ApplicationHealthPolicyMapItem `json:"ApplicationHealthPolicyMap,omitempty"`
 }
 
-// ApplicationHealthPolicy defines a health policy used to evaluate the health of an application or one of its
-// children entities.
+// ApplicationHealthPolicy defines a health policy used to evaluate the health of an application or one of
+// its children entities.
 type ApplicationHealthPolicy struct {
 	// ConsiderWarningAsError - Indicates whether warnings are treated with the same severity as errors.
 	ConsiderWarningAsError *bool `json:"ConsiderWarningAsError,omitempty"`
@@ -2765,8 +2765,8 @@ type ApplicationHealthStateChunk struct {
 	HealthState HealthState `json:"HealthState,omitempty"`
 }
 
-// ApplicationHealthStateChunkList the list of application health state chunks in the cluster that respect the
-// input filters in the chunk query. Returned by get cluster health state chunks query.
+// ApplicationHealthStateChunkList the list of application health state chunks in the cluster that respect
+// the input filters in the chunk query. Returned by get cluster health state chunks query.
 type ApplicationHealthStateChunkList struct {
 	// Items - The list of application health state chunks that respect the input filters in the chunk query.
 	Items *[]ApplicationHealthStateChunk `json:"Items,omitempty"`
@@ -2774,8 +2774,8 @@ type ApplicationHealthStateChunkList struct {
 	TotalCount *int64 `json:"TotalCount,omitempty"`
 }
 
-// ApplicationHealthStateFilter defines matching criteria to determine whether a application should be included
-// in the cluster health chunk.
+// ApplicationHealthStateFilter defines matching criteria to determine whether a application should be
+// included in the cluster health chunk.
 // One filter can match zero, one or multiple applications, depending on its properties.
 type ApplicationHealthStateFilter struct {
 	// ApplicationNameFilter - The name of the application that matches the filter, as a fabric uri. The filter is applied only to the specified application, if it exists.
@@ -2858,8 +2858,8 @@ type ApplicationLoadInfo struct {
 	ApplicationLoadMetricInformation *[]ApplicationMetricDescription `json:"ApplicationLoadMetricInformation,omitempty"`
 }
 
-// ApplicationMetricDescription describes capacity information for a custom resource balancing metric. This can
-// be used to limit the total consumption of this metric by the services of this application.
+// ApplicationMetricDescription describes capacity information for a custom resource balancing metric. This
+// can be used to limit the total consumption of this metric by the services of this application.
 type ApplicationMetricDescription struct {
 	// Name - The name of the metric.
 	Name *string `json:"Name,omitempty"`
@@ -3335,8 +3335,8 @@ func (anhre ApplicationNewHealthReportEvent) AsBasicFabricEvent() (BasicFabricEv
 	return &anhre, true
 }
 
-// ApplicationParameter describes an application parameter override to be applied when creating or upgrading an
-// application.
+// ApplicationParameter describes an application parameter override to be applied when creating or
+// upgrading an application.
 type ApplicationParameter struct {
 	// Key - The name of the parameter.
 	Key *string `json:"Key,omitempty"`
@@ -4120,8 +4120,8 @@ func (asvcpsfvd ApplicationScopedVolumeCreationParametersServiceFabricVolumeDisk
 	return &asvcpsfvd, true
 }
 
-// ApplicationsHealthEvaluation represents health evaluation for applications, containing health evaluations
-// for each unhealthy application that impacted current aggregated health state.
+// ApplicationsHealthEvaluation represents health evaluation for applications, containing health
+// evaluations for each unhealthy application that impacted current aggregated health state.
 type ApplicationsHealthEvaluation struct {
 	// MaxPercentUnhealthyApplications - Maximum allowed percentage of unhealthy applications from the ClusterHealthPolicy.
 	MaxPercentUnhealthyApplications *int32 `json:"MaxPercentUnhealthyApplications,omitempty"`
@@ -4272,11 +4272,11 @@ func (ahe ApplicationsHealthEvaluation) AsBasicHealthEvaluation() (BasicHealthEv
 	return &ahe, true
 }
 
-// ApplicationTypeApplicationsHealthEvaluation represents health evaluation for applications of a particular
-// application type. The application type applications evaluation can be returned when cluster health
-// evaluation returns unhealthy aggregated health state, either Error or Warning. It contains health
-// evaluations for each unhealthy application of the included application type that impacted current aggregated
-// health state.
+// ApplicationTypeApplicationsHealthEvaluation represents health evaluation for applications of a
+// particular application type. The application type applications evaluation can be returned when cluster
+// health evaluation returns unhealthy aggregated health state, either Error or Warning. It contains health
+// evaluations for each unhealthy application of the included application type that impacted current
+// aggregated health state.
 type ApplicationTypeApplicationsHealthEvaluation struct {
 	// ApplicationTypeName - The application type name as defined in the application manifest.
 	ApplicationTypeName *string `json:"ApplicationTypeName,omitempty"`
@@ -4464,8 +4464,8 @@ type ApplicationTypeInfo struct {
 	ApplicationTypeDefinitionKind ApplicationTypeDefinitionKind `json:"ApplicationTypeDefinitionKind,omitempty"`
 }
 
-// ApplicationTypeManifest contains the manifest describing an application type registered in a Service Fabric
-// cluster.
+// ApplicationTypeManifest contains the manifest describing an application type registered in a Service
+// Fabric cluster.
 type ApplicationTypeManifest struct {
 	autorest.Response `json:"-"`
 	// Manifest - The XML manifest as a string.
@@ -4887,11 +4887,11 @@ func (auce ApplicationUpgradeCompletedEvent) AsBasicFabricEvent() (BasicFabricEv
 
 // ApplicationUpgradeDescription describes the parameters for an application upgrade. Note that upgrade
 // description replaces the existing application description. This means that if the parameters are not
-// specified, the existing parameters on the applications will be overwritten with the empty parameters list.
-// This would result in the application using the default value of the parameters from the application
-// manifest. If you do not want to change any existing parameter values, please get the application parameters
-// first using the GetApplicationInfo query and then supply those values as Parameters in this
-// ApplicationUpgradeDescription.
+// specified, the existing parameters on the applications will be overwritten with the empty parameters
+// list. This would result in the application using the default value of the parameters from the
+// application manifest. If you do not want to change any existing parameter values, please get the
+// application parameters first using the GetApplicationInfo query and then supply those values as
+// Parameters in this ApplicationUpgradeDescription.
 type ApplicationUpgradeDescription struct {
 	// Name - The name of the target application, including the 'fabric:' URI scheme.
 	Name *string `json:"Name,omitempty"`
@@ -6655,7 +6655,8 @@ func (ause ApplicationUpgradeStartedEvent) AsBasicFabricEvent() (BasicFabricEven
 	return &ause, true
 }
 
-// ApplicationUpgradeUpdateDescription describes the parameters for updating an ongoing application upgrade.
+// ApplicationUpgradeUpdateDescription describes the parameters for updating an ongoing application
+// upgrade.
 type ApplicationUpgradeUpdateDescription struct {
 	// Name - The name of the application, including the 'fabric:' URI scheme.
 	Name *string `json:"Name,omitempty"`
@@ -7144,8 +7145,8 @@ func (aplst AveragePartitionLoadScalingTrigger) AsBasicScalingTriggerDescription
 	return &aplst, true
 }
 
-// AverageServiceLoadScalingTrigger represents a scaling policy related to an average load of a metric/resource
-// of a service.
+// AverageServiceLoadScalingTrigger represents a scaling policy related to an average load of a
+// metric/resource of a service.
 type AverageServiceLoadScalingTrigger struct {
 	// MetricName - The name of the metric for which usage should be tracked.
 	MetricName *string `json:"MetricName,omitempty"`
@@ -8523,10 +8524,10 @@ func (ccprse ChaosCodePackageRestartScheduledEvent) AsBasicFabricEvent() (BasicF
 	return &ccprse, true
 }
 
-// ChaosContext describes a map, which is a collection of (string, string) type key-value pairs. The map can be
-// used to record information about
-// the Chaos run. There cannot be more than 100 such pairs and each string (key or value) can be at most 4095
-// characters long.
+// ChaosContext describes a map, which is a collection of (string, string) type key-value pairs. The map
+// can be used to record information about
+// the Chaos run. There cannot be more than 100 such pairs and each string (key or value) can be at most
+// 4095 characters long.
 // This map is set by the starter of the Chaos run to optionally store the context about the specific run.
 type ChaosContext struct {
 	// Map - Describes a map that contains a collection of ChaosContextMapItem's.
@@ -10852,8 +10853,8 @@ type ChaosSchedule struct {
 	Jobs *[]ChaosScheduleJob `json:"Jobs,omitempty"`
 }
 
-// ChaosScheduleDescription defines the Chaos Schedule used by Chaos and the version of the Chaos Schedule. The
-// version value wraps back to 0 after surpassing 2,147,483,647.
+// ChaosScheduleDescription defines the Chaos Schedule used by Chaos and the version of the Chaos Schedule.
+// The version value wraps back to 0 after surpassing 2,147,483,647.
 type ChaosScheduleDescription struct {
 	autorest.Response `json:"-"`
 	// Version - The version number of the Schedule.
@@ -11731,16 +11732,16 @@ func (cse ChaosStoppedEvent) AsBasicFabricEvent() (BasicFabricEvent, bool) {
 // types or faulting only certain applications.
 // If ChaosTargetFilter is not used, Chaos faults all cluster entities. If ChaosTargetFilter is used, Chaos
 // faults only the entities that meet the ChaosTargetFilter
-// specification. NodeTypeInclusionList and ApplicationInclusionList allow a union semantics only. It is not
-// possible to specify an intersection
+// specification. NodeTypeInclusionList and ApplicationInclusionList allow a union semantics only. It is
+// not possible to specify an intersection
 // of NodeTypeInclusionList and ApplicationInclusionList. For example, it is not possible to specify "fault
 // this application only when it is on that node type."
-// Once an entity is included in either NodeTypeInclusionList or ApplicationInclusionList, that entity cannot
-// be excluded using ChaosTargetFilter. Even if
+// Once an entity is included in either NodeTypeInclusionList or ApplicationInclusionList, that entity
+// cannot be excluded using ChaosTargetFilter. Even if
 // applicationX does not appear in ApplicationInclusionList, in some Chaos iteration applicationX can be
 // faulted because it happens to be on a node of nodeTypeY that is included
-// in NodeTypeInclusionList. If both NodeTypeInclusionList and ApplicationInclusionList are null or empty, an
-// ArgumentException is thrown.
+// in NodeTypeInclusionList. If both NodeTypeInclusionList and ApplicationInclusionList are null or empty,
+// an ArgumentException is thrown.
 type ChaosTargetFilter struct {
 	// NodeTypeInclusionList - A list of node types to include in Chaos faults.
 	// All types of faults (restart node, restart code package, remove replica, restart replica, move primary, and move secondary) are enabled for the nodes of these node types.
@@ -11758,11 +11759,12 @@ type ChaosTargetFilter struct {
 	ApplicationInclusionList *[]string `json:"ApplicationInclusionList,omitempty"`
 }
 
-// CheckExistsPropertyBatchOperation represents a PropertyBatchOperation that compares the Boolean existence of
-// a property with the Exists argument.
-// The PropertyBatchOperation operation fails if the property's existence is not equal to the Exists argument.
-// The CheckExistsPropertyBatchOperation is generally used as a precondition for the write operations in the
-// batch.
+// CheckExistsPropertyBatchOperation represents a PropertyBatchOperation that compares the Boolean
+// existence of a property with the Exists argument.
+// The PropertyBatchOperation operation fails if the property's existence is not equal to the Exists
+// argument.
+// The CheckExistsPropertyBatchOperation is generally used as a precondition for the write operations in
+// the batch.
 // Note that if one PropertyBatchOperation in a PropertyBatch fails,
 // the entire batch fails and cannot be committed in a transactional manner.
 type CheckExistsPropertyBatchOperation struct {
@@ -11905,8 +11907,8 @@ func (cspbo CheckSequencePropertyBatchOperation) AsBasicPropertyBatchOperation()
 	return &cspbo, true
 }
 
-// CheckValuePropertyBatchOperation represents a PropertyBatchOperation that compares the value of the property
-// with the expected value.
+// CheckValuePropertyBatchOperation represents a PropertyBatchOperation that compares the value of the
+// property with the expected value.
 // The CheckValuePropertyBatchOperation is generally used as a precondition for the write operations in the
 // batch.
 // Note that if one PropertyBatchOperation in a PropertyBatch fails,
@@ -12049,7 +12051,8 @@ type ClusterConfigurationUpgradeDescription struct {
 	ApplicationHealthPolicies *ApplicationHealthPolicies `json:"ApplicationHealthPolicies,omitempty"`
 }
 
-// ClusterConfigurationUpgradeStatusInfo information about a standalone cluster configuration upgrade status.
+// ClusterConfigurationUpgradeStatusInfo information about a standalone cluster configuration upgrade
+// status.
 type ClusterConfigurationUpgradeStatusInfo struct {
 	autorest.Response `json:"-"`
 	// UpgradeState - The state of the upgrade domain. Possible values include: 'UpgradeStateInvalid', 'UpgradeStateRollingBackInProgress', 'UpgradeStateRollingBackCompleted', 'UpgradeStateRollingForwardPending', 'UpgradeStateRollingForwardInProgress', 'UpgradeStateRollingForwardCompleted', 'UpgradeStateFailed'
@@ -12537,8 +12540,8 @@ func (ce ClusterEvent) AsBasicFabricEvent() (BasicFabricEvent, bool) {
 }
 
 // ClusterHealth represents the health of the cluster.
-// Contains the cluster aggregated health state, the cluster application and node health states as well as the
-// health events and the unhealthy evaluations.
+// Contains the cluster aggregated health state, the cluster application and node health states as well as
+// the health events and the unhealthy evaluations.
 type ClusterHealth struct {
 	autorest.Response `json:"-"`
 	// NodeHealthStates - Cluster node health states as found in the health store.
@@ -12571,9 +12574,9 @@ type ClusterHealthChunk struct {
 	ApplicationHealthStateChunks *ApplicationHealthStateChunkList `json:"ApplicationHealthStateChunks,omitempty"`
 }
 
-// ClusterHealthChunkQueryDescription the cluster health chunk query description, which can specify the health
-// policies to evaluate cluster health and very expressive filters to select which cluster entities to include
-// in response.
+// ClusterHealthChunkQueryDescription the cluster health chunk query description, which can specify the
+// health policies to evaluate cluster health and very expressive filters to select which cluster entities
+// to include in response.
 type ClusterHealthChunkQueryDescription struct {
 	// NodeFilters - Defines a list of filters that specify which nodes to be included in the returned cluster health chunk.
 	// If no filters are specified, no nodes are returned. All the nodes are used to evaluate the cluster's aggregated health state, regardless of the input filters.
@@ -12602,7 +12605,8 @@ type ClusterHealthPolicies struct {
 	ClusterHealthPolicy *ClusterHealthPolicy `json:"ClusterHealthPolicy,omitempty"`
 }
 
-// ClusterHealthPolicy defines a health policy used to evaluate the health of the cluster or of a cluster node.
+// ClusterHealthPolicy defines a health policy used to evaluate the health of the cluster or of a cluster
+// node.
 type ClusterHealthPolicy struct {
 	// ConsiderWarningAsError - Indicates whether warnings are treated with the same severity as errors.
 	ConsiderWarningAsError *bool `json:"ConsiderWarningAsError,omitempty"`
@@ -13062,8 +13066,8 @@ func (chree ClusterHealthReportExpiredEvent) AsBasicFabricEvent() (BasicFabricEv
 	return &chree, true
 }
 
-// ClusterLoadInfo information about load in a Service Fabric cluster. It holds a summary of all metrics and
-// their load in a cluster.
+// ClusterLoadInfo information about load in a Service Fabric cluster. It holds a summary of all metrics
+// and their load in a cluster.
 type ClusterLoadInfo struct {
 	autorest.Response `json:"-"`
 	// LastBalancingStartTimeUtc - The starting time of last resource balancing run.
@@ -14355,8 +14359,8 @@ func (cudce ClusterUpgradeDomainCompletedEvent) AsBasicFabricEvent() (BasicFabri
 	return &cudce, true
 }
 
-// ClusterUpgradeHealthPolicyObject defines a health policy used to evaluate the health of the cluster during a
-// cluster upgrade.
+// ClusterUpgradeHealthPolicyObject defines a health policy used to evaluate the health of the cluster
+// during a cluster upgrade.
 type ClusterUpgradeHealthPolicyObject struct {
 	// MaxPercentDeltaUnhealthyNodes - The maximum allowed percentage of nodes health degradation allowed during cluster upgrades. The delta is measured between the state of the nodes at the beginning of upgrade and the state of the nodes at the time of the health evaluation. The check is performed after every upgrade domain upgrade completion to make sure the global state of the cluster is within tolerated limits. The default value is 10%.
 	MaxPercentDeltaUnhealthyNodes *int32 `json:"MaxPercentDeltaUnhealthyNodes,omitempty"`
@@ -15634,8 +15638,8 @@ type ClusterVersion struct {
 	Version *string `json:"Version,omitempty"`
 }
 
-// CodePackageEntryPoint information about setup or main entry point of a code package deployed on a Service
-// Fabric node.
+// CodePackageEntryPoint information about setup or main entry point of a code package deployed on a
+// Service Fabric node.
 type CodePackageEntryPoint struct {
 	// EntryPointLocation - The location of entry point executable on the node.
 	EntryPointLocation *string `json:"EntryPointLocation,omitempty"`
@@ -15653,8 +15657,8 @@ type CodePackageEntryPoint struct {
 	InstanceID *string `json:"InstanceId,omitempty"`
 }
 
-// CodePackageEntryPointStatistics statistics about setup or main entry point  of a code package deployed on a
-// Service Fabric node.
+// CodePackageEntryPointStatistics statistics about setup or main entry point  of a code package deployed
+// on a Service Fabric node.
 type CodePackageEntryPointStatistics struct {
 	// LastExitCode - The last exit code of the entry point.
 	LastExitCode *string `json:"LastExitCode,omitempty"`
@@ -16433,9 +16437,10 @@ func (dpbo DeletePropertyBatchOperation) AsBasicPropertyBatchOperation() (BasicP
 	return &dpbo, true
 }
 
-// DeltaNodesCheckHealthEvaluation represents health evaluation for delta nodes, containing health evaluations
-// for each unhealthy node that impacted current aggregated health state.
-// Can be returned during cluster upgrade when the aggregated health state of the cluster is Warning or Error.
+// DeltaNodesCheckHealthEvaluation represents health evaluation for delta nodes, containing health
+// evaluations for each unhealthy node that impacted current aggregated health state.
+// Can be returned during cluster upgrade when the aggregated health state of the cluster is Warning or
+// Error.
 type DeltaNodesCheckHealthEvaluation struct {
 	// BaselineErrorCount - Number of nodes with aggregated heath state Error in the health store at the beginning of the cluster upgrade.
 	BaselineErrorCount *int64 `json:"BaselineErrorCount,omitempty"`
@@ -16597,7 +16602,8 @@ func (dnche DeltaNodesCheckHealthEvaluation) AsBasicHealthEvaluation() (BasicHea
 	return &dnche, true
 }
 
-// DeployedApplicationHealth information about the health of an application deployed on a Service Fabric node.
+// DeployedApplicationHealth information about the health of an application deployed on a Service Fabric
+// node.
 type DeployedApplicationHealth struct {
 	autorest.Response `json:"-"`
 	// Name - Name of the application deployed on the node whose health information is described by this object.
@@ -17231,8 +17237,8 @@ type DeployedApplicationHealthState struct {
 }
 
 // DeployedApplicationHealthStateChunk represents the health state chunk of a deployed application, which
-// contains the node where the application is deployed, the aggregated health state and any deployed service
-// packages that respect the chunk query description filters.
+// contains the node where the application is deployed, the aggregated health state and any deployed
+// service packages that respect the chunk query description filters.
 type DeployedApplicationHealthStateChunk struct {
 	// NodeName - The name of node where the application is deployed.
 	NodeName *string `json:"NodeName,omitempty"`
@@ -17242,15 +17248,15 @@ type DeployedApplicationHealthStateChunk struct {
 	HealthState HealthState `json:"HealthState,omitempty"`
 }
 
-// DeployedApplicationHealthStateChunkList the list of deployed application health state chunks that respect
-// the input filters in the chunk query. Returned by get cluster health state chunks query.
+// DeployedApplicationHealthStateChunkList the list of deployed application health state chunks that
+// respect the input filters in the chunk query. Returned by get cluster health state chunks query.
 type DeployedApplicationHealthStateChunkList struct {
 	// Items - The list of deployed application health state chunks that respect the input filters in the chunk query.
 	Items *[]DeployedApplicationHealthStateChunk `json:"Items,omitempty"`
 }
 
-// DeployedApplicationHealthStateFilter defines matching criteria to determine whether a deployed application
-// should be included as a child of an application in the cluster health chunk.
+// DeployedApplicationHealthStateFilter defines matching criteria to determine whether a deployed
+// application should be included as a child of an application in the cluster health chunk.
 // The deployed applications are only returned if the parent application matches a filter specified in the
 // cluster health chunk query description.
 // One filter can match zero, one or multiple deployed applications, depending on its properties.
@@ -17752,7 +17758,8 @@ func (danhre DeployedApplicationNewHealthReportEvent) AsBasicFabricEvent() (Basi
 }
 
 // DeployedApplicationsHealthEvaluation represents health evaluation for deployed applications, containing
-// health evaluations for each unhealthy deployed application that impacted current aggregated health state.
+// health evaluations for each unhealthy deployed application that impacted current aggregated health
+// state.
 // Can be returned when evaluating application health and the aggregated health state is either Error or
 // Warning.
 type DeployedApplicationsHealthEvaluation struct {
@@ -17931,8 +17938,8 @@ type DeployedCodePackageInfo struct {
 	MainEntryPoint *CodePackageEntryPoint `json:"MainEntryPoint,omitempty"`
 }
 
-// DeployedServicePackageHealth information about the health of a service package for a specific application
-// deployed on a Service Fabric node.
+// DeployedServicePackageHealth information about the health of a service package for a specific
+// application deployed on a Service Fabric node.
 type DeployedServicePackageHealth struct {
 	autorest.Response `json:"-"`
 	// ApplicationName - The name of the application, including the 'fabric:' URI scheme.
@@ -18569,8 +18576,8 @@ func (dsphree DeployedServicePackageHealthReportExpiredEvent) AsBasicFabricEvent
 	return &dsphree, true
 }
 
-// DeployedServicePackageHealthState represents the health state of a deployed service package, containing the
-// entity identifier and the aggregated health state.
+// DeployedServicePackageHealthState represents the health state of a deployed service package, containing
+// the entity identifier and the aggregated health state.
 type DeployedServicePackageHealthState struct {
 	// NodeName - Name of the node on which the service package is deployed.
 	NodeName *string `json:"NodeName,omitempty"`
@@ -18606,11 +18613,11 @@ type DeployedServicePackageHealthStateChunkList struct {
 	Items *[]DeployedServicePackageHealthStateChunk `json:"Items,omitempty"`
 }
 
-// DeployedServicePackageHealthStateFilter defines matching criteria to determine whether a deployed service
-// package should be included as a child of a deployed application in the cluster health chunk.
+// DeployedServicePackageHealthStateFilter defines matching criteria to determine whether a deployed
+// service package should be included as a child of a deployed application in the cluster health chunk.
 // The deployed service packages are only returned if the parent entities match a filter specified in the
-// cluster health chunk query description. The parent deployed application and its parent application must be
-// included in the cluster health chunk.
+// cluster health chunk query description. The parent deployed application and its parent application must
+// be included in the cluster health chunk.
 // One filter can match zero, one or multiple deployed service packages, depending on its properties.
 type DeployedServicePackageHealthStateFilter struct {
 	// ServiceManifestNameFilter - The name of the service manifest which identifies the deployed service packages that matches the filter.
@@ -19110,9 +19117,9 @@ func (dspnhre DeployedServicePackageNewHealthReportEvent) AsBasicFabricEvent() (
 }
 
 // DeployedServicePackagesHealthEvaluation represents health evaluation for deployed service packages,
-// containing health evaluations for each unhealthy deployed service package that impacted current aggregated
-// health state. Can be returned when evaluating deployed application health and the aggregated health state is
-// either Error or Warning.
+// containing health evaluations for each unhealthy deployed service package that impacted current
+// aggregated health state. Can be returned when evaluating deployed application health and the aggregated
+// health state is either Error or Warning.
 type DeployedServicePackagesHealthEvaluation struct {
 	// TotalCount - Total number of deployed service packages of the deployed application in the health store.
 	TotalCount *int64 `json:"TotalCount,omitempty"`
@@ -19516,8 +19523,8 @@ func (dsri DeployedServiceReplicaInfo) AsBasicDeployedServiceReplicaInfo() (Basi
 	return &dsri, true
 }
 
-// DeployedServiceTypeInfo information about service type deployed on a node, information such as the status of
-// the service type registration on a node.
+// DeployedServiceTypeInfo information about service type deployed on a node, information such as the
+// status of the service type registration on a node.
 type DeployedServiceTypeInfo struct {
 	// ServiceTypeName - Name of the service type as specified in the service manifest.
 	ServiceTypeName *string `json:"ServiceTypeName,omitempty"`
@@ -19859,9 +19866,9 @@ func (dssri DeployedStatefulServiceReplicaInfo) AsBasicDeployedServiceReplicaInf
 	return &dssri, true
 }
 
-// DeployedStatelessServiceInstanceDetailInfo information about a stateless instance running in a code package.
-// Note that DeployedServiceReplicaQueryResult will contain duplicate data like ServiceKind, ServiceName,
-// PartitionId and InstanceId.
+// DeployedStatelessServiceInstanceDetailInfo information about a stateless instance running in a code
+// package. Note that DeployedServiceReplicaQueryResult will contain duplicate data like ServiceKind,
+// ServiceName, PartitionId and InstanceId.
 type DeployedStatelessServiceInstanceDetailInfo struct {
 	// InstanceID - Id of a stateless service instance. InstanceId is used by Service Fabric to uniquely identify an instance of a partition of a stateless service. It is unique within a partition and does not change for the lifetime of the instance. If the instance has failed over on the same or different node, it will get a different value for the InstanceId.
 	InstanceID *string `json:"InstanceId,omitempty"`
@@ -20020,8 +20027,8 @@ func (dssii DeployedStatelessServiceInstanceInfo) AsBasicDeployedServiceReplicaI
 	return &dssii, true
 }
 
-// DeployServicePackageToNodeDescription defines description for downloading packages associated with a service
-// manifest to image cache on a Service Fabric node.
+// DeployServicePackageToNodeDescription defines description for downloading packages associated with a
+// service manifest to image cache on a Service Fabric node.
 type DeployServicePackageToNodeDescription struct {
 	// ServiceManifestName - The name of service manifest whose packages need to be downloaded.
 	ServiceManifestName *string `json:"ServiceManifestName,omitempty"`
@@ -20269,9 +20276,9 @@ type EndpointRef struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// EnsureAvailabilitySafetyCheck safety check that waits to ensure the availability of the partition. It waits
-// until there are replicas available such that bringing down this replica will not cause availability loss for
-// the partition.
+// EnsureAvailabilitySafetyCheck safety check that waits to ensure the availability of the partition. It
+// waits until there are replicas available such that bringing down this replica will not cause
+// availability loss for the partition.
 type EnsureAvailabilitySafetyCheck struct {
 	// PartitionID - Id of the partition which is undergoing the safety check.
 	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
@@ -20453,8 +20460,8 @@ type EntityHealthStateChunk struct {
 	HealthState HealthState `json:"HealthState,omitempty"`
 }
 
-// EntityHealthStateChunkList a base type for the list of health state chunks found in the cluster. It contains
-// the total number of health states that match the input filters.
+// EntityHealthStateChunkList a base type for the list of health state chunks found in the cluster. It
+// contains the total number of health states that match the input filters.
 type EntityHealthStateChunkList struct {
 	// TotalCount - Total number of entity health state objects that match the specified filters from the cluster health chunk query description.
 	TotalCount *int64 `json:"TotalCount,omitempty"`
@@ -20478,9 +20485,10 @@ type EnvironmentVariable struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// Epoch an Epoch is a configuration number for the partition as a whole. When the configuration of the replica
-// set changes, for example when the Primary replica changes, the operations that are replicated from the new
-// Primary replica are said to be a new Epoch from the ones which were sent by the old Primary replica.
+// Epoch an Epoch is a configuration number for the partition as a whole. When the configuration of the
+// replica set changes, for example when the Primary replica changes, the operations that are replicated
+// from the new Primary replica are said to be a new Epoch from the ones which were sent by the old Primary
+// replica.
 type Epoch struct {
 	// ConfigurationVersion - The current configuration number of this Epoch. The configuration number is an increasing value that is updated whenever the configuration of this replica set changes.
 	ConfigurationVersion *string `json:"ConfigurationVersion,omitempty"`
@@ -20635,8 +20643,8 @@ func (ehe EventHealthEvaluation) AsBasicHealthEvaluation() (BasicHealthEvaluatio
 	return &ehe, true
 }
 
-// ExecutingFaultsChaosEvent describes a Chaos event that gets generated when Chaos has decided on the faults
-// for an iteration. This Chaos event contains the details of the faults as a list of strings.
+// ExecutingFaultsChaosEvent describes a Chaos event that gets generated when Chaos has decided on the
+// faults for an iteration. This Chaos event contains the details of the faults as a list of strings.
 type ExecutingFaultsChaosEvent struct {
 	// Faults - List of string description of the faults that Chaos decided to execute in an iteration.
 	Faults *[]string `json:"Faults,omitempty"`
@@ -20777,8 +20785,8 @@ func (ep ExecutionPolicy) AsBasicExecutionPolicy() (BasicExecutionPolicy, bool) 
 }
 
 // ExternalStoreProvisionApplicationTypeDescription describes the operation to register or provision an
-// application type using an application package from an external store instead of a package uploaded to the
-// Service Fabric image store.
+// application type using an application package from an external store instead of a package uploaded to
+// the Service Fabric image store.
 type ExternalStoreProvisionApplicationTypeDescription struct {
 	// ApplicationPackageDownloadURI - The path to the '.sfpkg' application package from where the application package can be downloaded using HTTP or HTTPS protocols. The application package can be stored in an external store that provides GET operation to download the file. Supported protocols are HTTP and HTTPS, and the path must allow READ access.
 	ApplicationPackageDownloadURI *string `json:"ApplicationPackageDownloadUri,omitempty"`
@@ -20846,8 +20854,9 @@ type FabricConfigVersionInfo struct {
 	ConfigVersion *string `json:"ConfigVersion,omitempty"`
 }
 
-// FabricError the REST API operations for Service Fabric return standard HTTP status codes. This type defines
-// the additional information returned from the Service Fabric API operations that are not successful.
+// FabricError the REST API operations for Service Fabric return standard HTTP status codes. This type
+// defines the additional information returned from the Service Fabric API operations that are not
+// successful.
 type FabricError struct {
 	// Error - Error object containing error code and error message.
 	Error *FabricErrorError `json:"Error,omitempty"`
@@ -21746,8 +21755,8 @@ func (fpbi FailedPropertyBatchInfo) AsBasicPropertyBatchInfo() (BasicPropertyBat
 	return &fpbi, true
 }
 
-// FailedUpgradeDomainProgressObject the detailed upgrade progress for nodes in the current upgrade domain at
-// the point of failure.
+// FailedUpgradeDomainProgressObject the detailed upgrade progress for nodes in the current upgrade domain
+// at the point of failure.
 type FailedUpgradeDomainProgressObject struct {
 	// DomainName - The name of the upgrade domain
 	DomainName *string `json:"DomainName,omitempty"`
@@ -21853,8 +21862,8 @@ type FileVersion struct {
 	EpochConfigurationNumber *string `json:"EpochConfigurationNumber,omitempty"`
 }
 
-// FolderInfo information about a image store folder. It includes how many files this folder contains and its
-// image store relative path.
+// FolderInfo information about a image store folder. It includes how many files this folder contains and
+// its image store relative path.
 type FolderInfo struct {
 	// StoreRelativePath - The remote location within image store. This path is relative to the image store root.
 	StoreRelativePath *string `json:"StoreRelativePath,omitempty"`
@@ -22017,8 +22026,8 @@ func (grd *GatewayResourceDescription) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// GetBackupByStorageQueryDescription describes additional filters to be applied, while listing backups, and
-// backup storage details from where to fetch the backups.
+// GetBackupByStorageQueryDescription describes additional filters to be applied, while listing backups,
+// and backup storage details from where to fetch the backups.
 type GetBackupByStorageQueryDescription struct {
 	// StartDateTimeFilter - Specifies the start date time in ISO8601 from which to enumerate backups. If not specified, backups are enumerated from the beginning.
 	StartDateTimeFilter *date.Time `json:"StartDateTimeFilter,omitempty"`
@@ -22090,7 +22099,8 @@ func (gbbsqd *GetBackupByStorageQueryDescription) UnmarshalJSON(body []byte) err
 	return nil
 }
 
-// GetPropertyBatchOperation represents a PropertyBatchOperation that gets the specified property if it exists.
+// GetPropertyBatchOperation represents a PropertyBatchOperation that gets the specified property if it
+// exists.
 // Note that if one PropertyBatchOperation in a PropertyBatch fails,
 // the entire batch fails and cannot be committed in a transactional manner.
 type GetPropertyBatchOperation struct {
@@ -22520,8 +22530,8 @@ func (hew *HealthEvaluationWrapper) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// HealthEvent represents health information reported on a health entity, such as cluster, application or node,
-// with additional metadata added by the Health Manager.
+// HealthEvent represents health information reported on a health entity, such as cluster, application or
+// node, with additional metadata added by the Health Manager.
 type HealthEvent struct {
 	// IsExpired - Returns true if the health event is expired, otherwise false.
 	IsExpired *bool `json:"IsExpired,omitempty"`
@@ -22585,8 +22595,8 @@ type HealthEvent struct {
 	HealthReportID *string `json:"HealthReportId,omitempty"`
 }
 
-// HealthInformation represents common health report information. It is included in all health reports sent to
-// health store and in all health events returned by health queries.
+// HealthInformation represents common health report information. It is included in all health reports sent
+// to health store and in all health events returned by health queries.
 type HealthInformation struct {
 	// SourceID - The source name that identifies the client/watchdog/system component that generated the health information.
 	SourceID *string `json:"SourceId,omitempty"`
@@ -22630,8 +22640,8 @@ type HealthInformation struct {
 	HealthReportID *string `json:"HealthReportId,omitempty"`
 }
 
-// HealthStateCount represents information about how many health entities are in Ok, Warning and Error health
-// state.
+// HealthStateCount represents information about how many health entities are in Ok, Warning and Error
+// health state.
 type HealthStateCount struct {
 	// OkCount - The number of health entities with aggregated health state Ok.
 	OkCount *int64 `json:"OkCount,omitempty"`
@@ -22641,8 +22651,8 @@ type HealthStateCount struct {
 	ErrorCount *int64 `json:"ErrorCount,omitempty"`
 }
 
-// HealthStatistics the health statistics of an entity, returned as part of the health query result when the
-// query description is configured to include statistics.
+// HealthStatistics the health statistics of an entity, returned as part of the health query result when
+// the query description is configured to include statistics.
 // The statistics include health state counts for all children types of the current entity.
 // For example, for cluster, the health statistics include health state counts for nodes, applications,
 // services, partitions, replicas, deployed applications and deployed service packages.
@@ -22772,8 +22782,8 @@ type ImageStoreContent struct {
 	StoreFolders *[]FolderInfo `json:"StoreFolders,omitempty"`
 }
 
-// ImageStoreCopyDescription information about how to copy image store content from one image store relative
-// path to another image store relative path.
+// ImageStoreCopyDescription information about how to copy image store content from one image store
+// relative path to another image store relative path.
 type ImageStoreCopyDescription struct {
 	// RemoteSource - The relative path of source image store content to be copied from.
 	RemoteSource *string `json:"RemoteSource,omitempty"`
@@ -22800,10 +22810,10 @@ type ImageStoreInfo struct {
 	UsedByRegister *UsageInfo `json:"UsedByRegister,omitempty"`
 }
 
-// InlinedValueSecretResourceProperties describes the properties of a secret resource whose value is provided
-// explicitly as plaintext. The secret resource may have multiple values, each being uniquely versioned. The
-// secret value of each version is stored encrypted, and delivered as plaintext into the context of
-// applications referencing it.
+// InlinedValueSecretResourceProperties describes the properties of a secret resource whose value is
+// provided explicitly as plaintext. The secret resource may have multiple values, each being uniquely
+// versioned. The secret value of each version is stored encrypted, and delivered as plaintext into the
+// context of applications referencing it.
 type InlinedValueSecretResourceProperties struct {
 	// Description - User readable description of the secret.
 	Description *string `json:"description,omitempty"`
@@ -22914,8 +22924,8 @@ func (i6pv Int64PropertyValue) AsBasicPropertyValue() (BasicPropertyValue, bool)
 	return &i6pv, true
 }
 
-// Int64RangePartitionInformation describes the partition information for the integer range that is based on
-// partition schemes.
+// Int64RangePartitionInformation describes the partition information for the integer range that is based
+// on partition schemes.
 type Int64RangePartitionInformation struct {
 	// LowKey - Specifies the minimum key value handled by this partition.
 	LowKey *string `json:"LowKey,omitempty"`
@@ -22971,7 +22981,8 @@ func (i6rpi Int64RangePartitionInformation) AsBasicPartitionInformation() (Basic
 	return &i6rpi, true
 }
 
-// InvokeDataLossResult represents information about an operation in a terminal state (Completed or Faulted).
+// InvokeDataLossResult represents information about an operation in a terminal state (Completed or
+// Faulted).
 type InvokeDataLossResult struct {
 	// ErrorCode - If OperationState is Completed, this is 0.  If OperationState is Faulted, this is an error code indicating the reason.
 	ErrorCode *int32 `json:"ErrorCode,omitempty"`
@@ -22979,7 +22990,8 @@ type InvokeDataLossResult struct {
 	SelectedPartition *SelectedPartition `json:"SelectedPartition,omitempty"`
 }
 
-// InvokeQuorumLossResult represents information about an operation in a terminal state (Completed or Faulted).
+// InvokeQuorumLossResult represents information about an operation in a terminal state (Completed or
+// Faulted).
 type InvokeQuorumLossResult struct {
 	// ErrorCode - If OperationState is Completed, this is 0.  If OperationState is Faulted, this is an error code indicating the reason.
 	ErrorCode *int32 `json:"ErrorCode,omitempty"`
@@ -23295,8 +23307,8 @@ type LoadMetricInformation struct {
 	PlannedLoadRemoval *string `json:"PlannedLoadRemoval,omitempty"`
 }
 
-// LoadMetricReport represents the load metric report which contains the time metric was reported, its name and
-// value.
+// LoadMetricReport represents the load metric report which contains the time metric was reported, its name
+// and value.
 type LoadMetricReport struct {
 	// LastReportedUtc - Gets the UTC time when the load was reported.
 	LastReportedUtc *date.Time `json:"LastReportedUtc,omitempty"`
@@ -25851,8 +25863,8 @@ func (ndse NodeDeactivateStartedEvent) AsBasicFabricEvent() (BasicFabricEvent, b
 	return &ndse, true
 }
 
-// NodeDeactivationInfo information about the node deactivation. This information is valid for a node that is
-// undergoing deactivation or has already been deactivated.
+// NodeDeactivationInfo information about the node deactivation. This information is valid for a node that
+// is undergoing deactivation or has already been deactivated.
 type NodeDeactivationInfo struct {
 	// NodeDeactivationIntent - The intent or the reason for deactivating the node. Following are the possible values for it. Possible values include: 'NodeDeactivationIntentInvalid', 'NodeDeactivationIntentPause', 'NodeDeactivationIntentRestart', 'NodeDeactivationIntentRemoveData', 'NodeDeactivationIntentRemoveNode'
 	NodeDeactivationIntent NodeDeactivationIntent `json:"NodeDeactivationIntent,omitempty"`
@@ -26802,9 +26814,9 @@ type NodeHealth struct {
 	HealthStatistics *HealthStatistics `json:"HealthStatistics,omitempty"`
 }
 
-// NodeHealthEvaluation represents health evaluation for a node, containing information about the data and the
-// algorithm used by health store to evaluate health. The evaluation is returned only when the aggregated
-// health state is either Error or Warning.
+// NodeHealthEvaluation represents health evaluation for a node, containing information about the data and
+// the algorithm used by health store to evaluate health. The evaluation is returned only when the
+// aggregated health state is either Error or Warning.
 type NodeHealthEvaluation struct {
 	// NodeName - The name of a Service Fabric node.
 	NodeName *string `json:"NodeName,omitempty"`
@@ -27391,8 +27403,8 @@ func (nhree NodeHealthReportExpiredEvent) AsBasicFabricEvent() (BasicFabricEvent
 	return &nhree, true
 }
 
-// NodeHealthState represents the health state of a node, which contains the node identifier and its aggregated
-// health state.
+// NodeHealthState represents the health state of a node, which contains the node identifier and its
+// aggregated health state.
 type NodeHealthState struct {
 	// Name - The name of a Service Fabric node.
 	Name *string `json:"Name,omitempty"`
@@ -27411,8 +27423,8 @@ type NodeHealthStateChunk struct {
 	HealthState HealthState `json:"HealthState,omitempty"`
 }
 
-// NodeHealthStateChunkList the list of node health state chunks in the cluster that respect the input filters
-// in the chunk query. Returned by get cluster health state chunks query.
+// NodeHealthStateChunkList the list of node health state chunks in the cluster that respect the input
+// filters in the chunk query. Returned by get cluster health state chunks query.
 type NodeHealthStateChunkList struct {
 	// Items - The list of node health state chunks that respect the input filters in the chunk query.
 	Items *[]NodeHealthStateChunk `json:"Items,omitempty"`
@@ -27502,8 +27514,8 @@ type NodeInfo struct {
 	NodeDownAt *date.Time `json:"NodeDownAt,omitempty"`
 }
 
-// NodeLoadInfo information about load on a Service Fabric node. It holds a summary of all metrics and their
-// load on a node.
+// NodeLoadInfo information about load on a Service Fabric node. It holds a summary of all metrics and
+// their load on a node.
 type NodeLoadInfo struct {
 	autorest.Response `json:"-"`
 	// NodeName - Name of the node for which the load information is provided by this object.
@@ -27512,8 +27524,8 @@ type NodeLoadInfo struct {
 	NodeLoadMetricInformation *[]NodeLoadMetricInformation `json:"NodeLoadMetricInformation,omitempty"`
 }
 
-// NodeLoadMetricInformation represents data structure that contains load information for a certain metric on a
-// node.
+// NodeLoadMetricInformation represents data structure that contains load information for a certain metric
+// on a node.
 type NodeLoadMetricInformation struct {
 	// Name - Name of the metric for which this load information is provided.
 	Name *string `json:"Name,omitempty"`
@@ -29369,8 +29381,8 @@ type NodeResult struct {
 }
 
 // NodesHealthEvaluation represents health evaluation for nodes, containing health evaluations for each
-// unhealthy node that impacted current aggregated health state. Can be returned when evaluating cluster health
-// and the aggregated health state is either Error or Warning.
+// unhealthy node that impacted current aggregated health state. Can be returned when evaluating cluster
+// health and the aggregated health state is either Error or Warning.
 type NodesHealthEvaluation struct {
 	// MaxPercentUnhealthyNodes - Maximum allowed percentage of unhealthy nodes from the ClusterHealthPolicy.
 	MaxPercentUnhealthyNodes *int32 `json:"MaxPercentUnhealthyNodes,omitempty"`
@@ -29521,8 +29533,8 @@ func (nhe NodesHealthEvaluation) AsBasicHealthEvaluation() (BasicHealthEvaluatio
 	return &nhe, true
 }
 
-// NodeTransitionProgress information about an NodeTransition operation.  This class contains an OperationState
-// and a NodeTransitionResult.  The NodeTransitionResult is not valid until OperationState
+// NodeTransitionProgress information about an NodeTransition operation.  This class contains an
+// OperationState and a NodeTransitionResult.  The NodeTransitionResult is not valid until OperationState
 // is Completed or Faulted.
 type NodeTransitionProgress struct {
 	autorest.Response `json:"-"`
@@ -29532,7 +29544,8 @@ type NodeTransitionProgress struct {
 	NodeTransitionResult *NodeTransitionResult `json:"NodeTransitionResult,omitempty"`
 }
 
-// NodeTransitionResult represents information about an operation in a terminal state (Completed or Faulted).
+// NodeTransitionResult represents information about an operation in a terminal state (Completed or
+// Faulted).
 type NodeTransitionResult struct {
 	// ErrorCode - If OperationState is Completed, this is 0.  If OperationState is Faulted, this is an error code indicating the reason.
 	ErrorCode *int32 `json:"ErrorCode,omitempty"`
@@ -29974,9 +29987,9 @@ type PackageSharingPolicyInfo struct {
 	PackageSharingScope PackageSharingPolicyScope `json:"PackageSharingScope,omitempty"`
 }
 
-// PagedApplicationInfoList the list of applications in the cluster. The list is paged when all of the results
-// cannot fit in a single message. The next set of results can be obtained by executing the same query with the
-// continuation token provided in this list.
+// PagedApplicationInfoList the list of applications in the cluster. The list is paged when all of the
+// results cannot fit in a single message. The next set of results can be obtained by executing the same
+// query with the continuation token provided in this list.
 type PagedApplicationInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -29985,9 +29998,9 @@ type PagedApplicationInfoList struct {
 	Items *[]ApplicationInfo `json:"Items,omitempty"`
 }
 
-// PagedApplicationResourceDescriptionList the list of application resources. The list is paged when all of the
-// results cannot fit in a single message. The next set of results can be obtained by executing the same query
-// with the continuation token provided in this list.
+// PagedApplicationResourceDescriptionList the list of application resources. The list is paged when all of
+// the results cannot fit in a single message. The next set of results can be obtained by executing the
+// same query with the continuation token provided in this list.
 type PagedApplicationResourceDescriptionList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -29996,9 +30009,9 @@ type PagedApplicationResourceDescriptionList struct {
 	Items *[]ApplicationResourceDescription `json:"Items,omitempty"`
 }
 
-// PagedApplicationTypeInfoList the list of application types that are provisioned or being provisioned in the
-// cluster. The list is paged when all of the results cannot fit in a single message. The next set of results
-// can be obtained by executing the same query with the continuation token provided in this list.
+// PagedApplicationTypeInfoList the list of application types that are provisioned or being provisioned in
+// the cluster. The list is paged when all of the results cannot fit in a single message. The next set of
+// results can be obtained by executing the same query with the continuation token provided in this list.
 type PagedApplicationTypeInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -30007,9 +30020,9 @@ type PagedApplicationTypeInfoList struct {
 	Items *[]ApplicationTypeInfo `json:"Items,omitempty"`
 }
 
-// PagedBackupConfigurationInfoList the list of backup configuration information. The list is paged when all of
-// the results cannot fit in a single message. The next set of results can be obtained by executing the same
-// query with the continuation token provided in this list.
+// PagedBackupConfigurationInfoList the list of backup configuration information. The list is paged when
+// all of the results cannot fit in a single message. The next set of results can be obtained by executing
+// the same query with the continuation token provided in this list.
 type PagedBackupConfigurationInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -30050,9 +30063,9 @@ func (pbcil *PagedBackupConfigurationInfoList) UnmarshalJSON(body []byte) error 
 	return nil
 }
 
-// PagedBackupEntityList the list of backup entities that are being periodically backed. The list is paged when
-// all of the results cannot fit in a single message. The next set of results can be obtained by executing the
-// same query with the continuation token provided in this list.
+// PagedBackupEntityList the list of backup entities that are being periodically backed. The list is paged
+// when all of the results cannot fit in a single message. The next set of results can be obtained by
+// executing the same query with the continuation token provided in this list.
 type PagedBackupEntityList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -30093,9 +30106,9 @@ func (pbel *PagedBackupEntityList) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PagedBackupInfoList the list of backups. The list is paged when all of the results cannot fit in a single
-// message. The next set of results can be obtained by executing the same query with the continuation token
-// provided in this list.
+// PagedBackupInfoList the list of backups. The list is paged when all of the results cannot fit in a
+// single message. The next set of results can be obtained by executing the same query with the
+// continuation token provided in this list.
 type PagedBackupInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -30104,9 +30117,9 @@ type PagedBackupInfoList struct {
 	Items *[]BackupInfo `json:"Items,omitempty"`
 }
 
-// PagedBackupPolicyDescriptionList the list of backup policies configured in the cluster. The list is paged
-// when all of the results cannot fit in a single message. The next set of results can be obtained by executing
-// the same query with the continuation token provided in this list.
+// PagedBackupPolicyDescriptionList the list of backup policies configured in the cluster. The list is
+// paged when all of the results cannot fit in a single message. The next set of results can be obtained by
+// executing the same query with the continuation token provided in this list.
 type PagedBackupPolicyDescriptionList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -30115,9 +30128,9 @@ type PagedBackupPolicyDescriptionList struct {
 	Items *[]BackupPolicyDescription `json:"Items,omitempty"`
 }
 
-// PagedComposeDeploymentStatusInfoList the list of compose deployments in the cluster. The list is paged when
-// all of the results cannot fit in a single message. The next set of results can be obtained by executing the
-// same query with the continuation token provided in this list.
+// PagedComposeDeploymentStatusInfoList the list of compose deployments in the cluster. The list is paged
+// when all of the results cannot fit in a single message. The next set of results can be obtained by
+// executing the same query with the continuation token provided in this list.
 type PagedComposeDeploymentStatusInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -30129,8 +30142,8 @@ type PagedComposeDeploymentStatusInfoList struct {
 // PagedDeployedApplicationInfoList the list of deployed applications in activating, downloading, or active
 // states on a node.
 // The list is paged when all of the results cannot fit in a single message.
-// The next set of results can be obtained by executing the same query with the continuation token provided in
-// this list.
+// The next set of results can be obtained by executing the same query with the continuation token provided
+// in this list.
 type PagedDeployedApplicationInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -30139,9 +30152,9 @@ type PagedDeployedApplicationInfoList struct {
 	Items *[]DeployedApplicationInfo `json:"Items,omitempty"`
 }
 
-// PagedGatewayResourceDescriptionList the list of gateway resources. The list is paged when all of the results
-// cannot fit in a single message. The next set of results can be obtained by executing the same query with the
-// continuation token provided in this list.
+// PagedGatewayResourceDescriptionList the list of gateway resources. The list is paged when all of the
+// results cannot fit in a single message. The next set of results can be obtained by executing the same
+// query with the continuation token provided in this list.
 type PagedGatewayResourceDescriptionList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -30150,9 +30163,9 @@ type PagedGatewayResourceDescriptionList struct {
 	Items *[]GatewayResourceDescription `json:"Items,omitempty"`
 }
 
-// PagedNetworkResourceDescriptionList the list of network resources. The list is paged when all of the results
-// cannot fit in a single message. The next set of results can be obtained by executing the same query with the
-// continuation token provided in this list.
+// PagedNetworkResourceDescriptionList the list of network resources. The list is paged when all of the
+// results cannot fit in a single message. The next set of results can be obtained by executing the same
+// query with the continuation token provided in this list.
 type PagedNetworkResourceDescriptionList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -30161,9 +30174,9 @@ type PagedNetworkResourceDescriptionList struct {
 	Items *[]NetworkResourceDescription `json:"Items,omitempty"`
 }
 
-// PagedNodeInfoList the list of nodes in the cluster. The list is paged when all of the results cannot fit in
-// a single message. The next set of results can be obtained by executing the same query with the continuation
-// token provided in this list.
+// PagedNodeInfoList the list of nodes in the cluster. The list is paged when all of the results cannot fit
+// in a single message. The next set of results can be obtained by executing the same query with the
+// continuation token provided in this list.
 type PagedNodeInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -30172,9 +30185,9 @@ type PagedNodeInfoList struct {
 	Items *[]NodeInfo `json:"Items,omitempty"`
 }
 
-// PagedPropertyInfoList the paged list of Service Fabric properties under a given name. The list is paged when
-// all of the results cannot fit in a single message. The next set of results can be obtained by executing the
-// same query with the continuation token provided in this list.
+// PagedPropertyInfoList the paged list of Service Fabric properties under a given name. The list is paged
+// when all of the results cannot fit in a single message. The next set of results can be obtained by
+// executing the same query with the continuation token provided in this list.
 type PagedPropertyInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -30185,9 +30198,9 @@ type PagedPropertyInfoList struct {
 	Properties *[]PropertyInfo `json:"Properties,omitempty"`
 }
 
-// PagedReplicaInfoList the list of replicas in the cluster for a given partition. The list is paged when all
-// of the results cannot fit in a single message. The next set of results can be obtained by executing the same
-// query with the continuation token provided in this list.
+// PagedReplicaInfoList the list of replicas in the cluster for a given partition. The list is paged when
+// all of the results cannot fit in a single message. The next set of results can be obtained by executing
+// the same query with the continuation token provided in this list.
 type PagedReplicaInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -30228,9 +30241,9 @@ func (pril *PagedReplicaInfoList) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PagedSecretResourceDescriptionList the list of secret resources. The list is paged when all of the results
-// cannot fit in a single message. The next set of results can be obtained by executing the same query with the
-// continuation token provided in this list.
+// PagedSecretResourceDescriptionList the list of secret resources. The list is paged when all of the
+// results cannot fit in a single message. The next set of results can be obtained by executing the same
+// query with the continuation token provided in this list.
 type PagedSecretResourceDescriptionList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -30250,9 +30263,9 @@ type PagedSecretValueResourceDescriptionList struct {
 	Items *[]SecretValueResourceDescription `json:"Items,omitempty"`
 }
 
-// PagedServiceInfoList the list of services in the cluster for an application. The list is paged when all of
-// the results cannot fit in a single message. The next set of results can be obtained by executing the same
-// query with the continuation token provided in this list.
+// PagedServiceInfoList the list of services in the cluster for an application. The list is paged when all
+// of the results cannot fit in a single message. The next set of results can be obtained by executing the
+// same query with the continuation token provided in this list.
 type PagedServiceInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -30293,9 +30306,9 @@ func (psil *PagedServiceInfoList) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PagedServicePartitionInfoList the list of partition in the cluster for a service. The list is paged when all
-// of the results cannot fit in a single message. The next set of results can be obtained by executing the same
-// query with the continuation token provided in this list.
+// PagedServicePartitionInfoList the list of partition in the cluster for a service. The list is paged when
+// all of the results cannot fit in a single message. The next set of results can be obtained by executing
+// the same query with the continuation token provided in this list.
 type PagedServicePartitionInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -30336,9 +30349,9 @@ func (pspil *PagedServicePartitionInfoList) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PagedServiceReplicaDescriptionList the list of service resource replicas in the cluster. The list is paged
-// when all of the results cannot fit in a single message. The next set of results can be obtained by executing
-// the same query with the continuation token provided in this list.
+// PagedServiceReplicaDescriptionList the list of service resource replicas in the cluster. The list is
+// paged when all of the results cannot fit in a single message. The next set of results can be obtained by
+// executing the same query with the continuation token provided in this list.
 type PagedServiceReplicaDescriptionList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -30347,9 +30360,9 @@ type PagedServiceReplicaDescriptionList struct {
 	Items *[]ServiceReplicaDescription `json:"Items,omitempty"`
 }
 
-// PagedServiceResourceDescriptionList the list of service resources. The list is paged when all of the results
-// cannot fit in a single message. The next set of results can be obtained by executing the same query with the
-// continuation token provided in this list.
+// PagedServiceResourceDescriptionList the list of service resources. The list is paged when all of the
+// results cannot fit in a single message. The next set of results can be obtained by executing the same
+// query with the continuation token provided in this list.
 type PagedServiceResourceDescriptionList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -30358,9 +30371,9 @@ type PagedServiceResourceDescriptionList struct {
 	Items *[]ServiceResourceDescription `json:"Items,omitempty"`
 }
 
-// PagedSubNameInfoList a paged list of Service Fabric names. The list is paged when all of the results cannot
-// fit in a single message. The next set of results can be obtained by executing the same query with the
-// continuation token provided in this list.
+// PagedSubNameInfoList a paged list of Service Fabric names. The list is paged when all of the results
+// cannot fit in a single message. The next set of results can be obtained by executing the same query with
+// the continuation token provided in this list.
 type PagedSubNameInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -30371,9 +30384,9 @@ type PagedSubNameInfoList struct {
 	SubNames *[]string `json:"SubNames,omitempty"`
 }
 
-// PagedVolumeResourceDescriptionList the list of volume resources. The list is paged when all of the results
-// cannot fit in a single message. The next set of results can be obtained by executing the same query with the
-// continuation token provided in this list.
+// PagedVolumeResourceDescriptionList the list of volume resources. The list is paged when all of the
+// results cannot fit in a single message. The next set of results can be obtained by executing the same
+// query with the continuation token provided in this list.
 type PagedVolumeResourceDescriptionList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results, then the continuation token is not included in the response.
@@ -30826,8 +30839,8 @@ func (pae PartitionAnalysisEvent) AsBasicFabricEvent() (BasicFabricEvent, bool) 
 	return &pae, true
 }
 
-// PartitionBackupConfigurationInfo backup configuration information, for a specific partition, specifying what
-// backup policy is being applied and suspend description, if any.
+// PartitionBackupConfigurationInfo backup configuration information, for a specific partition, specifying
+// what backup policy is being applied and suspend description, if any.
 type PartitionBackupConfigurationInfo struct {
 	autorest.Response `json:"-"`
 	// ServiceName - The full name of the service with 'fabric:' URI scheme.
@@ -32095,8 +32108,8 @@ func (phree PartitionHealthReportExpiredEvent) AsBasicFabricEvent() (BasicFabric
 	return &phree, true
 }
 
-// PartitionHealthState represents the health state of a partition, which contains the partition identifier and
-// its aggregated health state.
+// PartitionHealthState represents the health state of a partition, which contains the partition identifier
+// and its aggregated health state.
 type PartitionHealthState struct {
 	// PartitionID - Id of the partition whose health state is described by this object.
 	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
@@ -32104,9 +32117,9 @@ type PartitionHealthState struct {
 	AggregatedHealthState HealthState `json:"AggregatedHealthState,omitempty"`
 }
 
-// PartitionHealthStateChunk represents the health state chunk of a partition, which contains the partition ID,
-// its aggregated health state and any replicas that respect the filters in the cluster health chunk query
-// description.
+// PartitionHealthStateChunk represents the health state chunk of a partition, which contains the partition
+// ID, its aggregated health state and any replicas that respect the filters in the cluster health chunk
+// query description.
 type PartitionHealthStateChunk struct {
 	// PartitionID - The Id of the partition.
 	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
@@ -32116,18 +32129,19 @@ type PartitionHealthStateChunk struct {
 	HealthState HealthState `json:"HealthState,omitempty"`
 }
 
-// PartitionHealthStateChunkList the list of partition health state chunks that respect the input filters in
-// the chunk query description.
+// PartitionHealthStateChunkList the list of partition health state chunks that respect the input filters
+// in the chunk query description.
 // Returned by get cluster health state chunks query as part of the parent application hierarchy.
 type PartitionHealthStateChunkList struct {
 	// Items - The list of partition health state chunks that respect the input filters in the chunk query.
 	Items *[]PartitionHealthStateChunk `json:"Items,omitempty"`
 }
 
-// PartitionHealthStateFilter defines matching criteria to determine whether a partition should be included as
-// a child of a service in the cluster health chunk.
-// The partitions are only returned if the parent entities match a filter specified in the cluster health chunk
-// query description. The parent service and application must be included in the cluster health chunk.
+// PartitionHealthStateFilter defines matching criteria to determine whether a partition should be included
+// as a child of a service in the cluster health chunk.
+// The partitions are only returned if the parent entities match a filter specified in the cluster health
+// chunk query description. The parent service and application must be included in the cluster health
+// chunk.
 // One filter can match zero, one or multiple partitions, depending on its properties.
 type PartitionHealthStateFilter struct {
 	// PartitionIDFilter - ID of the partition that matches the filter. The filter is applied only to the specified partition, if it exists.
@@ -32307,8 +32321,8 @@ func (picsm PartitionInstanceCountScaleMechanism) AsBasicScalingMechanismDescrip
 
 // PartitionLoadInformation represents load information for a partition, which contains the primary and
 // secondary reported load metrics.
-// In case there is no load reported, PartitionLoadInformation will contain the default load for the service of
-// the partition.
+// In case there is no load reported, PartitionLoadInformation will contain the default load for the
+// service of the partition.
 // For default loads, LoadMetricReport's LastReportedUtc is set to 0.
 type PartitionLoadInformation struct {
 	autorest.Response `json:"-"`
@@ -33902,9 +33916,9 @@ func (psd PartitionSchemeDescription) AsBasicPartitionSchemeDescription() (Basic
 	return &psd, true
 }
 
-// PartitionsHealthEvaluation represents health evaluation for the partitions of a service, containing health
-// evaluations for each unhealthy partition that impacts current aggregated health state. Can be returned when
-// evaluating service health and the aggregated health state is either Error or Warning.
+// PartitionsHealthEvaluation represents health evaluation for the partitions of a service, containing
+// health evaluations for each unhealthy partition that impacts current aggregated health state. Can be
+// returned when evaluating service health and the aggregated health state is either Error or Warning.
 type PartitionsHealthEvaluation struct {
 	// MaxPercentUnhealthyPartitionsPerService - Maximum allowed percentage of unhealthy partitions per service from the ServiceTypeHealthPolicy.
 	MaxPercentUnhealthyPartitionsPerService *int32 `json:"MaxPercentUnhealthyPartitionsPerService,omitempty"`
@@ -34055,8 +34069,8 @@ func (phe PartitionsHealthEvaluation) AsBasicHealthEvaluation() (BasicHealthEval
 	return &phe, true
 }
 
-// PrimaryReplicatorStatus provides statistics about the Service Fabric Replicator, when it is functioning in a
-// Primary role.
+// PrimaryReplicatorStatus provides statistics about the Service Fabric Replicator, when it is functioning
+// in a Primary role.
 type PrimaryReplicatorStatus struct {
 	// ReplicationQueueStatus - Details about the replication queue on the primary replicator.
 	ReplicationQueueStatus *ReplicatorQueueStatus `json:"ReplicationQueueStatus,omitempty"`
@@ -34994,8 +35008,8 @@ type RemoteReplicatorAcknowledgementStatus struct {
 	CopyStreamAcknowledgementDetail *RemoteReplicatorAcknowledgementDetail `json:"CopyStreamAcknowledgementDetail,omitempty"`
 }
 
-// RemoteReplicatorStatus represents the state of the secondary replicator from the primary replicator’s point
-// of view.
+// RemoteReplicatorStatus represents the state of the secondary replicator from the primary replicator’s
+// point of view.
 type RemoteReplicatorStatus struct {
 	// ReplicaID - Represents the replica ID of the remote secondary replicator.
 	ReplicaID *string `json:"ReplicaId,omitempty"`
@@ -35465,7 +35479,8 @@ type RepairTaskHistory struct {
 	RestoringHealthCheckEndUtcTimestamp *date.Time `json:"RestoringHealthCheckEndUtcTimestamp,omitempty"`
 }
 
-// RepairTaskUpdateHealthPolicyDescription describes a request to update the health policy of a repair task.
+// RepairTaskUpdateHealthPolicyDescription describes a request to update the health policy of a repair
+// task.
 //
 // This type supports the Service Fabric platform; it is not meant to be used directly from your code.
 type RepairTaskUpdateHealthPolicyDescription struct {
@@ -36071,8 +36086,8 @@ func (rh ReplicaHealth) AsBasicReplicaHealth() (BasicReplicaHealth, bool) {
 	return &rh, true
 }
 
-// ReplicaHealthEvaluation represents health evaluation for a replica, containing information about the data
-// and the algorithm used by health store to evaluate health. The evaluation is returned only when the
+// ReplicaHealthEvaluation represents health evaluation for a replica, containing information about the
+// data and the algorithm used by health store to evaluate health. The evaluation is returned only when the
 // aggregated health state is either Error or Warning.
 type ReplicaHealthEvaluation struct {
 	// PartitionID - Id of the partition to which the replica belongs.
@@ -36347,18 +36362,18 @@ type ReplicaHealthStateChunk struct {
 	HealthState HealthState `json:"HealthState,omitempty"`
 }
 
-// ReplicaHealthStateChunkList the list of replica health state chunks that respect the input filters in the
-// chunk query. Returned by get cluster health state chunks query.
+// ReplicaHealthStateChunkList the list of replica health state chunks that respect the input filters in
+// the chunk query. Returned by get cluster health state chunks query.
 type ReplicaHealthStateChunkList struct {
 	// Items - The list of replica health state chunks that respect the input filters in the chunk query.
 	Items *[]ReplicaHealthStateChunk `json:"Items,omitempty"`
 }
 
-// ReplicaHealthStateFilter defines matching criteria to determine whether a replica should be included as a
-// child of a partition in the cluster health chunk.
-// The replicas are only returned if the parent entities match a filter specified in the cluster health chunk
-// query description. The parent partition, service and application must be included in the cluster health
-// chunk.
+// ReplicaHealthStateFilter defines matching criteria to determine whether a replica should be included as
+// a child of a partition in the cluster health chunk.
+// The replicas are only returned if the parent entities match a filter specified in the cluster health
+// chunk query description. The parent partition, service and application must be included in the cluster
+// health chunk.
 // One filter can match zero, one or multiple replicas, depending on its properties.
 type ReplicaHealthStateFilter struct {
 	// ReplicaOrInstanceIDFilter - Id of the stateful service replica or stateless service instance that matches the filter. The filter is applied only to the specified replica, if it exists.
@@ -36509,9 +36524,9 @@ func (rim *ReplicaInfoModel) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ReplicasHealthEvaluation represents health evaluation for replicas, containing health evaluations for each
-// unhealthy replica that impacted current aggregated health state. Can be returned when evaluating partition
-// health and the aggregated health state is either Error or Warning.
+// ReplicasHealthEvaluation represents health evaluation for replicas, containing health evaluations for
+// each unhealthy replica that impacted current aggregated health state. Can be returned when evaluating
+// partition health and the aggregated health state is either Error or Warning.
 type ReplicasHealthEvaluation struct {
 	// MaxPercentUnhealthyReplicasPerPartition - Maximum allowed percentage of unhealthy replicas per partition from the ApplicationHealthPolicy.
 	MaxPercentUnhealthyReplicasPerPartition *int32 `json:"MaxPercentUnhealthyReplicasPerPartition,omitempty"`
@@ -36737,8 +36752,8 @@ func (rsb ReplicaStatusBase) AsBasicReplicaStatusBase() (BasicReplicaStatusBase,
 }
 
 // ReplicatorQueueStatus provides various statistics of the queue used in the service fabric replicator.
-// Contains information about the service fabric replicator like the replication/copy queue utilization, last
-// acknowledgement received timestamp, etc.
+// Contains information about the service fabric replicator like the replication/copy queue utilization,
+// last acknowledgement received timestamp, etc.
 // Depending on the role of the replicator, the properties in this type imply different meanings.
 type ReplicatorQueueStatus struct {
 	// QueueUtilizationPercentage - Represents the utilization of the queue. A value of 0 indicates that the queue is empty and a value of 100 indicates the queue is full.
@@ -36943,8 +36958,8 @@ func (rsp *ResolvedServicePartition) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ResourceLimits this type describes the resource limits for a given container. It describes the most amount
-// of resources a container is allowed to use before being restarted.
+// ResourceLimits this type describes the resource limits for a given container. It describes the most
+// amount of resources a container is allowed to use before being restarted.
 type ResourceLimits struct {
 	// MemoryInGB - The memory limit in GB.
 	MemoryInGB *float64 `json:"memoryInGB,omitempty"`
@@ -36952,9 +36967,10 @@ type ResourceLimits struct {
 	CPU *float64 `json:"cpu,omitempty"`
 }
 
-// ResourceRequests this type describes the requested resources for a given container. It describes the least
-// amount of resources required for the container. A container can consume more than requested resources up to
-// the specified limits before being restarted. Currently, the requested resources are treated as limits.
+// ResourceRequests this type describes the requested resources for a given container. It describes the
+// least amount of resources required for the container. A container can consume more than requested
+// resources up to the specified limits before being restarted. Currently, the requested resources are
+// treated as limits.
 type ResourceRequests struct {
 	// MemoryInGB - The memory request in GB for this container.
 	MemoryInGB *float64 `json:"memoryInGB,omitempty"`
@@ -36970,8 +36986,8 @@ type ResourceRequirements struct {
 	Limits *ResourceLimits `json:"limits,omitempty"`
 }
 
-// RestartDeployedCodePackageDescription defines description for restarting a deployed code package on Service
-// Fabric node.
+// RestartDeployedCodePackageDescription defines description for restarting a deployed code package on
+// Service Fabric node.
 type RestartDeployedCodePackageDescription struct {
 	// ServiceManifestName - The name of service manifest that specified this code package.
 	ServiceManifestName *string `json:"ServiceManifestName,omitempty"`
@@ -36996,7 +37012,8 @@ type RestartNodeDescription struct {
 	CreateFabricDump CreateFabricDump `json:"CreateFabricDump,omitempty"`
 }
 
-// RestartPartitionResult represents information about an operation in a terminal state (Completed or Faulted).
+// RestartPartitionResult represents information about an operation in a terminal state (Completed or
+// Faulted).
 type RestartPartitionResult struct {
 	// ErrorCode - If OperationState is Completed, this is 0.  If OperationState is Faulted, this is an error code indicating the reason.
 	ErrorCode *int32 `json:"ErrorCode,omitempty"`
@@ -37004,7 +37021,8 @@ type RestartPartitionResult struct {
 	SelectedPartition *SelectedPartition `json:"SelectedPartition,omitempty"`
 }
 
-// RestorePartitionDescription specifies the parameters needed to trigger a restore of a specific partition.
+// RestorePartitionDescription specifies the parameters needed to trigger a restore of a specific
+// partition.
 type RestorePartitionDescription struct {
 	// BackupID - Unique backup ID.
 	BackupID *uuid.UUID `json:"BackupId,omitempty"`
@@ -37157,8 +37175,8 @@ func (rpd RetentionPolicyDescription) AsBasicBasicRetentionPolicyDescription() (
 	return &rpd, true
 }
 
-// RollingUpgradeUpdateDescription describes the parameters for updating a rolling upgrade of application or
-// cluster.
+// RollingUpgradeUpdateDescription describes the parameters for updating a rolling upgrade of application
+// or cluster.
 type RollingUpgradeUpdateDescription struct {
 	// RollingUpgradeMode - The mode used to monitor health during a rolling upgrade. The values are UnmonitoredAuto, UnmonitoredManual, and Monitored. Possible values include: 'UpgradeModeInvalid', 'UpgradeModeUnmonitoredAuto', 'UpgradeModeUnmonitoredManual', 'UpgradeModeMonitored'
 	RollingUpgradeMode UpgradeMode `json:"RollingUpgradeMode,omitempty"`
@@ -37612,8 +37630,8 @@ func (std ScalingTriggerDescription) AsBasicScalingTriggerDescription() (BasicSc
 	return &std, true
 }
 
-// SecondaryActiveReplicatorStatus status of the secondary replicator when it is in active mode and is part of
-// the replica set.
+// SecondaryActiveReplicatorStatus status of the secondary replicator when it is in active mode and is part
+// of the replica set.
 type SecondaryActiveReplicatorStatus struct {
 	// ReplicationQueueStatus - Details about the replication queue on the secondary replicator.
 	ReplicationQueueStatus *ReplicatorQueueStatus `json:"ReplicationQueueStatus,omitempty"`
@@ -37697,8 +37715,8 @@ func (sars SecondaryActiveReplicatorStatus) AsBasicReplicatorStatus() (BasicRepl
 	return &sars, true
 }
 
-// SecondaryIdleReplicatorStatus status of the secondary replicator when it is in idle mode and is being built
-// by the primary.
+// SecondaryIdleReplicatorStatus status of the secondary replicator when it is in idle mode and is being
+// built by the primary.
 type SecondaryIdleReplicatorStatus struct {
 	// ReplicationQueueStatus - Details about the replication queue on the secondary replicator.
 	ReplicationQueueStatus *ReplicatorQueueStatus `json:"ReplicationQueueStatus,omitempty"`
@@ -38158,8 +38176,8 @@ type SecretValueProperties struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// SecretValueResourceDescription this type describes a value of a secret resource. The name of this resource
-// is the version identifier corresponding to this secret value.
+// SecretValueResourceDescription this type describes a value of a secret resource. The name of this
+// resource is the version identifier corresponding to this secret value.
 type SecretValueResourceDescription struct {
 	autorest.Response `json:"-"`
 	// Name - Version identifier of the secret value.
@@ -38219,8 +38237,8 @@ type SecretValueResourceProperties struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// SeedNodeSafetyCheck represents a safety check for the seed nodes being performed by service fabric before
-// continuing with node level operations.
+// SeedNodeSafetyCheck represents a safety check for the seed nodes being performed by service fabric
+// before continuing with node level operations.
 type SeedNodeSafetyCheck struct {
 	// Kind - Possible values include: 'KindSafetyCheck', 'KindPartitionSafetyCheck', 'KindEnsureAvailability', 'KindEnsurePartitionQuorum', 'KindEnsureSeedNodeQuorum', 'KindWaitForInbuildReplica', 'KindWaitForPrimaryPlacement', 'KindWaitForPrimarySwap', 'KindWaitForReconfiguration'
 	Kind KindBasicSafetyCheck `json:"Kind,omitempty"`
@@ -38291,8 +38309,8 @@ func (snsc SeedNodeSafetyCheck) AsBasicSafetyCheck() (BasicSafetyCheck, bool) {
 	return &snsc, true
 }
 
-// SelectedPartition this class returns information about the partition that the user-induced operation acted
-// upon.
+// SelectedPartition this class returns information about the partition that the user-induced operation
+// acted upon.
 type SelectedPartition struct {
 	// ServiceName - The name of the service the partition belongs to.
 	ServiceName *string `json:"ServiceName,omitempty"`
@@ -40117,8 +40135,8 @@ type ServiceHealth struct {
 	HealthStatistics *HealthStatistics `json:"HealthStatistics,omitempty"`
 }
 
-// ServiceHealthEvaluation represents health evaluation for a service, containing information about the data
-// and the algorithm used by health store to evaluate health. The evaluation is returned only when the
+// ServiceHealthEvaluation represents health evaluation for a service, containing information about the
+// data and the algorithm used by health store to evaluate health. The evaluation is returned only when the
 // aggregated health state is either Error or Warning.
 type ServiceHealthEvaluation struct {
 	// ServiceName - Name of the service whose health evaluation is described by this object.
@@ -40708,8 +40726,8 @@ func (shree ServiceHealthReportExpiredEvent) AsBasicFabricEvent() (BasicFabricEv
 	return &shree, true
 }
 
-// ServiceHealthState represents the health state of a service, which contains the service identifier and its
-// aggregated health state.
+// ServiceHealthState represents the health state of a service, which contains the service identifier and
+// its aggregated health state.
 type ServiceHealthState struct {
 	// ServiceName - Name of the service whose health state is represented by this object.
 	ServiceName *string `json:"ServiceName,omitempty"`
@@ -40717,9 +40735,9 @@ type ServiceHealthState struct {
 	AggregatedHealthState HealthState `json:"AggregatedHealthState,omitempty"`
 }
 
-// ServiceHealthStateChunk represents the health state chunk of a service, which contains the service name, its
-// aggregated health state and any partitions that respect the filters in the cluster health chunk query
-// description.
+// ServiceHealthStateChunk represents the health state chunk of a service, which contains the service name,
+// its aggregated health state and any partitions that respect the filters in the cluster health chunk
+// query description.
 type ServiceHealthStateChunk struct {
 	// ServiceName - The name of the service whose health state chunk is provided in this object.
 	ServiceName *string `json:"ServiceName,omitempty"`
@@ -40729,17 +40747,17 @@ type ServiceHealthStateChunk struct {
 	HealthState HealthState `json:"HealthState,omitempty"`
 }
 
-// ServiceHealthStateChunkList the list of service health state chunks that respect the input filters in the
-// chunk query. Returned by get cluster health state chunks query.
+// ServiceHealthStateChunkList the list of service health state chunks that respect the input filters in
+// the chunk query. Returned by get cluster health state chunks query.
 type ServiceHealthStateChunkList struct {
 	// Items - The list of service health state chunks that respect the input filters in the chunk query.
 	Items *[]ServiceHealthStateChunk `json:"Items,omitempty"`
 }
 
-// ServiceHealthStateFilter defines matching criteria to determine whether a service should be included as a
-// child of an application in the cluster health chunk.
-// The services are only returned if the parent application matches a filter specified in the cluster health
-// chunk query description.
+// ServiceHealthStateFilter defines matching criteria to determine whether a service should be included as
+// a child of an application in the cluster health chunk.
+// The services are only returned if the parent application matches a filter specified in the cluster
+// health chunk query description.
 // One filter can match zero, one or multiple services, depending on its properties.
 type ServiceHealthStateFilter struct {
 	// ServiceNameFilter - The name of the service that matches the filter. The filter is applied only to the specified service, if it exists.
@@ -41546,9 +41564,9 @@ func (spim *ServicePartitionInfoModel) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServicePlacementInvalidDomainPolicyDescription describes the policy to be used for placement of a Service
-// Fabric service where a particular fault or upgrade domain should not be used for placement of the instances
-// or replicas of that service.
+// ServicePlacementInvalidDomainPolicyDescription describes the policy to be used for placement of a
+// Service Fabric service where a particular fault or upgrade domain should not be used for placement of
+// the instances or replicas of that service.
 type ServicePlacementInvalidDomainPolicyDescription struct {
 	// DomainName - The name of the domain that should not be used for placement.
 	DomainName *string `json:"DomainName,omitempty"`
@@ -41604,8 +41622,9 @@ func (spidpd ServicePlacementInvalidDomainPolicyDescription) AsBasicServicePlace
 	return &spidpd, true
 }
 
-// ServicePlacementNonPartiallyPlaceServicePolicyDescription describes the policy to be used for placement of a
-// Service Fabric service where all replicas must be able to be placed in order for any replicas to be created.
+// ServicePlacementNonPartiallyPlaceServicePolicyDescription describes the policy to be used for placement
+// of a Service Fabric service where all replicas must be able to be placed in order for any replicas to be
+// created.
 type ServicePlacementNonPartiallyPlaceServicePolicyDescription struct {
 	// Type - Possible values include: 'TypeServicePlacementPolicyDescription', 'TypeInvalidDomain', 'TypeNonPartiallyPlaceService', 'TypePreferPrimaryDomain', 'TypeRequireDomain', 'TypeRequireDomainDistribution'
 	Type Type `json:"Type,omitempty"`
@@ -41774,11 +41793,11 @@ func (sppd ServicePlacementPolicyDescription) AsBasicServicePlacementPolicyDescr
 // Service Fabric service where the service's Primary replicas should optimally be placed in a particular
 // domain.
 //
-// This placement policy is usually used with fault domains in scenarios where the Service Fabric cluster is
-// geographically distributed in order to indicate that a service's primary replica should be located in a
-// particular fault domain, which in geo-distributed scenarios usually aligns with regional or datacenter
-// boundaries. Note that since this is an optimization it is possible that the Primary replica may not end up
-// located in this domain due to failures, capacity limits, or other constraints.
+// This placement policy is usually used with fault domains in scenarios where the Service Fabric cluster
+// is geographically distributed in order to indicate that a service's primary replica should be located in
+// a particular fault domain, which in geo-distributed scenarios usually aligns with regional or datacenter
+// boundaries. Note that since this is an optimization it is possible that the Primary replica may not end
+// up located in this domain due to failures, capacity limits, or other constraints.
 type ServicePlacementPreferPrimaryDomainPolicyDescription struct {
 	// DomainName - The name of the domain that should used for placement as per this policy.
 	DomainName *string `json:"DomainName,omitempty"`
@@ -41834,8 +41853,9 @@ func (spppdpd ServicePlacementPreferPrimaryDomainPolicyDescription) AsBasicServi
 	return &spppdpd, true
 }
 
-// ServicePlacementRequiredDomainPolicyDescription describes the policy to be used for placement of a Service
-// Fabric service where the instances or replicas of that service must be placed in a particular domain
+// ServicePlacementRequiredDomainPolicyDescription describes the policy to be used for placement of a
+// Service Fabric service where the instances or replicas of that service must be placed in a particular
+// domain
 type ServicePlacementRequiredDomainPolicyDescription struct {
 	// DomainName - The name of the domain that should used for placement as per this policy.
 	DomainName *string `json:"DomainName,omitempty"`
@@ -41891,15 +41911,15 @@ func (sprdpd ServicePlacementRequiredDomainPolicyDescription) AsBasicServicePlac
 	return &sprdpd, true
 }
 
-// ServicePlacementRequireDomainDistributionPolicyDescription describes the policy to be used for placement of
-// a Service Fabric service where two replicas from the same partition should never be placed in the same fault
-// or upgrade domain.
+// ServicePlacementRequireDomainDistributionPolicyDescription describes the policy to be used for placement
+// of a Service Fabric service where two replicas from the same partition should never be placed in the
+// same fault or upgrade domain.
 //
 // While this is not common it can expose the service to an increased risk of concurrent failures due to
 // unplanned outages or other cases of subsequent/concurrent failures. As an example, consider a case where
-// replicas are deployed across different data center, with one replica per location. In the event that one of
-// the datacenters goes offline, normally the replica that was placed in that datacenter will be packed into
-// one of the remaining datacenters. If this is not desirable then this policy should be set.
+// replicas are deployed across different data center, with one replica per location. In the event that one
+// of the datacenters goes offline, normally the replica that was placed in that datacenter will be packed
+// into one of the remaining datacenters. If this is not desirable then this policy should be set.
 type ServicePlacementRequireDomainDistributionPolicyDescription struct {
 	// DomainName - The name of the domain that should used for placement as per this policy.
 	DomainName *string `json:"DomainName,omitempty"`
@@ -42392,10 +42412,10 @@ func (srp *ServiceResourceProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServicesHealthEvaluation represents health evaluation for services of a certain service type belonging to an
-// application, containing health evaluations for each unhealthy service that impacted current aggregated
-// health state. Can be returned when evaluating application health and the aggregated health state is either
-// Error or Warning.
+// ServicesHealthEvaluation represents health evaluation for services of a certain service type belonging
+// to an application, containing health evaluations for each unhealthy service that impacted current
+// aggregated health state. Can be returned when evaluating application health and the aggregated health
+// state is either Error or Warning.
 type ServicesHealthEvaluation struct {
 	// ServiceTypeName - Name of the service type of the services.
 	ServiceTypeName *string `json:"ServiceTypeName,omitempty"`
@@ -42752,8 +42772,8 @@ type ServiceTypeExtensionDescription struct {
 	Value *string `json:"Value,omitempty"`
 }
 
-// ServiceTypeHealthPolicy represents the health policy used to evaluate the health of services belonging to a
-// service type.
+// ServiceTypeHealthPolicy represents the health policy used to evaluate the health of services belonging
+// to a service type.
 type ServiceTypeHealthPolicy struct {
 	// MaxPercentUnhealthyPartitionsPerService - The maximum allowed percentage of unhealthy partitions per service. Allowed values are Byte values from zero to 100
 	// The percentage represents the maximum tolerated percentage of partitions that can be unhealthy before the service is considered in error.
@@ -42847,8 +42867,8 @@ func (sti *ServiceTypeInfo) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServiceTypeManifest contains the manifest describing a service type registered as part of an application in
-// a Service Fabric cluster.
+// ServiceTypeManifest contains the manifest describing a service type registered as part of an application
+// in a Service Fabric cluster.
 type ServiceTypeManifest struct {
 	autorest.Response `json:"-"`
 	// Manifest - The XML manifest as a string.
@@ -43080,8 +43100,8 @@ func (sud *ServiceUpdateDescription) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServiceUpgradeProgress information about how many replicas are completed or pending for a specific service
-// during upgrade.
+// ServiceUpgradeProgress information about how many replicas are completed or pending for a specific
+// service during upgrade.
 type ServiceUpgradeProgress struct {
 	// ServiceName - Name of the Service resource.
 	ServiceName *string `json:"ServiceName,omitempty"`
@@ -43092,8 +43112,8 @@ type ServiceUpgradeProgress struct {
 }
 
 // Setting describes a setting for the container. The setting file path can be fetched from environment
-// variable "Fabric_SettingPath". The path for Windows container is "C:\\secrets". The path for Linux container
-// is "/var/secrets".
+// variable "Fabric_SettingPath". The path for Windows container is "C:\\secrets". The path for Linux
+// container is "/var/secrets".
 type Setting struct {
 	// Type - The type of the setting being given in value. Possible values include: 'SettingTypeClearText', 'SettingTypeKeyVaultReference', 'SettingTypeSecretValueReference'
 	Type SettingType `json:"type,omitempty"`
@@ -43103,8 +43123,8 @@ type Setting struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// SingletonPartitionInformation information about a partition that is singleton. The services with singleton
-// partitioning scheme are effectively non-partitioned. They only have one partition.
+// SingletonPartitionInformation information about a partition that is singleton. The services with
+// singleton partitioning scheme are effectively non-partitioned. They only have one partition.
 type SingletonPartitionInformation struct {
 	// ID - An internal ID used by Service Fabric to uniquely identify a partition. This is a randomly generated GUID when the service was created. The partition ID is unique and does not change for the lifetime of the service. If the same service was deleted and recreated the IDs of its partitions would be different.
 	ID *uuid.UUID `json:"Id,omitempty"`
@@ -46809,8 +46829,8 @@ func (ssihs StatelessServiceInstanceHealthState) AsBasicReplicaHealthState() (Ba
 	return &ssihs, true
 }
 
-// StatelessServiceInstanceInfo represents a stateless service instance. This includes information about the
-// identity, status, health, node name, uptime, and other details about the instance.
+// StatelessServiceInstanceInfo represents a stateless service instance. This includes information about
+// the identity, status, health, node name, uptime, and other details about the instance.
 type StatelessServiceInstanceInfo struct {
 	// InstanceID - Id of a stateless service instance. InstanceId is used by Service Fabric to uniquely identify an instance of a partition of a stateless service. It is unique within a partition and does not change for the lifetime of the instance. If the instance has failed over on the same or different node, it will get a different value for the InstanceId.
 	InstanceID *string `json:"InstanceId,omitempty"`
@@ -47744,10 +47764,10 @@ type TCPConfig struct {
 	Destination *GatewayDestination `json:"destination,omitempty"`
 }
 
-// TestErrorChaosEvent describes a Chaos event that gets generated when an unexpected event occurs in the Chaos
-// engine.
-// For example, due to the cluster snapshot being inconsistent, while faulting an entity, Chaos found that the
-// entity was already faulted -- which would be an unexpected event.
+// TestErrorChaosEvent describes a Chaos event that gets generated when an unexpected event occurs in the
+// Chaos engine.
+// For example, due to the cluster snapshot being inconsistent, while faulting an entity, Chaos found that
+// the entity was already faulted -- which would be an unexpected event.
 type TestErrorChaosEvent struct {
 	// Reason - Describes why TestErrorChaosEvent was generated. For example, Chaos tries to fault a partition but finds that the partition is no longer fault tolerant, then a TestErrorEvent gets generated with the reason stating that the partition is not fault tolerant.
 	Reason *string `json:"Reason,omitempty"`
@@ -47983,9 +48003,9 @@ type UpdateClusterUpgradeDescription struct {
 	ApplicationHealthPolicyMap *ApplicationHealthPolicies `json:"ApplicationHealthPolicyMap,omitempty"`
 }
 
-// UpgradeDomainDeltaNodesCheckHealthEvaluation represents health evaluation for delta unhealthy cluster nodes
-// in an upgrade domain, containing health evaluations for each unhealthy node that impacted current aggregated
-// health state.
+// UpgradeDomainDeltaNodesCheckHealthEvaluation represents health evaluation for delta unhealthy cluster
+// nodes in an upgrade domain, containing health evaluations for each unhealthy node that impacted current
+// aggregated health state.
 // Can be returned during cluster upgrade when cluster aggregated health state is Warning or Error.
 type UpgradeDomainDeltaNodesCheckHealthEvaluation struct {
 	// UpgradeDomainName - Name of the upgrade domain where nodes health is currently evaluated.
@@ -48161,9 +48181,9 @@ type UpgradeDomainInfo struct {
 }
 
 // UpgradeDomainNodesHealthEvaluation represents health evaluation for cluster nodes in an upgrade domain,
-// containing health evaluations for each unhealthy node that impacted current aggregated health state. Can be
-// returned when evaluating cluster health during cluster upgrade and the aggregated health state is either
-// Error or Warning.
+// containing health evaluations for each unhealthy node that impacted current aggregated health state. Can
+// be returned when evaluating cluster health during cluster upgrade and the aggregated health state is
+// either Error or Warning.
 type UpgradeDomainNodesHealthEvaluation struct {
 	// UpgradeDomainName - Name of the upgrade domain where nodes health is currently evaluated.
 	UpgradeDomainName *string `json:"UpgradeDomainName,omitempty"`
@@ -48357,8 +48377,8 @@ type UploadSession struct {
 	UploadSessions *[]UploadSessionInfo `json:"UploadSessions,omitempty"`
 }
 
-// UploadSessionInfo information about an image store upload session. A session is associated with a relative
-// path in the image store.
+// UploadSessionInfo information about an image store upload session. A session is associated with a
+// relative path in the image store.
 type UploadSessionInfo struct {
 	// StoreRelativePath - The remote location within image store. This path is relative to the image store root.
 	StoreRelativePath *string `json:"StoreRelativePath,omitempty"`
@@ -48372,8 +48392,8 @@ type UploadSessionInfo struct {
 	ExpectedRanges *[]UploadChunkRange `json:"ExpectedRanges,omitempty"`
 }
 
-// UsageInfo information about how much space and how many files in the file system the ImageStore is using in
-// this category
+// UsageInfo information about how much space and how many files in the file system the ImageStore is using
+// in this category
 type UsageInfo struct {
 	// UsedSpace - the size of all files in this category
 	UsedSpace *string `json:"UsedSpace,omitempty"`
@@ -48551,9 +48571,9 @@ func (vrd *VolumeResourceDescription) UnmarshalJSON(body []byte) error {
 }
 
 // WaitForInbuildReplicaSafetyCheck safety check that waits for the replica build operation to finish. This
-// indicates that there is a replica that is going through the copy or is providing data for building another
-// replica. Bring the node down will abort this copy operation which are typically expensive involving data
-// movements.
+// indicates that there is a replica that is going through the copy or is providing data for building
+// another replica. Bring the node down will abort this copy operation which are typically expensive
+// involving data movements.
 type WaitForInbuildReplicaSafetyCheck struct {
 	// PartitionID - Id of the partition which is undergoing the safety check.
 	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
@@ -48629,8 +48649,8 @@ func (wfirsc WaitForInbuildReplicaSafetyCheck) AsBasicSafetyCheck() (BasicSafety
 	return &wfirsc, true
 }
 
-// WaitForPrimaryPlacementSafetyCheck safety check that waits for the primary replica that was moved out of the
-// node due to upgrade to be placed back again on that node.
+// WaitForPrimaryPlacementSafetyCheck safety check that waits for the primary replica that was moved out of
+// the node due to upgrade to be placed back again on that node.
 type WaitForPrimaryPlacementSafetyCheck struct {
 	// PartitionID - Id of the partition which is undergoing the safety check.
 	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
@@ -48706,8 +48726,8 @@ func (wfppsc WaitForPrimaryPlacementSafetyCheck) AsBasicSafetyCheck() (BasicSafe
 	return &wfppsc, true
 }
 
-// WaitForPrimarySwapSafetyCheck safety check that waits for the primary replica to be moved out of the node
-// before starting an upgrade to ensure the availability of the primary replica for the partition.
+// WaitForPrimarySwapSafetyCheck safety check that waits for the primary replica to be moved out of the
+// node before starting an upgrade to ensure the availability of the primary replica for the partition.
 type WaitForPrimarySwapSafetyCheck struct {
 	// PartitionID - Id of the partition which is undergoing the safety check.
 	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
@@ -48783,8 +48803,8 @@ func (wfpssc WaitForPrimarySwapSafetyCheck) AsBasicSafetyCheck() (BasicSafetyChe
 	return &wfpssc, true
 }
 
-// WaitForReconfigurationSafetyCheck safety check that waits for the current reconfiguration of the partition
-// to be completed before starting an upgrade.
+// WaitForReconfigurationSafetyCheck safety check that waits for the current reconfiguration of the
+// partition to be completed before starting an upgrade.
 type WaitForReconfigurationSafetyCheck struct {
 	// PartitionID - Id of the partition which is undergoing the safety check.
 	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`

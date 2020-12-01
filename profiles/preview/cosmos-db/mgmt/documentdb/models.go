@@ -386,131 +386,131 @@ type Usage = original.Usage
 type UsagesResult = original.UsagesResult
 type VirtualNetworkRule = original.VirtualNetworkRule
 
-func New(subscriptionID string, subscriptionID1 string) BaseClient {
-	return original.New(subscriptionID, subscriptionID1)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewCassandraResourcesClient(subscriptionID string, subscriptionID1 string) CassandraResourcesClient {
-	return original.NewCassandraResourcesClient(subscriptionID, subscriptionID1)
+func NewCassandraResourcesClient(subscriptionID string) CassandraResourcesClient {
+	return original.NewCassandraResourcesClient(subscriptionID)
 }
-func NewCassandraResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CassandraResourcesClient {
-	return original.NewCassandraResourcesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewCassandraResourcesClientWithBaseURI(baseURI string, subscriptionID string) CassandraResourcesClient {
+	return original.NewCassandraResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewCollectionClient(subscriptionID string, subscriptionID1 string) CollectionClient {
-	return original.NewCollectionClient(subscriptionID, subscriptionID1)
+func NewCollectionClient(subscriptionID string) CollectionClient {
+	return original.NewCollectionClient(subscriptionID)
 }
-func NewCollectionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CollectionClient {
-	return original.NewCollectionClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewCollectionClientWithBaseURI(baseURI string, subscriptionID string) CollectionClient {
+	return original.NewCollectionClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewCollectionPartitionClient(subscriptionID string, subscriptionID1 string) CollectionPartitionClient {
-	return original.NewCollectionPartitionClient(subscriptionID, subscriptionID1)
+func NewCollectionPartitionClient(subscriptionID string) CollectionPartitionClient {
+	return original.NewCollectionPartitionClient(subscriptionID)
 }
-func NewCollectionPartitionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CollectionPartitionClient {
-	return original.NewCollectionPartitionClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewCollectionPartitionClientWithBaseURI(baseURI string, subscriptionID string) CollectionPartitionClient {
+	return original.NewCollectionPartitionClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewCollectionPartitionRegionClient(subscriptionID string, subscriptionID1 string) CollectionPartitionRegionClient {
-	return original.NewCollectionPartitionRegionClient(subscriptionID, subscriptionID1)
+func NewCollectionPartitionRegionClient(subscriptionID string) CollectionPartitionRegionClient {
+	return original.NewCollectionPartitionRegionClient(subscriptionID)
 }
-func NewCollectionPartitionRegionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CollectionPartitionRegionClient {
-	return original.NewCollectionPartitionRegionClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewCollectionPartitionRegionClientWithBaseURI(baseURI string, subscriptionID string) CollectionPartitionRegionClient {
+	return original.NewCollectionPartitionRegionClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewCollectionRegionClient(subscriptionID string, subscriptionID1 string) CollectionRegionClient {
-	return original.NewCollectionRegionClient(subscriptionID, subscriptionID1)
+func NewCollectionRegionClient(subscriptionID string) CollectionRegionClient {
+	return original.NewCollectionRegionClient(subscriptionID)
 }
-func NewCollectionRegionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CollectionRegionClient {
-	return original.NewCollectionRegionClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewCollectionRegionClientWithBaseURI(baseURI string, subscriptionID string) CollectionRegionClient {
+	return original.NewCollectionRegionClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewDatabaseAccountRegionClient(subscriptionID string, subscriptionID1 string) DatabaseAccountRegionClient {
-	return original.NewDatabaseAccountRegionClient(subscriptionID, subscriptionID1)
+func NewDatabaseAccountRegionClient(subscriptionID string) DatabaseAccountRegionClient {
+	return original.NewDatabaseAccountRegionClient(subscriptionID)
 }
-func NewDatabaseAccountRegionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) DatabaseAccountRegionClient {
-	return original.NewDatabaseAccountRegionClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewDatabaseAccountRegionClientWithBaseURI(baseURI string, subscriptionID string) DatabaseAccountRegionClient {
+	return original.NewDatabaseAccountRegionClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewDatabaseAccountsClient(subscriptionID string, subscriptionID1 string) DatabaseAccountsClient {
-	return original.NewDatabaseAccountsClient(subscriptionID, subscriptionID1)
+func NewDatabaseAccountsClient(subscriptionID string) DatabaseAccountsClient {
+	return original.NewDatabaseAccountsClient(subscriptionID)
 }
-func NewDatabaseAccountsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) DatabaseAccountsClient {
-	return original.NewDatabaseAccountsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewDatabaseAccountsClientWithBaseURI(baseURI string, subscriptionID string) DatabaseAccountsClient {
+	return original.NewDatabaseAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewDatabaseClient(subscriptionID string, subscriptionID1 string) DatabaseClient {
-	return original.NewDatabaseClient(subscriptionID, subscriptionID1)
+func NewDatabaseClient(subscriptionID string) DatabaseClient {
+	return original.NewDatabaseClient(subscriptionID)
 }
-func NewDatabaseClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) DatabaseClient {
-	return original.NewDatabaseClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewDatabaseClientWithBaseURI(baseURI string, subscriptionID string) DatabaseClient {
+	return original.NewDatabaseClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewGremlinResourcesClient(subscriptionID string, subscriptionID1 string) GremlinResourcesClient {
-	return original.NewGremlinResourcesClient(subscriptionID, subscriptionID1)
+func NewGremlinResourcesClient(subscriptionID string) GremlinResourcesClient {
+	return original.NewGremlinResourcesClient(subscriptionID)
 }
-func NewGremlinResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) GremlinResourcesClient {
-	return original.NewGremlinResourcesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewGremlinResourcesClientWithBaseURI(baseURI string, subscriptionID string) GremlinResourcesClient {
+	return original.NewGremlinResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewMongoDBResourcesClient(subscriptionID string, subscriptionID1 string) MongoDBResourcesClient {
-	return original.NewMongoDBResourcesClient(subscriptionID, subscriptionID1)
+func NewMongoDBResourcesClient(subscriptionID string) MongoDBResourcesClient {
+	return original.NewMongoDBResourcesClient(subscriptionID)
 }
-func NewMongoDBResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) MongoDBResourcesClient {
-	return original.NewMongoDBResourcesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewMongoDBResourcesClientWithBaseURI(baseURI string, subscriptionID string) MongoDBResourcesClient {
+	return original.NewMongoDBResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewNotebookWorkspacesClient(subscriptionID string, subscriptionID1 string) NotebookWorkspacesClient {
-	return original.NewNotebookWorkspacesClient(subscriptionID, subscriptionID1)
+func NewNotebookWorkspacesClient(subscriptionID string) NotebookWorkspacesClient {
+	return original.NewNotebookWorkspacesClient(subscriptionID)
 }
-func NewNotebookWorkspacesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) NotebookWorkspacesClient {
-	return original.NewNotebookWorkspacesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewNotebookWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) NotebookWorkspacesClient {
+	return original.NewNotebookWorkspacesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
-func NewOperationsClient(subscriptionID string, subscriptionID1 string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID, subscriptionID1)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPartitionKeyRangeIDClient(subscriptionID string, subscriptionID1 string) PartitionKeyRangeIDClient {
-	return original.NewPartitionKeyRangeIDClient(subscriptionID, subscriptionID1)
+func NewPartitionKeyRangeIDClient(subscriptionID string) PartitionKeyRangeIDClient {
+	return original.NewPartitionKeyRangeIDClient(subscriptionID)
 }
-func NewPartitionKeyRangeIDClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PartitionKeyRangeIDClient {
-	return original.NewPartitionKeyRangeIDClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewPartitionKeyRangeIDClientWithBaseURI(baseURI string, subscriptionID string) PartitionKeyRangeIDClient {
+	return original.NewPartitionKeyRangeIDClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPartitionKeyRangeIDRegionClient(subscriptionID string, subscriptionID1 string) PartitionKeyRangeIDRegionClient {
-	return original.NewPartitionKeyRangeIDRegionClient(subscriptionID, subscriptionID1)
+func NewPartitionKeyRangeIDRegionClient(subscriptionID string) PartitionKeyRangeIDRegionClient {
+	return original.NewPartitionKeyRangeIDRegionClient(subscriptionID)
 }
-func NewPartitionKeyRangeIDRegionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PartitionKeyRangeIDRegionClient {
-	return original.NewPartitionKeyRangeIDRegionClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewPartitionKeyRangeIDRegionClientWithBaseURI(baseURI string, subscriptionID string) PartitionKeyRangeIDRegionClient {
+	return original.NewPartitionKeyRangeIDRegionClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPercentileClient(subscriptionID string, subscriptionID1 string) PercentileClient {
-	return original.NewPercentileClient(subscriptionID, subscriptionID1)
+func NewPercentileClient(subscriptionID string) PercentileClient {
+	return original.NewPercentileClient(subscriptionID)
 }
-func NewPercentileClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PercentileClient {
-	return original.NewPercentileClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewPercentileClientWithBaseURI(baseURI string, subscriptionID string) PercentileClient {
+	return original.NewPercentileClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPercentileSourceTargetClient(subscriptionID string, subscriptionID1 string) PercentileSourceTargetClient {
-	return original.NewPercentileSourceTargetClient(subscriptionID, subscriptionID1)
+func NewPercentileSourceTargetClient(subscriptionID string) PercentileSourceTargetClient {
+	return original.NewPercentileSourceTargetClient(subscriptionID)
 }
-func NewPercentileSourceTargetClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PercentileSourceTargetClient {
-	return original.NewPercentileSourceTargetClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewPercentileSourceTargetClientWithBaseURI(baseURI string, subscriptionID string) PercentileSourceTargetClient {
+	return original.NewPercentileSourceTargetClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPercentileTargetClient(subscriptionID string, subscriptionID1 string) PercentileTargetClient {
-	return original.NewPercentileTargetClient(subscriptionID, subscriptionID1)
+func NewPercentileTargetClient(subscriptionID string) PercentileTargetClient {
+	return original.NewPercentileTargetClient(subscriptionID)
 }
-func NewPercentileTargetClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PercentileTargetClient {
-	return original.NewPercentileTargetClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewPercentileTargetClientWithBaseURI(baseURI string, subscriptionID string) PercentileTargetClient {
+	return original.NewPercentileTargetClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSQLResourcesClient(subscriptionID string, subscriptionID1 string) SQLResourcesClient {
-	return original.NewSQLResourcesClient(subscriptionID, subscriptionID1)
+func NewSQLResourcesClient(subscriptionID string) SQLResourcesClient {
+	return original.NewSQLResourcesClient(subscriptionID)
 }
-func NewSQLResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) SQLResourcesClient {
-	return original.NewSQLResourcesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewSQLResourcesClientWithBaseURI(baseURI string, subscriptionID string) SQLResourcesClient {
+	return original.NewSQLResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewTableResourcesClient(subscriptionID string, subscriptionID1 string) TableResourcesClient {
-	return original.NewTableResourcesClient(subscriptionID, subscriptionID1)
+func NewTableResourcesClient(subscriptionID string) TableResourcesClient {
+	return original.NewTableResourcesClient(subscriptionID)
 }
-func NewTableResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) TableResourcesClient {
-	return original.NewTableResourcesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewTableResourcesClientWithBaseURI(baseURI string, subscriptionID string) TableResourcesClient {
+	return original.NewTableResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleCompositePathSortOrderValues() []CompositePathSortOrder {
 	return original.PossibleCompositePathSortOrderValues()

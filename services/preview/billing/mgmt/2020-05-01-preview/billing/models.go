@@ -30,7 +30,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/billing/mgmt/2020-05-01/billing"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2020-05-01-preview/billing"
 
 // Account a billing account.
 type Account struct {
@@ -257,8 +257,11 @@ func (page AccountListResultPage) Values() []Account {
 }
 
 // Creates a new instance of the AccountListResultPage type.
-func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
-	return AccountListResultPage{fn: getNextPage}
+func NewAccountListResultPage(cur AccountListResult, getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return AccountListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AccountProperties the properties of the billing account.
@@ -306,7 +309,8 @@ func (ap AccountProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AccountsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// AccountsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AccountsUpdateFuture struct {
 	azure.Future
 }
@@ -628,8 +632,11 @@ func (page AgreementListResultPage) Values() []Agreement {
 }
 
 // Creates a new instance of the AgreementListResultPage type.
-func NewAgreementListResultPage(getNextPage func(context.Context, AgreementListResult) (AgreementListResult, error)) AgreementListResultPage {
-	return AgreementListResultPage{fn: getNextPage}
+func NewAgreementListResultPage(cur AgreementListResult, getNextPage func(context.Context, AgreementListResult) (AgreementListResult, error)) AgreementListResultPage {
+	return AgreementListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AgreementProperties the properties of an agreement.
@@ -996,8 +1003,11 @@ func (page CustomerListResultPage) Values() []Customer {
 }
 
 // Creates a new instance of the CustomerListResultPage type.
-func NewCustomerListResultPage(getNextPage func(context.Context, CustomerListResult) (CustomerListResult, error)) CustomerListResultPage {
-	return CustomerListResultPage{fn: getNextPage}
+func NewCustomerListResultPage(cur CustomerListResult, getNextPage func(context.Context, CustomerListResult) (CustomerListResult, error)) CustomerListResultPage {
+	return CustomerListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // CustomerPolicy the customer's Policy.
@@ -1481,8 +1491,11 @@ func (page EnrollmentAccountListResultPage) Values() []EnrollmentAccountSummary 
 }
 
 // Creates a new instance of the EnrollmentAccountListResultPage type.
-func NewEnrollmentAccountListResultPage(getNextPage func(context.Context, EnrollmentAccountListResult) (EnrollmentAccountListResult, error)) EnrollmentAccountListResultPage {
-	return EnrollmentAccountListResultPage{fn: getNextPage}
+func NewEnrollmentAccountListResultPage(cur EnrollmentAccountListResult, getNextPage func(context.Context, EnrollmentAccountListResult) (EnrollmentAccountListResult, error)) EnrollmentAccountListResultPage {
+	return EnrollmentAccountListResultPage{
+		fn:   getNextPage,
+		ealr: cur,
+	}
 }
 
 // EnrollmentAccountProperties the properties of an enrollment account.
@@ -1602,6 +1615,8 @@ type ErrorDetails struct {
 	Message *string `json:"message,omitempty"`
 	// Target - READ-ONLY; The target of the particular error.
 	Target *string `json:"target,omitempty"`
+	// Details - READ-ONLY; The sub details of the error.
+	Details *[]ErrorSubDetailsItem `json:"details,omitempty"`
 }
 
 // ErrorResponse error response indicates that the service is not able to process the incoming request. The
@@ -1611,7 +1626,18 @@ type ErrorResponse struct {
 	Error *ErrorDetails `json:"error,omitempty"`
 }
 
-// IndirectRelationshipInfo the billing profile details of the partner of the customer for an indirect motion.
+// ErrorSubDetailsItem ...
+type ErrorSubDetailsItem struct {
+	// Code - READ-ONLY; Error code.
+	Code *string `json:"code,omitempty"`
+	// Message - READ-ONLY; Error message indicating why the operation failed.
+	Message *string `json:"message,omitempty"`
+	// Target - READ-ONLY; The target of the particular error.
+	Target *string `json:"target,omitempty"`
+}
+
+// IndirectRelationshipInfo the billing profile details of the partner of the customer for an indirect
+// motion.
 type IndirectRelationshipInfo struct {
 	// BillingAccountName - The billing account name of the partner or the customer for an indirect motion.
 	BillingAccountName *string `json:"billingAccountName,omitempty"`
@@ -1846,8 +1872,11 @@ func (page InstructionListResultPage) Values() []Instruction {
 }
 
 // Creates a new instance of the InstructionListResultPage type.
-func NewInstructionListResultPage(getNextPage func(context.Context, InstructionListResult) (InstructionListResult, error)) InstructionListResultPage {
-	return InstructionListResultPage{fn: getNextPage}
+func NewInstructionListResultPage(cur InstructionListResult, getNextPage func(context.Context, InstructionListResult) (InstructionListResult, error)) InstructionListResultPage {
+	return InstructionListResultPage{
+		fn:  getNextPage,
+		ilr: cur,
+	}
 }
 
 // InstructionProperties a billing instruction used during invoice generation.
@@ -2087,8 +2116,11 @@ func (page InvoiceListResultPage) Values() []Invoice {
 }
 
 // Creates a new instance of the InvoiceListResultPage type.
-func NewInvoiceListResultPage(getNextPage func(context.Context, InvoiceListResult) (InvoiceListResult, error)) InvoiceListResultPage {
-	return InvoiceListResultPage{fn: getNextPage}
+func NewInvoiceListResultPage(cur InvoiceListResult, getNextPage func(context.Context, InvoiceListResult) (InvoiceListResult, error)) InvoiceListResultPage {
+	return InvoiceListResultPage{
+		fn:  getNextPage,
+		ilr: cur,
+	}
 }
 
 // InvoiceProperties the properties of the invoice.
@@ -2097,7 +2129,7 @@ type InvoiceProperties struct {
 	DueDate *date.Time `json:"dueDate,omitempty"`
 	// InvoiceDate - READ-ONLY; The date when the invoice was generated.
 	InvoiceDate *date.Time `json:"invoiceDate,omitempty"`
-	// Status - READ-ONLY; The current status of the invoice. Possible values include: 'Due', 'OverDue', 'Paid'
+	// Status - READ-ONLY; The current status of the invoice. Possible values include: 'Due', 'OverDue', 'Paid', 'Void'
 	Status InvoiceStatus `json:"status,omitempty"`
 	// AmountDue - READ-ONLY; The amount due as of now.
 	AmountDue *Amount `json:"amountDue,omitempty"`
@@ -2133,12 +2165,26 @@ type InvoiceProperties struct {
 	Documents *[]Document `json:"documents,omitempty"`
 	// Payments - READ-ONLY; List of payments.
 	Payments *[]PaymentProperties `json:"payments,omitempty"`
+	// RebillDetails - READ-ONLY; Rebill details for an invoice.
+	RebillDetails map[string]*RebillDetails `json:"rebillDetails"`
+	// DocumentType - READ-ONLY; The type of the document. Possible values include: 'InvoiceDocumentTypeInvoice', 'InvoiceDocumentTypeCreditNote'
+	DocumentType InvoiceDocumentType `json:"documentType,omitempty"`
+	// BilledDocumentID - READ-ONLY; The Id of the active invoice which is originally billed after this invoice was voided. This field is applicable to the void invoices only.
+	BilledDocumentID *string `json:"billedDocumentId,omitempty"`
+	// CreditForDocumentID - READ-ONLY; The Id of the invoice which got voided and this credit note was issued as a result. This field is applicable to the credit notes only.
+	CreditForDocumentID *string `json:"creditForDocumentId,omitempty"`
 	// SubscriptionID - READ-ONLY; The ID of the subscription for which the invoice is generated.
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
 }
 
-// InvoicesDownloadBillingSubscriptionInvoiceFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// MarshalJSON is the custom marshaler for InvoiceProperties.
+func (IP InvoiceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// InvoicesDownloadBillingSubscriptionInvoiceFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type InvoicesDownloadBillingSubscriptionInvoiceFuture struct {
 	azure.Future
 }
@@ -2190,6 +2236,64 @@ func (future *InvoicesDownloadInvoiceFuture) Result(client InvoicesClient) (du D
 		du, err = client.DownloadInvoiceResponder(du.Response.Response)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadInvoiceFuture", "Result", du.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// InvoicesDownloadMultipleBillingProfileInvoicesFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type InvoicesDownloadMultipleBillingProfileInvoicesFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *InvoicesDownloadMultipleBillingProfileInvoicesFuture) Result(client InvoicesClient) (du DownloadURL, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadMultipleBillingProfileInvoicesFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("billing.InvoicesDownloadMultipleBillingProfileInvoicesFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if du.Response.Response, err = future.GetResult(sender); err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
+		du, err = client.DownloadMultipleBillingProfileInvoicesResponder(du.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadMultipleBillingProfileInvoicesFuture", "Result", du.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture an abstraction for monitoring and retrieving
+// the results of a long-running operation.
+type InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture) Result(client InvoicesClient) (du DownloadURL, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("billing.InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if du.Response.Response, err = future.GetResult(sender); err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
+		du, err = client.DownloadMultipleBillingSubscriptionInvoicesResponder(du.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture", "Result", du.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -2426,8 +2530,11 @@ func (page InvoiceSectionListResultPage) Values() []InvoiceSection {
 }
 
 // Creates a new instance of the InvoiceSectionListResultPage type.
-func NewInvoiceSectionListResultPage(getNextPage func(context.Context, InvoiceSectionListResult) (InvoiceSectionListResult, error)) InvoiceSectionListResultPage {
-	return InvoiceSectionListResultPage{fn: getNextPage}
+func NewInvoiceSectionListResultPage(cur InvoiceSectionListResult, getNextPage func(context.Context, InvoiceSectionListResult) (InvoiceSectionListResult, error)) InvoiceSectionListResultPage {
+	return InvoiceSectionListResultPage{
+		fn:   getNextPage,
+		islr: cur,
+	}
 }
 
 // InvoiceSectionListWithCreateSubPermissionResult the list of invoice section properties with create
@@ -2535,8 +2642,8 @@ func (islwcspr InvoiceSectionListWithCreateSubPermissionResult) invoiceSectionLi
 		autorest.WithBaseURL(to.String(islwcspr.NextLink)))
 }
 
-// InvoiceSectionListWithCreateSubPermissionResultPage contains a page of InvoiceSectionWithCreateSubPermission
-// values.
+// InvoiceSectionListWithCreateSubPermissionResultPage contains a page of
+// InvoiceSectionWithCreateSubPermission values.
 type InvoiceSectionListWithCreateSubPermissionResultPage struct {
 	fn       func(context.Context, InvoiceSectionListWithCreateSubPermissionResult) (InvoiceSectionListWithCreateSubPermissionResult, error)
 	islwcspr InvoiceSectionListWithCreateSubPermissionResult
@@ -2594,8 +2701,11 @@ func (page InvoiceSectionListWithCreateSubPermissionResultPage) Values() []Invoi
 }
 
 // Creates a new instance of the InvoiceSectionListWithCreateSubPermissionResultPage type.
-func NewInvoiceSectionListWithCreateSubPermissionResultPage(getNextPage func(context.Context, InvoiceSectionListWithCreateSubPermissionResult) (InvoiceSectionListWithCreateSubPermissionResult, error)) InvoiceSectionListWithCreateSubPermissionResultPage {
-	return InvoiceSectionListWithCreateSubPermissionResultPage{fn: getNextPage}
+func NewInvoiceSectionListWithCreateSubPermissionResultPage(cur InvoiceSectionListWithCreateSubPermissionResult, getNextPage func(context.Context, InvoiceSectionListWithCreateSubPermissionResult) (InvoiceSectionListWithCreateSubPermissionResult, error)) InvoiceSectionListWithCreateSubPermissionResultPage {
+	return InvoiceSectionListWithCreateSubPermissionResultPage{
+		fn:       getNextPage,
+		islwcspr: cur,
+	}
 }
 
 // InvoiceSectionProperties the properties of an invoice section.
@@ -2883,8 +2993,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // Participants the details about a participant.
@@ -3156,8 +3269,11 @@ func (page PeriodsListResultPage) Values() []Period {
 }
 
 // Creates a new instance of the PeriodsListResultPage type.
-func NewPeriodsListResultPage(getNextPage func(context.Context, PeriodsListResult) (PeriodsListResult, error)) PeriodsListResultPage {
-	return PeriodsListResultPage{fn: getNextPage}
+func NewPeriodsListResultPage(cur PeriodsListResult, getNextPage func(context.Context, PeriodsListResult) (PeriodsListResult, error)) PeriodsListResultPage {
+	return PeriodsListResultPage{
+		fn:  getNextPage,
+		plr: cur,
+	}
 }
 
 // PermissionsListResult result of list billingPermissions a caller has on a billing account.
@@ -3312,11 +3428,15 @@ func (page PermissionsListResultPage) Values() []PermissionsProperties {
 }
 
 // Creates a new instance of the PermissionsListResultPage type.
-func NewPermissionsListResultPage(getNextPage func(context.Context, PermissionsListResult) (PermissionsListResult, error)) PermissionsListResultPage {
-	return PermissionsListResultPage{fn: getNextPage}
+func NewPermissionsListResultPage(cur PermissionsListResult, getNextPage func(context.Context, PermissionsListResult) (PermissionsListResult, error)) PermissionsListResultPage {
+	return PermissionsListResultPage{
+		fn:  getNextPage,
+		plr: cur,
+	}
 }
 
-// PermissionsProperties the set of allowed action and not allowed actions a caller has on a billing account
+// PermissionsProperties the set of allowed action and not allowed actions a caller has on a billing
+// account
 type PermissionsProperties struct {
 	// Actions - READ-ONLY; The set of actions that the caller is allowed to perform.
 	Actions *[]string `json:"actions,omitempty"`
@@ -3694,8 +3814,11 @@ func (page ProductsListResultPage) Values() []Product {
 }
 
 // Creates a new instance of the ProductsListResultPage type.
-func NewProductsListResultPage(getNextPage func(context.Context, ProductsListResult) (ProductsListResult, error)) ProductsListResultPage {
-	return ProductsListResultPage{fn: getNextPage}
+func NewProductsListResultPage(cur ProductsListResult, getNextPage func(context.Context, ProductsListResult) (ProductsListResult, error)) ProductsListResultPage {
+	return ProductsListResultPage{
+		fn:  getNextPage,
+		plr: cur,
+	}
 }
 
 // Profile a billing profile.
@@ -3937,8 +4060,11 @@ func (page ProfileListResultPage) Values() []Profile {
 }
 
 // Creates a new instance of the ProfileListResultPage type.
-func NewProfileListResultPage(getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
-	return ProfileListResultPage{fn: getNextPage}
+func NewProfileListResultPage(cur ProfileListResult, getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
+	return ProfileListResultPage{
+		fn:  getNextPage,
+		plr: cur,
+	}
 }
 
 // ProfileProperties the properties of the billing profile.
@@ -4030,8 +4156,8 @@ func (future *ProfilesCreateOrUpdateFuture) Result(client ProfilesClient) (p Pro
 	return
 }
 
-// ProfilesOnExpand the billing profiles associated with the billing account. By default this is not populated,
-// unless it's specified in $expand.
+// ProfilesOnExpand the billing profiles associated with the billing account. By default this is not
+// populated, unless it's specified in $expand.
 type ProfilesOnExpand struct {
 	// HasMoreResults - READ-ONLY; Indicates whether there are more billing profiles than the ones listed in this collection. The collection lists a maximum of 50 billing profiles. To get all billing profiles, use the list billing profiles API.
 	HasMoreResults *bool `json:"hasMoreResults,omitempty"`
@@ -4165,6 +4291,22 @@ func (pp PropertyProperties) MarshalJSON() ([]byte, error) {
 	if pp.CostCenter != nil {
 		objectMap["costCenter"] = pp.CostCenter
 	}
+	return json.Marshal(objectMap)
+}
+
+// RebillDetails the rebill details of an invoice.
+type RebillDetails struct {
+	// CreditNoteDocumentID - READ-ONLY; The ID of credit note.
+	CreditNoteDocumentID *string `json:"creditNoteDocumentId,omitempty"`
+	// InvoiceDocumentID - READ-ONLY; The ID of invoice.
+	InvoiceDocumentID *string `json:"invoiceDocumentId,omitempty"`
+	// RebillDetails - READ-ONLY; Rebill details for an invoice.
+	RebillDetails map[string]*RebillDetails `json:"rebillDetails"`
+}
+
+// MarshalJSON is the custom marshaler for RebillDetails.
+func (rd RebillDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }
 
@@ -4411,8 +4553,11 @@ func (page RoleAssignmentListResultPage) Values() []RoleAssignment {
 }
 
 // Creates a new instance of the RoleAssignmentListResultPage type.
-func NewRoleAssignmentListResultPage(getNextPage func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)) RoleAssignmentListResultPage {
-	return RoleAssignmentListResultPage{fn: getNextPage}
+func NewRoleAssignmentListResultPage(cur RoleAssignmentListResult, getNextPage func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)) RoleAssignmentListResultPage {
+	return RoleAssignmentListResultPage{
+		fn:   getNextPage,
+		ralr: cur,
+	}
 }
 
 // RoleAssignmentProperties the properties of the role assignment.
@@ -4685,8 +4830,11 @@ func (page RoleDefinitionListResultPage) Values() []RoleDefinition {
 }
 
 // Creates a new instance of the RoleDefinitionListResultPage type.
-func NewRoleDefinitionListResultPage(getNextPage func(context.Context, RoleDefinitionListResult) (RoleDefinitionListResult, error)) RoleDefinitionListResultPage {
-	return RoleDefinitionListResultPage{fn: getNextPage}
+func NewRoleDefinitionListResultPage(cur RoleDefinitionListResult, getNextPage func(context.Context, RoleDefinitionListResult) (RoleDefinitionListResult, error)) RoleDefinitionListResultPage {
+	return RoleDefinitionListResultPage{
+		fn:   getNextPage,
+		rdlr: cur,
+	}
 }
 
 // RoleDefinitionProperties the properties of the a role definition.
@@ -4981,8 +5129,11 @@ func (page SubscriptionsListResultPage) Values() []Subscription {
 }
 
 // Creates a new instance of the SubscriptionsListResultPage type.
-func NewSubscriptionsListResultPage(getNextPage func(context.Context, SubscriptionsListResult) (SubscriptionsListResult, error)) SubscriptionsListResultPage {
-	return SubscriptionsListResultPage{fn: getNextPage}
+func NewSubscriptionsListResultPage(cur SubscriptionsListResult, getNextPage func(context.Context, SubscriptionsListResult) (SubscriptionsListResult, error)) SubscriptionsListResultPage {
+	return SubscriptionsListResultPage{
+		fn:  getNextPage,
+		slr: cur,
+	}
 }
 
 // SubscriptionsMoveFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -5237,8 +5388,11 @@ func (page TransactionListResultPage) Values() []Transaction {
 }
 
 // Creates a new instance of the TransactionListResultPage type.
-func NewTransactionListResultPage(getNextPage func(context.Context, TransactionListResult) (TransactionListResult, error)) TransactionListResultPage {
-	return TransactionListResultPage{fn: getNextPage}
+func NewTransactionListResultPage(cur TransactionListResult, getNextPage func(context.Context, TransactionListResult) (TransactionListResult, error)) TransactionListResultPage {
+	return TransactionListResultPage{
+		fn:  getNextPage,
+		tlr: cur,
+	}
 }
 
 // TransactionProperties the properties of a transaction.

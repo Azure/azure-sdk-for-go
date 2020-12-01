@@ -22,7 +22,7 @@ package search
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/search/mgmt/2020-03-13/search"
+	original "github.com/Azure/azure-sdk-for-go/services/search/mgmt/2020-08-01/search"
 )
 
 const (
@@ -85,6 +85,24 @@ const (
 	ServiceStatusRunning      ServiceStatus = original.ServiceStatusRunning
 )
 
+type SharedPrivateLinkResourceAsyncOperationResult = original.SharedPrivateLinkResourceAsyncOperationResult
+
+const (
+	SharedPrivateLinkResourceAsyncOperationResultFailed    SharedPrivateLinkResourceAsyncOperationResult = original.SharedPrivateLinkResourceAsyncOperationResultFailed
+	SharedPrivateLinkResourceAsyncOperationResultRunning   SharedPrivateLinkResourceAsyncOperationResult = original.SharedPrivateLinkResourceAsyncOperationResultRunning
+	SharedPrivateLinkResourceAsyncOperationResultSucceeded SharedPrivateLinkResourceAsyncOperationResult = original.SharedPrivateLinkResourceAsyncOperationResultSucceeded
+)
+
+type SharedPrivateLinkResourceProvisioningState = original.SharedPrivateLinkResourceProvisioningState
+
+const (
+	SharedPrivateLinkResourceProvisioningStateDeleting   SharedPrivateLinkResourceProvisioningState = original.SharedPrivateLinkResourceProvisioningStateDeleting
+	SharedPrivateLinkResourceProvisioningStateFailed     SharedPrivateLinkResourceProvisioningState = original.SharedPrivateLinkResourceProvisioningStateFailed
+	SharedPrivateLinkResourceProvisioningStateIncomplete SharedPrivateLinkResourceProvisioningState = original.SharedPrivateLinkResourceProvisioningStateIncomplete
+	SharedPrivateLinkResourceProvisioningStateSucceeded  SharedPrivateLinkResourceProvisioningState = original.SharedPrivateLinkResourceProvisioningStateSucceeded
+	SharedPrivateLinkResourceProvisioningStateUpdating   SharedPrivateLinkResourceProvisioningState = original.SharedPrivateLinkResourceProvisioningStateUpdating
+)
+
 type SharedPrivateLinkResourceStatus = original.SharedPrivateLinkResourceStatus
 
 const (
@@ -92,7 +110,6 @@ const (
 	SharedPrivateLinkResourceStatusDisconnected SharedPrivateLinkResourceStatus = original.SharedPrivateLinkResourceStatusDisconnected
 	SharedPrivateLinkResourceStatusPending      SharedPrivateLinkResourceStatus = original.SharedPrivateLinkResourceStatusPending
 	SharedPrivateLinkResourceStatusRejected     SharedPrivateLinkResourceStatus = original.SharedPrivateLinkResourceStatusRejected
-	SharedPrivateLinkResourceStatusTimeout      SharedPrivateLinkResourceStatus = original.SharedPrivateLinkResourceStatusTimeout
 )
 
 type SkuName = original.SkuName
@@ -116,6 +133,8 @@ const (
 
 type AdminKeyResult = original.AdminKeyResult
 type AdminKeysClient = original.AdminKeysClient
+type AsyncOperationResult = original.AsyncOperationResult
+type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type CheckNameAvailabilityInput = original.CheckNameAvailabilityInput
 type CheckNameAvailabilityOutput = original.CheckNameAvailabilityOutput
@@ -143,6 +162,7 @@ type PrivateLinkResource = original.PrivateLinkResource
 type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
 type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type PrivateLinkResourcesResult = original.PrivateLinkResourcesResult
+type ProxyResource = original.ProxyResource
 type QueryKey = original.QueryKey
 type QueryKeysClient = original.QueryKeysClient
 type Resource = original.Resource
@@ -151,6 +171,7 @@ type ServiceListResult = original.ServiceListResult
 type ServiceListResultIterator = original.ServiceListResultIterator
 type ServiceListResultPage = original.ServiceListResultPage
 type ServiceProperties = original.ServiceProperties
+type ServiceUpdate = original.ServiceUpdate
 type ServicesClient = original.ServicesClient
 type ServicesCreateOrUpdateFuture = original.ServicesCreateOrUpdateFuture
 type ShareablePrivateLinkResourceProperties = original.ShareablePrivateLinkResourceProperties
@@ -161,7 +182,10 @@ type SharedPrivateLinkResourceListResultIterator = original.SharedPrivateLinkRes
 type SharedPrivateLinkResourceListResultPage = original.SharedPrivateLinkResourceListResultPage
 type SharedPrivateLinkResourceProperties = original.SharedPrivateLinkResourceProperties
 type SharedPrivateLinkResourcesClient = original.SharedPrivateLinkResourcesClient
+type SharedPrivateLinkResourcesCreateOrUpdateFuture = original.SharedPrivateLinkResourcesCreateOrUpdateFuture
+type SharedPrivateLinkResourcesDeleteFuture = original.SharedPrivateLinkResourcesDeleteFuture
 type Sku = original.Sku
+type TrackedResource = original.TrackedResource
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -175,8 +199,8 @@ func NewAdminKeysClientWithBaseURI(baseURI string, subscriptionID string) AdminK
 func NewListQueryKeysResultIterator(page ListQueryKeysResultPage) ListQueryKeysResultIterator {
 	return original.NewListQueryKeysResultIterator(page)
 }
-func NewListQueryKeysResultPage(getNextPage func(context.Context, ListQueryKeysResult) (ListQueryKeysResult, error)) ListQueryKeysResultPage {
-	return original.NewListQueryKeysResultPage(getNextPage)
+func NewListQueryKeysResultPage(cur ListQueryKeysResult, getNextPage func(context.Context, ListQueryKeysResult) (ListQueryKeysResult, error)) ListQueryKeysResultPage {
+	return original.NewListQueryKeysResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -187,8 +211,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
 	return original.NewPrivateEndpointConnectionListResultIterator(page)
 }
-func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
-	return original.NewPrivateEndpointConnectionListResultPage(getNextPage)
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return original.NewPrivateEndpointConnectionListResultPage(cur, getNextPage)
 }
 func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
 	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
@@ -211,8 +235,8 @@ func NewQueryKeysClientWithBaseURI(baseURI string, subscriptionID string) QueryK
 func NewServiceListResultIterator(page ServiceListResultPage) ServiceListResultIterator {
 	return original.NewServiceListResultIterator(page)
 }
-func NewServiceListResultPage(getNextPage func(context.Context, ServiceListResult) (ServiceListResult, error)) ServiceListResultPage {
-	return original.NewServiceListResultPage(getNextPage)
+func NewServiceListResultPage(cur ServiceListResult, getNextPage func(context.Context, ServiceListResult) (ServiceListResult, error)) ServiceListResultPage {
+	return original.NewServiceListResultPage(cur, getNextPage)
 }
 func NewServicesClient(subscriptionID string) ServicesClient {
 	return original.NewServicesClient(subscriptionID)
@@ -223,8 +247,8 @@ func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) Service
 func NewSharedPrivateLinkResourceListResultIterator(page SharedPrivateLinkResourceListResultPage) SharedPrivateLinkResourceListResultIterator {
 	return original.NewSharedPrivateLinkResourceListResultIterator(page)
 }
-func NewSharedPrivateLinkResourceListResultPage(getNextPage func(context.Context, SharedPrivateLinkResourceListResult) (SharedPrivateLinkResourceListResult, error)) SharedPrivateLinkResourceListResultPage {
-	return original.NewSharedPrivateLinkResourceListResultPage(getNextPage)
+func NewSharedPrivateLinkResourceListResultPage(cur SharedPrivateLinkResourceListResult, getNextPage func(context.Context, SharedPrivateLinkResourceListResult) (SharedPrivateLinkResourceListResult, error)) SharedPrivateLinkResourceListResultPage {
+	return original.NewSharedPrivateLinkResourceListResultPage(cur, getNextPage)
 }
 func NewSharedPrivateLinkResourcesClient(subscriptionID string) SharedPrivateLinkResourcesClient {
 	return original.NewSharedPrivateLinkResourcesClient(subscriptionID)
@@ -255,6 +279,12 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 }
 func PossibleServiceStatusValues() []ServiceStatus {
 	return original.PossibleServiceStatusValues()
+}
+func PossibleSharedPrivateLinkResourceAsyncOperationResultValues() []SharedPrivateLinkResourceAsyncOperationResult {
+	return original.PossibleSharedPrivateLinkResourceAsyncOperationResultValues()
+}
+func PossibleSharedPrivateLinkResourceProvisioningStateValues() []SharedPrivateLinkResourceProvisioningState {
+	return original.PossibleSharedPrivateLinkResourceProvisioningStateValues()
 }
 func PossibleSharedPrivateLinkResourceStatusValues() []SharedPrivateLinkResourceStatus {
 	return original.PossibleSharedPrivateLinkResourceStatusValues()

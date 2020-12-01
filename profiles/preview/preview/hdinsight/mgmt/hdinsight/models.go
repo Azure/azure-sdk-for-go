@@ -87,18 +87,11 @@ const (
 	Windows OSType = original.Windows
 )
 
-type OutboundOnlyPublicNetworkAccessType = original.OutboundOnlyPublicNetworkAccessType
+type PrivateLink = original.PrivateLink
 
 const (
-	PublicLoadBalancer OutboundOnlyPublicNetworkAccessType = original.PublicLoadBalancer
-	UDR                OutboundOnlyPublicNetworkAccessType = original.UDR
-)
-
-type PublicNetworkAccess = original.PublicNetworkAccess
-
-const (
-	InboundAndOutbound PublicNetworkAccess = original.InboundAndOutbound
-	OutboundOnly       PublicNetworkAccess = original.OutboundOnly
+	Disabled PrivateLink = original.Disabled
+	Enabled  PrivateLink = original.Enabled
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
@@ -108,6 +101,13 @@ const (
 	SystemAssigned             ResourceIdentityType = original.SystemAssigned
 	SystemAssignedUserAssigned ResourceIdentityType = original.SystemAssignedUserAssigned
 	UserAssigned               ResourceIdentityType = original.UserAssigned
+)
+
+type ResourceProviderConnection = original.ResourceProviderConnection
+
+const (
+	Inbound  ResourceProviderConnection = original.Inbound
+	Outbound ResourceProviderConnection = original.Outbound
 )
 
 type Tier = original.Tier
@@ -186,7 +186,7 @@ type KafkaRestProperties = original.KafkaRestProperties
 type LinuxOperatingSystemProfile = original.LinuxOperatingSystemProfile
 type LocalizedName = original.LocalizedName
 type LocationsClient = original.LocationsClient
-type NetworkSettings = original.NetworkSettings
+type NetworkProperties = original.NetworkProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -238,8 +238,8 @@ func New(subscriptionID string) BaseClient {
 func NewApplicationListResultIterator(page ApplicationListResultPage) ApplicationListResultIterator {
 	return original.NewApplicationListResultIterator(page)
 }
-func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
-	return original.NewApplicationListResultPage(getNextPage)
+func NewApplicationListResultPage(cur ApplicationListResult, getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
+	return original.NewApplicationListResultPage(cur, getNextPage)
 }
 func NewApplicationsClient(subscriptionID string) ApplicationsClient {
 	return original.NewApplicationsClient(subscriptionID)
@@ -250,8 +250,8 @@ func NewApplicationsClientWithBaseURI(baseURI string, subscriptionID string) App
 func NewClusterListResultIterator(page ClusterListResultPage) ClusterListResultIterator {
 	return original.NewClusterListResultIterator(page)
 }
-func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
-	return original.NewClusterListResultPage(getNextPage)
+func NewClusterListResultPage(cur ClusterListResult, getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return original.NewClusterListResultPage(cur, getNextPage)
 }
 func NewClustersClient(subscriptionID string) ClustersClient {
 	return original.NewClustersClient(subscriptionID)
@@ -280,8 +280,8 @@ func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) Locati
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -292,8 +292,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewScriptActionExecutionHistoryListIterator(page ScriptActionExecutionHistoryListPage) ScriptActionExecutionHistoryListIterator {
 	return original.NewScriptActionExecutionHistoryListIterator(page)
 }
-func NewScriptActionExecutionHistoryListPage(getNextPage func(context.Context, ScriptActionExecutionHistoryList) (ScriptActionExecutionHistoryList, error)) ScriptActionExecutionHistoryListPage {
-	return original.NewScriptActionExecutionHistoryListPage(getNextPage)
+func NewScriptActionExecutionHistoryListPage(cur ScriptActionExecutionHistoryList, getNextPage func(context.Context, ScriptActionExecutionHistoryList) (ScriptActionExecutionHistoryList, error)) ScriptActionExecutionHistoryListPage {
+	return original.NewScriptActionExecutionHistoryListPage(cur, getNextPage)
 }
 func NewScriptActionsClient(subscriptionID string) ScriptActionsClient {
 	return original.NewScriptActionsClient(subscriptionID)
@@ -304,8 +304,8 @@ func NewScriptActionsClientWithBaseURI(baseURI string, subscriptionID string) Sc
 func NewScriptActionsListIterator(page ScriptActionsListPage) ScriptActionsListIterator {
 	return original.NewScriptActionsListIterator(page)
 }
-func NewScriptActionsListPage(getNextPage func(context.Context, ScriptActionsList) (ScriptActionsList, error)) ScriptActionsListPage {
-	return original.NewScriptActionsListPage(getNextPage)
+func NewScriptActionsListPage(cur ScriptActionsList, getNextPage func(context.Context, ScriptActionsList) (ScriptActionsList, error)) ScriptActionsListPage {
+	return original.NewScriptActionsListPage(cur, getNextPage)
 }
 func NewScriptExecutionHistoryClient(subscriptionID string) ScriptExecutionHistoryClient {
 	return original.NewScriptExecutionHistoryClient(subscriptionID)
@@ -337,14 +337,14 @@ func PossibleJSONWebKeyEncryptionAlgorithmValues() []JSONWebKeyEncryptionAlgorit
 func PossibleOSTypeValues() []OSType {
 	return original.PossibleOSTypeValues()
 }
-func PossibleOutboundOnlyPublicNetworkAccessTypeValues() []OutboundOnlyPublicNetworkAccessType {
-	return original.PossibleOutboundOnlyPublicNetworkAccessTypeValues()
-}
-func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
-	return original.PossiblePublicNetworkAccessValues()
+func PossiblePrivateLinkValues() []PrivateLink {
+	return original.PossiblePrivateLinkValues()
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
+}
+func PossibleResourceProviderConnectionValues() []ResourceProviderConnection {
+	return original.PossibleResourceProviderConnectionValues()
 }
 func PossibleTierValues() []Tier {
 	return original.PossibleTierValues()

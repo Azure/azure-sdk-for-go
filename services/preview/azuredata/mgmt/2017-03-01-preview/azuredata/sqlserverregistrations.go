@@ -26,21 +26,21 @@ import (
 )
 
 // SQLServerRegistrationsClient is the the AzureData management API provides a RESTful set of web APIs to manage Azure
-// Data Resources. For example, register, delete and retrieve a SQL Server, SQL Server registration.
+// Data Resources.
 type SQLServerRegistrationsClient struct {
 	BaseClient
 }
 
 // NewSQLServerRegistrationsClient creates an instance of the SQLServerRegistrationsClient client.
-func NewSQLServerRegistrationsClient(subscriptionID string) SQLServerRegistrationsClient {
-	return NewSQLServerRegistrationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewSQLServerRegistrationsClient(subscriptionID string, subscriptionID1 string) SQLServerRegistrationsClient {
+	return NewSQLServerRegistrationsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewSQLServerRegistrationsClientWithBaseURI creates an instance of the SQLServerRegistrationsClient client using a
 // custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
 // Azure stack).
-func NewSQLServerRegistrationsClientWithBaseURI(baseURI string, subscriptionID string) SQLServerRegistrationsClient {
-	return SQLServerRegistrationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewSQLServerRegistrationsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) SQLServerRegistrationsClient {
+	return SQLServerRegistrationsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // CreateOrUpdate creates or updates a SQL Server registration.
@@ -89,7 +89,7 @@ func (client SQLServerRegistrationsClient) CreateOrUpdatePreparer(ctx context.Co
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2019-07-24-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -115,7 +115,6 @@ func (client SQLServerRegistrationsClient) CreateOrUpdateSender(req *http.Reques
 func (client SQLServerRegistrationsClient) CreateOrUpdateResponder(resp *http.Response) (result SQLServerRegistration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -168,7 +167,7 @@ func (client SQLServerRegistrationsClient) DeletePreparer(ctx context.Context, r
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2019-07-24-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -192,7 +191,6 @@ func (client SQLServerRegistrationsClient) DeleteSender(req *http.Request) (*htt
 func (client SQLServerRegistrationsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -244,7 +242,7 @@ func (client SQLServerRegistrationsClient) GetPreparer(ctx context.Context, reso
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2019-07-24-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -268,7 +266,6 @@ func (client SQLServerRegistrationsClient) GetSender(req *http.Request) (*http.R
 func (client SQLServerRegistrationsClient) GetResponder(resp *http.Response) (result SQLServerRegistration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -306,6 +303,9 @@ func (client SQLServerRegistrationsClient) List(ctx context.Context) (result SQL
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.SQLServerRegistrationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.ssrlr.hasNextLink() && result.ssrlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -316,7 +316,7 @@ func (client SQLServerRegistrationsClient) ListPreparer(ctx context.Context) (*h
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2019-07-24-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -340,7 +340,6 @@ func (client SQLServerRegistrationsClient) ListSender(req *http.Request) (*http.
 func (client SQLServerRegistrationsClient) ListResponder(resp *http.Response) (result SQLServerRegistrationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -418,6 +417,9 @@ func (client SQLServerRegistrationsClient) ListByResourceGroup(ctx context.Conte
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.SQLServerRegistrationsClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.ssrlr.hasNextLink() && result.ssrlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -429,7 +431,7 @@ func (client SQLServerRegistrationsClient) ListByResourceGroupPreparer(ctx conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2019-07-24-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -453,7 +455,6 @@ func (client SQLServerRegistrationsClient) ListByResourceGroupSender(req *http.R
 func (client SQLServerRegistrationsClient) ListByResourceGroupResponder(resp *http.Response) (result SQLServerRegistrationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -544,7 +545,7 @@ func (client SQLServerRegistrationsClient) UpdatePreparer(ctx context.Context, r
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2019-07-24-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -570,7 +571,6 @@ func (client SQLServerRegistrationsClient) UpdateSender(req *http.Request) (*htt
 func (client SQLServerRegistrationsClient) UpdateResponder(resp *http.Response) (result SQLServerRegistration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

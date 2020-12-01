@@ -335,8 +335,11 @@ func (page CommunicationsListResultPage) Values() []CommunicationDetails {
 }
 
 // Creates a new instance of the CommunicationsListResultPage type.
-func NewCommunicationsListResultPage(getNextPage func(context.Context, CommunicationsListResult) (CommunicationsListResult, error)) CommunicationsListResultPage {
-	return CommunicationsListResultPage{fn: getNextPage}
+func NewCommunicationsListResultPage(cur CommunicationsListResult, getNextPage func(context.Context, CommunicationsListResult) (CommunicationsListResult, error)) CommunicationsListResultPage {
+	return CommunicationsListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // ContactProfile contact information associated with the support ticket.
@@ -827,7 +830,8 @@ func (tdp TicketDetailsProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TicketsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// TicketsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type TicketsCreateFuture struct {
 	azure.Future
 }
@@ -1007,8 +1011,11 @@ func (page TicketsListResultPage) Values() []TicketDetails {
 }
 
 // Creates a new instance of the TicketsListResultPage type.
-func NewTicketsListResultPage(getNextPage func(context.Context, TicketsListResult) (TicketsListResult, error)) TicketsListResultPage {
-	return TicketsListResultPage{fn: getNextPage}
+func NewTicketsListResultPage(cur TicketsListResult, getNextPage func(context.Context, TicketsListResult) (TicketsListResult, error)) TicketsListResultPage {
+	return TicketsListResultPage{
+		fn:  getNextPage,
+		tlr: cur,
+	}
 }
 
 // UpdateContactProfile contact information associated with the support ticket.

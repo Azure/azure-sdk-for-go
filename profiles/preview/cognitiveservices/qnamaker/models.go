@@ -86,7 +86,6 @@ type QnADTO = original.QnADTO
 type QnADTOContext = original.QnADTOContext
 type QnADocumentsDTO = original.QnADocumentsDTO
 type ReplaceKbDTO = original.ReplaceKbDTO
-type String = original.String
 type UpdateContextDTO = original.UpdateContextDTO
 type UpdateKbContentsDTO = original.UpdateKbContentsDTO
 type UpdateKbOperationDTO = original.UpdateKbOperationDTO

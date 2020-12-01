@@ -266,8 +266,11 @@ func (page AlertsListPage) Values() []Alert {
 }
 
 // Creates a new instance of the AlertsListPage type.
-func NewAlertsListPage(getNextPage func(context.Context, AlertsList) (AlertsList, error)) AlertsListPage {
-	return AlertsListPage{fn: getNextPage}
+func NewAlertsListPage(cur AlertsList, getNextPage func(context.Context, AlertsList) (AlertsList, error)) AlertsListPage {
+	return AlertsListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // AlertsSummary summary of alerts based on the input filters and 'groupby' parameters.
@@ -560,8 +563,11 @@ func (page OperationsListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationsListPage type.
-func NewOperationsListPage(getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
-	return OperationsListPage{fn: getNextPage}
+func NewOperationsListPage(cur OperationsList, getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
+	return OperationsListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // Resource an azure resource object
@@ -932,6 +938,9 @@ func (page SmartGroupsListPage) Values() []SmartGroup {
 }
 
 // Creates a new instance of the SmartGroupsListPage type.
-func NewSmartGroupsListPage(getNextPage func(context.Context, SmartGroupsList) (SmartGroupsList, error)) SmartGroupsListPage {
-	return SmartGroupsListPage{fn: getNextPage}
+func NewSmartGroupsListPage(cur SmartGroupsList, getNextPage func(context.Context, SmartGroupsList) (SmartGroupsList, error)) SmartGroupsListPage {
+	return SmartGroupsListPage{
+		fn:  getNextPage,
+		sgl: cur,
+	}
 }

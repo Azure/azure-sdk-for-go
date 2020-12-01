@@ -22,7 +22,7 @@ package digitaltwins
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/digitaltwins/2020-05-31/digitaltwins"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/digitaltwins/2020-05-31-preview/digitaltwins"
 )
 
 const (
@@ -69,8 +69,8 @@ func NewClientWithBaseURI(baseURI string) Client {
 func NewEventRouteCollectionIterator(page EventRouteCollectionPage) EventRouteCollectionIterator {
 	return original.NewEventRouteCollectionIterator(page)
 }
-func NewEventRouteCollectionPage(getNextPage func(context.Context, EventRouteCollection) (EventRouteCollection, error)) EventRouteCollectionPage {
-	return original.NewEventRouteCollectionPage(getNextPage)
+func NewEventRouteCollectionPage(cur EventRouteCollection, getNextPage func(context.Context, EventRouteCollection) (EventRouteCollection, error)) EventRouteCollectionPage {
+	return original.NewEventRouteCollectionPage(cur, getNextPage)
 }
 func NewEventRoutesClient() EventRoutesClient {
 	return original.NewEventRoutesClient()
@@ -81,8 +81,8 @@ func NewEventRoutesClientWithBaseURI(baseURI string) EventRoutesClient {
 func NewIncomingRelationshipCollectionIterator(page IncomingRelationshipCollectionPage) IncomingRelationshipCollectionIterator {
 	return original.NewIncomingRelationshipCollectionIterator(page)
 }
-func NewIncomingRelationshipCollectionPage(getNextPage func(context.Context, IncomingRelationshipCollection) (IncomingRelationshipCollection, error)) IncomingRelationshipCollectionPage {
-	return original.NewIncomingRelationshipCollectionPage(getNextPage)
+func NewIncomingRelationshipCollectionPage(cur IncomingRelationshipCollection, getNextPage func(context.Context, IncomingRelationshipCollection) (IncomingRelationshipCollection, error)) IncomingRelationshipCollectionPage {
+	return original.NewIncomingRelationshipCollectionPage(cur, getNextPage)
 }
 func NewModelsClient() ModelsClient {
 	return original.NewModelsClient()
@@ -93,8 +93,8 @@ func NewModelsClientWithBaseURI(baseURI string) ModelsClient {
 func NewPagedModelDataCollectionIterator(page PagedModelDataCollectionPage) PagedModelDataCollectionIterator {
 	return original.NewPagedModelDataCollectionIterator(page)
 }
-func NewPagedModelDataCollectionPage(getNextPage func(context.Context, PagedModelDataCollection) (PagedModelDataCollection, error)) PagedModelDataCollectionPage {
-	return original.NewPagedModelDataCollectionPage(getNextPage)
+func NewPagedModelDataCollectionPage(cur PagedModelDataCollection, getNextPage func(context.Context, PagedModelDataCollection) (PagedModelDataCollection, error)) PagedModelDataCollectionPage {
+	return original.NewPagedModelDataCollectionPage(cur, getNextPage)
 }
 func NewQueryClient() QueryClient {
 	return original.NewQueryClient()
@@ -105,8 +105,8 @@ func NewQueryClientWithBaseURI(baseURI string) QueryClient {
 func NewRelationshipCollectionIterator(page RelationshipCollectionPage) RelationshipCollectionIterator {
 	return original.NewRelationshipCollectionIterator(page)
 }
-func NewRelationshipCollectionPage(getNextPage func(context.Context, RelationshipCollection) (RelationshipCollection, error)) RelationshipCollectionPage {
-	return original.NewRelationshipCollectionPage(getNextPage)
+func NewRelationshipCollectionPage(cur RelationshipCollection, getNextPage func(context.Context, RelationshipCollection) (RelationshipCollection, error)) RelationshipCollectionPage {
+	return original.NewRelationshipCollectionPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)

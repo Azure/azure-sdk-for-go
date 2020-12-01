@@ -101,6 +101,31 @@ const (
 	MemoryOptimized  DataFlowComputeType = original.MemoryOptimized
 )
 
+type DataMaskingFunction = original.DataMaskingFunction
+
+const (
+	DataMaskingFunctionCCN     DataMaskingFunction = original.DataMaskingFunctionCCN
+	DataMaskingFunctionDefault DataMaskingFunction = original.DataMaskingFunctionDefault
+	DataMaskingFunctionEmail   DataMaskingFunction = original.DataMaskingFunctionEmail
+	DataMaskingFunctionNumber  DataMaskingFunction = original.DataMaskingFunctionNumber
+	DataMaskingFunctionSSN     DataMaskingFunction = original.DataMaskingFunctionSSN
+	DataMaskingFunctionText    DataMaskingFunction = original.DataMaskingFunctionText
+)
+
+type DataMaskingRuleState = original.DataMaskingRuleState
+
+const (
+	DataMaskingRuleStateDisabled DataMaskingRuleState = original.DataMaskingRuleStateDisabled
+	DataMaskingRuleStateEnabled  DataMaskingRuleState = original.DataMaskingRuleStateEnabled
+)
+
+type DataMaskingState = original.DataMaskingState
+
+const (
+	DataMaskingStateDisabled DataMaskingState = original.DataMaskingStateDisabled
+	DataMaskingStateEnabled  DataMaskingState = original.DataMaskingStateEnabled
+)
+
 type DesiredState = original.DesiredState
 
 const (
@@ -220,12 +245,13 @@ const (
 type NodeSize = original.NodeSize
 
 const (
-	NodeSizeLarge   NodeSize = original.NodeSizeLarge
-	NodeSizeMedium  NodeSize = original.NodeSizeMedium
-	NodeSizeNone    NodeSize = original.NodeSizeNone
-	NodeSizeSmall   NodeSize = original.NodeSizeSmall
-	NodeSizeXLarge  NodeSize = original.NodeSizeXLarge
-	NodeSizeXXLarge NodeSize = original.NodeSizeXXLarge
+	NodeSizeLarge    NodeSize = original.NodeSizeLarge
+	NodeSizeMedium   NodeSize = original.NodeSizeMedium
+	NodeSizeNone     NodeSize = original.NodeSizeNone
+	NodeSizeSmall    NodeSize = original.NodeSizeSmall
+	NodeSizeXLarge   NodeSize = original.NodeSizeXLarge
+	NodeSizeXXLarge  NodeSize = original.NodeSizeXXLarge
+	NodeSizeXXXLarge NodeSize = original.NodeSizeXXXLarge
 )
 
 type NodeSizeFamily = original.NodeSizeFamily
@@ -252,13 +278,6 @@ const (
 	ProvisioningStateFailed       ProvisioningState = original.ProvisioningStateFailed
 	ProvisioningStateProvisioning ProvisioningState = original.ProvisioningStateProvisioning
 	ProvisioningStateSucceeded    ProvisioningState = original.ProvisioningStateSucceeded
-)
-
-type ProvisioningState1 = original.ProvisioningState1
-
-const (
-	ProvisioningState1Failed    ProvisioningState1 = original.ProvisioningState1Failed
-	ProvisioningState1Succeeded ProvisioningState1 = original.ProvisioningState1Succeeded
 )
 
 type QueryAggregationFunction = original.QueryAggregationFunction
@@ -351,6 +370,13 @@ const (
 	SelfHostedIntegrationRuntimeNodeStatusUpgrading        SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatusUpgrading
 )
 
+type SensitivityLabelSource = original.SensitivityLabelSource
+
+const (
+	Current     SensitivityLabelSource = original.Current
+	Recommended SensitivityLabelSource = original.Recommended
+)
+
 type SsisObjectMetadataType = original.SsisObjectMetadataType
 
 const (
@@ -358,15 +384,6 @@ const (
 	Folder      SsisObjectMetadataType = original.Folder
 	Package     SsisObjectMetadataType = original.Package
 	Project     SsisObjectMetadataType = original.Project
-)
-
-type Status = original.Status
-
-const (
-	StatusApproved     Status = original.StatusApproved
-	StatusDisconnected Status = original.StatusDisconnected
-	StatusPending      Status = original.StatusPending
-	StatusRejected     Status = original.StatusRejected
 )
 
 type TransparentDataEncryptionStatus = original.TransparentDataEncryptionStatus
@@ -472,9 +489,18 @@ type CmdkeySetupTypeProperties = original.CmdkeySetupTypeProperties
 type ComponentSetup = original.ComponentSetup
 type CreateSQLPoolRestorePointDefinition = original.CreateSQLPoolRestorePointDefinition
 type CustomSetupBase = original.CustomSetupBase
+type CustomerManagedKeyDetails = original.CustomerManagedKeyDetails
 type DataLakeStorageAccountDetails = original.DataLakeStorageAccountDetails
+type DataMaskingPoliciesClient = original.DataMaskingPoliciesClient
+type DataMaskingPolicy = original.DataMaskingPolicy
+type DataMaskingPolicyProperties = original.DataMaskingPolicyProperties
+type DataMaskingRule = original.DataMaskingRule
+type DataMaskingRuleListResult = original.DataMaskingRuleListResult
+type DataMaskingRuleProperties = original.DataMaskingRuleProperties
+type DataMaskingRulesClient = original.DataMaskingRulesClient
 type DataWarehouseUserActivities = original.DataWarehouseUserActivities
 type DataWarehouseUserActivitiesProperties = original.DataWarehouseUserActivitiesProperties
+type EncryptionDetails = original.EncryptionDetails
 type EntityReference = original.EntityReference
 type EnvironmentVariableSetup = original.EnvironmentVariableSetup
 type EnvironmentVariableSetupTypeProperties = original.EnvironmentVariableSetupTypeProperties
@@ -482,7 +508,19 @@ type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorContract = original.ErrorContract
 type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
+type ExtendedSQLPoolBlobAuditingPoliciesClient = original.ExtendedSQLPoolBlobAuditingPoliciesClient
+type ExtendedSQLPoolBlobAuditingPolicy = original.ExtendedSQLPoolBlobAuditingPolicy
+type ExtendedSQLPoolBlobAuditingPolicyListResult = original.ExtendedSQLPoolBlobAuditingPolicyListResult
+type ExtendedSQLPoolBlobAuditingPolicyListResultIterator = original.ExtendedSQLPoolBlobAuditingPolicyListResultIterator
+type ExtendedSQLPoolBlobAuditingPolicyListResultPage = original.ExtendedSQLPoolBlobAuditingPolicyListResultPage
+type ExtendedSQLPoolBlobAuditingPolicyProperties = original.ExtendedSQLPoolBlobAuditingPolicyProperties
+type ExtendedServerBlobAuditingPolicy = original.ExtendedServerBlobAuditingPolicy
+type ExtendedServerBlobAuditingPolicyListResult = original.ExtendedServerBlobAuditingPolicyListResult
+type ExtendedServerBlobAuditingPolicyListResultIterator = original.ExtendedServerBlobAuditingPolicyListResultIterator
+type ExtendedServerBlobAuditingPolicyListResultPage = original.ExtendedServerBlobAuditingPolicyListResultPage
+type ExtendedServerBlobAuditingPolicyProperties = original.ExtendedServerBlobAuditingPolicyProperties
 type GeoBackupPolicy = original.GeoBackupPolicy
+type GeoBackupPolicyListResult = original.GeoBackupPolicyListResult
 type GeoBackupPolicyProperties = original.GeoBackupPolicyProperties
 type GetSsisObjectMetadataRequest = original.GetSsisObjectMetadataRequest
 type IPFirewallRuleInfo = original.IPFirewallRuleInfo
@@ -514,6 +552,7 @@ type IntegrationRuntimeNodeIPAddressClient = original.IntegrationRuntimeNodeIPAd
 type IntegrationRuntimeNodeMonitoringData = original.IntegrationRuntimeNodeMonitoringData
 type IntegrationRuntimeNodesClient = original.IntegrationRuntimeNodesClient
 type IntegrationRuntimeObjectMetadataClient = original.IntegrationRuntimeObjectMetadataClient
+type IntegrationRuntimeObjectMetadataRefreshFuture = original.IntegrationRuntimeObjectMetadataRefreshFuture
 type IntegrationRuntimeRegenerateKeyParameters = original.IntegrationRuntimeRegenerateKeyParameters
 type IntegrationRuntimeResource = original.IntegrationRuntimeResource
 type IntegrationRuntimeSsisCatalogInfo = original.IntegrationRuntimeSsisCatalogInfo
@@ -525,6 +564,16 @@ type IntegrationRuntimeVNetProperties = original.IntegrationRuntimeVNetPropertie
 type IntegrationRuntimesClient = original.IntegrationRuntimesClient
 type IntegrationRuntimesCreateFuture = original.IntegrationRuntimesCreateFuture
 type IntegrationRuntimesDeleteFuture = original.IntegrationRuntimesDeleteFuture
+type IntegrationRuntimesDisableInteractiveQueryFuture = original.IntegrationRuntimesDisableInteractiveQueryFuture
+type IntegrationRuntimesEnableInteractiveQueryFuture = original.IntegrationRuntimesEnableInteractiveQueryFuture
+type IntegrationRuntimesStartFuture = original.IntegrationRuntimesStartFuture
+type IntegrationRuntimesStopFuture = original.IntegrationRuntimesStopFuture
+type Key = original.Key
+type KeyInfoListResult = original.KeyInfoListResult
+type KeyInfoListResultIterator = original.KeyInfoListResultIterator
+type KeyInfoListResultPage = original.KeyInfoListResultPage
+type KeyProperties = original.KeyProperties
+type KeysClient = original.KeysClient
 type LibraryRequirements = original.LibraryRequirements
 type LicensedComponentSetupTypeProperties = original.LicensedComponentSetupTypeProperties
 type LinkedIntegrationRuntime = original.LinkedIntegrationRuntime
@@ -532,6 +581,9 @@ type LinkedIntegrationRuntimeKeyAuthorization = original.LinkedIntegrationRuntim
 type LinkedIntegrationRuntimeRbacAuthorization = original.LinkedIntegrationRuntimeRbacAuthorization
 type LinkedIntegrationRuntimeType = original.LinkedIntegrationRuntimeType
 type ListAvailableRpOperation = original.ListAvailableRpOperation
+type ListSQLPoolSecurityAlertPolicies = original.ListSQLPoolSecurityAlertPolicies
+type ListSQLPoolSecurityAlertPoliciesIterator = original.ListSQLPoolSecurityAlertPoliciesIterator
+type ListSQLPoolSecurityAlertPoliciesPage = original.ListSQLPoolSecurityAlertPoliciesPage
 type ManagedIdentity = original.ManagedIdentity
 type ManagedIdentitySQLControlSettingsModel = original.ManagedIdentitySQLControlSettingsModel
 type ManagedIdentitySQLControlSettingsModelProperties = original.ManagedIdentitySQLControlSettingsModelProperties
@@ -543,6 +595,7 @@ type ManagedIntegrationRuntimeOperationResult = original.ManagedIntegrationRunti
 type ManagedIntegrationRuntimeStatus = original.ManagedIntegrationRuntimeStatus
 type ManagedIntegrationRuntimeStatusTypeProperties = original.ManagedIntegrationRuntimeStatusTypeProperties
 type ManagedIntegrationRuntimeTypeProperties = original.ManagedIntegrationRuntimeTypeProperties
+type ManagedVirtualNetworkSettings = original.ManagedVirtualNetworkSettings
 type MetadataSyncConfig = original.MetadataSyncConfig
 type MetadataSyncConfigProperties = original.MetadataSyncConfigProperties
 type OperationMetaLogSpecification = original.OperationMetaLogSpecification
@@ -554,6 +607,11 @@ type OperationResource = original.OperationResource
 type OperationsClient = original.OperationsClient
 type PrivateEndpoint = original.PrivateEndpoint
 type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionForPrivateLinkHub = original.PrivateEndpointConnectionForPrivateLinkHub
+type PrivateEndpointConnectionForPrivateLinkHubBasic = original.PrivateEndpointConnectionForPrivateLinkHubBasic
+type PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse = original.PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse
+type PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponseIterator = original.PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponseIterator
+type PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponsePage = original.PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponsePage
 type PrivateEndpointConnectionList = original.PrivateEndpointConnectionList
 type PrivateEndpointConnectionListIterator = original.PrivateEndpointConnectionListIterator
 type PrivateEndpointConnectionListPage = original.PrivateEndpointConnectionListPage
@@ -561,6 +619,7 @@ type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionPro
 type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
 type PrivateEndpointConnectionsCreateFuture = original.PrivateEndpointConnectionsCreateFuture
 type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateEndpointConnectionsPrivateLinkHubClient = original.PrivateEndpointConnectionsPrivateLinkHubClient
 type PrivateLinkHub = original.PrivateLinkHub
 type PrivateLinkHubInfoListResult = original.PrivateLinkHubInfoListResult
 type PrivateLinkHubInfoListResultIterator = original.PrivateLinkHubInfoListResultIterator
@@ -568,6 +627,7 @@ type PrivateLinkHubInfoListResultPage = original.PrivateLinkHubInfoListResultPag
 type PrivateLinkHubPatchInfo = original.PrivateLinkHubPatchInfo
 type PrivateLinkHubProperties = original.PrivateLinkHubProperties
 type PrivateLinkHubsClient = original.PrivateLinkHubsClient
+type PrivateLinkHubsDeleteFuture = original.PrivateLinkHubsDeleteFuture
 type PrivateLinkResource = original.PrivateLinkResource
 type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
 type PrivateLinkResourceListResultIterator = original.PrivateLinkResourceListResultIterator
@@ -576,9 +636,15 @@ type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
 type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type ProxyResource = original.ProxyResource
+type PurviewConfiguration = original.PurviewConfiguration
 type QueryInterval = original.QueryInterval
 type QueryMetric = original.QueryMetric
 type QueryStatistic = original.QueryStatistic
+type RecoverableSQLPool = original.RecoverableSQLPool
+type RecoverableSQLPoolListResult = original.RecoverableSQLPoolListResult
+type RecoverableSQLPoolListResultIterator = original.RecoverableSQLPoolListResultIterator
+type RecoverableSQLPoolListResultPage = original.RecoverableSQLPoolListResultPage
+type RecoverableSQLPoolProperties = original.RecoverableSQLPoolProperties
 type ReplaceAllFirewallRulesOperationResponse = original.ReplaceAllFirewallRulesOperationResponse
 type ReplaceAllIPFirewallRulesRequest = original.ReplaceAllIPFirewallRulesRequest
 type ReplicationLink = original.ReplicationLink
@@ -587,7 +653,10 @@ type ReplicationLinkListResultIterator = original.ReplicationLinkListResultItera
 type ReplicationLinkListResultPage = original.ReplicationLinkListResultPage
 type ReplicationLinkProperties = original.ReplicationLinkProperties
 type Resource = original.Resource
-type ResourceMoveDefinition = original.ResourceMoveDefinition
+type RestorableDroppedSQLPool = original.RestorableDroppedSQLPool
+type RestorableDroppedSQLPoolListResult = original.RestorableDroppedSQLPoolListResult
+type RestorableDroppedSQLPoolProperties = original.RestorableDroppedSQLPoolProperties
+type RestorableDroppedSQLPoolsClient = original.RestorableDroppedSQLPoolsClient
 type RestorePoint = original.RestorePoint
 type RestorePointListResult = original.RestorePointListResult
 type RestorePointListResultIterator = original.RestorePointListResultIterator
@@ -596,6 +665,9 @@ type RestorePointProperties = original.RestorePointProperties
 type SQLPool = original.SQLPool
 type SQLPoolBlobAuditingPoliciesClient = original.SQLPoolBlobAuditingPoliciesClient
 type SQLPoolBlobAuditingPolicy = original.SQLPoolBlobAuditingPolicy
+type SQLPoolBlobAuditingPolicyListResult = original.SQLPoolBlobAuditingPolicyListResult
+type SQLPoolBlobAuditingPolicyListResultIterator = original.SQLPoolBlobAuditingPolicyListResultIterator
+type SQLPoolBlobAuditingPolicyListResultPage = original.SQLPoolBlobAuditingPolicyListResultPage
 type SQLPoolBlobAuditingPolicyProperties = original.SQLPoolBlobAuditingPolicyProperties
 type SQLPoolBlobAuditingPolicySQLPoolOperationListResult = original.SQLPoolBlobAuditingPolicySQLPoolOperationListResult
 type SQLPoolBlobAuditingPolicySQLPoolOperationListResultIterator = original.SQLPoolBlobAuditingPolicySQLPoolOperationListResultIterator
@@ -605,6 +677,7 @@ type SQLPoolColumnListResult = original.SQLPoolColumnListResult
 type SQLPoolColumnListResultIterator = original.SQLPoolColumnListResultIterator
 type SQLPoolColumnListResultPage = original.SQLPoolColumnListResultPage
 type SQLPoolColumnProperties = original.SQLPoolColumnProperties
+type SQLPoolColumnsClient = original.SQLPoolColumnsClient
 type SQLPoolConnectionPoliciesClient = original.SQLPoolConnectionPoliciesClient
 type SQLPoolConnectionPolicy = original.SQLPoolConnectionPolicy
 type SQLPoolConnectionPolicyProperties = original.SQLPoolConnectionPolicyProperties
@@ -657,6 +730,12 @@ type SQLPoolVulnerabilityAssessmentScansClient = original.SQLPoolVulnerabilityAs
 type SQLPoolVulnerabilityAssessmentScansExport = original.SQLPoolVulnerabilityAssessmentScansExport
 type SQLPoolVulnerabilityAssessmentScansInitiateScanFuture = original.SQLPoolVulnerabilityAssessmentScansInitiateScanFuture
 type SQLPoolVulnerabilityAssessmentsClient = original.SQLPoolVulnerabilityAssessmentsClient
+type SQLPoolWorkloadClassifierClient = original.SQLPoolWorkloadClassifierClient
+type SQLPoolWorkloadClassifierCreateOrUpdateFuture = original.SQLPoolWorkloadClassifierCreateOrUpdateFuture
+type SQLPoolWorkloadClassifierDeleteFuture = original.SQLPoolWorkloadClassifierDeleteFuture
+type SQLPoolWorkloadGroupClient = original.SQLPoolWorkloadGroupClient
+type SQLPoolWorkloadGroupCreateOrUpdateFuture = original.SQLPoolWorkloadGroupCreateOrUpdateFuture
+type SQLPoolWorkloadGroupDeleteFuture = original.SQLPoolWorkloadGroupDeleteFuture
 type SQLPoolsClient = original.SQLPoolsClient
 type SQLPoolsCreateFuture = original.SQLPoolsCreateFuture
 type SQLPoolsDeleteFuture = original.SQLPoolsDeleteFuture
@@ -675,6 +754,25 @@ type SensitivityLabelListResult = original.SensitivityLabelListResult
 type SensitivityLabelListResultIterator = original.SensitivityLabelListResultIterator
 type SensitivityLabelListResultPage = original.SensitivityLabelListResultPage
 type SensitivityLabelProperties = original.SensitivityLabelProperties
+type ServerBlobAuditingPolicy = original.ServerBlobAuditingPolicy
+type ServerBlobAuditingPolicyListResult = original.ServerBlobAuditingPolicyListResult
+type ServerBlobAuditingPolicyListResultIterator = original.ServerBlobAuditingPolicyListResultIterator
+type ServerBlobAuditingPolicyListResultPage = original.ServerBlobAuditingPolicyListResultPage
+type ServerBlobAuditingPolicyProperties = original.ServerBlobAuditingPolicyProperties
+type ServerSecurityAlertPolicy = original.ServerSecurityAlertPolicy
+type ServerSecurityAlertPolicyListResult = original.ServerSecurityAlertPolicyListResult
+type ServerSecurityAlertPolicyListResultIterator = original.ServerSecurityAlertPolicyListResultIterator
+type ServerSecurityAlertPolicyListResultPage = original.ServerSecurityAlertPolicyListResultPage
+type ServerSecurityAlertPolicyProperties = original.ServerSecurityAlertPolicyProperties
+type ServerUsage = original.ServerUsage
+type ServerUsageListResult = original.ServerUsageListResult
+type ServerUsageListResultIterator = original.ServerUsageListResultIterator
+type ServerUsageListResultPage = original.ServerUsageListResultPage
+type ServerVulnerabilityAssessment = original.ServerVulnerabilityAssessment
+type ServerVulnerabilityAssessmentListResult = original.ServerVulnerabilityAssessmentListResult
+type ServerVulnerabilityAssessmentListResultIterator = original.ServerVulnerabilityAssessmentListResultIterator
+type ServerVulnerabilityAssessmentListResultPage = original.ServerVulnerabilityAssessmentListResultPage
+type ServerVulnerabilityAssessmentProperties = original.ServerVulnerabilityAssessmentProperties
 type SetObject = original.SetObject
 type Sku = original.Sku
 type SsisEnvironment = original.SsisEnvironment
@@ -692,6 +790,9 @@ type TopQueries = original.TopQueries
 type TopQueriesListResult = original.TopQueriesListResult
 type TrackedResource = original.TrackedResource
 type TransparentDataEncryption = original.TransparentDataEncryption
+type TransparentDataEncryptionListResult = original.TransparentDataEncryptionListResult
+type TransparentDataEncryptionListResultIterator = original.TransparentDataEncryptionListResultIterator
+type TransparentDataEncryptionListResultPage = original.TransparentDataEncryptionListResultPage
 type TransparentDataEncryptionProperties = original.TransparentDataEncryptionProperties
 type UpdateIntegrationRuntimeNodeRequest = original.UpdateIntegrationRuntimeNodeRequest
 type UpdateIntegrationRuntimeRequest = original.UpdateIntegrationRuntimeRequest
@@ -703,6 +804,16 @@ type VulnerabilityAssessmentScanRecordListResult = original.VulnerabilityAssessm
 type VulnerabilityAssessmentScanRecordListResultIterator = original.VulnerabilityAssessmentScanRecordListResultIterator
 type VulnerabilityAssessmentScanRecordListResultPage = original.VulnerabilityAssessmentScanRecordListResultPage
 type VulnerabilityAssessmentScanRecordProperties = original.VulnerabilityAssessmentScanRecordProperties
+type WorkloadClassifier = original.WorkloadClassifier
+type WorkloadClassifierListResult = original.WorkloadClassifierListResult
+type WorkloadClassifierListResultIterator = original.WorkloadClassifierListResultIterator
+type WorkloadClassifierListResultPage = original.WorkloadClassifierListResultPage
+type WorkloadClassifierProperties = original.WorkloadClassifierProperties
+type WorkloadGroup = original.WorkloadGroup
+type WorkloadGroupListResult = original.WorkloadGroupListResult
+type WorkloadGroupListResultIterator = original.WorkloadGroupListResultIterator
+type WorkloadGroupListResultPage = original.WorkloadGroupListResultPage
+type WorkloadGroupProperties = original.WorkloadGroupProperties
 type Workspace = original.Workspace
 type WorkspaceAadAdminInfo = original.WorkspaceAadAdminInfo
 type WorkspaceAadAdminsClient = original.WorkspaceAadAdminsClient
@@ -711,10 +822,24 @@ type WorkspaceAadAdminsDeleteFuture = original.WorkspaceAadAdminsDeleteFuture
 type WorkspaceInfoListResult = original.WorkspaceInfoListResult
 type WorkspaceInfoListResultIterator = original.WorkspaceInfoListResultIterator
 type WorkspaceInfoListResultPage = original.WorkspaceInfoListResultPage
+type WorkspaceKeyDetails = original.WorkspaceKeyDetails
 type WorkspaceManagedIdentitySQLControlSettingsClient = original.WorkspaceManagedIdentitySQLControlSettingsClient
+type WorkspaceManagedSQLServerBlobAuditingPoliciesClient = original.WorkspaceManagedSQLServerBlobAuditingPoliciesClient
+type WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdateFuture = original.WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdateFuture
+type WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient = original.WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient
+type WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdateFuture = original.WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdateFuture
+type WorkspaceManagedSQLServerRecoverableSqlpoolsClient = original.WorkspaceManagedSQLServerRecoverableSqlpoolsClient
+type WorkspaceManagedSQLServerSecurityAlertPolicyClient = original.WorkspaceManagedSQLServerSecurityAlertPolicyClient
+type WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdateFuture = original.WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdateFuture
+type WorkspaceManagedSQLServerUsagesClient = original.WorkspaceManagedSQLServerUsagesClient
+type WorkspaceManagedSQLServerVulnerabilityAssessmentsClient = original.WorkspaceManagedSQLServerVulnerabilityAssessmentsClient
 type WorkspacePatchInfo = original.WorkspacePatchInfo
 type WorkspacePatchProperties = original.WorkspacePatchProperties
 type WorkspaceProperties = original.WorkspaceProperties
+type WorkspaceRepositoryConfiguration = original.WorkspaceRepositoryConfiguration
+type WorkspaceSQLAadAdminsClient = original.WorkspaceSQLAadAdminsClient
+type WorkspaceSQLAadAdminsCreateOrUpdateFuture = original.WorkspaceSQLAadAdminsCreateOrUpdateFuture
+type WorkspaceSQLAadAdminsDeleteFuture = original.WorkspaceSQLAadAdminsDeleteFuture
 type WorkspacesClient = original.WorkspacesClient
 type WorkspacesCreateOrUpdateFuture = original.WorkspacesCreateOrUpdateFuture
 type WorkspacesDeleteFuture = original.WorkspacesDeleteFuture
@@ -726,8 +851,8 @@ func New(subscriptionID string) BaseClient {
 func NewBigDataPoolResourceInfoListResultIterator(page BigDataPoolResourceInfoListResultPage) BigDataPoolResourceInfoListResultIterator {
 	return original.NewBigDataPoolResourceInfoListResultIterator(page)
 }
-func NewBigDataPoolResourceInfoListResultPage(getNextPage func(context.Context, BigDataPoolResourceInfoListResult) (BigDataPoolResourceInfoListResult, error)) BigDataPoolResourceInfoListResultPage {
-	return original.NewBigDataPoolResourceInfoListResultPage(getNextPage)
+func NewBigDataPoolResourceInfoListResultPage(cur BigDataPoolResourceInfoListResult, getNextPage func(context.Context, BigDataPoolResourceInfoListResult) (BigDataPoolResourceInfoListResult, error)) BigDataPoolResourceInfoListResultPage {
+	return original.NewBigDataPoolResourceInfoListResultPage(cur, getNextPage)
 }
 func NewBigDataPoolsClient(subscriptionID string) BigDataPoolsClient {
 	return original.NewBigDataPoolsClient(subscriptionID)
@@ -735,11 +860,41 @@ func NewBigDataPoolsClient(subscriptionID string) BigDataPoolsClient {
 func NewBigDataPoolsClientWithBaseURI(baseURI string, subscriptionID string) BigDataPoolsClient {
 	return original.NewBigDataPoolsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewDataMaskingPoliciesClient(subscriptionID string) DataMaskingPoliciesClient {
+	return original.NewDataMaskingPoliciesClient(subscriptionID)
+}
+func NewDataMaskingPoliciesClientWithBaseURI(baseURI string, subscriptionID string) DataMaskingPoliciesClient {
+	return original.NewDataMaskingPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDataMaskingRulesClient(subscriptionID string) DataMaskingRulesClient {
+	return original.NewDataMaskingRulesClient(subscriptionID)
+}
+func NewDataMaskingRulesClientWithBaseURI(baseURI string, subscriptionID string) DataMaskingRulesClient {
+	return original.NewDataMaskingRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewExtendedSQLPoolBlobAuditingPoliciesClient(subscriptionID string) ExtendedSQLPoolBlobAuditingPoliciesClient {
+	return original.NewExtendedSQLPoolBlobAuditingPoliciesClient(subscriptionID)
+}
+func NewExtendedSQLPoolBlobAuditingPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ExtendedSQLPoolBlobAuditingPoliciesClient {
+	return original.NewExtendedSQLPoolBlobAuditingPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewExtendedSQLPoolBlobAuditingPolicyListResultIterator(page ExtendedSQLPoolBlobAuditingPolicyListResultPage) ExtendedSQLPoolBlobAuditingPolicyListResultIterator {
+	return original.NewExtendedSQLPoolBlobAuditingPolicyListResultIterator(page)
+}
+func NewExtendedSQLPoolBlobAuditingPolicyListResultPage(cur ExtendedSQLPoolBlobAuditingPolicyListResult, getNextPage func(context.Context, ExtendedSQLPoolBlobAuditingPolicyListResult) (ExtendedSQLPoolBlobAuditingPolicyListResult, error)) ExtendedSQLPoolBlobAuditingPolicyListResultPage {
+	return original.NewExtendedSQLPoolBlobAuditingPolicyListResultPage(cur, getNextPage)
+}
+func NewExtendedServerBlobAuditingPolicyListResultIterator(page ExtendedServerBlobAuditingPolicyListResultPage) ExtendedServerBlobAuditingPolicyListResultIterator {
+	return original.NewExtendedServerBlobAuditingPolicyListResultIterator(page)
+}
+func NewExtendedServerBlobAuditingPolicyListResultPage(cur ExtendedServerBlobAuditingPolicyListResult, getNextPage func(context.Context, ExtendedServerBlobAuditingPolicyListResult) (ExtendedServerBlobAuditingPolicyListResult, error)) ExtendedServerBlobAuditingPolicyListResultPage {
+	return original.NewExtendedServerBlobAuditingPolicyListResultPage(cur, getNextPage)
+}
 func NewIPFirewallRuleInfoListResultIterator(page IPFirewallRuleInfoListResultPage) IPFirewallRuleInfoListResultIterator {
 	return original.NewIPFirewallRuleInfoListResultIterator(page)
 }
-func NewIPFirewallRuleInfoListResultPage(getNextPage func(context.Context, IPFirewallRuleInfoListResult) (IPFirewallRuleInfoListResult, error)) IPFirewallRuleInfoListResultPage {
-	return original.NewIPFirewallRuleInfoListResultPage(getNextPage)
+func NewIPFirewallRuleInfoListResultPage(cur IPFirewallRuleInfoListResult, getNextPage func(context.Context, IPFirewallRuleInfoListResult) (IPFirewallRuleInfoListResult, error)) IPFirewallRuleInfoListResultPage {
+	return original.NewIPFirewallRuleInfoListResultPage(cur, getNextPage)
 }
 func NewIPFirewallRulesClient(subscriptionID string) IPFirewallRulesClient {
 	return original.NewIPFirewallRulesClient(subscriptionID)
@@ -768,8 +923,8 @@ func NewIntegrationRuntimeCredentialsClientWithBaseURI(baseURI string, subscript
 func NewIntegrationRuntimeListResponseIterator(page IntegrationRuntimeListResponsePage) IntegrationRuntimeListResponseIterator {
 	return original.NewIntegrationRuntimeListResponseIterator(page)
 }
-func NewIntegrationRuntimeListResponsePage(getNextPage func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error)) IntegrationRuntimeListResponsePage {
-	return original.NewIntegrationRuntimeListResponsePage(getNextPage)
+func NewIntegrationRuntimeListResponsePage(cur IntegrationRuntimeListResponse, getNextPage func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error)) IntegrationRuntimeListResponsePage {
+	return original.NewIntegrationRuntimeListResponsePage(cur, getNextPage)
 }
 func NewIntegrationRuntimeMonitoringDataClient(subscriptionID string) IntegrationRuntimeMonitoringDataClient {
 	return original.NewIntegrationRuntimeMonitoringDataClient(subscriptionID)
@@ -807,17 +962,41 @@ func NewIntegrationRuntimesClient(subscriptionID string) IntegrationRuntimesClie
 func NewIntegrationRuntimesClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimesClient {
 	return original.NewIntegrationRuntimesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewKeyInfoListResultIterator(page KeyInfoListResultPage) KeyInfoListResultIterator {
+	return original.NewKeyInfoListResultIterator(page)
+}
+func NewKeyInfoListResultPage(cur KeyInfoListResult, getNextPage func(context.Context, KeyInfoListResult) (KeyInfoListResult, error)) KeyInfoListResultPage {
+	return original.NewKeyInfoListResultPage(cur, getNextPage)
+}
+func NewKeysClient(subscriptionID string) KeysClient {
+	return original.NewKeysClient(subscriptionID)
+}
+func NewKeysClientWithBaseURI(baseURI string, subscriptionID string) KeysClient {
+	return original.NewKeysClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewListSQLPoolSecurityAlertPoliciesIterator(page ListSQLPoolSecurityAlertPoliciesPage) ListSQLPoolSecurityAlertPoliciesIterator {
+	return original.NewListSQLPoolSecurityAlertPoliciesIterator(page)
+}
+func NewListSQLPoolSecurityAlertPoliciesPage(cur ListSQLPoolSecurityAlertPolicies, getNextPage func(context.Context, ListSQLPoolSecurityAlertPolicies) (ListSQLPoolSecurityAlertPolicies, error)) ListSQLPoolSecurityAlertPoliciesPage {
+	return original.NewListSQLPoolSecurityAlertPoliciesPage(cur, getNextPage)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponseIterator(page PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponsePage) PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponseIterator {
+	return original.NewPrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponseIterator(page)
+}
+func NewPrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponsePage(cur PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse, getNextPage func(context.Context, PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse) (PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse, error)) PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponsePage {
+	return original.NewPrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponsePage(cur, getNextPage)
+}
 func NewPrivateEndpointConnectionListIterator(page PrivateEndpointConnectionListPage) PrivateEndpointConnectionListIterator {
 	return original.NewPrivateEndpointConnectionListIterator(page)
 }
-func NewPrivateEndpointConnectionListPage(getNextPage func(context.Context, PrivateEndpointConnectionList) (PrivateEndpointConnectionList, error)) PrivateEndpointConnectionListPage {
-	return original.NewPrivateEndpointConnectionListPage(getNextPage)
+func NewPrivateEndpointConnectionListPage(cur PrivateEndpointConnectionList, getNextPage func(context.Context, PrivateEndpointConnectionList) (PrivateEndpointConnectionList, error)) PrivateEndpointConnectionListPage {
+	return original.NewPrivateEndpointConnectionListPage(cur, getNextPage)
 }
 func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
 	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
@@ -825,11 +1004,17 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointC
 func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
 	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionsPrivateLinkHubClient(subscriptionID string) PrivateEndpointConnectionsPrivateLinkHubClient {
+	return original.NewPrivateEndpointConnectionsPrivateLinkHubClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsPrivateLinkHubClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsPrivateLinkHubClient {
+	return original.NewPrivateEndpointConnectionsPrivateLinkHubClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewPrivateLinkHubInfoListResultIterator(page PrivateLinkHubInfoListResultPage) PrivateLinkHubInfoListResultIterator {
 	return original.NewPrivateLinkHubInfoListResultIterator(page)
 }
-func NewPrivateLinkHubInfoListResultPage(getNextPage func(context.Context, PrivateLinkHubInfoListResult) (PrivateLinkHubInfoListResult, error)) PrivateLinkHubInfoListResultPage {
-	return original.NewPrivateLinkHubInfoListResultPage(getNextPage)
+func NewPrivateLinkHubInfoListResultPage(cur PrivateLinkHubInfoListResult, getNextPage func(context.Context, PrivateLinkHubInfoListResult) (PrivateLinkHubInfoListResult, error)) PrivateLinkHubInfoListResultPage {
+	return original.NewPrivateLinkHubInfoListResultPage(cur, getNextPage)
 }
 func NewPrivateLinkHubsClient(subscriptionID string) PrivateLinkHubsClient {
 	return original.NewPrivateLinkHubsClient(subscriptionID)
@@ -840,8 +1025,8 @@ func NewPrivateLinkHubsClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewPrivateLinkResourceListResultIterator(page PrivateLinkResourceListResultPage) PrivateLinkResourceListResultIterator {
 	return original.NewPrivateLinkResourceListResultIterator(page)
 }
-func NewPrivateLinkResourceListResultPage(getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
-	return original.NewPrivateLinkResourceListResultPage(getNextPage)
+func NewPrivateLinkResourceListResultPage(cur PrivateLinkResourceListResult, getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
+	return original.NewPrivateLinkResourceListResultPage(cur, getNextPage)
 }
 func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
 	return original.NewPrivateLinkResourcesClient(subscriptionID)
@@ -849,17 +1034,29 @@ func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesCl
 func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
 	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewRecoverableSQLPoolListResultIterator(page RecoverableSQLPoolListResultPage) RecoverableSQLPoolListResultIterator {
+	return original.NewRecoverableSQLPoolListResultIterator(page)
+}
+func NewRecoverableSQLPoolListResultPage(cur RecoverableSQLPoolListResult, getNextPage func(context.Context, RecoverableSQLPoolListResult) (RecoverableSQLPoolListResult, error)) RecoverableSQLPoolListResultPage {
+	return original.NewRecoverableSQLPoolListResultPage(cur, getNextPage)
+}
 func NewReplicationLinkListResultIterator(page ReplicationLinkListResultPage) ReplicationLinkListResultIterator {
 	return original.NewReplicationLinkListResultIterator(page)
 }
-func NewReplicationLinkListResultPage(getNextPage func(context.Context, ReplicationLinkListResult) (ReplicationLinkListResult, error)) ReplicationLinkListResultPage {
-	return original.NewReplicationLinkListResultPage(getNextPage)
+func NewReplicationLinkListResultPage(cur ReplicationLinkListResult, getNextPage func(context.Context, ReplicationLinkListResult) (ReplicationLinkListResult, error)) ReplicationLinkListResultPage {
+	return original.NewReplicationLinkListResultPage(cur, getNextPage)
+}
+func NewRestorableDroppedSQLPoolsClient(subscriptionID string) RestorableDroppedSQLPoolsClient {
+	return original.NewRestorableDroppedSQLPoolsClient(subscriptionID)
+}
+func NewRestorableDroppedSQLPoolsClientWithBaseURI(baseURI string, subscriptionID string) RestorableDroppedSQLPoolsClient {
+	return original.NewRestorableDroppedSQLPoolsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewRestorePointListResultIterator(page RestorePointListResultPage) RestorePointListResultIterator {
 	return original.NewRestorePointListResultIterator(page)
 }
-func NewRestorePointListResultPage(getNextPage func(context.Context, RestorePointListResult) (RestorePointListResult, error)) RestorePointListResultPage {
-	return original.NewRestorePointListResultPage(getNextPage)
+func NewRestorePointListResultPage(cur RestorePointListResult, getNextPage func(context.Context, RestorePointListResult) (RestorePointListResult, error)) RestorePointListResultPage {
+	return original.NewRestorePointListResultPage(cur, getNextPage)
 }
 func NewSQLPoolBlobAuditingPoliciesClient(subscriptionID string) SQLPoolBlobAuditingPoliciesClient {
 	return original.NewSQLPoolBlobAuditingPoliciesClient(subscriptionID)
@@ -867,17 +1064,29 @@ func NewSQLPoolBlobAuditingPoliciesClient(subscriptionID string) SQLPoolBlobAudi
 func NewSQLPoolBlobAuditingPoliciesClientWithBaseURI(baseURI string, subscriptionID string) SQLPoolBlobAuditingPoliciesClient {
 	return original.NewSQLPoolBlobAuditingPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewSQLPoolBlobAuditingPolicyListResultIterator(page SQLPoolBlobAuditingPolicyListResultPage) SQLPoolBlobAuditingPolicyListResultIterator {
+	return original.NewSQLPoolBlobAuditingPolicyListResultIterator(page)
+}
+func NewSQLPoolBlobAuditingPolicyListResultPage(cur SQLPoolBlobAuditingPolicyListResult, getNextPage func(context.Context, SQLPoolBlobAuditingPolicyListResult) (SQLPoolBlobAuditingPolicyListResult, error)) SQLPoolBlobAuditingPolicyListResultPage {
+	return original.NewSQLPoolBlobAuditingPolicyListResultPage(cur, getNextPage)
+}
 func NewSQLPoolBlobAuditingPolicySQLPoolOperationListResultIterator(page SQLPoolBlobAuditingPolicySQLPoolOperationListResultPage) SQLPoolBlobAuditingPolicySQLPoolOperationListResultIterator {
 	return original.NewSQLPoolBlobAuditingPolicySQLPoolOperationListResultIterator(page)
 }
-func NewSQLPoolBlobAuditingPolicySQLPoolOperationListResultPage(getNextPage func(context.Context, SQLPoolBlobAuditingPolicySQLPoolOperationListResult) (SQLPoolBlobAuditingPolicySQLPoolOperationListResult, error)) SQLPoolBlobAuditingPolicySQLPoolOperationListResultPage {
-	return original.NewSQLPoolBlobAuditingPolicySQLPoolOperationListResultPage(getNextPage)
+func NewSQLPoolBlobAuditingPolicySQLPoolOperationListResultPage(cur SQLPoolBlobAuditingPolicySQLPoolOperationListResult, getNextPage func(context.Context, SQLPoolBlobAuditingPolicySQLPoolOperationListResult) (SQLPoolBlobAuditingPolicySQLPoolOperationListResult, error)) SQLPoolBlobAuditingPolicySQLPoolOperationListResultPage {
+	return original.NewSQLPoolBlobAuditingPolicySQLPoolOperationListResultPage(cur, getNextPage)
 }
 func NewSQLPoolColumnListResultIterator(page SQLPoolColumnListResultPage) SQLPoolColumnListResultIterator {
 	return original.NewSQLPoolColumnListResultIterator(page)
 }
-func NewSQLPoolColumnListResultPage(getNextPage func(context.Context, SQLPoolColumnListResult) (SQLPoolColumnListResult, error)) SQLPoolColumnListResultPage {
-	return original.NewSQLPoolColumnListResultPage(getNextPage)
+func NewSQLPoolColumnListResultPage(cur SQLPoolColumnListResult, getNextPage func(context.Context, SQLPoolColumnListResult) (SQLPoolColumnListResult, error)) SQLPoolColumnListResultPage {
+	return original.NewSQLPoolColumnListResultPage(cur, getNextPage)
+}
+func NewSQLPoolColumnsClient(subscriptionID string) SQLPoolColumnsClient {
+	return original.NewSQLPoolColumnsClient(subscriptionID)
+}
+func NewSQLPoolColumnsClientWithBaseURI(baseURI string, subscriptionID string) SQLPoolColumnsClient {
+	return original.NewSQLPoolColumnsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSQLPoolConnectionPoliciesClient(subscriptionID string) SQLPoolConnectionPoliciesClient {
 	return original.NewSQLPoolConnectionPoliciesClient(subscriptionID)
@@ -900,8 +1109,8 @@ func NewSQLPoolGeoBackupPoliciesClientWithBaseURI(baseURI string, subscriptionID
 func NewSQLPoolInfoListResultIterator(page SQLPoolInfoListResultPage) SQLPoolInfoListResultIterator {
 	return original.NewSQLPoolInfoListResultIterator(page)
 }
-func NewSQLPoolInfoListResultPage(getNextPage func(context.Context, SQLPoolInfoListResult) (SQLPoolInfoListResult, error)) SQLPoolInfoListResultPage {
-	return original.NewSQLPoolInfoListResultPage(getNextPage)
+func NewSQLPoolInfoListResultPage(cur SQLPoolInfoListResult, getNextPage func(context.Context, SQLPoolInfoListResult) (SQLPoolInfoListResult, error)) SQLPoolInfoListResultPage {
+	return original.NewSQLPoolInfoListResultPage(cur, getNextPage)
 }
 func NewSQLPoolMetadataSyncConfigsClient(subscriptionID string) SQLPoolMetadataSyncConfigsClient {
 	return original.NewSQLPoolMetadataSyncConfigsClient(subscriptionID)
@@ -936,8 +1145,8 @@ func NewSQLPoolRestorePointsClientWithBaseURI(baseURI string, subscriptionID str
 func NewSQLPoolSchemaListResultIterator(page SQLPoolSchemaListResultPage) SQLPoolSchemaListResultIterator {
 	return original.NewSQLPoolSchemaListResultIterator(page)
 }
-func NewSQLPoolSchemaListResultPage(getNextPage func(context.Context, SQLPoolSchemaListResult) (SQLPoolSchemaListResult, error)) SQLPoolSchemaListResultPage {
-	return original.NewSQLPoolSchemaListResultPage(getNextPage)
+func NewSQLPoolSchemaListResultPage(cur SQLPoolSchemaListResult, getNextPage func(context.Context, SQLPoolSchemaListResult) (SQLPoolSchemaListResult, error)) SQLPoolSchemaListResultPage {
+	return original.NewSQLPoolSchemaListResultPage(cur, getNextPage)
 }
 func NewSQLPoolSchemasClient(subscriptionID string) SQLPoolSchemasClient {
 	return original.NewSQLPoolSchemasClient(subscriptionID)
@@ -966,8 +1175,8 @@ func NewSQLPoolTableColumnsClientWithBaseURI(baseURI string, subscriptionID stri
 func NewSQLPoolTableListResultIterator(page SQLPoolTableListResultPage) SQLPoolTableListResultIterator {
 	return original.NewSQLPoolTableListResultIterator(page)
 }
-func NewSQLPoolTableListResultPage(getNextPage func(context.Context, SQLPoolTableListResult) (SQLPoolTableListResult, error)) SQLPoolTableListResultPage {
-	return original.NewSQLPoolTableListResultPage(getNextPage)
+func NewSQLPoolTableListResultPage(cur SQLPoolTableListResult, getNextPage func(context.Context, SQLPoolTableListResult) (SQLPoolTableListResult, error)) SQLPoolTableListResultPage {
+	return original.NewSQLPoolTableListResultPage(cur, getNextPage)
 }
 func NewSQLPoolTablesClient(subscriptionID string) SQLPoolTablesClient {
 	return original.NewSQLPoolTablesClient(subscriptionID)
@@ -984,8 +1193,8 @@ func NewSQLPoolTransparentDataEncryptionsClientWithBaseURI(baseURI string, subsc
 func NewSQLPoolUsageListResultIterator(page SQLPoolUsageListResultPage) SQLPoolUsageListResultIterator {
 	return original.NewSQLPoolUsageListResultIterator(page)
 }
-func NewSQLPoolUsageListResultPage(getNextPage func(context.Context, SQLPoolUsageListResult) (SQLPoolUsageListResult, error)) SQLPoolUsageListResultPage {
-	return original.NewSQLPoolUsageListResultPage(getNextPage)
+func NewSQLPoolUsageListResultPage(cur SQLPoolUsageListResult, getNextPage func(context.Context, SQLPoolUsageListResult) (SQLPoolUsageListResult, error)) SQLPoolUsageListResultPage {
+	return original.NewSQLPoolUsageListResultPage(cur, getNextPage)
 }
 func NewSQLPoolUsagesClient(subscriptionID string) SQLPoolUsagesClient {
 	return original.NewSQLPoolUsagesClient(subscriptionID)
@@ -996,8 +1205,8 @@ func NewSQLPoolUsagesClientWithBaseURI(baseURI string, subscriptionID string) SQ
 func NewSQLPoolVulnerabilityAssessmentListResultIterator(page SQLPoolVulnerabilityAssessmentListResultPage) SQLPoolVulnerabilityAssessmentListResultIterator {
 	return original.NewSQLPoolVulnerabilityAssessmentListResultIterator(page)
 }
-func NewSQLPoolVulnerabilityAssessmentListResultPage(getNextPage func(context.Context, SQLPoolVulnerabilityAssessmentListResult) (SQLPoolVulnerabilityAssessmentListResult, error)) SQLPoolVulnerabilityAssessmentListResultPage {
-	return original.NewSQLPoolVulnerabilityAssessmentListResultPage(getNextPage)
+func NewSQLPoolVulnerabilityAssessmentListResultPage(cur SQLPoolVulnerabilityAssessmentListResult, getNextPage func(context.Context, SQLPoolVulnerabilityAssessmentListResult) (SQLPoolVulnerabilityAssessmentListResult, error)) SQLPoolVulnerabilityAssessmentListResultPage {
+	return original.NewSQLPoolVulnerabilityAssessmentListResultPage(cur, getNextPage)
 }
 func NewSQLPoolVulnerabilityAssessmentRuleBaselinesClient(subscriptionID string) SQLPoolVulnerabilityAssessmentRuleBaselinesClient {
 	return original.NewSQLPoolVulnerabilityAssessmentRuleBaselinesClient(subscriptionID)
@@ -1017,6 +1226,18 @@ func NewSQLPoolVulnerabilityAssessmentsClient(subscriptionID string) SQLPoolVuln
 func NewSQLPoolVulnerabilityAssessmentsClientWithBaseURI(baseURI string, subscriptionID string) SQLPoolVulnerabilityAssessmentsClient {
 	return original.NewSQLPoolVulnerabilityAssessmentsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewSQLPoolWorkloadClassifierClient(subscriptionID string) SQLPoolWorkloadClassifierClient {
+	return original.NewSQLPoolWorkloadClassifierClient(subscriptionID)
+}
+func NewSQLPoolWorkloadClassifierClientWithBaseURI(baseURI string, subscriptionID string) SQLPoolWorkloadClassifierClient {
+	return original.NewSQLPoolWorkloadClassifierClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSQLPoolWorkloadGroupClient(subscriptionID string) SQLPoolWorkloadGroupClient {
+	return original.NewSQLPoolWorkloadGroupClient(subscriptionID)
+}
+func NewSQLPoolWorkloadGroupClientWithBaseURI(baseURI string, subscriptionID string) SQLPoolWorkloadGroupClient {
+	return original.NewSQLPoolWorkloadGroupClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewSQLPoolsClient(subscriptionID string) SQLPoolsClient {
 	return original.NewSQLPoolsClient(subscriptionID)
 }
@@ -1026,17 +1247,59 @@ func NewSQLPoolsClientWithBaseURI(baseURI string, subscriptionID string) SQLPool
 func NewSensitivityLabelListResultIterator(page SensitivityLabelListResultPage) SensitivityLabelListResultIterator {
 	return original.NewSensitivityLabelListResultIterator(page)
 }
-func NewSensitivityLabelListResultPage(getNextPage func(context.Context, SensitivityLabelListResult) (SensitivityLabelListResult, error)) SensitivityLabelListResultPage {
-	return original.NewSensitivityLabelListResultPage(getNextPage)
+func NewSensitivityLabelListResultPage(cur SensitivityLabelListResult, getNextPage func(context.Context, SensitivityLabelListResult) (SensitivityLabelListResult, error)) SensitivityLabelListResultPage {
+	return original.NewSensitivityLabelListResultPage(cur, getNextPage)
+}
+func NewServerBlobAuditingPolicyListResultIterator(page ServerBlobAuditingPolicyListResultPage) ServerBlobAuditingPolicyListResultIterator {
+	return original.NewServerBlobAuditingPolicyListResultIterator(page)
+}
+func NewServerBlobAuditingPolicyListResultPage(cur ServerBlobAuditingPolicyListResult, getNextPage func(context.Context, ServerBlobAuditingPolicyListResult) (ServerBlobAuditingPolicyListResult, error)) ServerBlobAuditingPolicyListResultPage {
+	return original.NewServerBlobAuditingPolicyListResultPage(cur, getNextPage)
+}
+func NewServerSecurityAlertPolicyListResultIterator(page ServerSecurityAlertPolicyListResultPage) ServerSecurityAlertPolicyListResultIterator {
+	return original.NewServerSecurityAlertPolicyListResultIterator(page)
+}
+func NewServerSecurityAlertPolicyListResultPage(cur ServerSecurityAlertPolicyListResult, getNextPage func(context.Context, ServerSecurityAlertPolicyListResult) (ServerSecurityAlertPolicyListResult, error)) ServerSecurityAlertPolicyListResultPage {
+	return original.NewServerSecurityAlertPolicyListResultPage(cur, getNextPage)
+}
+func NewServerUsageListResultIterator(page ServerUsageListResultPage) ServerUsageListResultIterator {
+	return original.NewServerUsageListResultIterator(page)
+}
+func NewServerUsageListResultPage(cur ServerUsageListResult, getNextPage func(context.Context, ServerUsageListResult) (ServerUsageListResult, error)) ServerUsageListResultPage {
+	return original.NewServerUsageListResultPage(cur, getNextPage)
+}
+func NewServerVulnerabilityAssessmentListResultIterator(page ServerVulnerabilityAssessmentListResultPage) ServerVulnerabilityAssessmentListResultIterator {
+	return original.NewServerVulnerabilityAssessmentListResultIterator(page)
+}
+func NewServerVulnerabilityAssessmentListResultPage(cur ServerVulnerabilityAssessmentListResult, getNextPage func(context.Context, ServerVulnerabilityAssessmentListResult) (ServerVulnerabilityAssessmentListResult, error)) ServerVulnerabilityAssessmentListResultPage {
+	return original.NewServerVulnerabilityAssessmentListResultPage(cur, getNextPage)
+}
+func NewTransparentDataEncryptionListResultIterator(page TransparentDataEncryptionListResultPage) TransparentDataEncryptionListResultIterator {
+	return original.NewTransparentDataEncryptionListResultIterator(page)
+}
+func NewTransparentDataEncryptionListResultPage(cur TransparentDataEncryptionListResult, getNextPage func(context.Context, TransparentDataEncryptionListResult) (TransparentDataEncryptionListResult, error)) TransparentDataEncryptionListResultPage {
+	return original.NewTransparentDataEncryptionListResultPage(cur, getNextPage)
 }
 func NewVulnerabilityAssessmentScanRecordListResultIterator(page VulnerabilityAssessmentScanRecordListResultPage) VulnerabilityAssessmentScanRecordListResultIterator {
 	return original.NewVulnerabilityAssessmentScanRecordListResultIterator(page)
 }
-func NewVulnerabilityAssessmentScanRecordListResultPage(getNextPage func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error)) VulnerabilityAssessmentScanRecordListResultPage {
-	return original.NewVulnerabilityAssessmentScanRecordListResultPage(getNextPage)
+func NewVulnerabilityAssessmentScanRecordListResultPage(cur VulnerabilityAssessmentScanRecordListResult, getNextPage func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error)) VulnerabilityAssessmentScanRecordListResultPage {
+	return original.NewVulnerabilityAssessmentScanRecordListResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkloadClassifierListResultIterator(page WorkloadClassifierListResultPage) WorkloadClassifierListResultIterator {
+	return original.NewWorkloadClassifierListResultIterator(page)
+}
+func NewWorkloadClassifierListResultPage(cur WorkloadClassifierListResult, getNextPage func(context.Context, WorkloadClassifierListResult) (WorkloadClassifierListResult, error)) WorkloadClassifierListResultPage {
+	return original.NewWorkloadClassifierListResultPage(cur, getNextPage)
+}
+func NewWorkloadGroupListResultIterator(page WorkloadGroupListResultPage) WorkloadGroupListResultIterator {
+	return original.NewWorkloadGroupListResultIterator(page)
+}
+func NewWorkloadGroupListResultPage(cur WorkloadGroupListResult, getNextPage func(context.Context, WorkloadGroupListResult) (WorkloadGroupListResult, error)) WorkloadGroupListResultPage {
+	return original.NewWorkloadGroupListResultPage(cur, getNextPage)
 }
 func NewWorkspaceAadAdminsClient(subscriptionID string) WorkspaceAadAdminsClient {
 	return original.NewWorkspaceAadAdminsClient(subscriptionID)
@@ -1047,14 +1310,56 @@ func NewWorkspaceAadAdminsClientWithBaseURI(baseURI string, subscriptionID strin
 func NewWorkspaceInfoListResultIterator(page WorkspaceInfoListResultPage) WorkspaceInfoListResultIterator {
 	return original.NewWorkspaceInfoListResultIterator(page)
 }
-func NewWorkspaceInfoListResultPage(getNextPage func(context.Context, WorkspaceInfoListResult) (WorkspaceInfoListResult, error)) WorkspaceInfoListResultPage {
-	return original.NewWorkspaceInfoListResultPage(getNextPage)
+func NewWorkspaceInfoListResultPage(cur WorkspaceInfoListResult, getNextPage func(context.Context, WorkspaceInfoListResult) (WorkspaceInfoListResult, error)) WorkspaceInfoListResultPage {
+	return original.NewWorkspaceInfoListResultPage(cur, getNextPage)
 }
 func NewWorkspaceManagedIdentitySQLControlSettingsClient(subscriptionID string) WorkspaceManagedIdentitySQLControlSettingsClient {
 	return original.NewWorkspaceManagedIdentitySQLControlSettingsClient(subscriptionID)
 }
 func NewWorkspaceManagedIdentitySQLControlSettingsClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceManagedIdentitySQLControlSettingsClient {
 	return original.NewWorkspaceManagedIdentitySQLControlSettingsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkspaceManagedSQLServerBlobAuditingPoliciesClient(subscriptionID string) WorkspaceManagedSQLServerBlobAuditingPoliciesClient {
+	return original.NewWorkspaceManagedSQLServerBlobAuditingPoliciesClient(subscriptionID)
+}
+func NewWorkspaceManagedSQLServerBlobAuditingPoliciesClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceManagedSQLServerBlobAuditingPoliciesClient {
+	return original.NewWorkspaceManagedSQLServerBlobAuditingPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient(subscriptionID string) WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient {
+	return original.NewWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient(subscriptionID)
+}
+func NewWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient {
+	return original.NewWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkspaceManagedSQLServerRecoverableSqlpoolsClient(subscriptionID string) WorkspaceManagedSQLServerRecoverableSqlpoolsClient {
+	return original.NewWorkspaceManagedSQLServerRecoverableSqlpoolsClient(subscriptionID)
+}
+func NewWorkspaceManagedSQLServerRecoverableSqlpoolsClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceManagedSQLServerRecoverableSqlpoolsClient {
+	return original.NewWorkspaceManagedSQLServerRecoverableSqlpoolsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkspaceManagedSQLServerSecurityAlertPolicyClient(subscriptionID string) WorkspaceManagedSQLServerSecurityAlertPolicyClient {
+	return original.NewWorkspaceManagedSQLServerSecurityAlertPolicyClient(subscriptionID)
+}
+func NewWorkspaceManagedSQLServerSecurityAlertPolicyClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceManagedSQLServerSecurityAlertPolicyClient {
+	return original.NewWorkspaceManagedSQLServerSecurityAlertPolicyClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkspaceManagedSQLServerUsagesClient(subscriptionID string) WorkspaceManagedSQLServerUsagesClient {
+	return original.NewWorkspaceManagedSQLServerUsagesClient(subscriptionID)
+}
+func NewWorkspaceManagedSQLServerUsagesClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceManagedSQLServerUsagesClient {
+	return original.NewWorkspaceManagedSQLServerUsagesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkspaceManagedSQLServerVulnerabilityAssessmentsClient(subscriptionID string) WorkspaceManagedSQLServerVulnerabilityAssessmentsClient {
+	return original.NewWorkspaceManagedSQLServerVulnerabilityAssessmentsClient(subscriptionID)
+}
+func NewWorkspaceManagedSQLServerVulnerabilityAssessmentsClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceManagedSQLServerVulnerabilityAssessmentsClient {
+	return original.NewWorkspaceManagedSQLServerVulnerabilityAssessmentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkspaceSQLAadAdminsClient(subscriptionID string) WorkspaceSQLAadAdminsClient {
+	return original.NewWorkspaceSQLAadAdminsClient(subscriptionID)
+}
+func NewWorkspaceSQLAadAdminsClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceSQLAadAdminsClient {
+	return original.NewWorkspaceSQLAadAdminsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClient(subscriptionID)
@@ -1076,6 +1381,15 @@ func PossibleColumnDataTypeValues() []ColumnDataType {
 }
 func PossibleDataFlowComputeTypeValues() []DataFlowComputeType {
 	return original.PossibleDataFlowComputeTypeValues()
+}
+func PossibleDataMaskingFunctionValues() []DataMaskingFunction {
+	return original.PossibleDataMaskingFunctionValues()
+}
+func PossibleDataMaskingRuleStateValues() []DataMaskingRuleState {
+	return original.PossibleDataMaskingRuleStateValues()
+}
+func PossibleDataMaskingStateValues() []DataMaskingState {
+	return original.PossibleDataMaskingStateValues()
 }
 func PossibleDesiredStateValues() []DesiredState {
 	return original.PossibleDesiredStateValues()
@@ -1128,9 +1442,6 @@ func PossibleNodeSizeValues() []NodeSize {
 func PossibleOperationStatusValues() []OperationStatus {
 	return original.PossibleOperationStatusValues()
 }
-func PossibleProvisioningState1Values() []ProvisioningState1 {
-	return original.PossibleProvisioningState1Values()
-}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
@@ -1164,11 +1475,11 @@ func PossibleSecurityAlertPolicyStateValues() []SecurityAlertPolicyState {
 func PossibleSelfHostedIntegrationRuntimeNodeStatusValues() []SelfHostedIntegrationRuntimeNodeStatus {
 	return original.PossibleSelfHostedIntegrationRuntimeNodeStatusValues()
 }
+func PossibleSensitivityLabelSourceValues() []SensitivityLabelSource {
+	return original.PossibleSensitivityLabelSourceValues()
+}
 func PossibleSsisObjectMetadataTypeValues() []SsisObjectMetadataType {
 	return original.PossibleSsisObjectMetadataTypeValues()
-}
-func PossibleStatusValues() []Status {
-	return original.PossibleStatusValues()
 }
 func PossibleTransparentDataEncryptionStatusValues() []TransparentDataEncryptionStatus {
 	return original.PossibleTransparentDataEncryptionStatusValues()

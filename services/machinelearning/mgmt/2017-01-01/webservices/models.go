@@ -120,8 +120,8 @@ type BlobLocation struct {
 	Credentials *string `json:"credentials,omitempty"`
 }
 
-// ColumnSpecification swagger 2.0 schema for a column within the data table representing a web service input
-// or output. See Swagger specification: http://swagger.io/specification/
+// ColumnSpecification swagger 2.0 schema for a column within the data table representing a web service
+// input or output. See Swagger specification: http://swagger.io/specification/
 type ColumnSpecification struct {
 	// Type - Data type of the column. Possible values include: 'Boolean', 'Integer', 'Number', 'String'
 	Type ColumnType `json:"type,omitempty"`
@@ -141,7 +141,8 @@ type CommitmentPlan struct {
 	ID *string `json:"id,omitempty"`
 }
 
-// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type CreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -169,8 +170,8 @@ func (future *CreateOrUpdateFuture) Result(client Client) (ws WebService, err er
 	return
 }
 
-// CreateRegionalPropertiesFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// CreateRegionalPropertiesFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type CreateRegionalPropertiesFuture struct {
 	azure.Future
 }
@@ -238,8 +239,8 @@ type GraphEdge struct {
 	TargetPortID *string `json:"targetPortId,omitempty"`
 }
 
-// GraphNode specifies a node in the web service graph. The node can either be an input, output or asset node,
-// so only one of the corresponding id properties is populated at any given time.
+// GraphNode specifies a node in the web service graph. The node can either be an input, output or asset
+// node, so only one of the corresponding id properties is populated at any given time.
 type GraphNode struct {
 	// AssetID - The id of the asset represented by this node.
 	AssetID *string `json:"assetId,omitempty"`
@@ -327,8 +328,8 @@ type Keys struct {
 	Secondary *string `json:"secondary,omitempty"`
 }
 
-// MachineLearningWorkspace information about the machine learning workspace containing the experiment that is
-// source for the web service.
+// MachineLearningWorkspace information about the machine learning workspace containing the experiment that
+// is source for the web service.
 type MachineLearningWorkspace struct {
 	// ID - Specifies the workspace ID of the machine learning workspace associated with the web service
 	ID *string `json:"id,omitempty"`
@@ -561,8 +562,11 @@ func (page PaginatedWebServicesListPage) Values() []WebService {
 }
 
 // Creates a new instance of the PaginatedWebServicesListPage type.
-func NewPaginatedWebServicesListPage(getNextPage func(context.Context, PaginatedWebServicesList) (PaginatedWebServicesList, error)) PaginatedWebServicesListPage {
-	return PaginatedWebServicesListPage{fn: getNextPage}
+func NewPaginatedWebServicesListPage(cur PaginatedWebServicesList, getNextPage func(context.Context, PaginatedWebServicesList) (PaginatedWebServicesList, error)) PaginatedWebServicesListPage {
+	return PaginatedWebServicesListPage{
+		fn:   getNextPage,
+		pwsl: cur,
+	}
 }
 
 // Parameter web Service Parameter object for node and global parameter

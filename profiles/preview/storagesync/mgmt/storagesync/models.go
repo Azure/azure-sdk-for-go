@@ -283,8 +283,8 @@ func NewCloudEndpointsClientWithBaseURI(baseURI string, subscriptionID string) C
 func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
 	return original.NewOperationEntityListResultIterator(page)
 }
-func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
-	return original.NewOperationEntityListResultPage(getNextPage)
+func NewOperationEntityListResultPage(cur OperationEntityListResult, getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
+	return original.NewOperationEntityListResultPage(cur, getNextPage)
 }
 func NewOperationStatusClient(subscriptionID string) OperationStatusClient {
 	return original.NewOperationStatusClient(subscriptionID)

@@ -55,3 +55,59 @@ type SQLServersClientAPI interface {
 }
 
 var _ SQLServersClientAPI = (*azuredata.SQLServersClient)(nil)
+
+// SQLManagedInstancesClientAPI contains the set of methods on the SQLManagedInstancesClient type.
+type SQLManagedInstancesClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, SQLManagedInstanceName string, parameters azuredata.SQLManagedInstance) (result azuredata.SQLManagedInstance, err error)
+	Delete(ctx context.Context, resourceGroupName string, SQLManagedInstanceName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, SQLManagedInstanceName string) (result azuredata.SQLManagedInstance, err error)
+	List(ctx context.Context) (result azuredata.SQLManagedInstanceListResultPage, err error)
+	ListComplete(ctx context.Context) (result azuredata.SQLManagedInstanceListResultIterator, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result azuredata.SQLManagedInstanceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result azuredata.SQLManagedInstanceListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, SQLManagedInstanceName string, parameters azuredata.SQLManagedInstanceUpdate) (result azuredata.SQLManagedInstance, err error)
+}
+
+var _ SQLManagedInstancesClientAPI = (*azuredata.SQLManagedInstancesClient)(nil)
+
+// SQLServerInstancesClientAPI contains the set of methods on the SQLServerInstancesClient type.
+type SQLServerInstancesClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, SQLServerInstanceName string, parameters azuredata.SQLServerInstance) (result azuredata.SQLServerInstance, err error)
+	Delete(ctx context.Context, resourceGroupName string, SQLServerInstanceName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, SQLServerInstanceName string) (result azuredata.SQLServerInstance, err error)
+	List(ctx context.Context) (result azuredata.SQLServerInstanceListResultPage, err error)
+	ListComplete(ctx context.Context) (result azuredata.SQLServerInstanceListResultIterator, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result azuredata.SQLServerInstanceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result azuredata.SQLServerInstanceListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, SQLServerInstanceName string, parameters azuredata.SQLServerInstanceUpdate) (result azuredata.SQLServerInstance, err error)
+}
+
+var _ SQLServerInstancesClientAPI = (*azuredata.SQLServerInstancesClient)(nil)
+
+// PostgresInstancesClientAPI contains the set of methods on the PostgresInstancesClient type.
+type PostgresInstancesClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, postgresInstanceName string) (result azuredata.PostgresInstance, err error)
+	Delete(ctx context.Context, resourceGroupName string, postgresInstanceName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, postgresInstanceName string) (result azuredata.PostgresInstance, err error)
+	List(ctx context.Context) (result azuredata.PostgresInstanceListResultPage, err error)
+	ListComplete(ctx context.Context) (result azuredata.PostgresInstanceListResultIterator, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result azuredata.PostgresInstanceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result azuredata.PostgresInstanceListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, postgresInstanceName string, parameters azuredata.PostgresInstanceUpdate) (result azuredata.PostgresInstance, err error)
+}
+
+var _ PostgresInstancesClientAPI = (*azuredata.PostgresInstancesClient)(nil)
+
+// DataControllersClientAPI contains the set of methods on the DataControllersClient type.
+type DataControllersClientAPI interface {
+	DeleteDataController(ctx context.Context, resourceGroupName string, dataControllerName string) (result autorest.Response, err error)
+	GetDataController(ctx context.Context, resourceGroupName string, dataControllerName string) (result azuredata.DataControllerResource, err error)
+	ListInGroup(ctx context.Context, resourceGroupName string) (result azuredata.PageOfDataControllerResourcePage, err error)
+	ListInGroupComplete(ctx context.Context, resourceGroupName string) (result azuredata.PageOfDataControllerResourceIterator, err error)
+	ListInSubscription(ctx context.Context) (result azuredata.PageOfDataControllerResourcePage, err error)
+	ListInSubscriptionComplete(ctx context.Context) (result azuredata.PageOfDataControllerResourceIterator, err error)
+	PatchDataController(ctx context.Context, resourceGroupName string, dataControllerName string, dataControllerResource azuredata.DataControllerUpdate) (result azuredata.DataControllerResource, err error)
+	PutDataController(ctx context.Context, resourceGroupName string, dataControllerResource azuredata.DataControllerResource, dataControllerName string) (result azuredata.DataControllerResource, err error)
+}
+
+var _ DataControllersClientAPI = (*azuredata.DataControllersClient)(nil)

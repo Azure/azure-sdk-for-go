@@ -140,8 +140,8 @@ func NewCloudManifestFileClientWithBaseURI(baseURI string, subscriptionID string
 func NewCustomerSubscriptionListIterator(page CustomerSubscriptionListPage) CustomerSubscriptionListIterator {
 	return original.NewCustomerSubscriptionListIterator(page)
 }
-func NewCustomerSubscriptionListPage(getNextPage func(context.Context, CustomerSubscriptionList) (CustomerSubscriptionList, error)) CustomerSubscriptionListPage {
-	return original.NewCustomerSubscriptionListPage(getNextPage)
+func NewCustomerSubscriptionListPage(cur CustomerSubscriptionList, getNextPage func(context.Context, CustomerSubscriptionList) (CustomerSubscriptionList, error)) CustomerSubscriptionListPage {
+	return original.NewCustomerSubscriptionListPage(cur, getNextPage)
 }
 func NewCustomerSubscriptionsClient(subscriptionID string) CustomerSubscriptionsClient {
 	return original.NewCustomerSubscriptionsClient(subscriptionID)
@@ -152,8 +152,8 @@ func NewCustomerSubscriptionsClientWithBaseURI(baseURI string, subscriptionID st
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
 }
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return original.NewOperationListPage(getNextPage)
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -164,8 +164,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewProductListIterator(page ProductListPage) ProductListIterator {
 	return original.NewProductListIterator(page)
 }
-func NewProductListPage(getNextPage func(context.Context, ProductList) (ProductList, error)) ProductListPage {
-	return original.NewProductListPage(getNextPage)
+func NewProductListPage(cur ProductList, getNextPage func(context.Context, ProductList) (ProductList, error)) ProductListPage {
+	return original.NewProductListPage(cur, getNextPage)
 }
 func NewProductsClient(subscriptionID string) ProductsClient {
 	return original.NewProductsClient(subscriptionID)
@@ -176,8 +176,8 @@ func NewProductsClientWithBaseURI(baseURI string, subscriptionID string) Product
 func NewRegistrationListIterator(page RegistrationListPage) RegistrationListIterator {
 	return original.NewRegistrationListIterator(page)
 }
-func NewRegistrationListPage(getNextPage func(context.Context, RegistrationList) (RegistrationList, error)) RegistrationListPage {
-	return original.NewRegistrationListPage(getNextPage)
+func NewRegistrationListPage(cur RegistrationList, getNextPage func(context.Context, RegistrationList) (RegistrationList, error)) RegistrationListPage {
+	return original.NewRegistrationListPage(cur, getNextPage)
 }
 func NewRegistrationsClient(subscriptionID string) RegistrationsClient {
 	return original.NewRegistrationsClient(subscriptionID)

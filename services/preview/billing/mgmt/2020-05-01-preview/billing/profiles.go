@@ -32,14 +32,14 @@ type ProfilesClient struct {
 }
 
 // NewProfilesClient creates an instance of the ProfilesClient client.
-func NewProfilesClient(subscriptionID string, subscriptionID1 string) ProfilesClient {
-	return NewProfilesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewProfilesClient(subscriptionID string) ProfilesClient {
+	return NewProfilesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewProfilesClientWithBaseURI creates an instance of the ProfilesClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) ProfilesClient {
-	return ProfilesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
+	return ProfilesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates a billing profile. The operation is supported for billing accounts with agreement

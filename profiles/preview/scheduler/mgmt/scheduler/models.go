@@ -198,8 +198,8 @@ func New(subscriptionID string) BaseClient {
 func NewJobCollectionListResultIterator(page JobCollectionListResultPage) JobCollectionListResultIterator {
 	return original.NewJobCollectionListResultIterator(page)
 }
-func NewJobCollectionListResultPage(getNextPage func(context.Context, JobCollectionListResult) (JobCollectionListResult, error)) JobCollectionListResultPage {
-	return original.NewJobCollectionListResultPage(getNextPage)
+func NewJobCollectionListResultPage(cur JobCollectionListResult, getNextPage func(context.Context, JobCollectionListResult) (JobCollectionListResult, error)) JobCollectionListResultPage {
+	return original.NewJobCollectionListResultPage(cur, getNextPage)
 }
 func NewJobCollectionsClient(subscriptionID string) JobCollectionsClient {
 	return original.NewJobCollectionsClient(subscriptionID)
@@ -210,14 +210,14 @@ func NewJobCollectionsClientWithBaseURI(baseURI string, subscriptionID string) J
 func NewJobHistoryListResultIterator(page JobHistoryListResultPage) JobHistoryListResultIterator {
 	return original.NewJobHistoryListResultIterator(page)
 }
-func NewJobHistoryListResultPage(getNextPage func(context.Context, JobHistoryListResult) (JobHistoryListResult, error)) JobHistoryListResultPage {
-	return original.NewJobHistoryListResultPage(getNextPage)
+func NewJobHistoryListResultPage(cur JobHistoryListResult, getNextPage func(context.Context, JobHistoryListResult) (JobHistoryListResult, error)) JobHistoryListResultPage {
+	return original.NewJobHistoryListResultPage(cur, getNextPage)
 }
 func NewJobListResultIterator(page JobListResultPage) JobListResultIterator {
 	return original.NewJobListResultIterator(page)
 }
-func NewJobListResultPage(getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
-	return original.NewJobListResultPage(getNextPage)
+func NewJobListResultPage(cur JobListResult, getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
+	return original.NewJobListResultPage(cur, getNextPage)
 }
 func NewJobsClient(subscriptionID string) JobsClient {
 	return original.NewJobsClient(subscriptionID)

@@ -43,7 +43,7 @@ func NewVirtualMachineScaleSetsClientWithBaseURI(baseURI string, subscriptionID 
 	return VirtualMachineScaleSetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ConvertToSinglePlacementGroup converts SinglePlacementGroup property to false for a existing virtual machine scale
+// ConvertToSinglePlacementGroup converts SinglePlacementGroup property to true for a existing virtual machine scale
 // set.
 // Parameters:
 // resourceGroupName - the name of the resource group.

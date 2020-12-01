@@ -119,10 +119,10 @@ type ErrorModelDetailsItem struct {
 	Target *string `json:"target,omitempty"`
 }
 
-// InkPoint an object containing the properties of an point in the path of an ink stroke. The main properties
-// are the x and y values. Other include tip pressure, x tilt etc. For the coordinate values, it is recommended
-// to have a precision of 8 digits after the decimal to obtain most accurate recognition results. The origin
-// (0,0) of the canvas is assumed to be at the top left corner of the canvas
+// InkPoint an object containing the properties of an point in the path of an ink stroke. The main
+// properties are the x and y values. Other include tip pressure, x tilt etc. For the coordinate values, it
+// is recommended to have a precision of 8 digits after the decimal to obtain most accurate recognition
+// results. The origin (0,0) of the canvas is assumed to be at the top left corner of the canvas
 type InkPoint struct {
 	// X - The x coordinate of the pen location on the writing surface.
 	X *float64 `json:"x,omitempty"`
@@ -208,9 +208,9 @@ type RecognitionUnitItem struct {
 }
 
 // RecognitionUnitItemBoundingRectangle the bounding rectangle of the recognition unit represented by the
-// coordinates of the top left corner (topX,topY) along with width and height of the rectangle. Note that this
-// rectangle is not rotated. So for  rotated objects such as slanted handwriting, it will cover the entire
-// object. The unit will be matched to the one specified in the original request (mm by default.)
+// coordinates of the top left corner (topX,topY) along with width and height of the rectangle. Note that
+// this rectangle is not rotated. So for  rotated objects such as slanted handwriting, it will cover the
+// entire object. The unit will be matched to the one specified in the original request (mm by default.)
 type RecognitionUnitItemBoundingRectangle struct {
 	// TopX - This is the top left x coordinate
 	TopX *float64 `json:"topX,omitempty"`

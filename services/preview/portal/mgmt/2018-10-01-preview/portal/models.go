@@ -307,8 +307,11 @@ func (page DashboardListResultPage) Values() []Dashboard {
 }
 
 // Creates a new instance of the DashboardListResultPage type.
-func NewDashboardListResultPage(getNextPage func(context.Context, DashboardListResult) (DashboardListResult, error)) DashboardListResultPage {
-	return DashboardListResultPage{fn: getNextPage}
+func NewDashboardListResultPage(cur DashboardListResult, getNextPage func(context.Context, DashboardListResult) (DashboardListResult, error)) DashboardListResultPage {
+	return DashboardListResultPage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
 // DashboardParts a dashboard part.
@@ -630,6 +633,9 @@ func (page ResourceProviderOperationListPage) Values() []ResourceProviderOperati
 }
 
 // Creates a new instance of the ResourceProviderOperationListPage type.
-func NewResourceProviderOperationListPage(getNextPage func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error)) ResourceProviderOperationListPage {
-	return ResourceProviderOperationListPage{fn: getNextPage}
+func NewResourceProviderOperationListPage(cur ResourceProviderOperationList, getNextPage func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error)) ResourceProviderOperationListPage {
+	return ResourceProviderOperationListPage{
+		fn:   getNextPage,
+		rpol: cur,
+	}
 }

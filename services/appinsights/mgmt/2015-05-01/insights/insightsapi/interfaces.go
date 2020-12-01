@@ -182,3 +182,15 @@ type WorkbooksClientAPI interface {
 }
 
 var _ WorkbooksClientAPI = (*insights.WorkbooksClient)(nil)
+
+// MyWorkbooksClientAPI contains the set of methods on the MyWorkbooksClient type.
+type MyWorkbooksClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, workbookProperties insights.MyWorkbook) (result insights.MyWorkbook, err error)
+	Delete(ctx context.Context, resourceGroupName string, resourceName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, resourceName string) (result insights.MyWorkbook, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string, category insights.CategoryType, tags []string, canFetchContent *bool) (result insights.MyWorkbooksListResult, err error)
+	ListBySubscription(ctx context.Context, category insights.CategoryType, tags []string, canFetchContent *bool) (result insights.MyWorkbooksListResult, err error)
+	Update(ctx context.Context, resourceGroupName string, resourceName string, workbookProperties insights.MyWorkbook) (result insights.MyWorkbook, err error)
+}
+
+var _ MyWorkbooksClientAPI = (*insights.MyWorkbooksClient)(nil)

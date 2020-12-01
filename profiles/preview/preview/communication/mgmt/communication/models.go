@@ -79,6 +79,8 @@ type LinkNotificationHubParameters = original.LinkNotificationHubParameters
 type LinkedNotificationHub = original.LinkedNotificationHub
 type LocationResource = original.LocationResource
 type MetricSpecification = original.MetricSpecification
+type NameAvailability = original.NameAvailability
+type NameAvailabilityParameters = original.NameAvailabilityParameters
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationList = original.OperationList
@@ -108,8 +110,8 @@ func New(subscriptionID string) BaseClient {
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
 }
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return original.NewOperationListPage(getNextPage)
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(cur, getNextPage)
 }
 func NewOperationStatusesClient(subscriptionID string) OperationStatusesClient {
 	return original.NewOperationStatusesClient(subscriptionID)
@@ -132,8 +134,8 @@ func NewServiceClientWithBaseURI(baseURI string, subscriptionID string) ServiceC
 func NewServiceResourceListIterator(page ServiceResourceListPage) ServiceResourceListIterator {
 	return original.NewServiceResourceListIterator(page)
 }
-func NewServiceResourceListPage(getNextPage func(context.Context, ServiceResourceList) (ServiceResourceList, error)) ServiceResourceListPage {
-	return original.NewServiceResourceListPage(getNextPage)
+func NewServiceResourceListPage(cur ServiceResourceList, getNextPage func(context.Context, ServiceResourceList) (ServiceResourceList, error)) ServiceResourceListPage {
+	return original.NewServiceResourceListPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

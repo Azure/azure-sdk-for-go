@@ -620,12 +620,15 @@ func (page InfoListResultPage) Values() []InformationBasic {
 }
 
 // Creates a new instance of the InfoListResultPage type.
-func NewInfoListResultPage(getNextPage func(context.Context, InfoListResult) (InfoListResult, error)) InfoListResultPage {
-	return InfoListResultPage{fn: getNextPage}
+func NewInfoListResultPage(cur InfoListResult, getNextPage func(context.Context, InfoListResult) (InfoListResult, error)) InfoListResultPage {
+	return InfoListResultPage{
+		fn:  getNextPage,
+		ilr: cur,
+	}
 }
 
-// Information the extended Data Lake Analytics job information properties returned when retrieving a specific
-// job.
+// Information the extended Data Lake Analytics job information properties returned when retrieving a
+// specific job.
 type Information struct {
 	autorest.Response `json:"-"`
 	// ErrorMessage - READ-ONLY; the error message details for the job, if the job failed.
@@ -948,8 +951,8 @@ type InnerError struct {
 	InnerError *InnerError `json:"innerError,omitempty"`
 }
 
-// PipelineInformation job Pipeline Information, showing the relationship of jobs and recurrences of those jobs
-// in a pipeline.
+// PipelineInformation job Pipeline Information, showing the relationship of jobs and recurrences of those
+// jobs in a pipeline.
 type PipelineInformation struct {
 	autorest.Response `json:"-"`
 	// PipelineID - READ-ONLY; the job relationship pipeline identifier (a GUID).
@@ -987,7 +990,8 @@ type PipelineInformationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// PipelineInformationListResultIterator provides access to a complete listing of PipelineInformation values.
+// PipelineInformationListResultIterator provides access to a complete listing of PipelineInformation
+// values.
 type PipelineInformationListResultIterator struct {
 	i    int
 	page PipelineInformationListResultPage
@@ -1130,8 +1134,11 @@ func (page PipelineInformationListResultPage) Values() []PipelineInformation {
 }
 
 // Creates a new instance of the PipelineInformationListResultPage type.
-func NewPipelineInformationListResultPage(getNextPage func(context.Context, PipelineInformationListResult) (PipelineInformationListResult, error)) PipelineInformationListResultPage {
-	return PipelineInformationListResultPage{fn: getNextPage}
+func NewPipelineInformationListResultPage(cur PipelineInformationListResult, getNextPage func(context.Context, PipelineInformationListResult) (PipelineInformationListResult, error)) PipelineInformationListResultPage {
+	return PipelineInformationListResultPage{
+		fn:   getNextPage,
+		pilr: cur,
+	}
 }
 
 // PipelineRunInformation run info for a specific job pipeline.
@@ -1409,12 +1416,15 @@ func (page RecurrenceInformationListResultPage) Values() []RecurrenceInformation
 }
 
 // Creates a new instance of the RecurrenceInformationListResultPage type.
-func NewRecurrenceInformationListResultPage(getNextPage func(context.Context, RecurrenceInformationListResult) (RecurrenceInformationListResult, error)) RecurrenceInformationListResultPage {
-	return RecurrenceInformationListResultPage{fn: getNextPage}
+func NewRecurrenceInformationListResultPage(cur RecurrenceInformationListResult, getNextPage func(context.Context, RecurrenceInformationListResult) (RecurrenceInformationListResult, error)) RecurrenceInformationListResultPage {
+	return RecurrenceInformationListResultPage{
+		fn:   getNextPage,
+		rilr: cur,
+	}
 }
 
-// RelationshipProperties job relationship information properties including pipeline information, correlation
-// information, etc.
+// RelationshipProperties job relationship information properties including pipeline information,
+// correlation information, etc.
 type RelationshipProperties struct {
 	// PipelineID - the job relationship pipeline identifier (a GUID).
 	PipelineID *uuid.UUID `json:"pipelineId,omitempty"`

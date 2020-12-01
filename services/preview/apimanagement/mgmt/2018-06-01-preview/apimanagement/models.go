@@ -45,7 +45,8 @@ type AccessInformationContract struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-// AccessInformationUpdateParameters tenant access information update parameters of the API Management service.
+// AccessInformationUpdateParameters tenant access information update parameters of the API Management
+// service.
 type AccessInformationUpdateParameters struct {
 	// Enabled - Tenant access information of the API Management service.
 	Enabled *bool `json:"enabled,omitempty"`
@@ -234,8 +235,11 @@ func (page APICollectionPage) Values() []APIContract {
 }
 
 // Creates a new instance of the APICollectionPage type.
-func NewAPICollectionPage(getNextPage func(context.Context, APICollection) (APICollection, error)) APICollectionPage {
-	return APICollectionPage{fn: getNextPage}
+func NewAPICollectionPage(cur APICollection, getNextPage func(context.Context, APICollection) (APICollection, error)) APICollectionPage {
+	return APICollectionPage{
+		fn: getNextPage,
+		ac: cur,
+	}
 }
 
 // APIContract API details.
@@ -913,8 +917,11 @@ func (page APIReleaseCollectionPage) Values() []APIReleaseContract {
 }
 
 // Creates a new instance of the APIReleaseCollectionPage type.
-func NewAPIReleaseCollectionPage(getNextPage func(context.Context, APIReleaseCollection) (APIReleaseCollection, error)) APIReleaseCollectionPage {
-	return APIReleaseCollectionPage{fn: getNextPage}
+func NewAPIReleaseCollectionPage(cur APIReleaseCollection, getNextPage func(context.Context, APIReleaseCollection) (APIReleaseCollection, error)) APIReleaseCollectionPage {
+	return APIReleaseCollectionPage{
+		fn:  getNextPage,
+		arc: cur,
+	}
 }
 
 // APIReleaseContract api Release details.
@@ -1166,8 +1173,11 @@ func (page APIRevisionCollectionPage) Values() []APIRevisionContract {
 }
 
 // Creates a new instance of the APIRevisionCollectionPage type.
-func NewAPIRevisionCollectionPage(getNextPage func(context.Context, APIRevisionCollection) (APIRevisionCollection, error)) APIRevisionCollectionPage {
-	return APIRevisionCollectionPage{fn: getNextPage}
+func NewAPIRevisionCollectionPage(cur APIRevisionCollection, getNextPage func(context.Context, APIRevisionCollection) (APIRevisionCollection, error)) APIRevisionCollectionPage {
+	return APIRevisionCollectionPage{
+		fn:  getNextPage,
+		arc: cur,
+	}
 }
 
 // APIRevisionContract summary of revision metadata.
@@ -1190,7 +1200,8 @@ type APIRevisionContract struct {
 	IsCurrent *bool `json:"isCurrent,omitempty"`
 }
 
-// APIRevisionInfoContract object used to create an API Revision or Version based on an existing API Revision
+// APIRevisionInfoContract object used to create an API Revision or Version based on an existing API
+// Revision
 type APIRevisionInfoContract struct {
 	// SourceAPIID - Resource identifier of API to be used to create the revision from.
 	SourceAPIID *string `json:"sourceApiId,omitempty"`
@@ -1482,8 +1493,11 @@ func (page APIVersionSetCollectionPage) Values() []APIVersionSetContract {
 }
 
 // Creates a new instance of the APIVersionSetCollectionPage type.
-func NewAPIVersionSetCollectionPage(getNextPage func(context.Context, APIVersionSetCollection) (APIVersionSetCollection, error)) APIVersionSetCollectionPage {
-	return APIVersionSetCollectionPage{fn: getNextPage}
+func NewAPIVersionSetCollectionPage(cur APIVersionSetCollection, getNextPage func(context.Context, APIVersionSetCollection) (APIVersionSetCollection, error)) APIVersionSetCollectionPage {
+	return APIVersionSetCollectionPage{
+		fn:   getNextPage,
+		avsc: cur,
+	}
 }
 
 // APIVersionSetContract api Version Set Contract details.
@@ -1559,8 +1573,8 @@ func (avsc *APIVersionSetContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// APIVersionSetContractDetails an API Version Set contains the common configuration for a set of API Versions
-// relating
+// APIVersionSetContractDetails an API Version Set contains the common configuration for a set of API
+// Versions relating
 type APIVersionSetContractDetails struct {
 	// ID - Identifier for existing API Version Set. Omit this value to create a new Version Set.
 	ID *string `json:"id,omitempty"`
@@ -1672,8 +1686,8 @@ type AuthorizationServerCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// AuthorizationServerCollectionIterator provides access to a complete listing of AuthorizationServerContract
-// values.
+// AuthorizationServerCollectionIterator provides access to a complete listing of
+// AuthorizationServerContract values.
 type AuthorizationServerCollectionIterator struct {
 	i    int
 	page AuthorizationServerCollectionPage
@@ -1816,8 +1830,11 @@ func (page AuthorizationServerCollectionPage) Values() []AuthorizationServerCont
 }
 
 // Creates a new instance of the AuthorizationServerCollectionPage type.
-func NewAuthorizationServerCollectionPage(getNextPage func(context.Context, AuthorizationServerCollection) (AuthorizationServerCollection, error)) AuthorizationServerCollectionPage {
-	return AuthorizationServerCollectionPage{fn: getNextPage}
+func NewAuthorizationServerCollectionPage(cur AuthorizationServerCollection, getNextPage func(context.Context, AuthorizationServerCollection) (AuthorizationServerCollection, error)) AuthorizationServerCollectionPage {
+	return AuthorizationServerCollectionPage{
+		fn:  getNextPage,
+		asc: cur,
+	}
 }
 
 // AuthorizationServerContract external OAuth authorization server settings.
@@ -2027,7 +2044,8 @@ func (asuc *AuthorizationServerUpdateContract) UnmarshalJSON(body []byte) error 
 	return nil
 }
 
-// AuthorizationServerUpdateContractProperties external OAuth authorization server Update settings contract.
+// AuthorizationServerUpdateContractProperties external OAuth authorization server Update settings
+// contract.
 type AuthorizationServerUpdateContractProperties struct {
 	// DisplayName - User-friendly authorization server name.
 	DisplayName *string `json:"displayName,omitempty"`
@@ -2241,8 +2259,11 @@ func (page BackendCollectionPage) Values() []BackendContract {
 }
 
 // Creates a new instance of the BackendCollectionPage type.
-func NewBackendCollectionPage(getNextPage func(context.Context, BackendCollection) (BackendCollection, error)) BackendCollectionPage {
-	return BackendCollectionPage{fn: getNextPage}
+func NewBackendCollectionPage(cur BackendCollection, getNextPage func(context.Context, BackendCollection) (BackendCollection, error)) BackendCollectionPage {
+	return BackendCollectionPage{
+		fn: getNextPage,
+		bc: cur,
+	}
 }
 
 // BackendContract backend details.
@@ -2705,8 +2726,11 @@ func (page CacheCollectionPage) Values() []CacheContract {
 }
 
 // Creates a new instance of the CacheCollectionPage type.
-func NewCacheCollectionPage(getNextPage func(context.Context, CacheCollection) (CacheCollection, error)) CacheCollectionPage {
-	return CacheCollectionPage{fn: getNextPage}
+func NewCacheCollectionPage(cur CacheCollection, getNextPage func(context.Context, CacheCollection) (CacheCollection, error)) CacheCollectionPage {
+	return CacheCollectionPage{
+		fn: getNextPage,
+		cc: cur,
+	}
 }
 
 // CacheContract cache details.
@@ -2993,8 +3017,11 @@ func (page CertificateCollectionPage) Values() []CertificateContract {
 }
 
 // Creates a new instance of the CertificateCollectionPage type.
-func NewCertificateCollectionPage(getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
-	return CertificateCollectionPage{fn: getNextPage}
+func NewCertificateCollectionPage(cur CertificateCollection, getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
+	return CertificateCollectionPage{
+		fn: getNextPage,
+		cc: cur,
+	}
 }
 
 // CertificateConfiguration certificate configuration which consist of non-trusted intermediates and root
@@ -3331,8 +3358,11 @@ func (page DiagnosticCollectionPage) Values() []DiagnosticContract {
 }
 
 // Creates a new instance of the DiagnosticCollectionPage type.
-func NewDiagnosticCollectionPage(getNextPage func(context.Context, DiagnosticCollection) (DiagnosticCollection, error)) DiagnosticCollectionPage {
-	return DiagnosticCollectionPage{fn: getNextPage}
+func NewDiagnosticCollectionPage(cur DiagnosticCollection, getNextPage func(context.Context, DiagnosticCollection) (DiagnosticCollection, error)) DiagnosticCollectionPage {
+	return DiagnosticCollectionPage{
+		fn: getNextPage,
+		dc: cur,
+	}
 }
 
 // DiagnosticContract diagnostic details.
@@ -3576,8 +3606,11 @@ func (page EmailTemplateCollectionPage) Values() []EmailTemplateContract {
 }
 
 // Creates a new instance of the EmailTemplateCollectionPage type.
-func NewEmailTemplateCollectionPage(getNextPage func(context.Context, EmailTemplateCollection) (EmailTemplateCollection, error)) EmailTemplateCollectionPage {
-	return EmailTemplateCollectionPage{fn: getNextPage}
+func NewEmailTemplateCollectionPage(cur EmailTemplateCollection, getNextPage func(context.Context, EmailTemplateCollection) (EmailTemplateCollection, error)) EmailTemplateCollectionPage {
+	return EmailTemplateCollectionPage{
+		fn:  getNextPage,
+		etc: cur,
+	}
 }
 
 // EmailTemplateContract email Template details.
@@ -3971,8 +4004,11 @@ func (page GroupCollectionPage) Values() []GroupContract {
 }
 
 // Creates a new instance of the GroupCollectionPage type.
-func NewGroupCollectionPage(getNextPage func(context.Context, GroupCollection) (GroupCollection, error)) GroupCollectionPage {
-	return GroupCollectionPage{fn: getNextPage}
+func NewGroupCollectionPage(cur GroupCollection, getNextPage func(context.Context, GroupCollection) (GroupCollection, error)) GroupCollectionPage {
+	return GroupCollectionPage{
+		fn: getNextPage,
+		gc: cur,
+	}
 }
 
 // GroupContract contract details.
@@ -4311,9 +4347,9 @@ func (ipc *IdentityProviderContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// IdentityProviderContractProperties the external Identity Providers like Facebook, Google, Microsoft, Twitter
-// or Azure Active Directory which can be used to enable access to the API Management service developer portal
-// for all users.
+// IdentityProviderContractProperties the external Identity Providers like Facebook, Google, Microsoft,
+// Twitter or Azure Active Directory which can be used to enable access to the API Management service
+// developer portal for all users.
 type IdentityProviderContractProperties struct {
 	// ClientID - Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for Google login, App ID for Microsoft.
 	ClientID *string `json:"clientId,omitempty"`
@@ -4487,8 +4523,11 @@ func (page IdentityProviderListPage) Values() []IdentityProviderContract {
 }
 
 // Creates a new instance of the IdentityProviderListPage type.
-func NewIdentityProviderListPage(getNextPage func(context.Context, IdentityProviderList) (IdentityProviderList, error)) IdentityProviderListPage {
-	return IdentityProviderListPage{fn: getNextPage}
+func NewIdentityProviderListPage(cur IdentityProviderList, getNextPage func(context.Context, IdentityProviderList) (IdentityProviderList, error)) IdentityProviderListPage {
+	return IdentityProviderListPage{
+		fn:  getNextPage,
+		ipl: cur,
+	}
 }
 
 // IdentityProviderUpdateParameters parameters supplied to update Identity Provider
@@ -4561,7 +4600,8 @@ type IssueAttachmentCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// IssueAttachmentCollectionIterator provides access to a complete listing of IssueAttachmentContract values.
+// IssueAttachmentCollectionIterator provides access to a complete listing of IssueAttachmentContract
+// values.
 type IssueAttachmentCollectionIterator struct {
 	i    int
 	page IssueAttachmentCollectionPage
@@ -4704,8 +4744,11 @@ func (page IssueAttachmentCollectionPage) Values() []IssueAttachmentContract {
 }
 
 // Creates a new instance of the IssueAttachmentCollectionPage type.
-func NewIssueAttachmentCollectionPage(getNextPage func(context.Context, IssueAttachmentCollection) (IssueAttachmentCollection, error)) IssueAttachmentCollectionPage {
-	return IssueAttachmentCollectionPage{fn: getNextPage}
+func NewIssueAttachmentCollectionPage(cur IssueAttachmentCollection, getNextPage func(context.Context, IssueAttachmentCollection) (IssueAttachmentCollection, error)) IssueAttachmentCollectionPage {
+	return IssueAttachmentCollectionPage{
+		fn:  getNextPage,
+		iac: cur,
+	}
 }
 
 // IssueAttachmentContract issue Attachment Contract details.
@@ -4943,8 +4986,11 @@ func (page IssueCollectionPage) Values() []IssueContract {
 }
 
 // Creates a new instance of the IssueCollectionPage type.
-func NewIssueCollectionPage(getNextPage func(context.Context, IssueCollection) (IssueCollection, error)) IssueCollectionPage {
-	return IssueCollectionPage{fn: getNextPage}
+func NewIssueCollectionPage(cur IssueCollection, getNextPage func(context.Context, IssueCollection) (IssueCollection, error)) IssueCollectionPage {
+	return IssueCollectionPage{
+		fn: getNextPage,
+		ic: cur,
+	}
 }
 
 // IssueCommentCollection paged Issue Comment list representation.
@@ -5099,8 +5145,11 @@ func (page IssueCommentCollectionPage) Values() []IssueCommentContract {
 }
 
 // Creates a new instance of the IssueCommentCollectionPage type.
-func NewIssueCommentCollectionPage(getNextPage func(context.Context, IssueCommentCollection) (IssueCommentCollection, error)) IssueCommentCollectionPage {
-	return IssueCommentCollectionPage{fn: getNextPage}
+func NewIssueCommentCollectionPage(cur IssueCommentCollection, getNextPage func(context.Context, IssueCommentCollection) (IssueCommentCollection, error)) IssueCommentCollectionPage {
+	return IssueCommentCollectionPage{
+		fn:  getNextPage,
+		icc: cur,
+	}
 }
 
 // IssueCommentContract issue Comment Contract details.
@@ -5500,8 +5549,11 @@ func (page LoggerCollectionPage) Values() []LoggerContract {
 }
 
 // Creates a new instance of the LoggerCollectionPage type.
-func NewLoggerCollectionPage(getNextPage func(context.Context, LoggerCollection) (LoggerCollection, error)) LoggerCollectionPage {
-	return LoggerCollectionPage{fn: getNextPage}
+func NewLoggerCollectionPage(cur LoggerCollection, getNextPage func(context.Context, LoggerCollection) (LoggerCollection, error)) LoggerCollectionPage {
+	return LoggerCollectionPage{
+		fn: getNextPage,
+		lc: cur,
+	}
 }
 
 // LoggerContract logger details.
@@ -5577,9 +5629,9 @@ func (lc *LoggerContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// LoggerContractProperties the Logger entity in API Management represents an event sink that you can use to
-// log API Management events. Currently the Logger entity supports logging API Management events to Azure Event
-// Hubs.
+// LoggerContractProperties the Logger entity in API Management represents an event sink that you can use
+// to log API Management events. Currently the Logger entity supports logging API Management events to
+// Azure Event Hubs.
 type LoggerContractProperties struct {
 	// LoggerType - Logger type. Possible values include: 'AzureEventHub', 'ApplicationInsights'
 	LoggerType LoggerType `json:"loggerType,omitempty"`
@@ -5853,8 +5905,11 @@ func (page NotificationCollectionPage) Values() []NotificationContract {
 }
 
 // Creates a new instance of the NotificationCollectionPage type.
-func NewNotificationCollectionPage(getNextPage func(context.Context, NotificationCollection) (NotificationCollection, error)) NotificationCollectionPage {
-	return NotificationCollectionPage{fn: getNextPage}
+func NewNotificationCollectionPage(cur NotificationCollection, getNextPage func(context.Context, NotificationCollection) (NotificationCollection, error)) NotificationCollectionPage {
+	return NotificationCollectionPage{
+		fn: getNextPage,
+		nc: cur,
+	}
 }
 
 // NotificationContract notification details.
@@ -6109,8 +6164,11 @@ func (page OpenIDConnectProviderCollectionPage) Values() []OpenidConnectProvider
 }
 
 // Creates a new instance of the OpenIDConnectProviderCollectionPage type.
-func NewOpenIDConnectProviderCollectionPage(getNextPage func(context.Context, OpenIDConnectProviderCollection) (OpenIDConnectProviderCollection, error)) OpenIDConnectProviderCollectionPage {
-	return OpenIDConnectProviderCollectionPage{fn: getNextPage}
+func NewOpenIDConnectProviderCollectionPage(cur OpenIDConnectProviderCollection, getNextPage func(context.Context, OpenIDConnectProviderCollection) (OpenIDConnectProviderCollection, error)) OpenIDConnectProviderCollectionPage {
+	return OpenIDConnectProviderCollectionPage{
+		fn:    getNextPage,
+		oicpc: cur,
+	}
 }
 
 // OpenidConnectProviderContract openId Connect Provider details.
@@ -6418,8 +6476,11 @@ func (page OperationCollectionPage) Values() []OperationContract {
 }
 
 // Creates a new instance of the OperationCollectionPage type.
-func NewOperationCollectionPage(getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
-	return OperationCollectionPage{fn: getNextPage}
+func NewOperationCollectionPage(cur OperationCollection, getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
+	return OperationCollectionPage{
+		fn: getNextPage,
+		oc: cur,
+	}
 }
 
 // OperationContract api Operation details.
@@ -6541,8 +6602,8 @@ type OperationEntityBaseContract struct {
 	Policies *string `json:"policies,omitempty"`
 }
 
-// OperationListResult result of the request to list REST API operations. It contains a list of operations and
-// a URL nextLink to get the next set of results.
+// OperationListResult result of the request to list REST API operations. It contains a list of operations
+// and a URL nextLink to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of operations supported by the resource provider.
@@ -6694,8 +6755,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationResultContract operation Result.
@@ -7369,8 +7433,11 @@ func (page ProductCollectionPage) Values() []ProductContract {
 }
 
 // Creates a new instance of the ProductCollectionPage type.
-func NewProductCollectionPage(getNextPage func(context.Context, ProductCollection) (ProductCollection, error)) ProductCollectionPage {
-	return ProductCollectionPage{fn: getNextPage}
+func NewProductCollectionPage(cur ProductCollection, getNextPage func(context.Context, ProductCollection) (ProductCollection, error)) ProductCollectionPage {
+	return ProductCollectionPage{
+		fn: getNextPage,
+		pc: cur,
+	}
 }
 
 // ProductContract product details.
@@ -7456,9 +7523,9 @@ type ProductContractProperties struct {
 	Terms *string `json:"terms,omitempty"`
 	// SubscriptionRequired - Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred to as "protected" and a valid subscription key is required for a request to an API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included in the product can be made without a subscription key. If property is omitted when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
-	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.
+	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of true.
 	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
-	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.
+	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of true.
 	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
 	// State - whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. Possible values include: 'NotPublished', 'Published'
 	State ProductState `json:"state,omitempty"`
@@ -7472,9 +7539,9 @@ type ProductEntityBaseParameters struct {
 	Terms *string `json:"terms,omitempty"`
 	// SubscriptionRequired - Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred to as "protected" and a valid subscription key is required for a request to an API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included in the product can be made without a subscription key. If property is omitted when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
-	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.
+	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of true.
 	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
-	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.
+	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of true.
 	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
 	// State - whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. Possible values include: 'NotPublished', 'Published'
 	State ProductState `json:"state,omitempty"`
@@ -7492,9 +7559,9 @@ type ProductTagResourceContractProperties struct {
 	Terms *string `json:"terms,omitempty"`
 	// SubscriptionRequired - Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred to as "protected" and a valid subscription key is required for a request to an API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included in the product can be made without a subscription key. If property is omitted when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
-	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.
+	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of true.
 	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
-	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.
+	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of true.
 	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
 	// State - whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. Possible values include: 'NotPublished', 'Published'
 	State ProductState `json:"state,omitempty"`
@@ -7549,9 +7616,9 @@ type ProductUpdateProperties struct {
 	Terms *string `json:"terms,omitempty"`
 	// SubscriptionRequired - Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred to as "protected" and a valid subscription key is required for a request to an API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included in the product can be made without a subscription key. If property is omitted when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
-	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.
+	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of true.
 	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
-	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.
+	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of true.
 	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
 	// State - whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. Possible values include: 'NotPublished', 'Published'
 	State ProductState `json:"state,omitempty"`
@@ -7709,8 +7776,11 @@ func (page PropertyCollectionPage) Values() []PropertyContract {
 }
 
 // Creates a new instance of the PropertyCollectionPage type.
-func NewPropertyCollectionPage(getNextPage func(context.Context, PropertyCollection) (PropertyCollection, error)) PropertyCollectionPage {
-	return PropertyCollectionPage{fn: getNextPage}
+func NewPropertyCollectionPage(cur PropertyCollection, getNextPage func(context.Context, PropertyCollection) (PropertyCollection, error)) PropertyCollectionPage {
+	return PropertyCollectionPage{
+		fn: getNextPage,
+		pc: cur,
+	}
 }
 
 // PropertyContract property details.
@@ -8290,8 +8360,11 @@ func (page RegionListResultPage) Values() []RegionContract {
 }
 
 // Creates a new instance of the RegionListResultPage type.
-func NewRegionListResultPage(getNextPage func(context.Context, RegionListResult) (RegionListResult, error)) RegionListResultPage {
-	return RegionListResultPage{fn: getNextPage}
+func NewRegionListResultPage(cur RegionListResult, getNextPage func(context.Context, RegionListResult) (RegionListResult, error)) RegionListResultPage {
+	return RegionListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // RegistrationDelegationSettingsProperties user registration delegation settings properties.
@@ -8454,8 +8527,11 @@ func (page ReportCollectionPage) Values() []ReportRecordContract {
 }
 
 // Creates a new instance of the ReportCollectionPage type.
-func NewReportCollectionPage(getNextPage func(context.Context, ReportCollection) (ReportCollection, error)) ReportCollectionPage {
-	return ReportCollectionPage{fn: getNextPage}
+func NewReportCollectionPage(cur ReportCollection, getNextPage func(context.Context, ReportCollection) (ReportCollection, error)) ReportCollectionPage {
+	return ReportCollectionPage{
+		fn: getNextPage,
+		rc: cur,
+	}
 }
 
 // ReportRecordContract report data.
@@ -8911,8 +8987,11 @@ func (page ResourceSkuResultsPage) Values() []ResourceSkuResult {
 }
 
 // Creates a new instance of the ResourceSkuResultsPage type.
-func NewResourceSkuResultsPage(getNextPage func(context.Context, ResourceSkuResults) (ResourceSkuResults, error)) ResourceSkuResultsPage {
-	return ResourceSkuResultsPage{fn: getNextPage}
+func NewResourceSkuResultsPage(cur ResourceSkuResults, getNextPage func(context.Context, ResourceSkuResults) (ResourceSkuResults, error)) ResourceSkuResultsPage {
+	return ResourceSkuResultsPage{
+		fn:  getNextPage,
+		rsr: cur,
+	}
 }
 
 // ResponseContract operation response details.
@@ -9095,8 +9174,11 @@ func (page SchemaCollectionPage) Values() []SchemaContract {
 }
 
 // Creates a new instance of the SchemaCollectionPage type.
-func NewSchemaCollectionPage(getNextPage func(context.Context, SchemaCollection) (SchemaCollection, error)) SchemaCollectionPage {
-	return SchemaCollectionPage{fn: getNextPage}
+func NewSchemaCollectionPage(cur SchemaCollection, getNextPage func(context.Context, SchemaCollection) (SchemaCollection, error)) SchemaCollectionPage {
+	return SchemaCollectionPage{
+		fn: getNextPage,
+		sc: cur,
+	}
 }
 
 // SchemaContract schema Contract details.
@@ -9231,14 +9313,15 @@ type SchemaDocumentProperties struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// ServiceApplyNetworkConfigurationParameters parameter supplied to the Apply Network configuration operation.
+// ServiceApplyNetworkConfigurationParameters parameter supplied to the Apply Network configuration
+// operation.
 type ServiceApplyNetworkConfigurationParameters struct {
 	// Location - Location of the Api Management service to update for a multi-region service. For a service deployed in a single region, this parameter is not required.
 	Location *string `json:"location,omitempty"`
 }
 
-// ServiceApplyNetworkConfigurationUpdatesFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ServiceApplyNetworkConfigurationUpdatesFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type ServiceApplyNetworkConfigurationUpdatesFuture struct {
 	azure.Future
 }
@@ -9266,7 +9349,8 @@ func (future *ServiceApplyNetworkConfigurationUpdatesFuture) Result(client Servi
 	return
 }
 
-// ServiceBackupFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServiceBackupFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServiceBackupFuture struct {
 	azure.Future
 }
@@ -9407,7 +9491,8 @@ func (future *ServiceCreateOrUpdateFuture) Result(client ServiceClient) (sr Serv
 	return
 }
 
-// ServiceDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServiceDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServiceDeleteFuture struct {
 	azure.Future
 }
@@ -9613,8 +9698,11 @@ func (page ServiceListResultPage) Values() []ServiceResource {
 }
 
 // Creates a new instance of the ServiceListResultPage type.
-func NewServiceListResultPage(getNextPage func(context.Context, ServiceListResult) (ServiceListResult, error)) ServiceListResultPage {
-	return ServiceListResultPage{fn: getNextPage}
+func NewServiceListResultPage(cur ServiceListResult, getNextPage func(context.Context, ServiceListResult) (ServiceListResult, error)) ServiceListResultPage {
+	return ServiceListResultPage{
+		fn:  getNextPage,
+		slr: cur,
+	}
 }
 
 // ServiceNameAvailabilityResult response of the CheckNameAvailability operation.
@@ -9852,7 +9940,8 @@ func (sr *ServiceResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServiceRestoreFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServiceRestoreFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServiceRestoreFuture struct {
 	azure.Future
 }
@@ -9888,7 +9977,8 @@ type ServiceSkuProperties struct {
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 
-// ServiceUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServiceUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServiceUpdateFuture struct {
 	azure.Future
 }
@@ -10153,8 +10243,8 @@ func (sup ServiceUpdateProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ServiceUploadCertificateParameters parameters supplied to the Upload SSL certificate for an API Management
-// service operation.
+// ServiceUploadCertificateParameters parameters supplied to the Upload SSL certificate for an API
+// Management service operation.
 type ServiceUploadCertificateParameters struct {
 	// Type - Hostname type. Possible values include: 'Proxy', 'Portal', 'Management', 'Scm'
 	Type HostnameType `json:"type,omitempty"`
@@ -10316,8 +10406,11 @@ func (page SubscriptionCollectionPage) Values() []SubscriptionContract {
 }
 
 // Creates a new instance of the SubscriptionCollectionPage type.
-func NewSubscriptionCollectionPage(getNextPage func(context.Context, SubscriptionCollection) (SubscriptionCollection, error)) SubscriptionCollectionPage {
-	return SubscriptionCollectionPage{fn: getNextPage}
+func NewSubscriptionCollectionPage(cur SubscriptionCollection, getNextPage func(context.Context, SubscriptionCollection) (SubscriptionCollection, error)) SubscriptionCollectionPage {
+	return SubscriptionCollectionPage{
+		fn: getNextPage,
+		sc: cur,
+	}
 }
 
 // SubscriptionContract subscription details.
@@ -10749,8 +10842,11 @@ func (page TagCollectionPage) Values() []TagContract {
 }
 
 // Creates a new instance of the TagCollectionPage type.
-func NewTagCollectionPage(getNextPage func(context.Context, TagCollection) (TagCollection, error)) TagCollectionPage {
-	return TagCollectionPage{fn: getNextPage}
+func NewTagCollectionPage(cur TagCollection, getNextPage func(context.Context, TagCollection) (TagCollection, error)) TagCollectionPage {
+	return TagCollectionPage{
+		fn: getNextPage,
+		tc: cur,
+	}
 }
 
 // TagContract tag Contract details.
@@ -11033,8 +11129,11 @@ func (page TagDescriptionCollectionPage) Values() []TagDescriptionContract {
 }
 
 // Creates a new instance of the TagDescriptionCollectionPage type.
-func NewTagDescriptionCollectionPage(getNextPage func(context.Context, TagDescriptionCollection) (TagDescriptionCollection, error)) TagDescriptionCollectionPage {
-	return TagDescriptionCollectionPage{fn: getNextPage}
+func NewTagDescriptionCollectionPage(cur TagDescriptionCollection, getNextPage func(context.Context, TagDescriptionCollection) (TagDescriptionCollection, error)) TagDescriptionCollectionPage {
+	return TagDescriptionCollectionPage{
+		fn:  getNextPage,
+		tdc: cur,
+	}
 }
 
 // TagDescriptionContract contract details.
@@ -11313,8 +11412,11 @@ func (page TagResourceCollectionPage) Values() []TagResourceContract {
 }
 
 // Creates a new instance of the TagResourceCollectionPage type.
-func NewTagResourceCollectionPage(getNextPage func(context.Context, TagResourceCollection) (TagResourceCollection, error)) TagResourceCollectionPage {
-	return TagResourceCollectionPage{fn: getNextPage}
+func NewTagResourceCollectionPage(cur TagResourceCollection, getNextPage func(context.Context, TagResourceCollection) (TagResourceCollection, error)) TagResourceCollectionPage {
+	return TagResourceCollectionPage{
+		fn:  getNextPage,
+		trc: cur,
+	}
 }
 
 // TagResourceContract tagResource contract properties.
@@ -11337,8 +11439,8 @@ type TagTagResourceContractProperties struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// TenantConfigurationDeployFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// TenantConfigurationDeployFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type TenantConfigurationDeployFuture struct {
 	azure.Future
 }
@@ -11414,8 +11516,8 @@ type TenantConfigurationSyncStateContract struct {
 	ConfigurationChangeDate *date.Time `json:"configurationChangeDate,omitempty"`
 }
 
-// TenantConfigurationValidateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// TenantConfigurationValidateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type TenantConfigurationValidateFuture struct {
 	azure.Future
 }
@@ -11613,8 +11715,11 @@ func (page UserCollectionPage) Values() []UserContract {
 }
 
 // Creates a new instance of the UserCollectionPage type.
-func NewUserCollectionPage(getNextPage func(context.Context, UserCollection) (UserCollection, error)) UserCollectionPage {
-	return UserCollectionPage{fn: getNextPage}
+func NewUserCollectionPage(cur UserCollection, getNextPage func(context.Context, UserCollection) (UserCollection, error)) UserCollectionPage {
+	return UserCollectionPage{
+		fn: getNextPage,
+		uc: cur,
+	}
 }
 
 // UserContract user details.
@@ -11960,8 +12065,11 @@ func (page UserIdentityCollectionPage) Values() []UserIdentityContract {
 }
 
 // Creates a new instance of the UserIdentityCollectionPage type.
-func NewUserIdentityCollectionPage(getNextPage func(context.Context, UserIdentityCollection) (UserIdentityCollection, error)) UserIdentityCollectionPage {
-	return UserIdentityCollectionPage{fn: getNextPage}
+func NewUserIdentityCollectionPage(cur UserIdentityCollection, getNextPage func(context.Context, UserIdentityCollection) (UserIdentityCollection, error)) UserIdentityCollectionPage {
+	return UserIdentityCollectionPage{
+		fn:  getNextPage,
+		uic: cur,
+	}
 }
 
 // UserIdentityContract user identity details.
@@ -12044,7 +12152,8 @@ type UserUpdateParametersProperties struct {
 	Identities *[]UserIdentityContract `json:"identities,omitempty"`
 }
 
-// VirtualNetworkConfiguration configuration of a virtual network to which API Management service is deployed.
+// VirtualNetworkConfiguration configuration of a virtual network to which API Management service is
+// deployed.
 type VirtualNetworkConfiguration struct {
 	// Vnetid - READ-ONLY; The virtual network ID. This is typically a GUID. Expect a null GUID by default.
 	Vnetid *string `json:"vnetid,omitempty"`

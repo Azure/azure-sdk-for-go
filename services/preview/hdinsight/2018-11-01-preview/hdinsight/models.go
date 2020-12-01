@@ -113,11 +113,16 @@ type Profile struct {
 // SparkBatchJob ...
 type SparkBatchJob struct {
 	autorest.Response `json:"-"`
-	ID                *int32             `json:"id,omitempty"`
-	AppID             *string            `json:"appId,omitempty"`
-	AppInfo           map[string]*string `json:"appInfo"`
-	State             *string            `json:"state,omitempty"`
-	LogLines          *[]string          `json:"log,omitempty"`
+	// ID - The livy id of the spark batch job.
+	ID *int32 `json:"id,omitempty"`
+	// AppID - The application id of this job.
+	AppID *string `json:"appId,omitempty"`
+	// AppInfo - The detailed application info.
+	AppInfo map[string]*string `json:"appInfo"`
+	// State - The current state of the spark batch job. Possible values include: 'NotStarted', 'Starting', 'Idle', 'Running', 'Busy', 'ShuttingDown', 'Error', 'Dead', 'Killed', 'Success', 'Recovering'
+	State JobState `json:"state,omitempty"`
+	// LogLines - The log lines.
+	LogLines *[]string `json:"log,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SparkBatchJob.
@@ -132,7 +137,7 @@ func (sbj SparkBatchJob) MarshalJSON() ([]byte, error) {
 	if sbj.AppInfo != nil {
 		objectMap["appInfo"] = sbj.AppInfo
 	}
-	if sbj.State != nil {
+	if sbj.State != "" {
 		objectMap["state"] = sbj.State
 	}
 	if sbj.LogLines != nil {
@@ -144,29 +149,48 @@ func (sbj SparkBatchJob) MarshalJSON() ([]byte, error) {
 // SparkBatchJobCollection ...
 type SparkBatchJobCollection struct {
 	autorest.Response `json:"-"`
-	From              *int32           `json:"from,omitempty"`
-	Total             *int32           `json:"total,omitempty"`
-	Sessions          *[]SparkBatchJob `json:"sessions,omitempty"`
+	// From - The start index to fetch Spark Batch jobs.
+	From *int32 `json:"from,omitempty"`
+	// Total - Number of Spark Batch jobs to fetch.
+	Total *int32 `json:"total,omitempty"`
+	// Sessions - List of spark batch jobs.
+	Sessions *[]SparkBatchJob `json:"sessions,omitempty"`
 }
 
 // SparkBatchJobRequest ...
 type SparkBatchJobRequest struct {
-	File           *string            `json:"file,omitempty"`
-	ProxyUser      *string            `json:"proxyUser,omitempty"`
-	ClassName      *string            `json:"className,omitempty"`
-	Arguments      *[]string          `json:"args,omitempty"`
-	Jars           *[]string          `json:"jars,omitempty"`
-	PythonFiles    *[]string          `json:"pyFiles,omitempty"`
-	Files          *[]string          `json:"files,omitempty"`
-	DriverMemory   *string            `json:"driverMemory,omitempty"`
-	DriverCores    *int32             `json:"driverCores,omitempty"`
-	ExecutorMemory *string            `json:"executorMemory,omitempty"`
-	ExecutorCores  *int32             `json:"executorCores,omitempty"`
-	ExecutorCount  *int32             `json:"numExecutors,omitempty"`
-	Archives       *[]string          `json:"archives,omitempty"`
-	Queue          *string            `json:"queue,omitempty"`
-	Name           *string            `json:"name,omitempty"`
-	Configuration  map[string]*string `json:"conf"`
+	// File - File containing the application to execute.
+	File *string `json:"file,omitempty"`
+	// ProxyUser - User to impersonate when running the job.
+	ProxyUser *string `json:"proxyUser,omitempty"`
+	// ClassName - Application Java/Spark main class.
+	ClassName *string `json:"className,omitempty"`
+	// Arguments - Command line arguments for the application.
+	Arguments *[]string `json:"args,omitempty"`
+	// Jars - Jars to be used in this batch job.
+	Jars *[]string `json:"jars,omitempty"`
+	// PythonFiles - Python files to be used in this batch job.
+	PythonFiles *[]string `json:"pyFiles,omitempty"`
+	// Files - Files to be used in this batch job.
+	Files *[]string `json:"files,omitempty"`
+	// DriverMemory - Amount of memory to use for the driver process.
+	DriverMemory *string `json:"driverMemory,omitempty"`
+	// DriverCores - Number of cores to use for the driver process.
+	DriverCores *int32 `json:"driverCores,omitempty"`
+	// ExecutorMemory - Amount of memory to use per executor process.
+	ExecutorMemory *string `json:"executorMemory,omitempty"`
+	// ExecutorCores - Number of cores to use for each executor.
+	ExecutorCores *int32 `json:"executorCores,omitempty"`
+	// ExecutorCount - Number of executors to launch for this batch job.
+	ExecutorCount *int32 `json:"numExecutors,omitempty"`
+	// Archives - Archives to be used in this batch job.
+	Archives *[]string `json:"archives,omitempty"`
+	// Queue - The name of the YARN queue to which submitted.
+	Queue *string `json:"queue,omitempty"`
+	// Name - The name of this batch job.
+	Name *string `json:"name,omitempty"`
+	// Configuration - Spark configuration properties.
+	Configuration map[string]*string `json:"conf"`
 }
 
 // MarshalJSON is the custom marshaler for SparkBatchJobRequest.
@@ -232,39 +256,57 @@ type SparkJobDeletedResult struct {
 // SparkJobLog ...
 type SparkJobLog struct {
 	autorest.Response `json:"-"`
-	ID                *int32    `json:"id,omitempty"`
-	From              *int32    `json:"from,omitempty"`
-	Size              *int32    `json:"size,omitempty"`
-	Total             *int64    `json:"total,omitempty"`
-	LogLines          *[]string `json:"log,omitempty"`
+	// ID - The livy id of the spark job.
+	ID *int32 `json:"id,omitempty"`
+	// From - Offset from start of log.
+	From *int32 `json:"from,omitempty"`
+	// Size - Max number of log lines.
+	Size *int32 `json:"size,omitempty"`
+	// Total - Total number of log lines.
+	Total *int64 `json:"total,omitempty"`
+	// LogLines - The log lines.
+	LogLines *[]string `json:"log,omitempty"`
 }
 
 // SparkJobState ...
 type SparkJobState struct {
 	autorest.Response `json:"-"`
-	ID                *int32  `json:"id,omitempty"`
-	State             *string `json:"state,omitempty"`
+	// ID - The livy id of the spark job.
+	ID *int32 `json:"id,omitempty"`
+	// State - The current state of the spark job. Possible values include: 'NotStarted', 'Starting', 'Idle', 'Running', 'Busy', 'ShuttingDown', 'Error', 'Dead', 'Killed', 'Success', 'Recovering'
+	State JobState `json:"state,omitempty"`
 }
 
 // SparkSessionCollection ...
 type SparkSessionCollection struct {
 	autorest.Response `json:"-"`
-	From              *int32             `json:"from,omitempty"`
-	Total             *int32             `json:"total,omitempty"`
-	Sessions          *[]SparkSessionJob `json:"sessions,omitempty"`
+	// From - The start index to fetch spark sessions.
+	From *int32 `json:"from,omitempty"`
+	// Total - Number of spark sessions to fetch.
+	Total *int32 `json:"total,omitempty"`
+	// Sessions - List of spark sessions.
+	Sessions *[]SparkSessionJob `json:"sessions,omitempty"`
 }
 
 // SparkSessionJob ...
 type SparkSessionJob struct {
 	autorest.Response `json:"-"`
-	ID                *int32             `json:"id,omitempty"`
-	AppID             *string            `json:"appId,omitempty"`
-	Owner             *string            `json:"owner,omitempty"`
-	ProxyUser         *string            `json:"proxyUser,omitempty"`
-	Kind              *string            `json:"kind,omitempty"`
-	LogLines          *[]string          `json:"log,omitempty"`
-	State             *string            `json:"state,omitempty"`
-	AppInfo           map[string]*string `json:"appInfo"`
+	// ID - The livy id of the spark session job.
+	ID *int32 `json:"id,omitempty"`
+	// AppID - The application id of this job.
+	AppID *string `json:"appId,omitempty"`
+	// Owner - Remote user who submitted this job.
+	Owner *string `json:"owner,omitempty"`
+	// ProxyUser - User to impersonate when running.
+	ProxyUser *string `json:"proxyUser,omitempty"`
+	// Kind - Spark session job kind. Possible values include: 'Spark', 'Pyspark', 'Sparkr', 'SQL'
+	Kind SessionJobKind `json:"kind,omitempty"`
+	// LogLines - The log lines.
+	LogLines *[]string `json:"log,omitempty"`
+	// State - The current state of the spark session job. Possible values include: 'NotStarted', 'Starting', 'Idle', 'Running', 'Busy', 'ShuttingDown', 'Error', 'Dead', 'Killed', 'Success', 'Recovering'
+	State JobState `json:"state,omitempty"`
+	// AppInfo - The detailed application info.
+	AppInfo map[string]*string `json:"appInfo"`
 }
 
 // MarshalJSON is the custom marshaler for SparkSessionJob.
@@ -282,13 +324,13 @@ func (ssj SparkSessionJob) MarshalJSON() ([]byte, error) {
 	if ssj.ProxyUser != nil {
 		objectMap["proxyUser"] = ssj.ProxyUser
 	}
-	if ssj.Kind != nil {
+	if ssj.Kind != "" {
 		objectMap["kind"] = ssj.Kind
 	}
 	if ssj.LogLines != nil {
 		objectMap["log"] = ssj.LogLines
 	}
-	if ssj.State != nil {
+	if ssj.State != "" {
 		objectMap["state"] = ssj.State
 	}
 	if ssj.AppInfo != nil {
@@ -299,22 +341,36 @@ func (ssj SparkSessionJob) MarshalJSON() ([]byte, error) {
 
 // SparkSessionJobRequest ...
 type SparkSessionJobRequest struct {
-	// Kind - Possible values include: 'Spark', 'Pyspark', 'Sparkr', 'SQL'
-	Kind                     SessionJobKind     `json:"kind,omitempty"`
-	ProxyUser                *string            `json:"proxyUser,omitempty"`
-	Jars                     *[]string          `json:"jars,omitempty"`
-	PythonFiles              *[]string          `json:"pyFiles,omitempty"`
-	Files                    *[]string          `json:"files,omitempty"`
-	DriverMemory             *string            `json:"driverMemory,omitempty"`
-	DriverCores              *int32             `json:"driverCores,omitempty"`
-	ExecutorMemory           *string            `json:"executorMemory,omitempty"`
-	ExecutorCores            *int32             `json:"executorCores,omitempty"`
-	ExecutorCount            *int32             `json:"numExecutors,omitempty"`
-	Archives                 *[]string          `json:"archives,omitempty"`
-	Queue                    *string            `json:"queue,omitempty"`
-	Name                     *string            `json:"name,omitempty"`
-	Configuration            map[string]*string `json:"conf"`
-	HeartbeatTimeoutInSecond *int32             `json:"heartbeatTimeoutInSecond,omitempty"`
+	// Kind - Spark session job kind. Possible values include: 'Spark', 'Pyspark', 'Sparkr', 'SQL'
+	Kind SessionJobKind `json:"kind,omitempty"`
+	// ProxyUser - User to impersonate when starting the session.
+	ProxyUser *string `json:"proxyUser,omitempty"`
+	// Jars - Jars to be used in this session.
+	Jars *[]string `json:"jars,omitempty"`
+	// PythonFiles - Python files to be used in this session.
+	PythonFiles *[]string `json:"pyFiles,omitempty"`
+	// Files - Files to be used in this session.
+	Files *[]string `json:"files,omitempty"`
+	// DriverMemory - Amount of memory to use for the driver process.
+	DriverMemory *string `json:"driverMemory,omitempty"`
+	// DriverCores - Number of cores to use for the driver process.
+	DriverCores *int32 `json:"driverCores,omitempty"`
+	// ExecutorMemory - Amount of memory to use per executor process.
+	ExecutorMemory *string `json:"executorMemory,omitempty"`
+	// ExecutorCores - Number of cores to use for each executor.
+	ExecutorCores *int32 `json:"executorCores,omitempty"`
+	// ExecutorCount - Number of executors to launch for this session.
+	ExecutorCount *int32 `json:"numExecutors,omitempty"`
+	// Archives - Archives to be used in this session.
+	Archives *[]string `json:"archives,omitempty"`
+	// Queue - The name of the YARN queue to which submitted.
+	Queue *string `json:"queue,omitempty"`
+	// Name - The name of this session.
+	Name *string `json:"name,omitempty"`
+	// Configuration - Spark configuration properties.
+	Configuration map[string]*string `json:"conf"`
+	// HeartbeatTimeoutInSecond - Timeout in second to which session be orphaned.
+	HeartbeatTimeoutInSecond *int32 `json:"heartbeatTimeoutInSecond,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SparkSessionJobRequest.
@@ -371,11 +427,16 @@ func (ssjr SparkSessionJobRequest) MarshalJSON() ([]byte, error) {
 // SparkStatement ...
 type SparkStatement struct {
 	autorest.Response `json:"-"`
-	ID                *int32                `json:"id,omitempty"`
-	Code              *string               `json:"code,omitempty"`
-	State             *string               `json:"state,omitempty"`
-	Output            *SparkStatementOutput `json:"output,omitempty"`
-	Progress          *float64              `json:"progress,omitempty"`
+	// ID - The livy id of the spark statement job.
+	ID *int32 `json:"id,omitempty"`
+	// Code - The execution code.
+	Code *string `json:"code,omitempty"`
+	// State - The current state of the spark statement. Possible values include: 'StatementStateWaiting', 'StatementStateRunning', 'StatementStateAvailable', 'StatementStateError', 'StatementStateCancelling', 'StatementStateCancelled'
+	State StatementState `json:"state,omitempty"`
+	// Output - The execution output.
+	Output *SparkStatementOutput `json:"output,omitempty"`
+	// Progress - The execution progress.
+	Progress *float64 `json:"progress,omitempty"`
 }
 
 // SparkStatementCancellationResult ...
@@ -387,20 +448,25 @@ type SparkStatementCancellationResult struct {
 // SparkStatementCollection ...
 type SparkStatementCollection struct {
 	autorest.Response `json:"-"`
-	Statements        *[]SparkStatement `json:"statements,omitempty"`
+	// Statements - List of spark statements.
+	Statements *[]SparkStatement `json:"statements,omitempty"`
 }
 
 // SparkStatementOutput ...
 type SparkStatementOutput struct {
-	Status         *string     `json:"status,omitempty"`
-	ExecutionCount *int32      `json:"execution_count,omitempty"`
-	Data           interface{} `json:"data,omitempty"`
+	// Status - Execution status. Possible values include: 'StatementExecutionStatusOk', 'StatementExecutionStatusError', 'StatementExecutionStatusAbort'
+	Status StatementExecutionStatus `json:"status,omitempty"`
+	// ExecutionCount - A monotonically increasing number.
+	ExecutionCount *int32 `json:"execution_count,omitempty"`
+	// Data - Statement output.
+	Data interface{} `json:"data,omitempty"`
 }
 
 // SparkStatementRequest ...
 type SparkStatementRequest struct {
 	Code *string `json:"code,omitempty"`
-	Kind *string `json:"kind,omitempty"`
+	// Kind - Possible values include: 'Spark', 'Pyspark', 'Sparkr', 'SQL'
+	Kind SessionJobKind `json:"kind,omitempty"`
 }
 
 // Status gets or sets the object containing the job status information.

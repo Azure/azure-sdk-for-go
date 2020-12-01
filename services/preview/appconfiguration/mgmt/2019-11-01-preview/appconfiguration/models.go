@@ -200,8 +200,11 @@ func (page APIKeyListResultPage) Values() []APIKey {
 }
 
 // Creates a new instance of the APIKeyListResultPage type.
-func NewAPIKeyListResultPage(getNextPage func(context.Context, APIKeyListResult) (APIKeyListResult, error)) APIKeyListResultPage {
-	return APIKeyListResultPage{fn: getNextPage}
+func NewAPIKeyListResultPage(cur APIKeyListResult, getNextPage func(context.Context, APIKeyListResult) (APIKeyListResult, error)) APIKeyListResultPage {
+	return APIKeyListResultPage{
+		fn:   getNextPage,
+		aklr: cur,
+	}
 }
 
 // CheckNameAvailabilityParameters parameters used for checking whether a resource name is available.
@@ -212,8 +215,8 @@ type CheckNameAvailabilityParameters struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// ConfigurationStore the configuration store along with all resource properties. The Configuration Store will
-// have all information to begin utilizing it.
+// ConfigurationStore the configuration store along with all resource properties. The Configuration Store
+// will have all information to begin utilizing it.
 type ConfigurationStore struct {
 	autorest.Response `json:"-"`
 	// Identity - The managed identity information, if configured.
@@ -494,8 +497,11 @@ func (page ConfigurationStoreListResultPage) Values() []ConfigurationStore {
 }
 
 // Creates a new instance of the ConfigurationStoreListResultPage type.
-func NewConfigurationStoreListResultPage(getNextPage func(context.Context, ConfigurationStoreListResult) (ConfigurationStoreListResult, error)) ConfigurationStoreListResultPage {
-	return ConfigurationStoreListResultPage{fn: getNextPage}
+func NewConfigurationStoreListResultPage(cur ConfigurationStoreListResult, getNextPage func(context.Context, ConfigurationStoreListResult) (ConfigurationStoreListResult, error)) ConfigurationStoreListResultPage {
+	return ConfigurationStoreListResultPage{
+		fn:   getNextPage,
+		cslr: cur,
+	}
 }
 
 // ConfigurationStoreProperties the properties of a configuration store.
@@ -532,8 +538,8 @@ type ConfigurationStorePropertiesUpdateParameters struct {
 	Encryption *EncryptionProperties `json:"encryption,omitempty"`
 }
 
-// ConfigurationStoresCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ConfigurationStoresCreateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ConfigurationStoresCreateFuture struct {
 	azure.Future
 }
@@ -561,8 +567,8 @@ func (future *ConfigurationStoresCreateFuture) Result(client ConfigurationStores
 	return
 }
 
-// ConfigurationStoresDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ConfigurationStoresDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ConfigurationStoresDeleteFuture struct {
 	azure.Future
 }
@@ -584,8 +590,8 @@ func (future *ConfigurationStoresDeleteFuture) Result(client ConfigurationStores
 	return
 }
 
-// ConfigurationStoresUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ConfigurationStoresUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ConfigurationStoresUpdateFuture struct {
 	azure.Future
 }
@@ -810,7 +816,8 @@ type OperationDefinitionListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// OperationDefinitionListResultIterator provides access to a complete listing of OperationDefinition values.
+// OperationDefinitionListResultIterator provides access to a complete listing of OperationDefinition
+// values.
 type OperationDefinitionListResultIterator struct {
 	i    int
 	page OperationDefinitionListResultPage
@@ -953,8 +960,11 @@ func (page OperationDefinitionListResultPage) Values() []OperationDefinition {
 }
 
 // Creates a new instance of the OperationDefinitionListResultPage type.
-func NewOperationDefinitionListResultPage(getNextPage func(context.Context, OperationDefinitionListResult) (OperationDefinitionListResult, error)) OperationDefinitionListResultPage {
-	return OperationDefinitionListResultPage{fn: getNextPage}
+func NewOperationDefinitionListResultPage(cur OperationDefinitionListResult, getNextPage func(context.Context, OperationDefinitionListResult) (OperationDefinitionListResult, error)) OperationDefinitionListResultPage {
+	return OperationDefinitionListResultPage{
+		fn:   getNextPage,
+		odlr: cur,
+	}
 }
 
 // PrivateEndpoint private endpoint which a connection belongs to.
@@ -1189,8 +1199,11 @@ func (page PrivateEndpointConnectionListResultPage) Values() []PrivateEndpointCo
 }
 
 // Creates a new instance of the PrivateEndpointConnectionListResultPage type.
-func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
-	return PrivateEndpointConnectionListResultPage{fn: getNextPage}
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return PrivateEndpointConnectionListResultPage{
+		fn:    getNextPage,
+		peclr: cur,
+	}
 }
 
 // PrivateEndpointConnectionProperties properties of a private endpoint connection.
@@ -1287,8 +1300,8 @@ func (pecr *PrivateEndpointConnectionReference) UnmarshalJSON(body []byte) error
 	return nil
 }
 
-// PrivateEndpointConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// PrivateEndpointConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type PrivateEndpointConnectionsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -1421,7 +1434,8 @@ type PrivateLinkResourceListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// PrivateLinkResourceListResultIterator provides access to a complete listing of PrivateLinkResource values.
+// PrivateLinkResourceListResultIterator provides access to a complete listing of PrivateLinkResource
+// values.
 type PrivateLinkResourceListResultIterator struct {
 	i    int
 	page PrivateLinkResourceListResultPage
@@ -1564,8 +1578,11 @@ func (page PrivateLinkResourceListResultPage) Values() []PrivateLinkResource {
 }
 
 // Creates a new instance of the PrivateLinkResourceListResultPage type.
-func NewPrivateLinkResourceListResultPage(getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
-	return PrivateLinkResourceListResultPage{fn: getNextPage}
+func NewPrivateLinkResourceListResultPage(cur PrivateLinkResourceListResult, getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
+	return PrivateLinkResourceListResultPage{
+		fn:    getNextPage,
+		plrlr: cur,
+	}
 }
 
 // PrivateLinkResourceProperties properties of a private link resource.

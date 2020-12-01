@@ -393,7 +393,8 @@ func (itd ImageTemplateDistributor) AsBasicImageTemplateDistributor() (BasicImag
 	return &itd, true
 }
 
-// ImageTemplateFileCustomizer uploads files to VMs (Linux, Windows). Corresponds to Packer file provisioner
+// ImageTemplateFileCustomizer uploads files to VMs (Linux, Windows). Corresponds to Packer file
+// provisioner
 type ImageTemplateFileCustomizer struct {
 	// SourceURI - The URI of the file to be uploaded for customizing the VM. It can be a github link, SAS URI for Azure Storage, etc
 	SourceURI *string `json:"sourceUri,omitempty"`
@@ -658,8 +659,11 @@ func (page ImageTemplateListResultPage) Values() []ImageTemplate {
 }
 
 // Creates a new instance of the ImageTemplateListResultPage type.
-func NewImageTemplateListResultPage(getNextPage func(context.Context, ImageTemplateListResult) (ImageTemplateListResult, error)) ImageTemplateListResultPage {
-	return ImageTemplateListResultPage{fn: getNextPage}
+func NewImageTemplateListResultPage(cur ImageTemplateListResult, getNextPage func(context.Context, ImageTemplateListResult) (ImageTemplateListResult, error)) ImageTemplateListResultPage {
+	return ImageTemplateListResultPage{
+		fn:   getNextPage,
+		itlr: cur,
+	}
 }
 
 // ImageTemplateManagedImageDistributor distribute as a Managed Disk Image.
@@ -723,7 +727,8 @@ func (itmid ImageTemplateManagedImageDistributor) AsBasicImageTemplateDistributo
 	return &itmid, true
 }
 
-// ImageTemplateManagedImageSource describes an image source that is a managed image in customer subscription.
+// ImageTemplateManagedImageSource describes an image source that is a managed image in customer
+// subscription.
 type ImageTemplateManagedImageSource struct {
 	// ImageID - ARM resource id of the managed image in customer subscription
 	ImageID *string `json:"imageId,omitempty"`
@@ -836,8 +841,8 @@ func (itpis ImageTemplatePlatformImageSource) AsBasicImageTemplateSource() (Basi
 	return &itpis, true
 }
 
-// ImageTemplatePowerShellCustomizer runs the specified PowerShell on the VM (Windows). Corresponds to Packer
-// powershell provisioner. Exactly one of 'scriptUri' or 'inline' can be specified.
+// ImageTemplatePowerShellCustomizer runs the specified PowerShell on the VM (Windows). Corresponds to
+// Packer powershell provisioner. Exactly one of 'scriptUri' or 'inline' can be specified.
 type ImageTemplatePowerShellCustomizer struct {
 	// ScriptURI - URI of the PowerShell script to be run for customizing. It can be a github link, SAS URI for Azure Storage, etc
 	ScriptURI *string `json:"scriptUri,omitempty"`
@@ -847,6 +852,8 @@ type ImageTemplatePowerShellCustomizer struct {
 	Inline *[]string `json:"inline,omitempty"`
 	// RunElevated - If specified, the PowerShell script will be run with elevated privileges
 	RunElevated *bool `json:"runElevated,omitempty"`
+	// RunAsSystem - If specified, the PowerShell script will be run with elevated privileges using the Local System user. Can only be true when the runElevated field above is set to true.
+	RunAsSystem *bool `json:"runAsSystem,omitempty"`
 	// ValidExitCodes - Valid exit codes for the PowerShell script. [Default: 0]
 	ValidExitCodes *[]int32 `json:"validExitCodes,omitempty"`
 	// Name - Friendly Name to provide context on what this customization step does
@@ -870,6 +877,9 @@ func (itpsc ImageTemplatePowerShellCustomizer) MarshalJSON() ([]byte, error) {
 	}
 	if itpsc.RunElevated != nil {
 		objectMap["runElevated"] = itpsc.RunElevated
+	}
+	if itpsc.RunAsSystem != nil {
+		objectMap["runAsSystem"] = itpsc.RunAsSystem
 	}
 	if itpsc.ValidExitCodes != nil {
 		objectMap["validExitCodes"] = itpsc.ValidExitCodes
@@ -1041,8 +1051,8 @@ func (itp *ImageTemplateProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ImageTemplateRestartCustomizer reboots a VM and waits for it to come back online (Windows). Corresponds to
-// Packer windows-restart provisioner
+// ImageTemplateRestartCustomizer reboots a VM and waits for it to come back online (Windows). Corresponds
+// to Packer windows-restart provisioner
 type ImageTemplateRestartCustomizer struct {
 	// RestartCommand - Command to execute the restart [Default: 'shutdown /r /f /t 0 /c "packer restart"']
 	RestartCommand *string `json:"restartCommand,omitempty"`
@@ -1184,8 +1194,8 @@ func (itsid ImageTemplateSharedImageDistributor) AsBasicImageTemplateDistributor
 	return &itsid, true
 }
 
-// ImageTemplateSharedImageVersionSource describes an image source that is an image version in a shared image
-// gallery.
+// ImageTemplateSharedImageVersionSource describes an image source that is an image version in a shared
+// image gallery.
 type ImageTemplateSharedImageVersionSource struct {
 	// ImageVersionID - ARM resource id of the image version in the shared image gallery
 	ImageVersionID *string `json:"imageVersionId,omitempty"`
@@ -1727,8 +1737,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // PlatformImagePurchasePlan purchase plan configuration for platform image.
@@ -2003,8 +2016,11 @@ func (page RunOutputCollectionPage) Values() []RunOutput {
 }
 
 // Creates a new instance of the RunOutputCollectionPage type.
-func NewRunOutputCollectionPage(getNextPage func(context.Context, RunOutputCollection) (RunOutputCollection, error)) RunOutputCollectionPage {
-	return RunOutputCollectionPage{fn: getNextPage}
+func NewRunOutputCollectionPage(cur RunOutputCollection, getNextPage func(context.Context, RunOutputCollection) (RunOutputCollection, error)) RunOutputCollectionPage {
+	return RunOutputCollectionPage{
+		fn:  getNextPage,
+		roc: cur,
+	}
 }
 
 // RunOutputProperties describes the properties of a run output
@@ -2071,8 +2087,8 @@ func (future *VirtualMachineImageTemplatesCancelFuture) Result(client VirtualMac
 	return
 }
 
-// VirtualMachineImageTemplatesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// VirtualMachineImageTemplatesCreateOrUpdateFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type VirtualMachineImageTemplatesCreateOrUpdateFuture struct {
 	azure.Future
 }

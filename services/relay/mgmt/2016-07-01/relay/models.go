@@ -271,8 +271,11 @@ func (page AuthorizationRuleListResultPage) Values() []AuthorizationRule {
 }
 
 // Creates a new instance of the AuthorizationRuleListResultPage type.
-func NewAuthorizationRuleListResultPage(getNextPage func(context.Context, AuthorizationRuleListResult) (AuthorizationRuleListResult, error)) AuthorizationRuleListResultPage {
-	return AuthorizationRuleListResultPage{fn: getNextPage}
+func NewAuthorizationRuleListResultPage(cur AuthorizationRuleListResult, getNextPage func(context.Context, AuthorizationRuleListResult) (AuthorizationRuleListResult, error)) AuthorizationRuleListResultPage {
+	return AuthorizationRuleListResultPage{
+		fn:   getNextPage,
+		arlr: cur,
+	}
 }
 
 // AuthorizationRuleProperties authorizationRule properties.
@@ -310,8 +313,8 @@ func (cnar CheckNameAvailabilityResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse error reponse indicates Relay service is not able to process the incoming request. The reason
-// is provided in the error message.
+// ErrorResponse error reponse indicates Relay service is not able to process the incoming request. The
+// reason is provided in the error message.
 type ErrorResponse struct {
 	// Code - Error code.
 	Code *string `json:"code,omitempty"`
@@ -544,8 +547,11 @@ func (page HybridConnectionListResultPage) Values() []HybridConnection {
 }
 
 // Creates a new instance of the HybridConnectionListResultPage type.
-func NewHybridConnectionListResultPage(getNextPage func(context.Context, HybridConnectionListResult) (HybridConnectionListResult, error)) HybridConnectionListResultPage {
-	return HybridConnectionListResultPage{fn: getNextPage}
+func NewHybridConnectionListResultPage(cur HybridConnectionListResult, getNextPage func(context.Context, HybridConnectionListResult) (HybridConnectionListResult, error)) HybridConnectionListResultPage {
+	return HybridConnectionListResultPage{
+		fn:   getNextPage,
+		hclr: cur,
+	}
 }
 
 // HybridConnectionProperties properties of the HybridConnection.
@@ -841,8 +847,11 @@ func (page NamespaceListResultPage) Values() []Namespace {
 }
 
 // Creates a new instance of the NamespaceListResultPage type.
-func NewNamespaceListResultPage(getNextPage func(context.Context, NamespaceListResult) (NamespaceListResult, error)) NamespaceListResultPage {
-	return NamespaceListResultPage{fn: getNextPage}
+func NewNamespaceListResultPage(cur NamespaceListResult, getNextPage func(context.Context, NamespaceListResult) (NamespaceListResult, error)) NamespaceListResultPage {
+	return NamespaceListResultPage{
+		fn:  getNextPage,
+		nlr: cur,
+	}
 }
 
 // NamespaceProperties properties of the Namespace.
@@ -859,8 +868,8 @@ type NamespaceProperties struct {
 	MetricID *string `json:"metricId,omitempty"`
 }
 
-// NamespacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// NamespacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type NamespacesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -888,7 +897,8 @@ func (future *NamespacesCreateOrUpdateFuture) Result(client NamespacesClient) (n
 	return
 }
 
-// NamespacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// NamespacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type NamespacesDeleteFuture struct {
 	azure.Future
 }
@@ -957,8 +967,8 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result of the request to list EventHub operations. It contains a list of operations and
-// a URL link to get the next set of results.
+// OperationListResult result of the request to list EventHub operations. It contains a list of operations
+// and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of EventHub operations supported by the Microsoft.EventHub resource provider.
@@ -1110,8 +1120,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // RegenerateKeysParameters parameters supplied to the Regenerate Authorization Rule operation.
@@ -1427,6 +1440,9 @@ func (page WcfRelaysListResultPage) Values() []WcfRelay {
 }
 
 // Creates a new instance of the WcfRelaysListResultPage type.
-func NewWcfRelaysListResultPage(getNextPage func(context.Context, WcfRelaysListResult) (WcfRelaysListResult, error)) WcfRelaysListResultPage {
-	return WcfRelaysListResultPage{fn: getNextPage}
+func NewWcfRelaysListResultPage(cur WcfRelaysListResult, getNextPage func(context.Context, WcfRelaysListResult) (WcfRelaysListResult, error)) WcfRelaysListResultPage {
+	return WcfRelaysListResultPage{
+		fn:   getNextPage,
+		wrlr: cur,
+	}
 }

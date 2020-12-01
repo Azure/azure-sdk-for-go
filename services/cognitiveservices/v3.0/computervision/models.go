@@ -271,8 +271,8 @@ type ImageCaption struct {
 	Confidence *float64 `json:"confidence,omitempty"`
 }
 
-// ImageDescription a collection of content tags, along with a list of captions sorted by confidence level, and
-// image metadata.
+// ImageDescription a collection of content tags, along with a list of captions sorted by confidence level,
+// and image metadata.
 type ImageDescription struct {
 	autorest.Response `json:"-"`
 	// ImageDescriptionDetails - A collection of content tags, along with a list of captions sorted by confidence level, and image metadata.

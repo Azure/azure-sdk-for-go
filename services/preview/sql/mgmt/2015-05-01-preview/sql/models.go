@@ -40,7 +40,8 @@ type CheckNameAvailabilityRequest struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// CheckNameAvailabilityResponse a response indicating whether the specified name for a resource is available.
+// CheckNameAvailabilityResponse a response indicating whether the specified name for a resource is
+// available.
 type CheckNameAvailabilityResponse struct {
 	autorest.Response `json:"-"`
 	// Available - READ-ONLY; True if the name is available, otherwise false.
@@ -402,8 +403,11 @@ func (page DatabaseBlobAuditingPolicyListResultPage) Values() []DatabaseBlobAudi
 }
 
 // Creates a new instance of the DatabaseBlobAuditingPolicyListResultPage type.
-func NewDatabaseBlobAuditingPolicyListResultPage(getNextPage func(context.Context, DatabaseBlobAuditingPolicyListResult) (DatabaseBlobAuditingPolicyListResult, error)) DatabaseBlobAuditingPolicyListResultPage {
-	return DatabaseBlobAuditingPolicyListResultPage{fn: getNextPage}
+func NewDatabaseBlobAuditingPolicyListResultPage(cur DatabaseBlobAuditingPolicyListResult, getNextPage func(context.Context, DatabaseBlobAuditingPolicyListResult) (DatabaseBlobAuditingPolicyListResult, error)) DatabaseBlobAuditingPolicyListResultPage {
+	return DatabaseBlobAuditingPolicyListResultPage{
+		fn:     getNextPage,
+		dbaplr: cur,
+	}
 }
 
 // DatabaseBlobAuditingPolicyProperties properties of a database blob auditing policy.
@@ -819,7 +823,8 @@ type DatabaseSecurityAlertPolicyProperties struct {
 	UseServerDefault SecurityAlertPolicyUseServerDefault `json:"useServerDefault,omitempty"`
 }
 
-// DatabasesExportFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DatabasesExportFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DatabasesExportFuture struct {
 	azure.Future
 }
@@ -847,7 +852,8 @@ func (future *DatabasesExportFuture) Result(client DatabasesClient) (ier ImportE
 	return
 }
 
-// DatabasesImportFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DatabasesImportFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DatabasesImportFuture struct {
 	azure.Future
 }
@@ -875,7 +881,8 @@ func (future *DatabasesImportFuture) Result(client DatabasesClient) (ier ImportE
 	return
 }
 
-// DatabasesPauseFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DatabasesPauseFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DatabasesPauseFuture struct {
 	azure.Future
 }
@@ -897,7 +904,8 @@ func (future *DatabasesPauseFuture) Result(client DatabasesClient) (ar autorest.
 	return
 }
 
-// DatabasesResumeFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DatabasesResumeFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DatabasesResumeFuture struct {
 	azure.Future
 }
@@ -919,7 +927,8 @@ func (future *DatabasesResumeFuture) Result(client DatabasesClient) (ar autorest
 	return
 }
 
-// DatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DatabasesUpdateFuture struct {
 	azure.Future
 }
@@ -1885,8 +1894,8 @@ func (epp ElasticPoolProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ElasticPoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ElasticPoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ElasticPoolsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -2133,7 +2142,8 @@ type EncryptionProtectorListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// EncryptionProtectorListResultIterator provides access to a complete listing of EncryptionProtector values.
+// EncryptionProtectorListResultIterator provides access to a complete listing of EncryptionProtector
+// values.
 type EncryptionProtectorListResultIterator struct {
 	i    int
 	page EncryptionProtectorListResultPage
@@ -2276,8 +2286,11 @@ func (page EncryptionProtectorListResultPage) Values() []EncryptionProtector {
 }
 
 // Creates a new instance of the EncryptionProtectorListResultPage type.
-func NewEncryptionProtectorListResultPage(getNextPage func(context.Context, EncryptionProtectorListResult) (EncryptionProtectorListResult, error)) EncryptionProtectorListResultPage {
-	return EncryptionProtectorListResultPage{fn: getNextPage}
+func NewEncryptionProtectorListResultPage(cur EncryptionProtectorListResult, getNextPage func(context.Context, EncryptionProtectorListResult) (EncryptionProtectorListResult, error)) EncryptionProtectorListResultPage {
+	return EncryptionProtectorListResultPage{
+		fn:   getNextPage,
+		eplr: cur,
+	}
 }
 
 // EncryptionProtectorProperties properties for an encryption protector execution.
@@ -2624,8 +2637,11 @@ func (page FailoverGroupListResultPage) Values() []FailoverGroup {
 }
 
 // Creates a new instance of the FailoverGroupListResultPage type.
-func NewFailoverGroupListResultPage(getNextPage func(context.Context, FailoverGroupListResult) (FailoverGroupListResult, error)) FailoverGroupListResultPage {
-	return FailoverGroupListResultPage{fn: getNextPage}
+func NewFailoverGroupListResultPage(cur FailoverGroupListResult, getNextPage func(context.Context, FailoverGroupListResult) (FailoverGroupListResult, error)) FailoverGroupListResultPage {
+	return FailoverGroupListResultPage{
+		fn:   getNextPage,
+		fglr: cur,
+	}
 }
 
 // FailoverGroupProperties properties of a failover group.
@@ -2757,8 +2773,8 @@ func (future *FailoverGroupsFailoverFuture) Result(client FailoverGroupsClient) 
 	return
 }
 
-// FailoverGroupsForceFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// FailoverGroupsForceFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type FailoverGroupsForceFailoverAllowDataLossFuture struct {
 	azure.Future
 }
@@ -3625,8 +3641,11 @@ func (page ManagedInstanceListResultPage) Values() []ManagedInstance {
 }
 
 // Creates a new instance of the ManagedInstanceListResultPage type.
-func NewManagedInstanceListResultPage(getNextPage func(context.Context, ManagedInstanceListResult) (ManagedInstanceListResult, error)) ManagedInstanceListResultPage {
-	return ManagedInstanceListResultPage{fn: getNextPage}
+func NewManagedInstanceListResultPage(cur ManagedInstanceListResult, getNextPage func(context.Context, ManagedInstanceListResult) (ManagedInstanceListResult, error)) ManagedInstanceListResultPage {
+	return ManagedInstanceListResultPage{
+		fn:   getNextPage,
+		milr: cur,
+	}
 }
 
 // ManagedInstanceProperties the properties of a managed instance.
@@ -4178,8 +4197,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // PartnerInfo partner server information for the failover group.
@@ -4523,8 +4545,8 @@ type ReplicationLinkProperties struct {
 	ReplicationState ReplicationState `json:"replicationState,omitempty"`
 }
 
-// ReplicationLinksFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ReplicationLinksFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type ReplicationLinksFailoverAllowDataLossFuture struct {
 	azure.Future
 }
@@ -4546,8 +4568,8 @@ func (future *ReplicationLinksFailoverAllowDataLossFuture) Result(client Replica
 	return
 }
 
-// ReplicationLinksFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ReplicationLinksFailoverFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ReplicationLinksFailoverFuture struct {
 	azure.Future
 }
@@ -5039,8 +5061,8 @@ func (saaa *ServerAzureADAdministrator) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServerAzureADAdministratorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// ServerAzureADAdministratorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type ServerAzureADAdministratorsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -5216,8 +5238,8 @@ func (sclp ServerCommunicationLinkProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ServerCommunicationLinksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ServerCommunicationLinksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type ServerCommunicationLinksCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -5596,8 +5618,11 @@ func (page ServerKeyListResultPage) Values() []ServerKey {
 }
 
 // Creates a new instance of the ServerKeyListResultPage type.
-func NewServerKeyListResultPage(getNextPage func(context.Context, ServerKeyListResult) (ServerKeyListResult, error)) ServerKeyListResultPage {
-	return ServerKeyListResultPage{fn: getNextPage}
+func NewServerKeyListResultPage(cur ServerKeyListResult, getNextPage func(context.Context, ServerKeyListResult) (ServerKeyListResult, error)) ServerKeyListResultPage {
+	return ServerKeyListResultPage{
+		fn:   getNextPage,
+		sklr: cur,
+	}
 }
 
 // ServerKeyProperties properties for a server key execution.
@@ -5632,8 +5657,8 @@ func (skp ServerKeyProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ServerKeysCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ServerKeysCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ServerKeysCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -5661,7 +5686,8 @@ func (future *ServerKeysCreateOrUpdateFuture) Result(client ServerKeysClient) (s
 	return
 }
 
-// ServerKeysDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServerKeysDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServerKeysDeleteFuture struct {
 	azure.Future
 }
@@ -5835,8 +5861,11 @@ func (page ServerListResultPage) Values() []Server {
 }
 
 // Creates a new instance of the ServerListResultPage type.
-func NewServerListResultPage(getNextPage func(context.Context, ServerListResult) (ServerListResult, error)) ServerListResultPage {
-	return ServerListResultPage{fn: getNextPage}
+func NewServerListResultPage(cur ServerListResult, getNextPage func(context.Context, ServerListResult) (ServerListResult, error)) ServerListResultPage {
+	return ServerListResultPage{
+		fn:  getNextPage,
+		slr: cur,
+	}
 }
 
 // ServerProperties the properties of a server.
@@ -5897,7 +5926,8 @@ func (future *ServersCreateOrUpdateFuture) Result(client ServersClient) (s Serve
 	return
 }
 
-// ServersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServersDeleteFuture struct {
 	azure.Future
 }
@@ -5919,7 +5949,8 @@ func (future *ServersDeleteFuture) Result(client ServersClient) (ar autorest.Res
 	return
 }
 
-// ServersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServersUpdateFuture struct {
 	azure.Future
 }
@@ -6537,8 +6568,11 @@ func (page SubscriptionUsageListResultPage) Values() []SubscriptionUsage {
 }
 
 // Creates a new instance of the SubscriptionUsageListResultPage type.
-func NewSubscriptionUsageListResultPage(getNextPage func(context.Context, SubscriptionUsageListResult) (SubscriptionUsageListResult, error)) SubscriptionUsageListResultPage {
-	return SubscriptionUsageListResultPage{fn: getNextPage}
+func NewSubscriptionUsageListResultPage(cur SubscriptionUsageListResult, getNextPage func(context.Context, SubscriptionUsageListResult) (SubscriptionUsageListResult, error)) SubscriptionUsageListResultPage {
+	return SubscriptionUsageListResultPage{
+		fn:   getNextPage,
+		sulr: cur,
+	}
 }
 
 // SubscriptionUsageProperties properties of a subscription usage.
@@ -6714,8 +6748,8 @@ type SyncAgentLinkedDatabaseListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// SyncAgentLinkedDatabaseListResultIterator provides access to a complete listing of SyncAgentLinkedDatabase
-// values.
+// SyncAgentLinkedDatabaseListResultIterator provides access to a complete listing of
+// SyncAgentLinkedDatabase values.
 type SyncAgentLinkedDatabaseListResultIterator struct {
 	i    int
 	page SyncAgentLinkedDatabaseListResultPage
@@ -6858,8 +6892,11 @@ func (page SyncAgentLinkedDatabaseListResultPage) Values() []SyncAgentLinkedData
 }
 
 // Creates a new instance of the SyncAgentLinkedDatabaseListResultPage type.
-func NewSyncAgentLinkedDatabaseListResultPage(getNextPage func(context.Context, SyncAgentLinkedDatabaseListResult) (SyncAgentLinkedDatabaseListResult, error)) SyncAgentLinkedDatabaseListResultPage {
-	return SyncAgentLinkedDatabaseListResultPage{fn: getNextPage}
+func NewSyncAgentLinkedDatabaseListResultPage(cur SyncAgentLinkedDatabaseListResult, getNextPage func(context.Context, SyncAgentLinkedDatabaseListResult) (SyncAgentLinkedDatabaseListResult, error)) SyncAgentLinkedDatabaseListResultPage {
+	return SyncAgentLinkedDatabaseListResultPage{
+		fn:     getNextPage,
+		saldlr: cur,
+	}
 }
 
 // SyncAgentLinkedDatabaseProperties properties of an Azure SQL Database sync agent linked database.
@@ -7030,8 +7067,11 @@ func (page SyncAgentListResultPage) Values() []SyncAgent {
 }
 
 // Creates a new instance of the SyncAgentListResultPage type.
-func NewSyncAgentListResultPage(getNextPage func(context.Context, SyncAgentListResult) (SyncAgentListResult, error)) SyncAgentListResultPage {
-	return SyncAgentListResultPage{fn: getNextPage}
+func NewSyncAgentListResultPage(cur SyncAgentListResult, getNextPage func(context.Context, SyncAgentListResult) (SyncAgentListResult, error)) SyncAgentListResultPage {
+	return SyncAgentListResultPage{
+		fn:   getNextPage,
+		salr: cur,
+	}
 }
 
 // SyncAgentProperties properties of an Azure SQL Database sync agent.
@@ -7061,8 +7101,8 @@ func (sap SyncAgentProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SyncAgentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// SyncAgentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type SyncAgentsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -7090,7 +7130,8 @@ func (future *SyncAgentsCreateOrUpdateFuture) Result(client SyncAgentsClient) (s
 	return
 }
 
-// SyncAgentsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// SyncAgentsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SyncAgentsDeleteFuture struct {
 	azure.Future
 }
@@ -7121,7 +7162,8 @@ type SyncDatabaseIDListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// SyncDatabaseIDListResultIterator provides access to a complete listing of SyncDatabaseIDProperties values.
+// SyncDatabaseIDListResultIterator provides access to a complete listing of SyncDatabaseIDProperties
+// values.
 type SyncDatabaseIDListResultIterator struct {
 	i    int
 	page SyncDatabaseIDListResultPage
@@ -7264,8 +7306,11 @@ func (page SyncDatabaseIDListResultPage) Values() []SyncDatabaseIDProperties {
 }
 
 // Creates a new instance of the SyncDatabaseIDListResultPage type.
-func NewSyncDatabaseIDListResultPage(getNextPage func(context.Context, SyncDatabaseIDListResult) (SyncDatabaseIDListResult, error)) SyncDatabaseIDListResultPage {
-	return SyncDatabaseIDListResultPage{fn: getNextPage}
+func NewSyncDatabaseIDListResultPage(cur SyncDatabaseIDListResult, getNextPage func(context.Context, SyncDatabaseIDListResult) (SyncDatabaseIDListResult, error)) SyncDatabaseIDListResultPage {
+	return SyncDatabaseIDListResultPage{
+		fn:    getNextPage,
+		sdilr: cur,
+	}
 }
 
 // SyncDatabaseIDProperties properties of the sync database id.
@@ -7291,8 +7336,8 @@ type SyncFullSchemaPropertiesListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// SyncFullSchemaPropertiesListResultIterator provides access to a complete listing of SyncFullSchemaProperties
-// values.
+// SyncFullSchemaPropertiesListResultIterator provides access to a complete listing of
+// SyncFullSchemaProperties values.
 type SyncFullSchemaPropertiesListResultIterator struct {
 	i    int
 	page SyncFullSchemaPropertiesListResultPage
@@ -7435,8 +7480,11 @@ func (page SyncFullSchemaPropertiesListResultPage) Values() []SyncFullSchemaProp
 }
 
 // Creates a new instance of the SyncFullSchemaPropertiesListResultPage type.
-func NewSyncFullSchemaPropertiesListResultPage(getNextPage func(context.Context, SyncFullSchemaPropertiesListResult) (SyncFullSchemaPropertiesListResult, error)) SyncFullSchemaPropertiesListResultPage {
-	return SyncFullSchemaPropertiesListResultPage{fn: getNextPage}
+func NewSyncFullSchemaPropertiesListResultPage(cur SyncFullSchemaPropertiesListResult, getNextPage func(context.Context, SyncFullSchemaPropertiesListResult) (SyncFullSchemaPropertiesListResult, error)) SyncFullSchemaPropertiesListResultPage {
+	return SyncFullSchemaPropertiesListResultPage{
+		fn:     getNextPage,
+		sfsplr: cur,
+	}
 }
 
 // SyncFullSchemaTable properties of the table in the database full schema.
@@ -7696,8 +7744,11 @@ func (page SyncGroupListResultPage) Values() []SyncGroup {
 }
 
 // Creates a new instance of the SyncGroupListResultPage type.
-func NewSyncGroupListResultPage(getNextPage func(context.Context, SyncGroupListResult) (SyncGroupListResult, error)) SyncGroupListResultPage {
-	return SyncGroupListResultPage{fn: getNextPage}
+func NewSyncGroupListResultPage(cur SyncGroupListResult, getNextPage func(context.Context, SyncGroupListResult) (SyncGroupListResult, error)) SyncGroupListResultPage {
+	return SyncGroupListResultPage{
+		fn:   getNextPage,
+		sglr: cur,
+	}
 }
 
 // SyncGroupLogListResult a list of sync group log properties.
@@ -7852,8 +7903,11 @@ func (page SyncGroupLogListResultPage) Values() []SyncGroupLogProperties {
 }
 
 // Creates a new instance of the SyncGroupLogListResultPage type.
-func NewSyncGroupLogListResultPage(getNextPage func(context.Context, SyncGroupLogListResult) (SyncGroupLogListResult, error)) SyncGroupLogListResultPage {
-	return SyncGroupLogListResultPage{fn: getNextPage}
+func NewSyncGroupLogListResultPage(cur SyncGroupLogListResult, getNextPage func(context.Context, SyncGroupLogListResult) (SyncGroupLogListResult, error)) SyncGroupLogListResultPage {
+	return SyncGroupLogListResultPage{
+		fn:    getNextPage,
+		sgllr: cur,
+	}
 }
 
 // SyncGroupLogProperties properties of an Azure SQL Database sync group log.
@@ -7942,8 +7996,8 @@ type SyncGroupSchemaTableColumn struct {
 	DataType *string `json:"dataType,omitempty"`
 }
 
-// SyncGroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// SyncGroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type SyncGroupsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -7971,7 +8025,8 @@ func (future *SyncGroupsCreateOrUpdateFuture) Result(client SyncGroupsClient) (s
 	return
 }
 
-// SyncGroupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// SyncGroupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SyncGroupsDeleteFuture struct {
 	azure.Future
 }
@@ -7993,8 +8048,8 @@ func (future *SyncGroupsDeleteFuture) Result(client SyncGroupsClient) (ar autore
 	return
 }
 
-// SyncGroupsRefreshHubSchemaFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// SyncGroupsRefreshHubSchemaFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type SyncGroupsRefreshHubSchemaFuture struct {
 	azure.Future
 }
@@ -8016,7 +8071,8 @@ func (future *SyncGroupsRefreshHubSchemaFuture) Result(client SyncGroupsClient) 
 	return
 }
 
-// SyncGroupsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// SyncGroupsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SyncGroupsUpdateFuture struct {
 	azure.Future
 }
@@ -8269,8 +8325,11 @@ func (page SyncMemberListResultPage) Values() []SyncMember {
 }
 
 // Creates a new instance of the SyncMemberListResultPage type.
-func NewSyncMemberListResultPage(getNextPage func(context.Context, SyncMemberListResult) (SyncMemberListResult, error)) SyncMemberListResultPage {
-	return SyncMemberListResultPage{fn: getNextPage}
+func NewSyncMemberListResultPage(cur SyncMemberListResult, getNextPage func(context.Context, SyncMemberListResult) (SyncMemberListResult, error)) SyncMemberListResultPage {
+	return SyncMemberListResultPage{
+		fn:   getNextPage,
+		smlr: cur,
+	}
 }
 
 // SyncMemberProperties properties of a sync member.
@@ -8325,8 +8384,8 @@ func (smp SyncMemberProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SyncMembersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// SyncMembersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type SyncMembersCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -8904,8 +8963,11 @@ func (page VirtualClusterListResultPage) Values() []VirtualCluster {
 }
 
 // Creates a new instance of the VirtualClusterListResultPage type.
-func NewVirtualClusterListResultPage(getNextPage func(context.Context, VirtualClusterListResult) (VirtualClusterListResult, error)) VirtualClusterListResultPage {
-	return VirtualClusterListResultPage{fn: getNextPage}
+func NewVirtualClusterListResultPage(cur VirtualClusterListResult, getNextPage func(context.Context, VirtualClusterListResult) (VirtualClusterListResult, error)) VirtualClusterListResultPage {
+	return VirtualClusterListResultPage{
+		fn:   getNextPage,
+		vclr: cur,
+	}
 }
 
 // VirtualClusterProperties the properties of a virtual cluster.
@@ -9257,8 +9319,11 @@ func (page VirtualNetworkRuleListResultPage) Values() []VirtualNetworkRule {
 }
 
 // Creates a new instance of the VirtualNetworkRuleListResultPage type.
-func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
-	return VirtualNetworkRuleListResultPage{fn: getNextPage}
+func NewVirtualNetworkRuleListResultPage(cur VirtualNetworkRuleListResult, getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
+	return VirtualNetworkRuleListResultPage{
+		fn:    getNextPage,
+		vnrlr: cur,
+	}
 }
 
 // VirtualNetworkRuleProperties properties of a virtual network rule.
@@ -9312,8 +9377,8 @@ func (future *VirtualNetworkRulesCreateOrUpdateFuture) Result(client VirtualNetw
 	return
 }
 
-// VirtualNetworkRulesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// VirtualNetworkRulesDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type VirtualNetworkRulesDeleteFuture struct {
 	azure.Future
 }

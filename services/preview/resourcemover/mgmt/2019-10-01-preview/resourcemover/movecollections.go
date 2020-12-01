@@ -43,6 +43,85 @@ func NewMoveCollectionsClientWithBaseURI(baseURI string, subscriptionID string) 
 	return MoveCollectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// BulkRemove removes the set of move resources included in the request body from move collection. The orchestration is
+// done by service. To aid the user to prerequisite the operation the client can call operation with validateOnly
+// property set to true.
+func (client MoveCollectionsClient) BulkRemove(ctx context.Context, resourceGroupName string, moveCollectionName string, body *BulkRemoveRequest) (result MoveCollectionsBulkRemoveFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MoveCollectionsClient.BulkRemove")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.BulkRemovePreparer(ctx, resourceGroupName, moveCollectionName, body)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "BulkRemove", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.BulkRemoveSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "BulkRemove", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// BulkRemovePreparer prepares the BulkRemove request.
+func (client MoveCollectionsClient) BulkRemovePreparer(ctx context.Context, resourceGroupName string, moveCollectionName string, body *BulkRemoveRequest) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"moveCollectionName": autorest.Encode("path", moveCollectionName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-10-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}/bulkRemove", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if body != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(body))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// BulkRemoveSender sends the BulkRemove request. The method will close the
+// http.Response Body if it receives an error.
+func (client MoveCollectionsClient) BulkRemoveSender(req *http.Request) (future MoveCollectionsBulkRemoveFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// BulkRemoveResponder handles the response to the BulkRemove request. The method always
+// closes the http.Response Body.
+func (client MoveCollectionsClient) BulkRemoveResponder(resp *http.Response) (result OperationStatus, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Commit commits the set of resources included in the request body. The commit operation is triggered on the
 // moveResources in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource
 // moveState do a transition to Committed. To aid the user to prerequisite the operation the client can call operation
@@ -65,18 +144,18 @@ func (client MoveCollectionsClient) Commit(ctx context.Context, resourceGroupNam
 		{TargetValue: body,
 			Constraints: []validation.Constraint{{Target: "body", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "body.MoveResources", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("regionmove.MoveCollectionsClient", "Commit", err.Error())
+		return result, validation.NewError("resourcemover.MoveCollectionsClient", "Commit", err.Error())
 	}
 
 	req, err := client.CommitPreparer(ctx, resourceGroupName, moveCollectionName, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "Commit", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Commit", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CommitSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "Commit", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Commit", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -133,7 +212,7 @@ func (client MoveCollectionsClient) CommitResponder(resp *http.Response) (result
 	return
 }
 
-// Create creates a move collection.
+// Create creates or updates a move collection.
 // Parameters:
 // resourceGroupName - the Resource Group Name.
 // moveCollectionName - the Move Collection Name.
@@ -156,25 +235,25 @@ func (client MoveCollectionsClient) Create(ctx context.Context, resourceGroupNam
 						{Target: "body.Properties.TargetRegion", Name: validation.Null, Rule: true, Chain: nil},
 					}},
 				}}}}}); err != nil {
-		return result, validation.NewError("regionmove.MoveCollectionsClient", "Create", err.Error())
+		return result, validation.NewError("resourcemover.MoveCollectionsClient", "Create", err.Error())
 	}
 
 	req, err := client.CreatePreparer(ctx, resourceGroupName, moveCollectionName, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Create", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
@@ -244,13 +323,13 @@ func (client MoveCollectionsClient) Delete(ctx context.Context, resourceGroupNam
 	}
 	req, err := client.DeletePreparer(ctx, resourceGroupName, moveCollectionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -324,18 +403,18 @@ func (client MoveCollectionsClient) Discard(ctx context.Context, resourceGroupNa
 		{TargetValue: body,
 			Constraints: []validation.Constraint{{Target: "body", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "body.MoveResources", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("regionmove.MoveCollectionsClient", "Discard", err.Error())
+		return result, validation.NewError("resourcemover.MoveCollectionsClient", "Discard", err.Error())
 	}
 
 	req, err := client.DiscardPreparer(ctx, resourceGroupName, moveCollectionName, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "Discard", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Discard", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DiscardSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "Discard", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Discard", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -409,20 +488,20 @@ func (client MoveCollectionsClient) Get(ctx context.Context, resourceGroupName s
 	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, moveCollectionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -474,7 +553,7 @@ func (client MoveCollectionsClient) GetResponder(resp *http.Response) (result Mo
 // Parameters:
 // resourceGroupName - the Resource Group Name.
 // moveCollectionName - the Move Collection Name.
-func (client MoveCollectionsClient) InitiateMove(ctx context.Context, resourceGroupName string, moveCollectionName string, body *ResourceMoveRequest) (result MoveCollectionsInitiateMoveFuture, err error) {
+func (client MoveCollectionsClient) InitiateMove(ctx context.Context, resourceGroupName string, moveCollectionName string, body *ResourceMoveRequestType) (result MoveCollectionsInitiateMoveFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/MoveCollectionsClient.InitiateMove")
 		defer func() {
@@ -489,18 +568,18 @@ func (client MoveCollectionsClient) InitiateMove(ctx context.Context, resourceGr
 		{TargetValue: body,
 			Constraints: []validation.Constraint{{Target: "body", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "body.MoveResources", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("regionmove.MoveCollectionsClient", "InitiateMove", err.Error())
+		return result, validation.NewError("resourcemover.MoveCollectionsClient", "InitiateMove", err.Error())
 	}
 
 	req, err := client.InitiateMovePreparer(ctx, resourceGroupName, moveCollectionName, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "InitiateMove", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "InitiateMove", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.InitiateMoveSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "InitiateMove", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "InitiateMove", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -508,7 +587,7 @@ func (client MoveCollectionsClient) InitiateMove(ctx context.Context, resourceGr
 }
 
 // InitiateMovePreparer prepares the InitiateMove request.
-func (client MoveCollectionsClient) InitiateMovePreparer(ctx context.Context, resourceGroupName string, moveCollectionName string, body *ResourceMoveRequest) (*http.Request, error) {
+func (client MoveCollectionsClient) InitiateMovePreparer(ctx context.Context, resourceGroupName string, moveCollectionName string, body *ResourceMoveRequestType) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"moveCollectionName": autorest.Encode("path", moveCollectionName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
@@ -574,20 +653,20 @@ func (client MoveCollectionsClient) ListMoveCollectionsByResourceGroup(ctx conte
 	result.fn = client.listMoveCollectionsByResourceGroupNextResults
 	req, err := client.ListMoveCollectionsByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "ListMoveCollectionsByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "ListMoveCollectionsByResourceGroup", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListMoveCollectionsByResourceGroupSender(req)
 	if err != nil {
 		result.mcrl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "ListMoveCollectionsByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "ListMoveCollectionsByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
 	result.mcrl, err = client.ListMoveCollectionsByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "ListMoveCollectionsByResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "ListMoveCollectionsByResourceGroup", resp, "Failure responding to request")
 	}
 	if result.mcrl.hasNextLink() && result.mcrl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -638,7 +717,7 @@ func (client MoveCollectionsClient) ListMoveCollectionsByResourceGroupResponder(
 func (client MoveCollectionsClient) listMoveCollectionsByResourceGroupNextResults(ctx context.Context, lastResults MoveCollectionResultList) (result MoveCollectionResultList, err error) {
 	req, err := lastResults.moveCollectionResultListPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "listMoveCollectionsByResourceGroupNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "listMoveCollectionsByResourceGroupNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -646,11 +725,11 @@ func (client MoveCollectionsClient) listMoveCollectionsByResourceGroupNextResult
 	resp, err := client.ListMoveCollectionsByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "listMoveCollectionsByResourceGroupNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "listMoveCollectionsByResourceGroupNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListMoveCollectionsByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "listMoveCollectionsByResourceGroupNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "listMoveCollectionsByResourceGroupNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
@@ -686,20 +765,20 @@ func (client MoveCollectionsClient) ListMoveCollectionsBySubscription(ctx contex
 	result.fn = client.listMoveCollectionsBySubscriptionNextResults
 	req, err := client.ListMoveCollectionsBySubscriptionPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "ListMoveCollectionsBySubscription", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "ListMoveCollectionsBySubscription", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListMoveCollectionsBySubscriptionSender(req)
 	if err != nil {
 		result.mcrl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "ListMoveCollectionsBySubscription", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "ListMoveCollectionsBySubscription", resp, "Failure sending request")
 		return
 	}
 
 	result.mcrl, err = client.ListMoveCollectionsBySubscriptionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "ListMoveCollectionsBySubscription", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "ListMoveCollectionsBySubscription", resp, "Failure responding to request")
 	}
 	if result.mcrl.hasNextLink() && result.mcrl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -749,7 +828,7 @@ func (client MoveCollectionsClient) ListMoveCollectionsBySubscriptionResponder(r
 func (client MoveCollectionsClient) listMoveCollectionsBySubscriptionNextResults(ctx context.Context, lastResults MoveCollectionResultList) (result MoveCollectionResultList, err error) {
 	req, err := lastResults.moveCollectionResultListPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "listMoveCollectionsBySubscriptionNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "listMoveCollectionsBySubscriptionNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -757,11 +836,11 @@ func (client MoveCollectionsClient) listMoveCollectionsBySubscriptionNextResults
 	resp, err := client.ListMoveCollectionsBySubscriptionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "listMoveCollectionsBySubscriptionNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "listMoveCollectionsBySubscriptionNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListMoveCollectionsBySubscriptionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "listMoveCollectionsBySubscriptionNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "listMoveCollectionsBySubscriptionNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
@@ -804,18 +883,18 @@ func (client MoveCollectionsClient) Prepare(ctx context.Context, resourceGroupNa
 		{TargetValue: body,
 			Constraints: []validation.Constraint{{Target: "body", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "body.MoveResources", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("regionmove.MoveCollectionsClient", "Prepare", err.Error())
+		return result, validation.NewError("resourcemover.MoveCollectionsClient", "Prepare", err.Error())
 	}
 
 	req, err := client.PreparePreparer(ctx, resourceGroupName, moveCollectionName, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "Prepare", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Prepare", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.PrepareSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "Prepare", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Prepare", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -889,13 +968,13 @@ func (client MoveCollectionsClient) ResolveDependencies(ctx context.Context, res
 	}
 	req, err := client.ResolveDependenciesPreparer(ctx, resourceGroupName, moveCollectionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "ResolveDependencies", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "ResolveDependencies", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.ResolveDependenciesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "ResolveDependencies", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "ResolveDependencies", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -964,20 +1043,20 @@ func (client MoveCollectionsClient) Update(ctx context.Context, resourceGroupNam
 	}
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, moveCollectionName, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Update", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Update", resp, "Failure responding to request")
 	}
 
 	return

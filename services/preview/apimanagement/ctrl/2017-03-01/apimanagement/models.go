@@ -44,7 +44,8 @@ type AccessInformationContract struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-// AccessInformationUpdateParameters tenant access information update parameters of the API Management service.
+// AccessInformationUpdateParameters tenant access information update parameters of the API Management
+// service.
 type AccessInformationUpdateParameters struct {
 	// Enabled - Tenant access information of the API Management service.
 	Enabled *bool `json:"enabled,omitempty"`
@@ -203,8 +204,11 @@ func (page APICollectionPage) Values() []APIContract {
 }
 
 // Creates a new instance of the APICollectionPage type.
-func NewAPICollectionPage(getNextPage func(context.Context, APICollection) (APICollection, error)) APICollectionPage {
-	return APICollectionPage{fn: getNextPage}
+func NewAPICollectionPage(cur APICollection, getNextPage func(context.Context, APICollection) (APICollection, error)) APICollectionPage {
+	return APICollectionPage{
+		fn: getNextPage,
+		ac: cur,
+	}
 }
 
 // APIContract api Contract Details
@@ -372,8 +376,8 @@ type AuthorizationServerCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// AuthorizationServerCollectionIterator provides access to a complete listing of AuthorizationServerContract
-// values.
+// AuthorizationServerCollectionIterator provides access to a complete listing of
+// AuthorizationServerContract values.
 type AuthorizationServerCollectionIterator struct {
 	i    int
 	page AuthorizationServerCollectionPage
@@ -516,8 +520,11 @@ func (page AuthorizationServerCollectionPage) Values() []AuthorizationServerCont
 }
 
 // Creates a new instance of the AuthorizationServerCollectionPage type.
-func NewAuthorizationServerCollectionPage(getNextPage func(context.Context, AuthorizationServerCollection) (AuthorizationServerCollection, error)) AuthorizationServerCollectionPage {
-	return AuthorizationServerCollectionPage{fn: getNextPage}
+func NewAuthorizationServerCollectionPage(cur AuthorizationServerCollection, getNextPage func(context.Context, AuthorizationServerCollection) (AuthorizationServerCollection, error)) AuthorizationServerCollectionPage {
+	return AuthorizationServerCollectionPage{
+		fn:  getNextPage,
+		asc: cur,
+	}
 }
 
 // AuthorizationServerContract external OAuth authorization server settings.
@@ -837,8 +844,11 @@ func (page BackendCollectionPage) Values() []BackendContract {
 }
 
 // Creates a new instance of the BackendCollectionPage type.
-func NewBackendCollectionPage(getNextPage func(context.Context, BackendCollection) (BackendCollection, error)) BackendCollectionPage {
-	return BackendCollectionPage{fn: getNextPage}
+func NewBackendCollectionPage(cur BackendCollection, getNextPage func(context.Context, BackendCollection) (BackendCollection, error)) BackendCollectionPage {
+	return BackendCollectionPage{
+		fn: getNextPage,
+		bc: cur,
+	}
 }
 
 // BackendContract backend details.
@@ -1134,8 +1144,11 @@ func (page CertificateCollectionPage) Values() []CertificateContract {
 }
 
 // Creates a new instance of the CertificateCollectionPage type.
-func NewCertificateCollectionPage(getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
-	return CertificateCollectionPage{fn: getNextPage}
+func NewCertificateCollectionPage(cur CertificateCollection, getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
+	return CertificateCollectionPage{
+		fn: getNextPage,
+		cc: cur,
+	}
 }
 
 // CertificateContract certificate details.
@@ -1331,8 +1344,11 @@ func (page EmailTemplateCollectionPage) Values() []EmailTemplateContract {
 }
 
 // Creates a new instance of the EmailTemplateCollectionPage type.
-func NewEmailTemplateCollectionPage(getNextPage func(context.Context, EmailTemplateCollection) (EmailTemplateCollection, error)) EmailTemplateCollectionPage {
-	return EmailTemplateCollectionPage{fn: getNextPage}
+func NewEmailTemplateCollectionPage(cur EmailTemplateCollection, getNextPage func(context.Context, EmailTemplateCollection) (EmailTemplateCollection, error)) EmailTemplateCollectionPage {
+	return EmailTemplateCollectionPage{
+		fn:  getNextPage,
+		etc: cur,
+	}
 }
 
 // EmailTemplateContract email Template details.
@@ -1620,8 +1636,11 @@ func (page GroupCollectionPage) Values() []GroupContract {
 }
 
 // Creates a new instance of the GroupCollectionPage type.
-func NewGroupCollectionPage(getNextPage func(context.Context, GroupCollection) (GroupCollection, error)) GroupCollectionPage {
-	return GroupCollectionPage{fn: getNextPage}
+func NewGroupCollectionPage(cur GroupCollection, getNextPage func(context.Context, GroupCollection) (GroupCollection, error)) GroupCollectionPage {
+	return GroupCollectionPage{
+		fn: getNextPage,
+		gc: cur,
+	}
 }
 
 // GroupContract contract details.
@@ -1757,9 +1776,9 @@ type IdentityProviderContract struct {
 	PasswordResetPolicyName *string `json:"passwordResetPolicyName,omitempty"`
 }
 
-// IdentityProviderContractProperties the external Identity Providers like Facebook, Google, Microsoft, Twitter
-// or Azure Active Directory which can be used to enable access to the API Management service developer portal
-// for all users.
+// IdentityProviderContractProperties the external Identity Providers like Facebook, Google, Microsoft,
+// Twitter or Azure Active Directory which can be used to enable access to the API Management service
+// developer portal for all users.
 type IdentityProviderContractProperties struct {
 	// ClientID - Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for Google login, App ID for Microsoft.
 	ClientID *string `json:"clientId,omitempty"`
@@ -1962,8 +1981,11 @@ func (page LoggerCollectionPage) Values() []LoggerContract {
 }
 
 // Creates a new instance of the LoggerCollectionPage type.
-func NewLoggerCollectionPage(getNextPage func(context.Context, LoggerCollection) (LoggerCollection, error)) LoggerCollectionPage {
-	return LoggerCollectionPage{fn: getNextPage}
+func NewLoggerCollectionPage(cur LoggerCollection, getNextPage func(context.Context, LoggerCollection) (LoggerCollection, error)) LoggerCollectionPage {
+	return LoggerCollectionPage{
+		fn: getNextPage,
+		lc: cur,
+	}
 }
 
 // LoggerContract logger details.
@@ -2002,9 +2024,9 @@ func (lc LoggerContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// LoggerContractProperties the Logger entity in API Management represents an event sink that you can use to
-// log API Management events. Currently the Logger entity supports logging API Management events to Azure Event
-// Hubs.
+// LoggerContractProperties the Logger entity in API Management represents an event sink that you can use
+// to log API Management events. Currently the Logger entity supports logging API Management events to
+// Azure Event Hubs.
 type LoggerContractProperties struct {
 	// LoggerType - Logger type.
 	LoggerType *string `json:"loggerType,omitempty"`
@@ -2227,8 +2249,11 @@ func (page OpenIDConnectProviderCollectionPage) Values() []OpenidConnectProvider
 }
 
 // Creates a new instance of the OpenIDConnectProviderCollectionPage type.
-func NewOpenIDConnectProviderCollectionPage(getNextPage func(context.Context, OpenIDConnectProviderCollection) (OpenIDConnectProviderCollection, error)) OpenIDConnectProviderCollectionPage {
-	return OpenIDConnectProviderCollectionPage{fn: getNextPage}
+func NewOpenIDConnectProviderCollectionPage(cur OpenIDConnectProviderCollection, getNextPage func(context.Context, OpenIDConnectProviderCollection) (OpenIDConnectProviderCollection, error)) OpenIDConnectProviderCollectionPage {
+	return OpenIDConnectProviderCollectionPage{
+		fn:    getNextPage,
+		oicpc: cur,
+	}
 }
 
 // OpenidConnectProviderContract openId Connect Provider details.
@@ -2430,8 +2455,11 @@ func (page OperationCollectionPage) Values() []OperationContract {
 }
 
 // Creates a new instance of the OperationCollectionPage type.
-func NewOperationCollectionPage(getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
-	return OperationCollectionPage{fn: getNextPage}
+func NewOperationCollectionPage(cur OperationCollection, getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
+	return OperationCollectionPage{
+		fn: getNextPage,
+		oc: cur,
+	}
 }
 
 // OperationContract api Operation details.
@@ -2802,8 +2830,11 @@ func (page ProductCollectionPage) Values() []ProductContract {
 }
 
 // Creates a new instance of the ProductCollectionPage type.
-func NewProductCollectionPage(getNextPage func(context.Context, ProductCollection) (ProductCollection, error)) ProductCollectionPage {
-	return ProductCollectionPage{fn: getNextPage}
+func NewProductCollectionPage(cur ProductCollection, getNextPage func(context.Context, ProductCollection) (ProductCollection, error)) ProductCollectionPage {
+	return ProductCollectionPage{
+		fn: getNextPage,
+		pc: cur,
+	}
 }
 
 // ProductContract product details.
@@ -2819,9 +2850,9 @@ type ProductContract struct {
 	Terms *string `json:"terms,omitempty"`
 	// SubscriptionRequired - Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred to as "protected" and a valid subscription key is required for a request to an API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included in the product can be made without a subscription key. If property is omitted when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
-	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.
+	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of true.
 	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
-	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.
+	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of true.
 	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
 	// State - whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. Possible values include: 'NotPublished', 'Published'
 	State ProductState `json:"state,omitempty"`
@@ -2837,9 +2868,9 @@ type ProductContractProperties struct {
 	Terms *string `json:"terms,omitempty"`
 	// SubscriptionRequired - Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred to as "protected" and a valid subscription key is required for a request to an API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included in the product can be made without a subscription key. If property is omitted when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
-	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.
+	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of true.
 	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
-	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.
+	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of true.
 	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
 	// State - whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. Possible values include: 'NotPublished', 'Published'
 	State ProductState `json:"state,omitempty"`
@@ -2853,9 +2884,9 @@ type ProductEntityBaseParameters struct {
 	Terms *string `json:"terms,omitempty"`
 	// SubscriptionRequired - Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred to as "protected" and a valid subscription key is required for a request to an API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included in the product can be made without a subscription key. If property is omitted when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
-	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.
+	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of true.
 	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
-	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.
+	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of true.
 	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
 	// State - whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. Possible values include: 'NotPublished', 'Published'
 	State ProductState `json:"state,omitempty"`
@@ -2871,9 +2902,9 @@ type ProductUpdateParameters struct {
 	Terms *string `json:"terms,omitempty"`
 	// SubscriptionRequired - Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred to as "protected" and a valid subscription key is required for a request to an API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included in the product can be made without a subscription key. If property is omitted when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
-	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.
+	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of true.
 	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
-	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.
+	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of true.
 	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
 	// State - whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. Possible values include: 'NotPublished', 'Published'
 	State ProductState `json:"state,omitempty"`
@@ -3033,8 +3064,11 @@ func (page PropertyCollectionPage) Values() []PropertyContract {
 }
 
 // Creates a new instance of the PropertyCollectionPage type.
-func NewPropertyCollectionPage(getNextPage func(context.Context, PropertyCollection) (PropertyCollection, error)) PropertyCollectionPage {
-	return PropertyCollectionPage{fn: getNextPage}
+func NewPropertyCollectionPage(cur PropertyCollection, getNextPage func(context.Context, PropertyCollection) (PropertyCollection, error)) PropertyCollectionPage {
+	return PropertyCollectionPage{
+		fn: getNextPage,
+		pc: cur,
+	}
 }
 
 // PropertyContract property details.
@@ -3350,8 +3384,11 @@ func (page ReportCollectionPage) Values() []ReportRecordContract {
 }
 
 // Creates a new instance of the ReportCollectionPage type.
-func NewReportCollectionPage(getNextPage func(context.Context, ReportCollection) (ReportCollection, error)) ReportCollectionPage {
-	return ReportCollectionPage{fn: getNextPage}
+func NewReportCollectionPage(cur ReportCollection, getNextPage func(context.Context, ReportCollection) (ReportCollection, error)) ReportCollectionPage {
+	return ReportCollectionPage{
+		fn: getNextPage,
+		rc: cur,
+	}
 }
 
 // ReportRecordContract report data.
@@ -3791,8 +3828,11 @@ func (page SchemaCollectionPage) Values() []SchemaContract {
 }
 
 // Creates a new instance of the SchemaCollectionPage type.
-func NewSchemaCollectionPage(getNextPage func(context.Context, SchemaCollection) (SchemaCollection, error)) SchemaCollectionPage {
-	return SchemaCollectionPage{fn: getNextPage}
+func NewSchemaCollectionPage(cur SchemaCollection, getNextPage func(context.Context, SchemaCollection) (SchemaCollection, error)) SchemaCollectionPage {
+	return SchemaCollectionPage{
+		fn: getNextPage,
+		sc: cur,
+	}
 }
 
 // SchemaContract schema Contract details.
@@ -4019,8 +4059,11 @@ func (page SubscriptionCollectionPage) Values() []SubscriptionContract {
 }
 
 // Creates a new instance of the SubscriptionCollectionPage type.
-func NewSubscriptionCollectionPage(getNextPage func(context.Context, SubscriptionCollection) (SubscriptionCollection, error)) SubscriptionCollectionPage {
-	return SubscriptionCollectionPage{fn: getNextPage}
+func NewSubscriptionCollectionPage(cur SubscriptionCollection, getNextPage func(context.Context, SubscriptionCollection) (SubscriptionCollection, error)) SubscriptionCollectionPage {
+	return SubscriptionCollectionPage{
+		fn: getNextPage,
+		sc: cur,
+	}
 }
 
 // SubscriptionContract subscription details.
@@ -4213,8 +4256,8 @@ type SubscriptionUpdateParameters struct {
 	StateComment *string `json:"stateComment,omitempty"`
 }
 
-// TenantConfigurationDeployFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// TenantConfigurationDeployFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type TenantConfigurationDeployFuture struct {
 	azure.Future
 }
@@ -4290,8 +4333,8 @@ type TenantConfigurationSyncStateContract struct {
 	ConfigurationChangeDate *date.Time `json:"configurationChangeDate,omitempty"`
 }
 
-// TenantConfigurationValidateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// TenantConfigurationValidateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type TenantConfigurationValidateFuture struct {
 	azure.Future
 }
@@ -4491,8 +4534,11 @@ func (page UserCollectionPage) Values() []UserContract {
 }
 
 // Creates a new instance of the UserCollectionPage type.
-func NewUserCollectionPage(getNextPage func(context.Context, UserCollection) (UserCollection, error)) UserCollectionPage {
-	return UserCollectionPage{fn: getNextPage}
+func NewUserCollectionPage(cur UserCollection, getNextPage func(context.Context, UserCollection) (UserCollection, error)) UserCollectionPage {
+	return UserCollectionPage{
+		fn: getNextPage,
+		uc: cur,
+	}
 }
 
 // UserContract user details.

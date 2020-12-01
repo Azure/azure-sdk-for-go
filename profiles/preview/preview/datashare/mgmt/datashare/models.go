@@ -364,8 +364,8 @@ func New(subscriptionID string) BaseClient {
 func NewAccountListIterator(page AccountListPage) AccountListIterator {
 	return original.NewAccountListIterator(page)
 }
-func NewAccountListPage(getNextPage func(context.Context, AccountList) (AccountList, error)) AccountListPage {
-	return original.NewAccountListPage(getNextPage)
+func NewAccountListPage(cur AccountList, getNextPage func(context.Context, AccountList) (AccountList, error)) AccountListPage {
+	return original.NewAccountListPage(cur, getNextPage)
 }
 func NewAccountsClient(subscriptionID string) AccountsClient {
 	return original.NewAccountsClient(subscriptionID)
@@ -376,8 +376,8 @@ func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) Account
 func NewConsumerInvitationListIterator(page ConsumerInvitationListPage) ConsumerInvitationListIterator {
 	return original.NewConsumerInvitationListIterator(page)
 }
-func NewConsumerInvitationListPage(getNextPage func(context.Context, ConsumerInvitationList) (ConsumerInvitationList, error)) ConsumerInvitationListPage {
-	return original.NewConsumerInvitationListPage(getNextPage)
+func NewConsumerInvitationListPage(cur ConsumerInvitationList, getNextPage func(context.Context, ConsumerInvitationList) (ConsumerInvitationList, error)) ConsumerInvitationListPage {
+	return original.NewConsumerInvitationListPage(cur, getNextPage)
 }
 func NewConsumerInvitationsClient(subscriptionID string) ConsumerInvitationsClient {
 	return original.NewConsumerInvitationsClient(subscriptionID)
@@ -388,8 +388,8 @@ func NewConsumerInvitationsClientWithBaseURI(baseURI string, subscriptionID stri
 func NewConsumerSourceDataSetListIterator(page ConsumerSourceDataSetListPage) ConsumerSourceDataSetListIterator {
 	return original.NewConsumerSourceDataSetListIterator(page)
 }
-func NewConsumerSourceDataSetListPage(getNextPage func(context.Context, ConsumerSourceDataSetList) (ConsumerSourceDataSetList, error)) ConsumerSourceDataSetListPage {
-	return original.NewConsumerSourceDataSetListPage(getNextPage)
+func NewConsumerSourceDataSetListPage(cur ConsumerSourceDataSetList, getNextPage func(context.Context, ConsumerSourceDataSetList) (ConsumerSourceDataSetList, error)) ConsumerSourceDataSetListPage {
+	return original.NewConsumerSourceDataSetListPage(cur, getNextPage)
 }
 func NewConsumerSourceDataSetsClient(subscriptionID string) ConsumerSourceDataSetsClient {
 	return original.NewConsumerSourceDataSetsClient(subscriptionID)
@@ -400,14 +400,14 @@ func NewConsumerSourceDataSetsClientWithBaseURI(baseURI string, subscriptionID s
 func NewDataSetListIterator(page DataSetListPage) DataSetListIterator {
 	return original.NewDataSetListIterator(page)
 }
-func NewDataSetListPage(getNextPage func(context.Context, DataSetList) (DataSetList, error)) DataSetListPage {
-	return original.NewDataSetListPage(getNextPage)
+func NewDataSetListPage(cur DataSetList, getNextPage func(context.Context, DataSetList) (DataSetList, error)) DataSetListPage {
+	return original.NewDataSetListPage(cur, getNextPage)
 }
 func NewDataSetMappingListIterator(page DataSetMappingListPage) DataSetMappingListIterator {
 	return original.NewDataSetMappingListIterator(page)
 }
-func NewDataSetMappingListPage(getNextPage func(context.Context, DataSetMappingList) (DataSetMappingList, error)) DataSetMappingListPage {
-	return original.NewDataSetMappingListPage(getNextPage)
+func NewDataSetMappingListPage(cur DataSetMappingList, getNextPage func(context.Context, DataSetMappingList) (DataSetMappingList, error)) DataSetMappingListPage {
+	return original.NewDataSetMappingListPage(cur, getNextPage)
 }
 func NewDataSetMappingsClient(subscriptionID string) DataSetMappingsClient {
 	return original.NewDataSetMappingsClient(subscriptionID)
@@ -424,8 +424,8 @@ func NewDataSetsClientWithBaseURI(baseURI string, subscriptionID string) DataSet
 func NewInvitationListIterator(page InvitationListPage) InvitationListIterator {
 	return original.NewInvitationListIterator(page)
 }
-func NewInvitationListPage(getNextPage func(context.Context, InvitationList) (InvitationList, error)) InvitationListPage {
-	return original.NewInvitationListPage(getNextPage)
+func NewInvitationListPage(cur InvitationList, getNextPage func(context.Context, InvitationList) (InvitationList, error)) InvitationListPage {
+	return original.NewInvitationListPage(cur, getNextPage)
 }
 func NewInvitationsClient(subscriptionID string) InvitationsClient {
 	return original.NewInvitationsClient(subscriptionID)
@@ -436,8 +436,8 @@ func NewInvitationsClientWithBaseURI(baseURI string, subscriptionID string) Invi
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
 }
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return original.NewOperationListPage(getNextPage)
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -448,8 +448,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewProviderShareSubscriptionListIterator(page ProviderShareSubscriptionListPage) ProviderShareSubscriptionListIterator {
 	return original.NewProviderShareSubscriptionListIterator(page)
 }
-func NewProviderShareSubscriptionListPage(getNextPage func(context.Context, ProviderShareSubscriptionList) (ProviderShareSubscriptionList, error)) ProviderShareSubscriptionListPage {
-	return original.NewProviderShareSubscriptionListPage(getNextPage)
+func NewProviderShareSubscriptionListPage(cur ProviderShareSubscriptionList, getNextPage func(context.Context, ProviderShareSubscriptionList) (ProviderShareSubscriptionList, error)) ProviderShareSubscriptionListPage {
+	return original.NewProviderShareSubscriptionListPage(cur, getNextPage)
 }
 func NewProviderShareSubscriptionsClient(subscriptionID string) ProviderShareSubscriptionsClient {
 	return original.NewProviderShareSubscriptionsClient(subscriptionID)
@@ -460,20 +460,20 @@ func NewProviderShareSubscriptionsClientWithBaseURI(baseURI string, subscription
 func NewShareListIterator(page ShareListPage) ShareListIterator {
 	return original.NewShareListIterator(page)
 }
-func NewShareListPage(getNextPage func(context.Context, ShareList) (ShareList, error)) ShareListPage {
-	return original.NewShareListPage(getNextPage)
+func NewShareListPage(cur ShareList, getNextPage func(context.Context, ShareList) (ShareList, error)) ShareListPage {
+	return original.NewShareListPage(cur, getNextPage)
 }
 func NewShareSubscriptionListIterator(page ShareSubscriptionListPage) ShareSubscriptionListIterator {
 	return original.NewShareSubscriptionListIterator(page)
 }
-func NewShareSubscriptionListPage(getNextPage func(context.Context, ShareSubscriptionList) (ShareSubscriptionList, error)) ShareSubscriptionListPage {
-	return original.NewShareSubscriptionListPage(getNextPage)
+func NewShareSubscriptionListPage(cur ShareSubscriptionList, getNextPage func(context.Context, ShareSubscriptionList) (ShareSubscriptionList, error)) ShareSubscriptionListPage {
+	return original.NewShareSubscriptionListPage(cur, getNextPage)
 }
 func NewShareSubscriptionSynchronizationListIterator(page ShareSubscriptionSynchronizationListPage) ShareSubscriptionSynchronizationListIterator {
 	return original.NewShareSubscriptionSynchronizationListIterator(page)
 }
-func NewShareSubscriptionSynchronizationListPage(getNextPage func(context.Context, ShareSubscriptionSynchronizationList) (ShareSubscriptionSynchronizationList, error)) ShareSubscriptionSynchronizationListPage {
-	return original.NewShareSubscriptionSynchronizationListPage(getNextPage)
+func NewShareSubscriptionSynchronizationListPage(cur ShareSubscriptionSynchronizationList, getNextPage func(context.Context, ShareSubscriptionSynchronizationList) (ShareSubscriptionSynchronizationList, error)) ShareSubscriptionSynchronizationListPage {
+	return original.NewShareSubscriptionSynchronizationListPage(cur, getNextPage)
 }
 func NewShareSubscriptionsClient(subscriptionID string) ShareSubscriptionsClient {
 	return original.NewShareSubscriptionsClient(subscriptionID)
@@ -484,8 +484,8 @@ func NewShareSubscriptionsClientWithBaseURI(baseURI string, subscriptionID strin
 func NewShareSynchronizationListIterator(page ShareSynchronizationListPage) ShareSynchronizationListIterator {
 	return original.NewShareSynchronizationListIterator(page)
 }
-func NewShareSynchronizationListPage(getNextPage func(context.Context, ShareSynchronizationList) (ShareSynchronizationList, error)) ShareSynchronizationListPage {
-	return original.NewShareSynchronizationListPage(getNextPage)
+func NewShareSynchronizationListPage(cur ShareSynchronizationList, getNextPage func(context.Context, ShareSynchronizationList) (ShareSynchronizationList, error)) ShareSynchronizationListPage {
+	return original.NewShareSynchronizationListPage(cur, getNextPage)
 }
 func NewSharesClient(subscriptionID string) SharesClient {
 	return original.NewSharesClient(subscriptionID)
@@ -496,20 +496,20 @@ func NewSharesClientWithBaseURI(baseURI string, subscriptionID string) SharesCli
 func NewSourceShareSynchronizationSettingListIterator(page SourceShareSynchronizationSettingListPage) SourceShareSynchronizationSettingListIterator {
 	return original.NewSourceShareSynchronizationSettingListIterator(page)
 }
-func NewSourceShareSynchronizationSettingListPage(getNextPage func(context.Context, SourceShareSynchronizationSettingList) (SourceShareSynchronizationSettingList, error)) SourceShareSynchronizationSettingListPage {
-	return original.NewSourceShareSynchronizationSettingListPage(getNextPage)
+func NewSourceShareSynchronizationSettingListPage(cur SourceShareSynchronizationSettingList, getNextPage func(context.Context, SourceShareSynchronizationSettingList) (SourceShareSynchronizationSettingList, error)) SourceShareSynchronizationSettingListPage {
+	return original.NewSourceShareSynchronizationSettingListPage(cur, getNextPage)
 }
 func NewSynchronizationDetailsListIterator(page SynchronizationDetailsListPage) SynchronizationDetailsListIterator {
 	return original.NewSynchronizationDetailsListIterator(page)
 }
-func NewSynchronizationDetailsListPage(getNextPage func(context.Context, SynchronizationDetailsList) (SynchronizationDetailsList, error)) SynchronizationDetailsListPage {
-	return original.NewSynchronizationDetailsListPage(getNextPage)
+func NewSynchronizationDetailsListPage(cur SynchronizationDetailsList, getNextPage func(context.Context, SynchronizationDetailsList) (SynchronizationDetailsList, error)) SynchronizationDetailsListPage {
+	return original.NewSynchronizationDetailsListPage(cur, getNextPage)
 }
 func NewSynchronizationSettingListIterator(page SynchronizationSettingListPage) SynchronizationSettingListIterator {
 	return original.NewSynchronizationSettingListIterator(page)
 }
-func NewSynchronizationSettingListPage(getNextPage func(context.Context, SynchronizationSettingList) (SynchronizationSettingList, error)) SynchronizationSettingListPage {
-	return original.NewSynchronizationSettingListPage(getNextPage)
+func NewSynchronizationSettingListPage(cur SynchronizationSettingList, getNextPage func(context.Context, SynchronizationSettingList) (SynchronizationSettingList, error)) SynchronizationSettingListPage {
+	return original.NewSynchronizationSettingListPage(cur, getNextPage)
 }
 func NewSynchronizationSettingsClient(subscriptionID string) SynchronizationSettingsClient {
 	return original.NewSynchronizationSettingsClient(subscriptionID)
@@ -520,8 +520,8 @@ func NewSynchronizationSettingsClientWithBaseURI(baseURI string, subscriptionID 
 func NewTriggerListIterator(page TriggerListPage) TriggerListIterator {
 	return original.NewTriggerListIterator(page)
 }
-func NewTriggerListPage(getNextPage func(context.Context, TriggerList) (TriggerList, error)) TriggerListPage {
-	return original.NewTriggerListPage(getNextPage)
+func NewTriggerListPage(cur TriggerList, getNextPage func(context.Context, TriggerList) (TriggerList, error)) TriggerListPage {
+	return original.NewTriggerListPage(cur, getNextPage)
 }
 func NewTriggersClient(subscriptionID string) TriggersClient {
 	return original.NewTriggersClient(subscriptionID)

@@ -100,8 +100,8 @@ func New(subscriptionID string) BaseClient {
 func NewAvailabilityStatusListResultIterator(page AvailabilityStatusListResultPage) AvailabilityStatusListResultIterator {
 	return original.NewAvailabilityStatusListResultIterator(page)
 }
-func NewAvailabilityStatusListResultPage(getNextPage func(context.Context, AvailabilityStatusListResult) (AvailabilityStatusListResult, error)) AvailabilityStatusListResultPage {
-	return original.NewAvailabilityStatusListResultPage(getNextPage)
+func NewAvailabilityStatusListResultPage(cur AvailabilityStatusListResult, getNextPage func(context.Context, AvailabilityStatusListResult) (AvailabilityStatusListResult, error)) AvailabilityStatusListResultPage {
+	return original.NewAvailabilityStatusListResultPage(cur, getNextPage)
 }
 func NewAvailabilityStatusesClient(subscriptionID string) AvailabilityStatusesClient {
 	return original.NewAvailabilityStatusesClient(subscriptionID)
@@ -124,8 +124,8 @@ func NewChildResourcesClientWithBaseURI(baseURI string, subscriptionID string) C
 func NewEmergingIssueListResultIterator(page EmergingIssueListResultPage) EmergingIssueListResultIterator {
 	return original.NewEmergingIssueListResultIterator(page)
 }
-func NewEmergingIssueListResultPage(getNextPage func(context.Context, EmergingIssueListResult) (EmergingIssueListResult, error)) EmergingIssueListResultPage {
-	return original.NewEmergingIssueListResultPage(getNextPage)
+func NewEmergingIssueListResultPage(cur EmergingIssueListResult, getNextPage func(context.Context, EmergingIssueListResult) (EmergingIssueListResult, error)) EmergingIssueListResultPage {
+	return original.NewEmergingIssueListResultPage(cur, getNextPage)
 }
 func NewEmergingIssuesClient(subscriptionID string) EmergingIssuesClient {
 	return original.NewEmergingIssuesClient(subscriptionID)

@@ -118,8 +118,8 @@ func NewCommunicationsClientWithBaseURI(baseURI string, subscriptionID string) C
 func NewCommunicationsListResultIterator(page CommunicationsListResultPage) CommunicationsListResultIterator {
 	return original.NewCommunicationsListResultIterator(page)
 }
-func NewCommunicationsListResultPage(getNextPage func(context.Context, CommunicationsListResult) (CommunicationsListResult, error)) CommunicationsListResultPage {
-	return original.NewCommunicationsListResultPage(getNextPage)
+func NewCommunicationsListResultPage(cur CommunicationsListResult, getNextPage func(context.Context, CommunicationsListResult) (CommunicationsListResult, error)) CommunicationsListResultPage {
+	return original.NewCommunicationsListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -148,8 +148,8 @@ func NewTicketsClientWithBaseURI(baseURI string, subscriptionID string) TicketsC
 func NewTicketsListResultIterator(page TicketsListResultPage) TicketsListResultIterator {
 	return original.NewTicketsListResultIterator(page)
 }
-func NewTicketsListResultPage(getNextPage func(context.Context, TicketsListResult) (TicketsListResult, error)) TicketsListResultPage {
-	return original.NewTicketsListResultPage(getNextPage)
+func NewTicketsListResultPage(cur TicketsListResult, getNextPage func(context.Context, TicketsListResult) (TicketsListResult, error)) TicketsListResultPage {
+	return original.NewTicketsListResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

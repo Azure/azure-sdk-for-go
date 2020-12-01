@@ -289,8 +289,8 @@ func NewAdDomainServiceMembersClientWithBaseURI(baseURI string) AdDomainServiceM
 func NewAddsConfigurationIterator(page AddsConfigurationPage) AddsConfigurationIterator {
 	return original.NewAddsConfigurationIterator(page)
 }
-func NewAddsConfigurationPage(getNextPage func(context.Context, AddsConfiguration) (AddsConfiguration, error)) AddsConfigurationPage {
-	return original.NewAddsConfigurationPage(getNextPage)
+func NewAddsConfigurationPage(cur AddsConfiguration, getNextPage func(context.Context, AddsConfiguration) (AddsConfiguration, error)) AddsConfigurationPage {
+	return original.NewAddsConfigurationPage(cur, getNextPage)
 }
 func NewAddsServiceClient() AddsServiceClient {
 	return original.NewAddsServiceClient()
@@ -307,8 +307,8 @@ func NewAddsServiceMembersClientWithBaseURI(baseURI string) AddsServiceMembersCl
 func NewAddsServiceMembersIterator(page AddsServiceMembersPage) AddsServiceMembersIterator {
 	return original.NewAddsServiceMembersIterator(page)
 }
-func NewAddsServiceMembersPage(getNextPage func(context.Context, AddsServiceMembers) (AddsServiceMembers, error)) AddsServiceMembersPage {
-	return original.NewAddsServiceMembersPage(getNextPage)
+func NewAddsServiceMembersPage(cur AddsServiceMembers, getNextPage func(context.Context, AddsServiceMembers) (AddsServiceMembers, error)) AddsServiceMembersPage {
+	return original.NewAddsServiceMembersPage(cur, getNextPage)
 }
 func NewAddsServicesClient() AddsServicesClient {
 	return original.NewAddsServicesClient()
@@ -343,8 +343,8 @@ func NewAlertsClientWithBaseURI(baseURI string) AlertsClient {
 func NewAlertsIterator(page AlertsPage) AlertsIterator {
 	return original.NewAlertsIterator(page)
 }
-func NewAlertsPage(getNextPage func(context.Context, Alerts) (Alerts, error)) AlertsPage {
-	return original.NewAlertsPage(getNextPage)
+func NewAlertsPage(cur Alerts, getNextPage func(context.Context, Alerts) (Alerts, error)) AlertsPage {
+	return original.NewAlertsPage(cur, getNextPage)
 }
 func NewConfigurationClient() ConfigurationClient {
 	return original.NewConfigurationClient()
@@ -361,20 +361,20 @@ func NewDimensionsClientWithBaseURI(baseURI string) DimensionsClient {
 func NewDimensionsIterator(page DimensionsPage) DimensionsIterator {
 	return original.NewDimensionsIterator(page)
 }
-func NewDimensionsPage(getNextPage func(context.Context, Dimensions) (Dimensions, error)) DimensionsPage {
-	return original.NewDimensionsPage(getNextPage)
+func NewDimensionsPage(cur Dimensions, getNextPage func(context.Context, Dimensions) (Dimensions, error)) DimensionsPage {
+	return original.NewDimensionsPage(cur, getNextPage)
 }
 func NewExportStatusesIterator(page ExportStatusesPage) ExportStatusesIterator {
 	return original.NewExportStatusesIterator(page)
 }
-func NewExportStatusesPage(getNextPage func(context.Context, ExportStatuses) (ExportStatuses, error)) ExportStatusesPage {
-	return original.NewExportStatusesPage(getNextPage)
+func NewExportStatusesPage(cur ExportStatuses, getNextPage func(context.Context, ExportStatuses) (ExportStatuses, error)) ExportStatusesPage {
+	return original.NewExportStatusesPage(cur, getNextPage)
 }
 func NewIPAddressAggregatesIterator(page IPAddressAggregatesPage) IPAddressAggregatesIterator {
 	return original.NewIPAddressAggregatesIterator(page)
 }
-func NewIPAddressAggregatesPage(getNextPage func(context.Context, IPAddressAggregates) (IPAddressAggregates, error)) IPAddressAggregatesPage {
-	return original.NewIPAddressAggregatesPage(getNextPage)
+func NewIPAddressAggregatesPage(cur IPAddressAggregates, getNextPage func(context.Context, IPAddressAggregates) (IPAddressAggregates, error)) IPAddressAggregatesPage {
+	return original.NewIPAddressAggregatesPage(cur, getNextPage)
 }
 func NewListClient() ListClient {
 	return original.NewListClient()
@@ -385,20 +385,20 @@ func NewListClientWithBaseURI(baseURI string) ListClient {
 func NewMetricMetadataListIterator(page MetricMetadataListPage) MetricMetadataListIterator {
 	return original.NewMetricMetadataListIterator(page)
 }
-func NewMetricMetadataListPage(getNextPage func(context.Context, MetricMetadataList) (MetricMetadataList, error)) MetricMetadataListPage {
-	return original.NewMetricMetadataListPage(getNextPage)
+func NewMetricMetadataListPage(cur MetricMetadataList, getNextPage func(context.Context, MetricMetadataList) (MetricMetadataList, error)) MetricMetadataListPage {
+	return original.NewMetricMetadataListPage(cur, getNextPage)
 }
 func NewMetricsIterator(page MetricsPage) MetricsIterator {
 	return original.NewMetricsIterator(page)
 }
-func NewMetricsPage(getNextPage func(context.Context, Metrics) (Metrics, error)) MetricsPage {
-	return original.NewMetricsPage(getNextPage)
+func NewMetricsPage(cur Metrics, getNextPage func(context.Context, Metrics) (Metrics, error)) MetricsPage {
+	return original.NewMetricsPage(cur, getNextPage)
 }
 func NewOperationListResponseIterator(page OperationListResponsePage) OperationListResponseIterator {
 	return original.NewOperationListResponseIterator(page)
 }
-func NewOperationListResponsePage(getNextPage func(context.Context, OperationListResponse) (OperationListResponse, error)) OperationListResponsePage {
-	return original.NewOperationListResponsePage(getNextPage)
+func NewOperationListResponsePage(cur OperationListResponse, getNextPage func(context.Context, OperationListResponse) (OperationListResponse, error)) OperationListResponsePage {
+	return original.NewOperationListResponsePage(cur, getNextPage)
 }
 func NewOperationsClient() OperationsClient {
 	return original.NewOperationsClient()
@@ -427,8 +427,8 @@ func NewServiceMembersClientWithBaseURI(baseURI string) ServiceMembersClient {
 func NewServiceMembersIterator(page ServiceMembersPage) ServiceMembersIterator {
 	return original.NewServiceMembersIterator(page)
 }
-func NewServiceMembersPage(getNextPage func(context.Context, ServiceMembers) (ServiceMembers, error)) ServiceMembersPage {
-	return original.NewServiceMembersPage(getNextPage)
+func NewServiceMembersPage(cur ServiceMembers, getNextPage func(context.Context, ServiceMembers) (ServiceMembers, error)) ServiceMembersPage {
+	return original.NewServiceMembersPage(cur, getNextPage)
 }
 func NewServicesClient() ServicesClient {
 	return original.NewServicesClient()
@@ -439,8 +439,8 @@ func NewServicesClientWithBaseURI(baseURI string) ServicesClient {
 func NewServicesIterator(page ServicesPage) ServicesIterator {
 	return original.NewServicesIterator(page)
 }
-func NewServicesPage(getNextPage func(context.Context, Services) (Services, error)) ServicesPage {
-	return original.NewServicesPage(getNextPage)
+func NewServicesPage(cur Services, getNextPage func(context.Context, Services) (Services, error)) ServicesPage {
+	return original.NewServicesPage(cur, getNextPage)
 }
 func NewUpdateClient() UpdateClient {
 	return original.NewUpdateClient()

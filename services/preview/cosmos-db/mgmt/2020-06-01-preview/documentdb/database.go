@@ -26,7 +26,7 @@ import (
 	"net/http"
 )
 
-// DatabaseClient is the azure Cosmos DB Database Service Resource Provider REST API
+// DatabaseClient is the client for the Database methods of the Documentdb service.
 type DatabaseClient struct {
 	BaseClient
 }

@@ -23,3 +23,4 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/portal/mgmt/
 
 type DashboardsClientAPI = original.DashboardsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type TenantConfigurationsClientAPI = original.TenantConfigurationsClientAPI

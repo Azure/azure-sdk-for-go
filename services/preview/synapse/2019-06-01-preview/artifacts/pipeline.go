@@ -42,13 +42,13 @@ func NewPipelineClient(endpoint string) PipelineClient {
 // pipeline - pipeline resource definition.
 // ifMatch - eTag of the pipeline entity.  Should only be specified for update, for which it should match
 // existing entity or can be * for unconditional update.
-func (client PipelineClient) CreateOrUpdatePipeline(ctx context.Context, pipelineName string, pipeline PipelineResource, ifMatch string) (result PipelineResource, err error) {
+func (client PipelineClient) CreateOrUpdatePipeline(ctx context.Context, pipelineName string, pipeline PipelineResource, ifMatch string) (result PipelineCreateOrUpdatePipelineFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PipelineClient.CreateOrUpdatePipeline")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -72,16 +72,10 @@ func (client PipelineClient) CreateOrUpdatePipeline(ctx context.Context, pipelin
 		return
 	}
 
-	resp, err := client.CreateOrUpdatePipelineSender(req)
+	result, err = client.CreateOrUpdatePipelineSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "CreateOrUpdatePipeline", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "CreateOrUpdatePipeline", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.CreateOrUpdatePipelineResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "CreateOrUpdatePipeline", resp, "Failure responding to request")
 	}
 
 	return
@@ -118,8 +112,14 @@ func (client PipelineClient) CreateOrUpdatePipelinePreparer(ctx context.Context,
 
 // CreateOrUpdatePipelineSender sends the CreateOrUpdatePipeline request. The method will close the
 // http.Response Body if it receives an error.
-func (client PipelineClient) CreateOrUpdatePipelineSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+func (client PipelineClient) CreateOrUpdatePipelineSender(req *http.Request) (future PipelineCreateOrUpdatePipelineFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // CreateOrUpdatePipelineResponder handles the response to the CreateOrUpdatePipeline request. The method always
@@ -127,7 +127,7 @@ func (client PipelineClient) CreateOrUpdatePipelineSender(req *http.Request) (*h
 func (client PipelineClient) CreateOrUpdatePipelineResponder(resp *http.Response) (result PipelineResource, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -233,7 +233,7 @@ func (client PipelineClient) CreatePipelineRunSender(req *http.Request) (*http.R
 func (client PipelineClient) CreatePipelineRunResponder(resp *http.Response) (result CreateRunResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -243,13 +243,13 @@ func (client PipelineClient) CreatePipelineRunResponder(resp *http.Response) (re
 // DeletePipeline deletes a pipeline.
 // Parameters:
 // pipelineName - the pipeline name.
-func (client PipelineClient) DeletePipeline(ctx context.Context, pipelineName string) (result autorest.Response, err error) {
+func (client PipelineClient) DeletePipeline(ctx context.Context, pipelineName string) (result PipelineDeletePipelineFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PipelineClient.DeletePipeline")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -268,16 +268,10 @@ func (client PipelineClient) DeletePipeline(ctx context.Context, pipelineName st
 		return
 	}
 
-	resp, err := client.DeletePipelineSender(req)
+	result, err = client.DeletePipelineSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "DeletePipeline", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "DeletePipeline", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.DeletePipelineResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "DeletePipeline", resp, "Failure responding to request")
 	}
 
 	return
@@ -308,8 +302,14 @@ func (client PipelineClient) DeletePipelinePreparer(ctx context.Context, pipelin
 
 // DeletePipelineSender sends the DeletePipeline request. The method will close the
 // http.Response Body if it receives an error.
-func (client PipelineClient) DeletePipelineSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+func (client PipelineClient) DeletePipelineSender(req *http.Request) (future PipelineDeletePipelineFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // DeletePipelineResponder handles the response to the DeletePipeline request. The method always
@@ -317,7 +317,7 @@ func (client PipelineClient) DeletePipelineSender(req *http.Request) (*http.Resp
 func (client PipelineClient) DeletePipelineResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -521,5 +521,97 @@ func (client PipelineClient) GetPipelinesByWorkspaceComplete(ctx context.Context
 		}()
 	}
 	result.page, err = client.GetPipelinesByWorkspace(ctx)
+	return
+}
+
+// RenamePipeline renames a pipeline.
+// Parameters:
+// pipelineName - the pipeline name.
+// request - proposed new name.
+func (client PipelineClient) RenamePipeline(ctx context.Context, pipelineName string, request RenameRequest) (result PipelineRenamePipelineFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PipelineClient.RenamePipeline")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: pipelineName,
+			Constraints: []validation.Constraint{{Target: "pipelineName", Name: validation.MaxLength, Rule: 260, Chain: nil},
+				{Target: "pipelineName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "pipelineName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}},
+		{TargetValue: request,
+			Constraints: []validation.Constraint{{Target: "request.NewName", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "request.NewName", Name: validation.MaxLength, Rule: 260, Chain: nil},
+					{Target: "request.NewName", Name: validation.MinLength, Rule: 1, Chain: nil},
+					{Target: "request.NewName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("artifacts.PipelineClient", "RenamePipeline", err.Error())
+	}
+
+	req, err := client.RenamePipelinePreparer(ctx, pipelineName, request)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "RenamePipeline", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.RenamePipelineSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "RenamePipeline", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// RenamePipelinePreparer prepares the RenamePipeline request.
+func (client PipelineClient) RenamePipelinePreparer(ctx context.Context, pipelineName string, request RenameRequest) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"pipelineName": autorest.Encode("path", pipelineName),
+	}
+
+	const APIVersion = "2019-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{endpoint}", urlParameters),
+		autorest.WithPathParameters("/pipelines/{pipelineName}/rename", pathParameters),
+		autorest.WithJSON(request),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// RenamePipelineSender sends the RenamePipeline request. The method will close the
+// http.Response Body if it receives an error.
+func (client PipelineClient) RenamePipelineSender(req *http.Request) (future PipelineRenamePipelineFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// RenamePipelineResponder handles the response to the RenamePipeline request. The method always
+// closes the http.Response Body.
+func (client PipelineClient) RenamePipelineResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
 	return
 }

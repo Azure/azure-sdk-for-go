@@ -101,8 +101,8 @@ func New(subscriptionID string) BaseClient {
 func NewOperationPageIterator(page OperationPagePage) OperationPageIterator {
 	return original.NewOperationPageIterator(page)
 }
-func NewOperationPagePage(getNextPage func(context.Context, OperationPage) (OperationPage, error)) OperationPagePage {
-	return original.NewOperationPagePage(getNextPage)
+func NewOperationPagePage(cur OperationPage, getNextPage func(context.Context, OperationPage) (OperationPage, error)) OperationPagePage {
+	return original.NewOperationPagePage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -113,8 +113,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewRemoteRenderingAccountPageIterator(page RemoteRenderingAccountPagePage) RemoteRenderingAccountPageIterator {
 	return original.NewRemoteRenderingAccountPageIterator(page)
 }
-func NewRemoteRenderingAccountPagePage(getNextPage func(context.Context, RemoteRenderingAccountPage) (RemoteRenderingAccountPage, error)) RemoteRenderingAccountPagePage {
-	return original.NewRemoteRenderingAccountPagePage(getNextPage)
+func NewRemoteRenderingAccountPagePage(cur RemoteRenderingAccountPage, getNextPage func(context.Context, RemoteRenderingAccountPage) (RemoteRenderingAccountPage, error)) RemoteRenderingAccountPagePage {
+	return original.NewRemoteRenderingAccountPagePage(cur, getNextPage)
 }
 func NewRemoteRenderingAccountsClient(subscriptionID string) RemoteRenderingAccountsClient {
 	return original.NewRemoteRenderingAccountsClient(subscriptionID)
@@ -125,8 +125,8 @@ func NewRemoteRenderingAccountsClientWithBaseURI(baseURI string, subscriptionID 
 func NewSpatialAnchorsAccountPageIterator(page SpatialAnchorsAccountPagePage) SpatialAnchorsAccountPageIterator {
 	return original.NewSpatialAnchorsAccountPageIterator(page)
 }
-func NewSpatialAnchorsAccountPagePage(getNextPage func(context.Context, SpatialAnchorsAccountPage) (SpatialAnchorsAccountPage, error)) SpatialAnchorsAccountPagePage {
-	return original.NewSpatialAnchorsAccountPagePage(getNextPage)
+func NewSpatialAnchorsAccountPagePage(cur SpatialAnchorsAccountPage, getNextPage func(context.Context, SpatialAnchorsAccountPage) (SpatialAnchorsAccountPage, error)) SpatialAnchorsAccountPagePage {
+	return original.NewSpatialAnchorsAccountPagePage(cur, getNextPage)
 }
 func NewSpatialAnchorsAccountsClient(subscriptionID string) SpatialAnchorsAccountsClient {
 	return original.NewSpatialAnchorsAccountsClient(subscriptionID)

@@ -48,8 +48,8 @@ const (
 
 type Authorization = original.Authorization
 type BaseClient = original.BaseClient
+type ErrorDefinition = original.ErrorDefinition
 type ErrorResponse = original.ErrorResponse
-type ErrorResponseError = original.ErrorResponseError
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationList = original.OperationList
@@ -85,8 +85,8 @@ func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
 func NewRegistrationAssignmentListIterator(page RegistrationAssignmentListPage) RegistrationAssignmentListIterator {
 	return original.NewRegistrationAssignmentListIterator(page)
 }
-func NewRegistrationAssignmentListPage(getNextPage func(context.Context, RegistrationAssignmentList) (RegistrationAssignmentList, error)) RegistrationAssignmentListPage {
-	return original.NewRegistrationAssignmentListPage(getNextPage)
+func NewRegistrationAssignmentListPage(cur RegistrationAssignmentList, getNextPage func(context.Context, RegistrationAssignmentList) (RegistrationAssignmentList, error)) RegistrationAssignmentListPage {
+	return original.NewRegistrationAssignmentListPage(cur, getNextPage)
 }
 func NewRegistrationAssignmentsClient() RegistrationAssignmentsClient {
 	return original.NewRegistrationAssignmentsClient()
@@ -97,8 +97,8 @@ func NewRegistrationAssignmentsClientWithBaseURI(baseURI string) RegistrationAss
 func NewRegistrationDefinitionListIterator(page RegistrationDefinitionListPage) RegistrationDefinitionListIterator {
 	return original.NewRegistrationDefinitionListIterator(page)
 }
-func NewRegistrationDefinitionListPage(getNextPage func(context.Context, RegistrationDefinitionList) (RegistrationDefinitionList, error)) RegistrationDefinitionListPage {
-	return original.NewRegistrationDefinitionListPage(getNextPage)
+func NewRegistrationDefinitionListPage(cur RegistrationDefinitionList, getNextPage func(context.Context, RegistrationDefinitionList) (RegistrationDefinitionList, error)) RegistrationDefinitionListPage {
+	return original.NewRegistrationDefinitionListPage(cur, getNextPage)
 }
 func NewRegistrationDefinitionsClient() RegistrationDefinitionsClient {
 	return original.NewRegistrationDefinitionsClient()

@@ -56,23 +56,17 @@ var _ ClientAPI = (*redisenterprise.Client)(nil)
 type DatabasesClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters redisenterprise.Database) (result redisenterprise.DatabasesCreateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, clusterName string, databaseName string) (result redisenterprise.DatabasesDeleteFuture, err error)
+	Export(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters redisenterprise.ExportClusterParameters) (result redisenterprise.DatabasesExportFuture, err error)
 	GetMethod(ctx context.Context, resourceGroupName string, clusterName string, databaseName string) (result redisenterprise.Database, err error)
+	Import(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters redisenterprise.ImportClusterParameters) (result redisenterprise.DatabasesImportFuture, err error)
 	ListByCluster(ctx context.Context, resourceGroupName string, clusterName string) (result redisenterprise.DatabaseListPage, err error)
 	ListByClusterComplete(ctx context.Context, resourceGroupName string, clusterName string) (result redisenterprise.DatabaseListIterator, err error)
+	ListKeys(ctx context.Context, resourceGroupName string, clusterName string, databaseName string) (result redisenterprise.AccessKeys, err error)
+	RegenerateKey(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters redisenterprise.RegenerateKeyParameters) (result redisenterprise.DatabasesRegenerateKeyFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters redisenterprise.DatabaseUpdate) (result redisenterprise.DatabasesUpdateFuture, err error)
 }
 
 var _ DatabasesClientAPI = (*redisenterprise.DatabasesClient)(nil)
-
-// DatabaseClientAPI contains the set of methods on the DatabaseClient type.
-type DatabaseClientAPI interface {
-	Export(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters redisenterprise.ExportClusterParameters) (result redisenterprise.DatabaseExportFuture, err error)
-	Import(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters redisenterprise.ImportClusterParameters) (result redisenterprise.DatabaseImportFuture, err error)
-	ListKeys(ctx context.Context, resourceGroupName string, clusterName string, databaseName string) (result redisenterprise.AccessKeys, err error)
-	RegenerateKey(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters redisenterprise.RegenerateKeyParameters) (result redisenterprise.DatabaseRegenerateKeyFuture, err error)
-}
-
-var _ DatabaseClientAPI = (*redisenterprise.DatabaseClient)(nil)
 
 // PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
 type PrivateEndpointConnectionsClientAPI interface {

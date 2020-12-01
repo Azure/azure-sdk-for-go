@@ -64,7 +64,8 @@ type LinkedNotificationHub struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
-// LinkNotificationHubParameters description of an Azure Notification Hub to link to the communication service
+// LinkNotificationHubParameters description of an Azure Notification Hub to link to the communication
+// service
 type LinkNotificationHubParameters struct {
 	// ResourceID - The resource ID of the notification hub
 	ResourceID *string `json:"resourceId,omitempty"`
@@ -98,6 +99,26 @@ type MetricSpecification struct {
 	Category *string `json:"category,omitempty"`
 	// Dimensions - The dimensions of the metrics.
 	Dimensions *[]Dimension `json:"dimensions,omitempty"`
+}
+
+// NameAvailability result of the request to check name availability. It contains a flag and possible
+// reason of failure.
+type NameAvailability struct {
+	autorest.Response `json:"-"`
+	// NameAvailable - Indicates whether the name is available or not.
+	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	// Reason - The reason of the availability. Required if name is not available.
+	Reason *string `json:"reason,omitempty"`
+	// Message - The message of the operation.
+	Message *string `json:"message,omitempty"`
+}
+
+// NameAvailabilityParameters data POST-ed to the nameAvailability action
+type NameAvailabilityParameters struct {
+	// Type - The resource type. Should be always "Microsoft.Communication/CommunicationServices".
+	Type *string `json:"type,omitempty"`
+	// Name - The CommunicationService name to validate. e.g."my-CommunicationService-name-here"
+	Name *string `json:"name,omitempty"`
 }
 
 // Operation REST API operation supported by CommunicationService resource provider.
@@ -277,8 +298,11 @@ func (page OperationListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListPage type.
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return OperationListPage{fn: getNextPage}
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // OperationProperties extra Operation properties.
@@ -290,7 +314,7 @@ type OperationProperties struct {
 // OperationStatus the current status of an async operation
 type OperationStatus struct {
 	autorest.Response `json:"-"`
-	// ID - READ-ONLY; The operation Id.
+	// ID - READ-ONLY; Fully qualified ID for the operation status.
 	ID *string `json:"id,omitempty"`
 	// Status - READ-ONLY; Provisioning state of the resource. Possible values include: 'StatusSucceeded', 'StatusFailed', 'StatusCanceled', 'StatusCreating', 'StatusDeleting', 'StatusMoving'
 	Status Status `json:"status,omitempty"`
@@ -427,7 +451,8 @@ func (future *ServiceCreateOrUpdateFuture) Result(client ServiceClient) (sr Serv
 	return
 }
 
-// ServiceDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServiceDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServiceDeleteFuture struct {
 	azure.Future
 }
@@ -588,7 +613,8 @@ func (sr *ServiceResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServiceResourceList object that includes an array of CommunicationServices and a possible link for next set.
+// ServiceResourceList object that includes an array of CommunicationServices and a possible link for next
+// set.
 type ServiceResourceList struct {
 	autorest.Response `json:"-"`
 	// Value - List of CommunicationService
@@ -741,8 +767,11 @@ func (page ServiceResourceListPage) Values() []ServiceResource {
 }
 
 // Creates a new instance of the ServiceResourceListPage type.
-func NewServiceResourceListPage(getNextPage func(context.Context, ServiceResourceList) (ServiceResourceList, error)) ServiceResourceListPage {
-	return ServiceResourceListPage{fn: getNextPage}
+func NewServiceResourceListPage(cur ServiceResourceList, getNextPage func(context.Context, ServiceResourceList) (ServiceResourceList, error)) ServiceResourceListPage {
+	return ServiceResourceListPage{
+		fn:  getNextPage,
+		srl: cur,
+	}
 }
 
 // ServiceSpecification an object that describes a specification.

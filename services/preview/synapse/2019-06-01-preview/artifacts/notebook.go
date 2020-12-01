@@ -42,43 +42,44 @@ func NewNotebookClient(endpoint string) NotebookClient {
 // notebook - note book resource definition.
 // ifMatch - eTag of the Note book entity.  Should only be specified for update, for which it should match
 // existing entity or can be * for unconditional update.
-func (client NotebookClient) CreateOrUpdateNotebook(ctx context.Context, notebookName string, notebook NotebookResource, ifMatch string) (result NotebookResource, err error) {
+func (client NotebookClient) CreateOrUpdateNotebook(ctx context.Context, notebookName string, notebook NotebookResource, ifMatch string) (result NotebookCreateOrUpdateNotebookFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotebookClient.CreateOrUpdateNotebook")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: notebook,
-			Constraints: []validation.Constraint{{Target: "notebook.Properties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "notebook.Properties.BigDataPool", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "notebook.Properties.BigDataPool.Type", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "notebook.Properties.BigDataPool.ReferenceName", Name: validation.Null, Rule: true, Chain: nil},
-					}},
-					{Target: "notebook.Properties.SessionProperties", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "notebook.Properties.SessionProperties.DriverMemory", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "notebook.Properties.SessionProperties.DriverCores", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "notebook.Properties.SessionProperties.ExecutorMemory", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "notebook.Properties.SessionProperties.ExecutorCores", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "notebook.Properties.SessionProperties.NumExecutors", Name: validation.Null, Rule: true, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "notebook.Name", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "notebook.Properties", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "notebook.Properties.BigDataPool", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "notebook.Properties.BigDataPool.Type", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "notebook.Properties.BigDataPool.ReferenceName", Name: validation.Null, Rule: true, Chain: nil},
 						}},
-					{Target: "notebook.Properties.Metadata", Name: validation.Null, Rule: true,
-						Chain: []validation.Constraint{{Target: "notebook.Properties.Metadata.Kernelspec", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "notebook.Properties.Metadata.Kernelspec.Name", Name: validation.Null, Rule: true, Chain: nil},
-								{Target: "notebook.Properties.Metadata.Kernelspec.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "notebook.Properties.SessionProperties", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "notebook.Properties.SessionProperties.DriverMemory", Name: validation.Null, Rule: true, Chain: nil},
+								{Target: "notebook.Properties.SessionProperties.DriverCores", Name: validation.Null, Rule: true, Chain: nil},
+								{Target: "notebook.Properties.SessionProperties.ExecutorMemory", Name: validation.Null, Rule: true, Chain: nil},
+								{Target: "notebook.Properties.SessionProperties.ExecutorCores", Name: validation.Null, Rule: true, Chain: nil},
+								{Target: "notebook.Properties.SessionProperties.NumExecutors", Name: validation.Null, Rule: true, Chain: nil},
 							}},
-							{Target: "notebook.Properties.Metadata.LanguageInfo", Name: validation.Null, Rule: false,
-								Chain: []validation.Constraint{{Target: "notebook.Properties.Metadata.LanguageInfo.Name", Name: validation.Null, Rule: true, Chain: nil}}},
-						}},
-					{Target: "notebook.Properties.Nbformat", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "notebook.Properties.NbformatMinor", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "notebook.Properties.Cells", Name: validation.Null, Rule: true, Chain: nil},
-				}}}}}); err != nil {
+						{Target: "notebook.Properties.Metadata", Name: validation.Null, Rule: true,
+							Chain: []validation.Constraint{{Target: "notebook.Properties.Metadata.Kernelspec", Name: validation.Null, Rule: false,
+								Chain: []validation.Constraint{{Target: "notebook.Properties.Metadata.Kernelspec.Name", Name: validation.Null, Rule: true, Chain: nil},
+									{Target: "notebook.Properties.Metadata.Kernelspec.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
+								}},
+								{Target: "notebook.Properties.Metadata.LanguageInfo", Name: validation.Null, Rule: false,
+									Chain: []validation.Constraint{{Target: "notebook.Properties.Metadata.LanguageInfo.Name", Name: validation.Null, Rule: true, Chain: nil}}},
+							}},
+						{Target: "notebook.Properties.Nbformat", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "notebook.Properties.NbformatMinor", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "notebook.Properties.Cells", Name: validation.Null, Rule: true, Chain: nil},
+					}}}}}); err != nil {
 		return result, validation.NewError("artifacts.NotebookClient", "CreateOrUpdateNotebook", err.Error())
 	}
 
@@ -88,16 +89,10 @@ func (client NotebookClient) CreateOrUpdateNotebook(ctx context.Context, noteboo
 		return
 	}
 
-	resp, err := client.CreateOrUpdateNotebookSender(req)
+	result, err = client.CreateOrUpdateNotebookSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "CreateOrUpdateNotebook", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "CreateOrUpdateNotebook", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.CreateOrUpdateNotebookResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "CreateOrUpdateNotebook", resp, "Failure responding to request")
 	}
 
 	return
@@ -118,6 +113,9 @@ func (client NotebookClient) CreateOrUpdateNotebookPreparer(ctx context.Context,
 		"api-version": APIVersion,
 	}
 
+	notebook.ID = nil
+	notebook.Type = nil
+	notebook.Etag = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -134,8 +132,14 @@ func (client NotebookClient) CreateOrUpdateNotebookPreparer(ctx context.Context,
 
 // CreateOrUpdateNotebookSender sends the CreateOrUpdateNotebook request. The method will close the
 // http.Response Body if it receives an error.
-func (client NotebookClient) CreateOrUpdateNotebookSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+func (client NotebookClient) CreateOrUpdateNotebookSender(req *http.Request) (future NotebookCreateOrUpdateNotebookFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // CreateOrUpdateNotebookResponder handles the response to the CreateOrUpdateNotebook request. The method always
@@ -143,7 +147,7 @@ func (client NotebookClient) CreateOrUpdateNotebookSender(req *http.Request) (*h
 func (client NotebookClient) CreateOrUpdateNotebookResponder(resp *http.Response) (result NotebookResource, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -153,13 +157,13 @@ func (client NotebookClient) CreateOrUpdateNotebookResponder(resp *http.Response
 // DeleteNotebook deletes a Note book.
 // Parameters:
 // notebookName - the notebook name.
-func (client NotebookClient) DeleteNotebook(ctx context.Context, notebookName string) (result autorest.Response, err error) {
+func (client NotebookClient) DeleteNotebook(ctx context.Context, notebookName string) (result NotebookDeleteNotebookFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotebookClient.DeleteNotebook")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -170,16 +174,10 @@ func (client NotebookClient) DeleteNotebook(ctx context.Context, notebookName st
 		return
 	}
 
-	resp, err := client.DeleteNotebookSender(req)
+	result, err = client.DeleteNotebookSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "DeleteNotebook", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "DeleteNotebook", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.DeleteNotebookResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "DeleteNotebook", resp, "Failure responding to request")
 	}
 
 	return
@@ -210,8 +208,14 @@ func (client NotebookClient) DeleteNotebookPreparer(ctx context.Context, noteboo
 
 // DeleteNotebookSender sends the DeleteNotebook request. The method will close the
 // http.Response Body if it receives an error.
-func (client NotebookClient) DeleteNotebookSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+func (client NotebookClient) DeleteNotebookSender(req *http.Request) (future NotebookDeleteNotebookFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // DeleteNotebookResponder handles the response to the DeleteNotebook request. The method always
@@ -219,7 +223,7 @@ func (client NotebookClient) DeleteNotebookSender(req *http.Request) (*http.Resp
 func (client NotebookClient) DeleteNotebookResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -526,5 +530,93 @@ func (client NotebookClient) GetNotebookSummaryByWorkSpaceComplete(ctx context.C
 		}()
 	}
 	result.page, err = client.GetNotebookSummaryByWorkSpace(ctx)
+	return
+}
+
+// RenameNotebook renames a notebook.
+// Parameters:
+// notebookName - the notebook name.
+// request - proposed new name.
+func (client NotebookClient) RenameNotebook(ctx context.Context, notebookName string, request RenameRequest) (result NotebookRenameNotebookFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NotebookClient.RenameNotebook")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: request,
+			Constraints: []validation.Constraint{{Target: "request.NewName", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "request.NewName", Name: validation.MaxLength, Rule: 260, Chain: nil},
+					{Target: "request.NewName", Name: validation.MinLength, Rule: 1, Chain: nil},
+					{Target: "request.NewName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("artifacts.NotebookClient", "RenameNotebook", err.Error())
+	}
+
+	req, err := client.RenameNotebookPreparer(ctx, notebookName, request)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "RenameNotebook", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.RenameNotebookSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "RenameNotebook", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// RenameNotebookPreparer prepares the RenameNotebook request.
+func (client NotebookClient) RenameNotebookPreparer(ctx context.Context, notebookName string, request RenameRequest) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"notebookName": autorest.Encode("path", notebookName),
+	}
+
+	const APIVersion = "2019-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{endpoint}", urlParameters),
+		autorest.WithPathParameters("/notebooks/{notebookName}/rename", pathParameters),
+		autorest.WithJSON(request),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// RenameNotebookSender sends the RenameNotebook request. The method will close the
+// http.Response Body if it receives an error.
+func (client NotebookClient) RenameNotebookSender(req *http.Request) (future NotebookRenameNotebookFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// RenameNotebookResponder handles the response to the RenameNotebook request. The method always
+// closes the http.Response Body.
+func (client NotebookClient) RenameNotebookResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
 	return
 }

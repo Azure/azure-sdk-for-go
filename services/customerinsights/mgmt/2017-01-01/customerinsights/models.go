@@ -238,8 +238,11 @@ func (page AuthorizationPolicyListResultPage) Values() []AuthorizationPolicyReso
 }
 
 // Creates a new instance of the AuthorizationPolicyListResultPage type.
-func NewAuthorizationPolicyListResultPage(getNextPage func(context.Context, AuthorizationPolicyListResult) (AuthorizationPolicyListResult, error)) AuthorizationPolicyListResultPage {
-	return AuthorizationPolicyListResultPage{fn: getNextPage}
+func NewAuthorizationPolicyListResultPage(cur AuthorizationPolicyListResult, getNextPage func(context.Context, AuthorizationPolicyListResult) (AuthorizationPolicyListResult, error)) AuthorizationPolicyListResultPage {
+	return AuthorizationPolicyListResultPage{
+		fn:   getNextPage,
+		aplr: cur,
+	}
 }
 
 // AuthorizationPolicyResourceFormat the authorization policy resource format.
@@ -522,8 +525,11 @@ func (page ConnectorListResultPage) Values() []ConnectorResourceFormat {
 }
 
 // Creates a new instance of the ConnectorListResultPage type.
-func NewConnectorListResultPage(getNextPage func(context.Context, ConnectorListResult) (ConnectorListResult, error)) ConnectorListResultPage {
-	return ConnectorListResultPage{fn: getNextPage}
+func NewConnectorListResultPage(cur ConnectorListResult, getNextPage func(context.Context, ConnectorListResult) (ConnectorListResult, error)) ConnectorListResultPage {
+	return ConnectorListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // ConnectorMapping the connector mapping definition.
@@ -633,8 +639,8 @@ type ConnectorMappingListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ConnectorMappingListResultIterator provides access to a complete listing of ConnectorMappingResourceFormat
-// values.
+// ConnectorMappingListResultIterator provides access to a complete listing of
+// ConnectorMappingResourceFormat values.
 type ConnectorMappingListResultIterator struct {
 	i    int
 	page ConnectorMappingListResultPage
@@ -777,8 +783,11 @@ func (page ConnectorMappingListResultPage) Values() []ConnectorMappingResourceFo
 }
 
 // Creates a new instance of the ConnectorMappingListResultPage type.
-func NewConnectorMappingListResultPage(getNextPage func(context.Context, ConnectorMappingListResult) (ConnectorMappingListResult, error)) ConnectorMappingListResultPage {
-	return ConnectorMappingListResultPage{fn: getNextPage}
+func NewConnectorMappingListResultPage(cur ConnectorMappingListResult, getNextPage func(context.Context, ConnectorMappingListResult) (ConnectorMappingListResult, error)) ConnectorMappingListResultPage {
+	return ConnectorMappingListResultPage{
+		fn:   getNextPage,
+		cmlr: cur,
+	}
 }
 
 // ConnectorMappingProperties the connector mapping properties.
@@ -957,8 +966,8 @@ func (crf *ConnectorResourceFormat) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ConnectorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ConnectorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ConnectorsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -986,7 +995,8 @@ func (future *ConnectorsCreateOrUpdateFuture) Result(client ConnectorsClient) (c
 	return
 }
 
-// ConnectorsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ConnectorsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ConnectorsDeleteFuture struct {
 	azure.Future
 }
@@ -1032,8 +1042,8 @@ type CrmConnectorProperties struct {
 	AccessToken *string `json:"accessToken,omitempty"`
 }
 
-// DataSource data Source is a way for us to know the source of instances. A single type can have data coming
-// in from multiple places. In activities we use this to determine precedence rules.
+// DataSource data Source is a way for us to know the source of instances. A single type can have data
+// coming in from multiple places. In activities we use this to determine precedence rules.
 type DataSource struct {
 	// Name - READ-ONLY; The data source name
 	Name *string `json:"name,omitempty"`
@@ -1547,8 +1557,11 @@ func (page HubListResultPage) Values() []Hub {
 }
 
 // Creates a new instance of the HubListResultPage type.
-func NewHubListResultPage(getNextPage func(context.Context, HubListResult) (HubListResult, error)) HubListResultPage {
-	return HubListResultPage{fn: getNextPage}
+func NewHubListResultPage(cur HubListResult, getNextPage func(context.Context, HubListResult) (HubListResult, error)) HubListResultPage {
+	return HubListResultPage{
+		fn:  getNextPage,
+		hlr: cur,
+	}
 }
 
 // HubPropertiesFormat properties of hub.
@@ -1762,8 +1775,11 @@ func (page InteractionListResultPage) Values() []InteractionResourceFormat {
 }
 
 // Creates a new instance of the InteractionListResultPage type.
-func NewInteractionListResultPage(getNextPage func(context.Context, InteractionListResult) (InteractionListResult, error)) InteractionListResultPage {
-	return InteractionListResultPage{fn: getNextPage}
+func NewInteractionListResultPage(cur InteractionListResult, getNextPage func(context.Context, InteractionListResult) (InteractionListResult, error)) InteractionListResultPage {
+	return InteractionListResultPage{
+		fn:  getNextPage,
+		ilr: cur,
+	}
 }
 
 // InteractionResourceFormat the interaction resource format.
@@ -1838,8 +1854,8 @@ func (irf *InteractionResourceFormat) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// InteractionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// InteractionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type InteractionsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -2536,8 +2552,11 @@ func (page KpiListResultPage) Values() []KpiResourceFormat {
 }
 
 // Creates a new instance of the KpiListResultPage type.
-func NewKpiListResultPage(getNextPage func(context.Context, KpiListResult) (KpiListResult, error)) KpiListResultPage {
-	return KpiListResultPage{fn: getNextPage}
+func NewKpiListResultPage(cur KpiListResult, getNextPage func(context.Context, KpiListResult) (KpiListResult, error)) KpiListResultPage {
+	return KpiListResultPage{
+		fn:  getNextPage,
+		klr: cur,
+	}
 }
 
 // KpiParticipantProfilesMetadata the KPI participant profile metadata.
@@ -2836,8 +2855,11 @@ func (page LinkListResultPage) Values() []LinkResourceFormat {
 }
 
 // Creates a new instance of the LinkListResultPage type.
-func NewLinkListResultPage(getNextPage func(context.Context, LinkListResult) (LinkListResult, error)) LinkListResultPage {
-	return LinkListResultPage{fn: getNextPage}
+func NewLinkListResultPage(cur LinkListResult, getNextPage func(context.Context, LinkListResult) (LinkListResult, error)) LinkListResultPage {
+	return LinkListResultPage{
+		fn:  getNextPage,
+		llr: cur,
+	}
 }
 
 // LinkResourceFormat the link resource format.
@@ -3172,8 +3194,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // Participant describes a profile type participating in an interaction.
@@ -3396,8 +3421,11 @@ func (page ProfileListResultPage) Values() []ProfileResourceFormat {
 }
 
 // Creates a new instance of the ProfileListResultPage type.
-func NewProfileListResultPage(getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
-	return ProfileListResultPage{fn: getNextPage}
+func NewProfileListResultPage(cur ProfileListResult, getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
+	return ProfileListResultPage{
+		fn:  getNextPage,
+		plr: cur,
+	}
 }
 
 // ProfileResourceFormat the profile resource format.
@@ -3501,7 +3529,8 @@ func (future *ProfilesCreateOrUpdateFuture) Result(client ProfilesClient) (prf P
 	return
 }
 
-// ProfilesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ProfilesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ProfilesDeleteFuture struct {
 	azure.Future
 }
@@ -3841,8 +3870,8 @@ type RelationshipLinkListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// RelationshipLinkListResultIterator provides access to a complete listing of RelationshipLinkResourceFormat
-// values.
+// RelationshipLinkListResultIterator provides access to a complete listing of
+// RelationshipLinkResourceFormat values.
 type RelationshipLinkListResultIterator struct {
 	i    int
 	page RelationshipLinkListResultPage
@@ -3985,8 +4014,11 @@ func (page RelationshipLinkListResultPage) Values() []RelationshipLinkResourceFo
 }
 
 // Creates a new instance of the RelationshipLinkListResultPage type.
-func NewRelationshipLinkListResultPage(getNextPage func(context.Context, RelationshipLinkListResult) (RelationshipLinkListResult, error)) RelationshipLinkListResultPage {
-	return RelationshipLinkListResultPage{fn: getNextPage}
+func NewRelationshipLinkListResultPage(cur RelationshipLinkListResult, getNextPage func(context.Context, RelationshipLinkListResult) (RelationshipLinkListResult, error)) RelationshipLinkListResultPage {
+	return RelationshipLinkListResultPage{
+		fn:   getNextPage,
+		rllr: cur,
+	}
 }
 
 // RelationshipLinkResourceFormat the relationship link resource format.
@@ -4122,7 +4154,8 @@ type RelationshipListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// RelationshipListResultIterator provides access to a complete listing of RelationshipResourceFormat values.
+// RelationshipListResultIterator provides access to a complete listing of RelationshipResourceFormat
+// values.
 type RelationshipListResultIterator struct {
 	i    int
 	page RelationshipListResultPage
@@ -4265,8 +4298,11 @@ func (page RelationshipListResultPage) Values() []RelationshipResourceFormat {
 }
 
 // Creates a new instance of the RelationshipListResultPage type.
-func NewRelationshipListResultPage(getNextPage func(context.Context, RelationshipListResult) (RelationshipListResult, error)) RelationshipListResultPage {
-	return RelationshipListResultPage{fn: getNextPage}
+func NewRelationshipListResultPage(cur RelationshipListResult, getNextPage func(context.Context, RelationshipListResult) (RelationshipListResult, error)) RelationshipListResultPage {
+	return RelationshipListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // RelationshipResourceFormat the relationship resource format.
@@ -4341,8 +4377,8 @@ func (rrf *RelationshipResourceFormat) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// RelationshipsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// RelationshipsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type RelationshipsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -4717,8 +4753,11 @@ func (page RoleAssignmentListResultPage) Values() []RoleAssignmentResourceFormat
 }
 
 // Creates a new instance of the RoleAssignmentListResultPage type.
-func NewRoleAssignmentListResultPage(getNextPage func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)) RoleAssignmentListResultPage {
-	return RoleAssignmentListResultPage{fn: getNextPage}
+func NewRoleAssignmentListResultPage(cur RoleAssignmentListResult, getNextPage func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)) RoleAssignmentListResultPage {
+	return RoleAssignmentListResultPage{
+		fn:   getNextPage,
+		ralr: cur,
+	}
 }
 
 // RoleAssignmentResourceFormat the Role Assignment resource format.
@@ -4974,8 +5013,11 @@ func (page RoleListResultPage) Values() []RoleResourceFormat {
 }
 
 // Creates a new instance of the RoleListResultPage type.
-func NewRoleListResultPage(getNextPage func(context.Context, RoleListResult) (RoleListResult, error)) RoleListResultPage {
-	return RoleListResultPage{fn: getNextPage}
+func NewRoleListResultPage(cur RoleListResult, getNextPage func(context.Context, RoleListResult) (RoleListResult, error)) RoleListResultPage {
+	return RoleListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // RoleResourceFormat the role resource format.
@@ -5313,8 +5355,11 @@ func (page ViewListResultPage) Values() []ViewResourceFormat {
 }
 
 // Creates a new instance of the ViewListResultPage type.
-func NewViewListResultPage(getNextPage func(context.Context, ViewListResult) (ViewListResult, error)) ViewListResultPage {
-	return ViewListResultPage{fn: getNextPage}
+func NewViewListResultPage(cur ViewListResult, getNextPage func(context.Context, ViewListResult) (ViewListResult, error)) ViewListResultPage {
+	return ViewListResultPage{
+		fn:  getNextPage,
+		vlr: cur,
+	}
 }
 
 // ViewResourceFormat the view resource format.
@@ -5584,8 +5629,11 @@ func (page WidgetTypeListResultPage) Values() []WidgetTypeResourceFormat {
 }
 
 // Creates a new instance of the WidgetTypeListResultPage type.
-func NewWidgetTypeListResultPage(getNextPage func(context.Context, WidgetTypeListResult) (WidgetTypeListResult, error)) WidgetTypeListResultPage {
-	return WidgetTypeListResultPage{fn: getNextPage}
+func NewWidgetTypeListResultPage(cur WidgetTypeListResult, getNextPage func(context.Context, WidgetTypeListResult) (WidgetTypeListResult, error)) WidgetTypeListResultPage {
+	return WidgetTypeListResultPage{
+		fn:   getNextPage,
+		wtlr: cur,
+	}
 }
 
 // WidgetTypeResourceFormat the WidgetTypeResourceFormat

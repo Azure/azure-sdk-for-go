@@ -244,8 +244,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // ReservationDetails reservation details resource.
@@ -769,6 +772,9 @@ func (page UsageDetailsListResultPage) Values() []UsageDetail {
 }
 
 // Creates a new instance of the UsageDetailsListResultPage type.
-func NewUsageDetailsListResultPage(getNextPage func(context.Context, UsageDetailsListResult) (UsageDetailsListResult, error)) UsageDetailsListResultPage {
-	return UsageDetailsListResultPage{fn: getNextPage}
+func NewUsageDetailsListResultPage(cur UsageDetailsListResult, getNextPage func(context.Context, UsageDetailsListResult) (UsageDetailsListResult, error)) UsageDetailsListResultPage {
+	return UsageDetailsListResultPage{
+		fn:   getNextPage,
+		udlr: cur,
+	}
 }

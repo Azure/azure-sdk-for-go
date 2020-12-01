@@ -52,15 +52,15 @@ type AccountProperties struct {
 	AccountDomain *string `json:"accountDomain,omitempty"`
 }
 
-// AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
+// AzureEntityResource the resource model definition for an Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.
 	Etag *string `json:"etag,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -139,8 +139,8 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationPage result of the request to list Resource Provider operations. It contains a list of operations
-// and a URL link to get the next set of results.
+// OperationPage result of the request to list Resource Provider operations. It contains a list of
+// operations and a URL link to get the next set of results.
 type OperationPage struct {
 	autorest.Response `json:"-"`
 	// Value - List of operations supported by the Resource Provider.
@@ -292,8 +292,11 @@ func (page OperationPagePage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationPagePage type.
-func NewOperationPagePage(getNextPage func(context.Context, OperationPage) (OperationPage, error)) OperationPagePage {
-	return OperationPagePage{fn: getNextPage}
+func NewOperationPagePage(cur OperationPage, getNextPage func(context.Context, OperationPage) (OperationPage, error)) OperationPagePage {
+	return OperationPagePage{
+		fn: getNextPage,
+		op: cur,
+	}
 }
 
 // Plan plan for the resource.
@@ -310,14 +313,14 @@ type Plan struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
-// required location and tags
+// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
+// have tags and a location
 type ProxyResource struct {
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -331,11 +334,11 @@ type RemoteRenderingAccount struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -454,8 +457,8 @@ func (rra RemoteRenderingAccountIdentity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RemoteRenderingAccountPage result of the request to get resource collection. It contains a list of resources
-// and a URL link to get the next set of results.
+// RemoteRenderingAccountPage result of the request to get resource collection. It contains a list of
+// resources and a URL link to get the next set of results.
 type RemoteRenderingAccountPage struct {
 	autorest.Response `json:"-"`
 	// Value - List of resources supported by the Resource Provider.
@@ -464,7 +467,8 @@ type RemoteRenderingAccountPage struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// RemoteRenderingAccountPageIterator provides access to a complete listing of RemoteRenderingAccount values.
+// RemoteRenderingAccountPageIterator provides access to a complete listing of RemoteRenderingAccount
+// values.
 type RemoteRenderingAccountPageIterator struct {
 	i    int
 	page RemoteRenderingAccountPagePage
@@ -607,28 +611,32 @@ func (page RemoteRenderingAccountPagePage) Values() []RemoteRenderingAccount {
 }
 
 // Creates a new instance of the RemoteRenderingAccountPagePage type.
-func NewRemoteRenderingAccountPagePage(getNextPage func(context.Context, RemoteRenderingAccountPage) (RemoteRenderingAccountPage, error)) RemoteRenderingAccountPagePage {
-	return RemoteRenderingAccountPagePage{fn: getNextPage}
+func NewRemoteRenderingAccountPagePage(cur RemoteRenderingAccountPage, getNextPage func(context.Context, RemoteRenderingAccountPage) (RemoteRenderingAccountPage, error)) RemoteRenderingAccountPagePage {
+	return RemoteRenderingAccountPagePage{
+		fn:   getNextPage,
+		rrap: cur,
+	}
 }
 
-// Resource ...
+// Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
 // ResourceModelWithAllowedPropertySet the resource model definition containing the full set of allowed
-// properties for a resource. Except properties bag, there cannot be a top level property outside of this set.
+// properties for a resource. Except properties bag, there cannot be a top level property outside of this
+// set.
 type ResourceModelWithAllowedPropertySet struct {
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts..
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
@@ -742,11 +750,11 @@ type SpatialAnchorsAccount struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -834,8 +842,8 @@ func (saa *SpatialAnchorsAccount) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SpatialAnchorsAccountPage result of the request to get resource collection. It contains a list of resources
-// and a URL link to get the next set of results.
+// SpatialAnchorsAccountPage result of the request to get resource collection. It contains a list of
+// resources and a URL link to get the next set of results.
 type SpatialAnchorsAccountPage struct {
 	autorest.Response `json:"-"`
 	// Value - List of resources supported by the Resource Provider.
@@ -987,21 +995,25 @@ func (page SpatialAnchorsAccountPagePage) Values() []SpatialAnchorsAccount {
 }
 
 // Creates a new instance of the SpatialAnchorsAccountPagePage type.
-func NewSpatialAnchorsAccountPagePage(getNextPage func(context.Context, SpatialAnchorsAccountPage) (SpatialAnchorsAccountPage, error)) SpatialAnchorsAccountPagePage {
-	return SpatialAnchorsAccountPagePage{fn: getNextPage}
+func NewSpatialAnchorsAccountPagePage(cur SpatialAnchorsAccountPage, getNextPage func(context.Context, SpatialAnchorsAccountPage) (SpatialAnchorsAccountPage, error)) SpatialAnchorsAccountPagePage {
+	return SpatialAnchorsAccountPagePage{
+		fn:   getNextPage,
+		saap: cur,
+	}
 }
 
-// TrackedResource the resource model definition for a ARM tracked top level resource
+// TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
+// which has 'tags' and a 'location'
 type TrackedResource struct {
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 

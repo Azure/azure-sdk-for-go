@@ -315,14 +315,14 @@ func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) Cer
 func NewEndpointHealthDataListResultIterator(page EndpointHealthDataListResultPage) EndpointHealthDataListResultIterator {
 	return original.NewEndpointHealthDataListResultIterator(page)
 }
-func NewEndpointHealthDataListResultPage(getNextPage func(context.Context, EndpointHealthDataListResult) (EndpointHealthDataListResult, error)) EndpointHealthDataListResultPage {
-	return original.NewEndpointHealthDataListResultPage(getNextPage)
+func NewEndpointHealthDataListResultPage(cur EndpointHealthDataListResult, getNextPage func(context.Context, EndpointHealthDataListResult) (EndpointHealthDataListResult, error)) EndpointHealthDataListResultPage {
+	return original.NewEndpointHealthDataListResultPage(cur, getNextPage)
 }
 func NewEventHubConsumerGroupsListResultIterator(page EventHubConsumerGroupsListResultPage) EventHubConsumerGroupsListResultIterator {
 	return original.NewEventHubConsumerGroupsListResultIterator(page)
 }
-func NewEventHubConsumerGroupsListResultPage(getNextPage func(context.Context, EventHubConsumerGroupsListResult) (EventHubConsumerGroupsListResult, error)) EventHubConsumerGroupsListResultPage {
-	return original.NewEventHubConsumerGroupsListResultPage(getNextPage)
+func NewEventHubConsumerGroupsListResultPage(cur EventHubConsumerGroupsListResult, getNextPage func(context.Context, EventHubConsumerGroupsListResult) (EventHubConsumerGroupsListResult, error)) EventHubConsumerGroupsListResultPage {
+	return original.NewEventHubConsumerGroupsListResultPage(cur, getNextPage)
 }
 func NewIotHubClient(subscriptionID string) IotHubClient {
 	return original.NewIotHubClient(subscriptionID)
@@ -333,14 +333,14 @@ func NewIotHubClientWithBaseURI(baseURI string, subscriptionID string) IotHubCli
 func NewIotHubDescriptionListResultIterator(page IotHubDescriptionListResultPage) IotHubDescriptionListResultIterator {
 	return original.NewIotHubDescriptionListResultIterator(page)
 }
-func NewIotHubDescriptionListResultPage(getNextPage func(context.Context, IotHubDescriptionListResult) (IotHubDescriptionListResult, error)) IotHubDescriptionListResultPage {
-	return original.NewIotHubDescriptionListResultPage(getNextPage)
+func NewIotHubDescriptionListResultPage(cur IotHubDescriptionListResult, getNextPage func(context.Context, IotHubDescriptionListResult) (IotHubDescriptionListResult, error)) IotHubDescriptionListResultPage {
+	return original.NewIotHubDescriptionListResultPage(cur, getNextPage)
 }
 func NewIotHubQuotaMetricInfoListResultIterator(page IotHubQuotaMetricInfoListResultPage) IotHubQuotaMetricInfoListResultIterator {
 	return original.NewIotHubQuotaMetricInfoListResultIterator(page)
 }
-func NewIotHubQuotaMetricInfoListResultPage(getNextPage func(context.Context, IotHubQuotaMetricInfoListResult) (IotHubQuotaMetricInfoListResult, error)) IotHubQuotaMetricInfoListResultPage {
-	return original.NewIotHubQuotaMetricInfoListResultPage(getNextPage)
+func NewIotHubQuotaMetricInfoListResultPage(cur IotHubQuotaMetricInfoListResult, getNextPage func(context.Context, IotHubQuotaMetricInfoListResult) (IotHubQuotaMetricInfoListResult, error)) IotHubQuotaMetricInfoListResultPage {
+	return original.NewIotHubQuotaMetricInfoListResultPage(cur, getNextPage)
 }
 func NewIotHubResourceClient(subscriptionID string) IotHubResourceClient {
 	return original.NewIotHubResourceClient(subscriptionID)
@@ -351,20 +351,20 @@ func NewIotHubResourceClientWithBaseURI(baseURI string, subscriptionID string) I
 func NewIotHubSkuDescriptionListResultIterator(page IotHubSkuDescriptionListResultPage) IotHubSkuDescriptionListResultIterator {
 	return original.NewIotHubSkuDescriptionListResultIterator(page)
 }
-func NewIotHubSkuDescriptionListResultPage(getNextPage func(context.Context, IotHubSkuDescriptionListResult) (IotHubSkuDescriptionListResult, error)) IotHubSkuDescriptionListResultPage {
-	return original.NewIotHubSkuDescriptionListResultPage(getNextPage)
+func NewIotHubSkuDescriptionListResultPage(cur IotHubSkuDescriptionListResult, getNextPage func(context.Context, IotHubSkuDescriptionListResult) (IotHubSkuDescriptionListResult, error)) IotHubSkuDescriptionListResultPage {
+	return original.NewIotHubSkuDescriptionListResultPage(cur, getNextPage)
 }
 func NewJobResponseListResultIterator(page JobResponseListResultPage) JobResponseListResultIterator {
 	return original.NewJobResponseListResultIterator(page)
 }
-func NewJobResponseListResultPage(getNextPage func(context.Context, JobResponseListResult) (JobResponseListResult, error)) JobResponseListResultPage {
-	return original.NewJobResponseListResultPage(getNextPage)
+func NewJobResponseListResultPage(cur JobResponseListResult, getNextPage func(context.Context, JobResponseListResult) (JobResponseListResult, error)) JobResponseListResultPage {
+	return original.NewJobResponseListResultPage(cur, getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -393,8 +393,8 @@ func NewResourceProviderCommonClientWithBaseURI(baseURI string, subscriptionID s
 func NewSharedAccessSignatureAuthorizationRuleListResultIterator(page SharedAccessSignatureAuthorizationRuleListResultPage) SharedAccessSignatureAuthorizationRuleListResultIterator {
 	return original.NewSharedAccessSignatureAuthorizationRuleListResultIterator(page)
 }
-func NewSharedAccessSignatureAuthorizationRuleListResultPage(getNextPage func(context.Context, SharedAccessSignatureAuthorizationRuleListResult) (SharedAccessSignatureAuthorizationRuleListResult, error)) SharedAccessSignatureAuthorizationRuleListResultPage {
-	return original.NewSharedAccessSignatureAuthorizationRuleListResultPage(getNextPage)
+func NewSharedAccessSignatureAuthorizationRuleListResultPage(cur SharedAccessSignatureAuthorizationRuleListResult, getNextPage func(context.Context, SharedAccessSignatureAuthorizationRuleListResult) (SharedAccessSignatureAuthorizationRuleListResult, error)) SharedAccessSignatureAuthorizationRuleListResultPage {
+	return original.NewSharedAccessSignatureAuthorizationRuleListResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

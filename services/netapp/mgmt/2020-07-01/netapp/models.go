@@ -306,7 +306,8 @@ func (future *AccountsCreateOrUpdateFuture) Result(client AccountsClient) (a Acc
 	return
 }
 
-// AccountsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// AccountsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AccountsDeleteFuture struct {
 	azure.Future
 }
@@ -328,7 +329,8 @@ func (future *AccountsDeleteFuture) Result(client AccountsClient) (ar autorest.R
 	return
 }
 
-// AccountsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// AccountsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AccountsUpdateFuture struct {
 	azure.Future
 }
@@ -1020,7 +1022,8 @@ func (bp BackupProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// BackupsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// BackupsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type BackupsCreateFuture struct {
 	azure.Future
 }
@@ -1048,7 +1051,8 @@ func (future *BackupsCreateFuture) Result(client BackupsClient) (b Backup, err e
 	return
 }
 
-// BackupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// BackupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type BackupsDeleteFuture struct {
 	azure.Future
 }
@@ -1617,8 +1621,8 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationListResult result of the request to list Cloud Volume operations. It contains a list of operations
-// and a URL link to get the next set of results.
+// OperationListResult result of the request to list Cloud Volume operations. It contains a list of
+// operations and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of Storage operations supported by the Storage resource provider.
@@ -2286,7 +2290,8 @@ type SnapshotProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// SnapshotsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// SnapshotsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SnapshotsCreateFuture struct {
 	azure.Future
 }
@@ -2314,7 +2319,8 @@ func (future *SnapshotsCreateFuture) Result(client SnapshotsClient) (s Snapshot,
 	return
 }
 
-// SnapshotsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// SnapshotsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SnapshotsDeleteFuture struct {
 	azure.Future
 }
@@ -2343,7 +2349,8 @@ type SnapshotsList struct {
 	Value *[]Snapshot `json:"value,omitempty"`
 }
 
-// SnapshotsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// SnapshotsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SnapshotsUpdateFuture struct {
 	azure.Future
 }
@@ -2713,8 +2720,8 @@ type VolumePatchProperties struct {
 	DataProtection *VolumePatchPropertiesDataProtection `json:"dataProtection,omitempty"`
 }
 
-// VolumePatchPropertiesDataProtection dataProtection type volumes include an object containing details of the
-// replication
+// VolumePatchPropertiesDataProtection dataProtection type volumes include an object containing details of
+// the replication
 type VolumePatchPropertiesDataProtection struct {
 	// Backup - Backup Properties
 	Backup *VolumeBackupProperties `json:"backup,omitempty"`
@@ -2844,8 +2851,8 @@ type VolumeRevert struct {
 	SnapshotID *string `json:"snapshotId,omitempty"`
 }
 
-// VolumesAuthorizeReplicationFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// VolumesAuthorizeReplicationFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type VolumesAuthorizeReplicationFuture struct {
 	azure.Future
 }
@@ -2919,7 +2926,8 @@ func (future *VolumesCreateOrUpdateFuture) Result(client VolumesClient) (vVar Vo
 	return
 }
 
-// VolumesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// VolumesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type VolumesDeleteFuture struct {
 	azure.Future
 }
@@ -2941,8 +2949,8 @@ func (future *VolumesDeleteFuture) Result(client VolumesClient) (ar autorest.Res
 	return
 }
 
-// VolumesDeleteReplicationFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// VolumesDeleteReplicationFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type VolumesDeleteReplicationFuture struct {
 	azure.Future
 }
@@ -3016,8 +3024,8 @@ func (future *VolumesReInitializeReplicationFuture) Result(client VolumesClient)
 	return
 }
 
-// VolumesResyncReplicationFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// VolumesResyncReplicationFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type VolumesResyncReplicationFuture struct {
 	azure.Future
 }
@@ -3039,7 +3047,8 @@ func (future *VolumesResyncReplicationFuture) Result(client VolumesClient) (ar a
 	return
 }
 
-// VolumesRevertFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// VolumesRevertFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type VolumesRevertFuture struct {
 	azure.Future
 }
@@ -3061,7 +3070,8 @@ func (future *VolumesRevertFuture) Result(client VolumesClient) (ar autorest.Res
 	return
 }
 
-// VolumesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// VolumesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type VolumesUpdateFuture struct {
 	azure.Future
 }

@@ -62,8 +62,8 @@ type ClusterReportedProperties = original.ClusterReportedProperties
 type ClusterUpdate = original.ClusterUpdate
 type ClustersClient = original.ClustersClient
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
+type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
-type ErrorResponseError = original.ErrorResponseError
 type OperationDetail = original.OperationDetail
 type OperationDisplay = original.OperationDisplay
 type OperationsClient = original.OperationsClient
@@ -77,8 +77,8 @@ func New(subscriptionID string) BaseClient {
 func NewClusterListIterator(page ClusterListPage) ClusterListIterator {
 	return original.NewClusterListIterator(page)
 }
-func NewClusterListPage(getNextPage func(context.Context, ClusterList) (ClusterList, error)) ClusterListPage {
-	return original.NewClusterListPage(getNextPage)
+func NewClusterListPage(cur ClusterList, getNextPage func(context.Context, ClusterList) (ClusterList, error)) ClusterListPage {
+	return original.NewClusterListPage(cur, getNextPage)
 }
 func NewClustersClient(subscriptionID string) ClustersClient {
 	return original.NewClustersClient(subscriptionID)

@@ -97,8 +97,8 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationListResult a list of service operations. It contains a list of operations and a URL link to get the
-// next set of results.
+// OperationListResult a list of service operations. It contains a list of operations and a URL link to get
+// the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// NextLink - The link used to get the next page of service description objects.
@@ -259,8 +259,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationResultsDescription the properties indicating the operation result of an operation on a service.
@@ -383,8 +386,8 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty"`
 }
 
-// PrivateEndpointConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// PrivateEndpointConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type PrivateEndpointConnectionsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -545,8 +548,8 @@ type PrivateLinkServiceConnectionState struct {
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
 }
 
-// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not have
-// tags and a location
+// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
+// have tags and a location
 type ProxyResource struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -639,7 +642,8 @@ func (future *ServicesCreateOrUpdateFuture) Result(client ServicesClient) (sd Se
 	return
 }
 
-// ServicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServicesDeleteFuture struct {
 	azure.Future
 }
@@ -717,7 +721,8 @@ type ServicesDescriptionListResult struct {
 	Value *[]ServicesDescription `json:"value,omitempty"`
 }
 
-// ServicesDescriptionListResultIterator provides access to a complete listing of ServicesDescription values.
+// ServicesDescriptionListResultIterator provides access to a complete listing of ServicesDescription
+// values.
 type ServicesDescriptionListResultIterator struct {
 	i    int
 	page ServicesDescriptionListResultPage
@@ -860,8 +865,11 @@ func (page ServicesDescriptionListResultPage) Values() []ServicesDescription {
 }
 
 // Creates a new instance of the ServicesDescriptionListResultPage type.
-func NewServicesDescriptionListResultPage(getNextPage func(context.Context, ServicesDescriptionListResult) (ServicesDescriptionListResult, error)) ServicesDescriptionListResultPage {
-	return ServicesDescriptionListResultPage{fn: getNextPage}
+func NewServicesDescriptionListResultPage(cur ServicesDescriptionListResult, getNextPage func(context.Context, ServicesDescriptionListResult) (ServicesDescriptionListResult, error)) ServicesDescriptionListResultPage {
+	return ServicesDescriptionListResultPage{
+		fn:   getNextPage,
+		sdlr: cur,
+	}
 }
 
 // ServicesNameAvailabilityInfo the properties indicating whether a given service name is available.
@@ -1031,7 +1039,8 @@ func (sr ServicesResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ServicesResourceIdentity setting indicating whether the service has a managed identity associated with it.
+// ServicesResourceIdentity setting indicating whether the service has a managed identity associated with
+// it.
 type ServicesResourceIdentity struct {
 	// PrincipalID - READ-ONLY; The principal ID of the resource identity.
 	PrincipalID *string `json:"principalId,omitempty"`
@@ -1050,7 +1059,8 @@ func (sr ServicesResourceIdentity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ServicesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServicesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServicesUpdateFuture struct {
 	azure.Future
 }
@@ -1084,8 +1094,8 @@ type SetObject struct {
 	Value             interface{} `json:"value,omitempty"`
 }
 
-// TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource which
-// has 'tags' and a 'location'
+// TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
+// which has 'tags' and a 'location'
 type TrackedResource struct {
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`

@@ -98,8 +98,8 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 func NewCommitmentAssociationListResultIterator(page CommitmentAssociationListResultPage) CommitmentAssociationListResultIterator {
 	return original.NewCommitmentAssociationListResultIterator(page)
 }
-func NewCommitmentAssociationListResultPage(getNextPage func(context.Context, CommitmentAssociationListResult) (CommitmentAssociationListResult, error)) CommitmentAssociationListResultPage {
-	return original.NewCommitmentAssociationListResultPage(getNextPage)
+func NewCommitmentAssociationListResultPage(cur CommitmentAssociationListResult, getNextPage func(context.Context, CommitmentAssociationListResult) (CommitmentAssociationListResult, error)) CommitmentAssociationListResultPage {
+	return original.NewCommitmentAssociationListResultPage(cur, getNextPage)
 }
 func NewCommitmentAssociationsClient(subscriptionID string) CommitmentAssociationsClient {
 	return original.NewCommitmentAssociationsClient(subscriptionID)
@@ -110,8 +110,8 @@ func NewCommitmentAssociationsClientWithBaseURI(baseURI string, subscriptionID s
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
 }
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return original.NewListResultPage(getNextPage)
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -122,8 +122,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewPlanUsageHistoryListResultIterator(page PlanUsageHistoryListResultPage) PlanUsageHistoryListResultIterator {
 	return original.NewPlanUsageHistoryListResultIterator(page)
 }
-func NewPlanUsageHistoryListResultPage(getNextPage func(context.Context, PlanUsageHistoryListResult) (PlanUsageHistoryListResult, error)) PlanUsageHistoryListResultPage {
-	return original.NewPlanUsageHistoryListResultPage(getNextPage)
+func NewPlanUsageHistoryListResultPage(cur PlanUsageHistoryListResult, getNextPage func(context.Context, PlanUsageHistoryListResult) (PlanUsageHistoryListResult, error)) PlanUsageHistoryListResultPage {
+	return original.NewPlanUsageHistoryListResultPage(cur, getNextPage)
 }
 func NewSkusClient(subscriptionID string) SkusClient {
 	return original.NewSkusClient(subscriptionID)

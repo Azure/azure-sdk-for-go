@@ -312,8 +312,11 @@ func (page ListPage) Values() []Response {
 }
 
 // Creates a new instance of the ListPage type.
-func NewListPage(getNextPage func(context.Context, List) (List, error)) ListPage {
-	return ListPage{fn: getNextPage}
+func NewListPage(cur List, getNextPage func(context.Context, List) (List, error)) ListPage {
+	return ListPage{
+		fn: getNextPage,
+		l:  cur,
+	}
 }
 
 // ListResponse ...
@@ -533,8 +536,11 @@ func (page OperationListPage) Values() []OperationResponse {
 }
 
 // Creates a new instance of the OperationListPage type.
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return OperationListPage{fn: getNextPage}
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // OperationResponse ...
@@ -695,8 +701,11 @@ func (page OrderListPage) Values() []OrderResponse {
 }
 
 // Creates a new instance of the OrderListPage type.
-func NewOrderListPage(getNextPage func(context.Context, OrderList) (OrderList, error)) OrderListPage {
-	return OrderListPage{fn: getNextPage}
+func NewOrderListPage(cur OrderList, getNextPage func(context.Context, OrderList) (OrderList, error)) OrderListPage {
+	return OrderListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // OrderProperties ...
@@ -906,7 +915,8 @@ func (p Properties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ReservationMergeFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ReservationMergeFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ReservationMergeFuture struct {
 	azure.Future
 }

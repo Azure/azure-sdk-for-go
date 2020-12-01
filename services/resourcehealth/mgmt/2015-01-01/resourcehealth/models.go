@@ -196,8 +196,11 @@ func (page AvailabilityStatusListResultPage) Values() []AvailabilityStatus {
 }
 
 // Creates a new instance of the AvailabilityStatusListResultPage type.
-func NewAvailabilityStatusListResultPage(getNextPage func(context.Context, AvailabilityStatusListResult) (AvailabilityStatusListResult, error)) AvailabilityStatusListResultPage {
-	return AvailabilityStatusListResultPage{fn: getNextPage}
+func NewAvailabilityStatusListResultPage(cur AvailabilityStatusListResult, getNextPage func(context.Context, AvailabilityStatusListResult) (AvailabilityStatusListResult, error)) AvailabilityStatusListResultPage {
+	return AvailabilityStatusListResultPage{
+		fn:   getNextPage,
+		aslr: cur,
+	}
 }
 
 // AvailabilityStatusProperties properties of availability state.
@@ -230,8 +233,8 @@ type AvailabilityStatusProperties struct {
 	ServiceImpactingEvents *[]ServiceImpactingEvent `json:"serviceImpactingEvents,omitempty"`
 }
 
-// AvailabilityStatusPropertiesRecentlyResolvedState an annotation describing a change in the availabilityState
-// to Available from Unavailable with a reasonType of type Unplanned
+// AvailabilityStatusPropertiesRecentlyResolvedState an annotation describing a change in the
+// availabilityState to Available from Unavailable with a reasonType of type Unplanned
 type AvailabilityStatusPropertiesRecentlyResolvedState struct {
 	// UnavailableOccurredTime - Timestamp for when the availabilityState changed to Unavailable
 	UnavailableOccurredTime *date.Time `json:"unavailableOccurredTime,omitempty"`
@@ -278,7 +281,8 @@ type OperationListResult struct {
 	Value *[]Operation `json:"value,omitempty"`
 }
 
-// RecommendedAction lists actions the user can take based on the current availabilityState of the resource.
+// RecommendedAction lists actions the user can take based on the current availabilityState of the
+// resource.
 type RecommendedAction struct {
 	// Action - Recommended action.
 	Action *string `json:"action,omitempty"`
@@ -288,7 +292,8 @@ type RecommendedAction struct {
 	ActionURLText *string `json:"actionUrlText,omitempty"`
 }
 
-// ServiceImpactingEvent lists the service impacting events that may be affecting the health of the resource.
+// ServiceImpactingEvent lists the service impacting events that may be affecting the health of the
+// resource.
 type ServiceImpactingEvent struct {
 	// EventStartTime - Timestamp for when the event started.
 	EventStartTime *date.Time `json:"eventStartTime,omitempty"`

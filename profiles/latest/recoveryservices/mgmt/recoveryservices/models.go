@@ -180,8 +180,8 @@ func NewClient(subscriptionID string) Client {
 func NewClientDiscoveryResponseIterator(page ClientDiscoveryResponsePage) ClientDiscoveryResponseIterator {
 	return original.NewClientDiscoveryResponseIterator(page)
 }
-func NewClientDiscoveryResponsePage(getNextPage func(context.Context, ClientDiscoveryResponse) (ClientDiscoveryResponse, error)) ClientDiscoveryResponsePage {
-	return original.NewClientDiscoveryResponsePage(getNextPage)
+func NewClientDiscoveryResponsePage(cur ClientDiscoveryResponse, getNextPage func(context.Context, ClientDiscoveryResponse) (ClientDiscoveryResponse, error)) ClientDiscoveryResponsePage {
+	return original.NewClientDiscoveryResponsePage(cur, getNextPage)
 }
 func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 	return original.NewClientWithBaseURI(baseURI, subscriptionID)
@@ -201,8 +201,8 @@ func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID str
 func NewPrivateLinkResourcesIterator(page PrivateLinkResourcesPage) PrivateLinkResourcesIterator {
 	return original.NewPrivateLinkResourcesIterator(page)
 }
-func NewPrivateLinkResourcesPage(getNextPage func(context.Context, PrivateLinkResources) (PrivateLinkResources, error)) PrivateLinkResourcesPage {
-	return original.NewPrivateLinkResourcesPage(getNextPage)
+func NewPrivateLinkResourcesPage(cur PrivateLinkResources, getNextPage func(context.Context, PrivateLinkResources) (PrivateLinkResources, error)) PrivateLinkResourcesPage {
+	return original.NewPrivateLinkResourcesPage(cur, getNextPage)
 }
 func NewRegisteredIdentitiesClient(subscriptionID string) RegisteredIdentitiesClient {
 	return original.NewRegisteredIdentitiesClient(subscriptionID)
@@ -237,8 +237,8 @@ func NewVaultExtendedInfoClientWithBaseURI(baseURI string, subscriptionID string
 func NewVaultListIterator(page VaultListPage) VaultListIterator {
 	return original.NewVaultListIterator(page)
 }
-func NewVaultListPage(getNextPage func(context.Context, VaultList) (VaultList, error)) VaultListPage {
-	return original.NewVaultListPage(getNextPage)
+func NewVaultListPage(cur VaultList, getNextPage func(context.Context, VaultList) (VaultList, error)) VaultListPage {
+	return original.NewVaultListPage(cur, getNextPage)
 }
 func NewVaultsClient(subscriptionID string) VaultsClient {
 	return original.NewVaultsClient(subscriptionID)

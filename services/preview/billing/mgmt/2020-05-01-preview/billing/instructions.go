@@ -32,14 +32,14 @@ type InstructionsClient struct {
 }
 
 // NewInstructionsClient creates an instance of the InstructionsClient client.
-func NewInstructionsClient(subscriptionID string, subscriptionID1 string) InstructionsClient {
-	return NewInstructionsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewInstructionsClient(subscriptionID string) InstructionsClient {
+	return NewInstructionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewInstructionsClientWithBaseURI creates an instance of the InstructionsClient client using a custom endpoint.  Use
 // this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewInstructionsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) InstructionsClient {
-	return InstructionsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewInstructionsClientWithBaseURI(baseURI string, subscriptionID string) InstructionsClient {
+	return InstructionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get get the instruction by name. These are custom billing instructions and are only applicable for certain

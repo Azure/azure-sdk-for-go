@@ -30,15 +30,15 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/workloadmonitor/mgmt/2018-08-31-preview/workloadmonitor"
 
-// AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
+// AzureEntityResource the resource model definition for an Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.
 	Etag *string `json:"etag,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -49,11 +49,11 @@ type Component struct {
 	Etag *string `json:"etag,omitempty"`
 	// ComponentProperties - READ-ONLY; Properties of the component.
 	*ComponentProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -319,8 +319,11 @@ func (page ComponentsCollectionPage) Values() []Component {
 }
 
 // Creates a new instance of the ComponentsCollectionPage type.
-func NewComponentsCollectionPage(getNextPage func(context.Context, ComponentsCollection) (ComponentsCollection, error)) ComponentsCollectionPage {
-	return ComponentsCollectionPage{fn: getNextPage}
+func NewComponentsCollectionPage(cur ComponentsCollection, getNextPage func(context.Context, ComponentsCollection) (ComponentsCollection, error)) ComponentsCollectionPage {
+	return ComponentsCollectionPage{
+		fn: getNextPage,
+		cc: cur,
+	}
 }
 
 // ErrorFieldContract error field contract.
@@ -358,11 +361,11 @@ type Monitor struct {
 	Etag *string `json:"etag,omitempty"`
 	// MonitorProperties - READ-ONLY; Properties of monitor instance
 	*MonitorProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -449,11 +452,11 @@ type MonitorInstance struct {
 	Etag *string `json:"etag,omitempty"`
 	// MonitorInstanceProperties - READ-ONLY; Properties of the monitor instance.
 	*MonitorInstanceProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -725,8 +728,11 @@ func (page MonitorInstancesCollectionPage) Values() []MonitorInstance {
 }
 
 // Creates a new instance of the MonitorInstancesCollectionPage type.
-func NewMonitorInstancesCollectionPage(getNextPage func(context.Context, MonitorInstancesCollection) (MonitorInstancesCollection, error)) MonitorInstancesCollectionPage {
-	return MonitorInstancesCollectionPage{fn: getNextPage}
+func NewMonitorInstancesCollectionPage(cur MonitorInstancesCollection, getNextPage func(context.Context, MonitorInstancesCollection) (MonitorInstancesCollection, error)) MonitorInstancesCollectionPage {
+	return MonitorInstancesCollectionPage{
+		fn:  getNextPage,
+		mic: cur,
+	}
 }
 
 // MonitorProperties model for properties of a Monitor.
@@ -923,8 +929,11 @@ func (page MonitorsCollectionPage) Values() []Monitor {
 }
 
 // Creates a new instance of the MonitorsCollectionPage type.
-func NewMonitorsCollectionPage(getNextPage func(context.Context, MonitorsCollection) (MonitorsCollection, error)) MonitorsCollectionPage {
-	return MonitorsCollectionPage{fn: getNextPage}
+func NewMonitorsCollectionPage(cur MonitorsCollection, getNextPage func(context.Context, MonitorsCollection) (MonitorsCollection, error)) MonitorsCollectionPage {
+	return MonitorsCollectionPage{
+		fn: getNextPage,
+		mc: cur,
+	}
 }
 
 // NotificationSetting model for NotificationSetting.
@@ -934,11 +943,11 @@ type NotificationSetting struct {
 	Etag *string `json:"etag,omitempty"`
 	// NotificationSettingProperties - READ-ONLY; Properties of Notification Settings
 	*NotificationSettingProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1031,7 +1040,8 @@ func (nsc NotificationSettingsCollection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// NotificationSettingsCollectionIterator provides access to a complete listing of NotificationSetting values.
+// NotificationSettingsCollectionIterator provides access to a complete listing of NotificationSetting
+// values.
 type NotificationSettingsCollectionIterator struct {
 	i    int
 	page NotificationSettingsCollectionPage
@@ -1174,8 +1184,11 @@ func (page NotificationSettingsCollectionPage) Values() []NotificationSetting {
 }
 
 // Creates a new instance of the NotificationSettingsCollectionPage type.
-func NewNotificationSettingsCollectionPage(getNextPage func(context.Context, NotificationSettingsCollection) (NotificationSettingsCollection, error)) NotificationSettingsCollectionPage {
-	return NotificationSettingsCollectionPage{fn: getNextPage}
+func NewNotificationSettingsCollectionPage(cur NotificationSettingsCollection, getNextPage func(context.Context, NotificationSettingsCollection) (NotificationSettingsCollection, error)) NotificationSettingsCollectionPage {
+	return NotificationSettingsCollectionPage{
+		fn:  getNextPage,
+		nsc: cur,
+	}
 }
 
 // Operation operation supported by the resource provider.
@@ -1340,8 +1353,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationProperties properties of an operation supported by the resource provider.
@@ -1356,38 +1372,39 @@ type OperationProperties struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
-// required location and tags
+// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
+// have tags and a location
 type ProxyResource struct {
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
-// Resource ...
+// Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
-// TrackedResource the resource model definition for a ARM tracked top level resource
+// TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
+// which has 'tags' and a 'location'
 type TrackedResource struct {
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 

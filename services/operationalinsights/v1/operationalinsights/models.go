@@ -68,8 +68,8 @@ type ErrorResponse struct {
 	Error *ErrorInfo `json:"error,omitempty"`
 }
 
-// MetadataApplication application Insights apps that were part of the metadata request and that the user has
-// access to.
+// MetadataApplication application Insights apps that were part of the metadata request and that the user
+// has access to.
 type MetadataApplication struct {
 	// ID - The ID of the Application Insights app.
 	ID *string `json:"id,omitempty"`
@@ -117,8 +117,8 @@ type MetadataCategoryRelated struct {
 	Solutions *[]string `json:"solutions,omitempty"`
 }
 
-// MetadataFunction functions are stored Kusto queries that can be specified as part of queries by using their
-// name.
+// MetadataFunction functions are stored Kusto queries that can be specified as part of queries by using
+// their name.
 type MetadataFunction struct {
 	// ID - The ID of the function.
 	ID *string `json:"id,omitempty"`
@@ -154,8 +154,8 @@ type MetadataFunctionRelated struct {
 	Workspaces *[]string `json:"workspaces,omitempty"`
 }
 
-// MetadataPermissions permission information for the metadata call, includes apps/workspaces/resource the user
-// didn't have access to.
+// MetadataPermissions permission information for the metadata call, includes apps/workspaces/resource the
+// user didn't have access to.
 type MetadataPermissions struct {
 	// Workspaces - The permission indication for the workspaces on the metadata request.
 	Workspaces *[]MetadataPermissionsWorkspacesItem `json:"workspaces,omitempty"`
@@ -219,7 +219,8 @@ type MetadataQueryRelated struct {
 	Tables *[]string `json:"tables,omitempty"`
 }
 
-// MetadataResourceType metadata about types of Azure resources, containing relevant tables, functions, etc.
+// MetadataResourceType metadata about types of Azure resources, containing relevant tables, functions,
+// etc.
 type MetadataResourceType struct {
 	// ID - The ID of the resource-type
 	ID *string `json:"id,omitempty"`

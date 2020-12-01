@@ -502,8 +502,8 @@ type PrivateEndpointConnectionResponse struct {
 	RetryAfter *int32
 }
 
-// PrivateEndpointConnectionsDeleteOptions contains the optional parameters for the PrivateEndpointConnections.Delete method.
-type PrivateEndpointConnectionsDeleteOptions struct {
+// PrivateEndpointConnectionsBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnections.BeginDelete method.
+type PrivateEndpointConnectionsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -847,13 +847,18 @@ type VaultResponse struct {
 	Vault *Vault
 }
 
-// VaultsCheckNameAvailabilityOptions contains the optional parameters for the Vaults.CheckNameAvailability method.
-type VaultsCheckNameAvailabilityOptions struct {
+// VaultsBeginCreateOrUpdateOptions contains the optional parameters for the Vaults.BeginCreateOrUpdate method.
+type VaultsBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VaultsCreateOrUpdateOptions contains the optional parameters for the Vaults.CreateOrUpdate method.
-type VaultsCreateOrUpdateOptions struct {
+// VaultsBeginPurgeDeletedOptions contains the optional parameters for the Vaults.BeginPurgeDeleted method.
+type VaultsBeginPurgeDeletedOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VaultsCheckNameAvailabilityOptions contains the optional parameters for the Vaults.CheckNameAvailability method.
+type VaultsCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -893,11 +898,6 @@ type VaultsListDeletedOptions struct {
 type VaultsListOptions struct {
 	// Maximum number of results to return.
 	Top *int32
-}
-
-// VaultsPurgeDeletedOptions contains the optional parameters for the Vaults.PurgeDeleted method.
-type VaultsPurgeDeletedOptions struct {
-	// placeholder for future optional parameters
 }
 
 // VaultsUpdateAccessPolicyOptions contains the optional parameters for the Vaults.UpdateAccessPolicy method.

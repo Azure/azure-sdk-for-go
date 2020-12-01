@@ -36,8 +36,8 @@ func (client PrivateEndpointConnectionsClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginDelete - Deletes the specified private endpoint connection associated with the key vault.
-func (client PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsDeleteOptions) (PrivateEndpointConnectionPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, vaultName, privateEndpointConnectionName, options)
+func (client PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsBeginDeleteOptions) (PrivateEndpointConnectionPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, vaultName, privateEndpointConnectionName, options)
 	if err != nil {
 		return PrivateEndpointConnectionPollerResponse{}, err
 	}
@@ -73,7 +73,7 @@ func (client PrivateEndpointConnectionsClient) ResumeDelete(token string) (Priva
 }
 
 // Delete - Deletes the specified private endpoint connection associated with the key vault.
-func (client PrivateEndpointConnectionsClient) Delete(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsDeleteOptions) (*azcore.Response, error) {
+func (client PrivateEndpointConnectionsClient) delete(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vaultName, privateEndpointConnectionName, options)
 	if err != nil {
 		return nil, err
@@ -89,7 +89,7 @@ func (client PrivateEndpointConnectionsClient) Delete(ctx context.Context, resou
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsDeleteOptions) (*azcore.Request, error) {
+func (client PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))

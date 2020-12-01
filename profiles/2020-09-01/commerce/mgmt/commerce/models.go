@@ -82,8 +82,8 @@ func NewUsageAggregatesClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewUsageAggregationListResultIterator(page UsageAggregationListResultPage) UsageAggregationListResultIterator {
 	return original.NewUsageAggregationListResultIterator(page)
 }
-func NewUsageAggregationListResultPage(getNextPage func(context.Context, UsageAggregationListResult) (UsageAggregationListResult, error)) UsageAggregationListResultPage {
-	return original.NewUsageAggregationListResultPage(getNextPage)
+func NewUsageAggregationListResultPage(cur UsageAggregationListResult, getNextPage func(context.Context, UsageAggregationListResult) (UsageAggregationListResult, error)) UsageAggregationListResultPage {
+	return original.NewUsageAggregationListResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

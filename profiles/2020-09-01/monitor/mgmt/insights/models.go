@@ -548,8 +548,8 @@ func NewAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) Alert
 func NewAutoscaleSettingResourceCollectionIterator(page AutoscaleSettingResourceCollectionPage) AutoscaleSettingResourceCollectionIterator {
 	return original.NewAutoscaleSettingResourceCollectionIterator(page)
 }
-func NewAutoscaleSettingResourceCollectionPage(getNextPage func(context.Context, AutoscaleSettingResourceCollection) (AutoscaleSettingResourceCollection, error)) AutoscaleSettingResourceCollectionPage {
-	return original.NewAutoscaleSettingResourceCollectionPage(getNextPage)
+func NewAutoscaleSettingResourceCollectionPage(cur AutoscaleSettingResourceCollection, getNextPage func(context.Context, AutoscaleSettingResourceCollection) (AutoscaleSettingResourceCollection, error)) AutoscaleSettingResourceCollectionPage {
+	return original.NewAutoscaleSettingResourceCollectionPage(cur, getNextPage)
 }
 func NewAutoscaleSettingsClient(subscriptionID string) AutoscaleSettingsClient {
 	return original.NewAutoscaleSettingsClient(subscriptionID)
@@ -584,8 +584,8 @@ func NewEventCategoriesClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewEventDataCollectionIterator(page EventDataCollectionPage) EventDataCollectionIterator {
 	return original.NewEventDataCollectionIterator(page)
 }
-func NewEventDataCollectionPage(getNextPage func(context.Context, EventDataCollection) (EventDataCollection, error)) EventDataCollectionPage {
-	return original.NewEventDataCollectionPage(getNextPage)
+func NewEventDataCollectionPage(cur EventDataCollection, getNextPage func(context.Context, EventDataCollection) (EventDataCollection, error)) EventDataCollectionPage {
+	return original.NewEventDataCollectionPage(cur, getNextPage)
 }
 func NewLogProfilesClient(subscriptionID string) LogProfilesClient {
 	return original.NewLogProfilesClient(subscriptionID)

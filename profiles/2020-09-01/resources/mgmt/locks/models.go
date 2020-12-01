@@ -64,8 +64,8 @@ func NewAuthorizationOperationsClientWithBaseURI(baseURI string, subscriptionID 
 func NewManagementLockListResultIterator(page ManagementLockListResultPage) ManagementLockListResultIterator {
 	return original.NewManagementLockListResultIterator(page)
 }
-func NewManagementLockListResultPage(getNextPage func(context.Context, ManagementLockListResult) (ManagementLockListResult, error)) ManagementLockListResultPage {
-	return original.NewManagementLockListResultPage(getNextPage)
+func NewManagementLockListResultPage(cur ManagementLockListResult, getNextPage func(context.Context, ManagementLockListResult) (ManagementLockListResult, error)) ManagementLockListResultPage {
+	return original.NewManagementLockListResultPage(cur, getNextPage)
 }
 func NewManagementLocksClient(subscriptionID string) ManagementLocksClient {
 	return original.NewManagementLocksClient(subscriptionID)
@@ -76,8 +76,8 @@ func NewManagementLocksClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

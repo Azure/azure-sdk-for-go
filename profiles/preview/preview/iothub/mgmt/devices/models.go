@@ -22,7 +22,7 @@ package devices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/iothub/mgmt/2019-03-22-preview/devices"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/iothub/mgmt/2019-07-01-preview/devices"
 )
 
 const (
@@ -161,6 +161,7 @@ const (
 	RoutingSourceDeviceJobLifecycleEvents RoutingSource = original.RoutingSourceDeviceJobLifecycleEvents
 	RoutingSourceDeviceLifecycleEvents    RoutingSource = original.RoutingSourceDeviceLifecycleEvents
 	RoutingSourceDeviceMessages           RoutingSource = original.RoutingSourceDeviceMessages
+	RoutingSourceDigitalTwinChangeEvents  RoutingSource = original.RoutingSourceDigitalTwinChangeEvents
 	RoutingSourceInvalid                  RoutingSource = original.RoutingSourceInvalid
 	RoutingSourceTwinChangeEvents         RoutingSource = original.RoutingSourceTwinChangeEvents
 )

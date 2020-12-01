@@ -43,7 +43,6 @@
 - `github.com/Azure/azure-sdk-for-go/services/preview/digitaltwins/2020-05-31-preview/digitaltwins`
 - `github.com/Azure/azure-sdk-for-go/services/preview/hybridnetwork/mgmt/2020-01-01-preview/hybridnetwork`
 - `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights`
-- `github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2019-08-01-preview/operationalinsights`
 - `github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2020-07-01-preview/policyinsights`
 - `github.com/Azure/azure-sdk-for-go/services/preview/postgresql/mgmt/2020-11-05-preview/postgresqlflexibleservers`
 - `github.com/Azure/azure-sdk-for-go/services/preview/powerplatform/mgmt/2020-10-30/powerplatform`

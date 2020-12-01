@@ -96,8 +96,8 @@ func (client StorageAccountsClient) checkNameAvailabilityHandleError(resp *azcor
 // is issued with different properties, the account properties
 // will be updated. If an account is already created and a subsequent create or update request is issued with the exact same set of properties, the request
 // will succeed.
-func (client StorageAccountsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters, options *StorageAccountsCreateOptions) (StorageAccountPollerResponse, error) {
-	resp, err := client.Create(ctx, resourceGroupName, accountName, parameters, options)
+func (client StorageAccountsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters, options *StorageAccountsBeginCreateOptions) (StorageAccountPollerResponse, error) {
+	resp, err := client.create(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return StorageAccountPollerResponse{}, err
 	}
@@ -136,7 +136,7 @@ func (client StorageAccountsClient) ResumeCreate(token string) (StorageAccountPo
 // is issued with different properties, the account properties
 // will be updated. If an account is already created and a subsequent create or update request is issued with the exact same set of properties, the request
 // will succeed.
-func (client StorageAccountsClient) Create(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters, options *StorageAccountsCreateOptions) (*azcore.Response, error) {
+func (client StorageAccountsClient) create(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters, options *StorageAccountsBeginCreateOptions) (*azcore.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -152,7 +152,7 @@ func (client StorageAccountsClient) Create(ctx context.Context, resourceGroupNam
 }
 
 // createCreateRequest creates the Create request.
-func (client StorageAccountsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters, options *StorageAccountsCreateOptions) (*azcore.Request, error) {
+func (client StorageAccountsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters, options *StorageAccountsBeginCreateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -236,8 +236,8 @@ func (client StorageAccountsClient) deleteHandleError(resp *azcore.Response) err
 // BeginFailover - Failover request can be triggered for a storage account in case of availability issues. The failover occurs from the storage account's
 // primary cluster to secondary cluster for RA-GRS accounts. The
 // secondary cluster will become primary after failover.
-func (client StorageAccountsClient) BeginFailover(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsFailoverOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Failover(ctx, resourceGroupName, accountName, options)
+func (client StorageAccountsClient) BeginFailover(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsBeginFailoverOptions) (HTTPPollerResponse, error) {
+	resp, err := client.failover(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -275,7 +275,7 @@ func (client StorageAccountsClient) ResumeFailover(token string) (HTTPPoller, er
 // Failover - Failover request can be triggered for a storage account in case of availability issues. The failover occurs from the storage account's primary
 // cluster to secondary cluster for RA-GRS accounts. The
 // secondary cluster will become primary after failover.
-func (client StorageAccountsClient) Failover(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsFailoverOptions) (*azcore.Response, error) {
+func (client StorageAccountsClient) failover(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsBeginFailoverOptions) (*azcore.Response, error) {
 	req, err := client.failoverCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
@@ -291,7 +291,7 @@ func (client StorageAccountsClient) Failover(ctx context.Context, resourceGroupN
 }
 
 // failoverCreateRequest creates the Failover request.
-func (client StorageAccountsClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsFailoverOptions) (*azcore.Request, error) {
+func (client StorageAccountsClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsBeginFailoverOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/failover"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -720,8 +720,8 @@ func (client StorageAccountsClient) regenerateKeyHandleError(resp *azcore.Respon
 }
 
 // BeginRestoreBlobRanges - Restore blobs in the specified blob ranges
-func (client StorageAccountsClient) BeginRestoreBlobRanges(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters, options *StorageAccountsRestoreBlobRangesOptions) (BlobRestoreStatusPollerResponse, error) {
-	resp, err := client.RestoreBlobRanges(ctx, resourceGroupName, accountName, parameters, options)
+func (client StorageAccountsClient) BeginRestoreBlobRanges(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters, options *StorageAccountsBeginRestoreBlobRangesOptions) (BlobRestoreStatusPollerResponse, error) {
+	resp, err := client.restoreBlobRanges(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return BlobRestoreStatusPollerResponse{}, err
 	}
@@ -757,7 +757,7 @@ func (client StorageAccountsClient) ResumeRestoreBlobRanges(token string) (BlobR
 }
 
 // RestoreBlobRanges - Restore blobs in the specified blob ranges
-func (client StorageAccountsClient) RestoreBlobRanges(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters, options *StorageAccountsRestoreBlobRangesOptions) (*azcore.Response, error) {
+func (client StorageAccountsClient) restoreBlobRanges(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters, options *StorageAccountsBeginRestoreBlobRangesOptions) (*azcore.Response, error) {
 	req, err := client.restoreBlobRangesCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -773,7 +773,7 @@ func (client StorageAccountsClient) RestoreBlobRanges(ctx context.Context, resou
 }
 
 // restoreBlobRangesCreateRequest creates the RestoreBlobRanges request.
-func (client StorageAccountsClient) restoreBlobRangesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters, options *StorageAccountsRestoreBlobRangesOptions) (*azcore.Request, error) {
+func (client StorageAccountsClient) restoreBlobRangesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters, options *StorageAccountsBeginRestoreBlobRangesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/restoreBlobRanges"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))

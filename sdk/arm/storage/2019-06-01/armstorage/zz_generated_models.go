@@ -3368,23 +3368,28 @@ type StorageAccountUpdateParameters struct {
 	Tags *map[string]string `json:"tags,omitempty"`
 }
 
+// StorageAccountsBeginCreateOptions contains the optional parameters for the StorageAccounts.BeginCreate method.
+type StorageAccountsBeginCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StorageAccountsBeginFailoverOptions contains the optional parameters for the StorageAccounts.BeginFailover method.
+type StorageAccountsBeginFailoverOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StorageAccountsBeginRestoreBlobRangesOptions contains the optional parameters for the StorageAccounts.BeginRestoreBlobRanges method.
+type StorageAccountsBeginRestoreBlobRangesOptions struct {
+	// placeholder for future optional parameters
+}
+
 // StorageAccountsCheckNameAvailabilityOptions contains the optional parameters for the StorageAccounts.CheckNameAvailability method.
 type StorageAccountsCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageAccountsCreateOptions contains the optional parameters for the StorageAccounts.Create method.
-type StorageAccountsCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // StorageAccountsDeleteOptions contains the optional parameters for the StorageAccounts.Delete method.
 type StorageAccountsDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StorageAccountsFailoverOptions contains the optional parameters for the StorageAccounts.Failover method.
-type StorageAccountsFailoverOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3423,11 +3428,6 @@ type StorageAccountsListServiceSasOptions struct {
 
 // StorageAccountsRegenerateKeyOptions contains the optional parameters for the StorageAccounts.RegenerateKey method.
 type StorageAccountsRegenerateKeyOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StorageAccountsRestoreBlobRangesOptions contains the optional parameters for the StorageAccounts.RestoreBlobRanges method.
-type StorageAccountsRestoreBlobRangesOptions struct {
 	// placeholder for future optional parameters
 }
 

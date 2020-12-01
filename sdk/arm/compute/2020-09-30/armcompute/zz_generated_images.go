@@ -38,8 +38,8 @@ func (client ImagesClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Create or update an image.
-func (client ImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters Image, options *ImagesCreateOrUpdateOptions) (ImagePollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, imageName, parameters, options)
+func (client ImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters Image, options *ImagesBeginCreateOrUpdateOptions) (ImagePollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, imageName, parameters, options)
 	if err != nil {
 		return ImagePollerResponse{}, err
 	}
@@ -75,7 +75,7 @@ func (client ImagesClient) ResumeCreateOrUpdate(token string) (ImagePoller, erro
 }
 
 // CreateOrUpdate - Create or update an image.
-func (client ImagesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters Image, options *ImagesCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client ImagesClient) createOrUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters Image, options *ImagesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, imageName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -91,7 +91,7 @@ func (client ImagesClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client ImagesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, imageName string, parameters Image, options *ImagesCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client ImagesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, imageName string, parameters Image, options *ImagesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))
@@ -128,8 +128,8 @@ func (client ImagesClient) createOrUpdateHandleError(resp *azcore.Response) erro
 }
 
 // BeginDelete - Deletes an Image.
-func (client ImagesClient) BeginDelete(ctx context.Context, resourceGroupName string, imageName string, options *ImagesDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, imageName, options)
+func (client ImagesClient) BeginDelete(ctx context.Context, resourceGroupName string, imageName string, options *ImagesBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, imageName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -165,7 +165,7 @@ func (client ImagesClient) ResumeDelete(token string) (HTTPPoller, error) {
 }
 
 // Delete - Deletes an Image.
-func (client ImagesClient) Delete(ctx context.Context, resourceGroupName string, imageName string, options *ImagesDeleteOptions) (*azcore.Response, error) {
+func (client ImagesClient) delete(ctx context.Context, resourceGroupName string, imageName string, options *ImagesBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, imageName, options)
 	if err != nil {
 		return nil, err
@@ -181,7 +181,7 @@ func (client ImagesClient) Delete(ctx context.Context, resourceGroupName string,
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client ImagesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, imageName string, options *ImagesDeleteOptions) (*azcore.Request, error) {
+func (client ImagesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, imageName string, options *ImagesBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))
@@ -374,8 +374,8 @@ func (client ImagesClient) listByResourceGroupHandleError(resp *azcore.Response)
 }
 
 // BeginUpdate - Update an image.
-func (client ImagesClient) BeginUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters ImageUpdate, options *ImagesUpdateOptions) (ImagePollerResponse, error) {
-	resp, err := client.Update(ctx, resourceGroupName, imageName, parameters, options)
+func (client ImagesClient) BeginUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters ImageUpdate, options *ImagesBeginUpdateOptions) (ImagePollerResponse, error) {
+	resp, err := client.update(ctx, resourceGroupName, imageName, parameters, options)
 	if err != nil {
 		return ImagePollerResponse{}, err
 	}
@@ -411,7 +411,7 @@ func (client ImagesClient) ResumeUpdate(token string) (ImagePoller, error) {
 }
 
 // Update - Update an image.
-func (client ImagesClient) Update(ctx context.Context, resourceGroupName string, imageName string, parameters ImageUpdate, options *ImagesUpdateOptions) (*azcore.Response, error) {
+func (client ImagesClient) update(ctx context.Context, resourceGroupName string, imageName string, parameters ImageUpdate, options *ImagesBeginUpdateOptions) (*azcore.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, imageName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -427,7 +427,7 @@ func (client ImagesClient) Update(ctx context.Context, resourceGroupName string,
 }
 
 // updateCreateRequest creates the Update request.
-func (client ImagesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, imageName string, parameters ImageUpdate, options *ImagesUpdateOptions) (*azcore.Request, error) {
+func (client ImagesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, imageName string, parameters ImageUpdate, options *ImagesBeginUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))

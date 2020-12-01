@@ -38,8 +38,8 @@ func (client DiskAccessesClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates or updates a disk access resource
-func (client DiskAccessesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccess, options *DiskAccessesCreateOrUpdateOptions) (DiskAccessPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, diskAccessName, diskAccess, options)
+func (client DiskAccessesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccess, options *DiskAccessesBeginCreateOrUpdateOptions) (DiskAccessPollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, diskAccessName, diskAccess, options)
 	if err != nil {
 		return DiskAccessPollerResponse{}, err
 	}
@@ -75,7 +75,7 @@ func (client DiskAccessesClient) ResumeCreateOrUpdate(token string) (DiskAccessP
 }
 
 // CreateOrUpdate - Creates or updates a disk access resource
-func (client DiskAccessesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccess, options *DiskAccessesCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client DiskAccessesClient) createOrUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccess, options *DiskAccessesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, diskAccessName, diskAccess, options)
 	if err != nil {
 		return nil, err
@@ -91,7 +91,7 @@ func (client DiskAccessesClient) CreateOrUpdate(ctx context.Context, resourceGro
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client DiskAccessesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccess, options *DiskAccessesCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client DiskAccessesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccess, options *DiskAccessesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -125,8 +125,8 @@ func (client DiskAccessesClient) createOrUpdateHandleError(resp *azcore.Response
 }
 
 // BeginDelete - Deletes a disk access resource.
-func (client DiskAccessesClient) BeginDelete(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, diskAccessName, options)
+func (client DiskAccessesClient) BeginDelete(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, diskAccessName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -162,7 +162,7 @@ func (client DiskAccessesClient) ResumeDelete(token string) (HTTPPoller, error) 
 }
 
 // Delete - Deletes a disk access resource.
-func (client DiskAccessesClient) Delete(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesDeleteOptions) (*azcore.Response, error) {
+func (client DiskAccessesClient) delete(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, diskAccessName, options)
 	if err != nil {
 		return nil, err
@@ -178,7 +178,7 @@ func (client DiskAccessesClient) Delete(ctx context.Context, resourceGroupName s
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client DiskAccessesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesDeleteOptions) (*azcore.Request, error) {
+func (client DiskAccessesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -413,8 +413,8 @@ func (client DiskAccessesClient) listByResourceGroupHandleError(resp *azcore.Res
 }
 
 // BeginUpdate - Updates (patches) a disk access resource.
-func (client DiskAccessesClient) BeginUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccessUpdate, options *DiskAccessesUpdateOptions) (DiskAccessPollerResponse, error) {
-	resp, err := client.Update(ctx, resourceGroupName, diskAccessName, diskAccess, options)
+func (client DiskAccessesClient) BeginUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccessUpdate, options *DiskAccessesBeginUpdateOptions) (DiskAccessPollerResponse, error) {
+	resp, err := client.update(ctx, resourceGroupName, diskAccessName, diskAccess, options)
 	if err != nil {
 		return DiskAccessPollerResponse{}, err
 	}
@@ -450,7 +450,7 @@ func (client DiskAccessesClient) ResumeUpdate(token string) (DiskAccessPoller, e
 }
 
 // Update - Updates (patches) a disk access resource.
-func (client DiskAccessesClient) Update(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccessUpdate, options *DiskAccessesUpdateOptions) (*azcore.Response, error) {
+func (client DiskAccessesClient) update(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccessUpdate, options *DiskAccessesBeginUpdateOptions) (*azcore.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, diskAccessName, diskAccess, options)
 	if err != nil {
 		return nil, err
@@ -466,7 +466,7 @@ func (client DiskAccessesClient) Update(ctx context.Context, resourceGroupName s
 }
 
 // updateCreateRequest creates the Update request.
-func (client DiskAccessesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccessUpdate, options *DiskAccessesUpdateOptions) (*azcore.Request, error) {
+func (client DiskAccessesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccessUpdate, options *DiskAccessesBeginUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))

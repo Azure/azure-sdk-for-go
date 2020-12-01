@@ -38,8 +38,8 @@ func (client ContainerServicesClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-func (client ContainerServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService, options *ContainerServicesCreateOrUpdateOptions) (ContainerServicePollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, containerServiceName, parameters, options)
+func (client ContainerServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService, options *ContainerServicesBeginCreateOrUpdateOptions) (ContainerServicePollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, containerServiceName, parameters, options)
 	if err != nil {
 		return ContainerServicePollerResponse{}, err
 	}
@@ -75,7 +75,7 @@ func (client ContainerServicesClient) ResumeCreateOrUpdate(token string) (Contai
 }
 
 // CreateOrUpdate - Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-func (client ContainerServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService, options *ContainerServicesCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client ContainerServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService, options *ContainerServicesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, containerServiceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -91,7 +91,7 @@ func (client ContainerServicesClient) CreateOrUpdate(ctx context.Context, resour
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client ContainerServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService, options *ContainerServicesCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client ContainerServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService, options *ContainerServicesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices/{containerServiceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{containerServiceName}", url.PathEscape(containerServiceName))
@@ -131,8 +131,8 @@ func (client ContainerServicesClient) createOrUpdateHandleError(resp *azcore.Res
 // created as part of creating a container service, including
 // storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can
 // be deleted individually.
-func (client ContainerServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, containerServiceName string, options *ContainerServicesDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, containerServiceName, options)
+func (client ContainerServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, containerServiceName string, options *ContainerServicesBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, containerServiceName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -171,7 +171,7 @@ func (client ContainerServicesClient) ResumeDelete(token string) (HTTPPoller, er
 // as part of creating a container service, including
 // storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can
 // be deleted individually.
-func (client ContainerServicesClient) Delete(ctx context.Context, resourceGroupName string, containerServiceName string, options *ContainerServicesDeleteOptions) (*azcore.Response, error) {
+func (client ContainerServicesClient) delete(ctx context.Context, resourceGroupName string, containerServiceName string, options *ContainerServicesBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, containerServiceName, options)
 	if err != nil {
 		return nil, err
@@ -187,7 +187,7 @@ func (client ContainerServicesClient) Delete(ctx context.Context, resourceGroupN
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client ContainerServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, containerServiceName string, options *ContainerServicesDeleteOptions) (*azcore.Request, error) {
+func (client ContainerServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, containerServiceName string, options *ContainerServicesBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices/{containerServiceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{containerServiceName}", url.PathEscape(containerServiceName))

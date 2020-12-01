@@ -35,8 +35,8 @@ func (client GalleriesClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Create or update a Shared Image Gallery.
-func (client GalleriesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery Gallery, options *GalleriesCreateOrUpdateOptions) (GalleryPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, galleryName, gallery, options)
+func (client GalleriesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery Gallery, options *GalleriesBeginCreateOrUpdateOptions) (GalleryPollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, galleryName, gallery, options)
 	if err != nil {
 		return GalleryPollerResponse{}, err
 	}
@@ -72,7 +72,7 @@ func (client GalleriesClient) ResumeCreateOrUpdate(token string) (GalleryPoller,
 }
 
 // CreateOrUpdate - Create or update a Shared Image Gallery.
-func (client GalleriesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery Gallery, options *GalleriesCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client GalleriesClient) createOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery Gallery, options *GalleriesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, galleryName, gallery, options)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (client GalleriesClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client GalleriesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, gallery Gallery, options *GalleriesCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client GalleriesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, gallery Gallery, options *GalleriesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -122,8 +122,8 @@ func (client GalleriesClient) createOrUpdateHandleError(resp *azcore.Response) e
 }
 
 // BeginDelete - Delete a Shared Image Gallery.
-func (client GalleriesClient) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, options *GalleriesDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, galleryName, options)
+func (client GalleriesClient) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, options *GalleriesBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, galleryName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -159,7 +159,7 @@ func (client GalleriesClient) ResumeDelete(token string) (HTTPPoller, error) {
 }
 
 // Delete - Delete a Shared Image Gallery.
-func (client GalleriesClient) Delete(ctx context.Context, resourceGroupName string, galleryName string, options *GalleriesDeleteOptions) (*azcore.Response, error) {
+func (client GalleriesClient) delete(ctx context.Context, resourceGroupName string, galleryName string, options *GalleriesBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, galleryName, options)
 	if err != nil {
 		return nil, err
@@ -175,7 +175,7 @@ func (client GalleriesClient) Delete(ctx context.Context, resourceGroupName stri
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client GalleriesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, options *GalleriesDeleteOptions) (*azcore.Request, error) {
+func (client GalleriesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, options *GalleriesBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -356,8 +356,8 @@ func (client GalleriesClient) listByResourceGroupHandleError(resp *azcore.Respon
 }
 
 // BeginUpdate - Update a Shared Image Gallery.
-func (client GalleriesClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery GalleryUpdate, options *GalleriesUpdateOptions) (GalleryPollerResponse, error) {
-	resp, err := client.Update(ctx, resourceGroupName, galleryName, gallery, options)
+func (client GalleriesClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery GalleryUpdate, options *GalleriesBeginUpdateOptions) (GalleryPollerResponse, error) {
+	resp, err := client.update(ctx, resourceGroupName, galleryName, gallery, options)
 	if err != nil {
 		return GalleryPollerResponse{}, err
 	}
@@ -393,7 +393,7 @@ func (client GalleriesClient) ResumeUpdate(token string) (GalleryPoller, error) 
 }
 
 // Update - Update a Shared Image Gallery.
-func (client GalleriesClient) Update(ctx context.Context, resourceGroupName string, galleryName string, gallery GalleryUpdate, options *GalleriesUpdateOptions) (*azcore.Response, error) {
+func (client GalleriesClient) update(ctx context.Context, resourceGroupName string, galleryName string, gallery GalleryUpdate, options *GalleriesBeginUpdateOptions) (*azcore.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, galleryName, gallery, options)
 	if err != nil {
 		return nil, err
@@ -409,7 +409,7 @@ func (client GalleriesClient) Update(ctx context.Context, resourceGroupName stri
 }
 
 // updateCreateRequest creates the Update request.
-func (client GalleriesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, gallery GalleryUpdate, options *GalleriesUpdateOptions) (*azcore.Request, error) {
+func (client GalleriesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, gallery GalleryUpdate, options *GalleriesBeginUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))

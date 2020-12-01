@@ -35,8 +35,8 @@ func (client GalleryApplicationsClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Create or update a gallery Application Definition.
-func (client GalleryApplicationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication GalleryApplication, options *GalleryApplicationsCreateOrUpdateOptions) (GalleryApplicationPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, galleryName, galleryApplicationName, galleryApplication, options)
+func (client GalleryApplicationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication GalleryApplication, options *GalleryApplicationsBeginCreateOrUpdateOptions) (GalleryApplicationPollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, galleryName, galleryApplicationName, galleryApplication, options)
 	if err != nil {
 		return GalleryApplicationPollerResponse{}, err
 	}
@@ -72,7 +72,7 @@ func (client GalleryApplicationsClient) ResumeCreateOrUpdate(token string) (Gall
 }
 
 // CreateOrUpdate - Create or update a gallery Application Definition.
-func (client GalleryApplicationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication GalleryApplication, options *GalleryApplicationsCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client GalleryApplicationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication GalleryApplication, options *GalleryApplicationsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, galleryName, galleryApplicationName, galleryApplication, options)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (client GalleryApplicationsClient) CreateOrUpdate(ctx context.Context, reso
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client GalleryApplicationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication GalleryApplication, options *GalleryApplicationsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client GalleryApplicationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication GalleryApplication, options *GalleryApplicationsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -123,8 +123,8 @@ func (client GalleryApplicationsClient) createOrUpdateHandleError(resp *azcore.R
 }
 
 // BeginDelete - Delete a gallery Application.
-func (client GalleryApplicationsClient) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, options *GalleryApplicationsDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, galleryName, galleryApplicationName, options)
+func (client GalleryApplicationsClient) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, options *GalleryApplicationsBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, galleryName, galleryApplicationName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -160,7 +160,7 @@ func (client GalleryApplicationsClient) ResumeDelete(token string) (HTTPPoller, 
 }
 
 // Delete - Delete a gallery Application.
-func (client GalleryApplicationsClient) Delete(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, options *GalleryApplicationsDeleteOptions) (*azcore.Response, error) {
+func (client GalleryApplicationsClient) delete(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, options *GalleryApplicationsBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, galleryName, galleryApplicationName, options)
 	if err != nil {
 		return nil, err
@@ -176,7 +176,7 @@ func (client GalleryApplicationsClient) Delete(ctx context.Context, resourceGrou
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client GalleryApplicationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, options *GalleryApplicationsDeleteOptions) (*azcore.Request, error) {
+func (client GalleryApplicationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, options *GalleryApplicationsBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -309,8 +309,8 @@ func (client GalleryApplicationsClient) listByGalleryHandleError(resp *azcore.Re
 }
 
 // BeginUpdate - Update a gallery Application Definition.
-func (client GalleryApplicationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication GalleryApplicationUpdate, options *GalleryApplicationsUpdateOptions) (GalleryApplicationPollerResponse, error) {
-	resp, err := client.Update(ctx, resourceGroupName, galleryName, galleryApplicationName, galleryApplication, options)
+func (client GalleryApplicationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication GalleryApplicationUpdate, options *GalleryApplicationsBeginUpdateOptions) (GalleryApplicationPollerResponse, error) {
+	resp, err := client.update(ctx, resourceGroupName, galleryName, galleryApplicationName, galleryApplication, options)
 	if err != nil {
 		return GalleryApplicationPollerResponse{}, err
 	}
@@ -346,7 +346,7 @@ func (client GalleryApplicationsClient) ResumeUpdate(token string) (GalleryAppli
 }
 
 // Update - Update a gallery Application Definition.
-func (client GalleryApplicationsClient) Update(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication GalleryApplicationUpdate, options *GalleryApplicationsUpdateOptions) (*azcore.Response, error) {
+func (client GalleryApplicationsClient) update(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication GalleryApplicationUpdate, options *GalleryApplicationsBeginUpdateOptions) (*azcore.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, galleryName, galleryApplicationName, galleryApplication, options)
 	if err != nil {
 		return nil, err
@@ -362,7 +362,7 @@ func (client GalleryApplicationsClient) Update(ctx context.Context, resourceGrou
 }
 
 // updateCreateRequest creates the Update request.
-func (client GalleryApplicationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication GalleryApplicationUpdate, options *GalleryApplicationsUpdateOptions) (*azcore.Request, error) {
+func (client GalleryApplicationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication GalleryApplicationUpdate, options *GalleryApplicationsBeginUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))

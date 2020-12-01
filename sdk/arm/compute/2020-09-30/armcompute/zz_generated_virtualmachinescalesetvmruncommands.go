@@ -35,8 +35,8 @@ func (client VirtualMachineScaleSetVMRunCommandsClient) Pipeline() azcore.Pipeli
 }
 
 // BeginCreateOrUpdate - The operation to create or update the VMSS VM run command.
-func (client VirtualMachineScaleSetVMRunCommandsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, runCommand VirtualMachineRunCommand, options *VirtualMachineScaleSetVMRunCommandsCreateOrUpdateOptions) (VirtualMachineRunCommandPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand, options)
+func (client VirtualMachineScaleSetVMRunCommandsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, runCommand VirtualMachineRunCommand, options *VirtualMachineScaleSetVMRunCommandsBeginCreateOrUpdateOptions) (VirtualMachineRunCommandPollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand, options)
 	if err != nil {
 		return VirtualMachineRunCommandPollerResponse{}, err
 	}
@@ -72,7 +72,7 @@ func (client VirtualMachineScaleSetVMRunCommandsClient) ResumeCreateOrUpdate(tok
 }
 
 // CreateOrUpdate - The operation to create or update the VMSS VM run command.
-func (client VirtualMachineScaleSetVMRunCommandsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, runCommand VirtualMachineRunCommand, options *VirtualMachineScaleSetVMRunCommandsCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client VirtualMachineScaleSetVMRunCommandsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, runCommand VirtualMachineRunCommand, options *VirtualMachineScaleSetVMRunCommandsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand, options)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (client VirtualMachineScaleSetVMRunCommandsClient) CreateOrUpdate(ctx conte
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client VirtualMachineScaleSetVMRunCommandsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, runCommand VirtualMachineRunCommand, options *VirtualMachineScaleSetVMRunCommandsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client VirtualMachineScaleSetVMRunCommandsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, runCommand VirtualMachineRunCommand, options *VirtualMachineScaleSetVMRunCommandsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/runCommands/{runCommandName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vmScaleSetName}", url.PathEscape(vmScaleSetName))
@@ -124,8 +124,8 @@ func (client VirtualMachineScaleSetVMRunCommandsClient) createOrUpdateHandleErro
 }
 
 // BeginDelete - The operation to delete the VMSS VM run command.
-func (client VirtualMachineScaleSetVMRunCommandsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, options *VirtualMachineScaleSetVMRunCommandsDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, vmScaleSetName, instanceId, runCommandName, options)
+func (client VirtualMachineScaleSetVMRunCommandsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, options *VirtualMachineScaleSetVMRunCommandsBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, vmScaleSetName, instanceId, runCommandName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -161,7 +161,7 @@ func (client VirtualMachineScaleSetVMRunCommandsClient) ResumeDelete(token strin
 }
 
 // Delete - The operation to delete the VMSS VM run command.
-func (client VirtualMachineScaleSetVMRunCommandsClient) Delete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, options *VirtualMachineScaleSetVMRunCommandsDeleteOptions) (*azcore.Response, error) {
+func (client VirtualMachineScaleSetVMRunCommandsClient) delete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, options *VirtualMachineScaleSetVMRunCommandsBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceId, runCommandName, options)
 	if err != nil {
 		return nil, err
@@ -177,7 +177,7 @@ func (client VirtualMachineScaleSetVMRunCommandsClient) Delete(ctx context.Conte
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client VirtualMachineScaleSetVMRunCommandsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, options *VirtualMachineScaleSetVMRunCommandsDeleteOptions) (*azcore.Request, error) {
+func (client VirtualMachineScaleSetVMRunCommandsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, options *VirtualMachineScaleSetVMRunCommandsBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/runCommands/{runCommandName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vmScaleSetName}", url.PathEscape(vmScaleSetName))
@@ -319,8 +319,8 @@ func (client VirtualMachineScaleSetVMRunCommandsClient) listHandleError(resp *az
 }
 
 // BeginUpdate - The operation to update the VMSS VM run command.
-func (client VirtualMachineScaleSetVMRunCommandsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineScaleSetVMRunCommandsUpdateOptions) (VirtualMachineRunCommandPollerResponse, error) {
-	resp, err := client.Update(ctx, resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand, options)
+func (client VirtualMachineScaleSetVMRunCommandsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineScaleSetVMRunCommandsBeginUpdateOptions) (VirtualMachineRunCommandPollerResponse, error) {
+	resp, err := client.update(ctx, resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand, options)
 	if err != nil {
 		return VirtualMachineRunCommandPollerResponse{}, err
 	}
@@ -356,7 +356,7 @@ func (client VirtualMachineScaleSetVMRunCommandsClient) ResumeUpdate(token strin
 }
 
 // Update - The operation to update the VMSS VM run command.
-func (client VirtualMachineScaleSetVMRunCommandsClient) Update(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineScaleSetVMRunCommandsUpdateOptions) (*azcore.Response, error) {
+func (client VirtualMachineScaleSetVMRunCommandsClient) update(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineScaleSetVMRunCommandsBeginUpdateOptions) (*azcore.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand, options)
 	if err != nil {
 		return nil, err
@@ -372,7 +372,7 @@ func (client VirtualMachineScaleSetVMRunCommandsClient) Update(ctx context.Conte
 }
 
 // updateCreateRequest creates the Update request.
-func (client VirtualMachineScaleSetVMRunCommandsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineScaleSetVMRunCommandsUpdateOptions) (*azcore.Request, error) {
+func (client VirtualMachineScaleSetVMRunCommandsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineScaleSetVMRunCommandsBeginUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/runCommands/{runCommandName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vmScaleSetName}", url.PathEscape(vmScaleSetName))

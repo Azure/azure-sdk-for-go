@@ -38,8 +38,8 @@ func (client DedicatedHostsClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Create or update a dedicated host .
-func (client DedicatedHostsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHost, options *DedicatedHostsCreateOrUpdateOptions) (DedicatedHostPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, hostGroupName, hostName, parameters, options)
+func (client DedicatedHostsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHost, options *DedicatedHostsBeginCreateOrUpdateOptions) (DedicatedHostPollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, hostGroupName, hostName, parameters, options)
 	if err != nil {
 		return DedicatedHostPollerResponse{}, err
 	}
@@ -75,7 +75,7 @@ func (client DedicatedHostsClient) ResumeCreateOrUpdate(token string) (Dedicated
 }
 
 // CreateOrUpdate - Create or update a dedicated host .
-func (client DedicatedHostsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHost, options *DedicatedHostsCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client DedicatedHostsClient) createOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHost, options *DedicatedHostsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, hostGroupName, hostName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -91,7 +91,7 @@ func (client DedicatedHostsClient) CreateOrUpdate(ctx context.Context, resourceG
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client DedicatedHostsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHost, options *DedicatedHostsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client DedicatedHostsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHost, options *DedicatedHostsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{hostGroupName}", url.PathEscape(hostGroupName))
@@ -129,8 +129,8 @@ func (client DedicatedHostsClient) createOrUpdateHandleError(resp *azcore.Respon
 }
 
 // BeginDelete - Delete a dedicated host.
-func (client DedicatedHostsClient) BeginDelete(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, hostGroupName, hostName, options)
+func (client DedicatedHostsClient) BeginDelete(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, hostGroupName, hostName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -166,7 +166,7 @@ func (client DedicatedHostsClient) ResumeDelete(token string) (HTTPPoller, error
 }
 
 // Delete - Delete a dedicated host.
-func (client DedicatedHostsClient) Delete(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsDeleteOptions) (*azcore.Response, error) {
+func (client DedicatedHostsClient) delete(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, hostGroupName, hostName, options)
 	if err != nil {
 		return nil, err
@@ -182,7 +182,7 @@ func (client DedicatedHostsClient) Delete(ctx context.Context, resourceGroupName
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client DedicatedHostsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsDeleteOptions) (*azcore.Request, error) {
+func (client DedicatedHostsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{hostGroupName}", url.PathEscape(hostGroupName))
@@ -327,8 +327,8 @@ func (client DedicatedHostsClient) listByHostGroupHandleError(resp *azcore.Respo
 }
 
 // BeginUpdate - Update an dedicated host .
-func (client DedicatedHostsClient) BeginUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHostUpdate, options *DedicatedHostsUpdateOptions) (DedicatedHostPollerResponse, error) {
-	resp, err := client.Update(ctx, resourceGroupName, hostGroupName, hostName, parameters, options)
+func (client DedicatedHostsClient) BeginUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHostUpdate, options *DedicatedHostsBeginUpdateOptions) (DedicatedHostPollerResponse, error) {
+	resp, err := client.update(ctx, resourceGroupName, hostGroupName, hostName, parameters, options)
 	if err != nil {
 		return DedicatedHostPollerResponse{}, err
 	}
@@ -364,7 +364,7 @@ func (client DedicatedHostsClient) ResumeUpdate(token string) (DedicatedHostPoll
 }
 
 // Update - Update an dedicated host .
-func (client DedicatedHostsClient) Update(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHostUpdate, options *DedicatedHostsUpdateOptions) (*azcore.Response, error) {
+func (client DedicatedHostsClient) update(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHostUpdate, options *DedicatedHostsBeginUpdateOptions) (*azcore.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, hostGroupName, hostName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -380,7 +380,7 @@ func (client DedicatedHostsClient) Update(ctx context.Context, resourceGroupName
 }
 
 // updateCreateRequest creates the Update request.
-func (client DedicatedHostsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHostUpdate, options *DedicatedHostsUpdateOptions) (*azcore.Request, error) {
+func (client DedicatedHostsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHostUpdate, options *DedicatedHostsBeginUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{hostGroupName}", url.PathEscape(hostGroupName))

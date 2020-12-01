@@ -38,8 +38,8 @@ func (client SnapshotsClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginCreateOrUpdate - Creates or updates a snapshot.
-func (client SnapshotsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot, options *SnapshotsCreateOrUpdateOptions) (SnapshotPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, snapshotName, snapshot, options)
+func (client SnapshotsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot, options *SnapshotsBeginCreateOrUpdateOptions) (SnapshotPollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, snapshotName, snapshot, options)
 	if err != nil {
 		return SnapshotPollerResponse{}, err
 	}
@@ -75,7 +75,7 @@ func (client SnapshotsClient) ResumeCreateOrUpdate(token string) (SnapshotPoller
 }
 
 // CreateOrUpdate - Creates or updates a snapshot.
-func (client SnapshotsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot, options *SnapshotsCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client SnapshotsClient) createOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot, options *SnapshotsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, snapshotName, snapshot, options)
 	if err != nil {
 		return nil, err
@@ -91,7 +91,7 @@ func (client SnapshotsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client SnapshotsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot, options *SnapshotsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client SnapshotsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot, options *SnapshotsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -128,8 +128,8 @@ func (client SnapshotsClient) createOrUpdateHandleError(resp *azcore.Response) e
 }
 
 // BeginDelete - Deletes a snapshot.
-func (client SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, snapshotName, options)
+func (client SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, snapshotName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -165,7 +165,7 @@ func (client SnapshotsClient) ResumeDelete(token string) (HTTPPoller, error) {
 }
 
 // Delete - Deletes a snapshot.
-func (client SnapshotsClient) Delete(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsDeleteOptions) (*azcore.Response, error) {
+func (client SnapshotsClient) delete(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, snapshotName, options)
 	if err != nil {
 		return nil, err
@@ -181,7 +181,7 @@ func (client SnapshotsClient) Delete(ctx context.Context, resourceGroupName stri
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client SnapshotsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsDeleteOptions) (*azcore.Request, error) {
+func (client SnapshotsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -267,8 +267,8 @@ func (client SnapshotsClient) getHandleError(resp *azcore.Response) error {
 }
 
 // BeginGrantAccess - Grants access to a snapshot.
-func (client SnapshotsClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, options *SnapshotsGrantAccessOptions) (AccessURIPollerResponse, error) {
-	resp, err := client.GrantAccess(ctx, resourceGroupName, snapshotName, grantAccessData, options)
+func (client SnapshotsClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, options *SnapshotsBeginGrantAccessOptions) (AccessURIPollerResponse, error) {
+	resp, err := client.grantAccess(ctx, resourceGroupName, snapshotName, grantAccessData, options)
 	if err != nil {
 		return AccessURIPollerResponse{}, err
 	}
@@ -304,7 +304,7 @@ func (client SnapshotsClient) ResumeGrantAccess(token string) (AccessURIPoller, 
 }
 
 // GrantAccess - Grants access to a snapshot.
-func (client SnapshotsClient) GrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, options *SnapshotsGrantAccessOptions) (*azcore.Response, error) {
+func (client SnapshotsClient) grantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, options *SnapshotsBeginGrantAccessOptions) (*azcore.Response, error) {
 	req, err := client.grantAccessCreateRequest(ctx, resourceGroupName, snapshotName, grantAccessData, options)
 	if err != nil {
 		return nil, err
@@ -320,7 +320,7 @@ func (client SnapshotsClient) GrantAccess(ctx context.Context, resourceGroupName
 }
 
 // grantAccessCreateRequest creates the GrantAccess request.
-func (client SnapshotsClient) grantAccessCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, options *SnapshotsGrantAccessOptions) (*azcore.Request, error) {
+func (client SnapshotsClient) grantAccessCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, options *SnapshotsBeginGrantAccessOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}/beginGetAccess"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -460,8 +460,8 @@ func (client SnapshotsClient) listByResourceGroupHandleError(resp *azcore.Respon
 }
 
 // BeginRevokeAccess - Revokes access to a snapshot.
-func (client SnapshotsClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsRevokeAccessOptions) (HTTPPollerResponse, error) {
-	resp, err := client.RevokeAccess(ctx, resourceGroupName, snapshotName, options)
+func (client SnapshotsClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsBeginRevokeAccessOptions) (HTTPPollerResponse, error) {
+	resp, err := client.revokeAccess(ctx, resourceGroupName, snapshotName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -497,7 +497,7 @@ func (client SnapshotsClient) ResumeRevokeAccess(token string) (HTTPPoller, erro
 }
 
 // RevokeAccess - Revokes access to a snapshot.
-func (client SnapshotsClient) RevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsRevokeAccessOptions) (*azcore.Response, error) {
+func (client SnapshotsClient) revokeAccess(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsBeginRevokeAccessOptions) (*azcore.Response, error) {
 	req, err := client.revokeAccessCreateRequest(ctx, resourceGroupName, snapshotName, options)
 	if err != nil {
 		return nil, err
@@ -513,7 +513,7 @@ func (client SnapshotsClient) RevokeAccess(ctx context.Context, resourceGroupNam
 }
 
 // revokeAccessCreateRequest creates the RevokeAccess request.
-func (client SnapshotsClient) revokeAccessCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsRevokeAccessOptions) (*azcore.Request, error) {
+func (client SnapshotsClient) revokeAccessCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsBeginRevokeAccessOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}/endGetAccess"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -542,8 +542,8 @@ func (client SnapshotsClient) revokeAccessHandleError(resp *azcore.Response) err
 }
 
 // BeginUpdate - Updates (patches) a snapshot.
-func (client SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, options *SnapshotsUpdateOptions) (SnapshotPollerResponse, error) {
-	resp, err := client.Update(ctx, resourceGroupName, snapshotName, snapshot, options)
+func (client SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, options *SnapshotsBeginUpdateOptions) (SnapshotPollerResponse, error) {
+	resp, err := client.update(ctx, resourceGroupName, snapshotName, snapshot, options)
 	if err != nil {
 		return SnapshotPollerResponse{}, err
 	}
@@ -579,7 +579,7 @@ func (client SnapshotsClient) ResumeUpdate(token string) (SnapshotPoller, error)
 }
 
 // Update - Updates (patches) a snapshot.
-func (client SnapshotsClient) Update(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, options *SnapshotsUpdateOptions) (*azcore.Response, error) {
+func (client SnapshotsClient) update(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, options *SnapshotsBeginUpdateOptions) (*azcore.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, snapshotName, snapshot, options)
 	if err != nil {
 		return nil, err
@@ -595,7 +595,7 @@ func (client SnapshotsClient) Update(ctx context.Context, resourceGroupName stri
 }
 
 // updateCreateRequest creates the Update request.
-func (client SnapshotsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, options *SnapshotsUpdateOptions) (*azcore.Request, error) {
+func (client SnapshotsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, options *SnapshotsBeginUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))

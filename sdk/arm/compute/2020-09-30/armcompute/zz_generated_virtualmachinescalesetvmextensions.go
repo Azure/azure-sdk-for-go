@@ -35,8 +35,8 @@ func (client VirtualMachineScaleSetVMExtensionsClient) Pipeline() azcore.Pipelin
 }
 
 // BeginCreateOrUpdate - The operation to create or update the VMSS VM extension.
-func (client VirtualMachineScaleSetVMExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineScaleSetVMExtension, options *VirtualMachineScaleSetVMExtensionsCreateOrUpdateOptions) (VirtualMachineScaleSetVMExtensionPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, options)
+func (client VirtualMachineScaleSetVMExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineScaleSetVMExtension, options *VirtualMachineScaleSetVMExtensionsBeginCreateOrUpdateOptions) (VirtualMachineScaleSetVMExtensionPollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, options)
 	if err != nil {
 		return VirtualMachineScaleSetVMExtensionPollerResponse{}, err
 	}
@@ -72,7 +72,7 @@ func (client VirtualMachineScaleSetVMExtensionsClient) ResumeCreateOrUpdate(toke
 }
 
 // CreateOrUpdate - The operation to create or update the VMSS VM extension.
-func (client VirtualMachineScaleSetVMExtensionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineScaleSetVMExtension, options *VirtualMachineScaleSetVMExtensionsCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client VirtualMachineScaleSetVMExtensionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineScaleSetVMExtension, options *VirtualMachineScaleSetVMExtensionsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, options)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (client VirtualMachineScaleSetVMExtensionsClient) CreateOrUpdate(ctx contex
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client VirtualMachineScaleSetVMExtensionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineScaleSetVMExtension, options *VirtualMachineScaleSetVMExtensionsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client VirtualMachineScaleSetVMExtensionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineScaleSetVMExtension, options *VirtualMachineScaleSetVMExtensionsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vmScaleSetName}", url.PathEscape(vmScaleSetName))
@@ -124,8 +124,8 @@ func (client VirtualMachineScaleSetVMExtensionsClient) createOrUpdateHandleError
 }
 
 // BeginDelete - The operation to delete the VMSS VM extension.
-func (client VirtualMachineScaleSetVMExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, options *VirtualMachineScaleSetVMExtensionsDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, options)
+func (client VirtualMachineScaleSetVMExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, options *VirtualMachineScaleSetVMExtensionsBeginDeleteOptions) (HTTPPollerResponse, error) {
+	resp, err := client.delete(ctx, resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -161,7 +161,7 @@ func (client VirtualMachineScaleSetVMExtensionsClient) ResumeDelete(token string
 }
 
 // Delete - The operation to delete the VMSS VM extension.
-func (client VirtualMachineScaleSetVMExtensionsClient) Delete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, options *VirtualMachineScaleSetVMExtensionsDeleteOptions) (*azcore.Response, error) {
+func (client VirtualMachineScaleSetVMExtensionsClient) delete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, options *VirtualMachineScaleSetVMExtensionsBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, options)
 	if err != nil {
 		return nil, err
@@ -177,7 +177,7 @@ func (client VirtualMachineScaleSetVMExtensionsClient) Delete(ctx context.Contex
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client VirtualMachineScaleSetVMExtensionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, options *VirtualMachineScaleSetVMExtensionsDeleteOptions) (*azcore.Request, error) {
+func (client VirtualMachineScaleSetVMExtensionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, options *VirtualMachineScaleSetVMExtensionsBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vmScaleSetName}", url.PathEscape(vmScaleSetName))
@@ -323,8 +323,8 @@ func (client VirtualMachineScaleSetVMExtensionsClient) listHandleError(resp *azc
 }
 
 // BeginUpdate - The operation to update the VMSS VM extension.
-func (client VirtualMachineScaleSetVMExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineScaleSetVMExtensionUpdate, options *VirtualMachineScaleSetVMExtensionsUpdateOptions) (VirtualMachineScaleSetVMExtensionPollerResponse, error) {
-	resp, err := client.Update(ctx, resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, options)
+func (client VirtualMachineScaleSetVMExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineScaleSetVMExtensionUpdate, options *VirtualMachineScaleSetVMExtensionsBeginUpdateOptions) (VirtualMachineScaleSetVMExtensionPollerResponse, error) {
+	resp, err := client.update(ctx, resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, options)
 	if err != nil {
 		return VirtualMachineScaleSetVMExtensionPollerResponse{}, err
 	}
@@ -360,7 +360,7 @@ func (client VirtualMachineScaleSetVMExtensionsClient) ResumeUpdate(token string
 }
 
 // Update - The operation to update the VMSS VM extension.
-func (client VirtualMachineScaleSetVMExtensionsClient) Update(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineScaleSetVMExtensionUpdate, options *VirtualMachineScaleSetVMExtensionsUpdateOptions) (*azcore.Response, error) {
+func (client VirtualMachineScaleSetVMExtensionsClient) update(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineScaleSetVMExtensionUpdate, options *VirtualMachineScaleSetVMExtensionsBeginUpdateOptions) (*azcore.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, options)
 	if err != nil {
 		return nil, err
@@ -376,7 +376,7 @@ func (client VirtualMachineScaleSetVMExtensionsClient) Update(ctx context.Contex
 }
 
 // updateCreateRequest creates the Update request.
-func (client VirtualMachineScaleSetVMExtensionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineScaleSetVMExtensionUpdate, options *VirtualMachineScaleSetVMExtensionsUpdateOptions) (*azcore.Request, error) {
+func (client VirtualMachineScaleSetVMExtensionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineScaleSetVMExtensionUpdate, options *VirtualMachineScaleSetVMExtensionsBeginUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vmScaleSetName}", url.PathEscape(vmScaleSetName))

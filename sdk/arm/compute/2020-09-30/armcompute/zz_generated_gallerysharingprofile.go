@@ -35,8 +35,8 @@ func (client GallerySharingProfileClient) Pipeline() azcore.Pipeline {
 }
 
 // BeginUpdate - Update sharing profile of a gallery.
-func (client GallerySharingProfileClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileUpdateOptions) (SharingUpdatePollerResponse, error) {
-	resp, err := client.Update(ctx, resourceGroupName, galleryName, sharingUpdate, options)
+func (client GallerySharingProfileClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileBeginUpdateOptions) (SharingUpdatePollerResponse, error) {
+	resp, err := client.update(ctx, resourceGroupName, galleryName, sharingUpdate, options)
 	if err != nil {
 		return SharingUpdatePollerResponse{}, err
 	}
@@ -72,7 +72,7 @@ func (client GallerySharingProfileClient) ResumeUpdate(token string) (SharingUpd
 }
 
 // Update - Update sharing profile of a gallery.
-func (client GallerySharingProfileClient) Update(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileUpdateOptions) (*azcore.Response, error) {
+func (client GallerySharingProfileClient) update(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileBeginUpdateOptions) (*azcore.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, galleryName, sharingUpdate, options)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (client GallerySharingProfileClient) Update(ctx context.Context, resourceGr
 }
 
 // updateCreateRequest creates the Update request.
-func (client GallerySharingProfileClient) updateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileUpdateOptions) (*azcore.Request, error) {
+func (client GallerySharingProfileClient) updateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileBeginUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/share"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))

@@ -52,6 +52,9 @@ const (
 	Version = "0.10.3"
 
 	rootUserAgent = "/golang-service-bus"
+
+	// default ServiceBus resource uri to authenticate with
+	serviceBusResourceURI = "https://servicebus.azure.net/"
 )
 
 type (
@@ -69,10 +72,6 @@ type (
 
 	// NamespaceOption provides structure for configuring a new Service Bus namespace
 	NamespaceOption func(h *Namespace) error
-)
-
-const (
-	serviceBusResourceURI = "https://servicebus.azure.net/"
 )
 
 // NamespaceWithConnectionString configures a namespace with the information provided in a Service Bus connection string
@@ -141,7 +140,8 @@ func NamespaceWithEnvironmentBinding(name string) NamespaceOption {
 	return func(ns *Namespace) error {
 		provider, err := aad.NewJWTProvider(
 			aad.JWTProviderWithEnvironmentVars(),
-			aad.JWTProviderWithResourceURI(serviceBusResourceURI),
+			// TODO: fix bug upstream to use environment resourceURI
+			aad.JWTProviderWithResourceURI(ns.getResourceURI()),
 		)
 		if err != nil {
 			return err
@@ -149,6 +149,31 @@ func NamespaceWithEnvironmentBinding(name string) NamespaceOption {
 
 		ns.TokenProvider = provider
 		ns.Name = name
+		return nil
+	}
+}
+
+// NamespaceWithAzureEnvironment sets the namespace's Environment, Suffix and ResourceURI parameters according
+// to the Azure Environment defined in "github.com/Azure/go-autorest/autorest/azure" package.
+// This allows to configure the library to be used in the different Azure clouds.
+// environmentName is the name of the cloud as defined in autorest : https://github.com/Azure/go-autorest/blob/b076c1437d051bf4c328db428b70f4fe22ad38b0/autorest/azure/environments.go#L34-L39
+func NamespaceWithAzureEnvironment(namespaceName, environmentName string) NamespaceOption {
+	return func(ns *Namespace) error {
+		azureEnv, err := azure.EnvironmentFromName(environmentName)
+		if err != nil {
+			return err
+		}
+		ns.Environment = azureEnv
+		ns.Suffix = azureEnv.ServiceBusEndpointSuffix
+		ns.Name = namespaceName
+		return nil
+	}
+}
+
+// NamespaceWithTokenProvider sets the token provider on the namespace
+func NamespaceWithTokenProvider(provider auth.TokenProvider) NamespaceOption {
+	return func(ns *Namespace) error {
+		ns.TokenProvider = provider
 		return nil
 	}
 }
@@ -246,13 +271,16 @@ func (ns *Namespace) getUserAgent() string {
 	return userAgent
 }
 
-func (ns *Namespace) resolveSuffix() string {
-	var suffix string
-	if ns.Suffix != "" {
-		suffix = ns.Suffix
-	} else {
-		suffix = azure.PublicCloud.ServiceBusEndpointSuffix
+func (ns *Namespace) getResourceURI() string {
+	if ns.Environment.ResourceIdentifiers.ServiceBus == "" {
+		return serviceBusResourceURI
 	}
+	return ns.Environment.ResourceIdentifiers.ServiceBus
+}
 
-	return suffix
+func (ns *Namespace) resolveSuffix() string {
+	if ns.Suffix != "" {
+		return ns.Suffix
+	}
+	return azure.PublicCloud.ServiceBusEndpointSuffix
 }

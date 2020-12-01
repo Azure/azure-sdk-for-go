@@ -30,6 +30,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-service-bus-go/internal/test"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/suite"
 )
@@ -55,6 +56,22 @@ func (suite *serviceBusSuite) TestCreateNamespaceFromConnectionString() {
 	ns, err := NewNamespace(NamespaceWithConnectionString(connStr))
 	if suite.NoError(err) {
 		suite.Contains(connStr, ns.Name)
+	}
+}
+
+func TestNewNamespaceWithAzureEnvironment(t *testing.T) {
+	ns, err := NewNamespace(NamespaceWithAzureEnvironment("namespaceName", "AzureGermanCloud"))
+	if err != nil {
+		t.Fatalf("unexpected error creating namespace: %s", err)
+	}
+	if ns.Environment != azure.GermanCloud {
+		t.Fatalf("expected namespace environment to be %q but was %q", azure.GermanCloud, ns.Environment)
+	}
+	if !strings.EqualFold(ns.Suffix, azure.GermanCloud.ServiceBusEndpointSuffix) {
+		t.Fatalf("expected suffix to be %q but was %q", azure.GermanCloud.ServiceBusEndpointSuffix, ns.Suffix)
+	}
+	if ns.Name != "namespaceName" {
+		t.Fatalf("expected namespace name to be %q but was %q", "namespaceName", ns.Name)
 	}
 }
 

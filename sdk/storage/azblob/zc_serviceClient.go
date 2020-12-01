@@ -20,41 +20,38 @@ const (
 
 // A ServiceClient represents a URL to the Azure Storage Blob service allowing you to manipulate blob containers.
 type ServiceClient struct {
-	client *client
+	client *serviceClient
+	u      url.URL
 }
 
 // NewServiceClient creates a ServiceClient object using the specified URL, credential, and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
-func NewServiceClient(serviceURL string, cred azcore.Credential, options *clientOptions) (ServiceClient, error) {
-	client, err := newClient(serviceURL, cred, options)
-
+func NewServiceClient(serviceURL string, cred azcore.Credential, options *connectionOptions) (ServiceClient, error) {
+	u, err := url.Parse(serviceURL)
 	if err != nil {
 		return ServiceClient{}, err
 	}
-
-	return ServiceClient{client: client}, err
+	return ServiceClient{client: &serviceClient{
+		con: newConnection(serviceURL, cred, options),
+	}, u: *u}, nil
 }
 
 // URL returns the URL endpoint used by the ServiceClient object.
 func (s ServiceClient) URL() url.URL {
-	return *s.client.u
+	return s.u
 }
 
 // String returns the URL as a string.
 func (s ServiceClient) String() string {
-	u := s.URL()
-	return u.String()
+	return s.u.String()
 }
 
 // WithPipeline creates a new ServiceClient object identical to the source but with the specified request policy pipeline.
-func (s ServiceClient) WithPipeline(pipeline azcore.Pipeline) (ServiceClient, error) {
-	client, err := newClientWithPipeline(s.client.u.String(), pipeline)
-
-	if err != nil {
-		return ServiceClient{}, err
-	}
-
-	return ServiceClient{client: client}, err
+func (s ServiceClient) WithPipeline(pipeline azcore.Pipeline) ServiceClient {
+	connection := newConnectionWithPipeline(s.u.String(), pipeline)
+	return ServiceClient{client: &serviceClient{
+		con: connection,
+	}}
 }
 
 // NewContainerClient creates a new ContainerClient object by concatenating containerName to the end of
@@ -63,10 +60,13 @@ func (s ServiceClient) WithPipeline(pipeline azcore.Pipeline) (ServiceClient, er
 // desired pipeline object. Or, call this package's NewContainerClient instead of calling this object's
 // NewContainerClient method.
 func (s ServiceClient) NewContainerClient(containerName string) ContainerClient {
-	containerURL := appendToURLPath(*s.client.u, containerName)
-	containerClient, _ := newClientWithPipeline(containerURL.String(), s.client.p)
+	containerURL := appendToURLPath(s.u, containerName)
+	containerConnection := newConnectionWithPipeline(containerURL.String(), s.client.con.p)
 	return ContainerClient{
-		client: containerClient,
+		client: &containerClient{
+			con: containerConnection,
+		},
+		u: containerURL,
 	}
 }
 
@@ -90,14 +90,14 @@ func appendToURLPath(u url.URL, name string) url.URL {
 	return u
 }
 
-func (s ServiceClient) GetAccountInfo(ctx context.Context) (*ServiceGetAccountInfoResponse, error) {
-	return s.client.ServiceOperations().GetAccountInfo(ctx)
+func (s ServiceClient) GetAccountInfo(ctx context.Context) (ServiceGetAccountInfoResponse, error) {
+	return s.client.GetAccountInfo(ctx, nil)
 }
 
 //GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceClient object.
 //OAuth is required for this call, as well as any role that can delegate access to the storage account.
 func (s ServiceClient) GetUserDelegationCredential(ctx context.Context, info KeyInfo) (UserDelegationCredential, error) {
-	udk, err := s.client.ServiceOperations().GetUserDelegationKey(ctx, info, nil)
+	udk, err := s.client.GetUserDelegationKey(ctx, info, nil)
 	if err != nil {
 		return UserDelegationCredential{}, err
 	}
@@ -115,41 +115,55 @@ func NewKeyInfo(Start, Expiry time.Time) KeyInfo {
 	}
 }
 
-// The List Containers Segment operation returns a list of the containers under the specified account.
-// A page is returned to allow the user to walk through segments of the list. Please refer to the examples on its ussage.
+// The List Containers Segment operation returns a channel of the containers under the specified account.
 // Use an empty Marker to start enumeration from the beginning. Container names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-containers2.
-func (s ServiceClient) ListContainersSegment(o *ListContainersSegmentOptions) (ListContainersSegmentResponsePager, error) {
-	pager, err := s.client.ServiceOperations().ListContainersSegment(o.pointers())
-
+// The returned channel contains individual container items.
+// AutoPagerTimeout specifies the amount of time with no read operations before the channel times out and closes. Specify no time and it will be ignored.
+// AutoPagerBufferSize specifies the channel's buffer size.
+func (s ServiceClient) ListContainersSegment(ctx context.Context, AutoPagerBufferSize uint, AutoPagerTimeout time.Duration, o *ListContainersSegmentOptions) (chan ContainerItem, error) {
+	listOptions := o.pointers()
+	pager := s.client.ListContainersSegment(listOptions)
 	// override the generated advancer, which is incorrect
-	if err == nil {
-		p := pager.(*listContainersSegmentResponsePager) // cast to the internal type first
-
-		p.advancer = func(response *ListContainersSegmentResponseResponse) (*azcore.Request, error) {
-			if response.EnumerationResults.NextMarker == nil {
-				return nil, errors.New("unexpected missing NextMarker")
-			}
-
-			queryValues, _ := url.ParseQuery(p.request.URL.RawQuery)
-			queryValues.Set("marker", *response.EnumerationResults.NextMarker)
-
-			p.request.URL.RawQuery = queryValues.Encode()
-			return p.request, nil
-		}
+	if pager.Err() != nil {
+		return nil, pager.Err()
 	}
 
-	return pager, err
+	p := pager.(*listContainersSegmentResponsePager) // cast to the internal type first
+	p.advancer = func(cxt context.Context, response ListContainersSegmentResponseResponse) (*azcore.Request, error) {
+		if response.EnumerationResults.NextMarker == nil {
+			return nil, errors.New("unexpected missing NextMarker")
+		}
+		req, err := s.client.listContainersSegmentCreateRequest(ctx, listOptions)
+		if err != nil {
+			return nil, err
+		}
+		queryValues, _ := url.ParseQuery(req.URL.RawQuery)
+		queryValues.Set("marker", *response.EnumerationResults.NextMarker)
+
+		req.URL.RawQuery = queryValues.Encode()
+		return req, nil
+	}
+	output := make(chan ContainerItem, AutoPagerBufferSize)
+	go listContainersSegmentAutoPager{
+		pager,
+		output,
+		ctx,
+		AutoPagerTimeout,
+		nil,
+	}.Go()
+
+	return output, nil
 }
 
-func (s ServiceClient) GetProperties(ctx context.Context) (*StorageServicePropertiesResponse, error) {
-	return s.client.ServiceOperations().GetProperties(ctx, nil)
+func (s ServiceClient) GetProperties(ctx context.Context) (StorageServicePropertiesResponse, error) {
+	return s.client.GetProperties(ctx, nil)
 }
 
-func (s ServiceClient) SetProperties(ctx context.Context, properties StorageServiceProperties) (*ServiceSetPropertiesResponse, error) {
-	return s.client.ServiceOperations().SetProperties(ctx, properties, nil)
+func (s ServiceClient) SetProperties(ctx context.Context, properties StorageServiceProperties) (ServiceSetPropertiesResponse, error) {
+	return s.client.SetProperties(ctx, properties, nil)
 }
 
-func (s ServiceClient) GetStatistics(ctx context.Context) (*StorageServiceStatsResponse, error) {
-	return s.client.ServiceOperations().GetStatistics(ctx, nil)
+func (s ServiceClient) GetStatistics(ctx context.Context) (StorageServiceStatsResponse, error) {
+	return s.client.GetStatistics(ctx, nil)
 }

@@ -6,20 +6,21 @@ import (
 	"io/ioutil"
 )
 
+// Options ...
 type Options interface {
+	// Arguments returns the argument defined in this options
 	Arguments() []string
-	String() string
+	// CodeGeneratorVersion returns the code generator version defined in this options
 	CodeGeneratorVersion() string
+	// String ...
+	String() string
 }
 
 type localOptions struct {
 	AutorestArguments []string `json:"autorestArguments"`
 }
 
-func (o localOptions) Arguments() []string {
-	return o.AutorestArguments
-}
-
+// NewOptionsFrom returns a new instance of Options from the given io.Reader
 func NewOptionsFrom(reader io.Reader) (Options, error) {
 	b, err := ioutil.ReadAll(reader)
 	if err != nil {
@@ -30,6 +31,11 @@ func NewOptionsFrom(reader io.Reader) (Options, error) {
 		return nil, err
 	}
 	return &result, nil
+}
+
+// Argument ...
+func (o localOptions) Arguments() []string {
+	return o.AutorestArguments
 }
 
 // String ...

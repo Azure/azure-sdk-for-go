@@ -209,8 +209,11 @@ func (page OperationEntityListResultPage) Values() []OperationEntity {
 }
 
 // Creates a new instance of the OperationEntityListResultPage type.
-func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
-	return OperationEntityListResultPage{fn: getNextPage}
+func NewOperationEntityListResultPage(cur OperationEntityListResult, getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
+	return OperationEntityListResultPage{
+		fn:   getNextPage,
+		oelr: cur,
+	}
 }
 
 // RecommendationProperties the properties of the recommendation.
@@ -543,8 +546,11 @@ func (page ResourceRecommendationBaseListResultPage) Values() []ResourceRecommen
 }
 
 // Creates a new instance of the ResourceRecommendationBaseListResultPage type.
-func NewResourceRecommendationBaseListResultPage(getNextPage func(context.Context, ResourceRecommendationBaseListResult) (ResourceRecommendationBaseListResult, error)) ResourceRecommendationBaseListResultPage {
-	return ResourceRecommendationBaseListResultPage{fn: getNextPage}
+func NewResourceRecommendationBaseListResultPage(cur ResourceRecommendationBaseListResult, getNextPage func(context.Context, ResourceRecommendationBaseListResult) (ResourceRecommendationBaseListResult, error)) ResourceRecommendationBaseListResultPage {
+	return ResourceRecommendationBaseListResultPage{
+		fn:    getNextPage,
+		rrblr: cur,
+	}
 }
 
 // ShortDescription a summary of the recommendation.
@@ -555,8 +561,8 @@ type ShortDescription struct {
 	Solution *string `json:"solution,omitempty"`
 }
 
-// SuppressionContract the details of the snoozed or dismissed rule; for example, the duration, name, and GUID
-// associated with the rule.
+// SuppressionContract the details of the snoozed or dismissed rule; for example, the duration, name, and
+// GUID associated with the rule.
 type SuppressionContract struct {
 	autorest.Response `json:"-"`
 	// SuppressionID - The GUID of the suppression.

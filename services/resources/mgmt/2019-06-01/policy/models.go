@@ -296,8 +296,11 @@ func (page AssignmentListResultPage) Values() []Assignment {
 }
 
 // Creates a new instance of the AssignmentListResultPage type.
-func NewAssignmentListResultPage(getNextPage func(context.Context, AssignmentListResult) (AssignmentListResult, error)) AssignmentListResultPage {
-	return AssignmentListResultPage{fn: getNextPage}
+func NewAssignmentListResultPage(cur AssignmentListResult, getNextPage func(context.Context, AssignmentListResult) (AssignmentListResult, error)) AssignmentListResultPage {
+	return AssignmentListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AssignmentProperties the policy assignment properties.
@@ -545,8 +548,11 @@ func (page DefinitionListResultPage) Values() []Definition {
 }
 
 // Creates a new instance of the DefinitionListResultPage type.
-func NewDefinitionListResultPage(getNextPage func(context.Context, DefinitionListResult) (DefinitionListResult, error)) DefinitionListResultPage {
-	return DefinitionListResultPage{fn: getNextPage}
+func NewDefinitionListResultPage(cur DefinitionListResult, getNextPage func(context.Context, DefinitionListResult) (DefinitionListResult, error)) DefinitionListResultPage {
+	return DefinitionListResultPage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
 // DefinitionProperties the policy definition properties.
@@ -575,8 +581,8 @@ type DefinitionReference struct {
 	Parameters interface{} `json:"parameters,omitempty"`
 }
 
-// ErrorResponse error response indicates Azure Resource Manager is not able to process the incoming request.
-// The reason is provided in the error message.
+// ErrorResponse error response indicates Azure Resource Manager is not able to process the incoming
+// request. The reason is provided in the error message.
 type ErrorResponse struct {
 	// HTTPStatus - Http status code.
 	HTTPStatus *string `json:"httpStatus,omitempty"`
@@ -830,8 +836,11 @@ func (page SetDefinitionListResultPage) Values() []SetDefinition {
 }
 
 // Creates a new instance of the SetDefinitionListResultPage type.
-func NewSetDefinitionListResultPage(getNextPage func(context.Context, SetDefinitionListResult) (SetDefinitionListResult, error)) SetDefinitionListResultPage {
-	return SetDefinitionListResultPage{fn: getNextPage}
+func NewSetDefinitionListResultPage(cur SetDefinitionListResult, getNextPage func(context.Context, SetDefinitionListResult) (SetDefinitionListResult, error)) SetDefinitionListResultPage {
+	return SetDefinitionListResultPage{
+		fn:   getNextPage,
+		sdlr: cur,
+	}
 }
 
 // SetDefinitionProperties the policy set definition properties.

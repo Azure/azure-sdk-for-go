@@ -340,14 +340,14 @@ func NewFrontendEndpointsClientWithBaseURI(baseURI string, subscriptionID string
 func NewFrontendEndpointsListResultIterator(page FrontendEndpointsListResultPage) FrontendEndpointsListResultIterator {
 	return original.NewFrontendEndpointsListResultIterator(page)
 }
-func NewFrontendEndpointsListResultPage(getNextPage func(context.Context, FrontendEndpointsListResult) (FrontendEndpointsListResult, error)) FrontendEndpointsListResultPage {
-	return original.NewFrontendEndpointsListResultPage(getNextPage)
+func NewFrontendEndpointsListResultPage(cur FrontendEndpointsListResult, getNextPage func(context.Context, FrontendEndpointsListResult) (FrontendEndpointsListResult, error)) FrontendEndpointsListResultPage {
+	return original.NewFrontendEndpointsListResultPage(cur, getNextPage)
 }
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
 }
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return original.NewListResultPage(getNextPage)
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(cur, getNextPage)
 }
 func NewPoliciesClient(subscriptionID string) PoliciesClient {
 	return original.NewPoliciesClient(subscriptionID)
@@ -358,8 +358,8 @@ func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) Policie
 func NewWebApplicationFirewallPolicyListResultIterator(page WebApplicationFirewallPolicyListResultPage) WebApplicationFirewallPolicyListResultIterator {
 	return original.NewWebApplicationFirewallPolicyListResultIterator(page)
 }
-func NewWebApplicationFirewallPolicyListResultPage(getNextPage func(context.Context, WebApplicationFirewallPolicyListResult) (WebApplicationFirewallPolicyListResult, error)) WebApplicationFirewallPolicyListResultPage {
-	return original.NewWebApplicationFirewallPolicyListResultPage(getNextPage)
+func NewWebApplicationFirewallPolicyListResultPage(cur WebApplicationFirewallPolicyListResult, getNextPage func(context.Context, WebApplicationFirewallPolicyListResult) (WebApplicationFirewallPolicyListResult, error)) WebApplicationFirewallPolicyListResultPage {
+	return original.NewWebApplicationFirewallPolicyListResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

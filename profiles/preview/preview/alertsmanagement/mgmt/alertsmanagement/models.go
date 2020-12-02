@@ -297,14 +297,14 @@ func NewActionRulesClientWithBaseURI(baseURI string, subscriptionID string) Acti
 func NewActionRulesListIterator(page ActionRulesListPage) ActionRulesListIterator {
 	return original.NewActionRulesListIterator(page)
 }
-func NewActionRulesListPage(getNextPage func(context.Context, ActionRulesList) (ActionRulesList, error)) ActionRulesListPage {
-	return original.NewActionRulesListPage(getNextPage)
+func NewActionRulesListPage(cur ActionRulesList, getNextPage func(context.Context, ActionRulesList) (ActionRulesList, error)) ActionRulesListPage {
+	return original.NewActionRulesListPage(cur, getNextPage)
 }
 func NewAlertRulesListIterator(page AlertRulesListPage) AlertRulesListIterator {
 	return original.NewAlertRulesListIterator(page)
 }
-func NewAlertRulesListPage(getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
-	return original.NewAlertRulesListPage(getNextPage)
+func NewAlertRulesListPage(cur AlertRulesList, getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
+	return original.NewAlertRulesListPage(cur, getNextPage)
 }
 func NewAlertsClient(subscriptionID string) AlertsClient {
 	return original.NewAlertsClient(subscriptionID)
@@ -315,8 +315,8 @@ func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsCli
 func NewAlertsListIterator(page AlertsListPage) AlertsListIterator {
 	return original.NewAlertsListIterator(page)
 }
-func NewAlertsListPage(getNextPage func(context.Context, AlertsList) (AlertsList, error)) AlertsListPage {
-	return original.NewAlertsListPage(getNextPage)
+func NewAlertsListPage(cur AlertsList, getNextPage func(context.Context, AlertsList) (AlertsList, error)) AlertsListPage {
+	return original.NewAlertsListPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -327,8 +327,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewOperationsListIterator(page OperationsListPage) OperationsListIterator {
 	return original.NewOperationsListIterator(page)
 }
-func NewOperationsListPage(getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
-	return original.NewOperationsListPage(getNextPage)
+func NewOperationsListPage(cur OperationsList, getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
+	return original.NewOperationsListPage(cur, getNextPage)
 }
 func NewSmartDetectorAlertRulesClient(subscriptionID string) SmartDetectorAlertRulesClient {
 	return original.NewSmartDetectorAlertRulesClient(subscriptionID)
@@ -345,8 +345,8 @@ func NewSmartGroupsClientWithBaseURI(baseURI string, subscriptionID string) Smar
 func NewSmartGroupsListIterator(page SmartGroupsListPage) SmartGroupsListIterator {
 	return original.NewSmartGroupsListIterator(page)
 }
-func NewSmartGroupsListPage(getNextPage func(context.Context, SmartGroupsList) (SmartGroupsList, error)) SmartGroupsListPage {
-	return original.NewSmartGroupsListPage(getNextPage)
+func NewSmartGroupsListPage(cur SmartGroupsList, getNextPage func(context.Context, SmartGroupsList) (SmartGroupsList, error)) SmartGroupsListPage {
+	return original.NewSmartGroupsListPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

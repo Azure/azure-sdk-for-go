@@ -222,8 +222,8 @@ func New(subscriptionID string) BaseClient {
 func NewClusterListResultIterator(page ClusterListResultPage) ClusterListResultIterator {
 	return original.NewClusterListResultIterator(page)
 }
-func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
-	return original.NewClusterListResultPage(getNextPage)
+func NewClusterListResultPage(cur ClusterListResult, getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return original.NewClusterListResultPage(cur, getNextPage)
 }
 func NewClustersClient(subscriptionID string) ClustersClient {
 	return original.NewClustersClient(subscriptionID)
@@ -234,14 +234,14 @@ func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) Cluster
 func NewFileListResultIterator(page FileListResultPage) FileListResultIterator {
 	return original.NewFileListResultIterator(page)
 }
-func NewFileListResultPage(getNextPage func(context.Context, FileListResult) (FileListResult, error)) FileListResultPage {
-	return original.NewFileListResultPage(getNextPage)
+func NewFileListResultPage(cur FileListResult, getNextPage func(context.Context, FileListResult) (FileListResult, error)) FileListResultPage {
+	return original.NewFileListResultPage(cur, getNextPage)
 }
 func NewFileServerListResultIterator(page FileServerListResultPage) FileServerListResultIterator {
 	return original.NewFileServerListResultIterator(page)
 }
-func NewFileServerListResultPage(getNextPage func(context.Context, FileServerListResult) (FileServerListResult, error)) FileServerListResultPage {
-	return original.NewFileServerListResultPage(getNextPage)
+func NewFileServerListResultPage(cur FileServerListResult, getNextPage func(context.Context, FileServerListResult) (FileServerListResult, error)) FileServerListResultPage {
+	return original.NewFileServerListResultPage(cur, getNextPage)
 }
 func NewFileServersClient(subscriptionID string) FileServersClient {
 	return original.NewFileServersClient(subscriptionID)
@@ -252,8 +252,8 @@ func NewFileServersClientWithBaseURI(baseURI string, subscriptionID string) File
 func NewJobListResultIterator(page JobListResultPage) JobListResultIterator {
 	return original.NewJobListResultIterator(page)
 }
-func NewJobListResultPage(getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
-	return original.NewJobListResultPage(getNextPage)
+func NewJobListResultPage(cur JobListResult, getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
+	return original.NewJobListResultPage(cur, getNextPage)
 }
 func NewJobsClient(subscriptionID string) JobsClient {
 	return original.NewJobsClient(subscriptionID)
@@ -264,8 +264,8 @@ func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient 
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -276,8 +276,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewRemoteLoginInformationListResultIterator(page RemoteLoginInformationListResultPage) RemoteLoginInformationListResultIterator {
 	return original.NewRemoteLoginInformationListResultIterator(page)
 }
-func NewRemoteLoginInformationListResultPage(getNextPage func(context.Context, RemoteLoginInformationListResult) (RemoteLoginInformationListResult, error)) RemoteLoginInformationListResultPage {
-	return original.NewRemoteLoginInformationListResultPage(getNextPage)
+func NewRemoteLoginInformationListResultPage(cur RemoteLoginInformationListResult, getNextPage func(context.Context, RemoteLoginInformationListResult) (RemoteLoginInformationListResult, error)) RemoteLoginInformationListResultPage {
+	return original.NewRemoteLoginInformationListResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

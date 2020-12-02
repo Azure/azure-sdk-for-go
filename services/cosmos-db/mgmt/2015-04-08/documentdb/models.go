@@ -176,7 +176,8 @@ func (ckcup *CassandraKeyspaceCreateUpdateParameters) UnmarshalJSON(body []byte)
 	return nil
 }
 
-// CassandraKeyspaceCreateUpdateProperties properties to create and update Azure Cosmos DB Cassandra keyspace.
+// CassandraKeyspaceCreateUpdateProperties properties to create and update Azure Cosmos DB Cassandra
+// keyspace.
 type CassandraKeyspaceCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a Cassandra keyspace
 	Resource *CassandraKeyspaceResource `json:"resource,omitempty"`
@@ -455,8 +456,8 @@ type ConsistencyPolicy struct {
 	MaxIntervalInSeconds *int32 `json:"maxIntervalInSeconds,omitempty"`
 }
 
-// ContainerPartitionKey the configuration of the partition key to be used for partitioning data into multiple
-// partitions
+// ContainerPartitionKey the configuration of the partition key to be used for partitioning data into
+// multiple partitions
 type ContainerPartitionKey struct {
 	// Paths - List of paths using which data within the container can be partitioned
 	Paths *[]string `json:"paths,omitempty"`
@@ -913,8 +914,8 @@ func (future *DatabaseAccountsCreateOrUpdateFuture) Result(client DatabaseAccoun
 	return
 }
 
-// DatabaseAccountsCreateUpdateCassandraKeyspaceFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// DatabaseAccountsCreateUpdateCassandraKeyspaceFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type DatabaseAccountsCreateUpdateCassandraKeyspaceFuture struct {
 	azure.Future
 }
@@ -942,8 +943,8 @@ func (future *DatabaseAccountsCreateUpdateCassandraKeyspaceFuture) Result(client
 	return
 }
 
-// DatabaseAccountsCreateUpdateCassandraTableFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// DatabaseAccountsCreateUpdateCassandraTableFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type DatabaseAccountsCreateUpdateCassandraTableFuture struct {
 	azure.Future
 }
@@ -971,8 +972,8 @@ func (future *DatabaseAccountsCreateUpdateCassandraTableFuture) Result(client Da
 	return
 }
 
-// DatabaseAccountsCreateUpdateGremlinDatabaseFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// DatabaseAccountsCreateUpdateGremlinDatabaseFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type DatabaseAccountsCreateUpdateGremlinDatabaseFuture struct {
 	azure.Future
 }
@@ -1000,8 +1001,8 @@ func (future *DatabaseAccountsCreateUpdateGremlinDatabaseFuture) Result(client D
 	return
 }
 
-// DatabaseAccountsCreateUpdateGremlinGraphFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DatabaseAccountsCreateUpdateGremlinGraphFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type DatabaseAccountsCreateUpdateGremlinGraphFuture struct {
 	azure.Future
 }
@@ -1029,8 +1030,8 @@ func (future *DatabaseAccountsCreateUpdateGremlinGraphFuture) Result(client Data
 	return
 }
 
-// DatabaseAccountsCreateUpdateMongoDBCollectionFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// DatabaseAccountsCreateUpdateMongoDBCollectionFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type DatabaseAccountsCreateUpdateMongoDBCollectionFuture struct {
 	azure.Future
 }
@@ -1058,8 +1059,8 @@ func (future *DatabaseAccountsCreateUpdateMongoDBCollectionFuture) Result(client
 	return
 }
 
-// DatabaseAccountsCreateUpdateMongoDBDatabaseFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// DatabaseAccountsCreateUpdateMongoDBDatabaseFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type DatabaseAccountsCreateUpdateMongoDBDatabaseFuture struct {
 	azure.Future
 }
@@ -1087,8 +1088,8 @@ func (future *DatabaseAccountsCreateUpdateMongoDBDatabaseFuture) Result(client D
 	return
 }
 
-// DatabaseAccountsCreateUpdateSQLContainerFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DatabaseAccountsCreateUpdateSQLContainerFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type DatabaseAccountsCreateUpdateSQLContainerFuture struct {
 	azure.Future
 }
@@ -1116,8 +1117,8 @@ func (future *DatabaseAccountsCreateUpdateSQLContainerFuture) Result(client Data
 	return
 }
 
-// DatabaseAccountsCreateUpdateSQLDatabaseFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DatabaseAccountsCreateUpdateSQLDatabaseFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type DatabaseAccountsCreateUpdateSQLDatabaseFuture struct {
 	azure.Future
 }
@@ -1174,8 +1175,8 @@ func (future *DatabaseAccountsCreateUpdateTableFuture) Result(client DatabaseAcc
 	return
 }
 
-// DatabaseAccountsDeleteCassandraKeyspaceFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DatabaseAccountsDeleteCassandraKeyspaceFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type DatabaseAccountsDeleteCassandraKeyspaceFuture struct {
 	azure.Future
 }
@@ -1243,8 +1244,8 @@ func (future *DatabaseAccountsDeleteFuture) Result(client DatabaseAccountsClient
 	return
 }
 
-// DatabaseAccountsDeleteGremlinDatabaseFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DatabaseAccountsDeleteGremlinDatabaseFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type DatabaseAccountsDeleteGremlinDatabaseFuture struct {
 	azure.Future
 }
@@ -1289,8 +1290,8 @@ func (future *DatabaseAccountsDeleteGremlinGraphFuture) Result(client DatabaseAc
 	return
 }
 
-// DatabaseAccountsDeleteMongoDBCollectionFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DatabaseAccountsDeleteMongoDBCollectionFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type DatabaseAccountsDeleteMongoDBCollectionFuture struct {
 	azure.Future
 }
@@ -1312,8 +1313,8 @@ func (future *DatabaseAccountsDeleteMongoDBCollectionFuture) Result(client Datab
 	return
 }
 
-// DatabaseAccountsDeleteMongoDBDatabaseFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DatabaseAccountsDeleteMongoDBDatabaseFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type DatabaseAccountsDeleteMongoDBDatabaseFuture struct {
 	azure.Future
 }
@@ -1381,8 +1382,8 @@ func (future *DatabaseAccountsDeleteSQLDatabaseFuture) Result(client DatabaseAcc
 	return
 }
 
-// DatabaseAccountsDeleteTableFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DatabaseAccountsDeleteTableFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type DatabaseAccountsDeleteTableFuture struct {
 	azure.Future
 }
@@ -1404,8 +1405,8 @@ func (future *DatabaseAccountsDeleteTableFuture) Result(client DatabaseAccountsC
 	return
 }
 
-// DatabaseAccountsFailoverPriorityChangeFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DatabaseAccountsFailoverPriorityChangeFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type DatabaseAccountsFailoverPriorityChangeFuture struct {
 	azure.Future
 }
@@ -1620,8 +1621,8 @@ func (future *DatabaseAccountsUpdateGremlinDatabaseThroughputFuture) Result(clie
 	return
 }
 
-// DatabaseAccountsUpdateGremlinGraphThroughputFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// DatabaseAccountsUpdateGremlinGraphThroughputFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type DatabaseAccountsUpdateGremlinGraphThroughputFuture struct {
 	azure.Future
 }
@@ -1707,8 +1708,8 @@ func (future *DatabaseAccountsUpdateMongoDBDatabaseThroughputFuture) Result(clie
 	return
 }
 
-// DatabaseAccountsUpdateSQLContainerThroughputFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// DatabaseAccountsUpdateSQLContainerThroughputFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type DatabaseAccountsUpdateSQLContainerThroughputFuture struct {
 	azure.Future
 }
@@ -1736,8 +1737,8 @@ func (future *DatabaseAccountsUpdateSQLContainerThroughputFuture) Result(client 
 	return
 }
 
-// DatabaseAccountsUpdateSQLDatabaseThroughputFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// DatabaseAccountsUpdateSQLDatabaseThroughputFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type DatabaseAccountsUpdateSQLDatabaseThroughputFuture struct {
 	azure.Future
 }
@@ -1765,8 +1766,8 @@ func (future *DatabaseAccountsUpdateSQLDatabaseThroughputFuture) Result(client D
 	return
 }
 
-// DatabaseAccountsUpdateTableThroughputFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DatabaseAccountsUpdateTableThroughputFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type DatabaseAccountsUpdateTableThroughputFuture struct {
 	azure.Future
 }
@@ -1808,8 +1809,8 @@ type ExcludedPath struct {
 	Path *string `json:"path,omitempty"`
 }
 
-// ExtendedResourceProperties the system generated resource properties associated with SQL databases and SQL
-// containers.
+// ExtendedResourceProperties the system generated resource properties associated with SQL databases and
+// SQL containers.
 type ExtendedResourceProperties struct {
 	// Rid - A system generated property. A unique identifier.
 	Rid *string `json:"_rid,omitempty"`
@@ -2532,7 +2533,8 @@ func (mdccup *MongoDBCollectionCreateUpdateParameters) UnmarshalJSON(body []byte
 	return nil
 }
 
-// MongoDBCollectionCreateUpdateProperties properties to create and update Azure Cosmos DB MongoDB collection.
+// MongoDBCollectionCreateUpdateProperties properties to create and update Azure Cosmos DB MongoDB
+// collection.
 type MongoDBCollectionCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a MongoDB collection
 	Resource *MongoDBCollectionResource `json:"resource,omitempty"`
@@ -2984,8 +2986,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // PartitionMetric the metric values for a single partition.
@@ -3878,15 +3883,15 @@ type ThroughputUpdateProperties struct {
 	Resource *ThroughputResource `json:"resource,omitempty"`
 }
 
-// UniqueKey the unique key on that enforces uniqueness constraint on documents in the collection in the Azure
-// Cosmos DB service.
+// UniqueKey the unique key on that enforces uniqueness constraint on documents in the collection in the
+// Azure Cosmos DB service.
 type UniqueKey struct {
 	// Paths - List of paths must be unique for each document in the Azure Cosmos DB service
 	Paths *[]string `json:"paths,omitempty"`
 }
 
-// UniqueKeyPolicy the unique key policy configuration for specifying uniqueness constraints on documents in
-// the collection in the Azure Cosmos DB service.
+// UniqueKeyPolicy the unique key policy configuration for specifying uniqueness constraints on documents
+// in the collection in the Azure Cosmos DB service.
 type UniqueKeyPolicy struct {
 	// UniqueKeys - List of unique keys on that enforces uniqueness constraint on documents in the collection in the Azure Cosmos DB service.
 	UniqueKeys *[]UniqueKey `json:"uniqueKeys,omitempty"`

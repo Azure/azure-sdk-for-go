@@ -167,8 +167,8 @@ func New() BaseClient {
 func NewArtifactListIterator(page ArtifactListPage) ArtifactListIterator {
 	return original.NewArtifactListIterator(page)
 }
-func NewArtifactListPage(getNextPage func(context.Context, ArtifactList) (ArtifactList, error)) ArtifactListPage {
-	return original.NewArtifactListPage(getNextPage)
+func NewArtifactListPage(cur ArtifactList, getNextPage func(context.Context, ArtifactList) (ArtifactList, error)) ArtifactListPage {
+	return original.NewArtifactListPage(cur, getNextPage)
 }
 func NewArtifactsClient() ArtifactsClient {
 	return original.NewArtifactsClient()
@@ -179,14 +179,14 @@ func NewArtifactsClientWithBaseURI(baseURI string) ArtifactsClient {
 func NewAssignmentListIterator(page AssignmentListPage) AssignmentListIterator {
 	return original.NewAssignmentListIterator(page)
 }
-func NewAssignmentListPage(getNextPage func(context.Context, AssignmentList) (AssignmentList, error)) AssignmentListPage {
-	return original.NewAssignmentListPage(getNextPage)
+func NewAssignmentListPage(cur AssignmentList, getNextPage func(context.Context, AssignmentList) (AssignmentList, error)) AssignmentListPage {
+	return original.NewAssignmentListPage(cur, getNextPage)
 }
 func NewAssignmentOperationListIterator(page AssignmentOperationListPage) AssignmentOperationListIterator {
 	return original.NewAssignmentOperationListIterator(page)
 }
-func NewAssignmentOperationListPage(getNextPage func(context.Context, AssignmentOperationList) (AssignmentOperationList, error)) AssignmentOperationListPage {
-	return original.NewAssignmentOperationListPage(getNextPage)
+func NewAssignmentOperationListPage(cur AssignmentOperationList, getNextPage func(context.Context, AssignmentOperationList) (AssignmentOperationList, error)) AssignmentOperationListPage {
+	return original.NewAssignmentOperationListPage(cur, getNextPage)
 }
 func NewAssignmentOperationsClient() AssignmentOperationsClient {
 	return original.NewAssignmentOperationsClient()
@@ -209,8 +209,8 @@ func NewBlueprintsClientWithBaseURI(baseURI string) BlueprintsClient {
 func NewListIterator(page ListPage) ListIterator {
 	return original.NewListIterator(page)
 }
-func NewListPage(getNextPage func(context.Context, List) (List, error)) ListPage {
-	return original.NewListPage(getNextPage)
+func NewListPage(cur List, getNextPage func(context.Context, List) (List, error)) ListPage {
+	return original.NewListPage(cur, getNextPage)
 }
 func NewPublishedArtifactsClient() PublishedArtifactsClient {
 	return original.NewPublishedArtifactsClient()
@@ -221,8 +221,8 @@ func NewPublishedArtifactsClientWithBaseURI(baseURI string) PublishedArtifactsCl
 func NewPublishedBlueprintListIterator(page PublishedBlueprintListPage) PublishedBlueprintListIterator {
 	return original.NewPublishedBlueprintListIterator(page)
 }
-func NewPublishedBlueprintListPage(getNextPage func(context.Context, PublishedBlueprintList) (PublishedBlueprintList, error)) PublishedBlueprintListPage {
-	return original.NewPublishedBlueprintListPage(getNextPage)
+func NewPublishedBlueprintListPage(cur PublishedBlueprintList, getNextPage func(context.Context, PublishedBlueprintList) (PublishedBlueprintList, error)) PublishedBlueprintListPage {
+	return original.NewPublishedBlueprintListPage(cur, getNextPage)
 }
 func NewPublishedBlueprintsClient() PublishedBlueprintsClient {
 	return original.NewPublishedBlueprintsClient()

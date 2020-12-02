@@ -35,6 +35,22 @@ const (
 	SUBMITTED ApplicationState = original.SUBMITTED
 )
 
+type JobState = original.JobState
+
+const (
+	Busy         JobState = original.Busy
+	Dead         JobState = original.Dead
+	Error        JobState = original.Error
+	Idle         JobState = original.Idle
+	Killed       JobState = original.Killed
+	NotStarted   JobState = original.NotStarted
+	Recovering   JobState = original.Recovering
+	Running      JobState = original.Running
+	ShuttingDown JobState = original.ShuttingDown
+	Starting     JobState = original.Starting
+	Success      JobState = original.Success
+)
+
 type SessionJobKind = original.SessionJobKind
 
 const (
@@ -42,6 +58,25 @@ const (
 	Spark   SessionJobKind = original.Spark
 	Sparkr  SessionJobKind = original.Sparkr
 	SQL     SessionJobKind = original.SQL
+)
+
+type StatementExecutionStatus = original.StatementExecutionStatus
+
+const (
+	StatementExecutionStatusAbort StatementExecutionStatus = original.StatementExecutionStatusAbort
+	StatementExecutionStatusError StatementExecutionStatus = original.StatementExecutionStatusError
+	StatementExecutionStatusOk    StatementExecutionStatus = original.StatementExecutionStatusOk
+)
+
+type StatementState = original.StatementState
+
+const (
+	StatementStateAvailable  StatementState = original.StatementStateAvailable
+	StatementStateCancelled  StatementState = original.StatementStateCancelled
+	StatementStateCancelling StatementState = original.StatementStateCancelling
+	StatementStateError      StatementState = original.StatementStateError
+	StatementStateRunning    StatementState = original.StatementStateRunning
+	StatementStateWaiting    StatementState = original.StatementStateWaiting
 )
 
 type AppState = original.AppState
@@ -83,8 +118,17 @@ func NewWithoutDefaults(endpoint string, userName string) BaseClient {
 func PossibleApplicationStateValues() []ApplicationState {
 	return original.PossibleApplicationStateValues()
 }
+func PossibleJobStateValues() []JobState {
+	return original.PossibleJobStateValues()
+}
 func PossibleSessionJobKindValues() []SessionJobKind {
 	return original.PossibleSessionJobKindValues()
+}
+func PossibleStatementExecutionStatusValues() []StatementExecutionStatus {
+	return original.PossibleStatementExecutionStatusValues()
+}
+func PossibleStatementStateValues() []StatementState {
+	return original.PossibleStatementStateValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

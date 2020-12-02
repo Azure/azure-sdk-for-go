@@ -51,18 +51,29 @@ const (
 	AvroDeflate EncodingCaptureDescription = original.AvroDeflate
 )
 
+type EndPointProvisioningState = original.EndPointProvisioningState
+
+const (
+	Canceled  EndPointProvisioningState = original.Canceled
+	Creating  EndPointProvisioningState = original.Creating
+	Deleting  EndPointProvisioningState = original.Deleting
+	Failed    EndPointProvisioningState = original.Failed
+	Succeeded EndPointProvisioningState = original.Succeeded
+	Updating  EndPointProvisioningState = original.Updating
+)
+
 type EntityStatus = original.EntityStatus
 
 const (
-	Active          EntityStatus = original.Active
-	Creating        EntityStatus = original.Creating
-	Deleting        EntityStatus = original.Deleting
-	Disabled        EntityStatus = original.Disabled
-	ReceiveDisabled EntityStatus = original.ReceiveDisabled
-	Renaming        EntityStatus = original.Renaming
-	Restoring       EntityStatus = original.Restoring
-	SendDisabled    EntityStatus = original.SendDisabled
-	Unknown         EntityStatus = original.Unknown
+	EntityStatusActive          EntityStatus = original.EntityStatusActive
+	EntityStatusCreating        EntityStatus = original.EntityStatusCreating
+	EntityStatusDeleting        EntityStatus = original.EntityStatusDeleting
+	EntityStatusDisabled        EntityStatus = original.EntityStatusDisabled
+	EntityStatusReceiveDisabled EntityStatus = original.EntityStatusReceiveDisabled
+	EntityStatusRenaming        EntityStatus = original.EntityStatusRenaming
+	EntityStatusRestoring       EntityStatus = original.EntityStatusRestoring
+	EntityStatusSendDisabled    EntityStatus = original.EntityStatusSendDisabled
+	EntityStatusUnknown         EntityStatus = original.EntityStatusUnknown
 )
 
 type IPAction = original.IPAction
@@ -97,12 +108,21 @@ const (
 	NetworkRuleIPActionAllow NetworkRuleIPAction = original.NetworkRuleIPActionAllow
 )
 
+type PrivateLinkConnectionStatus = original.PrivateLinkConnectionStatus
+
+const (
+	Approved     PrivateLinkConnectionStatus = original.Approved
+	Disconnected PrivateLinkConnectionStatus = original.Disconnected
+	Pending      PrivateLinkConnectionStatus = original.Pending
+	Rejected     PrivateLinkConnectionStatus = original.Rejected
+)
+
 type ProvisioningStateDR = original.ProvisioningStateDR
 
 const (
-	Accepted  ProvisioningStateDR = original.Accepted
-	Failed    ProvisioningStateDR = original.Failed
-	Succeeded ProvisioningStateDR = original.Succeeded
+	ProvisioningStateDRAccepted  ProvisioningStateDR = original.ProvisioningStateDRAccepted
+	ProvisioningStateDRFailed    ProvisioningStateDR = original.ProvisioningStateDRFailed
+	ProvisioningStateDRSucceeded ProvisioningStateDR = original.ProvisioningStateDRSucceeded
 )
 
 type RoleDisasterRecovery = original.RoleDisasterRecovery
@@ -167,6 +187,7 @@ type ClustersCreateOrUpdateFuture = original.ClustersCreateOrUpdateFuture
 type ClustersDeleteFuture = original.ClustersDeleteFuture
 type ClustersUpdateFuture = original.ClustersUpdateFuture
 type ConfigurationClient = original.ConfigurationClient
+type ConnectionState = original.ConnectionState
 type ConsumerGroup = original.ConsumerGroup
 type ConsumerGroupListResult = original.ConsumerGroupListResult
 type ConsumerGroupListResultIterator = original.ConsumerGroupListResultIterator
@@ -215,6 +236,18 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionListResultIterator = original.PrivateEndpointConnectionListResultIterator
+type PrivateEndpointConnectionListResultPage = original.PrivateEndpointConnectionListResultPage
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkResourcesListResult = original.PrivateLinkResourcesListResult
 type Properties = original.Properties
 type RegenerateAccessKeyParameters = original.RegenerateAccessKeyParameters
 type RegionsClient = original.RegionsClient
@@ -234,20 +267,20 @@ func New(subscriptionID string) BaseClient {
 func NewArmDisasterRecoveryListResultIterator(page ArmDisasterRecoveryListResultPage) ArmDisasterRecoveryListResultIterator {
 	return original.NewArmDisasterRecoveryListResultIterator(page)
 }
-func NewArmDisasterRecoveryListResultPage(getNextPage func(context.Context, ArmDisasterRecoveryListResult) (ArmDisasterRecoveryListResult, error)) ArmDisasterRecoveryListResultPage {
-	return original.NewArmDisasterRecoveryListResultPage(getNextPage)
+func NewArmDisasterRecoveryListResultPage(cur ArmDisasterRecoveryListResult, getNextPage func(context.Context, ArmDisasterRecoveryListResult) (ArmDisasterRecoveryListResult, error)) ArmDisasterRecoveryListResultPage {
+	return original.NewArmDisasterRecoveryListResultPage(cur, getNextPage)
 }
 func NewAuthorizationRuleListResultIterator(page AuthorizationRuleListResultPage) AuthorizationRuleListResultIterator {
 	return original.NewAuthorizationRuleListResultIterator(page)
 }
-func NewAuthorizationRuleListResultPage(getNextPage func(context.Context, AuthorizationRuleListResult) (AuthorizationRuleListResult, error)) AuthorizationRuleListResultPage {
-	return original.NewAuthorizationRuleListResultPage(getNextPage)
+func NewAuthorizationRuleListResultPage(cur AuthorizationRuleListResult, getNextPage func(context.Context, AuthorizationRuleListResult) (AuthorizationRuleListResult, error)) AuthorizationRuleListResultPage {
+	return original.NewAuthorizationRuleListResultPage(cur, getNextPage)
 }
 func NewClusterListResultIterator(page ClusterListResultPage) ClusterListResultIterator {
 	return original.NewClusterListResultIterator(page)
 }
-func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
-	return original.NewClusterListResultPage(getNextPage)
+func NewClusterListResultPage(cur ClusterListResult, getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return original.NewClusterListResultPage(cur, getNextPage)
 }
 func NewClustersClient(subscriptionID string) ClustersClient {
 	return original.NewClustersClient(subscriptionID)
@@ -264,8 +297,8 @@ func NewConfigurationClientWithBaseURI(baseURI string, subscriptionID string) Co
 func NewConsumerGroupListResultIterator(page ConsumerGroupListResultPage) ConsumerGroupListResultIterator {
 	return original.NewConsumerGroupListResultIterator(page)
 }
-func NewConsumerGroupListResultPage(getNextPage func(context.Context, ConsumerGroupListResult) (ConsumerGroupListResult, error)) ConsumerGroupListResultPage {
-	return original.NewConsumerGroupListResultPage(getNextPage)
+func NewConsumerGroupListResultPage(cur ConsumerGroupListResult, getNextPage func(context.Context, ConsumerGroupListResult) (ConsumerGroupListResult, error)) ConsumerGroupListResultPage {
+	return original.NewConsumerGroupListResultPage(cur, getNextPage)
 }
 func NewConsumerGroupsClient(subscriptionID string) ConsumerGroupsClient {
 	return original.NewConsumerGroupsClient(subscriptionID)
@@ -282,8 +315,8 @@ func NewDisasterRecoveryConfigsClientWithBaseURI(baseURI string, subscriptionID 
 func NewEHNamespaceListResultIterator(page EHNamespaceListResultPage) EHNamespaceListResultIterator {
 	return original.NewEHNamespaceListResultIterator(page)
 }
-func NewEHNamespaceListResultPage(getNextPage func(context.Context, EHNamespaceListResult) (EHNamespaceListResult, error)) EHNamespaceListResultPage {
-	return original.NewEHNamespaceListResultPage(getNextPage)
+func NewEHNamespaceListResultPage(cur EHNamespaceListResult, getNextPage func(context.Context, EHNamespaceListResult) (EHNamespaceListResult, error)) EHNamespaceListResultPage {
+	return original.NewEHNamespaceListResultPage(cur, getNextPage)
 }
 func NewEventHubsClient(subscriptionID string) EventHubsClient {
 	return original.NewEventHubsClient(subscriptionID)
@@ -294,20 +327,20 @@ func NewEventHubsClientWithBaseURI(baseURI string, subscriptionID string) EventH
 func NewIPFilterRuleListResultIterator(page IPFilterRuleListResultPage) IPFilterRuleListResultIterator {
 	return original.NewIPFilterRuleListResultIterator(page)
 }
-func NewIPFilterRuleListResultPage(getNextPage func(context.Context, IPFilterRuleListResult) (IPFilterRuleListResult, error)) IPFilterRuleListResultPage {
-	return original.NewIPFilterRuleListResultPage(getNextPage)
+func NewIPFilterRuleListResultPage(cur IPFilterRuleListResult, getNextPage func(context.Context, IPFilterRuleListResult) (IPFilterRuleListResult, error)) IPFilterRuleListResultPage {
+	return original.NewIPFilterRuleListResultPage(cur, getNextPage)
 }
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
 }
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return original.NewListResultPage(getNextPage)
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(cur, getNextPage)
 }
 func NewMessagingRegionsListResultIterator(page MessagingRegionsListResultPage) MessagingRegionsListResultIterator {
 	return original.NewMessagingRegionsListResultIterator(page)
 }
-func NewMessagingRegionsListResultPage(getNextPage func(context.Context, MessagingRegionsListResult) (MessagingRegionsListResult, error)) MessagingRegionsListResultPage {
-	return original.NewMessagingRegionsListResultPage(getNextPage)
+func NewMessagingRegionsListResultPage(cur MessagingRegionsListResult, getNextPage func(context.Context, MessagingRegionsListResult) (MessagingRegionsListResult, error)) MessagingRegionsListResultPage {
+	return original.NewMessagingRegionsListResultPage(cur, getNextPage)
 }
 func NewNamespacesClient(subscriptionID string) NamespacesClient {
 	return original.NewNamespacesClient(subscriptionID)
@@ -318,14 +351,32 @@ func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) Names
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
+	return original.NewPrivateEndpointConnectionListResultIterator(page)
+}
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return original.NewPrivateEndpointConnectionListResultPage(cur, getNextPage)
+}
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewRegionsClient(subscriptionID string) RegionsClient {
 	return original.NewRegionsClient(subscriptionID)
@@ -336,8 +387,8 @@ func NewRegionsClientWithBaseURI(baseURI string, subscriptionID string) RegionsC
 func NewVirtualNetworkRuleListResultIterator(page VirtualNetworkRuleListResultPage) VirtualNetworkRuleListResultIterator {
 	return original.NewVirtualNetworkRuleListResultIterator(page)
 }
-func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
-	return original.NewVirtualNetworkRuleListResultPage(getNextPage)
+func NewVirtualNetworkRuleListResultPage(cur VirtualNetworkRuleListResult, getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
+	return original.NewVirtualNetworkRuleListResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
@@ -350,6 +401,9 @@ func PossibleDefaultActionValues() []DefaultAction {
 }
 func PossibleEncodingCaptureDescriptionValues() []EncodingCaptureDescription {
 	return original.PossibleEncodingCaptureDescriptionValues()
+}
+func PossibleEndPointProvisioningStateValues() []EndPointProvisioningState {
+	return original.PossibleEndPointProvisioningStateValues()
 }
 func PossibleEntityStatusValues() []EntityStatus {
 	return original.PossibleEntityStatusValues()
@@ -368,6 +422,9 @@ func PossibleKeyTypeValues() []KeyType {
 }
 func PossibleNetworkRuleIPActionValues() []NetworkRuleIPAction {
 	return original.PossibleNetworkRuleIPActionValues()
+}
+func PossiblePrivateLinkConnectionStatusValues() []PrivateLinkConnectionStatus {
+	return original.PossiblePrivateLinkConnectionStatusValues()
 }
 func PossibleProvisioningStateDRValues() []ProvisioningStateDR {
 	return original.PossibleProvisioningStateDRValues()

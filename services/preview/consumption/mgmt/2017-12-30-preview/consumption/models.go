@@ -154,7 +154,8 @@ func (bp BudgetProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// BudgetsListResult result of listing budgets. It contains a list of available budgets in the scope provided.
+// BudgetsListResult result of listing budgets. It contains a list of available budgets in the scope
+// provided.
 type BudgetsListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of budgets.
@@ -386,8 +387,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // ProxyResource the Resource model definition.

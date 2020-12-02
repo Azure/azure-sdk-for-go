@@ -289,8 +289,11 @@ func (page DeploymentListResultPage) Values() []DeploymentExtended {
 }
 
 // Creates a new instance of the DeploymentListResultPage type.
-func NewDeploymentListResultPage(getNextPage func(context.Context, DeploymentListResult) (DeploymentListResult, error)) DeploymentListResultPage {
-	return DeploymentListResultPage{fn: getNextPage}
+func NewDeploymentListResultPage(cur DeploymentListResult, getNextPage func(context.Context, DeploymentListResult) (DeploymentListResult, error)) DeploymentListResultPage {
+	return DeploymentListResultPage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
 // DeploymentOperation deployment operation information.
@@ -353,7 +356,8 @@ func (dolr DeploymentOperationsListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DeploymentOperationsListResultIterator provides access to a complete listing of DeploymentOperation values.
+// DeploymentOperationsListResultIterator provides access to a complete listing of DeploymentOperation
+// values.
 type DeploymentOperationsListResultIterator struct {
 	i    int
 	page DeploymentOperationsListResultPage
@@ -496,8 +500,11 @@ func (page DeploymentOperationsListResultPage) Values() []DeploymentOperation {
 }
 
 // Creates a new instance of the DeploymentOperationsListResultPage type.
-func NewDeploymentOperationsListResultPage(getNextPage func(context.Context, DeploymentOperationsListResult) (DeploymentOperationsListResult, error)) DeploymentOperationsListResultPage {
-	return DeploymentOperationsListResultPage{fn: getNextPage}
+func NewDeploymentOperationsListResultPage(cur DeploymentOperationsListResult, getNextPage func(context.Context, DeploymentOperationsListResult) (DeploymentOperationsListResult, error)) DeploymentOperationsListResultPage {
+	return DeploymentOperationsListResultPage{
+		fn:   getNextPage,
+		dolr: cur,
+	}
 }
 
 // DeploymentProperties deployment properties.
@@ -644,8 +651,8 @@ func (future *DeploymentsCreateOrUpdateAtScopeFuture) Result(client DeploymentsC
 	return
 }
 
-// DeploymentsCreateOrUpdateAtSubscriptionScopeFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// DeploymentsCreateOrUpdateAtSubscriptionScopeFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type DeploymentsCreateOrUpdateAtSubscriptionScopeFuture struct {
 	azure.Future
 }
@@ -673,8 +680,8 @@ func (future *DeploymentsCreateOrUpdateAtSubscriptionScopeFuture) Result(client 
 	return
 }
 
-// DeploymentsCreateOrUpdateAtTenantScopeFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DeploymentsCreateOrUpdateAtTenantScopeFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type DeploymentsCreateOrUpdateAtTenantScopeFuture struct {
 	azure.Future
 }
@@ -702,8 +709,8 @@ func (future *DeploymentsCreateOrUpdateAtTenantScopeFuture) Result(client Deploy
 	return
 }
 
-// DeploymentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DeploymentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type DeploymentsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -731,8 +738,8 @@ func (future *DeploymentsCreateOrUpdateFuture) Result(client DeploymentsClient) 
 	return
 }
 
-// DeploymentsDeleteAtManagementGroupScopeFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DeploymentsDeleteAtManagementGroupScopeFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type DeploymentsDeleteAtManagementGroupScopeFuture struct {
 	azure.Future
 }
@@ -754,8 +761,8 @@ func (future *DeploymentsDeleteAtManagementGroupScopeFuture) Result(client Deplo
 	return
 }
 
-// DeploymentsDeleteAtScopeFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DeploymentsDeleteAtScopeFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type DeploymentsDeleteAtScopeFuture struct {
 	azure.Future
 }
@@ -955,7 +962,8 @@ type ErrorAdditionalInfo struct {
 	Info interface{} `json:"info,omitempty"`
 }
 
-// ErrorResponse the resource management error response.
+// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
+// failed operations. (This also follows the OData error response format.)
 type ErrorResponse struct {
 	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
@@ -1347,8 +1355,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // ParametersLink entity representing the reference to the deployment parameters.
@@ -1558,8 +1569,11 @@ func (page ProviderListResultPage) Values() []Provider {
 }
 
 // Creates a new instance of the ProviderListResultPage type.
-func NewProviderListResultPage(getNextPage func(context.Context, ProviderListResult) (ProviderListResult, error)) ProviderListResultPage {
-	return ProviderListResultPage{fn: getNextPage}
+func NewProviderListResultPage(cur ProviderListResult, getNextPage func(context.Context, ProviderListResult) (ProviderListResult, error)) ProviderListResultPage {
+	return ProviderListResultPage{
+		fn:  getNextPage,
+		plr: cur,
+	}
 }
 
 // ProviderResourceType resource type managed by the resource provider.
@@ -1843,8 +1857,11 @@ func (page ResourceGroupListResultPage) Values() []ResourceGroup {
 }
 
 // Creates a new instance of the ResourceGroupListResultPage type.
-func NewResourceGroupListResultPage(getNextPage func(context.Context, ResourceGroupListResult) (ResourceGroupListResult, error)) ResourceGroupListResultPage {
-	return ResourceGroupListResultPage{fn: getNextPage}
+func NewResourceGroupListResultPage(cur ResourceGroupListResult, getNextPage func(context.Context, ResourceGroupListResult) (ResourceGroupListResult, error)) ResourceGroupListResultPage {
+	return ResourceGroupListResultPage{
+		fn:   getNextPage,
+		rglr: cur,
+	}
 }
 
 // ResourceGroupPatchable resource group information.
@@ -2067,8 +2084,11 @@ func (page ResourceListResultPage) Values() []GenericResourceExpanded {
 }
 
 // Creates a new instance of the ResourceListResultPage type.
-func NewResourceListResultPage(getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
-	return ResourceListResultPage{fn: getNextPage}
+func NewResourceListResultPage(cur ResourceListResult, getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
+	return ResourceListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // ResourceProviderOperationDisplayProperties resource provider operation's display properties.
@@ -2085,8 +2105,8 @@ type ResourceProviderOperationDisplayProperties struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// ResourcesCreateOrUpdateByIDFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ResourcesCreateOrUpdateByIDFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ResourcesCreateOrUpdateByIDFuture struct {
 	azure.Future
 }
@@ -2166,7 +2186,8 @@ func (future *ResourcesDeleteByIDFuture) Result(client ResourcesClient) (ar auto
 	return
 }
 
-// ResourcesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ResourcesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ResourcesDeleteFuture struct {
 	azure.Future
 }
@@ -2248,7 +2269,8 @@ func (future *ResourcesUpdateByIDFuture) Result(client ResourcesClient) (gr Gene
 	return
 }
 
-// ResourcesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ResourcesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ResourcesUpdateFuture struct {
 	azure.Future
 }
@@ -2518,8 +2540,11 @@ func (page TagsListResultPage) Values() []TagDetails {
 }
 
 // Creates a new instance of the TagsListResultPage type.
-func NewTagsListResultPage(getNextPage func(context.Context, TagsListResult) (TagsListResult, error)) TagsListResultPage {
-	return TagsListResultPage{fn: getNextPage}
+func NewTagsListResultPage(cur TagsListResult, getNextPage func(context.Context, TagsListResult) (TagsListResult, error)) TagsListResultPage {
+	return TagsListResultPage{
+		fn:  getNextPage,
+		tlr: cur,
+	}
 }
 
 // TagValue tag information.
@@ -2593,8 +2618,8 @@ type WhatIfOperationProperties struct {
 	Changes *[]WhatIfChange `json:"changes,omitempty"`
 }
 
-// WhatIfOperationResult result of the What-If operation. Contains a list of predicted changes and a URL link
-// to get to the next set of results.
+// WhatIfOperationResult result of the What-If operation. Contains a list of predicted changes and a URL
+// link to get to the next set of results.
 type WhatIfOperationResult struct {
 	autorest.Response `json:"-"`
 	// Status - Status of the What-If operation.

@@ -171,8 +171,8 @@ func (future *AccessControlRecordsCreateOrUpdateFuture) Result(client AccessCont
 	return
 }
 
-// AccessControlRecordsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// AccessControlRecordsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type AccessControlRecordsDeleteFuture struct {
 	azure.Future
 }
@@ -466,8 +466,11 @@ func (page AlertListPage) Values() []Alert {
 }
 
 // Creates a new instance of the AlertListPage type.
-func NewAlertListPage(getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
-	return AlertListPage{fn: getNextPage}
+func NewAlertListPage(cur AlertList, getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
+	return AlertListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // AlertNotificationProperties the properties of the alert notification settings.
@@ -682,8 +685,8 @@ type AvailableProviderOperation struct {
 }
 
 // AvailableProviderOperationDisplay contains the localized display information for this particular
-// operation/action. These value will be used by several clients for (a) custom role definitions for RBAC, (b)
-// complex query filters for the event service and (c) audit history/records for management operations.
+// operation/action. These value will be used by several clients for (a) custom role definitions for RBAC,
+// (b) complex query filters for the event service and (c) audit history/records for management operations.
 type AvailableProviderOperationDisplay struct {
 	// Provider - The localized friendly form of the resource provider name - it is expected to also include the publisher/company responsible. It should use Title Casing and begin with 'Microsoft' for 1st party services.
 	Provider *string `json:"provider,omitempty"`
@@ -704,8 +707,8 @@ type AvailableProviderOperationList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// AvailableProviderOperationListIterator provides access to a complete listing of AvailableProviderOperation
-// values.
+// AvailableProviderOperationListIterator provides access to a complete listing of
+// AvailableProviderOperation values.
 type AvailableProviderOperationListIterator struct {
 	i    int
 	page AvailableProviderOperationListPage
@@ -848,8 +851,11 @@ func (page AvailableProviderOperationListPage) Values() []AvailableProviderOpera
 }
 
 // Creates a new instance of the AvailableProviderOperationListPage type.
-func NewAvailableProviderOperationListPage(getNextPage func(context.Context, AvailableProviderOperationList) (AvailableProviderOperationList, error)) AvailableProviderOperationListPage {
-	return AvailableProviderOperationListPage{fn: getNextPage}
+func NewAvailableProviderOperationListPage(cur AvailableProviderOperationList, getNextPage func(context.Context, AvailableProviderOperationList) (AvailableProviderOperationList, error)) AvailableProviderOperationListPage {
+	return AvailableProviderOperationListPage{
+		fn:   getNextPage,
+		apol: cur,
+	}
 }
 
 // Backup the backup.
@@ -1118,8 +1124,11 @@ func (page BackupListPage) Values() []Backup {
 }
 
 // Creates a new instance of the BackupListPage type.
-func NewBackupListPage(getNextPage func(context.Context, BackupList) (BackupList, error)) BackupListPage {
-	return BackupListPage{fn: getNextPage}
+func NewBackupListPage(cur BackupList, getNextPage func(context.Context, BackupList) (BackupList, error)) BackupListPage {
+	return BackupListPage{
+		fn: getNextPage,
+		bl: cur,
+	}
 }
 
 // BackupPoliciesBackupNowFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -1541,7 +1550,8 @@ func (future *BackupsCloneFuture) Result(client BackupsClient) (ar autorest.Resp
 	return
 }
 
-// BackupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// BackupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type BackupsDeleteFuture struct {
 	azure.Future
 }
@@ -1563,7 +1573,8 @@ func (future *BackupsDeleteFuture) Result(client BackupsClient) (ar autorest.Res
 	return
 }
 
-// BackupsRestoreFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// BackupsRestoreFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type BackupsRestoreFuture struct {
 	azure.Future
 }
@@ -1958,8 +1969,8 @@ type CloudApplianceSettings struct {
 	ChannelIntegrityKey *AsymmetricEncryptedSecret `json:"channelIntegrityKey,omitempty"`
 }
 
-// CloudAppliancesProvisionFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// CloudAppliancesProvisionFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type CloudAppliancesProvisionFuture struct {
 	azure.Future
 }
@@ -2179,8 +2190,8 @@ type ControllerPowerStateChangeRequestProperties struct {
 	Controller1State ControllerStatus `json:"controller1State,omitempty"`
 }
 
-// DataStatistics the additional details related to the data related statistics of a job. Currently applicable
-// only for Backup, Clone and Restore jobs.
+// DataStatistics the additional details related to the data related statistics of a job. Currently
+// applicable only for Backup, Clone and Restore jobs.
 type DataStatistics struct {
 	// TotalData - The total bytes of data to be processed, as part of the job.
 	TotalData *int64 `json:"totalData,omitempty"`
@@ -2491,7 +2502,8 @@ type DeviceRolloverDetails struct {
 	InEligibilityReason InEligibilityCategory `json:"inEligibilityReason,omitempty"`
 }
 
-// DevicesConfigureFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DevicesConfigureFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DevicesConfigureFuture struct {
 	azure.Future
 }
@@ -2536,7 +2548,8 @@ func (future *DevicesDeactivateFuture) Result(client DevicesClient) (ar autorest
 	return
 }
 
-// DevicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DevicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DevicesDeleteFuture struct {
 	azure.Future
 }
@@ -2558,8 +2571,8 @@ func (future *DevicesDeleteFuture) Result(client DevicesClient) (ar autorest.Res
 	return
 }
 
-// DeviceSettingsCreateOrUpdateAlertSettingsFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// DeviceSettingsCreateOrUpdateAlertSettingsFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type DeviceSettingsCreateOrUpdateAlertSettingsFuture struct {
 	azure.Future
 }
@@ -2587,8 +2600,8 @@ func (future *DeviceSettingsCreateOrUpdateAlertSettingsFuture) Result(client Dev
 	return
 }
 
-// DeviceSettingsCreateOrUpdateTimeSettingsFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DeviceSettingsCreateOrUpdateTimeSettingsFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type DeviceSettingsCreateOrUpdateTimeSettingsFuture struct {
 	azure.Future
 }
@@ -2616,8 +2629,8 @@ func (future *DeviceSettingsCreateOrUpdateTimeSettingsFuture) Result(client Devi
 	return
 }
 
-// DeviceSettingsSyncRemotemanagementCertificateFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// DeviceSettingsSyncRemotemanagementCertificateFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type DeviceSettingsSyncRemotemanagementCertificateFuture struct {
 	azure.Future
 }
@@ -2697,7 +2710,8 @@ func (future *DeviceSettingsUpdateSecuritySettingsFuture) Result(client DeviceSe
 	return
 }
 
-// DevicesFailoverFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DevicesFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DevicesFailoverFuture struct {
 	azure.Future
 }
@@ -2880,8 +2894,8 @@ type EncryptionSettingsProperties struct {
 	KeyRolloverStatus KeyRolloverStatus `json:"keyRolloverStatus,omitempty"`
 }
 
-// FailoverRequest the request object for triggering a failover of volume containers, from a source device to a
-// target device.
+// FailoverRequest the request object for triggering a failover of volume containers, from a source device
+// to a target device.
 type FailoverRequest struct {
 	// TargetDeviceID - The ARM path ID of the device which will act as the failover target.
 	TargetDeviceID *string `json:"targetDeviceId,omitempty"`
@@ -2938,8 +2952,8 @@ type FailoverTarget struct {
 	EligibilityResult *TargetEligibilityResult `json:"eligibilityResult,omitempty"`
 }
 
-// FailoverTargetsList the list of all devices in a resource and their eligibility status as a failover target
-// device.
+// FailoverTargetsList the list of all devices in a resource and their eligibility status as a failover
+// target device.
 type FailoverTargetsList struct {
 	autorest.Response `json:"-"`
 	// Value - The list of all the failover targets.
@@ -3444,8 +3458,11 @@ func (page JobListPage) Values() []Job {
 }
 
 // Creates a new instance of the JobListPage type.
-func NewJobListPage(getNextPage func(context.Context, JobList) (JobList, error)) JobListPage {
-	return JobListPage{fn: getNextPage}
+func NewJobListPage(cur JobList, getNextPage func(context.Context, JobList) (JobList, error)) JobListPage {
+	return JobListPage{
+		fn: getNextPage,
+		jl: cur,
+	}
 }
 
 // JobProperties the properties of the job.
@@ -3513,8 +3530,8 @@ type Key struct {
 	ActivationKey *string `json:"activationKey,omitempty"`
 }
 
-// ListFailoverTargetsRequest the request object for fetching the list of failover targets (eligible devices
-// for failover).
+// ListFailoverTargetsRequest the request object for fetching the list of failover targets (eligible
+// devices for failover).
 type ListFailoverTargetsRequest struct {
 	// VolumeContainers - The list of path IDs of the volume containers that needs to be failed-over, for which we want to fetch the eligible targets.
 	VolumeContainers *[]string `json:"volumeContainers,omitempty"`
@@ -4460,8 +4477,8 @@ func (sacp StorageAccountCredentialProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// StorageAccountCredentialsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// StorageAccountCredentialsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type StorageAccountCredentialsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -4523,8 +4540,8 @@ type SymmetricEncryptedSecret struct {
 	EncryptionAlgorithm EncryptionAlgorithm `json:"encryptionAlgorithm,omitempty"`
 }
 
-// TargetEligibilityErrorMessage the error/warning message due to which the device is ineligible as a failover
-// target device.
+// TargetEligibilityErrorMessage the error/warning message due to which the device is ineligible as a
+// failover target device.
 type TargetEligibilityErrorMessage struct {
 	// Message - The localized error message stating the reason why the device is not eligible as a target device.
 	Message *string `json:"message,omitempty"`
@@ -4936,8 +4953,8 @@ func (vc *VolumeContainer) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// VolumeContainerFailoverMetadata the metadata of the volume container, that is being considered as part of a
-// failover set.
+// VolumeContainerFailoverMetadata the metadata of the volume container, that is being considered as part
+// of a failover set.
 type VolumeContainerFailoverMetadata struct {
 	// VolumeContainerID - The path ID of the volume container.
 	VolumeContainerID *string `json:"volumeContainerId,omitempty"`
@@ -5139,7 +5156,8 @@ func (future *VolumesCreateOrUpdateFuture) Result(client VolumesClient) (vVar Vo
 	return
 }
 
-// VolumesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// VolumesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type VolumesDeleteFuture struct {
 	azure.Future
 }

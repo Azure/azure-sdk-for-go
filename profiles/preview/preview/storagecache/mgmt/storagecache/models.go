@@ -134,8 +134,8 @@ func New(subscriptionID string) BaseClient {
 func NewAPIOperationListResultIterator(page APIOperationListResultPage) APIOperationListResultIterator {
 	return original.NewAPIOperationListResultIterator(page)
 }
-func NewAPIOperationListResultPage(getNextPage func(context.Context, APIOperationListResult) (APIOperationListResult, error)) APIOperationListResultPage {
-	return original.NewAPIOperationListResultPage(getNextPage)
+func NewAPIOperationListResultPage(cur APIOperationListResult, getNextPage func(context.Context, APIOperationListResult) (APIOperationListResult, error)) APIOperationListResultPage {
+	return original.NewAPIOperationListResultPage(cur, getNextPage)
 }
 func NewCachesClient(subscriptionID string) CachesClient {
 	return original.NewCachesClient(subscriptionID)
@@ -146,8 +146,8 @@ func NewCachesClientWithBaseURI(baseURI string, subscriptionID string) CachesCli
 func NewCachesListResultIterator(page CachesListResultPage) CachesListResultIterator {
 	return original.NewCachesListResultIterator(page)
 }
-func NewCachesListResultPage(getNextPage func(context.Context, CachesListResult) (CachesListResult, error)) CachesListResultPage {
-	return original.NewCachesListResultPage(getNextPage)
+func NewCachesListResultPage(cur CachesListResult, getNextPage func(context.Context, CachesListResult) (CachesListResult, error)) CachesListResultPage {
+	return original.NewCachesListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -158,8 +158,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewResourceSkusResultIterator(page ResourceSkusResultPage) ResourceSkusResultIterator {
 	return original.NewResourceSkusResultIterator(page)
 }
-func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
-	return original.NewResourceSkusResultPage(getNextPage)
+func NewResourceSkusResultPage(cur ResourceSkusResult, getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
+	return original.NewResourceSkusResultPage(cur, getNextPage)
 }
 func NewSkusClient(subscriptionID string) SkusClient {
 	return original.NewSkusClient(subscriptionID)
@@ -176,8 +176,8 @@ func NewStorageTargetsClientWithBaseURI(baseURI string, subscriptionID string) S
 func NewStorageTargetsResultIterator(page StorageTargetsResultPage) StorageTargetsResultIterator {
 	return original.NewStorageTargetsResultIterator(page)
 }
-func NewStorageTargetsResultPage(getNextPage func(context.Context, StorageTargetsResult) (StorageTargetsResult, error)) StorageTargetsResultPage {
-	return original.NewStorageTargetsResultPage(getNextPage)
+func NewStorageTargetsResultPage(cur StorageTargetsResult, getNextPage func(context.Context, StorageTargetsResult) (StorageTargetsResult, error)) StorageTargetsResultPage {
+	return original.NewStorageTargetsResultPage(cur, getNextPage)
 }
 func NewUsageModelsClient(subscriptionID string) UsageModelsClient {
 	return original.NewUsageModelsClient(subscriptionID)
@@ -188,8 +188,8 @@ func NewUsageModelsClientWithBaseURI(baseURI string, subscriptionID string) Usag
 func NewUsageModelsResultIterator(page UsageModelsResultPage) UsageModelsResultIterator {
 	return original.NewUsageModelsResultIterator(page)
 }
-func NewUsageModelsResultPage(getNextPage func(context.Context, UsageModelsResult) (UsageModelsResult, error)) UsageModelsResultPage {
-	return original.NewUsageModelsResultPage(getNextPage)
+func NewUsageModelsResultPage(cur UsageModelsResult, getNextPage func(context.Context, UsageModelsResult) (UsageModelsResult, error)) UsageModelsResultPage {
+	return original.NewUsageModelsResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

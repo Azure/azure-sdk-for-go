@@ -106,8 +106,8 @@ func New(subscriptionID string) BaseClient {
 func NewGroupListResultIterator(page GroupListResultPage) GroupListResultIterator {
 	return original.NewGroupListResultIterator(page)
 }
-func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
-	return original.NewGroupListResultPage(getNextPage)
+func NewGroupListResultPage(cur GroupListResult, getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
+	return original.NewGroupListResultPage(cur, getNextPage)
 }
 func NewGroupsClient(subscriptionID string) GroupsClient {
 	return original.NewGroupsClient(subscriptionID)
@@ -118,8 +118,8 @@ func NewGroupsClientWithBaseURI(baseURI string, subscriptionID string) GroupsCli
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
 }
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return original.NewListResultPage(getNextPage)
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(cur, getNextPage)
 }
 func NewManagedNetworksClient(subscriptionID string) ManagedNetworksClient {
 	return original.NewManagedNetworksClient(subscriptionID)
@@ -130,8 +130,8 @@ func NewManagedNetworksClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -148,14 +148,14 @@ func NewPeeringPoliciesClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewPeeringPolicyListResultIterator(page PeeringPolicyListResultPage) PeeringPolicyListResultIterator {
 	return original.NewPeeringPolicyListResultIterator(page)
 }
-func NewPeeringPolicyListResultPage(getNextPage func(context.Context, PeeringPolicyListResult) (PeeringPolicyListResult, error)) PeeringPolicyListResultPage {
-	return original.NewPeeringPolicyListResultPage(getNextPage)
+func NewPeeringPolicyListResultPage(cur PeeringPolicyListResult, getNextPage func(context.Context, PeeringPolicyListResult) (PeeringPolicyListResult, error)) PeeringPolicyListResultPage {
+	return original.NewPeeringPolicyListResultPage(cur, getNextPage)
 }
 func NewScopeAssignmentListResultIterator(page ScopeAssignmentListResultPage) ScopeAssignmentListResultIterator {
 	return original.NewScopeAssignmentListResultIterator(page)
 }
-func NewScopeAssignmentListResultPage(getNextPage func(context.Context, ScopeAssignmentListResult) (ScopeAssignmentListResult, error)) ScopeAssignmentListResultPage {
-	return original.NewScopeAssignmentListResultPage(getNextPage)
+func NewScopeAssignmentListResultPage(cur ScopeAssignmentListResult, getNextPage func(context.Context, ScopeAssignmentListResult) (ScopeAssignmentListResult, error)) ScopeAssignmentListResultPage {
+	return original.NewScopeAssignmentListResultPage(cur, getNextPage)
 }
 func NewScopeAssignmentsClient(subscriptionID string) ScopeAssignmentsClient {
 	return original.NewScopeAssignmentsClient(subscriptionID)

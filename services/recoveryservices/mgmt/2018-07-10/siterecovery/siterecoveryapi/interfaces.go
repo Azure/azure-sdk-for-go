@@ -216,6 +216,16 @@ type ReplicationProtectionContainerMappingsClientAPI interface {
 
 var _ ReplicationProtectionContainerMappingsClientAPI = (*siterecovery.ReplicationProtectionContainerMappingsClient)(nil)
 
+// ReplicationProtectionIntentsClientAPI contains the set of methods on the ReplicationProtectionIntentsClient type.
+type ReplicationProtectionIntentsClientAPI interface {
+	Create(ctx context.Context, intentObjectName string, input siterecovery.CreateProtectionIntentInput) (result siterecovery.ReplicationProtectionIntent, err error)
+	Get(ctx context.Context, intentObjectName string) (result siterecovery.ReplicationProtectionIntent, err error)
+	List(ctx context.Context) (result siterecovery.ReplicationProtectionIntentCollectionPage, err error)
+	ListComplete(ctx context.Context) (result siterecovery.ReplicationProtectionIntentCollectionIterator, err error)
+}
+
+var _ ReplicationProtectionIntentsClientAPI = (*siterecovery.ReplicationProtectionIntentsClient)(nil)
+
 // ReplicationRecoveryServicesProvidersClientAPI contains the set of methods on the ReplicationRecoveryServicesProvidersClient type.
 type ReplicationRecoveryServicesProvidersClientAPI interface {
 	Create(ctx context.Context, fabricName string, providerName string, addProviderInput siterecovery.AddRecoveryServicesProviderInput) (result siterecovery.ReplicationRecoveryServicesProvidersCreateFuture, err error)

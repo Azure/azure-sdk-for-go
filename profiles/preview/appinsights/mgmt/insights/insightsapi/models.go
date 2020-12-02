@@ -31,6 +31,7 @@ type ComponentQuotaStatusClientAPI = original.ComponentQuotaStatusClientAPI
 type ComponentsClientAPI = original.ComponentsClientAPI
 type ExportConfigurationsClientAPI = original.ExportConfigurationsClientAPI
 type FavoritesClientAPI = original.FavoritesClientAPI
+type MyWorkbooksClientAPI = original.MyWorkbooksClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type ProactiveDetectionConfigurationsClientAPI = original.ProactiveDetectionConfigurationsClientAPI
 type WebTestLocationsClientAPI = original.WebTestLocationsClientAPI

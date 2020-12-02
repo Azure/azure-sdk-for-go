@@ -83,8 +83,8 @@ func NewDedicatedHsmClientWithBaseURI(baseURI string, subscriptionID string) Ded
 func NewDedicatedHsmListResultIterator(page DedicatedHsmListResultPage) DedicatedHsmListResultIterator {
 	return original.NewDedicatedHsmListResultIterator(page)
 }
-func NewDedicatedHsmListResultPage(getNextPage func(context.Context, DedicatedHsmListResult) (DedicatedHsmListResult, error)) DedicatedHsmListResultPage {
-	return original.NewDedicatedHsmListResultPage(getNextPage)
+func NewDedicatedHsmListResultPage(cur DedicatedHsmListResult, getNextPage func(context.Context, DedicatedHsmListResult) (DedicatedHsmListResult, error)) DedicatedHsmListResultPage {
+	return original.NewDedicatedHsmListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

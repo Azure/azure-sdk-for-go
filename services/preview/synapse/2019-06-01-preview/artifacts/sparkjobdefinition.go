@@ -576,3 +576,91 @@ func (client SparkJobDefinitionClient) GetSparkJobDefinitionsByWorkspaceComplete
 	result.page, err = client.GetSparkJobDefinitionsByWorkspace(ctx)
 	return
 }
+
+// RenameSparkJobDefinition renames a sparkJobDefinition.
+// Parameters:
+// sparkJobDefinitionName - the spark job definition name.
+// request - proposed new name.
+func (client SparkJobDefinitionClient) RenameSparkJobDefinition(ctx context.Context, sparkJobDefinitionName string, request RenameRequest) (result SparkJobDefinitionRenameSparkJobDefinitionFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SparkJobDefinitionClient.RenameSparkJobDefinition")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: request,
+			Constraints: []validation.Constraint{{Target: "request.NewName", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "request.NewName", Name: validation.MaxLength, Rule: 260, Chain: nil},
+					{Target: "request.NewName", Name: validation.MinLength, Rule: 1, Chain: nil},
+					{Target: "request.NewName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("artifacts.SparkJobDefinitionClient", "RenameSparkJobDefinition", err.Error())
+	}
+
+	req, err := client.RenameSparkJobDefinitionPreparer(ctx, sparkJobDefinitionName, request)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "RenameSparkJobDefinition", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.RenameSparkJobDefinitionSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "RenameSparkJobDefinition", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// RenameSparkJobDefinitionPreparer prepares the RenameSparkJobDefinition request.
+func (client SparkJobDefinitionClient) RenameSparkJobDefinitionPreparer(ctx context.Context, sparkJobDefinitionName string, request RenameRequest) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"sparkJobDefinitionName": autorest.Encode("path", sparkJobDefinitionName),
+	}
+
+	const APIVersion = "2019-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{endpoint}", urlParameters),
+		autorest.WithPathParameters("/sparkJobDefinitions/{sparkJobDefinitionName}/rename", pathParameters),
+		autorest.WithJSON(request),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// RenameSparkJobDefinitionSender sends the RenameSparkJobDefinition request. The method will close the
+// http.Response Body if it receives an error.
+func (client SparkJobDefinitionClient) RenameSparkJobDefinitionSender(req *http.Request) (future SparkJobDefinitionRenameSparkJobDefinitionFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// RenameSparkJobDefinitionResponder handles the response to the RenameSparkJobDefinition request. The method always
+// closes the http.Response Body.
+func (client SparkJobDefinitionClient) RenameSparkJobDefinitionResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}

@@ -183,8 +183,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewPaginatedWebServicesListIterator(page PaginatedWebServicesListPage) PaginatedWebServicesListIterator {
 	return original.NewPaginatedWebServicesListIterator(page)
 }
-func NewPaginatedWebServicesListPage(getNextPage func(context.Context, PaginatedWebServicesList) (PaginatedWebServicesList, error)) PaginatedWebServicesListPage {
-	return original.NewPaginatedWebServicesListPage(getNextPage)
+func NewPaginatedWebServicesListPage(cur PaginatedWebServicesList, getNextPage func(context.Context, PaginatedWebServicesList) (PaginatedWebServicesList, error)) PaginatedWebServicesListPage {
+	return original.NewPaginatedWebServicesListPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

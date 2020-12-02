@@ -169,7 +169,8 @@ func (dsdlr DeviceServiceDescriptionListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DeviceServiceDescriptionListResultIterator provides access to a complete listing of DeviceService values.
+// DeviceServiceDescriptionListResultIterator provides access to a complete listing of DeviceService
+// values.
 type DeviceServiceDescriptionListResultIterator struct {
 	i    int
 	page DeviceServiceDescriptionListResultPage
@@ -312,12 +313,15 @@ func (page DeviceServiceDescriptionListResultPage) Values() []DeviceService {
 }
 
 // Creates a new instance of the DeviceServiceDescriptionListResultPage type.
-func NewDeviceServiceDescriptionListResultPage(getNextPage func(context.Context, DeviceServiceDescriptionListResult) (DeviceServiceDescriptionListResult, error)) DeviceServiceDescriptionListResultPage {
-	return DeviceServiceDescriptionListResultPage{fn: getNextPage}
+func NewDeviceServiceDescriptionListResultPage(cur DeviceServiceDescriptionListResult, getNextPage func(context.Context, DeviceServiceDescriptionListResult) (DeviceServiceDescriptionListResult, error)) DeviceServiceDescriptionListResultPage {
+	return DeviceServiceDescriptionListResultPage{
+		fn:    getNextPage,
+		dsdlr: cur,
+	}
 }
 
-// DeviceServiceNameAvailabilityInfo the properties indicating whether a given Windows IoT Device Service name
-// is available.
+// DeviceServiceNameAvailabilityInfo the properties indicating whether a given Windows IoT Device Service
+// name is available.
 type DeviceServiceNameAvailabilityInfo struct {
 	autorest.Response `json:"-"`
 	// NameAvailable - READ-ONLY; The value which indicates whether the provided name is available.
@@ -401,8 +405,8 @@ type OperationEntity struct {
 	Display *OperationDisplayInfo `json:"display,omitempty"`
 }
 
-// OperationListResult result of the request to list Windows IoT Device Service operations. It contains a list
-// of operations and a URL link to get the next set of results.
+// OperationListResult result of the request to list Windows IoT Device Service operations. It contains a
+// list of operations and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of Windows IoT Device Service operations supported by the Microsoft.WindowsIoT resource provider.
@@ -554,8 +558,11 @@ func (page OperationListResultPage) Values() []OperationEntity {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than

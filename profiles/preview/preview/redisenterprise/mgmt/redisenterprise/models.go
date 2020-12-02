@@ -146,18 +146,17 @@ type ClusterProperties = original.ClusterProperties
 type ClusterUpdate = original.ClusterUpdate
 type CreateFuture = original.CreateFuture
 type Database = original.Database
-type DatabaseClient = original.DatabaseClient
-type DatabaseExportFuture = original.DatabaseExportFuture
-type DatabaseImportFuture = original.DatabaseImportFuture
 type DatabaseList = original.DatabaseList
 type DatabaseListIterator = original.DatabaseListIterator
 type DatabaseListPage = original.DatabaseListPage
 type DatabaseProperties = original.DatabaseProperties
-type DatabaseRegenerateKeyFuture = original.DatabaseRegenerateKeyFuture
 type DatabaseUpdate = original.DatabaseUpdate
 type DatabasesClient = original.DatabasesClient
 type DatabasesCreateFuture = original.DatabasesCreateFuture
 type DatabasesDeleteFuture = original.DatabasesDeleteFuture
+type DatabasesExportFuture = original.DatabasesExportFuture
+type DatabasesImportFuture = original.DatabasesImportFuture
+type DatabasesRegenerateKeyFuture = original.DatabasesRegenerateKeyFuture
 type DatabasesUpdateFuture = original.DatabasesUpdateFuture
 type DeleteFuture = original.DeleteFuture
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
@@ -204,20 +203,14 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 func NewClusterListIterator(page ClusterListPage) ClusterListIterator {
 	return original.NewClusterListIterator(page)
 }
-func NewClusterListPage(getNextPage func(context.Context, ClusterList) (ClusterList, error)) ClusterListPage {
-	return original.NewClusterListPage(getNextPage)
-}
-func NewDatabaseClient(subscriptionID string) DatabaseClient {
-	return original.NewDatabaseClient(subscriptionID)
-}
-func NewDatabaseClientWithBaseURI(baseURI string, subscriptionID string) DatabaseClient {
-	return original.NewDatabaseClientWithBaseURI(baseURI, subscriptionID)
+func NewClusterListPage(cur ClusterList, getNextPage func(context.Context, ClusterList) (ClusterList, error)) ClusterListPage {
+	return original.NewClusterListPage(cur, getNextPage)
 }
 func NewDatabaseListIterator(page DatabaseListPage) DatabaseListIterator {
 	return original.NewDatabaseListIterator(page)
 }
-func NewDatabaseListPage(getNextPage func(context.Context, DatabaseList) (DatabaseList, error)) DatabaseListPage {
-	return original.NewDatabaseListPage(getNextPage)
+func NewDatabaseListPage(cur DatabaseList, getNextPage func(context.Context, DatabaseList) (DatabaseList, error)) DatabaseListPage {
+	return original.NewDatabaseListPage(cur, getNextPage)
 }
 func NewDatabasesClient(subscriptionID string) DatabasesClient {
 	return original.NewDatabasesClient(subscriptionID)
@@ -234,8 +227,8 @@ func NewGetClientWithBaseURI(baseURI string, subscriptionID string) GetClient {
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

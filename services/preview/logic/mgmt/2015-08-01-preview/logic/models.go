@@ -854,8 +854,11 @@ func (page IntegrationAccountAgreementListResultPage) Values() []IntegrationAcco
 }
 
 // Creates a new instance of the IntegrationAccountAgreementListResultPage type.
-func NewIntegrationAccountAgreementListResultPage(getNextPage func(context.Context, IntegrationAccountAgreementListResult) (IntegrationAccountAgreementListResult, error)) IntegrationAccountAgreementListResultPage {
-	return IntegrationAccountAgreementListResultPage{fn: getNextPage}
+func NewIntegrationAccountAgreementListResultPage(cur IntegrationAccountAgreementListResult, getNextPage func(context.Context, IntegrationAccountAgreementListResult) (IntegrationAccountAgreementListResult, error)) IntegrationAccountAgreementListResultPage {
+	return IntegrationAccountAgreementListResultPage{
+		fn:    getNextPage,
+		iaalr: cur,
+	}
 }
 
 // IntegrationAccountAgreementProperties ...
@@ -1170,8 +1173,11 @@ func (page IntegrationAccountCertificateListResultPage) Values() []IntegrationAc
 }
 
 // Creates a new instance of the IntegrationAccountCertificateListResultPage type.
-func NewIntegrationAccountCertificateListResultPage(getNextPage func(context.Context, IntegrationAccountCertificateListResult) (IntegrationAccountCertificateListResult, error)) IntegrationAccountCertificateListResultPage {
-	return IntegrationAccountCertificateListResultPage{fn: getNextPage}
+func NewIntegrationAccountCertificateListResultPage(cur IntegrationAccountCertificateListResult, getNextPage func(context.Context, IntegrationAccountCertificateListResult) (IntegrationAccountCertificateListResult, error)) IntegrationAccountCertificateListResultPage {
+	return IntegrationAccountCertificateListResultPage{
+		fn:    getNextPage,
+		iaclr: cur,
+	}
 }
 
 // IntegrationAccountCertificateProperties ...
@@ -1377,8 +1383,11 @@ func (page IntegrationAccountListResultPage) Values() []IntegrationAccount {
 }
 
 // Creates a new instance of the IntegrationAccountListResultPage type.
-func NewIntegrationAccountListResultPage(getNextPage func(context.Context, IntegrationAccountListResult) (IntegrationAccountListResult, error)) IntegrationAccountListResultPage {
-	return IntegrationAccountListResultPage{fn: getNextPage}
+func NewIntegrationAccountListResultPage(cur IntegrationAccountListResult, getNextPage func(context.Context, IntegrationAccountListResult) (IntegrationAccountListResult, error)) IntegrationAccountListResultPage {
+	return IntegrationAccountListResultPage{
+		fn:   getNextPage,
+		ialr: cur,
+	}
 }
 
 // IntegrationAccountMap ...
@@ -1650,8 +1659,11 @@ func (page IntegrationAccountMapListResultPage) Values() []IntegrationAccountMap
 }
 
 // Creates a new instance of the IntegrationAccountMapListResultPage type.
-func NewIntegrationAccountMapListResultPage(getNextPage func(context.Context, IntegrationAccountMapListResult) (IntegrationAccountMapListResult, error)) IntegrationAccountMapListResultPage {
-	return IntegrationAccountMapListResultPage{fn: getNextPage}
+func NewIntegrationAccountMapListResultPage(cur IntegrationAccountMapListResult, getNextPage func(context.Context, IntegrationAccountMapListResult) (IntegrationAccountMapListResult, error)) IntegrationAccountMapListResultPage {
+	return IntegrationAccountMapListResultPage{
+		fn:    getNextPage,
+		iamlr: cur,
+	}
 }
 
 // IntegrationAccountMapProperties ...
@@ -1959,8 +1971,11 @@ func (page IntegrationAccountPartnerListResultPage) Values() []IntegrationAccoun
 }
 
 // Creates a new instance of the IntegrationAccountPartnerListResultPage type.
-func NewIntegrationAccountPartnerListResultPage(getNextPage func(context.Context, IntegrationAccountPartnerListResult) (IntegrationAccountPartnerListResult, error)) IntegrationAccountPartnerListResultPage {
-	return IntegrationAccountPartnerListResultPage{fn: getNextPage}
+func NewIntegrationAccountPartnerListResultPage(cur IntegrationAccountPartnerListResult, getNextPage func(context.Context, IntegrationAccountPartnerListResult) (IntegrationAccountPartnerListResult, error)) IntegrationAccountPartnerListResultPage {
+	return IntegrationAccountPartnerListResultPage{
+		fn:    getNextPage,
+		iaplr: cur,
+	}
 }
 
 // IntegrationAccountPartnerProperties ...
@@ -2152,8 +2167,8 @@ type IntegrationAccountSchemaListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// IntegrationAccountSchemaListResultIterator provides access to a complete listing of IntegrationAccountSchema
-// values.
+// IntegrationAccountSchemaListResultIterator provides access to a complete listing of
+// IntegrationAccountSchema values.
 type IntegrationAccountSchemaListResultIterator struct {
 	i    int
 	page IntegrationAccountSchemaListResultPage
@@ -2296,8 +2311,11 @@ func (page IntegrationAccountSchemaListResultPage) Values() []IntegrationAccount
 }
 
 // Creates a new instance of the IntegrationAccountSchemaListResultPage type.
-func NewIntegrationAccountSchemaListResultPage(getNextPage func(context.Context, IntegrationAccountSchemaListResult) (IntegrationAccountSchemaListResult, error)) IntegrationAccountSchemaListResultPage {
-	return IntegrationAccountSchemaListResultPage{fn: getNextPage}
+func NewIntegrationAccountSchemaListResultPage(cur IntegrationAccountSchemaListResult, getNextPage func(context.Context, IntegrationAccountSchemaListResult) (IntegrationAccountSchemaListResult, error)) IntegrationAccountSchemaListResultPage {
+	return IntegrationAccountSchemaListResultPage{
+		fn:    getNextPage,
+		iaslr: cur,
+	}
 }
 
 // IntegrationAccountSchemaProperties ...

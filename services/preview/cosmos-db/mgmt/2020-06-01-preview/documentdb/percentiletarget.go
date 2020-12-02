@@ -26,7 +26,7 @@ import (
 	"net/http"
 )
 
-// PercentileTargetClient is the azure Cosmos DB Database Service Resource Provider REST API
+// PercentileTargetClient is the client for the PercentileTarget methods of the Documentdb service.
 type PercentileTargetClient struct {
 	BaseClient
 }

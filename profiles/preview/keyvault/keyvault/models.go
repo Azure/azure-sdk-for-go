@@ -214,56 +214,56 @@ func New() BaseClient {
 func NewCertificateIssuerListResultIterator(page CertificateIssuerListResultPage) CertificateIssuerListResultIterator {
 	return original.NewCertificateIssuerListResultIterator(page)
 }
-func NewCertificateIssuerListResultPage(getNextPage func(context.Context, CertificateIssuerListResult) (CertificateIssuerListResult, error)) CertificateIssuerListResultPage {
-	return original.NewCertificateIssuerListResultPage(getNextPage)
+func NewCertificateIssuerListResultPage(cur CertificateIssuerListResult, getNextPage func(context.Context, CertificateIssuerListResult) (CertificateIssuerListResult, error)) CertificateIssuerListResultPage {
+	return original.NewCertificateIssuerListResultPage(cur, getNextPage)
 }
 func NewCertificateListResultIterator(page CertificateListResultPage) CertificateListResultIterator {
 	return original.NewCertificateListResultIterator(page)
 }
-func NewCertificateListResultPage(getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
-	return original.NewCertificateListResultPage(getNextPage)
+func NewCertificateListResultPage(cur CertificateListResult, getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
+	return original.NewCertificateListResultPage(cur, getNextPage)
 }
 func NewDeletedCertificateListResultIterator(page DeletedCertificateListResultPage) DeletedCertificateListResultIterator {
 	return original.NewDeletedCertificateListResultIterator(page)
 }
-func NewDeletedCertificateListResultPage(getNextPage func(context.Context, DeletedCertificateListResult) (DeletedCertificateListResult, error)) DeletedCertificateListResultPage {
-	return original.NewDeletedCertificateListResultPage(getNextPage)
+func NewDeletedCertificateListResultPage(cur DeletedCertificateListResult, getNextPage func(context.Context, DeletedCertificateListResult) (DeletedCertificateListResult, error)) DeletedCertificateListResultPage {
+	return original.NewDeletedCertificateListResultPage(cur, getNextPage)
 }
 func NewDeletedKeyListResultIterator(page DeletedKeyListResultPage) DeletedKeyListResultIterator {
 	return original.NewDeletedKeyListResultIterator(page)
 }
-func NewDeletedKeyListResultPage(getNextPage func(context.Context, DeletedKeyListResult) (DeletedKeyListResult, error)) DeletedKeyListResultPage {
-	return original.NewDeletedKeyListResultPage(getNextPage)
+func NewDeletedKeyListResultPage(cur DeletedKeyListResult, getNextPage func(context.Context, DeletedKeyListResult) (DeletedKeyListResult, error)) DeletedKeyListResultPage {
+	return original.NewDeletedKeyListResultPage(cur, getNextPage)
 }
 func NewDeletedSecretListResultIterator(page DeletedSecretListResultPage) DeletedSecretListResultIterator {
 	return original.NewDeletedSecretListResultIterator(page)
 }
-func NewDeletedSecretListResultPage(getNextPage func(context.Context, DeletedSecretListResult) (DeletedSecretListResult, error)) DeletedSecretListResultPage {
-	return original.NewDeletedSecretListResultPage(getNextPage)
+func NewDeletedSecretListResultPage(cur DeletedSecretListResult, getNextPage func(context.Context, DeletedSecretListResult) (DeletedSecretListResult, error)) DeletedSecretListResultPage {
+	return original.NewDeletedSecretListResultPage(cur, getNextPage)
 }
 func NewKeyListResultIterator(page KeyListResultPage) KeyListResultIterator {
 	return original.NewKeyListResultIterator(page)
 }
-func NewKeyListResultPage(getNextPage func(context.Context, KeyListResult) (KeyListResult, error)) KeyListResultPage {
-	return original.NewKeyListResultPage(getNextPage)
+func NewKeyListResultPage(cur KeyListResult, getNextPage func(context.Context, KeyListResult) (KeyListResult, error)) KeyListResultPage {
+	return original.NewKeyListResultPage(cur, getNextPage)
 }
 func NewSasDefinitionListResultIterator(page SasDefinitionListResultPage) SasDefinitionListResultIterator {
 	return original.NewSasDefinitionListResultIterator(page)
 }
-func NewSasDefinitionListResultPage(getNextPage func(context.Context, SasDefinitionListResult) (SasDefinitionListResult, error)) SasDefinitionListResultPage {
-	return original.NewSasDefinitionListResultPage(getNextPage)
+func NewSasDefinitionListResultPage(cur SasDefinitionListResult, getNextPage func(context.Context, SasDefinitionListResult) (SasDefinitionListResult, error)) SasDefinitionListResultPage {
+	return original.NewSasDefinitionListResultPage(cur, getNextPage)
 }
 func NewSecretListResultIterator(page SecretListResultPage) SecretListResultIterator {
 	return original.NewSecretListResultIterator(page)
 }
-func NewSecretListResultPage(getNextPage func(context.Context, SecretListResult) (SecretListResult, error)) SecretListResultPage {
-	return original.NewSecretListResultPage(getNextPage)
+func NewSecretListResultPage(cur SecretListResult, getNextPage func(context.Context, SecretListResult) (SecretListResult, error)) SecretListResultPage {
+	return original.NewSecretListResultPage(cur, getNextPage)
 }
 func NewStorageListResultIterator(page StorageListResultPage) StorageListResultIterator {
 	return original.NewStorageListResultIterator(page)
 }
-func NewStorageListResultPage(getNextPage func(context.Context, StorageListResult) (StorageListResult, error)) StorageListResultPage {
-	return original.NewStorageListResultPage(getNextPage)
+func NewStorageListResultPage(cur StorageListResult, getNextPage func(context.Context, StorageListResult) (StorageListResult, error)) StorageListResultPage {
+	return original.NewStorageListResultPage(cur, getNextPage)
 }
 func NewWithoutDefaults() BaseClient {
 	return original.NewWithoutDefaults()

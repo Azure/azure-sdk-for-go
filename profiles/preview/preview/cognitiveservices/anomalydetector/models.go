@@ -21,26 +21,26 @@ package anomalydetector
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/anomalydetector"
 
-type Granularity = original.Granularity
+type TimeGranularity = original.TimeGranularity
 
 const (
-	Daily    Granularity = original.Daily
-	Hourly   Granularity = original.Hourly
-	Minutely Granularity = original.Minutely
-	Monthly  Granularity = original.Monthly
-	Secondly Granularity = original.Secondly
-	Weekly   Granularity = original.Weekly
-	Yearly   Granularity = original.Yearly
+	Daily     TimeGranularity = original.Daily
+	Hourly    TimeGranularity = original.Hourly
+	Monthly   TimeGranularity = original.Monthly
+	PerMinute TimeGranularity = original.PerMinute
+	PerSecond TimeGranularity = original.PerSecond
+	Weekly    TimeGranularity = original.Weekly
+	Yearly    TimeGranularity = original.Yearly
 )
 
-type APIError = original.APIError
 type BaseClient = original.BaseClient
 type ChangePointDetectRequest = original.ChangePointDetectRequest
 type ChangePointDetectResponse = original.ChangePointDetectResponse
+type DetectRequest = original.DetectRequest
 type EntireDetectResponse = original.EntireDetectResponse
+type Error = original.Error
 type LastDetectResponse = original.LastDetectResponse
-type Point = original.Point
-type Request = original.Request
+type TimeSeriesPoint = original.TimeSeriesPoint
 
 func New(endpoint string) BaseClient {
 	return original.New(endpoint)
@@ -48,8 +48,8 @@ func New(endpoint string) BaseClient {
 func NewWithoutDefaults(endpoint string) BaseClient {
 	return original.NewWithoutDefaults(endpoint)
 }
-func PossibleGranularityValues() []Granularity {
-	return original.PossibleGranularityValues()
+func PossibleTimeGranularityValues() []TimeGranularity {
+	return original.PossibleTimeGranularityValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

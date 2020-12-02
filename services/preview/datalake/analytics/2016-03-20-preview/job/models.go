@@ -298,8 +298,11 @@ func (page InfoListResultPage) Values() []Information {
 }
 
 // Creates a new instance of the InfoListResultPage type.
-func NewInfoListResultPage(getNextPage func(context.Context, InfoListResult) (InfoListResult, error)) InfoListResultPage {
-	return InfoListResultPage{fn: getNextPage}
+func NewInfoListResultPage(cur InfoListResult, getNextPage func(context.Context, InfoListResult) (InfoListResult, error)) InfoListResultPage {
+	return InfoListResultPage{
+		fn:  getNextPage,
+		ilr: cur,
+	}
 }
 
 // Information the common Data Lake Analytics job information properties.

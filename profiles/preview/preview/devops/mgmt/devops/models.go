@@ -84,8 +84,8 @@ func New(subscriptionID string) BaseClient {
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -96,14 +96,14 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewPipelineListResultIterator(page PipelineListResultPage) PipelineListResultIterator {
 	return original.NewPipelineListResultIterator(page)
 }
-func NewPipelineListResultPage(getNextPage func(context.Context, PipelineListResult) (PipelineListResult, error)) PipelineListResultPage {
-	return original.NewPipelineListResultPage(getNextPage)
+func NewPipelineListResultPage(cur PipelineListResult, getNextPage func(context.Context, PipelineListResult) (PipelineListResult, error)) PipelineListResultPage {
+	return original.NewPipelineListResultPage(cur, getNextPage)
 }
 func NewPipelineTemplateDefinitionListResultIterator(page PipelineTemplateDefinitionListResultPage) PipelineTemplateDefinitionListResultIterator {
 	return original.NewPipelineTemplateDefinitionListResultIterator(page)
 }
-func NewPipelineTemplateDefinitionListResultPage(getNextPage func(context.Context, PipelineTemplateDefinitionListResult) (PipelineTemplateDefinitionListResult, error)) PipelineTemplateDefinitionListResultPage {
-	return original.NewPipelineTemplateDefinitionListResultPage(getNextPage)
+func NewPipelineTemplateDefinitionListResultPage(cur PipelineTemplateDefinitionListResult, getNextPage func(context.Context, PipelineTemplateDefinitionListResult) (PipelineTemplateDefinitionListResult, error)) PipelineTemplateDefinitionListResultPage {
+	return original.NewPipelineTemplateDefinitionListResultPage(cur, getNextPage)
 }
 func NewPipelineTemplateDefinitionsClient(subscriptionID string) PipelineTemplateDefinitionsClient {
 	return original.NewPipelineTemplateDefinitionsClient(subscriptionID)

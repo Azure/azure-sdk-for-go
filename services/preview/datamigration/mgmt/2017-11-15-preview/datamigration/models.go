@@ -252,8 +252,8 @@ func (ctsssto ConnectToSourceSQLServerTaskOutput) AsBasicConnectToSourceSQLServe
 	return &ctsssto, true
 }
 
-// ConnectToSourceSQLServerTaskOutputDatabaseLevel database level output for the task that validates connection
-// to SQL Server and also validates source server requirements
+// ConnectToSourceSQLServerTaskOutputDatabaseLevel database level output for the task that validates
+// connection to SQL Server and also validates source server requirements
 type ConnectToSourceSQLServerTaskOutputDatabaseLevel struct {
 	// Name - READ-ONLY; Database name
 	Name *string `json:"name,omitempty"`
@@ -301,8 +301,8 @@ func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) AsBasicConnectT
 	return &ctssstodl, true
 }
 
-// ConnectToSourceSQLServerTaskOutputTaskLevel task level output for the task that validates connection to SQL
-// Server and also validates source server requirements
+// ConnectToSourceSQLServerTaskOutputTaskLevel task level output for the task that validates connection to
+// SQL Server and also validates source server requirements
 type ConnectToSourceSQLServerTaskOutputTaskLevel struct {
 	// Databases - READ-ONLY; Source databases as a map from database name to database id
 	Databases map[string]*string `json:"databases"`
@@ -348,8 +348,8 @@ func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) AsBasicConnectToSou
 	return &ctssstotl, true
 }
 
-// ConnectToSourceSQLServerTaskProperties properties for the task that validates connection to SQL Server and
-// also validates source server requirements
+// ConnectToSourceSQLServerTaskProperties properties for the task that validates connection to SQL Server
+// and also validates source server requirements
 type ConnectToSourceSQLServerTaskProperties struct {
 	// Input - Task input
 	Input *ConnectToSourceSQLServerTaskInput `json:"input,omitempty"`
@@ -491,8 +491,8 @@ func (cttsdto ConnectToTargetSQLDbTaskOutput) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ConnectToTargetSQLDbTaskProperties properties for the task that validates connection to SQL DB and target
-// server requirements
+// ConnectToTargetSQLDbTaskProperties properties for the task that validates connection to SQL DB and
+// target server requirements
 type ConnectToTargetSQLDbTaskProperties struct {
 	// Input - Task input
 	Input *ConnectToTargetSQLDbTaskInput `json:"input,omitempty"`
@@ -890,8 +890,8 @@ func (msssddi MigrateSQLServerSQLDbDatabaseInput) MarshalJSON() ([]byte, error) 
 	return json.Marshal(objectMap)
 }
 
-// MigrateSQLServerSQLDbTaskInput input for the task that migrates on-prem SQL Server databases to Azure SQL
-// Database
+// MigrateSQLServerSQLDbTaskInput input for the task that migrates on-prem SQL Server databases to Azure
+// SQL Database
 type MigrateSQLServerSQLDbTaskInput struct {
 	// SelectedDatabases - Databases to migrate
 	SelectedDatabases *[]MigrateSQLServerSQLDbDatabaseInput `json:"selectedDatabases,omitempty"`
@@ -1013,7 +1013,8 @@ func (msssdto MigrateSQLServerSQLDbTaskOutput) AsBasicMigrateSQLServerSQLDbTaskO
 	return &msssdto, true
 }
 
-// MigrateSQLServerSQLDbTaskOutputDatabaseLevel database level result for Sql Server to Azure Sql DB migration.
+// MigrateSQLServerSQLDbTaskOutputDatabaseLevel database level result for Sql Server to Azure Sql DB
+// migration.
 type MigrateSQLServerSQLDbTaskOutputDatabaseLevel struct {
 	// DatabaseName - READ-ONLY; Name of the item
 	DatabaseName *string `json:"databaseName,omitempty"`
@@ -1285,8 +1286,8 @@ func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) AsBasicMigrateSQLServ
 	return &msssdtotl, true
 }
 
-// MigrateSQLServerSQLDbTaskProperties properties for the task that migrates on-prem SQL Server databases to
-// Azure SQL Database
+// MigrateSQLServerSQLDbTaskProperties properties for the task that migrates on-prem SQL Server databases
+// to Azure SQL Database
 type MigrateSQLServerSQLDbTaskProperties struct {
 	// Input - Task input
 	Input *MigrateSQLServerSQLDbTaskInput `json:"input,omitempty"`
@@ -1774,8 +1775,11 @@ func (page ProjectListPage) Values() []Project {
 }
 
 // Creates a new instance of the ProjectListPage type.
-func NewProjectListPage(getNextPage func(context.Context, ProjectList) (ProjectList, error)) ProjectListPage {
-	return ProjectListPage{fn: getNextPage}
+func NewProjectListPage(cur ProjectList, getNextPage func(context.Context, ProjectList) (ProjectList, error)) ProjectListPage {
+	return ProjectListPage{
+		fn: getNextPage,
+		pl: cur,
+	}
 }
 
 // ProjectMetadata common metadata for migration projects
@@ -2289,8 +2293,11 @@ func (page QuotaListPage) Values() []Quota {
 }
 
 // Creates a new instance of the QuotaListPage type.
-func NewQuotaListPage(getNextPage func(context.Context, QuotaList) (QuotaList, error)) QuotaListPage {
-	return QuotaListPage{fn: getNextPage}
+func NewQuotaListPage(cur QuotaList, getNextPage func(context.Context, QuotaList) (QuotaList, error)) QuotaListPage {
+	return QuotaListPage{
+		fn: getNextPage,
+		ql: cur,
+	}
 }
 
 // QuotaName the name of the quota
@@ -2545,8 +2552,11 @@ func (page ResourceSkusResultPage) Values() []ResourceSku {
 }
 
 // Creates a new instance of the ResourceSkusResultPage type.
-func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
-	return ResourceSkusResultPage{fn: getNextPage}
+func NewResourceSkusResultPage(cur ResourceSkusResult, getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
+	return ResourceSkusResultPage{
+		fn:  getNextPage,
+		rsr: cur,
+	}
 }
 
 // SchemaComparisonValidationResult results for schema comparison between the source and target
@@ -2885,8 +2895,11 @@ func (page ServiceListPage) Values() []Service {
 }
 
 // Creates a new instance of the ServiceListPage type.
-func NewServiceListPage(getNextPage func(context.Context, ServiceList) (ServiceList, error)) ServiceListPage {
-	return ServiceListPage{fn: getNextPage}
+func NewServiceListPage(cur ServiceList, getNextPage func(context.Context, ServiceList) (ServiceList, error)) ServiceListPage {
+	return ServiceListPage{
+		fn: getNextPage,
+		sl: cur,
+	}
 }
 
 // ServiceOperation description of an action supported by the Data Migration Service
@@ -3061,8 +3074,11 @@ func (page ServiceOperationListPage) Values() []ServiceOperation {
 }
 
 // Creates a new instance of the ServiceOperationListPage type.
-func NewServiceOperationListPage(getNextPage func(context.Context, ServiceOperationList) (ServiceOperationList, error)) ServiceOperationListPage {
-	return ServiceOperationListPage{fn: getNextPage}
+func NewServiceOperationListPage(cur ServiceOperationList, getNextPage func(context.Context, ServiceOperationList) (ServiceOperationList, error)) ServiceOperationListPage {
+	return ServiceOperationListPage{
+		fn:  getNextPage,
+		sol: cur,
+	}
 }
 
 // ServiceProperties properties of the Data Migration service instance
@@ -3116,7 +3132,8 @@ func (future *ServicesCreateOrUpdateFuture) Result(client ServicesClient) (s Ser
 	return
 }
 
-// ServicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServicesDeleteFuture struct {
 	azure.Future
 }
@@ -3304,11 +3321,15 @@ func (page ServiceSkuListPage) Values() []AvailableServiceSku {
 }
 
 // Creates a new instance of the ServiceSkuListPage type.
-func NewServiceSkuListPage(getNextPage func(context.Context, ServiceSkuList) (ServiceSkuList, error)) ServiceSkuListPage {
-	return ServiceSkuListPage{fn: getNextPage}
+func NewServiceSkuListPage(cur ServiceSkuList, getNextPage func(context.Context, ServiceSkuList) (ServiceSkuList, error)) ServiceSkuListPage {
+	return ServiceSkuListPage{
+		fn:  getNextPage,
+		ssl: cur,
+	}
 }
 
-// ServicesStartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServicesStartFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServicesStartFuture struct {
 	azure.Future
 }
@@ -3365,7 +3386,8 @@ type ServiceStatusResponse struct {
 	SupportedTaskTypes *[]string `json:"supportedTaskTypes,omitempty"`
 }
 
-// ServicesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServicesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServicesUpdateFuture struct {
 	azure.Future
 }
@@ -3619,8 +3641,11 @@ func (page TaskListPage) Values() []ProjectTask {
 }
 
 // Creates a new instance of the TaskListPage type.
-func NewTaskListPage(getNextPage func(context.Context, TaskList) (TaskList, error)) TaskListPage {
-	return TaskListPage{fn: getNextPage}
+func NewTaskListPage(cur TaskList, getNextPage func(context.Context, TaskList) (TaskList, error)) TaskListPage {
+	return TaskListPage{
+		fn: getNextPage,
+		tl: cur,
+	}
 }
 
 // TrackedResource ARM tracked top level resource.

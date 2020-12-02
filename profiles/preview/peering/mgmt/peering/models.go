@@ -22,7 +22,7 @@ package peering
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/peering/mgmt/2020-04-01/peering"
+	original "github.com/Azure/azure-sdk-for-go/services/peering/mgmt/2020-10-01/peering"
 )
 
 const (
@@ -173,6 +173,12 @@ const (
 type BandwidthOffer = original.BandwidthOffer
 type BaseClient = original.BaseClient
 type BgpSession = original.BgpSession
+type CdnPeeringPrefix = original.CdnPeeringPrefix
+type CdnPeeringPrefixListResult = original.CdnPeeringPrefixListResult
+type CdnPeeringPrefixListResultIterator = original.CdnPeeringPrefixListResultIterator
+type CdnPeeringPrefixListResultPage = original.CdnPeeringPrefixListResultPage
+type CdnPeeringPrefixProperties = original.CdnPeeringPrefixProperties
+type CdnPeeringPrefixesClient = original.CdnPeeringPrefixesClient
 type CheckServiceProviderAvailabilityInput = original.CheckServiceProviderAvailabilityInput
 type ContactDetail = original.ContactDetail
 type DirectConnection = original.DirectConnection
@@ -267,6 +273,18 @@ type SubResource = original.SubResource
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
+func NewCdnPeeringPrefixListResultIterator(page CdnPeeringPrefixListResultPage) CdnPeeringPrefixListResultIterator {
+	return original.NewCdnPeeringPrefixListResultIterator(page)
+}
+func NewCdnPeeringPrefixListResultPage(cur CdnPeeringPrefixListResult, getNextPage func(context.Context, CdnPeeringPrefixListResult) (CdnPeeringPrefixListResult, error)) CdnPeeringPrefixListResultPage {
+	return original.NewCdnPeeringPrefixListResultPage(cur, getNextPage)
+}
+func NewCdnPeeringPrefixesClient(subscriptionID string) CdnPeeringPrefixesClient {
+	return original.NewCdnPeeringPrefixesClient(subscriptionID)
+}
+func NewCdnPeeringPrefixesClientWithBaseURI(baseURI string, subscriptionID string) CdnPeeringPrefixesClient {
+	return original.NewCdnPeeringPrefixesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewLegacyPeeringsClient(subscriptionID string) LegacyPeeringsClient {
 	return original.NewLegacyPeeringsClient(subscriptionID)
 }
@@ -276,14 +294,14 @@ func NewLegacyPeeringsClientWithBaseURI(baseURI string, subscriptionID string) L
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
 }
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return original.NewListResultPage(getNextPage)
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(cur, getNextPage)
 }
 func NewLocationListResultIterator(page LocationListResultPage) LocationListResultIterator {
 	return original.NewLocationListResultIterator(page)
 }
-func NewLocationListResultPage(getNextPage func(context.Context, LocationListResult) (LocationListResult, error)) LocationListResultPage {
-	return original.NewLocationListResultPage(getNextPage)
+func NewLocationListResultPage(cur LocationListResult, getNextPage func(context.Context, LocationListResult) (LocationListResult, error)) LocationListResultPage {
+	return original.NewLocationListResultPage(cur, getNextPage)
 }
 func NewLocationsClient(subscriptionID string) LocationsClient {
 	return original.NewLocationsClient(subscriptionID)
@@ -294,8 +312,8 @@ func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) Locati
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -306,8 +324,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewPeerAsnListResultIterator(page PeerAsnListResultPage) PeerAsnListResultIterator {
 	return original.NewPeerAsnListResultIterator(page)
 }
-func NewPeerAsnListResultPage(getNextPage func(context.Context, PeerAsnListResult) (PeerAsnListResult, error)) PeerAsnListResultPage {
-	return original.NewPeerAsnListResultPage(getNextPage)
+func NewPeerAsnListResultPage(cur PeerAsnListResult, getNextPage func(context.Context, PeerAsnListResult) (PeerAsnListResult, error)) PeerAsnListResultPage {
+	return original.NewPeerAsnListResultPage(cur, getNextPage)
 }
 func NewPeerAsnsClient(subscriptionID string) PeerAsnsClient {
 	return original.NewPeerAsnsClient(subscriptionID)
@@ -330,8 +348,8 @@ func NewPrefixesClientWithBaseURI(baseURI string, subscriptionID string) Prefixe
 func NewReceivedRouteListResultIterator(page ReceivedRouteListResultPage) ReceivedRouteListResultIterator {
 	return original.NewReceivedRouteListResultIterator(page)
 }
-func NewReceivedRouteListResultPage(getNextPage func(context.Context, ReceivedRouteListResult) (ReceivedRouteListResult, error)) ReceivedRouteListResultPage {
-	return original.NewReceivedRouteListResultPage(getNextPage)
+func NewReceivedRouteListResultPage(cur ReceivedRouteListResult, getNextPage func(context.Context, ReceivedRouteListResult) (ReceivedRouteListResult, error)) ReceivedRouteListResultPage {
+	return original.NewReceivedRouteListResultPage(cur, getNextPage)
 }
 func NewReceivedRoutesClient(subscriptionID string) ReceivedRoutesClient {
 	return original.NewReceivedRoutesClient(subscriptionID)
@@ -342,8 +360,8 @@ func NewReceivedRoutesClientWithBaseURI(baseURI string, subscriptionID string) R
 func NewRegisteredAsnListResultIterator(page RegisteredAsnListResultPage) RegisteredAsnListResultIterator {
 	return original.NewRegisteredAsnListResultIterator(page)
 }
-func NewRegisteredAsnListResultPage(getNextPage func(context.Context, RegisteredAsnListResult) (RegisteredAsnListResult, error)) RegisteredAsnListResultPage {
-	return original.NewRegisteredAsnListResultPage(getNextPage)
+func NewRegisteredAsnListResultPage(cur RegisteredAsnListResult, getNextPage func(context.Context, RegisteredAsnListResult) (RegisteredAsnListResult, error)) RegisteredAsnListResultPage {
+	return original.NewRegisteredAsnListResultPage(cur, getNextPage)
 }
 func NewRegisteredAsnsClient(subscriptionID string) RegisteredAsnsClient {
 	return original.NewRegisteredAsnsClient(subscriptionID)
@@ -354,8 +372,8 @@ func NewRegisteredAsnsClientWithBaseURI(baseURI string, subscriptionID string) R
 func NewRegisteredPrefixListResultIterator(page RegisteredPrefixListResultPage) RegisteredPrefixListResultIterator {
 	return original.NewRegisteredPrefixListResultIterator(page)
 }
-func NewRegisteredPrefixListResultPage(getNextPage func(context.Context, RegisteredPrefixListResult) (RegisteredPrefixListResult, error)) RegisteredPrefixListResultPage {
-	return original.NewRegisteredPrefixListResultPage(getNextPage)
+func NewRegisteredPrefixListResultPage(cur RegisteredPrefixListResult, getNextPage func(context.Context, RegisteredPrefixListResult) (RegisteredPrefixListResult, error)) RegisteredPrefixListResultPage {
+	return original.NewRegisteredPrefixListResultPage(cur, getNextPage)
 }
 func NewRegisteredPrefixesClient(subscriptionID string) RegisteredPrefixesClient {
 	return original.NewRegisteredPrefixesClient(subscriptionID)
@@ -372,20 +390,20 @@ func NewServiceCountriesClientWithBaseURI(baseURI string, subscriptionID string)
 func NewServiceCountryListResultIterator(page ServiceCountryListResultPage) ServiceCountryListResultIterator {
 	return original.NewServiceCountryListResultIterator(page)
 }
-func NewServiceCountryListResultPage(getNextPage func(context.Context, ServiceCountryListResult) (ServiceCountryListResult, error)) ServiceCountryListResultPage {
-	return original.NewServiceCountryListResultPage(getNextPage)
+func NewServiceCountryListResultPage(cur ServiceCountryListResult, getNextPage func(context.Context, ServiceCountryListResult) (ServiceCountryListResult, error)) ServiceCountryListResultPage {
+	return original.NewServiceCountryListResultPage(cur, getNextPage)
 }
 func NewServiceListResultIterator(page ServiceListResultPage) ServiceListResultIterator {
 	return original.NewServiceListResultIterator(page)
 }
-func NewServiceListResultPage(getNextPage func(context.Context, ServiceListResult) (ServiceListResult, error)) ServiceListResultPage {
-	return original.NewServiceListResultPage(getNextPage)
+func NewServiceListResultPage(cur ServiceListResult, getNextPage func(context.Context, ServiceListResult) (ServiceListResult, error)) ServiceListResultPage {
+	return original.NewServiceListResultPage(cur, getNextPage)
 }
 func NewServiceLocationListResultIterator(page ServiceLocationListResultPage) ServiceLocationListResultIterator {
 	return original.NewServiceLocationListResultIterator(page)
 }
-func NewServiceLocationListResultPage(getNextPage func(context.Context, ServiceLocationListResult) (ServiceLocationListResult, error)) ServiceLocationListResultPage {
-	return original.NewServiceLocationListResultPage(getNextPage)
+func NewServiceLocationListResultPage(cur ServiceLocationListResult, getNextPage func(context.Context, ServiceLocationListResult) (ServiceLocationListResult, error)) ServiceLocationListResultPage {
+	return original.NewServiceLocationListResultPage(cur, getNextPage)
 }
 func NewServiceLocationsClient(subscriptionID string) ServiceLocationsClient {
 	return original.NewServiceLocationsClient(subscriptionID)
@@ -396,14 +414,14 @@ func NewServiceLocationsClientWithBaseURI(baseURI string, subscriptionID string)
 func NewServicePrefixListResultIterator(page ServicePrefixListResultPage) ServicePrefixListResultIterator {
 	return original.NewServicePrefixListResultIterator(page)
 }
-func NewServicePrefixListResultPage(getNextPage func(context.Context, ServicePrefixListResult) (ServicePrefixListResult, error)) ServicePrefixListResultPage {
-	return original.NewServicePrefixListResultPage(getNextPage)
+func NewServicePrefixListResultPage(cur ServicePrefixListResult, getNextPage func(context.Context, ServicePrefixListResult) (ServicePrefixListResult, error)) ServicePrefixListResultPage {
+	return original.NewServicePrefixListResultPage(cur, getNextPage)
 }
 func NewServiceProviderListResultIterator(page ServiceProviderListResultPage) ServiceProviderListResultIterator {
 	return original.NewServiceProviderListResultIterator(page)
 }
-func NewServiceProviderListResultPage(getNextPage func(context.Context, ServiceProviderListResult) (ServiceProviderListResult, error)) ServiceProviderListResultPage {
-	return original.NewServiceProviderListResultPage(getNextPage)
+func NewServiceProviderListResultPage(cur ServiceProviderListResult, getNextPage func(context.Context, ServiceProviderListResult) (ServiceProviderListResult, error)) ServiceProviderListResultPage {
+	return original.NewServiceProviderListResultPage(cur, getNextPage)
 }
 func NewServiceProvidersClient(subscriptionID string) ServiceProvidersClient {
 	return original.NewServiceProvidersClient(subscriptionID)

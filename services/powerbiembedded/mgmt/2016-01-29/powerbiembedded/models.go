@@ -221,8 +221,8 @@ type WorkspaceCollectionList struct {
 	Value             *[]WorkspaceCollection `json:"value,omitempty"`
 }
 
-// WorkspaceCollectionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// WorkspaceCollectionsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type WorkspaceCollectionsDeleteFuture struct {
 	azure.Future
 }

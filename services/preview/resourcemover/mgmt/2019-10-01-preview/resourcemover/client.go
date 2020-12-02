@@ -1,4 +1,4 @@
-// Package regionmove implements the Azure ARM Regionmove service API version 2019-10-01-preview.
+// Package resourcemover implements the Azure ARM Resourcemover service API version 2019-10-01-preview.
 //
 // A first party Azure service orchestrating the move of Azure resources from one Azure region to another or between
 // zones within a region.
@@ -26,11 +26,11 @@ import (
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Regionmove
+	// DefaultBaseURI is the default URI used for the service Resourcemover
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// BaseClient is the base client for Regionmove.
+// BaseClient is the base client for Resourcemover.
 type BaseClient struct {
 	autorest.Client
 	BaseURI        string

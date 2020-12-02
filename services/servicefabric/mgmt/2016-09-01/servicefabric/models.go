@@ -332,8 +332,11 @@ func (page ClusterCodeVersionsListResultPage) Values() []ClusterCodeVersionsResu
 }
 
 // Creates a new instance of the ClusterCodeVersionsListResultPage type.
-func NewClusterCodeVersionsListResultPage(getNextPage func(context.Context, ClusterCodeVersionsListResult) (ClusterCodeVersionsListResult, error)) ClusterCodeVersionsListResultPage {
-	return ClusterCodeVersionsListResultPage{fn: getNextPage}
+func NewClusterCodeVersionsListResultPage(cur ClusterCodeVersionsListResult, getNextPage func(context.Context, ClusterCodeVersionsListResult) (ClusterCodeVersionsListResult, error)) ClusterCodeVersionsListResultPage {
+	return ClusterCodeVersionsListResultPage{
+		fn:    getNextPage,
+		ccvlr: cur,
+	}
 }
 
 // ClusterCodeVersionsResult the result of the ServiceFabric runtime versions
@@ -417,7 +420,8 @@ func (ccvr *ClusterCodeVersionsResult) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ClusterHealthPolicy defines a health policy used to evaluate the health of the cluster or of a cluster node.
+// ClusterHealthPolicy defines a health policy used to evaluate the health of the cluster or of a cluster
+// node.
 type ClusterHealthPolicy struct {
 	// MaxPercentUnhealthyNodes - The maximum allowed percentage of unhealthy nodes before reporting an error. For example, to allow 10% of nodes to be unhealthy, this value would be 10.
 	MaxPercentUnhealthyNodes *int32 `json:"maxPercentUnhealthyNodes,omitempty"`
@@ -576,8 +580,11 @@ func (page ClusterListResultPage) Values() []Cluster {
 }
 
 // Creates a new instance of the ClusterListResultPage type.
-func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
-	return ClusterListResultPage{fn: getNextPage}
+func NewClusterListResultPage(cur ClusterListResult, getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return ClusterListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // ClusterProperties the cluster resource properties
@@ -694,7 +701,8 @@ type ClusterPropertiesUpdateParameters struct {
 	UpgradeDescription *ClusterUpgradePolicy `json:"upgradeDescription,omitempty"`
 }
 
-// ClustersCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ClustersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ClustersCreateFuture struct {
 	azure.Future
 }
@@ -722,7 +730,8 @@ func (future *ClustersCreateFuture) Result(client ClustersClient) (c Cluster, er
 	return
 }
 
-// ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ClustersUpdateFuture struct {
 	azure.Future
 }
@@ -882,8 +891,8 @@ type ErrorModelError struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// NodeTypeDescription describes a node type in the cluster, each node type represents sub set of nodes in the
-// cluster
+// NodeTypeDescription describes a node type in the cluster, each node type represents sub set of nodes in
+// the cluster
 type NodeTypeDescription struct {
 	// Name - Name of the node type
 	Name *string `json:"name,omitempty"`
@@ -948,8 +957,8 @@ func (ntd NodeTypeDescription) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationListResult result of the request to list ServiceFabric operations. It contains a list of operations
-// and a URL link to get the next set of results.
+// OperationListResult result of the request to list ServiceFabric operations. It contains a list of
+// operations and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of ServiceFabric operations supported by the Microsoft.ServiceFabric resource provider.
@@ -1101,8 +1110,11 @@ func (page OperationListResultPage) Values() []OperationResult {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationResult available operation list result

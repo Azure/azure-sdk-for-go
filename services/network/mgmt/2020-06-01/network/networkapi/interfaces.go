@@ -628,6 +628,13 @@ type VirtualApplianceSkusClientAPI interface {
 
 var _ VirtualApplianceSkusClientAPI = (*network.VirtualApplianceSkusClient)(nil)
 
+// InboundSecurityRuleClientAPI contains the set of methods on the InboundSecurityRuleClient type.
+type InboundSecurityRuleClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, ruleCollectionName string, parameters network.InboundSecurityRule) (result network.InboundSecurityRuleCreateOrUpdateFuture, err error)
+}
+
+var _ InboundSecurityRuleClientAPI = (*network.InboundSecurityRuleClient)(nil)
+
 // WatchersClientAPI contains the set of methods on the WatchersClient type.
 type WatchersClientAPI interface {
 	CheckConnectivity(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters network.ConnectivityParameters) (result network.WatchersCheckConnectivityFuture, err error)
@@ -1253,6 +1260,8 @@ var _ VirtualHubBgpConnectionClientAPI = (*network.VirtualHubBgpConnectionClient
 type VirtualHubBgpConnectionsClientAPI interface {
 	List(ctx context.Context, resourceGroupName string, virtualHubName string) (result network.ListVirtualHubBgpConnectionResultsPage, err error)
 	ListComplete(ctx context.Context, resourceGroupName string, virtualHubName string) (result network.ListVirtualHubBgpConnectionResultsIterator, err error)
+	ListAdvertisedRoutes(ctx context.Context, resourceGroupName string, hubName string, connectionName string) (result network.VirtualHubBgpConnectionsListAdvertisedRoutesFuture, err error)
+	ListLearnedRoutes(ctx context.Context, resourceGroupName string, hubName string, connectionName string) (result network.VirtualHubBgpConnectionsListLearnedRoutesFuture, err error)
 }
 
 var _ VirtualHubBgpConnectionsClientAPI = (*network.VirtualHubBgpConnectionsClient)(nil)

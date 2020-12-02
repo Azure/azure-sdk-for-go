@@ -111,9 +111,10 @@ const (
 type SkuTier = original.SkuTier
 
 const (
-	Free     SkuTier = original.Free
-	Premium  SkuTier = original.Premium
-	Standard SkuTier = original.Standard
+	Enterprise SkuTier = original.Enterprise
+	Free       SkuTier = original.Free
+	Premium    SkuTier = original.Premium
+	Standard   SkuTier = original.Standard
 )
 
 type UnitType = original.UnitType
@@ -194,8 +195,8 @@ func New(subscriptionID string) BaseClient {
 func NewAccountListResultIterator(page AccountListResultPage) AccountListResultIterator {
 	return original.NewAccountListResultIterator(page)
 }
-func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
-	return original.NewAccountListResultPage(getNextPage)
+func NewAccountListResultPage(cur AccountListResult, getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return original.NewAccountListResultPage(cur, getNextPage)
 }
 func NewAccountsClient(subscriptionID string) AccountsClient {
 	return original.NewAccountsClient(subscriptionID)
@@ -206,8 +207,8 @@ func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) Account
 func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
 	return original.NewOperationEntityListResultIterator(page)
 }
-func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
-	return original.NewOperationEntityListResultPage(getNextPage)
+func NewOperationEntityListResultPage(cur OperationEntityListResult, getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
+	return original.NewOperationEntityListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -236,8 +237,8 @@ func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) Res
 func NewResourceSkusResultIterator(page ResourceSkusResultPage) ResourceSkusResultIterator {
 	return original.NewResourceSkusResultIterator(page)
 }
-func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
-	return original.NewResourceSkusResultPage(getNextPage)
+func NewResourceSkusResultPage(cur ResourceSkusResult, getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
+	return original.NewResourceSkusResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

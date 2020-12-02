@@ -19,7 +19,7 @@
 
 package servicefabric
 
-import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/7.0/servicefabric"
+import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/7.2/servicefabric"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -164,9 +164,10 @@ const (
 type BackupStorageKind = original.BackupStorageKind
 
 const (
-	BackupStorageKindAzureBlobStore BackupStorageKind = original.BackupStorageKindAzureBlobStore
-	BackupStorageKindFileShare      BackupStorageKind = original.BackupStorageKindFileShare
-	BackupStorageKindInvalid        BackupStorageKind = original.BackupStorageKindInvalid
+	BackupStorageKindAzureBlobStore     BackupStorageKind = original.BackupStorageKindAzureBlobStore
+	BackupStorageKindDsmsAzureBlobStore BackupStorageKind = original.BackupStorageKindDsmsAzureBlobStore
+	BackupStorageKindFileShare          BackupStorageKind = original.BackupStorageKindFileShare
+	BackupStorageKindInvalid            BackupStorageKind = original.BackupStorageKindInvalid
 )
 
 type BackupSuspensionScope = original.BackupSuspensionScope
@@ -355,6 +356,7 @@ const (
 type ExecutionPolicyType = original.ExecutionPolicyType
 
 const (
+	Default         ExecutionPolicyType = original.Default
 	RunToCompletion ExecutionPolicyType = original.RunToCompletion
 )
 
@@ -951,15 +953,15 @@ const (
 type NodeStatusFilter = original.NodeStatusFilter
 
 const (
-	All       NodeStatusFilter = original.All
-	Default   NodeStatusFilter = original.Default
-	Disabled  NodeStatusFilter = original.Disabled
-	Disabling NodeStatusFilter = original.Disabling
-	Down      NodeStatusFilter = original.Down
-	Enabling  NodeStatusFilter = original.Enabling
-	Removed   NodeStatusFilter = original.Removed
-	Unknown   NodeStatusFilter = original.Unknown
-	Up        NodeStatusFilter = original.Up
+	NodeStatusFilterAll       NodeStatusFilter = original.NodeStatusFilterAll
+	NodeStatusFilterDefault   NodeStatusFilter = original.NodeStatusFilterDefault
+	NodeStatusFilterDisabled  NodeStatusFilter = original.NodeStatusFilterDisabled
+	NodeStatusFilterDisabling NodeStatusFilter = original.NodeStatusFilterDisabling
+	NodeStatusFilterDown      NodeStatusFilter = original.NodeStatusFilterDown
+	NodeStatusFilterEnabling  NodeStatusFilter = original.NodeStatusFilterEnabling
+	NodeStatusFilterRemoved   NodeStatusFilter = original.NodeStatusFilterRemoved
+	NodeStatusFilterUnknown   NodeStatusFilter = original.NodeStatusFilterUnknown
+	NodeStatusFilterUp        NodeStatusFilter = original.NodeStatusFilterUp
 )
 
 type NodeTransitionType = original.NodeTransitionType
@@ -1109,10 +1111,10 @@ const (
 type ReconfigurationType = original.ReconfigurationType
 
 const (
-	ReconfigurationTypeFailover    ReconfigurationType = original.ReconfigurationTypeFailover
-	ReconfigurationTypeOther       ReconfigurationType = original.ReconfigurationTypeOther
-	ReconfigurationTypeSwapPrimary ReconfigurationType = original.ReconfigurationTypeSwapPrimary
-	ReconfigurationTypeUnknown     ReconfigurationType = original.ReconfigurationTypeUnknown
+	Failover    ReconfigurationType = original.Failover
+	Other       ReconfigurationType = original.Other
+	SwapPrimary ReconfigurationType = original.SwapPrimary
+	Unknown     ReconfigurationType = original.Unknown
 )
 
 type RepairImpactKind = original.RepairImpactKind
@@ -1468,12 +1470,13 @@ const (
 type ServicePlacementPolicyType = original.ServicePlacementPolicyType
 
 const (
-	ServicePlacementPolicyTypeInvalid                   ServicePlacementPolicyType = original.ServicePlacementPolicyTypeInvalid
-	ServicePlacementPolicyTypeInvalidDomain             ServicePlacementPolicyType = original.ServicePlacementPolicyTypeInvalidDomain
-	ServicePlacementPolicyTypeNonPartiallyPlaceService  ServicePlacementPolicyType = original.ServicePlacementPolicyTypeNonPartiallyPlaceService
-	ServicePlacementPolicyTypePreferPrimaryDomain       ServicePlacementPolicyType = original.ServicePlacementPolicyTypePreferPrimaryDomain
-	ServicePlacementPolicyTypeRequireDomain             ServicePlacementPolicyType = original.ServicePlacementPolicyTypeRequireDomain
-	ServicePlacementPolicyTypeRequireDomainDistribution ServicePlacementPolicyType = original.ServicePlacementPolicyTypeRequireDomainDistribution
+	ServicePlacementPolicyTypeAllowMultipleStatelessInstancesOnNode ServicePlacementPolicyType = original.ServicePlacementPolicyTypeAllowMultipleStatelessInstancesOnNode
+	ServicePlacementPolicyTypeInvalid                               ServicePlacementPolicyType = original.ServicePlacementPolicyTypeInvalid
+	ServicePlacementPolicyTypeInvalidDomain                         ServicePlacementPolicyType = original.ServicePlacementPolicyTypeInvalidDomain
+	ServicePlacementPolicyTypeNonPartiallyPlaceService              ServicePlacementPolicyType = original.ServicePlacementPolicyTypeNonPartiallyPlaceService
+	ServicePlacementPolicyTypePreferPrimaryDomain                   ServicePlacementPolicyType = original.ServicePlacementPolicyTypePreferPrimaryDomain
+	ServicePlacementPolicyTypeRequireDomain                         ServicePlacementPolicyType = original.ServicePlacementPolicyTypeRequireDomain
+	ServicePlacementPolicyTypeRequireDomainDistribution             ServicePlacementPolicyType = original.ServicePlacementPolicyTypeRequireDomainDistribution
 )
 
 type ServiceStatus = original.ServiceStatus
@@ -1530,6 +1533,7 @@ type StorageKind = original.StorageKind
 const (
 	StorageKindAzureBlobStore           StorageKind = original.StorageKindAzureBlobStore
 	StorageKindBackupStorageDescription StorageKind = original.StorageKindBackupStorageDescription
+	StorageKindDsmsAzureBlobStore       StorageKind = original.StorageKindDsmsAzureBlobStore
 	StorageKindFileShare                StorageKind = original.StorageKindFileShare
 )
 
@@ -1547,6 +1551,7 @@ const (
 type TypeBasicExecutionPolicy = original.TypeBasicExecutionPolicy
 
 const (
+	TypeDefault         TypeBasicExecutionPolicy = original.TypeDefault
 	TypeExecutionPolicy TypeBasicExecutionPolicy = original.TypeExecutionPolicy
 	TypeRunToCompletion TypeBasicExecutionPolicy = original.TypeRunToCompletion
 )
@@ -1631,6 +1636,7 @@ type ApplicationHealthEvaluation = original.ApplicationHealthEvaluation
 type ApplicationHealthPolicies = original.ApplicationHealthPolicies
 type ApplicationHealthPolicy = original.ApplicationHealthPolicy
 type ApplicationHealthPolicyMapItem = original.ApplicationHealthPolicyMapItem
+type ApplicationHealthPolicyMapObject = original.ApplicationHealthPolicyMapObject
 type ApplicationHealthReportExpiredEvent = original.ApplicationHealthReportExpiredEvent
 type ApplicationHealthState = original.ApplicationHealthState
 type ApplicationHealthStateChunk = original.ApplicationHealthStateChunk
@@ -1638,6 +1644,7 @@ type ApplicationHealthStateChunkList = original.ApplicationHealthStateChunkList
 type ApplicationHealthStateFilter = original.ApplicationHealthStateFilter
 type ApplicationInfo = original.ApplicationInfo
 type ApplicationLoadInfo = original.ApplicationLoadInfo
+type ApplicationLoadMetricInformation = original.ApplicationLoadMetricInformation
 type ApplicationMetricDescription = original.ApplicationMetricDescription
 type ApplicationNameInfo = original.ApplicationNameInfo
 type ApplicationNewHealthReportEvent = original.ApplicationNewHealthReportEvent
@@ -1800,6 +1807,7 @@ type ContainerState = original.ContainerState
 type CreateComposeDeploymentDescription = original.CreateComposeDeploymentDescription
 type CurrentUpgradeDomainProgressInfo = original.CurrentUpgradeDomainProgressInfo
 type DeactivationIntentDescription = original.DeactivationIntentDescription
+type DefaultExecutionPolicy = original.DefaultExecutionPolicy
 type DeletePropertyBatchOperation = original.DeletePropertyBatchOperation
 type DeltaNodesCheckHealthEvaluation = original.DeltaNodesCheckHealthEvaluation
 type DeployServicePackageToNodeDescription = original.DeployServicePackageToNodeDescription
@@ -1838,6 +1846,7 @@ type DiagnosticsSinkProperties = original.DiagnosticsSinkProperties
 type DisableBackupDescription = original.DisableBackupDescription
 type DiskInfo = original.DiskInfo
 type DoublePropertyValue = original.DoublePropertyValue
+type DsmsAzureBlobBackupStorageDescription = original.DsmsAzureBlobBackupStorageDescription
 type EnableBackupDescription = original.EnableBackupDescription
 type EndpointProperties = original.EndpointProperties
 type EndpointRef = original.EndpointRef
@@ -1931,6 +1940,7 @@ type MeshSecretValueClient = original.MeshSecretValueClient
 type MeshServiceClient = original.MeshServiceClient
 type MeshServiceReplicaClient = original.MeshServiceReplicaClient
 type MeshVolumeClient = original.MeshVolumeClient
+type MetricLoadDescription = original.MetricLoadDescription
 type MonitoringPolicyDescription = original.MonitoringPolicyDescription
 type NameDescription = original.NameDescription
 type NamedPartitionInformation = original.NamedPartitionInformation
@@ -1996,6 +2006,7 @@ type PagedServicePartitionInfoList = original.PagedServicePartitionInfoList
 type PagedServiceReplicaDescriptionList = original.PagedServiceReplicaDescriptionList
 type PagedServiceResourceDescriptionList = original.PagedServiceResourceDescriptionList
 type PagedSubNameInfoList = original.PagedSubNameInfoList
+type PagedUpdatePartitionLoadResultList = original.PagedUpdatePartitionLoadResultList
 type PagedVolumeResourceDescriptionList = original.PagedVolumeResourceDescriptionList
 type PartitionAnalysisEvent = original.PartitionAnalysisEvent
 type PartitionBackupConfigurationInfo = original.PartitionBackupConfigurationInfo
@@ -2012,6 +2023,7 @@ type PartitionHealthStateFilter = original.PartitionHealthStateFilter
 type PartitionInformation = original.PartitionInformation
 type PartitionInstanceCountScaleMechanism = original.PartitionInstanceCountScaleMechanism
 type PartitionLoadInformation = original.PartitionLoadInformation
+type PartitionMetricLoadDescription = original.PartitionMetricLoadDescription
 type PartitionNewHealthReportEvent = original.PartitionNewHealthReportEvent
 type PartitionPrimaryMoveAnalysisEvent = original.PartitionPrimaryMoveAnalysisEvent
 type PartitionQuorumLossProgress = original.PartitionQuorumLossProgress
@@ -2063,6 +2075,7 @@ type ReplicaHealthStateChunkList = original.ReplicaHealthStateChunkList
 type ReplicaHealthStateFilter = original.ReplicaHealthStateFilter
 type ReplicaInfo = original.ReplicaInfo
 type ReplicaInfoModel = original.ReplicaInfoModel
+type ReplicaMetricLoadDescription = original.ReplicaMetricLoadDescription
 type ReplicaStatusBase = original.ReplicaStatusBase
 type ReplicasHealthEvaluation = original.ReplicasHealthEvaluation
 type ReplicatorQueueStatus = original.ReplicatorQueueStatus
@@ -2183,6 +2196,7 @@ type UnplacedReplicaInformation = original.UnplacedReplicaInformation
 type UnprovisionApplicationTypeDescriptionInfo = original.UnprovisionApplicationTypeDescriptionInfo
 type UnprovisionFabricDescription = original.UnprovisionFabricDescription
 type UpdateClusterUpgradeDescription = original.UpdateClusterUpgradeDescription
+type UpdatePartitionLoadResult = original.UpdatePartitionLoadResult
 type UpgradeDomainDeltaNodesCheckHealthEvaluation = original.UpgradeDomainDeltaNodesCheckHealthEvaluation
 type UpgradeDomainInfo = original.UpgradeDomainInfo
 type UpgradeDomainNodesHealthEvaluation = original.UpgradeDomainNodesHealthEvaluation

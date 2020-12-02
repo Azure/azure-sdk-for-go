@@ -503,8 +503,8 @@ func NewAccessControlRecordsClientWithBaseURI(baseURI string, subscriptionID str
 func NewAlertListIterator(page AlertListPage) AlertListIterator {
 	return original.NewAlertListIterator(page)
 }
-func NewAlertListPage(getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
-	return original.NewAlertListPage(getNextPage)
+func NewAlertListPage(cur AlertList, getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
+	return original.NewAlertListPage(cur, getNextPage)
 }
 func NewAlertsClient(subscriptionID string) AlertsClient {
 	return original.NewAlertsClient(subscriptionID)
@@ -521,14 +521,14 @@ func NewAvailableProviderOperationsClientWithBaseURI(baseURI string, subscriptio
 func NewAvailableProviderOperationsIterator(page AvailableProviderOperationsPage) AvailableProviderOperationsIterator {
 	return original.NewAvailableProviderOperationsIterator(page)
 }
-func NewAvailableProviderOperationsPage(getNextPage func(context.Context, AvailableProviderOperations) (AvailableProviderOperations, error)) AvailableProviderOperationsPage {
-	return original.NewAvailableProviderOperationsPage(getNextPage)
+func NewAvailableProviderOperationsPage(cur AvailableProviderOperations, getNextPage func(context.Context, AvailableProviderOperations) (AvailableProviderOperations, error)) AvailableProviderOperationsPage {
+	return original.NewAvailableProviderOperationsPage(cur, getNextPage)
 }
 func NewBackupListIterator(page BackupListPage) BackupListIterator {
 	return original.NewBackupListIterator(page)
 }
-func NewBackupListPage(getNextPage func(context.Context, BackupList) (BackupList, error)) BackupListPage {
-	return original.NewBackupListPage(getNextPage)
+func NewBackupListPage(cur BackupList, getNextPage func(context.Context, BackupList) (BackupList, error)) BackupListPage {
+	return original.NewBackupListPage(cur, getNextPage)
 }
 func NewBackupScheduleGroupsClient(subscriptionID string) BackupScheduleGroupsClient {
 	return original.NewBackupScheduleGroupsClient(subscriptionID)
@@ -581,8 +581,8 @@ func NewIscsiServersClientWithBaseURI(baseURI string, subscriptionID string) Isc
 func NewJobListIterator(page JobListPage) JobListIterator {
 	return original.NewJobListIterator(page)
 }
-func NewJobListPage(getNextPage func(context.Context, JobList) (JobList, error)) JobListPage {
-	return original.NewJobListPage(getNextPage)
+func NewJobListPage(cur JobList, getNextPage func(context.Context, JobList) (JobList, error)) JobListPage {
+	return original.NewJobListPage(cur, getNextPage)
 }
 func NewJobsClient(subscriptionID string) JobsClient {
 	return original.NewJobsClient(subscriptionID)

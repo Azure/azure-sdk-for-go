@@ -22,7 +22,7 @@ package batch
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/batch/2020-03-01.11.0/batch"
+	original "github.com/Azure/azure-sdk-for-go/services/batch/2020-09-01.12.0/batch"
 )
 
 type AccessScope = original.AccessScope
@@ -532,12 +532,14 @@ type TaskConstraints = original.TaskConstraints
 type TaskContainerExecutionInformation = original.TaskContainerExecutionInformation
 type TaskContainerSettings = original.TaskContainerSettings
 type TaskCounts = original.TaskCounts
+type TaskCountsResult = original.TaskCountsResult
 type TaskDependencies = original.TaskDependencies
 type TaskExecutionInformation = original.TaskExecutionInformation
 type TaskFailureInformation = original.TaskFailureInformation
 type TaskIDRange = original.TaskIDRange
 type TaskInformation = original.TaskInformation
 type TaskSchedulingPolicy = original.TaskSchedulingPolicy
+type TaskSlotCounts = original.TaskSlotCounts
 type TaskStatistics = original.TaskStatistics
 type TaskUpdateParameter = original.TaskUpdateParameter
 type UploadBatchServiceLogsConfiguration = original.UploadBatchServiceLogsConfiguration
@@ -558,8 +560,8 @@ func NewAccountClient(batchURL string) AccountClient {
 func NewAccountListSupportedImagesResultIterator(page AccountListSupportedImagesResultPage) AccountListSupportedImagesResultIterator {
 	return original.NewAccountListSupportedImagesResultIterator(page)
 }
-func NewAccountListSupportedImagesResultPage(getNextPage func(context.Context, AccountListSupportedImagesResult) (AccountListSupportedImagesResult, error)) AccountListSupportedImagesResultPage {
-	return original.NewAccountListSupportedImagesResultPage(getNextPage)
+func NewAccountListSupportedImagesResultPage(cur AccountListSupportedImagesResult, getNextPage func(context.Context, AccountListSupportedImagesResult) (AccountListSupportedImagesResult, error)) AccountListSupportedImagesResultPage {
+	return original.NewAccountListSupportedImagesResultPage(cur, getNextPage)
 }
 func NewApplicationClient(batchURL string) ApplicationClient {
 	return original.NewApplicationClient(batchURL)
@@ -567,8 +569,8 @@ func NewApplicationClient(batchURL string) ApplicationClient {
 func NewApplicationListResultIterator(page ApplicationListResultPage) ApplicationListResultIterator {
 	return original.NewApplicationListResultIterator(page)
 }
-func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
-	return original.NewApplicationListResultPage(getNextPage)
+func NewApplicationListResultPage(cur ApplicationListResult, getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
+	return original.NewApplicationListResultPage(cur, getNextPage)
 }
 func NewCertificateClient(batchURL string) CertificateClient {
 	return original.NewCertificateClient(batchURL)
@@ -576,38 +578,38 @@ func NewCertificateClient(batchURL string) CertificateClient {
 func NewCertificateListResultIterator(page CertificateListResultPage) CertificateListResultIterator {
 	return original.NewCertificateListResultIterator(page)
 }
-func NewCertificateListResultPage(getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
-	return original.NewCertificateListResultPage(getNextPage)
+func NewCertificateListResultPage(cur CertificateListResult, getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
+	return original.NewCertificateListResultPage(cur, getNextPage)
 }
 func NewCloudJobListPreparationAndReleaseTaskStatusResultIterator(page CloudJobListPreparationAndReleaseTaskStatusResultPage) CloudJobListPreparationAndReleaseTaskStatusResultIterator {
 	return original.NewCloudJobListPreparationAndReleaseTaskStatusResultIterator(page)
 }
-func NewCloudJobListPreparationAndReleaseTaskStatusResultPage(getNextPage func(context.Context, CloudJobListPreparationAndReleaseTaskStatusResult) (CloudJobListPreparationAndReleaseTaskStatusResult, error)) CloudJobListPreparationAndReleaseTaskStatusResultPage {
-	return original.NewCloudJobListPreparationAndReleaseTaskStatusResultPage(getNextPage)
+func NewCloudJobListPreparationAndReleaseTaskStatusResultPage(cur CloudJobListPreparationAndReleaseTaskStatusResult, getNextPage func(context.Context, CloudJobListPreparationAndReleaseTaskStatusResult) (CloudJobListPreparationAndReleaseTaskStatusResult, error)) CloudJobListPreparationAndReleaseTaskStatusResultPage {
+	return original.NewCloudJobListPreparationAndReleaseTaskStatusResultPage(cur, getNextPage)
 }
 func NewCloudJobListResultIterator(page CloudJobListResultPage) CloudJobListResultIterator {
 	return original.NewCloudJobListResultIterator(page)
 }
-func NewCloudJobListResultPage(getNextPage func(context.Context, CloudJobListResult) (CloudJobListResult, error)) CloudJobListResultPage {
-	return original.NewCloudJobListResultPage(getNextPage)
+func NewCloudJobListResultPage(cur CloudJobListResult, getNextPage func(context.Context, CloudJobListResult) (CloudJobListResult, error)) CloudJobListResultPage {
+	return original.NewCloudJobListResultPage(cur, getNextPage)
 }
 func NewCloudJobScheduleListResultIterator(page CloudJobScheduleListResultPage) CloudJobScheduleListResultIterator {
 	return original.NewCloudJobScheduleListResultIterator(page)
 }
-func NewCloudJobScheduleListResultPage(getNextPage func(context.Context, CloudJobScheduleListResult) (CloudJobScheduleListResult, error)) CloudJobScheduleListResultPage {
-	return original.NewCloudJobScheduleListResultPage(getNextPage)
+func NewCloudJobScheduleListResultPage(cur CloudJobScheduleListResult, getNextPage func(context.Context, CloudJobScheduleListResult) (CloudJobScheduleListResult, error)) CloudJobScheduleListResultPage {
+	return original.NewCloudJobScheduleListResultPage(cur, getNextPage)
 }
 func NewCloudPoolListResultIterator(page CloudPoolListResultPage) CloudPoolListResultIterator {
 	return original.NewCloudPoolListResultIterator(page)
 }
-func NewCloudPoolListResultPage(getNextPage func(context.Context, CloudPoolListResult) (CloudPoolListResult, error)) CloudPoolListResultPage {
-	return original.NewCloudPoolListResultPage(getNextPage)
+func NewCloudPoolListResultPage(cur CloudPoolListResult, getNextPage func(context.Context, CloudPoolListResult) (CloudPoolListResult, error)) CloudPoolListResultPage {
+	return original.NewCloudPoolListResultPage(cur, getNextPage)
 }
 func NewCloudTaskListResultIterator(page CloudTaskListResultPage) CloudTaskListResultIterator {
 	return original.NewCloudTaskListResultIterator(page)
 }
-func NewCloudTaskListResultPage(getNextPage func(context.Context, CloudTaskListResult) (CloudTaskListResult, error)) CloudTaskListResultPage {
-	return original.NewCloudTaskListResultPage(getNextPage)
+func NewCloudTaskListResultPage(cur CloudTaskListResult, getNextPage func(context.Context, CloudTaskListResult) (CloudTaskListResult, error)) CloudTaskListResultPage {
+	return original.NewCloudTaskListResultPage(cur, getNextPage)
 }
 func NewComputeNodeClient(batchURL string) ComputeNodeClient {
 	return original.NewComputeNodeClient(batchURL)
@@ -615,8 +617,8 @@ func NewComputeNodeClient(batchURL string) ComputeNodeClient {
 func NewComputeNodeListResultIterator(page ComputeNodeListResultPage) ComputeNodeListResultIterator {
 	return original.NewComputeNodeListResultIterator(page)
 }
-func NewComputeNodeListResultPage(getNextPage func(context.Context, ComputeNodeListResult) (ComputeNodeListResult, error)) ComputeNodeListResultPage {
-	return original.NewComputeNodeListResultPage(getNextPage)
+func NewComputeNodeListResultPage(cur ComputeNodeListResult, getNextPage func(context.Context, ComputeNodeListResult) (ComputeNodeListResult, error)) ComputeNodeListResultPage {
+	return original.NewComputeNodeListResultPage(cur, getNextPage)
 }
 func NewFileClient(batchURL string) FileClient {
 	return original.NewFileClient(batchURL)
@@ -630,8 +632,8 @@ func NewJobScheduleClient(batchURL string) JobScheduleClient {
 func NewNodeFileListResultIterator(page NodeFileListResultPage) NodeFileListResultIterator {
 	return original.NewNodeFileListResultIterator(page)
 }
-func NewNodeFileListResultPage(getNextPage func(context.Context, NodeFileListResult) (NodeFileListResult, error)) NodeFileListResultPage {
-	return original.NewNodeFileListResultPage(getNextPage)
+func NewNodeFileListResultPage(cur NodeFileListResult, getNextPage func(context.Context, NodeFileListResult) (NodeFileListResult, error)) NodeFileListResultPage {
+	return original.NewNodeFileListResultPage(cur, getNextPage)
 }
 func NewPoolClient(batchURL string) PoolClient {
 	return original.NewPoolClient(batchURL)
@@ -639,14 +641,14 @@ func NewPoolClient(batchURL string) PoolClient {
 func NewPoolListUsageMetricsResultIterator(page PoolListUsageMetricsResultPage) PoolListUsageMetricsResultIterator {
 	return original.NewPoolListUsageMetricsResultIterator(page)
 }
-func NewPoolListUsageMetricsResultPage(getNextPage func(context.Context, PoolListUsageMetricsResult) (PoolListUsageMetricsResult, error)) PoolListUsageMetricsResultPage {
-	return original.NewPoolListUsageMetricsResultPage(getNextPage)
+func NewPoolListUsageMetricsResultPage(cur PoolListUsageMetricsResult, getNextPage func(context.Context, PoolListUsageMetricsResult) (PoolListUsageMetricsResult, error)) PoolListUsageMetricsResultPage {
+	return original.NewPoolListUsageMetricsResultPage(cur, getNextPage)
 }
 func NewPoolNodeCountsListResultIterator(page PoolNodeCountsListResultPage) PoolNodeCountsListResultIterator {
 	return original.NewPoolNodeCountsListResultIterator(page)
 }
-func NewPoolNodeCountsListResultPage(getNextPage func(context.Context, PoolNodeCountsListResult) (PoolNodeCountsListResult, error)) PoolNodeCountsListResultPage {
-	return original.NewPoolNodeCountsListResultPage(getNextPage)
+func NewPoolNodeCountsListResultPage(cur PoolNodeCountsListResult, getNextPage func(context.Context, PoolNodeCountsListResult) (PoolNodeCountsListResult, error)) PoolNodeCountsListResultPage {
+	return original.NewPoolNodeCountsListResultPage(cur, getNextPage)
 }
 func NewTaskClient(batchURL string) TaskClient {
 	return original.NewTaskClient(batchURL)

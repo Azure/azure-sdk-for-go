@@ -32,14 +32,14 @@ type AddressClient struct {
 }
 
 // NewAddressClient creates an instance of the AddressClient client.
-func NewAddressClient(subscriptionID string, subscriptionID1 string) AddressClient {
-	return NewAddressClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewAddressClient(subscriptionID string) AddressClient {
+	return NewAddressClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewAddressClientWithBaseURI creates an instance of the AddressClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewAddressClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) AddressClient {
-	return AddressClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewAddressClientWithBaseURI(baseURI string, subscriptionID string) AddressClient {
+	return AddressClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Validate validates an address. Use the operation to validate an address before using it as soldTo or a billTo

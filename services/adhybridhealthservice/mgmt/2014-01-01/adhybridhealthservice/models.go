@@ -199,8 +199,11 @@ func (page AddsConfigurationPage) Values() []Item {
 }
 
 // Creates a new instance of the AddsConfigurationPage type.
-func NewAddsConfigurationPage(getNextPage func(context.Context, AddsConfiguration) (AddsConfiguration, error)) AddsConfigurationPage {
-	return AddsConfigurationPage{fn: getNextPage}
+func NewAddsConfigurationPage(cur AddsConfiguration, getNextPage func(context.Context, AddsConfiguration) (AddsConfiguration, error)) AddsConfigurationPage {
+	return AddsConfigurationPage{
+		fn: getNextPage,
+		ac: cur,
+	}
 }
 
 // AddsServiceMember the server details for ADDS service.
@@ -431,8 +434,11 @@ func (page AddsServiceMembersPage) Values() []AddsServiceMember {
 }
 
 // Creates a new instance of the AddsServiceMembersPage type.
-func NewAddsServiceMembersPage(getNextPage func(context.Context, AddsServiceMembers) (AddsServiceMembers, error)) AddsServiceMembersPage {
-	return AddsServiceMembersPage{fn: getNextPage}
+func NewAddsServiceMembersPage(cur AddsServiceMembers, getNextPage func(context.Context, AddsServiceMembers) (AddsServiceMembers, error)) AddsServiceMembersPage {
+	return AddsServiceMembersPage{
+		fn:  getNextPage,
+		asm: cur,
+	}
 }
 
 // Agent the agent details.
@@ -679,8 +685,11 @@ func (page AlertsPage) Values() []Alert {
 }
 
 // Creates a new instance of the AlertsPage type.
-func NewAlertsPage(getNextPage func(context.Context, Alerts) (Alerts, error)) AlertsPage {
-	return AlertsPage{fn: getNextPage}
+func NewAlertsPage(cur Alerts, getNextPage func(context.Context, Alerts) (Alerts, error)) AlertsPage {
+	return AlertsPage{
+		fn: getNextPage,
+		a:  cur,
+	}
 }
 
 // AssociatedObject object that hold sync object details.
@@ -1111,8 +1120,11 @@ func (page DimensionsPage) Values() []Dimension {
 }
 
 // Creates a new instance of the DimensionsPage type.
-func NewDimensionsPage(getNextPage func(context.Context, Dimensions) (Dimensions, error)) DimensionsPage {
-	return DimensionsPage{fn: getNextPage}
+func NewDimensionsPage(cur Dimensions, getNextPage func(context.Context, Dimensions) (Dimensions, error)) DimensionsPage {
+	return DimensionsPage{
+		fn: getNextPage,
+		d:  cur,
+	}
 }
 
 // Display displays the details related to operations supported by Azure Active Directory Connect Health.
@@ -1429,8 +1441,11 @@ func (page ExportStatusesPage) Values() []ExportStatus {
 }
 
 // Creates a new instance of the ExportStatusesPage type.
-func NewExportStatusesPage(getNextPage func(context.Context, ExportStatuses) (ExportStatuses, error)) ExportStatusesPage {
-	return ExportStatusesPage{fn: getNextPage}
+func NewExportStatusesPage(cur ExportStatuses, getNextPage func(context.Context, ExportStatuses) (ExportStatuses, error)) ExportStatusesPage {
+	return ExportStatusesPage{
+		fn: getNextPage,
+		es: cur,
+	}
 }
 
 // ExtensionErrorInfo the extension error details.
@@ -1790,8 +1805,11 @@ func (page IPAddressAggregatesPage) Values() []IPAddressAggregate {
 }
 
 // Creates a new instance of the IPAddressAggregatesPage type.
-func NewIPAddressAggregatesPage(getNextPage func(context.Context, IPAddressAggregates) (IPAddressAggregates, error)) IPAddressAggregatesPage {
-	return IPAddressAggregatesPage{fn: getNextPage}
+func NewIPAddressAggregatesPage(cur IPAddressAggregates, getNextPage func(context.Context, IPAddressAggregates) (IPAddressAggregates, error)) IPAddressAggregatesPage {
+	return IPAddressAggregatesPage{
+		fn:  getNextPage,
+		iaa: cur,
+	}
 }
 
 // Item the key value pair for properties.
@@ -2057,8 +2075,11 @@ func (page MetricMetadataListPage) Values() []MetricMetadata {
 }
 
 // Creates a new instance of the MetricMetadataListPage type.
-func NewMetricMetadataListPage(getNextPage func(context.Context, MetricMetadataList) (MetricMetadataList, error)) MetricMetadataListPage {
-	return MetricMetadataListPage{fn: getNextPage}
+func NewMetricMetadataListPage(cur MetricMetadataList, getNextPage func(context.Context, MetricMetadataList) (MetricMetadataList, error)) MetricMetadataListPage {
+	return MetricMetadataListPage{
+		fn:  getNextPage,
+		mml: cur,
+	}
 }
 
 // Metrics the list of metric items.
@@ -2235,8 +2256,11 @@ func (page MetricsPage) Values() []Item {
 }
 
 // Creates a new instance of the MetricsPage type.
-func NewMetricsPage(getNextPage func(context.Context, Metrics) (Metrics, error)) MetricsPage {
-	return MetricsPage{fn: getNextPage}
+func NewMetricsPage(cur Metrics, getNextPage func(context.Context, Metrics) (Metrics, error)) MetricsPage {
+	return MetricsPage{
+		fn:   getNextPage,
+		mVar: cur,
+	}
 }
 
 // ModuleConfiguration the module configuration as required by the Agent service.
@@ -2483,8 +2507,11 @@ func (page OperationListResponsePage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResponsePage type.
-func NewOperationListResponsePage(getNextPage func(context.Context, OperationListResponse) (OperationListResponse, error)) OperationListResponsePage {
-	return OperationListResponsePage{fn: getNextPage}
+func NewOperationListResponsePage(cur OperationListResponse, getNextPage func(context.Context, OperationListResponse) (OperationListResponse, error)) OperationListResponsePage {
+	return OperationListResponsePage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // Partition describes the partition in Synchronization service.
@@ -2916,8 +2943,11 @@ func (page ServiceMembersPage) Values() []ServiceMember {
 }
 
 // Creates a new instance of the ServiceMembersPage type.
-func NewServiceMembersPage(getNextPage func(context.Context, ServiceMembers) (ServiceMembers, error)) ServiceMembersPage {
-	return ServiceMembersPage{fn: getNextPage}
+func NewServiceMembersPage(cur ServiceMembers, getNextPage func(context.Context, ServiceMembers) (ServiceMembers, error)) ServiceMembersPage {
+	return ServiceMembersPage{
+		fn: getNextPage,
+		sm: cur,
+	}
 }
 
 // ServiceProperties the service properties for a given service.
@@ -3129,8 +3159,11 @@ func (page ServicesPage) Values() []ServiceProperties {
 }
 
 // Creates a new instance of the ServicesPage type.
-func NewServicesPage(getNextPage func(context.Context, Services) (Services, error)) ServicesPage {
-	return ServicesPage{fn: getNextPage}
+func NewServicesPage(cur Services, getNextPage func(context.Context, Services) (Services, error)) ServicesPage {
+	return ServicesPage{
+		fn: getNextPage,
+		s:  cur,
+	}
 }
 
 // TabularExportError the details for export error.

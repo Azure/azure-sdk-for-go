@@ -29,5 +29,6 @@ type CustomDomainsClientAPI = original.CustomDomainsClientAPI
 type DeploymentsClientAPI = original.DeploymentsClientAPI
 type MonitoringSettingsClientAPI = original.MonitoringSettingsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type RuntimeVersionsClientAPI = original.RuntimeVersionsClientAPI
 type ServicesClientAPI = original.ServicesClientAPI
 type SkusClientAPI = original.SkusClientAPI

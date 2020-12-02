@@ -129,14 +129,26 @@ const (
 type ReservedResourceType = original.ReservedResourceType
 
 const (
-	CosmosDb          ReservedResourceType = original.CosmosDb
-	RedHat            ReservedResourceType = original.RedHat
-	RedHatOsa         ReservedResourceType = original.RedHatOsa
-	SQLDatabases      ReservedResourceType = original.SQLDatabases
-	SQLDataWarehouse  ReservedResourceType = original.SQLDataWarehouse
-	SuseLinux         ReservedResourceType = original.SuseLinux
-	VirtualMachines   ReservedResourceType = original.VirtualMachines
-	VMwareCloudSimple ReservedResourceType = original.VMwareCloudSimple
+	AppService            ReservedResourceType = original.AppService
+	AzureDataExplorer     ReservedResourceType = original.AzureDataExplorer
+	BlockBlob             ReservedResourceType = original.BlockBlob
+	CosmosDb              ReservedResourceType = original.CosmosDb
+	Databricks            ReservedResourceType = original.Databricks
+	DedicatedHost         ReservedResourceType = original.DedicatedHost
+	ManagedDisk           ReservedResourceType = original.ManagedDisk
+	MariaDb               ReservedResourceType = original.MariaDb
+	MySQL                 ReservedResourceType = original.MySQL
+	PostgreSQL            ReservedResourceType = original.PostgreSQL
+	RedHat                ReservedResourceType = original.RedHat
+	RedHatOsa             ReservedResourceType = original.RedHatOsa
+	RedisCache            ReservedResourceType = original.RedisCache
+	SapHana               ReservedResourceType = original.SapHana
+	SQLAzureHybridBenefit ReservedResourceType = original.SQLAzureHybridBenefit
+	SQLDatabases          ReservedResourceType = original.SQLDatabases
+	SQLDataWarehouse      ReservedResourceType = original.SQLDataWarehouse
+	SuseLinux             ReservedResourceType = original.SuseLinux
+	VirtualMachines       ReservedResourceType = original.VirtualMachines
+	VMwareCloudSimple     ReservedResourceType = original.VMwareCloudSimple
 )
 
 type StatusCode = original.StatusCode
@@ -161,6 +173,8 @@ type AqiSettings = original.AqiSettings
 type AutoQuotaIncreaseClient = original.AutoQuotaIncreaseClient
 type AutoQuotaIncreaseDetail = original.AutoQuotaIncreaseDetail
 type AutoQuotaIncreaseSettings = original.AutoQuotaIncreaseSettings
+type AvailableScopeRequest = original.AvailableScopeRequest
+type AvailableScopeRequestProperties = original.AvailableScopeRequestProperties
 type BaseClient = original.BaseClient
 type CalculatePriceResponse = original.CalculatePriceResponse
 type CalculatePriceResponseProperties = original.CalculatePriceResponseProperties
@@ -270,8 +284,8 @@ func NewClientWithBaseURI(baseURI string) Client {
 func NewListIterator(page ListPage) ListIterator {
 	return original.NewListIterator(page)
 }
-func NewListPage(getNextPage func(context.Context, List) (List, error)) ListPage {
-	return original.NewListPage(getNextPage)
+func NewListPage(cur List, getNextPage func(context.Context, List) (List, error)) ListPage {
+	return original.NewListPage(cur, getNextPage)
 }
 func NewOperationClient() OperationClient {
 	return original.NewOperationClient()
@@ -282,8 +296,8 @@ func NewOperationClientWithBaseURI(baseURI string) OperationClient {
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
 }
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return original.NewOperationListPage(getNextPage)
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(cur, getNextPage)
 }
 func NewOrderClient() OrderClient {
 	return original.NewOrderClient()
@@ -294,8 +308,8 @@ func NewOrderClientWithBaseURI(baseURI string) OrderClient {
 func NewOrderListIterator(page OrderListPage) OrderListIterator {
 	return original.NewOrderListIterator(page)
 }
-func NewOrderListPage(getNextPage func(context.Context, OrderList) (OrderList, error)) OrderListPage {
-	return original.NewOrderListPage(getNextPage)
+func NewOrderListPage(cur OrderList, getNextPage func(context.Context, OrderList) (OrderList, error)) OrderListPage {
+	return original.NewOrderListPage(cur, getNextPage)
 }
 func NewQuotaClient() QuotaClient {
 	return original.NewQuotaClient()
@@ -306,14 +320,14 @@ func NewQuotaClientWithBaseURI(baseURI string) QuotaClient {
 func NewQuotaLimitsIterator(page QuotaLimitsPage) QuotaLimitsIterator {
 	return original.NewQuotaLimitsIterator(page)
 }
-func NewQuotaLimitsPage(getNextPage func(context.Context, QuotaLimits) (QuotaLimits, error)) QuotaLimitsPage {
-	return original.NewQuotaLimitsPage(getNextPage)
+func NewQuotaLimitsPage(cur QuotaLimits, getNextPage func(context.Context, QuotaLimits) (QuotaLimits, error)) QuotaLimitsPage {
+	return original.NewQuotaLimitsPage(cur, getNextPage)
 }
 func NewQuotaRequestDetailsListIterator(page QuotaRequestDetailsListPage) QuotaRequestDetailsListIterator {
 	return original.NewQuotaRequestDetailsListIterator(page)
 }
-func NewQuotaRequestDetailsListPage(getNextPage func(context.Context, QuotaRequestDetailsList) (QuotaRequestDetailsList, error)) QuotaRequestDetailsListPage {
-	return original.NewQuotaRequestDetailsListPage(getNextPage)
+func NewQuotaRequestDetailsListPage(cur QuotaRequestDetailsList, getNextPage func(context.Context, QuotaRequestDetailsList) (QuotaRequestDetailsList, error)) QuotaRequestDetailsListPage {
+	return original.NewQuotaRequestDetailsListPage(cur, getNextPage)
 }
 func NewQuotaRequestStatusClient() QuotaRequestStatusClient {
 	return original.NewQuotaRequestStatusClient()

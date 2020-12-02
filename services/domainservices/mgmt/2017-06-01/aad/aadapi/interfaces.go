@@ -43,3 +43,23 @@ type DomainServicesClientAPI interface {
 }
 
 var _ DomainServicesClientAPI = (*aad.DomainServicesClient)(nil)
+
+// OuContainerOperationsClientAPI contains the set of methods on the OuContainerOperationsClient type.
+type OuContainerOperationsClientAPI interface {
+	List(ctx context.Context) (result aad.OperationEntityListResultPage, err error)
+	ListComplete(ctx context.Context) (result aad.OperationEntityListResultIterator, err error)
+}
+
+var _ OuContainerOperationsClientAPI = (*aad.OuContainerOperationsClient)(nil)
+
+// OuContainerClientAPI contains the set of methods on the OuContainerClient type.
+type OuContainerClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount aad.ContainerAccount) (result aad.OuContainerCreateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string) (result aad.OuContainerDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string) (result aad.OuContainer, err error)
+	List(ctx context.Context, resourceGroupName string, domainServiceName string) (result aad.OuContainerListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, domainServiceName string) (result aad.OuContainerListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount aad.ContainerAccount) (result aad.OuContainerUpdateFuture, err error)
+}
+
+var _ OuContainerClientAPI = (*aad.OuContainerClient)(nil)

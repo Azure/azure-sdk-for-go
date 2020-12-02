@@ -1266,14 +1266,14 @@ func NewActivityRunsClientWithBaseURI(baseURI string, subscriptionID string) Act
 func NewActivityRunsListResponseIterator(page ActivityRunsListResponsePage) ActivityRunsListResponseIterator {
 	return original.NewActivityRunsListResponseIterator(page)
 }
-func NewActivityRunsListResponsePage(getNextPage func(context.Context, ActivityRunsListResponse) (ActivityRunsListResponse, error)) ActivityRunsListResponsePage {
-	return original.NewActivityRunsListResponsePage(getNextPage)
+func NewActivityRunsListResponsePage(cur ActivityRunsListResponse, getNextPage func(context.Context, ActivityRunsListResponse) (ActivityRunsListResponse, error)) ActivityRunsListResponsePage {
+	return original.NewActivityRunsListResponsePage(cur, getNextPage)
 }
 func NewDatasetListResponseIterator(page DatasetListResponsePage) DatasetListResponseIterator {
 	return original.NewDatasetListResponseIterator(page)
 }
-func NewDatasetListResponsePage(getNextPage func(context.Context, DatasetListResponse) (DatasetListResponse, error)) DatasetListResponsePage {
-	return original.NewDatasetListResponsePage(getNextPage)
+func NewDatasetListResponsePage(cur DatasetListResponse, getNextPage func(context.Context, DatasetListResponse) (DatasetListResponse, error)) DatasetListResponsePage {
+	return original.NewDatasetListResponsePage(cur, getNextPage)
 }
 func NewDatasetsClient(subscriptionID string) DatasetsClient {
 	return original.NewDatasetsClient(subscriptionID)
@@ -1290,14 +1290,14 @@ func NewFactoriesClientWithBaseURI(baseURI string, subscriptionID string) Factor
 func NewFactoryListResponseIterator(page FactoryListResponsePage) FactoryListResponseIterator {
 	return original.NewFactoryListResponseIterator(page)
 }
-func NewFactoryListResponsePage(getNextPage func(context.Context, FactoryListResponse) (FactoryListResponse, error)) FactoryListResponsePage {
-	return original.NewFactoryListResponsePage(getNextPage)
+func NewFactoryListResponsePage(cur FactoryListResponse, getNextPage func(context.Context, FactoryListResponse) (FactoryListResponse, error)) FactoryListResponsePage {
+	return original.NewFactoryListResponsePage(cur, getNextPage)
 }
 func NewIntegrationRuntimeListResponseIterator(page IntegrationRuntimeListResponsePage) IntegrationRuntimeListResponseIterator {
 	return original.NewIntegrationRuntimeListResponseIterator(page)
 }
-func NewIntegrationRuntimeListResponsePage(getNextPage func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error)) IntegrationRuntimeListResponsePage {
-	return original.NewIntegrationRuntimeListResponsePage(getNextPage)
+func NewIntegrationRuntimeListResponsePage(cur IntegrationRuntimeListResponse, getNextPage func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error)) IntegrationRuntimeListResponsePage {
+	return original.NewIntegrationRuntimeListResponsePage(cur, getNextPage)
 }
 func NewIntegrationRuntimeNodesClient(subscriptionID string) IntegrationRuntimeNodesClient {
 	return original.NewIntegrationRuntimeNodesClient(subscriptionID)
@@ -1314,8 +1314,8 @@ func NewIntegrationRuntimesClientWithBaseURI(baseURI string, subscriptionID stri
 func NewLinkedServiceListResponseIterator(page LinkedServiceListResponsePage) LinkedServiceListResponseIterator {
 	return original.NewLinkedServiceListResponseIterator(page)
 }
-func NewLinkedServiceListResponsePage(getNextPage func(context.Context, LinkedServiceListResponse) (LinkedServiceListResponse, error)) LinkedServiceListResponsePage {
-	return original.NewLinkedServiceListResponsePage(getNextPage)
+func NewLinkedServiceListResponsePage(cur LinkedServiceListResponse, getNextPage func(context.Context, LinkedServiceListResponse) (LinkedServiceListResponse, error)) LinkedServiceListResponsePage {
+	return original.NewLinkedServiceListResponsePage(cur, getNextPage)
 }
 func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
 	return original.NewLinkedServicesClient(subscriptionID)
@@ -1332,8 +1332,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewPipelineListResponseIterator(page PipelineListResponsePage) PipelineListResponseIterator {
 	return original.NewPipelineListResponseIterator(page)
 }
-func NewPipelineListResponsePage(getNextPage func(context.Context, PipelineListResponse) (PipelineListResponse, error)) PipelineListResponsePage {
-	return original.NewPipelineListResponsePage(getNextPage)
+func NewPipelineListResponsePage(cur PipelineListResponse, getNextPage func(context.Context, PipelineListResponse) (PipelineListResponse, error)) PipelineListResponsePage {
+	return original.NewPipelineListResponsePage(cur, getNextPage)
 }
 func NewPipelineRunsClient(subscriptionID string) PipelineRunsClient {
 	return original.NewPipelineRunsClient(subscriptionID)
@@ -1350,14 +1350,14 @@ func NewPipelinesClientWithBaseURI(baseURI string, subscriptionID string) Pipeli
 func NewTriggerListResponseIterator(page TriggerListResponsePage) TriggerListResponseIterator {
 	return original.NewTriggerListResponseIterator(page)
 }
-func NewTriggerListResponsePage(getNextPage func(context.Context, TriggerListResponse) (TriggerListResponse, error)) TriggerListResponsePage {
-	return original.NewTriggerListResponsePage(getNextPage)
+func NewTriggerListResponsePage(cur TriggerListResponse, getNextPage func(context.Context, TriggerListResponse) (TriggerListResponse, error)) TriggerListResponsePage {
+	return original.NewTriggerListResponsePage(cur, getNextPage)
 }
 func NewTriggerRunListResponseIterator(page TriggerRunListResponsePage) TriggerRunListResponseIterator {
 	return original.NewTriggerRunListResponseIterator(page)
 }
-func NewTriggerRunListResponsePage(getNextPage func(context.Context, TriggerRunListResponse) (TriggerRunListResponse, error)) TriggerRunListResponsePage {
-	return original.NewTriggerRunListResponsePage(getNextPage)
+func NewTriggerRunListResponsePage(cur TriggerRunListResponse, getNextPage func(context.Context, TriggerRunListResponse) (TriggerRunListResponse, error)) TriggerRunListResponsePage {
+	return original.NewTriggerRunListResponsePage(cur, getNextPage)
 }
 func NewTriggersClient(subscriptionID string) TriggersClient {
 	return original.NewTriggersClient(subscriptionID)

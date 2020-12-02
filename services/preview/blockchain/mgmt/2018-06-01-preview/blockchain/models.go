@@ -233,8 +233,11 @@ func (page ConsortiumMemberCollectionPage) Values() []ConsortiumMember {
 }
 
 // Creates a new instance of the ConsortiumMemberCollectionPage type.
-func NewConsortiumMemberCollectionPage(getNextPage func(context.Context, ConsortiumMemberCollection) (ConsortiumMemberCollection, error)) ConsortiumMemberCollectionPage {
-	return ConsortiumMemberCollectionPage{fn: getNextPage}
+func NewConsortiumMemberCollectionPage(cur ConsortiumMemberCollection, getNextPage func(context.Context, ConsortiumMemberCollection) (ConsortiumMemberCollection, error)) ConsortiumMemberCollectionPage {
+	return ConsortiumMemberCollectionPage{
+		fn:  getNextPage,
+		cmc: cur,
+	}
 }
 
 // FirewallRule ip range for firewall rules
@@ -247,7 +250,8 @@ type FirewallRule struct {
 	EndIPAddress *string `json:"endIpAddress,omitempty"`
 }
 
-// Member payload of the blockchain member which is exposed in the request/response of the resource provider.
+// Member payload of the blockchain member which is exposed in the request/response of the resource
+// provider.
 type Member struct {
 	autorest.Response `json:"-"`
 	// MemberProperties - Gets or sets the blockchain member properties.
@@ -362,8 +366,8 @@ func (mVar *Member) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// MemberCollection collection of the blockchain member payload which is exposed in the request/response of the
-// resource provider.
+// MemberCollection collection of the blockchain member payload which is exposed in the request/response of
+// the resource provider.
 type MemberCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Gets or sets the collection of blockchain members.
@@ -516,8 +520,11 @@ func (page MemberCollectionPage) Values() []Member {
 }
 
 // Creates a new instance of the MemberCollectionPage type.
-func NewMemberCollectionPage(getNextPage func(context.Context, MemberCollection) (MemberCollection, error)) MemberCollectionPage {
-	return MemberCollectionPage{fn: getNextPage}
+func NewMemberCollectionPage(cur MemberCollection, getNextPage func(context.Context, MemberCollection) (MemberCollection, error)) MemberCollectionPage {
+	return MemberCollectionPage{
+		fn: getNextPage,
+		mc: cur,
+	}
 }
 
 // MemberNodesSku payload of the blockchain member nodes Sku for a blockchain member.
@@ -598,7 +605,8 @@ type MemberPropertiesUpdate struct {
 	FirewallRules *[]FirewallRule `json:"firewallRules,omitempty"`
 }
 
-// MembersCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// MembersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type MembersCreateFuture struct {
 	azure.Future
 }
@@ -626,7 +634,8 @@ func (future *MembersCreateFuture) Result(client MembersClient) (mVar Member, er
 	return
 }
 
-// MembersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// MembersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type MembersDeleteFuture struct {
 	azure.Future
 }
@@ -713,8 +722,8 @@ type NameAvailability struct {
 	Reason NameAvailabilityReason `json:"reason,omitempty"`
 }
 
-// NameAvailabilityRequest name availability request payload which is exposed in the request of the resource
-// provider.
+// NameAvailabilityRequest name availability request payload which is exposed in the request of the
+// resource provider.
 type NameAvailabilityRequest struct {
 	// Name - Gets or sets the name to check.
 	Name *string `json:"name,omitempty"`
@@ -755,8 +764,8 @@ type ResourceProviderOperation struct {
 	Display *ResourceProviderOperationDisplay `json:"display,omitempty"`
 }
 
-// ResourceProviderOperationCollection collection of operation payload which is exposed in the response of the
-// resource provider.
+// ResourceProviderOperationCollection collection of operation payload which is exposed in the response of
+// the resource provider.
 type ResourceProviderOperationCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Gets or sets the collection of operations.
@@ -910,12 +919,15 @@ func (page ResourceProviderOperationCollectionPage) Values() []ResourceProviderO
 }
 
 // Creates a new instance of the ResourceProviderOperationCollectionPage type.
-func NewResourceProviderOperationCollectionPage(getNextPage func(context.Context, ResourceProviderOperationCollection) (ResourceProviderOperationCollection, error)) ResourceProviderOperationCollectionPage {
-	return ResourceProviderOperationCollectionPage{fn: getNextPage}
+func NewResourceProviderOperationCollectionPage(cur ResourceProviderOperationCollection, getNextPage func(context.Context, ResourceProviderOperationCollection) (ResourceProviderOperationCollection, error)) ResourceProviderOperationCollectionPage {
+	return ResourceProviderOperationCollectionPage{
+		fn:   getNextPage,
+		rpoc: cur,
+	}
 }
 
-// ResourceProviderOperationDisplay operation display payload which is exposed in the response of the resource
-// provider.
+// ResourceProviderOperationDisplay operation display payload which is exposed in the response of the
+// resource provider.
 type ResourceProviderOperationDisplay struct {
 	// Provider - Gets or sets the name of the provider for display purposes.
 	Provider *string `json:"provider,omitempty"`
@@ -1075,8 +1087,8 @@ func (tn *TransactionNode) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// TransactionNodeCollection collection of transaction node payload which is exposed in the request/response of
-// the resource provider.
+// TransactionNodeCollection collection of transaction node payload which is exposed in the
+// request/response of the resource provider.
 type TransactionNodeCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Gets or sets the collection of transaction nodes.
@@ -1229,11 +1241,15 @@ func (page TransactionNodeCollectionPage) Values() []TransactionNode {
 }
 
 // Creates a new instance of the TransactionNodeCollectionPage type.
-func NewTransactionNodeCollectionPage(getNextPage func(context.Context, TransactionNodeCollection) (TransactionNodeCollection, error)) TransactionNodeCollectionPage {
-	return TransactionNodeCollectionPage{fn: getNextPage}
+func NewTransactionNodeCollectionPage(cur TransactionNodeCollection, getNextPage func(context.Context, TransactionNodeCollection) (TransactionNodeCollection, error)) TransactionNodeCollectionPage {
+	return TransactionNodeCollectionPage{
+		fn:  getNextPage,
+		tnc: cur,
+	}
 }
 
-// TransactionNodeProperties payload of transaction node properties payload in the transaction node payload.
+// TransactionNodeProperties payload of transaction node properties payload in the transaction node
+// payload.
 type TransactionNodeProperties struct {
 	// ProvisioningState - READ-ONLY; Gets or sets the blockchain member provision state. Possible values include: 'NodeProvisioningStateNotSpecified', 'NodeProvisioningStateUpdating', 'NodeProvisioningStateDeleting', 'NodeProvisioningStateSucceeded', 'NodeProvisioningStateFailed'
 	ProvisioningState NodeProvisioningState `json:"provisioningState,omitempty"`
@@ -1322,8 +1338,8 @@ func (future *TransactionNodesDeleteFuture) Result(client TransactionNodesClient
 	return
 }
 
-// TransactionNodeUpdate update the transaction node payload which is exposed in the request/response of the
-// resource provider.
+// TransactionNodeUpdate update the transaction node payload which is exposed in the request/response of
+// the resource provider.
 type TransactionNodeUpdate struct {
 	// TransactionNodePropertiesUpdate - Gets or sets the transaction node update properties.
 	*TransactionNodePropertiesUpdate `json:"properties,omitempty"`

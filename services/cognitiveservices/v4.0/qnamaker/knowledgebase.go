@@ -194,7 +194,12 @@ func (client KnowledgebaseClient) DeleteResponder(resp *http.Response) (result a
 // Parameters:
 // kbID - knowledgebase id.
 // environment - specifies whether environment is Test or Prod.
-func (client KnowledgebaseClient) Download(ctx context.Context, kbID string, environment EnvironmentType) (result QnADocumentsDTO, err error) {
+// source - the source property filter to apply. Sample value: Editorial, smartLight%20FAQ.tsv .
+// changedSince - changedSince property is used to return all QnAs created or updated after a specific time
+// duration. The user can filter QnAs by seconds (s), minutes (m), hours (h) and days (d). The user may use any
+// integral value along with the suffix for time. For instance, the value of 5m returns all QnA pairs updated
+// or created in the last 5 minutes.
+func (client KnowledgebaseClient) Download(ctx context.Context, kbID string, environment EnvironmentType, source string, changedSince string) (result QnADocumentsDTO, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/KnowledgebaseClient.Download")
 		defer func() {
@@ -205,7 +210,7 @@ func (client KnowledgebaseClient) Download(ctx context.Context, kbID string, env
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DownloadPreparer(ctx, kbID, environment)
+	req, err := client.DownloadPreparer(ctx, kbID, environment, source, changedSince)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamaker.KnowledgebaseClient", "Download", nil, "Failure preparing request")
 		return
@@ -227,7 +232,7 @@ func (client KnowledgebaseClient) Download(ctx context.Context, kbID string, env
 }
 
 // DownloadPreparer prepares the Download request.
-func (client KnowledgebaseClient) DownloadPreparer(ctx context.Context, kbID string, environment EnvironmentType) (*http.Request, error) {
+func (client KnowledgebaseClient) DownloadPreparer(ctx context.Context, kbID string, environment EnvironmentType, source string, changedSince string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -237,10 +242,19 @@ func (client KnowledgebaseClient) DownloadPreparer(ctx context.Context, kbID str
 		"kbId":        autorest.Encode("path", kbID),
 	}
 
+	queryParameters := map[string]interface{}{}
+	if len(source) > 0 {
+		queryParameters["source"] = autorest.Encode("query", source)
+	}
+	if len(changedSince) > 0 {
+		queryParameters["changedSince"] = autorest.Encode("query", changedSince)
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/qnamaker/v4.0", urlParameters),
-		autorest.WithPathParameters("/knowledgebases/{kbId}/{environment}/qna", pathParameters))
+		autorest.WithPathParameters("/knowledgebases/{kbId}/{environment}/qna", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

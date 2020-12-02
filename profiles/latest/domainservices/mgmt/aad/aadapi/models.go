@@ -19,7 +19,9 @@
 
 package aadapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/domainservices/mgmt/2017-06-01/aad/aadapi"
+import original "github.com/Azure/azure-sdk-for-go/services/domainservices/mgmt/2020-01-01/aad/aadapi"
 
 type DomainServiceOperationsClientAPI = original.DomainServiceOperationsClientAPI
 type DomainServicesClientAPI = original.DomainServicesClientAPI
+type OuContainerClientAPI = original.OuContainerClientAPI
+type OuContainerOperationsClientAPI = original.OuContainerOperationsClientAPI

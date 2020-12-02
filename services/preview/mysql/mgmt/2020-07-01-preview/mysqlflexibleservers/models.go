@@ -195,8 +195,11 @@ func (page CapabilitiesListResultPage) Values() []CapabilityProperties {
 }
 
 // Creates a new instance of the CapabilitiesListResultPage type.
-func NewCapabilitiesListResultPage(getNextPage func(context.Context, CapabilitiesListResult) (CapabilitiesListResult, error)) CapabilitiesListResultPage {
-	return CapabilitiesListResultPage{fn: getNextPage}
+func NewCapabilitiesListResultPage(cur CapabilitiesListResult, getNextPage func(context.Context, CapabilitiesListResult) (CapabilitiesListResult, error)) CapabilitiesListResultPage {
+	return CapabilitiesListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // CapabilityProperties location capabilities.
@@ -438,8 +441,11 @@ func (page ConfigurationListResultPage) Values() []Configuration {
 }
 
 // Creates a new instance of the ConfigurationListResultPage type.
-func NewConfigurationListResultPage(getNextPage func(context.Context, ConfigurationListResult) (ConfigurationListResult, error)) ConfigurationListResultPage {
-	return ConfigurationListResultPage{fn: getNextPage}
+func NewConfigurationListResultPage(cur ConfigurationListResult, getNextPage func(context.Context, ConfigurationListResult) (ConfigurationListResult, error)) ConfigurationListResultPage {
+	return ConfigurationListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // ConfigurationProperties the properties of a configuration.
@@ -730,8 +736,11 @@ func (page DatabaseListResultPage) Values() []Database {
 }
 
 // Creates a new instance of the DatabaseListResultPage type.
-func NewDatabaseListResultPage(getNextPage func(context.Context, DatabaseListResult) (DatabaseListResult, error)) DatabaseListResultPage {
-	return DatabaseListResultPage{fn: getNextPage}
+func NewDatabaseListResultPage(cur DatabaseListResult, getNextPage func(context.Context, DatabaseListResult) (DatabaseListResult, error)) DatabaseListResultPage {
+	return DatabaseListResultPage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
 // DatabaseProperties the properties of a database.
@@ -771,7 +780,8 @@ func (future *DatabasesCreateOrUpdateFuture) Result(client DatabasesClient) (d D
 	return
 }
 
-// DatabasesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DatabasesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DatabasesDeleteFuture struct {
 	azure.Future
 }
@@ -815,8 +825,8 @@ type ErrorAdditionalInfo struct {
 	Info interface{} `json:"info,omitempty"`
 }
 
-// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for failed
-// operations. (This also follows the OData error response format.)
+// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
+// failed operations. (This also follows the OData error response format.)
 type ErrorResponse struct {
 	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
@@ -1055,8 +1065,11 @@ func (page FirewallRuleListResultPage) Values() []FirewallRule {
 }
 
 // Creates a new instance of the FirewallRuleListResultPage type.
-func NewFirewallRuleListResultPage(getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
-	return FirewallRuleListResultPage{fn: getNextPage}
+func NewFirewallRuleListResultPage(cur FirewallRuleListResult, getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
+	return FirewallRuleListResultPage{
+		fn:   getNextPage,
+		frlr: cur,
+	}
 }
 
 // FirewallRuleProperties the properties of a server firewall rule.
@@ -1067,8 +1080,8 @@ type FirewallRuleProperties struct {
 	EndIPAddress *string `json:"endIpAddress,omitempty"`
 }
 
-// FirewallRulesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// FirewallRulesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type FirewallRulesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -1228,8 +1241,8 @@ type Plan struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not have
-// tags and a location
+// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
+// have tags and a location
 type ProxyResource struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -1250,7 +1263,8 @@ type Resource struct {
 }
 
 // ResourceModelWithAllowedPropertySet the resource model definition containing the full set of allowed
-// properties for a resource. Except properties bag, there cannot be a top level property outside of this set.
+// properties for a resource. Except properties bag, there cannot be a top level property outside of this
+// set.
 type ResourceModelWithAllowedPropertySet struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -1783,8 +1797,11 @@ func (page ServerKeyListResultPage) Values() []ServerKey {
 }
 
 // Creates a new instance of the ServerKeyListResultPage type.
-func NewServerKeyListResultPage(getNextPage func(context.Context, ServerKeyListResult) (ServerKeyListResult, error)) ServerKeyListResultPage {
-	return ServerKeyListResultPage{fn: getNextPage}
+func NewServerKeyListResultPage(cur ServerKeyListResult, getNextPage func(context.Context, ServerKeyListResult) (ServerKeyListResult, error)) ServerKeyListResultPage {
+	return ServerKeyListResultPage{
+		fn:   getNextPage,
+		sklr: cur,
+	}
 }
 
 // ServerKeyProperties properties for a key execution.
@@ -1809,8 +1826,8 @@ func (skp ServerKeyProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ServerKeysCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ServerKeysCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ServerKeysCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -1838,7 +1855,8 @@ func (future *ServerKeysCreateOrUpdateFuture) Result(client ServerKeysClient) (s
 	return
 }
 
-// ServerKeysDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServerKeysDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServerKeysDeleteFuture struct {
 	azure.Future
 }
@@ -2012,8 +2030,11 @@ func (page ServerListResultPage) Values() []Server {
 }
 
 // Creates a new instance of the ServerListResultPage type.
-func NewServerListResultPage(getNextPage func(context.Context, ServerListResult) (ServerListResult, error)) ServerListResultPage {
-	return ServerListResultPage{fn: getNextPage}
+func NewServerListResultPage(cur ServerListResult, getNextPage func(context.Context, ServerListResult) (ServerListResult, error)) ServerListResultPage {
+	return ServerListResultPage{
+		fn:  getNextPage,
+		slr: cur,
+	}
 }
 
 // ServerProperties the properties of a server.
@@ -2135,7 +2156,8 @@ type ServerPropertiesForUpdate struct {
 	ReplicationRole *string `json:"replicationRole,omitempty"`
 }
 
-// ServersCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServersCreateFuture struct {
 	azure.Future
 }
@@ -2163,7 +2185,8 @@ func (future *ServersCreateFuture) Result(client ServersClient) (s Server, err e
 	return
 }
 
-// ServersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServersDeleteFuture struct {
 	azure.Future
 }
@@ -2185,7 +2208,8 @@ func (future *ServersDeleteFuture) Result(client ServersClient) (ar autorest.Res
 	return
 }
 
-// ServersRestartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServersRestartFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServersRestartFuture struct {
 	azure.Future
 }
@@ -2251,7 +2275,8 @@ func (future *ServersStopFuture) Result(client ServersClient) (ar autorest.Respo
 	return
 }
 
-// ServersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServersUpdateFuture struct {
 	azure.Future
 }
@@ -2329,8 +2354,8 @@ type StorageProfile struct {
 	StorageAutogrow StorageAutogrow `json:"storageAutogrow,omitempty"`
 }
 
-// TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource which
-// has 'tags' and a 'location'
+// TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
+// which has 'tags' and a 'location'
 type TrackedResource struct {
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`

@@ -473,8 +473,11 @@ func (page WorkflowAccessKeyListResultPage) Values() []WorkflowAccessKey {
 }
 
 // Creates a new instance of the WorkflowAccessKeyListResultPage type.
-func NewWorkflowAccessKeyListResultPage(getNextPage func(context.Context, WorkflowAccessKeyListResult) (WorkflowAccessKeyListResult, error)) WorkflowAccessKeyListResultPage {
-	return WorkflowAccessKeyListResultPage{fn: getNextPage}
+func NewWorkflowAccessKeyListResultPage(cur WorkflowAccessKeyListResult, getNextPage func(context.Context, WorkflowAccessKeyListResult) (WorkflowAccessKeyListResult, error)) WorkflowAccessKeyListResultPage {
+	return WorkflowAccessKeyListResultPage{
+		fn:    getNextPage,
+		waklr: cur,
+	}
 }
 
 // WorkflowAccessKeyProperties ...
@@ -643,8 +646,11 @@ func (page WorkflowListResultPage) Values() []Workflow {
 }
 
 // Creates a new instance of the WorkflowListResultPage type.
-func NewWorkflowListResultPage(getNextPage func(context.Context, WorkflowListResult) (WorkflowListResult, error)) WorkflowListResultPage {
-	return WorkflowListResultPage{fn: getNextPage}
+func NewWorkflowListResultPage(cur WorkflowListResult, getNextPage func(context.Context, WorkflowListResult) (WorkflowListResult, error)) WorkflowListResultPage {
+	return WorkflowListResultPage{
+		fn:  getNextPage,
+		wlr: cur,
+	}
 }
 
 // WorkflowOutputParameter ...
@@ -1044,8 +1050,11 @@ func (page WorkflowRunActionListResultPage) Values() []WorkflowRunAction {
 }
 
 // Creates a new instance of the WorkflowRunActionListResultPage type.
-func NewWorkflowRunActionListResultPage(getNextPage func(context.Context, WorkflowRunActionListResult) (WorkflowRunActionListResult, error)) WorkflowRunActionListResultPage {
-	return WorkflowRunActionListResultPage{fn: getNextPage}
+func NewWorkflowRunActionListResultPage(cur WorkflowRunActionListResult, getNextPage func(context.Context, WorkflowRunActionListResult) (WorkflowRunActionListResult, error)) WorkflowRunActionListResultPage {
+	return WorkflowRunActionListResultPage{
+		fn:    getNextPage,
+		wralr: cur,
+	}
 }
 
 // WorkflowRunActionProperties ...
@@ -1226,8 +1235,11 @@ func (page WorkflowRunListResultPage) Values() []WorkflowRun {
 }
 
 // Creates a new instance of the WorkflowRunListResultPage type.
-func NewWorkflowRunListResultPage(getNextPage func(context.Context, WorkflowRunListResult) (WorkflowRunListResult, error)) WorkflowRunListResultPage {
-	return WorkflowRunListResultPage{fn: getNextPage}
+func NewWorkflowRunListResultPage(cur WorkflowRunListResult, getNextPage func(context.Context, WorkflowRunListResult) (WorkflowRunListResult, error)) WorkflowRunListResultPage {
+	return WorkflowRunListResultPage{
+		fn:   getNextPage,
+		wrlr: cur,
+	}
 }
 
 // WorkflowRunProperties ...
@@ -1638,8 +1650,11 @@ func (page WorkflowTriggerHistoryListResultPage) Values() []WorkflowTriggerHisto
 }
 
 // Creates a new instance of the WorkflowTriggerHistoryListResultPage type.
-func NewWorkflowTriggerHistoryListResultPage(getNextPage func(context.Context, WorkflowTriggerHistoryListResult) (WorkflowTriggerHistoryListResult, error)) WorkflowTriggerHistoryListResultPage {
-	return WorkflowTriggerHistoryListResultPage{fn: getNextPage}
+func NewWorkflowTriggerHistoryListResultPage(cur WorkflowTriggerHistoryListResult, getNextPage func(context.Context, WorkflowTriggerHistoryListResult) (WorkflowTriggerHistoryListResult, error)) WorkflowTriggerHistoryListResultPage {
+	return WorkflowTriggerHistoryListResultPage{
+		fn:    getNextPage,
+		wthlr: cur,
+	}
 }
 
 // WorkflowTriggerHistoryProperties ...
@@ -1818,8 +1833,11 @@ func (page WorkflowTriggerListResultPage) Values() []WorkflowTrigger {
 }
 
 // Creates a new instance of the WorkflowTriggerListResultPage type.
-func NewWorkflowTriggerListResultPage(getNextPage func(context.Context, WorkflowTriggerListResult) (WorkflowTriggerListResult, error)) WorkflowTriggerListResultPage {
-	return WorkflowTriggerListResultPage{fn: getNextPage}
+func NewWorkflowTriggerListResultPage(cur WorkflowTriggerListResult, getNextPage func(context.Context, WorkflowTriggerListResult) (WorkflowTriggerListResult, error)) WorkflowTriggerListResultPage {
+	return WorkflowTriggerListResultPage{
+		fn:   getNextPage,
+		wtlr: cur,
+	}
 }
 
 // WorkflowTriggerProperties ...

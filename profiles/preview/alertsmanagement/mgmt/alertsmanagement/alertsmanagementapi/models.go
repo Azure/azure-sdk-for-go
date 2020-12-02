@@ -24,4 +24,3 @@ import original "github.com/Azure/azure-sdk-for-go/services/alertsmanagement/mgm
 type AlertsClientAPI = original.AlertsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type SmartDetectorAlertRulesClientAPI = original.SmartDetectorAlertRulesClientAPI
-type SmartGroupsClientAPI = original.SmartGroupsClientAPI

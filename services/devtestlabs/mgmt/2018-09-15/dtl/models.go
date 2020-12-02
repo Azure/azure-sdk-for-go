@@ -31,8 +31,8 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/devtestlabs/mgmt/2018-09-15/dtl"
 
-// ApplicableSchedule schedules applicable to a virtual machine. The schedules may have been defined on a VM or
-// on lab level.
+// ApplicableSchedule schedules applicable to a virtual machine. The schedules may have been defined on a
+// VM or on lab level.
 type ApplicableSchedule struct {
 	autorest.Response `json:"-"`
 	// ApplicableScheduleProperties - The properties of the resource.
@@ -133,8 +133,8 @@ func (as *ApplicableSchedule) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ApplicableScheduleFragment schedules applicable to a virtual machine. The schedules may have been defined on
-// a VM or on lab level.
+// ApplicableScheduleFragment schedules applicable to a virtual machine. The schedules may have been
+// defined on a VM or on lab level.
 type ApplicableScheduleFragment struct {
 	// ApplicableSchedulePropertiesFragment - The properties of the resource.
 	*ApplicableSchedulePropertiesFragment `json:"properties,omitempty"`
@@ -471,8 +471,11 @@ func (page ArmTemplateListPage) Values() []ArmTemplate {
 }
 
 // Creates a new instance of the ArmTemplateListPage type.
-func NewArmTemplateListPage(getNextPage func(context.Context, ArmTemplateList) (ArmTemplateList, error)) ArmTemplateListPage {
-	return ArmTemplateListPage{fn: getNextPage}
+func NewArmTemplateListPage(cur ArmTemplateList, getNextPage func(context.Context, ArmTemplateList) (ArmTemplateList, error)) ArmTemplateListPage {
+	return ArmTemplateListPage{
+		fn:  getNextPage,
+		atl: cur,
+	}
 }
 
 // ArmTemplateParameterProperties properties of an Azure Resource Manager template parameter.
@@ -820,8 +823,11 @@ func (page ArtifactListPage) Values() []Artifact {
 }
 
 // Creates a new instance of the ArtifactListPage type.
-func NewArtifactListPage(getNextPage func(context.Context, ArtifactList) (ArtifactList, error)) ArtifactListPage {
-	return ArtifactListPage{fn: getNextPage}
+func NewArtifactListPage(cur ArtifactList, getNextPage func(context.Context, ArtifactList) (ArtifactList, error)) ArtifactListPage {
+	return ArtifactListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // ArtifactParameterProperties properties of an artifact parameter.
@@ -1166,8 +1172,11 @@ func (page ArtifactSourceListPage) Values() []ArtifactSource {
 }
 
 // Creates a new instance of the ArtifactSourceListPage type.
-func NewArtifactSourceListPage(getNextPage func(context.Context, ArtifactSourceList) (ArtifactSourceList, error)) ArtifactSourceListPage {
-	return ArtifactSourceListPage{fn: getNextPage}
+func NewArtifactSourceListPage(cur ArtifactSourceList, getNextPage func(context.Context, ArtifactSourceList) (ArtifactSourceList, error)) ArtifactSourceListPage {
+	return ArtifactSourceListPage{
+		fn:  getNextPage,
+		asl: cur,
+	}
 }
 
 // ArtifactSourceProperties properties of an artifact source.
@@ -1702,8 +1711,11 @@ func (page CustomImageListPage) Values() []CustomImage {
 }
 
 // Creates a new instance of the CustomImageListPage type.
-func NewCustomImageListPage(getNextPage func(context.Context, CustomImageList) (CustomImageList, error)) CustomImageListPage {
-	return CustomImageListPage{fn: getNextPage}
+func NewCustomImageListPage(cur CustomImageList, getNextPage func(context.Context, CustomImageList) (CustomImageList, error)) CustomImageListPage {
+	return CustomImageListPage{
+		fn:  getNextPage,
+		cil: cur,
+	}
 }
 
 // CustomImageProperties properties of a custom image.
@@ -1849,8 +1861,8 @@ type CustomImagePropertiesFromVMFragment struct {
 	LinuxOsInfo *LinuxOsInfoFragment `json:"linuxOsInfo,omitempty"`
 }
 
-// CustomImagesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// CustomImagesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type CustomImagesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -2267,8 +2279,11 @@ func (page DiskListPage) Values() []Disk {
 }
 
 // Creates a new instance of the DiskListPage type.
-func NewDiskListPage(getNextPage func(context.Context, DiskList) (DiskList, error)) DiskListPage {
-	return DiskListPage{fn: getNextPage}
+func NewDiskListPage(cur DiskList, getNextPage func(context.Context, DiskList) (DiskList, error)) DiskListPage {
+	return DiskListPage{
+		fn: getNextPage,
+		dl: cur,
+	}
 }
 
 // DiskProperties properties of a disk.
@@ -2757,8 +2772,11 @@ func (page EnvironmentListPage) Values() []Environment {
 }
 
 // Creates a new instance of the EnvironmentListPage type.
-func NewEnvironmentListPage(getNextPage func(context.Context, EnvironmentList) (EnvironmentList, error)) EnvironmentListPage {
-	return EnvironmentListPage{fn: getNextPage}
+func NewEnvironmentListPage(cur EnvironmentList, getNextPage func(context.Context, EnvironmentList) (EnvironmentList, error)) EnvironmentListPage {
+	return EnvironmentListPage{
+		fn: getNextPage,
+		el: cur,
+	}
 }
 
 // EnvironmentProperties properties of an environment.
@@ -2797,8 +2815,8 @@ type EnvironmentPropertiesFragment struct {
 	ArmTemplateDisplayName *string `json:"armTemplateDisplayName,omitempty"`
 }
 
-// EnvironmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EnvironmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type EnvironmentsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -3216,8 +3234,11 @@ func (page FormulaListPage) Values() []Formula {
 }
 
 // Creates a new instance of the FormulaListPage type.
-func NewFormulaListPage(getNextPage func(context.Context, FormulaList) (FormulaList, error)) FormulaListPage {
-	return FormulaListPage{fn: getNextPage}
+func NewFormulaListPage(cur FormulaList, getNextPage func(context.Context, FormulaList) (FormulaList, error)) FormulaListPage {
+	return FormulaListPage{
+		fn: getNextPage,
+		fl: cur,
+	}
 }
 
 // FormulaProperties properties of a formula.
@@ -3568,8 +3589,11 @@ func (page GalleryImageListPage) Values() []GalleryImage {
 }
 
 // Creates a new instance of the GalleryImageListPage type.
-func NewGalleryImageListPage(getNextPage func(context.Context, GalleryImageList) (GalleryImageList, error)) GalleryImageListPage {
-	return GalleryImageListPage{fn: getNextPage}
+func NewGalleryImageListPage(cur GalleryImageList, getNextPage func(context.Context, GalleryImageList) (GalleryImageList, error)) GalleryImageListPage {
+	return GalleryImageListPage{
+		fn:  getNextPage,
+		gil: cur,
+	}
 }
 
 // GalleryImageProperties properties of a gallery image.
@@ -3762,8 +3786,8 @@ type InboundNatRule struct {
 	BackendPort *int32 `json:"backendPort,omitempty"`
 }
 
-// InboundNatRuleFragment a rule for NAT - exposing a VM's port (backendPort) on the public IP address using a
-// load balancer.
+// InboundNatRuleFragment a rule for NAT - exposing a VM's port (backendPort) on the public IP address
+// using a load balancer.
 type InboundNatRuleFragment struct {
 	// TransportProtocol - The transport protocol for the endpoint. Possible values include: 'TCP', 'UDP'
 	TransportProtocol TransportProtocol `json:"transportProtocol,omitempty"`
@@ -4294,8 +4318,11 @@ func (page LabListPage) Values() []Lab {
 }
 
 // Creates a new instance of the LabListPage type.
-func NewLabListPage(getNextPage func(context.Context, LabList) (LabList, error)) LabListPage {
-	return LabListPage{fn: getNextPage}
+func NewLabListPage(cur LabList, getNextPage func(context.Context, LabList) (LabList, error)) LabListPage {
+	return LabListPage{
+		fn: getNextPage,
+		ll: cur,
+	}
 }
 
 // LabProperties properties of a lab.
@@ -4448,7 +4475,8 @@ type LabResourceCostProperties struct {
 	ExternalResourceID *string `json:"externalResourceId,omitempty"`
 }
 
-// LabsClaimAnyVMFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// LabsClaimAnyVMFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type LabsClaimAnyVMFuture struct {
 	azure.Future
 }
@@ -4567,8 +4595,8 @@ func (future *LabsExportResourceUsageFuture) Result(client LabsClient) (ar autor
 	return
 }
 
-// LabsImportVirtualMachineFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// LabsImportVirtualMachineFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type LabsImportVirtualMachineFuture struct {
 	azure.Future
 }
@@ -4764,8 +4792,11 @@ func (page LabVhdListPage) Values() []LabVhd {
 }
 
 // Creates a new instance of the LabVhdListPage type.
-func NewLabVhdListPage(getNextPage func(context.Context, LabVhdList) (LabVhdList, error)) LabVhdListPage {
-	return LabVhdListPage{fn: getNextPage}
+func NewLabVhdListPage(cur LabVhdList, getNextPage func(context.Context, LabVhdList) (LabVhdList, error)) LabVhdListPage {
+	return LabVhdListPage{
+		fn:  getNextPage,
+		lvl: cur,
+	}
 }
 
 // LabVirtualMachine a virtual machine.
@@ -5372,8 +5403,11 @@ func (page LabVirtualMachineListPage) Values() []LabVirtualMachine {
 }
 
 // Creates a new instance of the LabVirtualMachineListPage type.
-func NewLabVirtualMachineListPage(getNextPage func(context.Context, LabVirtualMachineList) (LabVirtualMachineList, error)) LabVirtualMachineListPage {
-	return LabVirtualMachineListPage{fn: getNextPage}
+func NewLabVirtualMachineListPage(cur LabVirtualMachineList, getNextPage func(context.Context, LabVirtualMachineList) (LabVirtualMachineList, error)) LabVirtualMachineListPage {
+	return LabVirtualMachineListPage{
+		fn:   getNextPage,
+		lvml: cur,
+	}
 }
 
 // LabVirtualMachineProperties properties of a virtual machine.
@@ -5977,8 +6011,11 @@ func (page NotificationChannelListPage) Values() []NotificationChannel {
 }
 
 // Creates a new instance of the NotificationChannelListPage type.
-func NewNotificationChannelListPage(getNextPage func(context.Context, NotificationChannelList) (NotificationChannelList, error)) NotificationChannelListPage {
-	return NotificationChannelListPage{fn: getNextPage}
+func NewNotificationChannelListPage(cur NotificationChannelList, getNextPage func(context.Context, NotificationChannelList) (NotificationChannelList, error)) NotificationChannelListPage {
+	return NotificationChannelListPage{
+		fn:  getNextPage,
+		ncl: cur,
+	}
 }
 
 // NotificationChannelProperties properties of a schedule.
@@ -6439,8 +6476,11 @@ func (page PolicyListPage) Values() []Policy {
 }
 
 // Creates a new instance of the PolicyListPage type.
-func NewPolicyListPage(getNextPage func(context.Context, PolicyList) (PolicyList, error)) PolicyListPage {
-	return PolicyListPage{fn: getNextPage}
+func NewPolicyListPage(cur PolicyList, getNextPage func(context.Context, PolicyList) (PolicyList, error)) PolicyListPage {
+	return PolicyListPage{
+		fn: getNextPage,
+		pl: cur,
+	}
 }
 
 // PolicyProperties properties of a Policy.
@@ -6698,8 +6738,11 @@ func (page ProviderOperationResultPage) Values() []OperationMetadata {
 }
 
 // Creates a new instance of the ProviderOperationResultPage type.
-func NewProviderOperationResultPage(getNextPage func(context.Context, ProviderOperationResult) (ProviderOperationResult, error)) ProviderOperationResultPage {
-	return ProviderOperationResultPage{fn: getNextPage}
+func NewProviderOperationResultPage(cur ProviderOperationResult, getNextPage func(context.Context, ProviderOperationResult) (ProviderOperationResult, error)) ProviderOperationResultPage {
+	return ProviderOperationResultPage{
+		fn:  getNextPage,
+		por: cur,
+	}
 }
 
 // RdpConnection represents a .rdp file
@@ -7257,8 +7300,11 @@ func (page ScheduleListPage) Values() []Schedule {
 }
 
 // Creates a new instance of the ScheduleListPage type.
-func NewScheduleListPage(getNextPage func(context.Context, ScheduleList) (ScheduleList, error)) ScheduleListPage {
-	return ScheduleListPage{fn: getNextPage}
+func NewScheduleListPage(cur ScheduleList, getNextPage func(context.Context, ScheduleList) (ScheduleList, error)) ScheduleListPage {
+	return ScheduleListPage{
+		fn: getNextPage,
+		sl: cur,
+	}
 }
 
 // ScheduleProperties properties of a schedule.
@@ -7337,7 +7383,8 @@ type SchedulePropertiesFragment struct {
 	TargetResourceID *string `json:"targetResourceId,omitempty"`
 }
 
-// SchedulesExecuteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// SchedulesExecuteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SchedulesExecuteFuture struct {
 	azure.Future
 }
@@ -7665,8 +7712,11 @@ func (page SecretListPage) Values() []Secret {
 }
 
 // Creates a new instance of the SecretListPage type.
-func NewSecretListPage(getNextPage func(context.Context, SecretList) (SecretList, error)) SecretListPage {
-	return SecretListPage{fn: getNextPage}
+func NewSecretListPage(cur SecretList, getNextPage func(context.Context, SecretList) (SecretList, error)) SecretListPage {
+	return SecretListPage{
+		fn: getNextPage,
+		sl: cur,
+	}
 }
 
 // SecretProperties properties of a secret.
@@ -8029,8 +8079,11 @@ func (page ServiceFabricListPage) Values() []ServiceFabric {
 }
 
 // Creates a new instance of the ServiceFabricListPage type.
-func NewServiceFabricListPage(getNextPage func(context.Context, ServiceFabricList) (ServiceFabricList, error)) ServiceFabricListPage {
-	return ServiceFabricListPage{fn: getNextPage}
+func NewServiceFabricListPage(cur ServiceFabricList, getNextPage func(context.Context, ServiceFabricList) (ServiceFabricList, error)) ServiceFabricListPage {
+	return ServiceFabricListPage{
+		fn:  getNextPage,
+		sfl: cur,
+	}
 }
 
 // ServiceFabricProperties properties of a service fabric.
@@ -8220,8 +8273,8 @@ func (sr ServiceRunner) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SharedPublicIPAddressConfiguration properties of a virtual machine that determine how it is connected to a
-// load balancer.
+// SharedPublicIPAddressConfiguration properties of a virtual machine that determine how it is connected to
+// a load balancer.
 type SharedPublicIPAddressConfiguration struct {
 	// InboundNatRules - The incoming NAT rules
 	InboundNatRules *[]InboundNatRule `json:"inboundNatRules,omitempty"`
@@ -8694,8 +8747,11 @@ func (page UserListPage) Values() []User {
 }
 
 // Creates a new instance of the UserListPage type.
-func NewUserListPage(getNextPage func(context.Context, UserList) (UserList, error)) UserListPage {
-	return UserListPage{fn: getNextPage}
+func NewUserListPage(cur UserList, getNextPage func(context.Context, UserList) (UserList, error)) UserListPage {
+	return UserListPage{
+		fn: getNextPage,
+		ul: cur,
+	}
 }
 
 // UserProperties properties of a lab user profile.
@@ -8799,8 +8855,8 @@ type UserSecretStoreFragment struct {
 	KeyVaultID *string `json:"keyVaultId,omitempty"`
 }
 
-// VirtualMachinesAddDataDiskFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// VirtualMachinesAddDataDiskFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type VirtualMachinesAddDataDiskFuture struct {
 	azure.Future
 }
@@ -9433,8 +9489,11 @@ func (page VirtualNetworkListPage) Values() []VirtualNetwork {
 }
 
 // Creates a new instance of the VirtualNetworkListPage type.
-func NewVirtualNetworkListPage(getNextPage func(context.Context, VirtualNetworkList) (VirtualNetworkList, error)) VirtualNetworkListPage {
-	return VirtualNetworkListPage{fn: getNextPage}
+func NewVirtualNetworkListPage(cur VirtualNetworkList, getNextPage func(context.Context, VirtualNetworkList) (VirtualNetworkList, error)) VirtualNetworkListPage {
+	return VirtualNetworkListPage{
+		fn:  getNextPage,
+		vnl: cur,
+	}
 }
 
 // VirtualNetworkProperties properties of a virtual network.

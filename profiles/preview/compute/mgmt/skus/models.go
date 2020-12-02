@@ -76,8 +76,8 @@ func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) Res
 func NewResourceSkusResultIterator(page ResourceSkusResultPage) ResourceSkusResultIterator {
 	return original.NewResourceSkusResultIterator(page)
 }
-func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
-	return original.NewResourceSkusResultPage(getNextPage)
+func NewResourceSkusResultPage(cur ResourceSkusResult, getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
+	return original.NewResourceSkusResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

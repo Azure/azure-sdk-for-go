@@ -117,7 +117,6 @@ func (client BaseClient) BackupCertificateSender(req *http.Request) (*http.Respo
 func (client BaseClient) BackupCertificateResponder(resp *http.Response) (result BackupCertificateResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -203,7 +202,6 @@ func (client BaseClient) BackupKeySender(req *http.Request) (*http.Response, err
 func (client BaseClient) BackupKeyResponder(resp *http.Response) (result BackupKeyResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -282,7 +280,6 @@ func (client BaseClient) BackupSecretSender(req *http.Request) (*http.Response, 
 func (client BaseClient) BackupSecretResponder(resp *http.Response) (result BackupSecretResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -361,7 +358,6 @@ func (client BaseClient) BackupStorageAccountSender(req *http.Request) (*http.Re
 func (client BaseClient) BackupStorageAccountResponder(resp *http.Response) (result BackupStorageResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -456,7 +452,6 @@ func (client BaseClient) CreateCertificateSender(req *http.Request) (*http.Respo
 func (client BaseClient) CreateCertificateResponder(resp *http.Response) (result CertificateOperation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -544,7 +539,6 @@ func (client BaseClient) CreateKeySender(req *http.Request) (*http.Response, err
 func (client BaseClient) CreateKeyResponder(resp *http.Response) (result KeyBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -637,7 +631,6 @@ func (client BaseClient) DecryptSender(req *http.Request) (*http.Response, error
 func (client BaseClient) DecryptResponder(resp *http.Response) (result KeyOperationResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -717,7 +710,6 @@ func (client BaseClient) DeleteCertificateSender(req *http.Request) (*http.Respo
 func (client BaseClient) DeleteCertificateResponder(resp *http.Response) (result DeletedCertificateBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -791,7 +783,6 @@ func (client BaseClient) DeleteCertificateContactsSender(req *http.Request) (*ht
 func (client BaseClient) DeleteCertificateContactsResponder(resp *http.Response) (result Contacts, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -870,7 +861,6 @@ func (client BaseClient) DeleteCertificateIssuerSender(req *http.Request) (*http
 func (client BaseClient) DeleteCertificateIssuerResponder(resp *http.Response) (result IssuerBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -949,7 +939,6 @@ func (client BaseClient) DeleteCertificateOperationSender(req *http.Request) (*h
 func (client BaseClient) DeleteCertificateOperationResponder(resp *http.Response) (result CertificateOperation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1029,7 +1018,6 @@ func (client BaseClient) DeleteKeySender(req *http.Request) (*http.Response, err
 func (client BaseClient) DeleteKeyResponder(resp *http.Response) (result DeletedKeyBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1118,7 +1106,6 @@ func (client BaseClient) DeleteSasDefinitionSender(req *http.Request) (*http.Res
 func (client BaseClient) DeleteSasDefinitionResponder(resp *http.Response) (result DeletedSasDefinitionBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1197,7 +1184,6 @@ func (client BaseClient) DeleteSecretSender(req *http.Request) (*http.Response, 
 func (client BaseClient) DeleteSecretResponder(resp *http.Response) (result DeletedSecretBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1281,7 +1267,6 @@ func (client BaseClient) DeleteStorageAccountSender(req *http.Request) (*http.Re
 func (client BaseClient) DeleteStorageAccountResponder(resp *http.Response) (result DeletedStorageBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1376,7 +1361,6 @@ func (client BaseClient) EncryptSender(req *http.Request) (*http.Response, error
 func (client BaseClient) EncryptResponder(resp *http.Response) (result KeyOperationResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1389,7 +1373,8 @@ func (client BaseClient) EncryptResponder(resp *http.Response) (result KeyOperat
 // Parameters:
 // vaultBaseURL - the vault name, for example https://myvault.vault.azure.net.
 // certificateName - the name of the certificate in the given vault.
-// certificateVersion - the version of the certificate.
+// certificateVersion - the version of the certificate. This URI fragment is optional. If not specified, the
+// latest version of the certificate is returned.
 func (client BaseClient) GetCertificate(ctx context.Context, vaultBaseURL string, certificateName string, certificateVersion string) (result CertificateBundle, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetCertificate")
@@ -1457,7 +1442,6 @@ func (client BaseClient) GetCertificateSender(req *http.Request) (*http.Response
 func (client BaseClient) GetCertificateResponder(resp *http.Response) (result CertificateBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1531,7 +1515,6 @@ func (client BaseClient) GetCertificateContactsSender(req *http.Request) (*http.
 func (client BaseClient) GetCertificateContactsResponder(resp *http.Response) (result Contacts, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1610,7 +1593,6 @@ func (client BaseClient) GetCertificateIssuerSender(req *http.Request) (*http.Re
 func (client BaseClient) GetCertificateIssuerResponder(resp *http.Response) (result IssuerBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1662,6 +1644,9 @@ func (client BaseClient) GetCertificateIssuers(ctx context.Context, vaultBaseURL
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetCertificateIssuers", resp, "Failure responding to request")
 	}
+	if result.cilr.hasNextLink() && result.cilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1699,7 +1684,6 @@ func (client BaseClient) GetCertificateIssuersSender(req *http.Request) (*http.R
 func (client BaseClient) GetCertificateIssuersResponder(resp *http.Response) (result CertificateIssuerListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1815,7 +1799,6 @@ func (client BaseClient) GetCertificateOperationSender(req *http.Request) (*http
 func (client BaseClient) GetCertificateOperationResponder(resp *http.Response) (result CertificateOperation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1894,7 +1877,6 @@ func (client BaseClient) GetCertificatePolicySender(req *http.Request) (*http.Re
 func (client BaseClient) GetCertificatePolicyResponder(resp *http.Response) (result CertificatePolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1947,6 +1929,9 @@ func (client BaseClient) GetCertificates(ctx context.Context, vaultBaseURL strin
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetCertificates", resp, "Failure responding to request")
 	}
+	if result.clr.hasNextLink() && result.clr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1987,7 +1972,6 @@ func (client BaseClient) GetCertificatesSender(req *http.Request) (*http.Respons
 func (client BaseClient) GetCertificatesResponder(resp *http.Response) (result CertificateListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2077,6 +2061,9 @@ func (client BaseClient) GetCertificateVersions(ctx context.Context, vaultBaseUR
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetCertificateVersions", resp, "Failure responding to request")
 	}
+	if result.clr.hasNextLink() && result.clr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -2118,7 +2105,6 @@ func (client BaseClient) GetCertificateVersionsSender(req *http.Request) (*http.
 func (client BaseClient) GetCertificateVersionsResponder(resp *http.Response) (result CertificateListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2235,7 +2221,6 @@ func (client BaseClient) GetDeletedCertificateSender(req *http.Request) (*http.R
 func (client BaseClient) GetDeletedCertificateResponder(resp *http.Response) (result DeletedCertificateBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2290,6 +2275,9 @@ func (client BaseClient) GetDeletedCertificates(ctx context.Context, vaultBaseUR
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetDeletedCertificates", resp, "Failure responding to request")
 	}
+	if result.dclr.hasNextLink() && result.dclr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -2330,7 +2318,6 @@ func (client BaseClient) GetDeletedCertificatesSender(req *http.Request) (*http.
 func (client BaseClient) GetDeletedCertificatesResponder(resp *http.Response) (result DeletedCertificateListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2447,7 +2434,6 @@ func (client BaseClient) GetDeletedKeySender(req *http.Request) (*http.Response,
 func (client BaseClient) GetDeletedKeyResponder(resp *http.Response) (result DeletedKeyBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2501,6 +2487,9 @@ func (client BaseClient) GetDeletedKeys(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetDeletedKeys", resp, "Failure responding to request")
 	}
+	if result.dklr.hasNextLink() && result.dklr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -2538,7 +2527,6 @@ func (client BaseClient) GetDeletedKeysSender(req *http.Request) (*http.Response
 func (client BaseClient) GetDeletedKeysResponder(resp *http.Response) (result DeletedKeyListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2664,7 +2652,6 @@ func (client BaseClient) GetDeletedSasDefinitionSender(req *http.Request) (*http
 func (client BaseClient) GetDeletedSasDefinitionResponder(resp *http.Response) (result DeletedSasDefinitionBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2719,6 +2706,9 @@ func (client BaseClient) GetDeletedSasDefinitions(ctx context.Context, vaultBase
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetDeletedSasDefinitions", resp, "Failure responding to request")
 	}
+	if result.dsdlr.hasNextLink() && result.dsdlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -2760,7 +2750,6 @@ func (client BaseClient) GetDeletedSasDefinitionsSender(req *http.Request) (*htt
 func (client BaseClient) GetDeletedSasDefinitionsResponder(resp *http.Response) (result DeletedSasDefinitionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2876,7 +2865,6 @@ func (client BaseClient) GetDeletedSecretSender(req *http.Request) (*http.Respon
 func (client BaseClient) GetDeletedSecretResponder(resp *http.Response) (result DeletedSecretBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2928,6 +2916,9 @@ func (client BaseClient) GetDeletedSecrets(ctx context.Context, vaultBaseURL str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetDeletedSecrets", resp, "Failure responding to request")
 	}
+	if result.dslr.hasNextLink() && result.dslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -2965,7 +2956,6 @@ func (client BaseClient) GetDeletedSecretsSender(req *http.Request) (*http.Respo
 func (client BaseClient) GetDeletedSecretsResponder(resp *http.Response) (result DeletedSecretListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3087,7 +3077,6 @@ func (client BaseClient) GetDeletedStorageAccountSender(req *http.Request) (*htt
 func (client BaseClient) GetDeletedStorageAccountResponder(resp *http.Response) (result DeletedStorageBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3139,6 +3128,9 @@ func (client BaseClient) GetDeletedStorageAccounts(ctx context.Context, vaultBas
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetDeletedStorageAccounts", resp, "Failure responding to request")
 	}
+	if result.dslr.hasNextLink() && result.dslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -3176,7 +3168,6 @@ func (client BaseClient) GetDeletedStorageAccountsSender(req *http.Request) (*ht
 func (client BaseClient) GetDeletedStorageAccountsResponder(resp *http.Response) (result DeletedStorageListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3226,7 +3217,8 @@ func (client BaseClient) GetDeletedStorageAccountsComplete(ctx context.Context, 
 // Parameters:
 // vaultBaseURL - the vault name, for example https://myvault.vault.azure.net.
 // keyName - the name of the key to get.
-// keyVersion - adding the version parameter retrieves a specific version of a key.
+// keyVersion - adding the version parameter retrieves a specific version of a key. This URI fragment is
+// optional. If not specified, the latest version of the key is returned.
 func (client BaseClient) GetKey(ctx context.Context, vaultBaseURL string, keyName string, keyVersion string) (result KeyBundle, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetKey")
@@ -3294,7 +3286,6 @@ func (client BaseClient) GetKeySender(req *http.Request) (*http.Response, error)
 func (client BaseClient) GetKeyResponder(resp *http.Response) (result KeyBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3348,6 +3339,9 @@ func (client BaseClient) GetKeys(ctx context.Context, vaultBaseURL string, maxre
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetKeys", resp, "Failure responding to request")
 	}
+	if result.klr.hasNextLink() && result.klr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -3385,7 +3379,6 @@ func (client BaseClient) GetKeysSender(req *http.Request) (*http.Response, error
 func (client BaseClient) GetKeysResponder(resp *http.Response) (result KeyListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3475,6 +3468,9 @@ func (client BaseClient) GetKeyVersions(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetKeyVersions", resp, "Failure responding to request")
 	}
+	if result.klr.hasNextLink() && result.klr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -3516,7 +3512,6 @@ func (client BaseClient) GetKeyVersionsSender(req *http.Request) (*http.Response
 func (client BaseClient) GetKeyVersionsResponder(resp *http.Response) (result KeyListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3642,7 +3637,6 @@ func (client BaseClient) GetSasDefinitionSender(req *http.Request) (*http.Respon
 func (client BaseClient) GetSasDefinitionResponder(resp *http.Response) (result SasDefinitionBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3697,6 +3691,9 @@ func (client BaseClient) GetSasDefinitions(ctx context.Context, vaultBaseURL str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetSasDefinitions", resp, "Failure responding to request")
 	}
+	if result.sdlr.hasNextLink() && result.sdlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -3738,7 +3735,6 @@ func (client BaseClient) GetSasDefinitionsSender(req *http.Request) (*http.Respo
 func (client BaseClient) GetSasDefinitionsResponder(resp *http.Response) (result SasDefinitionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3788,7 +3784,8 @@ func (client BaseClient) GetSasDefinitionsComplete(ctx context.Context, vaultBas
 // Parameters:
 // vaultBaseURL - the vault name, for example https://myvault.vault.azure.net.
 // secretName - the name of the secret.
-// secretVersion - the version of the secret.
+// secretVersion - the version of the secret. This URI fragment is optional. If not specified, the latest
+// version of the secret is returned.
 func (client BaseClient) GetSecret(ctx context.Context, vaultBaseURL string, secretName string, secretVersion string) (result SecretBundle, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetSecret")
@@ -3856,7 +3853,6 @@ func (client BaseClient) GetSecretSender(req *http.Request) (*http.Response, err
 func (client BaseClient) GetSecretResponder(resp *http.Response) (result SecretBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3909,6 +3905,9 @@ func (client BaseClient) GetSecrets(ctx context.Context, vaultBaseURL string, ma
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetSecrets", resp, "Failure responding to request")
 	}
+	if result.slr.hasNextLink() && result.slr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -3946,7 +3945,6 @@ func (client BaseClient) GetSecretsSender(req *http.Request) (*http.Response, er
 func (client BaseClient) GetSecretsResponder(resp *http.Response) (result SecretListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4036,6 +4034,9 @@ func (client BaseClient) GetSecretVersions(ctx context.Context, vaultBaseURL str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetSecretVersions", resp, "Failure responding to request")
 	}
+	if result.slr.hasNextLink() && result.slr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -4077,7 +4078,6 @@ func (client BaseClient) GetSecretVersionsSender(req *http.Request) (*http.Respo
 func (client BaseClient) GetSecretVersionsResponder(resp *http.Response) (result SecretListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4199,7 +4199,6 @@ func (client BaseClient) GetStorageAccountSender(req *http.Request) (*http.Respo
 func (client BaseClient) GetStorageAccountResponder(resp *http.Response) (result StorageBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4251,6 +4250,9 @@ func (client BaseClient) GetStorageAccounts(ctx context.Context, vaultBaseURL st
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetStorageAccounts", resp, "Failure responding to request")
 	}
+	if result.slr.hasNextLink() && result.slr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -4288,7 +4290,6 @@ func (client BaseClient) GetStorageAccountsSender(req *http.Request) (*http.Resp
 func (client BaseClient) GetStorageAccountsResponder(resp *http.Response) (result StorageListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4422,7 +4423,6 @@ func (client BaseClient) ImportCertificateSender(req *http.Request) (*http.Respo
 func (client BaseClient) ImportCertificateResponder(resp *http.Response) (result CertificateBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4513,7 +4513,6 @@ func (client BaseClient) ImportKeySender(req *http.Request) (*http.Response, err
 func (client BaseClient) ImportKeyResponder(resp *http.Response) (result KeyBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4601,7 +4600,6 @@ func (client BaseClient) MergeCertificateSender(req *http.Request) (*http.Respon
 func (client BaseClient) MergeCertificateResponder(resp *http.Response) (result CertificateBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4681,7 +4679,6 @@ func (client BaseClient) PurgeDeletedCertificateSender(req *http.Request) (*http
 func (client BaseClient) PurgeDeletedCertificateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -4760,7 +4757,6 @@ func (client BaseClient) PurgeDeletedKeySender(req *http.Request) (*http.Respons
 func (client BaseClient) PurgeDeletedKeyResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -4839,7 +4835,6 @@ func (client BaseClient) PurgeDeletedSecretSender(req *http.Request) (*http.Resp
 func (client BaseClient) PurgeDeletedSecretResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -4924,7 +4919,6 @@ func (client BaseClient) PurgeDeletedStorageAccountSender(req *http.Request) (*h
 func (client BaseClient) PurgeDeletedStorageAccountResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -5003,7 +4997,6 @@ func (client BaseClient) RecoverDeletedCertificateSender(req *http.Request) (*ht
 func (client BaseClient) RecoverDeletedCertificateResponder(resp *http.Response) (result CertificateBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5084,7 +5077,6 @@ func (client BaseClient) RecoverDeletedKeySender(req *http.Request) (*http.Respo
 func (client BaseClient) RecoverDeletedKeyResponder(resp *http.Response) (result KeyBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5173,7 +5165,6 @@ func (client BaseClient) RecoverDeletedSasDefinitionSender(req *http.Request) (*
 func (client BaseClient) RecoverDeletedSasDefinitionResponder(resp *http.Response) (result SasDefinitionBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5252,7 +5243,6 @@ func (client BaseClient) RecoverDeletedSecretSender(req *http.Request) (*http.Re
 func (client BaseClient) RecoverDeletedSecretResponder(resp *http.Response) (result SecretBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5337,7 +5327,6 @@ func (client BaseClient) RecoverDeletedStorageAccountSender(req *http.Request) (
 func (client BaseClient) RecoverDeletedStorageAccountResponder(resp *http.Response) (result StorageBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5427,7 +5416,6 @@ func (client BaseClient) RegenerateStorageAccountKeySender(req *http.Request) (*
 func (client BaseClient) RegenerateStorageAccountKeyResponder(resp *http.Response) (result StorageBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5510,7 +5498,6 @@ func (client BaseClient) RestoreCertificateSender(req *http.Request) (*http.Resp
 func (client BaseClient) RestoreCertificateResponder(resp *http.Response) (result CertificateBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5600,7 +5587,6 @@ func (client BaseClient) RestoreKeySender(req *http.Request) (*http.Response, er
 func (client BaseClient) RestoreKeyResponder(resp *http.Response) (result KeyBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5683,7 +5669,6 @@ func (client BaseClient) RestoreSecretSender(req *http.Request) (*http.Response,
 func (client BaseClient) RestoreSecretResponder(resp *http.Response) (result SecretBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5766,7 +5751,6 @@ func (client BaseClient) RestoreStorageAccountSender(req *http.Request) (*http.R
 func (client BaseClient) RestoreStorageAccountResponder(resp *http.Response) (result StorageBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5844,7 +5828,6 @@ func (client BaseClient) SetCertificateContactsSender(req *http.Request) (*http.
 func (client BaseClient) SetCertificateContactsResponder(resp *http.Response) (result Contacts, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5932,7 +5915,6 @@ func (client BaseClient) SetCertificateIssuerSender(req *http.Request) (*http.Re
 func (client BaseClient) SetCertificateIssuerResponder(resp *http.Response) (result IssuerBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6027,7 +6009,6 @@ func (client BaseClient) SetSasDefinitionSender(req *http.Request) (*http.Respon
 func (client BaseClient) SetSasDefinitionResponder(resp *http.Response) (result SasDefinitionBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6117,7 +6098,6 @@ func (client BaseClient) SetSecretSender(req *http.Request) (*http.Response, err
 func (client BaseClient) SetSecretResponder(resp *http.Response) (result SecretBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6208,7 +6188,6 @@ func (client BaseClient) SetStorageAccountSender(req *http.Request) (*http.Respo
 func (client BaseClient) SetStorageAccountResponder(resp *http.Response) (result StorageBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6298,7 +6277,6 @@ func (client BaseClient) SignSender(req *http.Request) (*http.Response, error) {
 func (client BaseClient) SignResponder(resp *http.Response) (result KeyOperationResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6390,7 +6368,6 @@ func (client BaseClient) UnwrapKeySender(req *http.Request) (*http.Response, err
 func (client BaseClient) UnwrapKeyResponder(resp *http.Response) (result KeyOperationResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6474,7 +6451,6 @@ func (client BaseClient) UpdateCertificateSender(req *http.Request) (*http.Respo
 func (client BaseClient) UpdateCertificateResponder(resp *http.Response) (result CertificateBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6556,7 +6532,6 @@ func (client BaseClient) UpdateCertificateIssuerSender(req *http.Request) (*http
 func (client BaseClient) UpdateCertificateIssuerResponder(resp *http.Response) (result IssuerBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6638,7 +6613,6 @@ func (client BaseClient) UpdateCertificateOperationSender(req *http.Request) (*h
 func (client BaseClient) UpdateCertificateOperationResponder(resp *http.Response) (result CertificateOperation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6721,7 +6695,6 @@ func (client BaseClient) UpdateCertificatePolicySender(req *http.Request) (*http
 func (client BaseClient) UpdateCertificatePolicyResponder(resp *http.Response) (result CertificatePolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6805,7 +6778,6 @@ func (client BaseClient) UpdateKeySender(req *http.Request) (*http.Response, err
 func (client BaseClient) UpdateKeyResponder(resp *http.Response) (result KeyBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6897,7 +6869,6 @@ func (client BaseClient) UpdateSasDefinitionSender(req *http.Request) (*http.Res
 func (client BaseClient) UpdateSasDefinitionResponder(resp *http.Response) (result SasDefinitionBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6982,7 +6953,6 @@ func (client BaseClient) UpdateSecretSender(req *http.Request) (*http.Response, 
 func (client BaseClient) UpdateSecretResponder(resp *http.Response) (result SecretBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7070,7 +7040,6 @@ func (client BaseClient) UpdateStorageAccountSender(req *http.Request) (*http.Re
 func (client BaseClient) UpdateStorageAccountResponder(resp *http.Response) (result StorageBundle, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7163,7 +7132,6 @@ func (client BaseClient) VerifySender(req *http.Request) (*http.Response, error)
 func (client BaseClient) VerifyResponder(resp *http.Response) (result KeyVerifyResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7256,7 +7224,6 @@ func (client BaseClient) WrapKeySender(req *http.Request) (*http.Response, error
 func (client BaseClient) WrapKeyResponder(resp *http.Response) (result KeyOperationResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

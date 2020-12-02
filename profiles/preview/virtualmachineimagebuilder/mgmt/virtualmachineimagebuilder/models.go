@@ -178,14 +178,14 @@ func New(subscriptionID string) BaseClient {
 func NewImageTemplateListResultIterator(page ImageTemplateListResultPage) ImageTemplateListResultIterator {
 	return original.NewImageTemplateListResultIterator(page)
 }
-func NewImageTemplateListResultPage(getNextPage func(context.Context, ImageTemplateListResult) (ImageTemplateListResult, error)) ImageTemplateListResultPage {
-	return original.NewImageTemplateListResultPage(getNextPage)
+func NewImageTemplateListResultPage(cur ImageTemplateListResult, getNextPage func(context.Context, ImageTemplateListResult) (ImageTemplateListResult, error)) ImageTemplateListResultPage {
+	return original.NewImageTemplateListResultPage(cur, getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -196,8 +196,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewRunOutputCollectionIterator(page RunOutputCollectionPage) RunOutputCollectionIterator {
 	return original.NewRunOutputCollectionIterator(page)
 }
-func NewRunOutputCollectionPage(getNextPage func(context.Context, RunOutputCollection) (RunOutputCollection, error)) RunOutputCollectionPage {
-	return original.NewRunOutputCollectionPage(getNextPage)
+func NewRunOutputCollectionPage(cur RunOutputCollection, getNextPage func(context.Context, RunOutputCollection) (RunOutputCollection, error)) RunOutputCollectionPage {
+	return original.NewRunOutputCollectionPage(cur, getNextPage)
 }
 func NewVirtualMachineImageTemplatesClient(subscriptionID string) VirtualMachineImageTemplatesClient {
 	return original.NewVirtualMachineImageTemplatesClient(subscriptionID)

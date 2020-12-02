@@ -150,6 +150,13 @@ const (
 	AuthenticationTypeGcpCredentials                  AuthenticationType = original.AuthenticationTypeGcpCredentials
 )
 
+type AuthorizationState = original.AuthorizationState
+
+const (
+	Authorized   AuthorizationState = original.Authorized
+	Unauthorized AuthorizationState = original.Unauthorized
+)
+
 type AutoProvision = original.AutoProvision
 
 const (
@@ -217,6 +224,20 @@ const (
 	TwinData DataSource = original.TwinData
 )
 
+type DeviceCriticality = original.DeviceCriticality
+
+const (
+	Important DeviceCriticality = original.Important
+	Standard  DeviceCriticality = original.Standard
+)
+
+type DeviceStatus = original.DeviceStatus
+
+const (
+	DeviceStatusActive  DeviceStatus = original.DeviceStatusActive
+	DeviceStatusRemoved DeviceStatus = original.DeviceStatusRemoved
+)
+
 type Direction = original.Direction
 
 const (
@@ -243,9 +264,11 @@ const (
 type EventSource = original.EventSource
 
 const (
-	Alerts         EventSource = original.Alerts
-	Assessments    EventSource = original.Assessments
-	SubAssessments EventSource = original.SubAssessments
+	Alerts              EventSource = original.Alerts
+	Assessments         EventSource = original.Assessments
+	SecureScoreControls EventSource = original.SecureScoreControls
+	SecureScores        EventSource = original.SecureScores
+	SubAssessments      EventSource = original.SubAssessments
 )
 
 type Exe = original.Exe
@@ -376,6 +399,20 @@ const (
 	KindExternalSecuritySolution KindEnum1 = original.KindExternalSecuritySolution
 )
 
+type MacSignificance = original.MacSignificance
+
+const (
+	Primary   MacSignificance = original.Primary
+	Secondary MacSignificance = original.Secondary
+)
+
+type ManagementState = original.ManagementState
+
+const (
+	Managed   ManagementState = original.Managed
+	Unmanaged ManagementState = original.Unmanaged
+)
+
 type Msi = original.Msi
 
 const (
@@ -410,8 +447,15 @@ const (
 type PricingTier = original.PricingTier
 
 const (
-	Free     PricingTier = original.Free
-	Standard PricingTier = original.Standard
+	PricingTierFree     PricingTier = original.PricingTierFree
+	PricingTierStandard PricingTier = original.PricingTierStandard
+)
+
+type ProgrammingState = original.ProgrammingState
+
+const (
+	NotProgrammingDevice ProgrammingState = original.NotProgrammingDevice
+	ProgrammingDevice    ProgrammingState = original.ProgrammingDevice
 )
 
 type PropertyType = original.PropertyType
@@ -447,6 +491,14 @@ const (
 	ProvisioningState1Failed         ProvisioningState1 = original.ProvisioningState1Failed
 	ProvisioningState1Provisioning   ProvisioningState1 = original.ProvisioningState1Provisioning
 	ProvisioningState1Succeeded      ProvisioningState1 = original.ProvisioningState1Succeeded
+)
+
+type PurdueLevel = original.PurdueLevel
+
+const (
+	Enterprise     PurdueLevel = original.Enterprise
+	ProcessControl PurdueLevel = original.ProcessControl
+	Supervisory    PurdueLevel = original.Supervisory
 )
 
 type Rank = original.Rank
@@ -524,6 +576,13 @@ const (
 	IoTVulnerableTLSCipherSuite      RecommendationType = original.IoTVulnerableTLSCipherSuite
 )
 
+type RelationToIPStatus = original.RelationToIPStatus
+
+const (
+	Certain RelationToIPStatus = original.Certain
+	Guess   RelationToIPStatus = original.Guess
+)
+
 type ReportedSeverity = original.ReportedSeverity
 
 const (
@@ -542,6 +601,16 @@ const (
 	ResourceStatusOffByPolicy   ResourceStatus = original.ResourceStatusOffByPolicy
 )
 
+type RuleSeverity = original.RuleSeverity
+
+const (
+	RuleSeverityHigh          RuleSeverity = original.RuleSeverityHigh
+	RuleSeverityInformational RuleSeverity = original.RuleSeverityInformational
+	RuleSeverityLow           RuleSeverity = original.RuleSeverityLow
+	RuleSeverityMedium        RuleSeverity = original.RuleSeverityMedium
+	RuleSeverityObsolete      RuleSeverity = original.RuleSeverityObsolete
+)
+
 type RuleState = original.RuleState
 
 const (
@@ -550,34 +619,74 @@ const (
 	RuleStateExpired  RuleState = original.RuleStateExpired
 )
 
+type RuleStatus = original.RuleStatus
+
+const (
+	Finding       RuleStatus = original.Finding
+	InternalError RuleStatus = original.InternalError
+	NonFinding    RuleStatus = original.NonFinding
+)
+
 type RuleType = original.RuleType
 
 const (
-	RuleTypeActiveConnectionsNotInAllowedRange       RuleType = original.RuleTypeActiveConnectionsNotInAllowedRange
-	RuleTypeAllowlistCustomAlertRule                 RuleType = original.RuleTypeAllowlistCustomAlertRule
-	RuleTypeAmqpC2DMessagesNotInAllowedRange         RuleType = original.RuleTypeAmqpC2DMessagesNotInAllowedRange
-	RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange RuleType = original.RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange
-	RuleTypeAmqpD2CMessagesNotInAllowedRange         RuleType = original.RuleTypeAmqpD2CMessagesNotInAllowedRange
-	RuleTypeConnectionToIPNotAllowed                 RuleType = original.RuleTypeConnectionToIPNotAllowed
-	RuleTypeCustomAlertRule                          RuleType = original.RuleTypeCustomAlertRule
-	RuleTypeDenylistCustomAlertRule                  RuleType = original.RuleTypeDenylistCustomAlertRule
-	RuleTypeDirectMethodInvokesNotInAllowedRange     RuleType = original.RuleTypeDirectMethodInvokesNotInAllowedRange
-	RuleTypeFailedLocalLoginsNotInAllowedRange       RuleType = original.RuleTypeFailedLocalLoginsNotInAllowedRange
-	RuleTypeFileUploadsNotInAllowedRange             RuleType = original.RuleTypeFileUploadsNotInAllowedRange
-	RuleTypeHTTPC2DMessagesNotInAllowedRange         RuleType = original.RuleTypeHTTPC2DMessagesNotInAllowedRange
-	RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange RuleType = original.RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange
-	RuleTypeHTTPD2CMessagesNotInAllowedRange         RuleType = original.RuleTypeHTTPD2CMessagesNotInAllowedRange
-	RuleTypeListCustomAlertRule                      RuleType = original.RuleTypeListCustomAlertRule
-	RuleTypeLocalUserNotAllowed                      RuleType = original.RuleTypeLocalUserNotAllowed
-	RuleTypeMqttC2DMessagesNotInAllowedRange         RuleType = original.RuleTypeMqttC2DMessagesNotInAllowedRange
-	RuleTypeMqttC2DRejectedMessagesNotInAllowedRange RuleType = original.RuleTypeMqttC2DRejectedMessagesNotInAllowedRange
-	RuleTypeMqttD2CMessagesNotInAllowedRange         RuleType = original.RuleTypeMqttD2CMessagesNotInAllowedRange
-	RuleTypeProcessNotAllowed                        RuleType = original.RuleTypeProcessNotAllowed
-	RuleTypeQueuePurgesNotInAllowedRange             RuleType = original.RuleTypeQueuePurgesNotInAllowedRange
-	RuleTypeThresholdCustomAlertRule                 RuleType = original.RuleTypeThresholdCustomAlertRule
-	RuleTypeTimeWindowCustomAlertRule                RuleType = original.RuleTypeTimeWindowCustomAlertRule
-	RuleTypeTwinUpdatesNotInAllowedRange             RuleType = original.RuleTypeTwinUpdatesNotInAllowedRange
-	RuleTypeUnauthorizedOperationsNotInAllowedRange  RuleType = original.RuleTypeUnauthorizedOperationsNotInAllowedRange
+	BaselineExpected RuleType = original.BaselineExpected
+	Binary           RuleType = original.Binary
+	NegativeList     RuleType = original.NegativeList
+	PositiveList     RuleType = original.PositiveList
+)
+
+type RuleTypeBasicCustomAlertRule = original.RuleTypeBasicCustomAlertRule
+
+const (
+	RuleTypeActiveConnectionsNotInAllowedRange       RuleTypeBasicCustomAlertRule = original.RuleTypeActiveConnectionsNotInAllowedRange
+	RuleTypeAllowlistCustomAlertRule                 RuleTypeBasicCustomAlertRule = original.RuleTypeAllowlistCustomAlertRule
+	RuleTypeAmqpC2DMessagesNotInAllowedRange         RuleTypeBasicCustomAlertRule = original.RuleTypeAmqpC2DMessagesNotInAllowedRange
+	RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange RuleTypeBasicCustomAlertRule = original.RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange
+	RuleTypeAmqpD2CMessagesNotInAllowedRange         RuleTypeBasicCustomAlertRule = original.RuleTypeAmqpD2CMessagesNotInAllowedRange
+	RuleTypeConnectionToIPNotAllowed                 RuleTypeBasicCustomAlertRule = original.RuleTypeConnectionToIPNotAllowed
+	RuleTypeCustomAlertRule                          RuleTypeBasicCustomAlertRule = original.RuleTypeCustomAlertRule
+	RuleTypeDenylistCustomAlertRule                  RuleTypeBasicCustomAlertRule = original.RuleTypeDenylistCustomAlertRule
+	RuleTypeDirectMethodInvokesNotInAllowedRange     RuleTypeBasicCustomAlertRule = original.RuleTypeDirectMethodInvokesNotInAllowedRange
+	RuleTypeFailedLocalLoginsNotInAllowedRange       RuleTypeBasicCustomAlertRule = original.RuleTypeFailedLocalLoginsNotInAllowedRange
+	RuleTypeFileUploadsNotInAllowedRange             RuleTypeBasicCustomAlertRule = original.RuleTypeFileUploadsNotInAllowedRange
+	RuleTypeHTTPC2DMessagesNotInAllowedRange         RuleTypeBasicCustomAlertRule = original.RuleTypeHTTPC2DMessagesNotInAllowedRange
+	RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange RuleTypeBasicCustomAlertRule = original.RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange
+	RuleTypeHTTPD2CMessagesNotInAllowedRange         RuleTypeBasicCustomAlertRule = original.RuleTypeHTTPD2CMessagesNotInAllowedRange
+	RuleTypeListCustomAlertRule                      RuleTypeBasicCustomAlertRule = original.RuleTypeListCustomAlertRule
+	RuleTypeLocalUserNotAllowed                      RuleTypeBasicCustomAlertRule = original.RuleTypeLocalUserNotAllowed
+	RuleTypeMqttC2DMessagesNotInAllowedRange         RuleTypeBasicCustomAlertRule = original.RuleTypeMqttC2DMessagesNotInAllowedRange
+	RuleTypeMqttC2DRejectedMessagesNotInAllowedRange RuleTypeBasicCustomAlertRule = original.RuleTypeMqttC2DRejectedMessagesNotInAllowedRange
+	RuleTypeMqttD2CMessagesNotInAllowedRange         RuleTypeBasicCustomAlertRule = original.RuleTypeMqttD2CMessagesNotInAllowedRange
+	RuleTypeProcessNotAllowed                        RuleTypeBasicCustomAlertRule = original.RuleTypeProcessNotAllowed
+	RuleTypeQueuePurgesNotInAllowedRange             RuleTypeBasicCustomAlertRule = original.RuleTypeQueuePurgesNotInAllowedRange
+	RuleTypeThresholdCustomAlertRule                 RuleTypeBasicCustomAlertRule = original.RuleTypeThresholdCustomAlertRule
+	RuleTypeTimeWindowCustomAlertRule                RuleTypeBasicCustomAlertRule = original.RuleTypeTimeWindowCustomAlertRule
+	RuleTypeTwinUpdatesNotInAllowedRange             RuleTypeBasicCustomAlertRule = original.RuleTypeTwinUpdatesNotInAllowedRange
+	RuleTypeUnauthorizedOperationsNotInAllowedRange  RuleTypeBasicCustomAlertRule = original.RuleTypeUnauthorizedOperationsNotInAllowedRange
+)
+
+type ScanState = original.ScanState
+
+const (
+	ScanStateFailed      ScanState = original.ScanStateFailed
+	ScanStateFailedToRun ScanState = original.ScanStateFailedToRun
+	ScanStateInProgress  ScanState = original.ScanStateInProgress
+	ScanStatePassed      ScanState = original.ScanStatePassed
+)
+
+type ScanTriggerType = original.ScanTriggerType
+
+const (
+	OnDemand  ScanTriggerType = original.OnDemand
+	Recurring ScanTriggerType = original.Recurring
+)
+
+type ScanningFunctionality = original.ScanningFunctionality
+
+const (
+	NotScannerDevice ScanningFunctionality = original.NotScannerDevice
+	ScannerDevice    ScanningFunctionality = original.ScannerDevice
 )
 
 type Script = original.Script
@@ -818,6 +927,8 @@ type AzureResourceIdentifier = original.AzureResourceIdentifier
 type AzureResourceLink = original.AzureResourceLink
 type AzureTrackedResourceLocation = original.AzureTrackedResourceLocation
 type BaseClient = original.BaseClient
+type Baseline = original.Baseline
+type BaselineAdjustedResult = original.BaselineAdjustedResult
 type BasicAdditionalData = original.BasicAdditionalData
 type BasicAllowlistCustomAlertRule = original.BasicAllowlistCustomAlertRule
 type BasicAuthenticationDetailsProperties = original.BasicAuthenticationDetailsProperties
@@ -832,6 +943,7 @@ type BasicSetting = original.BasicSetting
 type BasicSettingResource = original.BasicSettingResource
 type BasicThresholdCustomAlertRule = original.BasicThresholdCustomAlertRule
 type BasicTimeWindowCustomAlertRule = original.BasicTimeWindowCustomAlertRule
+type BenchmarkReference = original.BenchmarkReference
 type CVE = original.CVE
 type CVSS = original.CVSS
 type CefExternalSecuritySolution = original.CefExternalSecuritySolution
@@ -872,12 +984,20 @@ type CustomAlertRule = original.CustomAlertRule
 type DataExportSettingProperties = original.DataExportSettingProperties
 type DataExportSettings = original.DataExportSettings
 type DenylistCustomAlertRule = original.DenylistCustomAlertRule
+type Device = original.Device
+type DeviceClient = original.DeviceClient
+type DeviceList = original.DeviceList
+type DeviceListIterator = original.DeviceListIterator
+type DeviceListPage = original.DeviceListPage
+type DeviceProperties = original.DeviceProperties
 type DeviceSecurityGroup = original.DeviceSecurityGroup
 type DeviceSecurityGroupList = original.DeviceSecurityGroupList
 type DeviceSecurityGroupListIterator = original.DeviceSecurityGroupListIterator
 type DeviceSecurityGroupListPage = original.DeviceSecurityGroupListPage
 type DeviceSecurityGroupProperties = original.DeviceSecurityGroupProperties
 type DeviceSecurityGroupsClient = original.DeviceSecurityGroupsClient
+type DevicesForHubClient = original.DevicesForHubClient
+type DevicesForSubscriptionClient = original.DevicesForSubscriptionClient
 type DirectMethodInvokesNotInAllowedRange = original.DirectMethodInvokesNotInAllowedRange
 type DiscoveredSecuritySolution = original.DiscoveredSecuritySolution
 type DiscoveredSecuritySolutionList = original.DiscoveredSecuritySolutionList
@@ -897,11 +1017,13 @@ type ExternalSecuritySolutionProperties = original.ExternalSecuritySolutionPrope
 type ExternalSecuritySolutionsClient = original.ExternalSecuritySolutionsClient
 type FailedLocalLoginsNotInAllowedRange = original.FailedLocalLoginsNotInAllowedRange
 type FileUploadsNotInAllowedRange = original.FileUploadsNotInAllowedRange
+type Firmware = original.Firmware
 type GcpCredentialsDetailsProperties = original.GcpCredentialsDetailsProperties
 type HTTPC2DMessagesNotInAllowedRange = original.HTTPC2DMessagesNotInAllowedRange
 type HTTPC2DRejectedMessagesNotInAllowedRange = original.HTTPC2DRejectedMessagesNotInAllowedRange
 type HTTPD2CMessagesNotInAllowedRange = original.HTTPD2CMessagesNotInAllowedRange
 type HybridComputeSettingsProperties = original.HybridComputeSettingsProperties
+type IPAddress = original.IPAddress
 type InformationProtectionKeyword = original.InformationProtectionKeyword
 type InformationProtectionPoliciesClient = original.InformationProtectionPoliciesClient
 type InformationProtectionPolicy = original.InformationProtectionPolicy
@@ -937,8 +1059,13 @@ type IoTSeverityMetrics = original.IoTSeverityMetrics
 type IotAlert = original.IotAlert
 type IotAlertList = original.IotAlertList
 type IotAlertListIterator = original.IotAlertListIterator
+type IotAlertListModel = original.IotAlertListModel
+type IotAlertListModelIterator = original.IotAlertListModelIterator
+type IotAlertListModelPage = original.IotAlertListModelPage
 type IotAlertListPage = original.IotAlertListPage
+type IotAlertModel = original.IotAlertModel
 type IotAlertProperties = original.IotAlertProperties
+type IotAlertPropertiesModel = original.IotAlertPropertiesModel
 type IotAlertType = original.IotAlertType
 type IotAlertTypeList = original.IotAlertTypeList
 type IotAlertTypeProperties = original.IotAlertTypeProperties
@@ -951,8 +1078,13 @@ type IotDefenderSettingsProperties = original.IotDefenderSettingsProperties
 type IotRecommendation = original.IotRecommendation
 type IotRecommendationList = original.IotRecommendationList
 type IotRecommendationListIterator = original.IotRecommendationListIterator
+type IotRecommendationListModel = original.IotRecommendationListModel
+type IotRecommendationListModelIterator = original.IotRecommendationListModelIterator
+type IotRecommendationListModelPage = original.IotRecommendationListModelPage
 type IotRecommendationListPage = original.IotRecommendationListPage
+type IotRecommendationModel = original.IotRecommendationModel
 type IotRecommendationProperties = original.IotRecommendationProperties
+type IotRecommendationPropertiesModel = original.IotRecommendationPropertiesModel
 type IotRecommendationType = original.IotRecommendationType
 type IotRecommendationTypeList = original.IotRecommendationTypeList
 type IotRecommendationTypeProperties = original.IotRecommendationTypeProperties
@@ -985,9 +1117,11 @@ type LocalUserNotAllowed = original.LocalUserNotAllowed
 type Location = original.Location
 type LocationsClient = original.LocationsClient
 type LogAnalyticsIdentifier = original.LogAnalyticsIdentifier
+type MacAddress = original.MacAddress
 type MqttC2DMessagesNotInAllowedRange = original.MqttC2DMessagesNotInAllowedRange
 type MqttC2DRejectedMessagesNotInAllowedRange = original.MqttC2DRejectedMessagesNotInAllowedRange
 type MqttD2CMessagesNotInAllowedRange = original.MqttD2CMessagesNotInAllowedRange
+type NetworkInterface = original.NetworkInterface
 type OnPremiseIotSensor = original.OnPremiseIotSensor
 type OnPremiseIotSensorsClient = original.OnPremiseIotSensorsClient
 type OnPremiseIotSensorsList = original.OnPremiseIotSensorsList
@@ -1007,7 +1141,6 @@ type PackageDownloadsCentralManagerFullOvf = original.PackageDownloadsCentralMan
 type PackageDownloadsSensor = original.PackageDownloadsSensor
 type PackageDownloadsSensorFull = original.PackageDownloadsSensorFull
 type PackageDownloadsSensorFullOvf = original.PackageDownloadsSensorFullOvf
-type PackageDownloadsThreatIntelligence = original.PackageDownloadsThreatIntelligence
 type PathRecommendation = original.PathRecommendation
 type Pricing = original.Pricing
 type PricingList = original.PricingList
@@ -1015,8 +1148,10 @@ type PricingProperties = original.PricingProperties
 type PricingsClient = original.PricingsClient
 type ProcessNotAllowed = original.ProcessNotAllowed
 type ProtectionMode = original.ProtectionMode
+type Protocol1 = original.Protocol1
 type ProxyServerProperties = original.ProxyServerProperties
 type PublisherInfo = original.PublisherInfo
+type QueryCheck = original.QueryCheck
 type QueuePurgesNotInAllowedRange = original.QueuePurgesNotInAllowedRange
 type ReadCloser = original.ReadCloser
 type RecommendationConfigurationProperties = original.RecommendationConfigurationProperties
@@ -1038,11 +1173,27 @@ type RegulatoryComplianceStandardListIterator = original.RegulatoryComplianceSta
 type RegulatoryComplianceStandardListPage = original.RegulatoryComplianceStandardListPage
 type RegulatoryComplianceStandardProperties = original.RegulatoryComplianceStandardProperties
 type RegulatoryComplianceStandardsClient = original.RegulatoryComplianceStandardsClient
+type Remediation = original.Remediation
+type ResetPasswordInput = original.ResetPasswordInput
 type Resource = original.Resource
 type ResourceDetails = original.ResourceDetails
 type ResourceIdentifier = original.ResourceIdentifier
 type Rule = original.Rule
+type RuleResults = original.RuleResults
+type RuleResultsInput = original.RuleResultsInput
+type RuleResultsProperties = original.RuleResultsProperties
+type RulesResults = original.RulesResults
+type RulesResultsInput = original.RulesResultsInput
 type SQLServerVulnerabilityProperties = original.SQLServerVulnerabilityProperties
+type SQLVulnerabilityAssessmentBaselineRulesClient = original.SQLVulnerabilityAssessmentBaselineRulesClient
+type SQLVulnerabilityAssessmentScanResultsClient = original.SQLVulnerabilityAssessmentScanResultsClient
+type SQLVulnerabilityAssessmentScansClient = original.SQLVulnerabilityAssessmentScansClient
+type Scan = original.Scan
+type ScanProperties = original.ScanProperties
+type ScanResult = original.ScanResult
+type ScanResultProperties = original.ScanResultProperties
+type ScanResults = original.ScanResults
+type Scans = original.Scans
 type ScopeElement = original.ScopeElement
 type ScoreDetails = original.ScoreDetails
 type SecureScoreControlDefinitionItem = original.SecureScoreControlDefinitionItem
@@ -1066,6 +1217,7 @@ type SecureScoresList = original.SecureScoresList
 type SecureScoresListIterator = original.SecureScoresListIterator
 type SecureScoresListPage = original.SecureScoresListPage
 type SensitivityLabel = original.SensitivityLabel
+type Sensor = original.Sensor
 type ServerVulnerabilityAssessment = original.ServerVulnerabilityAssessment
 type ServerVulnerabilityAssessmentClient = original.ServerVulnerabilityAssessmentClient
 type ServerVulnerabilityAssessmentProperties = original.ServerVulnerabilityAssessmentProperties
@@ -1078,6 +1230,7 @@ type SettingsClient = original.SettingsClient
 type SettingsList = original.SettingsList
 type SettingsListIterator = original.SettingsListIterator
 type SettingsListPage = original.SettingsListPage
+type Site = original.Site
 type Solution = original.Solution
 type SolutionList = original.SolutionList
 type SolutionListIterator = original.SolutionListIterator
@@ -1121,9 +1274,11 @@ type TwinUpdatesNotInAllowedRange = original.TwinUpdatesNotInAllowedRange
 type UnauthorizedOperationsNotInAllowedRange = original.UnauthorizedOperationsNotInAllowedRange
 type UpdateIoTSecuritySolutionProperties = original.UpdateIoTSecuritySolutionProperties
 type UpdateIotSecuritySolutionData = original.UpdateIotSecuritySolutionData
+type UpgradePackageDownloadInfo = original.UpgradePackageDownloadInfo
 type UserDefinedResourcesProperties = original.UserDefinedResourcesProperties
 type UserRecommendation = original.UserRecommendation
 type VMRecommendation = original.VMRecommendation
+type VaRule = original.VaRule
 type VendorReference = original.VendorReference
 type WorkspaceSetting = original.WorkspaceSetting
 type WorkspaceSettingList = original.WorkspaceSettingList
@@ -1150,8 +1305,8 @@ func NewAdaptiveNetworkHardeningsClientWithBaseURI(baseURI string, subscriptionI
 func NewAdaptiveNetworkHardeningsListIterator(page AdaptiveNetworkHardeningsListPage) AdaptiveNetworkHardeningsListIterator {
 	return original.NewAdaptiveNetworkHardeningsListIterator(page)
 }
-func NewAdaptiveNetworkHardeningsListPage(getNextPage func(context.Context, AdaptiveNetworkHardeningsList) (AdaptiveNetworkHardeningsList, error)) AdaptiveNetworkHardeningsListPage {
-	return original.NewAdaptiveNetworkHardeningsListPage(getNextPage)
+func NewAdaptiveNetworkHardeningsListPage(cur AdaptiveNetworkHardeningsList, getNextPage func(context.Context, AdaptiveNetworkHardeningsList) (AdaptiveNetworkHardeningsList, error)) AdaptiveNetworkHardeningsListPage {
+	return original.NewAdaptiveNetworkHardeningsListPage(cur, getNextPage)
 }
 func NewAdvancedThreatProtectionClient(subscriptionID string, ascLocation string) AdvancedThreatProtectionClient {
 	return original.NewAdvancedThreatProtectionClient(subscriptionID, ascLocation)
@@ -1162,8 +1317,8 @@ func NewAdvancedThreatProtectionClientWithBaseURI(baseURI string, subscriptionID
 func NewAlertListIterator(page AlertListPage) AlertListIterator {
 	return original.NewAlertListIterator(page)
 }
-func NewAlertListPage(getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
-	return original.NewAlertListPage(getNextPage)
+func NewAlertListPage(cur AlertList, getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
+	return original.NewAlertListPage(cur, getNextPage)
 }
 func NewAlertsClient(subscriptionID string, ascLocation string) AlertsClient {
 	return original.NewAlertsClient(subscriptionID, ascLocation)
@@ -1180,8 +1335,8 @@ func NewAlertsSuppressionRulesClientWithBaseURI(baseURI string, subscriptionID s
 func NewAlertsSuppressionRulesListIterator(page AlertsSuppressionRulesListPage) AlertsSuppressionRulesListIterator {
 	return original.NewAlertsSuppressionRulesListIterator(page)
 }
-func NewAlertsSuppressionRulesListPage(getNextPage func(context.Context, AlertsSuppressionRulesList) (AlertsSuppressionRulesList, error)) AlertsSuppressionRulesListPage {
-	return original.NewAlertsSuppressionRulesListPage(getNextPage)
+func NewAlertsSuppressionRulesListPage(cur AlertsSuppressionRulesList, getNextPage func(context.Context, AlertsSuppressionRulesList) (AlertsSuppressionRulesList, error)) AlertsSuppressionRulesListPage {
+	return original.NewAlertsSuppressionRulesListPage(cur, getNextPage)
 }
 func NewAllowedConnectionsClient(subscriptionID string, ascLocation string) AllowedConnectionsClient {
 	return original.NewAllowedConnectionsClient(subscriptionID, ascLocation)
@@ -1192,26 +1347,26 @@ func NewAllowedConnectionsClientWithBaseURI(baseURI string, subscriptionID strin
 func NewAllowedConnectionsListIterator(page AllowedConnectionsListPage) AllowedConnectionsListIterator {
 	return original.NewAllowedConnectionsListIterator(page)
 }
-func NewAllowedConnectionsListPage(getNextPage func(context.Context, AllowedConnectionsList) (AllowedConnectionsList, error)) AllowedConnectionsListPage {
-	return original.NewAllowedConnectionsListPage(getNextPage)
+func NewAllowedConnectionsListPage(cur AllowedConnectionsList, getNextPage func(context.Context, AllowedConnectionsList) (AllowedConnectionsList, error)) AllowedConnectionsListPage {
+	return original.NewAllowedConnectionsListPage(cur, getNextPage)
 }
 func NewAscLocationListIterator(page AscLocationListPage) AscLocationListIterator {
 	return original.NewAscLocationListIterator(page)
 }
-func NewAscLocationListPage(getNextPage func(context.Context, AscLocationList) (AscLocationList, error)) AscLocationListPage {
-	return original.NewAscLocationListPage(getNextPage)
+func NewAscLocationListPage(cur AscLocationList, getNextPage func(context.Context, AscLocationList) (AscLocationList, error)) AscLocationListPage {
+	return original.NewAscLocationListPage(cur, getNextPage)
 }
 func NewAssessmentListIterator(page AssessmentListPage) AssessmentListIterator {
 	return original.NewAssessmentListIterator(page)
 }
-func NewAssessmentListPage(getNextPage func(context.Context, AssessmentList) (AssessmentList, error)) AssessmentListPage {
-	return original.NewAssessmentListPage(getNextPage)
+func NewAssessmentListPage(cur AssessmentList, getNextPage func(context.Context, AssessmentList) (AssessmentList, error)) AssessmentListPage {
+	return original.NewAssessmentListPage(cur, getNextPage)
 }
 func NewAssessmentMetadataListIterator(page AssessmentMetadataListPage) AssessmentMetadataListIterator {
 	return original.NewAssessmentMetadataListIterator(page)
 }
-func NewAssessmentMetadataListPage(getNextPage func(context.Context, AssessmentMetadataList) (AssessmentMetadataList, error)) AssessmentMetadataListPage {
-	return original.NewAssessmentMetadataListPage(getNextPage)
+func NewAssessmentMetadataListPage(cur AssessmentMetadataList, getNextPage func(context.Context, AssessmentMetadataList) (AssessmentMetadataList, error)) AssessmentMetadataListPage {
+	return original.NewAssessmentMetadataListPage(cur, getNextPage)
 }
 func NewAssessmentsClient(subscriptionID string, ascLocation string) AssessmentsClient {
 	return original.NewAssessmentsClient(subscriptionID, ascLocation)
@@ -1228,8 +1383,8 @@ func NewAssessmentsMetadataClientWithBaseURI(baseURI string, subscriptionID stri
 func NewAutoProvisioningSettingListIterator(page AutoProvisioningSettingListPage) AutoProvisioningSettingListIterator {
 	return original.NewAutoProvisioningSettingListIterator(page)
 }
-func NewAutoProvisioningSettingListPage(getNextPage func(context.Context, AutoProvisioningSettingList) (AutoProvisioningSettingList, error)) AutoProvisioningSettingListPage {
-	return original.NewAutoProvisioningSettingListPage(getNextPage)
+func NewAutoProvisioningSettingListPage(cur AutoProvisioningSettingList, getNextPage func(context.Context, AutoProvisioningSettingList) (AutoProvisioningSettingList, error)) AutoProvisioningSettingListPage {
+	return original.NewAutoProvisioningSettingListPage(cur, getNextPage)
 }
 func NewAutoProvisioningSettingsClient(subscriptionID string, ascLocation string) AutoProvisioningSettingsClient {
 	return original.NewAutoProvisioningSettingsClient(subscriptionID, ascLocation)
@@ -1240,8 +1395,8 @@ func NewAutoProvisioningSettingsClientWithBaseURI(baseURI string, subscriptionID
 func NewAutomationListIterator(page AutomationListPage) AutomationListIterator {
 	return original.NewAutomationListIterator(page)
 }
-func NewAutomationListPage(getNextPage func(context.Context, AutomationList) (AutomationList, error)) AutomationListPage {
-	return original.NewAutomationListPage(getNextPage)
+func NewAutomationListPage(cur AutomationList, getNextPage func(context.Context, AutomationList) (AutomationList, error)) AutomationListPage {
+	return original.NewAutomationListPage(cur, getNextPage)
 }
 func NewAutomationsClient(subscriptionID string, ascLocation string) AutomationsClient {
 	return original.NewAutomationsClient(subscriptionID, ascLocation)
@@ -1252,14 +1407,14 @@ func NewAutomationsClientWithBaseURI(baseURI string, subscriptionID string, ascL
 func NewComplianceListIterator(page ComplianceListPage) ComplianceListIterator {
 	return original.NewComplianceListIterator(page)
 }
-func NewComplianceListPage(getNextPage func(context.Context, ComplianceList) (ComplianceList, error)) ComplianceListPage {
-	return original.NewComplianceListPage(getNextPage)
+func NewComplianceListPage(cur ComplianceList, getNextPage func(context.Context, ComplianceList) (ComplianceList, error)) ComplianceListPage {
+	return original.NewComplianceListPage(cur, getNextPage)
 }
 func NewComplianceResultListIterator(page ComplianceResultListPage) ComplianceResultListIterator {
 	return original.NewComplianceResultListIterator(page)
 }
-func NewComplianceResultListPage(getNextPage func(context.Context, ComplianceResultList) (ComplianceResultList, error)) ComplianceResultListPage {
-	return original.NewComplianceResultListPage(getNextPage)
+func NewComplianceResultListPage(cur ComplianceResultList, getNextPage func(context.Context, ComplianceResultList) (ComplianceResultList, error)) ComplianceResultListPage {
+	return original.NewComplianceResultListPage(cur, getNextPage)
 }
 func NewComplianceResultsClient(subscriptionID string, ascLocation string) ComplianceResultsClient {
 	return original.NewComplianceResultsClient(subscriptionID, ascLocation)
@@ -1276,8 +1431,8 @@ func NewCompliancesClientWithBaseURI(baseURI string, subscriptionID string, ascL
 func NewConnectorSettingListIterator(page ConnectorSettingListPage) ConnectorSettingListIterator {
 	return original.NewConnectorSettingListIterator(page)
 }
-func NewConnectorSettingListPage(getNextPage func(context.Context, ConnectorSettingList) (ConnectorSettingList, error)) ConnectorSettingListPage {
-	return original.NewConnectorSettingListPage(getNextPage)
+func NewConnectorSettingListPage(cur ConnectorSettingList, getNextPage func(context.Context, ConnectorSettingList) (ConnectorSettingList, error)) ConnectorSettingListPage {
+	return original.NewConnectorSettingListPage(cur, getNextPage)
 }
 func NewConnectorsClient(subscriptionID string, ascLocation string) ConnectorsClient {
 	return original.NewConnectorsClient(subscriptionID, ascLocation)
@@ -1288,8 +1443,8 @@ func NewConnectorsClientWithBaseURI(baseURI string, subscriptionID string, ascLo
 func NewContactListIterator(page ContactListPage) ContactListIterator {
 	return original.NewContactListIterator(page)
 }
-func NewContactListPage(getNextPage func(context.Context, ContactList) (ContactList, error)) ContactListPage {
-	return original.NewContactListPage(getNextPage)
+func NewContactListPage(cur ContactList, getNextPage func(context.Context, ContactList) (ContactList, error)) ContactListPage {
+	return original.NewContactListPage(cur, getNextPage)
 }
 func NewContactsClient(subscriptionID string, ascLocation string) ContactsClient {
 	return original.NewContactsClient(subscriptionID, ascLocation)
@@ -1297,11 +1452,23 @@ func NewContactsClient(subscriptionID string, ascLocation string) ContactsClient
 func NewContactsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) ContactsClient {
 	return original.NewContactsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
+func NewDeviceClient(subscriptionID string, ascLocation string) DeviceClient {
+	return original.NewDeviceClient(subscriptionID, ascLocation)
+}
+func NewDeviceClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) DeviceClient {
+	return original.NewDeviceClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewDeviceListIterator(page DeviceListPage) DeviceListIterator {
+	return original.NewDeviceListIterator(page)
+}
+func NewDeviceListPage(cur DeviceList, getNextPage func(context.Context, DeviceList) (DeviceList, error)) DeviceListPage {
+	return original.NewDeviceListPage(cur, getNextPage)
+}
 func NewDeviceSecurityGroupListIterator(page DeviceSecurityGroupListPage) DeviceSecurityGroupListIterator {
 	return original.NewDeviceSecurityGroupListIterator(page)
 }
-func NewDeviceSecurityGroupListPage(getNextPage func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)) DeviceSecurityGroupListPage {
-	return original.NewDeviceSecurityGroupListPage(getNextPage)
+func NewDeviceSecurityGroupListPage(cur DeviceSecurityGroupList, getNextPage func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)) DeviceSecurityGroupListPage {
+	return original.NewDeviceSecurityGroupListPage(cur, getNextPage)
 }
 func NewDeviceSecurityGroupsClient(subscriptionID string, ascLocation string) DeviceSecurityGroupsClient {
 	return original.NewDeviceSecurityGroupsClient(subscriptionID, ascLocation)
@@ -1309,11 +1476,23 @@ func NewDeviceSecurityGroupsClient(subscriptionID string, ascLocation string) De
 func NewDeviceSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) DeviceSecurityGroupsClient {
 	return original.NewDeviceSecurityGroupsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
+func NewDevicesForHubClient(subscriptionID string, ascLocation string) DevicesForHubClient {
+	return original.NewDevicesForHubClient(subscriptionID, ascLocation)
+}
+func NewDevicesForHubClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) DevicesForHubClient {
+	return original.NewDevicesForHubClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewDevicesForSubscriptionClient(subscriptionID string, ascLocation string) DevicesForSubscriptionClient {
+	return original.NewDevicesForSubscriptionClient(subscriptionID, ascLocation)
+}
+func NewDevicesForSubscriptionClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) DevicesForSubscriptionClient {
+	return original.NewDevicesForSubscriptionClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
 func NewDiscoveredSecuritySolutionListIterator(page DiscoveredSecuritySolutionListPage) DiscoveredSecuritySolutionListIterator {
 	return original.NewDiscoveredSecuritySolutionListIterator(page)
 }
-func NewDiscoveredSecuritySolutionListPage(getNextPage func(context.Context, DiscoveredSecuritySolutionList) (DiscoveredSecuritySolutionList, error)) DiscoveredSecuritySolutionListPage {
-	return original.NewDiscoveredSecuritySolutionListPage(getNextPage)
+func NewDiscoveredSecuritySolutionListPage(cur DiscoveredSecuritySolutionList, getNextPage func(context.Context, DiscoveredSecuritySolutionList) (DiscoveredSecuritySolutionList, error)) DiscoveredSecuritySolutionListPage {
+	return original.NewDiscoveredSecuritySolutionListPage(cur, getNextPage)
 }
 func NewDiscoveredSecuritySolutionsClient(subscriptionID string, ascLocation string) DiscoveredSecuritySolutionsClient {
 	return original.NewDiscoveredSecuritySolutionsClient(subscriptionID, ascLocation)
@@ -1324,8 +1503,8 @@ func NewDiscoveredSecuritySolutionsClientWithBaseURI(baseURI string, subscriptio
 func NewExternalSecuritySolutionListIterator(page ExternalSecuritySolutionListPage) ExternalSecuritySolutionListIterator {
 	return original.NewExternalSecuritySolutionListIterator(page)
 }
-func NewExternalSecuritySolutionListPage(getNextPage func(context.Context, ExternalSecuritySolutionList) (ExternalSecuritySolutionList, error)) ExternalSecuritySolutionListPage {
-	return original.NewExternalSecuritySolutionListPage(getNextPage)
+func NewExternalSecuritySolutionListPage(cur ExternalSecuritySolutionList, getNextPage func(context.Context, ExternalSecuritySolutionList) (ExternalSecuritySolutionList, error)) ExternalSecuritySolutionListPage {
+	return original.NewExternalSecuritySolutionListPage(cur, getNextPage)
 }
 func NewExternalSecuritySolutionsClient(subscriptionID string, ascLocation string) ExternalSecuritySolutionsClient {
 	return original.NewExternalSecuritySolutionsClient(subscriptionID, ascLocation)
@@ -1342,32 +1521,38 @@ func NewInformationProtectionPoliciesClientWithBaseURI(baseURI string, subscript
 func NewInformationProtectionPolicyListIterator(page InformationProtectionPolicyListPage) InformationProtectionPolicyListIterator {
 	return original.NewInformationProtectionPolicyListIterator(page)
 }
-func NewInformationProtectionPolicyListPage(getNextPage func(context.Context, InformationProtectionPolicyList) (InformationProtectionPolicyList, error)) InformationProtectionPolicyListPage {
-	return original.NewInformationProtectionPolicyListPage(getNextPage)
+func NewInformationProtectionPolicyListPage(cur InformationProtectionPolicyList, getNextPage func(context.Context, InformationProtectionPolicyList) (InformationProtectionPolicyList, error)) InformationProtectionPolicyListPage {
+	return original.NewInformationProtectionPolicyListPage(cur, getNextPage)
 }
 func NewIoTSecurityAggregatedAlertListIterator(page IoTSecurityAggregatedAlertListPage) IoTSecurityAggregatedAlertListIterator {
 	return original.NewIoTSecurityAggregatedAlertListIterator(page)
 }
-func NewIoTSecurityAggregatedAlertListPage(getNextPage func(context.Context, IoTSecurityAggregatedAlertList) (IoTSecurityAggregatedAlertList, error)) IoTSecurityAggregatedAlertListPage {
-	return original.NewIoTSecurityAggregatedAlertListPage(getNextPage)
+func NewIoTSecurityAggregatedAlertListPage(cur IoTSecurityAggregatedAlertList, getNextPage func(context.Context, IoTSecurityAggregatedAlertList) (IoTSecurityAggregatedAlertList, error)) IoTSecurityAggregatedAlertListPage {
+	return original.NewIoTSecurityAggregatedAlertListPage(cur, getNextPage)
 }
 func NewIoTSecurityAggregatedRecommendationListIterator(page IoTSecurityAggregatedRecommendationListPage) IoTSecurityAggregatedRecommendationListIterator {
 	return original.NewIoTSecurityAggregatedRecommendationListIterator(page)
 }
-func NewIoTSecurityAggregatedRecommendationListPage(getNextPage func(context.Context, IoTSecurityAggregatedRecommendationList) (IoTSecurityAggregatedRecommendationList, error)) IoTSecurityAggregatedRecommendationListPage {
-	return original.NewIoTSecurityAggregatedRecommendationListPage(getNextPage)
+func NewIoTSecurityAggregatedRecommendationListPage(cur IoTSecurityAggregatedRecommendationList, getNextPage func(context.Context, IoTSecurityAggregatedRecommendationList) (IoTSecurityAggregatedRecommendationList, error)) IoTSecurityAggregatedRecommendationListPage {
+	return original.NewIoTSecurityAggregatedRecommendationListPage(cur, getNextPage)
 }
 func NewIoTSecuritySolutionsListIterator(page IoTSecuritySolutionsListPage) IoTSecuritySolutionsListIterator {
 	return original.NewIoTSecuritySolutionsListIterator(page)
 }
-func NewIoTSecuritySolutionsListPage(getNextPage func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error)) IoTSecuritySolutionsListPage {
-	return original.NewIoTSecuritySolutionsListPage(getNextPage)
+func NewIoTSecuritySolutionsListPage(cur IoTSecuritySolutionsList, getNextPage func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error)) IoTSecuritySolutionsListPage {
+	return original.NewIoTSecuritySolutionsListPage(cur, getNextPage)
 }
 func NewIotAlertListIterator(page IotAlertListPage) IotAlertListIterator {
 	return original.NewIotAlertListIterator(page)
 }
-func NewIotAlertListPage(getNextPage func(context.Context, IotAlertList) (IotAlertList, error)) IotAlertListPage {
-	return original.NewIotAlertListPage(getNextPage)
+func NewIotAlertListModelIterator(page IotAlertListModelPage) IotAlertListModelIterator {
+	return original.NewIotAlertListModelIterator(page)
+}
+func NewIotAlertListModelPage(cur IotAlertListModel, getNextPage func(context.Context, IotAlertListModel) (IotAlertListModel, error)) IotAlertListModelPage {
+	return original.NewIotAlertListModelPage(cur, getNextPage)
+}
+func NewIotAlertListPage(cur IotAlertList, getNextPage func(context.Context, IotAlertList) (IotAlertList, error)) IotAlertListPage {
+	return original.NewIotAlertListPage(cur, getNextPage)
 }
 func NewIotAlertTypesClient(subscriptionID string, ascLocation string) IotAlertTypesClient {
 	return original.NewIotAlertTypesClient(subscriptionID, ascLocation)
@@ -1390,8 +1575,14 @@ func NewIotDefenderSettingsClientWithBaseURI(baseURI string, subscriptionID stri
 func NewIotRecommendationListIterator(page IotRecommendationListPage) IotRecommendationListIterator {
 	return original.NewIotRecommendationListIterator(page)
 }
-func NewIotRecommendationListPage(getNextPage func(context.Context, IotRecommendationList) (IotRecommendationList, error)) IotRecommendationListPage {
-	return original.NewIotRecommendationListPage(getNextPage)
+func NewIotRecommendationListModelIterator(page IotRecommendationListModelPage) IotRecommendationListModelIterator {
+	return original.NewIotRecommendationListModelIterator(page)
+}
+func NewIotRecommendationListModelPage(cur IotRecommendationListModel, getNextPage func(context.Context, IotRecommendationListModel) (IotRecommendationListModel, error)) IotRecommendationListModelPage {
+	return original.NewIotRecommendationListModelPage(cur, getNextPage)
+}
+func NewIotRecommendationListPage(cur IotRecommendationList, getNextPage func(context.Context, IotRecommendationList) (IotRecommendationList, error)) IotRecommendationListPage {
+	return original.NewIotRecommendationListPage(cur, getNextPage)
 }
 func NewIotRecommendationTypesClient(subscriptionID string, ascLocation string) IotRecommendationTypesClient {
 	return original.NewIotRecommendationTypesClient(subscriptionID, ascLocation)
@@ -1444,8 +1635,8 @@ func NewJitNetworkAccessPoliciesClientWithBaseURI(baseURI string, subscriptionID
 func NewJitNetworkAccessPoliciesListIterator(page JitNetworkAccessPoliciesListPage) JitNetworkAccessPoliciesListIterator {
 	return original.NewJitNetworkAccessPoliciesListIterator(page)
 }
-func NewJitNetworkAccessPoliciesListPage(getNextPage func(context.Context, JitNetworkAccessPoliciesList) (JitNetworkAccessPoliciesList, error)) JitNetworkAccessPoliciesListPage {
-	return original.NewJitNetworkAccessPoliciesListPage(getNextPage)
+func NewJitNetworkAccessPoliciesListPage(cur JitNetworkAccessPoliciesList, getNextPage func(context.Context, JitNetworkAccessPoliciesList) (JitNetworkAccessPoliciesList, error)) JitNetworkAccessPoliciesListPage {
+	return original.NewJitNetworkAccessPoliciesListPage(cur, getNextPage)
 }
 func NewLocationsClient(subscriptionID string, ascLocation string) LocationsClient {
 	return original.NewLocationsClient(subscriptionID, ascLocation)
@@ -1462,8 +1653,8 @@ func NewOnPremiseIotSensorsClientWithBaseURI(baseURI string, subscriptionID stri
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
 }
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return original.NewOperationListPage(getNextPage)
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string, ascLocation string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID, ascLocation)
@@ -1480,8 +1671,8 @@ func NewPricingsClientWithBaseURI(baseURI string, subscriptionID string, ascLoca
 func NewRegulatoryComplianceAssessmentListIterator(page RegulatoryComplianceAssessmentListPage) RegulatoryComplianceAssessmentListIterator {
 	return original.NewRegulatoryComplianceAssessmentListIterator(page)
 }
-func NewRegulatoryComplianceAssessmentListPage(getNextPage func(context.Context, RegulatoryComplianceAssessmentList) (RegulatoryComplianceAssessmentList, error)) RegulatoryComplianceAssessmentListPage {
-	return original.NewRegulatoryComplianceAssessmentListPage(getNextPage)
+func NewRegulatoryComplianceAssessmentListPage(cur RegulatoryComplianceAssessmentList, getNextPage func(context.Context, RegulatoryComplianceAssessmentList) (RegulatoryComplianceAssessmentList, error)) RegulatoryComplianceAssessmentListPage {
+	return original.NewRegulatoryComplianceAssessmentListPage(cur, getNextPage)
 }
 func NewRegulatoryComplianceAssessmentsClient(subscriptionID string, ascLocation string) RegulatoryComplianceAssessmentsClient {
 	return original.NewRegulatoryComplianceAssessmentsClient(subscriptionID, ascLocation)
@@ -1492,8 +1683,8 @@ func NewRegulatoryComplianceAssessmentsClientWithBaseURI(baseURI string, subscri
 func NewRegulatoryComplianceControlListIterator(page RegulatoryComplianceControlListPage) RegulatoryComplianceControlListIterator {
 	return original.NewRegulatoryComplianceControlListIterator(page)
 }
-func NewRegulatoryComplianceControlListPage(getNextPage func(context.Context, RegulatoryComplianceControlList) (RegulatoryComplianceControlList, error)) RegulatoryComplianceControlListPage {
-	return original.NewRegulatoryComplianceControlListPage(getNextPage)
+func NewRegulatoryComplianceControlListPage(cur RegulatoryComplianceControlList, getNextPage func(context.Context, RegulatoryComplianceControlList) (RegulatoryComplianceControlList, error)) RegulatoryComplianceControlListPage {
+	return original.NewRegulatoryComplianceControlListPage(cur, getNextPage)
 }
 func NewRegulatoryComplianceControlsClient(subscriptionID string, ascLocation string) RegulatoryComplianceControlsClient {
 	return original.NewRegulatoryComplianceControlsClient(subscriptionID, ascLocation)
@@ -1504,8 +1695,8 @@ func NewRegulatoryComplianceControlsClientWithBaseURI(baseURI string, subscripti
 func NewRegulatoryComplianceStandardListIterator(page RegulatoryComplianceStandardListPage) RegulatoryComplianceStandardListIterator {
 	return original.NewRegulatoryComplianceStandardListIterator(page)
 }
-func NewRegulatoryComplianceStandardListPage(getNextPage func(context.Context, RegulatoryComplianceStandardList) (RegulatoryComplianceStandardList, error)) RegulatoryComplianceStandardListPage {
-	return original.NewRegulatoryComplianceStandardListPage(getNextPage)
+func NewRegulatoryComplianceStandardListPage(cur RegulatoryComplianceStandardList, getNextPage func(context.Context, RegulatoryComplianceStandardList) (RegulatoryComplianceStandardList, error)) RegulatoryComplianceStandardListPage {
+	return original.NewRegulatoryComplianceStandardListPage(cur, getNextPage)
 }
 func NewRegulatoryComplianceStandardsClient(subscriptionID string, ascLocation string) RegulatoryComplianceStandardsClient {
 	return original.NewRegulatoryComplianceStandardsClient(subscriptionID, ascLocation)
@@ -1513,11 +1704,29 @@ func NewRegulatoryComplianceStandardsClient(subscriptionID string, ascLocation s
 func NewRegulatoryComplianceStandardsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) RegulatoryComplianceStandardsClient {
 	return original.NewRegulatoryComplianceStandardsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
+func NewSQLVulnerabilityAssessmentBaselineRulesClient(subscriptionID string, ascLocation string) SQLVulnerabilityAssessmentBaselineRulesClient {
+	return original.NewSQLVulnerabilityAssessmentBaselineRulesClient(subscriptionID, ascLocation)
+}
+func NewSQLVulnerabilityAssessmentBaselineRulesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SQLVulnerabilityAssessmentBaselineRulesClient {
+	return original.NewSQLVulnerabilityAssessmentBaselineRulesClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewSQLVulnerabilityAssessmentScanResultsClient(subscriptionID string, ascLocation string) SQLVulnerabilityAssessmentScanResultsClient {
+	return original.NewSQLVulnerabilityAssessmentScanResultsClient(subscriptionID, ascLocation)
+}
+func NewSQLVulnerabilityAssessmentScanResultsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SQLVulnerabilityAssessmentScanResultsClient {
+	return original.NewSQLVulnerabilityAssessmentScanResultsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewSQLVulnerabilityAssessmentScansClient(subscriptionID string, ascLocation string) SQLVulnerabilityAssessmentScansClient {
+	return original.NewSQLVulnerabilityAssessmentScansClient(subscriptionID, ascLocation)
+}
+func NewSQLVulnerabilityAssessmentScansClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SQLVulnerabilityAssessmentScansClient {
+	return original.NewSQLVulnerabilityAssessmentScansClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
 func NewSecureScoreControlDefinitionListIterator(page SecureScoreControlDefinitionListPage) SecureScoreControlDefinitionListIterator {
 	return original.NewSecureScoreControlDefinitionListIterator(page)
 }
-func NewSecureScoreControlDefinitionListPage(getNextPage func(context.Context, SecureScoreControlDefinitionList) (SecureScoreControlDefinitionList, error)) SecureScoreControlDefinitionListPage {
-	return original.NewSecureScoreControlDefinitionListPage(getNextPage)
+func NewSecureScoreControlDefinitionListPage(cur SecureScoreControlDefinitionList, getNextPage func(context.Context, SecureScoreControlDefinitionList) (SecureScoreControlDefinitionList, error)) SecureScoreControlDefinitionListPage {
+	return original.NewSecureScoreControlDefinitionListPage(cur, getNextPage)
 }
 func NewSecureScoreControlDefinitionsClient(subscriptionID string, ascLocation string) SecureScoreControlDefinitionsClient {
 	return original.NewSecureScoreControlDefinitionsClient(subscriptionID, ascLocation)
@@ -1528,8 +1737,8 @@ func NewSecureScoreControlDefinitionsClientWithBaseURI(baseURI string, subscript
 func NewSecureScoreControlListIterator(page SecureScoreControlListPage) SecureScoreControlListIterator {
 	return original.NewSecureScoreControlListIterator(page)
 }
-func NewSecureScoreControlListPage(getNextPage func(context.Context, SecureScoreControlList) (SecureScoreControlList, error)) SecureScoreControlListPage {
-	return original.NewSecureScoreControlListPage(getNextPage)
+func NewSecureScoreControlListPage(cur SecureScoreControlList, getNextPage func(context.Context, SecureScoreControlList) (SecureScoreControlList, error)) SecureScoreControlListPage {
+	return original.NewSecureScoreControlListPage(cur, getNextPage)
 }
 func NewSecureScoreControlsClient(subscriptionID string, ascLocation string) SecureScoreControlsClient {
 	return original.NewSecureScoreControlsClient(subscriptionID, ascLocation)
@@ -1546,8 +1755,8 @@ func NewSecureScoresClientWithBaseURI(baseURI string, subscriptionID string, asc
 func NewSecureScoresListIterator(page SecureScoresListPage) SecureScoresListIterator {
 	return original.NewSecureScoresListIterator(page)
 }
-func NewSecureScoresListPage(getNextPage func(context.Context, SecureScoresList) (SecureScoresList, error)) SecureScoresListPage {
-	return original.NewSecureScoresListPage(getNextPage)
+func NewSecureScoresListPage(cur SecureScoresList, getNextPage func(context.Context, SecureScoresList) (SecureScoresList, error)) SecureScoresListPage {
+	return original.NewSecureScoresListPage(cur, getNextPage)
 }
 func NewServerVulnerabilityAssessmentClient(subscriptionID string, ascLocation string) ServerVulnerabilityAssessmentClient {
 	return original.NewServerVulnerabilityAssessmentClient(subscriptionID, ascLocation)
@@ -1564,14 +1773,14 @@ func NewSettingsClientWithBaseURI(baseURI string, subscriptionID string, ascLoca
 func NewSettingsListIterator(page SettingsListPage) SettingsListIterator {
 	return original.NewSettingsListIterator(page)
 }
-func NewSettingsListPage(getNextPage func(context.Context, SettingsList) (SettingsList, error)) SettingsListPage {
-	return original.NewSettingsListPage(getNextPage)
+func NewSettingsListPage(cur SettingsList, getNextPage func(context.Context, SettingsList) (SettingsList, error)) SettingsListPage {
+	return original.NewSettingsListPage(cur, getNextPage)
 }
 func NewSolutionListIterator(page SolutionListPage) SolutionListIterator {
 	return original.NewSolutionListIterator(page)
 }
-func NewSolutionListPage(getNextPage func(context.Context, SolutionList) (SolutionList, error)) SolutionListPage {
-	return original.NewSolutionListPage(getNextPage)
+func NewSolutionListPage(cur SolutionList, getNextPage func(context.Context, SolutionList) (SolutionList, error)) SolutionListPage {
+	return original.NewSolutionListPage(cur, getNextPage)
 }
 func NewSolutionsClient(subscriptionID string, ascLocation string) SolutionsClient {
 	return original.NewSolutionsClient(subscriptionID, ascLocation)
@@ -1588,8 +1797,8 @@ func NewSolutionsReferenceDataClientWithBaseURI(baseURI string, subscriptionID s
 func NewSubAssessmentListIterator(page SubAssessmentListPage) SubAssessmentListIterator {
 	return original.NewSubAssessmentListIterator(page)
 }
-func NewSubAssessmentListPage(getNextPage func(context.Context, SubAssessmentList) (SubAssessmentList, error)) SubAssessmentListPage {
-	return original.NewSubAssessmentListPage(getNextPage)
+func NewSubAssessmentListPage(cur SubAssessmentList, getNextPage func(context.Context, SubAssessmentList) (SubAssessmentList, error)) SubAssessmentListPage {
+	return original.NewSubAssessmentListPage(cur, getNextPage)
 }
 func NewSubAssessmentsClient(subscriptionID string, ascLocation string) SubAssessmentsClient {
 	return original.NewSubAssessmentsClient(subscriptionID, ascLocation)
@@ -1600,8 +1809,8 @@ func NewSubAssessmentsClientWithBaseURI(baseURI string, subscriptionID string, a
 func NewTaskListIterator(page TaskListPage) TaskListIterator {
 	return original.NewTaskListIterator(page)
 }
-func NewTaskListPage(getNextPage func(context.Context, TaskList) (TaskList, error)) TaskListPage {
-	return original.NewTaskListPage(getNextPage)
+func NewTaskListPage(cur TaskList, getNextPage func(context.Context, TaskList) (TaskList, error)) TaskListPage {
+	return original.NewTaskListPage(cur, getNextPage)
 }
 func NewTasksClient(subscriptionID string, ascLocation string) TasksClient {
 	return original.NewTasksClient(subscriptionID, ascLocation)
@@ -1618,8 +1827,8 @@ func NewTopologyClientWithBaseURI(baseURI string, subscriptionID string, ascLoca
 func NewTopologyListIterator(page TopologyListPage) TopologyListIterator {
 	return original.NewTopologyListIterator(page)
 }
-func NewTopologyListPage(getNextPage func(context.Context, TopologyList) (TopologyList, error)) TopologyListPage {
-	return original.NewTopologyListPage(getNextPage)
+func NewTopologyListPage(cur TopologyList, getNextPage func(context.Context, TopologyList) (TopologyList, error)) TopologyListPage {
+	return original.NewTopologyListPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string, ascLocation string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID, ascLocation)
@@ -1627,8 +1836,8 @@ func NewWithBaseURI(baseURI string, subscriptionID string, ascLocation string) B
 func NewWorkspaceSettingListIterator(page WorkspaceSettingListPage) WorkspaceSettingListIterator {
 	return original.NewWorkspaceSettingListIterator(page)
 }
-func NewWorkspaceSettingListPage(getNextPage func(context.Context, WorkspaceSettingList) (WorkspaceSettingList, error)) WorkspaceSettingListPage {
-	return original.NewWorkspaceSettingListPage(getNextPage)
+func NewWorkspaceSettingListPage(cur WorkspaceSettingList, getNextPage func(context.Context, WorkspaceSettingList) (WorkspaceSettingList, error)) WorkspaceSettingListPage {
+	return original.NewWorkspaceSettingListPage(cur, getNextPage)
 }
 func NewWorkspaceSettingsClient(subscriptionID string, ascLocation string) WorkspaceSettingsClient {
 	return original.NewWorkspaceSettingsClient(subscriptionID, ascLocation)
@@ -1675,6 +1884,9 @@ func PossibleAuthenticationProvisioningStateValues() []AuthenticationProvisionin
 func PossibleAuthenticationTypeValues() []AuthenticationType {
 	return original.PossibleAuthenticationTypeValues()
 }
+func PossibleAuthorizationStateValues() []AuthorizationState {
+	return original.PossibleAuthorizationStateValues()
+}
 func PossibleAutoProvisionValues() []AutoProvision {
 	return original.PossibleAutoProvisionValues()
 }
@@ -1698,6 +1910,12 @@ func PossibleControlTypeValues() []ControlType {
 }
 func PossibleDataSourceValues() []DataSource {
 	return original.PossibleDataSourceValues()
+}
+func PossibleDeviceCriticalityValues() []DeviceCriticality {
+	return original.PossibleDeviceCriticalityValues()
+}
+func PossibleDeviceStatusValues() []DeviceStatus {
+	return original.PossibleDeviceStatusValues()
 }
 func PossibleDirectionValues() []Direction {
 	return original.PossibleDirectionValues()
@@ -1753,6 +1971,12 @@ func PossibleKindEnum1Values() []KindEnum1 {
 func PossibleKindEnumValues() []KindEnum {
 	return original.PossibleKindEnumValues()
 }
+func PossibleMacSignificanceValues() []MacSignificance {
+	return original.PossibleMacSignificanceValues()
+}
+func PossibleManagementStateValues() []ManagementState {
+	return original.PossibleManagementStateValues()
+}
 func PossibleMsiValues() []Msi {
 	return original.PossibleMsiValues()
 }
@@ -1765,6 +1989,9 @@ func PossiblePermissionPropertyValues() []PermissionProperty {
 func PossiblePricingTierValues() []PricingTier {
 	return original.PossiblePricingTierValues()
 }
+func PossibleProgrammingStateValues() []ProgrammingState {
+	return original.PossibleProgrammingStateValues()
+}
 func PossiblePropertyTypeValues() []PropertyType {
 	return original.PossiblePropertyTypeValues()
 }
@@ -1776,6 +2003,9 @@ func PossibleProvisioningState1Values() []ProvisioningState1 {
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossiblePurdueLevelValues() []PurdueLevel {
+	return original.PossiblePurdueLevelValues()
 }
 func PossibleRankValues() []Rank {
 	return original.PossibleRankValues()
@@ -1798,17 +2028,38 @@ func PossibleRecommendationStatusValues() []RecommendationStatus {
 func PossibleRecommendationTypeValues() []RecommendationType {
 	return original.PossibleRecommendationTypeValues()
 }
+func PossibleRelationToIPStatusValues() []RelationToIPStatus {
+	return original.PossibleRelationToIPStatusValues()
+}
 func PossibleReportedSeverityValues() []ReportedSeverity {
 	return original.PossibleReportedSeverityValues()
 }
 func PossibleResourceStatusValues() []ResourceStatus {
 	return original.PossibleResourceStatusValues()
 }
+func PossibleRuleSeverityValues() []RuleSeverity {
+	return original.PossibleRuleSeverityValues()
+}
 func PossibleRuleStateValues() []RuleState {
 	return original.PossibleRuleStateValues()
 }
+func PossibleRuleStatusValues() []RuleStatus {
+	return original.PossibleRuleStatusValues()
+}
+func PossibleRuleTypeBasicCustomAlertRuleValues() []RuleTypeBasicCustomAlertRule {
+	return original.PossibleRuleTypeBasicCustomAlertRuleValues()
+}
 func PossibleRuleTypeValues() []RuleType {
 	return original.PossibleRuleTypeValues()
+}
+func PossibleScanStateValues() []ScanState {
+	return original.PossibleScanStateValues()
+}
+func PossibleScanTriggerTypeValues() []ScanTriggerType {
+	return original.PossibleScanTriggerTypeValues()
+}
+func PossibleScanningFunctionalityValues() []ScanningFunctionality {
+	return original.PossibleScanningFunctionalityValues()
 }
 func PossibleScriptValues() []Script {
 	return original.PossibleScriptValues()

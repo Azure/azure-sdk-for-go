@@ -26,7 +26,7 @@ import (
 	"net/http"
 )
 
-// SQLResourcesClient is the azure Cosmos DB Database Service Resource Provider REST API
+// SQLResourcesClient is the client for the SQLResources methods of the Documentdb service.
 type SQLResourcesClient struct {
 	BaseClient
 }
@@ -242,6 +242,194 @@ func (client SQLResourcesClient) CreateUpdateSQLDatabaseSender(req *http.Request
 // CreateUpdateSQLDatabaseResponder handles the response to the CreateUpdateSQLDatabase request. The method always
 // closes the http.Response Body.
 func (client SQLResourcesClient) CreateUpdateSQLDatabaseResponder(resp *http.Response) (result SQLDatabaseGetResults, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// CreateUpdateSQLRoleAssignment creates or updates an Azure Cosmos DB SQL Role Assignment.
+// Parameters:
+// roleAssignmentID - the GUID for the Role Assignment.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// accountName - cosmos DB database account name.
+// createUpdateSQLRoleAssignmentParameters - the properties required to create or update a Role Assignment.
+func (client SQLResourcesClient) CreateUpdateSQLRoleAssignment(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, createUpdateSQLRoleAssignmentParameters SQLRoleAssignmentCreateUpdateParameters) (result SQLResourcesCreateUpdateSQLRoleAssignmentFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.CreateUpdateSQLRoleAssignment")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("documentdb.SQLResourcesClient", "CreateUpdateSQLRoleAssignment", err.Error())
+	}
+
+	req, err := client.CreateUpdateSQLRoleAssignmentPreparer(ctx, roleAssignmentID, resourceGroupName, accountName, createUpdateSQLRoleAssignmentParameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLRoleAssignment", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.CreateUpdateSQLRoleAssignmentSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLRoleAssignment", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// CreateUpdateSQLRoleAssignmentPreparer prepares the CreateUpdateSQLRoleAssignment request.
+func (client SQLResourcesClient) CreateUpdateSQLRoleAssignmentPreparer(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, createUpdateSQLRoleAssignmentParameters SQLRoleAssignmentCreateUpdateParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"roleAssignmentId":  autorest.Encode("path", roleAssignmentID),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}", pathParameters),
+		autorest.WithJSON(createUpdateSQLRoleAssignmentParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateUpdateSQLRoleAssignmentSender sends the CreateUpdateSQLRoleAssignment request. The method will close the
+// http.Response Body if it receives an error.
+func (client SQLResourcesClient) CreateUpdateSQLRoleAssignmentSender(req *http.Request) (future SQLResourcesCreateUpdateSQLRoleAssignmentFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// CreateUpdateSQLRoleAssignmentResponder handles the response to the CreateUpdateSQLRoleAssignment request. The method always
+// closes the http.Response Body.
+func (client SQLResourcesClient) CreateUpdateSQLRoleAssignmentResponder(resp *http.Response) (result SQLRoleAssignmentGetResults, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// CreateUpdateSQLRoleDefinition creates or updates an Azure Cosmos DB SQL Role Definition.
+// Parameters:
+// roleDefinitionID - the GUID for the Role Definition.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// accountName - cosmos DB database account name.
+// createUpdateSQLRoleDefinitionParameters - the properties required to create or update a Role Definition.
+func (client SQLResourcesClient) CreateUpdateSQLRoleDefinition(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, createUpdateSQLRoleDefinitionParameters SQLRoleDefinitionCreateUpdateParameters) (result SQLResourcesCreateUpdateSQLRoleDefinitionFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.CreateUpdateSQLRoleDefinition")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("documentdb.SQLResourcesClient", "CreateUpdateSQLRoleDefinition", err.Error())
+	}
+
+	req, err := client.CreateUpdateSQLRoleDefinitionPreparer(ctx, roleDefinitionID, resourceGroupName, accountName, createUpdateSQLRoleDefinitionParameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLRoleDefinition", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.CreateUpdateSQLRoleDefinitionSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLRoleDefinition", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// CreateUpdateSQLRoleDefinitionPreparer prepares the CreateUpdateSQLRoleDefinition request.
+func (client SQLResourcesClient) CreateUpdateSQLRoleDefinitionPreparer(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, createUpdateSQLRoleDefinitionParameters SQLRoleDefinitionCreateUpdateParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"roleDefinitionId":  autorest.Encode("path", roleDefinitionID),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}", pathParameters),
+		autorest.WithJSON(createUpdateSQLRoleDefinitionParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateUpdateSQLRoleDefinitionSender sends the CreateUpdateSQLRoleDefinition request. The method will close the
+// http.Response Body if it receives an error.
+func (client SQLResourcesClient) CreateUpdateSQLRoleDefinitionSender(req *http.Request) (future SQLResourcesCreateUpdateSQLRoleDefinitionFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// CreateUpdateSQLRoleDefinitionResponder handles the response to the CreateUpdateSQLRoleDefinition request. The method always
+// closes the http.Response Body.
+func (client SQLResourcesClient) CreateUpdateSQLRoleDefinitionResponder(resp *http.Response) (result SQLRoleDefinitionGetResults, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
@@ -738,6 +926,186 @@ func (client SQLResourcesClient) DeleteSQLDatabaseSender(req *http.Request) (fut
 // DeleteSQLDatabaseResponder handles the response to the DeleteSQLDatabase request. The method always
 // closes the http.Response Body.
 func (client SQLResourcesClient) DeleteSQLDatabaseResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// DeleteSQLRoleAssignment deletes an existing Azure Cosmos DB SQL Role Assignment.
+// Parameters:
+// roleAssignmentID - the GUID for the Role Assignment.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// accountName - cosmos DB database account name.
+func (client SQLResourcesClient) DeleteSQLRoleAssignment(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string) (result SQLResourcesDeleteSQLRoleAssignmentFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.DeleteSQLRoleAssignment")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("documentdb.SQLResourcesClient", "DeleteSQLRoleAssignment", err.Error())
+	}
+
+	req, err := client.DeleteSQLRoleAssignmentPreparer(ctx, roleAssignmentID, resourceGroupName, accountName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLRoleAssignment", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.DeleteSQLRoleAssignmentSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLRoleAssignment", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// DeleteSQLRoleAssignmentPreparer prepares the DeleteSQLRoleAssignment request.
+func (client SQLResourcesClient) DeleteSQLRoleAssignmentPreparer(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"roleAssignmentId":  autorest.Encode("path", roleAssignmentID),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteSQLRoleAssignmentSender sends the DeleteSQLRoleAssignment request. The method will close the
+// http.Response Body if it receives an error.
+func (client SQLResourcesClient) DeleteSQLRoleAssignmentSender(req *http.Request) (future SQLResourcesDeleteSQLRoleAssignmentFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// DeleteSQLRoleAssignmentResponder handles the response to the DeleteSQLRoleAssignment request. The method always
+// closes the http.Response Body.
+func (client SQLResourcesClient) DeleteSQLRoleAssignmentResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// DeleteSQLRoleDefinition deletes an existing Azure Cosmos DB SQL Role Definition.
+// Parameters:
+// roleDefinitionID - the GUID for the Role Definition.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// accountName - cosmos DB database account name.
+func (client SQLResourcesClient) DeleteSQLRoleDefinition(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string) (result SQLResourcesDeleteSQLRoleDefinitionFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.DeleteSQLRoleDefinition")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("documentdb.SQLResourcesClient", "DeleteSQLRoleDefinition", err.Error())
+	}
+
+	req, err := client.DeleteSQLRoleDefinitionPreparer(ctx, roleDefinitionID, resourceGroupName, accountName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLRoleDefinition", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.DeleteSQLRoleDefinitionSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLRoleDefinition", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// DeleteSQLRoleDefinitionPreparer prepares the DeleteSQLRoleDefinition request.
+func (client SQLResourcesClient) DeleteSQLRoleDefinitionPreparer(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"roleDefinitionId":  autorest.Encode("path", roleDefinitionID),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteSQLRoleDefinitionSender sends the DeleteSQLRoleDefinition request. The method will close the
+// http.Response Body if it receives an error.
+func (client SQLResourcesClient) DeleteSQLRoleDefinitionSender(req *http.Request) (future SQLResourcesDeleteSQLRoleDefinitionFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// DeleteSQLRoleDefinitionResponder handles the response to the DeleteSQLRoleDefinition request. The method always
+// closes the http.Response Body.
+func (client SQLResourcesClient) DeleteSQLRoleDefinitionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
@@ -1398,6 +1766,188 @@ func (client SQLResourcesClient) GetSQLDatabaseThroughputResponder(resp *http.Re
 	return
 }
 
+// GetSQLRoleAssignment retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
+// Parameters:
+// roleAssignmentID - the GUID for the Role Assignment.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// accountName - cosmos DB database account name.
+func (client SQLResourcesClient) GetSQLRoleAssignment(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string) (result SQLRoleAssignmentGetResults, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.GetSQLRoleAssignment")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("documentdb.SQLResourcesClient", "GetSQLRoleAssignment", err.Error())
+	}
+
+	req, err := client.GetSQLRoleAssignmentPreparer(ctx, roleAssignmentID, resourceGroupName, accountName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "GetSQLRoleAssignment", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetSQLRoleAssignmentSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "GetSQLRoleAssignment", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetSQLRoleAssignmentResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "GetSQLRoleAssignment", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetSQLRoleAssignmentPreparer prepares the GetSQLRoleAssignment request.
+func (client SQLResourcesClient) GetSQLRoleAssignmentPreparer(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"roleAssignmentId":  autorest.Encode("path", roleAssignmentID),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetSQLRoleAssignmentSender sends the GetSQLRoleAssignment request. The method will close the
+// http.Response Body if it receives an error.
+func (client SQLResourcesClient) GetSQLRoleAssignmentSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetSQLRoleAssignmentResponder handles the response to the GetSQLRoleAssignment request. The method always
+// closes the http.Response Body.
+func (client SQLResourcesClient) GetSQLRoleAssignmentResponder(resp *http.Response) (result SQLRoleAssignmentGetResults, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetSQLRoleDefinition retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
+// Parameters:
+// roleDefinitionID - the GUID for the Role Definition.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// accountName - cosmos DB database account name.
+func (client SQLResourcesClient) GetSQLRoleDefinition(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string) (result SQLRoleDefinitionGetResults, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.GetSQLRoleDefinition")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("documentdb.SQLResourcesClient", "GetSQLRoleDefinition", err.Error())
+	}
+
+	req, err := client.GetSQLRoleDefinitionPreparer(ctx, roleDefinitionID, resourceGroupName, accountName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "GetSQLRoleDefinition", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetSQLRoleDefinitionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "GetSQLRoleDefinition", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetSQLRoleDefinitionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "GetSQLRoleDefinition", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetSQLRoleDefinitionPreparer prepares the GetSQLRoleDefinition request.
+func (client SQLResourcesClient) GetSQLRoleDefinitionPreparer(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"roleDefinitionId":  autorest.Encode("path", roleDefinitionID),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetSQLRoleDefinitionSender sends the GetSQLRoleDefinition request. The method will close the
+// http.Response Body if it receives an error.
+func (client SQLResourcesClient) GetSQLRoleDefinitionSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetSQLRoleDefinitionResponder handles the response to the GetSQLRoleDefinition request. The method always
+// closes the http.Response Body.
+func (client SQLResourcesClient) GetSQLRoleDefinitionResponder(resp *http.Response) (result SQLRoleDefinitionGetResults, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // GetSQLStoredProcedure gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
@@ -1854,6 +2404,184 @@ func (client SQLResourcesClient) ListSQLDatabasesSender(req *http.Request) (*htt
 // ListSQLDatabasesResponder handles the response to the ListSQLDatabases request. The method always
 // closes the http.Response Body.
 func (client SQLResourcesClient) ListSQLDatabasesResponder(resp *http.Response) (result SQLDatabaseListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListSQLRoleAssignments retrieves the list of all Azure Cosmos DB SQL Role Assignments.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// accountName - cosmos DB database account name.
+func (client SQLResourcesClient) ListSQLRoleAssignments(ctx context.Context, resourceGroupName string, accountName string) (result SQLRoleAssignmentListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.ListSQLRoleAssignments")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("documentdb.SQLResourcesClient", "ListSQLRoleAssignments", err.Error())
+	}
+
+	req, err := client.ListSQLRoleAssignmentsPreparer(ctx, resourceGroupName, accountName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "ListSQLRoleAssignments", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSQLRoleAssignmentsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "ListSQLRoleAssignments", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListSQLRoleAssignmentsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "ListSQLRoleAssignments", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListSQLRoleAssignmentsPreparer prepares the ListSQLRoleAssignments request.
+func (client SQLResourcesClient) ListSQLRoleAssignmentsPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSQLRoleAssignmentsSender sends the ListSQLRoleAssignments request. The method will close the
+// http.Response Body if it receives an error.
+func (client SQLResourcesClient) ListSQLRoleAssignmentsSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListSQLRoleAssignmentsResponder handles the response to the ListSQLRoleAssignments request. The method always
+// closes the http.Response Body.
+func (client SQLResourcesClient) ListSQLRoleAssignmentsResponder(resp *http.Response) (result SQLRoleAssignmentListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListSQLRoleDefinitions retrieves the list of all Azure Cosmos DB SQL Role Definitions.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// accountName - cosmos DB database account name.
+func (client SQLResourcesClient) ListSQLRoleDefinitions(ctx context.Context, resourceGroupName string, accountName string) (result SQLRoleDefinitionListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.ListSQLRoleDefinitions")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("documentdb.SQLResourcesClient", "ListSQLRoleDefinitions", err.Error())
+	}
+
+	req, err := client.ListSQLRoleDefinitionsPreparer(ctx, resourceGroupName, accountName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "ListSQLRoleDefinitions", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSQLRoleDefinitionsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "ListSQLRoleDefinitions", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListSQLRoleDefinitionsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "ListSQLRoleDefinitions", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListSQLRoleDefinitionsPreparer prepares the ListSQLRoleDefinitions request.
+func (client SQLResourcesClient) ListSQLRoleDefinitionsPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSQLRoleDefinitionsSender sends the ListSQLRoleDefinitions request. The method will close the
+// http.Response Body if it receives an error.
+func (client SQLResourcesClient) ListSQLRoleDefinitionsSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListSQLRoleDefinitionsResponder handles the response to the ListSQLRoleDefinitions request. The method always
+// closes the http.Response Body.
+func (client SQLResourcesClient) ListSQLRoleDefinitionsResponder(resp *http.Response) (result SQLRoleDefinitionListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

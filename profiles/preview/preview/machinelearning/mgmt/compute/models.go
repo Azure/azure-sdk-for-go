@@ -185,8 +185,8 @@ func NewOperationalizationClustersClientWithBaseURI(baseURI string, subscription
 func NewPaginatedOperationalizationClustersListIterator(page PaginatedOperationalizationClustersListPage) PaginatedOperationalizationClustersListIterator {
 	return original.NewPaginatedOperationalizationClustersListIterator(page)
 }
-func NewPaginatedOperationalizationClustersListPage(getNextPage func(context.Context, PaginatedOperationalizationClustersList) (PaginatedOperationalizationClustersList, error)) PaginatedOperationalizationClustersListPage {
-	return original.NewPaginatedOperationalizationClustersListPage(getNextPage)
+func NewPaginatedOperationalizationClustersListPage(cur PaginatedOperationalizationClustersList, getNextPage func(context.Context, PaginatedOperationalizationClustersList) (PaginatedOperationalizationClustersList, error)) PaginatedOperationalizationClustersListPage {
+	return original.NewPaginatedOperationalizationClustersListPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

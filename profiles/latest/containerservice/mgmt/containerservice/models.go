@@ -471,8 +471,8 @@ func New(subscriptionID string) BaseClient {
 func NewAgentPoolListResultIterator(page AgentPoolListResultPage) AgentPoolListResultIterator {
 	return original.NewAgentPoolListResultIterator(page)
 }
-func NewAgentPoolListResultPage(getNextPage func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)) AgentPoolListResultPage {
-	return original.NewAgentPoolListResultPage(getNextPage)
+func NewAgentPoolListResultPage(cur AgentPoolListResult, getNextPage func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)) AgentPoolListResultPage {
+	return original.NewAgentPoolListResultPage(cur, getNextPage)
 }
 func NewAgentPoolsClient(subscriptionID string) AgentPoolsClient {
 	return original.NewAgentPoolsClient(subscriptionID)
@@ -483,8 +483,8 @@ func NewAgentPoolsClientWithBaseURI(baseURI string, subscriptionID string) Agent
 func NewManagedClusterListResultIterator(page ManagedClusterListResultPage) ManagedClusterListResultIterator {
 	return original.NewManagedClusterListResultIterator(page)
 }
-func NewManagedClusterListResultPage(getNextPage func(context.Context, ManagedClusterListResult) (ManagedClusterListResult, error)) ManagedClusterListResultPage {
-	return original.NewManagedClusterListResultPage(getNextPage)
+func NewManagedClusterListResultPage(cur ManagedClusterListResult, getNextPage func(context.Context, ManagedClusterListResult) (ManagedClusterListResult, error)) ManagedClusterListResultPage {
+	return original.NewManagedClusterListResultPage(cur, getNextPage)
 }
 func NewManagedClustersClient(subscriptionID string) ManagedClustersClient {
 	return original.NewManagedClustersClient(subscriptionID)

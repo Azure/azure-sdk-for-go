@@ -145,7 +145,6 @@ type ArmDisasterRecoveryListResult = original.ArmDisasterRecoveryListResult
 type ArmDisasterRecoveryListResultIterator = original.ArmDisasterRecoveryListResultIterator
 type ArmDisasterRecoveryListResultPage = original.ArmDisasterRecoveryListResultPage
 type ArmDisasterRecoveryProperties = original.ArmDisasterRecoveryProperties
-type AuthorizationRuleProperties = original.AuthorizationRuleProperties
 type BaseClient = original.BaseClient
 type CaptureDescription = original.CaptureDescription
 type CheckNameAvailability = original.CheckNameAvailability
@@ -154,7 +153,9 @@ type CorrelationFilter = original.CorrelationFilter
 type Destination = original.Destination
 type DestinationProperties = original.DestinationProperties
 type DisasterRecoveryConfigsClient = original.DisasterRecoveryConfigsClient
+type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorResponse = original.ErrorResponse
+type ErrorResponseError = original.ErrorResponseError
 type EventHubListResult = original.EventHubListResult
 type EventHubListResultIterator = original.EventHubListResultIterator
 type EventHubListResultPage = original.EventHubListResultPage
@@ -243,8 +244,8 @@ func New(subscriptionID string) BaseClient {
 func NewArmDisasterRecoveryListResultIterator(page ArmDisasterRecoveryListResultPage) ArmDisasterRecoveryListResultIterator {
 	return original.NewArmDisasterRecoveryListResultIterator(page)
 }
-func NewArmDisasterRecoveryListResultPage(getNextPage func(context.Context, ArmDisasterRecoveryListResult) (ArmDisasterRecoveryListResult, error)) ArmDisasterRecoveryListResultPage {
-	return original.NewArmDisasterRecoveryListResultPage(getNextPage)
+func NewArmDisasterRecoveryListResultPage(cur ArmDisasterRecoveryListResult, getNextPage func(context.Context, ArmDisasterRecoveryListResult) (ArmDisasterRecoveryListResult, error)) ArmDisasterRecoveryListResultPage {
+	return original.NewArmDisasterRecoveryListResultPage(cur, getNextPage)
 }
 func NewDisasterRecoveryConfigsClient(subscriptionID string) DisasterRecoveryConfigsClient {
 	return original.NewDisasterRecoveryConfigsClient(subscriptionID)
@@ -255,8 +256,8 @@ func NewDisasterRecoveryConfigsClientWithBaseURI(baseURI string, subscriptionID 
 func NewEventHubListResultIterator(page EventHubListResultPage) EventHubListResultIterator {
 	return original.NewEventHubListResultIterator(page)
 }
-func NewEventHubListResultPage(getNextPage func(context.Context, EventHubListResult) (EventHubListResult, error)) EventHubListResultPage {
-	return original.NewEventHubListResultPage(getNextPage)
+func NewEventHubListResultPage(cur EventHubListResult, getNextPage func(context.Context, EventHubListResult) (EventHubListResult, error)) EventHubListResultPage {
+	return original.NewEventHubListResultPage(cur, getNextPage)
 }
 func NewEventHubsClient(subscriptionID string) EventHubsClient {
 	return original.NewEventHubsClient(subscriptionID)
@@ -267,8 +268,8 @@ func NewEventHubsClientWithBaseURI(baseURI string, subscriptionID string) EventH
 func NewMigrationConfigListResultIterator(page MigrationConfigListResultPage) MigrationConfigListResultIterator {
 	return original.NewMigrationConfigListResultIterator(page)
 }
-func NewMigrationConfigListResultPage(getNextPage func(context.Context, MigrationConfigListResult) (MigrationConfigListResult, error)) MigrationConfigListResultPage {
-	return original.NewMigrationConfigListResultPage(getNextPage)
+func NewMigrationConfigListResultPage(cur MigrationConfigListResult, getNextPage func(context.Context, MigrationConfigListResult) (MigrationConfigListResult, error)) MigrationConfigListResultPage {
+	return original.NewMigrationConfigListResultPage(cur, getNextPage)
 }
 func NewMigrationConfigsClient(subscriptionID string) MigrationConfigsClient {
 	return original.NewMigrationConfigsClient(subscriptionID)
@@ -285,14 +286,14 @@ func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) Names
 func NewNetworkRuleSetListResultIterator(page NetworkRuleSetListResultPage) NetworkRuleSetListResultIterator {
 	return original.NewNetworkRuleSetListResultIterator(page)
 }
-func NewNetworkRuleSetListResultPage(getNextPage func(context.Context, NetworkRuleSetListResult) (NetworkRuleSetListResult, error)) NetworkRuleSetListResultPage {
-	return original.NewNetworkRuleSetListResultPage(getNextPage)
+func NewNetworkRuleSetListResultPage(cur NetworkRuleSetListResult, getNextPage func(context.Context, NetworkRuleSetListResult) (NetworkRuleSetListResult, error)) NetworkRuleSetListResultPage {
+	return original.NewNetworkRuleSetListResultPage(cur, getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -309,8 +310,8 @@ func NewPremiumMessagingRegionsClientWithBaseURI(baseURI string, subscriptionID 
 func NewPremiumMessagingRegionsListResultIterator(page PremiumMessagingRegionsListResultPage) PremiumMessagingRegionsListResultIterator {
 	return original.NewPremiumMessagingRegionsListResultIterator(page)
 }
-func NewPremiumMessagingRegionsListResultPage(getNextPage func(context.Context, PremiumMessagingRegionsListResult) (PremiumMessagingRegionsListResult, error)) PremiumMessagingRegionsListResultPage {
-	return original.NewPremiumMessagingRegionsListResultPage(getNextPage)
+func NewPremiumMessagingRegionsListResultPage(cur PremiumMessagingRegionsListResult, getNextPage func(context.Context, PremiumMessagingRegionsListResult) (PremiumMessagingRegionsListResult, error)) PremiumMessagingRegionsListResultPage {
+	return original.NewPremiumMessagingRegionsListResultPage(cur, getNextPage)
 }
 func NewQueuesClient(subscriptionID string) QueuesClient {
 	return original.NewQueuesClient(subscriptionID)
@@ -327,8 +328,8 @@ func NewRegionsClientWithBaseURI(baseURI string, subscriptionID string) RegionsC
 func NewRuleListResultIterator(page RuleListResultPage) RuleListResultIterator {
 	return original.NewRuleListResultIterator(page)
 }
-func NewRuleListResultPage(getNextPage func(context.Context, RuleListResult) (RuleListResult, error)) RuleListResultPage {
-	return original.NewRuleListResultPage(getNextPage)
+func NewRuleListResultPage(cur RuleListResult, getNextPage func(context.Context, RuleListResult) (RuleListResult, error)) RuleListResultPage {
+	return original.NewRuleListResultPage(cur, getNextPage)
 }
 func NewRulesClient(subscriptionID string) RulesClient {
 	return original.NewRulesClient(subscriptionID)
@@ -339,32 +340,32 @@ func NewRulesClientWithBaseURI(baseURI string, subscriptionID string) RulesClien
 func NewSBAuthorizationRuleListResultIterator(page SBAuthorizationRuleListResultPage) SBAuthorizationRuleListResultIterator {
 	return original.NewSBAuthorizationRuleListResultIterator(page)
 }
-func NewSBAuthorizationRuleListResultPage(getNextPage func(context.Context, SBAuthorizationRuleListResult) (SBAuthorizationRuleListResult, error)) SBAuthorizationRuleListResultPage {
-	return original.NewSBAuthorizationRuleListResultPage(getNextPage)
+func NewSBAuthorizationRuleListResultPage(cur SBAuthorizationRuleListResult, getNextPage func(context.Context, SBAuthorizationRuleListResult) (SBAuthorizationRuleListResult, error)) SBAuthorizationRuleListResultPage {
+	return original.NewSBAuthorizationRuleListResultPage(cur, getNextPage)
 }
 func NewSBNamespaceListResultIterator(page SBNamespaceListResultPage) SBNamespaceListResultIterator {
 	return original.NewSBNamespaceListResultIterator(page)
 }
-func NewSBNamespaceListResultPage(getNextPage func(context.Context, SBNamespaceListResult) (SBNamespaceListResult, error)) SBNamespaceListResultPage {
-	return original.NewSBNamespaceListResultPage(getNextPage)
+func NewSBNamespaceListResultPage(cur SBNamespaceListResult, getNextPage func(context.Context, SBNamespaceListResult) (SBNamespaceListResult, error)) SBNamespaceListResultPage {
+	return original.NewSBNamespaceListResultPage(cur, getNextPage)
 }
 func NewSBQueueListResultIterator(page SBQueueListResultPage) SBQueueListResultIterator {
 	return original.NewSBQueueListResultIterator(page)
 }
-func NewSBQueueListResultPage(getNextPage func(context.Context, SBQueueListResult) (SBQueueListResult, error)) SBQueueListResultPage {
-	return original.NewSBQueueListResultPage(getNextPage)
+func NewSBQueueListResultPage(cur SBQueueListResult, getNextPage func(context.Context, SBQueueListResult) (SBQueueListResult, error)) SBQueueListResultPage {
+	return original.NewSBQueueListResultPage(cur, getNextPage)
 }
 func NewSBSubscriptionListResultIterator(page SBSubscriptionListResultPage) SBSubscriptionListResultIterator {
 	return original.NewSBSubscriptionListResultIterator(page)
 }
-func NewSBSubscriptionListResultPage(getNextPage func(context.Context, SBSubscriptionListResult) (SBSubscriptionListResult, error)) SBSubscriptionListResultPage {
-	return original.NewSBSubscriptionListResultPage(getNextPage)
+func NewSBSubscriptionListResultPage(cur SBSubscriptionListResult, getNextPage func(context.Context, SBSubscriptionListResult) (SBSubscriptionListResult, error)) SBSubscriptionListResultPage {
+	return original.NewSBSubscriptionListResultPage(cur, getNextPage)
 }
 func NewSBTopicListResultIterator(page SBTopicListResultPage) SBTopicListResultIterator {
 	return original.NewSBTopicListResultIterator(page)
 }
-func NewSBTopicListResultPage(getNextPage func(context.Context, SBTopicListResult) (SBTopicListResult, error)) SBTopicListResultPage {
-	return original.NewSBTopicListResultPage(getNextPage)
+func NewSBTopicListResultPage(cur SBTopicListResult, getNextPage func(context.Context, SBTopicListResult) (SBTopicListResult, error)) SBTopicListResultPage {
+	return original.NewSBTopicListResultPage(cur, getNextPage)
 }
 func NewSubscriptionsClient(subscriptionID string) SubscriptionsClient {
 	return original.NewSubscriptionsClient(subscriptionID)

@@ -485,8 +485,8 @@ func NewDomainTopicsClientWithBaseURI(baseURI string, subscriptionID string) Dom
 func NewDomainTopicsListResultIterator(page DomainTopicsListResultPage) DomainTopicsListResultIterator {
 	return original.NewDomainTopicsListResultIterator(page)
 }
-func NewDomainTopicsListResultPage(getNextPage func(context.Context, DomainTopicsListResult) (DomainTopicsListResult, error)) DomainTopicsListResultPage {
-	return original.NewDomainTopicsListResultPage(getNextPage)
+func NewDomainTopicsListResultPage(cur DomainTopicsListResult, getNextPage func(context.Context, DomainTopicsListResult) (DomainTopicsListResult, error)) DomainTopicsListResultPage {
+	return original.NewDomainTopicsListResultPage(cur, getNextPage)
 }
 func NewDomainsClient(subscriptionID string) DomainsClient {
 	return original.NewDomainsClient(subscriptionID)
@@ -497,8 +497,8 @@ func NewDomainsClientWithBaseURI(baseURI string, subscriptionID string) DomainsC
 func NewDomainsListResultIterator(page DomainsListResultPage) DomainsListResultIterator {
 	return original.NewDomainsListResultIterator(page)
 }
-func NewDomainsListResultPage(getNextPage func(context.Context, DomainsListResult) (DomainsListResult, error)) DomainsListResultPage {
-	return original.NewDomainsListResultPage(getNextPage)
+func NewDomainsListResultPage(cur DomainsListResult, getNextPage func(context.Context, DomainsListResult) (DomainsListResult, error)) DomainsListResultPage {
+	return original.NewDomainsListResultPage(cur, getNextPage)
 }
 func NewEventChannelsClient(subscriptionID string) EventChannelsClient {
 	return original.NewEventChannelsClient(subscriptionID)
@@ -509,8 +509,8 @@ func NewEventChannelsClientWithBaseURI(baseURI string, subscriptionID string) Ev
 func NewEventChannelsListResultIterator(page EventChannelsListResultPage) EventChannelsListResultIterator {
 	return original.NewEventChannelsListResultIterator(page)
 }
-func NewEventChannelsListResultPage(getNextPage func(context.Context, EventChannelsListResult) (EventChannelsListResult, error)) EventChannelsListResultPage {
-	return original.NewEventChannelsListResultPage(getNextPage)
+func NewEventChannelsListResultPage(cur EventChannelsListResult, getNextPage func(context.Context, EventChannelsListResult) (EventChannelsListResult, error)) EventChannelsListResultPage {
+	return original.NewEventChannelsListResultPage(cur, getNextPage)
 }
 func NewEventSubscriptionsClient(subscriptionID string) EventSubscriptionsClient {
 	return original.NewEventSubscriptionsClient(subscriptionID)
@@ -521,8 +521,8 @@ func NewEventSubscriptionsClientWithBaseURI(baseURI string, subscriptionID strin
 func NewEventSubscriptionsListResultIterator(page EventSubscriptionsListResultPage) EventSubscriptionsListResultIterator {
 	return original.NewEventSubscriptionsListResultIterator(page)
 }
-func NewEventSubscriptionsListResultPage(getNextPage func(context.Context, EventSubscriptionsListResult) (EventSubscriptionsListResult, error)) EventSubscriptionsListResultPage {
-	return original.NewEventSubscriptionsListResultPage(getNextPage)
+func NewEventSubscriptionsListResultPage(cur EventSubscriptionsListResult, getNextPage func(context.Context, EventSubscriptionsListResult) (EventSubscriptionsListResult, error)) EventSubscriptionsListResultPage {
+	return original.NewEventSubscriptionsListResultPage(cur, getNextPage)
 }
 func NewExtensionTopicsClient(subscriptionID string) ExtensionTopicsClient {
 	return original.NewExtensionTopicsClient(subscriptionID)
@@ -545,8 +545,8 @@ func NewPartnerNamespacesClientWithBaseURI(baseURI string, subscriptionID string
 func NewPartnerNamespacesListResultIterator(page PartnerNamespacesListResultPage) PartnerNamespacesListResultIterator {
 	return original.NewPartnerNamespacesListResultIterator(page)
 }
-func NewPartnerNamespacesListResultPage(getNextPage func(context.Context, PartnerNamespacesListResult) (PartnerNamespacesListResult, error)) PartnerNamespacesListResultPage {
-	return original.NewPartnerNamespacesListResultPage(getNextPage)
+func NewPartnerNamespacesListResultPage(cur PartnerNamespacesListResult, getNextPage func(context.Context, PartnerNamespacesListResult) (PartnerNamespacesListResult, error)) PartnerNamespacesListResultPage {
+	return original.NewPartnerNamespacesListResultPage(cur, getNextPage)
 }
 func NewPartnerRegistrationsClient(subscriptionID string) PartnerRegistrationsClient {
 	return original.NewPartnerRegistrationsClient(subscriptionID)
@@ -557,8 +557,8 @@ func NewPartnerRegistrationsClientWithBaseURI(baseURI string, subscriptionID str
 func NewPartnerRegistrationsListResultIterator(page PartnerRegistrationsListResultPage) PartnerRegistrationsListResultIterator {
 	return original.NewPartnerRegistrationsListResultIterator(page)
 }
-func NewPartnerRegistrationsListResultPage(getNextPage func(context.Context, PartnerRegistrationsListResult) (PartnerRegistrationsListResult, error)) PartnerRegistrationsListResultPage {
-	return original.NewPartnerRegistrationsListResultPage(getNextPage)
+func NewPartnerRegistrationsListResultPage(cur PartnerRegistrationsListResult, getNextPage func(context.Context, PartnerRegistrationsListResult) (PartnerRegistrationsListResult, error)) PartnerRegistrationsListResultPage {
+	return original.NewPartnerRegistrationsListResultPage(cur, getNextPage)
 }
 func NewPartnerTopicEventSubscriptionsClient(subscriptionID string) PartnerTopicEventSubscriptionsClient {
 	return original.NewPartnerTopicEventSubscriptionsClient(subscriptionID)
@@ -575,14 +575,14 @@ func NewPartnerTopicsClientWithBaseURI(baseURI string, subscriptionID string) Pa
 func NewPartnerTopicsListResultIterator(page PartnerTopicsListResultPage) PartnerTopicsListResultIterator {
 	return original.NewPartnerTopicsListResultIterator(page)
 }
-func NewPartnerTopicsListResultPage(getNextPage func(context.Context, PartnerTopicsListResult) (PartnerTopicsListResult, error)) PartnerTopicsListResultPage {
-	return original.NewPartnerTopicsListResultPage(getNextPage)
+func NewPartnerTopicsListResultPage(cur PartnerTopicsListResult, getNextPage func(context.Context, PartnerTopicsListResult) (PartnerTopicsListResult, error)) PartnerTopicsListResultPage {
+	return original.NewPartnerTopicsListResultPage(cur, getNextPage)
 }
 func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
 	return original.NewPrivateEndpointConnectionListResultIterator(page)
 }
-func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
-	return original.NewPrivateEndpointConnectionListResultPage(getNextPage)
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return original.NewPrivateEndpointConnectionListResultPage(cur, getNextPage)
 }
 func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
 	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
@@ -599,8 +599,8 @@ func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID str
 func NewPrivateLinkResourcesListResultIterator(page PrivateLinkResourcesListResultPage) PrivateLinkResourcesListResultIterator {
 	return original.NewPrivateLinkResourcesListResultIterator(page)
 }
-func NewPrivateLinkResourcesListResultPage(getNextPage func(context.Context, PrivateLinkResourcesListResult) (PrivateLinkResourcesListResult, error)) PrivateLinkResourcesListResultPage {
-	return original.NewPrivateLinkResourcesListResultPage(getNextPage)
+func NewPrivateLinkResourcesListResultPage(cur PrivateLinkResourcesListResult, getNextPage func(context.Context, PrivateLinkResourcesListResult) (PrivateLinkResourcesListResult, error)) PrivateLinkResourcesListResultPage {
+	return original.NewPrivateLinkResourcesListResultPage(cur, getNextPage)
 }
 func NewSystemTopicEventSubscriptionsClient(subscriptionID string) SystemTopicEventSubscriptionsClient {
 	return original.NewSystemTopicEventSubscriptionsClient(subscriptionID)
@@ -617,8 +617,8 @@ func NewSystemTopicsClientWithBaseURI(baseURI string, subscriptionID string) Sys
 func NewSystemTopicsListResultIterator(page SystemTopicsListResultPage) SystemTopicsListResultIterator {
 	return original.NewSystemTopicsListResultIterator(page)
 }
-func NewSystemTopicsListResultPage(getNextPage func(context.Context, SystemTopicsListResult) (SystemTopicsListResult, error)) SystemTopicsListResultPage {
-	return original.NewSystemTopicsListResultPage(getNextPage)
+func NewSystemTopicsListResultPage(cur SystemTopicsListResult, getNextPage func(context.Context, SystemTopicsListResult) (SystemTopicsListResult, error)) SystemTopicsListResultPage {
+	return original.NewSystemTopicsListResultPage(cur, getNextPage)
 }
 func NewTopicTypesClient(subscriptionID string) TopicTypesClient {
 	return original.NewTopicTypesClient(subscriptionID)
@@ -635,8 +635,8 @@ func NewTopicsClientWithBaseURI(baseURI string, subscriptionID string) TopicsCli
 func NewTopicsListResultIterator(page TopicsListResultPage) TopicsListResultIterator {
 	return original.NewTopicsListResultIterator(page)
 }
-func NewTopicsListResultPage(getNextPage func(context.Context, TopicsListResult) (TopicsListResult, error)) TopicsListResultPage {
-	return original.NewTopicsListResultPage(getNextPage)
+func NewTopicsListResultPage(cur TopicsListResult, getNextPage func(context.Context, TopicsListResult) (TopicsListResult, error)) TopicsListResultPage {
+	return original.NewTopicsListResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

@@ -23,6 +23,15 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// MarketplaceAgreementsClientAPI contains the set of methods on the MarketplaceAgreementsClient type.
+type MarketplaceAgreementsClientAPI interface {
+	Create(ctx context.Context, body *datadog.AgreementResource) (result datadog.AgreementResource, err error)
+	List(ctx context.Context) (result datadog.AgreementResourceListResponsePage, err error)
+	ListComplete(ctx context.Context) (result datadog.AgreementResourceListResponseIterator, err error)
+}
+
+var _ MarketplaceAgreementsClientAPI = (*datadog.MarketplaceAgreementsClient)(nil)
+
 // APIKeysClientAPI contains the set of methods on the APIKeysClient type.
 type APIKeysClientAPI interface {
 	GetDefaultKey(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.APIKey, err error)

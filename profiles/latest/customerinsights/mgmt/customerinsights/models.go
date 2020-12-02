@@ -408,20 +408,20 @@ func NewAuthorizationPoliciesClientWithBaseURI(baseURI string, subscriptionID st
 func NewAuthorizationPolicyListResultIterator(page AuthorizationPolicyListResultPage) AuthorizationPolicyListResultIterator {
 	return original.NewAuthorizationPolicyListResultIterator(page)
 }
-func NewAuthorizationPolicyListResultPage(getNextPage func(context.Context, AuthorizationPolicyListResult) (AuthorizationPolicyListResult, error)) AuthorizationPolicyListResultPage {
-	return original.NewAuthorizationPolicyListResultPage(getNextPage)
+func NewAuthorizationPolicyListResultPage(cur AuthorizationPolicyListResult, getNextPage func(context.Context, AuthorizationPolicyListResult) (AuthorizationPolicyListResult, error)) AuthorizationPolicyListResultPage {
+	return original.NewAuthorizationPolicyListResultPage(cur, getNextPage)
 }
 func NewConnectorListResultIterator(page ConnectorListResultPage) ConnectorListResultIterator {
 	return original.NewConnectorListResultIterator(page)
 }
-func NewConnectorListResultPage(getNextPage func(context.Context, ConnectorListResult) (ConnectorListResult, error)) ConnectorListResultPage {
-	return original.NewConnectorListResultPage(getNextPage)
+func NewConnectorListResultPage(cur ConnectorListResult, getNextPage func(context.Context, ConnectorListResult) (ConnectorListResult, error)) ConnectorListResultPage {
+	return original.NewConnectorListResultPage(cur, getNextPage)
 }
 func NewConnectorMappingListResultIterator(page ConnectorMappingListResultPage) ConnectorMappingListResultIterator {
 	return original.NewConnectorMappingListResultIterator(page)
 }
-func NewConnectorMappingListResultPage(getNextPage func(context.Context, ConnectorMappingListResult) (ConnectorMappingListResult, error)) ConnectorMappingListResultPage {
-	return original.NewConnectorMappingListResultPage(getNextPage)
+func NewConnectorMappingListResultPage(cur ConnectorMappingListResult, getNextPage func(context.Context, ConnectorMappingListResult) (ConnectorMappingListResult, error)) ConnectorMappingListResultPage {
+	return original.NewConnectorMappingListResultPage(cur, getNextPage)
 }
 func NewConnectorMappingsClient(subscriptionID string) ConnectorMappingsClient {
 	return original.NewConnectorMappingsClient(subscriptionID)
@@ -438,8 +438,8 @@ func NewConnectorsClientWithBaseURI(baseURI string, subscriptionID string) Conne
 func NewHubListResultIterator(page HubListResultPage) HubListResultIterator {
 	return original.NewHubListResultIterator(page)
 }
-func NewHubListResultPage(getNextPage func(context.Context, HubListResult) (HubListResult, error)) HubListResultPage {
-	return original.NewHubListResultPage(getNextPage)
+func NewHubListResultPage(cur HubListResult, getNextPage func(context.Context, HubListResult) (HubListResult, error)) HubListResultPage {
+	return original.NewHubListResultPage(cur, getNextPage)
 }
 func NewHubsClient(subscriptionID string) HubsClient {
 	return original.NewHubsClient(subscriptionID)
@@ -456,8 +456,8 @@ func NewImagesClientWithBaseURI(baseURI string, subscriptionID string) ImagesCli
 func NewInteractionListResultIterator(page InteractionListResultPage) InteractionListResultIterator {
 	return original.NewInteractionListResultIterator(page)
 }
-func NewInteractionListResultPage(getNextPage func(context.Context, InteractionListResult) (InteractionListResult, error)) InteractionListResultPage {
-	return original.NewInteractionListResultPage(getNextPage)
+func NewInteractionListResultPage(cur InteractionListResult, getNextPage func(context.Context, InteractionListResult) (InteractionListResult, error)) InteractionListResultPage {
+	return original.NewInteractionListResultPage(cur, getNextPage)
 }
 func NewInteractionsClient(subscriptionID string) InteractionsClient {
 	return original.NewInteractionsClient(subscriptionID)
@@ -474,14 +474,14 @@ func NewKpiClientWithBaseURI(baseURI string, subscriptionID string) KpiClient {
 func NewKpiListResultIterator(page KpiListResultPage) KpiListResultIterator {
 	return original.NewKpiListResultIterator(page)
 }
-func NewKpiListResultPage(getNextPage func(context.Context, KpiListResult) (KpiListResult, error)) KpiListResultPage {
-	return original.NewKpiListResultPage(getNextPage)
+func NewKpiListResultPage(cur KpiListResult, getNextPage func(context.Context, KpiListResult) (KpiListResult, error)) KpiListResultPage {
+	return original.NewKpiListResultPage(cur, getNextPage)
 }
 func NewLinkListResultIterator(page LinkListResultPage) LinkListResultIterator {
 	return original.NewLinkListResultIterator(page)
 }
-func NewLinkListResultPage(getNextPage func(context.Context, LinkListResult) (LinkListResult, error)) LinkListResultPage {
-	return original.NewLinkListResultPage(getNextPage)
+func NewLinkListResultPage(cur LinkListResult, getNextPage func(context.Context, LinkListResult) (LinkListResult, error)) LinkListResultPage {
+	return original.NewLinkListResultPage(cur, getNextPage)
 }
 func NewLinksClient(subscriptionID string) LinksClient {
 	return original.NewLinksClient(subscriptionID)
@@ -492,8 +492,8 @@ func NewLinksClientWithBaseURI(baseURI string, subscriptionID string) LinksClien
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -504,8 +504,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewPredictionListResultIterator(page PredictionListResultPage) PredictionListResultIterator {
 	return original.NewPredictionListResultIterator(page)
 }
-func NewPredictionListResultPage(getNextPage func(context.Context, PredictionListResult) (PredictionListResult, error)) PredictionListResultPage {
-	return original.NewPredictionListResultPage(getNextPage)
+func NewPredictionListResultPage(cur PredictionListResult, getNextPage func(context.Context, PredictionListResult) (PredictionListResult, error)) PredictionListResultPage {
+	return original.NewPredictionListResultPage(cur, getNextPage)
 }
 func NewPredictionsClient(subscriptionID string) PredictionsClient {
 	return original.NewPredictionsClient(subscriptionID)
@@ -516,8 +516,8 @@ func NewPredictionsClientWithBaseURI(baseURI string, subscriptionID string) Pred
 func NewProfileListResultIterator(page ProfileListResultPage) ProfileListResultIterator {
 	return original.NewProfileListResultIterator(page)
 }
-func NewProfileListResultPage(getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
-	return original.NewProfileListResultPage(getNextPage)
+func NewProfileListResultPage(cur ProfileListResult, getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
+	return original.NewProfileListResultPage(cur, getNextPage)
 }
 func NewProfilesClient(subscriptionID string) ProfilesClient {
 	return original.NewProfilesClient(subscriptionID)
@@ -528,8 +528,8 @@ func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) Profile
 func NewRelationshipLinkListResultIterator(page RelationshipLinkListResultPage) RelationshipLinkListResultIterator {
 	return original.NewRelationshipLinkListResultIterator(page)
 }
-func NewRelationshipLinkListResultPage(getNextPage func(context.Context, RelationshipLinkListResult) (RelationshipLinkListResult, error)) RelationshipLinkListResultPage {
-	return original.NewRelationshipLinkListResultPage(getNextPage)
+func NewRelationshipLinkListResultPage(cur RelationshipLinkListResult, getNextPage func(context.Context, RelationshipLinkListResult) (RelationshipLinkListResult, error)) RelationshipLinkListResultPage {
+	return original.NewRelationshipLinkListResultPage(cur, getNextPage)
 }
 func NewRelationshipLinksClient(subscriptionID string) RelationshipLinksClient {
 	return original.NewRelationshipLinksClient(subscriptionID)
@@ -540,8 +540,8 @@ func NewRelationshipLinksClientWithBaseURI(baseURI string, subscriptionID string
 func NewRelationshipListResultIterator(page RelationshipListResultPage) RelationshipListResultIterator {
 	return original.NewRelationshipListResultIterator(page)
 }
-func NewRelationshipListResultPage(getNextPage func(context.Context, RelationshipListResult) (RelationshipListResult, error)) RelationshipListResultPage {
-	return original.NewRelationshipListResultPage(getNextPage)
+func NewRelationshipListResultPage(cur RelationshipListResult, getNextPage func(context.Context, RelationshipListResult) (RelationshipListResult, error)) RelationshipListResultPage {
+	return original.NewRelationshipListResultPage(cur, getNextPage)
 }
 func NewRelationshipsClient(subscriptionID string) RelationshipsClient {
 	return original.NewRelationshipsClient(subscriptionID)
@@ -552,8 +552,8 @@ func NewRelationshipsClientWithBaseURI(baseURI string, subscriptionID string) Re
 func NewRoleAssignmentListResultIterator(page RoleAssignmentListResultPage) RoleAssignmentListResultIterator {
 	return original.NewRoleAssignmentListResultIterator(page)
 }
-func NewRoleAssignmentListResultPage(getNextPage func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)) RoleAssignmentListResultPage {
-	return original.NewRoleAssignmentListResultPage(getNextPage)
+func NewRoleAssignmentListResultPage(cur RoleAssignmentListResult, getNextPage func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)) RoleAssignmentListResultPage {
+	return original.NewRoleAssignmentListResultPage(cur, getNextPage)
 }
 func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
 	return original.NewRoleAssignmentsClient(subscriptionID)
@@ -564,8 +564,8 @@ func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewRoleListResultIterator(page RoleListResultPage) RoleListResultIterator {
 	return original.NewRoleListResultIterator(page)
 }
-func NewRoleListResultPage(getNextPage func(context.Context, RoleListResult) (RoleListResult, error)) RoleListResultPage {
-	return original.NewRoleListResultPage(getNextPage)
+func NewRoleListResultPage(cur RoleListResult, getNextPage func(context.Context, RoleListResult) (RoleListResult, error)) RoleListResultPage {
+	return original.NewRoleListResultPage(cur, getNextPage)
 }
 func NewRolesClient(subscriptionID string) RolesClient {
 	return original.NewRolesClient(subscriptionID)
@@ -576,8 +576,8 @@ func NewRolesClientWithBaseURI(baseURI string, subscriptionID string) RolesClien
 func NewViewListResultIterator(page ViewListResultPage) ViewListResultIterator {
 	return original.NewViewListResultIterator(page)
 }
-func NewViewListResultPage(getNextPage func(context.Context, ViewListResult) (ViewListResult, error)) ViewListResultPage {
-	return original.NewViewListResultPage(getNextPage)
+func NewViewListResultPage(cur ViewListResult, getNextPage func(context.Context, ViewListResult) (ViewListResult, error)) ViewListResultPage {
+	return original.NewViewListResultPage(cur, getNextPage)
 }
 func NewViewsClient(subscriptionID string) ViewsClient {
 	return original.NewViewsClient(subscriptionID)
@@ -588,8 +588,8 @@ func NewViewsClientWithBaseURI(baseURI string, subscriptionID string) ViewsClien
 func NewWidgetTypeListResultIterator(page WidgetTypeListResultPage) WidgetTypeListResultIterator {
 	return original.NewWidgetTypeListResultIterator(page)
 }
-func NewWidgetTypeListResultPage(getNextPage func(context.Context, WidgetTypeListResult) (WidgetTypeListResult, error)) WidgetTypeListResultPage {
-	return original.NewWidgetTypeListResultPage(getNextPage)
+func NewWidgetTypeListResultPage(cur WidgetTypeListResult, getNextPage func(context.Context, WidgetTypeListResult) (WidgetTypeListResult, error)) WidgetTypeListResultPage {
+	return original.NewWidgetTypeListResultPage(cur, getNextPage)
 }
 func NewWidgetTypesClient(subscriptionID string) WidgetTypesClient {
 	return original.NewWidgetTypesClient(subscriptionID)

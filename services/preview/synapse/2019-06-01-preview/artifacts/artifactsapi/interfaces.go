@@ -25,34 +25,37 @@ import (
 
 // LinkedServiceClientAPI contains the set of methods on the LinkedServiceClient type.
 type LinkedServiceClientAPI interface {
-	CreateOrUpdateLinkedService(ctx context.Context, linkedServiceName string, linkedService artifacts.LinkedServiceResource, ifMatch string) (result artifacts.LinkedServiceResource, err error)
-	DeleteLinkedService(ctx context.Context, linkedServiceName string) (result autorest.Response, err error)
+	CreateOrUpdateLinkedService(ctx context.Context, linkedServiceName string, linkedService artifacts.LinkedServiceResource, ifMatch string) (result artifacts.LinkedServiceCreateOrUpdateLinkedServiceFuture, err error)
+	DeleteLinkedService(ctx context.Context, linkedServiceName string) (result artifacts.LinkedServiceDeleteLinkedServiceFuture, err error)
 	GetLinkedService(ctx context.Context, linkedServiceName string, ifNoneMatch string) (result artifacts.LinkedServiceResource, err error)
 	GetLinkedServicesByWorkspace(ctx context.Context) (result artifacts.LinkedServiceListResponsePage, err error)
 	GetLinkedServicesByWorkspaceComplete(ctx context.Context) (result artifacts.LinkedServiceListResponseIterator, err error)
+	RenameLinkedService(ctx context.Context, linkedServiceName string, request artifacts.RenameRequest) (result artifacts.LinkedServiceRenameLinkedServiceFuture, err error)
 }
 
 var _ LinkedServiceClientAPI = (*artifacts.LinkedServiceClient)(nil)
 
 // DatasetClientAPI contains the set of methods on the DatasetClient type.
 type DatasetClientAPI interface {
-	CreateOrUpdateDataset(ctx context.Context, datasetName string, dataset artifacts.DatasetResource, ifMatch string) (result artifacts.DatasetResource, err error)
-	DeleteDataset(ctx context.Context, datasetName string) (result autorest.Response, err error)
+	CreateOrUpdateDataset(ctx context.Context, datasetName string, dataset artifacts.DatasetResource, ifMatch string) (result artifacts.DatasetCreateOrUpdateDatasetFuture, err error)
+	DeleteDataset(ctx context.Context, datasetName string) (result artifacts.DatasetDeleteDatasetFuture, err error)
 	GetDataset(ctx context.Context, datasetName string, ifNoneMatch string) (result artifacts.DatasetResource, err error)
 	GetDatasetsByWorkspace(ctx context.Context) (result artifacts.DatasetListResponsePage, err error)
 	GetDatasetsByWorkspaceComplete(ctx context.Context) (result artifacts.DatasetListResponseIterator, err error)
+	RenameDataset(ctx context.Context, datasetName string, request artifacts.RenameRequest) (result artifacts.DatasetRenameDatasetFuture, err error)
 }
 
 var _ DatasetClientAPI = (*artifacts.DatasetClient)(nil)
 
 // PipelineClientAPI contains the set of methods on the PipelineClient type.
 type PipelineClientAPI interface {
-	CreateOrUpdatePipeline(ctx context.Context, pipelineName string, pipeline artifacts.PipelineResource, ifMatch string) (result artifacts.PipelineResource, err error)
+	CreateOrUpdatePipeline(ctx context.Context, pipelineName string, pipeline artifacts.PipelineResource, ifMatch string) (result artifacts.PipelineCreateOrUpdatePipelineFuture, err error)
 	CreatePipelineRun(ctx context.Context, pipelineName string, referencePipelineRunID string, isRecovery *bool, startActivityName string, parameters map[string]interface{}) (result artifacts.CreateRunResponse, err error)
-	DeletePipeline(ctx context.Context, pipelineName string) (result autorest.Response, err error)
+	DeletePipeline(ctx context.Context, pipelineName string) (result artifacts.PipelineDeletePipelineFuture, err error)
 	GetPipeline(ctx context.Context, pipelineName string, ifNoneMatch string) (result artifacts.PipelineResource, err error)
 	GetPipelinesByWorkspace(ctx context.Context) (result artifacts.PipelineListResponsePage, err error)
 	GetPipelinesByWorkspaceComplete(ctx context.Context) (result artifacts.PipelineListResponseIterator, err error)
+	RenamePipeline(ctx context.Context, pipelineName string, request artifacts.RenameRequest) (result artifacts.PipelineRenamePipelineFuture, err error)
 }
 
 var _ PipelineClientAPI = (*artifacts.PipelineClient)(nil)
@@ -69,8 +72,8 @@ var _ PipelineRunClientAPI = (*artifacts.PipelineRunClient)(nil)
 
 // TriggerClientAPI contains the set of methods on the TriggerClient type.
 type TriggerClientAPI interface {
-	CreateOrUpdateTrigger(ctx context.Context, triggerName string, trigger artifacts.TriggerResource, ifMatch string) (result artifacts.TriggerResource, err error)
-	DeleteTrigger(ctx context.Context, triggerName string) (result autorest.Response, err error)
+	CreateOrUpdateTrigger(ctx context.Context, triggerName string, trigger artifacts.TriggerResource, ifMatch string) (result artifacts.TriggerCreateOrUpdateTriggerFuture, err error)
+	DeleteTrigger(ctx context.Context, triggerName string) (result artifacts.TriggerDeleteTriggerFuture, err error)
 	GetEventSubscriptionStatus(ctx context.Context, triggerName string) (result artifacts.TriggerSubscriptionOperationStatus, err error)
 	GetTrigger(ctx context.Context, triggerName string, ifNoneMatch string) (result artifacts.TriggerResource, err error)
 	GetTriggersByWorkspace(ctx context.Context) (result artifacts.TriggerListResponsePage, err error)
@@ -94,11 +97,12 @@ var _ TriggerRunClientAPI = (*artifacts.TriggerRunClient)(nil)
 
 // DataFlowClientAPI contains the set of methods on the DataFlowClient type.
 type DataFlowClientAPI interface {
-	CreateOrUpdateDataFlow(ctx context.Context, dataFlowName string, dataFlow artifacts.DataFlowResource, ifMatch string) (result artifacts.DataFlowResource, err error)
-	DeleteDataFlow(ctx context.Context, dataFlowName string) (result autorest.Response, err error)
+	CreateOrUpdateDataFlow(ctx context.Context, dataFlowName string, dataFlow artifacts.DataFlowResource, ifMatch string) (result artifacts.DataFlowCreateOrUpdateDataFlowFuture, err error)
+	DeleteDataFlow(ctx context.Context, dataFlowName string) (result artifacts.DataFlowDeleteDataFlowFuture, err error)
 	GetDataFlow(ctx context.Context, dataFlowName string, ifNoneMatch string) (result artifacts.DataFlowResource, err error)
 	GetDataFlowsByWorkspace(ctx context.Context) (result artifacts.DataFlowListResponsePage, err error)
 	GetDataFlowsByWorkspaceComplete(ctx context.Context) (result artifacts.DataFlowListResponseIterator, err error)
+	RenameDataFlow(ctx context.Context, dataFlowName string, request artifacts.RenameRequest) (result artifacts.DataFlowRenameDataFlowFuture, err error)
 }
 
 var _ DataFlowClientAPI = (*artifacts.DataFlowClient)(nil)
@@ -122,6 +126,7 @@ type SQLScriptClientAPI interface {
 	GetSQLScript(ctx context.Context, SQLScriptName string, ifNoneMatch string) (result artifacts.SQLScriptResource, err error)
 	GetSQLScriptsByWorkspace(ctx context.Context) (result artifacts.SQLScriptsListResponsePage, err error)
 	GetSQLScriptsByWorkspaceComplete(ctx context.Context) (result artifacts.SQLScriptsListResponseIterator, err error)
+	RenameSQLScript(ctx context.Context, SQLScriptName string, request artifacts.RenameRequest) (result artifacts.SQLScriptRenameSQLScriptFuture, err error)
 }
 
 var _ SQLScriptClientAPI = (*artifacts.SQLScriptClient)(nil)
@@ -135,19 +140,59 @@ type SparkJobDefinitionClientAPI interface {
 	GetSparkJobDefinition(ctx context.Context, sparkJobDefinitionName string, ifNoneMatch string) (result artifacts.SparkJobDefinitionResource, err error)
 	GetSparkJobDefinitionsByWorkspace(ctx context.Context) (result artifacts.SparkJobDefinitionsListResponsePage, err error)
 	GetSparkJobDefinitionsByWorkspaceComplete(ctx context.Context) (result artifacts.SparkJobDefinitionsListResponseIterator, err error)
+	RenameSparkJobDefinition(ctx context.Context, sparkJobDefinitionName string, request artifacts.RenameRequest) (result artifacts.SparkJobDefinitionRenameSparkJobDefinitionFuture, err error)
 }
 
 var _ SparkJobDefinitionClientAPI = (*artifacts.SparkJobDefinitionClient)(nil)
 
 // NotebookClientAPI contains the set of methods on the NotebookClient type.
 type NotebookClientAPI interface {
-	CreateOrUpdateNotebook(ctx context.Context, notebookName string, notebook artifacts.NotebookResource, ifMatch string) (result artifacts.NotebookResource, err error)
-	DeleteNotebook(ctx context.Context, notebookName string) (result autorest.Response, err error)
+	CreateOrUpdateNotebook(ctx context.Context, notebookName string, notebook artifacts.NotebookResource, ifMatch string) (result artifacts.NotebookCreateOrUpdateNotebookFuture, err error)
+	DeleteNotebook(ctx context.Context, notebookName string) (result artifacts.NotebookDeleteNotebookFuture, err error)
 	GetNotebook(ctx context.Context, notebookName string, ifNoneMatch string) (result artifacts.NotebookResource, err error)
 	GetNotebooksByWorkspace(ctx context.Context) (result artifacts.NotebookListResponsePage, err error)
 	GetNotebooksByWorkspaceComplete(ctx context.Context) (result artifacts.NotebookListResponseIterator, err error)
 	GetNotebookSummaryByWorkSpace(ctx context.Context) (result artifacts.NotebookListResponsePage, err error)
 	GetNotebookSummaryByWorkSpaceComplete(ctx context.Context) (result artifacts.NotebookListResponseIterator, err error)
+	RenameNotebook(ctx context.Context, notebookName string, request artifacts.RenameRequest) (result artifacts.NotebookRenameNotebookFuture, err error)
 }
 
 var _ NotebookClientAPI = (*artifacts.NotebookClient)(nil)
+
+// WorkspaceClientAPI contains the set of methods on the WorkspaceClient type.
+type WorkspaceClientAPI interface {
+	Get(ctx context.Context) (result artifacts.Workspace, err error)
+}
+
+var _ WorkspaceClientAPI = (*artifacts.WorkspaceClient)(nil)
+
+// SQLPoolsClientAPI contains the set of methods on the SQLPoolsClient type.
+type SQLPoolsClientAPI interface {
+	Get(ctx context.Context, SQLPoolName string) (result artifacts.SQLPool, err error)
+	List(ctx context.Context) (result artifacts.SQLPoolInfoListResult, err error)
+}
+
+var _ SQLPoolsClientAPI = (*artifacts.SQLPoolsClient)(nil)
+
+// BigDataPoolsClientAPI contains the set of methods on the BigDataPoolsClient type.
+type BigDataPoolsClientAPI interface {
+	Get(ctx context.Context, bigDataPoolName string) (result artifacts.BigDataPoolResourceInfo, err error)
+	List(ctx context.Context) (result artifacts.BigDataPoolResourceInfoListResult, err error)
+}
+
+var _ BigDataPoolsClientAPI = (*artifacts.BigDataPoolsClient)(nil)
+
+// IntegrationRuntimesClientAPI contains the set of methods on the IntegrationRuntimesClient type.
+type IntegrationRuntimesClientAPI interface {
+	Get(ctx context.Context, integrationRuntimeName string) (result artifacts.IntegrationRuntimeResource, err error)
+	List(ctx context.Context) (result artifacts.IntegrationRuntimeListResponse, err error)
+}
+
+var _ IntegrationRuntimesClientAPI = (*artifacts.IntegrationRuntimesClient)(nil)
+
+// WorkspaceGitRepoManagementClientAPI contains the set of methods on the WorkspaceGitRepoManagementClient type.
+type WorkspaceGitRepoManagementClientAPI interface {
+	GetGitHubAccessToken(ctx context.Context, APIVersion string, gitHubAccessTokenRequest artifacts.GitHubAccessTokenRequest, clientRequestID string) (result artifacts.GitHubAccessTokenResponse, err error)
+}
+
+var _ WorkspaceGitRepoManagementClientAPI = (*artifacts.WorkspaceGitRepoManagementClient)(nil)

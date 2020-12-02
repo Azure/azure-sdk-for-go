@@ -317,8 +317,8 @@ func (oti OfferTermInfo) AsBasicOfferTermInfo() (BasicOfferTermInfo, bool) {
 	return &oti, true
 }
 
-// RateCardQueryParameters parameters that are used in the odata $filter query parameter for providing RateCard
-// information.
+// RateCardQueryParameters parameters that are used in the odata $filter query parameter for providing
+// RateCard information.
 type RateCardQueryParameters struct {
 	// OfferDurableID - The Offer ID parameter consists of the 'MS-AZR-' prefix, plus the Offer ID number (e.g., MS-AZR-0026P). See https://azure.microsoft.com/en-us/support/legal/offer-details/ for more information on the list of available Offer IDs, country/region availability, and billing currency.
 	OfferDurableID *string `json:"OfferDurableId,omitempty"`
@@ -688,8 +688,11 @@ func (page UsageAggregationListResultPage) Values() []UsageAggregation {
 }
 
 // Creates a new instance of the UsageAggregationListResultPage type.
-func NewUsageAggregationListResultPage(getNextPage func(context.Context, UsageAggregationListResult) (UsageAggregationListResult, error)) UsageAggregationListResultPage {
-	return UsageAggregationListResultPage{fn: getNextPage}
+func NewUsageAggregationListResultPage(cur UsageAggregationListResult, getNextPage func(context.Context, UsageAggregationListResult) (UsageAggregationListResult, error)) UsageAggregationListResultPage {
+	return UsageAggregationListResultPage{
+		fn:   getNextPage,
+		ualr: cur,
+	}
 }
 
 // UsageSample describes a sample of the usageAggregation.

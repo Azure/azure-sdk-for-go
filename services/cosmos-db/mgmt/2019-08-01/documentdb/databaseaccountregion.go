@@ -32,15 +32,15 @@ type DatabaseAccountRegionClient struct {
 }
 
 // NewDatabaseAccountRegionClient creates an instance of the DatabaseAccountRegionClient client.
-func NewDatabaseAccountRegionClient(subscriptionID string, subscriptionID1 string) DatabaseAccountRegionClient {
-	return NewDatabaseAccountRegionClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewDatabaseAccountRegionClient(subscriptionID string) DatabaseAccountRegionClient {
+	return NewDatabaseAccountRegionClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewDatabaseAccountRegionClientWithBaseURI creates an instance of the DatabaseAccountRegionClient client using a
 // custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
 // Azure stack).
-func NewDatabaseAccountRegionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) DatabaseAccountRegionClient {
-	return DatabaseAccountRegionClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewDatabaseAccountRegionClientWithBaseURI(baseURI string, subscriptionID string) DatabaseAccountRegionClient {
+	return DatabaseAccountRegionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListMetrics retrieves the metrics determined by the given filter for the given database account and region.
@@ -63,6 +63,8 @@ func (client DatabaseAccountRegionClient) ListMetrics(ctx context.Context, resou
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},

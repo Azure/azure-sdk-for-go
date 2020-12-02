@@ -191,8 +191,8 @@ func New(subscriptionID string) BaseClient {
 func NewDeploymentListResultIterator(page DeploymentListResultPage) DeploymentListResultIterator {
 	return original.NewDeploymentListResultIterator(page)
 }
-func NewDeploymentListResultPage(getNextPage func(context.Context, DeploymentListResult) (DeploymentListResult, error)) DeploymentListResultPage {
-	return original.NewDeploymentListResultPage(getNextPage)
+func NewDeploymentListResultPage(cur DeploymentListResult, getNextPage func(context.Context, DeploymentListResult) (DeploymentListResult, error)) DeploymentListResultPage {
+	return original.NewDeploymentListResultPage(cur, getNextPage)
 }
 func NewDeploymentOperationsClient(subscriptionID string) DeploymentOperationsClient {
 	return original.NewDeploymentOperationsClient(subscriptionID)
@@ -203,8 +203,8 @@ func NewDeploymentOperationsClientWithBaseURI(baseURI string, subscriptionID str
 func NewDeploymentOperationsListResultIterator(page DeploymentOperationsListResultPage) DeploymentOperationsListResultIterator {
 	return original.NewDeploymentOperationsListResultIterator(page)
 }
-func NewDeploymentOperationsListResultPage(getNextPage func(context.Context, DeploymentOperationsListResult) (DeploymentOperationsListResult, error)) DeploymentOperationsListResultPage {
-	return original.NewDeploymentOperationsListResultPage(getNextPage)
+func NewDeploymentOperationsListResultPage(cur DeploymentOperationsListResult, getNextPage func(context.Context, DeploymentOperationsListResult) (DeploymentOperationsListResult, error)) DeploymentOperationsListResultPage {
+	return original.NewDeploymentOperationsListResultPage(cur, getNextPage)
 }
 func NewDeploymentsClient(subscriptionID string) DeploymentsClient {
 	return original.NewDeploymentsClient(subscriptionID)
@@ -215,8 +215,8 @@ func NewDeploymentsClientWithBaseURI(baseURI string, subscriptionID string) Depl
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -227,8 +227,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewProviderListResultIterator(page ProviderListResultPage) ProviderListResultIterator {
 	return original.NewProviderListResultIterator(page)
 }
-func NewProviderListResultPage(getNextPage func(context.Context, ProviderListResult) (ProviderListResult, error)) ProviderListResultPage {
-	return original.NewProviderListResultPage(getNextPage)
+func NewProviderListResultPage(cur ProviderListResult, getNextPage func(context.Context, ProviderListResult) (ProviderListResult, error)) ProviderListResultPage {
+	return original.NewProviderListResultPage(cur, getNextPage)
 }
 func NewProvidersClient(subscriptionID string) ProvidersClient {
 	return original.NewProvidersClient(subscriptionID)
@@ -239,8 +239,8 @@ func NewProvidersClientWithBaseURI(baseURI string, subscriptionID string) Provid
 func NewResourceGroupListResultIterator(page ResourceGroupListResultPage) ResourceGroupListResultIterator {
 	return original.NewResourceGroupListResultIterator(page)
 }
-func NewResourceGroupListResultPage(getNextPage func(context.Context, ResourceGroupListResult) (ResourceGroupListResult, error)) ResourceGroupListResultPage {
-	return original.NewResourceGroupListResultPage(getNextPage)
+func NewResourceGroupListResultPage(cur ResourceGroupListResult, getNextPage func(context.Context, ResourceGroupListResult) (ResourceGroupListResult, error)) ResourceGroupListResultPage {
+	return original.NewResourceGroupListResultPage(cur, getNextPage)
 }
 func NewResourceGroupsClient(subscriptionID string) ResourceGroupsClient {
 	return original.NewResourceGroupsClient(subscriptionID)
@@ -251,8 +251,8 @@ func NewResourceGroupsClientWithBaseURI(baseURI string, subscriptionID string) R
 func NewResourceListResultIterator(page ResourceListResultPage) ResourceListResultIterator {
 	return original.NewResourceListResultIterator(page)
 }
-func NewResourceListResultPage(getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
-	return original.NewResourceListResultPage(getNextPage)
+func NewResourceListResultPage(cur ResourceListResult, getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
+	return original.NewResourceListResultPage(cur, getNextPage)
 }
 func NewResourcesClient(subscriptionID string) ResourcesClient {
 	return original.NewResourcesClient(subscriptionID)
@@ -269,8 +269,8 @@ func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient 
 func NewTagsListResultIterator(page TagsListResultPage) TagsListResultIterator {
 	return original.NewTagsListResultIterator(page)
 }
-func NewTagsListResultPage(getNextPage func(context.Context, TagsListResult) (TagsListResult, error)) TagsListResultPage {
-	return original.NewTagsListResultPage(getNextPage)
+func NewTagsListResultPage(cur TagsListResult, getNextPage func(context.Context, TagsListResult) (TagsListResult, error)) TagsListResultPage {
+	return original.NewTagsListResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

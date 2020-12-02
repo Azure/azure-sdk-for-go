@@ -37,7 +37,8 @@ type AccountListSupportedImagesResult struct {
 	OdataNextLink     *string             `json:"odata.nextLink,omitempty"`
 }
 
-// AccountListSupportedImagesResultIterator provides access to a complete listing of ImageInformation values.
+// AccountListSupportedImagesResultIterator provides access to a complete listing of ImageInformation
+// values.
 type AccountListSupportedImagesResultIterator struct {
 	i    int
 	page AccountListSupportedImagesResultPage
@@ -180,8 +181,11 @@ func (page AccountListSupportedImagesResultPage) Values() []ImageInformation {
 }
 
 // Creates a new instance of the AccountListSupportedImagesResultPage type.
-func NewAccountListSupportedImagesResultPage(getNextPage func(context.Context, AccountListSupportedImagesResult) (AccountListSupportedImagesResult, error)) AccountListSupportedImagesResultPage {
-	return AccountListSupportedImagesResultPage{fn: getNextPage}
+func NewAccountListSupportedImagesResultPage(cur AccountListSupportedImagesResult, getNextPage func(context.Context, AccountListSupportedImagesResult) (AccountListSupportedImagesResult, error)) AccountListSupportedImagesResultPage {
+	return AccountListSupportedImagesResultPage{
+		fn:    getNextPage,
+		alsir: cur,
+	}
 }
 
 // AffinityInformation ...
@@ -340,8 +344,11 @@ func (page ApplicationListResultPage) Values() []ApplicationSummary {
 }
 
 // Creates a new instance of the ApplicationListResultPage type.
-func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
-	return ApplicationListResultPage{fn: getNextPage}
+func NewApplicationListResultPage(cur ApplicationListResult, getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
+	return ApplicationListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // ApplicationPackageReference ...
@@ -400,8 +407,8 @@ type AutoUserSpecification struct {
 	ElevationLevel ElevationLevel `json:"elevationLevel,omitempty"`
 }
 
-// Certificate a Certificate that can be installed on Compute Nodes and can be used to authenticate operations
-// on the machine.
+// Certificate a Certificate that can be installed on Compute Nodes and can be used to authenticate
+// operations on the machine.
 type Certificate struct {
 	autorest.Response   `json:"-"`
 	Thumbprint          *string `json:"thumbprint,omitempty"`
@@ -580,8 +587,11 @@ func (page CertificateListResultPage) Values() []Certificate {
 }
 
 // Creates a new instance of the CertificateListResultPage type.
-func NewCertificateListResultPage(getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
-	return CertificateListResultPage{fn: getNextPage}
+func NewCertificateListResultPage(cur CertificateListResult, getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
+	return CertificateListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // CertificateReference ...
@@ -791,8 +801,11 @@ func (page CloudJobListPreparationAndReleaseTaskStatusResultPage) Values() []Job
 }
 
 // Creates a new instance of the CloudJobListPreparationAndReleaseTaskStatusResultPage type.
-func NewCloudJobListPreparationAndReleaseTaskStatusResultPage(getNextPage func(context.Context, CloudJobListPreparationAndReleaseTaskStatusResult) (CloudJobListPreparationAndReleaseTaskStatusResult, error)) CloudJobListPreparationAndReleaseTaskStatusResultPage {
-	return CloudJobListPreparationAndReleaseTaskStatusResultPage{fn: getNextPage}
+func NewCloudJobListPreparationAndReleaseTaskStatusResultPage(cur CloudJobListPreparationAndReleaseTaskStatusResult, getNextPage func(context.Context, CloudJobListPreparationAndReleaseTaskStatusResult) (CloudJobListPreparationAndReleaseTaskStatusResult, error)) CloudJobListPreparationAndReleaseTaskStatusResultPage {
+	return CloudJobListPreparationAndReleaseTaskStatusResultPage{
+		fn:        getNextPage,
+		cjlpartsr: cur,
+	}
 }
 
 // CloudJobListResult ...
@@ -945,8 +958,11 @@ func (page CloudJobListResultPage) Values() []CloudJob {
 }
 
 // Creates a new instance of the CloudJobListResultPage type.
-func NewCloudJobListResultPage(getNextPage func(context.Context, CloudJobListResult) (CloudJobListResult, error)) CloudJobListResultPage {
-	return CloudJobListResultPage{fn: getNextPage}
+func NewCloudJobListResultPage(cur CloudJobListResult, getNextPage func(context.Context, CloudJobListResult) (CloudJobListResult, error)) CloudJobListResultPage {
+	return CloudJobListResultPage{
+		fn:   getNextPage,
+		cjlr: cur,
+	}
 }
 
 // CloudJobSchedule ...
@@ -1125,8 +1141,11 @@ func (page CloudJobScheduleListResultPage) Values() []CloudJobSchedule {
 }
 
 // Creates a new instance of the CloudJobScheduleListResultPage type.
-func NewCloudJobScheduleListResultPage(getNextPage func(context.Context, CloudJobScheduleListResult) (CloudJobScheduleListResult, error)) CloudJobScheduleListResultPage {
-	return CloudJobScheduleListResultPage{fn: getNextPage}
+func NewCloudJobScheduleListResultPage(cur CloudJobScheduleListResult, getNextPage func(context.Context, CloudJobScheduleListResult) (CloudJobScheduleListResult, error)) CloudJobScheduleListResultPage {
+	return CloudJobScheduleListResultPage{
+		fn:    getNextPage,
+		cjslr: cur,
+	}
 }
 
 // CloudPool ...
@@ -1341,8 +1360,11 @@ func (page CloudPoolListResultPage) Values() []CloudPool {
 }
 
 // Creates a new instance of the CloudPoolListResultPage type.
-func NewCloudPoolListResultPage(getNextPage func(context.Context, CloudPoolListResult) (CloudPoolListResult, error)) CloudPoolListResultPage {
-	return CloudPoolListResultPage{fn: getNextPage}
+func NewCloudPoolListResultPage(cur CloudPoolListResult, getNextPage func(context.Context, CloudPoolListResult) (CloudPoolListResult, error)) CloudPoolListResultPage {
+	return CloudPoolListResultPage{
+		fn:   getNextPage,
+		cplr: cur,
+	}
 }
 
 // CloudServiceConfiguration ...
@@ -1359,12 +1381,12 @@ type CloudServiceConfiguration struct {
 }
 
 // CloudTask batch will retry Tasks when a recovery operation is triggered on a Node. Examples of recovery
-// operations include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node disappeared
-// due to host failure. Retries due to recovery operations are independent of and are not counted against the
-// maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a recovery operation may
-// occur. Because of this, all Tasks should be idempotent. This means Tasks need to tolerate being interrupted
-// and restarted without causing any corruption or duplicate data. The best practice for long running Tasks is
-// to use some form of checkpointing.
+// operations include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node
+// disappeared due to host failure. Retries due to recovery operations are independent of and are not
+// counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a
+// recovery operation may occur. Because of this, all Tasks should be idempotent. This means Tasks need to
+// tolerate being interrupted and restarted without causing any corruption or duplicate data. The best
+// practice for long running Tasks is to use some form of checkpointing.
 type CloudTask struct {
 	autorest.Response `json:"-"`
 	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters.
@@ -1560,8 +1582,11 @@ func (page CloudTaskListResultPage) Values() []CloudTask {
 }
 
 // Creates a new instance of the CloudTaskListResultPage type.
-func NewCloudTaskListResultPage(getNextPage func(context.Context, CloudTaskListResult) (CloudTaskListResult, error)) CloudTaskListResultPage {
-	return CloudTaskListResultPage{fn: getNextPage}
+func NewCloudTaskListResultPage(cur CloudTaskListResult, getNextPage func(context.Context, CloudTaskListResult) (CloudTaskListResult, error)) CloudTaskListResultPage {
+	return CloudTaskListResultPage{
+		fn:   getNextPage,
+		ctlr: cur,
+	}
 }
 
 // CloudTaskListSubtasksResult ...
@@ -1785,8 +1810,11 @@ func (page ComputeNodeListResultPage) Values() []ComputeNode {
 }
 
 // Creates a new instance of the ComputeNodeListResultPage type.
-func NewComputeNodeListResultPage(getNextPage func(context.Context, ComputeNodeListResult) (ComputeNodeListResult, error)) ComputeNodeListResultPage {
-	return ComputeNodeListResultPage{fn: getNextPage}
+func NewComputeNodeListResultPage(cur ComputeNodeListResult, getNextPage func(context.Context, ComputeNodeListResult) (ComputeNodeListResult, error)) ComputeNodeListResultPage {
+	return ComputeNodeListResultPage{
+		fn:   getNextPage,
+		cnlr: cur,
+	}
 }
 
 // ComputeNodeUser ...
@@ -2018,21 +2046,22 @@ type JobExecutionInformation struct {
 }
 
 // JobManagerTask the Job Manager Task is automatically started when the Job is created. The Batch service
-// tries to schedule the Job Manager Task before any other Tasks in the Job. When shrinking a Pool, the Batch
-// service tries to preserve Nodes where Job Manager Tasks are running for as long as possible (that is,
-// Compute Nodes running 'normal' Tasks are removed before Compute Nodes running Job Manager Tasks). When a Job
-// Manager Task fails and needs to be restarted, the system tries to schedule it at the highest priority. If
-// there are no idle Compute Nodes available, the system may terminate one of the running Tasks in the Pool and
-// return it to the queue in order to make room for the Job Manager Task to restart. Note that a Job Manager
-// Task in one Job does not have priority over Tasks in other Jobs. Across Jobs, only Job level priorities are
-// observed. For example, if a Job Manager in a priority 0 Job needs to be restarted, it will not displace
-// Tasks of a priority 1 Job. Batch will retry Tasks when a recovery operation is triggered on a Node. Examples
-// of recovery operations include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node
-// disappeared due to host failure. Retries due to recovery operations are independent of and are not counted
-// against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a recovery
-// operation may occur. Because of this, all Tasks should be idempotent. This means Tasks need to tolerate
-// being interrupted and restarted without causing any corruption or duplicate data. The best practice for long
-// running Tasks is to use some form of checkpointing.
+// tries to schedule the Job Manager Task before any other Tasks in the Job. When shrinking a Pool, the
+// Batch service tries to preserve Nodes where Job Manager Tasks are running for as long as possible (that
+// is, Compute Nodes running 'normal' Tasks are removed before Compute Nodes running Job Manager Tasks).
+// When a Job Manager Task fails and needs to be restarted, the system tries to schedule it at the highest
+// priority. If there are no idle Compute Nodes available, the system may terminate one of the running
+// Tasks in the Pool and return it to the queue in order to make room for the Job Manager Task to restart.
+// Note that a Job Manager Task in one Job does not have priority over Tasks in other Jobs. Across Jobs,
+// only Job level priorities are observed. For example, if a Job Manager in a priority 0 Job needs to be
+// restarted, it will not displace Tasks of a priority 1 Job. Batch will retry Tasks when a recovery
+// operation is triggered on a Node. Examples of recovery operations include (but are not limited to) when
+// an unhealthy Node is rebooted or a Compute Node disappeared due to host failure. Retries due to recovery
+// operations are independent of and are not counted against the maxTaskRetryCount. Even if the
+// maxTaskRetryCount is 0, an internal retry due to a recovery operation may occur. Because of this, all
+// Tasks should be idempotent. This means Tasks need to tolerate being interrupted and restarted without
+// causing any corruption or duplicate data. The best practice for long running Tasks is to use some form
+// of checkpointing.
 type JobManagerTask struct {
 	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores and cannot contain more than 64 characters.
 	ID *string `json:"id,omitempty"`
@@ -2093,23 +2122,24 @@ type JobPreparationAndReleaseTaskExecutionInformation struct {
 }
 
 // JobPreparationTask you can use Job Preparation to prepare a Node to run Tasks for the Job. Activities
-// commonly performed in Job Preparation include: Downloading common resource files used by all the Tasks in
-// the Job. The Job Preparation Task can download these common resource files to the shared location on the
-// Node. (AZ_BATCH_NODE_ROOT_DIR\shared), or starting a local service on the Node so that all Tasks of that Job
-// can communicate with it. If the Job Preparation Task fails (that is, exhausts its retry count before exiting
-// with exit code 0), Batch will not run Tasks of this Job on the Node. The Compute Node remains ineligible to
-// run Tasks of this Job until it is reimaged. The Compute Node remains active and can be used for other Jobs.
-// The Job Preparation Task can run multiple times on the same Node. Therefore, you should write the Job
-// Preparation Task to handle re-execution. If the Node is rebooted, the Job Preparation Task is run again on
-// the Compute Node before scheduling any other Task of the Job, if rerunOnNodeRebootAfterSuccess is true or if
-// the Job Preparation Task did not previously complete. If the Node is reimaged, the Job Preparation Task is
-// run again before scheduling any Task of the Job. Batch will retry Tasks when a recovery operation is
-// triggered on a Node. Examples of recovery operations include (but are not limited to) when an unhealthy Node
-// is rebooted or a Compute Node disappeared due to host failure. Retries due to recovery operations are
-// independent of and are not counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an
-// internal retry due to a recovery operation may occur. Because of this, all Tasks should be idempotent. This
-// means Tasks need to tolerate being interrupted and restarted without causing any corruption or duplicate
-// data. The best practice for long running Tasks is to use some form of checkpointing.
+// commonly performed in Job Preparation include: Downloading common resource files used by all the Tasks
+// in the Job. The Job Preparation Task can download these common resource files to the shared location on
+// the Node. (AZ_BATCH_NODE_ROOT_DIR\shared), or starting a local service on the Node so that all Tasks of
+// that Job can communicate with it. If the Job Preparation Task fails (that is, exhausts its retry count
+// before exiting with exit code 0), Batch will not run Tasks of this Job on the Node. The Compute Node
+// remains ineligible to run Tasks of this Job until it is reimaged. The Compute Node remains active and
+// can be used for other Jobs. The Job Preparation Task can run multiple times on the same Node. Therefore,
+// you should write the Job Preparation Task to handle re-execution. If the Node is rebooted, the Job
+// Preparation Task is run again on the Compute Node before scheduling any other Task of the Job, if
+// rerunOnNodeRebootAfterSuccess is true or if the Job Preparation Task did not previously complete. If the
+// Node is reimaged, the Job Preparation Task is run again before scheduling any Task of the Job. Batch
+// will retry Tasks when a recovery operation is triggered on a Node. Examples of recovery operations
+// include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node disappeared due to
+// host failure. Retries due to recovery operations are independent of and are not counted against the
+// maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a recovery operation may
+// occur. Because of this, all Tasks should be idempotent. This means Tasks need to tolerate being
+// interrupted and restarted without causing any corruption or duplicate data. The best practice for long
+// running Tasks is to use some form of checkpointing.
 type JobPreparationTask struct {
 	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores and cannot contain more than 64 characters. If you do not specify this property, the Batch service assigns a default value of 'jobpreparation'. No other Task in the Job can have the same ID as the Job Preparation Task. If you try to submit a Task with the same id, the Batch service rejects the request with error code TaskIdSameAsJobPreparationTask; if you are calling the REST API directly, the HTTP status code is 409 (Conflict).
 	ID *string `json:"id,omitempty"`
@@ -2153,17 +2183,17 @@ type JobPreparationTaskExecutionInformation struct {
 	Result TaskExecutionResult `json:"result,omitempty"`
 }
 
-// JobReleaseTask the Job Release Task runs when the Job ends, because of one of the following: The user calls
-// the Terminate Job API, or the Delete Job API while the Job is still active, the Job's maximum wall clock
-// time constraint is reached, and the Job is still active, or the Job's Job Manager Task completed, and the
-// Job is configured to terminate when the Job Manager completes. The Job Release Task runs on each Node where
-// Tasks of the Job have run and the Job Preparation Task ran and completed. If you reimage a Node after it has
-// run the Job Preparation Task, and the Job ends without any further Tasks of the Job running on that Node
-// (and hence the Job Preparation Task does not re-run), then the Job Release Task does not run on that Compute
-// Node. If a Node reboots while the Job Release Task is still running, the Job Release Task runs again when
-// the Compute Node starts up. The Job is not marked as complete until all Job Release Tasks have completed.
-// The Job Release Task runs in the background. It does not occupy a scheduling slot; that is, it does not
-// count towards the maxTasksPerNode limit specified on the Pool.
+// JobReleaseTask the Job Release Task runs when the Job ends, because of one of the following: The user
+// calls the Terminate Job API, or the Delete Job API while the Job is still active, the Job's maximum wall
+// clock time constraint is reached, and the Job is still active, or the Job's Job Manager Task completed,
+// and the Job is configured to terminate when the Job Manager completes. The Job Release Task runs on each
+// Node where Tasks of the Job have run and the Job Preparation Task ran and completed. If you reimage a
+// Node after it has run the Job Preparation Task, and the Job ends without any further Tasks of the Job
+// running on that Node (and hence the Job Preparation Task does not re-run), then the Job Release Task
+// does not run on that Compute Node. If a Node reboots while the Job Release Task is still running, the
+// Job Release Task runs again when the Compute Node starts up. The Job is not marked as complete until all
+// Job Release Tasks have completed. The Job Release Task runs in the background. It does not occupy a
+// scheduling slot; that is, it does not count towards the maxTasksPerNode limit specified on the Pool.
 type JobReleaseTask struct {
 	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores and cannot contain more than 64 characters. If you do not specify this property, the Batch service assigns a default value of 'jobrelease'. No other Task in the Job can have the same ID as the Job Release Task. If you try to submit a Task with the same id, the Batch service rejects the request with error code TaskIdSameAsJobReleaseTask; if you are calling the REST API directly, the HTTP status code is 409 (Conflict).
 	ID *string `json:"id,omitempty"`
@@ -2357,9 +2387,10 @@ type MetadataItem struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// MultiInstanceSettings multi-instance Tasks are commonly used to support MPI Tasks. In the MPI case, if any
-// of the subtasks fail (for example due to exiting with a non-zero exit code) the entire multi-instance Task
-// fails. The multi-instance Task is then terminated and retried, up to its retry limit.
+// MultiInstanceSettings multi-instance Tasks are commonly used to support MPI Tasks. In the MPI case, if
+// any of the subtasks fail (for example due to exiting with a non-zero exit code) the entire
+// multi-instance Task fails. The multi-instance Task is then terminated and retried, up to its retry
+// limit.
 type MultiInstanceSettings struct {
 	// NumberOfInstances - If omitted, the default is 1.
 	NumberOfInstances *int32 `json:"numberOfInstances,omitempty"`
@@ -2397,8 +2428,8 @@ type NetworkSecurityGroupRule struct {
 	SourcePortRanges *[]string `json:"sourcePortRanges,omitempty"`
 }
 
-// NodeAgentInformation the Batch Compute Node agent is a program that runs on each Compute Node in the Pool
-// and provides Batch capability on the Compute Node.
+// NodeAgentInformation the Batch Compute Node agent is a program that runs on each Compute Node in the
+// Pool and provides Batch capability on the Compute Node.
 type NodeAgentInformation struct {
 	// Version - This version number can be checked against the Compute Node agent release notes located at https://github.com/Azure/Batch/blob/master/changelogs/nodeagent/CHANGELOG.md.
 	Version *string `json:"version,omitempty"`
@@ -2588,8 +2619,11 @@ func (page NodeFileListResultPage) Values() []NodeFile {
 }
 
 // Creates a new instance of the NodeFileListResultPage type.
-func NewNodeFileListResultPage(getNextPage func(context.Context, NodeFileListResult) (NodeFileListResult, error)) NodeFileListResultPage {
-	return NodeFileListResultPage{fn: getNextPage}
+func NewNodeFileListResultPage(cur NodeFileListResult, getNextPage func(context.Context, NodeFileListResult) (NodeFileListResult, error)) NodeFileListResultPage {
+	return NodeFileListResultPage{
+		fn:   getNextPage,
+		nflr: cur,
+	}
 }
 
 // NodeRebootParameter ...
@@ -2872,8 +2906,11 @@ func (page PoolListUsageMetricsResultPage) Values() []PoolUsageMetrics {
 }
 
 // Creates a new instance of the PoolListUsageMetricsResultPage type.
-func NewPoolListUsageMetricsResultPage(getNextPage func(context.Context, PoolListUsageMetricsResult) (PoolListUsageMetricsResult, error)) PoolListUsageMetricsResultPage {
-	return PoolListUsageMetricsResultPage{fn: getNextPage}
+func NewPoolListUsageMetricsResultPage(cur PoolListUsageMetricsResult, getNextPage func(context.Context, PoolListUsageMetricsResult) (PoolListUsageMetricsResult, error)) PoolListUsageMetricsResultPage {
+	return PoolListUsageMetricsResultPage{
+		fn:    getNextPage,
+		plumr: cur,
+	}
 }
 
 // PoolNodeCounts ...
@@ -3034,8 +3071,11 @@ func (page PoolNodeCountsListResultPage) Values() []PoolNodeCounts {
 }
 
 // Creates a new instance of the PoolNodeCountsListResultPage type.
-func NewPoolNodeCountsListResultPage(getNextPage func(context.Context, PoolNodeCountsListResult) (PoolNodeCountsListResult, error)) PoolNodeCountsListResultPage {
-	return PoolNodeCountsListResultPage{fn: getNextPage}
+func NewPoolNodeCountsListResultPage(cur PoolNodeCountsListResult, getNextPage func(context.Context, PoolNodeCountsListResult) (PoolNodeCountsListResult, error)) PoolNodeCountsListResultPage {
+	return PoolNodeCountsListResultPage{
+		fn:    getNextPage,
+		pnclr: cur,
+	}
 }
 
 // PoolPatchParameter ...
@@ -3198,15 +3238,15 @@ type Schedule struct {
 }
 
 // StartTask batch will retry Tasks when a recovery operation is triggered on a Node. Examples of recovery
-// operations include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node disappeared
-// due to host failure. Retries due to recovery operations are independent of and are not counted against the
-// maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a recovery operation may
-// occur. Because of this, all Tasks should be idempotent. This means Tasks need to tolerate being interrupted
-// and restarted without causing any corruption or duplicate data. The best practice for long running Tasks is
-// to use some form of checkpointing. In some cases the start Task may be re-run even though the Compute Node
-// was not rebooted. Special care should be taken to avoid start Tasks which create breakaway process or
-// install/launch services from the start Task working directory, as this will block Batch from being able to
-// re-run the start Task.
+// operations include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node
+// disappeared due to host failure. Retries due to recovery operations are independent of and are not
+// counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a
+// recovery operation may occur. Because of this, all Tasks should be idempotent. This means Tasks need to
+// tolerate being interrupted and restarted without causing any corruption or duplicate data. The best
+// practice for long running Tasks is to use some form of checkpointing. In some cases the start Task may
+// be re-run even though the Compute Node was not rebooted. Special care should be taken to avoid start
+// Tasks which create breakaway process or install/launch services from the start Task working directory,
+// as this will block Batch from being able to re-run the start Task.
 type StartTask struct {
 	// CommandLine - The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path (relative to the Task working directory), or use the Batch provided environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
 	CommandLine *string `json:"commandLine,omitempty"`
@@ -3282,12 +3322,12 @@ type TaskAddCollectionResult struct {
 }
 
 // TaskAddParameter batch will retry Tasks when a recovery operation is triggered on a Node. Examples of
-// recovery operations include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node
-// disappeared due to host failure. Retries due to recovery operations are independent of and are not counted
-// against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a recovery
-// operation may occur. Because of this, all Tasks should be idempotent. This means Tasks need to tolerate
-// being interrupted and restarted without causing any corruption or duplicate data. The best practice for long
-// running Tasks is to use some form of checkpointing.
+// recovery operations include (but are not limited to) when an unhealthy Node is rebooted or a Compute
+// Node disappeared due to host failure. Retries due to recovery operations are independent of and are not
+// counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a
+// recovery operation may occur. Because of this, all Tasks should be idempotent. This means Tasks need to
+// tolerate being interrupted and restarted without causing any corruption or duplicate data. The best
+// practice for long running Tasks is to use some form of checkpointing.
 type TaskAddParameter struct {
 	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within a Job that differ only by case).
 	ID *string `json:"id,omitempty"`
@@ -3411,8 +3451,8 @@ type TaskFailureInformation struct {
 	Details  *[]NameValuePair `json:"details,omitempty"`
 }
 
-// TaskIDRange the start and end of the range are inclusive. For example, if a range has start 9 and end 12,
-// then it represents Tasks '9', '10', '11' and '12'.
+// TaskIDRange the start and end of the range are inclusive. For example, if a range has start 9 and end
+// 12, then it represents Tasks '9', '10', '11' and '12'.
 type TaskIDRange struct {
 	Start *int32 `json:"start,omitempty"`
 	End   *int32 `json:"end,omitempty"`

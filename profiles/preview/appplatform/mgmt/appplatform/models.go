@@ -118,8 +118,9 @@ const (
 type RuntimeVersion = original.RuntimeVersion
 
 const (
-	Java11 RuntimeVersion = original.Java11
-	Java8  RuntimeVersion = original.Java8
+	Java11    RuntimeVersion = original.Java11
+	Java8     RuntimeVersion = original.Java8
+	NetCore31 RuntimeVersion = original.NetCore31
 )
 
 type SkuScaleType = original.SkuScaleType
@@ -128,6 +129,21 @@ const (
 	SkuScaleTypeAutomatic SkuScaleType = original.SkuScaleTypeAutomatic
 	SkuScaleTypeManual    SkuScaleType = original.SkuScaleTypeManual
 	SkuScaleTypeNone      SkuScaleType = original.SkuScaleTypeNone
+)
+
+type SupportedRuntimePlatform = original.SupportedRuntimePlatform
+
+const (
+	Java    SupportedRuntimePlatform = original.Java
+	NETCore SupportedRuntimePlatform = original.NETCore
+)
+
+type SupportedRuntimeValue = original.SupportedRuntimeValue
+
+const (
+	SupportedRuntimeValueJava11    SupportedRuntimeValue = original.SupportedRuntimeValueJava11
+	SupportedRuntimeValueJava8     SupportedRuntimeValue = original.SupportedRuntimeValueJava8
+	SupportedRuntimeValueNetCore31 SupportedRuntimeValue = original.SupportedRuntimeValueNetCore31
 )
 
 type TestKeyType = original.TestKeyType
@@ -140,8 +156,9 @@ const (
 type UserSourceType = original.UserSourceType
 
 const (
-	Jar    UserSourceType = original.Jar
-	Source UserSourceType = original.Source
+	Jar        UserSourceType = original.Jar
+	NetCoreZip UserSourceType = original.NetCoreZip
+	Source     UserSourceType = original.Source
 )
 
 type AppResource = original.AppResource
@@ -156,6 +173,7 @@ type AppsUpdateFuture = original.AppsUpdateFuture
 type AvailableOperations = original.AvailableOperations
 type AvailableOperationsIterator = original.AvailableOperationsIterator
 type AvailableOperationsPage = original.AvailableOperationsPage
+type AvailableRuntimeVersions = original.AvailableRuntimeVersions
 type BaseClient = original.BaseClient
 type BindingResource = original.BindingResource
 type BindingResourceCollection = original.BindingResourceCollection
@@ -181,9 +199,12 @@ type ConfigServerGitProperty = original.ConfigServerGitProperty
 type ConfigServerProperties = original.ConfigServerProperties
 type ConfigServerResource = original.ConfigServerResource
 type ConfigServerSettings = original.ConfigServerSettings
+type ConfigServerSettingsErrorRecord = original.ConfigServerSettingsErrorRecord
+type ConfigServerSettingsValidateResult = original.ConfigServerSettingsValidateResult
 type ConfigServersClient = original.ConfigServersClient
 type ConfigServersUpdatePatchFuture = original.ConfigServersUpdatePatchFuture
 type ConfigServersUpdatePutFuture = original.ConfigServersUpdatePutFuture
+type ConfigServersValidateFuture = original.ConfigServersValidateFuture
 type CustomDomainProperties = original.CustomDomainProperties
 type CustomDomainResource = original.CustomDomainResource
 type CustomDomainResourceCollection = original.CustomDomainResourceCollection
@@ -224,6 +245,7 @@ type MonitoringSettingsUpdatePutFuture = original.MonitoringSettingsUpdatePutFut
 type NameAvailability = original.NameAvailability
 type NameAvailabilityParameters = original.NameAvailabilityParameters
 type NetworkProfile = original.NetworkProfile
+type NetworkProfileOutboundIPs = original.NetworkProfileOutboundIPs
 type OperationDetail = original.OperationDetail
 type OperationDisplay = original.OperationDisplay
 type OperationProperties = original.OperationProperties
@@ -242,6 +264,7 @@ type ResourceSkuRestrictionInfo = original.ResourceSkuRestrictionInfo
 type ResourceSkuRestrictions = original.ResourceSkuRestrictions
 type ResourceSkuZoneDetails = original.ResourceSkuZoneDetails
 type ResourceUploadDefinition = original.ResourceUploadDefinition
+type RuntimeVersionsClient = original.RuntimeVersionsClient
 type ServiceResource = original.ServiceResource
 type ServiceResourceList = original.ServiceResourceList
 type ServiceResourceListIterator = original.ServiceResourceListIterator
@@ -254,6 +277,7 @@ type ServicesUpdateFuture = original.ServicesUpdateFuture
 type Sku = original.Sku
 type SkuCapacity = original.SkuCapacity
 type SkusClient = original.SkusClient
+type SupportedRuntimeVersion = original.SupportedRuntimeVersion
 type TemporaryDisk = original.TemporaryDisk
 type TestKeys = original.TestKeys
 type TrackedResource = original.TrackedResource
@@ -265,8 +289,8 @@ func New(subscriptionID string) BaseClient {
 func NewAppResourceCollectionIterator(page AppResourceCollectionPage) AppResourceCollectionIterator {
 	return original.NewAppResourceCollectionIterator(page)
 }
-func NewAppResourceCollectionPage(getNextPage func(context.Context, AppResourceCollection) (AppResourceCollection, error)) AppResourceCollectionPage {
-	return original.NewAppResourceCollectionPage(getNextPage)
+func NewAppResourceCollectionPage(cur AppResourceCollection, getNextPage func(context.Context, AppResourceCollection) (AppResourceCollection, error)) AppResourceCollectionPage {
+	return original.NewAppResourceCollectionPage(cur, getNextPage)
 }
 func NewAppsClient(subscriptionID string) AppsClient {
 	return original.NewAppsClient(subscriptionID)
@@ -277,14 +301,14 @@ func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient 
 func NewAvailableOperationsIterator(page AvailableOperationsPage) AvailableOperationsIterator {
 	return original.NewAvailableOperationsIterator(page)
 }
-func NewAvailableOperationsPage(getNextPage func(context.Context, AvailableOperations) (AvailableOperations, error)) AvailableOperationsPage {
-	return original.NewAvailableOperationsPage(getNextPage)
+func NewAvailableOperationsPage(cur AvailableOperations, getNextPage func(context.Context, AvailableOperations) (AvailableOperations, error)) AvailableOperationsPage {
+	return original.NewAvailableOperationsPage(cur, getNextPage)
 }
 func NewBindingResourceCollectionIterator(page BindingResourceCollectionPage) BindingResourceCollectionIterator {
 	return original.NewBindingResourceCollectionIterator(page)
 }
-func NewBindingResourceCollectionPage(getNextPage func(context.Context, BindingResourceCollection) (BindingResourceCollection, error)) BindingResourceCollectionPage {
-	return original.NewBindingResourceCollectionPage(getNextPage)
+func NewBindingResourceCollectionPage(cur BindingResourceCollection, getNextPage func(context.Context, BindingResourceCollection) (BindingResourceCollection, error)) BindingResourceCollectionPage {
+	return original.NewBindingResourceCollectionPage(cur, getNextPage)
 }
 func NewBindingsClient(subscriptionID string) BindingsClient {
 	return original.NewBindingsClient(subscriptionID)
@@ -295,8 +319,8 @@ func NewBindingsClientWithBaseURI(baseURI string, subscriptionID string) Binding
 func NewCertificateResourceCollectionIterator(page CertificateResourceCollectionPage) CertificateResourceCollectionIterator {
 	return original.NewCertificateResourceCollectionIterator(page)
 }
-func NewCertificateResourceCollectionPage(getNextPage func(context.Context, CertificateResourceCollection) (CertificateResourceCollection, error)) CertificateResourceCollectionPage {
-	return original.NewCertificateResourceCollectionPage(getNextPage)
+func NewCertificateResourceCollectionPage(cur CertificateResourceCollection, getNextPage func(context.Context, CertificateResourceCollection) (CertificateResourceCollection, error)) CertificateResourceCollectionPage {
+	return original.NewCertificateResourceCollectionPage(cur, getNextPage)
 }
 func NewCertificatesClient(subscriptionID string) CertificatesClient {
 	return original.NewCertificatesClient(subscriptionID)
@@ -313,8 +337,8 @@ func NewConfigServersClientWithBaseURI(baseURI string, subscriptionID string) Co
 func NewCustomDomainResourceCollectionIterator(page CustomDomainResourceCollectionPage) CustomDomainResourceCollectionIterator {
 	return original.NewCustomDomainResourceCollectionIterator(page)
 }
-func NewCustomDomainResourceCollectionPage(getNextPage func(context.Context, CustomDomainResourceCollection) (CustomDomainResourceCollection, error)) CustomDomainResourceCollectionPage {
-	return original.NewCustomDomainResourceCollectionPage(getNextPage)
+func NewCustomDomainResourceCollectionPage(cur CustomDomainResourceCollection, getNextPage func(context.Context, CustomDomainResourceCollection) (CustomDomainResourceCollection, error)) CustomDomainResourceCollectionPage {
+	return original.NewCustomDomainResourceCollectionPage(cur, getNextPage)
 }
 func NewCustomDomainsClient(subscriptionID string) CustomDomainsClient {
 	return original.NewCustomDomainsClient(subscriptionID)
@@ -325,8 +349,8 @@ func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) Cu
 func NewDeploymentResourceCollectionIterator(page DeploymentResourceCollectionPage) DeploymentResourceCollectionIterator {
 	return original.NewDeploymentResourceCollectionIterator(page)
 }
-func NewDeploymentResourceCollectionPage(getNextPage func(context.Context, DeploymentResourceCollection) (DeploymentResourceCollection, error)) DeploymentResourceCollectionPage {
-	return original.NewDeploymentResourceCollectionPage(getNextPage)
+func NewDeploymentResourceCollectionPage(cur DeploymentResourceCollection, getNextPage func(context.Context, DeploymentResourceCollection) (DeploymentResourceCollection, error)) DeploymentResourceCollectionPage {
+	return original.NewDeploymentResourceCollectionPage(cur, getNextPage)
 }
 func NewDeploymentsClient(subscriptionID string) DeploymentsClient {
 	return original.NewDeploymentsClient(subscriptionID)
@@ -349,14 +373,20 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewResourceSkuCollectionIterator(page ResourceSkuCollectionPage) ResourceSkuCollectionIterator {
 	return original.NewResourceSkuCollectionIterator(page)
 }
-func NewResourceSkuCollectionPage(getNextPage func(context.Context, ResourceSkuCollection) (ResourceSkuCollection, error)) ResourceSkuCollectionPage {
-	return original.NewResourceSkuCollectionPage(getNextPage)
+func NewResourceSkuCollectionPage(cur ResourceSkuCollection, getNextPage func(context.Context, ResourceSkuCollection) (ResourceSkuCollection, error)) ResourceSkuCollectionPage {
+	return original.NewResourceSkuCollectionPage(cur, getNextPage)
+}
+func NewRuntimeVersionsClient(subscriptionID string) RuntimeVersionsClient {
+	return original.NewRuntimeVersionsClient(subscriptionID)
+}
+func NewRuntimeVersionsClientWithBaseURI(baseURI string, subscriptionID string) RuntimeVersionsClient {
+	return original.NewRuntimeVersionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewServiceResourceListIterator(page ServiceResourceListPage) ServiceResourceListIterator {
 	return original.NewServiceResourceListIterator(page)
 }
-func NewServiceResourceListPage(getNextPage func(context.Context, ServiceResourceList) (ServiceResourceList, error)) ServiceResourceListPage {
-	return original.NewServiceResourceListPage(getNextPage)
+func NewServiceResourceListPage(cur ServiceResourceList, getNextPage func(context.Context, ServiceResourceList) (ServiceResourceList, error)) ServiceResourceListPage {
+	return original.NewServiceResourceListPage(cur, getNextPage)
 }
 func NewServicesClient(subscriptionID string) ServicesClient {
 	return original.NewServicesClient(subscriptionID)
@@ -405,6 +435,12 @@ func PossibleRuntimeVersionValues() []RuntimeVersion {
 }
 func PossibleSkuScaleTypeValues() []SkuScaleType {
 	return original.PossibleSkuScaleTypeValues()
+}
+func PossibleSupportedRuntimePlatformValues() []SupportedRuntimePlatform {
+	return original.PossibleSupportedRuntimePlatformValues()
+}
+func PossibleSupportedRuntimeValueValues() []SupportedRuntimeValue {
+	return original.PossibleSupportedRuntimeValueValues()
 }
 func PossibleTestKeyTypeValues() []TestKeyType {
 	return original.PossibleTestKeyTypeValues()

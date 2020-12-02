@@ -138,7 +138,8 @@ type AccountBaseProperties struct {
 	AutoStorage *AutoStorageBaseProperties `json:"autoStorage,omitempty"`
 }
 
-// AccountCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// AccountCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AccountCreateFuture struct {
 	azure.Future
 }
@@ -233,7 +234,8 @@ func (acp *AccountCreateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AccountDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// AccountDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AccountDeleteFuture struct {
 	azure.Future
 }
@@ -416,8 +418,11 @@ func (page AccountListResultPage) Values() []Account {
 }
 
 // Creates a new instance of the AccountListResultPage type.
-func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
-	return AccountListResultPage{fn: getNextPage}
+func NewAccountListResultPage(cur AccountListResult, getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return AccountListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AccountProperties account specific properties.
@@ -571,7 +576,8 @@ type AutoStorageBaseProperties struct {
 	StorageAccountID *string `json:"storageAccountId,omitempty"`
 }
 
-// AutoStorageProperties contains information about the auto storage account associated with a Batch account.
+// AutoStorageProperties contains information about the auto storage account associated with a Batch
+// account.
 type AutoStorageProperties struct {
 	// StorageAccountID - The resource ID of the storage account to be used for auto storage account.
 	StorageAccountID *string `json:"storageAccountId,omitempty"`
@@ -743,8 +749,11 @@ func (page ListApplicationsResultPage) Values() []Application {
 }
 
 // Creates a new instance of the ListApplicationsResultPage type.
-func NewListApplicationsResultPage(getNextPage func(context.Context, ListApplicationsResult) (ListApplicationsResult, error)) ListApplicationsResultPage {
-	return ListApplicationsResultPage{fn: getNextPage}
+func NewListApplicationsResultPage(cur ListApplicationsResult, getNextPage func(context.Context, ListApplicationsResult) (ListApplicationsResult, error)) ListApplicationsResultPage {
+	return ListApplicationsResultPage{
+		fn:  getNextPage,
+		lar: cur,
+	}
 }
 
 // LocationQuota quotas associated with a Batch region for a particular subscription.

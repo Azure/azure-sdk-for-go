@@ -4187,7 +4187,8 @@ func (rri *RankingRankingItem) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// RankingRankingResponse defines where on the search results page content should be placed and in what order.
+// RankingRankingResponse defines where on the search results page content should be placed and in what
+// order.
 type RankingRankingResponse struct {
 	// Pole - READ-ONLY; The search results that should be afforded the most visible treatment (for example, displayed above the mainline and sidebar).
 	Pole *RankingRankingGroup `json:"pole,omitempty"`

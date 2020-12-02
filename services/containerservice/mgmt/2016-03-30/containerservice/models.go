@@ -189,8 +189,8 @@ func (future *ContainerServicesCreateOrUpdateFutureType) Result(client Container
 	return
 }
 
-// ContainerServicesDeleteFutureType an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ContainerServicesDeleteFutureType an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ContainerServicesDeleteFutureType struct {
 	azure.Future
 }

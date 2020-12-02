@@ -761,8 +761,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewProjectListIterator(page ProjectListPage) ProjectListIterator {
 	return original.NewProjectListIterator(page)
 }
-func NewProjectListPage(getNextPage func(context.Context, ProjectList) (ProjectList, error)) ProjectListPage {
-	return original.NewProjectListPage(getNextPage)
+func NewProjectListPage(cur ProjectList, getNextPage func(context.Context, ProjectList) (ProjectList, error)) ProjectListPage {
+	return original.NewProjectListPage(cur, getNextPage)
 }
 func NewProjectsClient(subscriptionID string) ProjectsClient {
 	return original.NewProjectsClient(subscriptionID)
@@ -773,8 +773,8 @@ func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string) Project
 func NewQuotaListIterator(page QuotaListPage) QuotaListIterator {
 	return original.NewQuotaListIterator(page)
 }
-func NewQuotaListPage(getNextPage func(context.Context, QuotaList) (QuotaList, error)) QuotaListPage {
-	return original.NewQuotaListPage(getNextPage)
+func NewQuotaListPage(cur QuotaList, getNextPage func(context.Context, QuotaList) (QuotaList, error)) QuotaListPage {
+	return original.NewQuotaListPage(cur, getNextPage)
 }
 func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
 	return original.NewResourceSkusClient(subscriptionID)
@@ -785,26 +785,26 @@ func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) Res
 func NewResourceSkusResultIterator(page ResourceSkusResultPage) ResourceSkusResultIterator {
 	return original.NewResourceSkusResultIterator(page)
 }
-func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
-	return original.NewResourceSkusResultPage(getNextPage)
+func NewResourceSkusResultPage(cur ResourceSkusResult, getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
+	return original.NewResourceSkusResultPage(cur, getNextPage)
 }
 func NewServiceListIterator(page ServiceListPage) ServiceListIterator {
 	return original.NewServiceListIterator(page)
 }
-func NewServiceListPage(getNextPage func(context.Context, ServiceList) (ServiceList, error)) ServiceListPage {
-	return original.NewServiceListPage(getNextPage)
+func NewServiceListPage(cur ServiceList, getNextPage func(context.Context, ServiceList) (ServiceList, error)) ServiceListPage {
+	return original.NewServiceListPage(cur, getNextPage)
 }
 func NewServiceOperationListIterator(page ServiceOperationListPage) ServiceOperationListIterator {
 	return original.NewServiceOperationListIterator(page)
 }
-func NewServiceOperationListPage(getNextPage func(context.Context, ServiceOperationList) (ServiceOperationList, error)) ServiceOperationListPage {
-	return original.NewServiceOperationListPage(getNextPage)
+func NewServiceOperationListPage(cur ServiceOperationList, getNextPage func(context.Context, ServiceOperationList) (ServiceOperationList, error)) ServiceOperationListPage {
+	return original.NewServiceOperationListPage(cur, getNextPage)
 }
 func NewServiceSkuListIterator(page ServiceSkuListPage) ServiceSkuListIterator {
 	return original.NewServiceSkuListIterator(page)
 }
-func NewServiceSkuListPage(getNextPage func(context.Context, ServiceSkuList) (ServiceSkuList, error)) ServiceSkuListPage {
-	return original.NewServiceSkuListPage(getNextPage)
+func NewServiceSkuListPage(cur ServiceSkuList, getNextPage func(context.Context, ServiceSkuList) (ServiceSkuList, error)) ServiceSkuListPage {
+	return original.NewServiceSkuListPage(cur, getNextPage)
 }
 func NewServicesClient(subscriptionID string) ServicesClient {
 	return original.NewServicesClient(subscriptionID)
@@ -815,8 +815,8 @@ func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) Service
 func NewTaskListIterator(page TaskListPage) TaskListIterator {
 	return original.NewTaskListIterator(page)
 }
-func NewTaskListPage(getNextPage func(context.Context, TaskList) (TaskList, error)) TaskListPage {
-	return original.NewTaskListPage(getNextPage)
+func NewTaskListPage(cur TaskList, getNextPage func(context.Context, TaskList) (TaskList, error)) TaskListPage {
+	return original.NewTaskListPage(cur, getNextPage)
 }
 func NewTasksClient(subscriptionID string) TasksClient {
 	return original.NewTasksClient(subscriptionID)

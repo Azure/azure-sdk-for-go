@@ -102,8 +102,8 @@ func NewAssociationsClientWithBaseURI(baseURI string, subscriptionID string) Ass
 func NewAssociationsListIterator(page AssociationsListPage) AssociationsListIterator {
 	return original.NewAssociationsListIterator(page)
 }
-func NewAssociationsListPage(getNextPage func(context.Context, AssociationsList) (AssociationsList, error)) AssociationsListPage {
-	return original.NewAssociationsListPage(getNextPage)
+func NewAssociationsListPage(cur AssociationsList, getNextPage func(context.Context, AssociationsList) (AssociationsList, error)) AssociationsListPage {
+	return original.NewAssociationsListPage(cur, getNextPage)
 }
 func NewCustomResourceProviderClient(subscriptionID string) CustomResourceProviderClient {
 	return original.NewCustomResourceProviderClient(subscriptionID)
@@ -114,8 +114,8 @@ func NewCustomResourceProviderClientWithBaseURI(baseURI string, subscriptionID s
 func NewListByCustomRPManifestIterator(page ListByCustomRPManifestPage) ListByCustomRPManifestIterator {
 	return original.NewListByCustomRPManifestIterator(page)
 }
-func NewListByCustomRPManifestPage(getNextPage func(context.Context, ListByCustomRPManifest) (ListByCustomRPManifest, error)) ListByCustomRPManifestPage {
-	return original.NewListByCustomRPManifestPage(getNextPage)
+func NewListByCustomRPManifestPage(cur ListByCustomRPManifest, getNextPage func(context.Context, ListByCustomRPManifest) (ListByCustomRPManifest, error)) ListByCustomRPManifestPage {
+	return original.NewListByCustomRPManifestPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -126,8 +126,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewResourceProviderOperationListIterator(page ResourceProviderOperationListPage) ResourceProviderOperationListIterator {
 	return original.NewResourceProviderOperationListIterator(page)
 }
-func NewResourceProviderOperationListPage(getNextPage func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error)) ResourceProviderOperationListPage {
-	return original.NewResourceProviderOperationListPage(getNextPage)
+func NewResourceProviderOperationListPage(cur ResourceProviderOperationList, getNextPage func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error)) ResourceProviderOperationListPage {
+	return original.NewResourceProviderOperationListPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

@@ -176,8 +176,8 @@ func (ehcgi EventHubConsumerGroupInfo) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// EventHubConsumerGroupsListResult the JSON-serialized array of Event Hub-compatible consumer group names with
-// a next link.
+// EventHubConsumerGroupsListResult the JSON-serialized array of Event Hub-compatible consumer group names
+// with a next link.
 type EventHubConsumerGroupsListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of consumer groups objects
@@ -195,8 +195,8 @@ func (ehcglr EventHubConsumerGroupsListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// EventHubConsumerGroupsListResultIterator provides access to a complete listing of EventHubConsumerGroupInfo
-// values.
+// EventHubConsumerGroupsListResultIterator provides access to a complete listing of
+// EventHubConsumerGroupInfo values.
 type EventHubConsumerGroupsListResultIterator struct {
 	i    int
 	page EventHubConsumerGroupsListResultPage
@@ -339,8 +339,11 @@ func (page EventHubConsumerGroupsListResultPage) Values() []EventHubConsumerGrou
 }
 
 // Creates a new instance of the EventHubConsumerGroupsListResultPage type.
-func NewEventHubConsumerGroupsListResultPage(getNextPage func(context.Context, EventHubConsumerGroupsListResult) (EventHubConsumerGroupsListResult, error)) EventHubConsumerGroupsListResultPage {
-	return EventHubConsumerGroupsListResultPage{fn: getNextPage}
+func NewEventHubConsumerGroupsListResultPage(cur EventHubConsumerGroupsListResult, getNextPage func(context.Context, EventHubConsumerGroupsListResult) (EventHubConsumerGroupsListResult, error)) EventHubConsumerGroupsListResultPage {
+	return EventHubConsumerGroupsListResultPage{
+		fn:     getNextPage,
+		ehcglr: cur,
+	}
 }
 
 // EventHubProperties the properties of the provisioned Event Hub-compatible endpoint used by the IoT hub.
@@ -377,8 +380,8 @@ type ExportDevicesRequest struct {
 	ExcludeKeys *bool `json:"excludeKeys,omitempty"`
 }
 
-// FallbackRouteProperties the properties of the fallback route. IoT Hub uses these properties when it routes
-// messages to the fallback endpoint.
+// FallbackRouteProperties the properties of the fallback route. IoT Hub uses these properties when it
+// routes messages to the fallback endpoint.
 type FallbackRouteProperties struct {
 	// Name - The name of the route. The name can only include alphanumeric characters, periods, underscores, hyphens, has a maximum length of 64 characters, and must be unique.
 	Name *string `json:"name,omitempty"`
@@ -623,8 +626,11 @@ func (page IotHubDescriptionListResultPage) Values() []IotHubDescription {
 }
 
 // Creates a new instance of the IotHubDescriptionListResultPage type.
-func NewIotHubDescriptionListResultPage(getNextPage func(context.Context, IotHubDescriptionListResult) (IotHubDescriptionListResult, error)) IotHubDescriptionListResultPage {
-	return IotHubDescriptionListResultPage{fn: getNextPage}
+func NewIotHubDescriptionListResultPage(cur IotHubDescriptionListResult, getNextPage func(context.Context, IotHubDescriptionListResult) (IotHubDescriptionListResult, error)) IotHubDescriptionListResultPage {
+	return IotHubDescriptionListResultPage{
+		fn:    getNextPage,
+		ihdlr: cur,
+	}
 }
 
 // IotHubNameAvailabilityInfo the properties indicating whether a given IoT hub name is available.
@@ -725,7 +731,8 @@ type IotHubQuotaMetricInfo struct {
 	MaxValue *int64 `json:"maxValue,omitempty"`
 }
 
-// IotHubQuotaMetricInfoListResult the JSON-serialized array of IotHubQuotaMetricInfo objects with a next link.
+// IotHubQuotaMetricInfoListResult the JSON-serialized array of IotHubQuotaMetricInfo objects with a next
+// link.
 type IotHubQuotaMetricInfoListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The array of quota metrics objects.
@@ -887,8 +894,11 @@ func (page IotHubQuotaMetricInfoListResultPage) Values() []IotHubQuotaMetricInfo
 }
 
 // Creates a new instance of the IotHubQuotaMetricInfoListResultPage type.
-func NewIotHubQuotaMetricInfoListResultPage(getNextPage func(context.Context, IotHubQuotaMetricInfoListResult) (IotHubQuotaMetricInfoListResult, error)) IotHubQuotaMetricInfoListResultPage {
-	return IotHubQuotaMetricInfoListResultPage{fn: getNextPage}
+func NewIotHubQuotaMetricInfoListResultPage(cur IotHubQuotaMetricInfoListResult, getNextPage func(context.Context, IotHubQuotaMetricInfoListResult) (IotHubQuotaMetricInfoListResult, error)) IotHubQuotaMetricInfoListResultPage {
+	return IotHubQuotaMetricInfoListResultPage{
+		fn:      getNextPage,
+		ihqmilr: cur,
+	}
 }
 
 // IotHubResourceCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -999,7 +1009,8 @@ func (ihsd IotHubSkuDescription) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// IotHubSkuDescriptionListResult the JSON-serialized array of IotHubSkuDescription objects with a next link.
+// IotHubSkuDescriptionListResult the JSON-serialized array of IotHubSkuDescription objects with a next
+// link.
 type IotHubSkuDescriptionListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The array of IotHubSkuDescription.
@@ -1017,7 +1028,8 @@ func (ihsdlr IotHubSkuDescriptionListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// IotHubSkuDescriptionListResultIterator provides access to a complete listing of IotHubSkuDescription values.
+// IotHubSkuDescriptionListResultIterator provides access to a complete listing of IotHubSkuDescription
+// values.
 type IotHubSkuDescriptionListResultIterator struct {
 	i    int
 	page IotHubSkuDescriptionListResultPage
@@ -1160,8 +1172,11 @@ func (page IotHubSkuDescriptionListResultPage) Values() []IotHubSkuDescription {
 }
 
 // Creates a new instance of the IotHubSkuDescriptionListResultPage type.
-func NewIotHubSkuDescriptionListResultPage(getNextPage func(context.Context, IotHubSkuDescriptionListResult) (IotHubSkuDescriptionListResult, error)) IotHubSkuDescriptionListResultPage {
-	return IotHubSkuDescriptionListResultPage{fn: getNextPage}
+func NewIotHubSkuDescriptionListResultPage(cur IotHubSkuDescriptionListResult, getNextPage func(context.Context, IotHubSkuDescriptionListResult) (IotHubSkuDescriptionListResult, error)) IotHubSkuDescriptionListResultPage {
+	return IotHubSkuDescriptionListResultPage{
+		fn:     getNextPage,
+		ihsdlr: cur,
+	}
 }
 
 // IotHubSkuInfo information about the SKU of the IoT hub.
@@ -1378,8 +1393,11 @@ func (page JobResponseListResultPage) Values() []JobResponse {
 }
 
 // Creates a new instance of the JobResponseListResultPage type.
-func NewJobResponseListResultPage(getNextPage func(context.Context, JobResponseListResult) (JobResponseListResult, error)) JobResponseListResultPage {
-	return JobResponseListResultPage{fn: getNextPage}
+func NewJobResponseListResultPage(cur JobResponseListResult, getNextPage func(context.Context, JobResponseListResult) (JobResponseListResult, error)) JobResponseListResultPage {
+	return JobResponseListResultPage{
+		fn:   getNextPage,
+		jrlr: cur,
+	}
 }
 
 // MessagingEndpointProperties the properties of the messaging endpoints used by this IoT hub.
@@ -1425,8 +1443,8 @@ type OperationInputs struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// OperationListResult result of the request to list IoT Hub operations. It contains a list of operations and a
-// URL link to get the next set of results.
+// OperationListResult result of the request to list IoT Hub operations. It contains a list of operations
+// and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of IoT Hub operations supported by the Microsoft.Devices resource provider.
@@ -1578,12 +1596,15 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
-// OperationsMonitoringProperties the operations monitoring properties for the IoT hub. The possible keys to
-// the dictionary are Connections, DeviceTelemetry, C2DCommands, DeviceIdentityOperations,
+// OperationsMonitoringProperties the operations monitoring properties for the IoT hub. The possible keys
+// to the dictionary are Connections, DeviceTelemetry, C2DCommands, DeviceIdentityOperations,
 // FileUploadOperations, Routes, D2CTwinOperations, C2DTwinOperations, TwinQueries, JobsOperations,
 // DirectMethods.
 type OperationsMonitoringProperties struct {
@@ -1650,9 +1671,9 @@ type RouteProperties struct {
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 }
 
-// RoutingEndpoints the properties related to the custom endpoints to which your IoT hub routes messages based
-// on the routing rules. A maximum of 10 custom endpoints are allowed across all endpoint types for paid hubs
-// and only 1 custom endpoint is allowed across all endpoint types for free hubs.
+// RoutingEndpoints the properties related to the custom endpoints to which your IoT hub routes messages
+// based on the routing rules. A maximum of 10 custom endpoints are allowed across all endpoint types for
+// paid hubs and only 1 custom endpoint is allowed across all endpoint types for free hubs.
 type RoutingEndpoints struct {
 	// ServiceBusQueues - The list of Service Bus queue endpoints that IoT hub routes the messages to, based on the routing rules.
 	ServiceBusQueues *[]RoutingServiceBusQueueEndpointProperties `json:"serviceBusQueues,omitempty"`
@@ -1914,8 +1935,11 @@ func (page SharedAccessSignatureAuthorizationRuleListResultPage) Values() []Shar
 }
 
 // Creates a new instance of the SharedAccessSignatureAuthorizationRuleListResultPage type.
-func NewSharedAccessSignatureAuthorizationRuleListResultPage(getNextPage func(context.Context, SharedAccessSignatureAuthorizationRuleListResult) (SharedAccessSignatureAuthorizationRuleListResult, error)) SharedAccessSignatureAuthorizationRuleListResultPage {
-	return SharedAccessSignatureAuthorizationRuleListResultPage{fn: getNextPage}
+func NewSharedAccessSignatureAuthorizationRuleListResultPage(cur SharedAccessSignatureAuthorizationRuleListResult, getNextPage func(context.Context, SharedAccessSignatureAuthorizationRuleListResult) (SharedAccessSignatureAuthorizationRuleListResult, error)) SharedAccessSignatureAuthorizationRuleListResultPage {
+	return SharedAccessSignatureAuthorizationRuleListResultPage{
+		fn:      getNextPage,
+		sasarlr: cur,
+	}
 }
 
 // StorageEndpointProperties the properties of the Azure Storage endpoint for file upload.
@@ -1928,8 +1952,8 @@ type StorageEndpointProperties struct {
 	ContainerName *string `json:"containerName,omitempty"`
 }
 
-// TagsResource a container holding only the Tags for a resource, allowing the user to update the tags on an
-// IoT Hub instance.
+// TagsResource a container holding only the Tags for a resource, allowing the user to update the tags on
+// an IoT Hub instance.
 type TagsResource struct {
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`

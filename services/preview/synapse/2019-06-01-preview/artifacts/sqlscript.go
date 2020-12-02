@@ -55,13 +55,14 @@ func (client SQLScriptClient) CreateOrUpdateSQLScript(ctx context.Context, SQLSc
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: SQLScript,
-			Constraints: []validation.Constraint{{Target: "SQLScript.Properties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "SQLScript.Properties.Content", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "SQLScript.Properties.Content.Query", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "SQLScript.Properties.Content.CurrentConnection", Name: validation.Null, Rule: true,
-							Chain: []validation.Constraint{{Target: "SQLScript.Properties.Content.CurrentConnection.Name", Name: validation.Null, Rule: true, Chain: nil}}},
-					}},
-				}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "SQLScript.Name", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "SQLScript.Properties", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "SQLScript.Properties.Content", Name: validation.Null, Rule: true,
+						Chain: []validation.Constraint{{Target: "SQLScript.Properties.Content.Query", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "SQLScript.Properties.Content.CurrentConnection", Name: validation.Null, Rule: true,
+								Chain: []validation.Constraint{{Target: "SQLScript.Properties.Content.CurrentConnection.Name", Name: validation.Null, Rule: true, Chain: nil}}},
+						}},
+					}}}}}); err != nil {
 		return result, validation.NewError("artifacts.SQLScriptClient", "CreateOrUpdateSQLScript", err.Error())
 	}
 
@@ -101,6 +102,9 @@ func (client SQLScriptClient) CreateOrUpdateSQLScriptPreparer(ctx context.Contex
 		"api-version": APIVersion,
 	}
 
+	SQLScript.ID = nil
+	SQLScript.Type = nil
+	SQLScript.Etag = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -398,5 +402,93 @@ func (client SQLScriptClient) GetSQLScriptsByWorkspaceComplete(ctx context.Conte
 		}()
 	}
 	result.page, err = client.GetSQLScriptsByWorkspace(ctx)
+	return
+}
+
+// RenameSQLScript renames a sqlScript.
+// Parameters:
+// SQLScriptName - the sql script name.
+// request - proposed new name.
+func (client SQLScriptClient) RenameSQLScript(ctx context.Context, SQLScriptName string, request RenameRequest) (result SQLScriptRenameSQLScriptFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SQLScriptClient.RenameSQLScript")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: request,
+			Constraints: []validation.Constraint{{Target: "request.NewName", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "request.NewName", Name: validation.MaxLength, Rule: 260, Chain: nil},
+					{Target: "request.NewName", Name: validation.MinLength, Rule: 1, Chain: nil},
+					{Target: "request.NewName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("artifacts.SQLScriptClient", "RenameSQLScript", err.Error())
+	}
+
+	req, err := client.RenameSQLScriptPreparer(ctx, SQLScriptName, request)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "artifacts.SQLScriptClient", "RenameSQLScript", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.RenameSQLScriptSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "artifacts.SQLScriptClient", "RenameSQLScript", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// RenameSQLScriptPreparer prepares the RenameSQLScript request.
+func (client SQLScriptClient) RenameSQLScriptPreparer(ctx context.Context, SQLScriptName string, request RenameRequest) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"sqlScriptName": autorest.Encode("path", SQLScriptName),
+	}
+
+	const APIVersion = "2019-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{endpoint}", urlParameters),
+		autorest.WithPathParameters("/sqlScripts/{sqlScriptName}/rename", pathParameters),
+		autorest.WithJSON(request),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// RenameSQLScriptSender sends the RenameSQLScript request. The method will close the
+// http.Response Body if it receives an error.
+func (client SQLScriptClient) RenameSQLScriptSender(req *http.Request) (future SQLScriptRenameSQLScriptFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// RenameSQLScriptResponder handles the response to the RenameSQLScript request. The method always
+// closes the http.Response Body.
+func (client SQLScriptClient) RenameSQLScriptResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
 	return
 }

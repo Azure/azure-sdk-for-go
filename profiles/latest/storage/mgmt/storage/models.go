@@ -563,8 +563,8 @@ func New(subscriptionID string) BaseClient {
 func NewAccountListResultIterator(page AccountListResultPage) AccountListResultIterator {
 	return original.NewAccountListResultIterator(page)
 }
-func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
-	return original.NewAccountListResultPage(getNextPage)
+func NewAccountListResultPage(cur AccountListResult, getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return original.NewAccountListResultPage(cur, getNextPage)
 }
 func NewAccountsClient(subscriptionID string) AccountsClient {
 	return original.NewAccountsClient(subscriptionID)
@@ -587,8 +587,8 @@ func NewBlobServicesClientWithBaseURI(baseURI string, subscriptionID string) Blo
 func NewEncryptionScopeListResultIterator(page EncryptionScopeListResultPage) EncryptionScopeListResultIterator {
 	return original.NewEncryptionScopeListResultIterator(page)
 }
-func NewEncryptionScopeListResultPage(getNextPage func(context.Context, EncryptionScopeListResult) (EncryptionScopeListResult, error)) EncryptionScopeListResultPage {
-	return original.NewEncryptionScopeListResultPage(getNextPage)
+func NewEncryptionScopeListResultPage(cur EncryptionScopeListResult, getNextPage func(context.Context, EncryptionScopeListResult) (EncryptionScopeListResult, error)) EncryptionScopeListResultPage {
+	return original.NewEncryptionScopeListResultPage(cur, getNextPage)
 }
 func NewEncryptionScopesClient(subscriptionID string) EncryptionScopesClient {
 	return original.NewEncryptionScopesClient(subscriptionID)
@@ -605,8 +605,8 @@ func NewFileServicesClientWithBaseURI(baseURI string, subscriptionID string) Fil
 func NewFileShareItemsIterator(page FileShareItemsPage) FileShareItemsIterator {
 	return original.NewFileShareItemsIterator(page)
 }
-func NewFileShareItemsPage(getNextPage func(context.Context, FileShareItems) (FileShareItems, error)) FileShareItemsPage {
-	return original.NewFileShareItemsPage(getNextPage)
+func NewFileShareItemsPage(cur FileShareItems, getNextPage func(context.Context, FileShareItems) (FileShareItems, error)) FileShareItemsPage {
+	return original.NewFileShareItemsPage(cur, getNextPage)
 }
 func NewFileSharesClient(subscriptionID string) FileSharesClient {
 	return original.NewFileSharesClient(subscriptionID)
@@ -617,20 +617,20 @@ func NewFileSharesClientWithBaseURI(baseURI string, subscriptionID string) FileS
 func NewListContainerItemsIterator(page ListContainerItemsPage) ListContainerItemsIterator {
 	return original.NewListContainerItemsIterator(page)
 }
-func NewListContainerItemsPage(getNextPage func(context.Context, ListContainerItems) (ListContainerItems, error)) ListContainerItemsPage {
-	return original.NewListContainerItemsPage(getNextPage)
+func NewListContainerItemsPage(cur ListContainerItems, getNextPage func(context.Context, ListContainerItems) (ListContainerItems, error)) ListContainerItemsPage {
+	return original.NewListContainerItemsPage(cur, getNextPage)
 }
 func NewListQueueResourceIterator(page ListQueueResourcePage) ListQueueResourceIterator {
 	return original.NewListQueueResourceIterator(page)
 }
-func NewListQueueResourcePage(getNextPage func(context.Context, ListQueueResource) (ListQueueResource, error)) ListQueueResourcePage {
-	return original.NewListQueueResourcePage(getNextPage)
+func NewListQueueResourcePage(cur ListQueueResource, getNextPage func(context.Context, ListQueueResource) (ListQueueResource, error)) ListQueueResourcePage {
+	return original.NewListQueueResourcePage(cur, getNextPage)
 }
 func NewListTableResourceIterator(page ListTableResourcePage) ListTableResourceIterator {
 	return original.NewListTableResourceIterator(page)
 }
-func NewListTableResourcePage(getNextPage func(context.Context, ListTableResource) (ListTableResource, error)) ListTableResourcePage {
-	return original.NewListTableResourcePage(getNextPage)
+func NewListTableResourcePage(cur ListTableResource, getNextPage func(context.Context, ListTableResource) (ListTableResource, error)) ListTableResourcePage {
+	return original.NewListTableResourcePage(cur, getNextPage)
 }
 func NewManagementPoliciesClient(subscriptionID string) ManagementPoliciesClient {
 	return original.NewManagementPoliciesClient(subscriptionID)

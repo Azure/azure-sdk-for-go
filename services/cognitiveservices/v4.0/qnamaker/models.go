@@ -60,7 +60,7 @@ type CreateKbDTO struct {
 	EnableHierarchicalExtraction *bool `json:"enableHierarchicalExtraction,omitempty"`
 	// DefaultAnswerUsedForExtraction - Text string to be used as the answer in any Q-A which has no extracted answer from the document but has a hierarchy. Required when EnableHierarchicalExtraction field is set to True.
 	DefaultAnswerUsedForExtraction *string `json:"defaultAnswerUsedForExtraction,omitempty"`
-	// Language - Language of the knowledgebase.
+	// Language - Language of the knowledgebase. Please find the list of supported languages <a href="https://aka.ms/qnamaker-languages#languages-supported" target="_blank">here</a>.
 	Language *string `json:"language,omitempty"`
 }
 
@@ -288,12 +288,6 @@ type ReplaceKbDTO struct {
 	QnAList *[]QnADTO `json:"qnAList,omitempty"`
 }
 
-// String ...
-type String struct {
-	autorest.Response `json:"-"`
-	Value             *string `json:"value,omitempty"`
-}
-
 // UpdateContextDTO update Body schema to represent context to be updated
 type UpdateContextDTO struct {
 	// PromptsToDelete - List of prompts associated with qna to be deleted
@@ -410,7 +404,8 @@ type UpdateQnaDTOQuestions struct {
 	Delete *[]string `json:"delete,omitempty"`
 }
 
-// UpdateQuestionsDTO PATCH Body schema for Update Kb which contains list of questions to be added and deleted
+// UpdateQuestionsDTO PATCH Body schema for Update Kb which contains list of questions to be added and
+// deleted
 type UpdateQuestionsDTO struct {
 	// Add - List of questions to be added
 	Add *[]string `json:"add,omitempty"`

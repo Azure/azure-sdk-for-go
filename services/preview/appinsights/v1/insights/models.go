@@ -2193,8 +2193,8 @@ type ListMetricsResultsItem struct {
 	Value             *[]MetricsResultsItem `json:"value,omitempty"`
 }
 
-// MetadataApplication application Insights apps that were part of the metadata request and that the user has
-// access to.
+// MetadataApplication application Insights apps that were part of the metadata request and that the user
+// has access to.
 type MetadataApplication struct {
 	// ID - The ID of the Application Insights app.
 	ID *string `json:"id,omitempty"`
@@ -2212,8 +2212,8 @@ type MetadataApplication struct {
 	TableGroups *[]string `json:"tableGroups,omitempty"`
 }
 
-// MetadataFunction functions are stored Kusto queries that can be specified as part of queries by using their
-// name.
+// MetadataFunction functions are stored Kusto queries that can be specified as part of queries by using
+// their name.
 type MetadataFunction struct {
 	// ID - The ID of the function.
 	ID *string `json:"id,omitempty"`

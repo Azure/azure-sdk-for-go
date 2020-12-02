@@ -293,8 +293,11 @@ func (page RegistryListResultPage) Values() []Registry {
 }
 
 // Creates a new instance of the RegistryListResultPage type.
-func NewRegistryListResultPage(getNextPage func(context.Context, RegistryListResult) (RegistryListResult, error)) RegistryListResultPage {
-	return RegistryListResultPage{fn: getNextPage}
+func NewRegistryListResultPage(cur RegistryListResult, getNextPage func(context.Context, RegistryListResult) (RegistryListResult, error)) RegistryListResultPage {
+	return RegistryListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // RegistryNameCheckRequest a request to check whether the container registry name is available.

@@ -281,14 +281,14 @@ func New(subscriptionID string) BaseClient {
 func NewAdministratorListResultIterator(page AdministratorListResultPage) AdministratorListResultIterator {
 	return original.NewAdministratorListResultIterator(page)
 }
-func NewAdministratorListResultPage(getNextPage func(context.Context, AdministratorListResult) (AdministratorListResult, error)) AdministratorListResultPage {
-	return original.NewAdministratorListResultPage(getNextPage)
+func NewAdministratorListResultPage(cur AdministratorListResult, getNextPage func(context.Context, AdministratorListResult) (AdministratorListResult, error)) AdministratorListResultPage {
+	return original.NewAdministratorListResultPage(cur, getNextPage)
 }
 func NewDatabaseSecurityAlertListResultIterator(page DatabaseSecurityAlertListResultPage) DatabaseSecurityAlertListResultIterator {
 	return original.NewDatabaseSecurityAlertListResultIterator(page)
 }
-func NewDatabaseSecurityAlertListResultPage(getNextPage func(context.Context, DatabaseSecurityAlertListResult) (DatabaseSecurityAlertListResult, error)) DatabaseSecurityAlertListResultPage {
-	return original.NewDatabaseSecurityAlertListResultPage(getNextPage)
+func NewDatabaseSecurityAlertListResultPage(cur DatabaseSecurityAlertListResult, getNextPage func(context.Context, DatabaseSecurityAlertListResult) (DatabaseSecurityAlertListResult, error)) DatabaseSecurityAlertListResultPage {
+	return original.NewDatabaseSecurityAlertListResultPage(cur, getNextPage)
 }
 func NewDatabaseSecurityAlertPoliciesClient(subscriptionID string) DatabaseSecurityAlertPoliciesClient {
 	return original.NewDatabaseSecurityAlertPoliciesClient(subscriptionID)
@@ -311,8 +311,8 @@ func NewElasticPoolsClientWithBaseURI(baseURI string, subscriptionID string) Ela
 func NewInstancePoolListResultIterator(page InstancePoolListResultPage) InstancePoolListResultIterator {
 	return original.NewInstancePoolListResultIterator(page)
 }
-func NewInstancePoolListResultPage(getNextPage func(context.Context, InstancePoolListResult) (InstancePoolListResult, error)) InstancePoolListResultPage {
-	return original.NewInstancePoolListResultPage(getNextPage)
+func NewInstancePoolListResultPage(cur InstancePoolListResult, getNextPage func(context.Context, InstancePoolListResult) (InstancePoolListResult, error)) InstancePoolListResultPage {
+	return original.NewInstancePoolListResultPage(cur, getNextPage)
 }
 func NewInstancePoolsClient(subscriptionID string) InstancePoolsClient {
 	return original.NewInstancePoolsClient(subscriptionID)
@@ -329,8 +329,8 @@ func NewLongTermRetentionManagedInstanceBackupsClientWithBaseURI(baseURI string,
 func NewManagedDatabaseListResultIterator(page ManagedDatabaseListResultPage) ManagedDatabaseListResultIterator {
 	return original.NewManagedDatabaseListResultIterator(page)
 }
-func NewManagedDatabaseListResultPage(getNextPage func(context.Context, ManagedDatabaseListResult) (ManagedDatabaseListResult, error)) ManagedDatabaseListResultPage {
-	return original.NewManagedDatabaseListResultPage(getNextPage)
+func NewManagedDatabaseListResultPage(cur ManagedDatabaseListResult, getNextPage func(context.Context, ManagedDatabaseListResult) (ManagedDatabaseListResult, error)) ManagedDatabaseListResultPage {
+	return original.NewManagedDatabaseListResultPage(cur, getNextPage)
 }
 func NewManagedDatabaseRestoreDetailsClient(subscriptionID string) ManagedDatabaseRestoreDetailsClient {
 	return original.NewManagedDatabaseRestoreDetailsClient(subscriptionID)
@@ -353,14 +353,14 @@ func NewManagedDatabasesClientWithBaseURI(baseURI string, subscriptionID string)
 func NewManagedInstanceListResultIterator(page ManagedInstanceListResultPage) ManagedInstanceListResultIterator {
 	return original.NewManagedInstanceListResultIterator(page)
 }
-func NewManagedInstanceListResultPage(getNextPage func(context.Context, ManagedInstanceListResult) (ManagedInstanceListResult, error)) ManagedInstanceListResultPage {
-	return original.NewManagedInstanceListResultPage(getNextPage)
+func NewManagedInstanceListResultPage(cur ManagedInstanceListResult, getNextPage func(context.Context, ManagedInstanceListResult) (ManagedInstanceListResult, error)) ManagedInstanceListResultPage {
+	return original.NewManagedInstanceListResultPage(cur, getNextPage)
 }
 func NewManagedInstanceLongTermRetentionBackupListResultIterator(page ManagedInstanceLongTermRetentionBackupListResultPage) ManagedInstanceLongTermRetentionBackupListResultIterator {
 	return original.NewManagedInstanceLongTermRetentionBackupListResultIterator(page)
 }
-func NewManagedInstanceLongTermRetentionBackupListResultPage(getNextPage func(context.Context, ManagedInstanceLongTermRetentionBackupListResult) (ManagedInstanceLongTermRetentionBackupListResult, error)) ManagedInstanceLongTermRetentionBackupListResultPage {
-	return original.NewManagedInstanceLongTermRetentionBackupListResultPage(getNextPage)
+func NewManagedInstanceLongTermRetentionBackupListResultPage(cur ManagedInstanceLongTermRetentionBackupListResult, getNextPage func(context.Context, ManagedInstanceLongTermRetentionBackupListResult) (ManagedInstanceLongTermRetentionBackupListResult, error)) ManagedInstanceLongTermRetentionBackupListResultPage {
+	return original.NewManagedInstanceLongTermRetentionBackupListResultPage(cur, getNextPage)
 }
 func NewManagedInstanceLongTermRetentionPoliciesClient(subscriptionID string) ManagedInstanceLongTermRetentionPoliciesClient {
 	return original.NewManagedInstanceLongTermRetentionPoliciesClient(subscriptionID)
@@ -371,14 +371,14 @@ func NewManagedInstanceLongTermRetentionPoliciesClientWithBaseURI(baseURI string
 func NewManagedInstanceLongTermRetentionPolicyListResultIterator(page ManagedInstanceLongTermRetentionPolicyListResultPage) ManagedInstanceLongTermRetentionPolicyListResultIterator {
 	return original.NewManagedInstanceLongTermRetentionPolicyListResultIterator(page)
 }
-func NewManagedInstanceLongTermRetentionPolicyListResultPage(getNextPage func(context.Context, ManagedInstanceLongTermRetentionPolicyListResult) (ManagedInstanceLongTermRetentionPolicyListResult, error)) ManagedInstanceLongTermRetentionPolicyListResultPage {
-	return original.NewManagedInstanceLongTermRetentionPolicyListResultPage(getNextPage)
+func NewManagedInstanceLongTermRetentionPolicyListResultPage(cur ManagedInstanceLongTermRetentionPolicyListResult, getNextPage func(context.Context, ManagedInstanceLongTermRetentionPolicyListResult) (ManagedInstanceLongTermRetentionPolicyListResult, error)) ManagedInstanceLongTermRetentionPolicyListResultPage {
+	return original.NewManagedInstanceLongTermRetentionPolicyListResultPage(cur, getNextPage)
 }
 func NewManagedInstanceOperationListResultIterator(page ManagedInstanceOperationListResultPage) ManagedInstanceOperationListResultIterator {
 	return original.NewManagedInstanceOperationListResultIterator(page)
 }
-func NewManagedInstanceOperationListResultPage(getNextPage func(context.Context, ManagedInstanceOperationListResult) (ManagedInstanceOperationListResult, error)) ManagedInstanceOperationListResultPage {
-	return original.NewManagedInstanceOperationListResultPage(getNextPage)
+func NewManagedInstanceOperationListResultPage(cur ManagedInstanceOperationListResult, getNextPage func(context.Context, ManagedInstanceOperationListResult) (ManagedInstanceOperationListResult, error)) ManagedInstanceOperationListResultPage {
+	return original.NewManagedInstanceOperationListResultPage(cur, getNextPage)
 }
 func NewManagedInstanceOperationsClient(subscriptionID string) ManagedInstanceOperationsClient {
 	return original.NewManagedInstanceOperationsClient(subscriptionID)
@@ -389,8 +389,8 @@ func NewManagedInstanceOperationsClientWithBaseURI(baseURI string, subscriptionI
 func NewManagedInstanceVulnerabilityAssessmentListResultIterator(page ManagedInstanceVulnerabilityAssessmentListResultPage) ManagedInstanceVulnerabilityAssessmentListResultIterator {
 	return original.NewManagedInstanceVulnerabilityAssessmentListResultIterator(page)
 }
-func NewManagedInstanceVulnerabilityAssessmentListResultPage(getNextPage func(context.Context, ManagedInstanceVulnerabilityAssessmentListResult) (ManagedInstanceVulnerabilityAssessmentListResult, error)) ManagedInstanceVulnerabilityAssessmentListResultPage {
-	return original.NewManagedInstanceVulnerabilityAssessmentListResultPage(getNextPage)
+func NewManagedInstanceVulnerabilityAssessmentListResultPage(cur ManagedInstanceVulnerabilityAssessmentListResult, getNextPage func(context.Context, ManagedInstanceVulnerabilityAssessmentListResult) (ManagedInstanceVulnerabilityAssessmentListResult, error)) ManagedInstanceVulnerabilityAssessmentListResultPage {
+	return original.NewManagedInstanceVulnerabilityAssessmentListResultPage(cur, getNextPage)
 }
 func NewManagedInstanceVulnerabilityAssessmentsClient(subscriptionID string) ManagedInstanceVulnerabilityAssessmentsClient {
 	return original.NewManagedInstanceVulnerabilityAssessmentsClient(subscriptionID)
@@ -407,8 +407,8 @@ func NewManagedInstancesClientWithBaseURI(baseURI string, subscriptionID string)
 func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
 	return original.NewPrivateEndpointConnectionListResultIterator(page)
 }
-func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
-	return original.NewPrivateEndpointConnectionListResultPage(getNextPage)
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return original.NewPrivateEndpointConnectionListResultPage(cur, getNextPage)
 }
 func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
 	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
@@ -419,8 +419,8 @@ func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscription
 func NewSensitivityLabelListResultIterator(page SensitivityLabelListResultPage) SensitivityLabelListResultIterator {
 	return original.NewSensitivityLabelListResultIterator(page)
 }
-func NewSensitivityLabelListResultPage(getNextPage func(context.Context, SensitivityLabelListResult) (SensitivityLabelListResult, error)) SensitivityLabelListResultPage {
-	return original.NewSensitivityLabelListResultPage(getNextPage)
+func NewSensitivityLabelListResultPage(cur SensitivityLabelListResult, getNextPage func(context.Context, SensitivityLabelListResult) (SensitivityLabelListResult, error)) SensitivityLabelListResultPage {
+	return original.NewSensitivityLabelListResultPage(cur, getNextPage)
 }
 func NewServerAzureADAdministratorsClient(subscriptionID string) ServerAzureADAdministratorsClient {
 	return original.NewServerAzureADAdministratorsClient(subscriptionID)
@@ -431,8 +431,8 @@ func NewServerAzureADAdministratorsClientWithBaseURI(baseURI string, subscriptio
 func NewServerVulnerabilityAssessmentListResultIterator(page ServerVulnerabilityAssessmentListResultPage) ServerVulnerabilityAssessmentListResultIterator {
 	return original.NewServerVulnerabilityAssessmentListResultIterator(page)
 }
-func NewServerVulnerabilityAssessmentListResultPage(getNextPage func(context.Context, ServerVulnerabilityAssessmentListResult) (ServerVulnerabilityAssessmentListResult, error)) ServerVulnerabilityAssessmentListResultPage {
-	return original.NewServerVulnerabilityAssessmentListResultPage(getNextPage)
+func NewServerVulnerabilityAssessmentListResultPage(cur ServerVulnerabilityAssessmentListResult, getNextPage func(context.Context, ServerVulnerabilityAssessmentListResult) (ServerVulnerabilityAssessmentListResult, error)) ServerVulnerabilityAssessmentListResultPage {
+	return original.NewServerVulnerabilityAssessmentListResultPage(cur, getNextPage)
 }
 func NewServerVulnerabilityAssessmentsClient(subscriptionID string) ServerVulnerabilityAssessmentsClient {
 	return original.NewServerVulnerabilityAssessmentsClient(subscriptionID)
@@ -443,8 +443,8 @@ func NewServerVulnerabilityAssessmentsClientWithBaseURI(baseURI string, subscrip
 func NewUsageListResultIterator(page UsageListResultPage) UsageListResultIterator {
 	return original.NewUsageListResultIterator(page)
 }
-func NewUsageListResultPage(getNextPage func(context.Context, UsageListResult) (UsageListResult, error)) UsageListResultPage {
-	return original.NewUsageListResultPage(getNextPage)
+func NewUsageListResultPage(cur UsageListResult, getNextPage func(context.Context, UsageListResult) (UsageListResult, error)) UsageListResultPage {
+	return original.NewUsageListResultPage(cur, getNextPage)
 }
 func NewUsagesClient(subscriptionID string) UsagesClient {
 	return original.NewUsagesClient(subscriptionID)

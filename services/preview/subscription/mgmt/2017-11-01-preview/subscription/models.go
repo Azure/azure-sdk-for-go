@@ -255,8 +255,11 @@ func (page DefinitionListPage) Values() []Definition {
 }
 
 // Creates a new instance of the DefinitionListPage type.
-func NewDefinitionListPage(getNextPage func(context.Context, DefinitionList) (DefinitionList, error)) DefinitionListPage {
-	return DefinitionListPage{fn: getNextPage}
+func NewDefinitionListPage(cur DefinitionList, getNextPage func(context.Context, DefinitionList) (DefinitionList, error)) DefinitionListPage {
+	return DefinitionListPage{
+		fn: getNextPage,
+		dl: cur,
+	}
 }
 
 // DefinitionProperties the subscription definition properties.
@@ -494,6 +497,9 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }

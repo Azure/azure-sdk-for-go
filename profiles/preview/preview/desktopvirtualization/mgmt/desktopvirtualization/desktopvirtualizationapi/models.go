@@ -19,12 +19,14 @@
 
 package desktopvirtualizationapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/desktopvirtualization/mgmt/2019-12-10-preview/desktopvirtualization/desktopvirtualizationapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/desktopvirtualization/mgmt/2020-11-02-preview/desktopvirtualization/desktopvirtualizationapi"
 
 type ApplicationGroupsClientAPI = original.ApplicationGroupsClientAPI
 type ApplicationsClientAPI = original.ApplicationsClientAPI
 type DesktopsClientAPI = original.DesktopsClientAPI
 type HostPoolsClientAPI = original.HostPoolsClientAPI
+type MSIXPackagesClientAPI = original.MSIXPackagesClientAPI
+type MsixImagesClientAPI = original.MsixImagesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type SessionHostsClientAPI = original.SessionHostsClientAPI
 type StartMenuItemsClientAPI = original.StartMenuItemsClientAPI

@@ -31,8 +31,8 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2019-08-01-preview/documentdb"
 
-// ARMProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
-// required location and tags
+// ARMProxyResource the resource model definition for a ARM proxy resource. It will have everything other
+// than required location and tags
 type ARMProxyResource struct {
 	// ID - READ-ONLY; The unique resource identifier of the database account.
 	ID *string `json:"id,omitempty"`
@@ -67,15 +67,15 @@ func (arp ARMResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
+// AzureEntityResource the resource model definition for an Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.
 	Etag *string `json:"etag,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -184,7 +184,8 @@ func (ckcup *CassandraKeyspaceCreateUpdateParameters) UnmarshalJSON(body []byte)
 	return nil
 }
 
-// CassandraKeyspaceCreateUpdateProperties properties to create and update Azure Cosmos DB Cassandra keyspace.
+// CassandraKeyspaceCreateUpdateProperties properties to create and update Azure Cosmos DB Cassandra
+// keyspace.
 type CassandraKeyspaceCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a Cassandra keyspace
 	Resource *CassandraKeyspaceResource `json:"resource,omitempty"`
@@ -379,8 +380,8 @@ func (future *CassandraResourcesCreateUpdateCassandraKeyspaceFuture) Result(clie
 	return
 }
 
-// CassandraResourcesCreateUpdateCassandraTableFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// CassandraResourcesCreateUpdateCassandraTableFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type CassandraResourcesCreateUpdateCassandraTableFuture struct {
 	azure.Future
 }
@@ -408,8 +409,8 @@ func (future *CassandraResourcesCreateUpdateCassandraTableFuture) Result(client 
 	return
 }
 
-// CassandraResourcesDeleteCassandraKeyspaceFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// CassandraResourcesDeleteCassandraKeyspaceFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type CassandraResourcesDeleteCassandraKeyspaceFuture struct {
 	azure.Future
 }
@@ -431,8 +432,8 @@ func (future *CassandraResourcesDeleteCassandraKeyspaceFuture) Result(client Cas
 	return
 }
 
-// CassandraResourcesDeleteCassandraTableFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// CassandraResourcesDeleteCassandraTableFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type CassandraResourcesDeleteCassandraTableFuture struct {
 	azure.Future
 }
@@ -454,8 +455,8 @@ func (future *CassandraResourcesDeleteCassandraTableFuture) Result(client Cassan
 	return
 }
 
-// CassandraResourcesUpdateCassandraKeyspaceThroughputFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// CassandraResourcesUpdateCassandraKeyspaceThroughputFuture an abstraction for monitoring and retrieving
+// the results of a long-running operation.
 type CassandraResourcesUpdateCassandraKeyspaceThroughputFuture struct {
 	azure.Future
 }
@@ -839,8 +840,8 @@ type ConsistencyPolicy struct {
 	MaxIntervalInSeconds *int32 `json:"maxIntervalInSeconds,omitempty"`
 }
 
-// ContainerPartitionKey the configuration of the partition key to be used for partitioning data into multiple
-// partitions
+// ContainerPartitionKey the configuration of the partition key to be used for partitioning data into
+// multiple partitions
 type ContainerPartitionKey struct {
 	// Paths - List of paths using which data within the container can be partitioned
 	Paths *[]string `json:"paths,omitempty"`
@@ -1274,8 +1275,8 @@ func (future *DatabaseAccountsDeleteFuture) Result(client DatabaseAccountsClient
 	return
 }
 
-// DatabaseAccountsFailoverPriorityChangeFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DatabaseAccountsFailoverPriorityChangeFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type DatabaseAccountsFailoverPriorityChangeFuture struct {
 	azure.Future
 }
@@ -2099,8 +2100,8 @@ type GremlinGraphResource struct {
 	ConflictResolutionPolicy *ConflictResolutionPolicy `json:"conflictResolutionPolicy,omitempty"`
 }
 
-// GremlinResourcesCreateUpdateGremlinDatabaseFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// GremlinResourcesCreateUpdateGremlinDatabaseFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type GremlinResourcesCreateUpdateGremlinDatabaseFuture struct {
 	azure.Future
 }
@@ -2128,8 +2129,8 @@ func (future *GremlinResourcesCreateUpdateGremlinDatabaseFuture) Result(client G
 	return
 }
 
-// GremlinResourcesCreateUpdateGremlinGraphFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// GremlinResourcesCreateUpdateGremlinGraphFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type GremlinResourcesCreateUpdateGremlinGraphFuture struct {
 	azure.Future
 }
@@ -2157,8 +2158,8 @@ func (future *GremlinResourcesCreateUpdateGremlinGraphFuture) Result(client Grem
 	return
 }
 
-// GremlinResourcesDeleteGremlinDatabaseFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// GremlinResourcesDeleteGremlinDatabaseFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type GremlinResourcesDeleteGremlinDatabaseFuture struct {
 	azure.Future
 }
@@ -2232,8 +2233,8 @@ func (future *GremlinResourcesUpdateGremlinDatabaseThroughputFuture) Result(clie
 	return
 }
 
-// GremlinResourcesUpdateGremlinGraphThroughputFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// GremlinResourcesUpdateGremlinGraphThroughputFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type GremlinResourcesUpdateGremlinGraphThroughputFuture struct {
 	azure.Future
 }
@@ -2521,7 +2522,8 @@ func (mdccup *MongoDBCollectionCreateUpdateParameters) UnmarshalJSON(body []byte
 	return nil
 }
 
-// MongoDBCollectionCreateUpdateProperties properties to create and update Azure Cosmos DB MongoDB collection.
+// MongoDBCollectionCreateUpdateProperties properties to create and update Azure Cosmos DB MongoDB
+// collection.
 type MongoDBCollectionCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a MongoDB collection
 	Resource *MongoDBCollectionResource `json:"resource,omitempty"`
@@ -2969,8 +2971,8 @@ type MongoDBDatabaseResource struct {
 	ID *string `json:"id,omitempty"`
 }
 
-// MongoDBResourcesCreateUpdateMongoDBCollectionFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// MongoDBResourcesCreateUpdateMongoDBCollectionFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type MongoDBResourcesCreateUpdateMongoDBCollectionFuture struct {
 	azure.Future
 }
@@ -2998,8 +3000,8 @@ func (future *MongoDBResourcesCreateUpdateMongoDBCollectionFuture) Result(client
 	return
 }
 
-// MongoDBResourcesCreateUpdateMongoDBDatabaseFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// MongoDBResourcesCreateUpdateMongoDBDatabaseFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type MongoDBResourcesCreateUpdateMongoDBDatabaseFuture struct {
 	azure.Future
 }
@@ -3027,8 +3029,8 @@ func (future *MongoDBResourcesCreateUpdateMongoDBDatabaseFuture) Result(client M
 	return
 }
 
-// MongoDBResourcesDeleteMongoDBCollectionFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// MongoDBResourcesDeleteMongoDBCollectionFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type MongoDBResourcesDeleteMongoDBCollectionFuture struct {
 	azure.Future
 }
@@ -3050,8 +3052,8 @@ func (future *MongoDBResourcesDeleteMongoDBCollectionFuture) Result(client Mongo
 	return
 }
 
-// MongoDBResourcesDeleteMongoDBDatabaseFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// MongoDBResourcesDeleteMongoDBDatabaseFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type MongoDBResourcesDeleteMongoDBDatabaseFuture struct {
 	azure.Future
 }
@@ -3289,8 +3291,8 @@ func (future *NotebookWorkspacesCreateOrUpdateFuture) Result(client NotebookWork
 	return
 }
 
-// NotebookWorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// NotebookWorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type NotebookWorkspacesDeleteFuture struct {
 	azure.Future
 }
@@ -3312,8 +3314,8 @@ func (future *NotebookWorkspacesDeleteFuture) Result(client NotebookWorkspacesCl
 	return
 }
 
-// NotebookWorkspacesRegenerateAuthTokenFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// NotebookWorkspacesRegenerateAuthTokenFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type NotebookWorkspacesRegenerateAuthTokenFuture struct {
 	azure.Future
 }
@@ -3531,8 +3533,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // PartitionMetric the metric values for a single partition.
@@ -3672,11 +3677,11 @@ type PrivateEndpointConnection struct {
 	autorest.Response `json:"-"`
 	// PrivateEndpointConnectionProperties - Resource properties.
 	*PrivateEndpointConnectionProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3759,8 +3764,8 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// PrivateEndpointConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// PrivateEndpointConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type PrivateEndpointConnectionsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -3929,14 +3934,14 @@ func (plscsp PrivateLinkServiceConnectionStateProperty) MarshalJSON() ([]byte, e
 	return json.Marshal(objectMap)
 }
 
-// ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
-// required location and tags
+// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
+// have tags and a location
 type ProxyResource struct {
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3946,13 +3951,13 @@ type RegionForOnlineOffline struct {
 	Region *string `json:"region,omitempty"`
 }
 
-// Resource ...
+// Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4583,8 +4588,8 @@ func (future *SQLResourcesCreateUpdateSQLDatabaseFuture) Result(client SQLResour
 	return
 }
 
-// SQLResourcesCreateUpdateSQLStoredProcedureFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// SQLResourcesCreateUpdateSQLStoredProcedureFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type SQLResourcesCreateUpdateSQLStoredProcedureFuture struct {
 	azure.Future
 }
@@ -4762,8 +4767,8 @@ func (future *SQLResourcesDeleteSQLTriggerFuture) Result(client SQLResourcesClie
 	return
 }
 
-// SQLResourcesDeleteSQLUserDefinedFunctionFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// SQLResourcesDeleteSQLUserDefinedFunctionFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type SQLResourcesDeleteSQLUserDefinedFunctionFuture struct {
 	azure.Future
 }
@@ -4785,8 +4790,8 @@ func (future *SQLResourcesDeleteSQLUserDefinedFunctionFuture) Result(client SQLR
 	return
 }
 
-// SQLResourcesUpdateSQLContainerThroughputFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// SQLResourcesUpdateSQLContainerThroughputFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type SQLResourcesUpdateSQLContainerThroughputFuture struct {
 	azure.Future
 }
@@ -4814,8 +4819,8 @@ func (future *SQLResourcesUpdateSQLContainerThroughputFuture) Result(client SQLR
 	return
 }
 
-// SQLResourcesUpdateSQLDatabaseThroughputFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// SQLResourcesUpdateSQLDatabaseThroughputFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type SQLResourcesUpdateSQLDatabaseThroughputFuture struct {
 	azure.Future
 }
@@ -4942,7 +4947,8 @@ func (sspcup *SQLStoredProcedureCreateUpdateParameters) UnmarshalJSON(body []byt
 	return nil
 }
 
-// SQLStoredProcedureCreateUpdateProperties properties to create and update Azure Cosmos DB storedProcedure.
+// SQLStoredProcedureCreateUpdateProperties properties to create and update Azure Cosmos DB
+// storedProcedure.
 type SQLStoredProcedureCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a storedProcedure
 	Resource *SQLStoredProcedureResource `json:"resource,omitempty"`
@@ -5388,7 +5394,8 @@ type SQLTriggerResource struct {
 	TriggerOperation TriggerOperation `json:"triggerOperation,omitempty"`
 }
 
-// SQLUserDefinedFunctionCreateUpdateParameters parameters to create and update Cosmos DB userDefinedFunction.
+// SQLUserDefinedFunctionCreateUpdateParameters parameters to create and update Cosmos DB
+// userDefinedFunction.
 type SQLUserDefinedFunctionCreateUpdateParameters struct {
 	// SQLUserDefinedFunctionCreateUpdateProperties - Properties to create and update Azure Cosmos DB userDefinedFunction.
 	*SQLUserDefinedFunctionCreateUpdateProperties `json:"properties,omitempty"`
@@ -5942,8 +5949,8 @@ func (future *TableResourcesCreateUpdateTableFuture) Result(client TableResource
 	return
 }
 
-// TableResourcesDeleteTableFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// TableResourcesDeleteTableFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type TableResourcesDeleteTableFuture struct {
 	azure.Future
 }
@@ -6248,17 +6255,18 @@ type ThroughputSettingsUpdateProperties struct {
 	Resource *ThroughputSettingsResource `json:"resource,omitempty"`
 }
 
-// TrackedResource the resource model definition for a ARM tracked top level resource
+// TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
+// which has 'tags' and a 'location'
 type TrackedResource struct {
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -6274,15 +6282,15 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UniqueKey the unique key on that enforces uniqueness constraint on documents in the collection in the Azure
-// Cosmos DB service.
+// UniqueKey the unique key on that enforces uniqueness constraint on documents in the collection in the
+// Azure Cosmos DB service.
 type UniqueKey struct {
 	// Paths - List of paths must be unique for each document in the Azure Cosmos DB service
 	Paths *[]string `json:"paths,omitempty"`
 }
 
-// UniqueKeyPolicy the unique key policy configuration for specifying uniqueness constraints on documents in
-// the collection in the Azure Cosmos DB service.
+// UniqueKeyPolicy the unique key policy configuration for specifying uniqueness constraints on documents
+// in the collection in the Azure Cosmos DB service.
 type UniqueKeyPolicy struct {
 	// UniqueKeys - List of unique keys on that enforces uniqueness constraint on documents in the collection in the Azure Cosmos DB service.
 	UniqueKeys *[]UniqueKey `json:"uniqueKeys,omitempty"`

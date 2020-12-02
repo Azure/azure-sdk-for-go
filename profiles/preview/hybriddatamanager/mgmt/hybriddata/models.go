@@ -183,8 +183,8 @@ func New(subscriptionID string) BaseClient {
 func NewAvailableProviderOperationsIterator(page AvailableProviderOperationsPage) AvailableProviderOperationsIterator {
 	return original.NewAvailableProviderOperationsIterator(page)
 }
-func NewAvailableProviderOperationsPage(getNextPage func(context.Context, AvailableProviderOperations) (AvailableProviderOperations, error)) AvailableProviderOperationsPage {
-	return original.NewAvailableProviderOperationsPage(getNextPage)
+func NewAvailableProviderOperationsPage(cur AvailableProviderOperations, getNextPage func(context.Context, AvailableProviderOperations) (AvailableProviderOperations, error)) AvailableProviderOperationsPage {
+	return original.NewAvailableProviderOperationsPage(cur, getNextPage)
 }
 func NewDataManagersClient(subscriptionID string) DataManagersClient {
 	return original.NewDataManagersClient(subscriptionID)
@@ -195,8 +195,8 @@ func NewDataManagersClientWithBaseURI(baseURI string, subscriptionID string) Dat
 func NewDataServiceListIterator(page DataServiceListPage) DataServiceListIterator {
 	return original.NewDataServiceListIterator(page)
 }
-func NewDataServiceListPage(getNextPage func(context.Context, DataServiceList) (DataServiceList, error)) DataServiceListPage {
-	return original.NewDataServiceListPage(getNextPage)
+func NewDataServiceListPage(cur DataServiceList, getNextPage func(context.Context, DataServiceList) (DataServiceList, error)) DataServiceListPage {
+	return original.NewDataServiceListPage(cur, getNextPage)
 }
 func NewDataServicesClient(subscriptionID string) DataServicesClient {
 	return original.NewDataServicesClient(subscriptionID)
@@ -207,14 +207,14 @@ func NewDataServicesClientWithBaseURI(baseURI string, subscriptionID string) Dat
 func NewDataStoreListIterator(page DataStoreListPage) DataStoreListIterator {
 	return original.NewDataStoreListIterator(page)
 }
-func NewDataStoreListPage(getNextPage func(context.Context, DataStoreList) (DataStoreList, error)) DataStoreListPage {
-	return original.NewDataStoreListPage(getNextPage)
+func NewDataStoreListPage(cur DataStoreList, getNextPage func(context.Context, DataStoreList) (DataStoreList, error)) DataStoreListPage {
+	return original.NewDataStoreListPage(cur, getNextPage)
 }
 func NewDataStoreTypeListIterator(page DataStoreTypeListPage) DataStoreTypeListIterator {
 	return original.NewDataStoreTypeListIterator(page)
 }
-func NewDataStoreTypeListPage(getNextPage func(context.Context, DataStoreTypeList) (DataStoreTypeList, error)) DataStoreTypeListPage {
-	return original.NewDataStoreTypeListPage(getNextPage)
+func NewDataStoreTypeListPage(cur DataStoreTypeList, getNextPage func(context.Context, DataStoreTypeList) (DataStoreTypeList, error)) DataStoreTypeListPage {
+	return original.NewDataStoreTypeListPage(cur, getNextPage)
 }
 func NewDataStoreTypesClient(subscriptionID string) DataStoreTypesClient {
 	return original.NewDataStoreTypesClient(subscriptionID)
@@ -231,8 +231,8 @@ func NewDataStoresClientWithBaseURI(baseURI string, subscriptionID string) DataS
 func NewJobDefinitionListIterator(page JobDefinitionListPage) JobDefinitionListIterator {
 	return original.NewJobDefinitionListIterator(page)
 }
-func NewJobDefinitionListPage(getNextPage func(context.Context, JobDefinitionList) (JobDefinitionList, error)) JobDefinitionListPage {
-	return original.NewJobDefinitionListPage(getNextPage)
+func NewJobDefinitionListPage(cur JobDefinitionList, getNextPage func(context.Context, JobDefinitionList) (JobDefinitionList, error)) JobDefinitionListPage {
+	return original.NewJobDefinitionListPage(cur, getNextPage)
 }
 func NewJobDefinitionsClient(subscriptionID string) JobDefinitionsClient {
 	return original.NewJobDefinitionsClient(subscriptionID)
@@ -243,8 +243,8 @@ func NewJobDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) J
 func NewJobListIterator(page JobListPage) JobListIterator {
 	return original.NewJobListIterator(page)
 }
-func NewJobListPage(getNextPage func(context.Context, JobList) (JobList, error)) JobListPage {
-	return original.NewJobListPage(getNextPage)
+func NewJobListPage(cur JobList, getNextPage func(context.Context, JobList) (JobList, error)) JobListPage {
+	return original.NewJobListPage(cur, getNextPage)
 }
 func NewJobsClient(subscriptionID string) JobsClient {
 	return original.NewJobsClient(subscriptionID)
@@ -261,8 +261,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewPublicKeyListIterator(page PublicKeyListPage) PublicKeyListIterator {
 	return original.NewPublicKeyListIterator(page)
 }
-func NewPublicKeyListPage(getNextPage func(context.Context, PublicKeyList) (PublicKeyList, error)) PublicKeyListPage {
-	return original.NewPublicKeyListPage(getNextPage)
+func NewPublicKeyListPage(cur PublicKeyList, getNextPage func(context.Context, PublicKeyList) (PublicKeyList, error)) PublicKeyListPage {
+	return original.NewPublicKeyListPage(cur, getNextPage)
 }
 func NewPublicKeysClient(subscriptionID string) PublicKeysClient {
 	return original.NewPublicKeysClient(subscriptionID)

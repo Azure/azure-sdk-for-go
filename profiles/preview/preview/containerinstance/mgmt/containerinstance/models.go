@@ -113,8 +113,8 @@ func New(subscriptionID string) BaseClient {
 func NewContainerGroupListResultIterator(page ContainerGroupListResultPage) ContainerGroupListResultIterator {
 	return original.NewContainerGroupListResultIterator(page)
 }
-func NewContainerGroupListResultPage(getNextPage func(context.Context, ContainerGroupListResult) (ContainerGroupListResult, error)) ContainerGroupListResultPage {
-	return original.NewContainerGroupListResultPage(getNextPage)
+func NewContainerGroupListResultPage(cur ContainerGroupListResult, getNextPage func(context.Context, ContainerGroupListResult) (ContainerGroupListResult, error)) ContainerGroupListResultPage {
+	return original.NewContainerGroupListResultPage(cur, getNextPage)
 }
 func NewContainerGroupUsageClient(subscriptionID string) ContainerGroupUsageClient {
 	return original.NewContainerGroupUsageClient(subscriptionID)

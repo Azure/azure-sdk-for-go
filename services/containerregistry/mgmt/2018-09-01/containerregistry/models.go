@@ -31,8 +31,8 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2018-09-01/containerregistry"
 
-// Actor the agent that initiated the event. For most situations, this could be from the authorization context
-// of the request.
+// Actor the agent that initiated the event. For most situations, this could be from the authorization
+// context of the request.
 type Actor struct {
 	// Name - The subject or username associated with the request context that generated the event.
 	Name *string `json:"name,omitempty"`
@@ -159,8 +159,8 @@ func (c Credentials) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// CustomRegistryCredentials describes the credentials that will be used to access a custom registry during a
-// run.
+// CustomRegistryCredentials describes the credentials that will be used to access a custom registry during
+// a run.
 type CustomRegistryCredentials struct {
 	// UserName - The username for logging into the custom registry.
 	UserName *SecretObject `json:"userName,omitempty"`
@@ -853,8 +853,11 @@ func (page EventListResultPage) Values() []Event {
 }
 
 // Creates a new instance of the EventListResultPage type.
-func NewEventListResultPage(getNextPage func(context.Context, EventListResult) (EventListResult, error)) EventListResultPage {
-	return EventListResultPage{fn: getNextPage}
+func NewEventListResultPage(cur EventListResult, getNextPage func(context.Context, EventListResult) (EventListResult, error)) EventListResultPage {
+	return EventListResultPage{
+		fn:  getNextPage,
+		elr: cur,
+	}
 }
 
 // EventRequestMessage the event request message sent to the service URI.
@@ -1473,8 +1476,11 @@ func (page OperationListResultPage) Values() []OperationDefinition {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationMetricSpecificationDefinition the definition of Azure Monitoring metric.
@@ -1548,7 +1554,8 @@ type RegenerateCredentialParameters struct {
 	Name PasswordName `json:"name,omitempty"`
 }
 
-// RegistriesCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// RegistriesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type RegistriesCreateFuture struct {
 	azure.Future
 }
@@ -1576,7 +1583,8 @@ func (future *RegistriesCreateFuture) Result(client RegistriesClient) (r Registr
 	return
 }
 
-// RegistriesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// RegistriesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type RegistriesDeleteFuture struct {
 	azure.Future
 }
@@ -1650,7 +1658,8 @@ func (future *RegistriesScheduleRunFuture) Result(client RegistriesClient) (r Ru
 	return
 }
 
-// RegistriesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// RegistriesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type RegistriesUpdateFuture struct {
 	azure.Future
 }
@@ -1678,8 +1687,8 @@ func (future *RegistriesUpdateFuture) Result(client RegistriesClient) (r Registr
 	return
 }
 
-// RegistriesUpdatePoliciesFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// RegistriesUpdatePoliciesFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type RegistriesUpdatePoliciesFuture struct {
 	azure.Future
 }
@@ -1983,8 +1992,11 @@ func (page RegistryListResultPage) Values() []Registry {
 }
 
 // Creates a new instance of the RegistryListResultPage type.
-func NewRegistryListResultPage(getNextPage func(context.Context, RegistryListResult) (RegistryListResult, error)) RegistryListResultPage {
-	return RegistryListResultPage{fn: getNextPage}
+func NewRegistryListResultPage(cur RegistryListResult, getNextPage func(context.Context, RegistryListResult) (RegistryListResult, error)) RegistryListResultPage {
+	return RegistryListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // RegistryNameCheckRequest a request to check whether a container registry name is available.
@@ -2405,8 +2417,11 @@ func (page ReplicationListResultPage) Values() []Replication {
 }
 
 // Creates a new instance of the ReplicationListResultPage type.
-func NewReplicationListResultPage(getNextPage func(context.Context, ReplicationListResult) (ReplicationListResult, error)) ReplicationListResultPage {
-	return ReplicationListResultPage{fn: getNextPage}
+func NewReplicationListResultPage(cur ReplicationListResult, getNextPage func(context.Context, ReplicationListResult) (ReplicationListResult, error)) ReplicationListResultPage {
+	return ReplicationListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // ReplicationProperties the properties of a replication.
@@ -2806,8 +2821,11 @@ func (page RunListResultPage) Values() []Run {
 }
 
 // Creates a new instance of the RunListResultPage type.
-func NewRunListResultPage(getNextPage func(context.Context, RunListResult) (RunListResult, error)) RunListResultPage {
-	return RunListResultPage{fn: getNextPage}
+func NewRunListResultPage(cur RunListResult, getNextPage func(context.Context, RunListResult) (RunListResult, error)) RunListResultPage {
+	return RunListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // RunProperties the properties for a run.
@@ -3110,8 +3128,8 @@ func (s Sku) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Source the registry node that generated the event. Put differently, while the actor initiates the event, the
-// source generates it.
+// Source the registry node that generated the event. Put differently, while the actor initiates the event,
+// the source generates it.
 type Source struct {
 	// Addr - The IP or hostname and the port of the registry node that generated the event. Generally, this will be resolved by os.Hostname() along with the running port.
 	Addr *string `json:"addr,omitempty"`
@@ -3214,8 +3232,8 @@ type Status struct {
 	Timestamp *date.Time `json:"timestamp,omitempty"`
 }
 
-// StorageAccountProperties the properties of a storage account for a container registry. Only applicable to
-// Classic SKU.
+// StorageAccountProperties the properties of a storage account for a container registry. Only applicable
+// to Classic SKU.
 type StorageAccountProperties struct {
 	// ID - The resource ID of the storage account.
 	ID *string `json:"id,omitempty"`
@@ -3497,8 +3515,11 @@ func (page TaskListResultPage) Values() []Task {
 }
 
 // Creates a new instance of the TaskListResultPage type.
-func NewTaskListResultPage(getNextPage func(context.Context, TaskListResult) (TaskListResult, error)) TaskListResultPage {
-	return TaskListResultPage{fn: getNextPage}
+func NewTaskListResultPage(cur TaskListResult, getNextPage func(context.Context, TaskListResult) (TaskListResult, error)) TaskListResultPage {
+	return TaskListResultPage{
+		fn:  getNextPage,
+		tlr: cur,
+	}
 }
 
 // TaskProperties the properties of a task.
@@ -4492,8 +4513,11 @@ func (page WebhookListResultPage) Values() []Webhook {
 }
 
 // Creates a new instance of the WebhookListResultPage type.
-func NewWebhookListResultPage(getNextPage func(context.Context, WebhookListResult) (WebhookListResult, error)) WebhookListResultPage {
-	return WebhookListResultPage{fn: getNextPage}
+func NewWebhookListResultPage(cur WebhookListResult, getNextPage func(context.Context, WebhookListResult) (WebhookListResult, error)) WebhookListResultPage {
+	return WebhookListResultPage{
+		fn:  getNextPage,
+		wlr: cur,
+	}
 }
 
 // WebhookProperties the properties of a webhook.
@@ -4593,7 +4617,8 @@ func (wpup WebhookPropertiesUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// WebhooksCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// WebhooksCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type WebhooksCreateFuture struct {
 	azure.Future
 }
@@ -4621,7 +4646,8 @@ func (future *WebhooksCreateFuture) Result(client WebhooksClient) (w Webhook, er
 	return
 }
 
-// WebhooksDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// WebhooksDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type WebhooksDeleteFuture struct {
 	azure.Future
 }
@@ -4643,7 +4669,8 @@ func (future *WebhooksDeleteFuture) Result(client WebhooksClient) (ar autorest.R
 	return
 }
 
-// WebhooksUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// WebhooksUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type WebhooksUpdateFuture struct {
 	azure.Future
 }

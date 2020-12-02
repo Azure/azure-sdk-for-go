@@ -120,7 +120,7 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 	if err != nil {
 		return nil, err
 	}
-	log.Printf("Autorest options: \n%s", options.String())
+	log.Printf("Autorest options: \n%+v", options)
 
 	// iterate over all the readme
 	results := make([]pipeline.PackageResult, 0)

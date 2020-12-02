@@ -6,8 +6,11 @@ import (
 	"io/ioutil"
 )
 
+// Metadata ...
 type Metadata interface {
+	// SwaggerFiles returns the related swagger files in this tag
 	SwaggerFiles() []string
+	// PackagePath returns the output package path of this tag
 	PackagePath() string
 }
 
@@ -24,18 +27,23 @@ func NewMetadataFrom(reader io.Reader) (Metadata, error) {
 }
 
 type localMetadata struct {
+	// InputFiles ...
 	InputFiles   []string `json:"inputFiles"`
+	// OutputFolder ...
 	OutputFolder string   `json:"outputFolder"`
 }
 
+// SwaggerFiles ...
 func (m localMetadata) SwaggerFiles() []string {
 	return m.InputFiles
 }
 
+// PackagePath ...
 func (m localMetadata) PackagePath() string {
 	return m.OutputFolder
 }
 
+// String ...
 func (m localMetadata) String() string {
 	b, _ := json.MarshalIndent(m, "", "  ")
 	return string(b)

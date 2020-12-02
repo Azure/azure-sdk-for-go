@@ -12,8 +12,6 @@ type Options interface {
 	Arguments() []string
 	// CodeGeneratorVersion returns the code generator version defined in this options
 	CodeGeneratorVersion() string
-	// String ...
-	String() string
 }
 
 type localOptions struct {

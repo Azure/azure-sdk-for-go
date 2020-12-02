@@ -1,9 +1,9 @@
 package autorest
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -56,14 +56,15 @@ func (p MetadataProcessor) Process() (map[string]model.Metadata, error) {
 		if f.IsDir() || !strings.HasSuffix(f.Name(), ".json") {
 			continue
 		}
-		b, err := ioutil.ReadFile(filepath.Join(p.metadataOutputFolder, f.Name()))
+		file, err := os.Open(filepath.Join(p.metadataOutputFolder, f.Name()))
 		if err != nil {
 			metadataErr.add(err)
 			continue
 		}
-		var metadata model.Metadata
-		if err := json.Unmarshal(b, &metadata); err != nil {
+		metadata, err := model.NewMetadataFrom(file)
+		if err != nil {
 			metadataErr.add(err)
+			continue
 		}
 		tag := strings.TrimSuffix(f.Name(), ".json")
 		result[tag] = metadata

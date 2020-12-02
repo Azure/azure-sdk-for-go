@@ -12,12 +12,12 @@ type Options interface {
 	CodeGeneratorVersion() string
 }
 
-type LocalOptions struct {
-	arguments []string
+type localOptions struct {
+	AutorestArguments []string `json:"autorestArguments"`
 }
 
-func (o LocalOptions) Arguments() []string {
-	return o.arguments
+func (o localOptions) Arguments() []string {
+	return o.AutorestArguments
 }
 
 func NewOptionsFrom(reader io.Reader) (Options, error) {
@@ -25,7 +25,7 @@ func NewOptionsFrom(reader io.Reader) (Options, error) {
 	if err != nil {
 		return nil, err
 	}
-	var result LocalOptions
+	var result localOptions
 	if err := json.Unmarshal(b, &result); err != nil {
 		return nil, err
 	}
@@ -33,12 +33,12 @@ func NewOptionsFrom(reader io.Reader) (Options, error) {
 }
 
 // String ...
-func (o LocalOptions) String() string {
+func (o localOptions) String() string {
 	b, _ := json.MarshalIndent(o, "", "  ")
 	return string(b)
 }
 
 // CodeGeneratorVersion ...
-func (o LocalOptions) CodeGeneratorVersion() string {
+func (o localOptions) CodeGeneratorVersion() string {
 	return ""
 }

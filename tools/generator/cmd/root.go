@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -147,7 +146,7 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 		var packages []string
 		for _, metadata := range metadataMap {
 			// TODO -- first validate the output folder is valid
-			outputFolder := filepath.Clean(metadata.OutputFolder)
+			outputFolder := filepath.Clean(metadata.PackagePath())
 			// first format the package
 			if err := autorest.FormatPackage(outputFolder); err != nil {
 				return nil, err
@@ -162,6 +161,7 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 		log.Printf("Packages changed: %+v", packages)
 		// iterate over the changed packages
 		for _, p := range packages {
+			p = normalizePath(p)
 			log.Printf("Getting package result for package '%s'", p)
 			c, err := changelog.NewChangelogForPackage(p)
 			if err != nil {
@@ -193,53 +193,8 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 	}, nil
 }
 
-func getChangedFiles() ([]string, error) {
-	var files []string
-	// get the file changed
-	changed, err := getDiffFiles()
-	if err != nil {
-		return nil, err
-	}
-	files = append(files, changed...)
-	// get the untracked files
-	untracked, err := getUntrackedFiles()
-	if err != nil {
-		return nil, err
-	}
-	files = append(files, untracked...)
-	return files, nil
-}
-
-func getDiffFiles() ([]string, error) {
-	c := exec.Command("git", "diff", "--name-only")
-	output, err := c.Output()
-	if err != nil {
-		return nil, err
-	}
-	var files []string
-	for _, f := range strings.Split(string(output), "\n") {
-		f = strings.TrimSpace(f)
-		if f != "" {
-			files = append(files, f)
-		}
-	}
-	return files, nil
-}
-
-func getUntrackedFiles() ([]string, error) {
-	c := exec.Command("git", "ls-files", "--other", "--exclude-standard")
-	output, err := c.Output()
-	if err != nil {
-		return nil, err
-	}
-	var files []string
-	for _, f := range strings.Split(string(output), "\n") {
-		f = strings.TrimSpace(f)
-		if f != "" {
-			files = append(files, f)
-		}
-	}
-	return files, nil
+func normalizePath(path string) string {
+	return strings.ReplaceAll(path, "\\", "/")
 }
 
 func getPackageIdentifier(pkg string) string {

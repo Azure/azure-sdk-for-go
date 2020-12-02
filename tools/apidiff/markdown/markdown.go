@@ -19,11 +19,12 @@ import (
 	"strings"
 )
 
+// RenderLink returns a rendered markdown link
 func RenderLink(name, link string) string {
 	return fmt.Sprintf("[%s](%s)", name, link)
 }
 
-// MarkdownWriter is a writer to write contents in markdown format
+// Writer is a writer to write contents in markdown format
 type Writer struct {
 	sb strings.Builder
 	nl bool
@@ -74,7 +75,7 @@ func (md *Writer) String() string {
 	return md.sb.String()
 }
 
-// MarkdownTable describes a table in a markdown document
+// Table describes a table in a markdown document
 type Table struct {
 	sb        *strings.Builder
 	headers   []string

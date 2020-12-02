@@ -1,18 +1,21 @@
 package report
 
+// Status ...
 type Status interface {
 	IsEmpty() bool
 	HasBreakingChanges() bool
 	HasAdditiveChanges() bool
 }
 
-// represents a collection of per-package reports, one for each commit hash
+// CommitPkgReport represents a collection of per-package reports, one for each commit hash
 type CommitPkgReport struct {
-	BreakingChanges []string           `json:"breakingChanges,omitempty"`
-	CommitsReports  map[string]Package `json:"deltas"`
+	// BreakingChanges includes the commit hashes that contains breaking changes
+	BreakingChanges []string `json:"breakingChanges,omitempty"`
+	// CommitsReports stores the package report with the key of commit hashes
+	CommitsReports map[string]Package `json:"deltas"`
 }
 
-// returns true if the report contains no data
+// IsEmpty returns true if the report contains no data
 func (c CommitPkgReport) IsEmpty() bool {
 	for _, rpt := range c.CommitsReports {
 		if !rpt.IsEmpty() {
@@ -22,7 +25,7 @@ func (c CommitPkgReport) IsEmpty() bool {
 	return true
 }
 
-// returns true if the report contains breaking changes
+// HasBreakingChanges returns true if the report contains breaking changes
 func (c CommitPkgReport) HasBreakingChanges() bool {
 	for _, r := range c.CommitsReports {
 		if r.HasBreakingChanges() {
@@ -32,7 +35,7 @@ func (c CommitPkgReport) HasBreakingChanges() bool {
 	return false
 }
 
-// returns true if the report contains additive changes
+// HasAdditiveChanges returns true if the report contains additive changes
 func (c CommitPkgReport) HasAdditiveChanges() bool {
 	for _, r := range c.CommitsReports {
 		if r.HasAdditiveChanges() {

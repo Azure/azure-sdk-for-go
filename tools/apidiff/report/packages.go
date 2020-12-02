@@ -11,6 +11,7 @@ import (
 
 const apiDirSuffix = "api"
 
+// GetPackages returns all the go sdk packages under the given root directory
 func GetPackages(dir string) ([]string, error) {
 	var pkgDirs []string
 	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
@@ -42,16 +43,18 @@ func GetPackages(dir string) ([]string, error) {
 	return pkgDirs, err
 }
 
-// contains a collection of packages
+// PkgsList contains a collection of packages
 type PkgsList []string
 
-// contains a collection of package reports, it's structured as "package path":pkgReport
+// ModifiedPackages contains a collection of package reports, it's structured as "package path":pkgReport
 type ModifiedPackages map[string]Package
 
+// IsEmpty ...
 func (m ModifiedPackages) IsEmpty() bool {
 	return len(m) == 0
 }
 
+// HasBreakingChanges returns true if any package contained in has a breaking change
 func (m ModifiedPackages) HasBreakingChanges() bool {
 	for _, p := range m {
 		if p.HasBreakingChanges() {
@@ -61,6 +64,7 @@ func (m ModifiedPackages) HasBreakingChanges() bool {
 	return false
 }
 
+// HasAdditiveChanges returns true if any package contained in has an additive change
 func (m ModifiedPackages) HasAdditiveChanges() bool {
 	for _, p := range m {
 		if p.HasAdditiveChanges() {
@@ -72,9 +76,12 @@ func (m ModifiedPackages) HasAdditiveChanges() bool {
 
 // CommitPkgsReport represents a collection of reports, one for each commit hash.
 type CommitPkgsReport struct {
-	AffectedPackages map[string]PkgsList   `json:"affectedPackages"`
-	BreakingChanges  []string              `json:"breakingChanges,omitempty"`
-	CommitsReports   map[string]PkgsReport `json:"deltas"`
+	// AffectedPackages stores the package list with key of commit hashes
+	AffectedPackages map[string]PkgsList `json:"affectedPackages"`
+	// BreakingChanges stores the commit hashes that contain breaking changes
+	BreakingChanges []string `json:"breakingChanges,omitempty"`
+	// CommitsReports stores the detailed reports with the key of commit hashes
+	CommitsReports map[string]PkgsReport `json:"deltas"`
 }
 
 // IsEmpty returns true if the report contains no data.
@@ -107,7 +114,7 @@ func (c CommitPkgsReport) HasAdditiveChanges() bool {
 	return false
 }
 
-// updates the collection of affected packages with the packages that were touched in the specified commit
+// UpdateAffectedPackages updates the collection of affected packages with the packages that were touched in the specified commit
 func (c *CommitPkgsReport) UpdateAffectedPackages(commit string, r PkgsReport) {
 	if c.AffectedPackages == nil {
 		c.AffectedPackages = map[string]PkgsList{}
@@ -126,30 +133,32 @@ func (c *CommitPkgsReport) UpdateAffectedPackages(commit string, r PkgsReport) {
 	}
 }
 
-// represents a complete report of added, removed, and modified packages
+// PkgsReport represents a complete report of added, removed, and modified packages
 type PkgsReport struct {
-	AddedPackages      PkgsList         `json:"added,omitempty"`
-	ModifiedPackages   ModifiedPackages `json:"modified,omitempty"`
-	RemovedPackages    PkgsList         `json:"removed,omitempty"`
-	modPkgHasAdditions bool
-	modPkgHasBreaking  bool
+	// AddedPackages stores the added packages in the report
+	AddedPackages PkgsList `json:"added,omitempty"`
+	// ModifiedPackages stores the details of all modified packages
+	ModifiedPackages ModifiedPackages `json:"modified,omitempty"`
+	// RemovedPackages stores the removed packages in the report
+	RemovedPackages PkgsList `json:"removed,omitempty"`
 }
 
-// returns true if the package report contains breaking changes
+// HasBreakingChanges returns true if the package report contains breaking changes
 func (r PkgsReport) HasBreakingChanges() bool {
 	return len(r.RemovedPackages) > 0 || (r.ModifiedPackages != nil && r.ModifiedPackages.HasBreakingChanges())
 }
 
-// returns true if the package report contains additive changes
+// HasAdditiveChanges returns true if the package report contains additive changes
 func (r PkgsReport) HasAdditiveChanges() bool {
 	return len(r.AddedPackages) > 0 || (r.ModifiedPackages != nil && r.ModifiedPackages.HasAdditiveChanges())
 }
 
-// returns true if the report contains no data
+// IsEmpty returns true if the report contains no data
 func (r PkgsReport) IsEmpty() bool {
 	return len(r.AddedPackages) == 0 && len(r.ModifiedPackages) == 0 && len(r.RemovedPackages) == 0
 }
 
+// ToMarkdown writes the report to string in the markdown form
 func (r *PkgsReport) ToMarkdown() string {
 	if r.IsEmpty() {
 		return ""

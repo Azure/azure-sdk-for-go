@@ -61,17 +61,20 @@ func (bc BreakingChanges) IsEmpty() bool {
 		(bc.Removed == nil || bc.Removed.IsEmpty())
 }
 
+// GenerationOption ...
 type GenerationOption struct {
+	// OnlyBreakingChanges ...
 	OnlyBreakingChanges bool
-	OnlyAdditionChanges bool
+	// OnlyAdditiveChanges ...
+	OnlyAdditiveChanges bool
 }
 
 // Generate generates a package report based on the delta between lhs and rhs.
 // onlyBreakingChanges - pass true to include only breaking changes in the report.
 // onlyAdditions - pass true to include only addition changes in the report.
 func Generate(lhs, rhs exports.Content, option *GenerationOption) Package {
-	onlyBreakingChanges := option != nil && option.OnlyAdditionChanges
-	onlyAdditions := option != nil && option.OnlyAdditionChanges
+	onlyBreakingChanges := option != nil && option.OnlyAdditiveChanges
+	onlyAdditiveChanges := option != nil && option.OnlyAdditiveChanges
 	r := Package{}
 	if !onlyBreakingChanges {
 		if adds := delta.GetExports(lhs, rhs); !adds.IsEmpty() {
@@ -79,7 +82,7 @@ func Generate(lhs, rhs exports.Content, option *GenerationOption) Package {
 		}
 	}
 
-	if !onlyAdditions {
+	if !onlyAdditiveChanges {
 		breaks := BreakingChanges{}
 		breaks.Consts = delta.GetConstTypeChanges(lhs, rhs)
 		breaks.Funcs = delta.GetFuncSigChanges(lhs, rhs)

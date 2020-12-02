@@ -101,7 +101,7 @@ func packageCmdCommitMode(args []string) (rs report.Status, err error) {
 		}
 		r := report.Generate(lhs, rhs, &report.GenerationOption{
 			OnlyBreakingChanges: onlyBreakingChangesFlag,
-			OnlyAdditionChanges: onlyAdditionsFlag,
+			OnlyAdditiveChanges: onlyAdditiveChangesFlag,
 		})
 		if r.HasBreakingChanges() {
 			rpt.BreakingChanges = append(rpt.BreakingChanges, targetCommit)
@@ -133,7 +133,7 @@ func packageCmdDirMode(args []string) (rs report.Status, err error) {
 	}
 	r := report.Generate(lhs, rhs, &report.GenerationOption{
 		OnlyBreakingChanges: onlyBreakingChangesFlag,
-		OnlyAdditionChanges: onlyAdditionsFlag,
+		OnlyAdditiveChanges: onlyAdditiveChangesFlag,
 	})
 	if asMarkdown && !suppressReport {
 		println(r.ToMarkdown())

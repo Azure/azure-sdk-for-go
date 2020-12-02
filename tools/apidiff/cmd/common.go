@@ -65,7 +65,7 @@ func vprintln(a ...interface{}) {
 }
 
 func processArgsAndClone(args []string) (cln repo.WorkingTree, err error) {
-	if onlyAdditionsFlag && onlyBreakingChangesFlag {
+	if onlyAdditiveChangesFlag && onlyBreakingChangesFlag {
 		err = errors.New("flags 'additions' and 'breakingchanges' are mutually exclusive")
 		return
 	}
@@ -174,11 +174,12 @@ func evalReportStatus(r report.Status) {
 	if onlyBreakingChangesFlag && r.HasBreakingChanges() {
 		os.Exit(1)
 	}
-	if onlyAdditionsFlag && !r.HasAdditiveChanges() {
+	if onlyAdditiveChangesFlag && !r.HasAdditiveChanges() {
 		os.Exit(1)
 	}
 }
 
+// PrintReport prints the report to stdout
 func PrintReport(r report.Status) error {
 	if r.IsEmpty() {
 		println("no changes were found")

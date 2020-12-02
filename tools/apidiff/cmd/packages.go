@@ -130,7 +130,7 @@ func getRepoContent(wt *repo.WorkingTree, dir string) (RepoContent, error) {
 	return r, nil
 }
 
-// contains repo content, it's structured as "package path":content
+// RepoContent contains repo content, it's structured as "package path":content
 type RepoContent map[string]exports.Content
 
 // returns RepoContent based on the provided slice of package directories
@@ -171,7 +171,7 @@ func getPkgsReport(lhs, rhs RepoContent) report.PkgsReport {
 	if !onlyBreakingChangesFlag {
 		rpt.AddedPackages = getDiffPkgs(lhs, rhs)
 	}
-	if !onlyAdditionsFlag {
+	if !onlyAdditiveChangesFlag {
 		rpt.RemovedPackages = getDiffPkgs(rhs, lhs)
 	}
 
@@ -182,7 +182,7 @@ func getPkgsReport(lhs, rhs RepoContent) report.PkgsReport {
 		}
 		if r := report.Generate(lhs[rhsPkg], rhsCnt, &report.GenerationOption{
 			OnlyBreakingChanges: onlyBreakingChangesFlag,
-			OnlyAdditionChanges: onlyAdditionsFlag,
+			OnlyAdditiveChanges: onlyAdditiveChangesFlag,
 		}); !r.IsEmpty() {
 			// only add an entry if the report contains data
 			if rpt.ModifiedPackages == nil {

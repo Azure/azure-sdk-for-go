@@ -14,6 +14,7 @@ type Metadata interface {
 	PackagePath() string
 }
 
+// NewMetadataFrom reads a new Metadata from a io.Reader
 func NewMetadataFrom(reader io.Reader) (Metadata, error) {
 	b, err := ioutil.ReadAll(reader)
 	if err != nil {
@@ -28,9 +29,9 @@ func NewMetadataFrom(reader io.Reader) (Metadata, error) {
 
 type localMetadata struct {
 	// InputFiles ...
-	InputFiles   []string `json:"inputFiles"`
+	InputFiles []string `json:"inputFiles"`
 	// OutputFolder ...
-	OutputFolder string   `json:"outputFolder"`
+	OutputFolder string `json:"outputFolder"`
 }
 
 // SwaggerFiles ...

@@ -37,11 +37,15 @@ func GetChangedPackages(changedFiles []string) (ChangedPackagesMap, error) {
 	r := ChangedPackagesMap{}
 	for _, file := range changedFiles {
 		fi, err := os.Stat(file)
-		if err != nil {
+		isDir := false
+		if err != nil && !os.IsNotExist(err) {
 			return nil, err
 		}
+		if fi != nil {
+			isDir = fi.IsDir()
+		}
 		path := file
-		if !fi.IsDir() {
+		if !isDir {
 			path = filepath.Dir(file)
 		}
 		if IsValidPackage(path) {
@@ -56,10 +60,14 @@ func ExpandChangedDirectories(changedFiles []string) ([]string, error) {
 	var result []string
 	for _, path := range changedFiles {
 		fi, err := os.Stat(path)
-		if err != nil {
+		isDir := false
+		if err != nil && !os.IsNotExist(err) {
 			return nil, err
 		}
-		if fi.IsDir() {
+		if fi != nil {
+			isDir = fi.IsDir()
+		}
+		if isDir {
 			siblings, err := getAllFiles(path)
 			if err != nil {
 				return nil, err

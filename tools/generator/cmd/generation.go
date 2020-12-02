@@ -17,7 +17,7 @@ type autorestContext struct {
 }
 
 func (c autorestContext) generate() error {
-	g := autorest.FromOptions(c.options).WithReadme(c.absReadme).WithMetadataOutput(c.metadataOutput)
+	g := autorest.NewGeneratorFromOptions(c.options).WithReadme(c.absReadme).WithMetadataOutput(c.metadataOutput)
 
 	stdout, _ := g.StdoutPipe()
 	stderr, _ := g.StderrPipe()

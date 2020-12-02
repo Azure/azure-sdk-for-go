@@ -213,10 +213,10 @@ func (s *Sender) trySend(ctx context.Context, evt eventer) error {
 	for {
 		select {
 		case <-ctx.Done():
-			if ctx.Err() != nil {
+			if err = ctx.Err(); err != nil {
 				tab.For(ctx).Error(err)
 			}
-			return ctx.Err()
+			return err
 		default:
 			// try as long as the context is not dead
 			s.clientMu.RLock()

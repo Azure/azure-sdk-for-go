@@ -32,8 +32,8 @@ func (g *Generator) WithTag(tag string) *Generator {
 	return g.WithOption(model.NewKeyValueOption("tag", tag))
 }
 
-// WithMultiApi appends a multiapi flag to the autorest argument list
-func (g *Generator) WithMultiApi() *Generator {
+// WithMultiAPI appends a multiapi flag to the autorest argument list
+func (g *Generator) WithMultiAPI() *Generator {
 	return g.WithOption(model.NewFlagOption("multiapi"))
 }
 

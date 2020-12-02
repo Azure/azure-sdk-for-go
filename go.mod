@@ -15,5 +15,6 @@ require (
 	github.com/joho/godotenv v1.3.0
 	github.com/mitchellh/mapstructure v1.3.3
 	github.com/stretchr/testify v1.6.1
-	golang.org/x/net v0.0.0-20200707034311-ab3426394381
+	golang.org/x/sys v0.0.0-20200323222414-85ca7c5b95cd // indirect
+	nhooyr.io/websocket v1.8.6
 )

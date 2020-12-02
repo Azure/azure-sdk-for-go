@@ -296,7 +296,7 @@ func (s *Sender) newSessionAndLink(ctx context.Context) error {
 	ctx, span := s.startProducerSpanFromContext(ctx, "sb.Sender.newSessionAndLink")
 	defer span.End()
 
-	connection, err := s.namespace.newClient()
+	connection, err := s.namespace.newClient(ctx)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err

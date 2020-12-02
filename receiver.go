@@ -47,6 +47,7 @@ type (
 		useSessions        bool
 		sessionID          *string
 		lastError          error
+		lastErrorMu        sync.RWMutex
 		mode               ReceiveMode
 		prefetch           uint32
 		DefaultDisposition DispositionAction
@@ -242,7 +243,7 @@ func (r *Receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 	if err != nil {
 		_, span := r.startConsumerSpanFromContext(ctx, optName)
 		span.Logger().Error(err)
-		r.lastError = err
+		r.setLastError(err)
 		if r.doneListening != nil {
 			r.doneListening()
 		}
@@ -259,7 +260,7 @@ func (r *Receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 
 	if err := handler.Handle(ctx, event); err != nil {
 		// stop handling messages since the message consumer ran into an unexpected error
-		r.lastError = err
+		r.setLastError(err)
 		if r.doneListening != nil {
 			r.doneListening()
 		}
@@ -283,7 +284,7 @@ func (r *Receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 		// if an error is returned by the default disposition, then we must alert the message consumer as we can't
 		// be sure the final message disposition.
 		tab.For(ctx).Error(err)
-		r.lastError = err
+		r.setLastError(err)
 		if r.doneListening != nil {
 			r.doneListening()
 		}
@@ -329,7 +330,7 @@ func (r *Receiver) listenForMessages(ctx context.Context, msgChan chan *amqp.Mes
 
 			if retryErr != nil {
 				tab.For(ctx).Debug("retried, but error was unrecoverable")
-				r.lastError = retryErr
+				r.setLastError(retryErr)
 				if err := r.Close(ctx); err != nil {
 					tab.For(ctx).Error(err)
 				}
@@ -338,6 +339,12 @@ func (r *Receiver) listenForMessages(ctx context.Context, msgChan chan *amqp.Mes
 			}
 		}
 	}
+}
+
+func (r *Receiver) setLastError(err error) {
+	r.lastErrorMu.Lock()
+	r.lastError = err
+	r.lastErrorMu.Unlock()
 }
 
 func (r *Receiver) listenForMessage(ctx context.Context) (*amqp.Message, error) {
@@ -381,7 +388,7 @@ func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.newSessionAndLink")
 	defer span.End()
 
-	client, err := r.namespace.newClient()
+	client, err := r.namespace.newClient(ctx)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
@@ -501,6 +508,8 @@ func (lc *ListenerHandle) Done() <-chan struct{} {
 
 // Err will return the last error encountered
 func (lc *ListenerHandle) Err() error {
+	lc.r.lastErrorMu.RLock()
+	defer lc.r.lastErrorMu.RUnlock()
 	if lc.r.lastError != nil {
 		return lc.r.lastError
 	}

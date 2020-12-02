@@ -92,7 +92,7 @@ func (r *rpcClient) ensureConn(ctx context.Context) error {
 	r.clientMu.Lock()
 	defer r.clientMu.Unlock()
 
-	client, err := r.ec.Namespace().newClient()
+	client, err := r.ec.Namespace().newClient(ctx)
 	err = r.ec.Namespace().negotiateClaim(ctx, client, r.ec.ManagementPath())
 	if err != nil {
 		tab.For(ctx).Error(err)

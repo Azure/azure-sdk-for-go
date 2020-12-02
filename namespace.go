@@ -26,9 +26,6 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
-	"runtime"
-	"strings"
-
 	"github.com/Azure/azure-amqp-common-go/v3/aad"
 	"github.com/Azure/azure-amqp-common-go/v3/auth"
 	"github.com/Azure/azure-amqp-common-go/v3/cbs"
@@ -36,7 +33,9 @@ import (
 	"github.com/Azure/azure-amqp-common-go/v3/sas"
 	"github.com/Azure/go-amqp"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"golang.org/x/net/websocket"
+	"nhooyr.io/websocket"
+	"runtime"
+	"strings"
 )
 
 const (
@@ -194,7 +193,9 @@ func NewNamespace(opts ...NamespaceOption) (*Namespace, error) {
 	return ns, nil
 }
 
-func (ns *Namespace) newClient() (*amqp.Client, error) {
+func (ns *Namespace) newClient(ctx context.Context) (*amqp.Client, error) {
+	ctx, span := ns.startSpanFromContext(ctx, "sb.namespace.newClient")
+	defer span.End()
 	defaultConnOptions := []amqp.ConnOption{
 		amqp.ConnSASLAnonymous(),
 		amqp.ConnMaxSessions(65535),
@@ -215,13 +216,15 @@ func (ns *Namespace) newClient() (*amqp.Client, error) {
 
 	if ns.useWebSocket {
 		wssHost := ns.getWSSHostURI() + "$servicebus/websocket"
-		wssConn, err := websocket.Dial(wssHost, "amqp", "http://localhost/")
+		opts := &websocket.DialOptions{Subprotocols: []string{"amqp"}}
+		wssConn, _, err := websocket.Dial(ctx, wssHost, opts)
+
 		if err != nil {
 			return nil, err
 		}
+		nConn := websocket.NetConn(context.Background(), wssConn, websocket.MessageBinary)
 
-		wssConn.PayloadType = websocket.BinaryFrame
-		return amqp.New(wssConn, append(defaultConnOptions, amqp.ConnServerHostname(ns.getHostname()))...)
+		return amqp.New(nConn, append(defaultConnOptions, amqp.ConnServerHostname(ns.getHostname()))...)
 	}
 
 	return amqp.Dial(ns.getAMQPHostURI(), defaultConnOptions...)

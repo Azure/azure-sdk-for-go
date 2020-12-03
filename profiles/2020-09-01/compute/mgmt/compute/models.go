@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/profiles/2020-09-01/compute"
+const fqdn = "github.com/Azure/azure-sdk-for-go/profiles/2020-09-01/compute/mgmt/compute"
 
 // AccessURI a disk access SAS uri.
 type AccessURI struct {
@@ -3538,6 +3538,10 @@ type LogAnalyticsInputBase struct {
 	GroupByOperationName *bool `json:"groupByOperationName,omitempty"`
 	// GroupByResourceName - Group query result by Resource Name.
 	GroupByResourceName *bool `json:"groupByResourceName,omitempty"`
+	// GroupByClientApplicationID - Group query result by Client Application ID.
+	GroupByClientApplicationID *bool `json:"groupByClientApplicationId,omitempty"`
+	// GroupByUserAgent - Group query result by User Agent.
+	GroupByUserAgent *bool `json:"groupByUserAgent,omitempty"`
 }
 
 // LogAnalyticsOperationResult logAnalytics operation status response
@@ -4156,6 +4160,10 @@ type RequestRateByIntervalInput struct {
 	GroupByOperationName *bool `json:"groupByOperationName,omitempty"`
 	// GroupByResourceName - Group query result by Resource Name.
 	GroupByResourceName *bool `json:"groupByResourceName,omitempty"`
+	// GroupByClientApplicationID - Group query result by Client Application ID.
+	GroupByClientApplicationID *bool `json:"groupByClientApplicationId,omitempty"`
+	// GroupByUserAgent - Group query result by User Agent.
+	GroupByUserAgent *bool `json:"groupByUserAgent,omitempty"`
 }
 
 // Resource the Resource model definition.
@@ -5351,6 +5359,10 @@ type ThrottledRequestsInput struct {
 	GroupByOperationName *bool `json:"groupByOperationName,omitempty"`
 	// GroupByResourceName - Group query result by Resource Name.
 	GroupByResourceName *bool `json:"groupByResourceName,omitempty"`
+	// GroupByClientApplicationID - Group query result by Client Application ID.
+	GroupByClientApplicationID *bool `json:"groupByClientApplicationId,omitempty"`
+	// GroupByUserAgent - Group query result by User Agent.
+	GroupByUserAgent *bool `json:"groupByUserAgent,omitempty"`
 }
 
 // UpdateResource the Update Resource model definition.

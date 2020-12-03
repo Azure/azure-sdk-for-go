@@ -43,3 +43,11 @@ type ServersClientAPI interface {
 }
 
 var _ ServersClientAPI = (*analysisservices.ServersClient)(nil)
+
+// OperationsClientAPI contains the set of methods on the OperationsClient type.
+type OperationsClientAPI interface {
+	List(ctx context.Context) (result analysisservices.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result analysisservices.OperationListResultIterator, err error)
+}
+
+var _ OperationsClientAPI = (*analysisservices.OperationsClient)(nil)

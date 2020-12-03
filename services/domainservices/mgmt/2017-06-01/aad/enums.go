@@ -107,6 +107,21 @@ func PossibleNtlmV1Values() []NtlmV1 {
 	return []NtlmV1{NtlmV1Disabled, NtlmV1Enabled}
 }
 
+// SyncKerberosPasswords enumerates the values for sync kerberos passwords.
+type SyncKerberosPasswords string
+
+const (
+	// SyncKerberosPasswordsDisabled ...
+	SyncKerberosPasswordsDisabled SyncKerberosPasswords = "Disabled"
+	// SyncKerberosPasswordsEnabled ...
+	SyncKerberosPasswordsEnabled SyncKerberosPasswords = "Enabled"
+)
+
+// PossibleSyncKerberosPasswordsValues returns an array of possible values for the SyncKerberosPasswords const type.
+func PossibleSyncKerberosPasswordsValues() []SyncKerberosPasswords {
+	return []SyncKerberosPasswords{SyncKerberosPasswordsDisabled, SyncKerberosPasswordsEnabled}
+}
+
 // SyncNtlmPasswords enumerates the values for sync ntlm passwords.
 type SyncNtlmPasswords string
 
@@ -120,6 +135,21 @@ const (
 // PossibleSyncNtlmPasswordsValues returns an array of possible values for the SyncNtlmPasswords const type.
 func PossibleSyncNtlmPasswordsValues() []SyncNtlmPasswords {
 	return []SyncNtlmPasswords{SyncNtlmPasswordsDisabled, SyncNtlmPasswordsEnabled}
+}
+
+// SyncOnPremPasswords enumerates the values for sync on prem passwords.
+type SyncOnPremPasswords string
+
+const (
+	// SyncOnPremPasswordsDisabled ...
+	SyncOnPremPasswordsDisabled SyncOnPremPasswords = "Disabled"
+	// SyncOnPremPasswordsEnabled ...
+	SyncOnPremPasswordsEnabled SyncOnPremPasswords = "Enabled"
+)
+
+// PossibleSyncOnPremPasswordsValues returns an array of possible values for the SyncOnPremPasswords const type.
+func PossibleSyncOnPremPasswordsValues() []SyncOnPremPasswords {
+	return []SyncOnPremPasswords{SyncOnPremPasswordsDisabled, SyncOnPremPasswordsEnabled}
 }
 
 // TLSV1 enumerates the values for tlsv1.

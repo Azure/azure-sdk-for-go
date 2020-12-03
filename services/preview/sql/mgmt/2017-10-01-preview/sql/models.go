@@ -61,8 +61,8 @@ func (future *BackupShortTermRetentionPoliciesCreateOrUpdateFuture) Result(clien
 	return
 }
 
-// BackupShortTermRetentionPoliciesUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// BackupShortTermRetentionPoliciesUpdateFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type BackupShortTermRetentionPoliciesUpdateFuture struct {
 	azure.Future
 }
@@ -316,8 +316,11 @@ func (page BackupShortTermRetentionPolicyListResultPage) Values() []BackupShortT
 }
 
 // Creates a new instance of the BackupShortTermRetentionPolicyListResultPage type.
-func NewBackupShortTermRetentionPolicyListResultPage(getNextPage func(context.Context, BackupShortTermRetentionPolicyListResult) (BackupShortTermRetentionPolicyListResult, error)) BackupShortTermRetentionPolicyListResultPage {
-	return BackupShortTermRetentionPolicyListResultPage{fn: getNextPage}
+func NewBackupShortTermRetentionPolicyListResultPage(cur BackupShortTermRetentionPolicyListResult, getNextPage func(context.Context, BackupShortTermRetentionPolicyListResult) (BackupShortTermRetentionPolicyListResult, error)) BackupShortTermRetentionPolicyListResultPage {
+	return BackupShortTermRetentionPolicyListResultPage{
+		fn:      getNextPage,
+		bstrplr: cur,
+	}
 }
 
 // BackupShortTermRetentionPolicyProperties properties of a short term retention policy
@@ -625,8 +628,11 @@ func (page DatabaseListResultPage) Values() []Database {
 }
 
 // Creates a new instance of the DatabaseListResultPage type.
-func NewDatabaseListResultPage(getNextPage func(context.Context, DatabaseListResult) (DatabaseListResult, error)) DatabaseListResultPage {
-	return DatabaseListResultPage{fn: getNextPage}
+func NewDatabaseListResultPage(cur DatabaseListResult, getNextPage func(context.Context, DatabaseListResult) (DatabaseListResult, error)) DatabaseListResultPage {
+	return DatabaseListResultPage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
 // DatabaseOperation a database operation.
@@ -853,8 +859,11 @@ func (page DatabaseOperationListResultPage) Values() []DatabaseOperation {
 }
 
 // Creates a new instance of the DatabaseOperationListResultPage type.
-func NewDatabaseOperationListResultPage(getNextPage func(context.Context, DatabaseOperationListResult) (DatabaseOperationListResult, error)) DatabaseOperationListResultPage {
-	return DatabaseOperationListResultPage{fn: getNextPage}
+func NewDatabaseOperationListResultPage(cur DatabaseOperationListResult, getNextPage func(context.Context, DatabaseOperationListResult) (DatabaseOperationListResult, error)) DatabaseOperationListResultPage {
+	return DatabaseOperationListResultPage{
+		fn:   getNextPage,
+		dolr: cur,
+	}
 }
 
 // DatabaseOperationProperties the properties of a database operation.
@@ -1063,7 +1072,8 @@ func (future *DatabasesCreateOrUpdateFuture) Result(client DatabasesClient) (d D
 	return
 }
 
-// DatabasesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DatabasesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DatabasesDeleteFuture struct {
 	azure.Future
 }
@@ -1085,7 +1095,8 @@ func (future *DatabasesDeleteFuture) Result(client DatabasesClient) (ar autorest
 	return
 }
 
-// DatabasesPauseFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DatabasesPauseFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DatabasesPauseFuture struct {
 	azure.Future
 }
@@ -1113,7 +1124,8 @@ func (future *DatabasesPauseFuture) Result(client DatabasesClient) (d Database, 
 	return
 }
 
-// DatabasesResumeFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DatabasesResumeFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DatabasesResumeFuture struct {
 	azure.Future
 }
@@ -1141,7 +1153,8 @@ func (future *DatabasesResumeFuture) Result(client DatabasesClient) (d Database,
 	return
 }
 
-// DatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DatabasesUpdateFuture struct {
 	azure.Future
 }
@@ -1485,8 +1498,11 @@ func (page DatabaseVulnerabilityAssessmentListResultPage) Values() []DatabaseVul
 }
 
 // Creates a new instance of the DatabaseVulnerabilityAssessmentListResultPage type.
-func NewDatabaseVulnerabilityAssessmentListResultPage(getNextPage func(context.Context, DatabaseVulnerabilityAssessmentListResult) (DatabaseVulnerabilityAssessmentListResult, error)) DatabaseVulnerabilityAssessmentListResultPage {
-	return DatabaseVulnerabilityAssessmentListResultPage{fn: getNextPage}
+func NewDatabaseVulnerabilityAssessmentListResultPage(cur DatabaseVulnerabilityAssessmentListResult, getNextPage func(context.Context, DatabaseVulnerabilityAssessmentListResult) (DatabaseVulnerabilityAssessmentListResult, error)) DatabaseVulnerabilityAssessmentListResultPage {
+	return DatabaseVulnerabilityAssessmentListResultPage{
+		fn:    getNextPage,
+		dvalr: cur,
+	}
 }
 
 // DatabaseVulnerabilityAssessmentProperties properties of a database Vulnerability Assessment.
@@ -1581,8 +1597,8 @@ type DatabaseVulnerabilityAssessmentRuleBaselineItem struct {
 	Result *[]string `json:"result,omitempty"`
 }
 
-// DatabaseVulnerabilityAssessmentRuleBaselineProperties properties of a database Vulnerability Assessment rule
-// baseline.
+// DatabaseVulnerabilityAssessmentRuleBaselineProperties properties of a database Vulnerability Assessment
+// rule baseline.
 type DatabaseVulnerabilityAssessmentRuleBaselineProperties struct {
 	// BaselineResults - The rule baseline result
 	BaselineResults *[]DatabaseVulnerabilityAssessmentRuleBaselineItem `json:"baselineResults,omitempty"`
@@ -2020,8 +2036,11 @@ func (page ElasticPoolListResultPage) Values() []ElasticPool {
 }
 
 // Creates a new instance of the ElasticPoolListResultPage type.
-func NewElasticPoolListResultPage(getNextPage func(context.Context, ElasticPoolListResult) (ElasticPoolListResult, error)) ElasticPoolListResultPage {
-	return ElasticPoolListResultPage{fn: getNextPage}
+func NewElasticPoolListResultPage(cur ElasticPoolListResult, getNextPage func(context.Context, ElasticPoolListResult) (ElasticPoolListResult, error)) ElasticPoolListResultPage {
+	return ElasticPoolListResultPage{
+		fn:   getNextPage,
+		eplr: cur,
+	}
 }
 
 // ElasticPoolOperation a elastic pool operation.
@@ -2105,7 +2124,8 @@ type ElasticPoolOperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ElasticPoolOperationListResultIterator provides access to a complete listing of ElasticPoolOperation values.
+// ElasticPoolOperationListResultIterator provides access to a complete listing of ElasticPoolOperation
+// values.
 type ElasticPoolOperationListResultIterator struct {
 	i    int
 	page ElasticPoolOperationListResultPage
@@ -2248,8 +2268,11 @@ func (page ElasticPoolOperationListResultPage) Values() []ElasticPoolOperation {
 }
 
 // Creates a new instance of the ElasticPoolOperationListResultPage type.
-func NewElasticPoolOperationListResultPage(getNextPage func(context.Context, ElasticPoolOperationListResult) (ElasticPoolOperationListResult, error)) ElasticPoolOperationListResultPage {
-	return ElasticPoolOperationListResultPage{fn: getNextPage}
+func NewElasticPoolOperationListResultPage(cur ElasticPoolOperationListResult, getNextPage func(context.Context, ElasticPoolOperationListResult) (ElasticPoolOperationListResult, error)) ElasticPoolOperationListResultPage {
+	return ElasticPoolOperationListResultPage{
+		fn:    getNextPage,
+		epolr: cur,
+	}
 }
 
 // ElasticPoolOperationProperties the properties of a elastic pool operation.
@@ -2307,7 +2330,8 @@ func (eppdmplc ElasticPoolPerDatabaseMaxPerformanceLevelCapability) MarshalJSON(
 	return json.Marshal(objectMap)
 }
 
-// ElasticPoolPerDatabaseMinPerformanceLevelCapability the minimum per-database performance level capability.
+// ElasticPoolPerDatabaseMinPerformanceLevelCapability the minimum per-database performance level
+// capability.
 type ElasticPoolPerDatabaseMinPerformanceLevelCapability struct {
 	// Limit - READ-ONLY; The minimum performance level per database.
 	Limit *float64 `json:"limit,omitempty"`
@@ -2403,8 +2427,8 @@ func (epp ElasticPoolProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ElasticPoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ElasticPoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ElasticPoolsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -2788,8 +2812,11 @@ func (page InstanceFailoverGroupListResultPage) Values() []InstanceFailoverGroup
 }
 
 // Creates a new instance of the InstanceFailoverGroupListResultPage type.
-func NewInstanceFailoverGroupListResultPage(getNextPage func(context.Context, InstanceFailoverGroupListResult) (InstanceFailoverGroupListResult, error)) InstanceFailoverGroupListResultPage {
-	return InstanceFailoverGroupListResultPage{fn: getNextPage}
+func NewInstanceFailoverGroupListResultPage(cur InstanceFailoverGroupListResult, getNextPage func(context.Context, InstanceFailoverGroupListResult) (InstanceFailoverGroupListResult, error)) InstanceFailoverGroupListResultPage {
+	return InstanceFailoverGroupListResultPage{
+		fn:    getNextPage,
+		ifglr: cur,
+	}
 }
 
 // InstanceFailoverGroupProperties properties of a instance failover group.
@@ -3001,8 +3028,8 @@ type LogSizeCapability struct {
 	Unit LogSizeUnit `json:"unit,omitempty"`
 }
 
-// ManagedDatabaseVulnerabilityAssessmentScansInitiateScanFuture an abstraction for monitoring and retrieving
-// the results of a long-running operation.
+// ManagedDatabaseVulnerabilityAssessmentScansInitiateScanFuture an abstraction for monitoring and
+// retrieving the results of a long-running operation.
 type ManagedDatabaseVulnerabilityAssessmentScansInitiateScanFuture struct {
 	azure.Future
 }
@@ -3283,8 +3310,11 @@ func (page ManagedInstanceEncryptionProtectorListResultPage) Values() []ManagedI
 }
 
 // Creates a new instance of the ManagedInstanceEncryptionProtectorListResultPage type.
-func NewManagedInstanceEncryptionProtectorListResultPage(getNextPage func(context.Context, ManagedInstanceEncryptionProtectorListResult) (ManagedInstanceEncryptionProtectorListResult, error)) ManagedInstanceEncryptionProtectorListResultPage {
-	return ManagedInstanceEncryptionProtectorListResultPage{fn: getNextPage}
+func NewManagedInstanceEncryptionProtectorListResultPage(cur ManagedInstanceEncryptionProtectorListResult, getNextPage func(context.Context, ManagedInstanceEncryptionProtectorListResult) (ManagedInstanceEncryptionProtectorListResult, error)) ManagedInstanceEncryptionProtectorListResultPage {
+	return ManagedInstanceEncryptionProtectorListResultPage{
+		fn:     getNextPage,
+		mieplr: cur,
+	}
 }
 
 // ManagedInstanceEncryptionProtectorProperties properties for an encryption protector execution.
@@ -3340,8 +3370,8 @@ func (future *ManagedInstanceEncryptionProtectorsCreateOrUpdateFuture) Result(cl
 	return
 }
 
-// ManagedInstanceEncryptionProtectorsRevalidateFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// ManagedInstanceEncryptionProtectorsRevalidateFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type ManagedInstanceEncryptionProtectorsRevalidateFuture struct {
 	azure.Future
 }
@@ -3628,8 +3658,11 @@ func (page ManagedInstanceKeyListResultPage) Values() []ManagedInstanceKey {
 }
 
 // Creates a new instance of the ManagedInstanceKeyListResultPage type.
-func NewManagedInstanceKeyListResultPage(getNextPage func(context.Context, ManagedInstanceKeyListResult) (ManagedInstanceKeyListResult, error)) ManagedInstanceKeyListResultPage {
-	return ManagedInstanceKeyListResultPage{fn: getNextPage}
+func NewManagedInstanceKeyListResultPage(cur ManagedInstanceKeyListResult, getNextPage func(context.Context, ManagedInstanceKeyListResult) (ManagedInstanceKeyListResult, error)) ManagedInstanceKeyListResultPage {
+	return ManagedInstanceKeyListResultPage{
+		fn:    getNextPage,
+		miklr: cur,
+	}
 }
 
 // ManagedInstanceKeyProperties properties for a key execution.
@@ -3685,8 +3718,8 @@ func (future *ManagedInstanceKeysCreateOrUpdateFuture) Result(client ManagedInst
 	return
 }
 
-// ManagedInstanceKeysDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ManagedInstanceKeysDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ManagedInstanceKeysDeleteFuture struct {
 	azure.Future
 }
@@ -4075,8 +4108,11 @@ func (page RecoverableManagedDatabaseListResultPage) Values() []RecoverableManag
 }
 
 // Creates a new instance of the RecoverableManagedDatabaseListResultPage type.
-func NewRecoverableManagedDatabaseListResultPage(getNextPage func(context.Context, RecoverableManagedDatabaseListResult) (RecoverableManagedDatabaseListResult, error)) RecoverableManagedDatabaseListResultPage {
-	return RecoverableManagedDatabaseListResultPage{fn: getNextPage}
+func NewRecoverableManagedDatabaseListResultPage(cur RecoverableManagedDatabaseListResult, getNextPage func(context.Context, RecoverableManagedDatabaseListResult) (RecoverableManagedDatabaseListResult, error)) RecoverableManagedDatabaseListResultPage {
+	return RecoverableManagedDatabaseListResultPage{
+		fn:    getNextPage,
+		rmdlr: cur,
+	}
 }
 
 // RecoverableManagedDatabaseProperties the recoverable managed database's properties.
@@ -4298,7 +4334,8 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// VulnerabilityAssessmentRecurringScansProperties properties of a Vulnerability Assessment recurring scans.
+// VulnerabilityAssessmentRecurringScansProperties properties of a Vulnerability Assessment recurring
+// scans.
 type VulnerabilityAssessmentRecurringScansProperties struct {
 	// IsEnabled - Recurring scans state.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
@@ -4484,7 +4521,8 @@ func (vasrlr VulnerabilityAssessmentScanRecordListResult) vulnerabilityAssessmen
 		autorest.WithBaseURL(to.String(vasrlr.NextLink)))
 }
 
-// VulnerabilityAssessmentScanRecordListResultPage contains a page of VulnerabilityAssessmentScanRecord values.
+// VulnerabilityAssessmentScanRecordListResultPage contains a page of VulnerabilityAssessmentScanRecord
+// values.
 type VulnerabilityAssessmentScanRecordListResultPage struct {
 	fn     func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error)
 	vasrlr VulnerabilityAssessmentScanRecordListResult
@@ -4542,8 +4580,11 @@ func (page VulnerabilityAssessmentScanRecordListResultPage) Values() []Vulnerabi
 }
 
 // Creates a new instance of the VulnerabilityAssessmentScanRecordListResultPage type.
-func NewVulnerabilityAssessmentScanRecordListResultPage(getNextPage func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error)) VulnerabilityAssessmentScanRecordListResultPage {
-	return VulnerabilityAssessmentScanRecordListResultPage{fn: getNextPage}
+func NewVulnerabilityAssessmentScanRecordListResultPage(cur VulnerabilityAssessmentScanRecordListResult, getNextPage func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error)) VulnerabilityAssessmentScanRecordListResultPage {
+	return VulnerabilityAssessmentScanRecordListResultPage{
+		fn:     getNextPage,
+		vasrlr: cur,
+	}
 }
 
 // VulnerabilityAssessmentScanRecordProperties properties of a vulnerability assessment scan record.

@@ -17,10 +17,11 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 	"sort"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/markdown"
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 	"github.com/spf13/cobra"
 )
 
@@ -72,8 +73,8 @@ func theChangelogCmd(args []string) error {
 	return nil
 }
 
-func writePackageChangelog(pr pkgsReport) (string, error) {
-	md := &report.MarkdownWriter{}
+func writePackageChangelog(pr report.PkgsReport) (string, error) {
+	md := &markdown.Writer{}
 	if err := reportAddedPkgs(pr, md); err != nil {
 		return "", fmt.Errorf("failed to write table for added packages: %+v", err)
 	}
@@ -89,24 +90,25 @@ func writePackageChangelog(pr pkgsReport) (string, error) {
 	return md.String(), nil
 }
 
-func reportAddedPkgs(pr pkgsReport, md *report.MarkdownWriter) error {
+func reportAddedPkgs(pr report.PkgsReport, md *markdown.Writer) error {
 	if len(pr.AddedPackages) == 0 {
 		return nil
 	}
-	md.WriteSubheader("New Packages")
 	t, err := createPackageTable(pr.AddedPackages)
 	if err != nil {
 		return err
 	}
-	md.WriteTable(*t)
+	if t.Rows() > 0 {
+		md.WriteSubheader("New Packages")
+		md.WriteTable(*t)
+	}
 	return nil
 }
 
-func reportUpdatedPkgs(pr pkgsReport, md *report.MarkdownWriter) error {
-	if !pr.modPkgHasAdditions {
+func reportUpdatedPkgs(pr report.PkgsReport, md *markdown.Writer) error {
+	if pr.ModifiedPackages == nil || !pr.ModifiedPackages.HasAdditiveChanges() {
 		return nil
 	}
-	md.WriteSubheader("Updated Packages")
 	var updated []string
 	for pkgName, pkgRpt := range pr.ModifiedPackages {
 		if pkgRpt.HasAdditiveChanges() && !pkgRpt.HasBreakingChanges() {
@@ -117,15 +119,17 @@ func reportUpdatedPkgs(pr pkgsReport, md *report.MarkdownWriter) error {
 	if err != nil {
 		return err
 	}
-	md.WriteTable(*t)
+	if t.Rows() > 0 {
+		md.WriteSubheader("Updated Packages")
+		md.WriteTable(*t)
+	}
 	return nil
 }
 
-func reportBreakingPkgs(pr pkgsReport, md *report.MarkdownWriter) error {
-	if !pr.modPkgHasBreaking {
+func reportBreakingPkgs(pr report.PkgsReport, md *markdown.Writer) error {
+	if pr.ModifiedPackages == nil || !pr.ModifiedPackages.HasBreakingChanges() {
 		return nil
 	}
-	md.WriteSubheader("Breaking Changes")
 	var breaking []string
 	for pkgName, pkgRpt := range pr.ModifiedPackages {
 		if pkgRpt.HasBreakingChanges() {
@@ -136,20 +140,25 @@ func reportBreakingPkgs(pr pkgsReport, md *report.MarkdownWriter) error {
 	if err != nil {
 		return err
 	}
-	md.WriteTable(*t)
+	if t.Rows() > 0 {
+		md.WriteSubheader("Breaking Changes")
+		md.WriteTable(*t)
+	}
 	return nil
 }
 
-func reportRemovedPkgs(pr pkgsReport, md *report.MarkdownWriter) error {
+func reportRemovedPkgs(pr report.PkgsReport, md *markdown.Writer) error {
 	if len(pr.RemovedPackages) == 0 {
 		return nil
 	}
-	md.WriteSubheader("Removed Packages")
 	t, err := createPackageTable(pr.RemovedPackages)
 	if err != nil {
 		return err
 	}
-	md.WriteTable(*t)
+	if t.Rows() > 0 {
+		md.WriteSubheader("Removed Packages")
+		md.WriteTable(*t)
+	}
 	return nil
 }
 
@@ -167,8 +176,8 @@ func convertFullPackagePathToPackageNameAndAPIVersion(packageName string) (strin
 	return segments[len(segments)-1], segments[len(segments)-2], nil
 }
 
-func createPackageTable(pkgs []string) (*report.MarkdownTable, error) {
-	t := report.NewMarkdownTable("rc", "Package Name", "API Version")
+func createPackageTable(pkgs []string) (*markdown.Table, error) {
+	t := markdown.NewTable("rc", "Package Name", "API Version")
 	rows, err := categorizePackageAPIVersions(pkgs)
 	if err != nil {
 		return nil, err

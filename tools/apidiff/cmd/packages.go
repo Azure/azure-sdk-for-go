@@ -18,9 +18,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
@@ -28,8 +26,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 	"github.com/spf13/cobra"
 )
-
-const apiDirSuffix = "api"
 
 var packagesCmd = &cobra.Command{
 	Use:   "packages <package search dir> (<base commit> <target commit(s)>) | (<commit sequence>)",
@@ -44,7 +40,7 @@ Commit sequences must be comma-delimited.`,
 		if err != nil {
 			return err
 		}
-		err = printReport(rpt)
+		err = PrintReport(rpt)
 		if err != nil {
 			return err
 		}
@@ -58,19 +54,19 @@ func init() {
 }
 
 // ExecPackagesCmd is the programmatic interface for the packages command.
-func ExecPackagesCmd(pkgDir string, commitSeq string, flags CommandFlags) (CommitPkgsReport, error) {
+func ExecPackagesCmd(pkgDir string, commitSeq string, flags CommandFlags) (report.CommitPkgsReport, error) {
 	flags.apply()
 	return thePackagesCmd([]string{pkgDir, commitSeq})
 }
 
 // split into its own func as we can't call os.Exit from it (the defer won't get executed)
-func thePackagesCmd(args []string) (rpt CommitPkgsReport, err error) {
+func thePackagesCmd(args []string) (rpt report.CommitPkgsReport, err error) {
 	cloneRepo, err := processArgsAndClone(args)
 	if err != nil {
 		return
 	}
 
-	rpt.CommitsReports = map[string]pkgsReport{}
+	rpt.CommitsReports = map[string]report.PkgsReport{}
 	worker := func(rootDir string, cloneRepo repo.WorkingTree, baseCommit, targetCommit string) error {
 		vprintf("generating diff between %s and %s\n", baseCommit, targetCommit)
 		// get for lhs
@@ -87,8 +83,8 @@ func thePackagesCmd(args []string) (rpt CommitPkgsReport, err error) {
 			return err
 		}
 		r := getPkgsReport(lhs, rhs)
-		rpt.updateAffectedPackages(targetCommit, r)
-		if r.hasBreakingChanges() {
+		rpt.UpdateAffectedPackages(targetCommit, r)
+		if r.HasBreakingChanges() {
 			rpt.BreakingChanges = append(rpt.BreakingChanges, targetCommit)
 		}
 		rpt.CommitsReports[fmt.Sprintf("%s:%s", baseCommit, targetCommit)] = r
@@ -103,39 +99,7 @@ func thePackagesCmd(args []string) (rpt CommitPkgsReport, err error) {
 	return
 }
 
-func getPackages(dir string) ([]string, error) {
-	var pkgDirs []string
-	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		var skipDir error
-		if info.IsDir() {
-			// check if leaf dir
-			fi, err := ioutil.ReadDir(path)
-			if err != nil {
-				return err
-			}
-			hasSubDirs := false
-			for _, f := range fi {
-				// check if this is the interfaces subdir, if it is don't count it as a subdir
-				if f.IsDir() && f.Name() != filepath.Base(path)+apiDirSuffix {
-					hasSubDirs = true
-					break
-				}
-			}
-			if !hasSubDirs {
-				pkgDirs = append(pkgDirs, path)
-				// skip any dirs under us (i.e. interfaces subdir)
-				skipDir = filepath.SkipDir
-			}
-		}
-		return skipDir
-	})
-	return pkgDirs, err
-}
-
-func getRepoContentForCommit(wt *repo.WorkingTree, dir, commit string) (r repoContent, err error) {
+func getRepoContentForCommit(wt *repo.WorkingTree, dir, commit string) (r RepoContent, err error) {
 	err = wt.Checkout(commit)
 	if err != nil {
 		err = fmt.Errorf("failed to check out commit '%s': %s", commit, err)
@@ -145,8 +109,8 @@ func getRepoContentForCommit(wt *repo.WorkingTree, dir, commit string) (r repoCo
 	return getRepoContent(wt, dir)
 }
 
-func getRepoContent(wt *repo.WorkingTree, dir string) (repoContent, error) {
-	pkgDirs, err := getPackages(dir)
+func getRepoContent(wt *repo.WorkingTree, dir string) (RepoContent, error) {
+	pkgDirs, err := report.GetPackages(dir)
 	if err != nil {
 		return nil, err
 	}
@@ -166,12 +130,12 @@ func getRepoContent(wt *repo.WorkingTree, dir string) (repoContent, error) {
 	return r, nil
 }
 
-// contains repo content, it's structured as "package path":content
-type repoContent map[string]exports.Content
+// RepoContent contains repo content, it's structured as "package path":content
+type RepoContent map[string]exports.Content
 
-// returns repoContent based on the provided slice of package directories
-func getExportsForPackages(root string, pkgDirs []string) (repoContent, error) {
-	exps := repoContent{}
+// returns RepoContent based on the provided slice of package directories
+func getExportsForPackages(root string, pkgDirs []string) (RepoContent, error) {
+	exps := RepoContent{}
 	for _, pkgDir := range pkgDirs {
 		dprintf("getting exports for %s\n", pkgDir)
 		// pkgDir = "C:\Users\somebody\AppData\Local\Temp\apidiff-1529437978\services\addons\mgmt\2017-05-15\addons"
@@ -190,8 +154,8 @@ func getExportsForPackages(root string, pkgDirs []string) (repoContent, error) {
 	return exps, nil
 }
 
-// print prints the repoContent to a Writer as JSON string
-func (r *repoContent) print(o io.Writer) error {
+// Print prints the RepoContent to a Writer as JSON string
+func (r *RepoContent) Print(o io.Writer) error {
 	b, err := json.MarshalIndent(r, "", "  ")
 	if err != nil {
 		return fmt.Errorf("failed to marshal report: %v", err)
@@ -200,101 +164,15 @@ func (r *repoContent) print(o io.Writer) error {
 	return err
 }
 
-// contains a collection of packages
-type pkgsList []string
-
-// contains a collection of package reports, it's structured as "package path":pkgReport
-type modifiedPackages map[string]report.Package
-
-// CommitPkgsReport represents a collection of reports, one for each commit hash.
-type CommitPkgsReport struct {
-	AffectedPackages map[string]pkgsList   `json:"affectedPackages"`
-	BreakingChanges  []string              `json:"breakingChanges,omitempty"`
-	CommitsReports   map[string]pkgsReport `json:"deltas"`
-}
-
-// IsEmpty returns true if the report contains no data.
-func (c CommitPkgsReport) IsEmpty() bool {
-	for _, r := range c.CommitsReports {
-		if !r.isEmpty() {
-			return false
-		}
-	}
-	return true
-}
-
-// HasBreakingChanges returns true if the report contains breaking changes.
-func (c CommitPkgsReport) HasBreakingChanges() bool {
-	for _, r := range c.CommitsReports {
-		if r.hasBreakingChanges() {
-			return true
-		}
-	}
-	return false
-}
-
-// HasAdditiveChanges returns true if the package contains additive changes.
-func (c CommitPkgsReport) HasAdditiveChanges() bool {
-	for _, r := range c.CommitsReports {
-		if r.hasAdditiveChanges() {
-			return true
-		}
-	}
-	return false
-}
-
-// updates the collection of affected packages with the packages that were touched in the specified commit
-func (c *CommitPkgsReport) updateAffectedPackages(commit string, r pkgsReport) {
-	if c.AffectedPackages == nil {
-		c.AffectedPackages = map[string]pkgsList{}
-	}
-
-	for _, pkg := range r.AddedPackages {
-		c.AffectedPackages[commit] = append(c.AffectedPackages[commit], pkg)
-	}
-
-	for pkgName := range r.ModifiedPackages {
-		c.AffectedPackages[commit] = append(c.AffectedPackages[commit], pkgName)
-	}
-
-	for _, pkg := range r.RemovedPackages {
-		c.AffectedPackages[commit] = append(c.AffectedPackages[commit], pkg)
-	}
-}
-
-// represents a complete report of added, removed, and modified packages
-type pkgsReport struct {
-	AddedPackages      pkgsList         `json:"added,omitempty"`
-	ModifiedPackages   modifiedPackages `json:"modified,omitempty"`
-	RemovedPackages    pkgsList         `json:"removed,omitempty"`
-	modPkgHasAdditions bool
-	modPkgHasBreaking  bool
-}
-
-// returns true if the package report contains breaking changes
-func (r pkgsReport) hasBreakingChanges() bool {
-	return len(r.RemovedPackages) > 0 || r.modPkgHasBreaking
-}
-
-// returns true if the package report contains additive changes
-func (r pkgsReport) hasAdditiveChanges() bool {
-	return len(r.AddedPackages) > 0 || r.modPkgHasAdditions
-}
-
-// returns true if the report contains no data
-func (r pkgsReport) isEmpty() bool {
-	return len(r.AddedPackages) == 0 && len(r.ModifiedPackages) == 0 && len(r.RemovedPackages) == 0
-}
-
-// generates a pkgsReport based on the delta between lhs and rhs
-func getPkgsReport(lhs, rhs repoContent) pkgsReport {
-	rpt := pkgsReport{}
+// generates a PkgsReport based on the delta between lhs and rhs
+func getPkgsReport(lhs, rhs RepoContent) report.PkgsReport {
+	rpt := report.PkgsReport{}
 
 	if !onlyBreakingChangesFlag {
-		rpt.AddedPackages = getPkgsList(lhs, rhs)
+		rpt.AddedPackages = getDiffPkgs(lhs, rhs)
 	}
-	if !onlyAdditionsFlag {
-		rpt.RemovedPackages = getPkgsList(rhs, lhs)
+	if !onlyAdditiveChangesFlag {
+		rpt.RemovedPackages = getDiffPkgs(rhs, lhs)
 	}
 
 	// diff packages
@@ -302,16 +180,13 @@ func getPkgsReport(lhs, rhs repoContent) pkgsReport {
 		if _, ok := lhs[rhsPkg]; !ok {
 			continue
 		}
-		if r := report.Generate(lhs[rhsPkg], rhsCnt, onlyBreakingChangesFlag, onlyAdditionsFlag); !r.IsEmpty() {
-			if r.HasBreakingChanges() {
-				rpt.modPkgHasBreaking = true
-			}
-			if r.HasAdditiveChanges() {
-				rpt.modPkgHasAdditions = true
-			}
+		if r := report.Generate(lhs[rhsPkg], rhsCnt, &report.GenerationOption{
+			OnlyBreakingChanges: onlyBreakingChangesFlag,
+			OnlyAdditiveChanges: onlyAdditiveChangesFlag,
+		}); !r.IsEmpty() {
 			// only add an entry if the report contains data
 			if rpt.ModifiedPackages == nil {
-				rpt.ModifiedPackages = modifiedPackages{}
+				rpt.ModifiedPackages = report.ModifiedPackages{}
 			}
 			rpt.ModifiedPackages[rhsPkg] = r
 		}
@@ -321,62 +196,12 @@ func getPkgsReport(lhs, rhs repoContent) pkgsReport {
 }
 
 // returns a list of packages in rhs that aren't in lhs
-func getPkgsList(lhs, rhs repoContent) pkgsList {
-	list := pkgsList{}
+func getDiffPkgs(lhs, rhs RepoContent) report.PkgsList {
+	list := report.PkgsList{}
 	for rhsPkg := range rhs {
 		if _, ok := lhs[rhsPkg]; !ok {
 			list = append(list, rhsPkg)
 		}
 	}
 	return list
-}
-
-func (r *pkgsReport) toMarkdown() string {
-	if r.isEmpty() {
-		return ""
-	}
-	md := report.MarkdownWriter{}
-	r.writeAddedPackages(&md)
-	r.writeRemovedPackages(&md)
-	r.writeModifiedPackages(&md)
-	return md.String()
-}
-
-func (r *pkgsReport) writeAddedPackages(md *report.MarkdownWriter) {
-	if len(r.AddedPackages) == 0 {
-		return
-	}
-	md.WriteHeader("New Packages")
-	// write list
-	for _, p := range r.AddedPackages {
-		md.WriteLine("- " + p)
-	}
-}
-
-func (r *pkgsReport) writeModifiedPackages(md *report.MarkdownWriter) {
-	if len(r.ModifiedPackages) == 0 {
-		return
-	}
-	md.WriteHeader("Modified Packages")
-	// write list
-	for n := range r.ModifiedPackages {
-		md.WriteLine(fmt.Sprintf("- `%s`", n))
-	}
-	// write details
-	for n, p := range r.ModifiedPackages {
-		md.WriteHeader(fmt.Sprintf("Modified `%s`", n))
-		md.WriteLine(p.ToMarkdown())
-	}
-}
-
-func (r *pkgsReport) writeRemovedPackages(md *report.MarkdownWriter) {
-	if len(r.RemovedPackages) == 0 {
-		return
-	}
-	md.WriteHeader("Removed Packages")
-	// write list
-	for _, p := range r.RemovedPackages {
-		md.WriteLine("- " + p)
-	}
-	md.EmptyLine()
 }

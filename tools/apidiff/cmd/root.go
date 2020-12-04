@@ -22,7 +22,7 @@ import (
 
 var copyRepoFlag bool
 var debugFlag bool
-var onlyAdditionsFlag bool
+var onlyAdditiveChangesFlag bool
 var onlyBreakingChangesFlag bool
 var quietFlag bool
 var suppressReport bool
@@ -39,7 +39,7 @@ individual packages or a set of packages under a specified directory.`,
 func init() {
 	rootCmd.PersistentFlags().BoolVarP(&copyRepoFlag, "copyrepo", "c", false, "copy the repo instead of cloning it")
 	rootCmd.PersistentFlags().BoolVarP(&debugFlag, "debug", "d", false, "debug output")
-	rootCmd.PersistentFlags().BoolVarP(&onlyAdditionsFlag, "additions", "a", false, "only include additive changes in the report")
+	rootCmd.PersistentFlags().BoolVarP(&onlyAdditiveChangesFlag, "additions", "a", false, "only include additive changes in the report")
 	rootCmd.PersistentFlags().BoolVarP(&onlyBreakingChangesFlag, "breakingchanges", "b", false, "only include breaking changes in the report")
 	rootCmd.PersistentFlags().BoolVarP(&quietFlag, "quiet", "q", false, "suppress console output")
 	rootCmd.PersistentFlags().BoolVarP(&verboseFlag, "verbose", "v", false, "verbose output")
@@ -67,7 +67,7 @@ type CommandFlags struct {
 func (cf CommandFlags) apply() {
 	copyRepoFlag = cf.CopyRepo
 	debugFlag = cf.Debug
-	onlyAdditionsFlag = cf.OnlyAdditions
+	onlyAdditiveChangesFlag = cf.OnlyAdditions
 	onlyBreakingChangesFlag = cf.OnlyBreakingChanges
 	quietFlag = cf.Quiet
 	suppressReport = cf.SuppressReport

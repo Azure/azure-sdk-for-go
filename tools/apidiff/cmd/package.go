@@ -48,49 +48,11 @@ Commit sequences must be comma-delimited.`,
 }
 
 // split into its own func as we can't call os.Exit from it (the defer won't get executed)
-func thePackageCmd(args []string) (rs reportStatus, err error) {
+func thePackageCmd(args []string) (rs report.Status, err error) {
 	if dirMode {
 		return packageCmdDirMode(args)
 	}
-
-	cloneRepo, err := processArgsAndClone(args)
-	if err != nil {
-		return
-	}
-
-	var rpt commitPkgReport
-	rpt.CommitsReports = map[string]report.Package{}
-	worker := func(pkgDir string, cloneRepo repo.WorkingTree, baseCommit, targetCommit string) error {
-		// lhs
-		vprintf("checking out base commit %s and gathering exports\n", baseCommit)
-		var lhs exports.Content
-		lhs, err = getContentForCommit(cloneRepo, pkgDir, baseCommit)
-		if err != nil {
-			return err
-		}
-
-		// rhs
-		vprintf("checking out target commit %s and gathering exports\n", targetCommit)
-		var rhs exports.Content
-		rhs, err = getContentForCommit(cloneRepo, pkgDir, targetCommit)
-		if err != nil {
-			return err
-		}
-		r := report.Generate(lhs, rhs, onlyBreakingChangesFlag, onlyAdditionsFlag)
-		if r.HasBreakingChanges() {
-			rpt.BreakingChanges = append(rpt.BreakingChanges, targetCommit)
-		}
-		rpt.CommitsReports[fmt.Sprintf("%s:%s", baseCommit, targetCommit)] = r
-		return nil
-	}
-
-	err = generateReports(args, cloneRepo, worker)
-	if err != nil {
-		return
-	}
-
-	err = printReport(rpt)
-	return
+	return packageCmdCommitMode(args)
 }
 
 func init() {
@@ -113,7 +75,51 @@ func getContentForCommit(wt repo.WorkingTree, dir, commit string) (cnt exports.C
 	return
 }
 
-func packageCmdDirMode(args []string) (rs reportStatus, err error) {
+func packageCmdCommitMode(args []string) (rs report.Status, err error) {
+	cloneRepo, err := processArgsAndClone(args)
+	if err != nil {
+		return
+	}
+
+	var rpt report.CommitPkgReport
+	rpt.CommitsReports = map[string]report.Package{}
+	worker := func(pkgDir string, cloneRepo repo.WorkingTree, baseCommit, targetCommit string) error {
+		// lhs
+		vprintf("checking out base commit %s and gathering exports\n", baseCommit)
+		var lhs exports.Content
+		lhs, err = getContentForCommit(cloneRepo, pkgDir, baseCommit)
+		if err != nil {
+			return err
+		}
+
+		// rhs
+		vprintf("checking out target commit %s and gathering exports\n", targetCommit)
+		var rhs exports.Content
+		rhs, err = getContentForCommit(cloneRepo, pkgDir, targetCommit)
+		if err != nil {
+			return err
+		}
+		r := report.Generate(lhs, rhs, &report.GenerationOption{
+			OnlyBreakingChanges: onlyBreakingChangesFlag,
+			OnlyAdditiveChanges: onlyAdditiveChangesFlag,
+		})
+		if r.HasBreakingChanges() {
+			rpt.BreakingChanges = append(rpt.BreakingChanges, targetCommit)
+		}
+		rpt.CommitsReports[fmt.Sprintf("%s:%s", baseCommit, targetCommit)] = r
+		return nil
+	}
+
+	err = generateReports(args, cloneRepo, worker)
+	if err != nil {
+		return
+	}
+
+	err = PrintReport(rpt)
+	return
+}
+
+func packageCmdDirMode(args []string) (rs report.Status, err error) {
 	if len(args) != 2 {
 		return nil, errors.New("directories mode requires two arguments")
 	}
@@ -125,11 +131,14 @@ func packageCmdDirMode(args []string) (rs reportStatus, err error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to get exports for package '%s': %s", args[1], err)
 	}
-	r := report.Generate(lhs, rhs, onlyBreakingChangesFlag, onlyAdditionsFlag)
+	r := report.Generate(lhs, rhs, &report.GenerationOption{
+		OnlyBreakingChanges: onlyBreakingChangesFlag,
+		OnlyAdditiveChanges: onlyAdditiveChangesFlag,
+	})
 	if asMarkdown && !suppressReport {
 		println(r.ToMarkdown())
 	} else {
-		err = printReport(r)
+		err = PrintReport(r)
 	}
 	return r, err
 }

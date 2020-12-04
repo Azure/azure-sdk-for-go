@@ -12,19 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package report
+package markdown
 
 import (
+	"fmt"
 	"strings"
 )
 
-// MarkdownWriter is a writer to write contents in markdown format
-type MarkdownWriter struct {
+// RenderLink returns a rendered markdown link
+func RenderLink(name, link string) string {
+	return fmt.Sprintf("[%s](%s)", name, link)
+}
+
+// Writer is a writer to write contents in markdown format
+type Writer struct {
 	sb strings.Builder
 	nl bool
 }
 
-func (md *MarkdownWriter) checkNL() {
+func (md *Writer) checkNL() {
 	if md.nl {
 		md.sb.WriteString("\n")
 		md.nl = false
@@ -32,7 +38,7 @@ func (md *MarkdownWriter) checkNL() {
 }
 
 // WriteHeader writes a header to the markdown document
-func (md *MarkdownWriter) WriteHeader(h string) {
+func (md *Writer) WriteHeader(h string) {
 	md.checkNL()
 	md.sb.WriteString("## ")
 	md.sb.WriteString(h)
@@ -40,7 +46,7 @@ func (md *MarkdownWriter) WriteHeader(h string) {
 }
 
 // WriteSubheader writes a sub-header to the markdown document
-func (md *MarkdownWriter) WriteSubheader(sh string) {
+func (md *Writer) WriteSubheader(sh string) {
 	md.checkNL()
 	md.sb.WriteString("### ")
 	md.sb.WriteString(sh)
@@ -48,29 +54,29 @@ func (md *MarkdownWriter) WriteSubheader(sh string) {
 }
 
 // WriteLine writes a line to the markdown document
-func (md *MarkdownWriter) WriteLine(s string) {
+func (md *Writer) WriteLine(s string) {
 	md.nl = true
 	md.sb.WriteString(s)
 	md.sb.WriteString("\n")
 }
 
 // WriteTable writes a table to the markdown document
-func (md *MarkdownWriter) WriteTable(table MarkdownTable) {
+func (md *Writer) WriteTable(table Table) {
 	md.WriteLine(table.String())
 }
 
 // EmptyLine inserts an empty line to the markdown document
-func (md *MarkdownWriter) EmptyLine() {
+func (md *Writer) EmptyLine() {
 	md.WriteLine("")
 }
 
 // String outputs the markdown document as a string
-func (md *MarkdownWriter) String() string {
+func (md *Writer) String() string {
 	return md.sb.String()
 }
 
-// MarkdownTable describes a table in a markdown document
-type MarkdownTable struct {
+// Table describes a table in a markdown document
+type Table struct {
 	sb        *strings.Builder
 	headers   []string
 	alignment string
@@ -83,10 +89,10 @@ const (
 	rightAlignment  = "---:"
 )
 
-// NewMarkdownTable creates a new table with given alignments and headers
-func NewMarkdownTable(alignment string, headers ...string) *MarkdownTable {
+// NewTable creates a new table with given alignments and headers
+func NewTable(alignment string, headers ...string) *Table {
 	alignment, headers = checkAlignmentAndHeaders(alignment, headers)
-	t := MarkdownTable{
+	t := Table{
 		sb:        &strings.Builder{},
 		headers:   headers,
 		alignment: alignment,
@@ -95,12 +101,17 @@ func NewMarkdownTable(alignment string, headers ...string) *MarkdownTable {
 }
 
 // Columns returns the number of columns in this table
-func (t *MarkdownTable) Columns() int {
+func (t *Table) Columns() int {
 	return len(t.headers)
 }
 
+// Rows returns the number of rows in this table
+func (t *Table) Rows() int {
+	return len(t.rows)
+}
+
 // AddRow adds a new row to the table
-func (t *MarkdownTable) AddRow(items ...string) {
+func (t *Table) AddRow(items ...string) {
 	t.rows = append(t.rows, markdownTableRow{
 		items: items,
 	})
@@ -135,7 +146,7 @@ func (r *markdownTableRow) ensureItems(count int) []string {
 	return r.items
 }
 
-func (t *MarkdownTable) writeHeader() {
+func (t *Table) writeHeader() {
 	if len(t.headers) == 0 {
 		return
 	}
@@ -144,7 +155,7 @@ func (t *MarkdownTable) writeHeader() {
 	t.sb.WriteString(" |")
 }
 
-func (t *MarkdownTable) writeAlignment() {
+func (t *Table) writeAlignment() {
 	if len(t.alignment) == 0 {
 		return
 	}
@@ -164,13 +175,13 @@ func (t *MarkdownTable) writeAlignment() {
 	t.sb.WriteString(" |")
 }
 
-func (t *MarkdownTable) writeRows() {
+func (t *Table) writeRows() {
 	for _, r := range t.rows {
 		t.writeRow(r)
 	}
 }
 
-func (t *MarkdownTable) writeRow(row markdownTableRow) {
+func (t *Table) writeRow(row markdownTableRow) {
 	items := row.ensureItems(t.Columns())
 	t.sb.WriteString("\n| ")
 	t.sb.WriteString(strings.Join(items, " | "))
@@ -178,7 +189,7 @@ func (t *MarkdownTable) writeRow(row markdownTableRow) {
 }
 
 // String outputs the markdown table to a string
-func (t *MarkdownTable) String() string {
+func (t *Table) String() string {
 	t.writeHeader()
 	t.writeAlignment()
 	t.writeRows()

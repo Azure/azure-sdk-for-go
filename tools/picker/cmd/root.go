@@ -17,6 +17,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 	"os"
 	"path/filepath"
 	"strings"
@@ -157,7 +158,7 @@ func contains(ss []string, s string) bool {
 }
 
 // removes commits and decendents thereof that contain breaking changes
-func pruneCommits(commits []repo.CherryCommit, report apidiff.CommitPkgsReport) []string {
+func pruneCommits(commits []repo.CherryCommit, report report.CommitPkgsReport) []string {
 	pkgsToSkip := map[string]string{}
 	forPicking := []string{}
 	for _, commit := range commits {

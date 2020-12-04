@@ -119,7 +119,8 @@ type ClassicAdministratorListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ClassicAdministratorListResultIterator provides access to a complete listing of ClassicAdministrator values.
+// ClassicAdministratorListResultIterator provides access to a complete listing of ClassicAdministrator
+// values.
 type ClassicAdministratorListResultIterator struct {
 	i    int
 	page ClassicAdministratorListResultPage
@@ -262,8 +263,11 @@ func (page ClassicAdministratorListResultPage) Values() []ClassicAdministrator {
 }
 
 // Creates a new instance of the ClassicAdministratorListResultPage type.
-func NewClassicAdministratorListResultPage(getNextPage func(context.Context, ClassicAdministratorListResult) (ClassicAdministratorListResult, error)) ClassicAdministratorListResultPage {
-	return ClassicAdministratorListResultPage{fn: getNextPage}
+func NewClassicAdministratorListResultPage(cur ClassicAdministratorListResult, getNextPage func(context.Context, ClassicAdministratorListResult) (ClassicAdministratorListResult, error)) ClassicAdministratorListResultPage {
+	return ClassicAdministratorListResultPage{
+		fn:   getNextPage,
+		calr: cur,
+	}
 }
 
 // ClassicAdministratorProperties classic Administrator properties.
@@ -272,6 +276,19 @@ type ClassicAdministratorProperties struct {
 	EmailAddress *string `json:"emailAddress,omitempty"`
 	// Role - The role of the administrator.
 	Role *string `json:"role,omitempty"`
+}
+
+// Error object to be thrown in case of an unsuccessful response
+type Error struct {
+	Error *ErrorError `json:"error,omitempty"`
+}
+
+// ErrorError ...
+type ErrorError struct {
+	// Code - Brief error code
+	Code *string `json:"code,omitempty"`
+	// Message - Longer message explaining the details of the error
+	Message *string `json:"message,omitempty"`
 }
 
 // Permission role definition permissions.
@@ -438,8 +455,11 @@ func (page PermissionGetResultPage) Values() []Permission {
 }
 
 // Creates a new instance of the PermissionGetResultPage type.
-func NewPermissionGetResultPage(getNextPage func(context.Context, PermissionGetResult) (PermissionGetResult, error)) PermissionGetResultPage {
-	return PermissionGetResultPage{fn: getNextPage}
+func NewPermissionGetResultPage(cur PermissionGetResult, getNextPage func(context.Context, PermissionGetResult) (PermissionGetResult, error)) PermissionGetResultPage {
+	return PermissionGetResultPage{
+		fn:  getNextPage,
+		pgr: cur,
+	}
 }
 
 // ProviderOperation operation
@@ -628,8 +648,11 @@ func (page ProviderOperationsMetadataListResultPage) Values() []ProviderOperatio
 }
 
 // Creates a new instance of the ProviderOperationsMetadataListResultPage type.
-func NewProviderOperationsMetadataListResultPage(getNextPage func(context.Context, ProviderOperationsMetadataListResult) (ProviderOperationsMetadataListResult, error)) ProviderOperationsMetadataListResultPage {
-	return ProviderOperationsMetadataListResultPage{fn: getNextPage}
+func NewProviderOperationsMetadataListResultPage(cur ProviderOperationsMetadataListResult, getNextPage func(context.Context, ProviderOperationsMetadataListResult) (ProviderOperationsMetadataListResult, error)) ProviderOperationsMetadataListResultPage {
+	return ProviderOperationsMetadataListResultPage{
+		fn:    getNextPage,
+		pomlr: cur,
+	}
 }
 
 // ResourceType resource Type
@@ -914,8 +937,11 @@ func (page RoleAssignmentListResultPage) Values() []RoleAssignment {
 }
 
 // Creates a new instance of the RoleAssignmentListResultPage type.
-func NewRoleAssignmentListResultPage(getNextPage func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)) RoleAssignmentListResultPage {
-	return RoleAssignmentListResultPage{fn: getNextPage}
+func NewRoleAssignmentListResultPage(cur RoleAssignmentListResult, getNextPage func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)) RoleAssignmentListResultPage {
+	return RoleAssignmentListResultPage{
+		fn:   getNextPage,
+		ralr: cur,
+	}
 }
 
 // RoleAssignmentProperties role assignment properties.
@@ -1173,8 +1199,11 @@ func (page RoleDefinitionListResultPage) Values() []RoleDefinition {
 }
 
 // Creates a new instance of the RoleDefinitionListResultPage type.
-func NewRoleDefinitionListResultPage(getNextPage func(context.Context, RoleDefinitionListResult) (RoleDefinitionListResult, error)) RoleDefinitionListResultPage {
-	return RoleDefinitionListResultPage{fn: getNextPage}
+func NewRoleDefinitionListResultPage(cur RoleDefinitionListResult, getNextPage func(context.Context, RoleDefinitionListResult) (RoleDefinitionListResult, error)) RoleDefinitionListResultPage {
+	return RoleDefinitionListResultPage{
+		fn:   getNextPage,
+		rdlr: cur,
+	}
 }
 
 // RoleDefinitionProperties role definition properties.

@@ -601,8 +601,11 @@ func (page ApisCollectionPage) Values() []APIEntity {
 }
 
 // Creates a new instance of the ApisCollectionPage type.
-func NewApisCollectionPage(getNextPage func(context.Context, ApisCollection) (ApisCollection, error)) ApisCollectionPage {
-	return ApisCollectionPage{fn: getNextPage}
+func NewApisCollectionPage(cur ApisCollection, getNextPage func(context.Context, ApisCollection) (ApisCollection, error)) ApisCollectionPage {
+	return ApisCollectionPage{
+		fn: getNextPage,
+		ac: cur,
+	}
 }
 
 // ApplicationLogsConfig application logs configuration
@@ -1107,8 +1110,11 @@ func (page BackupItemCollectionPage) Values() []BackupItem {
 }
 
 // Creates a new instance of the BackupItemCollectionPage type.
-func NewBackupItemCollectionPage(getNextPage func(context.Context, BackupItemCollection) (BackupItemCollection, error)) BackupItemCollectionPage {
-	return BackupItemCollectionPage{fn: getNextPage}
+func NewBackupItemCollectionPage(cur BackupItemCollection, getNextPage func(context.Context, BackupItemCollection) (BackupItemCollection, error)) BackupItemCollectionPage {
+	return BackupItemCollectionPage{
+		fn:  getNextPage,
+		bic: cur,
+	}
 }
 
 // BackupItemProperties ...
@@ -1282,8 +1288,8 @@ type BackupRequestProperties struct {
 	Type BackupRestoreOperationType `json:"type,omitempty"`
 }
 
-// BackupSchedule description of a backup schedule. Describes how often should be the backup performed and what
-// should be the retention policy.
+// BackupSchedule description of a backup schedule. Describes how often should be the backup performed and
+// what should be the retention policy.
 type BackupSchedule struct {
 	// FrequencyInterval - How often should be the backup executed (e.g. for weekly backup, this should be set to 7 and FrequencyUnit should be set to Day)
 	FrequencyInterval *int32 `json:"frequencyInterval,omitempty"`
@@ -1574,8 +1580,11 @@ func (page CertificateCollectionPage) Values() []Certificate {
 }
 
 // Creates a new instance of the CertificateCollectionPage type.
-func NewCertificateCollectionPage(getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
-	return CertificateCollectionPage{fn: getNextPage}
+func NewCertificateCollectionPage(cur CertificateCollection, getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
+	return CertificateCollectionPage{
+		fn: getNextPage,
+		cc: cur,
+	}
 }
 
 // CertificateDetails certificate Details
@@ -2382,8 +2391,11 @@ func (page CertificateOrderCertificateCollectionPage) Values() []CertificateOrde
 }
 
 // Creates a new instance of the CertificateOrderCertificateCollectionPage type.
-func NewCertificateOrderCertificateCollectionPage(getNextPage func(context.Context, CertificateOrderCertificateCollection) (CertificateOrderCertificateCollection, error)) CertificateOrderCertificateCollectionPage {
-	return CertificateOrderCertificateCollectionPage{fn: getNextPage}
+func NewCertificateOrderCertificateCollectionPage(cur CertificateOrderCertificateCollection, getNextPage func(context.Context, CertificateOrderCertificateCollection) (CertificateOrderCertificateCollection, error)) CertificateOrderCertificateCollectionPage {
+	return CertificateOrderCertificateCollectionPage{
+		fn:   getNextPage,
+		cocc: cur,
+	}
 }
 
 // CertificateOrderCertificateProperties ...
@@ -2548,8 +2560,11 @@ func (page CertificateOrderCollectionPage) Values() []CertificateOrder {
 }
 
 // Creates a new instance of the CertificateOrderCollectionPage type.
-func NewCertificateOrderCollectionPage(getNextPage func(context.Context, CertificateOrderCollection) (CertificateOrderCollection, error)) CertificateOrderCollectionPage {
-	return CertificateOrderCollectionPage{fn: getNextPage}
+func NewCertificateOrderCollectionPage(cur CertificateOrderCollection, getNextPage func(context.Context, CertificateOrderCollection) (CertificateOrderCollection, error)) CertificateOrderCollectionPage {
+	return CertificateOrderCollectionPage{
+		fn:  getNextPage,
+		coc: cur,
+	}
 }
 
 // CertificateOrderProperties ...
@@ -2808,7 +2823,8 @@ type ClassicMobileServiceCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ClassicMobileServiceCollectionIterator provides access to a complete listing of ClassicMobileService values.
+// ClassicMobileServiceCollectionIterator provides access to a complete listing of ClassicMobileService
+// values.
 type ClassicMobileServiceCollectionIterator struct {
 	i    int
 	page ClassicMobileServiceCollectionPage
@@ -2951,8 +2967,11 @@ func (page ClassicMobileServiceCollectionPage) Values() []ClassicMobileService {
 }
 
 // Creates a new instance of the ClassicMobileServiceCollectionPage type.
-func NewClassicMobileServiceCollectionPage(getNextPage func(context.Context, ClassicMobileServiceCollection) (ClassicMobileServiceCollection, error)) ClassicMobileServiceCollectionPage {
-	return ClassicMobileServiceCollectionPage{fn: getNextPage}
+func NewClassicMobileServiceCollectionPage(cur ClassicMobileServiceCollection, getNextPage func(context.Context, ClassicMobileServiceCollection) (ClassicMobileServiceCollection, error)) ClassicMobileServiceCollectionPage {
+	return ClassicMobileServiceCollectionPage{
+		fn:   getNextPage,
+		cmsc: cur,
+	}
 }
 
 // ClassicMobileServiceProperties ...
@@ -3435,8 +3454,11 @@ func (page ConnectionCollectionPage) Values() []Connection {
 }
 
 // Creates a new instance of the ConnectionCollectionPage type.
-func NewConnectionCollectionPage(getNextPage func(context.Context, ConnectionCollection) (ConnectionCollection, error)) ConnectionCollectionPage {
-	return ConnectionCollectionPage{fn: getNextPage}
+func NewConnectionCollectionPage(cur ConnectionCollection, getNextPage func(context.Context, ConnectionCollection) (ConnectionCollection, error)) ConnectionCollectionPage {
+	return ConnectionCollectionPage{
+		fn: getNextPage,
+		cc: cur,
+	}
 }
 
 // ConnectionError connection error
@@ -4034,7 +4056,8 @@ type ConsentLinkPayload struct {
 }
 
 // Contact contact information for domain registration. If 'Domain Privacy' option is not selected then the
-// contact information will be made publicly available through the Whois directories as per ICANN requirements.
+// contact information will be made publicly available through the Whois directories as per ICANN
+// requirements.
 type Contact struct {
 	// AddressMailing - Mailing address
 	AddressMailing *Address `json:"addressMailing,omitempty"`
@@ -4265,8 +4288,11 @@ func (page CsmUsageQuotaCollectionPage) Values() []CsmUsageQuota {
 }
 
 // Creates a new instance of the CsmUsageQuotaCollectionPage type.
-func NewCsmUsageQuotaCollectionPage(getNextPage func(context.Context, CsmUsageQuotaCollection) (CsmUsageQuotaCollection, error)) CsmUsageQuotaCollectionPage {
-	return CsmUsageQuotaCollectionPage{fn: getNextPage}
+func NewCsmUsageQuotaCollectionPage(cur CsmUsageQuotaCollection, getNextPage func(context.Context, CsmUsageQuotaCollection) (CsmUsageQuotaCollection, error)) CsmUsageQuotaCollectionPage {
+	return CsmUsageQuotaCollectionPage{
+		fn:   getNextPage,
+		cuqc: cur,
+	}
 }
 
 // Csr certificate signing request object
@@ -4826,8 +4852,11 @@ func (page DeletedSiteCollectionPage) Values() []DeletedSite {
 }
 
 // Creates a new instance of the DeletedSiteCollectionPage type.
-func NewDeletedSiteCollectionPage(getNextPage func(context.Context, DeletedSiteCollection) (DeletedSiteCollection, error)) DeletedSiteCollectionPage {
-	return DeletedSiteCollectionPage{fn: getNextPage}
+func NewDeletedSiteCollectionPage(cur DeletedSiteCollection, getNextPage func(context.Context, DeletedSiteCollection) (DeletedSiteCollection, error)) DeletedSiteCollectionPage {
+	return DeletedSiteCollectionPage{
+		fn:  getNextPage,
+		dsc: cur,
+	}
 }
 
 // DeletedSiteProperties ...
@@ -5227,8 +5256,11 @@ func (page DeploymentCollectionPage) Values() []Deployment {
 }
 
 // Creates a new instance of the DeploymentCollectionPage type.
-func NewDeploymentCollectionPage(getNextPage func(context.Context, DeploymentCollection) (DeploymentCollection, error)) DeploymentCollectionPage {
-	return DeploymentCollectionPage{fn: getNextPage}
+func NewDeploymentCollectionPage(cur DeploymentCollection, getNextPage func(context.Context, DeploymentCollection) (DeploymentCollection, error)) DeploymentCollectionPage {
+	return DeploymentCollectionPage{
+		fn: getNextPage,
+		dc: cur,
+	}
 }
 
 // DeploymentProperties ...
@@ -5541,8 +5573,11 @@ func (page DomainCollectionPage) Values() []Domain {
 }
 
 // Creates a new instance of the DomainCollectionPage type.
-func NewDomainCollectionPage(getNextPage func(context.Context, DomainCollection) (DomainCollection, error)) DomainCollectionPage {
-	return DomainCollectionPage{fn: getNextPage}
+func NewDomainCollectionPage(cur DomainCollection, getNextPage func(context.Context, DomainCollection) (DomainCollection, error)) DomainCollectionPage {
+	return DomainCollectionPage{
+		fn: getNextPage,
+		dc: cur,
+	}
 }
 
 // DomainControlCenterSsoRequest single sign on request information for domain management
@@ -5592,7 +5627,8 @@ type DomainProperties struct {
 	DomainNotRenewableReasons *[]string `json:"domainNotRenewableReasons,omitempty"`
 }
 
-// DomainPurchaseConsent domain purchase consent object representing acceptance of applicable legal agreements
+// DomainPurchaseConsent domain purchase consent object representing acceptance of applicable legal
+// agreements
 type DomainPurchaseConsent struct {
 	// AgreementKeys - List of applicable legal agreement keys. This list can be retrieved using ListLegalAgreements Api under TopLevelDomain resource
 	AgreementKeys *[]string `json:"agreementKeys,omitempty"`
@@ -6344,8 +6380,11 @@ func (page GeoRegionCollectionPage) Values() []GeoRegion {
 }
 
 // Creates a new instance of the GeoRegionCollectionPage type.
-func NewGeoRegionCollectionPage(getNextPage func(context.Context, GeoRegionCollection) (GeoRegionCollection, error)) GeoRegionCollectionPage {
-	return GeoRegionCollectionPage{fn: getNextPage}
+func NewGeoRegionCollectionPage(cur GeoRegionCollection, getNextPage func(context.Context, GeoRegionCollection) (GeoRegionCollection, error)) GeoRegionCollectionPage {
+	return GeoRegionCollectionPage{
+		fn:  getNextPage,
+		grc: cur,
+	}
 }
 
 // GeoRegionProperties ...
@@ -6358,9 +6397,10 @@ type GeoRegionProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
-// HandlerMapping the IIS handler mappings used to define which handler processes HTTP requests with certain
+// HandlerMapping the IIS handler mappings used to define which handler processes HTTP requests with
+// certain extension.
+// For example it is used to configure php-cgi.exe process to handle all HTTP requests with *.php
 // extension.
-// For example it is used to configure php-cgi.exe process to handle all HTTP requests with *.php extension.
 type HandlerMapping struct {
 	// Extension - Requests with this extension will be handled using the specified FastCGI application.
 	Extension *string `json:"extension,omitempty"`
@@ -6645,8 +6685,11 @@ func (page HostingEnvironmentCollectionPage) Values() []HostingEnvironment {
 }
 
 // Creates a new instance of the HostingEnvironmentCollectionPage type.
-func NewHostingEnvironmentCollectionPage(getNextPage func(context.Context, HostingEnvironmentCollection) (HostingEnvironmentCollection, error)) HostingEnvironmentCollectionPage {
-	return HostingEnvironmentCollectionPage{fn: getNextPage}
+func NewHostingEnvironmentCollectionPage(cur HostingEnvironmentCollection, getNextPage func(context.Context, HostingEnvironmentCollection) (HostingEnvironmentCollection, error)) HostingEnvironmentCollectionPage {
+	return HostingEnvironmentCollectionPage{
+		fn:  getNextPage,
+		hec: cur,
+	}
 }
 
 // HostingEnvironmentDiagnostics diagnostics for a hosting environment (App Service Environment)
@@ -6658,8 +6701,8 @@ type HostingEnvironmentDiagnostics struct {
 	DiagnosicsOutput *string `json:"diagnosicsOutput,omitempty"`
 }
 
-// HostingEnvironmentProfile specification for a hostingEnvironment (App Service Environment) to use for this
-// resource
+// HostingEnvironmentProfile specification for a hostingEnvironment (App Service Environment) to use for
+// this resource
 type HostingEnvironmentProfile struct {
 	// ID - Resource id of the hostingEnvironment (App Service Environment)
 	ID *string `json:"id,omitempty"`
@@ -6738,8 +6781,8 @@ type HostingEnvironmentProperties struct {
 	ClusterSettings *[]NameValuePair `json:"clusterSettings,omitempty"`
 }
 
-// HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture an abstraction for monitoring and retrieving
+// the results of a long-running operation.
 type HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture struct {
 	azure.Future
 }
@@ -6796,8 +6839,8 @@ func (future *HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture) Result(clien
 	return
 }
 
-// HostingEnvironmentsCreateOrUpdateWorkerPoolFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// HostingEnvironmentsCreateOrUpdateWorkerPoolFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type HostingEnvironmentsCreateOrUpdateWorkerPoolFuture struct {
 	azure.Future
 }
@@ -6825,8 +6868,8 @@ func (future *HostingEnvironmentsCreateOrUpdateWorkerPoolFuture) Result(client H
 	return
 }
 
-// HostingEnvironmentsDeleteHostingEnvironmentFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// HostingEnvironmentsDeleteHostingEnvironmentFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type HostingEnvironmentsDeleteHostingEnvironmentFuture struct {
 	azure.Future
 }
@@ -6898,8 +6941,8 @@ func (future *HostingEnvironmentsResumeHostingEnvironmentAllFuture) Result(clien
 	return
 }
 
-// HostingEnvironmentsResumeHostingEnvironmentFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// HostingEnvironmentsResumeHostingEnvironmentFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type HostingEnvironmentsResumeHostingEnvironmentFuture struct {
 	azure.Future
 }
@@ -6956,8 +6999,8 @@ func (future *HostingEnvironmentsSuspendHostingEnvironmentAllFuture) Result(clie
 	return
 }
 
-// HostingEnvironmentsSuspendHostingEnvironmentFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// HostingEnvironmentsSuspendHostingEnvironmentFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type HostingEnvironmentsSuspendHostingEnvironmentFuture struct {
 	azure.Future
 }
@@ -7276,8 +7319,11 @@ func (page HostNameBindingCollectionPage) Values() []HostNameBinding {
 }
 
 // Creates a new instance of the HostNameBindingCollectionPage type.
-func NewHostNameBindingCollectionPage(getNextPage func(context.Context, HostNameBindingCollection) (HostNameBindingCollection, error)) HostNameBindingCollectionPage {
-	return HostNameBindingCollectionPage{fn: getNextPage}
+func NewHostNameBindingCollectionPage(cur HostNameBindingCollection, getNextPage func(context.Context, HostNameBindingCollection) (HostNameBindingCollection, error)) HostNameBindingCollectionPage {
+	return HostNameBindingCollectionPage{
+		fn:   getNextPage,
+		hnbc: cur,
+	}
 }
 
 // HostNameBindingProperties ...
@@ -7790,8 +7836,11 @@ func (page ManagedHostingEnvironmentCollectionPage) Values() []ManagedHostingEnv
 }
 
 // Creates a new instance of the ManagedHostingEnvironmentCollectionPage type.
-func NewManagedHostingEnvironmentCollectionPage(getNextPage func(context.Context, ManagedHostingEnvironmentCollection) (ManagedHostingEnvironmentCollection, error)) ManagedHostingEnvironmentCollectionPage {
-	return ManagedHostingEnvironmentCollectionPage{fn: getNextPage}
+func NewManagedHostingEnvironmentCollectionPage(cur ManagedHostingEnvironmentCollection, getNextPage func(context.Context, ManagedHostingEnvironmentCollection) (ManagedHostingEnvironmentCollection, error)) ManagedHostingEnvironmentCollectionPage {
+	return ManagedHostingEnvironmentCollectionPage{
+		fn:   getNextPage,
+		mhec: cur,
+	}
 }
 
 // ManagedHostingEnvironmentProperties ...
@@ -7823,8 +7872,8 @@ type ManagedHostingEnvironmentProperties struct {
 	APIManagementAccount *string `json:"apiManagementAccount,omitempty"`
 }
 
-// ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture an abstraction for monitoring and
-// retrieving the results of a long-running operation.
+// ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture an abstraction for monitoring
+// and retrieving the results of a long-running operation.
 type ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture struct {
 	azure.Future
 }
@@ -7852,8 +7901,8 @@ func (future *ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentF
 	return
 }
 
-// ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture an abstraction for monitoring and retrieving
-// the results of a long-running operation.
+// ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture an abstraction for monitoring and
+// retrieving the results of a long-running operation.
 type ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture struct {
 	azure.Future
 }
@@ -8164,8 +8213,11 @@ func (page MetricDefinitionCollectionPage) Values() []MetricDefinition {
 }
 
 // Creates a new instance of the MetricDefinitionCollectionPage type.
-func NewMetricDefinitionCollectionPage(getNextPage func(context.Context, MetricDefinitionCollection) (MetricDefinitionCollection, error)) MetricDefinitionCollectionPage {
-	return MetricDefinitionCollectionPage{fn: getNextPage}
+func NewMetricDefinitionCollectionPage(cur MetricDefinitionCollection, getNextPage func(context.Context, MetricDefinitionCollection) (MetricDefinitionCollection, error)) MetricDefinitionCollectionPage {
+	return MetricDefinitionCollectionPage{
+		fn:  getNextPage,
+		mdc: cur,
+	}
 }
 
 // MetricDefinitionProperties ...
@@ -8340,8 +8392,11 @@ func (page NameIdentifierCollectionPage) Values() []NameIdentifier {
 }
 
 // Creates a new instance of the NameIdentifierCollectionPage type.
-func NewNameIdentifierCollectionPage(getNextPage func(context.Context, NameIdentifierCollection) (NameIdentifierCollection, error)) NameIdentifierCollectionPage {
-	return NameIdentifierCollectionPage{fn: getNextPage}
+func NewNameIdentifierCollectionPage(cur NameIdentifierCollection, getNextPage func(context.Context, NameIdentifierCollection) (NameIdentifierCollection, error)) NameIdentifierCollectionPage {
+	return NameIdentifierCollectionPage{
+		fn:  getNextPage,
+		nic: cur,
+	}
 }
 
 // NameValuePair name value pair
@@ -8361,8 +8416,8 @@ type NetworkAccessControlEntry struct {
 	RemoteSubnet *string                  `json:"remoteSubnet,omitempty"`
 }
 
-// NetworkFeatures this is an object used to store a full view of network features (presently VNET integration
-// and Hybrid Connections)
+// NetworkFeatures this is an object used to store a full view of network features (presently VNET
+// integration and Hybrid Connections)
 // for a web app.
 type NetworkFeatures struct {
 	autorest.Response          `json:"-"`
@@ -8668,8 +8723,8 @@ func (paor PremierAddOnRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RampUpRule routing rules for ramp up testing. This rule allows to redirect static traffic % to a slot or to
-// gradually change routing % based on performance
+// RampUpRule routing rules for ramp up testing. This rule allows to redirect static traffic % to a slot or
+// to gradually change routing % based on performance
 type RampUpRule struct {
 	// ActionHostName - Hostname of a slot to which the traffic will be redirected if decided to. E.g. mysite-stage.azurewebsites.net
 	ActionHostName *string `json:"actionHostName,omitempty"`
@@ -9376,8 +9431,11 @@ func (page ResourceMetricCollectionPage) Values() []ResourceMetric {
 }
 
 // Creates a new instance of the ResourceMetricCollectionPage type.
-func NewResourceMetricCollectionPage(getNextPage func(context.Context, ResourceMetricCollection) (ResourceMetricCollection, error)) ResourceMetricCollectionPage {
-	return ResourceMetricCollectionPage{fn: getNextPage}
+func NewResourceMetricCollectionPage(cur ResourceMetricCollection, getNextPage func(context.Context, ResourceMetricCollection) (ResourceMetricCollection, error)) ResourceMetricCollectionPage {
+	return ResourceMetricCollectionPage{
+		fn:  getNextPage,
+		rmc: cur,
+	}
 }
 
 // ResourceMetricName name of a metric for any resource
@@ -9424,8 +9482,8 @@ type ResourceNameAvailabilityRequest struct {
 	IsFqdn *bool `json:"isFqdn,omitempty"`
 }
 
-// ResponseMessageEnvelopeAPIEntity message envelope that contains the common Azure resource manager properties
-// and the resource provider specific content
+// ResponseMessageEnvelopeAPIEntity message envelope that contains the common Azure resource manager
+// properties and the resource provider specific content
 type ResponseMessageEnvelopeAPIEntity struct {
 	// ID - Resource Id. Typically id is populated only for responses to GET requests. Caller is responsible for passing in this
 	//             value for GET requests only.
@@ -9910,8 +9968,11 @@ func (page ServerFarmCollectionPage) Values() []ServerFarmWithRichSku {
 }
 
 // Creates a new instance of the ServerFarmCollectionPage type.
-func NewServerFarmCollectionPage(getNextPage func(context.Context, ServerFarmCollection) (ServerFarmCollection, error)) ServerFarmCollectionPage {
-	return ServerFarmCollectionPage{fn: getNextPage}
+func NewServerFarmCollectionPage(cur ServerFarmCollection, getNextPage func(context.Context, ServerFarmCollection) (ServerFarmCollection, error)) ServerFarmCollectionPage {
+	return ServerFarmCollectionPage{
+		fn:  getNextPage,
+		sfc: cur,
+	}
 }
 
 // ServerFarmsCreateOrUpdateServerFarmFuture an abstraction for monitoring and retrieving the results of a
@@ -10264,7 +10325,8 @@ func (s *Site) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SiteAuthSettings configuration settings for the Azure App Service Authentication / Authorization feature.
+// SiteAuthSettings configuration settings for the Azure App Service Authentication / Authorization
+// feature.
 type SiteAuthSettings struct {
 	autorest.Response `json:"-"`
 	// Enabled - Gets or sets a value indicating whether the Authentication / Authorization feature is enabled for the current app.
@@ -10533,8 +10595,11 @@ func (page SiteCollectionPage) Values() []Site {
 }
 
 // Creates a new instance of the SiteCollectionPage type.
-func NewSiteCollectionPage(getNextPage func(context.Context, SiteCollection) (SiteCollection, error)) SiteCollectionPage {
-	return SiteCollectionPage{fn: getNextPage}
+func NewSiteCollectionPage(cur SiteCollection, getNextPage func(context.Context, SiteCollection) (SiteCollection, error)) SiteCollectionPage {
+	return SiteCollectionPage{
+		fn: getNextPage,
+		sc: cur,
+	}
 }
 
 // SiteConfig configuration of Azure web site
@@ -11022,8 +11087,11 @@ func (page SiteInstanceCollectionPage) Values() []SiteInstance {
 }
 
 // Creates a new instance of the SiteInstanceCollectionPage type.
-func NewSiteInstanceCollectionPage(getNextPage func(context.Context, SiteInstanceCollection) (SiteInstanceCollection, error)) SiteInstanceCollectionPage {
-	return SiteInstanceCollectionPage{fn: getNextPage}
+func NewSiteInstanceCollectionPage(cur SiteInstanceCollection, getNextPage func(context.Context, SiteInstanceCollection) (SiteInstanceCollection, error)) SiteInstanceCollectionPage {
+	return SiteInstanceCollectionPage{
+		fn:  getNextPage,
+		sic: cur,
+	}
 }
 
 // SiteInstanceProperties ...
@@ -11330,8 +11398,8 @@ func (future *SitesCreateOrUpdateSiteFuture) Result(client SitesClient) (s Site,
 	return
 }
 
-// SitesCreateOrUpdateSiteSlotFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// SitesCreateOrUpdateSiteSlotFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type SitesCreateOrUpdateSiteSlotFuture struct {
 	azure.Future
 }
@@ -11388,8 +11456,8 @@ func (future *SitesListSitePublishingCredentialsFuture) Result(client SitesClien
 	return
 }
 
-// SitesListSitePublishingCredentialsSlotFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// SitesListSitePublishingCredentialsSlotFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type SitesListSitePublishingCredentialsSlotFuture struct {
 	azure.Future
 }
@@ -11554,7 +11622,8 @@ type SiteSourceControlProperties struct {
 	IsMercurial *bool `json:"isMercurial,omitempty"`
 }
 
-// SitesRecoverSiteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// SitesRecoverSiteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SitesRecoverSiteFuture struct {
 	azure.Future
 }
@@ -11611,7 +11680,8 @@ func (future *SitesRecoverSiteSlotFuture) Result(client SitesClient) (s Site, er
 	return
 }
 
-// SitesRestoreSiteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// SitesRestoreSiteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SitesRestoreSiteFuture struct {
 	azure.Future
 }
@@ -11697,8 +11767,8 @@ func (future *SitesSwapSlotsSlotFuture) Result(client SitesClient) (so SetObject
 	return
 }
 
-// SitesSwapSlotWithProductionFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// SitesSwapSlotWithProductionFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type SitesSwapSlotWithProductionFuture struct {
 	azure.Future
 }
@@ -11914,8 +11984,11 @@ func (page SkuInfoCollectionPage) Values() []SkuInfo {
 }
 
 // Creates a new instance of the SkuInfoCollectionPage type.
-func NewSkuInfoCollectionPage(getNextPage func(context.Context, SkuInfoCollection) (SkuInfoCollection, error)) SkuInfoCollectionPage {
-	return SkuInfoCollectionPage{fn: getNextPage}
+func NewSkuInfoCollectionPage(cur SkuInfoCollection, getNextPage func(context.Context, SkuInfoCollection) (SkuInfoCollection, error)) SkuInfoCollectionPage {
+	return SkuInfoCollectionPage{
+		fn:  getNextPage,
+		sic: cur,
+	}
 }
 
 // SlotConfigNames class containing names for connection strings and application settings to be marked as
@@ -12334,8 +12407,11 @@ func (page SlotDifferenceCollectionPage) Values() []SlotDifference {
 }
 
 // Creates a new instance of the SlotDifferenceCollectionPage type.
-func NewSlotDifferenceCollectionPage(getNextPage func(context.Context, SlotDifferenceCollection) (SlotDifferenceCollection, error)) SlotDifferenceCollectionPage {
-	return SlotDifferenceCollectionPage{fn: getNextPage}
+func NewSlotDifferenceCollectionPage(cur SlotDifferenceCollection, getNextPage func(context.Context, SlotDifferenceCollection) (SlotDifferenceCollection, error)) SlotDifferenceCollectionPage {
+	return SlotDifferenceCollectionPage{
+		fn:  getNextPage,
+		sdc: cur,
+	}
 }
 
 // SlotDifferenceProperties ...
@@ -12641,8 +12717,11 @@ func (page SourceControlCollectionPage) Values() []SourceControl {
 }
 
 // Creates a new instance of the SourceControlCollectionPage type.
-func NewSourceControlCollectionPage(getNextPage func(context.Context, SourceControlCollection) (SourceControlCollection, error)) SourceControlCollectionPage {
-	return SourceControlCollectionPage{fn: getNextPage}
+func NewSourceControlCollectionPage(cur SourceControlCollection, getNextPage func(context.Context, SourceControlCollection) (SourceControlCollection, error)) SourceControlCollectionPage {
+	return SourceControlCollectionPage{
+		fn:  getNextPage,
+		scc: cur,
+	}
 }
 
 // SourceControlProperties ...
@@ -12839,8 +12918,11 @@ func (page StampCapacityCollectionPage) Values() []StampCapacity {
 }
 
 // Creates a new instance of the StampCapacityCollectionPage type.
-func NewStampCapacityCollectionPage(getNextPage func(context.Context, StampCapacityCollection) (StampCapacityCollection, error)) StampCapacityCollectionPage {
-	return StampCapacityCollectionPage{fn: getNextPage}
+func NewStampCapacityCollectionPage(cur StampCapacityCollection, getNextPage func(context.Context, StampCapacityCollection) (StampCapacityCollection, error)) StampCapacityCollectionPage {
+	return StampCapacityCollectionPage{
+		fn:  getNextPage,
+		scc: cur,
+	}
 }
 
 // StatusCodesBasedTrigger statusCodeBasedTrigger
@@ -13067,8 +13149,11 @@ func (page TldLegalAgreementCollectionPage) Values() []TldLegalAgreement {
 }
 
 // Creates a new instance of the TldLegalAgreementCollectionPage type.
-func NewTldLegalAgreementCollectionPage(getNextPage func(context.Context, TldLegalAgreementCollection) (TldLegalAgreementCollection, error)) TldLegalAgreementCollectionPage {
-	return TldLegalAgreementCollectionPage{fn: getNextPage}
+func NewTldLegalAgreementCollectionPage(cur TldLegalAgreementCollection, getNextPage func(context.Context, TldLegalAgreementCollection) (TldLegalAgreementCollection, error)) TldLegalAgreementCollectionPage {
+	return TldLegalAgreementCollectionPage{
+		fn:   getNextPage,
+		tlac: cur,
+	}
 }
 
 // TopLevelDomain a top level domain object
@@ -13352,8 +13437,11 @@ func (page TopLevelDomainCollectionPage) Values() []TopLevelDomain {
 }
 
 // Creates a new instance of the TopLevelDomainCollectionPage type.
-func NewTopLevelDomainCollectionPage(getNextPage func(context.Context, TopLevelDomainCollection) (TopLevelDomainCollection, error)) TopLevelDomainCollectionPage {
-	return TopLevelDomainCollectionPage{fn: getNextPage}
+func NewTopLevelDomainCollectionPage(cur TopLevelDomainCollection, getNextPage func(context.Context, TopLevelDomainCollection) (TopLevelDomainCollection, error)) TopLevelDomainCollectionPage {
+	return TopLevelDomainCollectionPage{
+		fn:   getNextPage,
+		tldc: cur,
+	}
 }
 
 // TopLevelDomainProperties ...
@@ -13638,8 +13726,11 @@ func (page UsageCollectionPage) Values() []Usage {
 }
 
 // Creates a new instance of the UsageCollectionPage type.
-func NewUsageCollectionPage(getNextPage func(context.Context, UsageCollection) (UsageCollection, error)) UsageCollectionPage {
-	return UsageCollectionPage{fn: getNextPage}
+func NewUsageCollectionPage(cur UsageCollection, getNextPage func(context.Context, UsageCollection) (UsageCollection, error)) UsageCollectionPage {
+	return UsageCollectionPage{
+		fn: getNextPage,
+		uc: cur,
+	}
 }
 
 // UsageProperties ...
@@ -14537,8 +14628,11 @@ func (page WorkerPoolCollectionPage) Values() []WorkerPool {
 }
 
 // Creates a new instance of the WorkerPoolCollectionPage type.
-func NewWorkerPoolCollectionPage(getNextPage func(context.Context, WorkerPoolCollection) (WorkerPoolCollection, error)) WorkerPoolCollectionPage {
-	return WorkerPoolCollectionPage{fn: getNextPage}
+func NewWorkerPoolCollectionPage(cur WorkerPoolCollection, getNextPage func(context.Context, WorkerPoolCollection) (WorkerPoolCollection, error)) WorkerPoolCollectionPage {
+	return WorkerPoolCollectionPage{
+		fn:  getNextPage,
+		wpc: cur,
+	}
 }
 
 // WorkerPoolProperties ...

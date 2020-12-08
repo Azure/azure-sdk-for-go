@@ -1,8 +1,9 @@
 package cmd
 
 import (
-	"github.com/Azure/azure-sdk-for-go/tools/generator/pipeline"
 	"os"
+
+	"github.com/Azure/azure-sdk-for-go/tools/generator/pipeline"
 )
 
 func readInputFrom(inputPath string) (*pipeline.GenerateInput, error) {

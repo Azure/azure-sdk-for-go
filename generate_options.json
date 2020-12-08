@@ -8,8 +8,5 @@
     "--use-onever",
     "--preview-chk",
     "--version=V2"
-  ],
-  "afterScripts": [
-    "gofmt -w ./services/"
   ]
 }

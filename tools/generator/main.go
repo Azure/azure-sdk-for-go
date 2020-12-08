@@ -9,7 +9,7 @@ import (
 
 func main() {
 	if err := cmd.Command().Execute(); err != nil {
-		log.Printf("[ERROR] generation meets an error: %+v", err)
+		log.Printf("[ERROR] %+v", err)
 		os.Exit(1)
 	}
 }

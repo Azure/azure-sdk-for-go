@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"sort"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/changelog"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/model"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/pipeline"
 	"github.com/spf13/cobra"
 )
 
@@ -19,7 +19,8 @@ const (
 	defaultOptionPath = "generate_options.json"
 )
 
-// Command ...
+// Command returns the command for the generator. Note that this command is designed to run in the root directory of
+// azure-sdk-for-go. It might not work if you are running this tool in somewhere else
 func Command() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:  "generator <generate input filepath> <generate output filepath>",
@@ -58,7 +59,15 @@ func execute(inputPath, outputPath string, flags Flags) error {
 		return fmt.Errorf("cannot read generate input: %+v", err)
 	}
 	log.Printf("Generating using the following GenerateInput...\n%s", input.String())
-	output, err := generate(input, flags.OptionPath)
+	cwd, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+	ctx := generateContext{
+		cwd:        cwd,
+		optionPath: flags.OptionPath,
+	}
+	output, err := ctx.generate(input)
 	if err != nil {
 		return fmt.Errorf("cannot generate: %+v", err)
 	}
@@ -70,15 +79,15 @@ func execute(inputPath, outputPath string, flags Flags) error {
 	return nil
 }
 
-func readInputFrom(inputPath string) (*model.GenerateInput, error) {
+func readInputFrom(inputPath string) (*pipeline.GenerateInput, error) {
 	inputFile, err := os.Open(inputPath)
 	if err != nil {
 		return nil, err
 	}
-	return model.NewGenerateInputFrom(inputFile)
+	return pipeline.NewGenerateInputFrom(inputFile)
 }
 
-func writeOutputTo(outputPath string, output *model.GenerateOutput) error {
+func writeOutputTo(outputPath string, output *pipeline.GenerateOutput) error {
 	file, err := os.Create(outputPath)
 	if err != nil {
 		return err
@@ -90,61 +99,81 @@ func writeOutputTo(outputPath string, output *model.GenerateOutput) error {
 	return nil
 }
 
+type generateContext struct {
+	cwd        string
+	optionPath string
+}
+
 // TODO -- support dry run
-func generate(input *model.GenerateInput, optionPath string) (*model.GenerateOutput, error) {
+func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.GenerateOutput, error) {
 	if input.DryRun {
 		return nil, fmt.Errorf("dry run not supported yet")
 	}
-	log.Printf("Reading options from file '%s'...", optionPath)
+	log.Printf("Reading options from file '%s'...", ctx.optionPath)
 
-	optionFile, err := os.Open(optionPath)
+	optionFile, err := os.Open(ctx.optionPath)
 	if err != nil {
 		return nil, err
 	}
 
-	options, err := autorest.NewOptionsFrom(optionFile)
+	options, err := model.NewOptionsFrom(optionFile)
 	if err != nil {
 		return nil, err
 	}
-	log.Printf("Autorest options: \n%s", options.String())
+	log.Printf("Autorest options: \n%+v", options)
 
 	// iterate over all the readme
-	results := make([]model.PackageResult, 0)
+	results := make([]pipeline.PackageResult, 0)
 	for _, readme := range input.RelatedReadmeMdFiles {
+		// TODO -- maintain a map from readme files to corresponding output folders, so that we could detect the situation that a package was deleted
 		log.Printf("Processing readme '%s'...", readme)
-		task := autorest.Task{
-			AbsReadmeMd: filepath.Join(input.SpecFolder, readme),
+		absReadme := filepath.Join(input.SpecFolder, readme)
+		// generate code
+		g := autorestContext{
+			absReadme:      absReadme,
+			metadataOutput: filepath.Dir(absReadme),
+			options:        options,
 		}
-		if err := task.Execute(*options); err != nil {
+		if err := g.generate(); err != nil {
 			return nil, err
 		}
-		// get changed file list
-		changedFiles, err := getChangedFiles()
+		// get the metadata map
+		m := autorest.NewMetadataProcessorFromLocation(g.metadataOutput)
+		metadataMap, err := m.Process()
 		if err != nil {
 			return nil, err
 		}
-		log.Printf("Files changed in the SDK: %+v", changedFiles)
-		// get packages using the changed file list
-		// returns a map, key is package path, value is files that have changed
-		packages, err := autorest.GetChangedPackages(changedFiles)
-		if err != nil {
-			return nil, err
+		var packages []string
+		for _, metadata := range metadataMap {
+			// TODO -- first validate the output folder is valid
+			outputFolder := filepath.Clean(metadata.PackagePath())
+			// first format the package
+			if err := autorest.FormatPackage(outputFolder); err != nil {
+				return nil, err
+			}
+			// get the package path - which is a relative path to the sdk root
+			packagePath, err := filepath.Rel(ctx.cwd, outputFolder)
+			if err != nil {
+				return nil, err
+			}
+			packages = append(packages, packagePath)
 		}
 		log.Printf("Packages changed: %+v", packages)
 		// iterate over the changed packages
-		for p, files := range packages {
-			log.Printf("Getting package result for package '%s', changed files are: [%s]", p, strings.Join(files, ", "))
+		for _, p := range packages {
+			p = normalizePath(p)
+			log.Printf("Getting package result for package '%s'", p)
 			c, err := changelog.NewChangelogForPackage(p)
 			if err != nil {
 				return nil, err
 			}
 			content := c.ToMarkdown()
 			breaking := c.HasBreakingChanges()
-			results = append(results, model.PackageResult{
+			results = append(results, pipeline.PackageResult{
 				PackageName: getPackageIdentifier(p),
 				Path:        []string{p},
 				ReadmeMd:    []string{readme},
-				Changelog: &model.Changelog{
+				Changelog: &pipeline.Changelog{
 					Content:           &content,
 					HasBreakingChange: &breaking,
 				},
@@ -159,58 +188,13 @@ func generate(input *model.GenerateInput, optionPath string) (*model.GenerateOut
 		return apiI > apiJ
 	})
 
-	return &model.GenerateOutput{
+	return &pipeline.GenerateOutput{
 		Packages: results,
 	}, nil
 }
 
-func getChangedFiles() ([]string, error) {
-	var files []string
-	// get the file changed
-	changed, err := getDiffFiles()
-	if err != nil {
-		return nil, err
-	}
-	files = append(files, changed...)
-	// get the untracked files
-	untracked, err := getUntrackedFiles()
-	if err != nil {
-		return nil, err
-	}
-	files = append(files, untracked...)
-	return files, nil
-}
-
-func getDiffFiles() ([]string, error) {
-	c := exec.Command("git", "diff", "--name-only")
-	output, err := c.Output()
-	if err != nil {
-		return nil, err
-	}
-	var files []string
-	for _, f := range strings.Split(string(output), "\n") {
-		f = strings.TrimSpace(f)
-		if f != "" {
-			files = append(files, f)
-		}
-	}
-	return files, nil
-}
-
-func getUntrackedFiles() ([]string, error) {
-	c := exec.Command("git", "ls-files", "--other", "--exclude-standard")
-	output, err := c.Output()
-	if err != nil {
-		return nil, err
-	}
-	var files []string
-	for _, f := range strings.Split(string(output), "\n") {
-		f = strings.TrimSpace(f)
-		if f != "" {
-			files = append(files, f)
-		}
-	}
-	return files, nil
+func normalizePath(path string) string {
+	return strings.ReplaceAll(path, "\\", "/")
 }
 
 func getPackageIdentifier(pkg string) string {

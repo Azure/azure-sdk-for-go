@@ -1,4 +1,4 @@
-package model
+package pipeline
 
 import (
 	"encoding/json"

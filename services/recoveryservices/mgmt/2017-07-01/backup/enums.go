@@ -112,44 +112,6 @@ func PossibleContainerTypeBasicProtectionContainerValues() []ContainerTypeBasicP
 	return []ContainerTypeBasicProtectionContainer{ContainerTypeAzureBackupServerContainer1, ContainerTypeAzureSQLContainer1, ContainerTypeAzureWorkloadContainer, ContainerTypeDPMContainer1, ContainerTypeGenericContainer1, ContainerTypeIaaSVMContainer, ContainerTypeMicrosoftClassicComputevirtualMachines, ContainerTypeMicrosoftComputevirtualMachines, ContainerTypeProtectionContainer, ContainerTypeSQLAGWorkLoadContainer1, ContainerTypeStorageContainer1, ContainerTypeVMAppContainer1, ContainerTypeWindows1}
 }
 
-// CopyOptions enumerates the values for copy options.
-type CopyOptions string
-
-const (
-	// CopyOptionsCreateCopy ...
-	CopyOptionsCreateCopy CopyOptions = "CreateCopy"
-	// CopyOptionsFailOnConflict ...
-	CopyOptionsFailOnConflict CopyOptions = "FailOnConflict"
-	// CopyOptionsInvalid ...
-	CopyOptionsInvalid CopyOptions = "Invalid"
-	// CopyOptionsOverwrite ...
-	CopyOptionsOverwrite CopyOptions = "Overwrite"
-	// CopyOptionsSkip ...
-	CopyOptionsSkip CopyOptions = "Skip"
-)
-
-// PossibleCopyOptionsValues returns an array of possible values for the CopyOptions const type.
-func PossibleCopyOptionsValues() []CopyOptions {
-	return []CopyOptions{CopyOptionsCreateCopy, CopyOptionsFailOnConflict, CopyOptionsInvalid, CopyOptionsOverwrite, CopyOptionsSkip}
-}
-
-// CreateMode enumerates the values for create mode.
-type CreateMode string
-
-const (
-	// CreateModeDefault ...
-	CreateModeDefault CreateMode = "Default"
-	// CreateModeInvalid ...
-	CreateModeInvalid CreateMode = "Invalid"
-	// CreateModeRecover ...
-	CreateModeRecover CreateMode = "Recover"
-)
-
-// PossibleCreateModeValues returns an array of possible values for the CreateMode const type.
-func PossibleCreateModeValues() []CreateMode {
-	return []CreateMode{CreateModeDefault, CreateModeInvalid, CreateModeRecover}
-}
-
 // DataSourceType enumerates the values for data source type.
 type DataSourceType string
 
@@ -238,44 +200,6 @@ const (
 // PossibleFeatureTypeValues returns an array of possible values for the FeatureType const type.
 func PossibleFeatureTypeValues() []FeatureType {
 	return []FeatureType{FeatureTypeAzureBackupGoals, FeatureTypeAzureVMResourceBackup, FeatureTypeFeatureSupportRequest}
-}
-
-// HealthState enumerates the values for health state.
-type HealthState string
-
-const (
-	// HealthStateActionRequired ...
-	HealthStateActionRequired HealthState = "ActionRequired"
-	// HealthStateActionSuggested ...
-	HealthStateActionSuggested HealthState = "ActionSuggested"
-	// HealthStateInvalid ...
-	HealthStateInvalid HealthState = "Invalid"
-	// HealthStatePassed ...
-	HealthStatePassed HealthState = "Passed"
-)
-
-// PossibleHealthStateValues returns an array of possible values for the HealthState const type.
-func PossibleHealthStateValues() []HealthState {
-	return []HealthState{HealthStateActionRequired, HealthStateActionSuggested, HealthStateInvalid, HealthStatePassed}
-}
-
-// HealthStatus enumerates the values for health status.
-type HealthStatus string
-
-const (
-	// HealthStatusActionRequired ...
-	HealthStatusActionRequired HealthStatus = "ActionRequired"
-	// HealthStatusActionSuggested ...
-	HealthStatusActionSuggested HealthStatus = "ActionSuggested"
-	// HealthStatusInvalid ...
-	HealthStatusInvalid HealthStatus = "Invalid"
-	// HealthStatusPassed ...
-	HealthStatusPassed HealthStatus = "Passed"
-)
-
-// PossibleHealthStatusValues returns an array of possible values for the HealthStatus const type.
-func PossibleHealthStatusValues() []HealthStatus {
-	return []HealthStatus{HealthStatusActionRequired, HealthStatusActionSuggested, HealthStatusInvalid, HealthStatusPassed}
 }
 
 // InquiryStatus enumerates the values for inquiry status.
@@ -393,25 +317,6 @@ func PossibleJobTypeValues() []JobType {
 	return []JobType{JobTypeAzureIaaSVMJob, JobTypeAzureStorageJob, JobTypeAzureWorkloadJob, JobTypeDpmJob, JobTypeJob, JobTypeMabJob}
 }
 
-// LastBackupStatus enumerates the values for last backup status.
-type LastBackupStatus string
-
-const (
-	// LastBackupStatusHealthy ...
-	LastBackupStatusHealthy LastBackupStatus = "Healthy"
-	// LastBackupStatusInvalid ...
-	LastBackupStatusInvalid LastBackupStatus = "Invalid"
-	// LastBackupStatusIRPending ...
-	LastBackupStatusIRPending LastBackupStatus = "IRPending"
-	// LastBackupStatusUnhealthy ...
-	LastBackupStatusUnhealthy LastBackupStatus = "Unhealthy"
-)
-
-// PossibleLastBackupStatusValues returns an array of possible values for the LastBackupStatus const type.
-func PossibleLastBackupStatusValues() []LastBackupStatus {
-	return []LastBackupStatus{LastBackupStatusHealthy, LastBackupStatusInvalid, LastBackupStatusIRPending, LastBackupStatusUnhealthy}
-}
-
 // MabServerType enumerates the values for mab server type.
 type MabServerType string
 
@@ -486,29 +391,19 @@ func PossibleManagementTypeValues() []ManagementType {
 type ObjectType string
 
 const (
-	// ObjectTypeAzureFileShareRestoreRequest ...
-	ObjectTypeAzureFileShareRestoreRequest ObjectType = "AzureFileShareRestoreRequest"
-	// ObjectTypeAzureWorkloadPointInTimeRestoreRequest ...
-	ObjectTypeAzureWorkloadPointInTimeRestoreRequest ObjectType = "AzureWorkloadPointInTimeRestoreRequest"
-	// ObjectTypeAzureWorkloadRestoreRequest ...
-	ObjectTypeAzureWorkloadRestoreRequest ObjectType = "AzureWorkloadRestoreRequest"
-	// ObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest ...
-	ObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest ObjectType = "AzureWorkloadSAPHanaPointInTimeRestoreRequest"
-	// ObjectTypeAzureWorkloadSAPHanaRestoreRequest ...
-	ObjectTypeAzureWorkloadSAPHanaRestoreRequest ObjectType = "AzureWorkloadSAPHanaRestoreRequest"
-	// ObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest ...
-	ObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest ObjectType = "AzureWorkloadSQLPointInTimeRestoreRequest"
-	// ObjectTypeAzureWorkloadSQLRestoreRequest ...
-	ObjectTypeAzureWorkloadSQLRestoreRequest ObjectType = "AzureWorkloadSQLRestoreRequest"
-	// ObjectTypeIaasVMRestoreRequest ...
-	ObjectTypeIaasVMRestoreRequest ObjectType = "IaasVMRestoreRequest"
-	// ObjectTypeRestoreRequest ...
-	ObjectTypeRestoreRequest ObjectType = "RestoreRequest"
+	// ObjectTypeAzureFileShareBackupRequest ...
+	ObjectTypeAzureFileShareBackupRequest ObjectType = "AzureFileShareBackupRequest"
+	// ObjectTypeAzureWorkloadBackupRequest ...
+	ObjectTypeAzureWorkloadBackupRequest ObjectType = "AzureWorkloadBackupRequest"
+	// ObjectTypeBackupRequest ...
+	ObjectTypeBackupRequest ObjectType = "BackupRequest"
+	// ObjectTypeIaasVMBackupRequest ...
+	ObjectTypeIaasVMBackupRequest ObjectType = "IaasVMBackupRequest"
 )
 
 // PossibleObjectTypeValues returns an array of possible values for the ObjectType const type.
 func PossibleObjectTypeValues() []ObjectType {
-	return []ObjectType{ObjectTypeAzureFileShareRestoreRequest, ObjectTypeAzureWorkloadPointInTimeRestoreRequest, ObjectTypeAzureWorkloadRestoreRequest, ObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest, ObjectTypeAzureWorkloadSAPHanaRestoreRequest, ObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest, ObjectTypeAzureWorkloadSQLRestoreRequest, ObjectTypeIaasVMRestoreRequest, ObjectTypeRestoreRequest}
+	return []ObjectType{ObjectTypeAzureFileShareBackupRequest, ObjectTypeAzureWorkloadBackupRequest, ObjectTypeBackupRequest, ObjectTypeIaasVMBackupRequest}
 }
 
 // ObjectTypeBasicILRRequest enumerates the values for object type basic ilr request.
@@ -541,63 +436,24 @@ const (
 	ObjectTypeOperationStatusJobsExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = "OperationStatusJobsExtendedInfo"
 	// ObjectTypeOperationStatusProvisionILRExtendedInfo ...
 	ObjectTypeOperationStatusProvisionILRExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = "OperationStatusProvisionILRExtendedInfo"
-	// ObjectTypeOperationStatusRecoveryPointExtendedInfo ...
-	ObjectTypeOperationStatusRecoveryPointExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = "OperationStatusRecoveryPointExtendedInfo"
 )
 
 // PossibleObjectTypeBasicOperationStatusExtendedInfoValues returns an array of possible values for the ObjectTypeBasicOperationStatusExtendedInfo const type.
 func PossibleObjectTypeBasicOperationStatusExtendedInfoValues() []ObjectTypeBasicOperationStatusExtendedInfo {
-	return []ObjectTypeBasicOperationStatusExtendedInfo{ObjectTypeOperationStatusExtendedInfo, ObjectTypeOperationStatusJobExtendedInfo, ObjectTypeOperationStatusJobsExtendedInfo, ObjectTypeOperationStatusProvisionILRExtendedInfo, ObjectTypeOperationStatusRecoveryPointExtendedInfo}
+	return []ObjectTypeBasicOperationStatusExtendedInfo{ObjectTypeOperationStatusExtendedInfo, ObjectTypeOperationStatusJobExtendedInfo, ObjectTypeOperationStatusJobsExtendedInfo, ObjectTypeOperationStatusProvisionILRExtendedInfo}
 }
 
 // ObjectTypeBasicRecoveryPoint enumerates the values for object type basic recovery point.
 type ObjectTypeBasicRecoveryPoint string
 
 const (
-	// ObjectTypeAzureFileShareRecoveryPoint ...
-	ObjectTypeAzureFileShareRecoveryPoint ObjectTypeBasicRecoveryPoint = "AzureFileShareRecoveryPoint"
-	// ObjectTypeAzureWorkloadPointInTimeRecoveryPoint ...
-	ObjectTypeAzureWorkloadPointInTimeRecoveryPoint ObjectTypeBasicRecoveryPoint = "AzureWorkloadPointInTimeRecoveryPoint"
-	// ObjectTypeAzureWorkloadRecoveryPoint ...
-	ObjectTypeAzureWorkloadRecoveryPoint ObjectTypeBasicRecoveryPoint = "AzureWorkloadRecoveryPoint"
-	// ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint ...
-	ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint ObjectTypeBasicRecoveryPoint = "AzureWorkloadSAPHanaPointInTimeRecoveryPoint"
-	// ObjectTypeAzureWorkloadSAPHanaRecoveryPoint ...
-	ObjectTypeAzureWorkloadSAPHanaRecoveryPoint ObjectTypeBasicRecoveryPoint = "AzureWorkloadSAPHanaRecoveryPoint"
-	// ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint ...
-	ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint ObjectTypeBasicRecoveryPoint = "AzureWorkloadSQLPointInTimeRecoveryPoint"
-	// ObjectTypeAzureWorkloadSQLRecoveryPoint ...
-	ObjectTypeAzureWorkloadSQLRecoveryPoint ObjectTypeBasicRecoveryPoint = "AzureWorkloadSQLRecoveryPoint"
-	// ObjectTypeGenericRecoveryPoint ...
-	ObjectTypeGenericRecoveryPoint ObjectTypeBasicRecoveryPoint = "GenericRecoveryPoint"
-	// ObjectTypeIaasVMRecoveryPoint ...
-	ObjectTypeIaasVMRecoveryPoint ObjectTypeBasicRecoveryPoint = "IaasVMRecoveryPoint"
 	// ObjectTypeRecoveryPoint ...
 	ObjectTypeRecoveryPoint ObjectTypeBasicRecoveryPoint = "RecoveryPoint"
 )
 
 // PossibleObjectTypeBasicRecoveryPointValues returns an array of possible values for the ObjectTypeBasicRecoveryPoint const type.
 func PossibleObjectTypeBasicRecoveryPointValues() []ObjectTypeBasicRecoveryPoint {
-	return []ObjectTypeBasicRecoveryPoint{ObjectTypeAzureFileShareRecoveryPoint, ObjectTypeAzureWorkloadPointInTimeRecoveryPoint, ObjectTypeAzureWorkloadRecoveryPoint, ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint, ObjectTypeAzureWorkloadSAPHanaRecoveryPoint, ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint, ObjectTypeAzureWorkloadSQLRecoveryPoint, ObjectTypeGenericRecoveryPoint, ObjectTypeIaasVMRecoveryPoint, ObjectTypeRecoveryPoint}
-}
-
-// ObjectTypeBasicRequest enumerates the values for object type basic request.
-type ObjectTypeBasicRequest string
-
-const (
-	// ObjectTypeAzureFileShareBackupRequest ...
-	ObjectTypeAzureFileShareBackupRequest ObjectTypeBasicRequest = "AzureFileShareBackupRequest"
-	// ObjectTypeAzureWorkloadBackupRequest ...
-	ObjectTypeAzureWorkloadBackupRequest ObjectTypeBasicRequest = "AzureWorkloadBackupRequest"
-	// ObjectTypeBackupRequest ...
-	ObjectTypeBackupRequest ObjectTypeBasicRequest = "BackupRequest"
-	// ObjectTypeIaasVMBackupRequest ...
-	ObjectTypeIaasVMBackupRequest ObjectTypeBasicRequest = "IaasVMBackupRequest"
-)
-
-// PossibleObjectTypeBasicRequestValues returns an array of possible values for the ObjectTypeBasicRequest const type.
-func PossibleObjectTypeBasicRequestValues() []ObjectTypeBasicRequest {
-	return []ObjectTypeBasicRequest{ObjectTypeAzureFileShareBackupRequest, ObjectTypeAzureWorkloadBackupRequest, ObjectTypeBackupRequest, ObjectTypeIaasVMBackupRequest}
+	return []ObjectTypeBasicRecoveryPoint{ObjectTypeRecoveryPoint}
 }
 
 // OperationStatusValues enumerates the values for operation status values.
@@ -636,23 +492,6 @@ const (
 // PossibleOperationTypeValues returns an array of possible values for the OperationType const type.
 func PossibleOperationTypeValues() []OperationType {
 	return []OperationType{OperationTypeInvalid, OperationTypeRegister, OperationTypeReregister}
-}
-
-// OverwriteOptions enumerates the values for overwrite options.
-type OverwriteOptions string
-
-const (
-	// OverwriteOptionsFailOnConflict ...
-	OverwriteOptionsFailOnConflict OverwriteOptions = "FailOnConflict"
-	// OverwriteOptionsInvalid ...
-	OverwriteOptionsInvalid OverwriteOptions = "Invalid"
-	// OverwriteOptionsOverwrite ...
-	OverwriteOptionsOverwrite OverwriteOptions = "Overwrite"
-)
-
-// PossibleOverwriteOptionsValues returns an array of possible values for the OverwriteOptions const type.
-func PossibleOverwriteOptionsValues() []OverwriteOptions {
-	return []OverwriteOptions{OverwriteOptionsFailOnConflict, OverwriteOptionsInvalid, OverwriteOptionsOverwrite}
 }
 
 // ProtectableContainerType enumerates the values for protectable container type.
@@ -707,87 +546,6 @@ func PossibleProtectableItemTypeValues() []ProtectableItemType {
 	return []ProtectableItemType{ProtectableItemTypeAzureFileShare, ProtectableItemTypeAzureVMWorkloadProtectableItem, ProtectableItemTypeIaaSVMProtectableItem, ProtectableItemTypeMicrosoftClassicComputevirtualMachines, ProtectableItemTypeMicrosoftComputevirtualMachines, ProtectableItemTypeSAPAseSystem, ProtectableItemTypeSAPHanaDatabase, ProtectableItemTypeSAPHanaSystem, ProtectableItemTypeSQLAvailabilityGroupContainer, ProtectableItemTypeSQLDataBase, ProtectableItemTypeSQLInstance, ProtectableItemTypeWorkloadProtectableItem}
 }
 
-// ProtectedItemHealthStatus enumerates the values for protected item health status.
-type ProtectedItemHealthStatus string
-
-const (
-	// ProtectedItemHealthStatusHealthy ...
-	ProtectedItemHealthStatusHealthy ProtectedItemHealthStatus = "Healthy"
-	// ProtectedItemHealthStatusInvalid ...
-	ProtectedItemHealthStatusInvalid ProtectedItemHealthStatus = "Invalid"
-	// ProtectedItemHealthStatusIRPending ...
-	ProtectedItemHealthStatusIRPending ProtectedItemHealthStatus = "IRPending"
-	// ProtectedItemHealthStatusNotReachable ...
-	ProtectedItemHealthStatusNotReachable ProtectedItemHealthStatus = "NotReachable"
-	// ProtectedItemHealthStatusUnhealthy ...
-	ProtectedItemHealthStatusUnhealthy ProtectedItemHealthStatus = "Unhealthy"
-)
-
-// PossibleProtectedItemHealthStatusValues returns an array of possible values for the ProtectedItemHealthStatus const type.
-func PossibleProtectedItemHealthStatusValues() []ProtectedItemHealthStatus {
-	return []ProtectedItemHealthStatus{ProtectedItemHealthStatusHealthy, ProtectedItemHealthStatusInvalid, ProtectedItemHealthStatusIRPending, ProtectedItemHealthStatusNotReachable, ProtectedItemHealthStatusUnhealthy}
-}
-
-// ProtectedItemState enumerates the values for protected item state.
-type ProtectedItemState string
-
-const (
-	// ProtectedItemStateInvalid ...
-	ProtectedItemStateInvalid ProtectedItemState = "Invalid"
-	// ProtectedItemStateIRPending ...
-	ProtectedItemStateIRPending ProtectedItemState = "IRPending"
-	// ProtectedItemStateProtected ...
-	ProtectedItemStateProtected ProtectedItemState = "Protected"
-	// ProtectedItemStateProtectionError ...
-	ProtectedItemStateProtectionError ProtectedItemState = "ProtectionError"
-	// ProtectedItemStateProtectionPaused ...
-	ProtectedItemStateProtectionPaused ProtectedItemState = "ProtectionPaused"
-	// ProtectedItemStateProtectionStopped ...
-	ProtectedItemStateProtectionStopped ProtectedItemState = "ProtectionStopped"
-)
-
-// PossibleProtectedItemStateValues returns an array of possible values for the ProtectedItemState const type.
-func PossibleProtectedItemStateValues() []ProtectedItemState {
-	return []ProtectedItemState{ProtectedItemStateInvalid, ProtectedItemStateIRPending, ProtectedItemStateProtected, ProtectedItemStateProtectionError, ProtectedItemStateProtectionPaused, ProtectedItemStateProtectionStopped}
-}
-
-// ProtectedItemType enumerates the values for protected item type.
-type ProtectedItemType string
-
-const (
-	// ProtectedItemTypeAzureFileShareProtectedItem ...
-	ProtectedItemTypeAzureFileShareProtectedItem ProtectedItemType = "AzureFileShareProtectedItem"
-	// ProtectedItemTypeAzureIaaSVMProtectedItem ...
-	ProtectedItemTypeAzureIaaSVMProtectedItem ProtectedItemType = "AzureIaaSVMProtectedItem"
-	// ProtectedItemTypeAzureVMWorkloadProtectedItem ...
-	ProtectedItemTypeAzureVMWorkloadProtectedItem ProtectedItemType = "AzureVmWorkloadProtectedItem"
-	// ProtectedItemTypeAzureVMWorkloadSAPAseDatabase ...
-	ProtectedItemTypeAzureVMWorkloadSAPAseDatabase ProtectedItemType = "AzureVmWorkloadSAPAseDatabase"
-	// ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase ...
-	ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase ProtectedItemType = "AzureVmWorkloadSAPHanaDatabase"
-	// ProtectedItemTypeAzureVMWorkloadSQLDatabase ...
-	ProtectedItemTypeAzureVMWorkloadSQLDatabase ProtectedItemType = "AzureVmWorkloadSQLDatabase"
-	// ProtectedItemTypeDPMProtectedItem ...
-	ProtectedItemTypeDPMProtectedItem ProtectedItemType = "DPMProtectedItem"
-	// ProtectedItemTypeGenericProtectedItem ...
-	ProtectedItemTypeGenericProtectedItem ProtectedItemType = "GenericProtectedItem"
-	// ProtectedItemTypeMabFileFolderProtectedItem ...
-	ProtectedItemTypeMabFileFolderProtectedItem ProtectedItemType = "MabFileFolderProtectedItem"
-	// ProtectedItemTypeMicrosoftClassicComputevirtualMachines ...
-	ProtectedItemTypeMicrosoftClassicComputevirtualMachines ProtectedItemType = "Microsoft.ClassicCompute/virtualMachines"
-	// ProtectedItemTypeMicrosoftComputevirtualMachines ...
-	ProtectedItemTypeMicrosoftComputevirtualMachines ProtectedItemType = "Microsoft.Compute/virtualMachines"
-	// ProtectedItemTypeMicrosoftSqlserversdatabases ...
-	ProtectedItemTypeMicrosoftSqlserversdatabases ProtectedItemType = "Microsoft.Sql/servers/databases"
-	// ProtectedItemTypeProtectedItem ...
-	ProtectedItemTypeProtectedItem ProtectedItemType = "ProtectedItem"
-)
-
-// PossibleProtectedItemTypeValues returns an array of possible values for the ProtectedItemType const type.
-func PossibleProtectedItemTypeValues() []ProtectedItemType {
-	return []ProtectedItemType{ProtectedItemTypeAzureFileShareProtectedItem, ProtectedItemTypeAzureIaaSVMProtectedItem, ProtectedItemTypeAzureVMWorkloadProtectedItem, ProtectedItemTypeAzureVMWorkloadSAPAseDatabase, ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase, ProtectedItemTypeAzureVMWorkloadSQLDatabase, ProtectedItemTypeDPMProtectedItem, ProtectedItemTypeGenericProtectedItem, ProtectedItemTypeMabFileFolderProtectedItem, ProtectedItemTypeMicrosoftClassicComputevirtualMachines, ProtectedItemTypeMicrosoftComputevirtualMachines, ProtectedItemTypeMicrosoftSqlserversdatabases, ProtectedItemTypeProtectedItem}
-}
-
 // ProtectionIntentItemType enumerates the values for protection intent item type.
 type ProtectionIntentItemType string
 
@@ -809,29 +567,6 @@ func PossibleProtectionIntentItemTypeValues() []ProtectionIntentItemType {
 	return []ProtectionIntentItemType{ProtectionIntentItemTypeAzureResourceItem, ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent, ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent, ProtectionIntentItemTypeProtectionIntent, ProtectionIntentItemTypeRecoveryServiceVaultItem}
 }
 
-// ProtectionState enumerates the values for protection state.
-type ProtectionState string
-
-const (
-	// ProtectionStateInvalid ...
-	ProtectionStateInvalid ProtectionState = "Invalid"
-	// ProtectionStateIRPending ...
-	ProtectionStateIRPending ProtectionState = "IRPending"
-	// ProtectionStateProtected ...
-	ProtectionStateProtected ProtectionState = "Protected"
-	// ProtectionStateProtectionError ...
-	ProtectionStateProtectionError ProtectionState = "ProtectionError"
-	// ProtectionStateProtectionPaused ...
-	ProtectionStateProtectionPaused ProtectionState = "ProtectionPaused"
-	// ProtectionStateProtectionStopped ...
-	ProtectionStateProtectionStopped ProtectionState = "ProtectionStopped"
-)
-
-// PossibleProtectionStateValues returns an array of possible values for the ProtectionState const type.
-func PossibleProtectionStateValues() []ProtectionState {
-	return []ProtectionState{ProtectionStateInvalid, ProtectionStateIRPending, ProtectionStateProtected, ProtectionStateProtectionError, ProtectionStateProtectionPaused, ProtectionStateProtectionStopped}
-}
-
 // ProtectionStatus enumerates the values for protection status.
 type ProtectionStatus string
 
@@ -851,139 +586,6 @@ const (
 // PossibleProtectionStatusValues returns an array of possible values for the ProtectionStatus const type.
 func PossibleProtectionStatusValues() []ProtectionStatus {
 	return []ProtectionStatus{ProtectionStatusInvalid, ProtectionStatusNotProtected, ProtectionStatusProtected, ProtectionStatusProtecting, ProtectionStatusProtectionFailed}
-}
-
-// RecoveryMode enumerates the values for recovery mode.
-type RecoveryMode string
-
-const (
-	// RecoveryModeFileRecovery ...
-	RecoveryModeFileRecovery RecoveryMode = "FileRecovery"
-	// RecoveryModeInvalid ...
-	RecoveryModeInvalid RecoveryMode = "Invalid"
-	// RecoveryModeWorkloadRecovery ...
-	RecoveryModeWorkloadRecovery RecoveryMode = "WorkloadRecovery"
-)
-
-// PossibleRecoveryModeValues returns an array of possible values for the RecoveryMode const type.
-func PossibleRecoveryModeValues() []RecoveryMode {
-	return []RecoveryMode{RecoveryModeFileRecovery, RecoveryModeInvalid, RecoveryModeWorkloadRecovery}
-}
-
-// RecoveryPointTierStatus enumerates the values for recovery point tier status.
-type RecoveryPointTierStatus string
-
-const (
-	// RecoveryPointTierStatusDeleted ...
-	RecoveryPointTierStatusDeleted RecoveryPointTierStatus = "Deleted"
-	// RecoveryPointTierStatusDisabled ...
-	RecoveryPointTierStatusDisabled RecoveryPointTierStatus = "Disabled"
-	// RecoveryPointTierStatusInvalid ...
-	RecoveryPointTierStatusInvalid RecoveryPointTierStatus = "Invalid"
-	// RecoveryPointTierStatusValid ...
-	RecoveryPointTierStatusValid RecoveryPointTierStatus = "Valid"
-)
-
-// PossibleRecoveryPointTierStatusValues returns an array of possible values for the RecoveryPointTierStatus const type.
-func PossibleRecoveryPointTierStatusValues() []RecoveryPointTierStatus {
-	return []RecoveryPointTierStatus{RecoveryPointTierStatusDeleted, RecoveryPointTierStatusDisabled, RecoveryPointTierStatusInvalid, RecoveryPointTierStatusValid}
-}
-
-// RecoveryPointTierType enumerates the values for recovery point tier type.
-type RecoveryPointTierType string
-
-const (
-	// RecoveryPointTierTypeHardenedRP ...
-	RecoveryPointTierTypeHardenedRP RecoveryPointTierType = "HardenedRP"
-	// RecoveryPointTierTypeInstantRP ...
-	RecoveryPointTierTypeInstantRP RecoveryPointTierType = "InstantRP"
-	// RecoveryPointTierTypeInvalid ...
-	RecoveryPointTierTypeInvalid RecoveryPointTierType = "Invalid"
-)
-
-// PossibleRecoveryPointTierTypeValues returns an array of possible values for the RecoveryPointTierType const type.
-func PossibleRecoveryPointTierTypeValues() []RecoveryPointTierType {
-	return []RecoveryPointTierType{RecoveryPointTierTypeHardenedRP, RecoveryPointTierTypeInstantRP, RecoveryPointTierTypeInvalid}
-}
-
-// RecoveryType enumerates the values for recovery type.
-type RecoveryType string
-
-const (
-	// RecoveryTypeAlternateLocation ...
-	RecoveryTypeAlternateLocation RecoveryType = "AlternateLocation"
-	// RecoveryTypeInvalid ...
-	RecoveryTypeInvalid RecoveryType = "Invalid"
-	// RecoveryTypeOffline ...
-	RecoveryTypeOffline RecoveryType = "Offline"
-	// RecoveryTypeOriginalLocation ...
-	RecoveryTypeOriginalLocation RecoveryType = "OriginalLocation"
-	// RecoveryTypeRestoreDisks ...
-	RecoveryTypeRestoreDisks RecoveryType = "RestoreDisks"
-)
-
-// PossibleRecoveryTypeValues returns an array of possible values for the RecoveryType const type.
-func PossibleRecoveryTypeValues() []RecoveryType {
-	return []RecoveryType{RecoveryTypeAlternateLocation, RecoveryTypeInvalid, RecoveryTypeOffline, RecoveryTypeOriginalLocation, RecoveryTypeRestoreDisks}
-}
-
-// RestorePointQueryType enumerates the values for restore point query type.
-type RestorePointQueryType string
-
-const (
-	// RestorePointQueryTypeAll ...
-	RestorePointQueryTypeAll RestorePointQueryType = "All"
-	// RestorePointQueryTypeDifferential ...
-	RestorePointQueryTypeDifferential RestorePointQueryType = "Differential"
-	// RestorePointQueryTypeFull ...
-	RestorePointQueryTypeFull RestorePointQueryType = "Full"
-	// RestorePointQueryTypeFullAndDifferential ...
-	RestorePointQueryTypeFullAndDifferential RestorePointQueryType = "FullAndDifferential"
-	// RestorePointQueryTypeInvalid ...
-	RestorePointQueryTypeInvalid RestorePointQueryType = "Invalid"
-	// RestorePointQueryTypeLog ...
-	RestorePointQueryTypeLog RestorePointQueryType = "Log"
-)
-
-// PossibleRestorePointQueryTypeValues returns an array of possible values for the RestorePointQueryType const type.
-func PossibleRestorePointQueryTypeValues() []RestorePointQueryType {
-	return []RestorePointQueryType{RestorePointQueryTypeAll, RestorePointQueryTypeDifferential, RestorePointQueryTypeFull, RestorePointQueryTypeFullAndDifferential, RestorePointQueryTypeInvalid, RestorePointQueryTypeLog}
-}
-
-// RestorePointType enumerates the values for restore point type.
-type RestorePointType string
-
-const (
-	// RestorePointTypeDifferential ...
-	RestorePointTypeDifferential RestorePointType = "Differential"
-	// RestorePointTypeFull ...
-	RestorePointTypeFull RestorePointType = "Full"
-	// RestorePointTypeInvalid ...
-	RestorePointTypeInvalid RestorePointType = "Invalid"
-	// RestorePointTypeLog ...
-	RestorePointTypeLog RestorePointType = "Log"
-)
-
-// PossibleRestorePointTypeValues returns an array of possible values for the RestorePointType const type.
-func PossibleRestorePointTypeValues() []RestorePointType {
-	return []RestorePointType{RestorePointTypeDifferential, RestorePointTypeFull, RestorePointTypeInvalid, RestorePointTypeLog}
-}
-
-// RestoreRequestType enumerates the values for restore request type.
-type RestoreRequestType string
-
-const (
-	// RestoreRequestTypeFullShareRestore ...
-	RestoreRequestTypeFullShareRestore RestoreRequestType = "FullShareRestore"
-	// RestoreRequestTypeInvalid ...
-	RestoreRequestTypeInvalid RestoreRequestType = "Invalid"
-	// RestoreRequestTypeItemLevelRestore ...
-	RestoreRequestTypeItemLevelRestore RestoreRequestType = "ItemLevelRestore"
-)
-
-// PossibleRestoreRequestTypeValues returns an array of possible values for the RestoreRequestType const type.
-func PossibleRestoreRequestTypeValues() []RestoreRequestType {
-	return []RestoreRequestType{RestoreRequestTypeFullShareRestore, RestoreRequestTypeInvalid, RestoreRequestTypeItemLevelRestore}
 }
 
 // SQLDataDirectoryType enumerates the values for sql data directory type.

@@ -60,7 +60,8 @@ func (cnar CheckNameAvailabilityResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ConsumerGroupCreateOrUpdateParameters parameters supplied to the Create Or Update Consumer Group operation.
+// ConsumerGroupCreateOrUpdateParameters parameters supplied to the Create Or Update Consumer Group
+// operation.
 type ConsumerGroupCreateOrUpdateParameters struct {
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -292,8 +293,11 @@ func (page ConsumerGroupListResultPage) Values() []ConsumerGroupResource {
 }
 
 // Creates a new instance of the ConsumerGroupListResultPage type.
-func NewConsumerGroupListResultPage(getNextPage func(context.Context, ConsumerGroupListResult) (ConsumerGroupListResult, error)) ConsumerGroupListResultPage {
-	return ConsumerGroupListResultPage{fn: getNextPage}
+func NewConsumerGroupListResultPage(cur ConsumerGroupListResult, getNextPage func(context.Context, ConsumerGroupListResult) (ConsumerGroupListResult, error)) ConsumerGroupListResultPage {
+	return ConsumerGroupListResultPage{
+		fn:   getNextPage,
+		cglr: cur,
+	}
 }
 
 // ConsumerGroupProperties properties supplied to the Create Or Update Consumer Group operation.
@@ -635,8 +639,11 @@ func (page ListResultPage) Values() []ResourceType {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // NamespaceCreateOrUpdateParameters parameters supplied to the Create Or Update Namespace operation.
@@ -870,8 +877,11 @@ func (page NamespaceListResultPage) Values() []NamespaceResource {
 }
 
 // Creates a new instance of the NamespaceListResultPage type.
-func NewNamespaceListResultPage(getNextPage func(context.Context, NamespaceListResult) (NamespaceListResult, error)) NamespaceListResultPage {
-	return NamespaceListResultPage{fn: getNextPage}
+func NewNamespaceListResultPage(cur NamespaceListResult, getNextPage func(context.Context, NamespaceListResult) (NamespaceListResult, error)) NamespaceListResultPage {
+	return NamespaceListResultPage{
+		fn:  getNextPage,
+		nlr: cur,
+	}
 }
 
 // NamespaceProperties properties of the Namespace supplied for create or update Namespace operation
@@ -1029,8 +1039,8 @@ func (nr *NamespaceResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// NamespacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// NamespacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type NamespacesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -1058,7 +1068,8 @@ func (future *NamespacesCreateOrUpdateFuture) Result(client NamespacesClient) (n
 	return
 }
 
-// NamespacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// NamespacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type NamespacesDeleteFuture struct {
 	azure.Future
 }
@@ -1127,8 +1138,8 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result of the request to list Event Hub operations. It contains a list of operations and
-// a URL link to get the next set of results.
+// OperationListResult result of the request to list Event Hub operations. It contains a list of operations
+// and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of Event Hub operations supported by the Microsoft.EventHub resource provider.
@@ -1280,8 +1291,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // Properties properties supplied to the Create Or Update Event Hub operation.
@@ -1605,7 +1619,8 @@ func (saarlr SharedAccessAuthorizationRuleListResult) sharedAccessAuthorizationR
 		autorest.WithBaseURL(to.String(saarlr.NextLink)))
 }
 
-// SharedAccessAuthorizationRuleListResultPage contains a page of SharedAccessAuthorizationRuleResource values.
+// SharedAccessAuthorizationRuleListResultPage contains a page of SharedAccessAuthorizationRuleResource
+// values.
 type SharedAccessAuthorizationRuleListResultPage struct {
 	fn     func(context.Context, SharedAccessAuthorizationRuleListResult) (SharedAccessAuthorizationRuleListResult, error)
 	saarlr SharedAccessAuthorizationRuleListResult
@@ -1663,8 +1678,11 @@ func (page SharedAccessAuthorizationRuleListResultPage) Values() []SharedAccessA
 }
 
 // Creates a new instance of the SharedAccessAuthorizationRuleListResultPage type.
-func NewSharedAccessAuthorizationRuleListResultPage(getNextPage func(context.Context, SharedAccessAuthorizationRuleListResult) (SharedAccessAuthorizationRuleListResult, error)) SharedAccessAuthorizationRuleListResultPage {
-	return SharedAccessAuthorizationRuleListResultPage{fn: getNextPage}
+func NewSharedAccessAuthorizationRuleListResultPage(cur SharedAccessAuthorizationRuleListResult, getNextPage func(context.Context, SharedAccessAuthorizationRuleListResult) (SharedAccessAuthorizationRuleListResult, error)) SharedAccessAuthorizationRuleListResultPage {
+	return SharedAccessAuthorizationRuleListResultPage{
+		fn:     getNextPage,
+		saarlr: cur,
+	}
 }
 
 // SharedAccessAuthorizationRuleProperties properties supplied to create or update

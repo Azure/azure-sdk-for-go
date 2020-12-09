@@ -143,9 +143,9 @@ func (aa AacAudio) AsBasicCodec() (BasicCodec, bool) {
 	return &aa, true
 }
 
-// AbsoluteClipTime specifies the clip time as an absolute time position in the media file.  The absolute time
-// can point to a different position depending on whether the media file starts from a timestamp of zero or
-// not.
+// AbsoluteClipTime specifies the clip time as an absolute time position in the media file.  The absolute
+// time can point to a different position depending on whether the media file starts from a timestamp of
+// zero or not.
 type AbsoluteClipTime struct {
 	// Time - The time position on the timeline of the input media. It is usually specified as an ISO8601 period. e.g PT30S for 30 seconds.
 	Time *string `json:"time,omitempty"`
@@ -405,8 +405,11 @@ func (page AccountFilterCollectionPage) Values() []AccountFilter {
 }
 
 // Creates a new instance of the AccountFilterCollectionPage type.
-func NewAccountFilterCollectionPage(getNextPage func(context.Context, AccountFilterCollection) (AccountFilterCollection, error)) AccountFilterCollectionPage {
-	return AccountFilterCollectionPage{fn: getNextPage}
+func NewAccountFilterCollectionPage(cur AccountFilterCollection, getNextPage func(context.Context, AccountFilterCollection) (AccountFilterCollection, error)) AccountFilterCollectionPage {
+	return AccountFilterCollectionPage{
+		fn:  getNextPage,
+		afc: cur,
+	}
 }
 
 // AkamaiAccessControl akamai access control
@@ -656,8 +659,11 @@ func (page AssetCollectionPage) Values() []Asset {
 }
 
 // Creates a new instance of the AssetCollectionPage type.
-func NewAssetCollectionPage(getNextPage func(context.Context, AssetCollection) (AssetCollection, error)) AssetCollectionPage {
-	return AssetCollectionPage{fn: getNextPage}
+func NewAssetCollectionPage(cur AssetCollection, getNextPage func(context.Context, AssetCollection) (AssetCollection, error)) AssetCollectionPage {
+	return AssetCollectionPage{
+		fn: getNextPage,
+		ac: cur,
+	}
 }
 
 // AssetContainerSas the Asset Storage container SAS URLs.
@@ -901,8 +907,11 @@ func (page AssetFilterCollectionPage) Values() []AssetFilter {
 }
 
 // Creates a new instance of the AssetFilterCollectionPage type.
-func NewAssetFilterCollectionPage(getNextPage func(context.Context, AssetFilterCollection) (AssetFilterCollection, error)) AssetFilterCollectionPage {
-	return AssetFilterCollectionPage{fn: getNextPage}
+func NewAssetFilterCollectionPage(cur AssetFilterCollection, getNextPage func(context.Context, AssetFilterCollection) (AssetFilterCollection, error)) AssetFilterCollectionPage {
+	return AssetFilterCollectionPage{
+		fn:  getNextPage,
+		afc: cur,
+	}
 }
 
 // AssetProperties the Asset properties.
@@ -1352,7 +1361,8 @@ func (bisep BuiltInStandardEncoderPreset) AsBasicPreset() (BasicPreset, bool) {
 	return &bisep, true
 }
 
-// CbcsDrmConfiguration class to specify DRM configurations of CommonEncryptionCbcs scheme in Streaming Policy
+// CbcsDrmConfiguration class to specify DRM configurations of CommonEncryptionCbcs scheme in Streaming
+// Policy
 type CbcsDrmConfiguration struct {
 	// FairPlay - FairPlay configurations
 	FairPlay *StreamingPolicyFairPlayConfiguration `json:"fairPlay,omitempty"`
@@ -1362,7 +1372,8 @@ type CbcsDrmConfiguration struct {
 	Widevine *StreamingPolicyWidevineConfiguration `json:"widevine,omitempty"`
 }
 
-// CencDrmConfiguration class to specify DRM configurations of CommonEncryptionCenc scheme in Streaming Policy
+// CencDrmConfiguration class to specify DRM configurations of CommonEncryptionCenc scheme in Streaming
+// Policy
 type CencDrmConfiguration struct {
 	// PlayReady - PlayReady configurations
 	PlayReady *StreamingPolicyPlayReadyConfiguration `json:"playReady,omitempty"`
@@ -1930,8 +1941,11 @@ func (page ContentKeyPolicyCollectionPage) Values() []ContentKeyPolicy {
 }
 
 // Creates a new instance of the ContentKeyPolicyCollectionPage type.
-func NewContentKeyPolicyCollectionPage(getNextPage func(context.Context, ContentKeyPolicyCollection) (ContentKeyPolicyCollection, error)) ContentKeyPolicyCollectionPage {
-	return ContentKeyPolicyCollectionPage{fn: getNextPage}
+func NewContentKeyPolicyCollectionPage(cur ContentKeyPolicyCollection, getNextPage func(context.Context, ContentKeyPolicyCollection) (ContentKeyPolicyCollection, error)) ContentKeyPolicyCollectionPage {
+	return ContentKeyPolicyCollectionPage{
+		fn:   getNextPage,
+		ckpc: cur,
+	}
 }
 
 // BasicContentKeyPolicyConfiguration base class for Content Key Policy configuration. A derived class must be used to
@@ -2139,8 +2153,8 @@ type ContentKeyPolicyFairPlayOfflineRentalConfiguration struct {
 	StorageDurationSeconds *int64 `json:"storageDurationSeconds,omitempty"`
 }
 
-// ContentKeyPolicyOpenRestriction represents an open restriction. License or key will be delivered on every
-// request.
+// ContentKeyPolicyOpenRestriction represents an open restriction. License or key will be delivered on
+// every request.
 type ContentKeyPolicyOpenRestriction struct {
 	// OdataType - Possible values include: 'OdataTypeContentKeyPolicyRestriction', 'OdataTypeMicrosoftMediaContentKeyPolicyOpenRestriction', 'OdataTypeMicrosoftMediaContentKeyPolicyUnknownRestriction', 'OdataTypeMicrosoftMediaContentKeyPolicyTokenRestriction'
 	OdataType OdataTypeBasicContentKeyPolicyRestriction `json:"@odata.type,omitempty"`
@@ -3130,8 +3144,8 @@ func (ckptr *ContentKeyPolicyTokenRestriction) UnmarshalJSON(body []byte) error 
 	return nil
 }
 
-// ContentKeyPolicyUnknownConfiguration represents a ContentKeyPolicyConfiguration that is unavailable in the
-// current API version.
+// ContentKeyPolicyUnknownConfiguration represents a ContentKeyPolicyConfiguration that is unavailable in
+// the current API version.
 type ContentKeyPolicyUnknownConfiguration struct {
 	// OdataType - Possible values include: 'OdataTypeContentKeyPolicyConfiguration', 'OdataTypeMicrosoftMediaContentKeyPolicyClearKeyConfiguration', 'OdataTypeMicrosoftMediaContentKeyPolicyUnknownConfiguration', 'OdataTypeMicrosoftMediaContentKeyPolicyWidevineConfiguration', 'OdataTypeMicrosoftMediaContentKeyPolicyPlayReadyConfiguration', 'OdataTypeMicrosoftMediaContentKeyPolicyFairPlayConfiguration'
 	OdataType OdataTypeBasicContentKeyPolicyConfiguration `json:"@odata.type,omitempty"`
@@ -3595,8 +3609,8 @@ type EnvelopeEncryption struct {
 	CustomKeyAcquisitionURLTemplate *string `json:"customKeyAcquisitionUrlTemplate,omitempty"`
 }
 
-// FaceDetectorPreset describes all the settings to be used when analyzing a video in order to detect all the
-// faces present.
+// FaceDetectorPreset describes all the settings to be used when analyzing a video in order to detect all
+// the faces present.
 type FaceDetectorPreset struct {
 	// Resolution - Specifies the maximum resolution at which your video is analyzed. The default behavior is "SourceResolution," which will keep the input video at its original resolution when analyzed. Using "StandardDefinition" will resize input videos to standard definition while preserving the appropriate aspect ratio. It will only resize if the video is of higher resolution. For example, a 1920x1080 input would be scaled to 640x360 before processing. Switching to "StandardDefinition" will reduce the time it takes to process high resolution video. It may also reduce the cost of using this component (see https://azure.microsoft.com/en-us/pricing/details/media-services/#analytics for details). However, faces that end up being too small in the resized video may not be detected. Possible values include: 'SourceResolution', 'StandardDefinition'
 	Resolution AnalysisResolution `json:"resolution,omitempty"`
@@ -3672,8 +3686,8 @@ type FilterProperties struct {
 	Tracks *[]FilterTrackSelection `json:"tracks,omitempty"`
 }
 
-// Filters describes all the filtering operations, such as de-interlacing, rotation etc. that are to be applied
-// to the input media before encoding.
+// Filters describes all the filtering operations, such as de-interlacing, rotation etc. that are to be
+// applied to the input media before encoding.
 type Filters struct {
 	// Deinterlace - The de-interlacing settings.
 	Deinterlace *Deinterlace `json:"deinterlace,omitempty"`
@@ -3745,8 +3759,8 @@ type FilterTrackPropertyCondition struct {
 	Operation FilterTrackPropertyCompareOperation `json:"operation,omitempty"`
 }
 
-// FilterTrackSelection representing a list of FilterTrackPropertyConditions to select a track.  The filters
-// are combined using a logical AND operation.
+// FilterTrackSelection representing a list of FilterTrackPropertyConditions to select a track.  The
+// filters are combined using a logical AND operation.
 type FilterTrackSelection struct {
 	// TrackSelections - The track selections.
 	TrackSelections *[]FilterTrackPropertyCondition `json:"trackSelections,omitempty"`
@@ -4442,8 +4456,8 @@ type IPRange struct {
 	SubnetPrefixLength *int32 `json:"subnetPrefixLength,omitempty"`
 }
 
-// Job a Job resource type. The progress and state can be obtained by polling a Job or subscribing to events
-// using EventGrid.
+// Job a Job resource type. The progress and state can be obtained by polling a Job or subscribing to
+// events using EventGrid.
 type Job struct {
 	autorest.Response `json:"-"`
 	// JobProperties - The resource properties.
@@ -4668,8 +4682,11 @@ func (page JobCollectionPage) Values() []Job {
 }
 
 // Creates a new instance of the JobCollectionPage type.
-func NewJobCollectionPage(getNextPage func(context.Context, JobCollection) (JobCollection, error)) JobCollectionPage {
-	return JobCollectionPage{fn: getNextPage}
+func NewJobCollectionPage(cur JobCollection, getNextPage func(context.Context, JobCollection) (JobCollection, error)) JobCollectionPage {
+	return JobCollectionPage{
+		fn: getNextPage,
+		jc: cur,
+	}
 }
 
 // JobError details of JobOutput errors.
@@ -6355,8 +6372,11 @@ func (page LiveEventListResultPage) Values() []LiveEvent {
 }
 
 // Creates a new instance of the LiveEventListResultPage type.
-func NewLiveEventListResultPage(getNextPage func(context.Context, LiveEventListResult) (LiveEventListResult, error)) LiveEventListResultPage {
-	return LiveEventListResultPage{fn: getNextPage}
+func NewLiveEventListResultPage(cur LiveEventListResult, getNextPage func(context.Context, LiveEventListResult) (LiveEventListResult, error)) LiveEventListResultPage {
+	return LiveEventListResultPage{
+		fn:   getNextPage,
+		lelr: cur,
+	}
 }
 
 // LiveEventPreview the Live Event preview.
@@ -6432,7 +6452,8 @@ func (lep LiveEventProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// LiveEventsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// LiveEventsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type LiveEventsCreateFuture struct {
 	azure.Future
 }
@@ -6460,7 +6481,8 @@ func (future *LiveEventsCreateFuture) Result(client LiveEventsClient) (le LiveEv
 	return
 }
 
-// LiveEventsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// LiveEventsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type LiveEventsDeleteFuture struct {
 	azure.Future
 }
@@ -6482,7 +6504,8 @@ func (future *LiveEventsDeleteFuture) Result(client LiveEventsClient) (ar autore
 	return
 }
 
-// LiveEventsResetFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// LiveEventsResetFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type LiveEventsResetFuture struct {
 	azure.Future
 }
@@ -6504,7 +6527,8 @@ func (future *LiveEventsResetFuture) Result(client LiveEventsClient) (ar autores
 	return
 }
 
-// LiveEventsStartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// LiveEventsStartFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type LiveEventsStartFuture struct {
 	azure.Future
 }
@@ -6526,7 +6550,8 @@ func (future *LiveEventsStartFuture) Result(client LiveEventsClient) (ar autores
 	return
 }
 
-// LiveEventsStopFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// LiveEventsStopFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type LiveEventsStopFuture struct {
 	azure.Future
 }
@@ -6548,7 +6573,8 @@ func (future *LiveEventsStopFuture) Result(client LiveEventsClient) (ar autorest
 	return
 }
 
-// LiveEventsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// LiveEventsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type LiveEventsUpdateFuture struct {
 	azure.Future
 }
@@ -6803,8 +6829,11 @@ func (page LiveOutputListResultPage) Values() []LiveOutput {
 }
 
 // Creates a new instance of the LiveOutputListResultPage type.
-func NewLiveOutputListResultPage(getNextPage func(context.Context, LiveOutputListResult) (LiveOutputListResult, error)) LiveOutputListResultPage {
-	return LiveOutputListResultPage{fn: getNextPage}
+func NewLiveOutputListResultPage(cur LiveOutputListResult, getNextPage func(context.Context, LiveOutputListResult) (LiveOutputListResult, error)) LiveOutputListResultPage {
+	return LiveOutputListResultPage{
+		fn:   getNextPage,
+		lolr: cur,
+	}
 }
 
 // LiveOutputProperties the JSON object that contains the properties required to create a Live Output.
@@ -7330,8 +7359,11 @@ func (page OperationCollectionPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationCollectionPage type.
-func NewOperationCollectionPage(getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
-	return OperationCollectionPage{fn: getNextPage}
+func NewOperationCollectionPage(cur OperationCollection, getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
+	return OperationCollectionPage{
+		fn: getNextPage,
+		oc: cur,
+	}
 }
 
 // OperationDisplay operation details.
@@ -7879,7 +7911,8 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// Rectangle describes the properties of a rectangular window applied to the input media before processing it.
+// Rectangle describes the properties of a rectangular window applied to the input media before processing
+// it.
 type Rectangle struct {
 	// Left - The number of pixels from the left-margin. This can be absolute pixel value (e.g 100), or relative to the size of the video (For example, 50%).
 	Left *string `json:"left,omitempty"`
@@ -8154,8 +8187,11 @@ func (page ServiceCollectionPage) Values() []Service {
 }
 
 // Creates a new instance of the ServiceCollectionPage type.
-func NewServiceCollectionPage(getNextPage func(context.Context, ServiceCollection) (ServiceCollection, error)) ServiceCollectionPage {
-	return ServiceCollectionPage{fn: getNextPage}
+func NewServiceCollectionPage(cur ServiceCollection, getNextPage func(context.Context, ServiceCollection) (ServiceCollection, error)) ServiceCollectionPage {
+	return ServiceCollectionPage{
+		fn: getNextPage,
+		sc: cur,
+	}
 }
 
 // ServiceProperties properties of the Media Services account.
@@ -8181,8 +8217,8 @@ type ServiceSpecification struct {
 	MetricSpecifications *[]Metric `json:"metricSpecifications,omitempty"`
 }
 
-// StandardEncoderPreset describes all the settings to be used when encoding the input video with the Standard
-// Encoder.
+// StandardEncoderPreset describes all the settings to be used when encoding the input video with the
+// Standard Encoder.
 type StandardEncoderPreset struct {
 	// Filters - One or more filtering operations that are applied to the input media before encoding.
 	Filters *Filters `json:"filters,omitempty"`
@@ -8583,8 +8619,11 @@ func (page StreamingEndpointListResultPage) Values() []StreamingEndpoint {
 }
 
 // Creates a new instance of the StreamingEndpointListResultPage type.
-func NewStreamingEndpointListResultPage(getNextPage func(context.Context, StreamingEndpointListResult) (StreamingEndpointListResult, error)) StreamingEndpointListResultPage {
-	return StreamingEndpointListResultPage{fn: getNextPage}
+func NewStreamingEndpointListResultPage(cur StreamingEndpointListResult, getNextPage func(context.Context, StreamingEndpointListResult) (StreamingEndpointListResult, error)) StreamingEndpointListResultPage {
+	return StreamingEndpointListResultPage{
+		fn:   getNextPage,
+		selr: cur,
+	}
 }
 
 // StreamingEndpointProperties the StreamingEndpoint properties.
@@ -8659,8 +8698,8 @@ func (sep StreamingEndpointProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// StreamingEndpointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// StreamingEndpointsCreateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type StreamingEndpointsCreateFuture struct {
 	azure.Future
 }
@@ -8688,8 +8727,8 @@ func (future *StreamingEndpointsCreateFuture) Result(client StreamingEndpointsCl
 	return
 }
 
-// StreamingEndpointsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// StreamingEndpointsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type StreamingEndpointsDeleteFuture struct {
 	azure.Future
 }
@@ -8780,8 +8819,8 @@ func (future *StreamingEndpointsStopFuture) Result(client StreamingEndpointsClie
 	return
 }
 
-// StreamingEndpointsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// StreamingEndpointsUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type StreamingEndpointsUpdateFuture struct {
 	azure.Future
 }
@@ -9039,8 +9078,11 @@ func (page StreamingLocatorCollectionPage) Values() []StreamingLocator {
 }
 
 // Creates a new instance of the StreamingLocatorCollectionPage type.
-func NewStreamingLocatorCollectionPage(getNextPage func(context.Context, StreamingLocatorCollection) (StreamingLocatorCollection, error)) StreamingLocatorCollectionPage {
-	return StreamingLocatorCollectionPage{fn: getNextPage}
+func NewStreamingLocatorCollectionPage(cur StreamingLocatorCollection, getNextPage func(context.Context, StreamingLocatorCollection) (StreamingLocatorCollection, error)) StreamingLocatorCollectionPage {
+	return StreamingLocatorCollectionPage{
+		fn:  getNextPage,
+		slc: cur,
+	}
 }
 
 // StreamingLocatorContentKey class for content key in Streaming Locator
@@ -9365,8 +9407,11 @@ func (page StreamingPolicyCollectionPage) Values() []StreamingPolicy {
 }
 
 // Creates a new instance of the StreamingPolicyCollectionPage type.
-func NewStreamingPolicyCollectionPage(getNextPage func(context.Context, StreamingPolicyCollection) (StreamingPolicyCollection, error)) StreamingPolicyCollectionPage {
-	return StreamingPolicyCollectionPage{fn: getNextPage}
+func NewStreamingPolicyCollectionPage(cur StreamingPolicyCollection, getNextPage func(context.Context, StreamingPolicyCollection) (StreamingPolicyCollection, error)) StreamingPolicyCollectionPage {
+	return StreamingPolicyCollectionPage{
+		fn:  getNextPage,
+		spc: cur,
+	}
 }
 
 // StreamingPolicyContentKey class to specify properties of content key
@@ -9556,8 +9601,8 @@ type SubscriptionMediaServiceCollection struct {
 	OdataNextLink *string `json:"@odata.nextLink,omitempty"`
 }
 
-// SubscriptionMediaServiceCollectionIterator provides access to a complete listing of SubscriptionMediaService
-// values.
+// SubscriptionMediaServiceCollectionIterator provides access to a complete listing of
+// SubscriptionMediaService values.
 type SubscriptionMediaServiceCollectionIterator struct {
 	i    int
 	page SubscriptionMediaServiceCollectionPage
@@ -9700,8 +9745,11 @@ func (page SubscriptionMediaServiceCollectionPage) Values() []SubscriptionMediaS
 }
 
 // Creates a new instance of the SubscriptionMediaServiceCollectionPage type.
-func NewSubscriptionMediaServiceCollectionPage(getNextPage func(context.Context, SubscriptionMediaServiceCollection) (SubscriptionMediaServiceCollection, error)) SubscriptionMediaServiceCollectionPage {
-	return SubscriptionMediaServiceCollectionPage{fn: getNextPage}
+func NewSubscriptionMediaServiceCollectionPage(cur SubscriptionMediaServiceCollection, getNextPage func(context.Context, SubscriptionMediaServiceCollection) (SubscriptionMediaServiceCollection, error)) SubscriptionMediaServiceCollectionPage {
+	return SubscriptionMediaServiceCollectionPage{
+		fn:   getNextPage,
+		smsc: cur,
+	}
 }
 
 // SyncStorageKeysInput the input to the sync storage keys request.
@@ -9753,8 +9801,8 @@ type TrackSelection struct {
 }
 
 // Transform a Transform encapsulates the rules or instructions for generating desired outputs from input
-// media, such as by transcoding or by extracting insights. After the Transform is created, it can be applied
-// to input media by creating Jobs.
+// media, such as by transcoding or by extracting insights. After the Transform is created, it can be
+// applied to input media by creating Jobs.
 type Transform struct {
 	autorest.Response `json:"-"`
 	// TransformProperties - The resource properties.
@@ -9979,8 +10027,11 @@ func (page TransformCollectionPage) Values() []Transform {
 }
 
 // Creates a new instance of the TransformCollectionPage type.
-func NewTransformCollectionPage(getNextPage func(context.Context, TransformCollection) (TransformCollection, error)) TransformCollectionPage {
-	return TransformCollectionPage{fn: getNextPage}
+func NewTransformCollectionPage(cur TransformCollection, getNextPage func(context.Context, TransformCollection) (TransformCollection, error)) TransformCollectionPage {
+	return TransformCollectionPage{
+		fn: getNextPage,
+		tc: cur,
+	}
 }
 
 // TransformOutput describes the properties of a TransformOutput, which are the rules to be applied while
@@ -10059,8 +10110,8 @@ func (tp TransformProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TransportStreamFormat describes the properties for generating an MPEG-2 Transport Stream (ISO/IEC 13818-1)
-// output video file(s).
+// TransportStreamFormat describes the properties for generating an MPEG-2 Transport Stream (ISO/IEC
+// 13818-1) output video file(s).
 type TransportStreamFormat struct {
 	// OutputFiles - The list of output files to produce.  Each entry in the list is a set of audio and video layer labels to be muxed together .
 	OutputFiles *[]OutputFile `json:"outputFiles,omitempty"`

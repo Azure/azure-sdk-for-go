@@ -390,7 +390,7 @@ func (c *aadIdentityClient) authenticateInteractiveBrowser(ctx context.Context, 
 	if err != nil {
 		return nil, err
 	}
-	return c.authenticateAuthCode(ctx, tenantID, clientID, cfg.authCode, clientSecret, scopes)
+	return c.authenticateAuthCode(ctx, tenantID, clientID, cfg.authCode, clientSecret, cfg.redirectURI, scopes)
 }
 
 // authenticateAuthCode requests an Access Token with the authorization code and returns the token or an error in case of authentication failure.
@@ -401,8 +401,8 @@ func (c *aadIdentityClient) authenticateInteractiveBrowser(ctx context.Context, 
 // clientSecret: Gets the client secret that was generated for the App Registration used to authenticate the client.
 // redirectURI: The redirect URI that was used to request the authorization code. Must be the same URI that is configured for the App Registration.
 // scopes: The scopes required for the token
-func (c *aadIdentityClient) authenticateAuthCode(ctx context.Context, tenantID string, clientID string, authCode string, clientSecret string, scopes []string) (*azcore.AccessToken, error) {
-	req, err := c.createAuthorizationCodeAuthRequest(ctx, tenantID, clientID, authCode, clientSecret, scopes)
+func (c *aadIdentityClient) authenticateAuthCode(ctx context.Context, tenantID string, clientID string, authCode string, clientSecret string, redirectURI string, scopes []string) (*azcore.AccessToken, error) {
+	req, err := c.createAuthorizationCodeAuthRequest(ctx, tenantID, clientID, authCode, clientSecret, redirectURI, scopes)
 	if err != nil {
 		return nil, err
 	}
@@ -420,15 +420,14 @@ func (c *aadIdentityClient) authenticateAuthCode(ctx context.Context, tenantID s
 }
 
 // createAuthorizationCodeAuthRequest creates a request for an Access Token for authorization_code grant types.
-func (c *aadIdentityClient) createAuthorizationCodeAuthRequest(ctx context.Context, tenantID string, clientID string, authCode string, clientSecret string, scopes []string) (*azcore.Request, error) {
+func (c *aadIdentityClient) createAuthorizationCodeAuthRequest(ctx context.Context, tenantID string, clientID string, authCode string, clientSecret string, redirectURI string, scopes []string) (*azcore.Request, error) {
 	data := url.Values{}
 	data.Set(qpGrantType, "authorization_code")
 	data.Set(qpClientID, clientID)
 	if clientSecret != "" {
 		data.Set(qpClientSecret, clientSecret) // only for web apps
 	}
-	// similar to MSAL, we use a hard-coded redirect URI here as we never actually redirect to it
-	data.Set(qpRedirectURI, "https://login.microsoftonline.com/common/oauth2/nativeclient")
+	data.Set(qpRedirectURI, redirectURI)
 	data.Set(qpScope, strings.Join(scopes, " "))
 	data.Set(qpCode, authCode)
 	dataEncoded := data.Encode()

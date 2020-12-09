@@ -124,7 +124,10 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 	}
 	// this is the case when expires_on is a time string
 	// this is the format of the string coming from the service
-	if expiresOn, err := time.Parse("01/02/2006 15:04:05 PM +00:00", value.ExpiresOn); err == nil { // the date string specified in the layout param of time.Parse cannot be changed, Golang expects whatever layout to always signify January 2, 2006 at 3:04 PM
+	if expiresOn, err := time.Parse("1/2/2006 15:04:05 PM +00:00", value.ExpiresOn); err == nil { // the date string specified is for Windows OS
+		eo := expiresOn.UTC()
+		return &azcore.AccessToken{Token: value.Token, ExpiresOn: eo}, nil
+	} else if expiresOn, err := time.Parse("1/2/2006 15:04:05 +00:00", value.ExpiresOn); err == nil { // the date string specified is for Linux OS
 		eo := expiresOn.UTC()
 		return &azcore.AccessToken{Token: value.Token, ExpiresOn: eo}, nil
 	} else {
@@ -182,14 +185,19 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context,
 		request.Header.Set("secret", os.Getenv(msiSecret))
 		q.Add("api-version", "2017-09-01")
 		q.Add("resource", strings.Join(scopes, " "))
+		if clientID != "" {
+			// the legacy 2017 API version specifically specifies "clientid" and not "client_id" as a query param
+			q.Add("clientid", clientID)
+		}
 	} else if c.msiType == msiTypeAppServiceV20190801 {
 		request.Header.Set("X-IDENTITY-HEADER", os.Getenv(identityHeader))
 		q.Add("api-version", "2019-08-01")
 		q.Add("resource", scopes[0])
+		if clientID != "" {
+			q.Add(qpClientID, clientID)
+		}
 	}
-	if clientID != "" {
-		q.Add(qpClientID, clientID)
-	}
+
 	request.URL.RawQuery = q.Encode()
 	return request, nil
 }

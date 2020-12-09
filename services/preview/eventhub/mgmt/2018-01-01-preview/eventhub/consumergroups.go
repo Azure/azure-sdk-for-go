@@ -68,7 +68,7 @@ func (client ConsumerGroupsClient) CreateOrUpdate(ctx context.Context, resourceG
 			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
 		{TargetValue: eventHubName,
-			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "eventHubName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: consumerGroupName,
 			Constraints: []validation.Constraint{{Target: "consumerGroupName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -107,7 +107,7 @@ func (client ConsumerGroupsClient) CreateOrUpdatePreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -165,7 +165,7 @@ func (client ConsumerGroupsClient) Delete(ctx context.Context, resourceGroupName
 			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
 		{TargetValue: eventHubName,
-			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "eventHubName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: consumerGroupName,
 			Constraints: []validation.Constraint{{Target: "consumerGroupName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -204,7 +204,7 @@ func (client ConsumerGroupsClient) DeletePreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -259,7 +259,7 @@ func (client ConsumerGroupsClient) Get(ctx context.Context, resourceGroupName st
 			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
 		{TargetValue: eventHubName,
-			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "eventHubName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: consumerGroupName,
 			Constraints: []validation.Constraint{{Target: "consumerGroupName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -298,7 +298,7 @@ func (client ConsumerGroupsClient) GetPreparer(ctx context.Context, resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -358,7 +358,7 @@ func (client ConsumerGroupsClient) ListByEventHub(ctx context.Context, resourceG
 			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
 		{TargetValue: eventHubName,
-			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "eventHubName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: skip,
 			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
@@ -407,7 +407,7 @@ func (client ConsumerGroupsClient) ListByEventHubPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

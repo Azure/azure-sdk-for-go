@@ -67,7 +67,7 @@ func (client EventHubsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
 		{TargetValue: eventHubName,
-			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "eventHubName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: false,
@@ -119,7 +119,7 @@ func (client EventHubsClient) CreateOrUpdatePreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -179,7 +179,7 @@ func (client EventHubsClient) CreateOrUpdateAuthorizationRule(ctx context.Contex
 			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
 		{TargetValue: eventHubName,
-			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "eventHubName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: authorizationRuleName,
 			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -220,7 +220,7 @@ func (client EventHubsClient) CreateOrUpdateAuthorizationRulePreparer(ctx contex
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -277,7 +277,7 @@ func (client EventHubsClient) Delete(ctx context.Context, resourceGroupName stri
 			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
 		{TargetValue: eventHubName,
-			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "eventHubName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("eventhub.EventHubsClient", "Delete", err.Error())
 	}
@@ -312,7 +312,7 @@ func (client EventHubsClient) DeletePreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -367,7 +367,7 @@ func (client EventHubsClient) DeleteAuthorizationRule(ctx context.Context, resou
 			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
 		{TargetValue: eventHubName,
-			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "eventHubName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: authorizationRuleName,
 			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
@@ -405,7 +405,7 @@ func (client EventHubsClient) DeleteAuthorizationRulePreparer(ctx context.Contex
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -459,7 +459,7 @@ func (client EventHubsClient) Get(ctx context.Context, resourceGroupName string,
 			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
 		{TargetValue: eventHubName,
-			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "eventHubName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("eventhub.EventHubsClient", "Get", err.Error())
 	}
@@ -494,7 +494,7 @@ func (client EventHubsClient) GetPreparer(ctx context.Context, resourceGroupName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -550,7 +550,7 @@ func (client EventHubsClient) GetAuthorizationRule(ctx context.Context, resource
 			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
 		{TargetValue: eventHubName,
-			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "eventHubName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: authorizationRuleName,
 			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
@@ -588,7 +588,7 @@ func (client EventHubsClient) GetAuthorizationRulePreparer(ctx context.Context, 
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -643,7 +643,7 @@ func (client EventHubsClient) ListAuthorizationRules(ctx context.Context, resour
 			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
 		{TargetValue: eventHubName,
-			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "eventHubName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("eventhub.EventHubsClient", "ListAuthorizationRules", err.Error())
 	}
@@ -682,7 +682,7 @@ func (client EventHubsClient) ListAuthorizationRulesPreparer(ctx context.Context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -822,7 +822,7 @@ func (client EventHubsClient) ListByNamespacePreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -921,7 +921,7 @@ func (client EventHubsClient) ListKeys(ctx context.Context, resourceGroupName st
 			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
 		{TargetValue: eventHubName,
-			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "eventHubName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: authorizationRuleName,
 			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
@@ -959,7 +959,7 @@ func (client EventHubsClient) ListKeysPreparer(ctx context.Context, resourceGrou
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1016,7 +1016,7 @@ func (client EventHubsClient) RegenerateKeys(ctx context.Context, resourceGroupN
 			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
 		{TargetValue: eventHubName,
-			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "eventHubName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: authorizationRuleName,
 			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
@@ -1054,7 +1054,7 @@ func (client EventHubsClient) RegenerateKeysPreparer(ctx context.Context, resour
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

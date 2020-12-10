@@ -171,9 +171,7 @@ func (client IntegrationRuntimesClient) CreateOrUpdate(ctx context.Context, reso
 		{TargetValue: integrationRuntimeName,
 			Constraints: []validation.Constraint{{Target: "integrationRuntimeName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "integrationRuntimeName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "integrationRuntimeName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}},
-		{TargetValue: integrationRuntime,
-			Constraints: []validation.Constraint{{Target: "integrationRuntime.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "integrationRuntimeName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("datafactory.IntegrationRuntimesClient", "CreateOrUpdate", err.Error())
 	}
 

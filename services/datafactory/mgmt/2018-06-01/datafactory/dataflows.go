@@ -74,9 +74,7 @@ func (client DataFlowsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 		{TargetValue: dataFlowName,
 			Constraints: []validation.Constraint{{Target: "dataFlowName", Name: validation.MaxLength, Rule: 260, Chain: nil},
 				{Target: "dataFlowName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "dataFlowName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}},
-		{TargetValue: dataFlow,
-			Constraints: []validation.Constraint{{Target: "dataFlow.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "dataFlowName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("datafactory.DataFlowsClient", "CreateOrUpdate", err.Error())
 	}
 

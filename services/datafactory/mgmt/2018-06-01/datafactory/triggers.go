@@ -74,9 +74,7 @@ func (client TriggersClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 		{TargetValue: triggerName,
 			Constraints: []validation.Constraint{{Target: "triggerName", Name: validation.MaxLength, Rule: 260, Chain: nil},
 				{Target: "triggerName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "triggerName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}},
-		{TargetValue: trigger,
-			Constraints: []validation.Constraint{{Target: "trigger.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "triggerName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("datafactory.TriggersClient", "CreateOrUpdate", err.Error())
 	}
 

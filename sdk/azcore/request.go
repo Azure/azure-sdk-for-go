@@ -14,6 +14,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"reflect"
 	"strconv"
@@ -240,6 +241,29 @@ func (req *Request) valid() error {
 			}
 		}
 	}
+	return nil
+}
+
+// writes to a buffer, used for logging purposes
+func (req *Request) writeBody(b *bytes.Buffer) error {
+	if req.Body == nil {
+		fmt.Fprint(b, "   Request contained no body\n")
+		return nil
+	}
+	if ct := req.Header.Get(HeaderContentType); !shouldLogBody(b, ct) {
+		return nil
+	}
+	body, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		fmt.Fprintf(b, "   Failed to read request body: %s\n", err.Error())
+		return err
+	}
+	if err := req.RewindBody(); err != nil {
+		return err
+	}
+	fmt.Fprintln(b, "   --------------------------------------------------------------------------------")
+	fmt.Fprintln(b, string(body))
+	fmt.Fprintln(b, "   --------------------------------------------------------------------------------")
 	return nil
 }
 

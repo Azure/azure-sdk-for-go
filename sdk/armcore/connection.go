@@ -31,6 +31,8 @@ type ConnectionOptions struct {
 	Retry azcore.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior.
 	Telemetry azcore.TelemetryOptions
+	// Logging configures the built-in logging policy behavior.
+	Logging azcore.LogOptions
 	// RegisterRPOptions configures the built-in RP registration policy behavior.
 	RegisterRPOptions RegistrationOptions
 }
@@ -41,6 +43,7 @@ func DefaultConnectionOptions() ConnectionOptions {
 		Retry:             azcore.DefaultRetryOptions(),
 		RegisterRPOptions: DefaultRegistrationOptions(),
 		Telemetry:         azcore.DefaultTelemetryOptions(),
+		Logging:           azcore.DefaultLogOptions(),
 	}
 }
 
@@ -73,7 +76,7 @@ func NewConnection(endpoint string, cred azcore.TokenCredential, options *Connec
 		NewRPRegistrationPolicy(endpoint, cred, &options.RegisterRPOptions),
 		azcore.NewRetryPolicy(&options.Retry),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{endpointToScope(endpoint)}}}),
-		azcore.NewLogPolicy(nil))
+		azcore.NewLogPolicy(&options.Logging))
 	return NewConnectionWithPipeline(endpoint, p)
 }
 

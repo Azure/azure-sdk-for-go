@@ -24,6 +24,8 @@ type AuthorizationCodeCredentialOptions struct {
 	Retry azcore.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior
 	Telemetry azcore.TelemetryOptions
+	// Logging configures the built-in logging policy behavior.
+	Logging azcore.LogOptions
 }
 
 // DefaultAuthorizationCodeCredentialOptions returns an instance of AuthorizationCodeCredentialOptions initialized with default values.
@@ -64,7 +66,7 @@ func NewAuthorizationCodeCredential(tenantID string, clientID string, authCode s
 	if err != nil {
 		return nil, err
 	}
-	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry})
+	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry, Logging: options.Logging})
 	if err != nil {
 		return nil, err
 	}

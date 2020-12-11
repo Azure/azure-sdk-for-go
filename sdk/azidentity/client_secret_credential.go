@@ -22,6 +22,8 @@ type ClientSecretCredentialOptions struct {
 	Retry azcore.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior
 	Telemetry azcore.TelemetryOptions
+	// Logging configures the built-in logging policy behavior.
+	Logging azcore.LogOptions
 }
 
 // DefaultClientSecretCredentialOptions returns an instance of ClientSecretCredentialOptions initialized with default values.
@@ -29,6 +31,7 @@ func DefaultClientSecretCredentialOptions() ClientSecretCredentialOptions {
 	return ClientSecretCredentialOptions{
 		Retry:     azcore.DefaultRetryOptions(),
 		Telemetry: azcore.DefaultTelemetryOptions(),
+		Logging:   azcore.DefaultLogOptions(),
 	}
 }
 
@@ -59,7 +62,7 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 	if err != nil {
 		return nil, err
 	}
-	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry})
+	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry, Logging: options.Logging})
 	if err != nil {
 		return nil, err
 	}

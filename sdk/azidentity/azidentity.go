@@ -128,6 +128,9 @@ type pipelineOptions struct {
 
 	// Telemetry configures the built-in telemetry policy behavior
 	Telemetry azcore.TelemetryOptions
+
+	// Logging configures the built-in logging policy behavior.
+	Logging azcore.LogOptions
 }
 
 // setAuthorityHost initializes the authority host for credentials.
@@ -155,7 +158,7 @@ func newDefaultPipeline(o pipelineOptions) azcore.Pipeline {
 		o.HTTPClient,
 		azcore.NewTelemetryPolicy(&o.Telemetry),
 		azcore.NewRetryPolicy(&o.Retry),
-		azcore.NewLogPolicy(nil))
+		azcore.NewLogPolicy(&o.Logging))
 }
 
 // newDefaultMSIPipeline creates a pipeline using the specified pipeline options needed
@@ -195,7 +198,7 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 		o.HTTPClient,
 		azcore.NewTelemetryPolicy(&o.Telemetry),
 		azcore.NewRetryPolicy(&retryOpts),
-		azcore.NewLogPolicy(nil))
+		azcore.NewLogPolicy(&o.Logging))
 }
 
 // validTenantID return true is it receives a valid tenantID, returns false otherwise

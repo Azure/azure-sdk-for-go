@@ -173,9 +173,7 @@ func (r *Response) writeBody(b *bytes.Buffer) error {
 		return err
 	}
 	if len(body) > 0 {
-		fmt.Fprintln(b, "   --------------------------------------------------------------------------------")
-		fmt.Fprintln(b, string(body))
-		fmt.Fprintln(b, "   --------------------------------------------------------------------------------")
+		logBody(b, body)
 	} else {
 		fmt.Fprint(b, "   Response contained no body\n")
 	}

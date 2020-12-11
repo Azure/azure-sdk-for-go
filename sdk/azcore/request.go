@@ -261,9 +261,7 @@ func (req *Request) writeBody(b *bytes.Buffer) error {
 	if err := req.RewindBody(); err != nil {
 		return err
 	}
-	fmt.Fprintln(b, "   --------------------------------------------------------------------------------")
-	fmt.Fprintln(b, string(body))
-	fmt.Fprintln(b, "   --------------------------------------------------------------------------------")
+	logBody(b, body)
 	return nil
 }
 
@@ -339,4 +337,10 @@ func azureTagIsReadOnly(tag string) bool {
 		}
 	}
 	return false
+}
+
+func logBody(b *bytes.Buffer, body []byte) {
+	fmt.Fprintln(b, "   --------------------------------------------------------------------------------")
+	fmt.Fprintln(b, string(body))
+	fmt.Fprintln(b, "   --------------------------------------------------------------------------------")
 }

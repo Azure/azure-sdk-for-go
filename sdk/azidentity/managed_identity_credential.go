@@ -20,12 +20,16 @@ type ManagedIdentityCredentialOptions struct {
 
 	// Telemetry configures the built-in telemetry policy behavior.
 	Telemetry azcore.TelemetryOptions
+
+	// Logging configures the built-in logging policy behavior.
+	Logging azcore.LogOptions
 }
 
 // DefaultManagedIdentityCredentialOptions returns an instance of ManagedIdentityCredentialOptions initialized with default values.
 func DefaultManagedIdentityCredentialOptions() ManagedIdentityCredentialOptions {
 	return ManagedIdentityCredentialOptions{
 		Telemetry: azcore.DefaultTelemetryOptions(),
+		Logging:   azcore.DefaultLogOptions(),
 	}
 }
 

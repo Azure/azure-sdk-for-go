@@ -33,6 +33,7 @@ func DefaultAuthorizationCodeCredentialOptions() AuthorizationCodeCredentialOpti
 	return AuthorizationCodeCredentialOptions{
 		Retry:     azcore.DefaultRetryOptions(),
 		Telemetry: azcore.DefaultTelemetryOptions(),
+		Logging:   azcore.DefaultLogOptions(),
 	}
 }
 

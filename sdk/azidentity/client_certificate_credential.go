@@ -41,6 +41,7 @@ func DefaultClientCertificateCredentialOptions() ClientCertificateCredentialOpti
 	return ClientCertificateCredentialOptions{
 		Retry:     azcore.DefaultRetryOptions(),
 		Telemetry: azcore.DefaultTelemetryOptions(),
+		Logging:   azcore.DefaultLogOptions(),
 	}
 }
 

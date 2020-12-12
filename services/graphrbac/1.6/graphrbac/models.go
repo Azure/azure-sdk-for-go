@@ -105,7 +105,7 @@ type ADGroup struct {
 	ObjectID *string `json:"objectId,omitempty"`
 	// DeletionTimestamp - READ-ONLY; The time at which the directory object was deleted.
 	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
+	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplication', 'ObjectTypeAppRoleAssignment', 'ObjectTypeGroup', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
 	ObjectType ObjectType `json:"objectType,omitempty"`
 }
 
@@ -139,6 +139,11 @@ func (ag ADGroup) MarshalJSON() ([]byte, error) {
 
 // AsApplication is the BasicDirectoryObject implementation for ADGroup.
 func (ag ADGroup) AsApplication() (*Application, bool) {
+	return nil, false
+}
+
+// AsAppRoleAssignment is the BasicDirectoryObject implementation for ADGroup.
+func (ag ADGroup) AsAppRoleAssignment() (*AppRoleAssignment, bool) {
 	return nil, false
 }
 
@@ -338,7 +343,7 @@ type Application struct {
 	ObjectID *string `json:"objectId,omitempty"`
 	// DeletionTimestamp - READ-ONLY; The time at which the directory object was deleted.
 	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
+	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplication', 'ObjectTypeAppRoleAssignment', 'ObjectTypeGroup', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
 	ObjectType ObjectType `json:"objectType,omitempty"`
 }
 
@@ -454,6 +459,11 @@ func (a Application) MarshalJSON() ([]byte, error) {
 // AsApplication is the BasicDirectoryObject implementation for Application.
 func (a Application) AsApplication() (*Application, bool) {
 	return &a, true
+}
+
+// AsAppRoleAssignment is the BasicDirectoryObject implementation for Application.
+func (a Application) AsAppRoleAssignment() (*AppRoleAssignment, bool) {
+	return nil, false
 }
 
 // AsADGroup is the BasicDirectoryObject implementation for Application.
@@ -1089,8 +1099,11 @@ func (page ApplicationListResultPage) Values() []Application {
 }
 
 // Creates a new instance of the ApplicationListResultPage type.
-func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
-	return ApplicationListResultPage{fn: getNextPage}
+func NewApplicationListResultPage(cur ApplicationListResult, getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
+	return ApplicationListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // ApplicationUpdateParameters request parameters for updating a new application.
@@ -1172,6 +1185,363 @@ type AppRole struct {
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// Value - Specifies the value of the roles claim that the application should expect in the authentication and access tokens.
 	Value *string `json:"value,omitempty"`
+}
+
+// AppRoleAssignment appRoleAssignment information.
+type AppRoleAssignment struct {
+	// ID - The role id that was assigned to the principal. This role must be declared by the target resource application resourceId in its appRoles property.
+	ID *string `json:"id,omitempty"`
+	// PrincipalDisplayName - The display name of the principal that was granted the access.
+	PrincipalDisplayName *string `json:"principalDisplayName,omitempty"`
+	// PrincipalID - The unique identifier (objectId) for the principal being granted the access.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// PrincipalType - The type of principal. This can either be "User", "Group" or "ServicePrincipal".
+	PrincipalType *string `json:"principalType,omitempty"`
+	// ResourceDisplayName - The display name of the resource to which the assignment was made.
+	ResourceDisplayName *string `json:"resourceDisplayName,omitempty"`
+	// ResourceID - The unique identifier (objectId) for the target resource (service principal) for which the assignment was made.
+	ResourceID *string `json:"resourceId,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// ObjectID - READ-ONLY; The object ID.
+	ObjectID *string `json:"objectId,omitempty"`
+	// DeletionTimestamp - READ-ONLY; The time at which the directory object was deleted.
+	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
+	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplication', 'ObjectTypeAppRoleAssignment', 'ObjectTypeGroup', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
+	ObjectType ObjectType `json:"objectType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AppRoleAssignment.
+func (ara AppRoleAssignment) MarshalJSON() ([]byte, error) {
+	ara.ObjectType = ObjectTypeAppRoleAssignment
+	objectMap := make(map[string]interface{})
+	if ara.ID != nil {
+		objectMap["id"] = ara.ID
+	}
+	if ara.PrincipalDisplayName != nil {
+		objectMap["principalDisplayName"] = ara.PrincipalDisplayName
+	}
+	if ara.PrincipalID != nil {
+		objectMap["principalId"] = ara.PrincipalID
+	}
+	if ara.PrincipalType != nil {
+		objectMap["principalType"] = ara.PrincipalType
+	}
+	if ara.ResourceDisplayName != nil {
+		objectMap["resourceDisplayName"] = ara.ResourceDisplayName
+	}
+	if ara.ResourceID != nil {
+		objectMap["resourceId"] = ara.ResourceID
+	}
+	if ara.ObjectType != "" {
+		objectMap["objectType"] = ara.ObjectType
+	}
+	for k, v := range ara.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsApplication is the BasicDirectoryObject implementation for AppRoleAssignment.
+func (ara AppRoleAssignment) AsApplication() (*Application, bool) {
+	return nil, false
+}
+
+// AsAppRoleAssignment is the BasicDirectoryObject implementation for AppRoleAssignment.
+func (ara AppRoleAssignment) AsAppRoleAssignment() (*AppRoleAssignment, bool) {
+	return &ara, true
+}
+
+// AsADGroup is the BasicDirectoryObject implementation for AppRoleAssignment.
+func (ara AppRoleAssignment) AsADGroup() (*ADGroup, bool) {
+	return nil, false
+}
+
+// AsServicePrincipal is the BasicDirectoryObject implementation for AppRoleAssignment.
+func (ara AppRoleAssignment) AsServicePrincipal() (*ServicePrincipal, bool) {
+	return nil, false
+}
+
+// AsUser is the BasicDirectoryObject implementation for AppRoleAssignment.
+func (ara AppRoleAssignment) AsUser() (*User, bool) {
+	return nil, false
+}
+
+// AsDirectoryObject is the BasicDirectoryObject implementation for AppRoleAssignment.
+func (ara AppRoleAssignment) AsDirectoryObject() (*DirectoryObject, bool) {
+	return nil, false
+}
+
+// AsBasicDirectoryObject is the BasicDirectoryObject implementation for AppRoleAssignment.
+func (ara AppRoleAssignment) AsBasicDirectoryObject() (BasicDirectoryObject, bool) {
+	return &ara, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AppRoleAssignment struct.
+func (ara *AppRoleAssignment) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ara.ID = &ID
+			}
+		case "principalDisplayName":
+			if v != nil {
+				var principalDisplayName string
+				err = json.Unmarshal(*v, &principalDisplayName)
+				if err != nil {
+					return err
+				}
+				ara.PrincipalDisplayName = &principalDisplayName
+			}
+		case "principalId":
+			if v != nil {
+				var principalID string
+				err = json.Unmarshal(*v, &principalID)
+				if err != nil {
+					return err
+				}
+				ara.PrincipalID = &principalID
+			}
+		case "principalType":
+			if v != nil {
+				var principalType string
+				err = json.Unmarshal(*v, &principalType)
+				if err != nil {
+					return err
+				}
+				ara.PrincipalType = &principalType
+			}
+		case "resourceDisplayName":
+			if v != nil {
+				var resourceDisplayName string
+				err = json.Unmarshal(*v, &resourceDisplayName)
+				if err != nil {
+					return err
+				}
+				ara.ResourceDisplayName = &resourceDisplayName
+			}
+		case "resourceId":
+			if v != nil {
+				var resourceID string
+				err = json.Unmarshal(*v, &resourceID)
+				if err != nil {
+					return err
+				}
+				ara.ResourceID = &resourceID
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if ara.AdditionalProperties == nil {
+					ara.AdditionalProperties = make(map[string]interface{})
+				}
+				ara.AdditionalProperties[k] = additionalProperties
+			}
+		case "objectId":
+			if v != nil {
+				var objectID string
+				err = json.Unmarshal(*v, &objectID)
+				if err != nil {
+					return err
+				}
+				ara.ObjectID = &objectID
+			}
+		case "deletionTimestamp":
+			if v != nil {
+				var deletionTimestamp date.Time
+				err = json.Unmarshal(*v, &deletionTimestamp)
+				if err != nil {
+					return err
+				}
+				ara.DeletionTimestamp = &deletionTimestamp
+			}
+		case "objectType":
+			if v != nil {
+				var objectType ObjectType
+				err = json.Unmarshal(*v, &objectType)
+				if err != nil {
+					return err
+				}
+				ara.ObjectType = objectType
+			}
+		}
+	}
+
+	return nil
+}
+
+// AppRoleAssignmentListResult appRoleAssignment list operation result.
+type AppRoleAssignmentListResult struct {
+	autorest.Response `json:"-"`
+	// Value - A collection of AppRoleAssignment.
+	Value *[]AppRoleAssignment `json:"value,omitempty"`
+	// OdataNextLink - The URL to get the next set of results.
+	OdataNextLink *string `json:"odata.nextLink,omitempty"`
+}
+
+// AppRoleAssignmentListResultIterator provides access to a complete listing of AppRoleAssignment values.
+type AppRoleAssignmentListResultIterator struct {
+	i    int
+	page AppRoleAssignmentListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AppRoleAssignmentListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppRoleAssignmentListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AppRoleAssignmentListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AppRoleAssignmentListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AppRoleAssignmentListResultIterator) Response() AppRoleAssignmentListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AppRoleAssignmentListResultIterator) Value() AppRoleAssignment {
+	if !iter.page.NotDone() {
+		return AppRoleAssignment{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AppRoleAssignmentListResultIterator type.
+func NewAppRoleAssignmentListResultIterator(page AppRoleAssignmentListResultPage) AppRoleAssignmentListResultIterator {
+	return AppRoleAssignmentListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (aralr AppRoleAssignmentListResult) IsEmpty() bool {
+	return aralr.Value == nil || len(*aralr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (aralr AppRoleAssignmentListResult) hasNextLink() bool {
+	return aralr.OdataNextLink != nil && len(*aralr.OdataNextLink) != 0
+}
+
+// appRoleAssignmentListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (aralr AppRoleAssignmentListResult) appRoleAssignmentListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !aralr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(aralr.OdataNextLink)))
+}
+
+// AppRoleAssignmentListResultPage contains a page of AppRoleAssignment values.
+type AppRoleAssignmentListResultPage struct {
+	fn    func(context.Context, AppRoleAssignmentListResult) (AppRoleAssignmentListResult, error)
+	aralr AppRoleAssignmentListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AppRoleAssignmentListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppRoleAssignmentListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.aralr)
+		if err != nil {
+			return err
+		}
+		page.aralr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AppRoleAssignmentListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AppRoleAssignmentListResultPage) NotDone() bool {
+	return !page.aralr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AppRoleAssignmentListResultPage) Response() AppRoleAssignmentListResult {
+	return page.aralr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AppRoleAssignmentListResultPage) Values() []AppRoleAssignment {
+	if page.aralr.IsEmpty() {
+		return nil
+	}
+	return *page.aralr.Value
+}
+
+// Creates a new instance of the AppRoleAssignmentListResultPage type.
+func NewAppRoleAssignmentListResultPage(cur AppRoleAssignmentListResult, getNextPage func(context.Context, AppRoleAssignmentListResult) (AppRoleAssignmentListResult, error)) AppRoleAssignmentListResultPage {
+	return AppRoleAssignmentListResultPage{
+		fn:    getNextPage,
+		aralr: cur,
+	}
 }
 
 // CheckGroupMembershipParameters request parameters for IsMemberOf API call.
@@ -1304,6 +1674,7 @@ func (cgmr *CheckGroupMembershipResult) UnmarshalJSON(body []byte) error {
 // BasicDirectoryObject represents an Azure Active Directory object.
 type BasicDirectoryObject interface {
 	AsApplication() (*Application, bool)
+	AsAppRoleAssignment() (*AppRoleAssignment, bool)
 	AsADGroup() (*ADGroup, bool)
 	AsServicePrincipal() (*ServicePrincipal, bool)
 	AsUser() (*User, bool)
@@ -1318,7 +1689,7 @@ type DirectoryObject struct {
 	ObjectID *string `json:"objectId,omitempty"`
 	// DeletionTimestamp - READ-ONLY; The time at which the directory object was deleted.
 	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
+	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplication', 'ObjectTypeAppRoleAssignment', 'ObjectTypeGroup', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
 	ObjectType ObjectType `json:"objectType,omitempty"`
 }
 
@@ -1334,6 +1705,10 @@ func unmarshalBasicDirectoryObject(body []byte) (BasicDirectoryObject, error) {
 		var a Application
 		err := json.Unmarshal(body, &a)
 		return a, err
+	case string(ObjectTypeAppRoleAssignment):
+		var ara AppRoleAssignment
+		err := json.Unmarshal(body, &ara)
+		return ara, err
 	case string(ObjectTypeGroup):
 		var ag ADGroup
 		err := json.Unmarshal(body, &ag)
@@ -1386,6 +1761,11 @@ func (do DirectoryObject) MarshalJSON() ([]byte, error) {
 
 // AsApplication is the BasicDirectoryObject implementation for DirectoryObject.
 func (do DirectoryObject) AsApplication() (*Application, bool) {
+	return nil, false
+}
+
+// AsAppRoleAssignment is the BasicDirectoryObject implementation for DirectoryObject.
+func (do DirectoryObject) AsAppRoleAssignment() (*AppRoleAssignment, bool) {
 	return nil, false
 }
 
@@ -1652,8 +2032,11 @@ func (page DirectoryObjectListResultPage) Values() []BasicDirectoryObject {
 }
 
 // Creates a new instance of the DirectoryObjectListResultPage type.
-func NewDirectoryObjectListResultPage(getNextPage func(context.Context, DirectoryObjectListResult) (DirectoryObjectListResult, error)) DirectoryObjectListResultPage {
-	return DirectoryObjectListResultPage{fn: getNextPage}
+func NewDirectoryObjectListResultPage(cur DirectoryObjectListResult, getNextPage func(context.Context, DirectoryObjectListResult) (DirectoryObjectListResult, error)) DirectoryObjectListResultPage {
+	return DirectoryObjectListResultPage{
+		fn:   getNextPage,
+		dolr: cur,
+	}
 }
 
 // Domain active Directory Domain information.
@@ -2239,12 +2622,15 @@ func (page GroupListResultPage) Values() []ADGroup {
 }
 
 // Creates a new instance of the GroupListResultPage type.
-func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
-	return GroupListResultPage{fn: getNextPage}
+func NewGroupListResultPage(cur GroupListResult, getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
+	return GroupListResultPage{
+		fn:  getNextPage,
+		glr: cur,
+	}
 }
 
-// InformationalURL represents a group of URIs that provide terms of service, marketing, support and privacy
-// policy information about an application. The default value for each string is null.
+// InformationalURL represents a group of URIs that provide terms of service, marketing, support and
+// privacy policy information about an application. The default value for each string is null.
 type InformationalURL struct {
 	// TermsOfService - The terms of service URI
 	TermsOfService *string `json:"termsOfService,omitempty"`
@@ -2410,8 +2796,8 @@ type KeyCredentialsUpdateParameters struct {
 }
 
 // OAuth2Permission represents an OAuth 2.0 delegated permission scope. The specified OAuth 2.0 delegated
-// permission scopes may be requested by client applications (through the requiredResourceAccess collection on
-// the Application object) when calling a resource application. The oauth2Permissions property of the
+// permission scopes may be requested by client applications (through the requiredResourceAccess collection
+// on the Application object) when calling a resource application. The oauth2Permissions property of the
 // ServicePrincipal entity and of the Application entity is a collection of OAuth2Permission.
 type OAuth2Permission struct {
 	// AdminConsentDescription - Permission help text that appears in the admin consent and app assignment experiences.
@@ -2596,8 +2982,11 @@ func (page OAuth2PermissionGrantListResultPage) Values() []OAuth2PermissionGrant
 }
 
 // Creates a new instance of the OAuth2PermissionGrantListResultPage type.
-func NewOAuth2PermissionGrantListResultPage(getNextPage func(context.Context, OAuth2PermissionGrantListResult) (OAuth2PermissionGrantListResult, error)) OAuth2PermissionGrantListResultPage {
-	return OAuth2PermissionGrantListResultPage{fn: getNextPage}
+func NewOAuth2PermissionGrantListResultPage(cur OAuth2PermissionGrantListResult, getNextPage func(context.Context, OAuth2PermissionGrantListResult) (OAuth2PermissionGrantListResult, error)) OAuth2PermissionGrantListResultPage {
+	return OAuth2PermissionGrantListResultPage{
+		fn:      getNextPage,
+		oa2pglr: cur,
+	}
 }
 
 // OdataError active Directory OData error information.
@@ -2879,8 +3268,8 @@ type PreAuthorizedApplication struct {
 	Extensions *[]PreAuthorizedApplicationExtension `json:"extensions,omitempty"`
 }
 
-// PreAuthorizedApplicationExtension representation of an app PreAuthorizedApplicationExtension required by a
-// pre authorized client app.
+// PreAuthorizedApplicationExtension representation of an app PreAuthorizedApplicationExtension required by
+// a pre authorized client app.
 type PreAuthorizedApplicationExtension struct {
 	// Conditions - The extension's conditions.
 	Conditions *[]string `json:"conditions,omitempty"`
@@ -2894,10 +3283,11 @@ type PreAuthorizedApplicationPermission struct {
 	AccessGrants *[]string `json:"accessGrants,omitempty"`
 }
 
-// RequiredResourceAccess specifies the set of OAuth 2.0 permission scopes and app roles under the specified
-// resource that an application requires access to. The specified OAuth 2.0 permission scopes may be requested
-// by client applications (through the requiredResourceAccess collection) when calling a resource application.
-// The requiredResourceAccess property of the Application entity is a collection of RequiredResourceAccess.
+// RequiredResourceAccess specifies the set of OAuth 2.0 permission scopes and app roles under the
+// specified resource that an application requires access to. The specified OAuth 2.0 permission scopes may
+// be requested by client applications (through the requiredResourceAccess collection) when calling a
+// resource application. The requiredResourceAccess property of the Application entity is a collection of
+// RequiredResourceAccess.
 type RequiredResourceAccess struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -3089,7 +3479,7 @@ type ServicePrincipal struct {
 	ObjectID *string `json:"objectId,omitempty"`
 	// DeletionTimestamp - READ-ONLY; The time at which the directory object was deleted.
 	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
+	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplication', 'ObjectTypeAppRoleAssignment', 'ObjectTypeGroup', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
 	ObjectType ObjectType `json:"objectType,omitempty"`
 }
 
@@ -3162,6 +3552,11 @@ func (sp ServicePrincipal) MarshalJSON() ([]byte, error) {
 
 // AsApplication is the BasicDirectoryObject implementation for ServicePrincipal.
 func (sp ServicePrincipal) AsApplication() (*Application, bool) {
+	return nil, false
+}
+
+// AsAppRoleAssignment is the BasicDirectoryObject implementation for ServicePrincipal.
+func (sp ServicePrincipal) AsAppRoleAssignment() (*AppRoleAssignment, bool) {
 	return nil, false
 }
 
@@ -3433,7 +3828,8 @@ func (sp *ServicePrincipal) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServicePrincipalBase active Directory service principal common properties shared among GET, POST and PATCH
+// ServicePrincipalBase active Directory service principal common properties shared among GET, POST and
+// PATCH
 type ServicePrincipalBase struct {
 	// AccountEnabled - whether or not the service principal account is enabled
 	AccountEnabled *bool `json:"accountEnabled,omitempty"`
@@ -3607,8 +4003,11 @@ func (page ServicePrincipalListResultPage) Values() []ServicePrincipal {
 }
 
 // Creates a new instance of the ServicePrincipalListResultPage type.
-func NewServicePrincipalListResultPage(getNextPage func(context.Context, ServicePrincipalListResult) (ServicePrincipalListResult, error)) ServicePrincipalListResultPage {
-	return ServicePrincipalListResultPage{fn: getNextPage}
+func NewServicePrincipalListResultPage(cur ServicePrincipalListResult, getNextPage func(context.Context, ServicePrincipalListResult) (ServicePrincipalListResult, error)) ServicePrincipalListResultPage {
+	return ServicePrincipalListResultPage{
+		fn:   getNextPage,
+		splr: cur,
+	}
 }
 
 // ServicePrincipalObjectResult service Principal Object Result.
@@ -3636,8 +4035,8 @@ type ServicePrincipalUpdateParameters struct {
 	Tags *[]string `json:"tags,omitempty"`
 }
 
-// SignInName contains information about a sign-in name of a local account user in an Azure Active Directory
-// B2C tenant.
+// SignInName contains information about a sign-in name of a local account user in an Azure Active
+// Directory B2C tenant.
 type SignInName struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -3738,7 +4137,7 @@ type User struct {
 	ObjectID *string `json:"objectId,omitempty"`
 	// DeletionTimestamp - READ-ONLY; The time at which the directory object was deleted.
 	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
+	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplication', 'ObjectTypeAppRoleAssignment', 'ObjectTypeGroup', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
 	ObjectType ObjectType `json:"objectType,omitempty"`
 }
 
@@ -3790,6 +4189,11 @@ func (u User) MarshalJSON() ([]byte, error) {
 
 // AsApplication is the BasicDirectoryObject implementation for User.
 func (u User) AsApplication() (*Application, bool) {
+	return nil, false
+}
+
+// AsAppRoleAssignment is the BasicDirectoryObject implementation for User.
+func (u User) AsAppRoleAssignment() (*AppRoleAssignment, bool) {
 	return nil, false
 }
 
@@ -4482,8 +4886,11 @@ func (page UserListResultPage) Values() []User {
 }
 
 // Creates a new instance of the UserListResultPage type.
-func NewUserListResultPage(getNextPage func(context.Context, UserListResult) (UserListResult, error)) UserListResultPage {
-	return UserListResultPage{fn: getNextPage}
+func NewUserListResultPage(cur UserListResult, getNextPage func(context.Context, UserListResult) (UserListResult, error)) UserListResultPage {
+	return UserListResultPage{
+		fn:  getNextPage,
+		ulr: cur,
+	}
 }
 
 // UserUpdateParameters request parameters for updating an existing work or school account user.

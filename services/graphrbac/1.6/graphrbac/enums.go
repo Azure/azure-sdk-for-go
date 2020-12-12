@@ -55,6 +55,8 @@ type ObjectType string
 const (
 	// ObjectTypeApplication ...
 	ObjectTypeApplication ObjectType = "Application"
+	// ObjectTypeAppRoleAssignment ...
+	ObjectTypeAppRoleAssignment ObjectType = "AppRoleAssignment"
 	// ObjectTypeDirectoryObject ...
 	ObjectTypeDirectoryObject ObjectType = "DirectoryObject"
 	// ObjectTypeGroup ...
@@ -67,7 +69,7 @@ const (
 
 // PossibleObjectTypeValues returns an array of possible values for the ObjectType const type.
 func PossibleObjectTypeValues() []ObjectType {
-	return []ObjectType{ObjectTypeApplication, ObjectTypeDirectoryObject, ObjectTypeGroup, ObjectTypeServicePrincipal, ObjectTypeUser}
+	return []ObjectType{ObjectTypeApplication, ObjectTypeAppRoleAssignment, ObjectTypeDirectoryObject, ObjectTypeGroup, ObjectTypeServicePrincipal, ObjectTypeUser}
 }
 
 // UserType enumerates the values for user type.

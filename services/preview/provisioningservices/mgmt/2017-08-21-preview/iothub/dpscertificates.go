@@ -72,6 +72,7 @@ func (client DpsCertificatesClient) List(ctx context.Context, resourceGroupName 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.DpsCertificatesClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

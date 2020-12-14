@@ -73,6 +73,7 @@ func (client JobCollectionsClient) CreateOrUpdate(ctx context.Context, resourceG
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -374,6 +375,7 @@ func (client JobCollectionsClient) Get(ctx context.Context, resourceGroupName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -449,9 +451,11 @@ func (client JobCollectionsClient) ListByResourceGroup(ctx context.Context, reso
 	result.jclr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.jclr.hasNextLink() && result.jclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -561,9 +565,11 @@ func (client JobCollectionsClient) ListBySubscription(ctx context.Context) (resu
 	result.jclr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.jclr.hasNextLink() && result.jclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -675,6 +681,7 @@ func (client JobCollectionsClient) Patch(ctx context.Context, resourceGroupName 
 	result, err = client.PatchResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Patch", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -75,6 +75,7 @@ func (client JobsClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -157,6 +158,7 @@ func (client JobsClient) Delete(ctx context.Context, resourceGroupName string, j
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -233,6 +235,7 @@ func (client JobsClient) Get(ctx context.Context, resourceGroupName string, jobC
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -322,9 +325,11 @@ func (client JobsClient) List(ctx context.Context, resourceGroupName string, job
 	result.jlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.jlr.hasNextLink() && result.jlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -460,9 +465,11 @@ func (client JobsClient) ListJobHistory(ctx context.Context, resourceGroupName s
 	result.jhlr, err = client.ListJobHistoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "ListJobHistory", resp, "Failure responding to request")
+		return
 	}
 	if result.jhlr.hasNextLink() && result.jhlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -587,6 +594,7 @@ func (client JobsClient) Patch(ctx context.Context, resourceGroupName string, jo
 	result, err = client.PatchResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "Patch", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -669,6 +677,7 @@ func (client JobsClient) Run(ctx context.Context, resourceGroupName string, jobC
 	result, err = client.RunResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "Run", resp, "Failure responding to request")
+		return
 	}
 
 	return

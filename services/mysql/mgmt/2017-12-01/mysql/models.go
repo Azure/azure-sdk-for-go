@@ -32,15 +32,15 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2017-12-01/mysql"
 
-// AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
+// AzureEntityResource the resource model definition for an Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.
 	Etag *string `json:"etag,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -54,11 +54,11 @@ type Configuration struct {
 	autorest.Response `json:"-"`
 	// ConfigurationProperties - The properties of a configuration.
 	*ConfigurationProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -191,11 +191,11 @@ type Database struct {
 	autorest.Response `json:"-"`
 	// DatabaseProperties - The properties of a database.
 	*DatabaseProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -303,7 +303,8 @@ func (future *DatabasesCreateOrUpdateFuture) Result(client DatabasesClient) (d D
 	return
 }
 
-// DatabasesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DatabasesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DatabasesDeleteFuture struct {
 	azure.Future
 }
@@ -333,7 +334,8 @@ type ErrorAdditionalInfo struct {
 	Info interface{} `json:"info,omitempty"`
 }
 
-// ErrorResponse the resource management error response.
+// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
+// failed operations. (This also follows the OData error response format.)
 type ErrorResponse struct {
 	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
@@ -352,11 +354,11 @@ type FirewallRule struct {
 	autorest.Response `json:"-"`
 	// FirewallRuleProperties - The properties of a firewall rule.
 	*FirewallRuleProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -435,8 +437,8 @@ type FirewallRuleProperties struct {
 	EndIPAddress *string `json:"endIpAddress,omitempty"`
 }
 
-// FirewallRulesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// FirewallRulesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type FirewallRulesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -491,11 +493,11 @@ func (future *FirewallRulesDeleteFuture) Result(client FirewallRulesClient) (ar 
 type LogFile struct {
 	// LogFileProperties - The properties of the log file.
 	*LogFileProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -662,6 +664,18 @@ type PerformanceTierListResult struct {
 type PerformanceTierProperties struct {
 	// ID - ID of the performance tier.
 	ID *string `json:"id,omitempty"`
+	// MaxBackupRetentionDays - Maximum Backup retention in days for the performance tier edition
+	MaxBackupRetentionDays *int32 `json:"maxBackupRetentionDays,omitempty"`
+	// MinBackupRetentionDays - Minimum Backup retention in days for the performance tier edition
+	MinBackupRetentionDays *int32 `json:"minBackupRetentionDays,omitempty"`
+	// MaxStorageMB - Max storage allowed for a server.
+	MaxStorageMB *int32 `json:"maxStorageMB,omitempty"`
+	// MinLargeStorageMB - Max storage allowed for a server.
+	MinLargeStorageMB *int32 `json:"minLargeStorageMB,omitempty"`
+	// MaxLargeStorageMB - Max storage allowed for a server.
+	MaxLargeStorageMB *int32 `json:"maxLargeStorageMB,omitempty"`
+	// MinStorageMB - Max storage allowed for a server.
+	MinStorageMB *int32 `json:"minStorageMB,omitempty"`
 	// ServiceLevelObjectives - Service level objectives associated with the performance tier
 	ServiceLevelObjectives *[]PerformanceTierServiceLevelObjectives `json:"serviceLevelObjectives,omitempty"`
 }
@@ -692,24 +706,113 @@ type PrivateEndpointProperty struct {
 	ID *string `json:"id,omitempty"`
 }
 
-// ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
-// required location and tags
+// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
+// have tags and a location
 type ProxyResource struct {
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
-// Resource ...
-type Resource struct {
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+// RecoverableServerProperties the recoverable server's properties.
+type RecoverableServerProperties struct {
+	// LastAvailableBackupDateTime - READ-ONLY; The last available backup date time.
+	LastAvailableBackupDateTime *string `json:"lastAvailableBackupDateTime,omitempty"`
+	// ServiceLevelObjective - READ-ONLY; The service level objective
+	ServiceLevelObjective *string `json:"serviceLevelObjective,omitempty"`
+	// Edition - READ-ONLY; Edition of the performance tier.
+	Edition *string `json:"edition,omitempty"`
+	// VCore - READ-ONLY; vCore associated with the service level objective
+	VCore *int32 `json:"vCore,omitempty"`
+	// HardwareGeneration - READ-ONLY; Hardware generation associated with the service level objective
+	HardwareGeneration *string `json:"hardwareGeneration,omitempty"`
+	// Version - READ-ONLY; The MySQL version
+	Version *string `json:"version,omitempty"`
+}
+
+// RecoverableServerResource a recoverable server resource.
+type RecoverableServerResource struct {
+	autorest.Response `json:"-"`
+	// RecoverableServerProperties - Resource properties.
+	*RecoverableServerProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RecoverableServerResource.
+func (rsr RecoverableServerResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rsr.RecoverableServerProperties != nil {
+		objectMap["properties"] = rsr.RecoverableServerProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for RecoverableServerResource struct.
+func (rsr *RecoverableServerResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var recoverableServerProperties RecoverableServerProperties
+				err = json.Unmarshal(*v, &recoverableServerProperties)
+				if err != nil {
+					return err
+				}
+				rsr.RecoverableServerProperties = &recoverableServerProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				rsr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				rsr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rsr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// Resource common fields that are returned in the response for all Azure Resource Manager resources
+type Resource struct {
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -763,11 +866,11 @@ type Server struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -896,11 +999,11 @@ type ServerAdministratorResource struct {
 	autorest.Response `json:"-"`
 	// ServerAdministratorProperties - Properties of the server AAD administrator.
 	*ServerAdministratorProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1000,8 +1103,8 @@ func (future *ServerAdministratorsCreateOrUpdateFuture) Result(client ServerAdmi
 	return
 }
 
-// ServerAdministratorsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ServerAdministratorsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ServerAdministratorsDeleteFuture struct {
 	azure.Future
 }
@@ -1120,6 +1223,35 @@ type ServerListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of servers
 	Value *[]Server `json:"value,omitempty"`
+}
+
+// ServerParametersListUpdateConfigurationsFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
+type ServerParametersListUpdateConfigurationsFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ServerParametersListUpdateConfigurationsFuture) Result(client ServerParametersClient) (clr ConfigurationListResult, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "mysql.ServerParametersListUpdateConfigurationsFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("mysql.ServerParametersListUpdateConfigurationsFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if clr.Response.Response, err = future.GetResult(sender); err == nil && clr.Response.Response.StatusCode != http.StatusNoContent {
+		clr, err = client.ListUpdateConfigurationsResponder(clr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "mysql.ServerParametersListUpdateConfigurationsFuture", "Result", clr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // ServerPrivateEndpointConnection a private endpoint connection under a server
@@ -1473,8 +1605,8 @@ func (spfdc ServerPropertiesForDefaultCreate) AsBasicServerPropertiesForCreate()
 	return &spfdc, true
 }
 
-// ServerPropertiesForGeoRestore the properties used to create a new server by restoring to a different region
-// from a geo replicated backup.
+// ServerPropertiesForGeoRestore the properties used to create a new server by restoring to a different
+// region from a geo replicated backup.
 type ServerPropertiesForGeoRestore struct {
 	// SourceServerID - The source server id to restore from.
 	SourceServerID *string `json:"sourceServerId,omitempty"`
@@ -1722,7 +1854,8 @@ func (spfr ServerPropertiesForRestore) AsBasicServerPropertiesForCreate() (Basic
 	return &spfr, true
 }
 
-// ServersCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServersCreateFuture struct {
 	azure.Future
 }
@@ -1750,7 +1883,8 @@ func (future *ServersCreateFuture) Result(client ServersClient) (s Server, err e
 	return
 }
 
-// ServersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServersDeleteFuture struct {
 	azure.Future
 }
@@ -1772,8 +1906,8 @@ func (future *ServersDeleteFuture) Result(client ServersClient) (ar autorest.Res
 	return
 }
 
-// ServerSecurityAlertPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// ServerSecurityAlertPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type ServerSecurityAlertPoliciesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -1806,11 +1940,11 @@ type ServerSecurityAlertPolicy struct {
 	autorest.Response `json:"-"`
 	// SecurityAlertPolicyProperties - Resource properties.
 	*SecurityAlertPolicyProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1874,7 +2008,8 @@ func (ssap *ServerSecurityAlertPolicy) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServersRestartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServersRestartFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServersRestartFuture struct {
 	azure.Future
 }
@@ -1896,7 +2031,8 @@ func (future *ServersRestartFuture) Result(client ServersClient) (ar autorest.Re
 	return
 }
 
-// ServersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServersUpdateFuture struct {
 	azure.Future
 }
@@ -2049,17 +2185,18 @@ type StorageProfile struct {
 	StorageAutogrow StorageAutogrow `json:"storageAutogrow,omitempty"`
 }
 
-// TrackedResource the resource model definition for a ARM tracked top level resource
+// TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
+// which has 'tags' and a 'location'
 type TrackedResource struct {
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2080,11 +2217,11 @@ type VirtualNetworkRule struct {
 	autorest.Response `json:"-"`
 	// VirtualNetworkRuleProperties - Resource properties.
 	*VirtualNetworkRuleProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2300,8 +2437,11 @@ func (page VirtualNetworkRuleListResultPage) Values() []VirtualNetworkRule {
 }
 
 // Creates a new instance of the VirtualNetworkRuleListResultPage type.
-func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
-	return VirtualNetworkRuleListResultPage{fn: getNextPage}
+func NewVirtualNetworkRuleListResultPage(cur VirtualNetworkRuleListResult, getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
+	return VirtualNetworkRuleListResultPage{
+		fn:    getNextPage,
+		vnrlr: cur,
+	}
 }
 
 // VirtualNetworkRuleProperties properties of a virtual network rule.
@@ -2355,8 +2495,8 @@ func (future *VirtualNetworkRulesCreateOrUpdateFuture) Result(client VirtualNetw
 	return
 }
 
-// VirtualNetworkRulesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// VirtualNetworkRulesDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type VirtualNetworkRulesDeleteFuture struct {
 	azure.Future
 }

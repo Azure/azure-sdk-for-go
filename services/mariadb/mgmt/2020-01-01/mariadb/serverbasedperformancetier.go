@@ -26,31 +26,32 @@ import (
 	"net/http"
 )
 
-// LogFilesClient is the the Microsoft Azure management API provides create, read, update, and delete functionality for
-// Azure MariaDB resources including servers, databases, firewall rules, VNET rules, log files and configurations with
-// new business model.
-type LogFilesClient struct {
+// ServerBasedPerformanceTierClient is the the Microsoft Azure management API provides create, read, update, and delete
+// functionality for Azure MariaDB resources including servers, databases, firewall rules, VNET rules, log files and
+// configurations with new business model.
+type ServerBasedPerformanceTierClient struct {
 	BaseClient
 }
 
-// NewLogFilesClient creates an instance of the LogFilesClient client.
-func NewLogFilesClient(subscriptionID string) LogFilesClient {
-	return NewLogFilesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewServerBasedPerformanceTierClient creates an instance of the ServerBasedPerformanceTierClient client.
+func NewServerBasedPerformanceTierClient(subscriptionID string) ServerBasedPerformanceTierClient {
+	return NewServerBasedPerformanceTierClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewLogFilesClientWithBaseURI creates an instance of the LogFilesClient client using a custom endpoint.  Use this
-// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewLogFilesClientWithBaseURI(baseURI string, subscriptionID string) LogFilesClient {
-	return LogFilesClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewServerBasedPerformanceTierClientWithBaseURI creates an instance of the ServerBasedPerformanceTierClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
+func NewServerBasedPerformanceTierClientWithBaseURI(baseURI string, subscriptionID string) ServerBasedPerformanceTierClient {
+	return ServerBasedPerformanceTierClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ListByServer list all the log files in a given server.
+// List list all the performance tiers for a MariaDB server.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // serverName - the name of the server.
-func (client LogFilesClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result LogFileListResult, err error) {
+func (client ServerBasedPerformanceTierClient) List(ctx context.Context, resourceGroupName string, serverName string) (result PerformanceTierListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/LogFilesClient.ListByServer")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerBasedPerformanceTierClient.List")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -66,33 +67,33 @@ func (client LogFilesClient) ListByServer(ctx context.Context, resourceGroupName
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("mariadb.LogFilesClient", "ListByServer", err.Error())
+		return result, validation.NewError("mariadb.ServerBasedPerformanceTierClient", "List", err.Error())
 	}
 
-	req, err := client.ListByServerPreparer(ctx, resourceGroupName, serverName)
+	req, err := client.ListPreparer(ctx, resourceGroupName, serverName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mariadb.LogFilesClient", "ListByServer", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mariadb.ServerBasedPerformanceTierClient", "List", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListByServerSender(req)
+	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "mariadb.LogFilesClient", "ListByServer", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mariadb.ServerBasedPerformanceTierClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListByServerResponder(resp)
+	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mariadb.LogFilesClient", "ListByServer", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "mariadb.ServerBasedPerformanceTierClient", "List", resp, "Failure responding to request")
 		return
 	}
 
 	return
 }
 
-// ListByServerPreparer prepares the ListByServer request.
-func (client LogFilesClient) ListByServerPreparer(ctx context.Context, resourceGroupName string, serverName string) (*http.Request, error) {
+// ListPreparer prepares the List request.
+func (client ServerBasedPerformanceTierClient) ListPreparer(ctx context.Context, resourceGroupName string, serverName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serverName":        autorest.Encode("path", serverName),
@@ -107,20 +108,20 @@ func (client LogFilesClient) ListByServerPreparer(ctx context.Context, resourceG
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMariaDB/servers/{serverName}/logFiles", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMariaDB/servers/{serverName}/performanceTiers", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListByServerSender sends the ListByServer request. The method will close the
+// ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client LogFilesClient) ListByServerSender(req *http.Request) (*http.Response, error) {
+func (client ServerBasedPerformanceTierClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
-// ListByServerResponder handles the response to the ListByServer request. The method always
+// ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client LogFilesClient) ListByServerResponder(resp *http.Response) (result LogFileListResult, err error) {
+func (client ServerBasedPerformanceTierClient) ListResponder(resp *http.Response) (result PerformanceTierListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

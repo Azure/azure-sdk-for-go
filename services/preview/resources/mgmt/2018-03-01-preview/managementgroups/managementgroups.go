@@ -245,6 +245,7 @@ func (client Client) Get(ctx context.Context, groupID string, expand string, rec
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -338,9 +339,11 @@ func (client Client) GetDescendants(ctx context.Context, groupID string, skiptok
 	result.dlr, err = client.GetDescendantsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "GetDescendants", resp, "Failure responding to request")
+		return
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -460,9 +463,11 @@ func (client Client) List(ctx context.Context, cacheControl string, skiptoken st
 	result.lr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -580,6 +585,7 @@ func (client Client) Update(ctx context.Context, groupID string, patchGroupReque
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

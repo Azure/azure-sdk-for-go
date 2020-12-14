@@ -26,31 +26,32 @@ import (
 	"net/http"
 )
 
-// LogFilesClient is the the Microsoft Azure management API provides create, read, update, and delete functionality for
-// Azure MariaDB resources including servers, databases, firewall rules, VNET rules, log files and configurations with
-// new business model.
-type LogFilesClient struct {
+// RecoverableServersClient is the the Microsoft Azure management API provides create, read, update, and delete
+// functionality for Azure MariaDB resources including servers, databases, firewall rules, VNET rules, log files and
+// configurations with new business model.
+type RecoverableServersClient struct {
 	BaseClient
 }
 
-// NewLogFilesClient creates an instance of the LogFilesClient client.
-func NewLogFilesClient(subscriptionID string) LogFilesClient {
-	return NewLogFilesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewRecoverableServersClient creates an instance of the RecoverableServersClient client.
+func NewRecoverableServersClient(subscriptionID string) RecoverableServersClient {
+	return NewRecoverableServersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewLogFilesClientWithBaseURI creates an instance of the LogFilesClient client using a custom endpoint.  Use this
-// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewLogFilesClientWithBaseURI(baseURI string, subscriptionID string) LogFilesClient {
-	return LogFilesClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewRecoverableServersClientWithBaseURI creates an instance of the RecoverableServersClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
+func NewRecoverableServersClientWithBaseURI(baseURI string, subscriptionID string) RecoverableServersClient {
+	return RecoverableServersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ListByServer list all the log files in a given server.
+// Get gets a recoverable MariaDB Server.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // serverName - the name of the server.
-func (client LogFilesClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result LogFileListResult, err error) {
+func (client RecoverableServersClient) Get(ctx context.Context, resourceGroupName string, serverName string) (result RecoverableServerResource, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/LogFilesClient.ListByServer")
+		ctx = tracing.StartSpan(ctx, fqdn+"/RecoverableServersClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -66,33 +67,33 @@ func (client LogFilesClient) ListByServer(ctx context.Context, resourceGroupName
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("mariadb.LogFilesClient", "ListByServer", err.Error())
+		return result, validation.NewError("mariadb.RecoverableServersClient", "Get", err.Error())
 	}
 
-	req, err := client.ListByServerPreparer(ctx, resourceGroupName, serverName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, serverName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mariadb.LogFilesClient", "ListByServer", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mariadb.RecoverableServersClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListByServerSender(req)
+	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "mariadb.LogFilesClient", "ListByServer", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mariadb.RecoverableServersClient", "Get", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListByServerResponder(resp)
+	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mariadb.LogFilesClient", "ListByServer", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "mariadb.RecoverableServersClient", "Get", resp, "Failure responding to request")
 		return
 	}
 
 	return
 }
 
-// ListByServerPreparer prepares the ListByServer request.
-func (client LogFilesClient) ListByServerPreparer(ctx context.Context, resourceGroupName string, serverName string) (*http.Request, error) {
+// GetPreparer prepares the Get request.
+func (client RecoverableServersClient) GetPreparer(ctx context.Context, resourceGroupName string, serverName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serverName":        autorest.Encode("path", serverName),
@@ -107,20 +108,20 @@ func (client LogFilesClient) ListByServerPreparer(ctx context.Context, resourceG
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMariaDB/servers/{serverName}/logFiles", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMariaDB/servers/{serverName}/recoverableServers", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListByServerSender sends the ListByServer request. The method will close the
+// GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client LogFilesClient) ListByServerSender(req *http.Request) (*http.Response, error) {
+func (client RecoverableServersClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
-// ListByServerResponder handles the response to the ListByServer request. The method always
+// GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client LogFilesClient) ListByServerResponder(resp *http.Response) (result LogFileListResult, err error) {
+func (client RecoverableServersClient) GetResponder(resp *http.Response) (result RecoverableServerResource, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

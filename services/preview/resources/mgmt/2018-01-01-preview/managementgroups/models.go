@@ -39,7 +39,8 @@ type CheckNameAvailabilityRequest struct {
 	Type Type `json:"type,omitempty"`
 }
 
-// CheckNameAvailabilityResult describes the result of the request to check management group name availability.
+// CheckNameAvailabilityResult describes the result of the request to check management group name
+// availability.
 type CheckNameAvailabilityResult struct {
 	autorest.Response `json:"-"`
 	// NameAvailable - READ-ONLY; Required. True indicates name is valid and available. False indicates the name is invalid, unavailable, or both.
@@ -201,7 +202,8 @@ func (cmgr *CreateManagementGroupRequest) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type CreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -611,8 +613,11 @@ func (page EntityListResultPage) Values() []EntityInfo {
 }
 
 // Creates a new instance of the EntityListResultPage type.
-func NewEntityListResultPage(getNextPage func(context.Context, EntityListResult) (EntityListResult, error)) EntityListResultPage {
-	return EntityListResultPage{fn: getNextPage}
+func NewEntityListResultPage(cur EntityListResult, getNextPage func(context.Context, EntityListResult) (EntityListResult, error)) EntityListResultPage {
+	return EntityListResultPage{
+		fn:  getNextPage,
+		elr: cur,
+	}
 }
 
 // EntityParentGroupInfo (Optional) The ID of the parent management group.
@@ -876,8 +881,11 @@ func (page ListResultPage) Values() []Info {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // ManagementGroup the management group details.
@@ -1132,8 +1140,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationResults the results of an asynchronous operation.

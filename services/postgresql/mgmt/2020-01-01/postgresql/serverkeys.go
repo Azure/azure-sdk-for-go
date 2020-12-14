@@ -266,6 +266,7 @@ func (client ServerKeysClient) Get(ctx context.Context, resourceGroupName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "postgresql.ServerKeysClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -353,9 +354,11 @@ func (client ServerKeysClient) List(ctx context.Context, resourceGroupName strin
 	result.sklr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "postgresql.ServerKeysClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.sklr.hasNextLink() && result.sklr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return

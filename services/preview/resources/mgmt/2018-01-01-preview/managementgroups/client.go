@@ -90,6 +90,7 @@ func (client BaseClient) CheckNameAvailability(ctx context.Context, checkNameAva
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.BaseClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return

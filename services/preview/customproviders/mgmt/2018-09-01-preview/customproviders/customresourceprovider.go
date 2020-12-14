@@ -247,6 +247,7 @@ func (client CustomResourceProviderClient) Get(ctx context.Context, resourceGrou
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customproviders.CustomResourceProviderClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -322,9 +323,11 @@ func (client CustomResourceProviderClient) ListByResourceGroup(ctx context.Conte
 	result.lbcrm, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customproviders.CustomResourceProviderClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.lbcrm.hasNextLink() && result.lbcrm.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -434,9 +437,11 @@ func (client CustomResourceProviderClient) ListBySubscription(ctx context.Contex
 	result.lbcrm, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customproviders.CustomResourceProviderClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.lbcrm.hasNextLink() && result.lbcrm.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -556,6 +561,7 @@ func (client CustomResourceProviderClient) Update(ctx context.Context, resourceG
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customproviders.CustomResourceProviderClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

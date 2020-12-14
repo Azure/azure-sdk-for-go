@@ -163,6 +163,7 @@ func (client LinkedServerClient) Delete(ctx context.Context, resourceGroupName s
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.LinkedServerClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -239,6 +240,7 @@ func (client LinkedServerClient) Get(ctx context.Context, resourceGroupName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.LinkedServerClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -315,6 +317,7 @@ func (client LinkedServerClient) List(ctx context.Context, resourceGroupName str
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.LinkedServerClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -18,9 +18,10 @@ import (
 
 // headerJWT type contains the fields necessary to create a JSON Web Token including the x5t field which must contain a x.509 certificate thumbprint
 type headerJWT struct {
-	Typ string `json:"typ"`
-	Alg string `json:"alg"`
-	X5t string `json:"x5t"`
+	Typ string   `json:"typ"`
+	Alg string   `json:"alg"`
+	X5t string   `json:"x5t"`
+	X5c []string `json:"x5c,omitempty"`
 }
 
 // payloadJWT type contains all fields that are necessary when creating a JSON Web Token payload section
@@ -35,11 +36,14 @@ type payloadJWT struct {
 
 // createClientAssertionJWT build the JWT header, payload and signature,
 // then returns a string for the JWT assertion
-func createClientAssertionJWT(clientID string, audience string, cert *certContents) (string, error) {
+func createClientAssertionJWT(clientID string, audience string, cert *certContents, sendCertificateChain bool) (string, error) {
 	headerData := headerJWT{
 		Typ: "JWT",
 		Alg: "RS256",
 		X5t: base64.RawURLEncoding.EncodeToString(cert.fp),
+	}
+	if sendCertificateChain {
+		headerData.X5c = cert.publicCertificates
 	}
 
 	headerJSON, err := json.Marshal(headerData)

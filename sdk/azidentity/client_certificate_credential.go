@@ -7,6 +7,7 @@ import (
 	"context"
 	"crypto/rsa"
 	"crypto/x509"
+	"encoding/base64"
 	"encoding/pem"
 	"errors"
 	"io/ioutil"
@@ -22,6 +23,9 @@ import (
 type ClientCertificateCredentialOptions struct {
 	// The password required to decrypt the private key.  Leave empty if there is no password.
 	Password string
+	// Set to true to include x5c header in client claims when acquiring a token to enable
+	// SubjectName and Issuer based authentication for ClientCertificateCredential.
+	SendCertificateChain bool
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost string
@@ -49,10 +53,11 @@ func DefaultClientCertificateCredentialOptions() ClientCertificateCredentialOpti
 // on how to configure certificate authentication can be found here:
 // https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-certificate-credentials#register-your-certificate-with-azure-ad
 type ClientCertificateCredential struct {
-	client   *aadIdentityClient
-	tenantID string        // The Azure Active Directory tenant (directory) ID of the service principal
-	clientID string        // The client (application) ID of the service principal
-	cert     *certContents // The contents of the certificate file
+	client               *aadIdentityClient
+	tenantID             string        // The Azure Active Directory tenant (directory) ID of the service principal
+	clientID             string        // The client (application) ID of the service principal
+	cert                 *certContents // The contents of the certificate file
+	sendCertificateChain bool          // Determines whether to include the certificate chain in the claims to retreive a token
 }
 
 // NewClientCertificateCredential creates an instance of ClientCertificateCredential with the details needed to authenticate against Azure Active Directory with the specified certificate.
@@ -84,9 +89,9 @@ func NewClientCertificateCredential(tenantID string, clientID string, certificat
 	var cert *certContents
 	certificatePath = strings.ToUpper(certificatePath)
 	if strings.HasSuffix(certificatePath, ".PEM") {
-		cert, err = extractFromPEMFile(certData, options.Password)
+		cert, err = extractFromPEMFile(certData, options.Password, options.SendCertificateChain)
 	} else if strings.HasSuffix(certificatePath, ".PFX") {
-		cert, err = extractFromPFXFile(certData, options.Password)
+		cert, err = extractFromPFXFile(certData, options.Password, options.SendCertificateChain)
 	} else {
 		err = errors.New("only PEM and PFX files are supported")
 	}
@@ -103,16 +108,17 @@ func NewClientCertificateCredential(tenantID string, clientID string, certificat
 	if err != nil {
 		return nil, err
 	}
-	return &ClientCertificateCredential{tenantID: tenantID, clientID: clientID, cert: cert, client: c}, nil
+	return &ClientCertificateCredential{tenantID: tenantID, clientID: clientID, cert: cert, sendCertificateChain: options.SendCertificateChain, client: c}, nil
 }
 
 // contains decoded cert contents we care about
 type certContents struct {
-	fp fingerprint
-	pk *rsa.PrivateKey
+	fp                 fingerprint
+	pk                 *rsa.PrivateKey
+	publicCertificates []string
 }
 
-func newCertContents(blocks []*pem.Block, fromPEM bool) (*certContents, error) {
+func newCertContents(blocks []*pem.Block, fromPEM bool, sendCertificateChain bool) (*certContents, error) {
 	cc := certContents{}
 	// first extract the private key
 	for _, block := range blocks {
@@ -166,10 +172,18 @@ func newCertContents(blocks []*pem.Block, fromPEM bool) (*certContents, error) {
 	if cc.fp == nil {
 		return nil, errors.New("missing certificate")
 	}
+	// now find all the public certificates to send in the x5c header
+	if sendCertificateChain {
+		for _, block := range blocks {
+			if block.Type == "CERTIFICATE" {
+				cc.publicCertificates = append(cc.publicCertificates, base64.StdEncoding.EncodeToString(block.Bytes))
+			}
+		}
+	}
 	return &cc, nil
 }
 
-func extractFromPEMFile(certData []byte, password string) (*certContents, error) {
+func extractFromPEMFile(certData []byte, password string, sendCertificateChain bool) (*certContents, error) {
 	// TODO: wire up support for password
 	blocks := []*pem.Block{}
 	// read all of the PEM blocks
@@ -184,10 +198,10 @@ func extractFromPEMFile(certData []byte, password string) (*certContents, error)
 	if len(blocks) == 0 {
 		return nil, errors.New("didn't find any blocks in PEM file")
 	}
-	return newCertContents(blocks, true)
+	return newCertContents(blocks, true, sendCertificateChain)
 }
 
-func extractFromPFXFile(certData []byte, password string) (*certContents, error) {
+func extractFromPFXFile(certData []byte, password string, sendCertificateChain bool) (*certContents, error) {
 	// convert PFX binary data to PEM blocks
 	blocks, err := pkcs12.ToPEM(certData, password)
 	if err != nil {
@@ -196,7 +210,7 @@ func extractFromPFXFile(certData []byte, password string) (*certContents, error)
 	if len(blocks) == 0 {
 		return nil, errors.New("didn't find any blocks in PFX file")
 	}
-	return newCertContents(blocks, false)
+	return newCertContents(blocks, false, sendCertificateChain)
 }
 
 // GetToken obtains a token from Azure Active Directory, using the certificate in the file path.
@@ -204,7 +218,7 @@ func extractFromPFXFile(certData []byte, password string) (*certContents, error)
 // ctx: controlling the request lifetime.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	tk, err := c.client.authenticateCertificate(ctx, c.tenantID, c.clientID, c.cert, opts.Scopes)
+	tk, err := c.client.authenticateCertificate(ctx, c.tenantID, c.clientID, c.cert, c.sendCertificateChain, opts.Scopes)
 	if err != nil {
 		addGetTokenFailureLogs("Client Certificate Credential", err, true)
 		return nil, err

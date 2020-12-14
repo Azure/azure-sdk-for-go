@@ -162,6 +162,24 @@ func (r *Response) retryAfter() time.Duration {
 	return RetryAfter(r.Response)
 }
 
+// writes to a buffer, used for logging purposes
+func (r *Response) writeBody(b *bytes.Buffer) error {
+	if ct := r.Header.Get(HeaderContentType); !shouldLogBody(b, ct) {
+		return nil
+	}
+	body, err := r.payload()
+	if err != nil {
+		fmt.Fprintf(b, "   Failed to read response body: %s\n", err.Error())
+		return err
+	}
+	if len(body) > 0 {
+		logBody(b, body)
+	} else {
+		fmt.Fprint(b, "   Response contained no body\n")
+	}
+	return nil
+}
+
 // RetryAfter returns non-zero if the response contains a Retry-After header value.
 func RetryAfter(resp *http.Response) time.Duration {
 	if resp == nil {

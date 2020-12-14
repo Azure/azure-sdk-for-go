@@ -8,6 +8,7 @@ package azcore
 import (
 	"bytes"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
@@ -15,7 +16,10 @@ import (
 
 // LogOptions configures the logging policy's behavior.
 type LogOptions struct {
-	// placeholder for future configuration options
+	// IncludeBody indicates if request and response bodies should be included in logging.
+	// The default value is false.
+	// NOTE: enabling this can lead to disclosure of sensitive information, use with care.
+	IncludeBody bool
 }
 
 // DefaultLogOptions returns an instance of LogOptions initialized with default values.
@@ -58,7 +62,14 @@ func (p *logPolicy) Do(req *Request) (*Response, error) {
 		b := &bytes.Buffer{}
 		fmt.Fprintf(b, "==> OUTGOING REQUEST (Try=%d)\n", opValues.try)
 		writeRequestWithResponse(b, req, nil, nil)
+		var err error
+		if p.options.IncludeBody {
+			err = req.writeBody(b)
+		}
 		Log().Write(LogRequest, b.String())
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// Set the time for this particular retry operation and then Do the operation.
@@ -82,8 +93,22 @@ func (p *logPolicy) Do(req *Request) (*Response, error) {
 		if err != nil {
 			// skip frames runtime.Callers() and runtime.StackTrace()
 			b.WriteString(runtime.StackTrace(2, StackFrameCount))
+		} else if p.options.IncludeBody {
+			err = response.writeBody(b)
 		}
 		Log().Write(LogResponse, b.String())
 	}
 	return response, err
+}
+
+// returns true if the request/response body should be logged.
+// this is determined by looking at the content-type header value.
+func shouldLogBody(b *bytes.Buffer, contentType string) bool {
+	if strings.HasPrefix(contentType, "text") ||
+		strings.HasSuffix(contentType, "json") ||
+		strings.HasSuffix(contentType, "xml") {
+		return true
+	}
+	fmt.Fprintf(b, "   Skip logging body for %s\n", contentType)
+	return false
 }

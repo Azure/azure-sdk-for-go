@@ -6,6 +6,7 @@
 package azcore
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"net/http"
@@ -115,5 +116,30 @@ func TestPolicyLoggingError(t *testing.T) {
 		}
 	} else {
 		t.Fatal("missing LogResponse")
+	}
+}
+
+func TestShouldLogBody(t *testing.T) {
+	b := bytes.NewBuffer(make([]byte, 64))
+	if shouldLogBody(b, "application/octet-stream") {
+		t.Fatal("shouldn't log for application/octet-stream")
+	} else if b.Len() == 0 {
+		t.Fatal("skip logging should write skip message to buffer")
+	}
+	b.Reset()
+	if !shouldLogBody(b, "application/json") {
+		t.Fatal("should log for application/json")
+	} else if b.Len() != 0 {
+		t.Fatal("logging shouldn't write message")
+	}
+	if !shouldLogBody(b, "application/xml") {
+		t.Fatal("should log for application/xml")
+	} else if b.Len() != 0 {
+		t.Fatal("logging shouldn't write message")
+	}
+	if !shouldLogBody(b, "text/plain") {
+		t.Fatal("should log for text/plain")
+	} else if b.Len() != 0 {
+		t.Fatal("logging shouldn't write message")
 	}
 }

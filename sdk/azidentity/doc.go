@@ -8,6 +8,19 @@
 Package azidentity implements a set of credential types for use with
 Azure SDK clients that support Azure Active Directory (AAD) token authentication.
 
+The following credential types are included in this module:
+	- AuthorizationCodeCredential
+	- AzureCLICredential
+	- ChainedTokenCredential
+	- ClientCertificateCredential
+	- ClientSecretCredential
+	- DefaultAzureCredential
+	- DeviceCodeCredential
+	- EnvironmentCredential
+	- InteractiveBrowserCredential
+	- ManagedIdentityCredential
+	- UsernamePasswordCredential
+
 By default, the recommendation is that users call NewDefaultAzureCredential() which will
 provide a default ChainedTokenCredential configuration conformed of:
 	- EnvironmentCredential
@@ -31,18 +44,6 @@ Example call to NewDefaultAzureCredential() with options set:
 		// process error
 	}
 	client := armresources.NewResourcesClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
-
-The following credential types are included in this module:
-	- AuthorizationCodeCredential
-	- AzureCLICredential
-	- ChainedTokenCredential
-	- ClientCertificateCredential
-	- ClientSecretCredential
-	- DeviceCodeCredential
-	- EnvironmentCredential
-	- InteractiveBrowserCredential
-	- ManagedIdentityCredential
-	- UsernamePasswordCredential
 
 Additional configuration of each credential can be done through each credential's
 options type. These options can also be used to modify the default pipeline for each

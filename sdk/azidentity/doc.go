@@ -22,7 +22,7 @@ The following credential types are included in this module:
 	- UsernamePasswordCredential
 
 By default, the recommendation is that users call NewDefaultAzureCredential() which will
-provide a default ChainedTokenCredential configuration conformed of:
+provide a default ChainedTokenCredential configuration composed of:
 	- EnvironmentCredential
 	- ManagedIdentityCredential
 	- AzureCLICredential
@@ -34,16 +34,15 @@ Example call to NewDefaultAzureCredential():
 	if err != nil {
 		// process error
 	}
-	client := armresources.NewResourcesClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	// pass credential in to an Azure SDK client
 
 Example call to NewDefaultAzureCredential() with options set:
 	// these options will make sure the AzureCLICredential will not be added to the credential chain
-	opts := DefaultAzureCredentialOptions{ExcludeAzureCLICredential: true}
-	cred, err := NewDefaultAzureCredential(&opts)
+	cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{ExcludeAzureCLICredential: true})
 	if err != nil {
 		// process error
 	}
-	client := armresources.NewResourcesClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	// pass credential in to an Azure SDK client
 
 Additional configuration of each credential can be done through each credential's
 options type. These options can also be used to modify the default pipeline for each
@@ -62,6 +61,8 @@ CREDENTIAL AUTHORITY HOSTS
 The default authority host for all credentials, except for ManagedIdentityCredential, is the
 AzurePublicCloud host. This value can be changed through the credential options or by specifying
 a different value in an environment variable called AZURE_AUTHORITY_HOST.
+NOTE: An alternate value for authority host explicitly set through the code will take precedence over the
+AZURE_AUTHORITY_HOST environment variable.
 
 Example of setting an alternate Azure authority host through code:
 	opts := DefaultClientSecretCredentialOptions()
@@ -70,7 +71,7 @@ Example of setting an alternate Azure authority host through code:
 	if err != nil {
 		// process error
 	}
-	client := armresources.NewResourcesClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	// pass credential in to an Azure SDK client
 
 Example of setting an alternate authority host value in the AZURE_AUTHORITY_HOST environment variable (in Powershell):
 	$env:AZURE_AUTHORITY_HOST="https://contoso.com/auth/"

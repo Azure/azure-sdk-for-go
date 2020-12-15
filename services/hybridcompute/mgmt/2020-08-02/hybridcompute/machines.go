@@ -73,6 +73,7 @@ func (client MachinesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridcompute.MachinesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -150,6 +151,7 @@ func (client MachinesClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridcompute.MachinesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -225,6 +227,7 @@ func (client MachinesClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridcompute.MachinesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -272,8 +275,7 @@ func (client MachinesClient) GetResponder(resp *http.Response) (result Machine, 
 	return
 }
 
-// ListByResourceGroup lists all the hybrid machines in the specified resource group. Use the nextLink property in the
-// response to get the next page of hybrid machines.
+// ListByResourceGroup lists all the hybrid machines in the specified resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 func (client MachinesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result MachineListResultPage, err error) {
@@ -304,9 +306,11 @@ func (client MachinesClient) ListByResourceGroup(ctx context.Context, resourceGr
 	result.mlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridcompute.MachinesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.mlr.hasNextLink() && result.mlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -387,8 +391,7 @@ func (client MachinesClient) ListByResourceGroupComplete(ctx context.Context, re
 	return
 }
 
-// ListBySubscription lists all the hybrid machines in the specified subscription. Use the nextLink property in the
-// response to get the next page of hybrid machines.
+// ListBySubscription lists all the hybrid machines in the specified subscription.
 func (client MachinesClient) ListBySubscription(ctx context.Context) (result MachineListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/MachinesClient.ListBySubscription")
@@ -417,9 +420,11 @@ func (client MachinesClient) ListBySubscription(ctx context.Context) (result Mac
 	result.mlr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridcompute.MachinesClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.mlr.hasNextLink() && result.mlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -531,6 +536,7 @@ func (client MachinesClient) Update(ctx context.Context, resourceGroupName strin
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridcompute.MachinesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

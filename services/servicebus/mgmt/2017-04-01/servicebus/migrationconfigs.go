@@ -86,6 +86,7 @@ func (client MigrationConfigsClient) CompleteMigration(ctx context.Context, reso
 	result, err = client.CompleteMigrationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsClient", "CompleteMigration", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -266,6 +267,7 @@ func (client MigrationConfigsClient) Delete(ctx context.Context, resourceGroupNa
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -351,6 +353,7 @@ func (client MigrationConfigsClient) Get(ctx context.Context, resourceGroupName 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -438,9 +441,11 @@ func (client MigrationConfigsClient) List(ctx context.Context, resourceGroupName
 	result.mclr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.mclr.hasNextLink() && result.mclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -563,6 +568,7 @@ func (client MigrationConfigsClient) Revert(ctx context.Context, resourceGroupNa
 	result, err = client.RevertResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsClient", "Revert", resp, "Failure responding to request")
+		return
 	}
 
 	return

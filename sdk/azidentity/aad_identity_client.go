@@ -120,8 +120,8 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 // clientID: The client (application) ID of the service principal
 // clientCertificatePath: The path to the client certificate PEM file
 // scopes: The scopes required for the token
-func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantID string, clientID string, cert *certContents, scopes []string) (*azcore.AccessToken, error) {
-	req, err := c.createClientCertificateAuthRequest(ctx, tenantID, clientID, cert, scopes)
+func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantID string, clientID string, cert *certContents, sendCertificateChain bool, scopes []string) (*azcore.AccessToken, error) {
+	req, err := c.createClientCertificateAuthRequest(ctx, tenantID, clientID, cert, sendCertificateChain, scopes)
 	if err != nil {
 		return nil, err
 	}
@@ -221,9 +221,9 @@ func (c *aadIdentityClient) createClientSecretAuthRequest(ctx context.Context, t
 	return req, nil
 }
 
-func (c *aadIdentityClient) createClientCertificateAuthRequest(ctx context.Context, tenantID string, clientID string, cert *certContents, scopes []string) (*azcore.Request, error) {
+func (c *aadIdentityClient) createClientCertificateAuthRequest(ctx context.Context, tenantID string, clientID string, cert *certContents, sendCertificateChain bool, scopes []string) (*azcore.Request, error) {
 	u := azcore.JoinPaths(c.authorityHost, tenantID, tokenEndpoint)
-	clientAssertion, err := createClientAssertionJWT(clientID, u, cert)
+	clientAssertion, err := createClientAssertionJWT(clientID, u, cert, sendCertificateChain)
 	if err != nil {
 		return nil, err
 	}

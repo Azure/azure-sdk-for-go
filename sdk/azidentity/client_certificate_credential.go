@@ -64,8 +64,7 @@ type ClientCertificateCredential struct {
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
 // clientID: The client (application) ID of the service principal.
 // certificatePath: The path to the client certificate used to authenticate the client.  Supported formats are PEM and PFX.
-// password: The password required to decrypt the private key.  Pass nil if there is no password.
-// options: ClientCertificateCredentialOptions that can be used to provide additional configurations for the credential.
+// options: ClientCertificateCredentialOptions that can be used to provide additional configurations for the credential, such as the certificate password.
 func NewClientCertificateCredential(tenantID string, clientID string, certificatePath string, options *ClientCertificateCredentialOptions) (*ClientCertificateCredential, error) {
 	if !validTenantID(tenantID) {
 		return nil, &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: tenantIDValidationErr}

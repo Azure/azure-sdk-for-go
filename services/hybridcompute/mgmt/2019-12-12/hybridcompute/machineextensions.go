@@ -249,6 +249,7 @@ func (client MachineExtensionsClient) Get(ctx context.Context, resourceGroupName
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -333,9 +334,11 @@ func (client MachineExtensionsClient) List(ctx context.Context, resourceGroupNam
 	result.melr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.melr.hasNextLink() && result.melr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return

@@ -26,6 +26,46 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/mgmt/2018-08-31/marketplacefulfillment"
 
+        // SaasSubscriptionStatus enumerates the values for saas subscription status.
+    type SaasSubscriptionStatus string
+
+    const (
+                // NotStarted ...
+        NotStarted SaasSubscriptionStatus = "NotStarted"
+                // PendingFulfillmentStart ...
+        PendingFulfillmentStart SaasSubscriptionStatus = "PendingFulfillmentStart"
+                // Subscribed ...
+        Subscribed SaasSubscriptionStatus = "Subscribed"
+                // Suspended ...
+        Suspended SaasSubscriptionStatus = "Suspended"
+                // Unsubscribed ...
+        Unsubscribed SaasSubscriptionStatus = "Unsubscribed"
+            )
+    // PossibleSaasSubscriptionStatusValues returns an array of possible values for the SaasSubscriptionStatus const type.
+    func PossibleSaasSubscriptionStatusValues() []SaasSubscriptionStatus {
+        return []SaasSubscriptionStatus{NotStarted,PendingFulfillmentStart,Subscribed,Suspended,Unsubscribed}
+    }
+
+        // Status enumerates the values for status.
+    type Status string
+
+    const (
+                // StatusConflict ...
+        StatusConflict Status = "Conflict"
+                // StatusFailed ...
+        StatusFailed Status = "Failed"
+                // StatusInProgress ...
+        StatusInProgress Status = "InProgress"
+                // StatusNotStarted ...
+        StatusNotStarted Status = "NotStarted"
+                // StatusSucceeded ...
+        StatusSucceeded Status = "Succeeded"
+            )
+    // PossibleStatusValues returns an array of possible values for the Status const type.
+    func PossibleStatusValues() []Status {
+        return []Status{StatusConflict,StatusFailed,StatusInProgress,StatusNotStarted,StatusSucceeded}
+    }
+
             // ErrorResponse error response indicates Microsoft.MarketplaceFulfillment service is not able to process
             // the incoming request. The reason is provided in the error message.
             type ErrorResponse struct {

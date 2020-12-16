@@ -1,4 +1,4 @@
-package marketplacemeteredbilling
+package liftrmeteredbilling
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -25,7 +25,7 @@ import (
     "github.com/Azure/go-autorest/tracing"
 )
 
-// Client is the REST API for MarketplaceMeteredBilling.
+// Client is the REST API for LiftrMeteredBilling.
 type Client struct {
     BaseClient
 }
@@ -42,13 +42,13 @@ func NewClient() Client {
 // BatchUsageEvent report batch usage events.
     // Parameters:
         // authorization - bearer token for authorization.
+        // parameters - parameters supplied to report batch usage events.
         // xMsRequestid - a unique string value for tracking the request from the client, preferably a GUID. If this
         // value isn't provided, one will be generated and provided in the response headers.
-        // parameters - parameters supplied to report batch usage events.
         // xMsCorrelationid - a unique string value for operation on the client. This parameter correlates all events
         // from client operation with events on the server side. If this value isn't provided, one will be generated
         // and provided in the response headers.
-func (client Client) BatchUsageEvent(ctx context.Context, authorization string, xMsRequestid string, parameters BatchUsageEventRequest, xMsCorrelationid string) (result BatchUsageEventResponse, err error) {
+func (client Client) BatchUsageEvent(ctx context.Context, authorization string, parameters BatchUsageEventRequest, xMsRequestid string, xMsCorrelationid string) (result BatchUsageEventResponse, err error) {
     if tracing.IsEnabled() {
         ctx = tracing.StartSpan(ctx, fqdn + "/Client.BatchUsageEvent")
         defer func() {
@@ -59,29 +59,29 @@ func (client Client) BatchUsageEvent(ctx context.Context, authorization string, 
             tracing.EndSpan(ctx, sc, err)
         }()
     }
-        req, err := client.BatchUsageEventPreparer(ctx, authorization, xMsRequestid, parameters, xMsCorrelationid)
+        req, err := client.BatchUsageEventPreparer(ctx, authorization, parameters, xMsRequestid, xMsCorrelationid)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "marketplacemeteredbilling.Client", "BatchUsageEvent", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "liftrmeteredbilling.Client", "BatchUsageEvent", nil , "Failure preparing request")
     return
     }
 
             resp, err := client.BatchUsageEventSender(req)
             if err != nil {
             result.Response = autorest.Response{Response: resp}
-            err = autorest.NewErrorWithError(err, "marketplacemeteredbilling.Client", "BatchUsageEvent", resp, "Failure sending request")
+            err = autorest.NewErrorWithError(err, "liftrmeteredbilling.Client", "BatchUsageEvent", resp, "Failure sending request")
             return
             }
 
             result, err = client.BatchUsageEventResponder(resp)
             if err != nil {
-            err = autorest.NewErrorWithError(err, "marketplacemeteredbilling.Client", "BatchUsageEvent", resp, "Failure responding to request")
+            err = autorest.NewErrorWithError(err, "liftrmeteredbilling.Client", "BatchUsageEvent", resp, "Failure responding to request")
             }
 
     return
     }
 
     // BatchUsageEventPreparer prepares the BatchUsageEvent request.
-    func (client Client) BatchUsageEventPreparer(ctx context.Context, authorization string, xMsRequestid string, parameters BatchUsageEventRequest, xMsCorrelationid string) (*http.Request, error) {
+    func (client Client) BatchUsageEventPreparer(ctx context.Context, authorization string, parameters BatchUsageEventRequest, xMsRequestid string, xMsCorrelationid string) (*http.Request, error) {
                     const APIVersion = "2018-08-31"
         queryParameters := map[string]interface{} {
         "api-version": APIVersion,
@@ -91,11 +91,14 @@ func (client Client) BatchUsageEvent(ctx context.Context, authorization string, 
     autorest.AsContentType("application/json; charset=utf-8"),
     autorest.AsPost(),
     autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPath("/batchUsageEvent"),
+    autorest.WithPath("/batchusageevent"),
     autorest.WithJSON(parameters),
     autorest.WithQueryParameters(queryParameters),
-    autorest.WithHeader("authorization", autorest.String(authorization)),
-    autorest.WithHeader("x-ms-requestid", autorest.String(xMsRequestid)))
+    autorest.WithHeader("authorization", autorest.String(authorization)))
+            if len(xMsRequestid) > 0 {
+            preparer = autorest.DecoratePreparer(preparer,
+            autorest.WithHeader("x-ms-requestid",autorest.String(xMsRequestid)))
+            }
             if len(xMsCorrelationid) > 0 {
             preparer = autorest.DecoratePreparer(preparer,
             autorest.WithHeader("x-ms-correlationid",autorest.String(xMsCorrelationid)))
@@ -145,20 +148,20 @@ func (client Client) UsageEvent(ctx context.Context, authorization string, param
     }
         req, err := client.UsageEventPreparer(ctx, authorization, parameters, xMsRequestid, xMsCorrelationid)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "marketplacemeteredbilling.Client", "UsageEvent", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "liftrmeteredbilling.Client", "UsageEvent", nil , "Failure preparing request")
     return
     }
 
             resp, err := client.UsageEventSender(req)
             if err != nil {
             result.Response = autorest.Response{Response: resp}
-            err = autorest.NewErrorWithError(err, "marketplacemeteredbilling.Client", "UsageEvent", resp, "Failure sending request")
+            err = autorest.NewErrorWithError(err, "liftrmeteredbilling.Client", "UsageEvent", resp, "Failure sending request")
             return
             }
 
             result, err = client.UsageEventResponder(resp)
             if err != nil {
-            err = autorest.NewErrorWithError(err, "marketplacemeteredbilling.Client", "UsageEvent", resp, "Failure responding to request")
+            err = autorest.NewErrorWithError(err, "liftrmeteredbilling.Client", "UsageEvent", resp, "Failure responding to request")
             }
 
     return
@@ -175,7 +178,7 @@ func (client Client) UsageEvent(ctx context.Context, authorization string, param
     autorest.AsContentType("application/json; charset=utf-8"),
     autorest.AsPost(),
     autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPath("/usageEvent"),
+    autorest.WithPath("/usageevent"),
     autorest.WithJSON(parameters),
     autorest.WithQueryParameters(queryParameters),
     autorest.WithHeader("authorization", autorest.String(authorization)))

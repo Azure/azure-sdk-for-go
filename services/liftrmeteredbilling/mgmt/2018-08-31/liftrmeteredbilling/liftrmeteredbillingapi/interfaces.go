@@ -1,4 +1,4 @@
-package marketplacemeteredbillingapi
+package liftrmeteredbillingapi
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -19,13 +19,13 @@ package marketplacemeteredbillingapi
 
 import (
     "context"
-    "github.com/Azure/azure-sdk-for-go/services/marketplacemeteredbilling/mgmt/2018-08-31/marketplacemeteredbilling"
+    "github.com/Azure/azure-sdk-for-go/services/liftrmeteredbilling/mgmt/2018-08-31/liftrmeteredbilling"
 )
 
         // ClientAPI contains the set of methods on the Client type.
         type ClientAPI interface {
-            BatchUsageEvent(ctx context.Context, authorization string, xMsRequestid string, parameters marketplacemeteredbilling.BatchUsageEventRequest, xMsCorrelationid string) (result marketplacemeteredbilling.BatchUsageEventResponse, err error)
-            UsageEvent(ctx context.Context, authorization string, parameters marketplacemeteredbilling.UsageEventRequest, xMsRequestid string, xMsCorrelationid string) (result marketplacemeteredbilling.SetObject, err error)
+            BatchUsageEvent(ctx context.Context, authorization string, parameters liftrmeteredbilling.BatchUsageEventRequest, xMsRequestid string, xMsCorrelationid string) (result liftrmeteredbilling.BatchUsageEventResponse, err error)
+            UsageEvent(ctx context.Context, authorization string, parameters liftrmeteredbilling.UsageEventRequest, xMsRequestid string, xMsCorrelationid string) (result liftrmeteredbilling.SetObject, err error)
         }
 
-        var _ ClientAPI = (*marketplacemeteredbilling.Client)(nil)
+        var _ ClientAPI = (*liftrmeteredbilling.Client)(nil)

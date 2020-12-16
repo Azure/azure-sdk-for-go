@@ -1,4 +1,4 @@
-package marketplacemeteredbilling
+package liftrmeteredbilling
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -22,7 +22,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacemeteredbilling/mgmt/2018-08-31/marketplacemeteredbilling"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/liftrmeteredbilling/mgmt/2018-08-31/liftrmeteredbilling"
 
             // AdditionalInfoProperties additionalInfoProperties definition
             type AdditionalInfoProperties struct {

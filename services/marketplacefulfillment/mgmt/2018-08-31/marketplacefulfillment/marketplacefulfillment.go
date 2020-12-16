@@ -34,7 +34,8 @@ func NewClient() Client {
     return NewClientWithBaseURI(DefaultBaseURI, )
 }
 
-// NewClientWithBaseURI creates an instance of the Client client.
+// NewClientWithBaseURI creates an instance of the Client client using a custom endpoint.  Use this when interacting
+// with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
     func NewClientWithBaseURI(baseURI string, ) Client {
         return Client{ NewWithBaseURI(baseURI, )}
     }
@@ -54,84 +55,83 @@ func (client Client) ActivateSubscription(ctx context.Context, activatePayload S
         ctx = tracing.StartSpan(ctx, fqdn + "/Client.ActivateSubscription")
         defer func() {
             sc := -1
-            if result.Response.Response != nil {
-                sc = result.Response.Response.StatusCode
-            }
+        if result.Response.Response != nil {
+        sc = result.Response.Response.StatusCode
+        }
             tracing.EndSpan(ctx, sc, err)
         }()
     }
-        req, err := client.ActivateSubscriptionPreparer(ctx, activatePayload, subscriptionID, authorization, xMsRequestid, xMsCorrelationid)
+    req, err := client.ActivateSubscriptionPreparer(ctx, activatePayload, subscriptionID, authorization, xMsRequestid, xMsCorrelationid)
     if err != nil {
     err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "ActivateSubscription", nil , "Failure preparing request")
     return
     }
 
-            resp, err := client.ActivateSubscriptionSender(req)
-            if err != nil {
-            result.Response = autorest.Response{Response: resp}
-            err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "ActivateSubscription", resp, "Failure sending request")
-            return
-            }
+        resp, err := client.ActivateSubscriptionSender(req)
+        if err != nil {
+        result.Response = autorest.Response{Response: resp}
+        err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "ActivateSubscription", resp, "Failure sending request")
+        return
+        }
 
-            result, err = client.ActivateSubscriptionResponder(resp)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "ActivateSubscription", resp, "Failure responding to request")
-            }
+        result, err = client.ActivateSubscriptionResponder(resp)
+        if err != nil {
+        err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "ActivateSubscription", resp, "Failure responding to request")
+        return
+        }
 
     return
-    }
+}
 
     // ActivateSubscriptionPreparer prepares the ActivateSubscription request.
     func (client Client) ActivateSubscriptionPreparer(ctx context.Context, activatePayload Subscription, subscriptionID string, authorization string, xMsRequestid string, xMsCorrelationid string) (*http.Request, error) {
-            pathParameters := map[string]interface{} {
-            "subscriptionId": autorest.Encode("path",subscriptionID),
-            }
-
-                        const APIVersion = "2018-08-31"
-        queryParameters := map[string]interface{} {
-        "api-version": APIVersion,
+        pathParameters := map[string]interface{} {
+        "subscriptionId": autorest.Encode("path",subscriptionID),
         }
 
-        preparer := autorest.CreatePreparer(
-    autorest.AsContentType("application/json; charset=utf-8"),
-    autorest.AsPost(),
-    autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPathParameters("/{subscriptionId}/activate",pathParameters),
-    autorest.WithJSON(activatePayload),
-    autorest.WithQueryParameters(queryParameters))
-            if len(authorization) > 0 {
-            preparer = autorest.DecoratePreparer(preparer,
-            autorest.WithHeader("authorization",autorest.String(authorization)))
-            }
-            if len(xMsRequestid) > 0 {
-            preparer = autorest.DecoratePreparer(preparer,
-            autorest.WithHeader("x-ms-requestid",autorest.String(xMsRequestid)))
-            }
-            if len(xMsCorrelationid) > 0 {
-            preparer = autorest.DecoratePreparer(preparer,
-            autorest.WithHeader("x-ms-correlationid",autorest.String(xMsCorrelationid)))
-            }
+            const APIVersion = "2018-08-31"
+    queryParameters := map[string]interface{} {
+    "api-version": APIVersion,
+    }
+
+    preparer := autorest.CreatePreparer(
+autorest.AsContentType("application/json; charset=utf-8"),
+autorest.AsPost(),
+autorest.WithBaseURL(client.BaseURI),
+autorest.WithPathParameters("/{subscriptionId}/activate",pathParameters),
+autorest.WithJSON(activatePayload),
+autorest.WithQueryParameters(queryParameters))
+        if len(authorization) > 0 {
+        preparer = autorest.DecoratePreparer(preparer,
+        autorest.WithHeader("authorization",autorest.String(authorization)))
+        }
+        if len(xMsRequestid) > 0 {
+        preparer = autorest.DecoratePreparer(preparer,
+        autorest.WithHeader("x-ms-requestid",autorest.String(xMsRequestid)))
+        }
+        if len(xMsCorrelationid) > 0 {
+        preparer = autorest.DecoratePreparer(preparer,
+        autorest.WithHeader("x-ms-correlationid",autorest.String(xMsCorrelationid)))
+        }
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
     // ActivateSubscriptionSender sends the ActivateSubscription request. The method will close the
     // http.Response Body if it receives an error.
     func (client Client) ActivateSubscriptionSender(req *http.Request) (*http.Response, error) {
-        sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-            return autorest.SendWithSender(client, req, sd...)
+            return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
             }
 
-// ActivateSubscriptionResponder handles the response to the ActivateSubscription request. The method always
-// closes the http.Response Body.
-func (client Client) ActivateSubscriptionResponder(resp *http.Response) (result Subscription, err error) {
-    err = autorest.Respond(
-    resp,
-    client.ByInspecting(),
-    azure.WithErrorUnlessStatusCode(http.StatusOK),
-    autorest.ByUnmarshallingJSON(&result),
-    autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-        return
+    // ActivateSubscriptionResponder handles the response to the ActivateSubscription request. The method always
+    // closes the http.Response Body.
+    func (client Client) ActivateSubscriptionResponder(resp *http.Response) (result Subscription, err error) {
+            err = autorest.Respond(
+            resp,
+            azure.WithErrorUnlessStatusCode(http.StatusOK),
+            autorest.ByUnmarshallingJSON(&result),
+            autorest.ByClosing())
+            result.Response = autorest.Response{Response: resp}
+            return
     }
 
 // GetOperation enables the publisher to track the status of the specified triggered async operation (such as
@@ -150,83 +150,82 @@ func (client Client) GetOperation(ctx context.Context, subscriptionID string, op
         ctx = tracing.StartSpan(ctx, fqdn + "/Client.GetOperation")
         defer func() {
             sc := -1
-            if result.Response.Response != nil {
-                sc = result.Response.Response.StatusCode
-            }
+        if result.Response.Response != nil {
+        sc = result.Response.Response.StatusCode
+        }
             tracing.EndSpan(ctx, sc, err)
         }()
     }
-        req, err := client.GetOperationPreparer(ctx, subscriptionID, operationID, authorization, xMsRequestid, xMsCorrelationid)
+    req, err := client.GetOperationPreparer(ctx, subscriptionID, operationID, authorization, xMsRequestid, xMsCorrelationid)
     if err != nil {
     err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "GetOperation", nil , "Failure preparing request")
     return
     }
 
-            resp, err := client.GetOperationSender(req)
-            if err != nil {
-            result.Response = autorest.Response{Response: resp}
-            err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "GetOperation", resp, "Failure sending request")
-            return
-            }
+        resp, err := client.GetOperationSender(req)
+        if err != nil {
+        result.Response = autorest.Response{Response: resp}
+        err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "GetOperation", resp, "Failure sending request")
+        return
+        }
 
-            result, err = client.GetOperationResponder(resp)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "GetOperation", resp, "Failure responding to request")
-            }
+        result, err = client.GetOperationResponder(resp)
+        if err != nil {
+        err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "GetOperation", resp, "Failure responding to request")
+        return
+        }
 
     return
-    }
+}
 
     // GetOperationPreparer prepares the GetOperation request.
     func (client Client) GetOperationPreparer(ctx context.Context, subscriptionID string, operationID string, authorization string, xMsRequestid string, xMsCorrelationid string) (*http.Request, error) {
-            pathParameters := map[string]interface{} {
-            "operationId": autorest.Encode("path",operationID),
-            "subscriptionId": autorest.Encode("path",subscriptionID),
-            }
-
-                        const APIVersion = "2018-08-31"
-        queryParameters := map[string]interface{} {
-        "api-version": APIVersion,
+        pathParameters := map[string]interface{} {
+        "operationId": autorest.Encode("path",operationID),
+        "subscriptionId": autorest.Encode("path",subscriptionID),
         }
 
-        preparer := autorest.CreatePreparer(
-    autorest.AsGet(),
-    autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPathParameters("/{subscriptionId}/operations/{operationId}",pathParameters),
-    autorest.WithQueryParameters(queryParameters))
-            if len(authorization) > 0 {
-            preparer = autorest.DecoratePreparer(preparer,
-            autorest.WithHeader("authorization",autorest.String(authorization)))
-            }
-            if len(xMsRequestid) > 0 {
-            preparer = autorest.DecoratePreparer(preparer,
-            autorest.WithHeader("x-ms-requestid",autorest.String(xMsRequestid)))
-            }
-            if len(xMsCorrelationid) > 0 {
-            preparer = autorest.DecoratePreparer(preparer,
-            autorest.WithHeader("x-ms-correlationid",autorest.String(xMsCorrelationid)))
-            }
+            const APIVersion = "2018-08-31"
+    queryParameters := map[string]interface{} {
+    "api-version": APIVersion,
+    }
+
+    preparer := autorest.CreatePreparer(
+autorest.AsGet(),
+autorest.WithBaseURL(client.BaseURI),
+autorest.WithPathParameters("/{subscriptionId}/operations/{operationId}",pathParameters),
+autorest.WithQueryParameters(queryParameters))
+        if len(authorization) > 0 {
+        preparer = autorest.DecoratePreparer(preparer,
+        autorest.WithHeader("authorization",autorest.String(authorization)))
+        }
+        if len(xMsRequestid) > 0 {
+        preparer = autorest.DecoratePreparer(preparer,
+        autorest.WithHeader("x-ms-requestid",autorest.String(xMsRequestid)))
+        }
+        if len(xMsCorrelationid) > 0 {
+        preparer = autorest.DecoratePreparer(preparer,
+        autorest.WithHeader("x-ms-correlationid",autorest.String(xMsCorrelationid)))
+        }
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
     // GetOperationSender sends the GetOperation request. The method will close the
     // http.Response Body if it receives an error.
     func (client Client) GetOperationSender(req *http.Request) (*http.Response, error) {
-        sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-            return autorest.SendWithSender(client, req, sd...)
+            return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
             }
 
-// GetOperationResponder handles the response to the GetOperation request. The method always
-// closes the http.Response Body.
-func (client Client) GetOperationResponder(resp *http.Response) (result Operation, err error) {
-    err = autorest.Respond(
-    resp,
-    client.ByInspecting(),
-    azure.WithErrorUnlessStatusCode(http.StatusOK),
-    autorest.ByUnmarshallingJSON(&result),
-    autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-        return
+    // GetOperationResponder handles the response to the GetOperation request. The method always
+    // closes the http.Response Body.
+    func (client Client) GetOperationResponder(resp *http.Response) (result Operation, err error) {
+            err = autorest.Respond(
+            resp,
+            azure.WithErrorUnlessStatusCode(http.StatusOK),
+            autorest.ByUnmarshallingJSON(&result),
+            autorest.ByClosing())
+            result.Response = autorest.Response{Response: resp}
+            return
     }
 
 // GetSubscription gets the specified SaaS subscription. Use this call to get license information and plan information.
@@ -243,82 +242,81 @@ func (client Client) GetSubscription(ctx context.Context, subscriptionID string,
         ctx = tracing.StartSpan(ctx, fqdn + "/Client.GetSubscription")
         defer func() {
             sc := -1
-            if result.Response.Response != nil {
-                sc = result.Response.Response.StatusCode
-            }
+        if result.Response.Response != nil {
+        sc = result.Response.Response.StatusCode
+        }
             tracing.EndSpan(ctx, sc, err)
         }()
     }
-        req, err := client.GetSubscriptionPreparer(ctx, subscriptionID, authorization, xMsRequestid, xMsCorrelationid)
+    req, err := client.GetSubscriptionPreparer(ctx, subscriptionID, authorization, xMsRequestid, xMsCorrelationid)
     if err != nil {
     err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "GetSubscription", nil , "Failure preparing request")
     return
     }
 
-            resp, err := client.GetSubscriptionSender(req)
-            if err != nil {
-            result.Response = autorest.Response{Response: resp}
-            err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "GetSubscription", resp, "Failure sending request")
-            return
-            }
+        resp, err := client.GetSubscriptionSender(req)
+        if err != nil {
+        result.Response = autorest.Response{Response: resp}
+        err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "GetSubscription", resp, "Failure sending request")
+        return
+        }
 
-            result, err = client.GetSubscriptionResponder(resp)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "GetSubscription", resp, "Failure responding to request")
-            }
+        result, err = client.GetSubscriptionResponder(resp)
+        if err != nil {
+        err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "GetSubscription", resp, "Failure responding to request")
+        return
+        }
 
     return
-    }
+}
 
     // GetSubscriptionPreparer prepares the GetSubscription request.
     func (client Client) GetSubscriptionPreparer(ctx context.Context, subscriptionID string, authorization string, xMsRequestid string, xMsCorrelationid string) (*http.Request, error) {
-            pathParameters := map[string]interface{} {
-            "subscriptionId": autorest.Encode("path",subscriptionID),
-            }
-
-                        const APIVersion = "2018-08-31"
-        queryParameters := map[string]interface{} {
-        "api-version": APIVersion,
+        pathParameters := map[string]interface{} {
+        "subscriptionId": autorest.Encode("path",subscriptionID),
         }
 
-        preparer := autorest.CreatePreparer(
-    autorest.AsGet(),
-    autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPathParameters("/{subscriptionId}",pathParameters),
-    autorest.WithQueryParameters(queryParameters))
-            if len(authorization) > 0 {
-            preparer = autorest.DecoratePreparer(preparer,
-            autorest.WithHeader("authorization",autorest.String(authorization)))
-            }
-            if len(xMsRequestid) > 0 {
-            preparer = autorest.DecoratePreparer(preparer,
-            autorest.WithHeader("x-ms-requestid",autorest.String(xMsRequestid)))
-            }
-            if len(xMsCorrelationid) > 0 {
-            preparer = autorest.DecoratePreparer(preparer,
-            autorest.WithHeader("x-ms-correlationid",autorest.String(xMsCorrelationid)))
-            }
+            const APIVersion = "2018-08-31"
+    queryParameters := map[string]interface{} {
+    "api-version": APIVersion,
+    }
+
+    preparer := autorest.CreatePreparer(
+autorest.AsGet(),
+autorest.WithBaseURL(client.BaseURI),
+autorest.WithPathParameters("/{subscriptionId}",pathParameters),
+autorest.WithQueryParameters(queryParameters))
+        if len(authorization) > 0 {
+        preparer = autorest.DecoratePreparer(preparer,
+        autorest.WithHeader("authorization",autorest.String(authorization)))
+        }
+        if len(xMsRequestid) > 0 {
+        preparer = autorest.DecoratePreparer(preparer,
+        autorest.WithHeader("x-ms-requestid",autorest.String(xMsRequestid)))
+        }
+        if len(xMsCorrelationid) > 0 {
+        preparer = autorest.DecoratePreparer(preparer,
+        autorest.WithHeader("x-ms-correlationid",autorest.String(xMsCorrelationid)))
+        }
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
     // GetSubscriptionSender sends the GetSubscription request. The method will close the
     // http.Response Body if it receives an error.
     func (client Client) GetSubscriptionSender(req *http.Request) (*http.Response, error) {
-        sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-            return autorest.SendWithSender(client, req, sd...)
+            return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
             }
 
-// GetSubscriptionResponder handles the response to the GetSubscription request. The method always
-// closes the http.Response Body.
-func (client Client) GetSubscriptionResponder(resp *http.Response) (result Subscription, err error) {
-    err = autorest.Respond(
-    resp,
-    client.ByInspecting(),
-    azure.WithErrorUnlessStatusCode(http.StatusOK),
-    autorest.ByUnmarshallingJSON(&result),
-    autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-        return
+    // GetSubscriptionResponder handles the response to the GetSubscription request. The method always
+    // closes the http.Response Body.
+    func (client Client) GetSubscriptionResponder(resp *http.Response) (result Subscription, err error) {
+            err = autorest.Respond(
+            resp,
+            azure.WithErrorUnlessStatusCode(http.StatusOK),
+            autorest.ByUnmarshallingJSON(&result),
+            autorest.ByClosing())
+            result.Response = autorest.Response{Response: resp}
+            return
     }
 
 // PatchOperation update the status of an operation to indicate success or failure with the provided values.
@@ -337,85 +335,84 @@ func (client Client) PatchOperation(ctx context.Context, patchPayload Operation,
         ctx = tracing.StartSpan(ctx, fqdn + "/Client.PatchOperation")
         defer func() {
             sc := -1
-            if result.Response.Response != nil {
-                sc = result.Response.Response.StatusCode
-            }
+        if result.Response.Response != nil {
+        sc = result.Response.Response.StatusCode
+        }
             tracing.EndSpan(ctx, sc, err)
         }()
     }
-        req, err := client.PatchOperationPreparer(ctx, patchPayload, subscriptionID, operationID, authorization, xMsRequestid, xMsCorrelationid)
+    req, err := client.PatchOperationPreparer(ctx, patchPayload, subscriptionID, operationID, authorization, xMsRequestid, xMsCorrelationid)
     if err != nil {
     err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "PatchOperation", nil , "Failure preparing request")
     return
     }
 
-            resp, err := client.PatchOperationSender(req)
-            if err != nil {
-            result.Response = autorest.Response{Response: resp}
-            err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "PatchOperation", resp, "Failure sending request")
-            return
-            }
+        resp, err := client.PatchOperationSender(req)
+        if err != nil {
+        result.Response = autorest.Response{Response: resp}
+        err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "PatchOperation", resp, "Failure sending request")
+        return
+        }
 
-            result, err = client.PatchOperationResponder(resp)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "PatchOperation", resp, "Failure responding to request")
-            }
+        result, err = client.PatchOperationResponder(resp)
+        if err != nil {
+        err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "PatchOperation", resp, "Failure responding to request")
+        return
+        }
 
     return
-    }
+}
 
     // PatchOperationPreparer prepares the PatchOperation request.
     func (client Client) PatchOperationPreparer(ctx context.Context, patchPayload Operation, subscriptionID string, operationID string, authorization string, xMsRequestid string, xMsCorrelationid string) (*http.Request, error) {
-            pathParameters := map[string]interface{} {
-            "operationId": autorest.Encode("path",operationID),
-            "subscriptionId": autorest.Encode("path",subscriptionID),
-            }
-
-                        const APIVersion = "2018-08-31"
-        queryParameters := map[string]interface{} {
-        "api-version": APIVersion,
+        pathParameters := map[string]interface{} {
+        "operationId": autorest.Encode("path",operationID),
+        "subscriptionId": autorest.Encode("path",subscriptionID),
         }
 
-        preparer := autorest.CreatePreparer(
-    autorest.AsContentType("application/json; charset=utf-8"),
-    autorest.AsPatch(),
-    autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPathParameters("/{subscriptionId}/operations/{operationId}",pathParameters),
-    autorest.WithJSON(patchPayload),
-    autorest.WithQueryParameters(queryParameters))
-            if len(authorization) > 0 {
-            preparer = autorest.DecoratePreparer(preparer,
-            autorest.WithHeader("authorization",autorest.String(authorization)))
-            }
-            if len(xMsRequestid) > 0 {
-            preparer = autorest.DecoratePreparer(preparer,
-            autorest.WithHeader("x-ms-requestid",autorest.String(xMsRequestid)))
-            }
-            if len(xMsCorrelationid) > 0 {
-            preparer = autorest.DecoratePreparer(preparer,
-            autorest.WithHeader("x-ms-correlationid",autorest.String(xMsCorrelationid)))
-            }
+            const APIVersion = "2018-08-31"
+    queryParameters := map[string]interface{} {
+    "api-version": APIVersion,
+    }
+
+    preparer := autorest.CreatePreparer(
+autorest.AsContentType("application/json; charset=utf-8"),
+autorest.AsPatch(),
+autorest.WithBaseURL(client.BaseURI),
+autorest.WithPathParameters("/{subscriptionId}/operations/{operationId}",pathParameters),
+autorest.WithJSON(patchPayload),
+autorest.WithQueryParameters(queryParameters))
+        if len(authorization) > 0 {
+        preparer = autorest.DecoratePreparer(preparer,
+        autorest.WithHeader("authorization",autorest.String(authorization)))
+        }
+        if len(xMsRequestid) > 0 {
+        preparer = autorest.DecoratePreparer(preparer,
+        autorest.WithHeader("x-ms-requestid",autorest.String(xMsRequestid)))
+        }
+        if len(xMsCorrelationid) > 0 {
+        preparer = autorest.DecoratePreparer(preparer,
+        autorest.WithHeader("x-ms-correlationid",autorest.String(xMsCorrelationid)))
+        }
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
     // PatchOperationSender sends the PatchOperation request. The method will close the
     // http.Response Body if it receives an error.
     func (client Client) PatchOperationSender(req *http.Request) (*http.Response, error) {
-        sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-            return autorest.SendWithSender(client, req, sd...)
+            return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
             }
 
-// PatchOperationResponder handles the response to the PatchOperation request. The method always
-// closes the http.Response Body.
-func (client Client) PatchOperationResponder(resp *http.Response) (result Operation, err error) {
-    err = autorest.Respond(
-    resp,
-    client.ByInspecting(),
-    azure.WithErrorUnlessStatusCode(http.StatusOK),
-    autorest.ByUnmarshallingJSON(&result),
-    autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-        return
+    // PatchOperationResponder handles the response to the PatchOperation request. The method always
+    // closes the http.Response Body.
+    func (client Client) PatchOperationResponder(resp *http.Response) (result Operation, err error) {
+            err = autorest.Respond(
+            resp,
+            azure.WithErrorUnlessStatusCode(http.StatusOK),
+            autorest.ByUnmarshallingJSON(&result),
+            autorest.ByClosing())
+            result.Response = autorest.Response{Response: resp}
+            return
     }
 
 // Resolve resolve marketplace subscription.
@@ -434,78 +431,77 @@ func (client Client) Resolve(ctx context.Context, xMsMarketplaceToken string, xM
         ctx = tracing.StartSpan(ctx, fqdn + "/Client.Resolve")
         defer func() {
             sc := -1
-            if result.Response.Response != nil {
-                sc = result.Response.Response.StatusCode
-            }
+        if result.Response.Response != nil {
+        sc = result.Response.Response.StatusCode
+        }
             tracing.EndSpan(ctx, sc, err)
         }()
     }
-        req, err := client.ResolvePreparer(ctx, xMsMarketplaceToken, xMsRequestid, xMsCorrelationid, authorization)
+    req, err := client.ResolvePreparer(ctx, xMsMarketplaceToken, xMsRequestid, xMsCorrelationid, authorization)
     if err != nil {
     err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "Resolve", nil , "Failure preparing request")
     return
     }
 
-            resp, err := client.ResolveSender(req)
-            if err != nil {
-            result.Response = autorest.Response{Response: resp}
-            err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "Resolve", resp, "Failure sending request")
-            return
-            }
+        resp, err := client.ResolveSender(req)
+        if err != nil {
+        result.Response = autorest.Response{Response: resp}
+        err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "Resolve", resp, "Failure sending request")
+        return
+        }
 
-            result, err = client.ResolveResponder(resp)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "Resolve", resp, "Failure responding to request")
-            }
+        result, err = client.ResolveResponder(resp)
+        if err != nil {
+        err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "Resolve", resp, "Failure responding to request")
+        return
+        }
 
     return
-    }
+}
 
     // ResolvePreparer prepares the Resolve request.
     func (client Client) ResolvePreparer(ctx context.Context, xMsMarketplaceToken string, xMsRequestid string, xMsCorrelationid string, authorization string) (*http.Request, error) {
-                    const APIVersion = "2018-08-31"
-        queryParameters := map[string]interface{} {
-        "api-version": APIVersion,
-        }
+        const APIVersion = "2018-08-31"
+    queryParameters := map[string]interface{} {
+    "api-version": APIVersion,
+    }
 
-        preparer := autorest.CreatePreparer(
-    autorest.AsPost(),
-    autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPath("/resolve"),
-    autorest.WithQueryParameters(queryParameters),
-    autorest.WithHeader("x-ms-marketplace-token", autorest.String(xMsMarketplaceToken)))
-            if len(xMsRequestid) > 0 {
-            preparer = autorest.DecoratePreparer(preparer,
-            autorest.WithHeader("x-ms-requestid",autorest.String(xMsRequestid)))
-            }
-            if len(xMsCorrelationid) > 0 {
-            preparer = autorest.DecoratePreparer(preparer,
-            autorest.WithHeader("x-ms-correlationid",autorest.String(xMsCorrelationid)))
-            }
-            if len(authorization) > 0 {
-            preparer = autorest.DecoratePreparer(preparer,
-            autorest.WithHeader("authorization",autorest.String(authorization)))
-            }
+    preparer := autorest.CreatePreparer(
+autorest.AsPost(),
+autorest.WithBaseURL(client.BaseURI),
+autorest.WithPath("/resolve"),
+autorest.WithQueryParameters(queryParameters),
+autorest.WithHeader("x-ms-marketplace-token", autorest.String(xMsMarketplaceToken)))
+        if len(xMsRequestid) > 0 {
+        preparer = autorest.DecoratePreparer(preparer,
+        autorest.WithHeader("x-ms-requestid",autorest.String(xMsRequestid)))
+        }
+        if len(xMsCorrelationid) > 0 {
+        preparer = autorest.DecoratePreparer(preparer,
+        autorest.WithHeader("x-ms-correlationid",autorest.String(xMsCorrelationid)))
+        }
+        if len(authorization) > 0 {
+        preparer = autorest.DecoratePreparer(preparer,
+        autorest.WithHeader("authorization",autorest.String(authorization)))
+        }
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
     // ResolveSender sends the Resolve request. The method will close the
     // http.Response Body if it receives an error.
     func (client Client) ResolveSender(req *http.Request) (*http.Response, error) {
-        sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-            return autorest.SendWithSender(client, req, sd...)
+            return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
             }
 
-// ResolveResponder handles the response to the Resolve request. The method always
-// closes the http.Response Body.
-func (client Client) ResolveResponder(resp *http.Response) (result Subscription, err error) {
-    err = autorest.Respond(
-    resp,
-    client.ByInspecting(),
-    azure.WithErrorUnlessStatusCode(http.StatusOK),
-    autorest.ByUnmarshallingJSON(&result),
-    autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-        return
+    // ResolveResponder handles the response to the Resolve request. The method always
+    // closes the http.Response Body.
+    func (client Client) ResolveResponder(resp *http.Response) (result Subscription, err error) {
+            err = autorest.Respond(
+            resp,
+            azure.WithErrorUnlessStatusCode(http.StatusOK),
+            autorest.ByUnmarshallingJSON(&result),
+            autorest.ByClosing())
+            result.Response = autorest.Response{Response: resp}
+            return
     }
 

@@ -283,6 +283,8 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/
             OfferID *string `json:"offerId,omitempty"`
             // PlanID - Plan Id.
             PlanID *string `json:"planId,omitempty"`
+            // Term - Term for contract.
+            Term *Term `json:"term,omitempty"`
             // Quantity - Quantity.
             Quantity *string `json:"quantity,omitempty"`
             // Beneficiary - Tenant for which SaaS subscription is purchased.
@@ -313,6 +315,9 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/
                 }
                 if(s.PlanID != nil) {
                 objectMap["planId"] = s.PlanID
+                }
+                if(s.Term != nil) {
+                objectMap["term"] = s.Term
                 }
                 if(s.Quantity != nil) {
                 objectMap["quantity"] = s.Quantity
@@ -391,6 +396,15 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/
     }
         s.PlanID = &planID
     }
+                case "term":
+    if v != nil {
+        var term Term
+        err = json.Unmarshal(*v, &term)
+    if err != nil {
+    return err
+    }
+        s.Term = &term
+    }
                 case "quantity":
     if v != nil {
         var quantity string
@@ -445,6 +459,8 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/
             OfferID *string `json:"offerId,omitempty"`
             // PlanID - Plan Id.
             PlanID *string `json:"planId,omitempty"`
+            // Term - Term for contract.
+            Term *Term `json:"term,omitempty"`
             // Quantity - Quantity.
             Quantity *string `json:"quantity,omitempty"`
             // Beneficiary - Tenant for which SaaS subscription is purchased.
@@ -465,5 +481,15 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/
             TenantID *string `json:"tenantId,omitempty"`
             // Puid - The puid of the tenant.
             Puid *string `json:"puid,omitempty"`
+            }
+
+            // Term the properties of a tenant.
+            type Term struct {
+            // StartDate - The start date of the subscription.
+            StartDate *string `json:"startDate,omitempty"`
+            // EndDate - The end date of the subscription.
+            EndDate *string `json:"endDate,omitempty"`
+            // TermUnit - The term unit for the subscription.
+            TermUnit *string `json:"termUnit,omitempty"`
             }
 

@@ -83,6 +83,7 @@ func (client Client) CheckNameAvailability(ctx context.Context, location string,
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -344,6 +345,7 @@ func (client Client) Get(ctx context.Context, resourceGroupName string, resource
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -417,9 +419,11 @@ func (client Client) List(ctx context.Context) (result DescriptionListResultPage
 	result.dlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -537,9 +541,11 @@ func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName 
 	result.dlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -662,6 +668,7 @@ func (client Client) Update(ctx context.Context, resourceGroupName string, resou
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

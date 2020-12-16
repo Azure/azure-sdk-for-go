@@ -68,9 +68,7 @@ func (client EndpointClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 				{Target: "resourceName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
 		{TargetValue: endpointName,
 			Constraints: []validation.Constraint{{Target: "endpointName", Name: validation.MaxLength, Rule: 49, Chain: nil},
-				{Target: "endpointName", Name: validation.MinLength, Rule: 2, Chain: nil}}},
-		{TargetValue: endpointDescription,
-			Constraints: []validation.Constraint{{Target: "endpointDescription.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "endpointName", Name: validation.MinLength, Rule: 2, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("digitaltwins.EndpointClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -272,6 +270,7 @@ func (client EndpointClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.EndpointClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -359,9 +358,11 @@ func (client EndpointClient) List(ctx context.Context, resourceGroupName string,
 	result.erlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.EndpointClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.erlr.hasNextLink() && result.erlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return

@@ -69,8 +69,12 @@ func LoadPackage(dir string) (pkg Package, err error) {
 		return
 	}
 	if len(packages) > 1 {
+		pkgs := []string{}
+		for p := range packages {
+			pkgs = append(pkgs, p)
+		}
 		err = errorInfo{
-			m: fmt.Sprintf("found more than one package in '%s'", dir),
+			m: fmt.Sprintf("found multiple packages in '%s': %s", dir, strings.Join(pkgs, ", ")),
 			c: len(packages),
 		}
 		return

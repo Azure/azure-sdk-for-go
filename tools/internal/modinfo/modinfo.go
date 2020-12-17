@@ -127,7 +127,7 @@ func GetModuleInfo(baseline, staged string) (Provider, error) {
 	lhs, err := exports.Get(baseline)
 	if err != nil {
 		// if baseline has no content then this is a v1 package
-		if ei, ok := err.(exports.LoadPackageErrorInfo); !ok || ei.PkgCount() != 0 {
+		if ei, ok := err.(exports.LoadPackageErrorInfo); !ok || len(ei.Packages()) != 0 {
 			return nil, fmt.Errorf("failed to get exports for package '%s': %s", baseline, err)
 		}
 	}

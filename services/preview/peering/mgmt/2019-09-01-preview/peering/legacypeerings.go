@@ -73,6 +73,7 @@ func (client LegacyPeeringsClient) List(ctx context.Context, peeringLocation str
 	result.lr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.LegacyPeeringsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -137,6 +138,7 @@ func (client LegacyPeeringsClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.LegacyPeeringsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -229,6 +229,7 @@ func (client ApplicationsClient) Get(ctx context.Context, resourceGroupName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -306,6 +307,7 @@ func (client ApplicationsClient) List(ctx context.Context, resourceGroupName str
 	result.alr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -370,6 +372,7 @@ func (client ApplicationsClient) listNextResults(ctx context.Context, lastResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

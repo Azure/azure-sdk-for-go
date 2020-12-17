@@ -95,6 +95,7 @@ func (client ChargesClient) List(ctx context.Context, scope string, startDate st
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ChargesClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

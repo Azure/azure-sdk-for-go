@@ -74,6 +74,7 @@ func (client LotsClient) List(ctx context.Context, billingAccountID string, bill
 	result.l, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.LotsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.l.hasNextLink() && result.l.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -137,6 +138,7 @@ func (client LotsClient) listNextResults(ctx context.Context, lastResults Lots) 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.LotsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

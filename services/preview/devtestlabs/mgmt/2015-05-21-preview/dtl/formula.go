@@ -152,6 +152,7 @@ func (client FormulaClient) DeleteResource(ctx context.Context, resourceGroupNam
 	result, err = client.DeleteResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.FormulaClient", "DeleteResource", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -228,6 +229,7 @@ func (client FormulaClient) GetResource(ctx context.Context, resourceGroupName s
 	result, err = client.GetResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.FormulaClient", "GetResource", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -306,6 +308,7 @@ func (client FormulaClient) List(ctx context.Context, resourceGroupName string, 
 	result.rwcf, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.FormulaClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rwcf.hasNextLink() && result.rwcf.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -379,6 +382,7 @@ func (client FormulaClient) listNextResults(ctx context.Context, lastResults Res
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.FormulaClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

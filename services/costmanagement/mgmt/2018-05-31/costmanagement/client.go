@@ -120,6 +120,7 @@ func (client BaseClient) QueryBillingAccount(ctx context.Context, billingAccount
 	result, err = client.QueryBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.BaseClient", "QueryBillingAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -228,6 +229,7 @@ func (client BaseClient) QueryResourceGroup(ctx context.Context, resourceGroupNa
 	result, err = client.QueryResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.BaseClient", "QueryResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -336,6 +338,7 @@ func (client BaseClient) QuerySubscription(ctx context.Context, parameters Repor
 	result, err = client.QuerySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.BaseClient", "QuerySubscription", resp, "Failure responding to request")
+		return
 	}
 
 	return

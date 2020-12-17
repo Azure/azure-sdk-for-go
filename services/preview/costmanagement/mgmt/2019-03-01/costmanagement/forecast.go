@@ -104,6 +104,7 @@ func (client ForecastClient) UsageByBillingAccount(ctx context.Context, billingA
 	result, err = client.UsageByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ForecastClient", "UsageByBillingAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -211,6 +212,7 @@ func (client ForecastClient) UsageByDepartment(ctx context.Context, billingAccou
 	result, err = client.UsageByDepartmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ForecastClient", "UsageByDepartment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -319,6 +321,7 @@ func (client ForecastClient) UsageByEnrollmentAccount(ctx context.Context, billi
 	result, err = client.UsageByEnrollmentAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ForecastClient", "UsageByEnrollmentAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -426,6 +429,7 @@ func (client ForecastClient) UsageByExternalBillingAccount(ctx context.Context, 
 	result, err = client.UsageByExternalBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ForecastClient", "UsageByExternalBillingAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -532,6 +536,7 @@ func (client ForecastClient) UsageByManagementGroup(ctx context.Context, managem
 	result, err = client.UsageByManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ForecastClient", "UsageByManagementGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -638,6 +643,7 @@ func (client ForecastClient) UsageByResourceGroup(ctx context.Context, resourceG
 	result, err = client.UsageByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ForecastClient", "UsageByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -744,6 +750,7 @@ func (client ForecastClient) UsageBySubscription(ctx context.Context, parameters
 	result, err = client.UsageBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ForecastClient", "UsageBySubscription", resp, "Failure responding to request")
+		return
 	}
 
 	return

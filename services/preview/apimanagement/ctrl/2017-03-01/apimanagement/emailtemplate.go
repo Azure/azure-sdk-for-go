@@ -80,6 +80,7 @@ func (client EmailTemplateClient) CreateOrUpdate(ctx context.Context, apimBaseUR
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.EmailTemplateClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -162,6 +163,7 @@ func (client EmailTemplateClient) Delete(ctx context.Context, apimBaseURL string
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.EmailTemplateClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -240,6 +242,7 @@ func (client EmailTemplateClient) Get(ctx context.Context, apimBaseURL string, t
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.EmailTemplateClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -333,6 +336,7 @@ func (client EmailTemplateClient) List(ctx context.Context, apimBaseURL string, 
 	result.etc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.EmailTemplateClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.etc.hasNextLink() && result.etc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -404,6 +408,7 @@ func (client EmailTemplateClient) listNextResults(ctx context.Context, lastResul
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.EmailTemplateClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -457,6 +462,7 @@ func (client EmailTemplateClient) Update(ctx context.Context, apimBaseURL string
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.EmailTemplateClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

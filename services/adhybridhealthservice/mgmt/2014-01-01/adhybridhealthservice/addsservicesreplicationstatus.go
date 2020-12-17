@@ -73,6 +73,7 @@ func (client AddsServicesReplicationStatusClient) Get(ctx context.Context, servi
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesReplicationStatusClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

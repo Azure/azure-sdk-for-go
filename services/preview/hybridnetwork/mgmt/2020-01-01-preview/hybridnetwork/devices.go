@@ -255,6 +255,7 @@ func (client DevicesClient) Get(ctx context.Context, resourceGroupName string, d
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.DevicesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -340,6 +341,7 @@ func (client DevicesClient) ListByResourceGroup(ctx context.Context, resourceGro
 	result.dlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.DevicesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -403,6 +405,7 @@ func (client DevicesClient) listByResourceGroupNextResults(ctx context.Context, 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.DevicesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -458,6 +461,7 @@ func (client DevicesClient) ListBySubscription(ctx context.Context) (result Devi
 	result.dlr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.DevicesClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -520,6 +524,7 @@ func (client DevicesClient) listBySubscriptionNextResults(ctx context.Context, l
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.DevicesClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -581,6 +586,7 @@ func (client DevicesClient) ListRegistrationKey(ctx context.Context, resourceGro
 	result, err = client.ListRegistrationKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.DevicesClient", "ListRegistrationKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -667,6 +673,7 @@ func (client DevicesClient) UpdateTags(ctx context.Context, resourceGroupName st
 	result, err = client.UpdateTagsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.DevicesClient", "UpdateTags", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -265,6 +265,7 @@ func (client ControllerClient) GetDetails(ctx context.Context, resourceGroupName
 	result, err = client.GetDetailsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.ControllerClient", "GetDetails", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -354,6 +355,7 @@ func (client ControllerClient) Patch(ctx context.Context, resourceGroupName stri
 	result, err = client.PatchResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.ControllerClient", "Patch", resp, "Failure responding to request")
+		return
 	}
 
 	return

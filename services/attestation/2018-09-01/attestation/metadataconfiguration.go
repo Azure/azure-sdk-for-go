@@ -65,6 +65,7 @@ func (client MetadataConfigurationClient) Get(ctx context.Context, tenantBaseURL
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "attestation.MetadataConfigurationClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

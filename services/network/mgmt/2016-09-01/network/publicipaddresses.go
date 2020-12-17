@@ -238,6 +238,7 @@ func (client PublicIPAddressesClient) Get(ctx context.Context, resourceGroupName
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -316,6 +317,7 @@ func (client PublicIPAddressesClient) List(ctx context.Context, resourceGroupNam
 	result.pialr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.pialr.hasNextLink() && result.pialr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -379,6 +381,7 @@ func (client PublicIPAddressesClient) listNextResults(ctx context.Context, lastR
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -428,6 +431,7 @@ func (client PublicIPAddressesClient) ListAll(ctx context.Context) (result Publi
 	result.pialr, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesClient", "ListAll", resp, "Failure responding to request")
+		return
 	}
 	if result.pialr.hasNextLink() && result.pialr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -490,6 +494,7 @@ func (client PublicIPAddressesClient) listAllNextResults(ctx context.Context, la
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesClient", "listAllNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

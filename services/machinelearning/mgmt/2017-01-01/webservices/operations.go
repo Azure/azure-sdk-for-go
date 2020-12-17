@@ -72,6 +72,7 @@ func (client OperationsClient) List(ctx context.Context) (result OperationEntity
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.OperationsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

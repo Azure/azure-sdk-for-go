@@ -89,6 +89,7 @@ func (client ComputeNodeClient) AddUser(ctx context.Context, poolID string, node
 	result, err = client.AddUserResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "AddUser", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -192,6 +193,7 @@ func (client ComputeNodeClient) DeleteUser(ctx context.Context, poolID string, n
 	result, err = client.DeleteUserResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "DeleteUser", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -294,6 +296,7 @@ func (client ComputeNodeClient) DisableScheduling(ctx context.Context, poolID st
 	result, err = client.DisableSchedulingResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "DisableScheduling", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -399,6 +402,7 @@ func (client ComputeNodeClient) EnableScheduling(ctx context.Context, poolID str
 	result, err = client.EnableSchedulingResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "EnableScheduling", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -500,6 +504,7 @@ func (client ComputeNodeClient) Get(ctx context.Context, poolID string, nodeID s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -606,6 +611,7 @@ func (client ComputeNodeClient) GetRemoteDesktop(ctx context.Context, poolID str
 	result, err = client.GetRemoteDesktopResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "GetRemoteDesktop", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -708,6 +714,7 @@ func (client ComputeNodeClient) GetRemoteLoginSettings(ctx context.Context, pool
 	result, err = client.GetRemoteLoginSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "GetRemoteLoginSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -822,6 +829,7 @@ func (client ComputeNodeClient) List(ctx context.Context, poolID string, filter 
 	result.cnlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.cnlr.hasNextLink() && result.cnlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -915,6 +923,7 @@ func (client ComputeNodeClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -974,6 +983,7 @@ func (client ComputeNodeClient) Reboot(ctx context.Context, poolID string, nodeI
 	result, err = client.RebootResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "Reboot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1081,6 +1091,7 @@ func (client ComputeNodeClient) Reimage(ctx context.Context, poolID string, node
 	result, err = client.ReimageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "Reimage", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1190,6 +1201,7 @@ func (client ComputeNodeClient) UpdateUser(ctx context.Context, poolID string, n
 	result, err = client.UpdateUserResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "UpdateUser", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1303,6 +1315,7 @@ func (client ComputeNodeClient) UploadBatchServiceLogs(ctx context.Context, pool
 	result, err = client.UploadBatchServiceLogsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "UploadBatchServiceLogs", resp, "Failure responding to request")
+		return
 	}
 
 	return

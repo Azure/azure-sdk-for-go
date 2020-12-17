@@ -97,6 +97,7 @@ func (client AssessmentsClient) Create(ctx context.Context, resourceGroupName st
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.AssessmentsClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -192,6 +193,7 @@ func (client AssessmentsClient) Delete(ctx context.Context, resourceGroupName st
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.AssessmentsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -275,6 +277,7 @@ func (client AssessmentsClient) Get(ctx context.Context, resourceGroupName strin
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.AssessmentsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -358,6 +361,7 @@ func (client AssessmentsClient) GetReportDownloadURL(ctx context.Context, resour
 	result, err = client.GetReportDownloadURLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.AssessmentsClient", "GetReportDownloadURL", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -442,6 +446,7 @@ func (client AssessmentsClient) ListByGroup(ctx context.Context, resourceGroupNa
 	result, err = client.ListByGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.AssessmentsClient", "ListByGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -524,6 +529,7 @@ func (client AssessmentsClient) ListByProject(ctx context.Context, resourceGroup
 	result, err = client.ListByProjectResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.AssessmentsClient", "ListByProject", resp, "Failure responding to request")
+		return
 	}
 
 	return

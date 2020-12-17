@@ -67,6 +67,7 @@ func (client SignInSettingsClient) CreateOrUpdate(ctx context.Context, apimBaseU
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SignInSettingsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -142,6 +143,7 @@ func (client SignInSettingsClient) Get(ctx context.Context, apimBaseURL string) 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SignInSettingsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -218,6 +220,7 @@ func (client SignInSettingsClient) Update(ctx context.Context, apimBaseURL strin
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SignInSettingsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

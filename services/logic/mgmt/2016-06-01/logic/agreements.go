@@ -510,6 +510,7 @@ func (client AgreementsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.AgreementsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -589,6 +590,7 @@ func (client AgreementsClient) Delete(ctx context.Context, resourceGroupName str
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.AgreementsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -665,6 +667,7 @@ func (client AgreementsClient) Get(ctx context.Context, resourceGroupName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.AgreementsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -744,6 +747,7 @@ func (client AgreementsClient) ListByIntegrationAccounts(ctx context.Context, re
 	result.iaalr, err = client.ListByIntegrationAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.AgreementsClient", "ListByIntegrationAccounts", resp, "Failure responding to request")
+		return
 	}
 	if result.iaalr.hasNextLink() && result.iaalr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -814,6 +818,7 @@ func (client AgreementsClient) listByIntegrationAccountsNextResults(ctx context.
 	result, err = client.ListByIntegrationAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.AgreementsClient", "listByIntegrationAccountsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -866,6 +871,7 @@ func (client AgreementsClient) ListContentCallbackURL(ctx context.Context, resou
 	result, err = client.ListContentCallbackURLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.AgreementsClient", "ListContentCallbackURL", resp, "Failure responding to request")
+		return
 	}
 
 	return

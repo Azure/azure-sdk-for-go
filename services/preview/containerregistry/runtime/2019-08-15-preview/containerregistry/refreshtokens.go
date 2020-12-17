@@ -69,6 +69,7 @@ func (client RefreshTokensClient) GetFromExchange(ctx context.Context, grantType
 	result, err = client.GetFromExchangeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RefreshTokensClient", "GetFromExchange", resp, "Failure responding to request")
+		return
 	}
 
 	return

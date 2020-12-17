@@ -77,6 +77,7 @@ func (client ChildAvailabilityStatusesClient) GetByResource(ctx context.Context,
 	result, err = client.GetByResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.ChildAvailabilityStatusesClient", "GetByResource", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -162,6 +163,7 @@ func (client ChildAvailabilityStatusesClient) List(ctx context.Context, resource
 	result.aslr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.ChildAvailabilityStatusesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.aslr.hasNextLink() && result.aslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -230,6 +232,7 @@ func (client ChildAvailabilityStatusesClient) listNextResults(ctx context.Contex
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.ChildAvailabilityStatusesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

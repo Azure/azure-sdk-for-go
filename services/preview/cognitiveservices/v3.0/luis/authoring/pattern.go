@@ -69,6 +69,7 @@ func (client PatternClient) AddPattern(ctx context.Context, appID uuid.UUID, ver
 	result, err = client.AddPatternResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.PatternClient", "AddPattern", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -150,6 +151,7 @@ func (client PatternClient) BatchAddPatterns(ctx context.Context, appID uuid.UUI
 	result, err = client.BatchAddPatternsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.PatternClient", "BatchAddPatterns", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -225,6 +227,7 @@ func (client PatternClient) DeletePattern(ctx context.Context, appID uuid.UUID, 
 	result, err = client.DeletePatternResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.PatternClient", "DeletePattern", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -305,6 +308,7 @@ func (client PatternClient) DeletePatterns(ctx context.Context, appID uuid.UUID,
 	result, err = client.DeletePatternsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.PatternClient", "DeletePatterns", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -394,6 +398,7 @@ func (client PatternClient) ListIntentPatterns(ctx context.Context, appID uuid.U
 	result, err = client.ListIntentPatternsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.PatternClient", "ListIntentPatterns", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -494,6 +499,7 @@ func (client PatternClient) ListPatterns(ctx context.Context, appID uuid.UUID, v
 	result, err = client.ListPatternsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.PatternClient", "ListPatterns", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -581,6 +587,7 @@ func (client PatternClient) UpdatePattern(ctx context.Context, appID uuid.UUID, 
 	result, err = client.UpdatePatternResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.PatternClient", "UpdatePattern", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -663,6 +670,7 @@ func (client PatternClient) UpdatePatterns(ctx context.Context, appID uuid.UUID,
 	result, err = client.UpdatePatternsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.PatternClient", "UpdatePatterns", resp, "Failure responding to request")
+		return
 	}
 
 	return

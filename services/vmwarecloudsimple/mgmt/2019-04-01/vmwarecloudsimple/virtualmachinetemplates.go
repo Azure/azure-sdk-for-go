@@ -74,6 +74,7 @@ func (client VirtualMachineTemplatesClient) Get(ctx context.Context, regionID st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineTemplatesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -152,6 +153,7 @@ func (client VirtualMachineTemplatesClient) List(ctx context.Context, pcName str
 	result.vmtlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineTemplatesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.vmtlr.hasNextLink() && result.vmtlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -217,6 +219,7 @@ func (client VirtualMachineTemplatesClient) listNextResults(ctx context.Context,
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineTemplatesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

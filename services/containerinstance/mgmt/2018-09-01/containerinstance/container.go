@@ -75,6 +75,7 @@ func (client ContainerClient) ExecuteCommand(ctx context.Context, resourceGroupN
 	result, err = client.ExecuteCommandResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerinstance.ContainerClient", "ExecuteCommand", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -156,6 +157,7 @@ func (client ContainerClient) ListLogs(ctx context.Context, resourceGroupName st
 	result, err = client.ListLogsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerinstance.ContainerClient", "ListLogs", resp, "Failure responding to request")
+		return
 	}
 
 	return

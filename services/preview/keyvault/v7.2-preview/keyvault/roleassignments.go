@@ -79,6 +79,7 @@ func (client RoleAssignmentsClient) Create(ctx context.Context, vaultBaseURL str
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.RoleAssignmentsClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -160,6 +161,7 @@ func (client RoleAssignmentsClient) Delete(ctx context.Context, vaultBaseURL str
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.RoleAssignmentsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -239,6 +241,7 @@ func (client RoleAssignmentsClient) Get(ctx context.Context, vaultBaseURL string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.RoleAssignmentsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -321,6 +324,7 @@ func (client RoleAssignmentsClient) ListForScope(ctx context.Context, vaultBaseU
 	result.ralr, err = client.ListForScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.RoleAssignmentsClient", "ListForScope", resp, "Failure responding to request")
+		return
 	}
 	if result.ralr.hasNextLink() && result.ralr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -390,6 +394,7 @@ func (client RoleAssignmentsClient) listForScopeNextResults(ctx context.Context,
 	result, err = client.ListForScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.RoleAssignmentsClient", "listForScopeNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -72,6 +72,7 @@ func (client CloudConnectorClient) CreateOrUpdate(ctx context.Context, connector
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.CloudConnectorClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -149,6 +150,7 @@ func (client CloudConnectorClient) Delete(ctx context.Context, connectorName str
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.CloudConnectorClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -221,6 +223,7 @@ func (client CloudConnectorClient) Get(ctx context.Context, connectorName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.CloudConnectorClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -294,6 +297,7 @@ func (client CloudConnectorClient) List(ctx context.Context) (result ConnectorDe
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.CloudConnectorClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -363,6 +367,7 @@ func (client CloudConnectorClient) Update(ctx context.Context, connectorName str
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.CloudConnectorClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

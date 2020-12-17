@@ -77,6 +77,7 @@ func (client ExtensionsClient) Create(ctx context.Context, resourceGroupName str
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.ExtensionsClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -156,6 +157,7 @@ func (client ExtensionsClient) Delete(ctx context.Context, resourceGroupName str
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.ExtensionsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -232,6 +234,7 @@ func (client ExtensionsClient) Get(ctx context.Context, resourceGroupName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.ExtensionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -308,6 +311,7 @@ func (client ExtensionsClient) ListByAccount(ctx context.Context, resourceGroupN
 	result, err = client.ListByAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.ExtensionsClient", "ListByAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -385,6 +389,7 @@ func (client ExtensionsClient) Update(ctx context.Context, resourceGroupName str
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.ExtensionsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

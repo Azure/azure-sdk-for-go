@@ -89,6 +89,7 @@ func (client GroupsClient) Create(ctx context.Context, resourceGroupName string,
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.GroupsClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -182,6 +183,7 @@ func (client GroupsClient) Delete(ctx context.Context, resourceGroupName string,
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.GroupsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -263,6 +265,7 @@ func (client GroupsClient) Get(ctx context.Context, resourceGroupName string, pr
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.GroupsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -344,6 +347,7 @@ func (client GroupsClient) ListByProject(ctx context.Context, resourceGroupName 
 	result, err = client.ListByProjectResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.GroupsClient", "ListByProject", resp, "Failure responding to request")
+		return
 	}
 
 	return

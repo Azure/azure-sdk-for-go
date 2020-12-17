@@ -224,6 +224,7 @@ func (client HanaInstancesClient) Get(ctx context.Context, resourceGroupName str
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -298,6 +299,7 @@ func (client HanaInstancesClient) List(ctx context.Context) (result HanaInstance
 	result.hilr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.hilr.hasNextLink() && result.hilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -360,6 +362,7 @@ func (client HanaInstancesClient) listNextResults(ctx context.Context, lastResul
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -412,6 +415,7 @@ func (client HanaInstancesClient) ListByResourceGroup(ctx context.Context, resou
 	result.hilr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.hilr.hasNextLink() && result.hilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -475,6 +479,7 @@ func (client HanaInstancesClient) listByResourceGroupNextResults(ctx context.Con
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -750,6 +755,7 @@ func (client HanaInstancesClient) Update(ctx context.Context, resourceGroupName 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

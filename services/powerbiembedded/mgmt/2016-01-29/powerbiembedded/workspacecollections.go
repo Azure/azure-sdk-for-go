@@ -75,6 +75,7 @@ func (client WorkspaceCollectionsClient) CheckNameAvailability(ctx context.Conte
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -162,6 +163,7 @@ func (client WorkspaceCollectionsClient) Create(ctx context.Context, resourceGro
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -313,6 +315,7 @@ func (client WorkspaceCollectionsClient) GetAccessKeys(ctx context.Context, reso
 	result, err = client.GetAccessKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "GetAccessKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -388,6 +391,7 @@ func (client WorkspaceCollectionsClient) GetByName(ctx context.Context, resource
 	result, err = client.GetByNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "GetByName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -462,6 +466,7 @@ func (client WorkspaceCollectionsClient) ListByResourceGroup(ctx context.Context
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -533,6 +538,7 @@ func (client WorkspaceCollectionsClient) ListBySubscription(ctx context.Context)
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -606,6 +612,7 @@ func (client WorkspaceCollectionsClient) Migrate(ctx context.Context, resourceGr
 	result, err = client.MigrateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Migrate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -682,6 +689,7 @@ func (client WorkspaceCollectionsClient) RegenerateKey(ctx context.Context, reso
 	result, err = client.RegenerateKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "RegenerateKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -760,6 +768,7 @@ func (client WorkspaceCollectionsClient) Update(ctx context.Context, resourceGro
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

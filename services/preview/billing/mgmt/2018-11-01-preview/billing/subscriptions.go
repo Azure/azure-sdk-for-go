@@ -73,6 +73,7 @@ func (client SubscriptionsClient) Get(ctx context.Context, billingAccountName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -149,6 +150,7 @@ func (client SubscriptionsClient) GetByCustomerName(ctx context.Context, billing
 	result, err = client.GetByCustomerNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "GetByCustomerName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -224,6 +226,7 @@ func (client SubscriptionsClient) ListByBillingAccountName(ctx context.Context, 
 	result.slr, err = client.ListByBillingAccountNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ListByBillingAccountName", resp, "Failure responding to request")
+		return
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -286,6 +289,7 @@ func (client SubscriptionsClient) listByBillingAccountNameNextResults(ctx contex
 	result, err = client.ListByBillingAccountNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "listByBillingAccountNameNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -338,6 +342,7 @@ func (client SubscriptionsClient) ListByBillingProfileName(ctx context.Context, 
 	result.slr, err = client.ListByBillingProfileNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ListByBillingProfileName", resp, "Failure responding to request")
+		return
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -401,6 +406,7 @@ func (client SubscriptionsClient) listByBillingProfileNameNextResults(ctx contex
 	result, err = client.ListByBillingProfileNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "listByBillingProfileNameNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -453,6 +459,7 @@ func (client SubscriptionsClient) ListByCustomerName(ctx context.Context, billin
 	result.slr, err = client.ListByCustomerNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ListByCustomerName", resp, "Failure responding to request")
+		return
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -516,6 +523,7 @@ func (client SubscriptionsClient) listByCustomerNameNextResults(ctx context.Cont
 	result, err = client.ListByCustomerNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "listByCustomerNameNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -568,6 +576,7 @@ func (client SubscriptionsClient) ListByInvoiceSectionName(ctx context.Context, 
 	result.slr, err = client.ListByInvoiceSectionNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ListByInvoiceSectionName", resp, "Failure responding to request")
+		return
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -631,6 +640,7 @@ func (client SubscriptionsClient) listByInvoiceSectionNameNextResults(ctx contex
 	result, err = client.ListByInvoiceSectionNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "listByInvoiceSectionNameNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -757,6 +767,7 @@ func (client SubscriptionsClient) ValidateTransfer(ctx context.Context, billingA
 	result, err = client.ValidateTransferResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ValidateTransfer", resp, "Failure responding to request")
+		return
 	}
 
 	return

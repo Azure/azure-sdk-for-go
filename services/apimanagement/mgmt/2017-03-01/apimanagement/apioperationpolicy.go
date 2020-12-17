@@ -100,6 +100,7 @@ func (client APIOperationPolicyClient) CreateOrUpdate(ctx context.Context, resou
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationPolicyClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -202,6 +203,7 @@ func (client APIOperationPolicyClient) Delete(ctx context.Context, resourceGroup
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationPolicyClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -300,6 +302,7 @@ func (client APIOperationPolicyClient) Get(ctx context.Context, resourceGroupNam
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationPolicyClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -397,6 +400,7 @@ func (client APIOperationPolicyClient) GetEntityTag(ctx context.Context, resourc
 	result, err = client.GetEntityTagResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationPolicyClient", "GetEntityTag", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -494,6 +498,7 @@ func (client APIOperationPolicyClient) ListByOperation(ctx context.Context, reso
 	result, err = client.ListByOperationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationPolicyClient", "ListByOperation", resp, "Failure responding to request")
+		return
 	}
 
 	return

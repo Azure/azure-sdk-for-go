@@ -163,6 +163,7 @@ func (client SecretsClient) Delete(ctx context.Context, resourceGroupName string
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.SecretsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -242,6 +243,7 @@ func (client SecretsClient) Get(ctx context.Context, resourceGroupName string, l
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.SecretsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -328,6 +330,7 @@ func (client SecretsClient) List(ctx context.Context, resourceGroupName string, 
 	result.sl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.SecretsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.sl.hasNextLink() && result.sl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -405,6 +408,7 @@ func (client SecretsClient) listNextResults(ctx context.Context, lastResults Sec
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.SecretsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -459,6 +463,7 @@ func (client SecretsClient) Update(ctx context.Context, resourceGroupName string
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.SecretsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -80,6 +80,7 @@ func (client CloudAppliancesClient) ListSupportedConfigurations(ctx context.Cont
 	result, err = client.ListSupportedConfigurationsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.CloudAppliancesClient", "ListSupportedConfigurations", resp, "Failure responding to request")
+		return
 	}
 
 	return

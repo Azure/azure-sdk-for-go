@@ -87,6 +87,7 @@ func (client BaseClient) CheckServiceProviderAvailability(ctx context.Context, c
 	result, err = client.CheckServiceProviderAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.BaseClient", "CheckServiceProviderAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return

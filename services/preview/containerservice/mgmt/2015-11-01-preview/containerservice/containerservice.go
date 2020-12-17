@@ -243,6 +243,7 @@ func (client Client) Get(ctx context.Context, resourceGroupName string, containe
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.Client", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -317,6 +318,7 @@ func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.Client", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return

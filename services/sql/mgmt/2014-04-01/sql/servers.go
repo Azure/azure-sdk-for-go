@@ -81,6 +81,7 @@ func (client ServersClient) CheckNameAvailability(ctx context.Context, parameter
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServersClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -158,6 +159,7 @@ func (client ServersClient) CreateOrUpdate(ctx context.Context, resourceGroupNam
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServersClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -237,6 +239,7 @@ func (client ServersClient) Delete(ctx context.Context, resourceGroupName string
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServersClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -312,6 +315,7 @@ func (client ServersClient) Get(ctx context.Context, resourceGroupName string, s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -384,6 +388,7 @@ func (client ServersClient) List(ctx context.Context) (result ServerListResult, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServersClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -457,6 +462,7 @@ func (client ServersClient) ListByResourceGroup(ctx context.Context, resourceGro
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServersClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -533,6 +539,7 @@ func (client ServersClient) Update(ctx context.Context, resourceGroupName string
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServersClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

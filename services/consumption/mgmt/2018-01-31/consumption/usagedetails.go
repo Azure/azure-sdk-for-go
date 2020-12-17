@@ -92,6 +92,7 @@ func (client UsageDetailsClient) List(ctx context.Context, expand string, filter
 	result.udlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.udlr.hasNextLink() && result.udlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -166,6 +167,7 @@ func (client UsageDetailsClient) listNextResults(ctx context.Context, lastResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -236,6 +238,7 @@ func (client UsageDetailsClient) ListByBillingPeriod(ctx context.Context, billin
 	result.udlr, err = client.ListByBillingPeriodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByBillingPeriod", resp, "Failure responding to request")
+		return
 	}
 	if result.udlr.hasNextLink() && result.udlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -311,6 +314,7 @@ func (client UsageDetailsClient) listByBillingPeriodNextResults(ctx context.Cont
 	result, err = client.ListByBillingPeriodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listByBillingPeriodNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -93,6 +93,7 @@ func (client TagClient) AssignToAPI(ctx context.Context, resourceGroupName strin
 	result, err = client.AssignToAPIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "AssignToAPI", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -200,6 +201,7 @@ func (client TagClient) AssignToOperation(ctx context.Context, resourceGroupName
 	result, err = client.AssignToOperationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "AssignToOperation", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -301,6 +303,7 @@ func (client TagClient) AssignToProduct(ctx context.Context, resourceGroupName s
 	result, err = client.AssignToProductResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "AssignToProduct", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -403,6 +406,7 @@ func (client TagClient) CreateOrUpdate(ctx context.Context, resourceGroupName st
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -496,6 +500,7 @@ func (client TagClient) Delete(ctx context.Context, resourceGroupName string, se
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -593,6 +598,7 @@ func (client TagClient) DetachFromAPI(ctx context.Context, resourceGroupName str
 	result, err = client.DetachFromAPIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "DetachFromAPI", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -697,6 +703,7 @@ func (client TagClient) DetachFromOperation(ctx context.Context, resourceGroupNa
 	result, err = client.DetachFromOperationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "DetachFromOperation", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -795,6 +802,7 @@ func (client TagClient) DetachFromProduct(ctx context.Context, resourceGroupName
 	result, err = client.DetachFromProductResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "DetachFromProduct", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -885,6 +893,7 @@ func (client TagClient) Get(ctx context.Context, resourceGroupName string, servi
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -980,6 +989,7 @@ func (client TagClient) GetByAPI(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetByAPIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "GetByAPI", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1082,6 +1092,7 @@ func (client TagClient) GetByOperation(ctx context.Context, resourceGroupName st
 	result, err = client.GetByOperationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "GetByOperation", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1178,6 +1189,7 @@ func (client TagClient) GetByProduct(ctx context.Context, resourceGroupName stri
 	result, err = client.GetByProductResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "GetByProduct", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1268,6 +1280,7 @@ func (client TagClient) GetEntityState(ctx context.Context, resourceGroupName st
 	result, err = client.GetEntityStateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "GetEntityState", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1362,6 +1375,7 @@ func (client TagClient) GetEntityStateByAPI(ctx context.Context, resourceGroupNa
 	result, err = client.GetEntityStateByAPIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "GetEntityStateByAPI", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1463,6 +1477,7 @@ func (client TagClient) GetEntityStateByOperation(ctx context.Context, resourceG
 	result, err = client.GetEntityStateByOperationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "GetEntityStateByOperation", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1558,6 +1573,7 @@ func (client TagClient) GetEntityStateByProduct(ctx context.Context, resourceGro
 	result, err = client.GetEntityStateByProductResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "GetEntityStateByProduct", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1661,6 +1677,7 @@ func (client TagClient) ListByAPI(ctx context.Context, resourceGroupName string,
 	result.tc, err = client.ListByAPIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "ListByAPI", resp, "Failure responding to request")
+		return
 	}
 	if result.tc.hasNextLink() && result.tc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1735,6 +1752,7 @@ func (client TagClient) listByAPINextResults(ctx context.Context, lastResults Ta
 	result, err = client.ListByAPIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "listByAPINextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1822,6 +1840,7 @@ func (client TagClient) ListByOperation(ctx context.Context, resourceGroupName s
 	result.tc, err = client.ListByOperationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "ListByOperation", resp, "Failure responding to request")
+		return
 	}
 	if result.tc.hasNextLink() && result.tc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1897,6 +1916,7 @@ func (client TagClient) listByOperationNextResults(ctx context.Context, lastResu
 	result, err = client.ListByOperationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "listByOperationNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1974,6 +1994,7 @@ func (client TagClient) ListByProduct(ctx context.Context, resourceGroupName str
 	result.tc, err = client.ListByProductResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "ListByProduct", resp, "Failure responding to request")
+		return
 	}
 	if result.tc.hasNextLink() && result.tc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -2048,6 +2069,7 @@ func (client TagClient) listByProductNextResults(ctx context.Context, lastResult
 	result, err = client.ListByProductResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "listByProductNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -2120,6 +2142,7 @@ func (client TagClient) ListByService(ctx context.Context, resourceGroupName str
 	result.tc, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 	if result.tc.hasNextLink() && result.tc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -2193,6 +2216,7 @@ func (client TagClient) listByServiceNextResults(ctx context.Context, lastResult
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -2260,6 +2284,7 @@ func (client TagClient) Update(ctx context.Context, resourceGroupName string, se
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -75,6 +75,7 @@ func (client VCenterClient) DeleteVCenter(ctx context.Context, subscriptionID st
 	result, err = client.DeleteVCenterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.VCenterClient", "DeleteVCenter", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -152,6 +153,7 @@ func (client VCenterClient) GetAllVCentersInSite(ctx context.Context, subscripti
 	result.vcc, err = client.GetAllVCentersInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.VCenterClient", "GetAllVCentersInSite", resp, "Failure responding to request")
+		return
 	}
 	if result.vcc.hasNextLink() && result.vcc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -218,6 +220,7 @@ func (client VCenterClient) getAllVCentersInSiteNextResults(ctx context.Context,
 	result, err = client.GetAllVCentersInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.VCenterClient", "getAllVCentersInSiteNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -272,6 +275,7 @@ func (client VCenterClient) GetVCenter(ctx context.Context, subscriptionID strin
 	result, err = client.GetVCenterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.VCenterClient", "GetVCenter", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -351,6 +355,7 @@ func (client VCenterClient) PutVCenter(ctx context.Context, subscriptionID strin
 	result, err = client.PutVCenterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.VCenterClient", "PutVCenter", resp, "Failure responding to request")
+		return
 	}
 
 	return

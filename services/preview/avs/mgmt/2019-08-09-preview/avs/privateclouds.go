@@ -232,6 +232,7 @@ func (client PrivateCloudsClient) Get(ctx context.Context, resourceGroupName str
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.PrivateCloudsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -307,6 +308,7 @@ func (client PrivateCloudsClient) List(ctx context.Context, resourceGroupName st
 	result.pcl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.PrivateCloudsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.pcl.hasNextLink() && result.pcl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -370,6 +372,7 @@ func (client PrivateCloudsClient) listNextResults(ctx context.Context, lastResul
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.PrivateCloudsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -421,6 +424,7 @@ func (client PrivateCloudsClient) ListAdminCredentials(ctx context.Context, reso
 	result, err = client.ListAdminCredentialsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.PrivateCloudsClient", "ListAdminCredentials", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -494,6 +498,7 @@ func (client PrivateCloudsClient) ListInSubscription(ctx context.Context) (resul
 	result.pcl, err = client.ListInSubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.PrivateCloudsClient", "ListInSubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.pcl.hasNextLink() && result.pcl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -556,6 +561,7 @@ func (client PrivateCloudsClient) listInSubscriptionNextResults(ctx context.Cont
 	result, err = client.ListInSubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.PrivateCloudsClient", "listInSubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -74,6 +74,7 @@ func (client AddsServicesUserPreferenceClient) Add(ctx context.Context, serviceN
 	result, err = client.AddResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesUserPreferenceClient", "Add", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -149,6 +150,7 @@ func (client AddsServicesUserPreferenceClient) Delete(ctx context.Context, servi
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesUserPreferenceClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -222,6 +224,7 @@ func (client AddsServicesUserPreferenceClient) Get(ctx context.Context, serviceN
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesUserPreferenceClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

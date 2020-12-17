@@ -81,6 +81,7 @@ func (client QueryClient) Execute(ctx context.Context, workspaceID string, body 
 	result, err = client.ExecuteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.QueryClient", "Execute", resp, "Failure responding to request")
+		return
 	}
 
 	return

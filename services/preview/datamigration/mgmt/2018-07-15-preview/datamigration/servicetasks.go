@@ -74,6 +74,7 @@ func (client ServiceTasksClient) Cancel(ctx context.Context, groupName string, s
 	result, err = client.CancelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "Cancel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -154,6 +155,7 @@ func (client ServiceTasksClient) CreateOrUpdate(ctx context.Context, parameters 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -235,6 +237,7 @@ func (client ServiceTasksClient) Delete(ctx context.Context, groupName string, s
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -316,6 +319,7 @@ func (client ServiceTasksClient) Get(ctx context.Context, groupName string, serv
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -399,6 +403,7 @@ func (client ServiceTasksClient) List(ctx context.Context, groupName string, ser
 	result.tl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.tl.hasNextLink() && result.tl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -466,6 +471,7 @@ func (client ServiceTasksClient) listNextResults(ctx context.Context, lastResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -521,6 +527,7 @@ func (client ServiceTasksClient) Update(ctx context.Context, parameters ProjectT
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -87,6 +87,7 @@ func (client BackendsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -180,6 +181,7 @@ func (client BackendsClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -269,6 +271,7 @@ func (client BackendsClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -366,6 +369,7 @@ func (client BackendsClient) ListByService(ctx context.Context, resourceGroupNam
 	result.bc, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 	if result.bc.hasNextLink() && result.bc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -439,6 +443,7 @@ func (client BackendsClient) listByServiceNextResults(ctx context.Context, lastR
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -506,6 +511,7 @@ func (client BackendsClient) Update(ctx context.Context, resourceGroupName strin
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

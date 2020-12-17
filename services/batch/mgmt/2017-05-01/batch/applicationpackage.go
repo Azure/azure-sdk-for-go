@@ -89,6 +89,7 @@ func (client ApplicationPackageClient) Activate(ctx context.Context, resourceGro
 	result, err = client.ActivateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ApplicationPackageClient", "Activate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -179,6 +180,7 @@ func (client ApplicationPackageClient) Create(ctx context.Context, resourceGroup
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ApplicationPackageClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -268,6 +270,7 @@ func (client ApplicationPackageClient) Delete(ctx context.Context, resourceGroup
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ApplicationPackageClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -356,6 +359,7 @@ func (client ApplicationPackageClient) Get(ctx context.Context, resourceGroupNam
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ApplicationPackageClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

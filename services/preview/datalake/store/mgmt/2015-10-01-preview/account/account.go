@@ -154,6 +154,7 @@ func (client Client) CreateOrUpdateFirewallRule(ctx context.Context, resourceGro
 	result, err = client.CreateOrUpdateFirewallRuleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "CreateOrUpdateFirewallRule", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -308,6 +309,7 @@ func (client Client) DeleteFirewallRule(ctx context.Context, resourceGroupName s
 	result, err = client.DeleteFirewallRuleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "DeleteFirewallRule", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -383,6 +385,7 @@ func (client Client) EnableKeyVault(ctx context.Context, resourceGroupName strin
 	result, err = client.EnableKeyVaultResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "EnableKeyVault", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -457,6 +460,7 @@ func (client Client) Get(ctx context.Context, resourceGroupName string, accountN
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -533,6 +537,7 @@ func (client Client) GetFirewallRule(ctx context.Context, resourceGroupName stri
 	result, err = client.GetFirewallRuleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "GetFirewallRule", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -625,6 +630,7 @@ func (client Client) List(ctx context.Context, filter string, top *int32, skip *
 	result.dlsalr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.dlsalr.hasNextLink() && result.dlsalr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -714,6 +720,7 @@ func (client Client) listNextResults(ctx context.Context, lastResults DataLakeSt
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -782,6 +789,7 @@ func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName 
 	result.dlsalr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.dlsalr.hasNextLink() && result.dlsalr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -872,6 +880,7 @@ func (client Client) listByResourceGroupNextResults(ctx context.Context, lastRes
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -924,6 +933,7 @@ func (client Client) ListFirewallRules(ctx context.Context, resourceGroupName st
 	result.dlsfrlr, err = client.ListFirewallRulesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "ListFirewallRules", resp, "Failure responding to request")
+		return
 	}
 	if result.dlsfrlr.hasNextLink() && result.dlsfrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -988,6 +998,7 @@ func (client Client) listFirewallRulesNextResults(ctx context.Context, lastResul
 	result, err = client.ListFirewallRulesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "listFirewallRulesNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

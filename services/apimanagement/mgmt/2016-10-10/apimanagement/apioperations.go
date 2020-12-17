@@ -103,6 +103,7 @@ func (client APIOperationsClient) CreateOrUpdate(ctx context.Context, resourceGr
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -203,6 +204,7 @@ func (client APIOperationsClient) Delete(ctx context.Context, resourceGroupName 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -299,6 +301,7 @@ func (client APIOperationsClient) Get(ctx context.Context, resourceGroupName str
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -404,6 +407,7 @@ func (client APIOperationsClient) ListByApis(ctx context.Context, resourceGroupN
 	result.oc, err = client.ListByApisResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationsClient", "ListByApis", resp, "Failure responding to request")
+		return
 	}
 	if result.oc.hasNextLink() && result.oc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -478,6 +482,7 @@ func (client APIOperationsClient) listByApisNextResults(ctx context.Context, las
 	result, err = client.ListByApisResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationsClient", "listByApisNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -551,6 +556,7 @@ func (client APIOperationsClient) Update(ctx context.Context, resourceGroupName 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

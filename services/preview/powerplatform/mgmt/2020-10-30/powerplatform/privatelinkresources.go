@@ -85,6 +85,7 @@ func (client PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupN
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerplatform.PrivateLinkResourcesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -171,6 +172,7 @@ func (client PrivateLinkResourcesClient) ListByEnterprisePolicy(ctx context.Cont
 	result, err = client.ListByEnterprisePolicyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerplatform.PrivateLinkResourcesClient", "ListByEnterprisePolicy", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -76,6 +76,7 @@ func (client ProtectionPoliciesClient) Delete(ctx context.Context, vaultName str
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ProtectionPoliciesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return

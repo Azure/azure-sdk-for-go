@@ -101,6 +101,7 @@ func (client DatasetsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.DatasetsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -200,6 +201,7 @@ func (client DatasetsClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.DatasetsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -292,6 +294,7 @@ func (client DatasetsClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.DatasetsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -381,6 +384,7 @@ func (client DatasetsClient) ListByFactory(ctx context.Context, resourceGroupNam
 	result.dlr, err = client.ListByFactoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.DatasetsClient", "ListByFactory", resp, "Failure responding to request")
+		return
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -445,6 +449,7 @@ func (client DatasetsClient) listByFactoryNextResults(ctx context.Context, lastR
 	result, err = client.ListByFactoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.DatasetsClient", "listByFactoryNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

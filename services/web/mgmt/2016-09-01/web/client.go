@@ -92,6 +92,7 @@ func (client BaseClient) CheckNameAvailability(ctx context.Context, request Reso
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -164,6 +165,7 @@ func (client BaseClient) GetPublishingUser(ctx context.Context) (result User, er
 	result, err = client.GetPublishingUserResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "GetPublishingUser", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -232,6 +234,7 @@ func (client BaseClient) GetSourceControl(ctx context.Context, sourceControlType
 	result, err = client.GetSourceControlResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "GetSourceControl", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -302,6 +305,7 @@ func (client BaseClient) GetSubscriptionDeploymentLocations(ctx context.Context)
 	result, err = client.GetSubscriptionDeploymentLocationsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "GetSubscriptionDeploymentLocations", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -377,6 +381,7 @@ func (client BaseClient) ListGeoRegions(ctx context.Context, sku SkuName, linuxW
 	result.grc, err = client.ListGeoRegionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "ListGeoRegions", resp, "Failure responding to request")
+		return
 	}
 	if result.grc.hasNextLink() && result.grc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -445,6 +450,7 @@ func (client BaseClient) listGeoRegionsNextResults(ctx context.Context, lastResu
 	result, err = client.ListGeoRegionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "listGeoRegionsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -494,6 +500,7 @@ func (client BaseClient) ListPremierAddOnOffers(ctx context.Context) (result Pre
 	result.paooc, err = client.ListPremierAddOnOffersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "ListPremierAddOnOffers", resp, "Failure responding to request")
+		return
 	}
 	if result.paooc.hasNextLink() && result.paooc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -556,6 +563,7 @@ func (client BaseClient) listPremierAddOnOffersNextResults(ctx context.Context, 
 	result, err = client.ListPremierAddOnOffersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "listPremierAddOnOffersNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -607,6 +615,7 @@ func (client BaseClient) ListSiteIdentifiersAssignedToHostName(ctx context.Conte
 	result.ic, err = client.ListSiteIdentifiersAssignedToHostNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "ListSiteIdentifiersAssignedToHostName", resp, "Failure responding to request")
+		return
 	}
 	if result.ic.hasNextLink() && result.ic.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -671,6 +680,7 @@ func (client BaseClient) listSiteIdentifiersAssignedToHostNameNextResults(ctx co
 	result, err = client.ListSiteIdentifiersAssignedToHostNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "listSiteIdentifiersAssignedToHostNameNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -719,6 +729,7 @@ func (client BaseClient) ListSkus(ctx context.Context) (result SkuInfos, err err
 	result, err = client.ListSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "ListSkus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -790,6 +801,7 @@ func (client BaseClient) ListSourceControls(ctx context.Context) (result SourceC
 	result.scc, err = client.ListSourceControlsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "ListSourceControls", resp, "Failure responding to request")
+		return
 	}
 	if result.scc.hasNextLink() && result.scc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -848,6 +860,7 @@ func (client BaseClient) listSourceControlsNextResults(ctx context.Context, last
 	result, err = client.ListSourceControlsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "listSourceControlsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -913,6 +926,7 @@ func (client BaseClient) Move(ctx context.Context, resourceGroupName string, mov
 	result, err = client.MoveResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "Move", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -994,6 +1008,7 @@ func (client BaseClient) UpdatePublishingUser(ctx context.Context, userDetails U
 	result, err = client.UpdatePublishingUserResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "UpdatePublishingUser", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1065,6 +1080,7 @@ func (client BaseClient) UpdateSourceControl(ctx context.Context, sourceControlT
 	result, err = client.UpdateSourceControlResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "UpdateSourceControl", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1155,6 +1171,7 @@ func (client BaseClient) Validate(ctx context.Context, resourceGroupName string,
 	result, err = client.ValidateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "Validate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1245,6 +1262,7 @@ func (client BaseClient) ValidateMove(ctx context.Context, resourceGroupName str
 	result, err = client.ValidateMoveResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "ValidateMove", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1320,6 +1338,7 @@ func (client BaseClient) VerifyHostingEnvironmentVnet(ctx context.Context, param
 	result, err = client.VerifyHostingEnvironmentVnetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "VerifyHostingEnvironmentVnet", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -98,6 +98,7 @@ func (client APIProductsClient) ListByAPI(ctx context.Context, resourceGroupName
 	result.pc, err = client.ListByAPIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIProductsClient", "ListByAPI", resp, "Failure responding to request")
+		return
 	}
 	if result.pc.hasNextLink() && result.pc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -172,6 +173,7 @@ func (client APIProductsClient) listByAPINextResults(ctx context.Context, lastRe
 	result, err = client.ListByAPIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIProductsClient", "listByAPINextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

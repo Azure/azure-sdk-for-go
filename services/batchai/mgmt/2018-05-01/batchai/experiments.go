@@ -275,6 +275,7 @@ func (client ExperimentsClient) Get(ctx context.Context, resourceGroupName strin
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.ExperimentsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -369,6 +370,7 @@ func (client ExperimentsClient) ListByWorkspace(ctx context.Context, resourceGro
 	result.elr, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.ExperimentsClient", "ListByWorkspace", resp, "Failure responding to request")
+		return
 	}
 	if result.elr.hasNextLink() && result.elr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -438,6 +440,7 @@ func (client ExperimentsClient) listByWorkspaceNextResults(ctx context.Context, 
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.ExperimentsClient", "listByWorkspaceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

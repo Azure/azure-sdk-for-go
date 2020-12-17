@@ -90,6 +90,7 @@ func (client UserClient) CreateOrUpdate(ctx context.Context, apimBaseURL string,
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -182,6 +183,7 @@ func (client UserClient) Delete(ctx context.Context, apimBaseURL string, UID str
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -279,6 +281,7 @@ func (client UserClient) GenerateSsoURL(ctx context.Context, apimBaseURL string,
 	result, err = client.GenerateSsoURLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "GenerateSsoURL", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -365,6 +368,7 @@ func (client UserClient) Get(ctx context.Context, apimBaseURL string, UID string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -454,6 +458,7 @@ func (client UserClient) GetSharedAccessToken(ctx context.Context, apimBaseURL s
 	result, err = client.GetSharedAccessTokenResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "GetSharedAccessToken", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -555,6 +560,7 @@ func (client UserClient) List(ctx context.Context, apimBaseURL string, filter st
 	result.uc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.uc.hasNextLink() && result.uc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -626,6 +632,7 @@ func (client UserClient) listNextResults(ctx context.Context, lastResults UserCo
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -689,6 +696,7 @@ func (client UserClient) Update(ctx context.Context, apimBaseURL string, UID str
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

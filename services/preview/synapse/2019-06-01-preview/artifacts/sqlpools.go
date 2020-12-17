@@ -65,6 +65,7 @@ func (client SQLPoolsClient) Get(ctx context.Context, SQLPoolName string) (resul
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.SQLPoolsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -139,6 +140,7 @@ func (client SQLPoolsClient) List(ctx context.Context) (result SQLPoolInfoListRe
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.SQLPoolsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

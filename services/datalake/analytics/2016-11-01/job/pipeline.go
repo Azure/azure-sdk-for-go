@@ -72,6 +72,7 @@ func (client PipelineClient) Get(ctx context.Context, accountName string, pipeli
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.PipelineClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -160,6 +161,7 @@ func (client PipelineClient) List(ctx context.Context, accountName string, start
 	result.pilr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.PipelineClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.pilr.hasNextLink() && result.pilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -229,6 +231,7 @@ func (client PipelineClient) listNextResults(ctx context.Context, lastResults Pi
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.PipelineClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

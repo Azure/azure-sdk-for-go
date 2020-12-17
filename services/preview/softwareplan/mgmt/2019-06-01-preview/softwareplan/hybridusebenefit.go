@@ -83,6 +83,7 @@ func (client HybridUseBenefitClient) Create(ctx context.Context, scope string, p
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "softwareplan.HybridUseBenefitClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -161,6 +162,7 @@ func (client HybridUseBenefitClient) Delete(ctx context.Context, scope string, p
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "softwareplan.HybridUseBenefitClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -235,6 +237,7 @@ func (client HybridUseBenefitClient) Get(ctx context.Context, scope string, plan
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "softwareplan.HybridUseBenefitClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -311,6 +314,7 @@ func (client HybridUseBenefitClient) List(ctx context.Context, scope string, fil
 	result.hublr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "softwareplan.HybridUseBenefitClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.hublr.hasNextLink() && result.hublr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -376,6 +380,7 @@ func (client HybridUseBenefitClient) listNextResults(ctx context.Context, lastRe
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "softwareplan.HybridUseBenefitClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -429,6 +434,7 @@ func (client HybridUseBenefitClient) Update(ctx context.Context, scope string, p
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "softwareplan.HybridUseBenefitClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

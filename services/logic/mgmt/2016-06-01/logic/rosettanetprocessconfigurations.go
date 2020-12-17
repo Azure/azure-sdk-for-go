@@ -119,6 +119,7 @@ func (client RosettaNetProcessConfigurationsClient) CreateOrUpdate(ctx context.C
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.RosettaNetProcessConfigurationsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -198,6 +199,7 @@ func (client RosettaNetProcessConfigurationsClient) Delete(ctx context.Context, 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.RosettaNetProcessConfigurationsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -274,6 +276,7 @@ func (client RosettaNetProcessConfigurationsClient) Get(ctx context.Context, res
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.RosettaNetProcessConfigurationsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -353,6 +356,7 @@ func (client RosettaNetProcessConfigurationsClient) ListByIntegrationAccounts(ct
 	result.iarnpclr, err = client.ListByIntegrationAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.RosettaNetProcessConfigurationsClient", "ListByIntegrationAccounts", resp, "Failure responding to request")
+		return
 	}
 	if result.iarnpclr.hasNextLink() && result.iarnpclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -423,6 +427,7 @@ func (client RosettaNetProcessConfigurationsClient) listByIntegrationAccountsNex
 	result, err = client.ListByIntegrationAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.RosettaNetProcessConfigurationsClient", "listByIntegrationAccountsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

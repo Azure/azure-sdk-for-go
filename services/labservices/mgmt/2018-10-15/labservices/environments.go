@@ -76,6 +76,7 @@ func (client EnvironmentsClient) Claim(ctx context.Context, resourceGroupName st
 	result, err = client.ClaimResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "Claim", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -157,6 +158,7 @@ func (client EnvironmentsClient) CreateOrUpdate(ctx context.Context, resourceGro
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -321,6 +323,7 @@ func (client EnvironmentsClient) Get(ctx context.Context, resourceGroupName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -409,6 +412,7 @@ func (client EnvironmentsClient) List(ctx context.Context, resourceGroupName str
 	result.rwce, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rwce.hasNextLink() && result.rwce.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -487,6 +491,7 @@ func (client EnvironmentsClient) listNextResults(ctx context.Context, lastResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -793,6 +798,7 @@ func (client EnvironmentsClient) Update(ctx context.Context, resourceGroupName s
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

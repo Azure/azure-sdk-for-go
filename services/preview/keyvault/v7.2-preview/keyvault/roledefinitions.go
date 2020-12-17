@@ -70,6 +70,7 @@ func (client RoleDefinitionsClient) List(ctx context.Context, vaultBaseURL strin
 	result.rdlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.RoleDefinitionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rdlr.hasNextLink() && result.rdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -139,6 +140,7 @@ func (client RoleDefinitionsClient) listNextResults(ctx context.Context, lastRes
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.RoleDefinitionsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

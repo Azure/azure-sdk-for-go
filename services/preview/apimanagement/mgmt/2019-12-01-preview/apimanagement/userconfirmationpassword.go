@@ -86,6 +86,7 @@ func (client UserConfirmationPasswordClient) SendMethod(ctx context.Context, res
 	result, err = client.SendMethodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserConfirmationPasswordClient", "SendMethod", resp, "Failure responding to request")
+		return
 	}
 
 	return

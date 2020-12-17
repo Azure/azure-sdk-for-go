@@ -168,6 +168,7 @@ func (client AzureBareMetalInstancesClient) Get(ctx context.Context, resourceGro
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -253,6 +254,7 @@ func (client AzureBareMetalInstancesClient) List(ctx context.Context, resourceGr
 	result.abmilr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.abmilr.hasNextLink() && result.abmilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -316,6 +318,7 @@ func (client AzureBareMetalInstancesClient) listNextResults(ctx context.Context,
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -372,6 +375,7 @@ func (client AzureBareMetalInstancesClient) ListBySubscription(ctx context.Conte
 	result.abmilr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.abmilr.hasNextLink() && result.abmilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -434,6 +438,7 @@ func (client AzureBareMetalInstancesClient) listBySubscriptionNextResults(ctx co
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -749,6 +754,7 @@ func (client AzureBareMetalInstancesClient) Update(ctx context.Context, resource
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

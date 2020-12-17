@@ -96,6 +96,7 @@ func (client BaseClient) DetectChangePoint(ctx context.Context, body ChangePoint
 	result, err = client.DetectChangePointResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "DetectChangePoint", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -172,6 +173,7 @@ func (client BaseClient) DetectEntireSeries(ctx context.Context, body DetectRequ
 	result, err = client.DetectEntireSeriesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "DetectEntireSeries", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -248,6 +250,7 @@ func (client BaseClient) DetectLastPoint(ctx context.Context, body DetectRequest
 	result, err = client.DetectLastPointResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "DetectLastPoint", resp, "Failure responding to request")
+		return
 	}
 
 	return

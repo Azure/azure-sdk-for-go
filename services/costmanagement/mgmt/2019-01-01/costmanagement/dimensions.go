@@ -96,6 +96,7 @@ func (client DimensionsClient) ListBySubscription(ctx context.Context, scope str
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.DimensionsClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 
 	return

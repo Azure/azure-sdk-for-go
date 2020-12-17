@@ -77,6 +77,7 @@ func (client BaseClient) BackupKey(ctx context.Context, vaultBaseURL string, key
 	result, err = client.BackupKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "BackupKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -169,6 +170,7 @@ func (client BaseClient) CreateCertificate(ctx context.Context, vaultBaseURL str
 	result, err = client.CreateCertificateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "CreateCertificate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -255,6 +257,7 @@ func (client BaseClient) CreateKey(ctx context.Context, vaultBaseURL string, key
 	result, err = client.CreateKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "CreateKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -342,6 +345,7 @@ func (client BaseClient) Decrypt(ctx context.Context, vaultBaseURL string, keyNa
 	result, err = client.DecryptResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "Decrypt", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -422,6 +426,7 @@ func (client BaseClient) DeleteCertificate(ctx context.Context, vaultBaseURL str
 	result, err = client.DeleteCertificateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "DeleteCertificate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -498,6 +503,7 @@ func (client BaseClient) DeleteCertificateContacts(ctx context.Context, vaultBas
 	result, err = client.DeleteCertificateContactsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "DeleteCertificateContacts", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -571,6 +577,7 @@ func (client BaseClient) DeleteCertificateIssuer(ctx context.Context, vaultBaseU
 	result, err = client.DeleteCertificateIssuerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "DeleteCertificateIssuer", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -648,6 +655,7 @@ func (client BaseClient) DeleteCertificateOperation(ctx context.Context, vaultBa
 	result, err = client.DeleteCertificateOperationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "DeleteCertificateOperation", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -725,6 +733,7 @@ func (client BaseClient) DeleteKey(ctx context.Context, vaultBaseURL string, key
 	result, err = client.DeleteKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "DeleteKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -802,6 +811,7 @@ func (client BaseClient) DeleteSecret(ctx context.Context, vaultBaseURL string, 
 	result, err = client.DeleteSecretResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "DeleteSecret", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -887,6 +897,7 @@ func (client BaseClient) Encrypt(ctx context.Context, vaultBaseURL string, keyNa
 	result, err = client.EncryptResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "Encrypt", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -968,6 +979,7 @@ func (client BaseClient) GetCertificate(ctx context.Context, vaultBaseURL string
 	result, err = client.GetCertificateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetCertificate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1045,6 +1057,7 @@ func (client BaseClient) GetCertificateContacts(ctx context.Context, vaultBaseUR
 	result, err = client.GetCertificateContactsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetCertificateContacts", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1118,6 +1131,7 @@ func (client BaseClient) GetCertificateIssuer(ctx context.Context, vaultBaseURL 
 	result, err = client.GetCertificateIssuerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetCertificateIssuer", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1206,6 +1220,7 @@ func (client BaseClient) GetCertificateIssuers(ctx context.Context, vaultBaseURL
 	result.cilr, err = client.GetCertificateIssuersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetCertificateIssuers", resp, "Failure responding to request")
+		return
 	}
 	if result.cilr.hasNextLink() && result.cilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1271,6 +1286,7 @@ func (client BaseClient) getCertificateIssuersNextResults(ctx context.Context, l
 	result, err = client.GetCertificateIssuersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getCertificateIssuersNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1322,6 +1338,7 @@ func (client BaseClient) GetCertificateOperation(ctx context.Context, vaultBaseU
 	result, err = client.GetCertificateOperationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetCertificateOperation", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1399,6 +1416,7 @@ func (client BaseClient) GetCertificatePolicy(ctx context.Context, vaultBaseURL 
 	result, err = client.GetCertificatePolicyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetCertificatePolicy", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1487,6 +1505,7 @@ func (client BaseClient) GetCertificates(ctx context.Context, vaultBaseURL strin
 	result.clr, err = client.GetCertificatesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetCertificates", resp, "Failure responding to request")
+		return
 	}
 	if result.clr.hasNextLink() && result.clr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1552,6 +1571,7 @@ func (client BaseClient) getCertificatesNextResults(ctx context.Context, lastRes
 	result, err = client.GetCertificatesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getCertificatesNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1615,6 +1635,7 @@ func (client BaseClient) GetCertificateVersions(ctx context.Context, vaultBaseUR
 	result.clr, err = client.GetCertificateVersionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetCertificateVersions", resp, "Failure responding to request")
+		return
 	}
 	if result.clr.hasNextLink() && result.clr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1684,6 +1705,7 @@ func (client BaseClient) getCertificateVersionsNextResults(ctx context.Context, 
 	result, err = client.GetCertificateVersionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getCertificateVersionsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1736,6 +1758,7 @@ func (client BaseClient) GetKey(ctx context.Context, vaultBaseURL string, keyNam
 	result, err = client.GetKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1825,6 +1848,7 @@ func (client BaseClient) GetKeys(ctx context.Context, vaultBaseURL string, maxre
 	result.klr, err = client.GetKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetKeys", resp, "Failure responding to request")
+		return
 	}
 	if result.klr.hasNextLink() && result.klr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1890,6 +1914,7 @@ func (client BaseClient) getKeysNextResults(ctx context.Context, lastResults Key
 	result, err = client.GetKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getKeysNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1953,6 +1978,7 @@ func (client BaseClient) GetKeyVersions(ctx context.Context, vaultBaseURL string
 	result.klr, err = client.GetKeyVersionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetKeyVersions", resp, "Failure responding to request")
+		return
 	}
 	if result.klr.hasNextLink() && result.klr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -2022,6 +2048,7 @@ func (client BaseClient) getKeyVersionsNextResults(ctx context.Context, lastResu
 	result, err = client.GetKeyVersionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getKeyVersionsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -2074,6 +2101,7 @@ func (client BaseClient) GetSecret(ctx context.Context, vaultBaseURL string, sec
 	result, err = client.GetSecretResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetSecret", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2163,6 +2191,7 @@ func (client BaseClient) GetSecrets(ctx context.Context, vaultBaseURL string, ma
 	result.slr, err = client.GetSecretsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetSecrets", resp, "Failure responding to request")
+		return
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -2228,6 +2257,7 @@ func (client BaseClient) getSecretsNextResults(ctx context.Context, lastResults 
 	result, err = client.GetSecretsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getSecretsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -2291,6 +2321,7 @@ func (client BaseClient) GetSecretVersions(ctx context.Context, vaultBaseURL str
 	result.slr, err = client.GetSecretVersionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "GetSecretVersions", resp, "Failure responding to request")
+		return
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -2360,6 +2391,7 @@ func (client BaseClient) getSecretVersionsNextResults(ctx context.Context, lastR
 	result, err = client.GetSecretVersionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getSecretVersionsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -2426,6 +2458,7 @@ func (client BaseClient) ImportCertificate(ctx context.Context, vaultBaseURL str
 	result, err = client.ImportCertificateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "ImportCertificate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2514,6 +2547,7 @@ func (client BaseClient) ImportKey(ctx context.Context, vaultBaseURL string, key
 	result, err = client.ImportKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "ImportKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2600,6 +2634,7 @@ func (client BaseClient) MergeCertificate(ctx context.Context, vaultBaseURL stri
 	result, err = client.MergeCertificateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "MergeCertificate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2685,6 +2720,7 @@ func (client BaseClient) RestoreKey(ctx context.Context, vaultBaseURL string, pa
 	result, err = client.RestoreKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "RestoreKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2760,6 +2796,7 @@ func (client BaseClient) SetCertificateContacts(ctx context.Context, vaultBaseUR
 	result, err = client.SetCertificateContactsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "SetCertificateContacts", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2843,6 +2880,7 @@ func (client BaseClient) SetCertificateIssuer(ctx context.Context, vaultBaseURL 
 	result, err = client.SetCertificateIssuerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "SetCertificateIssuer", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2931,6 +2969,7 @@ func (client BaseClient) SetSecret(ctx context.Context, vaultBaseURL string, sec
 	result, err = client.SetSecretResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "SetSecret", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3018,6 +3057,7 @@ func (client BaseClient) Sign(ctx context.Context, vaultBaseURL string, keyName 
 	result, err = client.SignResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "Sign", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3107,6 +3147,7 @@ func (client BaseClient) UnwrapKey(ctx context.Context, vaultBaseURL string, key
 	result, err = client.UnwrapKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "UnwrapKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3188,6 +3229,7 @@ func (client BaseClient) UpdateCertificate(ctx context.Context, vaultBaseURL str
 	result, err = client.UpdateCertificateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "UpdateCertificate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3269,6 +3311,7 @@ func (client BaseClient) UpdateCertificateIssuer(ctx context.Context, vaultBaseU
 	result, err = client.UpdateCertificateIssuerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "UpdateCertificateIssuer", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3349,6 +3392,7 @@ func (client BaseClient) UpdateCertificateOperation(ctx context.Context, vaultBa
 	result, err = client.UpdateCertificateOperationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "UpdateCertificateOperation", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3430,6 +3474,7 @@ func (client BaseClient) UpdateCertificatePolicy(ctx context.Context, vaultBaseU
 	result, err = client.UpdateCertificatePolicyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "UpdateCertificatePolicy", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3512,6 +3557,7 @@ func (client BaseClient) UpdateKey(ctx context.Context, vaultBaseURL string, key
 	result, err = client.UpdateKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "UpdateKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3593,6 +3639,7 @@ func (client BaseClient) UpdateSecret(ctx context.Context, vaultBaseURL string, 
 	result, err = client.UpdateSecretResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "UpdateSecret", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3682,6 +3729,7 @@ func (client BaseClient) Verify(ctx context.Context, vaultBaseURL string, keyNam
 	result, err = client.VerifyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "Verify", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3770,6 +3818,7 @@ func (client BaseClient) WrapKey(ctx context.Context, vaultBaseURL string, keyNa
 	result, err = client.WrapKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "WrapKey", resp, "Failure responding to request")
+		return
 	}
 
 	return

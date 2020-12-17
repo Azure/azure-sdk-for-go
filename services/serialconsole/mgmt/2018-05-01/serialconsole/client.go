@@ -85,6 +85,7 @@ func (client BaseClient) DisableConsole(ctx context.Context, defaultParameter st
 	result, err = client.DisableConsoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "serialconsole.BaseClient", "DisableConsole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -158,6 +159,7 @@ func (client BaseClient) EnableConsole(ctx context.Context, defaultParameter str
 	result, err = client.EnableConsoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "serialconsole.BaseClient", "EnableConsole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -231,6 +233,7 @@ func (client BaseClient) GetConsoleStatus(ctx context.Context, defaultParameter 
 	result, err = client.GetConsoleStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "serialconsole.BaseClient", "GetConsoleStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -302,6 +305,7 @@ func (client BaseClient) ListOperations(ctx context.Context) (result Operations,
 	result, err = client.ListOperationsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "serialconsole.BaseClient", "ListOperations", resp, "Failure responding to request")
+		return
 	}
 
 	return

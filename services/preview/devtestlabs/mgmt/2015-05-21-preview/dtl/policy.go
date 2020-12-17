@@ -74,6 +74,7 @@ func (client PolicyClient) CreateOrUpdateResource(ctx context.Context, resourceG
 	result, err = client.CreateOrUpdateResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.PolicyClient", "CreateOrUpdateResource", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -155,6 +156,7 @@ func (client PolicyClient) DeleteResource(ctx context.Context, resourceGroupName
 	result, err = client.DeleteResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.PolicyClient", "DeleteResource", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -233,6 +235,7 @@ func (client PolicyClient) GetResource(ctx context.Context, resourceGroupName st
 	result, err = client.GetResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.PolicyClient", "GetResource", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -313,6 +316,7 @@ func (client PolicyClient) List(ctx context.Context, resourceGroupName string, l
 	result.rwcp, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.PolicyClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rwcp.hasNextLink() && result.rwcp.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -387,6 +391,7 @@ func (client PolicyClient) listNextResults(ctx context.Context, lastResults Resp
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.PolicyClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -440,6 +445,7 @@ func (client PolicyClient) PatchResource(ctx context.Context, resourceGroupName 
 	result, err = client.PatchResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.PolicyClient", "PatchResource", resp, "Failure responding to request")
+		return
 	}
 
 	return

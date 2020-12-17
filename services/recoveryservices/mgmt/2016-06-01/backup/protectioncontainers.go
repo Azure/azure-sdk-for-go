@@ -75,6 +75,7 @@ func (client ProtectionContainersClient) Get(ctx context.Context, vaultName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ProtectionContainersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -156,6 +157,7 @@ func (client ProtectionContainersClient) List(ctx context.Context, vaultName str
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ProtectionContainersClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -236,6 +238,7 @@ func (client ProtectionContainersClient) Refresh(ctx context.Context, vaultName 
 	result, err = client.RefreshResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ProtectionContainersClient", "Refresh", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -312,6 +315,7 @@ func (client ProtectionContainersClient) Unregister(ctx context.Context, resourc
 	result, err = client.UnregisterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ProtectionContainersClient", "Unregister", resp, "Failure responding to request")
+		return
 	}
 
 	return

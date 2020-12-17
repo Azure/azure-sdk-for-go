@@ -90,6 +90,7 @@ func (client VaultsClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -167,6 +168,7 @@ func (client VaultsClient) Delete(ctx context.Context, resourceGroupName string,
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -241,6 +243,7 @@ func (client VaultsClient) Get(ctx context.Context, resourceGroupName string, va
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -316,6 +319,7 @@ func (client VaultsClient) List(ctx context.Context, top *int32) (result Resourc
 	result.rlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -382,6 +386,7 @@ func (client VaultsClient) listNextResults(ctx context.Context, lastResults Reso
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -435,6 +440,7 @@ func (client VaultsClient) ListByResourceGroup(ctx context.Context, resourceGrou
 	result.vlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.vlr.hasNextLink() && result.vlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -501,6 +507,7 @@ func (client VaultsClient) listByResourceGroupNextResults(ctx context.Context, l
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -83,6 +83,7 @@ func (client CertificateClient) Add(ctx context.Context, certificate Certificate
 	result, err = client.AddResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "Add", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -188,6 +189,7 @@ func (client CertificateClient) CancelDeletion(ctx context.Context, thumbprintAl
 	result, err = client.CancelDeletionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "CancelDeletion", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -298,6 +300,7 @@ func (client CertificateClient) Delete(ctx context.Context, thumbprintAlgorithm 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -403,6 +406,7 @@ func (client CertificateClient) Get(ctx context.Context, thumbprintAlgorithm str
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -524,6 +528,7 @@ func (client CertificateClient) List(ctx context.Context, filter string, selectP
 	result.clr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.clr.hasNextLink() && result.clr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -617,6 +622,7 @@ func (client CertificateClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

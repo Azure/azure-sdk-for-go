@@ -77,6 +77,7 @@ func (client AddsServiceClient) GetMetrics(ctx context.Context, serviceName stri
 	result, err = client.GetMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServiceClient", "GetMetrics", resp, "Failure responding to request")
+		return
 	}
 
 	return

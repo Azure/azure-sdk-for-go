@@ -66,6 +66,7 @@ func (client TagClient) Delete(ctx context.Context, name string, reference strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.TagClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -137,6 +138,7 @@ func (client TagClient) GetAttributes(ctx context.Context, name string, referenc
 	result, err = client.GetAttributesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.TagClient", "GetAttributes", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -213,6 +215,7 @@ func (client TagClient) GetList(ctx context.Context, name string, last string, n
 	result, err = client.GetListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.TagClient", "GetList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -300,6 +303,7 @@ func (client TagClient) UpdateAttributes(ctx context.Context, name string, refer
 	result, err = client.UpdateAttributesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.TagClient", "UpdateAttributes", resp, "Failure responding to request")
+		return
 	}
 
 	return

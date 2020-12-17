@@ -75,6 +75,7 @@ func (client HyperVClusterClient) GetAllClustersInSite(ctx context.Context, subs
 	result.hvcc, err = client.GetAllClustersInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVClusterClient", "GetAllClustersInSite", resp, "Failure responding to request")
+		return
 	}
 	if result.hvcc.hasNextLink() && result.hvcc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -141,6 +142,7 @@ func (client HyperVClusterClient) getAllClustersInSiteNextResults(ctx context.Co
 	result, err = client.GetAllClustersInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVClusterClient", "getAllClustersInSiteNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -195,6 +197,7 @@ func (client HyperVClusterClient) GetCluster(ctx context.Context, subscriptionID
 	result, err = client.GetClusterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVClusterClient", "GetCluster", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -274,6 +277,7 @@ func (client HyperVClusterClient) PutCluster(ctx context.Context, subscriptionID
 	result, err = client.PutClusterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVClusterClient", "PutCluster", resp, "Failure responding to request")
+		return
 	}
 
 	return

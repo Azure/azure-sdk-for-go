@@ -75,6 +75,7 @@ func (client AvailableBalancesClient) Get(ctx context.Context, billingAccountNam
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.AvailableBalancesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

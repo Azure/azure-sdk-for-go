@@ -89,6 +89,7 @@ func (client APIClient) CreateOrUpdate(ctx context.Context, resourceGroupName st
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -188,6 +189,7 @@ func (client APIClient) Delete(ctx context.Context, resourceGroupName string, se
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -281,6 +283,7 @@ func (client APIClient) Get(ctx context.Context, resourceGroupName string, servi
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -371,6 +374,7 @@ func (client APIClient) GetEntityTag(ctx context.Context, resourceGroupName stri
 	result, err = client.GetEntityTagResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "GetEntityTag", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -471,6 +475,7 @@ func (client APIClient) ListByService(ctx context.Context, resourceGroupName str
 	result.ac, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 	if result.ac.hasNextLink() && result.ac.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -549,6 +554,7 @@ func (client APIClient) listByServiceNextResults(ctx context.Context, lastResult
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -627,6 +633,7 @@ func (client APIClient) ListByTags(ctx context.Context, resourceGroupName string
 	result.trc, err = client.ListByTagsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "ListByTags", resp, "Failure responding to request")
+		return
 	}
 	if result.trc.hasNextLink() && result.trc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -700,6 +707,7 @@ func (client APIClient) listByTagsNextResults(ctx context.Context, lastResults T
 	result, err = client.ListByTagsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "listByTagsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -768,6 +776,7 @@ func (client APIClient) Update(ctx context.Context, resourceGroupName string, se
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

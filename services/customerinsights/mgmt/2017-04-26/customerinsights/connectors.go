@@ -243,6 +243,7 @@ func (client ConnectorsClient) Get(ctx context.Context, resourceGroupName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -320,6 +321,7 @@ func (client ConnectorsClient) ListByHub(ctx context.Context, resourceGroupName 
 	result.clr, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorsClient", "ListByHub", resp, "Failure responding to request")
+		return
 	}
 	if result.clr.hasNextLink() && result.clr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -384,6 +386,7 @@ func (client ConnectorsClient) listByHubNextResults(ctx context.Context, lastRes
 	result, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorsClient", "listByHubNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

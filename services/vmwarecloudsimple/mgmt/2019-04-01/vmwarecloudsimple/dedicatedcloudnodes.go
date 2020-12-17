@@ -184,6 +184,7 @@ func (client DedicatedCloudNodesClient) Delete(ctx context.Context, resourceGrou
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudNodesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -264,6 +265,7 @@ func (client DedicatedCloudNodesClient) Get(ctx context.Context, resourceGroupNa
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudNodesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -342,6 +344,7 @@ func (client DedicatedCloudNodesClient) ListByResourceGroup(ctx context.Context,
 	result.dcnlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudNodesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.dcnlr.hasNextLink() && result.dcnlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -414,6 +417,7 @@ func (client DedicatedCloudNodesClient) listByResourceGroupNextResults(ctx conte
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudNodesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -467,6 +471,7 @@ func (client DedicatedCloudNodesClient) ListBySubscription(ctx context.Context, 
 	result.dcnlr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudNodesClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.dcnlr.hasNextLink() && result.dcnlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -538,6 +543,7 @@ func (client DedicatedCloudNodesClient) listBySubscriptionNextResults(ctx contex
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudNodesClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -596,6 +602,7 @@ func (client DedicatedCloudNodesClient) Update(ctx context.Context, resourceGrou
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudNodesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -68,6 +68,7 @@ func (client SettingsClient) List(ctx context.Context, appID uuid.UUID, versionI
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.SettingsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -147,6 +148,7 @@ func (client SettingsClient) Update(ctx context.Context, appID uuid.UUID, versio
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.SettingsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

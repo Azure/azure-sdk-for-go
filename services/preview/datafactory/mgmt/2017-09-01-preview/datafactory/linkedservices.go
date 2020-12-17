@@ -101,6 +101,7 @@ func (client LinkedServicesClient) CreateOrUpdate(ctx context.Context, resourceG
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.LinkedServicesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -200,6 +201,7 @@ func (client LinkedServicesClient) Delete(ctx context.Context, resourceGroupName
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.LinkedServicesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -292,6 +294,7 @@ func (client LinkedServicesClient) Get(ctx context.Context, resourceGroupName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.LinkedServicesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -381,6 +384,7 @@ func (client LinkedServicesClient) ListByFactory(ctx context.Context, resourceGr
 	result.lslr, err = client.ListByFactoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.LinkedServicesClient", "ListByFactory", resp, "Failure responding to request")
+		return
 	}
 	if result.lslr.hasNextLink() && result.lslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -445,6 +449,7 @@ func (client LinkedServicesClient) listByFactoryNextResults(ctx context.Context,
 	result, err = client.ListByFactoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.LinkedServicesClient", "listByFactoryNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

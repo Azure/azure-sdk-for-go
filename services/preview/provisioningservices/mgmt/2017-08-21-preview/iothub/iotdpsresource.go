@@ -79,6 +79,7 @@ func (client IotDpsResourceClient) CheckNameAvailability(ctx context.Context, ar
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -315,6 +316,7 @@ func (client IotDpsResourceClient) Get(ctx context.Context, provisioningServiceN
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -391,6 +393,7 @@ func (client IotDpsResourceClient) GetKeysForKeyName(ctx context.Context, provis
 	result, err = client.GetKeysForKeyNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceClient", "GetKeysForKeyName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -471,6 +474,7 @@ func (client IotDpsResourceClient) GetOperationResult(ctx context.Context, opera
 	result, err = client.GetOperationResultResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceClient", "GetOperationResult", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -548,6 +552,7 @@ func (client IotDpsResourceClient) ListByResourceGroup(ctx context.Context, reso
 	result.psdlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.psdlr.hasNextLink() && result.psdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -611,6 +616,7 @@ func (client IotDpsResourceClient) listByResourceGroupNextResults(ctx context.Co
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -660,6 +666,7 @@ func (client IotDpsResourceClient) ListBySubscription(ctx context.Context) (resu
 	result.psdlr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.psdlr.hasNextLink() && result.psdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -722,6 +729,7 @@ func (client IotDpsResourceClient) listBySubscriptionNextResults(ctx context.Con
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -774,6 +782,7 @@ func (client IotDpsResourceClient) ListKeys(ctx context.Context, provisioningSer
 	result.sasarlr, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceClient", "ListKeys", resp, "Failure responding to request")
+		return
 	}
 	if result.sasarlr.hasNextLink() && result.sasarlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -838,6 +847,7 @@ func (client IotDpsResourceClient) listKeysNextResults(ctx context.Context, last
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceClient", "listKeysNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -890,6 +900,7 @@ func (client IotDpsResourceClient) ListValidSkus(ctx context.Context, provisioni
 	result.idsdlr, err = client.ListValidSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceClient", "ListValidSkus", resp, "Failure responding to request")
+		return
 	}
 	if result.idsdlr.hasNextLink() && result.idsdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -954,6 +965,7 @@ func (client IotDpsResourceClient) listValidSkusNextResults(ctx context.Context,
 	result, err = client.ListValidSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceClient", "listValidSkusNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -79,6 +79,7 @@ func (client AvailabilityStatusesClient) GetByResource(ctx context.Context, reso
 	result, err = client.GetByResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.AvailabilityStatusesClient", "GetByResource", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -166,6 +167,7 @@ func (client AvailabilityStatusesClient) List(ctx context.Context, resourceURI s
 	result.aslr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.AvailabilityStatusesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.aslr.hasNextLink() && result.aslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -234,6 +236,7 @@ func (client AvailabilityStatusesClient) listNextResults(ctx context.Context, la
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.AvailabilityStatusesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -289,6 +292,7 @@ func (client AvailabilityStatusesClient) ListByResourceGroup(ctx context.Context
 	result.aslr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.AvailabilityStatusesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.aslr.hasNextLink() && result.aslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -358,6 +362,7 @@ func (client AvailabilityStatusesClient) listByResourceGroupNextResults(ctx cont
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.AvailabilityStatusesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -412,6 +417,7 @@ func (client AvailabilityStatusesClient) ListBySubscriptionID(ctx context.Contex
 	result.aslr, err = client.ListBySubscriptionIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.AvailabilityStatusesClient", "ListBySubscriptionID", resp, "Failure responding to request")
+		return
 	}
 	if result.aslr.hasNextLink() && result.aslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -480,6 +486,7 @@ func (client AvailabilityStatusesClient) listBySubscriptionIDNextResults(ctx con
 	result, err = client.ListBySubscriptionIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.AvailabilityStatusesClient", "listBySubscriptionIDNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

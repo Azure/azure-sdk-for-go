@@ -66,6 +66,7 @@ func (client Client) GetSparkJobList(ctx context.Context, APIVersion string, xMs
 	result, err = client.GetSparkJobListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitoring.Client", "GetSparkJobList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -142,6 +143,7 @@ func (client Client) GetSQLJobQueryString(ctx context.Context, APIVersion string
 	result, err = client.GetSQLJobQueryStringResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitoring.Client", "GetSQLJobQueryString", resp, "Failure responding to request")
+		return
 	}
 
 	return

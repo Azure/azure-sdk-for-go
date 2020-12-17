@@ -94,6 +94,7 @@ func (client WebApplicationFirewallPoliciesClient) CreateOrUpdate(ctx context.Co
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.WebApplicationFirewallPoliciesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -257,6 +258,7 @@ func (client WebApplicationFirewallPoliciesClient) Get(ctx context.Context, reso
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.WebApplicationFirewallPoliciesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -332,6 +334,7 @@ func (client WebApplicationFirewallPoliciesClient) List(ctx context.Context, res
 	result.wafplr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.WebApplicationFirewallPoliciesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.wafplr.hasNextLink() && result.wafplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -395,6 +398,7 @@ func (client WebApplicationFirewallPoliciesClient) listNextResults(ctx context.C
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.WebApplicationFirewallPoliciesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -444,6 +448,7 @@ func (client WebApplicationFirewallPoliciesClient) ListAll(ctx context.Context) 
 	result.wafplr, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.WebApplicationFirewallPoliciesClient", "ListAll", resp, "Failure responding to request")
+		return
 	}
 	if result.wafplr.hasNextLink() && result.wafplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -506,6 +511,7 @@ func (client WebApplicationFirewallPoliciesClient) listAllNextResults(ctx contex
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.WebApplicationFirewallPoliciesClient", "listAllNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

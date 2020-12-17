@@ -82,6 +82,7 @@ func (client RolloutsClient) Cancel(ctx context.Context, resourceGroupName strin
 	result, err = client.CancelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsClient", "Cancel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -267,6 +268,7 @@ func (client RolloutsClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -351,6 +353,7 @@ func (client RolloutsClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -440,6 +443,7 @@ func (client RolloutsClient) Restart(ctx context.Context, resourceGroupName stri
 	result, err = client.RestartResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsClient", "Restart", resp, "Failure responding to request")
+		return
 	}
 
 	return

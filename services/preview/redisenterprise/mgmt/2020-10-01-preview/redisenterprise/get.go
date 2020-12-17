@@ -72,6 +72,7 @@ func (client GetClient) OperationStatusMethod(ctx context.Context, location stri
 	result, err = client.OperationStatusMethodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redisenterprise.GetClient", "OperationStatusMethod", resp, "Failure responding to request")
+		return
 	}
 
 	return

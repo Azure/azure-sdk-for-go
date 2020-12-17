@@ -260,6 +260,7 @@ func (client DataStoresClient) Get(ctx context.Context, dataStoreName string, re
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.DataStoresClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -347,6 +348,7 @@ func (client DataStoresClient) ListByDataManager(ctx context.Context, resourceGr
 	result.dsl, err = client.ListByDataManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.DataStoresClient", "ListByDataManager", resp, "Failure responding to request")
+		return
 	}
 	if result.dsl.hasNextLink() && result.dsl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -414,6 +416,7 @@ func (client DataStoresClient) listByDataManagerNextResults(ctx context.Context,
 	result, err = client.ListByDataManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.DataStoresClient", "listByDataManagerNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

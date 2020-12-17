@@ -75,6 +75,7 @@ func (client RegisteredAsnsClient) CreateOrUpdate(ctx context.Context, resourceG
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.RegisteredAsnsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -155,6 +156,7 @@ func (client RegisteredAsnsClient) Delete(ctx context.Context, resourceGroupName
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.RegisteredAsnsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -232,6 +234,7 @@ func (client RegisteredAsnsClient) Get(ctx context.Context, resourceGroupName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.RegisteredAsnsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -309,6 +312,7 @@ func (client RegisteredAsnsClient) ListByPeering(ctx context.Context, resourceGr
 	result.ralr, err = client.ListByPeeringResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.RegisteredAsnsClient", "ListByPeering", resp, "Failure responding to request")
+		return
 	}
 	if result.ralr.hasNextLink() && result.ralr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -373,6 +377,7 @@ func (client RegisteredAsnsClient) listByPeeringNextResults(ctx context.Context,
 	result, err = client.ListByPeeringResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.RegisteredAsnsClient", "listByPeeringNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

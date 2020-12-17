@@ -65,6 +65,7 @@ func (client OperationsClient) GetDetails(ctx context.Context, operationID strin
 	result, err = client.GetDetailsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamaker.OperationsClient", "GetDetails", resp, "Failure responding to request")
+		return
 	}
 
 	return

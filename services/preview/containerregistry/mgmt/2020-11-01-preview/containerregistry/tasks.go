@@ -283,6 +283,7 @@ func (client TasksClient) Get(ctx context.Context, resourceGroupName string, reg
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.TasksClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -374,6 +375,7 @@ func (client TasksClient) GetDetails(ctx context.Context, resourceGroupName stri
 	result, err = client.GetDetailsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.TasksClient", "GetDetails", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -461,6 +463,7 @@ func (client TasksClient) List(ctx context.Context, resourceGroupName string, re
 	result.tlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.TasksClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -525,6 +528,7 @@ func (client TasksClient) listNextResults(ctx context.Context, lastResults TaskL
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.TasksClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

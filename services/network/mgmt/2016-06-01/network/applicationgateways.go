@@ -225,6 +225,7 @@ func (client ApplicationGatewaysClient) Get(ctx context.Context, resourceGroupNa
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -300,6 +301,7 @@ func (client ApplicationGatewaysClient) List(ctx context.Context, resourceGroupN
 	result.aglr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.aglr.hasNextLink() && result.aglr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -363,6 +365,7 @@ func (client ApplicationGatewaysClient) listNextResults(ctx context.Context, las
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -412,6 +415,7 @@ func (client ApplicationGatewaysClient) ListAll(ctx context.Context) (result App
 	result.aglr, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "ListAll", resp, "Failure responding to request")
+		return
 	}
 	if result.aglr.hasNextLink() && result.aglr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -474,6 +478,7 @@ func (client ApplicationGatewaysClient) listAllNextResults(ctx context.Context, 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "listAllNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

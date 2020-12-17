@@ -277,6 +277,7 @@ func (client BackupsClient) ListByDevice(ctx context.Context, deviceName string,
 	result.bl, err = client.ListByDeviceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "ListByDevice", resp, "Failure responding to request")
+		return
 	}
 	if result.bl.hasNextLink() && result.bl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -348,6 +349,7 @@ func (client BackupsClient) listByDeviceNextResults(ctx context.Context, lastRes
 	result, err = client.ListByDeviceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "listByDeviceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -408,6 +410,7 @@ func (client BackupsClient) ListByManager(ctx context.Context, resourceGroupName
 	result.bl, err = client.ListByManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "ListByManager", resp, "Failure responding to request")
+		return
 	}
 	if result.bl.hasNextLink() && result.bl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -475,6 +478,7 @@ func (client BackupsClient) listByManagerNextResults(ctx context.Context, lastRe
 	result, err = client.ListByManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "listByManagerNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

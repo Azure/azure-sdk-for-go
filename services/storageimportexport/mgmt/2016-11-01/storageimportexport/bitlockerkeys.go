@@ -73,6 +73,7 @@ func (client BitLockerKeysClient) List(ctx context.Context, jobName string, reso
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storageimportexport.BitLockerKeysClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

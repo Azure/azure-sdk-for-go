@@ -276,6 +276,7 @@ func (client FileServersClient) Get(ctx context.Context, resourceGroupName strin
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.FileServersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -363,6 +364,7 @@ func (client FileServersClient) List(ctx context.Context, filter string, selectP
 	result.fslr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.FileServersClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.fslr.hasNextLink() && result.fslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -436,6 +438,7 @@ func (client FileServersClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.FileServersClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -502,6 +505,7 @@ func (client FileServersClient) ListByResourceGroup(ctx context.Context, resourc
 	result.fslr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.FileServersClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.fslr.hasNextLink() && result.fslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -576,6 +580,7 @@ func (client FileServersClient) listByResourceGroupNextResults(ctx context.Conte
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.FileServersClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

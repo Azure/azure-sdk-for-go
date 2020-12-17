@@ -78,6 +78,7 @@ func (client PredictionClient) GetSlotPrediction(ctx context.Context, appID uuid
 	result, err = client.GetSlotPredictionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "runtime.PredictionClient", "GetSlotPrediction", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -174,6 +175,7 @@ func (client PredictionClient) GetVersionPrediction(ctx context.Context, appID u
 	result, err = client.GetVersionPredictionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "runtime.PredictionClient", "GetVersionPrediction", resp, "Failure responding to request")
+		return
 	}
 
 	return

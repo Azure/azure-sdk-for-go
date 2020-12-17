@@ -229,6 +229,7 @@ func (client VirtualNetworkGatewayConnectionsClient) Get(ctx context.Context, re
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -305,6 +306,7 @@ func (client VirtualNetworkGatewayConnectionsClient) GetSharedKey(ctx context.Co
 	result, err = client.GetSharedKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsClient", "GetSharedKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -381,6 +383,7 @@ func (client VirtualNetworkGatewayConnectionsClient) List(ctx context.Context, r
 	result.vngclr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.vngclr.hasNextLink() && result.vngclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -444,6 +447,7 @@ func (client VirtualNetworkGatewayConnectionsClient) listNextResults(ctx context
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

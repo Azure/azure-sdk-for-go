@@ -75,6 +75,7 @@ func (client ArtifactClient) GenerateArmTemplate(ctx context.Context, resourceGr
 	result, err = client.GenerateArmTemplateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ArtifactClient", "GenerateArmTemplate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -156,6 +157,7 @@ func (client ArtifactClient) GetResource(ctx context.Context, resourceGroupName 
 	result, err = client.GetResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ArtifactClient", "GetResource", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -236,6 +238,7 @@ func (client ArtifactClient) List(ctx context.Context, resourceGroupName string,
 	result.rwca, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ArtifactClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rwca.hasNextLink() && result.rwca.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -310,6 +313,7 @@ func (client ArtifactClient) listNextResults(ctx context.Context, lastResults Re
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ArtifactClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

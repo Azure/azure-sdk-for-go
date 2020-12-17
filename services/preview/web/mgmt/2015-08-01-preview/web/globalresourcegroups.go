@@ -70,6 +70,7 @@ func (client GlobalResourceGroupsClient) MoveResources(ctx context.Context, reso
 	result, err = client.MoveResourcesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalResourceGroupsClient", "MoveResources", resp, "Failure responding to request")
+		return
 	}
 
 	return

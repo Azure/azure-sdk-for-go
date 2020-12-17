@@ -164,6 +164,7 @@ func (client ProjectsClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.ProjectsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -244,6 +245,7 @@ func (client ProjectsClient) GetJobStatus(ctx context.Context, resourceGroupName
 	result, err = client.GetJobStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.ProjectsClient", "GetJobStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -326,6 +328,7 @@ func (client ProjectsClient) ListByResourceGroup(ctx context.Context, resourceGr
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.ProjectsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -403,6 +406,7 @@ func (client ProjectsClient) Update(ctx context.Context, resourceGroupName strin
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.ProjectsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

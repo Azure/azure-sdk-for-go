@@ -90,6 +90,7 @@ func (client EventHubsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -190,6 +191,7 @@ func (client EventHubsClient) CreateOrUpdateAuthorizationRule(ctx context.Contex
 	result, err = client.CreateOrUpdateAuthorizationRuleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "CreateOrUpdateAuthorizationRule", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -283,6 +285,7 @@ func (client EventHubsClient) Delete(ctx context.Context, resourceGroupName stri
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -376,6 +379,7 @@ func (client EventHubsClient) DeleteAuthorizationRule(ctx context.Context, resou
 	result, err = client.DeleteAuthorizationRuleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "DeleteAuthorizationRule", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -466,6 +470,7 @@ func (client EventHubsClient) Get(ctx context.Context, resourceGroupName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -560,6 +565,7 @@ func (client EventHubsClient) GetAuthorizationRule(ctx context.Context, resource
 	result, err = client.GetAuthorizationRuleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "GetAuthorizationRule", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -648,6 +654,7 @@ func (client EventHubsClient) ListAll(ctx context.Context, resourceGroupName str
 	result.lr, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "ListAll", resp, "Failure responding to request")
+		return
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -712,6 +719,7 @@ func (client EventHubsClient) listAllNextResults(ctx context.Context, lastResult
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "listAllNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -778,6 +786,7 @@ func (client EventHubsClient) ListAuthorizationRules(ctx context.Context, resour
 	result.saarlr, err = client.ListAuthorizationRulesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "ListAuthorizationRules", resp, "Failure responding to request")
+		return
 	}
 	if result.saarlr.hasNextLink() && result.saarlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -843,6 +852,7 @@ func (client EventHubsClient) listAuthorizationRulesNextResults(ctx context.Cont
 	result, err = client.ListAuthorizationRulesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "listAuthorizationRulesNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -912,6 +922,7 @@ func (client EventHubsClient) ListKeys(ctx context.Context, resourceGroupName st
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "ListKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1007,6 +1018,7 @@ func (client EventHubsClient) PostAuthorizationRule(ctx context.Context, resourc
 	result, err = client.PostAuthorizationRuleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "PostAuthorizationRule", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1103,6 +1115,7 @@ func (client EventHubsClient) RegenerateKeys(ctx context.Context, resourceGroupN
 	result, err = client.RegenerateKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "RegenerateKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return

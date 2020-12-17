@@ -73,6 +73,7 @@ func (client CostInsightClient) GetResource(ctx context.Context, resourceGroupNa
 	result, err = client.GetResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.CostInsightClient", "GetResource", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -151,6 +152,7 @@ func (client CostInsightClient) List(ctx context.Context, resourceGroupName stri
 	result.rwcci, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.CostInsightClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rwcci.hasNextLink() && result.rwcci.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -224,6 +226,7 @@ func (client CostInsightClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.CostInsightClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

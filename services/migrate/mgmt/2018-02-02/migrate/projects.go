@@ -73,6 +73,7 @@ func (client ProjectsClient) Create(ctx context.Context, resourceGroupName strin
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -160,6 +161,7 @@ func (client ProjectsClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -238,6 +240,7 @@ func (client ProjectsClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -317,6 +320,7 @@ func (client ProjectsClient) GetKeys(ctx context.Context, resourceGroupName stri
 	result, err = client.GetKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "GetKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -395,6 +399,7 @@ func (client ProjectsClient) ListByResourceGroup(ctx context.Context, resourceGr
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -470,6 +475,7 @@ func (client ProjectsClient) ListBySubscription(ctx context.Context) (result Pro
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -548,6 +554,7 @@ func (client ProjectsClient) Update(ctx context.Context, resourceGroupName strin
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

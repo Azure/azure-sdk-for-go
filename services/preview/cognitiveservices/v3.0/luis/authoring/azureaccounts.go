@@ -80,6 +80,7 @@ func (client AzureAccountsClient) AssignToApp(ctx context.Context, appID uuid.UU
 	result, err = client.AssignToAppResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AzureAccountsClient", "AssignToApp", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -161,6 +162,7 @@ func (client AzureAccountsClient) GetAssigned(ctx context.Context, appID uuid.UU
 	result, err = client.GetAssignedResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AzureAccountsClient", "GetAssigned", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -236,6 +238,7 @@ func (client AzureAccountsClient) ListUserLUISAccounts(ctx context.Context, armT
 	result, err = client.ListUserLUISAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AzureAccountsClient", "ListUserLUISAccounts", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -319,6 +322,7 @@ func (client AzureAccountsClient) RemoveFromApp(ctx context.Context, appID uuid.
 	result, err = client.RemoveFromAppResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AzureAccountsClient", "RemoveFromApp", resp, "Failure responding to request")
+		return
 	}
 
 	return

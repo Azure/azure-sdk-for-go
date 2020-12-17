@@ -59,6 +59,7 @@ func (client FeaturesClient) AddPhraseList(ctx context.Context, appID uuid.UUID,
 	result, err = client.AddPhraseListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "programmatic.FeaturesClient", "AddPhraseList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -126,6 +127,7 @@ func (client FeaturesClient) DeletePhraseList(ctx context.Context, appID uuid.UU
 	result, err = client.DeletePhraseListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "programmatic.FeaturesClient", "DeletePhraseList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -192,6 +194,7 @@ func (client FeaturesClient) GetPhraseList(ctx context.Context, appID uuid.UUID,
 	result, err = client.GetPhraseListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "programmatic.FeaturesClient", "GetPhraseList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -271,6 +274,7 @@ func (client FeaturesClient) List(ctx context.Context, appID uuid.UUID, versionI
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "programmatic.FeaturesClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -362,6 +366,7 @@ func (client FeaturesClient) ListPhraseLists(ctx context.Context, appID uuid.UUI
 	result, err = client.ListPhraseListsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "programmatic.FeaturesClient", "ListPhraseLists", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -442,6 +447,7 @@ func (client FeaturesClient) UpdatePhraseList(ctx context.Context, appID uuid.UU
 	result, err = client.UpdatePhraseListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "programmatic.FeaturesClient", "UpdatePhraseList", resp, "Failure responding to request")
+		return
 	}
 
 	return

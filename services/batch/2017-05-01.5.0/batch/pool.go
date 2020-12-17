@@ -103,6 +103,7 @@ func (client PoolClient) Add(ctx context.Context, pool PoolAddParameter, timeout
 	result, err = client.AddResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Add", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -217,6 +218,7 @@ func (client PoolClient) Delete(ctx context.Context, poolID string, timeout *int
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -331,6 +333,7 @@ func (client PoolClient) DisableAutoScale(ctx context.Context, poolID string, ti
 	result, err = client.DisableAutoScaleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "DisableAutoScale", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -444,6 +447,7 @@ func (client PoolClient) EnableAutoScale(ctx context.Context, poolID string, poo
 	result, err = client.EnableAutoScaleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "EnableAutoScale", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -568,6 +572,7 @@ func (client PoolClient) EvaluateAutoScale(ctx context.Context, poolID string, p
 	result, err = client.EvaluateAutoScaleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "EvaluateAutoScale", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -680,6 +685,7 @@ func (client PoolClient) Exists(ctx context.Context, poolID string, timeout *int
 	result, err = client.ExistsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Exists", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -807,6 +813,7 @@ func (client PoolClient) Get(ctx context.Context, poolID string, selectParameter
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -928,6 +935,7 @@ func (client PoolClient) GetAllLifetimeStatistics(ctx context.Context, timeout *
 	result, err = client.GetAllLifetimeStatisticsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "GetAllLifetimeStatistics", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1036,6 +1044,7 @@ func (client PoolClient) List(ctx context.Context, filter string, selectParamete
 	result.cplr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.cplr.hasNextLink() && result.cplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1128,6 +1137,7 @@ func (client PoolClient) listNextResults(ctx context.Context, lastResults CloudP
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1204,6 +1214,7 @@ func (client PoolClient) ListUsageMetrics(ctx context.Context, startTime *date.T
 	result.plumr, err = client.ListUsageMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "ListUsageMetrics", resp, "Failure responding to request")
+		return
 	}
 	if result.plumr.hasNextLink() && result.plumr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1296,6 +1307,7 @@ func (client PoolClient) listUsageMetricsNextResults(ctx context.Context, lastRe
 	result, err = client.ListUsageMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "listUsageMetricsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1367,6 +1379,7 @@ func (client PoolClient) Patch(ctx context.Context, poolID string, poolPatchPara
 	result, err = client.PatchResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Patch", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1503,6 +1516,7 @@ func (client PoolClient) RemoveNodes(ctx context.Context, poolID string, nodeRem
 	result, err = client.RemoveNodesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "RemoveNodes", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1635,6 +1649,7 @@ func (client PoolClient) Resize(ctx context.Context, poolID string, poolResizePa
 	result, err = client.ResizeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Resize", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1764,6 +1779,7 @@ func (client PoolClient) StopResize(ctx context.Context, poolID string, timeout 
 	result, err = client.StopResizeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "StopResize", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1891,6 +1907,7 @@ func (client PoolClient) UpdateProperties(ctx context.Context, poolID string, po
 	result, err = client.UpdatePropertiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "UpdateProperties", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2015,6 +2032,7 @@ func (client PoolClient) UpgradeOS(ctx context.Context, poolID string, poolUpgra
 	result, err = client.UpgradeOSResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "UpgradeOS", resp, "Failure responding to request")
+		return
 	}
 
 	return

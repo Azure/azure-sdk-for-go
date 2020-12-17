@@ -84,6 +84,7 @@ func (client BaseClient) PredictImage(ctx context.Context, projectID uuid.UUID, 
 	result, err = client.PredictImageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "prediction.BaseClient", "PredictImage", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -173,6 +174,7 @@ func (client BaseClient) PredictImageURL(ctx context.Context, projectID uuid.UUI
 	result, err = client.PredictImageURLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "prediction.BaseClient", "PredictImageURL", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -259,6 +261,7 @@ func (client BaseClient) PredictImageURLWithNoStore(ctx context.Context, project
 	result, err = client.PredictImageURLWithNoStoreResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "prediction.BaseClient", "PredictImageURLWithNoStore", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -344,6 +347,7 @@ func (client BaseClient) PredictImageWithNoStore(ctx context.Context, projectID 
 	result, err = client.PredictImageWithNoStoreResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "prediction.BaseClient", "PredictImageWithNoStore", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -68,6 +68,7 @@ func (client AccessTokensClient) Get(ctx context.Context, service string, scope 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.AccessTokensClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -144,6 +145,7 @@ func (client AccessTokensClient) GetFromLogin(ctx context.Context, service strin
 	result, err = client.GetFromLoginResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.AccessTokensClient", "GetFromLogin", resp, "Failure responding to request")
+		return
 	}
 
 	return

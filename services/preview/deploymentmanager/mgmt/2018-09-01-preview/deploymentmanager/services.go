@@ -86,6 +86,7 @@ func (client ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "deploymentmanager.ServicesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -173,6 +174,7 @@ func (client ServicesClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "deploymentmanager.ServicesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -257,6 +259,7 @@ func (client ServicesClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "deploymentmanager.ServicesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

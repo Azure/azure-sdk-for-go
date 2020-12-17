@@ -97,6 +97,7 @@ func (client APIIssuAttachmentClient) Head(ctx context.Context, resourceGroupNam
 	result, err = client.HeadResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIIssuAttachmentClient", "Head", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -74,6 +74,7 @@ func (client SitesClient) DeleteSite(ctx context.Context, subscriptionID string,
 	result, err = client.DeleteSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.SitesClient", "DeleteSite", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -149,6 +150,7 @@ func (client SitesClient) GetSite(ctx context.Context, subscriptionID string, re
 	result, err = client.GetSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.SitesClient", "GetSite", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -226,6 +228,7 @@ func (client SitesClient) GetSiteHealthSummary(ctx context.Context, subscription
 	result.shsc, err = client.GetSiteHealthSummaryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.SitesClient", "GetSiteHealthSummary", resp, "Failure responding to request")
+		return
 	}
 	if result.shsc.hasNextLink() && result.shsc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -289,6 +292,7 @@ func (client SitesClient) getSiteHealthSummaryNextResults(ctx context.Context, l
 	result, err = client.GetSiteHealthSummaryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.SitesClient", "getSiteHealthSummaryNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -341,6 +345,7 @@ func (client SitesClient) GetSiteUsage(ctx context.Context, subscriptionID strin
 	result, err = client.GetSiteUsageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.SitesClient", "GetSiteUsage", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -418,6 +423,7 @@ func (client SitesClient) PatchSite(ctx context.Context, subscriptionID string, 
 	result, err = client.PatchSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.SitesClient", "PatchSite", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -499,6 +505,7 @@ func (client SitesClient) PutSite(ctx context.Context, subscriptionID string, re
 	result, err = client.PutSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.SitesClient", "PutSite", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -579,6 +586,7 @@ func (client SitesClient) RefreshSite(ctx context.Context, subscriptionID string
 	result, err = client.RefreshSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.SitesClient", "RefreshSite", resp, "Failure responding to request")
+		return
 	}
 
 	return

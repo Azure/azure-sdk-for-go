@@ -73,6 +73,7 @@ func (client AvailableBalancesClient) GetByBillingProfile(ctx context.Context, b
 	result, err = client.GetByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.AvailableBalancesClient", "GetByBillingProfile", resp, "Failure responding to request")
+		return
 	}
 
 	return

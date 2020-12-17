@@ -63,6 +63,7 @@ func (client EndpointKeysClient) GetKeys(ctx context.Context) (result EndpointKe
 	result, err = client.GetKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamaker.EndpointKeysClient", "GetKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -129,6 +130,7 @@ func (client EndpointKeysClient) RefreshKeys(ctx context.Context, keyType string
 	result, err = client.RefreshKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamaker.EndpointKeysClient", "RefreshKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return

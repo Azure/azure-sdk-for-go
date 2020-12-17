@@ -75,6 +75,7 @@ func (client ContainerLogsClient) List(ctx context.Context, resourceGroupName st
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerinstance.ContainerLogsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

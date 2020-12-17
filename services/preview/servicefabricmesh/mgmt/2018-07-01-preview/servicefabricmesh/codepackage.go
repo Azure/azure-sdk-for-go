@@ -76,6 +76,7 @@ func (client CodePackageClient) GetContainerLog(ctx context.Context, resourceGro
 	result, err = client.GetContainerLogResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.CodePackageClient", "GetContainerLog", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -80,6 +80,7 @@ func (client CommunicationsClient) CheckNameAvailability(ctx context.Context, su
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "support.CommunicationsClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -250,6 +251,7 @@ func (client CommunicationsClient) Get(ctx context.Context, supportTicketName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "support.CommunicationsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -335,6 +337,7 @@ func (client CommunicationsClient) List(ctx context.Context, supportTicketName s
 	result.clr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "support.CommunicationsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.clr.hasNextLink() && result.clr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -404,6 +407,7 @@ func (client CommunicationsClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "support.CommunicationsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -67,6 +67,7 @@ func (client PolicySnippetsClient) List(ctx context.Context, apimBaseURL string,
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.PolicySnippetsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

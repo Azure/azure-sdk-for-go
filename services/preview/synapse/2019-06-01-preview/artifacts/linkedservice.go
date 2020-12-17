@@ -259,6 +259,7 @@ func (client LinkedServiceClient) GetLinkedService(ctx context.Context, linkedSe
 	result, err = client.GetLinkedServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceClient", "GetLinkedService", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -338,6 +339,7 @@ func (client LinkedServiceClient) GetLinkedServicesByWorkspace(ctx context.Conte
 	result.lslr, err = client.GetLinkedServicesByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceClient", "GetLinkedServicesByWorkspace", resp, "Failure responding to request")
+		return
 	}
 	if result.lslr.hasNextLink() && result.lslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -400,6 +402,7 @@ func (client LinkedServiceClient) getLinkedServicesByWorkspaceNextResults(ctx co
 	result, err = client.GetLinkedServicesByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceClient", "getLinkedServicesByWorkspaceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

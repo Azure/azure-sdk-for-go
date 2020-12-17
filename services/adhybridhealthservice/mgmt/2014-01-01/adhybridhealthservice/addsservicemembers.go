@@ -78,6 +78,7 @@ func (client AddsServiceMembersClient) Delete(ctx context.Context, serviceName s
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServiceMembersClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -155,6 +156,7 @@ func (client AddsServiceMembersClient) Get(ctx context.Context, serviceName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServiceMembersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -231,6 +233,7 @@ func (client AddsServiceMembersClient) List(ctx context.Context, serviceName str
 	result.asm, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServiceMembersClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.asm.hasNextLink() && result.asm.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -296,6 +299,7 @@ func (client AddsServiceMembersClient) listNextResults(ctx context.Context, last
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServiceMembersClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -349,6 +353,7 @@ func (client AddsServiceMembersClient) ListCredentials(ctx context.Context, serv
 	result, err = client.ListCredentialsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServiceMembersClient", "ListCredentials", resp, "Failure responding to request")
+		return
 	}
 
 	return

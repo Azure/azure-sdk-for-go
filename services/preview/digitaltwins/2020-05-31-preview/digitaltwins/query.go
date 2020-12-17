@@ -74,6 +74,7 @@ func (client QueryClient) QueryTwins(ctx context.Context, querySpecification Que
 	result, err = client.QueryTwinsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.QueryClient", "QueryTwins", resp, "Failure responding to request")
+		return
 	}
 
 	return

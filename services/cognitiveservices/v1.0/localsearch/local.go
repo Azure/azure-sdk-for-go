@@ -181,6 +181,7 @@ func (client LocalClient) Search(ctx context.Context, query string, acceptLangua
 	result, err = client.SearchResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "localsearch.LocalClient", "Search", resp, "Failure responding to request")
+		return
 	}
 
 	return

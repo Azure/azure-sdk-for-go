@@ -75,6 +75,7 @@ func (client JobsClient) GetAllJobsInSite(ctx context.Context, subscriptionID st
 	result.vmjc, err = client.GetAllJobsInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.JobsClient", "GetAllJobsInSite", resp, "Failure responding to request")
+		return
 	}
 	if result.vmjc.hasNextLink() && result.vmjc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -138,6 +139,7 @@ func (client JobsClient) getAllJobsInSiteNextResults(ctx context.Context, lastRe
 	result, err = client.GetAllJobsInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.JobsClient", "getAllJobsInSiteNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -192,6 +194,7 @@ func (client JobsClient) GetJob(ctx context.Context, subscriptionID string, reso
 	result, err = client.GetJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.JobsClient", "GetJob", resp, "Failure responding to request")
+		return
 	}
 
 	return

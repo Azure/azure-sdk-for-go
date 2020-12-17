@@ -71,6 +71,7 @@ func (client OrderClient) Get(ctx context.Context, reservationOrderID string) (r
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -142,6 +143,7 @@ func (client OrderClient) List(ctx context.Context) (result OrderListPage, err e
 	result.ol, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.ol.hasNextLink() && result.ol.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -200,6 +202,7 @@ func (client OrderClient) listNextResults(ctx context.Context, lastResults Order
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

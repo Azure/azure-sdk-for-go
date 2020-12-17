@@ -248,6 +248,7 @@ func (client DatabasesClient) Get(ctx context.Context, resourceGroupName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabasesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -327,6 +328,7 @@ func (client DatabasesClient) ListByElasticPool(ctx context.Context, resourceGro
 	result.dlr, err = client.ListByElasticPoolResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabasesClient", "ListByElasticPool", resp, "Failure responding to request")
+		return
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -392,6 +394,7 @@ func (client DatabasesClient) listByElasticPoolNextResults(ctx context.Context, 
 	result, err = client.ListByElasticPoolResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabasesClient", "listByElasticPoolNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -445,6 +448,7 @@ func (client DatabasesClient) ListByServer(ctx context.Context, resourceGroupNam
 	result.dlr, err = client.ListByServerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabasesClient", "ListByServer", resp, "Failure responding to request")
+		return
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -509,6 +513,7 @@ func (client DatabasesClient) listByServerNextResults(ctx context.Context, lastR
 	result, err = client.ListByServerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabasesClient", "listByServerNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -647,6 +652,7 @@ func (client DatabasesClient) Rename(ctx context.Context, resourceGroupName stri
 	result, err = client.RenameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabasesClient", "Rename", resp, "Failure responding to request")
+		return
 	}
 
 	return

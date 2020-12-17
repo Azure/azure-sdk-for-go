@@ -81,6 +81,7 @@ func (client SchemasClient) CreateOrUpdate(ctx context.Context, resourceGroupNam
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.SchemasClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -160,6 +161,7 @@ func (client SchemasClient) Delete(ctx context.Context, resourceGroupName string
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.SchemasClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -236,6 +238,7 @@ func (client SchemasClient) Get(ctx context.Context, resourceGroupName string, i
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.SchemasClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -315,6 +318,7 @@ func (client SchemasClient) ListByIntegrationAccounts(ctx context.Context, resou
 	result.iaslr, err = client.ListByIntegrationAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.SchemasClient", "ListByIntegrationAccounts", resp, "Failure responding to request")
+		return
 	}
 	if result.iaslr.hasNextLink() && result.iaslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -385,6 +389,7 @@ func (client SchemasClient) listByIntegrationAccountsNextResults(ctx context.Con
 	result, err = client.ListByIntegrationAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.SchemasClient", "listByIntegrationAccountsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -437,6 +442,7 @@ func (client SchemasClient) ListContentCallbackURL(ctx context.Context, resource
 	result, err = client.ListContentCallbackURLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.SchemasClient", "ListContentCallbackURL", resp, "Failure responding to request")
+		return
 	}
 
 	return

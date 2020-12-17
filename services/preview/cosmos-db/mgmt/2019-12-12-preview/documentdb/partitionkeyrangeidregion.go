@@ -93,6 +93,7 @@ func (client PartitionKeyRangeIDRegionClient) ListMetrics(ctx context.Context, r
 	result, err = client.ListMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.PartitionKeyRangeIDRegionClient", "ListMetrics", resp, "Failure responding to request")
+		return
 	}
 
 	return

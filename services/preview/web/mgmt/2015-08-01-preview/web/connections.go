@@ -73,6 +73,7 @@ func (client ConnectionsClient) ConfirmConsentCode(ctx context.Context, resource
 	result, err = client.ConfirmConsentCodeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ConnectionsClient", "ConfirmConsentCode", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -151,6 +152,7 @@ func (client ConnectionsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ConnectionsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -228,6 +230,7 @@ func (client ConnectionsClient) Delete(ctx context.Context, resourceGroupName st
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ConnectionsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -302,6 +305,7 @@ func (client ConnectionsClient) Get(ctx context.Context, resourceGroupName strin
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ConnectionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -379,6 +383,7 @@ func (client ConnectionsClient) List(ctx context.Context, resourceGroupName stri
 	result.cc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ConnectionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.cc.hasNextLink() && result.cc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -448,6 +453,7 @@ func (client ConnectionsClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ConnectionsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -500,6 +506,7 @@ func (client ConnectionsClient) ListConnectionKeys(ctx context.Context, resource
 	result, err = client.ListConnectionKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ConnectionsClient", "ListConnectionKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -578,6 +585,7 @@ func (client ConnectionsClient) ListConsentLinks(ctx context.Context, resourceGr
 	result, err = client.ListConsentLinksResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ConnectionsClient", "ListConsentLinks", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -68,6 +68,7 @@ func (client ServiceConfigurationClient) Get(ctx context.Context) (result Servic
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "personalizer.ServiceConfigurationClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -155,6 +156,7 @@ func (client ServiceConfigurationClient) Update(ctx context.Context, config Serv
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "personalizer.ServiceConfigurationClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

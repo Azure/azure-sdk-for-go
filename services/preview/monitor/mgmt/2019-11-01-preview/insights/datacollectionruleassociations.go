@@ -88,6 +88,7 @@ func (client DataCollectionRuleAssociationsClient) Create(ctx context.Context, r
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.DataCollectionRuleAssociationsClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -181,6 +182,7 @@ func (client DataCollectionRuleAssociationsClient) Delete(ctx context.Context, r
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.DataCollectionRuleAssociationsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -264,6 +266,7 @@ func (client DataCollectionRuleAssociationsClient) Get(ctx context.Context, reso
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.DataCollectionRuleAssociationsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -344,6 +347,7 @@ func (client DataCollectionRuleAssociationsClient) ListByResource(ctx context.Co
 	result.dcraporlr, err = client.ListByResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.DataCollectionRuleAssociationsClient", "ListByResource", resp, "Failure responding to request")
+		return
 	}
 	if result.dcraporlr.hasNextLink() && result.dcraporlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -406,6 +410,7 @@ func (client DataCollectionRuleAssociationsClient) listByResourceNextResults(ctx
 	result, err = client.ListByResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.DataCollectionRuleAssociationsClient", "listByResourceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -472,6 +477,7 @@ func (client DataCollectionRuleAssociationsClient) ListByRule(ctx context.Contex
 	result.dcraporlr, err = client.ListByRuleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.DataCollectionRuleAssociationsClient", "ListByRule", resp, "Failure responding to request")
+		return
 	}
 	if result.dcraporlr.hasNextLink() && result.dcraporlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -536,6 +542,7 @@ func (client DataCollectionRuleAssociationsClient) listByRuleNextResults(ctx con
 	result, err = client.ListByRuleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.DataCollectionRuleAssociationsClient", "listByRuleNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

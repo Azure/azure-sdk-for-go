@@ -69,6 +69,7 @@ func (client TrainClient) GetStatus(ctx context.Context, appID uuid.UUID, versio
 	result, err = client.GetStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.TrainClient", "GetStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -145,6 +146,7 @@ func (client TrainClient) TrainVersion(ctx context.Context, appID uuid.UUID, ver
 	result, err = client.TrainVersionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.TrainClient", "TrainVersion", resp, "Failure responding to request")
+		return
 	}
 
 	return

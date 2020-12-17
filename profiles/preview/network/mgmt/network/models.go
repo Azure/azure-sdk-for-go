@@ -22,7 +22,7 @@ package network
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-06-01/network"
+	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-07-01/network"
 )
 
 const (
@@ -527,11 +527,34 @@ const (
 	QinQ  ExpressRoutePortsEncapsulation = original.QinQ
 )
 
+type ExtendedLocationTypes = original.ExtendedLocationTypes
+
+const (
+	EdgeZone ExtendedLocationTypes = original.EdgeZone
+)
+
 type FirewallPolicyFilterRuleCollectionActionType = original.FirewallPolicyFilterRuleCollectionActionType
 
 const (
 	FirewallPolicyFilterRuleCollectionActionTypeAllow FirewallPolicyFilterRuleCollectionActionType = original.FirewallPolicyFilterRuleCollectionActionTypeAllow
 	FirewallPolicyFilterRuleCollectionActionTypeDeny  FirewallPolicyFilterRuleCollectionActionType = original.FirewallPolicyFilterRuleCollectionActionTypeDeny
+)
+
+type FirewallPolicyIntrusionDetectionProtocol = original.FirewallPolicyIntrusionDetectionProtocol
+
+const (
+	FirewallPolicyIntrusionDetectionProtocolANY  FirewallPolicyIntrusionDetectionProtocol = original.FirewallPolicyIntrusionDetectionProtocolANY
+	FirewallPolicyIntrusionDetectionProtocolICMP FirewallPolicyIntrusionDetectionProtocol = original.FirewallPolicyIntrusionDetectionProtocolICMP
+	FirewallPolicyIntrusionDetectionProtocolTCP  FirewallPolicyIntrusionDetectionProtocol = original.FirewallPolicyIntrusionDetectionProtocolTCP
+	FirewallPolicyIntrusionDetectionProtocolUDP  FirewallPolicyIntrusionDetectionProtocol = original.FirewallPolicyIntrusionDetectionProtocolUDP
+)
+
+type FirewallPolicyIntrusionDetectionStateType = original.FirewallPolicyIntrusionDetectionStateType
+
+const (
+	FirewallPolicyIntrusionDetectionStateTypeAlert FirewallPolicyIntrusionDetectionStateType = original.FirewallPolicyIntrusionDetectionStateTypeAlert
+	FirewallPolicyIntrusionDetectionStateTypeDeny  FirewallPolicyIntrusionDetectionStateType = original.FirewallPolicyIntrusionDetectionStateTypeDeny
+	FirewallPolicyIntrusionDetectionStateTypeOff   FirewallPolicyIntrusionDetectionStateType = original.FirewallPolicyIntrusionDetectionStateTypeOff
 )
 
 type FirewallPolicyNatRuleCollectionActionType = original.FirewallPolicyNatRuleCollectionActionType
@@ -554,6 +577,13 @@ const (
 	FirewallPolicyRuleNetworkProtocolICMP FirewallPolicyRuleNetworkProtocol = original.FirewallPolicyRuleNetworkProtocolICMP
 	FirewallPolicyRuleNetworkProtocolTCP  FirewallPolicyRuleNetworkProtocol = original.FirewallPolicyRuleNetworkProtocolTCP
 	FirewallPolicyRuleNetworkProtocolUDP  FirewallPolicyRuleNetworkProtocol = original.FirewallPolicyRuleNetworkProtocolUDP
+)
+
+type FirewallPolicySkuTier = original.FirewallPolicySkuTier
+
+const (
+	FirewallPolicySkuTierPremium  FirewallPolicySkuTier = original.FirewallPolicySkuTierPremium
+	FirewallPolicySkuTierStandard FirewallPolicySkuTier = original.FirewallPolicySkuTierStandard
 )
 
 type FlowLogFormatType = original.FlowLogFormatType
@@ -703,6 +733,13 @@ type LoadBalancerSkuName = original.LoadBalancerSkuName
 const (
 	LoadBalancerSkuNameBasic    LoadBalancerSkuName = original.LoadBalancerSkuNameBasic
 	LoadBalancerSkuNameStandard LoadBalancerSkuName = original.LoadBalancerSkuNameStandard
+)
+
+type LoadBalancerSkuTier = original.LoadBalancerSkuTier
+
+const (
+	Global   LoadBalancerSkuTier = original.Global
+	Regional LoadBalancerSkuTier = original.Regional
 )
 
 type LoadDistribution = original.LoadDistribution
@@ -888,10 +925,24 @@ const (
 	PublicIPAddressSkuNameStandard PublicIPAddressSkuName = original.PublicIPAddressSkuNameStandard
 )
 
+type PublicIPAddressSkuTier = original.PublicIPAddressSkuTier
+
+const (
+	PublicIPAddressSkuTierGlobal   PublicIPAddressSkuTier = original.PublicIPAddressSkuTierGlobal
+	PublicIPAddressSkuTierRegional PublicIPAddressSkuTier = original.PublicIPAddressSkuTierRegional
+)
+
 type PublicIPPrefixSkuName = original.PublicIPPrefixSkuName
 
 const (
 	PublicIPPrefixSkuNameStandard PublicIPPrefixSkuName = original.PublicIPPrefixSkuNameStandard
+)
+
+type PublicIPPrefixSkuTier = original.PublicIPPrefixSkuTier
+
+const (
+	PublicIPPrefixSkuTierGlobal   PublicIPPrefixSkuTier = original.PublicIPPrefixSkuTierGlobal
+	PublicIPPrefixSkuTierRegional PublicIPPrefixSkuTier = original.PublicIPPrefixSkuTierRegional
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
@@ -1022,6 +1073,14 @@ const (
 	VerbosityLevelNormal  VerbosityLevel = original.VerbosityLevelNormal
 )
 
+type VirtualNetworkGatewayConnectionMode = original.VirtualNetworkGatewayConnectionMode
+
+const (
+	VirtualNetworkGatewayConnectionModeDefault       VirtualNetworkGatewayConnectionMode = original.VirtualNetworkGatewayConnectionModeDefault
+	VirtualNetworkGatewayConnectionModeInitiatorOnly VirtualNetworkGatewayConnectionMode = original.VirtualNetworkGatewayConnectionModeInitiatorOnly
+	VirtualNetworkGatewayConnectionModeResponderOnly VirtualNetworkGatewayConnectionMode = original.VirtualNetworkGatewayConnectionModeResponderOnly
+)
+
 type VirtualNetworkGatewayConnectionProtocol = original.VirtualNetworkGatewayConnectionProtocol
 
 const (
@@ -1095,6 +1154,7 @@ type VirtualNetworkGatewayType = original.VirtualNetworkGatewayType
 
 const (
 	VirtualNetworkGatewayTypeExpressRoute VirtualNetworkGatewayType = original.VirtualNetworkGatewayTypeExpressRoute
+	VirtualNetworkGatewayTypeLocalGateway VirtualNetworkGatewayType = original.VirtualNetworkGatewayTypeLocalGateway
 	VirtualNetworkGatewayTypeVpn          VirtualNetworkGatewayType = original.VirtualNetworkGatewayTypeVpn
 )
 
@@ -1418,6 +1478,11 @@ type AzureReachabilityReportItem = original.AzureReachabilityReportItem
 type AzureReachabilityReportLatencyInfo = original.AzureReachabilityReportLatencyInfo
 type AzureReachabilityReportLocation = original.AzureReachabilityReportLocation
 type AzureReachabilityReportParameters = original.AzureReachabilityReportParameters
+type AzureWebCategory = original.AzureWebCategory
+type AzureWebCategoryListResult = original.AzureWebCategoryListResult
+type AzureWebCategoryListResultIterator = original.AzureWebCategoryListResultIterator
+type AzureWebCategoryListResultPage = original.AzureWebCategoryListResultPage
+type AzureWebCategoryPropertiesFormat = original.AzureWebCategoryPropertiesFormat
 type BGPCommunity = original.BGPCommunity
 type BackendAddressPool = original.BackendAddressPool
 type BackendAddressPoolPropertiesFormat = original.BackendAddressPoolPropertiesFormat
@@ -1670,12 +1735,18 @@ type ExpressRouteServiceProviderListResultIterator = original.ExpressRouteServic
 type ExpressRouteServiceProviderListResultPage = original.ExpressRouteServiceProviderListResultPage
 type ExpressRouteServiceProviderPropertiesFormat = original.ExpressRouteServiceProviderPropertiesFormat
 type ExpressRouteServiceProvidersClient = original.ExpressRouteServiceProvidersClient
+type ExtendedLocation = original.ExtendedLocation
 type FirewallPoliciesClient = original.FirewallPoliciesClient
 type FirewallPoliciesCreateOrUpdateFuture = original.FirewallPoliciesCreateOrUpdateFuture
 type FirewallPoliciesDeleteFuture = original.FirewallPoliciesDeleteFuture
 type FirewallPolicy = original.FirewallPolicy
+type FirewallPolicyCertificateAuthority = original.FirewallPolicyCertificateAuthority
 type FirewallPolicyFilterRuleCollection = original.FirewallPolicyFilterRuleCollection
 type FirewallPolicyFilterRuleCollectionAction = original.FirewallPolicyFilterRuleCollectionAction
+type FirewallPolicyIntrusionDetection = original.FirewallPolicyIntrusionDetection
+type FirewallPolicyIntrusionDetectionBypassTrafficSpecifications = original.FirewallPolicyIntrusionDetectionBypassTrafficSpecifications
+type FirewallPolicyIntrusionDetectionConfiguration = original.FirewallPolicyIntrusionDetectionConfiguration
+type FirewallPolicyIntrusionDetectionSignatureSpecification = original.FirewallPolicyIntrusionDetectionSignatureSpecification
 type FirewallPolicyListResult = original.FirewallPolicyListResult
 type FirewallPolicyListResultIterator = original.FirewallPolicyListResultIterator
 type FirewallPolicyListResultPage = original.FirewallPolicyListResultPage
@@ -1693,7 +1764,9 @@ type FirewallPolicyRuleCollectionGroupProperties = original.FirewallPolicyRuleCo
 type FirewallPolicyRuleCollectionGroupsClient = original.FirewallPolicyRuleCollectionGroupsClient
 type FirewallPolicyRuleCollectionGroupsCreateOrUpdateFuture = original.FirewallPolicyRuleCollectionGroupsCreateOrUpdateFuture
 type FirewallPolicyRuleCollectionGroupsDeleteFuture = original.FirewallPolicyRuleCollectionGroupsDeleteFuture
+type FirewallPolicySku = original.FirewallPolicySku
 type FirewallPolicyThreatIntelWhitelist = original.FirewallPolicyThreatIntelWhitelist
+type FirewallPolicyTransportSecurity = original.FirewallPolicyTransportSecurity
 type FlowLog = original.FlowLog
 type FlowLogFormatParameters = original.FlowLogFormatParameters
 type FlowLogInformation = original.FlowLogInformation
@@ -2431,6 +2504,7 @@ type WebApplicationFirewallPolicyListResult = original.WebApplicationFirewallPol
 type WebApplicationFirewallPolicyListResultIterator = original.WebApplicationFirewallPolicyListResultIterator
 type WebApplicationFirewallPolicyListResultPage = original.WebApplicationFirewallPolicyListResultPage
 type WebApplicationFirewallPolicyPropertiesFormat = original.WebApplicationFirewallPolicyPropertiesFormat
+type WebCategoriesClient = original.WebCategoriesClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -2572,6 +2646,12 @@ func NewAzureFirewallsClient(subscriptionID string) AzureFirewallsClient {
 }
 func NewAzureFirewallsClientWithBaseURI(baseURI string, subscriptionID string) AzureFirewallsClient {
 	return original.NewAzureFirewallsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAzureWebCategoryListResultIterator(page AzureWebCategoryListResultPage) AzureWebCategoryListResultIterator {
+	return original.NewAzureWebCategoryListResultIterator(page)
+}
+func NewAzureWebCategoryListResultPage(cur AzureWebCategoryListResult, getNextPage func(context.Context, AzureWebCategoryListResult) (AzureWebCategoryListResult, error)) AzureWebCategoryListResultPage {
+	return original.NewAzureWebCategoryListResultPage(cur, getNextPage)
 }
 func NewBastionActiveSessionListResultIterator(page BastionActiveSessionListResultPage) BastionActiveSessionListResultIterator {
 	return original.NewBastionActiveSessionListResultIterator(page)
@@ -3629,6 +3709,12 @@ func NewWebApplicationFirewallPolicyListResultIterator(page WebApplicationFirewa
 func NewWebApplicationFirewallPolicyListResultPage(cur WebApplicationFirewallPolicyListResult, getNextPage func(context.Context, WebApplicationFirewallPolicyListResult) (WebApplicationFirewallPolicyListResult, error)) WebApplicationFirewallPolicyListResultPage {
 	return original.NewWebApplicationFirewallPolicyListResultPage(cur, getNextPage)
 }
+func NewWebCategoriesClient(subscriptionID string) WebCategoriesClient {
+	return original.NewWebCategoriesClient(subscriptionID)
+}
+func NewWebCategoriesClientWithBaseURI(baseURI string, subscriptionID string) WebCategoriesClient {
+	return original.NewWebCategoriesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
@@ -3809,8 +3895,17 @@ func PossibleExpressRoutePeeringTypeValues() []ExpressRoutePeeringType {
 func PossibleExpressRoutePortsEncapsulationValues() []ExpressRoutePortsEncapsulation {
 	return original.PossibleExpressRoutePortsEncapsulationValues()
 }
+func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
+	return original.PossibleExtendedLocationTypesValues()
+}
 func PossibleFirewallPolicyFilterRuleCollectionActionTypeValues() []FirewallPolicyFilterRuleCollectionActionType {
 	return original.PossibleFirewallPolicyFilterRuleCollectionActionTypeValues()
+}
+func PossibleFirewallPolicyIntrusionDetectionProtocolValues() []FirewallPolicyIntrusionDetectionProtocol {
+	return original.PossibleFirewallPolicyIntrusionDetectionProtocolValues()
+}
+func PossibleFirewallPolicyIntrusionDetectionStateTypeValues() []FirewallPolicyIntrusionDetectionStateType {
+	return original.PossibleFirewallPolicyIntrusionDetectionStateTypeValues()
 }
 func PossibleFirewallPolicyNatRuleCollectionActionTypeValues() []FirewallPolicyNatRuleCollectionActionType {
 	return original.PossibleFirewallPolicyNatRuleCollectionActionTypeValues()
@@ -3820,6 +3915,9 @@ func PossibleFirewallPolicyRuleApplicationProtocolTypeValues() []FirewallPolicyR
 }
 func PossibleFirewallPolicyRuleNetworkProtocolValues() []FirewallPolicyRuleNetworkProtocol {
 	return original.PossibleFirewallPolicyRuleNetworkProtocolValues()
+}
+func PossibleFirewallPolicySkuTierValues() []FirewallPolicySkuTier {
+	return original.PossibleFirewallPolicySkuTierValues()
 }
 func PossibleFlowLogFormatTypeValues() []FlowLogFormatType {
 	return original.PossibleFlowLogFormatTypeValues()
@@ -3871,6 +3969,9 @@ func PossibleLoadBalancerOutboundRuleProtocolValues() []LoadBalancerOutboundRule
 }
 func PossibleLoadBalancerSkuNameValues() []LoadBalancerSkuName {
 	return original.PossibleLoadBalancerSkuNameValues()
+}
+func PossibleLoadBalancerSkuTierValues() []LoadBalancerSkuTier {
+	return original.PossibleLoadBalancerSkuTierValues()
 }
 func PossibleLoadDistributionValues() []LoadDistribution {
 	return original.PossibleLoadDistributionValues()
@@ -3935,8 +4036,14 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 func PossiblePublicIPAddressSkuNameValues() []PublicIPAddressSkuName {
 	return original.PossiblePublicIPAddressSkuNameValues()
 }
+func PossiblePublicIPAddressSkuTierValues() []PublicIPAddressSkuTier {
+	return original.PossiblePublicIPAddressSkuTierValues()
+}
 func PossiblePublicIPPrefixSkuNameValues() []PublicIPPrefixSkuName {
 	return original.PossiblePublicIPPrefixSkuNameValues()
+}
+func PossiblePublicIPPrefixSkuTierValues() []PublicIPPrefixSkuTier {
+	return original.PossiblePublicIPPrefixSkuTierValues()
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
@@ -3982,6 +4089,9 @@ func PossibleTunnelConnectionStatusValues() []TunnelConnectionStatus {
 }
 func PossibleVerbosityLevelValues() []VerbosityLevel {
 	return original.PossibleVerbosityLevelValues()
+}
+func PossibleVirtualNetworkGatewayConnectionModeValues() []VirtualNetworkGatewayConnectionMode {
+	return original.PossibleVirtualNetworkGatewayConnectionModeValues()
 }
 func PossibleVirtualNetworkGatewayConnectionProtocolValues() []VirtualNetworkGatewayConnectionProtocol {
 	return original.PossibleVirtualNetworkGatewayConnectionProtocolValues()

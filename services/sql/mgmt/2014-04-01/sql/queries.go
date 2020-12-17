@@ -76,6 +76,7 @@ func (client QueriesClient) ListByDatabase(ctx context.Context, resourceGroupNam
 	result, err = client.ListByDatabaseResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.QueriesClient", "ListByDatabase", resp, "Failure responding to request")
+		return
 	}
 
 	return

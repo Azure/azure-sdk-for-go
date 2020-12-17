@@ -72,6 +72,7 @@ func (client Client) Cancel(ctx context.Context, subscriptionID string) (result 
 	result, err = client.CancelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.Client", "Cancel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -478,6 +479,7 @@ func (client Client) DeleteAlias(ctx context.Context, aliasName string) (result 
 	result, err = client.DeleteAliasResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.Client", "DeleteAlias", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -549,6 +551,7 @@ func (client Client) Enable(ctx context.Context, subscriptionID string) (result 
 	result, err = client.EnableResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.Client", "Enable", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -621,6 +624,7 @@ func (client Client) GetAlias(ctx context.Context, aliasName string) (result Put
 	result, err = client.GetAliasResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.Client", "GetAlias", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -691,6 +695,7 @@ func (client Client) ListAlias(ctx context.Context) (result PutAliasListResult, 
 	result, err = client.ListAliasResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.Client", "ListAlias", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -760,6 +765,7 @@ func (client Client) Rename(ctx context.Context, subscriptionID string, body Nam
 	result, err = client.RenameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.Client", "Rename", resp, "Failure responding to request")
+		return
 	}
 
 	return

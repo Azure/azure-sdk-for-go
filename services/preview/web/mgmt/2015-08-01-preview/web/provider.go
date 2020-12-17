@@ -69,6 +69,7 @@ func (client ProviderClient) GetPublishingUser(ctx context.Context) (result User
 	result, err = client.GetPublishingUserResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ProviderClient", "GetPublishingUser", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -137,6 +138,7 @@ func (client ProviderClient) GetSourceControl(ctx context.Context, sourceControl
 	result, err = client.GetSourceControlResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ProviderClient", "GetSourceControl", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -208,6 +210,7 @@ func (client ProviderClient) GetSourceControls(ctx context.Context) (result Sour
 	result.scc, err = client.GetSourceControlsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ProviderClient", "GetSourceControls", resp, "Failure responding to request")
+		return
 	}
 	if result.scc.hasNextLink() && result.scc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -266,6 +269,7 @@ func (client ProviderClient) getSourceControlsNextResults(ctx context.Context, l
 	result, err = client.GetSourceControlsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ProviderClient", "getSourceControlsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -316,6 +320,7 @@ func (client ProviderClient) UpdatePublishingUser(ctx context.Context, requestMe
 	result, err = client.UpdatePublishingUserResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ProviderClient", "UpdatePublishingUser", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -387,6 +392,7 @@ func (client ProviderClient) UpdateSourceControl(ctx context.Context, sourceCont
 	result, err = client.UpdateSourceControlResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ProviderClient", "UpdateSourceControl", resp, "Failure responding to request")
+		return
 	}
 
 	return

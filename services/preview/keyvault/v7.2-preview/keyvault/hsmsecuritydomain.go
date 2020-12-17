@@ -83,6 +83,7 @@ func (client HSMSecurityDomainClient) Download(ctx context.Context, vaultBaseURL
 	result, err = client.DownloadResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainClient", "Download", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -157,6 +158,7 @@ func (client HSMSecurityDomainClient) TransferKeyMethod(ctx context.Context, vau
 	result, err = client.TransferKeyMethodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainClient", "TransferKeyMethod", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -314,6 +316,7 @@ func (client HSMSecurityDomainClient) UploadPending(ctx context.Context, vaultBa
 	result, err = client.UploadPendingResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainClient", "UploadPending", resp, "Failure responding to request")
+		return
 	}
 
 	return

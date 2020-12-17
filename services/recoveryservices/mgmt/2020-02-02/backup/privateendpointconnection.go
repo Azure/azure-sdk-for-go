@@ -150,6 +150,7 @@ func (client PrivateEndpointConnectionClient) Get(ctx context.Context, vaultName
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.PrivateEndpointConnectionClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -92,6 +92,7 @@ func (client IncidentsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.IncidentsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -185,6 +186,7 @@ func (client IncidentsClient) Delete(ctx context.Context, resourceGroupName stri
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.IncidentsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -275,6 +277,7 @@ func (client IncidentsClient) Get(ctx context.Context, resourceGroupName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.IncidentsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -372,6 +375,7 @@ func (client IncidentsClient) List(ctx context.Context, resourceGroupName string
 	result.il, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.IncidentsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.il.hasNextLink() && result.il.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -448,6 +452,7 @@ func (client IncidentsClient) listNextResults(ctx context.Context, lastResults I
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.IncidentsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

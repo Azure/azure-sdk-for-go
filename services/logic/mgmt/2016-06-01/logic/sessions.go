@@ -81,6 +81,7 @@ func (client SessionsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.SessionsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -160,6 +161,7 @@ func (client SessionsClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.SessionsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -236,6 +238,7 @@ func (client SessionsClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.SessionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -315,6 +318,7 @@ func (client SessionsClient) ListByIntegrationAccounts(ctx context.Context, reso
 	result.iaslr, err = client.ListByIntegrationAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.SessionsClient", "ListByIntegrationAccounts", resp, "Failure responding to request")
+		return
 	}
 	if result.iaslr.hasNextLink() && result.iaslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -385,6 +389,7 @@ func (client SessionsClient) listByIntegrationAccountsNextResults(ctx context.Co
 	result, err = client.ListByIntegrationAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.SessionsClient", "listByIntegrationAccountsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

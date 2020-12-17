@@ -97,6 +97,7 @@ func (client APISchemaClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -201,6 +202,7 @@ func (client APISchemaClient) Delete(ctx context.Context, resourceGroupName stri
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -297,6 +299,7 @@ func (client APISchemaClient) Get(ctx context.Context, resourceGroupName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -393,6 +396,7 @@ func (client APISchemaClient) GetEntityTag(ctx context.Context, resourceGroupNam
 	result, err = client.GetEntityTagResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "GetEntityTag", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -484,6 +488,7 @@ func (client APISchemaClient) ListByAPI(ctx context.Context, resourceGroupName s
 	result.sc, err = client.ListByAPIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "ListByAPI", resp, "Failure responding to request")
+		return
 	}
 	if result.sc.hasNextLink() && result.sc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -549,6 +554,7 @@ func (client APISchemaClient) listByAPINextResults(ctx context.Context, lastResu
 	result, err = client.ListByAPIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "listByAPINextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

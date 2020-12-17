@@ -86,6 +86,7 @@ func (client ReplicasClient) ListByServer(ctx context.Context, resourceGroupName
 	result.slr, err = client.ListByServerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mysqlflexibleservers.ReplicasClient", "ListByServer", resp, "Failure responding to request")
+		return
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -150,6 +151,7 @@ func (client ReplicasClient) listByServerNextResults(ctx context.Context, lastRe
 	result, err = client.ListByServerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mysqlflexibleservers.ReplicasClient", "listByServerNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

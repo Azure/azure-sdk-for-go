@@ -72,6 +72,7 @@ func (client RecurrenceClient) Get(ctx context.Context, accountName string, recu
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.RecurrenceClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -160,6 +161,7 @@ func (client RecurrenceClient) List(ctx context.Context, accountName string, sta
 	result.rilr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.RecurrenceClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rilr.hasNextLink() && result.rilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -229,6 +231,7 @@ func (client RecurrenceClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.RecurrenceClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

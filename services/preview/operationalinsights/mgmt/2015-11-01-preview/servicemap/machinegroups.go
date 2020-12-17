@@ -94,6 +94,7 @@ func (client MachineGroupsClient) Create(ctx context.Context, resourceGroupName 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -187,6 +188,7 @@ func (client MachineGroupsClient) Delete(ctx context.Context, resourceGroupName 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -282,6 +284,7 @@ func (client MachineGroupsClient) Get(ctx context.Context, resourceGroupName str
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -381,6 +384,7 @@ func (client MachineGroupsClient) ListByWorkspace(ctx context.Context, resourceG
 	result.mgc, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "ListByWorkspace", resp, "Failure responding to request")
+		return
 	}
 	if result.mgc.hasNextLink() && result.mgc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -451,6 +455,7 @@ func (client MachineGroupsClient) listByWorkspaceNextResults(ctx context.Context
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "listByWorkspaceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -526,6 +531,7 @@ func (client MachineGroupsClient) Update(ctx context.Context, resourceGroupName 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

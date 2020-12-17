@@ -73,6 +73,7 @@ func (client ClassicMobileServicesClient) DeleteClassicMobileService(ctx context
 	result, err = client.DeleteClassicMobileServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ClassicMobileServicesClient", "DeleteClassicMobileService", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -148,6 +149,7 @@ func (client ClassicMobileServicesClient) GetClassicMobileService(ctx context.Co
 	result, err = client.GetClassicMobileServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ClassicMobileServicesClient", "GetClassicMobileService", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -223,6 +225,7 @@ func (client ClassicMobileServicesClient) GetClassicMobileServices(ctx context.C
 	result.cmsc, err = client.GetClassicMobileServicesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ClassicMobileServicesClient", "GetClassicMobileServices", resp, "Failure responding to request")
+		return
 	}
 	if result.cmsc.hasNextLink() && result.cmsc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -286,6 +289,7 @@ func (client ClassicMobileServicesClient) getClassicMobileServicesNextResults(ct
 	result, err = client.GetClassicMobileServicesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ClassicMobileServicesClient", "getClassicMobileServicesNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -72,6 +72,7 @@ func (client AlertsClient) ChangeState(ctx context.Context, alertID string, newS
 	result, err = client.ChangeStateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "alertsmanagement.AlertsClient", "ChangeState", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -160,6 +161,7 @@ func (client AlertsClient) GetAll(ctx context.Context, targetResource string, ta
 	result.al, err = client.GetAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "alertsmanagement.AlertsClient", "GetAll", resp, "Failure responding to request")
+		return
 	}
 	if result.al.hasNextLink() && result.al.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -261,6 +263,7 @@ func (client AlertsClient) getAllNextResults(ctx context.Context, lastResults Al
 	result, err = client.GetAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "alertsmanagement.AlertsClient", "getAllNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -311,6 +314,7 @@ func (client AlertsClient) GetByID(ctx context.Context, alertID string) (result 
 	result, err = client.GetByIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "alertsmanagement.AlertsClient", "GetByID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -384,6 +388,7 @@ func (client AlertsClient) GetHistory(ctx context.Context, alertID string) (resu
 	result, err = client.GetHistoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "alertsmanagement.AlertsClient", "GetHistory", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -458,6 +463,7 @@ func (client AlertsClient) GetSummary(ctx context.Context, targetResourceGroup s
 	result, err = client.GetSummaryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "alertsmanagement.AlertsClient", "GetSummary", resp, "Failure responding to request")
+		return
 	}
 
 	return

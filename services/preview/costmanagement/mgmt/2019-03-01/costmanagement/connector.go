@@ -71,6 +71,7 @@ func (client ConnectorClient) CheckEligibility(ctx context.Context, connectorCre
 	result, err = client.CheckEligibilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ConnectorClient", "CheckEligibility", resp, "Failure responding to request")
+		return
 	}
 
 	return

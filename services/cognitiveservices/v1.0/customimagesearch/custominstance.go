@@ -274,6 +274,7 @@ func (client CustomInstanceClient) ImageSearch(ctx context.Context, customConfig
 	result, err = client.ImageSearchResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customimagesearch.CustomInstanceClient", "ImageSearch", resp, "Failure responding to request")
+		return
 	}
 
 	return

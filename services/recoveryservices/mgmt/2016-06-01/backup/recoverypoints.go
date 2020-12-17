@@ -77,6 +77,7 @@ func (client RecoveryPointsClient) Get(ctx context.Context, vaultName string, re
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.RecoveryPointsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -160,6 +161,7 @@ func (client RecoveryPointsClient) List(ctx context.Context, vaultName string, r
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.RecoveryPointsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

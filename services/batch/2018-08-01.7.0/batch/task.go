@@ -101,6 +101,7 @@ func (client TaskClient) Add(ctx context.Context, jobID string, task TaskAddPara
 	result, err = client.AddResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Add", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -218,6 +219,7 @@ func (client TaskClient) AddCollection(ctx context.Context, jobID string, taskCo
 	result, err = client.AddCollectionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.TaskClient", "AddCollection", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -333,6 +335,7 @@ func (client TaskClient) Delete(ctx context.Context, jobID string, taskID string
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -463,6 +466,7 @@ func (client TaskClient) Get(ctx context.Context, jobID string, taskID string, s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -601,6 +605,7 @@ func (client TaskClient) List(ctx context.Context, jobID string, filter string, 
 	result.ctlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.TaskClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.ctlr.hasNextLink() && result.ctlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -697,6 +702,7 @@ func (client TaskClient) listNextResults(ctx context.Context, lastResults CloudT
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.TaskClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -756,6 +762,7 @@ func (client TaskClient) ListSubtasks(ctx context.Context, jobID string, taskID 
 	result, err = client.ListSubtasksResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.TaskClient", "ListSubtasks", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -875,6 +882,7 @@ func (client TaskClient) Reactivate(ctx context.Context, jobID string, taskID st
 	result, err = client.ReactivateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Reactivate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1004,6 +1012,7 @@ func (client TaskClient) Terminate(ctx context.Context, jobID string, taskID str
 	result, err = client.TerminateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Terminate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1132,6 +1141,7 @@ func (client TaskClient) Update(ctx context.Context, jobID string, taskID string
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

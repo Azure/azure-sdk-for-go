@@ -96,6 +96,7 @@ func (client APIVersionSetClient) CreateOrUpdate(ctx context.Context, parameters
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIVersionSetClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -193,6 +194,7 @@ func (client APIVersionSetClient) Delete(ctx context.Context, ifMatch string, re
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIVersionSetClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -282,6 +284,7 @@ func (client APIVersionSetClient) Get(ctx context.Context, resourceGroupName str
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIVersionSetClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -371,6 +374,7 @@ func (client APIVersionSetClient) GetEntityTag(ctx context.Context, resourceGrou
 	result, err = client.GetEntityTagResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIVersionSetClient", "GetEntityTag", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -472,6 +476,7 @@ func (client APIVersionSetClient) ListByService(ctx context.Context, resourceGro
 	result.avsc, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIVersionSetClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 	if result.avsc.hasNextLink() && result.avsc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -545,6 +550,7 @@ func (client APIVersionSetClient) listByServiceNextResults(ctx context.Context, 
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIVersionSetClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -612,6 +618,7 @@ func (client APIVersionSetClient) Update(ctx context.Context, parameters APIVers
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIVersionSetClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

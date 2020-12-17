@@ -103,6 +103,7 @@ func (client LargePersonGroupClient) Create(ctx context.Context, largePersonGrou
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargePersonGroupClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -182,6 +183,7 @@ func (client LargePersonGroupClient) Delete(ctx context.Context, largePersonGrou
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargePersonGroupClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -263,6 +265,7 @@ func (client LargePersonGroupClient) Get(ctx context.Context, largePersonGroupID
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargePersonGroupClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -348,6 +351,7 @@ func (client LargePersonGroupClient) GetTrainingStatus(ctx context.Context, larg
 	result, err = client.GetTrainingStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargePersonGroupClient", "GetTrainingStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -443,6 +447,7 @@ func (client LargePersonGroupClient) List(ctx context.Context, start string, top
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargePersonGroupClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -532,6 +537,7 @@ func (client LargePersonGroupClient) Train(ctx context.Context, largePersonGroup
 	result, err = client.TrainResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargePersonGroupClient", "Train", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -610,6 +616,7 @@ func (client LargePersonGroupClient) Update(ctx context.Context, largePersonGrou
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargePersonGroupClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

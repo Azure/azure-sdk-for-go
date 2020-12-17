@@ -73,6 +73,7 @@ func (client ClusterVersionsClient) Get(ctx context.Context, location string, en
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -149,6 +150,7 @@ func (client ClusterVersionsClient) List(ctx context.Context, location string) (
 	result.ccvlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.ccvlr.hasNextLink() && result.ccvlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -212,6 +214,7 @@ func (client ClusterVersionsClient) listNextResults(ctx context.Context, lastRes
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -264,6 +267,7 @@ func (client ClusterVersionsClient) ListByEnvironment(ctx context.Context, locat
 	result.ccvlr, err = client.ListByEnvironmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "ListByEnvironment", resp, "Failure responding to request")
+		return
 	}
 	if result.ccvlr.hasNextLink() && result.ccvlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -328,6 +332,7 @@ func (client ClusterVersionsClient) listByEnvironmentNextResults(ctx context.Con
 	result, err = client.ListByEnvironmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "listByEnvironmentNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -380,6 +385,7 @@ func (client ClusterVersionsClient) ListByVersion(ctx context.Context, location 
 	result.ccvlr, err = client.ListByVersionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "ListByVersion", resp, "Failure responding to request")
+		return
 	}
 	if result.ccvlr.hasNextLink() && result.ccvlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -444,6 +450,7 @@ func (client ClusterVersionsClient) listByVersionNextResults(ctx context.Context
 	result, err = client.ListByVersionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "listByVersionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

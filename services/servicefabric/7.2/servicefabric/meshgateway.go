@@ -86,6 +86,7 @@ func (client MeshGatewayClient) CreateOrUpdate(ctx context.Context, gatewayResou
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.MeshGatewayClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -160,6 +161,7 @@ func (client MeshGatewayClient) Delete(ctx context.Context, gatewayResourceName 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.MeshGatewayClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -232,6 +234,7 @@ func (client MeshGatewayClient) Get(ctx context.Context, gatewayResourceName str
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.MeshGatewayClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -303,6 +306,7 @@ func (client MeshGatewayClient) List(ctx context.Context) (result PagedGatewayRe
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.MeshGatewayClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

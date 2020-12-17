@@ -71,6 +71,7 @@ func (client DomainServiceOperationsClient) List(ctx context.Context) (result Op
 	result.oelr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServiceOperationsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.oelr.hasNextLink() && result.oelr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -129,6 +130,7 @@ func (client DomainServiceOperationsClient) listNextResults(ctx context.Context,
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServiceOperationsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

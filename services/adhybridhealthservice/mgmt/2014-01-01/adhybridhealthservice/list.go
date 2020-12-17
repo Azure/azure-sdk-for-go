@@ -73,6 +73,7 @@ func (client ListClient) IPAddressAggregatesByService(ctx context.Context, servi
 	result.iaa, err = client.IPAddressAggregatesByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ListClient", "IPAddressAggregatesByService", resp, "Failure responding to request")
+		return
 	}
 	if result.iaa.hasNextLink() && result.iaa.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -138,6 +139,7 @@ func (client ListClient) iPAddressAggregatesByServiceNextResults(ctx context.Con
 	result, err = client.IPAddressAggregatesByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ListClient", "iPAddressAggregatesByServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -188,6 +190,7 @@ func (client ListClient) IPAddressAggregateSettings(ctx context.Context, service
 	result, err = client.IPAddressAggregateSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ListClient", "IPAddressAggregateSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return

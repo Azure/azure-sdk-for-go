@@ -66,6 +66,7 @@ func (client RegionsClient) List(ctx context.Context, apimBaseURL string) (resul
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.RegionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

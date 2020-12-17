@@ -72,6 +72,7 @@ func (client OperationsClient) Get(ctx context.Context, regionID string, operati
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.OperationsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -146,6 +147,7 @@ func (client OperationsClient) List(ctx context.Context) (result AvailableOperat
 	result.aolr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.OperationsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.aolr.hasNextLink() && result.aolr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -204,6 +206,7 @@ func (client OperationsClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.OperationsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

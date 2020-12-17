@@ -83,6 +83,7 @@ func (client EventRoutesClient) Add(ctx context.Context, ID string, eventRoute *
 	result, err = client.AddResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.EventRoutesClient", "Add", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -163,6 +164,7 @@ func (client EventRoutesClient) Delete(ctx context.Context, ID string) (result a
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.EventRoutesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -237,6 +239,7 @@ func (client EventRoutesClient) GetByID(ctx context.Context, ID string) (result 
 	result, err = client.GetByIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.EventRoutesClient", "GetByID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -314,6 +317,7 @@ func (client EventRoutesClient) List(ctx context.Context, maxItemCount *int32) (
 	result.erc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.EventRoutesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.erc.hasNextLink() && result.erc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -379,6 +383,7 @@ func (client EventRoutesClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.EventRoutesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

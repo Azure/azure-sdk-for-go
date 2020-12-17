@@ -152,6 +152,7 @@ func (client AliasClient) Delete(ctx context.Context, aliasName string) (result 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.AliasClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -223,6 +224,7 @@ func (client AliasClient) Get(ctx context.Context, aliasName string) (result Put
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.AliasClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -293,6 +295,7 @@ func (client AliasClient) List(ctx context.Context) (result PutAliasListResult, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.AliasClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

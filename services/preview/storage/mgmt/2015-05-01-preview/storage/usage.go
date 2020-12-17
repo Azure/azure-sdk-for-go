@@ -69,6 +69,7 @@ func (client UsageClient) List(ctx context.Context) (result UsageListResult, err
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storage.UsageClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

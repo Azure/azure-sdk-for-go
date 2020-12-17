@@ -77,6 +77,7 @@ func (client MachinesClient) GetAllMachinesInSite(ctx context.Context, subscript
 	result.vmmc, err = client.GetAllMachinesInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.MachinesClient", "GetAllMachinesInSite", resp, "Failure responding to request")
+		return
 	}
 	if result.vmmc.hasNextLink() && result.vmmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -152,6 +153,7 @@ func (client MachinesClient) getAllMachinesInSiteNextResults(ctx context.Context
 	result, err = client.GetAllMachinesInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.MachinesClient", "getAllMachinesInSiteNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -206,6 +208,7 @@ func (client MachinesClient) GetMachine(ctx context.Context, subscriptionID stri
 	result, err = client.GetMachineResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.MachinesClient", "GetMachine", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -284,6 +287,7 @@ func (client MachinesClient) StartMachine(ctx context.Context, subscriptionID st
 	result, err = client.StartMachineResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.MachinesClient", "StartMachine", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -361,6 +365,7 @@ func (client MachinesClient) StopMachine(ctx context.Context, subscriptionID str
 	result, err = client.StopMachineResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.MachinesClient", "StopMachine", resp, "Failure responding to request")
+		return
 	}
 
 	return

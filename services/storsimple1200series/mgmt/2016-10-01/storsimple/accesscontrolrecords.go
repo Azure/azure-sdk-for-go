@@ -255,6 +255,7 @@ func (client AccessControlRecordsClient) Get(ctx context.Context, accessControlR
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -338,6 +339,7 @@ func (client AccessControlRecordsClient) ListByManager(ctx context.Context, reso
 	result, err = client.ListByManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsClient", "ListByManager", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -76,6 +76,7 @@ func (client SQLServerRegistrationsClient) CreateOrUpdate(ctx context.Context, r
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.SQLServerRegistrationsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -154,6 +155,7 @@ func (client SQLServerRegistrationsClient) Delete(ctx context.Context, resourceG
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.SQLServerRegistrationsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -229,6 +231,7 @@ func (client SQLServerRegistrationsClient) Get(ctx context.Context, resourceGrou
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.SQLServerRegistrationsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -302,6 +305,7 @@ func (client SQLServerRegistrationsClient) List(ctx context.Context) (result SQL
 	result.ssrlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.SQLServerRegistrationsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.ssrlr.hasNextLink() && result.ssrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -364,6 +368,7 @@ func (client SQLServerRegistrationsClient) listNextResults(ctx context.Context, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.SQLServerRegistrationsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -416,6 +421,7 @@ func (client SQLServerRegistrationsClient) ListByResourceGroup(ctx context.Conte
 	result.ssrlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.SQLServerRegistrationsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.ssrlr.hasNextLink() && result.ssrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -479,6 +485,7 @@ func (client SQLServerRegistrationsClient) listByResourceGroupNextResults(ctx co
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.SQLServerRegistrationsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -532,6 +539,7 @@ func (client SQLServerRegistrationsClient) Update(ctx context.Context, resourceG
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.SQLServerRegistrationsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

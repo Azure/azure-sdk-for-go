@@ -70,6 +70,7 @@ func (client TopLevelDomainsClient) GetGetTopLevelDomains(ctx context.Context) (
 	result.tldc, err = client.GetGetTopLevelDomainsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "GetGetTopLevelDomains", resp, "Failure responding to request")
+		return
 	}
 	if result.tldc.hasNextLink() && result.tldc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -132,6 +133,7 @@ func (client TopLevelDomainsClient) getGetTopLevelDomainsNextResults(ctx context
 	result, err = client.GetGetTopLevelDomainsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "getGetTopLevelDomainsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -182,6 +184,7 @@ func (client TopLevelDomainsClient) GetTopLevelDomain(ctx context.Context, name 
 	result, err = client.GetTopLevelDomainResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "GetTopLevelDomain", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -257,6 +260,7 @@ func (client TopLevelDomainsClient) ListTopLevelDomainAgreements(ctx context.Con
 	result.tlac, err = client.ListTopLevelDomainAgreementsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "ListTopLevelDomainAgreements", resp, "Failure responding to request")
+		return
 	}
 	if result.tlac.hasNextLink() && result.tlac.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -322,6 +326,7 @@ func (client TopLevelDomainsClient) listTopLevelDomainAgreementsNextResults(ctx 
 	result, err = client.ListTopLevelDomainAgreementsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "listTopLevelDomainAgreementsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -94,6 +94,7 @@ func (client BaseClient) CheckNameAvailability(ctx context.Context, checkNameAva
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.BaseClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -163,6 +164,7 @@ func (client BaseClient) ListOperations(ctx context.Context) (result OperationLi
 	result.olr, err = client.ListOperationsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.BaseClient", "ListOperations", resp, "Failure responding to request")
+		return
 	}
 	if result.olr.hasNextLink() && result.olr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -221,6 +223,7 @@ func (client BaseClient) listOperationsNextResults(ctx context.Context, lastResu
 	result, err = client.ListOperationsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.BaseClient", "listOperationsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -270,6 +273,7 @@ func (client BaseClient) ListResourceUsage(ctx context.Context) (result Resource
 	result.rulr, err = client.ListResourceUsageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.BaseClient", "ListResourceUsage", resp, "Failure responding to request")
+		return
 	}
 	if result.rulr.hasNextLink() && result.rulr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -332,6 +336,7 @@ func (client BaseClient) listResourceUsageNextResults(ctx context.Context, lastR
 	result, err = client.ListResourceUsageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.BaseClient", "listResourceUsageNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -94,6 +94,7 @@ func (client BaseClient) CheckNameAvailability(ctx context.Context, resourceGrou
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "engagementfabric.BaseClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -99,6 +99,7 @@ func (client BaseClient) Resources(ctx context.Context, query QueryRequest) (res
 	result, err = client.ResourcesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcegraph.BaseClient", "Resources", resp, "Failure responding to request")
+		return
 	}
 
 	return

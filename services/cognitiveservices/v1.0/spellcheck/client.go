@@ -205,6 +205,7 @@ func (client BaseClient) SpellCheckerMethod(ctx context.Context, textParameter s
 	result, err = client.SpellCheckerMethodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "spellcheck.BaseClient", "SpellCheckerMethod", resp, "Failure responding to request")
+		return
 	}
 
 	return

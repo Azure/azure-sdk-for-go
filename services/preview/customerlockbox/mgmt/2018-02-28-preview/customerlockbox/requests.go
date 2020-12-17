@@ -74,6 +74,7 @@ func (client RequestsClient) Get(ctx context.Context, requestID string, subscrip
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerlockbox.RequestsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -150,6 +151,7 @@ func (client RequestsClient) List(ctx context.Context, subscriptionID string, fi
 	result.rlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerlockbox.RequestsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -212,6 +214,7 @@ func (client RequestsClient) listNextResults(ctx context.Context, lastResults Re
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerlockbox.RequestsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -266,6 +269,7 @@ func (client RequestsClient) UpdateStatus(ctx context.Context, approval Approval
 	result, err = client.UpdateStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerlockbox.RequestsClient", "UpdateStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return

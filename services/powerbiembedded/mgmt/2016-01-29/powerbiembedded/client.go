@@ -83,6 +83,7 @@ func (client BaseClient) GetAvailableOperations(ctx context.Context) (result Ope
 	result, err = client.GetAvailableOperationsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerbiembedded.BaseClient", "GetAvailableOperations", resp, "Failure responding to request")
+		return
 	}
 
 	return

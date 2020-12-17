@@ -252,6 +252,7 @@ func (client VendorSkuPreviewClient) Get(ctx context.Context, vendorName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkuPreviewClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -335,6 +336,7 @@ func (client VendorSkuPreviewClient) List(ctx context.Context, vendorName string
 	result.psl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkuPreviewClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.psl.hasNextLink() && result.psl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -399,6 +401,7 @@ func (client VendorSkuPreviewClient) listNextResults(ctx context.Context, lastRe
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkuPreviewClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

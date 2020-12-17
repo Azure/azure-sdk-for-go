@@ -256,6 +256,7 @@ func (client OpenShiftClustersClient) Get(ctx context.Context, resourceGroupName
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -335,6 +336,7 @@ func (client OpenShiftClustersClient) List(ctx context.Context) (result OpenShif
 	result.oscl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.oscl.hasNextLink() && result.oscl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -397,6 +399,7 @@ func (client OpenShiftClustersClient) listNextResults(ctx context.Context, lastR
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -458,6 +461,7 @@ func (client OpenShiftClustersClient) ListByResourceGroup(ctx context.Context, r
 	result.oscl, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.oscl.hasNextLink() && result.oscl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -521,6 +525,7 @@ func (client OpenShiftClustersClient) listByResourceGroupNextResults(ctx context
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -582,6 +587,7 @@ func (client OpenShiftClustersClient) ListCredentials(ctx context.Context, resou
 	result, err = client.ListCredentialsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersClient", "ListCredentials", resp, "Failure responding to request")
+		return
 	}
 
 	return

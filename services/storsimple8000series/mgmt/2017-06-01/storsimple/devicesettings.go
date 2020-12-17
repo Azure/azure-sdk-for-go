@@ -260,6 +260,7 @@ func (client DeviceSettingsClient) GetAlertSettings(ctx context.Context, deviceN
 	result, err = client.GetAlertSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "GetAlertSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -344,6 +345,7 @@ func (client DeviceSettingsClient) GetNetworkSettings(ctx context.Context, devic
 	result, err = client.GetNetworkSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "GetNetworkSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -428,6 +430,7 @@ func (client DeviceSettingsClient) GetSecuritySettings(ctx context.Context, devi
 	result, err = client.GetSecuritySettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "GetSecuritySettings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -512,6 +515,7 @@ func (client DeviceSettingsClient) GetTimeSettings(ctx context.Context, deviceNa
 	result, err = client.GetTimeSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "GetTimeSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return

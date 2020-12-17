@@ -77,6 +77,7 @@ func (client APIExportClient) Get(ctx context.Context, apimBaseURL string, apiid
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIExportClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

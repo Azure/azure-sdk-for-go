@@ -225,6 +225,7 @@ func (client InterfacesClient) Get(ctx context.Context, resourceGroupName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -381,6 +382,7 @@ func (client InterfacesClient) GetVirtualMachineScaleSetNetworkInterface(ctx con
 	result, err = client.GetVirtualMachineScaleSetNetworkInterfaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "GetVirtualMachineScaleSetNetworkInterface", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -461,6 +463,7 @@ func (client InterfacesClient) List(ctx context.Context, resourceGroupName strin
 	result.ilr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -524,6 +527,7 @@ func (client InterfacesClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -573,6 +577,7 @@ func (client InterfacesClient) ListAll(ctx context.Context) (result InterfaceLis
 	result.ilr, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListAll", resp, "Failure responding to request")
+		return
 	}
 	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -635,6 +640,7 @@ func (client InterfacesClient) listAllNextResults(ctx context.Context, lastResul
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "listAllNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -762,6 +768,7 @@ func (client InterfacesClient) ListVirtualMachineScaleSetNetworkInterfaces(ctx c
 	result.ilr, err = client.ListVirtualMachineScaleSetNetworkInterfacesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetNetworkInterfaces", resp, "Failure responding to request")
+		return
 	}
 	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -826,6 +833,7 @@ func (client InterfacesClient) listVirtualMachineScaleSetNetworkInterfacesNextRe
 	result, err = client.ListVirtualMachineScaleSetNetworkInterfacesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "listVirtualMachineScaleSetNetworkInterfacesNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -880,6 +888,7 @@ func (client InterfacesClient) ListVirtualMachineScaleSetVMNetworkInterfaces(ctx
 	result.ilr, err = client.ListVirtualMachineScaleSetVMNetworkInterfacesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetVMNetworkInterfaces", resp, "Failure responding to request")
+		return
 	}
 	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -945,6 +954,7 @@ func (client InterfacesClient) listVirtualMachineScaleSetVMNetworkInterfacesNext
 	result, err = client.ListVirtualMachineScaleSetVMNetworkInterfacesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "listVirtualMachineScaleSetVMNetworkInterfacesNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

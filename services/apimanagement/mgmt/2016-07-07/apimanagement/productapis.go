@@ -91,6 +91,7 @@ func (client ProductApisClient) Add(ctx context.Context, resourceGroupName strin
 	result, err = client.AddResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductApisClient", "Add", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -196,6 +197,7 @@ func (client ProductApisClient) ListByProduct(ctx context.Context, resourceGroup
 	result.ac, err = client.ListByProductResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductApisClient", "ListByProduct", resp, "Failure responding to request")
+		return
 	}
 	if result.ac.hasNextLink() && result.ac.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -270,6 +272,7 @@ func (client ProductApisClient) listByProductNextResults(ctx context.Context, la
 	result, err = client.ListByProductResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductApisClient", "listByProductNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -339,6 +342,7 @@ func (client ProductApisClient) Remove(ctx context.Context, resourceGroupName st
 	result, err = client.RemoveResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductApisClient", "Remove", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -172,6 +172,7 @@ func (client PipelinesClient) Delete(ctx context.Context, resourceGroupName stri
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devops.PipelinesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -246,6 +247,7 @@ func (client PipelinesClient) Get(ctx context.Context, resourceGroupName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devops.PipelinesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -321,6 +323,7 @@ func (client PipelinesClient) ListByResourceGroup(ctx context.Context, resourceG
 	result.plr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devops.PipelinesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -384,6 +387,7 @@ func (client PipelinesClient) listByResourceGroupNextResults(ctx context.Context
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devops.PipelinesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -433,6 +437,7 @@ func (client PipelinesClient) ListBySubscription(ctx context.Context) (result Pi
 	result.plr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devops.PipelinesClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -495,6 +500,7 @@ func (client PipelinesClient) listBySubscriptionNextResults(ctx context.Context,
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devops.PipelinesClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -547,6 +553,7 @@ func (client PipelinesClient) Update(ctx context.Context, resourceGroupName stri
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devops.PipelinesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

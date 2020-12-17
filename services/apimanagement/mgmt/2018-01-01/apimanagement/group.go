@@ -95,6 +95,7 @@ func (client GroupClient) CreateOrUpdate(ctx context.Context, resourceGroupName 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -192,6 +193,7 @@ func (client GroupClient) Delete(ctx context.Context, resourceGroupName string, 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -281,6 +283,7 @@ func (client GroupClient) Get(ctx context.Context, resourceGroupName string, ser
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -370,6 +373,7 @@ func (client GroupClient) GetEntityTag(ctx context.Context, resourceGroupName st
 	result, err = client.GetEntityTagResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "GetEntityTag", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -468,6 +472,7 @@ func (client GroupClient) ListByService(ctx context.Context, resourceGroupName s
 	result.gc, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 	if result.gc.hasNextLink() && result.gc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -541,6 +546,7 @@ func (client GroupClient) listByServiceNextResults(ctx context.Context, lastResu
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -608,6 +614,7 @@ func (client GroupClient) Update(ctx context.Context, resourceGroupName string, 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

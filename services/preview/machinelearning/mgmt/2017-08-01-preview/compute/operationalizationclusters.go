@@ -90,6 +90,7 @@ func (client OperationalizationClustersClient) CheckSystemServicesUpdatesAvailab
 	result, err = client.CheckSystemServicesUpdatesAvailableResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "CheckSystemServicesUpdatesAvailable", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -389,6 +390,7 @@ func (client OperationalizationClustersClient) Get(ctx context.Context, resource
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -473,6 +475,7 @@ func (client OperationalizationClustersClient) ListByResourceGroup(ctx context.C
 	result.pocl, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.pocl.hasNextLink() && result.pocl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -539,6 +542,7 @@ func (client OperationalizationClustersClient) listByResourceGroupNextResults(ct
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -590,6 +594,7 @@ func (client OperationalizationClustersClient) ListBySubscriptionID(ctx context.
 	result.pocl, err = client.ListBySubscriptionIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "ListBySubscriptionID", resp, "Failure responding to request")
+		return
 	}
 	if result.pocl.hasNextLink() && result.pocl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -655,6 +660,7 @@ func (client OperationalizationClustersClient) listBySubscriptionIDNextResults(c
 	result, err = client.ListBySubscriptionIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "listBySubscriptionIDNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -719,6 +725,7 @@ func (client OperationalizationClustersClient) ListKeys(ctx context.Context, res
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "ListKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -808,6 +815,7 @@ func (client OperationalizationClustersClient) Update(ctx context.Context, resou
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

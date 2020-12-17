@@ -83,6 +83,7 @@ func (client BaseClient) AnalyzeWithCustomModel(ctx context.Context, ID uuid.UUI
 	result, err = client.AnalyzeWithCustomModelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "AnalyzeWithCustomModel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -171,6 +172,7 @@ func (client BaseClient) BatchReadReceipt(ctx context.Context, imageURL ImageURL
 	result, err = client.BatchReadReceiptResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "BatchReadReceipt", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -240,6 +242,7 @@ func (client BaseClient) BatchReadReceiptInStream(ctx context.Context, imagePara
 	result, err = client.BatchReadReceiptInStreamResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "BatchReadReceiptInStream", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -307,6 +310,7 @@ func (client BaseClient) DeleteCustomModel(ctx context.Context, ID uuid.UUID) (r
 	result, err = client.DeleteCustomModelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "DeleteCustomModel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -376,6 +380,7 @@ func (client BaseClient) GetCustomModel(ctx context.Context, ID uuid.UUID) (resu
 	result, err = client.GetCustomModelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "GetCustomModel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -444,6 +449,7 @@ func (client BaseClient) GetCustomModels(ctx context.Context) (result ModelsResu
 	result, err = client.GetCustomModelsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "GetCustomModels", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -511,6 +517,7 @@ func (client BaseClient) GetExtractedKeys(ctx context.Context, ID uuid.UUID) (re
 	result, err = client.GetExtractedKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "GetExtractedKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -583,6 +590,7 @@ func (client BaseClient) GetReadReceiptResult(ctx context.Context, operationID s
 	result, err = client.GetReadReceiptResultResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "GetReadReceiptResult", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -676,6 +684,7 @@ func (client BaseClient) TrainCustomModel(ctx context.Context, trainRequest Trai
 	result, err = client.TrainCustomModelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "TrainCustomModel", resp, "Failure responding to request")
+		return
 	}
 
 	return

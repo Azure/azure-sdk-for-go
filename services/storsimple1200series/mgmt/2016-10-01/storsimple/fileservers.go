@@ -347,6 +347,7 @@ func (client FileServersClient) Get(ctx context.Context, deviceName string, file
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.FileServersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -432,6 +433,7 @@ func (client FileServersClient) ListByDevice(ctx context.Context, deviceName str
 	result, err = client.ListByDeviceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.FileServersClient", "ListByDevice", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -515,6 +517,7 @@ func (client FileServersClient) ListByManager(ctx context.Context, resourceGroup
 	result, err = client.ListByManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.FileServersClient", "ListByManager", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -599,6 +602,7 @@ func (client FileServersClient) ListMetricDefinition(ctx context.Context, device
 	result, err = client.ListMetricDefinitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.FileServersClient", "ListMetricDefinition", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -686,6 +690,7 @@ func (client FileServersClient) ListMetrics(ctx context.Context, deviceName stri
 	result, err = client.ListMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.FileServersClient", "ListMetrics", resp, "Failure responding to request")
+		return
 	}
 
 	return

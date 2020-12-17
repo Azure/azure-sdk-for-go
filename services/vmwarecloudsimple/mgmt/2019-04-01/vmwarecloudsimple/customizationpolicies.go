@@ -74,6 +74,7 @@ func (client CustomizationPoliciesClient) Get(ctx context.Context, regionID stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.CustomizationPoliciesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -153,6 +154,7 @@ func (client CustomizationPoliciesClient) List(ctx context.Context, regionID str
 	result.cplr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.CustomizationPoliciesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.cplr.hasNextLink() && result.cplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -220,6 +222,7 @@ func (client CustomizationPoliciesClient) listNextResults(ctx context.Context, l
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.CustomizationPoliciesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

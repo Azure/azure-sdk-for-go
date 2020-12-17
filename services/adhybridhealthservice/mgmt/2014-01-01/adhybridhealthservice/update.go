@@ -72,6 +72,7 @@ func (client UpdateClient) IPAddressAggregateSettings(ctx context.Context, servi
 	result, err = client.IPAddressAggregateSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.UpdateClient", "IPAddressAggregateSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return

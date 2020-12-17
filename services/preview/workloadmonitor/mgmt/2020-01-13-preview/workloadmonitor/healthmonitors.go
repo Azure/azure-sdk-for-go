@@ -79,6 +79,7 @@ func (client HealthMonitorsClient) Get(ctx context.Context, subscriptionID strin
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.HealthMonitorsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -167,6 +168,7 @@ func (client HealthMonitorsClient) GetStateChange(ctx context.Context, subscript
 	result, err = client.GetStateChangeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.HealthMonitorsClient", "GetStateChange", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -257,6 +259,7 @@ func (client HealthMonitorsClient) List(ctx context.Context, subscriptionID stri
 	result.hml, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.HealthMonitorsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.hml.hasNextLink() && result.hml.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -329,6 +332,7 @@ func (client HealthMonitorsClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.HealthMonitorsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -390,6 +394,7 @@ func (client HealthMonitorsClient) ListStateChanges(ctx context.Context, subscri
 	result.hmscl, err = client.ListStateChangesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.HealthMonitorsClient", "ListStateChanges", resp, "Failure responding to request")
+		return
 	}
 	if result.hmscl.hasNextLink() && result.hmscl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -469,6 +474,7 @@ func (client HealthMonitorsClient) listStateChangesNextResults(ctx context.Conte
 	result, err = client.ListStateChangesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.HealthMonitorsClient", "listStateChangesNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

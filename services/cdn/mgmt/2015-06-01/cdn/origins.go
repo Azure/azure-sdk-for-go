@@ -243,6 +243,7 @@ func (client OriginsClient) Get(ctx context.Context, originName string, endpoint
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -321,6 +322,7 @@ func (client OriginsClient) ListByEndpoint(ctx context.Context, endpointName str
 	result, err = client.ListByEndpointResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "ListByEndpoint", resp, "Failure responding to request")
+		return
 	}
 
 	return

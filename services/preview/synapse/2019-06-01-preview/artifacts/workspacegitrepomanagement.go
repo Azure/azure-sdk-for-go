@@ -74,6 +74,7 @@ func (client WorkspaceGitRepoManagementClient) GetGitHubAccessToken(ctx context.
 	result, err = client.GetGitHubAccessTokenResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.WorkspaceGitRepoManagementClient", "GetGitHubAccessToken", resp, "Failure responding to request")
+		return
 	}
 
 	return

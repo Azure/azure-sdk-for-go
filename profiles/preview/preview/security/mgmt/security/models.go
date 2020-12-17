@@ -387,7 +387,6 @@ type KindEnum = original.KindEnum
 const (
 	KindDataExportSettings KindEnum = original.KindDataExportSettings
 	KindSetting            KindEnum = original.KindSetting
-	KindSettingResource    KindEnum = original.KindSettingResource
 )
 
 type KindEnum1 = original.KindEnum1
@@ -697,6 +696,14 @@ const (
 	ScriptNone    Script = original.ScriptNone
 )
 
+type SensorStatus = original.SensorStatus
+
+const (
+	Disconnected SensorStatus = original.Disconnected
+	Ok           SensorStatus = original.Ok
+	Unavailable  SensorStatus = original.Unavailable
+)
+
 type Severity = original.Severity
 
 const (
@@ -774,6 +781,15 @@ const (
 	MaliciousInsider     Threats = original.MaliciousInsider
 	MissingCoverage      Threats = original.MissingCoverage
 	ThreatResistance     Threats = original.ThreatResistance
+)
+
+type TiStatus = original.TiStatus
+
+const (
+	TiStatusFailed          TiStatus = original.TiStatusFailed
+	TiStatusInProgress      TiStatus = original.TiStatusInProgress
+	TiStatusOk              TiStatus = original.TiStatusOk
+	TiStatusUpdateAvailable TiStatus = original.TiStatusUpdateAvailable
 )
 
 type TransportProtocol = original.TransportProtocol
@@ -940,7 +956,6 @@ type BasicOnPremiseResourceDetails = original.BasicOnPremiseResourceDetails
 type BasicResourceDetails = original.BasicResourceDetails
 type BasicResourceIdentifier = original.BasicResourceIdentifier
 type BasicSetting = original.BasicSetting
-type BasicSettingResource = original.BasicSettingResource
 type BasicThresholdCustomAlertRule = original.BasicThresholdCustomAlertRule
 type BasicTimeWindowCustomAlertRule = original.BasicTimeWindowCustomAlertRule
 type BenchmarkReference = original.BenchmarkReference
@@ -1094,9 +1109,14 @@ type IotSecuritySolutionAnalyticsClient = original.IotSecuritySolutionAnalyticsC
 type IotSecuritySolutionClient = original.IotSecuritySolutionClient
 type IotSecuritySolutionsAnalyticsAggregatedAlertClient = original.IotSecuritySolutionsAnalyticsAggregatedAlertClient
 type IotSecuritySolutionsAnalyticsRecommendationClient = original.IotSecuritySolutionsAnalyticsRecommendationClient
-type IotSensor = original.IotSensor
+type IotSensorProperties = original.IotSensorProperties
 type IotSensorsClient = original.IotSensorsClient
 type IotSensorsList = original.IotSensorsList
+type IotSensorsModel = original.IotSensorsModel
+type IotSiteProperties = original.IotSiteProperties
+type IotSitesClient = original.IotSitesClient
+type IotSitesList = original.IotSitesList
+type IotSitesModel = original.IotSitesModel
 type JitNetworkAccessPoliciesClient = original.JitNetworkAccessPoliciesClient
 type JitNetworkAccessPoliciesList = original.JitNetworkAccessPoliciesList
 type JitNetworkAccessPoliciesListIterator = original.JitNetworkAccessPoliciesListIterator
@@ -1225,7 +1245,7 @@ type ServerVulnerabilityAssessmentsList = original.ServerVulnerabilityAssessment
 type ServerVulnerabilityProperties = original.ServerVulnerabilityProperties
 type ServicePrincipalProperties = original.ServicePrincipalProperties
 type Setting = original.Setting
-type SettingResource = original.SettingResource
+type SettingModel = original.SettingModel
 type SettingsClient = original.SettingsClient
 type SettingsList = original.SettingsList
 type SettingsListIterator = original.SettingsListIterator
@@ -1625,6 +1645,12 @@ func NewIotSensorsClient(subscriptionID string, ascLocation string) IotSensorsCl
 }
 func NewIotSensorsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotSensorsClient {
 	return original.NewIotSensorsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewIotSitesClient(subscriptionID string, ascLocation string) IotSitesClient {
+	return original.NewIotSitesClient(subscriptionID, ascLocation)
+}
+func NewIotSitesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotSitesClient {
+	return original.NewIotSitesClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewJitNetworkAccessPoliciesClient(subscriptionID string, ascLocation string) JitNetworkAccessPoliciesClient {
 	return original.NewJitNetworkAccessPoliciesClient(subscriptionID, ascLocation)
@@ -2064,6 +2090,9 @@ func PossibleScanningFunctionalityValues() []ScanningFunctionality {
 func PossibleScriptValues() []Script {
 	return original.PossibleScriptValues()
 }
+func PossibleSensorStatusValues() []SensorStatus {
+	return original.PossibleSensorStatusValues()
+}
 func PossibleSeverityValues() []Severity {
 	return original.PossibleSeverityValues()
 }
@@ -2090,6 +2119,9 @@ func PossibleSubAssessmentStatusCodeValues() []SubAssessmentStatusCode {
 }
 func PossibleThreatsValues() []Threats {
 	return original.PossibleThreatsValues()
+}
+func PossibleTiStatusValues() []TiStatus {
+	return original.PossibleTiStatusValues()
 }
 func PossibleTransportProtocolValues() []TransportProtocol {
 	return original.PossibleTransportProtocolValues()

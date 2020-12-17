@@ -69,6 +69,7 @@ func (client ModelClient) AddClosedList(ctx context.Context, appID uuid.UUID, ve
 	result, err = client.AddClosedListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddClosedList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -146,6 +147,7 @@ func (client ModelClient) AddCompositeEntityChild(ctx context.Context, appID uui
 	result, err = client.AddCompositeEntityChildResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddCompositeEntityChild", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -223,6 +225,7 @@ func (client ModelClient) AddCustomPrebuiltDomain(ctx context.Context, appID uui
 	result, err = client.AddCustomPrebuiltDomainResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddCustomPrebuiltDomain", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -299,6 +302,7 @@ func (client ModelClient) AddCustomPrebuiltEntity(ctx context.Context, appID uui
 	result, err = client.AddCustomPrebuiltEntityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddCustomPrebuiltEntity", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -375,6 +379,7 @@ func (client ModelClient) AddCustomPrebuiltIntent(ctx context.Context, appID uui
 	result, err = client.AddCustomPrebuiltIntentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddCustomPrebuiltIntent", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -450,6 +455,7 @@ func (client ModelClient) AddEntity(ctx context.Context, appID uuid.UUID, versio
 	result, err = client.AddEntityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddEntity", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -526,6 +532,7 @@ func (client ModelClient) AddEntityChild(ctx context.Context, appID uuid.UUID, v
 	result, err = client.AddEntityChildResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddEntityChild", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -603,6 +610,7 @@ func (client ModelClient) AddExplicitListItem(ctx context.Context, appID uuid.UU
 	result, err = client.AddExplicitListItemResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddExplicitListItem", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -679,6 +687,7 @@ func (client ModelClient) AddIntent(ctx context.Context, appID uuid.UUID, versio
 	result, err = client.AddIntentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddIntent", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -760,6 +769,7 @@ func (client ModelClient) AddPrebuilt(ctx context.Context, appID uuid.UUID, vers
 	result, err = client.AddPrebuiltResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddPrebuilt", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -836,6 +846,7 @@ func (client ModelClient) AddSubList(ctx context.Context, appID uuid.UUID, versi
 	result, err = client.AddSubListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddSubList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -913,6 +924,7 @@ func (client ModelClient) CreateClosedListEntityRole(ctx context.Context, appID 
 	result, err = client.CreateClosedListEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "CreateClosedListEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -990,6 +1002,7 @@ func (client ModelClient) CreateCompositeEntityRole(ctx context.Context, appID u
 	result, err = client.CreateCompositeEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "CreateCompositeEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1067,6 +1080,7 @@ func (client ModelClient) CreateCustomPrebuiltEntityRole(ctx context.Context, ap
 	result, err = client.CreateCustomPrebuiltEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "CreateCustomPrebuiltEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1144,6 +1158,7 @@ func (client ModelClient) CreateEntityRole(ctx context.Context, appID uuid.UUID,
 	result, err = client.CreateEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "CreateEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1221,6 +1236,7 @@ func (client ModelClient) CreateHierarchicalEntityRole(ctx context.Context, appI
 	result, err = client.CreateHierarchicalEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "CreateHierarchicalEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1298,6 +1314,7 @@ func (client ModelClient) CreatePatternAnyEntityModel(ctx context.Context, appID
 	result, err = client.CreatePatternAnyEntityModelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "CreatePatternAnyEntityModel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1374,6 +1391,7 @@ func (client ModelClient) CreatePatternAnyEntityRole(ctx context.Context, appID 
 	result, err = client.CreatePatternAnyEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "CreatePatternAnyEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1451,6 +1469,7 @@ func (client ModelClient) CreatePrebuiltEntityRole(ctx context.Context, appID uu
 	result, err = client.CreatePrebuiltEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "CreatePrebuiltEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1528,6 +1547,7 @@ func (client ModelClient) CreateRegexEntityModel(ctx context.Context, appID uuid
 	result, err = client.CreateRegexEntityModelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "CreateRegexEntityModel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1604,6 +1624,7 @@ func (client ModelClient) CreateRegexEntityRole(ctx context.Context, appID uuid.
 	result, err = client.CreateRegexEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "CreateRegexEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1680,6 +1701,7 @@ func (client ModelClient) DeleteClosedList(ctx context.Context, appID uuid.UUID,
 	result, err = client.DeleteClosedListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteClosedList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1755,6 +1777,7 @@ func (client ModelClient) DeleteClosedListEntityRole(ctx context.Context, appID 
 	result, err = client.DeleteClosedListEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteClosedListEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1830,6 +1853,7 @@ func (client ModelClient) DeleteCompositeEntity(ctx context.Context, appID uuid.
 	result, err = client.DeleteCompositeEntityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteCompositeEntity", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1905,6 +1929,7 @@ func (client ModelClient) DeleteCompositeEntityChild(ctx context.Context, appID 
 	result, err = client.DeleteCompositeEntityChildResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteCompositeEntityChild", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1981,6 +2006,7 @@ func (client ModelClient) DeleteCompositeEntityRole(ctx context.Context, appID u
 	result, err = client.DeleteCompositeEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteCompositeEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2057,6 +2083,7 @@ func (client ModelClient) DeleteCustomEntityRole(ctx context.Context, appID uuid
 	result, err = client.DeleteCustomEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteCustomEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2132,6 +2159,7 @@ func (client ModelClient) DeleteCustomPrebuiltDomain(ctx context.Context, appID 
 	result, err = client.DeleteCustomPrebuiltDomainResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteCustomPrebuiltDomain", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2206,6 +2234,7 @@ func (client ModelClient) DeleteEntity(ctx context.Context, appID uuid.UUID, ver
 	result, err = client.DeleteEntityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteEntity", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2282,6 +2311,7 @@ func (client ModelClient) DeleteEntityFeature(ctx context.Context, appID uuid.UU
 	result, err = client.DeleteEntityFeatureResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteEntityFeature", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2359,6 +2389,7 @@ func (client ModelClient) DeleteEntityRole(ctx context.Context, appID uuid.UUID,
 	result, err = client.DeleteEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2435,6 +2466,7 @@ func (client ModelClient) DeleteExplicitListItem(ctx context.Context, appID uuid
 	result, err = client.DeleteExplicitListItemResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteExplicitListItem", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2510,6 +2542,7 @@ func (client ModelClient) DeleteHierarchicalEntity(ctx context.Context, appID uu
 	result, err = client.DeleteHierarchicalEntityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteHierarchicalEntity", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2585,6 +2618,7 @@ func (client ModelClient) DeleteHierarchicalEntityChild(ctx context.Context, app
 	result, err = client.DeleteHierarchicalEntityChildResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteHierarchicalEntityChild", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2661,6 +2695,7 @@ func (client ModelClient) DeleteHierarchicalEntityRole(ctx context.Context, appI
 	result, err = client.DeleteHierarchicalEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteHierarchicalEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2738,6 +2773,7 @@ func (client ModelClient) DeleteIntent(ctx context.Context, appID uuid.UUID, ver
 	result, err = client.DeleteIntentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteIntent", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2822,6 +2858,7 @@ func (client ModelClient) DeleteIntentFeature(ctx context.Context, appID uuid.UU
 	result, err = client.DeleteIntentFeatureResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteIntentFeature", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2898,6 +2935,7 @@ func (client ModelClient) DeletePatternAnyEntityModel(ctx context.Context, appID
 	result, err = client.DeletePatternAnyEntityModelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeletePatternAnyEntityModel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2973,6 +3011,7 @@ func (client ModelClient) DeletePatternAnyEntityRole(ctx context.Context, appID 
 	result, err = client.DeletePatternAnyEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeletePatternAnyEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3048,6 +3087,7 @@ func (client ModelClient) DeletePrebuilt(ctx context.Context, appID uuid.UUID, v
 	result, err = client.DeletePrebuiltResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeletePrebuilt", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3123,6 +3163,7 @@ func (client ModelClient) DeletePrebuiltEntityRole(ctx context.Context, appID uu
 	result, err = client.DeletePrebuiltEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeletePrebuiltEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3198,6 +3239,7 @@ func (client ModelClient) DeleteRegexEntityModel(ctx context.Context, appID uuid
 	result, err = client.DeleteRegexEntityModelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteRegexEntityModel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3273,6 +3315,7 @@ func (client ModelClient) DeleteRegexEntityRole(ctx context.Context, appID uuid.
 	result, err = client.DeleteRegexEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteRegexEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3349,6 +3392,7 @@ func (client ModelClient) DeleteSubList(ctx context.Context, appID uuid.UUID, ve
 	result, err = client.DeleteSubListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteSubList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3438,6 +3482,7 @@ func (client ModelClient) ExamplesMethod(ctx context.Context, appID uuid.UUID, v
 	result, err = client.ExamplesMethodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ExamplesMethod", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3525,6 +3570,7 @@ func (client ModelClient) GetClosedList(ctx context.Context, appID uuid.UUID, ve
 	result, err = client.GetClosedListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetClosedList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3600,6 +3646,7 @@ func (client ModelClient) GetClosedListEntityRole(ctx context.Context, appID uui
 	result, err = client.GetClosedListEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetClosedListEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3675,6 +3722,7 @@ func (client ModelClient) GetCompositeEntity(ctx context.Context, appID uuid.UUI
 	result, err = client.GetCompositeEntityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetCompositeEntity", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3750,6 +3798,7 @@ func (client ModelClient) GetCompositeEntityRole(ctx context.Context, appID uuid
 	result, err = client.GetCompositeEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetCompositeEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3826,6 +3875,7 @@ func (client ModelClient) GetCustomEntityRole(ctx context.Context, appID uuid.UU
 	result, err = client.GetCustomEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetCustomEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3901,6 +3951,7 @@ func (client ModelClient) GetEntity(ctx context.Context, appID uuid.UUID, versio
 	result, err = client.GetEntityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetEntity", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3975,6 +4026,7 @@ func (client ModelClient) GetEntityFeatures(ctx context.Context, appID uuid.UUID
 	result, err = client.GetEntityFeaturesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetEntityFeatures", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4050,6 +4102,7 @@ func (client ModelClient) GetEntityRole(ctx context.Context, appID uuid.UUID, ve
 	result, err = client.GetEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4125,6 +4178,7 @@ func (client ModelClient) GetExplicitList(ctx context.Context, appID uuid.UUID, 
 	result, err = client.GetExplicitListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetExplicitList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4200,6 +4254,7 @@ func (client ModelClient) GetExplicitListItem(ctx context.Context, appID uuid.UU
 	result, err = client.GetExplicitListItemResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetExplicitListItem", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4275,6 +4330,7 @@ func (client ModelClient) GetHierarchicalEntity(ctx context.Context, appID uuid.
 	result, err = client.GetHierarchicalEntityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetHierarchicalEntity", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4351,6 +4407,7 @@ func (client ModelClient) GetHierarchicalEntityChild(ctx context.Context, appID 
 	result, err = client.GetHierarchicalEntityChildResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetHierarchicalEntityChild", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4427,6 +4484,7 @@ func (client ModelClient) GetHierarchicalEntityRole(ctx context.Context, appID u
 	result, err = client.GetHierarchicalEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetHierarchicalEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4502,6 +4560,7 @@ func (client ModelClient) GetIntent(ctx context.Context, appID uuid.UUID, versio
 	result, err = client.GetIntentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetIntent", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4576,6 +4635,7 @@ func (client ModelClient) GetIntentFeatures(ctx context.Context, appID uuid.UUID
 	result, err = client.GetIntentFeaturesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetIntentFeatures", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4650,6 +4710,7 @@ func (client ModelClient) GetPatternAnyEntityInfo(ctx context.Context, appID uui
 	result, err = client.GetPatternAnyEntityInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetPatternAnyEntityInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4725,6 +4786,7 @@ func (client ModelClient) GetPatternAnyEntityRole(ctx context.Context, appID uui
 	result, err = client.GetPatternAnyEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetPatternAnyEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4800,6 +4862,7 @@ func (client ModelClient) GetPrebuilt(ctx context.Context, appID uuid.UUID, vers
 	result, err = client.GetPrebuiltResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetPrebuilt", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4875,6 +4938,7 @@ func (client ModelClient) GetPrebuiltEntityRole(ctx context.Context, appID uuid.
 	result, err = client.GetPrebuiltEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetPrebuiltEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4950,6 +5014,7 @@ func (client ModelClient) GetRegexEntityEntityInfo(ctx context.Context, appID uu
 	result, err = client.GetRegexEntityEntityInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetRegexEntityEntityInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5025,6 +5090,7 @@ func (client ModelClient) GetRegexEntityRole(ctx context.Context, appID uuid.UUI
 	result, err = client.GetRegexEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetRegexEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5100,6 +5166,7 @@ func (client ModelClient) ListClosedListEntityRoles(ctx context.Context, appID u
 	result, err = client.ListClosedListEntityRolesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListClosedListEntityRoles", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5187,6 +5254,7 @@ func (client ModelClient) ListClosedLists(ctx context.Context, appID uuid.UUID, 
 	result, err = client.ListClosedListsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListClosedLists", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5286,6 +5354,7 @@ func (client ModelClient) ListCompositeEntities(ctx context.Context, appID uuid.
 	result, err = client.ListCompositeEntitiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListCompositeEntities", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5372,6 +5441,7 @@ func (client ModelClient) ListCompositeEntityRoles(ctx context.Context, appID uu
 	result, err = client.ListCompositeEntityRolesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListCompositeEntityRoles", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5445,6 +5515,7 @@ func (client ModelClient) ListCustomPrebuiltEntities(ctx context.Context, appID 
 	result, err = client.ListCustomPrebuiltEntitiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListCustomPrebuiltEntities", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5518,6 +5589,7 @@ func (client ModelClient) ListCustomPrebuiltEntityRoles(ctx context.Context, app
 	result, err = client.ListCustomPrebuiltEntityRolesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListCustomPrebuiltEntityRoles", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5592,6 +5664,7 @@ func (client ModelClient) ListCustomPrebuiltIntents(ctx context.Context, appID u
 	result, err = client.ListCustomPrebuiltIntentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListCustomPrebuiltIntents", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5665,6 +5738,7 @@ func (client ModelClient) ListCustomPrebuiltModels(ctx context.Context, appID uu
 	result, err = client.ListCustomPrebuiltModelsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListCustomPrebuiltModels", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5751,6 +5825,7 @@ func (client ModelClient) ListEntities(ctx context.Context, appID uuid.UUID, ver
 	result, err = client.ListEntitiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListEntities", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5837,6 +5912,7 @@ func (client ModelClient) ListEntityRoles(ctx context.Context, appID uuid.UUID, 
 	result, err = client.ListEntityRolesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListEntityRoles", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5923,6 +5999,7 @@ func (client ModelClient) ListEntitySuggestions(ctx context.Context, appID uuid.
 	result, err = client.ListEntitySuggestionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListEntitySuggestions", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6023,6 +6100,7 @@ func (client ModelClient) ListHierarchicalEntities(ctx context.Context, appID uu
 	result, err = client.ListHierarchicalEntitiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListHierarchicalEntities", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6109,6 +6187,7 @@ func (client ModelClient) ListHierarchicalEntityRoles(ctx context.Context, appID
 	result, err = client.ListHierarchicalEntityRolesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListHierarchicalEntityRoles", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6196,6 +6275,7 @@ func (client ModelClient) ListIntents(ctx context.Context, appID uuid.UUID, vers
 	result, err = client.ListIntentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListIntents", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6294,6 +6374,7 @@ func (client ModelClient) ListIntentSuggestions(ctx context.Context, appID uuid.
 	result, err = client.ListIntentSuggestionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListIntentSuggestions", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6394,6 +6475,7 @@ func (client ModelClient) ListModels(ctx context.Context, appID uuid.UUID, versi
 	result, err = client.ListModelsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListModels", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6493,6 +6575,7 @@ func (client ModelClient) ListPatternAnyEntityInfos(ctx context.Context, appID u
 	result, err = client.ListPatternAnyEntityInfosResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListPatternAnyEntityInfos", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6579,6 +6662,7 @@ func (client ModelClient) ListPatternAnyEntityRoles(ctx context.Context, appID u
 	result, err = client.ListPatternAnyEntityRolesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListPatternAnyEntityRoles", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6652,6 +6736,7 @@ func (client ModelClient) ListPrebuiltEntities(ctx context.Context, appID uuid.U
 	result, err = client.ListPrebuiltEntitiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListPrebuiltEntities", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6725,6 +6810,7 @@ func (client ModelClient) ListPrebuiltEntityRoles(ctx context.Context, appID uui
 	result, err = client.ListPrebuiltEntityRolesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListPrebuiltEntityRoles", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6812,6 +6898,7 @@ func (client ModelClient) ListPrebuilts(ctx context.Context, appID uuid.UUID, ve
 	result, err = client.ListPrebuiltsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListPrebuilts", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6911,6 +6998,7 @@ func (client ModelClient) ListRegexEntityInfos(ctx context.Context, appID uuid.U
 	result, err = client.ListRegexEntityInfosResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListRegexEntityInfos", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6997,6 +7085,7 @@ func (client ModelClient) ListRegexEntityRoles(ctx context.Context, appID uuid.U
 	result, err = client.ListRegexEntityRolesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListRegexEntityRoles", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7072,6 +7161,7 @@ func (client ModelClient) PatchClosedList(ctx context.Context, appID uuid.UUID, 
 	result, err = client.PatchClosedListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "PatchClosedList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7155,6 +7245,7 @@ func (client ModelClient) ReplaceEntityFeatures(ctx context.Context, appID uuid.
 	result, err = client.ReplaceEntityFeaturesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ReplaceEntityFeatures", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7238,6 +7329,7 @@ func (client ModelClient) ReplaceIntentFeatures(ctx context.Context, appID uuid.
 	result, err = client.ReplaceIntentFeaturesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ReplaceIntentFeatures", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7315,6 +7407,7 @@ func (client ModelClient) UpdateClosedList(ctx context.Context, appID uuid.UUID,
 	result, err = client.UpdateClosedListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateClosedList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7393,6 +7486,7 @@ func (client ModelClient) UpdateClosedListEntityRole(ctx context.Context, appID 
 	result, err = client.UpdateClosedListEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateClosedListEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7471,6 +7565,7 @@ func (client ModelClient) UpdateCompositeEntity(ctx context.Context, appID uuid.
 	result, err = client.UpdateCompositeEntityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateCompositeEntity", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7549,6 +7644,7 @@ func (client ModelClient) UpdateCompositeEntityRole(ctx context.Context, appID u
 	result, err = client.UpdateCompositeEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateCompositeEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7628,6 +7724,7 @@ func (client ModelClient) UpdateCustomPrebuiltEntityRole(ctx context.Context, ap
 	result, err = client.UpdateCustomPrebuiltEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateCustomPrebuiltEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7708,6 +7805,7 @@ func (client ModelClient) UpdateEntityChild(ctx context.Context, appID uuid.UUID
 	result, err = client.UpdateEntityChildResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateEntityChild", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7786,6 +7884,7 @@ func (client ModelClient) UpdateEntityRole(ctx context.Context, appID uuid.UUID,
 	result, err = client.UpdateEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7865,6 +7964,7 @@ func (client ModelClient) UpdateExplicitListItem(ctx context.Context, appID uuid
 	result, err = client.UpdateExplicitListItemResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateExplicitListItem", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7943,6 +8043,7 @@ func (client ModelClient) UpdateHierarchicalEntity(ctx context.Context, appID uu
 	result, err = client.UpdateHierarchicalEntityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateHierarchicalEntity", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8022,6 +8123,7 @@ func (client ModelClient) UpdateHierarchicalEntityChild(ctx context.Context, app
 	result, err = client.UpdateHierarchicalEntityChildResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateHierarchicalEntityChild", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8101,6 +8203,7 @@ func (client ModelClient) UpdateHierarchicalEntityRole(ctx context.Context, appI
 	result, err = client.UpdateHierarchicalEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateHierarchicalEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8179,6 +8282,7 @@ func (client ModelClient) UpdateIntent(ctx context.Context, appID uuid.UUID, ver
 	result, err = client.UpdateIntentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateIntent", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8256,6 +8360,7 @@ func (client ModelClient) UpdatePatternAnyEntityModel(ctx context.Context, appID
 	result, err = client.UpdatePatternAnyEntityModelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdatePatternAnyEntityModel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8334,6 +8439,7 @@ func (client ModelClient) UpdatePatternAnyEntityRole(ctx context.Context, appID 
 	result, err = client.UpdatePatternAnyEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdatePatternAnyEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8413,6 +8519,7 @@ func (client ModelClient) UpdatePrebuiltEntityRole(ctx context.Context, appID uu
 	result, err = client.UpdatePrebuiltEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdatePrebuiltEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8491,6 +8598,7 @@ func (client ModelClient) UpdateRegexEntityModel(ctx context.Context, appID uuid
 	result, err = client.UpdateRegexEntityModelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateRegexEntityModel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8569,6 +8677,7 @@ func (client ModelClient) UpdateRegexEntityRole(ctx context.Context, appID uuid.
 	result, err = client.UpdateRegexEntityRoleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateRegexEntityRole", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8648,6 +8757,7 @@ func (client ModelClient) UpdateSubList(ctx context.Context, appID uuid.UUID, ve
 	result, err = client.UpdateSubListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateSubList", resp, "Failure responding to request")
+		return
 	}
 
 	return

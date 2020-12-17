@@ -108,6 +108,7 @@ func (client LoggerClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.LoggerClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -200,6 +201,7 @@ func (client LoggerClient) Delete(ctx context.Context, resourceGroupName string,
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.LoggerClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -288,6 +290,7 @@ func (client LoggerClient) Get(ctx context.Context, resourceGroupName string, se
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.LoggerClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -376,6 +379,7 @@ func (client LoggerClient) GetEntityTag(ctx context.Context, resourceGroupName s
 	result, err = client.GetEntityTagResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.LoggerClient", "GetEntityTag", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -472,6 +476,7 @@ func (client LoggerClient) ListByService(ctx context.Context, resourceGroupName 
 	result.lc, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.LoggerClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 	if result.lc.hasNextLink() && result.lc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -545,6 +550,7 @@ func (client LoggerClient) listByServiceNextResults(ctx context.Context, lastRes
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.LoggerClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -611,6 +617,7 @@ func (client LoggerClient) Update(ctx context.Context, resourceGroupName string,
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.LoggerClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

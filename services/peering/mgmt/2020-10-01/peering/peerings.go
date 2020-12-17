@@ -82,6 +82,7 @@ func (client PeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeeringsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -159,6 +160,7 @@ func (client PeeringsClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeeringsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -233,6 +235,7 @@ func (client PeeringsClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeeringsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -308,6 +311,7 @@ func (client PeeringsClient) ListByResourceGroup(ctx context.Context, resourceGr
 	result.lr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeeringsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -371,6 +375,7 @@ func (client PeeringsClient) listByResourceGroupNextResults(ctx context.Context,
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeeringsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -420,6 +425,7 @@ func (client PeeringsClient) ListBySubscription(ctx context.Context) (result Lis
 	result.lr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeeringsClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -482,6 +488,7 @@ func (client PeeringsClient) listBySubscriptionNextResults(ctx context.Context, 
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeeringsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -534,6 +541,7 @@ func (client PeeringsClient) Update(ctx context.Context, resourceGroupName strin
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeeringsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

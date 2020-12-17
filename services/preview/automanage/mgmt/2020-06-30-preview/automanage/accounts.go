@@ -84,6 +84,7 @@ func (client AccountsClient) CreateOrUpdate(ctx context.Context, accountName str
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automanage.AccountsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -171,6 +172,7 @@ func (client AccountsClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automanage.AccountsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -255,6 +257,7 @@ func (client AccountsClient) Get(ctx context.Context, accountName string, resour
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automanage.AccountsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -339,6 +342,7 @@ func (client AccountsClient) ListByResourceGroup(ctx context.Context, resourceGr
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automanage.AccountsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -416,6 +420,7 @@ func (client AccountsClient) ListBySubscription(ctx context.Context) (result Acc
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automanage.AccountsClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -500,6 +505,7 @@ func (client AccountsClient) Update(ctx context.Context, accountName string, res
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automanage.AccountsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -80,6 +80,7 @@ func (client ServicesClient) CheckDeviceServiceNameAvailability(ctx context.Cont
 	result, err = client.CheckDeviceServiceNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsiot.ServicesClient", "CheckDeviceServiceNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -160,6 +161,7 @@ func (client ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsiot.ServicesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -242,6 +244,7 @@ func (client ServicesClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsiot.ServicesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -317,6 +320,7 @@ func (client ServicesClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsiot.ServicesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -390,6 +394,7 @@ func (client ServicesClient) List(ctx context.Context) (result DeviceServiceDesc
 	result.dsdlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsiot.ServicesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.dsdlr.hasNextLink() && result.dsdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -452,6 +457,7 @@ func (client ServicesClient) listNextResults(ctx context.Context, lastResults De
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsiot.ServicesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -503,6 +509,7 @@ func (client ServicesClient) ListByResourceGroup(ctx context.Context, resourceGr
 	result.dsdlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsiot.ServicesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.dsdlr.hasNextLink() && result.dsdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -566,6 +573,7 @@ func (client ServicesClient) listByResourceGroupNextResults(ctx context.Context,
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsiot.ServicesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -622,6 +630,7 @@ func (client ServicesClient) Update(ctx context.Context, resourceGroupName strin
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsiot.ServicesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

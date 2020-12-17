@@ -76,6 +76,7 @@ func (client OpenIDConnectProviderClient) CreateOrUpdate(ctx context.Context, ap
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProviderClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -165,6 +166,7 @@ func (client OpenIDConnectProviderClient) Delete(ctx context.Context, apimBaseUR
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProviderClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -250,6 +252,7 @@ func (client OpenIDConnectProviderClient) Get(ctx context.Context, apimBaseURL s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProviderClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -344,6 +347,7 @@ func (client OpenIDConnectProviderClient) List(ctx context.Context, apimBaseURL 
 	result.oicpc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProviderClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.oicpc.hasNextLink() && result.oicpc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -415,6 +419,7 @@ func (client OpenIDConnectProviderClient) listNextResults(ctx context.Context, l
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProviderClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -477,6 +482,7 @@ func (client OpenIDConnectProviderClient) Update(ctx context.Context, apimBaseUR
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProviderClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

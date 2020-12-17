@@ -86,6 +86,7 @@ func (client CertificatesClient) CreateOrUpdate(ctx context.Context, resourceGro
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.CertificatesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -165,6 +166,7 @@ func (client CertificatesClient) Delete(ctx context.Context, resourceGroupName s
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.CertificatesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -241,6 +243,7 @@ func (client CertificatesClient) Get(ctx context.Context, resourceGroupName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.CertificatesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -319,6 +322,7 @@ func (client CertificatesClient) ListByIntegrationAccounts(ctx context.Context, 
 	result.iaclr, err = client.ListByIntegrationAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.CertificatesClient", "ListByIntegrationAccounts", resp, "Failure responding to request")
+		return
 	}
 	if result.iaclr.hasNextLink() && result.iaclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -386,6 +390,7 @@ func (client CertificatesClient) listByIntegrationAccountsNextResults(ctx contex
 	result, err = client.ListByIntegrationAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.CertificatesClient", "listByIntegrationAccountsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

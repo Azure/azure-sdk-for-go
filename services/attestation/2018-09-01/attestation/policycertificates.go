@@ -68,6 +68,7 @@ func (client PolicyCertificatesClient) Add(ctx context.Context, tenantBaseURL st
 	result, err = client.AddResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "attestation.PolicyCertificatesClient", "Add", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -142,6 +143,7 @@ func (client PolicyCertificatesClient) Get(ctx context.Context, tenantBaseURL st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "attestation.PolicyCertificatesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -217,6 +219,7 @@ func (client PolicyCertificatesClient) Remove(ctx context.Context, tenantBaseURL
 	result, err = client.RemoveResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "attestation.PolicyCertificatesClient", "Remove", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -157,6 +157,7 @@ func (client ServerFarmsClient) CreateOrUpdateVnetRoute(ctx context.Context, res
 	result, err = client.CreateOrUpdateVnetRouteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "CreateOrUpdateVnetRoute", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -236,6 +237,7 @@ func (client ServerFarmsClient) DeleteServerFarm(ctx context.Context, resourceGr
 	result, err = client.DeleteServerFarmResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "DeleteServerFarm", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -313,6 +315,7 @@ func (client ServerFarmsClient) DeleteVnetRoute(ctx context.Context, resourceGro
 	result, err = client.DeleteVnetRouteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "DeleteVnetRoute", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -392,6 +395,7 @@ func (client ServerFarmsClient) GetRouteForVnet(ctx context.Context, resourceGro
 	result, err = client.GetRouteForVnetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetRouteForVnet", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -470,6 +474,7 @@ func (client ServerFarmsClient) GetRoutesForVnet(ctx context.Context, resourceGr
 	result, err = client.GetRoutesForVnetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetRoutesForVnet", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -546,6 +551,7 @@ func (client ServerFarmsClient) GetServerFarm(ctx context.Context, resourceGroup
 	result, err = client.GetServerFarmResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarm", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -622,6 +628,7 @@ func (client ServerFarmsClient) GetServerFarmMetricDefintions(ctx context.Contex
 	result.mdc, err = client.GetServerFarmMetricDefintionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetricDefintions", resp, "Failure responding to request")
+		return
 	}
 	if result.mdc.hasNextLink() && result.mdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -686,6 +693,7 @@ func (client ServerFarmsClient) getServerFarmMetricDefintionsNextResults(ctx con
 	result, err = client.GetServerFarmMetricDefintionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "getServerFarmMetricDefintionsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -742,6 +750,7 @@ func (client ServerFarmsClient) GetServerFarmMetrics(ctx context.Context, resour
 	result.rmc, err = client.GetServerFarmMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetrics", resp, "Failure responding to request")
+		return
 	}
 	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -812,6 +821,7 @@ func (client ServerFarmsClient) getServerFarmMetricsNextResults(ctx context.Cont
 	result, err = client.GetServerFarmMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "getServerFarmMetricsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -864,6 +874,7 @@ func (client ServerFarmsClient) GetServerFarmOperation(ctx context.Context, reso
 	result, err = client.GetServerFarmOperationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmOperation", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -940,6 +951,7 @@ func (client ServerFarmsClient) GetServerFarms(ctx context.Context, resourceGrou
 	result.sfc, err = client.GetServerFarmsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarms", resp, "Failure responding to request")
+		return
 	}
 	if result.sfc.hasNextLink() && result.sfc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1003,6 +1015,7 @@ func (client ServerFarmsClient) getServerFarmsNextResults(ctx context.Context, l
 	result, err = client.GetServerFarmsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "getServerFarmsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1059,6 +1072,7 @@ func (client ServerFarmsClient) GetServerFarmSites(ctx context.Context, resource
 	result.sc, err = client.GetServerFarmSitesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmSites", resp, "Failure responding to request")
+		return
 	}
 	if result.sc.hasNextLink() && result.sc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1132,6 +1146,7 @@ func (client ServerFarmsClient) getServerFarmSitesNextResults(ctx context.Contex
 	result, err = client.GetServerFarmSitesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "getServerFarmSitesNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1185,6 +1200,7 @@ func (client ServerFarmsClient) GetServerFarmVnetGateway(ctx context.Context, re
 	result, err = client.GetServerFarmVnetGatewayResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmVnetGateway", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1263,6 +1279,7 @@ func (client ServerFarmsClient) GetVnetFromServerFarm(ctx context.Context, resou
 	result, err = client.GetVnetFromServerFarmResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetVnetFromServerFarm", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1339,6 +1356,7 @@ func (client ServerFarmsClient) GetVnetsForServerFarm(ctx context.Context, resou
 	result, err = client.GetVnetsForServerFarmResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetVnetsForServerFarm", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1415,6 +1433,7 @@ func (client ServerFarmsClient) RebootWorkerForServerFarm(ctx context.Context, r
 	result, err = client.RebootWorkerForServerFarmResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "RebootWorkerForServerFarm", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1493,6 +1512,7 @@ func (client ServerFarmsClient) RestartSitesForServerFarm(ctx context.Context, r
 	result, err = client.RestartSitesForServerFarmResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "RestartSitesForServerFarm", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1574,6 +1594,7 @@ func (client ServerFarmsClient) UpdateServerFarmVnetGateway(ctx context.Context,
 	result, err = client.UpdateServerFarmVnetGatewayResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "UpdateServerFarmVnetGateway", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1656,6 +1677,7 @@ func (client ServerFarmsClient) UpdateVnetRoute(ctx context.Context, resourceGro
 	result, err = client.UpdateVnetRouteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "UpdateVnetRoute", resp, "Failure responding to request")
+		return
 	}
 
 	return

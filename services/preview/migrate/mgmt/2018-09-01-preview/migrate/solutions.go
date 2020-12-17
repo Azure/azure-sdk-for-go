@@ -73,6 +73,7 @@ func (client SolutionsClient) CleanupSolutionData(ctx context.Context, resourceG
 	result, err = client.CleanupSolutionDataResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.SolutionsClient", "CleanupSolutionData", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -149,6 +150,7 @@ func (client SolutionsClient) DeleteSolution(ctx context.Context, resourceGroupN
 	result, err = client.DeleteSolutionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.SolutionsClient", "DeleteSolution", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -228,6 +230,7 @@ func (client SolutionsClient) EnumerateSolutions(ctx context.Context, resourceGr
 	result, err = client.EnumerateSolutionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.SolutionsClient", "EnumerateSolutions", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -304,6 +307,7 @@ func (client SolutionsClient) GetConfig(ctx context.Context, resourceGroupName s
 	result, err = client.GetConfigResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.SolutionsClient", "GetConfig", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -381,6 +385,7 @@ func (client SolutionsClient) GetSolution(ctx context.Context, resourceGroupName
 	result, err = client.GetSolutionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.SolutionsClient", "GetSolution", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -460,6 +465,7 @@ func (client SolutionsClient) PatchSolution(ctx context.Context, resourceGroupNa
 	result, err = client.PatchSolutionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.SolutionsClient", "PatchSolution", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -543,6 +549,7 @@ func (client SolutionsClient) PutSolution(ctx context.Context, resourceGroupName
 	result, err = client.PutSolutionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.SolutionsClient", "PutSolution", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -67,6 +67,7 @@ func (client Client) AttestOpenEnclave(ctx context.Context, instanceURL string, 
 	result, err = client.AttestOpenEnclaveResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "attestation.Client", "AttestOpenEnclave", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -143,6 +144,7 @@ func (client Client) AttestSgxEnclave(ctx context.Context, instanceURL string, r
 	result, err = client.AttestSgxEnclaveResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "attestation.Client", "AttestSgxEnclave", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -219,6 +221,7 @@ func (client Client) AttestTpm(ctx context.Context, instanceURL string, request 
 	result, err = client.AttestTpmResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "attestation.Client", "AttestTpm", resp, "Failure responding to request")
+		return
 	}
 
 	return

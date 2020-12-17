@@ -66,6 +66,7 @@ func (client BatchClient) CancelSparkBatchJob(ctx context.Context, batchID int32
 	result, err = client.CancelSparkBatchJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "spark.BatchClient", "CancelSparkBatchJob", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -145,6 +146,7 @@ func (client BatchClient) CreateSparkBatchJob(ctx context.Context, sparkBatchJob
 	result, err = client.CreateSparkBatchJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "spark.BatchClient", "CreateSparkBatchJob", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -222,6 +224,7 @@ func (client BatchClient) GetSparkBatchJob(ctx context.Context, batchID int32, d
 	result, err = client.GetSparkBatchJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "spark.BatchClient", "GetSparkBatchJob", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -303,6 +306,7 @@ func (client BatchClient) GetSparkBatchJobs(ctx context.Context, from *int32, si
 	result, err = client.GetSparkBatchJobsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "spark.BatchClient", "GetSparkBatchJobs", resp, "Failure responding to request")
+		return
 	}
 
 	return

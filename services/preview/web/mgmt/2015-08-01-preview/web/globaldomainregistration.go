@@ -72,6 +72,7 @@ func (client GlobalDomainRegistrationClient) CheckDomainAvailability(ctx context
 	result, err = client.CheckDomainAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "CheckDomainAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -145,6 +146,7 @@ func (client GlobalDomainRegistrationClient) GetAllDomains(ctx context.Context) 
 	result.dc, err = client.GetAllDomainsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetAllDomains", resp, "Failure responding to request")
+		return
 	}
 	if result.dc.hasNextLink() && result.dc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -207,6 +209,7 @@ func (client GlobalDomainRegistrationClient) getAllDomainsNextResults(ctx contex
 	result, err = client.GetAllDomainsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "getAllDomainsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -255,6 +258,7 @@ func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequest(ct
 	result, err = client.GetDomainControlCenterSsoRequestResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetDomainControlCenterSsoRequest", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -328,6 +332,7 @@ func (client GlobalDomainRegistrationClient) ListDomainRecommendations(ctx conte
 	result.nic, err = client.ListDomainRecommendationsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ListDomainRecommendations", resp, "Failure responding to request")
+		return
 	}
 	if result.nic.hasNextLink() && result.nic.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -392,6 +397,7 @@ func (client GlobalDomainRegistrationClient) listDomainRecommendationsNextResult
 	result, err = client.ListDomainRecommendationsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "listDomainRecommendationsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -442,6 +448,7 @@ func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformation(c
 	result, err = client.ValidateDomainPurchaseInformationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ValidateDomainPurchaseInformation", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -75,6 +75,7 @@ func (client ImagesClient) GetUploadURLForData(ctx context.Context, resourceGrou
 	result, err = client.GetUploadURLForDataResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForData", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -153,6 +154,7 @@ func (client ImagesClient) GetUploadURLForEntityType(ctx context.Context, resour
 	result, err = client.GetUploadURLForEntityTypeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForEntityType", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -77,6 +77,7 @@ func (client ManagedNetworksClient) CreateOrUpdate(ctx context.Context, managedN
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -230,6 +231,7 @@ func (client ManagedNetworksClient) Get(ctx context.Context, resourceGroupName s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -319,6 +321,7 @@ func (client ManagedNetworksClient) ListByResourceGroup(ctx context.Context, res
 	result.lr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -388,6 +391,7 @@ func (client ManagedNetworksClient) listByResourceGroupNextResults(ctx context.C
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -452,6 +456,7 @@ func (client ManagedNetworksClient) ListBySubscription(ctx context.Context, top 
 	result.lr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -520,6 +525,7 @@ func (client ManagedNetworksClient) listBySubscriptionNextResults(ctx context.Co
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

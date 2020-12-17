@@ -245,6 +245,7 @@ func (client RelationshipsClient) Get(ctx context.Context, resourceGroupName str
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -322,6 +323,7 @@ func (client RelationshipsClient) ListByHub(ctx context.Context, resourceGroupNa
 	result.rlr, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipsClient", "ListByHub", resp, "Failure responding to request")
+		return
 	}
 	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -386,6 +388,7 @@ func (client RelationshipsClient) listByHubNextResults(ctx context.Context, last
 	result, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipsClient", "listByHubNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

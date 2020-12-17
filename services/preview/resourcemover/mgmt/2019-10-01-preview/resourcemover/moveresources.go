@@ -251,6 +251,7 @@ func (client MoveResourcesClient) Get(ctx context.Context, resourceGroupName str
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -330,6 +331,7 @@ func (client MoveResourcesClient) List(ctx context.Context, resourceGroupName st
 	result.mrc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.mrc.hasNextLink() && result.mrc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -397,6 +399,7 @@ func (client MoveResourcesClient) listNextResults(ctx context.Context, lastResul
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

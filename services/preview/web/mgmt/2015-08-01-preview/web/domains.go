@@ -73,6 +73,7 @@ func (client DomainsClient) CreateOrUpdateDomain(ctx context.Context, resourceGr
 	result, err = client.CreateOrUpdateDomainResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdateDomain", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -151,6 +152,7 @@ func (client DomainsClient) DeleteDomain(ctx context.Context, resourceGroupName 
 	result, err = client.DeleteDomainResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.DomainsClient", "DeleteDomain", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -229,6 +231,7 @@ func (client DomainsClient) GetDomain(ctx context.Context, resourceGroupName str
 	result, err = client.GetDomainResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomain", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -305,6 +308,7 @@ func (client DomainsClient) GetDomainOperation(ctx context.Context, resourceGrou
 	result, err = client.GetDomainOperationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomainOperation", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -381,6 +385,7 @@ func (client DomainsClient) GetDomains(ctx context.Context, resourceGroupName st
 	result.dc, err = client.GetDomainsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomains", resp, "Failure responding to request")
+		return
 	}
 	if result.dc.hasNextLink() && result.dc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -444,6 +449,7 @@ func (client DomainsClient) getDomainsNextResults(ctx context.Context, lastResul
 	result, err = client.GetDomainsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.DomainsClient", "getDomainsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -496,6 +502,7 @@ func (client DomainsClient) UpdateDomain(ctx context.Context, resourceGroupName 
 	result, err = client.UpdateDomainResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.DomainsClient", "UpdateDomain", resp, "Failure responding to request")
+		return
 	}
 
 	return

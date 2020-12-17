@@ -70,6 +70,7 @@ func (client PropertyClient) Get(ctx context.Context) (result Property, err erro
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PropertyClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -143,6 +144,7 @@ func (client PropertyClient) Update(ctx context.Context, parameters Property) (r
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PropertyClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

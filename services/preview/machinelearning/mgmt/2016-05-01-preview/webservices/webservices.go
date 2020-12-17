@@ -182,6 +182,7 @@ func (client Client) Get(ctx context.Context, resourceGroupName string, webServi
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.Client", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -257,6 +258,7 @@ func (client Client) List(ctx context.Context, skiptoken string) (result Paginat
 	result.pwsl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.Client", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.pwsl.hasNextLink() && result.pwsl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -322,6 +324,7 @@ func (client Client) listNextResults(ctx context.Context, lastResults PaginatedW
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.Client", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -374,6 +377,7 @@ func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName 
 	result.pwsl, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.Client", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.pwsl.hasNextLink() && result.pwsl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -440,6 +444,7 @@ func (client Client) listByResourceGroupNextResults(ctx context.Context, lastRes
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.Client", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -491,6 +496,7 @@ func (client Client) ListKeys(ctx context.Context, resourceGroupName string, web
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.Client", "ListKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return

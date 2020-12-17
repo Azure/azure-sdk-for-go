@@ -189,6 +189,7 @@ func (client ImagesClient) VisualSearch(ctx context.Context, acceptLanguage stri
 	result, err = client.VisualSearchResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualsearch.ImagesClient", "VisualSearch", resp, "Failure responding to request")
+		return
 	}
 
 	return

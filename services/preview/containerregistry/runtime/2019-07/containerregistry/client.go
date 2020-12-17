@@ -79,6 +79,7 @@ func (client BaseClient) CreateManifest(ctx context.Context, name string, refere
 	result, err = client.CreateManifestResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "CreateManifest", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -152,6 +153,7 @@ func (client BaseClient) DeleteAcrRepository(ctx context.Context, name string) (
 	result, err = client.DeleteAcrRepositoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "DeleteAcrRepository", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -223,6 +225,7 @@ func (client BaseClient) DeleteAcrTag(ctx context.Context, name string, referenc
 	result, err = client.DeleteAcrTagResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "DeleteAcrTag", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -295,6 +298,7 @@ func (client BaseClient) DeleteManifest(ctx context.Context, name string, refere
 	result, err = client.DeleteManifestResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "DeleteManifest", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -368,6 +372,7 @@ func (client BaseClient) GetAcrAccessToken(ctx context.Context, service string, 
 	result, err = client.GetAcrAccessTokenResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrAccessToken", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -444,6 +449,7 @@ func (client BaseClient) GetAcrAccessTokenFromLogin(ctx context.Context, service
 	result, err = client.GetAcrAccessTokenFromLoginResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrAccessTokenFromLogin", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -517,6 +523,7 @@ func (client BaseClient) GetAcrManifestAttributes(ctx context.Context, name stri
 	result, err = client.GetAcrManifestAttributesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrManifestAttributes", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -592,6 +599,7 @@ func (client BaseClient) GetAcrManifests(ctx context.Context, name string, last 
 	result, err = client.GetAcrManifestsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrManifests", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -678,6 +686,7 @@ func (client BaseClient) GetAcrRefreshTokenFromExchange(ctx context.Context, gra
 	result, err = client.GetAcrRefreshTokenFromExchangeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrRefreshTokenFromExchange", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -761,6 +770,7 @@ func (client BaseClient) GetAcrRepositories(ctx context.Context, last string, n 
 	result, err = client.GetAcrRepositoriesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrRepositories", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -836,6 +846,7 @@ func (client BaseClient) GetAcrRepositoryAttributes(ctx context.Context, name st
 	result, err = client.GetAcrRepositoryAttributesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrRepositoryAttributes", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -907,6 +918,7 @@ func (client BaseClient) GetAcrTagAttributes(ctx context.Context, name string, r
 	result, err = client.GetAcrTagAttributesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrTagAttributes", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -983,6 +995,7 @@ func (client BaseClient) GetAcrTags(ctx context.Context, name string, last strin
 	result, err = client.GetAcrTagsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrTags", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1066,6 +1079,7 @@ func (client BaseClient) GetDockerRegistryV2Support(ctx context.Context) (result
 	result, err = client.GetDockerRegistryV2SupportResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetDockerRegistryV2Support", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1135,6 +1149,7 @@ func (client BaseClient) GetManifest(ctx context.Context, name string, reference
 	result, err = client.GetManifestResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetManifest", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1212,6 +1227,7 @@ func (client BaseClient) GetRepositories(ctx context.Context, last string, n *in
 	result, err = client.GetRepositoriesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetRepositories", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1287,6 +1303,7 @@ func (client BaseClient) GetTagList(ctx context.Context, name string) (result Re
 	result, err = client.GetTagListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetTagList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1359,6 +1376,7 @@ func (client BaseClient) UpdateAcrManifestAttributes(ctx context.Context, name s
 	result, err = client.UpdateAcrManifestAttributesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateAcrManifestAttributes", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1436,6 +1454,7 @@ func (client BaseClient) UpdateAcrRepositoryAttributes(ctx context.Context, name
 	result, err = client.UpdateAcrRepositoryAttributesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateAcrRepositoryAttributes", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1512,6 +1531,7 @@ func (client BaseClient) UpdateAcrTagAttributes(ctx context.Context, name string
 	result, err = client.UpdateAcrTagAttributesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateAcrTagAttributes", resp, "Failure responding to request")
+		return
 	}
 
 	return

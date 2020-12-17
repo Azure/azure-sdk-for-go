@@ -245,6 +245,7 @@ func (client DisksClient) Get(ctx context.Context, resourceGroupName string, dis
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DisksClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -404,6 +405,7 @@ func (client DisksClient) List(ctx context.Context) (result DiskListPage, err er
 	result.dl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DisksClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.dl.hasNextLink() && result.dl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -466,6 +468,7 @@ func (client DisksClient) listNextResults(ctx context.Context, lastResults DiskL
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DisksClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -517,6 +520,7 @@ func (client DisksClient) ListByResourceGroup(ctx context.Context, resourceGroup
 	result.dl, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DisksClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.dl.hasNextLink() && result.dl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -580,6 +584,7 @@ func (client DisksClient) listByResourceGroupNextResults(ctx context.Context, la
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DisksClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

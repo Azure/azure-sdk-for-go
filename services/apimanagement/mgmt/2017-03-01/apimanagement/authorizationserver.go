@@ -98,6 +98,7 @@ func (client AuthorizationServerClient) CreateOrUpdate(ctx context.Context, reso
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServerClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -190,6 +191,7 @@ func (client AuthorizationServerClient) Delete(ctx context.Context, resourceGrou
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServerClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -278,6 +280,7 @@ func (client AuthorizationServerClient) Get(ctx context.Context, resourceGroupNa
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServerClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -366,6 +369,7 @@ func (client AuthorizationServerClient) GetEntityTag(ctx context.Context, resour
 	result, err = client.GetEntityTagResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServerClient", "GetEntityTag", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -462,6 +466,7 @@ func (client AuthorizationServerClient) ListByService(ctx context.Context, resou
 	result.asc, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServerClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 	if result.asc.hasNextLink() && result.asc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -535,6 +540,7 @@ func (client AuthorizationServerClient) listByServiceNextResults(ctx context.Con
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServerClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -601,6 +607,7 @@ func (client AuthorizationServerClient) Update(ctx context.Context, resourceGrou
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServerClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

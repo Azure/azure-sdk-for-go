@@ -74,6 +74,7 @@ func (client HyperVSitesClient) DeleteSite(ctx context.Context, subscriptionID s
 	result, err = client.DeleteSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVSitesClient", "DeleteSite", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -149,6 +150,7 @@ func (client HyperVSitesClient) GetSite(ctx context.Context, subscriptionID stri
 	result, err = client.GetSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVSitesClient", "GetSite", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -226,6 +228,7 @@ func (client HyperVSitesClient) GetSiteHealthSummary(ctx context.Context, subscr
 	result.shsc, err = client.GetSiteHealthSummaryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVSitesClient", "GetSiteHealthSummary", resp, "Failure responding to request")
+		return
 	}
 	if result.shsc.hasNextLink() && result.shsc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -289,6 +292,7 @@ func (client HyperVSitesClient) getSiteHealthSummaryNextResults(ctx context.Cont
 	result, err = client.GetSiteHealthSummaryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVSitesClient", "getSiteHealthSummaryNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -341,6 +345,7 @@ func (client HyperVSitesClient) GetSiteUsage(ctx context.Context, subscriptionID
 	result, err = client.GetSiteUsageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVSitesClient", "GetSiteUsage", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -418,6 +423,7 @@ func (client HyperVSitesClient) PatchSite(ctx context.Context, subscriptionID st
 	result, err = client.PatchSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVSitesClient", "PatchSite", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -499,6 +505,7 @@ func (client HyperVSitesClient) PutSite(ctx context.Context, subscriptionID stri
 	result, err = client.PutSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVSitesClient", "PutSite", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -579,6 +586,7 @@ func (client HyperVSitesClient) RefreshSite(ctx context.Context, subscriptionID 
 	result, err = client.RefreshSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVSitesClient", "RefreshSite", resp, "Failure responding to request")
+		return
 	}
 
 	return

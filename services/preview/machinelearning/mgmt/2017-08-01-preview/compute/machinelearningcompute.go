@@ -74,6 +74,7 @@ func (client MachineLearningComputeClient) ListAvailableOperations(ctx context.C
 	result, err = client.ListAvailableOperationsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.MachineLearningComputeClient", "ListAvailableOperations", resp, "Failure responding to request")
+		return
 	}
 
 	return

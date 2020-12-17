@@ -113,6 +113,7 @@ func (client BaseClient) AnalyzeImage(ctx context.Context, imageURL ImageURL, vi
 	result, err = client.AnalyzeImageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "AnalyzeImage", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -213,6 +214,7 @@ func (client BaseClient) AnalyzeImageByDomain(ctx context.Context, model string,
 	result, err = client.AnalyzeImageByDomainResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "AnalyzeImageByDomain", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -302,6 +304,7 @@ func (client BaseClient) AnalyzeImageByDomainInStream(ctx context.Context, model
 	result, err = client.AnalyzeImageByDomainInStreamResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "AnalyzeImageByDomainInStream", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -405,6 +408,7 @@ func (client BaseClient) AnalyzeImageInStream(ctx context.Context, imageParamete
 	result, err = client.AnalyzeImageInStreamResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "AnalyzeImageInStream", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -507,6 +511,7 @@ func (client BaseClient) DescribeImage(ctx context.Context, imageURL ImageURL, m
 	result, err = client.DescribeImageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "DescribeImage", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -602,6 +607,7 @@ func (client BaseClient) DescribeImageInStream(ctx context.Context, imageParamet
 	result, err = client.DescribeImageInStreamResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "DescribeImageInStream", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -695,6 +701,7 @@ func (client BaseClient) DetectObjects(ctx context.Context, imageURL ImageURL) (
 	result, err = client.DetectObjectsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "DetectObjects", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -766,6 +773,7 @@ func (client BaseClient) DetectObjectsInStream(ctx context.Context, imageParamet
 	result, err = client.DetectObjectsInStreamResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "DetectObjectsInStream", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -856,6 +864,7 @@ func (client BaseClient) GenerateThumbnail(ctx context.Context, width int32, hei
 	result, err = client.GenerateThumbnailResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "GenerateThumbnail", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -955,6 +964,7 @@ func (client BaseClient) GenerateThumbnailInStream(ctx context.Context, width in
 	result, err = client.GenerateThumbnailInStreamResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "GenerateThumbnailInStream", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1043,6 +1053,7 @@ func (client BaseClient) GetAreaOfInterest(ctx context.Context, imageURL ImageUR
 	result, err = client.GetAreaOfInterestResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "GetAreaOfInterest", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1115,6 +1126,7 @@ func (client BaseClient) GetAreaOfInterestInStream(ctx context.Context, imagePar
 	result, err = client.GetAreaOfInterestInStreamResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "GetAreaOfInterestInStream", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1184,6 +1196,7 @@ func (client BaseClient) GetReadResult(ctx context.Context, operationID uuid.UUI
 	result, err = client.GetReadResultResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "GetReadResult", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1255,6 +1268,7 @@ func (client BaseClient) ListModels(ctx context.Context) (result ListModelsResul
 	result, err = client.ListModelsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "ListModels", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1334,6 +1348,7 @@ func (client BaseClient) Read(ctx context.Context, imageURL ImageURL, language O
 	result, err = client.ReadResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "Read", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1416,6 +1431,7 @@ func (client BaseClient) ReadInStream(ctx context.Context, imageParameter io.Rea
 	result, err = client.ReadInStreamResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "ReadInStream", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1506,6 +1522,7 @@ func (client BaseClient) RecognizePrintedText(ctx context.Context, detectOrienta
 	result, err = client.RecognizePrintedTextResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "RecognizePrintedText", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1593,6 +1610,7 @@ func (client BaseClient) RecognizePrintedTextInStream(ctx context.Context, detec
 	result, err = client.RecognizePrintedTextInStreamResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "RecognizePrintedTextInStream", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1687,6 +1705,7 @@ func (client BaseClient) TagImage(ctx context.Context, imageURL ImageURL, langua
 	result, err = client.TagImageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "TagImage", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1773,6 +1792,7 @@ func (client BaseClient) TagImageInStream(ctx context.Context, imageParameter io
 	result, err = client.TagImageInStreamResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "TagImageInStream", resp, "Failure responding to request")
+		return
 	}
 
 	return

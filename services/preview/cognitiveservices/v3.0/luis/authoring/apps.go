@@ -76,6 +76,7 @@ func (client AppsClient) Add(ctx context.Context, applicationCreateObject Applic
 	result, err = client.AddResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "Add", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -144,6 +145,7 @@ func (client AppsClient) AddCustomPrebuiltDomain(ctx context.Context, prebuiltDo
 	result, err = client.AddCustomPrebuiltDomainResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "AddCustomPrebuiltDomain", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -213,6 +215,7 @@ func (client AppsClient) Delete(ctx context.Context, appID uuid.UUID, force *boo
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -291,6 +294,7 @@ func (client AppsClient) DownloadQueryLogs(ctx context.Context, appID uuid.UUID)
 	result, err = client.DownloadQueryLogsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "DownloadQueryLogs", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -360,6 +364,7 @@ func (client AppsClient) Get(ctx context.Context, appID uuid.UUID) (result Appli
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -430,6 +435,7 @@ func (client AppsClient) GetPublishSettings(ctx context.Context, appID uuid.UUID
 	result, err = client.GetPublishSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "GetPublishSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -500,6 +506,7 @@ func (client AppsClient) GetSettings(ctx context.Context, appID uuid.UUID) (resu
 	result, err = client.GetSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "GetSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -572,6 +579,7 @@ func (client AppsClient) Import(ctx context.Context, luisApp LuisApp, appName st
 	result, err = client.ImportResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "Import", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -648,6 +656,7 @@ func (client AppsClient) ImportLuFormat(ctx context.Context, luisAppLu string, a
 	result, err = client.ImportLuFormatResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ImportLuFormat", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -724,6 +733,7 @@ func (client AppsClient) ImportV2App(ctx context.Context, luisAppV2 LuisAppV2, a
 	result, err = client.ImportV2AppResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ImportV2App", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -811,6 +821,7 @@ func (client AppsClient) List(ctx context.Context, skip *int32, take *int32) (re
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -888,6 +899,7 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomains(ctx context.Context)
 	result, err = client.ListAvailableCustomPrebuiltDomainsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ListAvailableCustomPrebuiltDomains", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -954,6 +966,7 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCulture(ctx contex
 	result, err = client.ListAvailableCustomPrebuiltDomainsForCultureResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ListAvailableCustomPrebuiltDomainsForCulture", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1022,6 +1035,7 @@ func (client AppsClient) ListCortanaEndpoints(ctx context.Context) (result Perso
 	result, err = client.ListCortanaEndpointsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ListCortanaEndpoints", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1086,6 +1100,7 @@ func (client AppsClient) ListDomains(ctx context.Context) (result ListString, er
 	result, err = client.ListDomainsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ListDomains", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1152,6 +1167,7 @@ func (client AppsClient) ListEndpoints(ctx context.Context, appID uuid.UUID) (re
 	result, err = client.ListEndpointsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ListEndpoints", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1221,6 +1237,7 @@ func (client AppsClient) ListSupportedCultures(ctx context.Context) (result List
 	result, err = client.ListSupportedCulturesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ListSupportedCultures", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1285,6 +1302,7 @@ func (client AppsClient) ListUsageScenarios(ctx context.Context) (result ListStr
 	result, err = client.ListUsageScenariosResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ListUsageScenarios", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1353,6 +1371,7 @@ func (client AppsClient) PackagePublishedApplicationAsGzip(ctx context.Context, 
 	result, err = client.PackagePublishedApplicationAsGzipResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "PackagePublishedApplicationAsGzip", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1424,6 +1443,7 @@ func (client AppsClient) PackageTrainedApplicationAsGzip(ctx context.Context, ap
 	result, err = client.PackageTrainedApplicationAsGzipResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "PackageTrainedApplicationAsGzip", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1496,6 +1516,7 @@ func (client AppsClient) Publish(ctx context.Context, appID uuid.UUID, applicati
 	result, err = client.PublishResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "Publish", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1569,6 +1590,7 @@ func (client AppsClient) Update(ctx context.Context, appID uuid.UUID, applicatio
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1642,6 +1664,7 @@ func (client AppsClient) UpdatePublishSettings(ctx context.Context, appID uuid.U
 	result, err = client.UpdatePublishSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "UpdatePublishSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1715,6 +1738,7 @@ func (client AppsClient) UpdateSettings(ctx context.Context, appID uuid.UUID, ap
 	result, err = client.UpdateSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "UpdateSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return

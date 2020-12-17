@@ -464,6 +464,7 @@ func (client CassandraResourcesClient) GetCassandraKeyspace(ctx context.Context,
 	result, err = client.GetCassandraKeyspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "GetCassandraKeyspace", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -554,6 +555,7 @@ func (client CassandraResourcesClient) GetCassandraKeyspaceThroughput(ctx contex
 	result, err = client.GetCassandraKeyspaceThroughputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "GetCassandraKeyspaceThroughput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -644,6 +646,7 @@ func (client CassandraResourcesClient) GetCassandraTable(ctx context.Context, re
 	result, err = client.GetCassandraTableResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "GetCassandraTable", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -736,6 +739,7 @@ func (client CassandraResourcesClient) GetCassandraTableThroughput(ctx context.C
 	result, err = client.GetCassandraTableThroughputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "GetCassandraTableThroughput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -825,6 +829,7 @@ func (client CassandraResourcesClient) ListCassandraKeyspaces(ctx context.Contex
 	result, err = client.ListCassandraKeyspacesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "ListCassandraKeyspaces", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -913,6 +918,7 @@ func (client CassandraResourcesClient) ListCassandraTables(ctx context.Context, 
 	result, err = client.ListCassandraTablesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "ListCassandraTables", resp, "Failure responding to request")
+		return
 	}
 
 	return

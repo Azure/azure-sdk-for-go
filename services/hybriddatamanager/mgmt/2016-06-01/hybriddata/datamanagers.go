@@ -254,6 +254,7 @@ func (client DataManagersClient) Get(ctx context.Context, resourceGroupName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.DataManagersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -326,6 +327,7 @@ func (client DataManagersClient) List(ctx context.Context) (result DataManagerLi
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.DataManagersClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -398,6 +400,7 @@ func (client DataManagersClient) ListByResourceGroup(ctx context.Context, resour
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.DataManagersClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return

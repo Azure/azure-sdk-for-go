@@ -100,6 +100,7 @@ func (client BudgetsClient) CreateOrUpdate(ctx context.Context, budgetName strin
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -203,6 +204,7 @@ func (client BudgetsClient) CreateOrUpdateByResourceGroupName(ctx context.Contex
 	result, err = client.CreateOrUpdateByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "CreateOrUpdateByResourceGroupName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -279,6 +281,7 @@ func (client BudgetsClient) Delete(ctx context.Context, budgetName string) (resu
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -352,6 +355,7 @@ func (client BudgetsClient) DeleteByResourceGroupName(ctx context.Context, resou
 	result, err = client.DeleteByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "DeleteByResourceGroupName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -425,6 +429,7 @@ func (client BudgetsClient) Get(ctx context.Context, budgetName string) (result 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -499,6 +504,7 @@ func (client BudgetsClient) GetByResourceGroupName(ctx context.Context, resource
 	result, err = client.GetByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "GetByResourceGroupName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -572,6 +578,7 @@ func (client BudgetsClient) List(ctx context.Context) (result BudgetsListResultP
 	result.blr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.blr.hasNextLink() && result.blr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -634,6 +641,7 @@ func (client BudgetsClient) listNextResults(ctx context.Context, lastResults Bud
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -685,6 +693,7 @@ func (client BudgetsClient) ListByResourceGroupName(ctx context.Context, resourc
 	result.blr, err = client.ListByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "ListByResourceGroupName", resp, "Failure responding to request")
+		return
 	}
 	if result.blr.hasNextLink() && result.blr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -748,6 +757,7 @@ func (client BudgetsClient) listByResourceGroupNameNextResults(ctx context.Conte
 	result, err = client.ListByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "listByResourceGroupNameNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

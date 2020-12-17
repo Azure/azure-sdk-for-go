@@ -86,6 +86,7 @@ func (client MonitorsClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.MonitorsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -179,6 +180,7 @@ func (client MonitorsClient) ListByResource(ctx context.Context, resourceGroupNa
 	result.mc, err = client.ListByResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.MonitorsClient", "ListByResource", resp, "Failure responding to request")
+		return
 	}
 	if result.mc.hasNextLink() && result.mc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -251,6 +253,7 @@ func (client MonitorsClient) listByResourceNextResults(ctx context.Context, last
 	result, err = client.ListByResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.MonitorsClient", "listByResourceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -316,6 +319,7 @@ func (client MonitorsClient) Update(ctx context.Context, resourceGroupName strin
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.MonitorsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

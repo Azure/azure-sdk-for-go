@@ -91,6 +91,7 @@ func (client ProductPolicyClient) CreateOrUpdate(ctx context.Context, resourceGr
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductPolicyClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -189,6 +190,7 @@ func (client ProductPolicyClient) Delete(ctx context.Context, resourceGroupName 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductPolicyClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -279,6 +281,7 @@ func (client ProductPolicyClient) Get(ctx context.Context, resourceGroupName str
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductPolicyClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -369,6 +372,7 @@ func (client ProductPolicyClient) GetEntityTag(ctx context.Context, resourceGrou
 	result, err = client.GetEntityTagResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductPolicyClient", "GetEntityTag", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -458,6 +462,7 @@ func (client ProductPolicyClient) ListByProduct(ctx context.Context, resourceGro
 	result, err = client.ListByProductResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductPolicyClient", "ListByProduct", resp, "Failure responding to request")
+		return
 	}
 
 	return

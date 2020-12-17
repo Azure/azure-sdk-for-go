@@ -90,6 +90,7 @@ func (client SummariesClient) GetMachines(ctx context.Context, resourceGroupName
 	result, err = client.GetMachinesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.SummariesClient", "GetMachines", resp, "Failure responding to request")
+		return
 	}
 
 	return

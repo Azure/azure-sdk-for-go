@@ -73,6 +73,7 @@ func (client ProductsClient) Get(ctx context.Context, resourceGroup string, regi
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.ProductsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -151,6 +152,7 @@ func (client ProductsClient) GetProduct(ctx context.Context, resourceGroup strin
 	result, err = client.GetProductResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.ProductsClient", "GetProduct", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -235,6 +237,7 @@ func (client ProductsClient) GetProducts(ctx context.Context, resourceGroup stri
 	result, err = client.GetProductsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.ProductsClient", "GetProducts", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -318,6 +321,7 @@ func (client ProductsClient) List(ctx context.Context, resourceGroup string, reg
 	result.pl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.ProductsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.pl.hasNextLink() && result.pl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -382,6 +386,7 @@ func (client ProductsClient) listNextResults(ctx context.Context, lastResults Pr
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.ProductsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -434,6 +439,7 @@ func (client ProductsClient) ListDetails(ctx context.Context, resourceGroup stri
 	result, err = client.ListDetailsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.ProductsClient", "ListDetails", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -512,6 +518,7 @@ func (client ProductsClient) UploadLog(ctx context.Context, resourceGroup string
 	result, err = client.UploadLogResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.ProductsClient", "UploadLog", resp, "Failure responding to request")
+		return
 	}
 
 	return

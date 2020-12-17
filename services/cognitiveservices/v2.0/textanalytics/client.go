@@ -82,6 +82,7 @@ func (client BaseClient) DetectLanguage(ctx context.Context, input BatchInput) (
 	result, err = client.DetectLanguageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "DetectLanguage", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -153,6 +154,7 @@ func (client BaseClient) Entities(ctx context.Context, input MultiLanguageBatchI
 	result, err = client.EntitiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "Entities", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -224,6 +226,7 @@ func (client BaseClient) KeyPhrases(ctx context.Context, input MultiLanguageBatc
 	result, err = client.KeyPhrasesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "KeyPhrases", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -295,6 +298,7 @@ func (client BaseClient) Sentiment(ctx context.Context, input MultiLanguageBatch
 	result, err = client.SentimentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "Sentiment", resp, "Failure responding to request")
+		return
 	}
 
 	return

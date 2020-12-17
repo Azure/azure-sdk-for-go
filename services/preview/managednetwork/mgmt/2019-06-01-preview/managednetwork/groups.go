@@ -234,6 +234,7 @@ func (client GroupsClient) Get(ctx context.Context, resourceGroupName string, ma
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.GroupsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -325,6 +326,7 @@ func (client GroupsClient) ListByManagedNetwork(ctx context.Context, resourceGro
 	result.glr, err = client.ListByManagedNetworkResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.GroupsClient", "ListByManagedNetwork", resp, "Failure responding to request")
+		return
 	}
 	if result.glr.hasNextLink() && result.glr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -395,6 +397,7 @@ func (client GroupsClient) listByManagedNetworkNextResults(ctx context.Context, 
 	result, err = client.ListByManagedNetworkResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.GroupsClient", "listByManagedNetworkNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

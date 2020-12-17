@@ -96,6 +96,7 @@ func (client IotSecuritySolutionClient) Create(ctx context.Context, resourceGrou
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -187,6 +188,7 @@ func (client IotSecuritySolutionClient) Delete(ctx context.Context, resourceGrou
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -272,6 +274,7 @@ func (client IotSecuritySolutionClient) Get(ctx context.Context, resourceGroupNa
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -360,6 +363,7 @@ func (client IotSecuritySolutionClient) Update(ctx context.Context, resourceGrou
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

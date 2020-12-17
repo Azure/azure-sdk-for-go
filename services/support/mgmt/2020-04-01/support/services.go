@@ -71,6 +71,7 @@ func (client ServicesClient) Get(ctx context.Context, serviceName string) (resul
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "support.ServicesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -146,6 +147,7 @@ func (client ServicesClient) List(ctx context.Context) (result ServicesListResul
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "support.ServicesClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

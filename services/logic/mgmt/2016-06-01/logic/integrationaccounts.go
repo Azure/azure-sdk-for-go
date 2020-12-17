@@ -75,6 +75,7 @@ func (client IntegrationAccountsClient) CreateOrUpdate(ctx context.Context, reso
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -152,6 +153,7 @@ func (client IntegrationAccountsClient) Delete(ctx context.Context, resourceGrou
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -226,6 +228,7 @@ func (client IntegrationAccountsClient) Get(ctx context.Context, resourceGroupNa
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -302,6 +305,7 @@ func (client IntegrationAccountsClient) GetCallbackURL(ctx context.Context, reso
 	result, err = client.GetCallbackURLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "GetCallbackURL", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -380,6 +384,7 @@ func (client IntegrationAccountsClient) ListByResourceGroup(ctx context.Context,
 	result.ialr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.ialr.hasNextLink() && result.ialr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -446,6 +451,7 @@ func (client IntegrationAccountsClient) listByResourceGroupNextResults(ctx conte
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -497,6 +503,7 @@ func (client IntegrationAccountsClient) ListBySubscription(ctx context.Context, 
 	result.ialr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.ialr.hasNextLink() && result.ialr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -562,6 +569,7 @@ func (client IntegrationAccountsClient) listBySubscriptionNextResults(ctx contex
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -620,6 +628,7 @@ func (client IntegrationAccountsClient) ListKeyVaultKeys(ctx context.Context, re
 	result, err = client.ListKeyVaultKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "ListKeyVaultKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -705,6 +714,7 @@ func (client IntegrationAccountsClient) LogTrackingEvents(ctx context.Context, r
 	result, err = client.LogTrackingEventsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "LogTrackingEvents", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -782,6 +792,7 @@ func (client IntegrationAccountsClient) RegenerateAccessKey(ctx context.Context,
 	result, err = client.RegenerateAccessKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "RegenerateAccessKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -860,6 +871,7 @@ func (client IntegrationAccountsClient) Update(ctx context.Context, resourceGrou
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

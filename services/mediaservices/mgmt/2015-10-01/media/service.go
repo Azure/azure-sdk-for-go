@@ -83,6 +83,7 @@ func (client ServiceClient) CheckNameAvailability(ctx context.Context, parameter
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.ServiceClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -167,6 +168,7 @@ func (client ServiceClient) Create(ctx context.Context, resourceGroupName string
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.ServiceClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -252,6 +254,7 @@ func (client ServiceClient) Delete(ctx context.Context, resourceGroupName string
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.ServiceClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -334,6 +337,7 @@ func (client ServiceClient) Get(ctx context.Context, resourceGroupName string, m
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.ServiceClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -408,6 +412,7 @@ func (client ServiceClient) ListByResourceGroup(ctx context.Context, resourceGro
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.ServiceClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -490,6 +495,7 @@ func (client ServiceClient) ListKeys(ctx context.Context, resourceGroupName stri
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.ServiceClient", "ListKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -574,6 +580,7 @@ func (client ServiceClient) RegenerateKey(ctx context.Context, resourceGroupName
 	result, err = client.RegenerateKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.ServiceClient", "RegenerateKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -662,6 +669,7 @@ func (client ServiceClient) SyncStorageKeys(ctx context.Context, resourceGroupNa
 	result, err = client.SyncStorageKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.ServiceClient", "SyncStorageKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -747,6 +755,7 @@ func (client ServiceClient) Update(ctx context.Context, resourceGroupName string
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.ServiceClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

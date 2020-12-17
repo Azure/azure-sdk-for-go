@@ -88,6 +88,7 @@ func (client AccountClient) ListPoolNodeCounts(ctx context.Context, filter strin
 	result.pnclr, err = client.ListPoolNodeCountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.AccountClient", "ListPoolNodeCounts", resp, "Failure responding to request")
+		return
 	}
 	if result.pnclr.hasNextLink() && result.pnclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -178,6 +179,7 @@ func (client AccountClient) listPoolNodeCountsNextResults(ctx context.Context, l
 	result, err = client.ListPoolNodeCountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.AccountClient", "listPoolNodeCountsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -248,6 +250,7 @@ func (client AccountClient) ListSupportedImages(ctx context.Context, filter stri
 	result.alsir, err = client.ListSupportedImagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.AccountClient", "ListSupportedImages", resp, "Failure responding to request")
+		return
 	}
 	if result.alsir.hasNextLink() && result.alsir.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -338,6 +341,7 @@ func (client AccountClient) listSupportedImagesNextResults(ctx context.Context, 
 	result, err = client.ListSupportedImagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.AccountClient", "listSupportedImagesNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

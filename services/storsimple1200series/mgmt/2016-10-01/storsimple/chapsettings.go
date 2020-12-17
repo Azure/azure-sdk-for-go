@@ -261,6 +261,7 @@ func (client ChapSettingsClient) Get(ctx context.Context, deviceName string, cha
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ChapSettingsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -346,6 +347,7 @@ func (client ChapSettingsClient) ListByDevice(ctx context.Context, deviceName st
 	result, err = client.ListByDeviceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ChapSettingsClient", "ListByDevice", resp, "Failure responding to request")
+		return
 	}
 
 	return

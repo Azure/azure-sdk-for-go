@@ -93,6 +93,7 @@ func (client SavedSearchesClient) CreateOrUpdate(ctx context.Context, resourceGr
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.SavedSearchesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -183,6 +184,7 @@ func (client SavedSearchesClient) Delete(ctx context.Context, resourceGroupName 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.SavedSearchesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -267,6 +269,7 @@ func (client SavedSearchesClient) Get(ctx context.Context, resourceGroupName str
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.SavedSearchesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -351,6 +354,7 @@ func (client SavedSearchesClient) ListByWorkspace(ctx context.Context, resourceG
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.SavedSearchesClient", "ListByWorkspace", resp, "Failure responding to request")
+		return
 	}
 
 	return

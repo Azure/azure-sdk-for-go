@@ -63,6 +63,7 @@ func (client EndpointSettingsClient) GetSettings(ctx context.Context) (result En
 	result, err = client.GetSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamaker.EndpointSettingsClient", "GetSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -129,6 +130,7 @@ func (client EndpointSettingsClient) UpdateSettings(ctx context.Context, endpoin
 	result, err = client.UpdateSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamaker.EndpointSettingsClient", "UpdateSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return

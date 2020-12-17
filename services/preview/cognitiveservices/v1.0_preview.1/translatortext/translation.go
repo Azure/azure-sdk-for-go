@@ -73,6 +73,7 @@ func (client TranslationClient) CancelOperation(ctx context.Context, endpoint st
 	result, err = client.CancelOperationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "translatortext.TranslationClient", "CancelOperation", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -146,6 +147,7 @@ func (client TranslationClient) GetDocumentFormats(ctx context.Context, endpoint
 	result, err = client.GetDocumentFormatsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "translatortext.TranslationClient", "GetDocumentFormats", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -215,6 +217,7 @@ func (client TranslationClient) GetDocumentStatus(ctx context.Context, endpoint 
 	result, err = client.GetDocumentStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "translatortext.TranslationClient", "GetDocumentStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -287,6 +290,7 @@ func (client TranslationClient) GetDocumentStorageSource(ctx context.Context, en
 	result, err = client.GetDocumentStorageSourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "translatortext.TranslationClient", "GetDocumentStorageSource", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -355,6 +359,7 @@ func (client TranslationClient) GetGlossaryFormats(ctx context.Context, endpoint
 	result, err = client.GetGlossaryFormatsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "translatortext.TranslationClient", "GetGlossaryFormats", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -457,6 +462,7 @@ func (client TranslationClient) GetOperationDocumentsStatus(ctx context.Context,
 	result, err = client.GetOperationDocumentsStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "translatortext.TranslationClient", "GetOperationDocumentsStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -575,6 +581,7 @@ func (client TranslationClient) GetOperations(ctx context.Context, endpoint stri
 	result, err = client.GetOperationsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "translatortext.TranslationClient", "GetOperations", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -658,6 +665,7 @@ func (client TranslationClient) GetOperationStatus(ctx context.Context, endpoint
 	result, err = client.GetOperationStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "translatortext.TranslationClient", "GetOperationStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -750,6 +758,7 @@ func (client TranslationClient) SubmitBatchRequest(ctx context.Context, endpoint
 	result, err = client.SubmitBatchRequestResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "translatortext.TranslationClient", "SubmitBatchRequest", resp, "Failure responding to request")
+		return
 	}
 
 	return

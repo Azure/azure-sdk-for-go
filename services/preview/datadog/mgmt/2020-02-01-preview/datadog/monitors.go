@@ -250,6 +250,7 @@ func (client MonitorsClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -323,6 +324,7 @@ func (client MonitorsClient) List(ctx context.Context) (result MonitorResourceLi
 	result.mrlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.mrlr.hasNextLink() && result.mrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -385,6 +387,7 @@ func (client MonitorsClient) listNextResults(ctx context.Context, lastResults Mo
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -436,6 +439,7 @@ func (client MonitorsClient) ListByResourceGroup(ctx context.Context, resourceGr
 	result.mrlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.mrlr.hasNextLink() && result.mrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -499,6 +503,7 @@ func (client MonitorsClient) listByResourceGroupNextResults(ctx context.Context,
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -550,6 +555,7 @@ func (client MonitorsClient) Update(ctx context.Context, resourceGroupName strin
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

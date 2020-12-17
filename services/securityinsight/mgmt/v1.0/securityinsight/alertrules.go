@@ -89,6 +89,7 @@ func (client AlertRulesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -184,6 +185,7 @@ func (client AlertRulesClient) CreateOrUpdateAction(ctx context.Context, resourc
 	result, err = client.CreateOrUpdateActionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "CreateOrUpdateAction", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -278,6 +280,7 @@ func (client AlertRulesClient) Delete(ctx context.Context, resourceGroupName str
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -369,6 +372,7 @@ func (client AlertRulesClient) DeleteAction(ctx context.Context, resourceGroupNa
 	result, err = client.DeleteActionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "DeleteAction", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -460,6 +464,7 @@ func (client AlertRulesClient) Get(ctx context.Context, resourceGroupName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -552,6 +557,7 @@ func (client AlertRulesClient) GetAction(ctx context.Context, resourceGroupName 
 	result, err = client.GetActionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "GetAction", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -644,6 +650,7 @@ func (client AlertRulesClient) List(ctx context.Context, resourceGroupName strin
 	result.arl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.arl.hasNextLink() && result.arl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -708,6 +715,7 @@ func (client AlertRulesClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

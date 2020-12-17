@@ -78,6 +78,7 @@ func (client ProtectedItemsClient) CreateOrUpdate(ctx context.Context, vaultName
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ProtectedItemsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -161,6 +162,7 @@ func (client ProtectedItemsClient) Delete(ctx context.Context, vaultName string,
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ProtectedItemsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -244,6 +246,7 @@ func (client ProtectedItemsClient) Get(ctx context.Context, vaultName string, re
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ProtectedItemsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -331,6 +334,7 @@ func (client ProtectedItemsClient) List(ctx context.Context, vaultName string, r
 	result.pirl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ProtectedItemsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.pirl.hasNextLink() && result.pirl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -401,6 +405,7 @@ func (client ProtectedItemsClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ProtectedItemsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

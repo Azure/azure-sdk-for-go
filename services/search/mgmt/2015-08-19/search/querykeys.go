@@ -78,6 +78,7 @@ func (client QueryKeysClient) Create(ctx context.Context, resourceGroupName stri
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "search.QueryKeysClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -164,6 +165,7 @@ func (client QueryKeysClient) Delete(ctx context.Context, resourceGroupName stri
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "search.QueryKeysClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -247,6 +249,7 @@ func (client QueryKeysClient) ListBySearchService(ctx context.Context, resourceG
 	result, err = client.ListBySearchServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "search.QueryKeysClient", "ListBySearchService", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -330,6 +333,7 @@ func (client QueryKeysClient) ListBySearchServiceGet(ctx context.Context, resour
 	result, err = client.ListBySearchServiceGetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "search.QueryKeysClient", "ListBySearchServiceGet", resp, "Failure responding to request")
+		return
 	}
 
 	return

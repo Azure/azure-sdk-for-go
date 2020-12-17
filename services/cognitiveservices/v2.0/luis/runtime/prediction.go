@@ -81,6 +81,7 @@ func (client PredictionClient) Resolve(ctx context.Context, appID uuid.UUID, que
 	result, err = client.ResolveResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "runtime.PredictionClient", "Resolve", resp, "Failure responding to request")
+		return
 	}
 
 	return

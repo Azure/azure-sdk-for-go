@@ -315,6 +315,7 @@ func (client DatabasesClient) GetMethod(ctx context.Context, resourceGroupName s
 	result, err = client.GetMethodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "GetMethod", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -477,6 +478,7 @@ func (client DatabasesClient) ListByCluster(ctx context.Context, resourceGroupNa
 	result.dl, err = client.ListByClusterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "ListByCluster", resp, "Failure responding to request")
+		return
 	}
 	if result.dl.hasNextLink() && result.dl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -541,6 +543,7 @@ func (client DatabasesClient) listByClusterNextResults(ctx context.Context, last
 	result, err = client.ListByClusterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "listByClusterNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -593,6 +596,7 @@ func (client DatabasesClient) ListKeys(ctx context.Context, resourceGroupName st
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "ListKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return

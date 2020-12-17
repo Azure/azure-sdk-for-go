@@ -71,6 +71,7 @@ func (client TableClient) Create(ctx context.Context, tableProperties TablePrope
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagetables.TableClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -157,6 +158,7 @@ func (client TableClient) Delete(ctx context.Context, table string, requestID st
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagetables.TableClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -246,6 +248,7 @@ func (client TableClient) DeleteEntity(ctx context.Context, table string, partit
 	result, err = client.DeleteEntityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagetables.TableClient", "DeleteEntity", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -344,6 +347,7 @@ func (client TableClient) GetAccessPolicy(ctx context.Context, table string, tim
 	result, err = client.GetAccessPolicyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagetables.TableClient", "GetAccessPolicy", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -441,6 +445,7 @@ func (client TableClient) InsertEntity(ctx context.Context, table string, timeou
 	result, err = client.InsertEntityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagetables.TableClient", "InsertEntity", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -553,6 +558,7 @@ func (client TableClient) MergeEntity(ctx context.Context, table string, partiti
 	result, err = client.MergeEntityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagetables.TableClient", "MergeEntity", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -662,6 +668,7 @@ func (client TableClient) Query(ctx context.Context, requestID string, formatPar
 	result, err = client.QueryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagetables.TableClient", "Query", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -772,6 +779,7 @@ func (client TableClient) QueryEntities(ctx context.Context, table string, timeo
 	result, err = client.QueryEntitiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagetables.TableClient", "QueryEntities", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -888,6 +896,7 @@ func (client TableClient) QueryEntitiesWithPartitionAndRowKey(ctx context.Contex
 	result, err = client.QueryEntitiesWithPartitionAndRowKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagetables.TableClient", "QueryEntitiesWithPartitionAndRowKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -992,6 +1001,7 @@ func (client TableClient) SetAccessPolicy(ctx context.Context, table string, tab
 	result, err = client.SetAccessPolicyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagetables.TableClient", "SetAccessPolicy", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1097,6 +1107,7 @@ func (client TableClient) UpdateEntity(ctx context.Context, table string, partit
 	result, err = client.UpdateEntityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagetables.TableClient", "UpdateEntity", resp, "Failure responding to request")
+		return
 	}
 
 	return

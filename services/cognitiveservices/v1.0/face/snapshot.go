@@ -101,6 +101,7 @@ func (client SnapshotClient) Apply(ctx context.Context, snapshotID uuid.UUID, bo
 	result, err = client.ApplyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.SnapshotClient", "Apply", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -174,6 +175,7 @@ func (client SnapshotClient) Delete(ctx context.Context, snapshotID uuid.UUID) (
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.SnapshotClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -244,6 +246,7 @@ func (client SnapshotClient) Get(ctx context.Context, snapshotID uuid.UUID) (res
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.SnapshotClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -314,6 +317,7 @@ func (client SnapshotClient) GetOperationStatus(ctx context.Context, operationID
 	result, err = client.GetOperationStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.SnapshotClient", "GetOperationStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -387,6 +391,7 @@ func (client SnapshotClient) List(ctx context.Context, typeParameter SnapshotObj
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.SnapshotClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -497,6 +502,7 @@ func (client SnapshotClient) Take(ctx context.Context, body TakeSnapshotRequest)
 	result, err = client.TakeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.SnapshotClient", "Take", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -566,6 +572,7 @@ func (client SnapshotClient) Update(ctx context.Context, snapshotID uuid.UUID, b
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.SnapshotClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

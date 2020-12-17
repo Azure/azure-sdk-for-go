@@ -237,6 +237,7 @@ func (client CustomImagesClient) Get(ctx context.Context, resourceGroupName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.CustomImagesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -321,6 +322,7 @@ func (client CustomImagesClient) List(ctx context.Context, resourceGroupName str
 	result.cil, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.CustomImagesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.cil.hasNextLink() && result.cil.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -397,6 +399,7 @@ func (client CustomImagesClient) listNextResults(ctx context.Context, lastResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.CustomImagesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -450,6 +453,7 @@ func (client CustomImagesClient) Update(ctx context.Context, resourceGroupName s
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.CustomImagesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

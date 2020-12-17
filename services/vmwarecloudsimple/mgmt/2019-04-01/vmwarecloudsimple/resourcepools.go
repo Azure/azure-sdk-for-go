@@ -73,6 +73,7 @@ func (client ResourcePoolsClient) Get(ctx context.Context, regionID string, pcNa
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcePoolsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -150,6 +151,7 @@ func (client ResourcePoolsClient) List(ctx context.Context, regionID string, pcN
 	result.rplr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcePoolsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rplr.hasNextLink() && result.rplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -214,6 +216,7 @@ func (client ResourcePoolsClient) listNextResults(ctx context.Context, lastResul
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcePoolsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

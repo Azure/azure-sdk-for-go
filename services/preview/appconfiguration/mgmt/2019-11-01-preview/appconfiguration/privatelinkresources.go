@@ -83,6 +83,7 @@ func (client PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupN
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.PrivateLinkResourcesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -168,6 +169,7 @@ func (client PrivateLinkResourcesClient) ListByConfigurationStore(ctx context.Co
 	result.plrlr, err = client.ListByConfigurationStoreResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.PrivateLinkResourcesClient", "ListByConfigurationStore", resp, "Failure responding to request")
+		return
 	}
 	if result.plrlr.hasNextLink() && result.plrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -232,6 +234,7 @@ func (client PrivateLinkResourcesClient) listByConfigurationStoreNextResults(ctx
 	result, err = client.ListByConfigurationStoreResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.PrivateLinkResourcesClient", "listByConfigurationStoreNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

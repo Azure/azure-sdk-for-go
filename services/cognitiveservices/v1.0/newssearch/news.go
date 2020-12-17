@@ -232,6 +232,7 @@ func (client NewsClient) Category(ctx context.Context, acceptLanguage string, us
 	result, err = client.CategoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "newssearch.NewsClient", "Category", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -513,6 +514,7 @@ func (client NewsClient) Search(ctx context.Context, query string, acceptLanguag
 	result, err = client.SearchResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "newssearch.NewsClient", "Search", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -785,6 +787,7 @@ func (client NewsClient) Trending(ctx context.Context, acceptLanguage string, us
 	result, err = client.TrendingResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "newssearch.NewsClient", "Trending", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -73,6 +73,7 @@ func (client MachinesClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.MachinesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -154,6 +155,7 @@ func (client MachinesClient) ListByProject(ctx context.Context, resourceGroupNam
 	result, err = client.ListByProjectResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.MachinesClient", "ListByProject", resp, "Failure responding to request")
+		return
 	}
 
 	return

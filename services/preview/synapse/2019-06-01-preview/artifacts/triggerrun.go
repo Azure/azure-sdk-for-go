@@ -75,6 +75,7 @@ func (client TriggerRunClient) CancelTriggerInstance(ctx context.Context, trigge
 	result, err = client.CancelTriggerInstanceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.TriggerRunClient", "CancelTriggerInstance", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -158,6 +159,7 @@ func (client TriggerRunClient) QueryTriggerRunsByWorkspace(ctx context.Context, 
 	result, err = client.QueryTriggerRunsByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.TriggerRunClient", "QueryTriggerRunsByWorkspace", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -241,6 +243,7 @@ func (client TriggerRunClient) RerunTriggerInstance(ctx context.Context, trigger
 	result, err = client.RerunTriggerInstanceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.TriggerRunClient", "RerunTriggerInstance", resp, "Failure responding to request")
+		return
 	}
 
 	return

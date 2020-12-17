@@ -89,6 +89,7 @@ func (client EnterpriseKnowledgeGraphClient) Create(ctx context.Context, resourc
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "enterpriseknowledgegraphservice.EnterpriseKnowledgeGraphClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -178,6 +179,7 @@ func (client EnterpriseKnowledgeGraphClient) Delete(ctx context.Context, resourc
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "enterpriseknowledgegraphservice.EnterpriseKnowledgeGraphClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -264,6 +266,7 @@ func (client EnterpriseKnowledgeGraphClient) Get(ctx context.Context, resourceGr
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "enterpriseknowledgegraphservice.EnterpriseKnowledgeGraphClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -337,6 +340,7 @@ func (client EnterpriseKnowledgeGraphClient) List(ctx context.Context) (result E
 	result.ekgrl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "enterpriseknowledgegraphservice.EnterpriseKnowledgeGraphClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.ekgrl.hasNextLink() && result.ekgrl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -399,6 +403,7 @@ func (client EnterpriseKnowledgeGraphClient) listNextResults(ctx context.Context
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "enterpriseknowledgegraphservice.EnterpriseKnowledgeGraphClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -458,6 +463,7 @@ func (client EnterpriseKnowledgeGraphClient) ListByResourceGroup(ctx context.Con
 	result.ekgrl, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "enterpriseknowledgegraphservice.EnterpriseKnowledgeGraphClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.ekgrl.hasNextLink() && result.ekgrl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -521,6 +527,7 @@ func (client EnterpriseKnowledgeGraphClient) listByResourceGroupNextResults(ctx 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "enterpriseknowledgegraphservice.EnterpriseKnowledgeGraphClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -585,6 +592,7 @@ func (client EnterpriseKnowledgeGraphClient) Update(ctx context.Context, resourc
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "enterpriseknowledgegraphservice.EnterpriseKnowledgeGraphClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

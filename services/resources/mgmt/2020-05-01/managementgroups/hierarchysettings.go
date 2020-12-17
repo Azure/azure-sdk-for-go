@@ -75,6 +75,7 @@ func (client HierarchySettingsClient) CreateOrUpdate(ctx context.Context, groupI
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.HierarchySettingsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -149,6 +150,7 @@ func (client HierarchySettingsClient) Delete(ctx context.Context, groupID string
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.HierarchySettingsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -221,6 +223,7 @@ func (client HierarchySettingsClient) Get(ctx context.Context, groupID string) (
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.HierarchySettingsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -294,6 +297,7 @@ func (client HierarchySettingsClient) List(ctx context.Context, groupID string) 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.HierarchySettingsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -367,6 +371,7 @@ func (client HierarchySettingsClient) Update(ctx context.Context, groupID string
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.HierarchySettingsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

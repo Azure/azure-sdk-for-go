@@ -74,6 +74,7 @@ func (client OperationsStatusClient) Get(ctx context.Context, deviceName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.OperationsStatusClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -82,6 +82,7 @@ func (client ServiceClient) ListAvailableSkus(ctx context.Context, location stri
 	result.asr, err = client.ListAvailableSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "ListAvailableSkus", resp, "Failure responding to request")
+		return
 	}
 	if result.asr.hasNextLink() && result.asr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -147,6 +148,7 @@ func (client ServiceClient) listAvailableSkusNextResults(ctx context.Context, la
 	result, err = client.ListAvailableSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "listAvailableSkusNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -209,6 +211,7 @@ func (client ServiceClient) ListAvailableSkusByResourceGroup(ctx context.Context
 	result.asr, err = client.ListAvailableSkusByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "ListAvailableSkusByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.asr.hasNextLink() && result.asr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -275,6 +278,7 @@ func (client ServiceClient) listAvailableSkusByResourceGroupNextResults(ctx cont
 	result, err = client.ListAvailableSkusByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "listAvailableSkusByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -333,6 +337,7 @@ func (client ServiceClient) RegionConfiguration(ctx context.Context, location st
 	result, err = client.RegionConfigurationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "RegionConfiguration", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -420,6 +425,7 @@ func (client ServiceClient) ValidateAddressMethod(ctx context.Context, location 
 	result, err = client.ValidateAddressMethodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "ValidateAddressMethod", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -502,6 +508,7 @@ func (client ServiceClient) ValidateInputs(ctx context.Context, location string,
 	result, err = client.ValidateInputsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "ValidateInputs", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -585,6 +592,7 @@ func (client ServiceClient) ValidateInputsByResourceGroup(ctx context.Context, r
 	result, err = client.ValidateInputsByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "ValidateInputsByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return

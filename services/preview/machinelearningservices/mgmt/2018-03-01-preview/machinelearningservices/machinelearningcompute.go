@@ -233,6 +233,7 @@ func (client MachineLearningComputeClient) Get(ctx context.Context, resourceGrou
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -311,6 +312,7 @@ func (client MachineLearningComputeClient) ListByWorkspace(ctx context.Context, 
 	result.pcrl, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "ListByWorkspace", resp, "Failure responding to request")
+		return
 	}
 	if result.pcrl.hasNextLink() && result.pcrl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -378,6 +380,7 @@ func (client MachineLearningComputeClient) listByWorkspaceNextResults(ctx contex
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "listByWorkspaceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -430,6 +433,7 @@ func (client MachineLearningComputeClient) ListKeys(ctx context.Context, resourc
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "ListKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -73,6 +73,7 @@ func (client ExternalBillingAccountClient) Get(ctx context.Context, externalBill
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ExternalBillingAccountClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -146,6 +147,7 @@ func (client ExternalBillingAccountClient) List(ctx context.Context) (result Ext
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ExternalBillingAccountClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

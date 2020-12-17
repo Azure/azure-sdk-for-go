@@ -275,6 +275,7 @@ func (client ScopeMapsClient) Get(ctx context.Context, resourceGroupName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.ScopeMapsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -362,6 +363,7 @@ func (client ScopeMapsClient) List(ctx context.Context, resourceGroupName string
 	result.smlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.ScopeMapsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.smlr.hasNextLink() && result.smlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -426,6 +428,7 @@ func (client ScopeMapsClient) listNextResults(ctx context.Context, lastResults S
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.ScopeMapsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

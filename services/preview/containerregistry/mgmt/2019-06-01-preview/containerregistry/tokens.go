@@ -272,6 +272,7 @@ func (client TokensClient) Get(ctx context.Context, resourceGroupName string, re
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.TokensClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -359,6 +360,7 @@ func (client TokensClient) List(ctx context.Context, resourceGroupName string, r
 	result.tlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.TokensClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -423,6 +425,7 @@ func (client TokensClient) listNextResults(ctx context.Context, lastResults Toke
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.TokensClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

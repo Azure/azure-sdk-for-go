@@ -75,6 +75,7 @@ func (client PrefixesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -155,6 +156,7 @@ func (client PrefixesClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -233,6 +235,7 @@ func (client PrefixesClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -314,6 +317,7 @@ func (client PrefixesClient) ListByPeeringService(ctx context.Context, resourceG
 	result.splr, err = client.ListByPeeringServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "ListByPeeringService", resp, "Failure responding to request")
+		return
 	}
 	if result.splr.hasNextLink() && result.splr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -381,6 +385,7 @@ func (client PrefixesClient) listByPeeringServiceNextResults(ctx context.Context
 	result, err = client.ListByPeeringServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "listByPeeringServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

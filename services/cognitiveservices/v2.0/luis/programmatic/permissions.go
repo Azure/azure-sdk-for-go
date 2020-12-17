@@ -57,6 +57,7 @@ func (client PermissionsClient) Add(ctx context.Context, appID uuid.UUID, userTo
 	result, err = client.AddResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "programmatic.PermissionsClient", "Add", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -123,6 +124,7 @@ func (client PermissionsClient) Delete(ctx context.Context, appID uuid.UUID, use
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "programmatic.PermissionsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -187,6 +189,7 @@ func (client PermissionsClient) List(ctx context.Context, appID uuid.UUID) (resu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "programmatic.PermissionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -251,6 +254,7 @@ func (client PermissionsClient) Update(ctx context.Context, appID uuid.UUID, col
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "programmatic.PermissionsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

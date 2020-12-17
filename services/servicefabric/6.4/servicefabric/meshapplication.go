@@ -82,6 +82,7 @@ func (client MeshApplicationClient) CreateOrUpdate(ctx context.Context, applicat
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.MeshApplicationClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -156,6 +157,7 @@ func (client MeshApplicationClient) Delete(ctx context.Context, applicationResou
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.MeshApplicationClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -228,6 +230,7 @@ func (client MeshApplicationClient) Get(ctx context.Context, applicationResource
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.MeshApplicationClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -299,6 +302,7 @@ func (client MeshApplicationClient) List(ctx context.Context) (result PagedAppli
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.MeshApplicationClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

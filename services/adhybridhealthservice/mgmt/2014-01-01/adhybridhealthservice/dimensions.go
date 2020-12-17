@@ -73,6 +73,7 @@ func (client DimensionsClient) ListAddsDimensions(ctx context.Context, serviceNa
 	result.d, err = client.ListAddsDimensionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.DimensionsClient", "ListAddsDimensions", resp, "Failure responding to request")
+		return
 	}
 	if result.d.hasNextLink() && result.d.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -136,6 +137,7 @@ func (client DimensionsClient) listAddsDimensionsNextResults(ctx context.Context
 	result, err = client.ListAddsDimensionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.DimensionsClient", "listAddsDimensionsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

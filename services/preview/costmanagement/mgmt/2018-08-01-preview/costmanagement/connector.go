@@ -73,6 +73,7 @@ func (client ConnectorClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ConnectorClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -153,6 +154,7 @@ func (client ConnectorClient) Delete(ctx context.Context, resourceGroupName stri
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ConnectorClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -227,6 +229,7 @@ func (client ConnectorClient) Get(ctx context.Context, resourceGroupName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ConnectorClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -299,6 +302,7 @@ func (client ConnectorClient) List(ctx context.Context) (result ConnectorDefinit
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ConnectorClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -371,6 +375,7 @@ func (client ConnectorClient) ListByResourceGroupName(ctx context.Context, resou
 	result, err = client.ListByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ConnectorClient", "ListByResourceGroupName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -446,6 +451,7 @@ func (client ConnectorClient) Update(ctx context.Context, resourceGroupName stri
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ConnectorClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

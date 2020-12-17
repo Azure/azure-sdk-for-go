@@ -72,6 +72,7 @@ func (client MetadataClient) Get(ctx context.Context, appID string) (result Meta
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.MetadataClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -139,6 +140,7 @@ func (client MetadataClient) Post(ctx context.Context, appID string) (result Met
 	result, err = client.PostResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.MetadataClient", "Post", resp, "Failure responding to request")
+		return
 	}
 
 	return

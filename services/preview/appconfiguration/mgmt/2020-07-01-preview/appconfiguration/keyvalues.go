@@ -84,6 +84,7 @@ func (client KeyValuesClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.KeyValuesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -263,6 +264,7 @@ func (client KeyValuesClient) Get(ctx context.Context, resourceGroupName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.KeyValuesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -351,6 +353,7 @@ func (client KeyValuesClient) ListByConfigurationStore(ctx context.Context, reso
 	result.kvlr, err = client.ListByConfigurationStoreResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.KeyValuesClient", "ListByConfigurationStore", resp, "Failure responding to request")
+		return
 	}
 	if result.kvlr.hasNextLink() && result.kvlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -418,6 +421,7 @@ func (client KeyValuesClient) listByConfigurationStoreNextResults(ctx context.Co
 	result, err = client.ListByConfigurationStoreResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.KeyValuesClient", "listByConfigurationStoreNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

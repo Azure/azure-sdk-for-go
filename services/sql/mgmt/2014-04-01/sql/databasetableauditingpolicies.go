@@ -79,6 +79,7 @@ func (client DatabaseTableAuditingPoliciesClient) CreateOrUpdate(ctx context.Con
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabaseTableAuditingPoliciesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -162,6 +163,7 @@ func (client DatabaseTableAuditingPoliciesClient) Get(ctx context.Context, resou
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabaseTableAuditingPoliciesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -241,6 +243,7 @@ func (client DatabaseTableAuditingPoliciesClient) ListByDatabase(ctx context.Con
 	result, err = client.ListByDatabaseResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabaseTableAuditingPoliciesClient", "ListByDatabase", resp, "Failure responding to request")
+		return
 	}
 
 	return

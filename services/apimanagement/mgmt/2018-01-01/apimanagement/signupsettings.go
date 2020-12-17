@@ -82,6 +82,7 @@ func (client SignUpSettingsClient) CreateOrUpdate(ctx context.Context, resourceG
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SignUpSettingsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -167,6 +168,7 @@ func (client SignUpSettingsClient) Get(ctx context.Context, resourceGroupName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SignUpSettingsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -250,6 +252,7 @@ func (client SignUpSettingsClient) GetEntityTag(ctx context.Context, resourceGro
 	result, err = client.GetEntityTagResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SignUpSettingsClient", "GetEntityTag", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -335,6 +338,7 @@ func (client SignUpSettingsClient) Update(ctx context.Context, resourceGroupName
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SignUpSettingsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

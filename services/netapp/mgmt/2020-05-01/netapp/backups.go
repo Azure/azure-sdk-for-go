@@ -294,6 +294,7 @@ func (client BackupsClient) Get(ctx context.Context, resourceGroupName string, a
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.BackupsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -390,6 +391,7 @@ func (client BackupsClient) List(ctx context.Context, resourceGroupName string, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.BackupsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -487,6 +489,7 @@ func (client BackupsClient) Update(ctx context.Context, resourceGroupName string
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.BackupsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

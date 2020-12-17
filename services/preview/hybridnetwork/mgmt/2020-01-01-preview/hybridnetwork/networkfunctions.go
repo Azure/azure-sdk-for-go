@@ -256,6 +256,7 @@ func (client NetworkFunctionsClient) Get(ctx context.Context, resourceGroupName 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -341,6 +342,7 @@ func (client NetworkFunctionsClient) ListByResourceGroup(ctx context.Context, re
 	result.nflr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.nflr.hasNextLink() && result.nflr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -404,6 +406,7 @@ func (client NetworkFunctionsClient) listByResourceGroupNextResults(ctx context.
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -459,6 +462,7 @@ func (client NetworkFunctionsClient) ListBySubscription(ctx context.Context) (re
 	result.nflr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.nflr.hasNextLink() && result.nflr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -521,6 +525,7 @@ func (client NetworkFunctionsClient) listBySubscriptionNextResults(ctx context.C
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -583,6 +588,7 @@ func (client NetworkFunctionsClient) UpdateTags(ctx context.Context, resourceGro
 	result, err = client.UpdateTagsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsClient", "UpdateTags", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -119,6 +119,7 @@ func (client JobScheduleClient) Add(ctx context.Context, cloudJobSchedule JobSch
 	result, err = client.AddResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobScheduleClient", "Add", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -229,6 +230,7 @@ func (client JobScheduleClient) Delete(ctx context.Context, jobScheduleID string
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobScheduleClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -354,6 +356,7 @@ func (client JobScheduleClient) Disable(ctx context.Context, jobScheduleID strin
 	result, err = client.DisableResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobScheduleClient", "Disable", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -479,6 +482,7 @@ func (client JobScheduleClient) Enable(ctx context.Context, jobScheduleID string
 	result, err = client.EnableResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobScheduleClient", "Enable", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -604,6 +608,7 @@ func (client JobScheduleClient) Exists(ctx context.Context, jobScheduleID string
 	result, err = client.ExistsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobScheduleClient", "Exists", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -731,6 +736,7 @@ func (client JobScheduleClient) Get(ctx context.Context, jobScheduleID string, s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobScheduleClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -866,6 +872,7 @@ func (client JobScheduleClient) List(ctx context.Context, filter string, selectP
 	result.cjslr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobScheduleClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.cjslr.hasNextLink() && result.cjslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -958,6 +965,7 @@ func (client JobScheduleClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobScheduleClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1030,6 +1038,7 @@ func (client JobScheduleClient) Patch(ctx context.Context, jobScheduleID string,
 	result, err = client.PatchResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobScheduleClient", "Patch", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1157,6 +1166,7 @@ func (client JobScheduleClient) Terminate(ctx context.Context, jobScheduleID str
 	result, err = client.TerminateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobScheduleClient", "Terminate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1323,6 +1333,7 @@ func (client JobScheduleClient) Update(ctx context.Context, jobScheduleID string
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobScheduleClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

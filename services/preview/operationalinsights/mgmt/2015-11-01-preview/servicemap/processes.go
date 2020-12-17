@@ -96,6 +96,7 @@ func (client ProcessesClient) Get(ctx context.Context, resourceGroupName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.ProcessesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -200,6 +201,7 @@ func (client ProcessesClient) GetLiveness(ctx context.Context, resourceGroupName
 	result, err = client.GetLivenessResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.ProcessesClient", "GetLiveness", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -308,6 +310,7 @@ func (client ProcessesClient) ListAcceptingPorts(ctx context.Context, resourceGr
 	result.pc, err = client.ListAcceptingPortsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.ProcessesClient", "ListAcceptingPorts", resp, "Failure responding to request")
+		return
 	}
 	if result.pc.hasNextLink() && result.pc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -380,6 +383,7 @@ func (client ProcessesClient) listAcceptingPortsNextResults(ctx context.Context,
 	result, err = client.ListAcceptingPortsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.ProcessesClient", "listAcceptingPortsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -456,6 +460,7 @@ func (client ProcessesClient) ListConnections(ctx context.Context, resourceGroup
 	result.cc, err = client.ListConnectionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.ProcessesClient", "ListConnections", resp, "Failure responding to request")
+		return
 	}
 	if result.cc.hasNextLink() && result.cc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -528,6 +533,7 @@ func (client ProcessesClient) listConnectionsNextResults(ctx context.Context, la
 	result, err = client.ListConnectionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.ProcessesClient", "listConnectionsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

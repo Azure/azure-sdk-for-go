@@ -79,6 +79,7 @@ func (client DataFlowDebugSessionClient) AddDataFlow(ctx context.Context, reques
 	result, err = client.AddDataFlowResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.DataFlowDebugSessionClient", "AddDataFlow", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -240,6 +241,7 @@ func (client DataFlowDebugSessionClient) DeleteDataFlowDebugSession(ctx context.
 	result, err = client.DeleteDataFlowDebugSessionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.DataFlowDebugSessionClient", "DeleteDataFlowDebugSession", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -393,6 +395,7 @@ func (client DataFlowDebugSessionClient) QueryDataFlowDebugSessionsByWorkspace(c
 	result.qdfdsr, err = client.QueryDataFlowDebugSessionsByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.DataFlowDebugSessionClient", "QueryDataFlowDebugSessionsByWorkspace", resp, "Failure responding to request")
+		return
 	}
 	if result.qdfdsr.hasNextLink() && result.qdfdsr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -455,6 +458,7 @@ func (client DataFlowDebugSessionClient) queryDataFlowDebugSessionsByWorkspaceNe
 	result, err = client.QueryDataFlowDebugSessionsByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.DataFlowDebugSessionClient", "queryDataFlowDebugSessionsByWorkspaceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

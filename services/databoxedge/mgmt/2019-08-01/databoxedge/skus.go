@@ -71,6 +71,7 @@ func (client SkusClient) List(ctx context.Context, filter string) (result SkuInf
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.SkusClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

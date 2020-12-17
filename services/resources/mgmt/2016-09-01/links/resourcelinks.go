@@ -86,6 +86,7 @@ func (client ResourceLinksClient) CreateOrUpdate(ctx context.Context, linkID str
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -166,6 +167,7 @@ func (client ResourceLinksClient) Delete(ctx context.Context, linkID string) (re
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -238,6 +240,7 @@ func (client ResourceLinksClient) Get(ctx context.Context, linkID string) (resul
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -315,6 +318,7 @@ func (client ResourceLinksClient) ListAtSourceScope(ctx context.Context, scope s
 	result.rlr, err = client.ListAtSourceScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "ListAtSourceScope", resp, "Failure responding to request")
+		return
 	}
 	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -380,6 +384,7 @@ func (client ResourceLinksClient) listAtSourceScopeNextResults(ctx context.Conte
 	result, err = client.ListAtSourceScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "listAtSourceScopeNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -432,6 +437,7 @@ func (client ResourceLinksClient) ListAtSubscription(ctx context.Context, filter
 	result.rlr, err = client.ListAtSubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "ListAtSubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -497,6 +503,7 @@ func (client ResourceLinksClient) listAtSubscriptionNextResults(ctx context.Cont
 	result, err = client.ListAtSubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "listAtSubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

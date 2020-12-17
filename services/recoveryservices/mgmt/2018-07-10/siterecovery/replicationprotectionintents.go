@@ -74,6 +74,7 @@ func (client ReplicationProtectionIntentsClient) Create(ctx context.Context, int
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectionIntentsClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -151,6 +152,7 @@ func (client ReplicationProtectionIntentsClient) Get(ctx context.Context, intent
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectionIntentsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -225,6 +227,7 @@ func (client ReplicationProtectionIntentsClient) List(ctx context.Context) (resu
 	result.rpic, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectionIntentsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rpic.hasNextLink() && result.rpic.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -289,6 +292,7 @@ func (client ReplicationProtectionIntentsClient) listNextResults(ctx context.Con
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectionIntentsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

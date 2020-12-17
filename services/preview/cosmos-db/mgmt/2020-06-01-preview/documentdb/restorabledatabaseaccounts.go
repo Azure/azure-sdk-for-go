@@ -80,6 +80,7 @@ func (client RestorableDatabaseAccountsClient) GetByLocation(ctx context.Context
 	result, err = client.GetByLocationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.RestorableDatabaseAccountsClient", "GetByLocation", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -158,6 +159,7 @@ func (client RestorableDatabaseAccountsClient) List(ctx context.Context) (result
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.RestorableDatabaseAccountsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -237,6 +239,7 @@ func (client RestorableDatabaseAccountsClient) ListByLocation(ctx context.Contex
 	result, err = client.ListByLocationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.RestorableDatabaseAccountsClient", "ListByLocation", resp, "Failure responding to request")
+		return
 	}
 
 	return

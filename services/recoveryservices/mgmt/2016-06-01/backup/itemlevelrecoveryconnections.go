@@ -81,6 +81,7 @@ func (client ItemLevelRecoveryConnectionsClient) Provision(ctx context.Context, 
 	result, err = client.ProvisionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ItemLevelRecoveryConnectionsClient", "Provision", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -167,6 +168,7 @@ func (client ItemLevelRecoveryConnectionsClient) Revoke(ctx context.Context, vau
 	result, err = client.RevokeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ItemLevelRecoveryConnectionsClient", "Revoke", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -69,6 +69,7 @@ func (client Client) Build(ctx context.Context, accountName string, parameters B
 	result, err = client.BuildResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.Client", "Build", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -145,6 +146,7 @@ func (client Client) Cancel(ctx context.Context, accountName string, jobIdentity
 	result, err = client.CancelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.Client", "Cancel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -236,6 +238,7 @@ func (client Client) Create(ctx context.Context, accountName string, jobIdentity
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.Client", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -316,6 +319,7 @@ func (client Client) Get(ctx context.Context, accountName string, jobIdentity uu
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.Client", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -394,6 +398,7 @@ func (client Client) GetDebugDataPath(ctx context.Context, accountName string, j
 	result, err = client.GetDebugDataPathResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.Client", "GetDebugDataPath", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -472,6 +477,7 @@ func (client Client) GetStatistics(ctx context.Context, accountName string, jobI
 	result, err = client.GetStatisticsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.Client", "GetStatistics", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -571,6 +577,7 @@ func (client Client) List(ctx context.Context, accountName string, filter string
 	result.ilr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.Client", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -652,6 +659,7 @@ func (client Client) listNextResults(ctx context.Context, lastResults InfoListRe
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.Client", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

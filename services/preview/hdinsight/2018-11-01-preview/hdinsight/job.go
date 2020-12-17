@@ -68,6 +68,7 @@ func (client JobClient) DeleteSparkBatch(ctx context.Context, batchID int32, req
 	result, err = client.DeleteSparkBatchResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "DeleteSparkBatch", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -146,6 +147,7 @@ func (client JobClient) DeleteSparkSessionJob(ctx context.Context, sessionID int
 	result, err = client.DeleteSparkSessionJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "DeleteSparkSessionJob", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -225,6 +227,7 @@ func (client JobClient) DeleteSparkStatementJob(ctx context.Context, sessionID i
 	result, err = client.DeleteSparkStatementJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "DeleteSparkStatementJob", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -303,6 +306,7 @@ func (client JobClient) Get(ctx context.Context, jobID string) (result JobDetail
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -379,6 +383,7 @@ func (client JobClient) GetAppState(ctx context.Context, appID string) (result A
 	result, err = client.GetAppStateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "GetAppState", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -449,6 +454,7 @@ func (client JobClient) GetSparkBatchJob(ctx context.Context, batchID int32) (re
 	result, err = client.GetSparkBatchJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "GetSparkBatchJob", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -522,6 +528,7 @@ func (client JobClient) GetSparkBatchLog(ctx context.Context, batchID int32, fro
 	result, err = client.GetSparkBatchLogResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "GetSparkBatchLog", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -601,6 +608,7 @@ func (client JobClient) GetSparkBatchState(ctx context.Context, batchID int32) (
 	result, err = client.GetSparkBatchStateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "GetSparkBatchState", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -671,6 +679,7 @@ func (client JobClient) GetSparkSessionJob(ctx context.Context, sessionID int32)
 	result, err = client.GetSparkSessionJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "GetSparkSessionJob", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -744,6 +753,7 @@ func (client JobClient) GetSparkSessionLog(ctx context.Context, sessionID int32,
 	result, err = client.GetSparkSessionLogResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "GetSparkSessionLog", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -823,6 +833,7 @@ func (client JobClient) GetSparkSessionState(ctx context.Context, sessionID int3
 	result, err = client.GetSparkSessionStateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "GetSparkSessionState", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -894,6 +905,7 @@ func (client JobClient) GetSparkStatementJob(ctx context.Context, sessionID int3
 	result, err = client.GetSparkStatementJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "GetSparkStatementJob", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -971,6 +983,7 @@ func (client JobClient) Kill(ctx context.Context, jobID string) (result JobDetai
 	result, err = client.KillResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "Kill", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1044,6 +1057,7 @@ func (client JobClient) List(ctx context.Context) (result ListJobListJSONObject,
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1125,6 +1139,7 @@ func (client JobClient) ListAfterJobID(ctx context.Context, jobid string, numrec
 	result, err = client.ListAfterJobIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "ListAfterJobID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1206,6 +1221,7 @@ func (client JobClient) ListSparkBatchJob(ctx context.Context, from *int32, size
 	result, err = client.ListSparkBatchJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "ListSparkBatchJob", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1283,6 +1299,7 @@ func (client JobClient) ListSparkSessionJob(ctx context.Context, from *int32, si
 	result, err = client.ListSparkSessionJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "ListSparkSessionJob", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1358,6 +1375,7 @@ func (client JobClient) ListSparkStatementJob(ctx context.Context, sessionID int
 	result, err = client.ListSparkStatementJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "ListSparkStatementJob", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1428,6 +1446,7 @@ func (client JobClient) SubmitHiveJob(ctx context.Context, content io.ReadCloser
 	result, err = client.SubmitHiveJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "SubmitHiveJob", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1501,6 +1520,7 @@ func (client JobClient) SubmitMapReduceJob(ctx context.Context, content io.ReadC
 	result, err = client.SubmitMapReduceJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "SubmitMapReduceJob", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1574,6 +1594,7 @@ func (client JobClient) SubmitMapReduceStreamingJob(ctx context.Context, content
 	result, err = client.SubmitMapReduceStreamingJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "SubmitMapReduceStreamingJob", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1647,6 +1668,7 @@ func (client JobClient) SubmitPigJob(ctx context.Context, content io.ReadCloser)
 	result, err = client.SubmitPigJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "SubmitPigJob", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1721,6 +1743,7 @@ func (client JobClient) SubmitSparkBatchJob(ctx context.Context, sparkBatchJobRe
 	result, err = client.SubmitSparkBatchJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "SubmitSparkBatchJob", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1797,6 +1820,7 @@ func (client JobClient) SubmitSparkSessionJob(ctx context.Context, sparkSessionJ
 	result, err = client.SubmitSparkSessionJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "SubmitSparkSessionJob", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1874,6 +1898,7 @@ func (client JobClient) SubmitSparkStatementJob(ctx context.Context, sessionID i
 	result, err = client.SubmitSparkStatementJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "SubmitSparkStatementJob", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1953,6 +1978,7 @@ func (client JobClient) SubmitSqoopJob(ctx context.Context, content io.ReadClose
 	result, err = client.SubmitSqoopJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.JobClient", "SubmitSqoopJob", resp, "Failure responding to request")
+		return
 	}
 
 	return

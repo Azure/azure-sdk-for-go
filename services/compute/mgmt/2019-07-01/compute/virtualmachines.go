@@ -493,6 +493,7 @@ func (client VirtualMachinesClient) Generalize(ctx context.Context, resourceGrou
 	result, err = client.GeneralizeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "Generalize", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -568,6 +569,7 @@ func (client VirtualMachinesClient) Get(ctx context.Context, resourceGroupName s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -646,6 +648,7 @@ func (client VirtualMachinesClient) InstanceView(ctx context.Context, resourceGr
 	result, err = client.InstanceViewResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "InstanceView", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -722,6 +725,7 @@ func (client VirtualMachinesClient) List(ctx context.Context, resourceGroupName 
 	result.vmlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.vmlr.hasNextLink() && result.vmlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -785,6 +789,7 @@ func (client VirtualMachinesClient) listNextResults(ctx context.Context, lastRes
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -837,6 +842,7 @@ func (client VirtualMachinesClient) ListAll(ctx context.Context, statusOnly stri
 	result.vmlr, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "ListAll", resp, "Failure responding to request")
+		return
 	}
 	if result.vmlr.hasNextLink() && result.vmlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -902,6 +908,7 @@ func (client VirtualMachinesClient) listAllNextResults(ctx context.Context, last
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "listAllNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -953,6 +960,7 @@ func (client VirtualMachinesClient) ListAvailableSizes(ctx context.Context, reso
 	result, err = client.ListAvailableSizesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "ListAvailableSizes", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1034,6 +1042,7 @@ func (client VirtualMachinesClient) ListByLocation(ctx context.Context, location
 	result.vmlr, err = client.ListByLocationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "ListByLocation", resp, "Failure responding to request")
+		return
 	}
 	if result.vmlr.hasNextLink() && result.vmlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1097,6 +1106,7 @@ func (client VirtualMachinesClient) listByLocationNextResults(ctx context.Contex
 	result, err = client.ListByLocationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "listByLocationNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

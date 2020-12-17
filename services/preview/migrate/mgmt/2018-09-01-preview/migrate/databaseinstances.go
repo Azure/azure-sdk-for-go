@@ -76,6 +76,7 @@ func (client DatabaseInstancesClient) EnumerateDatabaseInstances(ctx context.Con
 	result, err = client.EnumerateDatabaseInstancesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.DatabaseInstancesClient", "EnumerateDatabaseInstances", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -162,6 +163,7 @@ func (client DatabaseInstancesClient) GetDatabaseInstance(ctx context.Context, r
 	result, err = client.GetDatabaseInstanceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.DatabaseInstancesClient", "GetDatabaseInstance", resp, "Failure responding to request")
+		return
 	}
 
 	return

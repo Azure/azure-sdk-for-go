@@ -43,10 +43,10 @@ var _ PricingsClientAPI = (*security.PricingsClient)(nil)
 
 // SettingsClientAPI contains the set of methods on the SettingsClient type.
 type SettingsClientAPI interface {
-	Get(ctx context.Context, settingName string) (result security.Setting, err error)
+	Get(ctx context.Context, settingName string) (result security.SettingModel, err error)
 	List(ctx context.Context) (result security.SettingsListPage, err error)
 	ListComplete(ctx context.Context) (result security.SettingsListIterator, err error)
-	Update(ctx context.Context, settingName string, setting security.BasicSetting) (result security.Setting, err error)
+	Update(ctx context.Context, settingName string, setting security.BasicSetting) (result security.SettingModel, err error)
 }
 
 var _ SettingsClientAPI = (*security.SettingsClient)(nil)
@@ -541,12 +541,13 @@ var _ IotDefenderSettingsClientAPI = (*security.IotDefenderSettingsClient)(nil)
 
 // IotSensorsClientAPI contains the set of methods on the IotSensorsClient type.
 type IotSensorsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, scope string, iotSensorName string) (result security.IotSensor, err error)
+	CreateOrUpdate(ctx context.Context, scope string, iotSensorName string, iotSensorsModel security.IotSensorsModel) (result security.IotSensorsModel, err error)
 	Delete(ctx context.Context, scope string, iotSensorName string) (result autorest.Response, err error)
 	DownloadActivation(ctx context.Context, scope string, iotSensorName string) (result security.ReadCloser, err error)
 	DownloadResetPassword(ctx context.Context, scope string, iotSensorName string, body security.ResetPasswordInput) (result security.ReadCloser, err error)
-	Get(ctx context.Context, scope string, iotSensorName string) (result security.IotSensor, err error)
+	Get(ctx context.Context, scope string, iotSensorName string) (result security.IotSensorsModel, err error)
 	List(ctx context.Context, scope string) (result security.IotSensorsList, err error)
+	TriggerTiPackageUpdate(ctx context.Context, scope string, iotSensorName string) (result autorest.Response, err error)
 }
 
 var _ IotSensorsClientAPI = (*security.IotSensorsClient)(nil)
@@ -585,3 +586,13 @@ type OnPremiseIotSensorsClientAPI interface {
 }
 
 var _ OnPremiseIotSensorsClientAPI = (*security.OnPremiseIotSensorsClient)(nil)
+
+// IotSitesClientAPI contains the set of methods on the IotSitesClient type.
+type IotSitesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, scope string, iotSitesModel security.IotSitesModel) (result security.IotSitesModel, err error)
+	Delete(ctx context.Context, scope string) (result autorest.Response, err error)
+	Get(ctx context.Context, scope string) (result security.IotSitesModel, err error)
+	List(ctx context.Context, scope string) (result security.IotSitesList, err error)
+}
+
+var _ IotSitesClientAPI = (*security.IotSitesClient)(nil)

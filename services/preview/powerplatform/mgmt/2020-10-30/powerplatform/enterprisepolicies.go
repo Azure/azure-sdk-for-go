@@ -85,6 +85,7 @@ func (client EnterprisePoliciesClient) CreateOrUpdate(ctx context.Context, enter
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerplatform.EnterprisePoliciesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -172,6 +173,7 @@ func (client EnterprisePoliciesClient) Delete(ctx context.Context, resourceGroup
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerplatform.EnterprisePoliciesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -256,6 +258,7 @@ func (client EnterprisePoliciesClient) Get(ctx context.Context, enterprisePolicy
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerplatform.EnterprisePoliciesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -340,6 +343,7 @@ func (client EnterprisePoliciesClient) ListByResourceGroup(ctx context.Context, 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerplatform.EnterprisePoliciesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -417,6 +421,7 @@ func (client EnterprisePoliciesClient) ListBySubscription(ctx context.Context) (
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerplatform.EnterprisePoliciesClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -501,6 +506,7 @@ func (client EnterprisePoliciesClient) Update(ctx context.Context, enterprisePol
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerplatform.EnterprisePoliciesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

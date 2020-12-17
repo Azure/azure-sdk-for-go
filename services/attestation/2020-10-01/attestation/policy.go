@@ -67,6 +67,7 @@ func (client PolicyClient) Get(ctx context.Context, instanceURL string, attestat
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "attestation.PolicyClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -151,6 +152,7 @@ func (client PolicyClient) Reset(ctx context.Context, instanceURL string, attest
 	result, err = client.ResetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "attestation.PolicyClient", "Reset", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -237,6 +239,7 @@ func (client PolicyClient) Set(ctx context.Context, instanceURL string, attestat
 	result, err = client.SetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "attestation.PolicyClient", "Set", resp, "Failure responding to request")
+		return
 	}
 
 	return

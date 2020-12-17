@@ -81,6 +81,7 @@ func (client ReplicationVaultSettingClient) Create(ctx context.Context, vaultSet
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationVaultSettingClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -158,6 +159,7 @@ func (client ReplicationVaultSettingClient) Get(ctx context.Context, vaultSettin
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationVaultSettingClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -232,6 +234,7 @@ func (client ReplicationVaultSettingClient) List(ctx context.Context) (result Va
 	result.vsc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationVaultSettingClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.vsc.hasNextLink() && result.vsc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -296,6 +299,7 @@ func (client ReplicationVaultSettingClient) listNextResults(ctx context.Context,
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationVaultSettingClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -80,6 +80,7 @@ func (client GroupsClient) CheckExistence(ctx context.Context, resourceGroupName
 	result, err = client.CheckExistenceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.GroupsClient", "CheckExistence", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -163,6 +164,7 @@ func (client GroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.GroupsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -329,6 +331,7 @@ func (client GroupsClient) ExportTemplate(ctx context.Context, resourceGroupName
 	result, err = client.ExportTemplateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.GroupsClient", "ExportTemplate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -412,6 +415,7 @@ func (client GroupsClient) Get(ctx context.Context, resourceGroupName string) (r
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.GroupsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -487,6 +491,7 @@ func (client GroupsClient) List(ctx context.Context, filter string, top *int32) 
 	result.glr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.GroupsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.glr.hasNextLink() && result.glr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -555,6 +560,7 @@ func (client GroupsClient) listNextResults(ctx context.Context, lastResults Grou
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.GroupsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -615,6 +621,7 @@ func (client GroupsClient) Update(ctx context.Context, resourceGroupName string,
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.GroupsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

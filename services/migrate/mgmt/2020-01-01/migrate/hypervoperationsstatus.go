@@ -76,6 +76,7 @@ func (client HyperVOperationsStatusClient) GetOperationStatus(ctx context.Contex
 	result, err = client.GetOperationStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVOperationsStatusClient", "GetOperationStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return

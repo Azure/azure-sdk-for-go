@@ -74,6 +74,7 @@ func (client InvoicesClient) Get(ctx context.Context, invoiceName string) (resul
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -147,6 +148,7 @@ func (client InvoicesClient) GetLatest(ctx context.Context) (result Invoice, err
 	result, err = client.GetLatestResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "GetLatest", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -240,6 +242,7 @@ func (client InvoicesClient) List(ctx context.Context, expand string, filter str
 	result.ilr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -314,6 +317,7 @@ func (client InvoicesClient) listNextResults(ctx context.Context, lastResults In
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

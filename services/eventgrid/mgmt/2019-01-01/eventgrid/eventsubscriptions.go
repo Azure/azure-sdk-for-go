@@ -246,6 +246,7 @@ func (client EventSubscriptionsClient) Get(ctx context.Context, scope string, ev
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -327,6 +328,7 @@ func (client EventSubscriptionsClient) GetFullURL(ctx context.Context, scope str
 	result, err = client.GetFullURLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "GetFullURL", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -403,6 +405,7 @@ func (client EventSubscriptionsClient) ListByResource(ctx context.Context, resou
 	result, err = client.ListByResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListByResource", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -479,6 +482,7 @@ func (client EventSubscriptionsClient) ListGlobalByResourceGroup(ctx context.Con
 	result, err = client.ListGlobalByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListGlobalByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -554,6 +558,7 @@ func (client EventSubscriptionsClient) ListGlobalByResourceGroupForTopicType(ctx
 	result, err = client.ListGlobalByResourceGroupForTopicTypeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListGlobalByResourceGroupForTopicType", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -626,6 +631,7 @@ func (client EventSubscriptionsClient) ListGlobalBySubscription(ctx context.Cont
 	result, err = client.ListGlobalBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListGlobalBySubscription", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -699,6 +705,7 @@ func (client EventSubscriptionsClient) ListGlobalBySubscriptionForTopicType(ctx 
 	result, err = client.ListGlobalBySubscriptionForTopicTypeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListGlobalBySubscriptionForTopicType", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -774,6 +781,7 @@ func (client EventSubscriptionsClient) ListRegionalByResourceGroup(ctx context.C
 	result, err = client.ListRegionalByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListRegionalByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -851,6 +859,7 @@ func (client EventSubscriptionsClient) ListRegionalByResourceGroupForTopicType(c
 	result, err = client.ListRegionalByResourceGroupForTopicTypeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListRegionalByResourceGroupForTopicType", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -926,6 +935,7 @@ func (client EventSubscriptionsClient) ListRegionalBySubscription(ctx context.Co
 	result, err = client.ListRegionalBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListRegionalBySubscription", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1001,6 +1011,7 @@ func (client EventSubscriptionsClient) ListRegionalBySubscriptionForTopicType(ct
 	result, err = client.ListRegionalBySubscriptionForTopicTypeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListRegionalBySubscriptionForTopicType", resp, "Failure responding to request")
+		return
 	}
 
 	return

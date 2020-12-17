@@ -304,6 +304,7 @@ func (client ScheduleClient) GetResource(ctx context.Context, resourceGroupName 
 	result, err = client.GetResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ScheduleClient", "GetResource", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -382,6 +383,7 @@ func (client ScheduleClient) List(ctx context.Context, resourceGroupName string,
 	result.rwcs, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ScheduleClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rwcs.hasNextLink() && result.rwcs.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -455,6 +457,7 @@ func (client ScheduleClient) listNextResults(ctx context.Context, lastResults Re
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ScheduleClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -507,6 +510,7 @@ func (client ScheduleClient) PatchResource(ctx context.Context, resourceGroupNam
 	result, err = client.PatchResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ScheduleClient", "PatchResource", resp, "Failure responding to request")
+		return
 	}
 
 	return

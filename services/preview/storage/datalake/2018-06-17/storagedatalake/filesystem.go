@@ -86,6 +86,7 @@ func (client FilesystemClient) Create(ctx context.Context, filesystem string, xM
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagedatalake.FilesystemClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -208,6 +209,7 @@ func (client FilesystemClient) Delete(ctx context.Context, filesystem string, if
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagedatalake.FilesystemClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -323,6 +325,7 @@ func (client FilesystemClient) GetProperties(ctx context.Context, filesystem str
 	result, err = client.GetPropertiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagedatalake.FilesystemClient", "GetProperties", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -437,6 +440,7 @@ func (client FilesystemClient) List(ctx context.Context, prefix string, continua
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagedatalake.FilesystemClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -561,6 +565,7 @@ func (client FilesystemClient) SetProperties(ctx context.Context, filesystem str
 	result, err = client.SetPropertiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagedatalake.FilesystemClient", "SetProperties", resp, "Failure responding to request")
+		return
 	}
 
 	return

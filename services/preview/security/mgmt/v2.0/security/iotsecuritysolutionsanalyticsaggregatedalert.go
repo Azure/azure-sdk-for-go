@@ -88,6 +88,7 @@ func (client IoTSecuritySolutionsAnalyticsAggregatedAlertClient) Dismiss(ctx con
 	result, err = client.DismissResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsAggregatedAlertClient", "Dismiss", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -175,6 +176,7 @@ func (client IoTSecuritySolutionsAnalyticsAggregatedAlertClient) Get(ctx context
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsAggregatedAlertClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

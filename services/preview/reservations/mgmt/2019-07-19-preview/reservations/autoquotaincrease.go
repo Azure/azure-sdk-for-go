@@ -73,6 +73,7 @@ func (client AutoQuotaIncreaseClient) Create(ctx context.Context, subscriptionID
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.AutoQuotaIncreaseClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -150,6 +151,7 @@ func (client AutoQuotaIncreaseClient) GetProperties(ctx context.Context, subscri
 	result, err = client.GetPropertiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.AutoQuotaIncreaseClient", "GetProperties", resp, "Failure responding to request")
+		return
 	}
 
 	return

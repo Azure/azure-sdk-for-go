@@ -73,6 +73,7 @@ func (client VirtualNetworksClient) Get(ctx context.Context, regionID string, pc
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualNetworksClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -151,6 +152,7 @@ func (client VirtualNetworksClient) List(ctx context.Context, regionID string, p
 	result.vnlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualNetworksClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.vnlr.hasNextLink() && result.vnlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -216,6 +218,7 @@ func (client VirtualNetworksClient) listNextResults(ctx context.Context, lastRes
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualNetworksClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

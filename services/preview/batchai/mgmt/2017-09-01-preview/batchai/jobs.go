@@ -292,6 +292,7 @@ func (client JobsClient) Get(ctx context.Context, resourceGroupName string, jobN
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -378,6 +379,7 @@ func (client JobsClient) List(ctx context.Context, filter string, selectParamete
 	result.jlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.jlr.hasNextLink() && result.jlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -451,6 +453,7 @@ func (client JobsClient) listNextResults(ctx context.Context, lastResults JobLis
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -516,6 +519,7 @@ func (client JobsClient) ListByResourceGroup(ctx context.Context, resourceGroupN
 	result.jlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.jlr.hasNextLink() && result.jlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -590,6 +594,7 @@ func (client JobsClient) listByResourceGroupNextResults(ctx context.Context, las
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -669,6 +674,7 @@ func (client JobsClient) ListOutputFiles(ctx context.Context, resourceGroupName 
 	result.flr, err = client.ListOutputFilesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "ListOutputFiles", resp, "Failure responding to request")
+		return
 	}
 	if result.flr.hasNextLink() && result.flr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -744,6 +750,7 @@ func (client JobsClient) listOutputFilesNextResults(ctx context.Context, lastRes
 	result, err = client.ListOutputFilesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "listOutputFilesNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -809,6 +816,7 @@ func (client JobsClient) ListRemoteLoginInformation(ctx context.Context, resourc
 	result.rlilr, err = client.ListRemoteLoginInformationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "ListRemoteLoginInformation", resp, "Failure responding to request")
+		return
 	}
 	if result.rlilr.hasNextLink() && result.rlilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -873,6 +881,7 @@ func (client JobsClient) listRemoteLoginInformationNextResults(ctx context.Conte
 	result, err = client.ListRemoteLoginInformationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "listRemoteLoginInformationNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

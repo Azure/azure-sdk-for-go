@@ -335,7 +335,7 @@ var _ WorkspaceSQLAadAdminsClientAPI = (*synapse.WorkspaceSQLAadAdminsClient)(ni
 
 // WorkspaceManagedIdentitySQLControlSettingsClientAPI contains the set of methods on the WorkspaceManagedIdentitySQLControlSettingsClient type.
 type WorkspaceManagedIdentitySQLControlSettingsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, managedIdentitySQLControlSettings synapse.ManagedIdentitySQLControlSettingsModel) (result synapse.ManagedIdentitySQLControlSettingsModel, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, managedIdentitySQLControlSettings synapse.ManagedIdentitySQLControlSettingsModel) (result synapse.WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.ManagedIdentitySQLControlSettingsModel, err error)
 }
 

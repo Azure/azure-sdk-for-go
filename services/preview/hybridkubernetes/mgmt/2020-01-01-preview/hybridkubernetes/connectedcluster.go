@@ -267,6 +267,7 @@ func (client ConnectedClusterClient) Get(ctx context.Context, resourceGroupName 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -352,6 +353,7 @@ func (client ConnectedClusterClient) ListByResourceGroup(ctx context.Context, re
 	result.ccl, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.ccl.hasNextLink() && result.ccl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -415,6 +417,7 @@ func (client ConnectedClusterClient) listByResourceGroupNextResults(ctx context.
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -470,6 +473,7 @@ func (client ConnectedClusterClient) ListBySubscription(ctx context.Context) (re
 	result.ccl, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.ccl.hasNextLink() && result.ccl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -532,6 +536,7 @@ func (client ConnectedClusterClient) listBySubscriptionNextResults(ctx context.C
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -602,6 +607,7 @@ func (client ConnectedClusterClient) ListClusterUserCredentials(ctx context.Cont
 	result, err = client.ListClusterUserCredentialsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "ListClusterUserCredentials", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -696,6 +702,7 @@ func (client ConnectedClusterClient) Update(ctx context.Context, resourceGroupNa
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

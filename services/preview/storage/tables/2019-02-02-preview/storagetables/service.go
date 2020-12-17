@@ -76,6 +76,7 @@ func (client ServiceClient) GetProperties(ctx context.Context, timeout *int32, r
 	result, err = client.GetPropertiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagetables.ServiceClient", "GetProperties", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -166,6 +167,7 @@ func (client ServiceClient) GetStatistics(ctx context.Context, timeout *int32, r
 	result, err = client.GetStatisticsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagetables.ServiceClient", "GetStatistics", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -285,6 +287,7 @@ func (client ServiceClient) SetProperties(ctx context.Context, tableServicePrope
 	result, err = client.SetPropertiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagetables.ServiceClient", "SetProperties", resp, "Failure responding to request")
+		return
 	}
 
 	return

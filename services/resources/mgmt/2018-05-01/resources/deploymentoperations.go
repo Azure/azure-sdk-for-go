@@ -87,6 +87,7 @@ func (client DeploymentOperationsClient) Get(ctx context.Context, resourceGroupN
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentOperationsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -171,6 +172,7 @@ func (client DeploymentOperationsClient) GetAtSubscriptionScope(ctx context.Cont
 	result, err = client.GetAtSubscriptionScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentOperationsClient", "GetAtSubscriptionScope", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -260,6 +262,7 @@ func (client DeploymentOperationsClient) List(ctx context.Context, resourceGroup
 	result.dolr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentOperationsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.dolr.hasNextLink() && result.dolr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -327,6 +330,7 @@ func (client DeploymentOperationsClient) listNextResults(ctx context.Context, la
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentOperationsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -387,6 +391,7 @@ func (client DeploymentOperationsClient) ListAtSubscriptionScope(ctx context.Con
 	result.dolr, err = client.ListAtSubscriptionScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentOperationsClient", "ListAtSubscriptionScope", resp, "Failure responding to request")
+		return
 	}
 	if result.dolr.hasNextLink() && result.dolr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -453,6 +458,7 @@ func (client DeploymentOperationsClient) listAtSubscriptionScopeNextResults(ctx 
 	result, err = client.ListAtSubscriptionScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentOperationsClient", "listAtSubscriptionScopeNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

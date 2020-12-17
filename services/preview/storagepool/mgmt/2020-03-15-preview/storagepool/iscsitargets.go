@@ -277,6 +277,7 @@ func (client IscsiTargetsClient) Get(ctx context.Context, resourceGroupName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -368,6 +369,7 @@ func (client IscsiTargetsClient) ListByDiskPool(ctx context.Context, resourceGro
 	result.itl, err = client.ListByDiskPoolResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsClient", "ListByDiskPool", resp, "Failure responding to request")
+		return
 	}
 	if result.itl.hasNextLink() && result.itl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -432,6 +434,7 @@ func (client IscsiTargetsClient) listByDiskPoolNextResults(ctx context.Context, 
 	result, err = client.ListByDiskPoolResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsClient", "listByDiskPoolNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

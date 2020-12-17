@@ -72,6 +72,7 @@ func (client OperationsClient) Get(ctx context.Context, locationName string, ope
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.OperationsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

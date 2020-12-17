@@ -73,6 +73,7 @@ func (client EventsClient) DeleteEvent(ctx context.Context, resourceGroupName st
 	result, err = client.DeleteEventResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.EventsClient", "DeleteEvent", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -151,6 +152,7 @@ func (client EventsClient) EnumerateEvents(ctx context.Context, resourceGroupNam
 	result, err = client.EnumerateEventsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.EventsClient", "EnumerateEvents", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -237,6 +239,7 @@ func (client EventsClient) GetEvent(ctx context.Context, resourceGroupName strin
 	result, err = client.GetEventResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.EventsClient", "GetEvent", resp, "Failure responding to request")
+		return
 	}
 
 	return

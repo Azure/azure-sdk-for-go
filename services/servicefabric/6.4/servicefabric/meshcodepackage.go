@@ -76,6 +76,7 @@ func (client MeshCodePackageClient) GetContainerLogs(ctx context.Context, applic
 	result, err = client.GetContainerLogsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.MeshCodePackageClient", "GetContainerLogs", resp, "Failure responding to request")
+		return
 	}
 
 	return

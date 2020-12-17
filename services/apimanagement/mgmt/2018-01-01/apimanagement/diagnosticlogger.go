@@ -91,6 +91,7 @@ func (client DiagnosticLoggerClient) CheckEntityExists(ctx context.Context, reso
 	result, err = client.CheckEntityExistsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.DiagnosticLoggerClient", "CheckEntityExists", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -184,6 +185,7 @@ func (client DiagnosticLoggerClient) CreateOrUpdate(ctx context.Context, resourc
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.DiagnosticLoggerClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -278,6 +280,7 @@ func (client DiagnosticLoggerClient) Delete(ctx context.Context, resourceGroupNa
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.DiagnosticLoggerClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -380,6 +383,7 @@ func (client DiagnosticLoggerClient) ListByService(ctx context.Context, resource
 	result.lc, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.DiagnosticLoggerClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 	if result.lc.hasNextLink() && result.lc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -454,6 +458,7 @@ func (client DiagnosticLoggerClient) listByServiceNextResults(ctx context.Contex
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.DiagnosticLoggerClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

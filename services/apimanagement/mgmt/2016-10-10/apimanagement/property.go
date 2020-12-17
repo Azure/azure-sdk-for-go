@@ -98,6 +98,7 @@ func (client PropertyClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.PropertyClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -189,6 +190,7 @@ func (client PropertyClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.PropertyClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -278,6 +280,7 @@ func (client PropertyClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.PropertyClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -369,6 +372,7 @@ func (client PropertyClient) Update(ctx context.Context, resourceGroupName strin
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.PropertyClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

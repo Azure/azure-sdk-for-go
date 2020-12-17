@@ -75,6 +75,7 @@ func (client Client) Append(ctx context.Context, accountName string, directFileP
 	result, err = client.AppendResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "Append", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -161,6 +162,7 @@ func (client Client) CheckAccess(ctx context.Context, accountName string, pathPa
 	result, err = client.CheckAccessResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "CheckAccess", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -252,6 +254,7 @@ func (client Client) Concat(ctx context.Context, accountName string, destination
 	result, err = client.ConcatResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "Concat", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -340,6 +343,7 @@ func (client Client) ConcurrentAppend(ctx context.Context, accountName string, f
 	result, err = client.ConcurrentAppendResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "ConcurrentAppend", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -428,6 +432,7 @@ func (client Client) Create(ctx context.Context, accountName string, directFileP
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -516,6 +521,7 @@ func (client Client) Delete(ctx context.Context, accountName string, filePath st
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -599,6 +605,7 @@ func (client Client) Flush(ctx context.Context, accountName string, flushFilePat
 	result, err = client.FlushResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "Flush", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -680,6 +687,7 @@ func (client Client) GetACLStatus(ctx context.Context, accountName string, ACLFi
 	result, err = client.GetACLStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "GetACLStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -760,6 +768,7 @@ func (client Client) GetContentSummary(ctx context.Context, accountName string, 
 	result, err = client.GetContentSummaryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "GetContentSummary", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -840,6 +849,7 @@ func (client Client) GetFileStatus(ctx context.Context, accountName string, getF
 	result, err = client.GetFileStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "GetFileStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -926,6 +936,7 @@ func (client Client) ListFileStatus(ctx context.Context, accountName string, lis
 	result, err = client.ListFileStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "ListFileStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1014,6 +1025,7 @@ func (client Client) Mkdirs(ctx context.Context, accountName string, pathParamet
 	result, err = client.MkdirsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "Mkdirs", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1096,6 +1108,7 @@ func (client Client) ModifyACLEntries(ctx context.Context, accountName string, m
 	result, err = client.ModifyACLEntriesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "ModifyACLEntries", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1185,6 +1198,7 @@ func (client Client) MsConcat(ctx context.Context, accountName string, msConcatD
 	result, err = client.MsConcatResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "MsConcat", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1268,6 +1282,7 @@ func (client Client) Open(ctx context.Context, accountName string, directFilePat
 	result, err = client.OpenResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "Open", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1354,6 +1369,7 @@ func (client Client) RemoveACL(ctx context.Context, accountName string, ACLFileP
 	result, err = client.RemoveACLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "RemoveACL", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1434,6 +1450,7 @@ func (client Client) RemoveACLEntries(ctx context.Context, accountName string, r
 	result, err = client.RemoveACLEntriesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "RemoveACLEntries", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1514,6 +1531,7 @@ func (client Client) RemoveDefaultACL(ctx context.Context, accountName string, d
 	result, err = client.RemoveDefaultACLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "RemoveDefaultACL", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1593,6 +1611,7 @@ func (client Client) Rename(ctx context.Context, accountName string, renameFileP
 	result, err = client.RenameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "Rename", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1676,6 +1695,7 @@ func (client Client) SetACL(ctx context.Context, accountName string, setACLFileP
 	result, err = client.SetACLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "SetACL", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1763,6 +1783,7 @@ func (client Client) SetFileExpiry(ctx context.Context, accountName string, file
 	result, err = client.SetFileExpiryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "SetFileExpiry", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1850,6 +1871,7 @@ func (client Client) SetOwner(ctx context.Context, accountName string, setOwnerF
 	result, err = client.SetOwnerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "SetOwner", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1937,6 +1959,7 @@ func (client Client) SetPermission(ctx context.Context, accountName string, setP
 	result, err = client.SetPermissionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "SetPermission", resp, "Failure responding to request")
+		return
 	}
 
 	return

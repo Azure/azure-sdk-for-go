@@ -598,6 +598,7 @@ func (client DevicesClient) Get(ctx context.Context, deviceName string, resource
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -685,6 +686,7 @@ func (client DevicesClient) GetAlertSettings(ctx context.Context, deviceName str
 	result, err = client.GetAlertSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "GetAlertSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -769,6 +771,7 @@ func (client DevicesClient) GetNetworkSettings(ctx context.Context, deviceName s
 	result, err = client.GetNetworkSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "GetNetworkSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -853,6 +856,7 @@ func (client DevicesClient) GetTimeSettings(ctx context.Context, deviceName stri
 	result, err = client.GetTimeSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "GetTimeSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -937,6 +941,7 @@ func (client DevicesClient) GetUpdateSummary(ctx context.Context, deviceName str
 	result, err = client.GetUpdateSummaryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "GetUpdateSummary", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1104,6 +1109,7 @@ func (client DevicesClient) ListByManager(ctx context.Context, resourceGroupName
 	result, err = client.ListByManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "ListByManager", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1191,6 +1197,7 @@ func (client DevicesClient) ListFailoverTarget(ctx context.Context, deviceName s
 	result, err = client.ListFailoverTargetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "ListFailoverTarget", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1278,6 +1285,7 @@ func (client DevicesClient) ListMetricDefinition(ctx context.Context, deviceName
 	result, err = client.ListMetricDefinitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "ListMetricDefinition", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1363,6 +1371,7 @@ func (client DevicesClient) ListMetrics(ctx context.Context, deviceName string, 
 	result, err = client.ListMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "ListMetrics", resp, "Failure responding to request")
+		return
 	}
 
 	return

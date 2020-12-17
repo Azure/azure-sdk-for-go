@@ -166,6 +166,7 @@ func (client BuildsClient) Get(ctx context.Context, resourceGroupName string, re
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BuildsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -251,6 +252,7 @@ func (client BuildsClient) GetLogLink(ctx context.Context, resourceGroupName str
 	result, err = client.GetLogLinkResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BuildsClient", "GetLogLink", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -340,6 +342,7 @@ func (client BuildsClient) List(ctx context.Context, resourceGroupName string, r
 	result.blr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BuildsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.blr.hasNextLink() && result.blr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -413,6 +416,7 @@ func (client BuildsClient) listNextResults(ctx context.Context, lastResults Buil
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BuildsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

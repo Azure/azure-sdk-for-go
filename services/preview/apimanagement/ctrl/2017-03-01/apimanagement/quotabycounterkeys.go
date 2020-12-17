@@ -71,6 +71,7 @@ func (client QuotaByCounterKeysClient) List(ctx context.Context, apimBaseURL str
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.QuotaByCounterKeysClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -154,6 +155,7 @@ func (client QuotaByCounterKeysClient) Update(ctx context.Context, apimBaseURL s
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.QuotaByCounterKeysClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

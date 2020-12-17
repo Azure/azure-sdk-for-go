@@ -76,6 +76,7 @@ func (client ChargesClient) ListByDepartment(ctx context.Context, billingAccount
 	result, err = client.ListByDepartmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ChargesClient", "ListByDepartment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -156,6 +157,7 @@ func (client ChargesClient) ListByEnrollmentAccount(ctx context.Context, billing
 	result, err = client.ListByEnrollmentAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ChargesClient", "ListByEnrollmentAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -237,6 +239,7 @@ func (client ChargesClient) ListForBillingPeriodByDepartment(ctx context.Context
 	result, err = client.ListForBillingPeriodByDepartmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ChargesClient", "ListForBillingPeriodByDepartment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -319,6 +322,7 @@ func (client ChargesClient) ListForBillingPeriodByEnrollmentAccount(ctx context.
 	result, err = client.ListForBillingPeriodByEnrollmentAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ChargesClient", "ListForBillingPeriodByEnrollmentAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return

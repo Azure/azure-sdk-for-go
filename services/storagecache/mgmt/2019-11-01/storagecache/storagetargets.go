@@ -276,6 +276,7 @@ func (client StorageTargetsClient) Get(ctx context.Context, resourceGroupName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -359,6 +360,7 @@ func (client StorageTargetsClient) ListByCache(ctx context.Context, resourceGrou
 	result.str, err = client.ListByCacheResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsClient", "ListByCache", resp, "Failure responding to request")
+		return
 	}
 	if result.str.hasNextLink() && result.str.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -423,6 +425,7 @@ func (client StorageTargetsClient) listByCacheNextResults(ctx context.Context, l
 	result, err = client.ListByCacheResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsClient", "listByCacheNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

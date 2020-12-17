@@ -84,6 +84,7 @@ func (client ServersClient) CheckNameAvailability(ctx context.Context, location 
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -354,6 +355,7 @@ func (client ServersClient) GetDetails(ctx context.Context, resourceGroupName st
 	result, err = client.GetDetailsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "GetDetails", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -426,6 +428,7 @@ func (client ServersClient) List(ctx context.Context) (result Servers, err error
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -507,6 +510,7 @@ func (client ServersClient) ListByResourceGroup(ctx context.Context, resourceGro
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -581,6 +585,7 @@ func (client ServersClient) ListOperationResults(ctx context.Context, location s
 	result, err = client.ListOperationResultsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "ListOperationResults", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -655,6 +660,7 @@ func (client ServersClient) ListOperationStatuses(ctx context.Context, location 
 	result, err = client.ListOperationStatusesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "ListOperationStatuses", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -744,6 +750,7 @@ func (client ServersClient) ListSkusForExisting(ctx context.Context, resourceGro
 	result, err = client.ListSkusForExistingResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "ListSkusForExisting", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -816,6 +823,7 @@ func (client ServersClient) ListSkusForNew(ctx context.Context) (result SkuEnume
 	result, err = client.ListSkusForNewResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "ListSkusForNew", resp, "Failure responding to request")
+		return
 	}
 
 	return

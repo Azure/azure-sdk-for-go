@@ -89,6 +89,7 @@ func (client PolicyRestrictionsClient) CheckAtResourceGroupScope(ctx context.Con
 	result, err = client.CheckAtResourceGroupScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyRestrictionsClient", "CheckAtResourceGroupScope", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -174,6 +175,7 @@ func (client PolicyRestrictionsClient) CheckAtSubscriptionScope(ctx context.Cont
 	result, err = client.CheckAtSubscriptionScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyRestrictionsClient", "CheckAtSubscriptionScope", resp, "Failure responding to request")
+		return
 	}
 
 	return

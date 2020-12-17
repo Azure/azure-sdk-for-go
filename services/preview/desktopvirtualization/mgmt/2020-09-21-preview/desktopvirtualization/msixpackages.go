@@ -93,6 +93,7 @@ func (client MSIXPackagesClient) CreateOrUpdate(ctx context.Context, resourceGro
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "desktopvirtualization.MSIXPackagesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -188,6 +189,7 @@ func (client MSIXPackagesClient) Delete(ctx context.Context, resourceGroupName s
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "desktopvirtualization.MSIXPackagesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -280,6 +282,7 @@ func (client MSIXPackagesClient) Get(ctx context.Context, resourceGroupName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "desktopvirtualization.MSIXPackagesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -370,6 +373,7 @@ func (client MSIXPackagesClient) List(ctx context.Context, resourceGroupName str
 	result.mpl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "desktopvirtualization.MSIXPackagesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.mpl.hasNextLink() && result.mpl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -434,6 +438,7 @@ func (client MSIXPackagesClient) listNextResults(ctx context.Context, lastResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "desktopvirtualization.MSIXPackagesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -503,6 +508,7 @@ func (client MSIXPackagesClient) Update(ctx context.Context, resourceGroupName s
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "desktopvirtualization.MSIXPackagesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

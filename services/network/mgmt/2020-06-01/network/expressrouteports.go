@@ -234,6 +234,7 @@ func (client ExpressRoutePortsClient) GenerateLOA(ctx context.Context, resourceG
 	result, err = client.GenerateLOAResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsClient", "GenerateLOA", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -311,6 +312,7 @@ func (client ExpressRoutePortsClient) Get(ctx context.Context, resourceGroupName
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -384,6 +386,7 @@ func (client ExpressRoutePortsClient) List(ctx context.Context) (result ExpressR
 	result.erplr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.erplr.hasNextLink() && result.erplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -446,6 +449,7 @@ func (client ExpressRoutePortsClient) listNextResults(ctx context.Context, lastR
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -497,6 +501,7 @@ func (client ExpressRoutePortsClient) ListByResourceGroup(ctx context.Context, r
 	result.erplr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.erplr.hasNextLink() && result.erplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -560,6 +565,7 @@ func (client ExpressRoutePortsClient) listByResourceGroupNextResults(ctx context
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -612,6 +618,7 @@ func (client ExpressRoutePortsClient) UpdateTags(ctx context.Context, resourceGr
 	result, err = client.UpdateTagsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsClient", "UpdateTags", resp, "Failure responding to request")
+		return
 	}
 
 	return

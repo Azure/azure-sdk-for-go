@@ -68,6 +68,7 @@ func (client PolicyClient) Get(ctx context.Context) (result PolicyContract, err 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "personalizer.PolicyClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -132,6 +133,7 @@ func (client PolicyClient) Reset(ctx context.Context) (result PolicyContract, er
 	result, err = client.ResetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "personalizer.PolicyClient", "Reset", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -207,6 +209,7 @@ func (client PolicyClient) Update(ctx context.Context, policy PolicyContract) (r
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "personalizer.PolicyClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

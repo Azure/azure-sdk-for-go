@@ -75,6 +75,7 @@ func (client FilesClient) CreateOrUpdate(ctx context.Context, parameters Project
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.FilesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -156,6 +157,7 @@ func (client FilesClient) Delete(ctx context.Context, groupName string, serviceN
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.FilesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -235,6 +237,7 @@ func (client FilesClient) Get(ctx context.Context, groupName string, serviceName
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.FilesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -315,6 +318,7 @@ func (client FilesClient) List(ctx context.Context, groupName string, serviceNam
 	result.fl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.FilesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.fl.hasNextLink() && result.fl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -380,6 +384,7 @@ func (client FilesClient) listNextResults(ctx context.Context, lastResults FileL
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.FilesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -433,6 +438,7 @@ func (client FilesClient) Read(ctx context.Context, groupName string, serviceNam
 	result, err = client.ReadResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.FilesClient", "Read", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -512,6 +518,7 @@ func (client FilesClient) ReadWrite(ctx context.Context, groupName string, servi
 	result, err = client.ReadWriteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.FilesClient", "ReadWrite", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -592,6 +599,7 @@ func (client FilesClient) Update(ctx context.Context, parameters ProjectFile, gr
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.FilesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

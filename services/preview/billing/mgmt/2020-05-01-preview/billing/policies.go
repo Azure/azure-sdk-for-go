@@ -73,6 +73,7 @@ func (client PoliciesClient) GetByBillingProfile(ctx context.Context, billingAcc
 	result, err = client.GetByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PoliciesClient", "GetByBillingProfile", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -148,6 +149,7 @@ func (client PoliciesClient) GetByCustomer(ctx context.Context, billingAccountNa
 	result, err = client.GetByCustomerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PoliciesClient", "GetByCustomer", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -224,6 +226,7 @@ func (client PoliciesClient) Update(ctx context.Context, billingAccountName stri
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PoliciesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -302,6 +305,7 @@ func (client PoliciesClient) UpdateCustomer(ctx context.Context, billingAccountN
 	result, err = client.UpdateCustomerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PoliciesClient", "UpdateCustomer", resp, "Failure responding to request")
+		return
 	}
 
 	return

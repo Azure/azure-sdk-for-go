@@ -82,6 +82,7 @@ func (client DatabaseAccountsClient) CheckNameExists(ctx context.Context, accoun
 	result, err = client.CheckNameExistsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CheckNameExists", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2140,6 +2141,7 @@ func (client DatabaseAccountsClient) Get(ctx context.Context, resourceGroupName 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2229,6 +2231,7 @@ func (client DatabaseAccountsClient) GetCassandraKeyspace(ctx context.Context, r
 	result, err = client.GetCassandraKeyspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetCassandraKeyspace", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2319,6 +2322,7 @@ func (client DatabaseAccountsClient) GetCassandraKeyspaceThroughput(ctx context.
 	result, err = client.GetCassandraKeyspaceThroughputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetCassandraKeyspaceThroughput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2409,6 +2413,7 @@ func (client DatabaseAccountsClient) GetCassandraTable(ctx context.Context, reso
 	result, err = client.GetCassandraTableResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetCassandraTable", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2501,6 +2506,7 @@ func (client DatabaseAccountsClient) GetCassandraTableThroughput(ctx context.Con
 	result, err = client.GetCassandraTableThroughputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetCassandraTableThroughput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2592,6 +2598,7 @@ func (client DatabaseAccountsClient) GetGremlinDatabase(ctx context.Context, res
 	result, err = client.GetGremlinDatabaseResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetGremlinDatabase", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2682,6 +2689,7 @@ func (client DatabaseAccountsClient) GetGremlinDatabaseThroughput(ctx context.Co
 	result, err = client.GetGremlinDatabaseThroughputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetGremlinDatabaseThroughput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2772,6 +2780,7 @@ func (client DatabaseAccountsClient) GetGremlinGraph(ctx context.Context, resour
 	result, err = client.GetGremlinGraphResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetGremlinGraph", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2864,6 +2873,7 @@ func (client DatabaseAccountsClient) GetGremlinGraphThroughput(ctx context.Conte
 	result, err = client.GetGremlinGraphThroughputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetGremlinGraphThroughput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2955,6 +2965,7 @@ func (client DatabaseAccountsClient) GetMongoDBCollection(ctx context.Context, r
 	result, err = client.GetMongoDBCollectionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetMongoDBCollection", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3047,6 +3058,7 @@ func (client DatabaseAccountsClient) GetMongoDBCollectionThroughput(ctx context.
 	result, err = client.GetMongoDBCollectionThroughputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetMongoDBCollectionThroughput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3138,6 +3150,7 @@ func (client DatabaseAccountsClient) GetMongoDBDatabase(ctx context.Context, res
 	result, err = client.GetMongoDBDatabaseResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetMongoDBDatabase", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3228,6 +3241,7 @@ func (client DatabaseAccountsClient) GetMongoDBDatabaseThroughput(ctx context.Co
 	result, err = client.GetMongoDBDatabaseThroughputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetMongoDBDatabaseThroughput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3316,6 +3330,7 @@ func (client DatabaseAccountsClient) GetReadOnlyKeys(ctx context.Context, resour
 	result, err = client.GetReadOnlyKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetReadOnlyKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3405,6 +3420,7 @@ func (client DatabaseAccountsClient) GetSQLContainer(ctx context.Context, resour
 	result, err = client.GetSQLContainerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetSQLContainer", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3497,6 +3513,7 @@ func (client DatabaseAccountsClient) GetSQLContainerThroughput(ctx context.Conte
 	result, err = client.GetSQLContainerThroughputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetSQLContainerThroughput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3587,6 +3604,7 @@ func (client DatabaseAccountsClient) GetSQLDatabase(ctx context.Context, resourc
 	result, err = client.GetSQLDatabaseResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetSQLDatabase", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3677,6 +3695,7 @@ func (client DatabaseAccountsClient) GetSQLDatabaseThroughput(ctx context.Contex
 	result, err = client.GetSQLDatabaseThroughputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetSQLDatabaseThroughput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3766,6 +3785,7 @@ func (client DatabaseAccountsClient) GetTable(ctx context.Context, resourceGroup
 	result, err = client.GetTableResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetTable", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3856,6 +3876,7 @@ func (client DatabaseAccountsClient) GetTableThroughput(ctx context.Context, res
 	result, err = client.GetTableThroughputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetTableThroughput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3929,6 +3950,7 @@ func (client DatabaseAccountsClient) List(ctx context.Context) (result DatabaseA
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4009,6 +4031,7 @@ func (client DatabaseAccountsClient) ListByResourceGroup(ctx context.Context, re
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4095,6 +4118,7 @@ func (client DatabaseAccountsClient) ListCassandraKeyspaces(ctx context.Context,
 	result, err = client.ListCassandraKeyspacesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListCassandraKeyspaces", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4183,6 +4207,7 @@ func (client DatabaseAccountsClient) ListCassandraTables(ctx context.Context, re
 	result, err = client.ListCassandraTablesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListCassandraTables", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4271,6 +4296,7 @@ func (client DatabaseAccountsClient) ListConnectionStrings(ctx context.Context, 
 	result, err = client.ListConnectionStringsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListConnectionStrings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4358,6 +4384,7 @@ func (client DatabaseAccountsClient) ListGremlinDatabases(ctx context.Context, r
 	result, err = client.ListGremlinDatabasesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListGremlinDatabases", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4446,6 +4473,7 @@ func (client DatabaseAccountsClient) ListGremlinGraphs(ctx context.Context, reso
 	result, err = client.ListGremlinGraphsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListGremlinGraphs", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4534,6 +4562,7 @@ func (client DatabaseAccountsClient) ListKeys(ctx context.Context, resourceGroup
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4621,6 +4650,7 @@ func (client DatabaseAccountsClient) ListMetricDefinitions(ctx context.Context, 
 	result, err = client.ListMetricDefinitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListMetricDefinitions", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4711,6 +4741,7 @@ func (client DatabaseAccountsClient) ListMetrics(ctx context.Context, resourceGr
 	result, err = client.ListMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListMetrics", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4800,6 +4831,7 @@ func (client DatabaseAccountsClient) ListMongoDBCollections(ctx context.Context,
 	result, err = client.ListMongoDBCollectionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListMongoDBCollections", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4888,6 +4920,7 @@ func (client DatabaseAccountsClient) ListMongoDBDatabases(ctx context.Context, r
 	result, err = client.ListMongoDBDatabasesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListMongoDBDatabases", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4975,6 +5008,7 @@ func (client DatabaseAccountsClient) ListReadOnlyKeys(ctx context.Context, resou
 	result, err = client.ListReadOnlyKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListReadOnlyKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5063,6 +5097,7 @@ func (client DatabaseAccountsClient) ListSQLContainers(ctx context.Context, reso
 	result, err = client.ListSQLContainersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListSQLContainers", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5151,6 +5186,7 @@ func (client DatabaseAccountsClient) ListSQLDatabases(ctx context.Context, resou
 	result, err = client.ListSQLDatabasesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListSQLDatabases", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5238,6 +5274,7 @@ func (client DatabaseAccountsClient) ListTables(ctx context.Context, resourceGro
 	result, err = client.ListTablesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListTables", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5327,6 +5364,7 @@ func (client DatabaseAccountsClient) ListUsages(ctx context.Context, resourceGro
 	result, err = client.ListUsagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListUsages", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -69,6 +69,7 @@ func (client AddressesClient) Validate(ctx context.Context, address Address) (re
 	result, err = client.ValidateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.AddressesClient", "Validate", resp, "Failure responding to request")
+		return
 	}
 
 	return

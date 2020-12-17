@@ -67,6 +67,7 @@ func (client ModelClient) Get(ctx context.Context) (result ReadCloser, err error
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "personalizer.ModelClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -130,6 +131,7 @@ func (client ModelClient) GetProperties(ctx context.Context) (result ModelProper
 	result, err = client.GetPropertiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "personalizer.ModelClient", "GetProperties", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -194,6 +196,7 @@ func (client ModelClient) Reset(ctx context.Context) (result autorest.Response, 
 	result, err = client.ResetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "personalizer.ModelClient", "Reset", resp, "Failure responding to request")
+		return
 	}
 
 	return

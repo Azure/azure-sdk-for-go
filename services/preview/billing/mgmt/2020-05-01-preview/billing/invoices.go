@@ -390,6 +390,7 @@ func (client InvoicesClient) Get(ctx context.Context, billingAccountName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -464,6 +465,7 @@ func (client InvoicesClient) GetByID(ctx context.Context, invoiceName string) (r
 	result, err = client.GetByIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "GetByID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -536,6 +538,7 @@ func (client InvoicesClient) GetBySubscriptionAndInvoiceID(ctx context.Context, 
 	result, err = client.GetBySubscriptionAndInvoiceIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "GetBySubscriptionAndInvoiceID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -613,6 +616,7 @@ func (client InvoicesClient) ListByBillingAccount(ctx context.Context, billingAc
 	result.ilr, err = client.ListByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "ListByBillingAccount", resp, "Failure responding to request")
+		return
 	}
 	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -677,6 +681,7 @@ func (client InvoicesClient) listByBillingAccountNextResults(ctx context.Context
 	result, err = client.ListByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "listByBillingAccountNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -732,6 +737,7 @@ func (client InvoicesClient) ListByBillingProfile(ctx context.Context, billingAc
 	result.ilr, err = client.ListByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "ListByBillingProfile", resp, "Failure responding to request")
+		return
 	}
 	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -797,6 +803,7 @@ func (client InvoicesClient) listByBillingProfileNextResults(ctx context.Context
 	result, err = client.ListByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "listByBillingProfileNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -849,6 +856,7 @@ func (client InvoicesClient) ListByBillingSubscription(ctx context.Context, peri
 	result.ilr, err = client.ListByBillingSubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "ListByBillingSubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -913,6 +921,7 @@ func (client InvoicesClient) listByBillingSubscriptionNextResults(ctx context.Co
 	result, err = client.ListByBillingSubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "listByBillingSubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

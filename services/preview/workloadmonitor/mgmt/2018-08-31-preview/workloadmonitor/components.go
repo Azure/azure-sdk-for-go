@@ -89,6 +89,7 @@ func (client ComponentsClient) Get(ctx context.Context, resourceGroupName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.ComponentsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -193,6 +194,7 @@ func (client ComponentsClient) ListByResource(ctx context.Context, resourceGroup
 	result.cc, err = client.ListByResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.ComponentsClient", "ListByResource", resp, "Failure responding to request")
+		return
 	}
 	if result.cc.hasNextLink() && result.cc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -280,6 +282,7 @@ func (client ComponentsClient) listByResourceNextResults(ctx context.Context, la
 	result, err = client.ListByResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.ComponentsClient", "listByResourceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

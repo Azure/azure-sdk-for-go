@@ -76,6 +76,7 @@ func (client RoleDefinitionsClient) CreateOrUpdate(ctx context.Context, scope st
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -155,6 +156,7 @@ func (client RoleDefinitionsClient) Delete(ctx context.Context, scope string, ro
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -229,6 +231,7 @@ func (client RoleDefinitionsClient) Get(ctx context.Context, scope string, roleD
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -305,6 +308,7 @@ func (client RoleDefinitionsClient) GetByID(ctx context.Context, roleDefinitionI
 	result, err = client.GetByIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "GetByID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -380,6 +384,7 @@ func (client RoleDefinitionsClient) List(ctx context.Context, scope string, filt
 	result.rdlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rdlr.hasNextLink() && result.rdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -445,6 +450,7 @@ func (client RoleDefinitionsClient) listNextResults(ctx context.Context, lastRes
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -73,6 +73,7 @@ func (client ResourceVaultConfigsClient) Get(ctx context.Context, vaultName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ResourceVaultConfigsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -149,6 +150,7 @@ func (client ResourceVaultConfigsClient) Put(ctx context.Context, vaultName stri
 	result, err = client.PutResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ResourceVaultConfigsClient", "Put", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -227,6 +229,7 @@ func (client ResourceVaultConfigsClient) Update(ctx context.Context, vaultName s
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ResourceVaultConfigsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

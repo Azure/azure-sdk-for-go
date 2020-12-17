@@ -268,6 +268,7 @@ func (client BackupSchedulesClient) Get(ctx context.Context, deviceName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupSchedulesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -355,6 +356,7 @@ func (client BackupSchedulesClient) ListByBackupPolicy(ctx context.Context, devi
 	result, err = client.ListByBackupPolicyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupSchedulesClient", "ListByBackupPolicy", resp, "Failure responding to request")
+		return
 	}
 
 	return

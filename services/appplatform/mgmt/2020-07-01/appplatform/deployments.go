@@ -237,6 +237,7 @@ func (client DeploymentsClient) Get(ctx context.Context, resourceGroupName strin
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.DeploymentsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -317,6 +318,7 @@ func (client DeploymentsClient) GetLogFileURL(ctx context.Context, resourceGroup
 	result, err = client.GetLogFileURLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.DeploymentsClient", "GetLogFileURL", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -398,6 +400,7 @@ func (client DeploymentsClient) List(ctx context.Context, resourceGroupName stri
 	result.drc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.DeploymentsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.drc.hasNextLink() && result.drc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -466,6 +469,7 @@ func (client DeploymentsClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.DeploymentsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -520,6 +524,7 @@ func (client DeploymentsClient) ListForCluster(ctx context.Context, resourceGrou
 	result.drc, err = client.ListForClusterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.DeploymentsClient", "ListForCluster", resp, "Failure responding to request")
+		return
 	}
 	if result.drc.hasNextLink() && result.drc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -587,6 +592,7 @@ func (client DeploymentsClient) listForClusterNextResults(ctx context.Context, l
 	result, err = client.ListForClusterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.DeploymentsClient", "listForClusterNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

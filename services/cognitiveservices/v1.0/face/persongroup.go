@@ -101,6 +101,7 @@ func (client PersonGroupClient) Create(ctx context.Context, personGroupID string
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -180,6 +181,7 @@ func (client PersonGroupClient) Delete(ctx context.Context, personGroupID string
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -259,6 +261,7 @@ func (client PersonGroupClient) Get(ctx context.Context, personGroupID string, r
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -344,6 +347,7 @@ func (client PersonGroupClient) GetTrainingStatus(ctx context.Context, personGro
 	result, err = client.GetTrainingStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupClient", "GetTrainingStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -439,6 +443,7 @@ func (client PersonGroupClient) List(ctx context.Context, start string, top *int
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -528,6 +533,7 @@ func (client PersonGroupClient) Train(ctx context.Context, personGroupID string)
 	result, err = client.TrainResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupClient", "Train", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -606,6 +612,7 @@ func (client PersonGroupClient) Update(ctx context.Context, personGroupID string
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

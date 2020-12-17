@@ -72,6 +72,7 @@ func (client WorkspacesClient) List(ctx context.Context, resourceGroupName strin
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspacesClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

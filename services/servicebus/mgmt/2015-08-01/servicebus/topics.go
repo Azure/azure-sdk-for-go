@@ -90,6 +90,7 @@ func (client TopicsClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -190,6 +191,7 @@ func (client TopicsClient) CreateOrUpdateAuthorizationRule(ctx context.Context, 
 	result, err = client.CreateOrUpdateAuthorizationRuleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "CreateOrUpdateAuthorizationRule", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -283,6 +285,7 @@ func (client TopicsClient) Delete(ctx context.Context, resourceGroupName string,
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -376,6 +379,7 @@ func (client TopicsClient) DeleteAuthorizationRule(ctx context.Context, resource
 	result, err = client.DeleteAuthorizationRuleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "DeleteAuthorizationRule", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -466,6 +470,7 @@ func (client TopicsClient) Get(ctx context.Context, resourceGroupName string, na
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -560,6 +565,7 @@ func (client TopicsClient) GetAuthorizationRule(ctx context.Context, resourceGro
 	result, err = client.GetAuthorizationRuleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "GetAuthorizationRule", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -648,6 +654,7 @@ func (client TopicsClient) ListAll(ctx context.Context, resourceGroupName string
 	result.tlr, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "ListAll", resp, "Failure responding to request")
+		return
 	}
 	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -712,6 +719,7 @@ func (client TopicsClient) listAllNextResults(ctx context.Context, lastResults T
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "listAllNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -778,6 +786,7 @@ func (client TopicsClient) ListAuthorizationRules(ctx context.Context, resourceG
 	result.saarlr, err = client.ListAuthorizationRulesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "ListAuthorizationRules", resp, "Failure responding to request")
+		return
 	}
 	if result.saarlr.hasNextLink() && result.saarlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -843,6 +852,7 @@ func (client TopicsClient) listAuthorizationRulesNextResults(ctx context.Context
 	result, err = client.ListAuthorizationRulesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "listAuthorizationRulesNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -912,6 +922,7 @@ func (client TopicsClient) ListKeys(ctx context.Context, resourceGroupName strin
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "ListKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1007,6 +1018,7 @@ func (client TopicsClient) PostAuthorizationRule(ctx context.Context, resourceGr
 	result, err = client.PostAuthorizationRuleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "PostAuthorizationRule", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1103,6 +1115,7 @@ func (client TopicsClient) RegenerateKeys(ctx context.Context, resourceGroupName
 	result, err = client.RegenerateKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "RegenerateKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return

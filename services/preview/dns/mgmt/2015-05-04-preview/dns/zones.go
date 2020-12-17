@@ -87,6 +87,7 @@ func (client ZonesClient) CreateOrUpdate(ctx context.Context, resourceGroupName 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -184,6 +185,7 @@ func (client ZonesClient) Delete(ctx context.Context, resourceGroupName string, 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -272,6 +274,7 @@ func (client ZonesClient) Get(ctx context.Context, resourceGroupName string, zon
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -359,6 +362,7 @@ func (client ZonesClient) ListZonesInResourceGroup(ctx context.Context, resource
 	result.zlr, err = client.ListZonesInResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "ListZonesInResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.zlr.hasNextLink() && result.zlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -428,6 +432,7 @@ func (client ZonesClient) listZonesInResourceGroupNextResults(ctx context.Contex
 	result, err = client.ListZonesInResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "listZonesInResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -486,6 +491,7 @@ func (client ZonesClient) ListZonesInSubscription(ctx context.Context, top strin
 	result.zlr, err = client.ListZonesInSubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "ListZonesInSubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.zlr.hasNextLink() && result.zlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -554,6 +560,7 @@ func (client ZonesClient) listZonesInSubscriptionNextResults(ctx context.Context
 	result, err = client.ListZonesInSubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "listZonesInSubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -99,6 +99,7 @@ func (client TagDescriptionClient) CreateOrUpdate(ctx context.Context, resourceG
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagDescriptionClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -203,6 +204,7 @@ func (client TagDescriptionClient) Delete(ctx context.Context, resourceGroupName
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagDescriptionClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -299,6 +301,7 @@ func (client TagDescriptionClient) Get(ctx context.Context, resourceGroupName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagDescriptionClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -395,6 +398,7 @@ func (client TagDescriptionClient) GetEntityState(ctx context.Context, resourceG
 	result, err = client.GetEntityStateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagDescriptionClient", "GetEntityState", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -499,6 +503,7 @@ func (client TagDescriptionClient) ListByAPI(ctx context.Context, resourceGroupN
 	result.tdc, err = client.ListByAPIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagDescriptionClient", "ListByAPI", resp, "Failure responding to request")
+		return
 	}
 	if result.tdc.hasNextLink() && result.tdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -573,6 +578,7 @@ func (client TagDescriptionClient) listByAPINextResults(ctx context.Context, las
 	result, err = client.ListByAPIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagDescriptionClient", "listByAPINextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

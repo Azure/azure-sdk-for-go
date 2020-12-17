@@ -224,6 +224,7 @@ func (client WorkspacesClient) Get(ctx context.Context, resourceGroupName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.WorkspacesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -300,6 +301,7 @@ func (client WorkspacesClient) ListByResourceGroup(ctx context.Context, resource
 	result.wlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.WorkspacesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.wlr.hasNextLink() && result.wlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -366,6 +368,7 @@ func (client WorkspacesClient) listByResourceGroupNextResults(ctx context.Contex
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.WorkspacesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -417,6 +420,7 @@ func (client WorkspacesClient) ListBySubscription(ctx context.Context, skiptoken
 	result.wlr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.WorkspacesClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.wlr.hasNextLink() && result.wlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -482,6 +486,7 @@ func (client WorkspacesClient) listBySubscriptionNextResults(ctx context.Context
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.WorkspacesClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -534,6 +539,7 @@ func (client WorkspacesClient) ListKeys(ctx context.Context, resourceGroupName s
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.WorkspacesClient", "ListKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -610,6 +616,7 @@ func (client WorkspacesClient) ResyncKeys(ctx context.Context, resourceGroupName
 	result, err = client.ResyncKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.WorkspacesClient", "ResyncKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -685,6 +692,7 @@ func (client WorkspacesClient) Update(ctx context.Context, resourceGroupName str
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.WorkspacesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

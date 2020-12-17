@@ -65,6 +65,7 @@ func (client SigningCertificatesClient) Get(ctx context.Context, tenantBaseURL s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "attestation.SigningCertificatesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -72,6 +72,7 @@ func (client RoleAssignmentsClient) AddByBillingAccountName(ctx context.Context,
 	result, err = client.AddByBillingAccountNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleAssignmentsClient", "AddByBillingAccountName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -148,6 +149,7 @@ func (client RoleAssignmentsClient) AddByBillingProfileName(ctx context.Context,
 	result, err = client.AddByBillingProfileNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleAssignmentsClient", "AddByBillingProfileName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -225,6 +227,7 @@ func (client RoleAssignmentsClient) AddByInvoiceSectionName(ctx context.Context,
 	result, err = client.AddByInvoiceSectionNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleAssignmentsClient", "AddByInvoiceSectionName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -301,6 +304,7 @@ func (client RoleAssignmentsClient) DeleteByBillingAccountName(ctx context.Conte
 	result, err = client.DeleteByBillingAccountNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleAssignmentsClient", "DeleteByBillingAccountName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -376,6 +380,7 @@ func (client RoleAssignmentsClient) DeleteByBillingProfileName(ctx context.Conte
 	result, err = client.DeleteByBillingProfileNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleAssignmentsClient", "DeleteByBillingProfileName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -452,6 +457,7 @@ func (client RoleAssignmentsClient) DeleteByInvoiceSectionName(ctx context.Conte
 	result, err = client.DeleteByInvoiceSectionNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleAssignmentsClient", "DeleteByInvoiceSectionName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -527,6 +533,7 @@ func (client RoleAssignmentsClient) GetByBillingAccount(ctx context.Context, bil
 	result, err = client.GetByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleAssignmentsClient", "GetByBillingAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -602,6 +609,7 @@ func (client RoleAssignmentsClient) GetByBillingProfileName(ctx context.Context,
 	result, err = client.GetByBillingProfileNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleAssignmentsClient", "GetByBillingProfileName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -678,6 +686,7 @@ func (client RoleAssignmentsClient) GetByInvoiceSectionName(ctx context.Context,
 	result, err = client.GetByInvoiceSectionNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleAssignmentsClient", "GetByInvoiceSectionName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -752,6 +761,7 @@ func (client RoleAssignmentsClient) ListByBillingAccountName(ctx context.Context
 	result, err = client.ListByBillingAccountNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleAssignmentsClient", "ListByBillingAccountName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -825,6 +835,7 @@ func (client RoleAssignmentsClient) ListByBillingProfileName(ctx context.Context
 	result, err = client.ListByBillingProfileNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleAssignmentsClient", "ListByBillingProfileName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -899,6 +910,7 @@ func (client RoleAssignmentsClient) ListByInvoiceSectionName(ctx context.Context
 	result, err = client.ListByInvoiceSectionNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleAssignmentsClient", "ListByInvoiceSectionName", resp, "Failure responding to request")
+		return
 	}
 
 	return

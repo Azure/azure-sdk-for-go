@@ -84,6 +84,7 @@ func (client FirewallRuleClient) CreateOrUpdate(ctx context.Context, resourceGro
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.FirewallRuleClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -166,6 +167,7 @@ func (client FirewallRuleClient) Delete(ctx context.Context, resourceGroupName s
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.FirewallRuleClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -242,6 +244,7 @@ func (client FirewallRuleClient) Get(ctx context.Context, resourceGroupName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.FirewallRuleClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

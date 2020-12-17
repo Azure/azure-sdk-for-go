@@ -252,6 +252,7 @@ func (client GalleryImageVersionsClient) Get(ctx context.Context, resourceGroupN
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.GalleryImageVersionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -335,6 +336,7 @@ func (client GalleryImageVersionsClient) ListByGalleryImage(ctx context.Context,
 	result.givl, err = client.ListByGalleryImageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.GalleryImageVersionsClient", "ListByGalleryImage", resp, "Failure responding to request")
+		return
 	}
 	if result.givl.hasNextLink() && result.givl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -400,6 +402,7 @@ func (client GalleryImageVersionsClient) listByGalleryImageNextResults(ctx conte
 	result, err = client.ListByGalleryImageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.GalleryImageVersionsClient", "listByGalleryImageNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

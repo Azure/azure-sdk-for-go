@@ -69,6 +69,7 @@ func (client SkusClient) List(ctx context.Context) (result ResourceTypeSkuCollec
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blockchain.SkusClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

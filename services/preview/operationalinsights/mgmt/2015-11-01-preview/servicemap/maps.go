@@ -86,6 +86,7 @@ func (client MapsClient) Generate(ctx context.Context, resourceGroupName string,
 	result, err = client.GenerateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.MapsClient", "Generate", resp, "Failure responding to request")
+		return
 	}
 
 	return

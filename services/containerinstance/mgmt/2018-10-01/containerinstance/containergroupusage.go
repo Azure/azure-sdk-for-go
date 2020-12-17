@@ -72,6 +72,7 @@ func (client ContainerGroupUsageClient) List(ctx context.Context, location strin
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupUsageClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

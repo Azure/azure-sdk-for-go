@@ -87,6 +87,7 @@ func (client ViewsClient) CreateOrUpdate(ctx context.Context, resourceGroupName 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -167,6 +168,7 @@ func (client ViewsClient) Delete(ctx context.Context, resourceGroupName string, 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -245,6 +247,7 @@ func (client ViewsClient) Get(ctx context.Context, resourceGroupName string, hub
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -324,6 +327,7 @@ func (client ViewsClient) ListByHub(ctx context.Context, resourceGroupName strin
 	result.vlr, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "ListByHub", resp, "Failure responding to request")
+		return
 	}
 	if result.vlr.hasNextLink() && result.vlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -389,6 +393,7 @@ func (client ViewsClient) listByHubNextResults(ctx context.Context, lastResults 
 	result, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "listByHubNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -75,6 +75,7 @@ func (client ReplicaClient) Get(ctx context.Context, resourceGroupName string, a
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.ReplicaClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -155,6 +156,7 @@ func (client ReplicaClient) ListByServiceName(ctx context.Context, resourceGroup
 	result.srl, err = client.ListByServiceNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.ReplicaClient", "ListByServiceName", resp, "Failure responding to request")
+		return
 	}
 	if result.srl.hasNextLink() && result.srl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -220,6 +222,7 @@ func (client ReplicaClient) listByServiceNameNextResults(ctx context.Context, la
 	result, err = client.ListByServiceNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.ReplicaClient", "listByServiceNameNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

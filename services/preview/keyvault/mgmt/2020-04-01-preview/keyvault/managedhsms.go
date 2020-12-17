@@ -225,6 +225,7 @@ func (client ManagedHsmsClient) Get(ctx context.Context, resourceGroupName strin
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -302,6 +303,7 @@ func (client ManagedHsmsClient) ListByResourceGroup(ctx context.Context, resourc
 	result.mhlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.mhlr.hasNextLink() && result.mhlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -368,6 +370,7 @@ func (client ManagedHsmsClient) listByResourceGroupNextResults(ctx context.Conte
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -419,6 +422,7 @@ func (client ManagedHsmsClient) ListBySubscription(ctx context.Context, top *int
 	result.mhlr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.mhlr.hasNextLink() && result.mhlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -484,6 +488,7 @@ func (client ManagedHsmsClient) listBySubscriptionNextResults(ctx context.Contex
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -83,6 +83,7 @@ func (client BaseClient) ClassifyImage(ctx context.Context, projectID uuid.UUID,
 	result, err = client.ClassifyImageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "prediction.BaseClient", "ClassifyImage", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -174,6 +175,7 @@ func (client BaseClient) ClassifyImageURL(ctx context.Context, projectID uuid.UU
 	result, err = client.ClassifyImageURLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "prediction.BaseClient", "ClassifyImageURL", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -262,6 +264,7 @@ func (client BaseClient) ClassifyImageURLWithNoStore(ctx context.Context, projec
 	result, err = client.ClassifyImageURLWithNoStoreResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "prediction.BaseClient", "ClassifyImageURLWithNoStore", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -344,6 +347,7 @@ func (client BaseClient) ClassifyImageWithNoStore(ctx context.Context, projectID
 	result, err = client.ClassifyImageWithNoStoreResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "prediction.BaseClient", "ClassifyImageWithNoStore", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -429,6 +433,7 @@ func (client BaseClient) DetectImage(ctx context.Context, projectID uuid.UUID, p
 	result, err = client.DetectImageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "prediction.BaseClient", "DetectImage", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -520,6 +525,7 @@ func (client BaseClient) DetectImageURL(ctx context.Context, projectID uuid.UUID
 	result, err = client.DetectImageURLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "prediction.BaseClient", "DetectImageURL", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -608,6 +614,7 @@ func (client BaseClient) DetectImageURLWithNoStore(ctx context.Context, projectI
 	result, err = client.DetectImageURLWithNoStoreResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "prediction.BaseClient", "DetectImageURLWithNoStore", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -690,6 +697,7 @@ func (client BaseClient) DetectImageWithNoStore(ctx context.Context, projectID u
 	result, err = client.DetectImageWithNoStoreResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "prediction.BaseClient", "DetectImageWithNoStore", resp, "Failure responding to request")
+		return
 	}
 
 	return

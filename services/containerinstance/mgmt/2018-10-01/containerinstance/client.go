@@ -85,6 +85,7 @@ func (client BaseClient) ListCachedImages(ctx context.Context, location string) 
 	result, err = client.ListCachedImagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerinstance.BaseClient", "ListCachedImages", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -158,6 +159,7 @@ func (client BaseClient) ListCapabilities(ctx context.Context, location string) 
 	result, err = client.ListCapabilitiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerinstance.BaseClient", "ListCapabilities", resp, "Failure responding to request")
+		return
 	}
 
 	return

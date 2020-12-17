@@ -267,6 +267,7 @@ func (client JobDefinitionsClient) Get(ctx context.Context, dataServiceName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -355,6 +356,7 @@ func (client JobDefinitionsClient) ListByDataManager(ctx context.Context, resour
 	result.jdl, err = client.ListByDataManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsClient", "ListByDataManager", resp, "Failure responding to request")
+		return
 	}
 	if result.jdl.hasNextLink() && result.jdl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -422,6 +424,7 @@ func (client JobDefinitionsClient) listByDataManagerNextResults(ctx context.Cont
 	result, err = client.ListByDataManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsClient", "listByDataManagerNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -485,6 +488,7 @@ func (client JobDefinitionsClient) ListByDataService(ctx context.Context, dataSe
 	result.jdl, err = client.ListByDataServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsClient", "ListByDataService", resp, "Failure responding to request")
+		return
 	}
 	if result.jdl.hasNextLink() && result.jdl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -553,6 +557,7 @@ func (client JobDefinitionsClient) listByDataServiceNextResults(ctx context.Cont
 	result, err = client.ListByDataServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsClient", "listByDataServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

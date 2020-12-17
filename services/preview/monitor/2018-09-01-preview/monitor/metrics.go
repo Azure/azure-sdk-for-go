@@ -92,6 +92,7 @@ func (client MetricsClient) Create(ctx context.Context, contentType string, cont
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.MetricsClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return

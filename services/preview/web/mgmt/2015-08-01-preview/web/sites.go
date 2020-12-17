@@ -69,6 +69,7 @@ func (client SitesClient) AddSitePremierAddOn(ctx context.Context, resourceGroup
 	result, err = client.AddSitePremierAddOnResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "AddSitePremierAddOn", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -144,6 +145,7 @@ func (client SitesClient) AddSitePremierAddOnSlot(ctx context.Context, resourceG
 	result, err = client.AddSitePremierAddOnSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "AddSitePremierAddOnSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -226,6 +228,7 @@ func (client SitesClient) ApplySlotConfigSlot(ctx context.Context, resourceGroup
 	result, err = client.ApplySlotConfigSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ApplySlotConfigSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -306,6 +309,7 @@ func (client SitesClient) ApplySlotConfigToProduction(ctx context.Context, resou
 	result, err = client.ApplySlotConfigToProductionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ApplySlotConfigToProduction", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -384,6 +388,7 @@ func (client SitesClient) BackupSite(ctx context.Context, resourceGroupName stri
 	result, err = client.BackupSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "BackupSite", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -463,6 +468,7 @@ func (client SitesClient) BackupSiteSlot(ctx context.Context, resourceGroupName 
 	result, err = client.BackupSiteSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "BackupSiteSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -543,6 +549,7 @@ func (client SitesClient) CreateDeployment(ctx context.Context, resourceGroupNam
 	result, err = client.CreateDeploymentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateDeployment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -624,6 +631,7 @@ func (client SitesClient) CreateDeploymentSlot(ctx context.Context, resourceGrou
 	result, err = client.CreateDeploymentSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateDeploymentSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -706,6 +714,7 @@ func (client SitesClient) CreateInstanceDeployment(ctx context.Context, resource
 	result, err = client.CreateInstanceDeploymentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateInstanceDeployment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -789,6 +798,7 @@ func (client SitesClient) CreateInstanceDeploymentSlot(ctx context.Context, reso
 	result, err = client.CreateInstanceDeploymentSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateInstanceDeploymentSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -966,6 +976,7 @@ func (client SitesClient) CreateOrUpdateSiteConfig(ctx context.Context, resource
 	result, err = client.CreateOrUpdateSiteConfigResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteConfig", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1045,6 +1056,7 @@ func (client SitesClient) CreateOrUpdateSiteConfigSlot(ctx context.Context, reso
 	result, err = client.CreateOrUpdateSiteConfigSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteConfigSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1125,6 +1137,7 @@ func (client SitesClient) CreateOrUpdateSiteHostNameBinding(ctx context.Context,
 	result, err = client.CreateOrUpdateSiteHostNameBindingResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteHostNameBinding", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1206,6 +1219,7 @@ func (client SitesClient) CreateOrUpdateSiteHostNameBindingSlot(ctx context.Cont
 	result, err = client.CreateOrUpdateSiteHostNameBindingSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteHostNameBindingSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1287,6 +1301,7 @@ func (client SitesClient) CreateOrUpdateSiteRelayServiceConnection(ctx context.C
 	result, err = client.CreateOrUpdateSiteRelayServiceConnectionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteRelayServiceConnection", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1368,6 +1383,7 @@ func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionSlot(ctx conte
 	result, err = client.CreateOrUpdateSiteRelayServiceConnectionSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteRelayServiceConnectionSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1546,6 +1562,7 @@ func (client SitesClient) CreateOrUpdateSiteSourceControl(ctx context.Context, r
 	result, err = client.CreateOrUpdateSiteSourceControlResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteSourceControl", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1625,6 +1642,7 @@ func (client SitesClient) CreateOrUpdateSiteSourceControlSlot(ctx context.Contex
 	result, err = client.CreateOrUpdateSiteSourceControlSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteSourceControlSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1705,6 +1723,7 @@ func (client SitesClient) CreateOrUpdateSiteVNETConnection(ctx context.Context, 
 	result, err = client.CreateOrUpdateSiteVNETConnectionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteVNETConnection", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1786,6 +1805,7 @@ func (client SitesClient) CreateOrUpdateSiteVNETConnectionGateway(ctx context.Co
 	result, err = client.CreateOrUpdateSiteVNETConnectionGatewayResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteVNETConnectionGateway", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1869,6 +1889,7 @@ func (client SitesClient) CreateOrUpdateSiteVNETConnectionGatewaySlot(ctx contex
 	result, err = client.CreateOrUpdateSiteVNETConnectionGatewaySlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteVNETConnectionGatewaySlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1952,6 +1973,7 @@ func (client SitesClient) CreateOrUpdateSiteVNETConnectionSlot(ctx context.Conte
 	result, err = client.CreateOrUpdateSiteVNETConnectionSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteVNETConnectionSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2032,6 +2054,7 @@ func (client SitesClient) DeleteBackup(ctx context.Context, resourceGroupName st
 	result, err = client.DeleteBackupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteBackup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2110,6 +2133,7 @@ func (client SitesClient) DeleteBackupSlot(ctx context.Context, resourceGroupNam
 	result, err = client.DeleteBackupSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteBackupSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2188,6 +2212,7 @@ func (client SitesClient) DeleteDeployment(ctx context.Context, resourceGroupNam
 	result, err = client.DeleteDeploymentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteDeployment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2266,6 +2291,7 @@ func (client SitesClient) DeleteDeploymentSlot(ctx context.Context, resourceGrou
 	result, err = client.DeleteDeploymentSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteDeploymentSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2345,6 +2371,7 @@ func (client SitesClient) DeleteInstanceDeployment(ctx context.Context, resource
 	result, err = client.DeleteInstanceDeploymentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteInstanceDeployment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2425,6 +2452,7 @@ func (client SitesClient) DeleteInstanceDeploymentSlot(ctx context.Context, reso
 	result, err = client.DeleteInstanceDeploymentSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteInstanceDeploymentSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2508,6 +2536,7 @@ func (client SitesClient) DeleteSite(ctx context.Context, resourceGroupName stri
 	result, err = client.DeleteSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSite", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2596,6 +2625,7 @@ func (client SitesClient) DeleteSiteHostNameBinding(ctx context.Context, resourc
 	result, err = client.DeleteSiteHostNameBindingResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSiteHostNameBinding", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2674,6 +2704,7 @@ func (client SitesClient) DeleteSiteHostNameBindingSlot(ctx context.Context, res
 	result, err = client.DeleteSiteHostNameBindingSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSiteHostNameBindingSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2748,6 +2779,7 @@ func (client SitesClient) DeleteSitePremierAddOn(ctx context.Context, resourceGr
 	result, err = client.DeleteSitePremierAddOnResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSitePremierAddOn", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2821,6 +2853,7 @@ func (client SitesClient) DeleteSitePremierAddOnSlot(ctx context.Context, resour
 	result, err = client.DeleteSitePremierAddOnSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSitePremierAddOnSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2899,6 +2932,7 @@ func (client SitesClient) DeleteSiteRelayServiceConnection(ctx context.Context, 
 	result, err = client.DeleteSiteRelayServiceConnectionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSiteRelayServiceConnection", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2977,6 +3011,7 @@ func (client SitesClient) DeleteSiteRelayServiceConnectionSlot(ctx context.Conte
 	result, err = client.DeleteSiteRelayServiceConnectionSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSiteRelayServiceConnectionSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3060,6 +3095,7 @@ func (client SitesClient) DeleteSiteSlot(ctx context.Context, resourceGroupName 
 	result, err = client.DeleteSiteSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSiteSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3148,6 +3184,7 @@ func (client SitesClient) DeleteSiteSourceControl(ctx context.Context, resourceG
 	result, err = client.DeleteSiteSourceControlResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSiteSourceControl", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3224,6 +3261,7 @@ func (client SitesClient) DeleteSiteSourceControlSlot(ctx context.Context, resou
 	result, err = client.DeleteSiteSourceControlSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSiteSourceControlSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3301,6 +3339,7 @@ func (client SitesClient) DeleteSiteVNETConnection(ctx context.Context, resource
 	result, err = client.DeleteSiteVNETConnectionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSiteVNETConnection", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3379,6 +3418,7 @@ func (client SitesClient) DeleteSiteVNETConnectionSlot(ctx context.Context, reso
 	result, err = client.DeleteSiteVNETConnectionSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSiteVNETConnectionSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3457,6 +3497,7 @@ func (client SitesClient) DiscoverSiteRestore(ctx context.Context, resourceGroup
 	result, err = client.DiscoverSiteRestoreResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DiscoverSiteRestore", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3536,6 +3577,7 @@ func (client SitesClient) DiscoverSiteRestoreSlot(ctx context.Context, resourceG
 	result, err = client.DiscoverSiteRestoreSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DiscoverSiteRestoreSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3614,6 +3656,7 @@ func (client SitesClient) GenerateNewSitePublishingPassword(ctx context.Context,
 	result, err = client.GenerateNewSitePublishingPasswordResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GenerateNewSitePublishingPassword", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3690,6 +3733,7 @@ func (client SitesClient) GenerateNewSitePublishingPasswordSlot(ctx context.Cont
 	result, err = client.GenerateNewSitePublishingPasswordSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GenerateNewSitePublishingPasswordSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3768,6 +3812,7 @@ func (client SitesClient) GetDeletedSites(ctx context.Context, resourceGroupName
 	result.dsc, err = client.GetDeletedSitesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetDeletedSites", resp, "Failure responding to request")
+		return
 	}
 	if result.dsc.hasNextLink() && result.dsc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -3837,6 +3882,7 @@ func (client SitesClient) getDeletedSitesNextResults(ctx context.Context, lastRe
 	result, err = client.GetDeletedSitesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getDeletedSitesNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -3889,6 +3935,7 @@ func (client SitesClient) GetDeployment(ctx context.Context, resourceGroupName s
 	result, err = client.GetDeploymentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetDeployment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3966,6 +4013,7 @@ func (client SitesClient) GetDeployments(ctx context.Context, resourceGroupName 
 	result.dc, err = client.GetDeploymentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetDeployments", resp, "Failure responding to request")
+		return
 	}
 	if result.dc.hasNextLink() && result.dc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -4030,6 +4078,7 @@ func (client SitesClient) getDeploymentsNextResults(ctx context.Context, lastRes
 	result, err = client.GetDeploymentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getDeploymentsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -4083,6 +4132,7 @@ func (client SitesClient) GetDeploymentSlot(ctx context.Context, resourceGroupNa
 	result, err = client.GetDeploymentSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetDeploymentSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4162,6 +4212,7 @@ func (client SitesClient) GetDeploymentsSlot(ctx context.Context, resourceGroupN
 	result.dc, err = client.GetDeploymentsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetDeploymentsSlot", resp, "Failure responding to request")
+		return
 	}
 	if result.dc.hasNextLink() && result.dc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -4227,6 +4278,7 @@ func (client SitesClient) getDeploymentsSlotNextResults(ctx context.Context, las
 	result, err = client.GetDeploymentsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getDeploymentsSlotNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -4280,6 +4332,7 @@ func (client SitesClient) GetInstanceDeployment(ctx context.Context, resourceGro
 	result, err = client.GetInstanceDeploymentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetInstanceDeployment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4359,6 +4412,7 @@ func (client SitesClient) GetInstanceDeployments(ctx context.Context, resourceGr
 	result.dc, err = client.GetInstanceDeploymentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetInstanceDeployments", resp, "Failure responding to request")
+		return
 	}
 	if result.dc.hasNextLink() && result.dc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -4424,6 +4478,7 @@ func (client SitesClient) getInstanceDeploymentsNextResults(ctx context.Context,
 	result, err = client.GetInstanceDeploymentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getInstanceDeploymentsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -4478,6 +4533,7 @@ func (client SitesClient) GetInstanceDeploymentSlot(ctx context.Context, resourc
 	result, err = client.GetInstanceDeploymentSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetInstanceDeploymentSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4559,6 +4615,7 @@ func (client SitesClient) GetInstanceDeploymentsSlot(ctx context.Context, resour
 	result.dc, err = client.GetInstanceDeploymentsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetInstanceDeploymentsSlot", resp, "Failure responding to request")
+		return
 	}
 	if result.dc.hasNextLink() && result.dc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -4625,6 +4682,7 @@ func (client SitesClient) getInstanceDeploymentsSlotNextResults(ctx context.Cont
 	result, err = client.GetInstanceDeploymentsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getInstanceDeploymentsSlotNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -4677,6 +4735,7 @@ func (client SitesClient) GetSite(ctx context.Context, resourceGroupName string,
 	result, err = client.GetSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSite", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4755,6 +4814,7 @@ func (client SitesClient) GetSiteBackupConfiguration(ctx context.Context, resour
 	result, err = client.GetSiteBackupConfigurationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteBackupConfiguration", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4831,6 +4891,7 @@ func (client SitesClient) GetSiteBackupConfigurationSlot(ctx context.Context, re
 	result, err = client.GetSiteBackupConfigurationSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteBackupConfigurationSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4908,6 +4969,7 @@ func (client SitesClient) GetSiteBackupStatus(ctx context.Context, resourceGroup
 	result, err = client.GetSiteBackupStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteBackupStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4986,6 +5048,7 @@ func (client SitesClient) GetSiteBackupStatusSecrets(ctx context.Context, resour
 	result, err = client.GetSiteBackupStatusSecretsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteBackupStatusSecrets", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5067,6 +5130,7 @@ func (client SitesClient) GetSiteBackupStatusSecretsSlot(ctx context.Context, re
 	result, err = client.GetSiteBackupStatusSecretsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteBackupStatusSecretsSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5148,6 +5212,7 @@ func (client SitesClient) GetSiteBackupStatusSlot(ctx context.Context, resourceG
 	result, err = client.GetSiteBackupStatusSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteBackupStatusSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5225,6 +5290,7 @@ func (client SitesClient) GetSiteConfig(ctx context.Context, resourceGroupName s
 	result, err = client.GetSiteConfigResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteConfig", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5301,6 +5367,7 @@ func (client SitesClient) GetSiteConfigSlot(ctx context.Context, resourceGroupNa
 	result, err = client.GetSiteConfigSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteConfigSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5378,6 +5445,7 @@ func (client SitesClient) GetSiteHostNameBinding(ctx context.Context, resourceGr
 	result, err = client.GetSiteHostNameBindingResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteHostNameBinding", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5455,6 +5523,7 @@ func (client SitesClient) GetSiteHostNameBindings(ctx context.Context, resourceG
 	result.hnbc, err = client.GetSiteHostNameBindingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteHostNameBindings", resp, "Failure responding to request")
+		return
 	}
 	if result.hnbc.hasNextLink() && result.hnbc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -5519,6 +5588,7 @@ func (client SitesClient) getSiteHostNameBindingsNextResults(ctx context.Context
 	result, err = client.GetSiteHostNameBindingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteHostNameBindingsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -5572,6 +5642,7 @@ func (client SitesClient) GetSiteHostNameBindingSlot(ctx context.Context, resour
 	result, err = client.GetSiteHostNameBindingSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteHostNameBindingSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5651,6 +5722,7 @@ func (client SitesClient) GetSiteHostNameBindingsSlot(ctx context.Context, resou
 	result.hnbc, err = client.GetSiteHostNameBindingsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteHostNameBindingsSlot", resp, "Failure responding to request")
+		return
 	}
 	if result.hnbc.hasNextLink() && result.hnbc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -5716,6 +5788,7 @@ func (client SitesClient) getSiteHostNameBindingsSlotNextResults(ctx context.Con
 	result, err = client.GetSiteHostNameBindingsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteHostNameBindingsSlotNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -5768,6 +5841,7 @@ func (client SitesClient) GetSiteInstanceIdentifiers(ctx context.Context, resour
 	result.sic, err = client.GetSiteInstanceIdentifiersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteInstanceIdentifiers", resp, "Failure responding to request")
+		return
 	}
 	if result.sic.hasNextLink() && result.sic.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -5832,6 +5906,7 @@ func (client SitesClient) getSiteInstanceIdentifiersNextResults(ctx context.Cont
 	result, err = client.GetSiteInstanceIdentifiersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteInstanceIdentifiersNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -5885,6 +5960,7 @@ func (client SitesClient) GetSiteInstanceIdentifiersSlot(ctx context.Context, re
 	result.sic, err = client.GetSiteInstanceIdentifiersSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteInstanceIdentifiersSlot", resp, "Failure responding to request")
+		return
 	}
 	if result.sic.hasNextLink() && result.sic.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -5950,6 +6026,7 @@ func (client SitesClient) getSiteInstanceIdentifiersSlotNextResults(ctx context.
 	result, err = client.GetSiteInstanceIdentifiersSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteInstanceIdentifiersSlotNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -6001,6 +6078,7 @@ func (client SitesClient) GetSiteLogsConfig(ctx context.Context, resourceGroupNa
 	result, err = client.GetSiteLogsConfigResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteLogsConfig", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6077,6 +6155,7 @@ func (client SitesClient) GetSiteLogsConfigSlot(ctx context.Context, resourceGro
 	result, err = client.GetSiteLogsConfigSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteLogsConfigSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6154,6 +6233,7 @@ func (client SitesClient) GetSiteMetricDefinitions(ctx context.Context, resource
 	result.mdc, err = client.GetSiteMetricDefinitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteMetricDefinitions", resp, "Failure responding to request")
+		return
 	}
 	if result.mdc.hasNextLink() && result.mdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -6218,6 +6298,7 @@ func (client SitesClient) getSiteMetricDefinitionsNextResults(ctx context.Contex
 	result, err = client.GetSiteMetricDefinitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteMetricDefinitionsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -6271,6 +6352,7 @@ func (client SitesClient) GetSiteMetricDefinitionsSlot(ctx context.Context, reso
 	result.mdc, err = client.GetSiteMetricDefinitionsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteMetricDefinitionsSlot", resp, "Failure responding to request")
+		return
 	}
 	if result.mdc.hasNextLink() && result.mdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -6336,6 +6418,7 @@ func (client SitesClient) getSiteMetricDefinitionsSlotNextResults(ctx context.Co
 	result, err = client.GetSiteMetricDefinitionsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteMetricDefinitionsSlotNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -6392,6 +6475,7 @@ func (client SitesClient) GetSiteMetrics(ctx context.Context, resourceGroupName 
 	result.rmc, err = client.GetSiteMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteMetrics", resp, "Failure responding to request")
+		return
 	}
 	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -6462,6 +6546,7 @@ func (client SitesClient) getSiteMetricsNextResults(ctx context.Context, lastRes
 	result, err = client.GetSiteMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteMetricsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -6519,6 +6604,7 @@ func (client SitesClient) GetSiteMetricsSlot(ctx context.Context, resourceGroupN
 	result.rmc, err = client.GetSiteMetricsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteMetricsSlot", resp, "Failure responding to request")
+		return
 	}
 	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -6590,6 +6676,7 @@ func (client SitesClient) getSiteMetricsSlotNextResults(ctx context.Context, las
 	result, err = client.GetSiteMetricsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteMetricsSlotNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -6642,6 +6729,7 @@ func (client SitesClient) GetSiteNetworkFeatures(ctx context.Context, resourceGr
 	result, err = client.GetSiteNetworkFeaturesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteNetworkFeatures", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6720,6 +6808,7 @@ func (client SitesClient) GetSiteNetworkFeaturesSlot(ctx context.Context, resour
 	result, err = client.GetSiteNetworkFeaturesSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteNetworkFeaturesSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6798,6 +6887,7 @@ func (client SitesClient) GetSiteOperation(ctx context.Context, resourceGroupNam
 	result, err = client.GetSiteOperationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteOperation", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6876,6 +6966,7 @@ func (client SitesClient) GetSiteOperationSlot(ctx context.Context, resourceGrou
 	result, err = client.GetSiteOperationSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteOperationSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6950,6 +7041,7 @@ func (client SitesClient) GetSitePremierAddOn(ctx context.Context, resourceGroup
 	result, err = client.GetSitePremierAddOnResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSitePremierAddOn", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7023,6 +7115,7 @@ func (client SitesClient) GetSitePremierAddOnSlot(ctx context.Context, resourceG
 	result, err = client.GetSitePremierAddOnSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSitePremierAddOnSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7101,6 +7194,7 @@ func (client SitesClient) GetSiteRelayServiceConnection(ctx context.Context, res
 	result, err = client.GetSiteRelayServiceConnectionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteRelayServiceConnection", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7179,6 +7273,7 @@ func (client SitesClient) GetSiteRelayServiceConnectionSlot(ctx context.Context,
 	result, err = client.GetSiteRelayServiceConnectionSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteRelayServiceConnectionSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7259,6 +7354,7 @@ func (client SitesClient) GetSites(ctx context.Context, resourceGroupName string
 	result.sc, err = client.GetSitesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSites", resp, "Failure responding to request")
+		return
 	}
 	if result.sc.hasNextLink() && result.sc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -7331,6 +7427,7 @@ func (client SitesClient) getSitesNextResults(ctx context.Context, lastResults S
 	result, err = client.GetSitesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSitesNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -7384,6 +7481,7 @@ func (client SitesClient) GetSiteSlot(ctx context.Context, resourceGroupName str
 	result, err = client.GetSiteSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7465,6 +7563,7 @@ func (client SitesClient) GetSiteSlots(ctx context.Context, resourceGroupName st
 	result.sc, err = client.GetSiteSlotsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteSlots", resp, "Failure responding to request")
+		return
 	}
 	if result.sc.hasNextLink() && result.sc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -7532,6 +7631,7 @@ func (client SitesClient) getSiteSlotsNextResults(ctx context.Context, lastResul
 	result, err = client.GetSiteSlotsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteSlotsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -7583,6 +7683,7 @@ func (client SitesClient) GetSiteSnapshots(ctx context.Context, resourceGroupNam
 	result, err = client.GetSiteSnapshotsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteSnapshots", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7659,6 +7760,7 @@ func (client SitesClient) GetSiteSnapshotsSlot(ctx context.Context, resourceGrou
 	result, err = client.GetSiteSnapshotsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteSnapshotsSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7735,6 +7837,7 @@ func (client SitesClient) GetSiteSourceControl(ctx context.Context, resourceGrou
 	result, err = client.GetSiteSourceControlResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteSourceControl", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7811,6 +7914,7 @@ func (client SitesClient) GetSiteSourceControlSlot(ctx context.Context, resource
 	result, err = client.GetSiteSourceControlSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteSourceControlSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7891,6 +7995,7 @@ func (client SitesClient) GetSiteUsages(ctx context.Context, resourceGroupName s
 	result.cuqc, err = client.GetSiteUsagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteUsages", resp, "Failure responding to request")
+		return
 	}
 	if result.cuqc.hasNextLink() && result.cuqc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -7958,6 +8063,7 @@ func (client SitesClient) getSiteUsagesNextResults(ctx context.Context, lastResu
 	result, err = client.GetSiteUsagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteUsagesNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -8014,6 +8120,7 @@ func (client SitesClient) GetSiteUsagesSlot(ctx context.Context, resourceGroupNa
 	result.cuqc, err = client.GetSiteUsagesSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteUsagesSlot", resp, "Failure responding to request")
+		return
 	}
 	if result.cuqc.hasNextLink() && result.cuqc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -8082,6 +8189,7 @@ func (client SitesClient) getSiteUsagesSlotNextResults(ctx context.Context, last
 	result, err = client.GetSiteUsagesSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteUsagesSlotNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -8134,6 +8242,7 @@ func (client SitesClient) GetSiteVNETConnection(ctx context.Context, resourceGro
 	result, err = client.GetSiteVNETConnectionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteVNETConnection", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8210,6 +8319,7 @@ func (client SitesClient) GetSiteVNETConnections(ctx context.Context, resourceGr
 	result, err = client.GetSiteVNETConnectionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteVNETConnections", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8287,6 +8397,7 @@ func (client SitesClient) GetSiteVNETConnectionSlot(ctx context.Context, resourc
 	result, err = client.GetSiteVNETConnectionSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteVNETConnectionSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8365,6 +8476,7 @@ func (client SitesClient) GetSiteVNETConnectionsSlot(ctx context.Context, resour
 	result, err = client.GetSiteVNETConnectionsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteVNETConnectionsSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8443,6 +8555,7 @@ func (client SitesClient) GetSiteVnetGateway(ctx context.Context, resourceGroupN
 	result, err = client.GetSiteVnetGatewayResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteVnetGateway", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8523,6 +8636,7 @@ func (client SitesClient) GetSiteVnetGatewaySlot(ctx context.Context, resourceGr
 	result, err = client.GetSiteVnetGatewaySlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteVnetGatewaySlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8601,6 +8715,7 @@ func (client SitesClient) GetSlotConfigNames(ctx context.Context, resourceGroupN
 	result, err = client.GetSlotConfigNamesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSlotConfigNames", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8678,6 +8793,7 @@ func (client SitesClient) GetSlotsDifferencesFromProduction(ctx context.Context,
 	result.sdc, err = client.GetSlotsDifferencesFromProductionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSlotsDifferencesFromProduction", resp, "Failure responding to request")
+		return
 	}
 	if result.sdc.hasNextLink() && result.sdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -8744,6 +8860,7 @@ func (client SitesClient) getSlotsDifferencesFromProductionNextResults(ctx conte
 	result, err = client.GetSlotsDifferencesFromProductionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSlotsDifferencesFromProductionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -8798,6 +8915,7 @@ func (client SitesClient) GetSlotsDifferencesSlot(ctx context.Context, resourceG
 	result.sdc, err = client.GetSlotsDifferencesSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSlotsDifferencesSlot", resp, "Failure responding to request")
+		return
 	}
 	if result.sdc.hasNextLink() && result.sdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -8865,6 +8983,7 @@ func (client SitesClient) getSlotsDifferencesSlotNextResults(ctx context.Context
 	result, err = client.GetSlotsDifferencesSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSlotsDifferencesSlotNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -8916,6 +9035,7 @@ func (client SitesClient) IsSiteCloneable(ctx context.Context, resourceGroupName
 	result, err = client.IsSiteCloneableResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "IsSiteCloneable", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8992,6 +9112,7 @@ func (client SitesClient) IsSiteCloneableSlot(ctx context.Context, resourceGroup
 	result, err = client.IsSiteCloneableSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "IsSiteCloneableSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -9068,6 +9189,7 @@ func (client SitesClient) ListSiteAppSettings(ctx context.Context, resourceGroup
 	result, err = client.ListSiteAppSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteAppSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -9144,6 +9266,7 @@ func (client SitesClient) ListSiteAppSettingsSlot(ctx context.Context, resourceG
 	result, err = client.ListSiteAppSettingsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteAppSettingsSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -9220,6 +9343,7 @@ func (client SitesClient) ListSiteAuthSettings(ctx context.Context, resourceGrou
 	result, err = client.ListSiteAuthSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteAuthSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -9296,6 +9420,7 @@ func (client SitesClient) ListSiteAuthSettingsSlot(ctx context.Context, resource
 	result, err = client.ListSiteAuthSettingsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteAuthSettingsSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -9373,6 +9498,7 @@ func (client SitesClient) ListSiteBackups(ctx context.Context, resourceGroupName
 	result.bic, err = client.ListSiteBackupsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteBackups", resp, "Failure responding to request")
+		return
 	}
 	if result.bic.hasNextLink() && result.bic.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -9437,6 +9563,7 @@ func (client SitesClient) listSiteBackupsNextResults(ctx context.Context, lastRe
 	result, err = client.ListSiteBackupsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "listSiteBackupsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -9490,6 +9617,7 @@ func (client SitesClient) ListSiteBackupsSlot(ctx context.Context, resourceGroup
 	result.bic, err = client.ListSiteBackupsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteBackupsSlot", resp, "Failure responding to request")
+		return
 	}
 	if result.bic.hasNextLink() && result.bic.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -9555,6 +9683,7 @@ func (client SitesClient) listSiteBackupsSlotNextResults(ctx context.Context, la
 	result, err = client.ListSiteBackupsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "listSiteBackupsSlotNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -9606,6 +9735,7 @@ func (client SitesClient) ListSiteConnectionStrings(ctx context.Context, resourc
 	result, err = client.ListSiteConnectionStringsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteConnectionStrings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -9682,6 +9812,7 @@ func (client SitesClient) ListSiteConnectionStringsSlot(ctx context.Context, res
 	result, err = client.ListSiteConnectionStringsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteConnectionStringsSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -9758,6 +9889,7 @@ func (client SitesClient) ListSiteMetadata(ctx context.Context, resourceGroupNam
 	result, err = client.ListSiteMetadataResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteMetadata", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -9834,6 +9966,7 @@ func (client SitesClient) ListSiteMetadataSlot(ctx context.Context, resourceGrou
 	result, err = client.ListSiteMetadataSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteMetadataSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -9907,6 +10040,7 @@ func (client SitesClient) ListSitePremierAddOns(ctx context.Context, resourceGro
 	result, err = client.ListSitePremierAddOnsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSitePremierAddOns", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -9979,6 +10113,7 @@ func (client SitesClient) ListSitePremierAddOnsSlot(ctx context.Context, resourc
 	result, err = client.ListSitePremierAddOnsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSitePremierAddOnsSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -10209,6 +10344,7 @@ func (client SitesClient) ListSitePublishingProfileXML(ctx context.Context, reso
 	result, err = client.ListSitePublishingProfileXMLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSitePublishingProfileXML", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -10288,6 +10424,7 @@ func (client SitesClient) ListSitePublishingProfileXMLSlot(ctx context.Context, 
 	result, err = client.ListSitePublishingProfileXMLSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSitePublishingProfileXMLSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -10365,6 +10502,7 @@ func (client SitesClient) ListSiteRelayServiceConnections(ctx context.Context, r
 	result, err = client.ListSiteRelayServiceConnectionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteRelayServiceConnections", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -10441,6 +10579,7 @@ func (client SitesClient) ListSiteRelayServiceConnectionsSlot(ctx context.Contex
 	result, err = client.ListSiteRelayServiceConnectionsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteRelayServiceConnectionsSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -10677,6 +10816,7 @@ func (client SitesClient) ResetProductionSlotConfig(ctx context.Context, resourc
 	result, err = client.ResetProductionSlotConfigResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ResetProductionSlotConfig", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -10753,6 +10893,7 @@ func (client SitesClient) ResetSlotConfigSlot(ctx context.Context, resourceGroup
 	result, err = client.ResetSlotConfigSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ResetSlotConfigSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -10832,6 +10973,7 @@ func (client SitesClient) RestartSite(ctx context.Context, resourceGroupName str
 	result, err = client.RestartSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "RestartSite", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -10917,6 +11059,7 @@ func (client SitesClient) RestartSiteSlot(ctx context.Context, resourceGroupName
 	result, err = client.RestartSiteSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "RestartSiteSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -11161,6 +11304,7 @@ func (client SitesClient) StartSite(ctx context.Context, resourceGroupName strin
 	result, err = client.StartSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "StartSite", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -11237,6 +11381,7 @@ func (client SitesClient) StartSiteSlot(ctx context.Context, resourceGroupName s
 	result, err = client.StartSiteSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "StartSiteSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -11313,6 +11458,7 @@ func (client SitesClient) StopSite(ctx context.Context, resourceGroupName string
 	result, err = client.StopSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "StopSite", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -11389,6 +11535,7 @@ func (client SitesClient) StopSiteSlot(ctx context.Context, resourceGroupName st
 	result, err = client.StopSiteSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "StopSiteSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -11620,6 +11767,7 @@ func (client SitesClient) SyncSiteRepository(ctx context.Context, resourceGroupN
 	result, err = client.SyncSiteRepositoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "SyncSiteRepository", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -11692,6 +11840,7 @@ func (client SitesClient) SyncSiteRepositorySlot(ctx context.Context, resourceGr
 	result, err = client.SyncSiteRepositorySlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "SyncSiteRepositorySlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -11769,6 +11918,7 @@ func (client SitesClient) UpdateSiteAppSettings(ctx context.Context, resourceGro
 	result, err = client.UpdateSiteAppSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteAppSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -11848,6 +11998,7 @@ func (client SitesClient) UpdateSiteAppSettingsSlot(ctx context.Context, resourc
 	result, err = client.UpdateSiteAppSettingsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteAppSettingsSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -11927,6 +12078,7 @@ func (client SitesClient) UpdateSiteAuthSettings(ctx context.Context, resourceGr
 	result, err = client.UpdateSiteAuthSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteAuthSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12006,6 +12158,7 @@ func (client SitesClient) UpdateSiteAuthSettingsSlot(ctx context.Context, resour
 	result, err = client.UpdateSiteAuthSettingsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteAuthSettingsSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12085,6 +12238,7 @@ func (client SitesClient) UpdateSiteBackupConfiguration(ctx context.Context, res
 	result, err = client.UpdateSiteBackupConfigurationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteBackupConfiguration", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12164,6 +12318,7 @@ func (client SitesClient) UpdateSiteBackupConfigurationSlot(ctx context.Context,
 	result, err = client.UpdateSiteBackupConfigurationSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteBackupConfigurationSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12243,6 +12398,7 @@ func (client SitesClient) UpdateSiteConfig(ctx context.Context, resourceGroupNam
 	result, err = client.UpdateSiteConfigResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteConfig", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12322,6 +12478,7 @@ func (client SitesClient) UpdateSiteConfigSlot(ctx context.Context, resourceGrou
 	result, err = client.UpdateSiteConfigSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteConfigSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12401,6 +12558,7 @@ func (client SitesClient) UpdateSiteConnectionStrings(ctx context.Context, resou
 	result, err = client.UpdateSiteConnectionStringsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteConnectionStrings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12480,6 +12638,7 @@ func (client SitesClient) UpdateSiteConnectionStringsSlot(ctx context.Context, r
 	result, err = client.UpdateSiteConnectionStringsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteConnectionStringsSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12559,6 +12718,7 @@ func (client SitesClient) UpdateSiteLogsConfig(ctx context.Context, resourceGrou
 	result, err = client.UpdateSiteLogsConfigResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteLogsConfig", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12638,6 +12798,7 @@ func (client SitesClient) UpdateSiteLogsConfigSlot(ctx context.Context, resource
 	result, err = client.UpdateSiteLogsConfigSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteLogsConfigSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12717,6 +12878,7 @@ func (client SitesClient) UpdateSiteMetadata(ctx context.Context, resourceGroupN
 	result, err = client.UpdateSiteMetadataResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteMetadata", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12796,6 +12958,7 @@ func (client SitesClient) UpdateSiteMetadataSlot(ctx context.Context, resourceGr
 	result, err = client.UpdateSiteMetadataSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteMetadataSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12876,6 +13039,7 @@ func (client SitesClient) UpdateSiteRelayServiceConnection(ctx context.Context, 
 	result, err = client.UpdateSiteRelayServiceConnectionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteRelayServiceConnection", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12957,6 +13121,7 @@ func (client SitesClient) UpdateSiteRelayServiceConnectionSlot(ctx context.Conte
 	result, err = client.UpdateSiteRelayServiceConnectionSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteRelayServiceConnectionSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -13037,6 +13202,7 @@ func (client SitesClient) UpdateSiteSourceControl(ctx context.Context, resourceG
 	result, err = client.UpdateSiteSourceControlResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteSourceControl", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -13116,6 +13282,7 @@ func (client SitesClient) UpdateSiteSourceControlSlot(ctx context.Context, resou
 	result, err = client.UpdateSiteSourceControlSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteSourceControlSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -13196,6 +13363,7 @@ func (client SitesClient) UpdateSiteVNETConnection(ctx context.Context, resource
 	result, err = client.UpdateSiteVNETConnectionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteVNETConnection", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -13277,6 +13445,7 @@ func (client SitesClient) UpdateSiteVNETConnectionGateway(ctx context.Context, r
 	result, err = client.UpdateSiteVNETConnectionGatewayResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteVNETConnectionGateway", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -13360,6 +13529,7 @@ func (client SitesClient) UpdateSiteVNETConnectionGatewaySlot(ctx context.Contex
 	result, err = client.UpdateSiteVNETConnectionGatewaySlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteVNETConnectionGatewaySlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -13443,6 +13613,7 @@ func (client SitesClient) UpdateSiteVNETConnectionSlot(ctx context.Context, reso
 	result, err = client.UpdateSiteVNETConnectionSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteVNETConnectionSlot", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -13523,6 +13694,7 @@ func (client SitesClient) UpdateSlotConfigNames(ctx context.Context, resourceGro
 	result, err = client.UpdateSlotConfigNamesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSlotConfigNames", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -243,6 +243,7 @@ func (client ElasticPoolsClient) Get(ctx context.Context, resourceGroupName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -322,6 +323,7 @@ func (client ElasticPoolsClient) ListByServer(ctx context.Context, resourceGroup
 	result.eplr, err = client.ListByServerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "ListByServer", resp, "Failure responding to request")
+		return
 	}
 	if result.eplr.hasNextLink() && result.eplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -389,6 +391,7 @@ func (client ElasticPoolsClient) listByServerNextResults(ctx context.Context, la
 	result, err = client.ListByServerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "listByServerNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

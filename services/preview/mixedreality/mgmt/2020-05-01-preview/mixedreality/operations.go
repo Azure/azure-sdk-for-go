@@ -70,6 +70,7 @@ func (client OperationsClient) List(ctx context.Context) (result OperationPagePa
 	result.op, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mixedreality.OperationsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.op.hasNextLink() && result.op.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -128,6 +129,7 @@ func (client OperationsClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mixedreality.OperationsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

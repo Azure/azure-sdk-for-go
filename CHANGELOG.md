@@ -1,5 +1,27 @@
 # CHANGELOG
 
+## `v49.1.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-07-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/preview/azureadb2c/mgmt/2020-05-01-preview/azureadb2c`
+- `github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-06-01/redis`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security` | [details](services/preview/security/mgmt/v3.0/security/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/2019-06-01-preview/synapse` | [details](services/preview/synapse/mgmt/2019-06-01-preview/synapse/CHANGELOG.md) |
+
 ## `v49.0.0`
 
 **NOTE**: Due to the changes requested in [this issue](https://github.com/Azure/azure-sdk-for-go/issues/12834), we changed the constructor of all the pager structs, which leads to a very long list of breaking changes. Please check the details of the breaking changes by the link in the table. 

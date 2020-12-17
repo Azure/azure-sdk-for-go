@@ -69,6 +69,7 @@ func (client ReportsClient) GetDevOps(ctx context.Context) (result Result, err e
 	result, err = client.GetDevOpsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ReportsClient", "GetDevOps", resp, "Failure responding to request")
+		return
 	}
 
 	return

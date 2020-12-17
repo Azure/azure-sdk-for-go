@@ -96,6 +96,7 @@ func (client APIIssuCommentClient) Head(ctx context.Context, resourceGroupName s
 	result, err = client.HeadResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIIssuCommentClient", "Head", resp, "Failure responding to request")
+		return
 	}
 
 	return

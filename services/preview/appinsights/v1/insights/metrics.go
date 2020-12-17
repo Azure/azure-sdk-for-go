@@ -104,6 +104,7 @@ func (client MetricsClient) Get(ctx context.Context, appID string, metricID Metr
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.MetricsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -196,6 +197,7 @@ func (client MetricsClient) GetMetadata(ctx context.Context, appID string) (resu
 	result, err = client.GetMetadataResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.MetricsClient", "GetMetadata", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -270,6 +272,7 @@ func (client MetricsClient) GetMultiple(ctx context.Context, appID string, body 
 	result, err = client.GetMultipleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.MetricsClient", "GetMultiple", resp, "Failure responding to request")
+		return
 	}
 
 	return

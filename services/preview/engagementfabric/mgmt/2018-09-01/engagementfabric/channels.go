@@ -82,6 +82,7 @@ func (client ChannelsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "engagementfabric.ChannelsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -161,6 +162,7 @@ func (client ChannelsClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "engagementfabric.ChannelsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -237,6 +239,7 @@ func (client ChannelsClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "engagementfabric.ChannelsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -313,6 +316,7 @@ func (client ChannelsClient) ListByAccount(ctx context.Context, resourceGroupNam
 	result, err = client.ListByAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "engagementfabric.ChannelsClient", "ListByAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return

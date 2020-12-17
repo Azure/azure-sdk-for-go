@@ -270,6 +270,7 @@ func (client PrivateEndpointConnectionsClient) Get(ctx context.Context, resource
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "healthcareapis.PrivateEndpointConnectionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -357,6 +358,7 @@ func (client PrivateEndpointConnectionsClient) ListByService(ctx context.Context
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "healthcareapis.PrivateEndpointConnectionsClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 
 	return

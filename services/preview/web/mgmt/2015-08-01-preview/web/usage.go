@@ -74,6 +74,7 @@ func (client UsageClient) GetUsage(ctx context.Context, resourceGroupName string
 	result, err = client.GetUsageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.UsageClient", "GetUsage", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -100,6 +100,7 @@ func (client ReviewsClient) AddVideoFrame(ctx context.Context, teamName string, 
 	result, err = client.AddVideoFrameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoFrame", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -184,6 +185,7 @@ func (client ReviewsClient) AddVideoFrameStream(ctx context.Context, contentType
 	result, err = client.AddVideoFrameStreamResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoFrameStream", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -280,6 +282,7 @@ func (client ReviewsClient) AddVideoFrameURL(ctx context.Context, contentType st
 	result, err = client.AddVideoFrameURLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoFrameURL", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -362,6 +365,7 @@ func (client ReviewsClient) AddVideoTranscript(ctx context.Context, teamName str
 	result, err = client.AddVideoTranscriptResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoTranscript", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -446,6 +450,7 @@ func (client ReviewsClient) AddVideoTranscriptModerationResult(ctx context.Conte
 	result, err = client.AddVideoTranscriptModerationResultResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoTranscriptModerationResult", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -579,6 +584,7 @@ func (client ReviewsClient) CreateJob(ctx context.Context, teamName string, cont
 	result, err = client.CreateJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "CreateJob", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -695,6 +701,7 @@ func (client ReviewsClient) CreateReviews(ctx context.Context, URLContentType st
 	result, err = client.CreateReviewsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "CreateReviews", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -807,6 +814,7 @@ func (client ReviewsClient) CreateVideoReviews(ctx context.Context, contentType 
 	result, err = client.CreateVideoReviewsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "CreateVideoReviews", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -887,6 +895,7 @@ func (client ReviewsClient) GetJobDetails(ctx context.Context, teamName string, 
 	result, err = client.GetJobDetailsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "GetJobDetails", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -959,6 +968,7 @@ func (client ReviewsClient) GetReview(ctx context.Context, teamName string, revi
 	result, err = client.GetReviewResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "GetReview", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1058,6 +1068,7 @@ func (client ReviewsClient) GetVideoFrames(ctx context.Context, teamName string,
 	result, err = client.GetVideoFramesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "GetVideoFrames", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1142,6 +1153,7 @@ func (client ReviewsClient) PublishVideoReview(ctx context.Context, teamName str
 	result, err = client.PublishVideoReviewResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "PublishVideoReview", resp, "Failure responding to request")
+		return
 	}
 
 	return

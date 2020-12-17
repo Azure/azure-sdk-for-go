@@ -84,6 +84,7 @@ func (client BaseClient) GetAppliedReservationList(ctx context.Context, subscrip
 	result, err = client.GetAppliedReservationListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.BaseClient", "GetAppliedReservationList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -159,6 +160,7 @@ func (client BaseClient) GetCatalog(ctx context.Context, subscriptionID string, 
 	result, err = client.GetCatalogResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.BaseClient", "GetCatalog", resp, "Failure responding to request")
+		return
 	}
 
 	return

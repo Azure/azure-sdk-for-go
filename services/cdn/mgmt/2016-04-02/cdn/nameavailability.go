@@ -80,6 +80,7 @@ func (client NameAvailabilityClient) CheckNameAvailability(ctx context.Context, 
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.NameAvailabilityClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return

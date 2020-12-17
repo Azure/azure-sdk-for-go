@@ -75,6 +75,7 @@ func (client InstructionsClient) Get(ctx context.Context, billingAccountName str
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InstructionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -151,6 +152,7 @@ func (client InstructionsClient) ListByBillingProfile(ctx context.Context, billi
 	result.ilr, err = client.ListByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InstructionsClient", "ListByBillingProfile", resp, "Failure responding to request")
+		return
 	}
 	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -214,6 +216,7 @@ func (client InstructionsClient) listByBillingProfileNextResults(ctx context.Con
 	result, err = client.ListByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InstructionsClient", "listByBillingProfileNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -278,6 +281,7 @@ func (client InstructionsClient) Put(ctx context.Context, billingAccountName str
 	result, err = client.PutResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InstructionsClient", "Put", resp, "Failure responding to request")
+		return
 	}
 
 	return

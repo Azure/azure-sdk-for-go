@@ -88,6 +88,7 @@ func (client SparkJobDefinitionClient) CreateOrUpdateSparkJobDefinition(ctx cont
 	result, err = client.CreateOrUpdateSparkJobDefinitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "CreateOrUpdateSparkJobDefinition", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -263,6 +264,7 @@ func (client SparkJobDefinitionClient) DeleteSparkJobDefinition(ctx context.Cont
 	result, err = client.DeleteSparkJobDefinitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "DeleteSparkJobDefinition", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -416,6 +418,7 @@ func (client SparkJobDefinitionClient) GetSparkJobDefinition(ctx context.Context
 	result, err = client.GetSparkJobDefinitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "GetSparkJobDefinition", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -495,6 +498,7 @@ func (client SparkJobDefinitionClient) GetSparkJobDefinitionsByWorkspace(ctx con
 	result.sjdlr, err = client.GetSparkJobDefinitionsByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "GetSparkJobDefinitionsByWorkspace", resp, "Failure responding to request")
+		return
 	}
 	if result.sjdlr.hasNextLink() && result.sjdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -557,6 +561,7 @@ func (client SparkJobDefinitionClient) getSparkJobDefinitionsByWorkspaceNextResu
 	result, err = client.GetSparkJobDefinitionsByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "getSparkJobDefinitionsByWorkspaceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

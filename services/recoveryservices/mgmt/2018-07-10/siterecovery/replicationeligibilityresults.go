@@ -73,6 +73,7 @@ func (client ReplicationEligibilityResultsClient) Get(ctx context.Context, virtu
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationEligibilityResultsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -147,6 +148,7 @@ func (client ReplicationEligibilityResultsClient) List(ctx context.Context, virt
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationEligibilityResultsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

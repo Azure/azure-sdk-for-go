@@ -73,6 +73,7 @@ func (client RefreshSetPasswordClient) Get(ctx context.Context, resourceGroupNam
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.RefreshSetPasswordClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

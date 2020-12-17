@@ -82,6 +82,7 @@ func (client ClustersClient) CheckNameAvailability(ctx context.Context, location
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -318,6 +319,7 @@ func (client ClustersClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -390,6 +392,7 @@ func (client ClustersClient) List(ctx context.Context) (result ClusterListResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -462,6 +465,7 @@ func (client ClustersClient) ListByResourceGroup(ctx context.Context, resourceGr
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -533,6 +537,7 @@ func (client ClustersClient) ListSkus(ctx context.Context) (result ListSkusResul
 	result, err = client.ListSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "ListSkus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -606,6 +611,7 @@ func (client ClustersClient) ListSkusByResource(ctx context.Context, resourceGro
 	result, err = client.ListSkusByResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "ListSkusByResource", resp, "Failure responding to request")
+		return
 	}
 
 	return

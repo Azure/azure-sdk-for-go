@@ -256,6 +256,7 @@ func (client EventHubConnectionsClient) EventhubConnectionValidation(ctx context
 	result, err = client.EventhubConnectionValidationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsClient", "EventhubConnectionValidation", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -336,6 +337,7 @@ func (client EventHubConnectionsClient) Get(ctx context.Context, resourceGroupNa
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -414,6 +416,7 @@ func (client EventHubConnectionsClient) ListByDatabase(ctx context.Context, reso
 	result, err = client.ListByDatabaseResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsClient", "ListByDatabase", resp, "Failure responding to request")
+		return
 	}
 
 	return

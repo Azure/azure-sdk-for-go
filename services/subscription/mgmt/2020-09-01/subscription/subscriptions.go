@@ -71,6 +71,7 @@ func (client SubscriptionsClient) Get(ctx context.Context, subscriptionID string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.SubscriptionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -142,9 +143,11 @@ func (client SubscriptionsClient) List(ctx context.Context) (result ListResultPa
 	result.lr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.SubscriptionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -251,6 +254,7 @@ func (client SubscriptionsClient) ListLocations(ctx context.Context, subscriptio
 	result, err = client.ListLocationsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.SubscriptionsClient", "ListLocations", resp, "Failure responding to request")
+		return
 	}
 
 	return

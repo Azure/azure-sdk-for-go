@@ -22,7 +22,7 @@ package redis
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2018-03-01/redis"
+	original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-06-01/redis"
 )
 
 const (
@@ -50,21 +50,45 @@ const (
 	Secondary KeyType = original.Secondary
 )
 
+type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
+
+const (
+	Creating  PrivateEndpointConnectionProvisioningState = original.Creating
+	Deleting  PrivateEndpointConnectionProvisioningState = original.Deleting
+	Failed    PrivateEndpointConnectionProvisioningState = original.Failed
+	Succeeded PrivateEndpointConnectionProvisioningState = original.Succeeded
+)
+
+type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
+
+const (
+	Approved PrivateEndpointServiceConnectionStatus = original.Approved
+	Pending  PrivateEndpointServiceConnectionStatus = original.Pending
+	Rejected PrivateEndpointServiceConnectionStatus = original.Rejected
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Creating               ProvisioningState = original.Creating
-	Deleting               ProvisioningState = original.Deleting
-	Disabled               ProvisioningState = original.Disabled
-	Failed                 ProvisioningState = original.Failed
-	Linking                ProvisioningState = original.Linking
-	Provisioning           ProvisioningState = original.Provisioning
-	RecoveringScaleFailure ProvisioningState = original.RecoveringScaleFailure
-	Scaling                ProvisioningState = original.Scaling
-	Succeeded              ProvisioningState = original.Succeeded
-	Unlinking              ProvisioningState = original.Unlinking
-	Unprovisioning         ProvisioningState = original.Unprovisioning
-	Updating               ProvisioningState = original.Updating
+	ProvisioningStateCreating               ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleting               ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateDisabled               ProvisioningState = original.ProvisioningStateDisabled
+	ProvisioningStateFailed                 ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateLinking                ProvisioningState = original.ProvisioningStateLinking
+	ProvisioningStateProvisioning           ProvisioningState = original.ProvisioningStateProvisioning
+	ProvisioningStateRecoveringScaleFailure ProvisioningState = original.ProvisioningStateRecoveringScaleFailure
+	ProvisioningStateScaling                ProvisioningState = original.ProvisioningStateScaling
+	ProvisioningStateSucceeded              ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateUnlinking              ProvisioningState = original.ProvisioningStateUnlinking
+	ProvisioningStateUnprovisioning         ProvisioningState = original.ProvisioningStateUnprovisioning
+	ProvisioningStateUpdating               ProvisioningState = original.ProvisioningStateUpdating
+)
+
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	Disabled PublicNetworkAccess = original.Disabled
+	Enabled  PublicNetworkAccess = original.Enabled
 )
 
 type RebootType = original.RebootType
@@ -114,6 +138,9 @@ type CreateFuture = original.CreateFuture
 type CreateParameters = original.CreateParameters
 type CreateProperties = original.CreateProperties
 type DeleteFuture = original.DeleteFuture
+type ErrorAdditionalInfo = original.ErrorAdditionalInfo
+type ErrorDetail = original.ErrorDetail
+type ErrorResponse = original.ErrorResponse
 type ExportDataFuture = original.ExportDataFuture
 type ExportRDBParameters = original.ExportRDBParameters
 type FirewallRule = original.FirewallRule
@@ -126,6 +153,7 @@ type FirewallRulesClient = original.FirewallRulesClient
 type ForceRebootResponse = original.ForceRebootResponse
 type ImportDataFuture = original.ImportDataFuture
 type ImportRDBParameters = original.ImportRDBParameters
+type InstanceDetails = original.InstanceDetails
 type LinkedServer = original.LinkedServer
 type LinkedServerClient = original.LinkedServerClient
 type LinkedServerCreateFuture = original.LinkedServerCreateFuture
@@ -151,6 +179,17 @@ type PatchScheduleListResult = original.PatchScheduleListResult
 type PatchScheduleListResultIterator = original.PatchScheduleListResultIterator
 type PatchScheduleListResultPage = original.PatchScheduleListResultPage
 type PatchSchedulesClient = original.PatchSchedulesClient
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsPutFuture = original.PrivateEndpointConnectionsPutFuture
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type Properties = original.Properties
 type ProxyResource = original.ProxyResource
 type RebootParameters = original.RebootParameters
@@ -228,6 +267,18 @@ func NewPatchSchedulesClient(subscriptionID string) PatchSchedulesClient {
 func NewPatchSchedulesClientWithBaseURI(baseURI string, subscriptionID string) PatchSchedulesClient {
 	return original.NewPatchSchedulesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
@@ -237,8 +288,17 @@ func PossibleDayOfWeekValues() []DayOfWeek {
 func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()
 }
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return original.PossiblePrivateEndpointConnectionProvisioningStateValues()
+}
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return original.PossiblePrivateEndpointServiceConnectionStatusValues()
+}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
 }
 func PossibleRebootTypeValues() []RebootType {
 	return original.PossibleRebootTypeValues()

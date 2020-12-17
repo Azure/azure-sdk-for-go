@@ -170,6 +170,7 @@ func (client DiscoveredSecuritySolutionsClient) List(ctx context.Context) (resul
 	}
 	if result.dssl.hasNextLink() && result.dssl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -229,7 +230,6 @@ func (client DiscoveredSecuritySolutionsClient) listNextResults(ctx context.Cont
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.DiscoveredSecuritySolutionsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -289,6 +289,7 @@ func (client DiscoveredSecuritySolutionsClient) ListByHomeRegion(ctx context.Con
 	}
 	if result.dssl.hasNextLink() && result.dssl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -349,7 +350,6 @@ func (client DiscoveredSecuritySolutionsClient) listByHomeRegionNextResults(ctx 
 	result, err = client.ListByHomeRegionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.DiscoveredSecuritySolutionsClient", "listByHomeRegionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

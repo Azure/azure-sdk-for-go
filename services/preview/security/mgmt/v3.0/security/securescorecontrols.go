@@ -84,6 +84,7 @@ func (client SecureScoreControlsClient) List(ctx context.Context, expand ExpandC
 	}
 	if result.sscl.hasNextLink() && result.sscl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -146,7 +147,6 @@ func (client SecureScoreControlsClient) listNextResults(ctx context.Context, las
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.SecureScoreControlsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -210,6 +210,7 @@ func (client SecureScoreControlsClient) ListBySecureScore(ctx context.Context, s
 	}
 	if result.sscl.hasNextLink() && result.sscl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -273,7 +274,6 @@ func (client SecureScoreControlsClient) listBySecureScoreNextResults(ctx context
 	result, err = client.ListBySecureScoreResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.SecureScoreControlsClient", "listBySecureScoreNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

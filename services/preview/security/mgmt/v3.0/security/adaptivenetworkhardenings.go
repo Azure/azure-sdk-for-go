@@ -282,6 +282,7 @@ func (client AdaptiveNetworkHardeningsClient) ListByExtendedResource(ctx context
 	}
 	if result.anhl.hasNextLink() && result.anhl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -345,7 +346,6 @@ func (client AdaptiveNetworkHardeningsClient) listByExtendedResourceNextResults(
 	result, err = client.ListByExtendedResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AdaptiveNetworkHardeningsClient", "listByExtendedResourceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -250,6 +250,7 @@ func (client AlertsClient) List(ctx context.Context) (result AlertListPage, err 
 	}
 	if result.al.hasNextLink() && result.al.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -309,7 +310,6 @@ func (client AlertsClient) listNextResults(ctx context.Context, lastResults Aler
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AlertsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -376,6 +376,7 @@ func (client AlertsClient) ListByResourceGroup(ctx context.Context, resourceGrou
 	}
 	if result.al.hasNextLink() && result.al.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -436,7 +437,6 @@ func (client AlertsClient) listByResourceGroupNextResults(ctx context.Context, l
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AlertsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -504,6 +504,7 @@ func (client AlertsClient) ListResourceGroupLevelAlertsByRegion(ctx context.Cont
 	}
 	if result.al.hasNextLink() && result.al.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -565,7 +566,6 @@ func (client AlertsClient) listResourceGroupLevelAlertsByRegionNextResults(ctx c
 	result, err = client.ListResourceGroupLevelAlertsByRegionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AlertsClient", "listResourceGroupLevelAlertsByRegionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -626,6 +626,7 @@ func (client AlertsClient) ListSubscriptionLevelAlertsByRegion(ctx context.Conte
 	}
 	if result.al.hasNextLink() && result.al.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -686,7 +687,6 @@ func (client AlertsClient) listSubscriptionLevelAlertsByRegionNextResults(ctx co
 	result, err = client.ListSubscriptionLevelAlertsByRegionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AlertsClient", "listSubscriptionLevelAlertsByRegionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

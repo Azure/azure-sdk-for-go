@@ -259,6 +259,7 @@ func (client IotRecommendationsClient) List(ctx context.Context, resourceGroupNa
 	}
 	if result.irl.hasNextLink() && result.irl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -332,7 +333,6 @@ func (client IotRecommendationsClient) listNextResults(ctx context.Context, last
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IotRecommendationsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -393,6 +393,7 @@ func (client IotRecommendationsClient) List1(ctx context.Context, scope string, 
 	}
 	if result.irlm.hasNextLink() && result.irlm.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -464,7 +465,6 @@ func (client IotRecommendationsClient) list1NextResults(ctx context.Context, las
 	result, err = client.List1Responder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IotRecommendationsClient", "list1NextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

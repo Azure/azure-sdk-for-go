@@ -271,6 +271,7 @@ func (client IotSecuritySolutionsAnalyticsAggregatedAlertClient) List(ctx contex
 	}
 	if result.itsaal.hasNextLink() && result.itsaal.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -335,7 +336,6 @@ func (client IotSecuritySolutionsAnalyticsAggregatedAlertClient) listNextResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionsAnalyticsAggregatedAlertClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -52,6 +52,7 @@ type IotSecuritySolutionClientAPI = original.IotSecuritySolutionClientAPI
 type IotSecuritySolutionsAnalyticsAggregatedAlertClientAPI = original.IotSecuritySolutionsAnalyticsAggregatedAlertClientAPI
 type IotSecuritySolutionsAnalyticsRecommendationClientAPI = original.IotSecuritySolutionsAnalyticsRecommendationClientAPI
 type IotSensorsClientAPI = original.IotSensorsClientAPI
+type IotSitesClientAPI = original.IotSitesClientAPI
 type JitNetworkAccessPoliciesClientAPI = original.JitNetworkAccessPoliciesClientAPI
 type LocationsClientAPI = original.LocationsClientAPI
 type OnPremiseIotSensorsClientAPI = original.OnPremiseIotSensorsClientAPI

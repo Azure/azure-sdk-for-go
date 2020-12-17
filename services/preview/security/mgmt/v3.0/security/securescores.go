@@ -163,6 +163,7 @@ func (client SecureScoresClient) List(ctx context.Context) (result SecureScoresL
 	}
 	if result.ssl.hasNextLink() && result.ssl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -222,7 +223,6 @@ func (client SecureScoresClient) listNextResults(ctx context.Context, lastResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.SecureScoresClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

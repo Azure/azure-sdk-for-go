@@ -307,6 +307,7 @@ func (client DeviceSecurityGroupsClient) List(ctx context.Context, resourceID st
 	}
 	if result.dsgl.hasNextLink() && result.dsgl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -366,7 +367,6 @@ func (client DeviceSecurityGroupsClient) listNextResults(ctx context.Context, la
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.DeviceSecurityGroupsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

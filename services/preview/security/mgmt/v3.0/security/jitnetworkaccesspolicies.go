@@ -447,6 +447,7 @@ func (client JitNetworkAccessPoliciesClient) List(ctx context.Context) (result J
 	}
 	if result.jnapl.hasNextLink() && result.jnapl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -506,7 +507,6 @@ func (client JitNetworkAccessPoliciesClient) listNextResults(ctx context.Context
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.JitNetworkAccessPoliciesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -566,6 +566,7 @@ func (client JitNetworkAccessPoliciesClient) ListByRegion(ctx context.Context) (
 	}
 	if result.jnapl.hasNextLink() && result.jnapl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -626,7 +627,6 @@ func (client JitNetworkAccessPoliciesClient) listByRegionNextResults(ctx context
 	result, err = client.ListByRegionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.JitNetworkAccessPoliciesClient", "listByRegionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -694,6 +694,7 @@ func (client JitNetworkAccessPoliciesClient) ListByResourceGroup(ctx context.Con
 	}
 	if result.jnapl.hasNextLink() && result.jnapl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -754,7 +755,6 @@ func (client JitNetworkAccessPoliciesClient) listByResourceGroupNextResults(ctx 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.JitNetworkAccessPoliciesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -822,6 +822,7 @@ func (client JitNetworkAccessPoliciesClient) ListByResourceGroupAndRegion(ctx co
 	}
 	if result.jnapl.hasNextLink() && result.jnapl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -883,7 +884,6 @@ func (client JitNetworkAccessPoliciesClient) listByResourceGroupAndRegionNextRes
 	result, err = client.ListByResourceGroupAndRegionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.JitNetworkAccessPoliciesClient", "listByResourceGroupAndRegionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

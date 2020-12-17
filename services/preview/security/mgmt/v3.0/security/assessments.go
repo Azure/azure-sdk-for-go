@@ -62,8 +62,7 @@ func (client AssessmentsClient) CreateOrUpdate(ctx context.Context, resourceID s
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: assessment,
 			Constraints: []validation.Constraint{{Target: "assessment.AssessmentProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "assessment.AssessmentProperties.ResourceDetails", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "assessment.AssessmentProperties.Status", Name: validation.Null, Rule: true, Chain: nil},
+				Chain: []validation.Constraint{{Target: "assessment.AssessmentProperties.Status", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "assessment.AssessmentProperties.Metadata", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "assessment.AssessmentProperties.Metadata.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
 							{Target: "assessment.AssessmentProperties.Metadata.PartnerData", Name: validation.Null, Rule: false,
@@ -331,6 +330,7 @@ func (client AssessmentsClient) List(ctx context.Context, scope string) (result 
 	}
 	if result.al.hasNextLink() && result.al.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -390,7 +390,6 @@ func (client AssessmentsClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AssessmentsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

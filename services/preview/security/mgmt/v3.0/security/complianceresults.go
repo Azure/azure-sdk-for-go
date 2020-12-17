@@ -153,6 +153,7 @@ func (client ComplianceResultsClient) List(ctx context.Context, scope string) (r
 	}
 	if result.crl.hasNextLink() && result.crl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -212,7 +213,6 @@ func (client ComplianceResultsClient) listNextResults(ctx context.Context, lastR
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ComplianceResultsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

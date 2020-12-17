@@ -169,6 +169,7 @@ func (client SolutionsClient) List(ctx context.Context) (result SolutionListPage
 	}
 	if result.sl.hasNextLink() && result.sl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -228,7 +229,6 @@ func (client SolutionsClient) listNextResults(ctx context.Context, lastResults S
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.SolutionsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

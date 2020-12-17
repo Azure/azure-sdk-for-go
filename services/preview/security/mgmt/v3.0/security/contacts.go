@@ -326,6 +326,7 @@ func (client ContactsClient) List(ctx context.Context) (result ContactListPage, 
 	}
 	if result.cl.hasNextLink() && result.cl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -385,7 +386,6 @@ func (client ContactsClient) listNextResults(ctx context.Context, lastResults Co
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ContactsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

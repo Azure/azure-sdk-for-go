@@ -260,6 +260,7 @@ func (client IotAlertsClient) List(ctx context.Context, resourceGroupName string
 	}
 	if result.ial.hasNextLink() && result.ial.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -339,7 +340,6 @@ func (client IotAlertsClient) listNextResults(ctx context.Context, lastResults I
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IotAlertsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -403,6 +403,7 @@ func (client IotAlertsClient) List1(ctx context.Context, scope string, minStartT
 	}
 	if result.ialm.hasNextLink() && result.ialm.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -483,7 +484,6 @@ func (client IotAlertsClient) list1NextResults(ctx context.Context, lastResults 
 	result, err = client.List1Responder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IotAlertsClient", "list1NextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

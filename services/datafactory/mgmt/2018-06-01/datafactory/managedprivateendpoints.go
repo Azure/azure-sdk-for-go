@@ -413,6 +413,7 @@ func (client ManagedPrivateEndpointsClient) ListByFactory(ctx context.Context, r
 	}
 	if result.mpelr.hasNextLink() && result.mpelr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -475,7 +476,6 @@ func (client ManagedPrivateEndpointsClient) listByFactoryNextResults(ctx context
 	result, err = client.ListByFactoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.ManagedPrivateEndpointsClient", "listByFactoryNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

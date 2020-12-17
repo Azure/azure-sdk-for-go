@@ -70,14 +70,12 @@ func (client DataFlowDebugSessionClient) AddDataFlow(ctx context.Context, resour
 				{Target: "factoryName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}},
 		{TargetValue: request,
-			Constraints: []validation.Constraint{{Target: "request.DataFlow", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "request.DataFlow.Properties", Name: validation.Null, Rule: true, Chain: nil}}},
-				{Target: "request.Staging", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "request.Staging.LinkedService", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "request.Staging.LinkedService.Type", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "request.Staging.LinkedService.ReferenceName", Name: validation.Null, Rule: true, Chain: nil},
-						}},
-					}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "request.Staging", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "request.Staging.LinkedService", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "request.Staging.LinkedService.Type", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "request.Staging.LinkedService.ReferenceName", Name: validation.Null, Rule: true, Chain: nil},
+					}},
+				}}}}}); err != nil {
 		return result, validation.NewError("datafactory.DataFlowDebugSessionClient", "AddDataFlow", err.Error())
 	}
 
@@ -168,10 +166,7 @@ func (client DataFlowDebugSessionClient) Create(ctx context.Context, resourceGro
 		{TargetValue: factoryName,
 			Constraints: []validation.Constraint{{Target: "factoryName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "factoryName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}},
-		{TargetValue: request,
-			Constraints: []validation.Constraint{{Target: "request.IntegrationRuntime", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "request.IntegrationRuntime.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("datafactory.DataFlowDebugSessionClient", "Create", err.Error())
 	}
 
@@ -468,6 +463,7 @@ func (client DataFlowDebugSessionClient) QueryByFactory(ctx context.Context, res
 	}
 	if result.qdfdsr.hasNextLink() && result.qdfdsr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -529,7 +525,6 @@ func (client DataFlowDebugSessionClient) queryByFactoryNextResults(ctx context.C
 	result, err = client.QueryByFactoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionClient", "queryByFactoryNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

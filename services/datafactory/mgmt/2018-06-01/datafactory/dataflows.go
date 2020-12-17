@@ -74,9 +74,7 @@ func (client DataFlowsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 		{TargetValue: dataFlowName,
 			Constraints: []validation.Constraint{{Target: "dataFlowName", Name: validation.MaxLength, Rule: 260, Chain: nil},
 				{Target: "dataFlowName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "dataFlowName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}},
-		{TargetValue: dataFlow,
-			Constraints: []validation.Constraint{{Target: "dataFlow.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "dataFlowName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("datafactory.DataFlowsClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -389,6 +387,7 @@ func (client DataFlowsClient) ListByFactory(ctx context.Context, resourceGroupNa
 	}
 	if result.dflr.hasNextLink() && result.dflr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -450,7 +449,6 @@ func (client DataFlowsClient) listByFactoryNextResults(ctx context.Context, last
 	result, err = client.ListByFactoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.DataFlowsClient", "listByFactoryNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

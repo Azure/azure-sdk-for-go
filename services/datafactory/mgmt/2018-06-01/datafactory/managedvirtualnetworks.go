@@ -297,6 +297,7 @@ func (client ManagedVirtualNetworksClient) ListByFactory(ctx context.Context, re
 	}
 	if result.mvnlr.hasNextLink() && result.mvnlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -358,7 +359,6 @@ func (client ManagedVirtualNetworksClient) listByFactoryNextResults(ctx context.
 	result, err = client.ListByFactoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.ManagedVirtualNetworksClient", "listByFactoryNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

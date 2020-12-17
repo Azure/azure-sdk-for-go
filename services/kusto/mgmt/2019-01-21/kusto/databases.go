@@ -77,6 +77,7 @@ func (client DatabasesClient) AddPrincipals(ctx context.Context, resourceGroupNa
 	result, err = client.AddPrincipalsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.DatabasesClient", "AddPrincipals", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -163,6 +164,7 @@ func (client DatabasesClient) CheckNameAvailability(ctx context.Context, resourc
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.DatabasesClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -397,6 +399,7 @@ func (client DatabasesClient) Get(ctx context.Context, resourceGroupName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.DatabasesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -473,6 +476,7 @@ func (client DatabasesClient) ListByCluster(ctx context.Context, resourceGroupNa
 	result, err = client.ListByClusterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.DatabasesClient", "ListByCluster", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -549,6 +553,7 @@ func (client DatabasesClient) ListPrincipals(ctx context.Context, resourceGroupN
 	result, err = client.ListPrincipalsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.DatabasesClient", "ListPrincipals", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -627,6 +632,7 @@ func (client DatabasesClient) RemovePrincipals(ctx context.Context, resourceGrou
 	result, err = client.RemovePrincipalsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.DatabasesClient", "RemovePrincipals", resp, "Failure responding to request")
+		return
 	}
 
 	return

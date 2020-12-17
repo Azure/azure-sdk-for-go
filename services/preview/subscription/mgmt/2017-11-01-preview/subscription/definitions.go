@@ -151,6 +151,7 @@ func (client DefinitionsClient) Get(ctx context.Context, subscriptionDefinitionN
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.DefinitionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -225,6 +226,7 @@ func (client DefinitionsClient) GetOperationStatus(ctx context.Context, operatio
 	result, err = client.GetOperationStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.DefinitionsClient", "GetOperationStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -296,9 +298,11 @@ func (client DefinitionsClient) List(ctx context.Context) (result DefinitionList
 	result.dl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.DefinitionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.dl.hasNextLink() && result.dl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return

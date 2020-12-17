@@ -13,14 +13,14 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](\services\datafactory\mgmt\2018-06-01\datafactory\CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
 
 ### Breaking Changes
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security` | [details](\services\preview\security\mgmt\v3.0\security\CHANGELOG.md) |
-| `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/2019-06-01-preview/synapse` | [details](\services\preview\synapse\mgmt\2019-06-01-preview\synapse\CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security` | [details](services/preview/security/mgmt/v3.0/security/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/2019-06-01-preview/synapse` | [details](services/preview/synapse/mgmt/2019-06-01-preview/synapse/CHANGELOG.md) |
 
 ## `v49.0.0`
 

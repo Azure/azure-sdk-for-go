@@ -180,6 +180,7 @@ func (client SQLPoolReplicationLinksClient) List(ctx context.Context, resourceGr
 	}
 	if result.rllr.hasNextLink() && result.rllr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -242,7 +243,6 @@ func (client SQLPoolReplicationLinksClient) listNextResults(ctx context.Context,
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolReplicationLinksClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

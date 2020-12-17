@@ -272,6 +272,7 @@ func (client ExtendedSQLPoolBlobAuditingPoliciesClient) ListBySQLPool(ctx contex
 	}
 	if result.espbaplr.hasNextLink() && result.espbaplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -334,7 +335,6 @@ func (client ExtendedSQLPoolBlobAuditingPoliciesClient) listBySQLPoolNextResults
 	result, err = client.ListBySQLPoolResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.ExtendedSQLPoolBlobAuditingPoliciesClient", "listBySQLPoolNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -366,6 +366,7 @@ func (client SQLPoolWorkloadGroupClient) List(ctx context.Context, resourceGroup
 	}
 	if result.wglr.hasNextLink() && result.wglr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -428,7 +429,6 @@ func (client SQLPoolWorkloadGroupClient) listNextResults(ctx context.Context, la
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolWorkloadGroupClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

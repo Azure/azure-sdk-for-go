@@ -353,6 +353,7 @@ func (client SQLPoolsClient) ListByWorkspace(ctx context.Context, resourceGroupN
 	}
 	if result.spilr.hasNextLink() && result.spilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -414,7 +415,6 @@ func (client SQLPoolsClient) listByWorkspaceNextResults(ctx context.Context, las
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolsClient", "listByWorkspaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

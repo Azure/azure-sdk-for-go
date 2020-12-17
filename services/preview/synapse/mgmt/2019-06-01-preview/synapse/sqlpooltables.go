@@ -183,6 +183,7 @@ func (client SQLPoolTablesClient) ListBySchema(ctx context.Context, resourceGrou
 	}
 	if result.sptlr.hasNextLink() && result.sptlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -249,7 +250,6 @@ func (client SQLPoolTablesClient) listBySchemaNextResults(ctx context.Context, l
 	result, err = client.ListBySchemaResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolTablesClient", "listBySchemaNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

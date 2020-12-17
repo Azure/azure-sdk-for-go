@@ -340,6 +340,7 @@ func (client WorkspacesClient) List(ctx context.Context) (result WorkspaceInfoLi
 	}
 	if result.wilr.hasNextLink() && result.wilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -399,7 +400,6 @@ func (client WorkspacesClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -465,6 +465,7 @@ func (client WorkspacesClient) ListByResourceGroup(ctx context.Context, resource
 	}
 	if result.wilr.hasNextLink() && result.wilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -525,7 +526,6 @@ func (client WorkspacesClient) listByResourceGroupNextResults(ctx context.Contex
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

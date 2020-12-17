@@ -355,6 +355,7 @@ func (client KeysClient) ListByWorkspace(ctx context.Context, resourceGroupName 
 	}
 	if result.kilr.hasNextLink() && result.kilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -416,7 +417,6 @@ func (client KeysClient) listByWorkspaceNextResults(ctx context.Context, lastRes
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.KeysClient", "listByWorkspaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

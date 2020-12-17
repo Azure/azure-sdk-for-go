@@ -370,6 +370,7 @@ func (client SQLPoolWorkloadClassifierClient) List(ctx context.Context, resource
 	}
 	if result.wclr.hasNextLink() && result.wclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -433,7 +434,6 @@ func (client SQLPoolWorkloadClassifierClient) listNextResults(ctx context.Contex
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolWorkloadClassifierClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

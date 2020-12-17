@@ -180,6 +180,7 @@ func (client SQLPoolSchemasClient) List(ctx context.Context, resourceGroupName s
 	}
 	if result.spslr.hasNextLink() && result.spslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -245,7 +246,6 @@ func (client SQLPoolSchemasClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolSchemasClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

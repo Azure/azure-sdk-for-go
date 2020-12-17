@@ -273,6 +273,7 @@ func (client SQLPoolTransparentDataEncryptionsClient) List(ctx context.Context, 
 	}
 	if result.tdelr.hasNextLink() && result.tdelr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -335,7 +336,6 @@ func (client SQLPoolTransparentDataEncryptionsClient) listNextResults(ctx contex
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

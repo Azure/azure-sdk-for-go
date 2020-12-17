@@ -90,6 +90,7 @@ func (client SQLPoolOperationsClient) List(ctx context.Context, resourceGroupNam
 	}
 	if result.spbapspolr.hasNextLink() && result.spbapspolr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -152,7 +153,6 @@ func (client SQLPoolOperationsClient) listNextResults(ctx context.Context, lastR
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolOperationsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

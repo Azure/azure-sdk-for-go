@@ -266,6 +266,7 @@ func (client WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient) ListBy
 	}
 	if result.esbaplr.hasNextLink() && result.esbaplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -327,7 +328,6 @@ func (client WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient) listBy
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient", "listByWorkspaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

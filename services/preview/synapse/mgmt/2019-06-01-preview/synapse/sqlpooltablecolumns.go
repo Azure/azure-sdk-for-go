@@ -93,6 +93,7 @@ func (client SQLPoolTableColumnsClient) ListByTableName(ctx context.Context, res
 	}
 	if result.spclr.hasNextLink() && result.spclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -160,7 +161,6 @@ func (client SQLPoolTableColumnsClient) listByTableNameNextResults(ctx context.C
 	result, err = client.ListByTableNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolTableColumnsClient", "listByTableNameNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

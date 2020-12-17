@@ -272,6 +272,7 @@ func (client SQLPoolBlobAuditingPoliciesClient) ListBySQLPool(ctx context.Contex
 	}
 	if result.spbaplr.hasNextLink() && result.spbaplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -334,7 +335,6 @@ func (client SQLPoolBlobAuditingPoliciesClient) listBySQLPoolNextResults(ctx con
 	result, err = client.ListBySQLPoolResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolBlobAuditingPoliciesClient", "listBySQLPoolNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

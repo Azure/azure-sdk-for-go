@@ -271,6 +271,7 @@ func (client SQLPoolSecurityAlertPoliciesClient) List(ctx context.Context, resou
 	}
 	if result.lspsap.hasNextLink() && result.lspsap.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -333,7 +334,6 @@ func (client SQLPoolSecurityAlertPoliciesClient) listNextResults(ctx context.Con
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolSecurityAlertPoliciesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

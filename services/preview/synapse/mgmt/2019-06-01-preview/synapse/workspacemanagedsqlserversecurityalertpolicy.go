@@ -266,6 +266,7 @@ func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) List(ctx contex
 	}
 	if result.ssaplr.hasNextLink() && result.ssaplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -327,7 +328,6 @@ func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) listNextResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerSecurityAlertPolicyClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

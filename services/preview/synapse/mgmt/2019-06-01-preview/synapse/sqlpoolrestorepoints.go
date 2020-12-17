@@ -361,6 +361,7 @@ func (client SQLPoolRestorePointsClient) List(ctx context.Context, resourceGroup
 	}
 	if result.rplr.hasNextLink() && result.rplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -423,7 +424,6 @@ func (client SQLPoolRestorePointsClient) listNextResults(ctx context.Context, la
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolRestorePointsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

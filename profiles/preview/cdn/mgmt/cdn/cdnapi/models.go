@@ -19,12 +19,18 @@
 
 package cdnapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-04-15/cdn/cdnapi"
+import original "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn/cdnapi"
 
+type AFDCustomDomainsClientAPI = original.AFDCustomDomainsClientAPI
+type AFDEndpointsClientAPI = original.AFDEndpointsClientAPI
+type AFDOriginGroupsClientAPI = original.AFDOriginGroupsClientAPI
+type AFDOriginsClientAPI = original.AFDOriginsClientAPI
+type AFDProfilesClientAPI = original.AFDProfilesClientAPI
 type BaseClientAPI = original.BaseClientAPI
 type CustomDomainsClientAPI = original.CustomDomainsClientAPI
 type EdgeNodesClientAPI = original.EdgeNodesClientAPI
 type EndpointsClientAPI = original.EndpointsClientAPI
+type LogAnalyticsClientAPI = original.LogAnalyticsClientAPI
 type ManagedRuleSetsClientAPI = original.ManagedRuleSetsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type OriginGroupsClientAPI = original.OriginGroupsClientAPI
@@ -32,3 +38,9 @@ type OriginsClientAPI = original.OriginsClientAPI
 type PoliciesClientAPI = original.PoliciesClientAPI
 type ProfilesClientAPI = original.ProfilesClientAPI
 type ResourceUsageClientAPI = original.ResourceUsageClientAPI
+type RoutesClientAPI = original.RoutesClientAPI
+type RuleSetsClientAPI = original.RuleSetsClientAPI
+type RulesClientAPI = original.RulesClientAPI
+type SecretsClientAPI = original.SecretsClientAPI
+type SecurityPoliciesClientAPI = original.SecurityPoliciesClientAPI
+type ValidateClientAPI = original.ValidateClientAPI

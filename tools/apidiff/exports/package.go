@@ -20,6 +20,8 @@ import (
 	"go/parser"
 	"go/token"
 	"io/ioutil"
+	"os"
+	"strings"
 )
 
 // Package represents a Go package.
@@ -52,7 +54,10 @@ func (ei errorInfo) PkgCount() int {
 func LoadPackage(dir string) (pkg Package, err error) {
 	pkg.files = map[string][]byte{}
 	pkg.f = token.NewFileSet()
-	packages, err := parser.ParseDir(pkg.f, dir, nil, 0)
+	packages, err := parser.ParseDir(pkg.f, dir, func(f os.FileInfo) bool {
+		// exclude test files
+		return !strings.HasSuffix(f.Name(), "_test.go")
+	}, 0)
 	if err != nil {
 		return
 	}

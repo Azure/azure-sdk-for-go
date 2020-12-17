@@ -155,7 +155,7 @@ func (pkg Package) getText(start token.Pos, end token.Pos) string {
 // iterates over the specified field list, for each field the specified
 // callback is invoked with the name of the field and the type name.  the field
 // name can be nil, e.g. anonymous fields in structs, unnamed return types etc.
-func (pkg Package) translateFieldList(fl []*ast.Field, cb func(*string, string)) {
+func (pkg Package) translateFieldList(fl []*ast.Field, cb func(*string, string, *ast.Field)) {
 	for _, f := range fl {
 		var name *string
 		if f.Names != nil {
@@ -163,7 +163,7 @@ func (pkg Package) translateFieldList(fl []*ast.Field, cb func(*string, string))
 			name = &n
 		}
 		t := pkg.getText(f.Type.Pos(), f.Type.End())
-		cb(name, t)
+		cb(name, t, f)
 	}
 }
 
@@ -181,7 +181,7 @@ func (pkg Package) buildFunc(ft *ast.FuncType) (f Func) {
 	// build the params type list
 	if ft.Params.List != nil {
 		p := ""
-		pkg.translateFieldList(ft.Params.List, func(n *string, t string) {
+		pkg.translateFieldList(ft.Params.List, func(n *string, t string, f *ast.Field) {
 			p = appendString(p, t)
 		})
 		f.Params = &p
@@ -190,7 +190,7 @@ func (pkg Package) buildFunc(ft *ast.FuncType) (f Func) {
 	// build the return types list
 	if ft.Results != nil {
 		r := ""
-		pkg.translateFieldList(ft.Results.List, func(n *string, t string) {
+		pkg.translateFieldList(ft.Results.List, func(n *string, t string, f *ast.Field) {
 			r = appendString(r, t)
 		})
 		f.Returns = &r

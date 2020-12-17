@@ -257,6 +257,7 @@ func (client OuContainerClient) Get(ctx context.Context, resourceGroupName strin
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.OuContainerClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -343,6 +344,7 @@ func (client OuContainerClient) List(ctx context.Context, resourceGroupName stri
 	result.oclr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.OuContainerClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.oclr.hasNextLink() && result.oclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -407,6 +409,7 @@ func (client OuContainerClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.OuContainerClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

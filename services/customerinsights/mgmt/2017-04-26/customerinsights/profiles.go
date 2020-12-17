@@ -247,6 +247,7 @@ func (client ProfilesClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ProfilesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -330,6 +331,7 @@ func (client ProfilesClient) GetEnrichingKpis(ctx context.Context, resourceGroup
 	result, err = client.GetEnrichingKpisResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ProfilesClient", "GetEnrichingKpis", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -408,6 +410,7 @@ func (client ProfilesClient) ListByHub(ctx context.Context, resourceGroupName st
 	result.plr, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ProfilesClient", "ListByHub", resp, "Failure responding to request")
+		return
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -477,6 +480,7 @@ func (client ProfilesClient) listByHubNextResults(ctx context.Context, lastResul
 	result, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ProfilesClient", "listByHubNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

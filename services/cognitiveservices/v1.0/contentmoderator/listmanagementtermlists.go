@@ -73,6 +73,7 @@ func (client ListManagementTermListsClient) Create(ctx context.Context, contentT
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ListManagementTermListsClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -142,6 +143,7 @@ func (client ListManagementTermListsClient) Delete(ctx context.Context, listID s
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ListManagementTermListsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -210,6 +212,7 @@ func (client ListManagementTermListsClient) GetAllTermLists(ctx context.Context)
 	result, err = client.GetAllTermListsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ListManagementTermListsClient", "GetAllTermLists", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -276,6 +279,7 @@ func (client ListManagementTermListsClient) GetDetails(ctx context.Context, list
 	result, err = client.GetDetailsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ListManagementTermListsClient", "GetDetails", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -347,6 +351,7 @@ func (client ListManagementTermListsClient) RefreshIndexMethod(ctx context.Conte
 	result, err = client.RefreshIndexMethodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ListManagementTermListsClient", "RefreshIndexMethod", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -424,6 +429,7 @@ func (client ListManagementTermListsClient) Update(ctx context.Context, listID s
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ListManagementTermListsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

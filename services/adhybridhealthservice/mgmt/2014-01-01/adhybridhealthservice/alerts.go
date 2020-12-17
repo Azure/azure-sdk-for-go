@@ -77,6 +77,7 @@ func (client AlertsClient) ListAddsAlerts(ctx context.Context, serviceName strin
 	result.a, err = client.ListAddsAlertsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AlertsClient", "ListAddsAlerts", resp, "Failure responding to request")
+		return
 	}
 	if result.a.hasNextLink() && result.a.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -151,6 +152,7 @@ func (client AlertsClient) listAddsAlertsNextResults(ctx context.Context, lastRe
 	result, err = client.ListAddsAlertsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AlertsClient", "listAddsAlertsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

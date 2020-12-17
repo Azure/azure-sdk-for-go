@@ -387,6 +387,7 @@ func (client DisasterRecoveryConfigurationsClient) Get(ctx context.Context, reso
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -464,6 +465,7 @@ func (client DisasterRecoveryConfigurationsClient) List(ctx context.Context, res
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

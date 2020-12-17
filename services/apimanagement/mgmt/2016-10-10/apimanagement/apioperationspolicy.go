@@ -97,6 +97,7 @@ func (client APIOperationsPolicyClient) CreateOrUpdate(ctx context.Context, reso
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationsPolicyClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -197,6 +198,7 @@ func (client APIOperationsPolicyClient) Delete(ctx context.Context, resourceGrou
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationsPolicyClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -293,6 +295,7 @@ func (client APIOperationsPolicyClient) Get(ctx context.Context, resourceGroupNa
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationsPolicyClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

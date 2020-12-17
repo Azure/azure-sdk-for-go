@@ -80,6 +80,7 @@ func (client ResourceClient) CheckFilePathAvailability(ctx context.Context, body
 	result, err = client.CheckFilePathAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.ResourceClient", "CheckFilePathAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -163,6 +164,7 @@ func (client ResourceClient) CheckNameAvailability(ctx context.Context, body Res
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.ResourceClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -246,6 +248,7 @@ func (client ResourceClient) CheckQuotaAvailability(ctx context.Context, body Qu
 	result, err = client.CheckQuotaAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.ResourceClient", "CheckQuotaAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return

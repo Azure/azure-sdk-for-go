@@ -84,6 +84,7 @@ func (client NotificationRecipientEmailClient) CreateOrUpdate(ctx context.Contex
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.NotificationRecipientEmailClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -171,6 +172,7 @@ func (client NotificationRecipientEmailClient) Delete(ctx context.Context, resou
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.NotificationRecipientEmailClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -257,6 +259,7 @@ func (client NotificationRecipientEmailClient) Get(ctx context.Context, resource
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.NotificationRecipientEmailClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -342,6 +345,7 @@ func (client NotificationRecipientEmailClient) ListByNotification(ctx context.Co
 	result, err = client.ListByNotificationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.NotificationRecipientEmailClient", "ListByNotification", resp, "Failure responding to request")
+		return
 	}
 
 	return

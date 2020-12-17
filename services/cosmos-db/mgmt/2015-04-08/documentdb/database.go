@@ -86,6 +86,7 @@ func (client DatabaseClient) ListMetricDefinitions(ctx context.Context, resource
 	result, err = client.ListMetricDefinitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseClient", "ListMetricDefinitions", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -178,6 +179,7 @@ func (client DatabaseClient) ListMetrics(ctx context.Context, resourceGroupName 
 	result, err = client.ListMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseClient", "ListMetrics", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -270,6 +272,7 @@ func (client DatabaseClient) ListUsages(ctx context.Context, resourceGroupName s
 	result, err = client.ListUsagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseClient", "ListUsages", resp, "Failure responding to request")
+		return
 	}
 
 	return

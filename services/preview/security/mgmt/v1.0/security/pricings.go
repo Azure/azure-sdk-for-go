@@ -85,6 +85,7 @@ func (client PricingsClient) CreateOrUpdateResourceGroupPricing(ctx context.Cont
 	result, err = client.CreateOrUpdateResourceGroupPricingResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.PricingsClient", "CreateOrUpdateResourceGroupPricing", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -173,6 +174,7 @@ func (client PricingsClient) GetResourceGroupPricing(ctx context.Context, resour
 	result, err = client.GetResourceGroupPricingResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.PricingsClient", "GetResourceGroupPricing", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -254,6 +256,7 @@ func (client PricingsClient) GetSubscriptionPricing(ctx context.Context, pricing
 	result, err = client.GetSubscriptionPricingResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.PricingsClient", "GetSubscriptionPricing", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -332,6 +335,7 @@ func (client PricingsClient) List(ctx context.Context) (result PricingListPage, 
 	result.pl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.PricingsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.pl.hasNextLink() && result.pl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -394,6 +398,7 @@ func (client PricingsClient) listNextResults(ctx context.Context, lastResults Pr
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.PricingsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -456,6 +461,7 @@ func (client PricingsClient) ListByResourceGroup(ctx context.Context, resourceGr
 	result.pl, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.PricingsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.pl.hasNextLink() && result.pl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -519,6 +525,7 @@ func (client PricingsClient) listByResourceGroupNextResults(ctx context.Context,
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.PricingsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -576,6 +583,7 @@ func (client PricingsClient) UpdateSubscriptionPricing(ctx context.Context, pric
 	result, err = client.UpdateSubscriptionPricingResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.PricingsClient", "UpdateSubscriptionPricing", resp, "Failure responding to request")
+		return
 	}
 
 	return

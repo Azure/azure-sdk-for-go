@@ -83,6 +83,7 @@ func (client APIOperationClient) CreateOrUpdate(ctx context.Context, apimBaseURL
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -180,6 +181,7 @@ func (client APIOperationClient) Delete(ctx context.Context, apimBaseURL string,
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -273,6 +275,7 @@ func (client APIOperationClient) Get(ctx context.Context, apimBaseURL string, ap
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -375,6 +378,7 @@ func (client APIOperationClient) ListByAPI(ctx context.Context, apimBaseURL stri
 	result.oc, err = client.ListByAPIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationClient", "ListByAPI", resp, "Failure responding to request")
+		return
 	}
 	if result.oc.hasNextLink() && result.oc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -450,6 +454,7 @@ func (client APIOperationClient) listByAPINextResults(ctx context.Context, lastR
 	result, err = client.ListByAPIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationClient", "listByAPINextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -519,6 +524,7 @@ func (client APIOperationClient) Update(ctx context.Context, apimBaseURL string,
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

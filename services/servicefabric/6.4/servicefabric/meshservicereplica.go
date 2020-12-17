@@ -76,6 +76,7 @@ func (client MeshServiceReplicaClient) Get(ctx context.Context, applicationResou
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.MeshServiceReplicaClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -152,6 +153,7 @@ func (client MeshServiceReplicaClient) List(ctx context.Context, applicationReso
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.MeshServiceReplicaClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

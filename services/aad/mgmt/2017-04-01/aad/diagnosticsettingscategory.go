@@ -70,6 +70,7 @@ func (client DiagnosticSettingsCategoryClient) List(ctx context.Context) (result
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DiagnosticSettingsCategoryClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -71,6 +71,7 @@ func (client LocationClient) GetQuotas(ctx context.Context, locationName string)
 	result, err = client.GetQuotasResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.LocationClient", "GetQuotas", resp, "Failure responding to request")
+		return
 	}
 
 	return

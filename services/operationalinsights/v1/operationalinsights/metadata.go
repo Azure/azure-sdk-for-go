@@ -72,6 +72,7 @@ func (client MetadataClient) Get(ctx context.Context, workspaceID string) (resul
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.MetadataClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -139,6 +140,7 @@ func (client MetadataClient) Post(ctx context.Context, workspaceID string) (resu
 	result, err = client.PostResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.MetadataClient", "Post", resp, "Failure responding to request")
+		return
 	}
 
 	return

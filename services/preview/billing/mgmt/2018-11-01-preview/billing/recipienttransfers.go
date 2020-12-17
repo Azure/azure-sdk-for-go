@@ -73,6 +73,7 @@ func (client RecipientTransfersClient) Accept(ctx context.Context, transferName 
 	result, err = client.AcceptResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RecipientTransfersClient", "Accept", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -141,6 +142,7 @@ func (client RecipientTransfersClient) Decline(ctx context.Context, transferName
 	result, err = client.DeclineResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RecipientTransfersClient", "Decline", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -207,6 +209,7 @@ func (client RecipientTransfersClient) Get(ctx context.Context, transferName str
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RecipientTransfersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -272,6 +275,7 @@ func (client RecipientTransfersClient) List(ctx context.Context) (result Recipie
 	result.rtdlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RecipientTransfersClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rtdlr.hasNextLink() && result.rtdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -324,6 +328,7 @@ func (client RecipientTransfersClient) listNextResults(ctx context.Context, last
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RecipientTransfersClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -75,6 +75,7 @@ func (client ListManagementImageClient) AddImage(ctx context.Context, listID str
 	result, err = client.AddImageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ListManagementImageClient", "AddImage", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -157,6 +158,7 @@ func (client ListManagementImageClient) AddImageFileInput(ctx context.Context, l
 	result, err = client.AddImageFileInputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ListManagementImageClient", "AddImageFileInput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -242,6 +244,7 @@ func (client ListManagementImageClient) AddImageURLInput(ctx context.Context, li
 	result, err = client.AddImageURLInputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ListManagementImageClient", "AddImageURLInput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -324,6 +327,7 @@ func (client ListManagementImageClient) DeleteAllImages(ctx context.Context, lis
 	result, err = client.DeleteAllImagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ListManagementImageClient", "DeleteAllImages", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -395,6 +399,7 @@ func (client ListManagementImageClient) DeleteImage(ctx context.Context, listID 
 	result, err = client.DeleteImageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ListManagementImageClient", "DeleteImage", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -466,6 +471,7 @@ func (client ListManagementImageClient) GetAllImageIds(ctx context.Context, list
 	result, err = client.GetAllImageIdsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ListManagementImageClient", "GetAllImageIds", resp, "Failure responding to request")
+		return
 	}
 
 	return

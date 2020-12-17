@@ -79,6 +79,7 @@ func (client APIClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -173,6 +174,7 @@ func (client APIClient) Delete(ctx context.Context, apimBaseURL string, apiid st
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -259,6 +261,7 @@ func (client APIClient) Get(ctx context.Context, apimBaseURL string, apiid strin
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -356,6 +359,7 @@ func (client APIClient) List(ctx context.Context, apimBaseURL string, filter str
 	result.ac, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.ac.hasNextLink() && result.ac.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -427,6 +431,7 @@ func (client APIClient) listNextResults(ctx context.Context, lastResults APIColl
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -490,6 +495,7 @@ func (client APIClient) Update(ctx context.Context, apimBaseURL string, apiid st
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

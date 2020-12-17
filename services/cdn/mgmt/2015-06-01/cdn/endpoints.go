@@ -238,6 +238,7 @@ func (client EndpointsClient) Get(ctx context.Context, endpointName string, prof
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -314,6 +315,7 @@ func (client EndpointsClient) ListByProfile(ctx context.Context, profileName str
 	result, err = client.ListByProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ListByProfile", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -801,6 +803,7 @@ func (client EndpointsClient) ValidateCustomDomain(ctx context.Context, endpoint
 	result, err = client.ValidateCustomDomainResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ValidateCustomDomain", resp, "Failure responding to request")
+		return
 	}
 
 	return

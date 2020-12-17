@@ -74,6 +74,7 @@ func (client AccountsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "engagementfabric.AccountsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -151,6 +152,7 @@ func (client AccountsClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "engagementfabric.AccountsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -225,6 +227,7 @@ func (client AccountsClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "engagementfabric.AccountsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -297,6 +300,7 @@ func (client AccountsClient) List(ctx context.Context) (result AccountList, err 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "engagementfabric.AccountsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -369,6 +373,7 @@ func (client AccountsClient) ListByResourceGroup(ctx context.Context, resourceGr
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "engagementfabric.AccountsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -443,6 +448,7 @@ func (client AccountsClient) ListChannelTypes(ctx context.Context, resourceGroup
 	result, err = client.ListChannelTypesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "engagementfabric.AccountsClient", "ListChannelTypes", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -518,6 +524,7 @@ func (client AccountsClient) ListKeys(ctx context.Context, resourceGroupName str
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "engagementfabric.AccountsClient", "ListKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -600,6 +607,7 @@ func (client AccountsClient) RegenerateKey(ctx context.Context, resourceGroupNam
 	result, err = client.RegenerateKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "engagementfabric.AccountsClient", "RegenerateKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -678,6 +686,7 @@ func (client AccountsClient) Update(ctx context.Context, resourceGroupName strin
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "engagementfabric.AccountsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

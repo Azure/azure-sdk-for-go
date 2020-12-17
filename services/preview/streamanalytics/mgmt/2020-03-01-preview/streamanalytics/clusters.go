@@ -276,6 +276,7 @@ func (client ClustersClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.ClustersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -361,6 +362,7 @@ func (client ClustersClient) ListByResourceGroup(ctx context.Context, resourceGr
 	result.clr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.ClustersClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.clr.hasNextLink() && result.clr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -424,6 +426,7 @@ func (client ClustersClient) listByResourceGroupNextResults(ctx context.Context,
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.ClustersClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -479,6 +482,7 @@ func (client ClustersClient) ListBySubscription(ctx context.Context) (result Clu
 	result.clr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.ClustersClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.clr.hasNextLink() && result.clr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -541,6 +545,7 @@ func (client ClustersClient) listBySubscriptionNextResults(ctx context.Context, 
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.ClustersClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -603,6 +608,7 @@ func (client ClustersClient) ListStreamingJobs(ctx context.Context, resourceGrou
 	result.cjlr, err = client.ListStreamingJobsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.ClustersClient", "ListStreamingJobs", resp, "Failure responding to request")
+		return
 	}
 	if result.cjlr.hasNextLink() && result.cjlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -667,6 +673,7 @@ func (client ClustersClient) listStreamingJobsNextResults(ctx context.Context, l
 	result, err = client.ListStreamingJobsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.ClustersClient", "listStreamingJobsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

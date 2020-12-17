@@ -73,6 +73,7 @@ func (client ComplianceResultsClient) Get(ctx context.Context, resourceID string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ComplianceResultsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -148,6 +149,7 @@ func (client ComplianceResultsClient) List(ctx context.Context, scope string) (r
 	result.crl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ComplianceResultsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.crl.hasNextLink() && result.crl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -210,6 +212,7 @@ func (client ComplianceResultsClient) listNextResults(ctx context.Context, lastR
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ComplianceResultsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -248,6 +248,7 @@ func (client Client) Get(ctx context.Context, groupID string, expand string, rec
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -337,6 +338,7 @@ func (client Client) GetDescendants(ctx context.Context, groupID string) (result
 	result.dlr, err = client.GetDescendantsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "GetDescendants", resp, "Failure responding to request")
+		return
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -405,6 +407,7 @@ func (client Client) getDescendantsNextResults(ctx context.Context, lastResults 
 	result, err = client.GetDescendantsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "getDescendantsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -456,6 +459,7 @@ func (client Client) List(ctx context.Context, cacheControl string) (result List
 	result.lr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -524,6 +528,7 @@ func (client Client) listNextResults(ctx context.Context, lastResults ListResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -576,6 +581,7 @@ func (client Client) Update(ctx context.Context, groupID string, patchGroupReque
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

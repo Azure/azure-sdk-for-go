@@ -224,6 +224,7 @@ func (client SapMonitorsClient) Get(ctx context.Context, resourceGroupName strin
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -298,6 +299,7 @@ func (client SapMonitorsClient) List(ctx context.Context) (result SapMonitorList
 	result.smlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.smlr.hasNextLink() && result.smlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -360,6 +362,7 @@ func (client SapMonitorsClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -412,6 +415,7 @@ func (client SapMonitorsClient) Update(ctx context.Context, resourceGroupName st
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

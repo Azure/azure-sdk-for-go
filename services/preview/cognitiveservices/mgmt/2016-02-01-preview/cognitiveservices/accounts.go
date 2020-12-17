@@ -89,6 +89,7 @@ func (client AccountsClient) Create(ctx context.Context, resourceGroupName strin
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -176,6 +177,7 @@ func (client AccountsClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -260,6 +262,7 @@ func (client AccountsClient) GetProperties(ctx context.Context, resourceGroupNam
 	result, err = client.GetPropertiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "GetProperties", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -332,6 +335,7 @@ func (client AccountsClient) List(ctx context.Context) (result AccountListResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -404,6 +408,7 @@ func (client AccountsClient) ListByResourceGroup(ctx context.Context, resourceGr
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -488,6 +493,7 @@ func (client AccountsClient) ListKeys(ctx context.Context, resourceGroupName str
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -573,6 +579,7 @@ func (client AccountsClient) ListSkus(ctx context.Context, resourceGroupName str
 	result, err = client.ListSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListSkus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -659,6 +666,7 @@ func (client AccountsClient) RegenerateKey(ctx context.Context, resourceGroupNam
 	result, err = client.RegenerateKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "RegenerateKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -747,6 +755,7 @@ func (client AccountsClient) Update(ctx context.Context, resourceGroupName strin
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

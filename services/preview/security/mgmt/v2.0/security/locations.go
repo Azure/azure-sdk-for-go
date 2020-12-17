@@ -76,6 +76,7 @@ func (client LocationsClient) Get(ctx context.Context) (result AscLocation, err 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.LocationsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -156,6 +157,7 @@ func (client LocationsClient) List(ctx context.Context) (result AscLocationListP
 	result.all, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.LocationsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.all.hasNextLink() && result.all.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -218,6 +220,7 @@ func (client LocationsClient) listNextResults(ctx context.Context, lastResults A
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.LocationsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

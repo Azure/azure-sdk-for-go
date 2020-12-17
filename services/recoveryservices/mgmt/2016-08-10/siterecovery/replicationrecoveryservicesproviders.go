@@ -151,6 +151,7 @@ func (client ReplicationRecoveryServicesProvidersClient) Get(ctx context.Context
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryServicesProvidersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -226,6 +227,7 @@ func (client ReplicationRecoveryServicesProvidersClient) List(ctx context.Contex
 	result.rspc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryServicesProvidersClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rspc.hasNextLink() && result.rspc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -290,6 +292,7 @@ func (client ReplicationRecoveryServicesProvidersClient) listNextResults(ctx con
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryServicesProvidersClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -341,6 +344,7 @@ func (client ReplicationRecoveryServicesProvidersClient) ListByReplicationFabric
 	result.rspc, err = client.ListByReplicationFabricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryServicesProvidersClient", "ListByReplicationFabrics", resp, "Failure responding to request")
+		return
 	}
 	if result.rspc.hasNextLink() && result.rspc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -406,6 +410,7 @@ func (client ReplicationRecoveryServicesProvidersClient) listByReplicationFabric
 	result, err = client.ListByReplicationFabricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryServicesProvidersClient", "listByReplicationFabricsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

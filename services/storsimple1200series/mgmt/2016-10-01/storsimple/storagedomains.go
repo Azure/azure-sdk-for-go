@@ -257,6 +257,7 @@ func (client StorageDomainsClient) Get(ctx context.Context, storageDomainName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.StorageDomainsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -340,6 +341,7 @@ func (client StorageDomainsClient) ListByManager(ctx context.Context, resourceGr
 	result, err = client.ListByManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.StorageDomainsClient", "ListByManager", resp, "Failure responding to request")
+		return
 	}
 
 	return

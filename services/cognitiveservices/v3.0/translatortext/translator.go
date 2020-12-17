@@ -216,6 +216,7 @@ func (client TranslatorClient) BreakSentence(ctx context.Context, textParameter 
 	result, err = client.BreakSentenceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "translatortext.TranslatorClient", "BreakSentence", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -330,6 +331,7 @@ func (client TranslatorClient) Detect(ctx context.Context, textParameter []Detec
 	result, err = client.DetectResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "translatortext.TranslatorClient", "Detect", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -458,6 +460,7 @@ func (client TranslatorClient) DictionaryExamples(ctx context.Context, from stri
 	result, err = client.DictionaryExamplesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "translatortext.TranslatorClient", "DictionaryExamples", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -624,6 +627,7 @@ func (client TranslatorClient) DictionaryLookup(ctx context.Context, from string
 	result, err = client.DictionaryLookupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "translatortext.TranslatorClient", "DictionaryLookup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -864,6 +868,7 @@ func (client TranslatorClient) Languages(ctx context.Context, scope []string, ac
 	result, err = client.LanguagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "translatortext.TranslatorClient", "Languages", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1054,6 +1059,7 @@ func (client TranslatorClient) Translate(ctx context.Context, toParameter []stri
 	result, err = client.TranslateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "translatortext.TranslatorClient", "Translate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1191,6 +1197,7 @@ func (client TranslatorClient) Transliterate(ctx context.Context, language strin
 	result, err = client.TransliterateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "translatortext.TranslatorClient", "Transliterate", resp, "Failure responding to request")
+		return
 	}
 
 	return

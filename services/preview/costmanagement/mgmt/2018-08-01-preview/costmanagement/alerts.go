@@ -73,6 +73,7 @@ func (client AlertsClient) GetAlertByManagementGroups(ctx context.Context, manag
 	result, err = client.GetAlertByManagementGroupsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetAlertByManagementGroups", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -148,6 +149,7 @@ func (client AlertsClient) GetByAccount(ctx context.Context, billingAccountID st
 	result, err = client.GetByAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetByAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -224,6 +226,7 @@ func (client AlertsClient) GetByDepartment(ctx context.Context, billingAccountID
 	result, err = client.GetByDepartmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetByDepartment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -299,6 +302,7 @@ func (client AlertsClient) GetByEnrollment(ctx context.Context, billingAccountID
 	result, err = client.GetByEnrollmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetByEnrollment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -373,6 +377,7 @@ func (client AlertsClient) GetByResourceGroupName(ctx context.Context, resourceG
 	result, err = client.GetByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetByResourceGroupName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -447,6 +452,7 @@ func (client AlertsClient) GetBySubscription(ctx context.Context, alertID string
 	result, err = client.GetBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetBySubscription", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -536,6 +542,7 @@ func (client AlertsClient) List(ctx context.Context, filter string, skiptoken st
 	result.alr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -607,6 +614,7 @@ func (client AlertsClient) listNextResults(ctx context.Context, lastResults Aler
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -675,6 +683,7 @@ func (client AlertsClient) ListByAccount(ctx context.Context, billingAccountID s
 	result.alr, err = client.ListByAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByAccount", resp, "Failure responding to request")
+		return
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -747,6 +756,7 @@ func (client AlertsClient) listByAccountNextResults(ctx context.Context, lastRes
 	result, err = client.ListByAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByAccountNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -815,6 +825,7 @@ func (client AlertsClient) ListByDepartment(ctx context.Context, billingAccountI
 	result.alr, err = client.ListByDepartmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByDepartment", resp, "Failure responding to request")
+		return
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -887,6 +898,7 @@ func (client AlertsClient) listByDepartmentNextResults(ctx context.Context, last
 	result, err = client.ListByDepartmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByDepartmentNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -954,6 +966,7 @@ func (client AlertsClient) ListByEnrollment(ctx context.Context, billingAccountI
 	result.alr, err = client.ListByEnrollmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByEnrollment", resp, "Failure responding to request")
+		return
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1025,6 +1038,7 @@ func (client AlertsClient) listByEnrollmentNextResults(ctx context.Context, last
 	result, err = client.ListByEnrollmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByEnrollmentNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1092,6 +1106,7 @@ func (client AlertsClient) ListByManagementGroups(ctx context.Context, managemen
 	result.alr, err = client.ListByManagementGroupsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByManagementGroups", resp, "Failure responding to request")
+		return
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1163,6 +1178,7 @@ func (client AlertsClient) listByManagementGroupsNextResults(ctx context.Context
 	result, err = client.ListByManagementGroupsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByManagementGroupsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1230,6 +1246,7 @@ func (client AlertsClient) ListByResourceGroupName(ctx context.Context, resource
 	result.alr, err = client.ListByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByResourceGroupName", resp, "Failure responding to request")
+		return
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1302,6 +1319,7 @@ func (client AlertsClient) listByResourceGroupNameNextResults(ctx context.Contex
 	result, err = client.ListByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByResourceGroupNameNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1354,6 +1372,7 @@ func (client AlertsClient) UpdateBillingAccountAlertStatus(ctx context.Context, 
 	result, err = client.UpdateBillingAccountAlertStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "UpdateBillingAccountAlertStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1435,6 +1454,7 @@ func (client AlertsClient) UpdateDepartmentsAlertStatus(ctx context.Context, bil
 	result, err = client.UpdateDepartmentsAlertStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "UpdateDepartmentsAlertStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1517,6 +1537,7 @@ func (client AlertsClient) UpdateEnrollmentAccountAlertStatus(ctx context.Contex
 	result, err = client.UpdateEnrollmentAccountAlertStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "UpdateEnrollmentAccountAlertStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1598,6 +1619,7 @@ func (client AlertsClient) UpdateManagementGroupAlertStatus(ctx context.Context,
 	result, err = client.UpdateManagementGroupAlertStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "UpdateManagementGroupAlertStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1678,6 +1700,7 @@ func (client AlertsClient) UpdateResourceGroupNameAlertStatus(ctx context.Contex
 	result, err = client.UpdateResourceGroupNameAlertStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "UpdateResourceGroupNameAlertStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1758,6 +1781,7 @@ func (client AlertsClient) UpdateSubscriptionAlertStatus(ctx context.Context, al
 	result, err = client.UpdateSubscriptionAlertStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "UpdateSubscriptionAlertStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return

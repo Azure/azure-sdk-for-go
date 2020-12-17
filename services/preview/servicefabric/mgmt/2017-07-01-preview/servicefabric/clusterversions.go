@@ -74,6 +74,7 @@ func (client ClusterVersionsClient) Get(ctx context.Context, location string, AP
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -151,6 +152,7 @@ func (client ClusterVersionsClient) GetByEnvironment(ctx context.Context, locati
 	result, err = client.GetByEnvironmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "GetByEnvironment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -227,6 +229,7 @@ func (client ClusterVersionsClient) List(ctx context.Context, location string, A
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -302,6 +305,7 @@ func (client ClusterVersionsClient) ListByEnvironment(ctx context.Context, locat
 	result, err = client.ListByEnvironmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "ListByEnvironment", resp, "Failure responding to request")
+		return
 	}
 
 	return

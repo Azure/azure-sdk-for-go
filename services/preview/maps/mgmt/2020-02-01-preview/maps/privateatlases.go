@@ -88,6 +88,7 @@ func (client PrivateAtlasesClient) CreateOrUpdate(ctx context.Context, resourceG
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "maps.PrivateAtlasesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -177,6 +178,7 @@ func (client PrivateAtlasesClient) Delete(ctx context.Context, resourceGroupName
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "maps.PrivateAtlasesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -263,6 +265,7 @@ func (client PrivateAtlasesClient) Get(ctx context.Context, resourceGroupName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "maps.PrivateAtlasesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -349,6 +352,7 @@ func (client PrivateAtlasesClient) ListByAccount(ctx context.Context, resourceGr
 	result, err = client.ListByAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "maps.PrivateAtlasesClient", "ListByAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -437,6 +441,7 @@ func (client PrivateAtlasesClient) Update(ctx context.Context, resourceGroupName
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "maps.PrivateAtlasesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

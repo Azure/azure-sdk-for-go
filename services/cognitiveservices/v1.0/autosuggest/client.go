@@ -192,6 +192,7 @@ func (client BaseClient) AutoSuggest(ctx context.Context, query string, acceptLa
 	result, err = client.AutoSuggestResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "autosuggest.BaseClient", "AutoSuggest", resp, "Failure responding to request")
+		return
 	}
 
 	return

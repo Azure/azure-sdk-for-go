@@ -167,6 +167,7 @@ func (client VendorNetworkFunctionsClient) Get(ctx context.Context, locationName
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorNetworkFunctionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -253,6 +254,7 @@ func (client VendorNetworkFunctionsClient) List(ctx context.Context, locationNam
 	result.vnflr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorNetworkFunctionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.vnflr.hasNextLink() && result.vnflr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -320,6 +322,7 @@ func (client VendorNetworkFunctionsClient) listNextResults(ctx context.Context, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorNetworkFunctionsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

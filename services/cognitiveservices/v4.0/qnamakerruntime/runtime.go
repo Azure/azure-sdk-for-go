@@ -66,6 +66,7 @@ func (client RuntimeClient) GenerateAnswer(ctx context.Context, kbID string, gen
 	result, err = client.GenerateAnswerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamakerruntime.RuntimeClient", "GenerateAnswer", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -139,6 +140,7 @@ func (client RuntimeClient) Train(ctx context.Context, kbID string, trainPayload
 	result, err = client.TrainResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamakerruntime.RuntimeClient", "Train", resp, "Failure responding to request")
+		return
 	}
 
 	return

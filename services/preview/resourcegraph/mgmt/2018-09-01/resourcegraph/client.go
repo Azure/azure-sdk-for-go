@@ -93,6 +93,7 @@ func (client BaseClient) ResourceChangeDetails(ctx context.Context, parameters R
 	result, err = client.ResourceChangeDetailsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcegraph.BaseClient", "ResourceChangeDetails", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -174,6 +175,7 @@ func (client BaseClient) ResourceChanges(ctx context.Context, parameters Resourc
 	result, err = client.ResourceChangesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcegraph.BaseClient", "ResourceChanges", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -259,6 +261,7 @@ func (client BaseClient) Resources(ctx context.Context, query QueryRequest) (res
 	result, err = client.ResourcesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcegraph.BaseClient", "Resources", resp, "Failure responding to request")
+		return
 	}
 
 	return

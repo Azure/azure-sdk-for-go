@@ -84,6 +84,7 @@ func (client MeshSecretValueClient) AddValue(ctx context.Context, secretResource
 	result, err = client.AddValueResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.MeshSecretValueClient", "AddValue", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -162,6 +163,7 @@ func (client MeshSecretValueClient) Delete(ctx context.Context, secretResourceNa
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.MeshSecretValueClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -237,6 +239,7 @@ func (client MeshSecretValueClient) Get(ctx context.Context, secretResourceName 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.MeshSecretValueClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -311,6 +314,7 @@ func (client MeshSecretValueClient) List(ctx context.Context, secretResourceName
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.MeshSecretValueClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -385,6 +389,7 @@ func (client MeshSecretValueClient) Show(ctx context.Context, secretResourceName
 	result, err = client.ShowResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.MeshSecretValueClient", "Show", resp, "Failure responding to request")
+		return
 	}
 
 	return

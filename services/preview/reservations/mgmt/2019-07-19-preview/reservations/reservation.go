@@ -72,6 +72,7 @@ func (client Client) Archive(ctx context.Context, reservationOrderID string, res
 	result, err = client.ArchiveResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.Client", "Archive", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -223,6 +224,7 @@ func (client Client) Get(ctx context.Context, reservationID string, reservationO
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.Client", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -300,6 +302,7 @@ func (client Client) List(ctx context.Context, reservationOrderID string) (resul
 	result.l, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.Client", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.l.hasNextLink() && result.l.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -362,6 +365,7 @@ func (client Client) listNextResults(ctx context.Context, lastResults List) (res
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.Client", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -414,6 +418,7 @@ func (client Client) ListRevisions(ctx context.Context, reservationID string, re
 	result.l, err = client.ListRevisionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.Client", "ListRevisions", resp, "Failure responding to request")
+		return
 	}
 	if result.l.hasNextLink() && result.l.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -477,6 +482,7 @@ func (client Client) listRevisionsNextResults(ctx context.Context, lastResults L
 	result, err = client.ListRevisionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.Client", "listRevisionsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -679,6 +685,7 @@ func (client Client) Unarchive(ctx context.Context, reservationOrderID string, r
 	result, err = client.UnarchiveResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.Client", "Unarchive", resp, "Failure responding to request")
+		return
 	}
 
 	return

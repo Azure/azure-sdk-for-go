@@ -254,6 +254,7 @@ func (client DataFlowClient) GetDataFlow(ctx context.Context, dataFlowName strin
 	result, err = client.GetDataFlowResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "GetDataFlow", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -333,6 +334,7 @@ func (client DataFlowClient) GetDataFlowsByWorkspace(ctx context.Context) (resul
 	result.dflr, err = client.GetDataFlowsByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "GetDataFlowsByWorkspace", resp, "Failure responding to request")
+		return
 	}
 	if result.dflr.hasNextLink() && result.dflr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -395,6 +397,7 @@ func (client DataFlowClient) getDataFlowsByWorkspaceNextResults(ctx context.Cont
 	result, err = client.GetDataFlowsByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "getDataFlowsByWorkspaceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

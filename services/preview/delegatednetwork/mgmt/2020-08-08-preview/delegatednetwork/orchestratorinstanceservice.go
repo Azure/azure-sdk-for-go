@@ -268,6 +268,7 @@ func (client OrchestratorInstanceServiceClient) GetDetails(ctx context.Context, 
 	result, err = client.GetDetailsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceClient", "GetDetails", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -352,6 +353,7 @@ func (client OrchestratorInstanceServiceClient) ListByResourceGroup(ctx context.
 	result.o, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.o.hasNextLink() && result.o.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -415,6 +417,7 @@ func (client OrchestratorInstanceServiceClient) listByResourceGroupNextResults(c
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -464,6 +467,7 @@ func (client OrchestratorInstanceServiceClient) ListBySubscription(ctx context.C
 	result.o, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.o.hasNextLink() && result.o.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -526,6 +530,7 @@ func (client OrchestratorInstanceServiceClient) listBySubscriptionNextResults(ct
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -591,6 +596,7 @@ func (client OrchestratorInstanceServiceClient) Patch(ctx context.Context, resou
 	result, err = client.PatchResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceClient", "Patch", resp, "Failure responding to request")
+		return
 	}
 
 	return

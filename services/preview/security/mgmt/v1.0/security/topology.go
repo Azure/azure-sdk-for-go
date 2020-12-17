@@ -84,6 +84,7 @@ func (client TopologyClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.TopologyClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -164,6 +165,7 @@ func (client TopologyClient) List(ctx context.Context) (result TopologyListPage,
 	result.tl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.TopologyClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.tl.hasNextLink() && result.tl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -226,6 +228,7 @@ func (client TopologyClient) listNextResults(ctx context.Context, lastResults To
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.TopologyClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -281,6 +284,7 @@ func (client TopologyClient) ListByHomeRegion(ctx context.Context) (result Topol
 	result.tl, err = client.ListByHomeRegionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.TopologyClient", "ListByHomeRegion", resp, "Failure responding to request")
+		return
 	}
 	if result.tl.hasNextLink() && result.tl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -344,6 +348,7 @@ func (client TopologyClient) listByHomeRegionNextResults(ctx context.Context, la
 	result, err = client.ListByHomeRegionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.TopologyClient", "listByHomeRegionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

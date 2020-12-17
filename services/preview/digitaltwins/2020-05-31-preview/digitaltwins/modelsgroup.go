@@ -85,6 +85,7 @@ func (client ModelsClient) Add(ctx context.Context, models []interface{}) (resul
 	result, err = client.AddResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.ModelsClient", "Add", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -163,6 +164,7 @@ func (client ModelsClient) Delete(ctx context.Context, ID string) (result autore
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.ModelsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -238,6 +240,7 @@ func (client ModelsClient) GetByID(ctx context.Context, ID string, includeModelD
 	result, err = client.GetByIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.ModelsClient", "GetByID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -323,6 +326,7 @@ func (client ModelsClient) List(ctx context.Context, dependenciesFor []string, i
 	result.pmdc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.ModelsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.pmdc.hasNextLink() && result.pmdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -396,6 +400,7 @@ func (client ModelsClient) listNextResults(ctx context.Context, lastResults Page
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.ModelsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -458,6 +463,7 @@ func (client ModelsClient) Update(ctx context.Context, ID string, updateModel []
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.ModelsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

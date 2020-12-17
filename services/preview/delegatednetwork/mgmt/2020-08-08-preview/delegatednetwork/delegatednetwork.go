@@ -82,6 +82,7 @@ func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName 
 	result.dc, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.Client", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.dc.hasNextLink() && result.dc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -145,6 +146,7 @@ func (client Client) listByResourceGroupNextResults(ctx context.Context, lastRes
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.Client", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -194,6 +196,7 @@ func (client Client) ListBySubscription(ctx context.Context) (result DelegatedCo
 	result.dc, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.Client", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.dc.hasNextLink() && result.dc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -256,6 +259,7 @@ func (client Client) listBySubscriptionNextResults(ctx context.Context, lastResu
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.Client", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

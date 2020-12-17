@@ -73,6 +73,7 @@ func (client APIKeysClient) GetDefaultKey(ctx context.Context, resourceGroupName
 	result, err = client.GetDefaultKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.APIKeysClient", "GetDefaultKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -149,6 +150,7 @@ func (client APIKeysClient) List(ctx context.Context, resourceGroupName string, 
 	result.aklr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.APIKeysClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.aklr.hasNextLink() && result.aklr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -213,6 +215,7 @@ func (client APIKeysClient) listNextResults(ctx context.Context, lastResults API
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.APIKeysClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -271,6 +274,7 @@ func (client APIKeysClient) SetDefaultKey(ctx context.Context, resourceGroupName
 	result, err = client.SetDefaultKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.APIKeysClient", "SetDefaultKey", resp, "Failure responding to request")
+		return
 	}
 
 	return

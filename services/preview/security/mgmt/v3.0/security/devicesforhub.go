@@ -75,6 +75,7 @@ func (client DevicesForHubClient) List(ctx context.Context, resourceID string, l
 	result.dl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.DevicesForHubClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.dl.hasNextLink() && result.dl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -146,6 +147,7 @@ func (client DevicesForHubClient) listNextResults(ctx context.Context, lastResul
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.DevicesForHubClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

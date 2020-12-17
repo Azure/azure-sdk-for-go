@@ -90,6 +90,7 @@ func (client ResourceGroupDimensionsClient) List(ctx context.Context, resourceGr
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ResourceGroupDimensionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -67,6 +67,7 @@ func (client PipelineRunClient) CancelPipelineRun(ctx context.Context, runID str
 	result, err = client.CancelPipelineRunResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.PipelineRunClient", "CancelPipelineRun", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -145,6 +146,7 @@ func (client PipelineRunClient) GetPipelineRun(ctx context.Context, runID string
 	result, err = client.GetPipelineRunResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.PipelineRunClient", "GetPipelineRun", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -234,6 +236,7 @@ func (client PipelineRunClient) QueryActivityRuns(ctx context.Context, pipelineN
 	result, err = client.QueryActivityRunsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.PipelineRunClient", "QueryActivityRuns", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -320,6 +323,7 @@ func (client PipelineRunClient) QueryPipelineRunsByWorkspace(ctx context.Context
 	result, err = client.QueryPipelineRunsByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.PipelineRunClient", "QueryPipelineRunsByWorkspace", resp, "Failure responding to request")
+		return
 	}
 
 	return

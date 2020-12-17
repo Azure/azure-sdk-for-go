@@ -250,6 +250,7 @@ func (client ConfigurationStoresClient) Get(ctx context.Context, resourceGroupNa
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -327,6 +328,7 @@ func (client ConfigurationStoresClient) List(ctx context.Context, skipToken stri
 	result.cslr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.cslr.hasNextLink() && result.cslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -392,6 +394,7 @@ func (client ConfigurationStoresClient) listNextResults(ctx context.Context, las
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -446,6 +449,7 @@ func (client ConfigurationStoresClient) ListByResourceGroup(ctx context.Context,
 	result.cslr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.cslr.hasNextLink() && result.cslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -512,6 +516,7 @@ func (client ConfigurationStoresClient) listByResourceGroupNextResults(ctx conte
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -575,6 +580,7 @@ func (client ConfigurationStoresClient) ListKeys(ctx context.Context, resourceGr
 	result.aklr, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresClient", "ListKeys", resp, "Failure responding to request")
+		return
 	}
 	if result.aklr.hasNextLink() && result.aklr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -642,6 +648,7 @@ func (client ConfigurationStoresClient) listKeysNextResults(ctx context.Context,
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresClient", "listKeysNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -704,6 +711,7 @@ func (client ConfigurationStoresClient) ListKeyValue(ctx context.Context, resour
 	result, err = client.ListKeyValueResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresClient", "ListKeyValue", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -790,6 +798,7 @@ func (client ConfigurationStoresClient) RegenerateKey(ctx context.Context, resou
 	result, err = client.RegenerateKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresClient", "RegenerateKey", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -71,6 +71,7 @@ func (client GlobalCertificateOrderClient) GetAllCertificateOrders(ctx context.C
 	result.coc, err = client.GetAllCertificateOrdersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalCertificateOrderClient", "GetAllCertificateOrders", resp, "Failure responding to request")
+		return
 	}
 	if result.coc.hasNextLink() && result.coc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -133,6 +134,7 @@ func (client GlobalCertificateOrderClient) getAllCertificateOrdersNextResults(ct
 	result, err = client.GetAllCertificateOrdersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalCertificateOrderClient", "getAllCertificateOrdersNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -183,6 +185,7 @@ func (client GlobalCertificateOrderClient) ValidateCertificatePurchaseInformatio
 	result, err = client.ValidateCertificatePurchaseInformationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalCertificateOrderClient", "ValidateCertificatePurchaseInformation", resp, "Failure responding to request")
+		return
 	}
 
 	return

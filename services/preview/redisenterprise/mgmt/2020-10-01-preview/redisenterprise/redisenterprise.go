@@ -231,6 +231,7 @@ func (client Client) GetMethod(ctx context.Context, resourceGroupName string, cl
 	result, err = client.GetMethodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redisenterprise.Client", "GetMethod", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -304,6 +305,7 @@ func (client Client) List(ctx context.Context) (result ClusterListPage, err erro
 	result.cl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redisenterprise.Client", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.cl.hasNextLink() && result.cl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -366,6 +368,7 @@ func (client Client) listNextResults(ctx context.Context, lastResults ClusterLis
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redisenterprise.Client", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -417,6 +420,7 @@ func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName 
 	result.cl, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redisenterprise.Client", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.cl.hasNextLink() && result.cl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -480,6 +484,7 @@ func (client Client) listByResourceGroupNextResults(ctx context.Context, lastRes
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redisenterprise.Client", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

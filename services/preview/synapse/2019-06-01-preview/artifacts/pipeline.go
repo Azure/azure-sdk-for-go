@@ -180,6 +180,7 @@ func (client PipelineClient) CreatePipelineRun(ctx context.Context, pipelineName
 	result, err = client.CreatePipelineRunResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "CreatePipelineRun", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -363,6 +364,7 @@ func (client PipelineClient) GetPipeline(ctx context.Context, pipelineName strin
 	result, err = client.GetPipelineResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "GetPipeline", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -442,6 +444,7 @@ func (client PipelineClient) GetPipelinesByWorkspace(ctx context.Context) (resul
 	result.plr, err = client.GetPipelinesByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "GetPipelinesByWorkspace", resp, "Failure responding to request")
+		return
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -504,6 +507,7 @@ func (client PipelineClient) getPipelinesByWorkspaceNextResults(ctx context.Cont
 	result, err = client.GetPipelinesByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "getPipelinesByWorkspaceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

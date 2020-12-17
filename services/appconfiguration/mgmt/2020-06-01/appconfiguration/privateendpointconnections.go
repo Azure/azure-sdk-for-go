@@ -263,6 +263,7 @@ func (client PrivateEndpointConnectionsClient) Get(ctx context.Context, resource
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.PrivateEndpointConnectionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -348,6 +349,7 @@ func (client PrivateEndpointConnectionsClient) ListByConfigurationStore(ctx cont
 	result.peclr, err = client.ListByConfigurationStoreResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.PrivateEndpointConnectionsClient", "ListByConfigurationStore", resp, "Failure responding to request")
+		return
 	}
 	if result.peclr.hasNextLink() && result.peclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -412,6 +414,7 @@ func (client PrivateEndpointConnectionsClient) listByConfigurationStoreNextResul
 	result, err = client.ListByConfigurationStoreResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.PrivateEndpointConnectionsClient", "listByConfigurationStoreNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

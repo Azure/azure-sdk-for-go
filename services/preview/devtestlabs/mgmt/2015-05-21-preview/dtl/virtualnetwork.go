@@ -228,6 +228,7 @@ func (client VirtualNetworkClient) GetResource(ctx context.Context, resourceGrou
 	result, err = client.GetResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualNetworkClient", "GetResource", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -306,6 +307,7 @@ func (client VirtualNetworkClient) List(ctx context.Context, resourceGroupName s
 	result.rwcvn, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualNetworkClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rwcvn.hasNextLink() && result.rwcvn.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -379,6 +381,7 @@ func (client VirtualNetworkClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualNetworkClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -431,6 +434,7 @@ func (client VirtualNetworkClient) PatchResource(ctx context.Context, resourceGr
 	result, err = client.PatchResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualNetworkClient", "PatchResource", resp, "Failure responding to request")
+		return
 	}
 
 	return

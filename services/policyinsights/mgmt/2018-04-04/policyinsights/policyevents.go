@@ -74,6 +74,7 @@ func (client PolicyEventsClient) GetMetadata(ctx context.Context, scope string) 
 	result, err = client.GetMetadataResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "GetMetadata", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -164,6 +165,7 @@ func (client PolicyEventsClient) ListQueryResultsForManagementGroup(ctx context.
 	result, err = client.ListQueryResultsForManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForManagementGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -278,6 +280,7 @@ func (client PolicyEventsClient) ListQueryResultsForPolicyDefinition(ctx context
 	result, err = client.ListQueryResultsForPolicyDefinitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForPolicyDefinition", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -393,6 +396,7 @@ func (client PolicyEventsClient) ListQueryResultsForPolicySetDefinition(ctx cont
 	result, err = client.ListQueryResultsForPolicySetDefinitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForPolicySetDefinition", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -507,6 +511,7 @@ func (client PolicyEventsClient) ListQueryResultsForResource(ctx context.Context
 	result, err = client.ListQueryResultsForResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForResource", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -620,6 +625,7 @@ func (client PolicyEventsClient) ListQueryResultsForResourceGroup(ctx context.Co
 	result, err = client.ListQueryResultsForResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -736,6 +742,7 @@ func (client PolicyEventsClient) ListQueryResultsForResourceGroupLevelPolicyAssi
 	result, err = client.ListQueryResultsForResourceGroupLevelPolicyAssignmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForResourceGroupLevelPolicyAssignment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -851,6 +858,7 @@ func (client PolicyEventsClient) ListQueryResultsForSubscription(ctx context.Con
 	result, err = client.ListQueryResultsForSubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForSubscription", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -965,6 +973,7 @@ func (client PolicyEventsClient) ListQueryResultsForSubscriptionLevelPolicyAssig
 	result, err = client.ListQueryResultsForSubscriptionLevelPolicyAssignmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForSubscriptionLevelPolicyAssignment", resp, "Failure responding to request")
+		return
 	}
 
 	return

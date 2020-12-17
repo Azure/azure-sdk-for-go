@@ -443,6 +443,7 @@ func (client IntegrationRuntimesClient) Get(ctx context.Context, resourceGroupNa
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -534,6 +535,7 @@ func (client IntegrationRuntimesClient) ListByWorkspace(ctx context.Context, res
 	result.irlr, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimesClient", "ListByWorkspace", resp, "Failure responding to request")
+		return
 	}
 	if result.irlr.hasNextLink() && result.irlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -598,6 +600,7 @@ func (client IntegrationRuntimesClient) listByWorkspaceNextResults(ctx context.C
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimesClient", "listByWorkspaceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -834,6 +837,7 @@ func (client IntegrationRuntimesClient) Update(ctx context.Context, resourceGrou
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -923,6 +927,7 @@ func (client IntegrationRuntimesClient) Upgrade(ctx context.Context, resourceGro
 	result, err = client.UpgradeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimesClient", "Upgrade", resp, "Failure responding to request")
+		return
 	}
 
 	return

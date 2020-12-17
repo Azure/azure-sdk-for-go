@@ -69,6 +69,7 @@ func (client ExamplesClient) Add(ctx context.Context, appID uuid.UUID, versionID
 	result, err = client.AddResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ExamplesClient", "Add", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -150,6 +151,7 @@ func (client ExamplesClient) Batch(ctx context.Context, appID uuid.UUID, version
 	result, err = client.BatchResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ExamplesClient", "Batch", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -225,6 +227,7 @@ func (client ExamplesClient) Delete(ctx context.Context, appID uuid.UUID, versio
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ExamplesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -312,6 +315,7 @@ func (client ExamplesClient) List(ctx context.Context, appID uuid.UUID, versionI
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ExamplesClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

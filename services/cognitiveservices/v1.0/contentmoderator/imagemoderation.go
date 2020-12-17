@@ -74,6 +74,7 @@ func (client ImageModerationClient) EvaluateFileInput(ctx context.Context, image
 	result, err = client.EvaluateFileInputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ImageModerationClient", "EvaluateFileInput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -148,6 +149,7 @@ func (client ImageModerationClient) EvaluateMethod(ctx context.Context, cacheIma
 	result, err = client.EvaluateMethodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ImageModerationClient", "EvaluateMethod", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -222,6 +224,7 @@ func (client ImageModerationClient) EvaluateURLInput(ctx context.Context, conten
 	result, err = client.EvaluateURLInputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ImageModerationClient", "EvaluateURLInput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -297,6 +300,7 @@ func (client ImageModerationClient) FindFaces(ctx context.Context, cacheImage *b
 	result, err = client.FindFacesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ImageModerationClient", "FindFaces", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -370,6 +374,7 @@ func (client ImageModerationClient) FindFacesFileInput(ctx context.Context, imag
 	result, err = client.FindFacesFileInputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ImageModerationClient", "FindFacesFileInput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -446,6 +451,7 @@ func (client ImageModerationClient) FindFacesURLInput(ctx context.Context, conte
 	result, err = client.FindFacesURLInputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ImageModerationClient", "FindFacesURLInput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -530,6 +536,7 @@ func (client ImageModerationClient) MatchFileInput(ctx context.Context, imageStr
 	result, err = client.MatchFileInputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ImageModerationClient", "MatchFileInput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -615,6 +622,7 @@ func (client ImageModerationClient) MatchMethod(ctx context.Context, listID stri
 	result, err = client.MatchMethodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ImageModerationClient", "MatchMethod", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -700,6 +708,7 @@ func (client ImageModerationClient) MatchURLInput(ctx context.Context, contentTy
 	result, err = client.MatchURLInputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ImageModerationClient", "MatchURLInput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -787,6 +796,7 @@ func (client ImageModerationClient) OCRFileInput(ctx context.Context, language s
 	result, err = client.OCRFileInputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ImageModerationClient", "OCRFileInput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -876,6 +886,7 @@ func (client ImageModerationClient) OCRMethod(ctx context.Context, language stri
 	result, err = client.OCRMethodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ImageModerationClient", "OCRMethod", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -965,6 +976,7 @@ func (client ImageModerationClient) OCRURLInput(ctx context.Context, language st
 	result, err = client.OCRURLInputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ImageModerationClient", "OCRURLInput", resp, "Failure responding to request")
+		return
 	}
 
 	return

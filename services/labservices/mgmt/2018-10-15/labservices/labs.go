@@ -81,6 +81,7 @@ func (client LabsClient) AddUsers(ctx context.Context, resourceGroupName string,
 	result, err = client.AddUsersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabsClient", "AddUsers", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -160,6 +161,7 @@ func (client LabsClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -316,6 +318,7 @@ func (client LabsClient) Get(ctx context.Context, resourceGroupName string, labA
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -400,6 +403,7 @@ func (client LabsClient) List(ctx context.Context, resourceGroupName string, lab
 	result.rwcl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rwcl.hasNextLink() && result.rwcl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -476,6 +480,7 @@ func (client LabsClient) listNextResults(ctx context.Context, lastResults Respon
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -528,6 +533,7 @@ func (client LabsClient) Register(ctx context.Context, resourceGroupName string,
 	result, err = client.RegisterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabsClient", "Register", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -605,6 +611,7 @@ func (client LabsClient) Update(ctx context.Context, resourceGroupName string, l
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

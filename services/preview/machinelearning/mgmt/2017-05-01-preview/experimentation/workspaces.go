@@ -91,6 +91,7 @@ func (client WorkspacesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "experimentation.WorkspacesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -182,6 +183,7 @@ func (client WorkspacesClient) Delete(ctx context.Context, resourceGroupName str
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "experimentation.WorkspacesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -270,6 +272,7 @@ func (client WorkspacesClient) Get(ctx context.Context, resourceGroupName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "experimentation.WorkspacesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -355,6 +358,7 @@ func (client WorkspacesClient) ListByAccounts(ctx context.Context, accountName s
 	result.wlr, err = client.ListByAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "experimentation.WorkspacesClient", "ListByAccounts", resp, "Failure responding to request")
+		return
 	}
 	if result.wlr.hasNextLink() && result.wlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -419,6 +423,7 @@ func (client WorkspacesClient) listByAccountsNextResults(ctx context.Context, la
 	result, err = client.ListByAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "experimentation.WorkspacesClient", "listByAccountsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -484,6 +489,7 @@ func (client WorkspacesClient) Update(ctx context.Context, resourceGroupName str
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "experimentation.WorkspacesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

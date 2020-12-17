@@ -73,6 +73,7 @@ func (client DefinitionsClient) CreateOrUpdate(ctx context.Context, policyDefini
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -149,6 +150,7 @@ func (client DefinitionsClient) Delete(ctx context.Context, policyDefinitionName
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -221,6 +223,7 @@ func (client DefinitionsClient) Get(ctx context.Context, policyDefinitionName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -295,6 +298,7 @@ func (client DefinitionsClient) List(ctx context.Context, filter string) (result
 	result.dlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -360,6 +364,7 @@ func (client DefinitionsClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

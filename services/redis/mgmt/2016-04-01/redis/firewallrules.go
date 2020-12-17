@@ -73,6 +73,7 @@ func (client FirewallRulesClient) List(ctx context.Context, resourceGroupName st
 	result.frlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.FirewallRulesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.frlr.hasNextLink() && result.frlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -137,6 +138,7 @@ func (client FirewallRulesClient) listNextResults(ctx context.Context, lastResul
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.FirewallRulesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

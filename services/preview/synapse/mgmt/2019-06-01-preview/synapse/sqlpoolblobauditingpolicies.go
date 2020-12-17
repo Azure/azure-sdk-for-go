@@ -86,6 +86,7 @@ func (client SQLPoolBlobAuditingPoliciesClient) CreateOrUpdate(ctx context.Conte
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolBlobAuditingPoliciesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -177,6 +178,7 @@ func (client SQLPoolBlobAuditingPoliciesClient) Get(ctx context.Context, resourc
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolBlobAuditingPoliciesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -266,6 +268,7 @@ func (client SQLPoolBlobAuditingPoliciesClient) ListBySQLPool(ctx context.Contex
 	result.spbaplr, err = client.ListBySQLPoolResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolBlobAuditingPoliciesClient", "ListBySQLPool", resp, "Failure responding to request")
+		return
 	}
 	if result.spbaplr.hasNextLink() && result.spbaplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -331,6 +334,7 @@ func (client SQLPoolBlobAuditingPoliciesClient) listBySQLPoolNextResults(ctx con
 	result, err = client.ListBySQLPoolResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolBlobAuditingPoliciesClient", "listBySQLPoolNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -84,6 +84,7 @@ func (client SubnetsClient) CreateOrUpdate(ctx context.Context, resourceGroupNam
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerplatform.SubnetsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -171,6 +172,7 @@ func (client SubnetsClient) Get(ctx context.Context, resourceGroupName string, e
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerplatform.SubnetsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -257,6 +259,7 @@ func (client SubnetsClient) ListByEnterprisePolicy(ctx context.Context, resource
 	result, err = client.ListByEnterprisePolicyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerplatform.SubnetsClient", "ListByEnterprisePolicy", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -255,6 +255,7 @@ func (client ContainerServicesClient) Get(ctx context.Context, resourceGroupName
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -328,6 +329,7 @@ func (client ContainerServicesClient) List(ctx context.Context) (result ListResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -402,6 +404,7 @@ func (client ContainerServicesClient) ListByResourceGroup(ctx context.Context, r
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return

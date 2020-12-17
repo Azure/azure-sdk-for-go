@@ -229,6 +229,7 @@ func (client RolesClient) Get(ctx context.Context, deviceName string, name strin
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.RolesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -306,6 +307,7 @@ func (client RolesClient) ListByDataBoxEdgeDevice(ctx context.Context, deviceNam
 	result.rl, err = client.ListByDataBoxEdgeDeviceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.RolesClient", "ListByDataBoxEdgeDevice", resp, "Failure responding to request")
+		return
 	}
 	if result.rl.hasNextLink() && result.rl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -370,6 +372,7 @@ func (client RolesClient) listByDataBoxEdgeDeviceNextResults(ctx context.Context
 	result, err = client.ListByDataBoxEdgeDeviceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.RolesClient", "listByDataBoxEdgeDeviceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

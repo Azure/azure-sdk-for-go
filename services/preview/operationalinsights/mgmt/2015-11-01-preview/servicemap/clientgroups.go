@@ -94,6 +94,7 @@ func (client ClientGroupsClient) Get(ctx context.Context, resourceGroupName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.ClientGroupsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -196,6 +197,7 @@ func (client ClientGroupsClient) GetMembersCount(ctx context.Context, resourceGr
 	result, err = client.GetMembersCountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.ClientGroupsClient", "GetMembersCount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -305,6 +307,7 @@ func (client ClientGroupsClient) ListMembers(ctx context.Context, resourceGroupN
 	result.cgmc, err = client.ListMembersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.ClientGroupsClient", "ListMembers", resp, "Failure responding to request")
+		return
 	}
 	if result.cgmc.hasNextLink() && result.cgmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -379,6 +382,7 @@ func (client ClientGroupsClient) listMembersNextResults(ctx context.Context, las
 	result, err = client.ListMembersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.ClientGroupsClient", "listMembersNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

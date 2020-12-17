@@ -85,6 +85,7 @@ func (client IoTSecuritySolutionsAnalyticsClient) GetAll(ctx context.Context, re
 	result, err = client.GetAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsClient", "GetAll", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -171,6 +172,7 @@ func (client IoTSecuritySolutionsAnalyticsClient) GetDefault(ctx context.Context
 	result, err = client.GetDefaultResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsClient", "GetDefault", resp, "Failure responding to request")
+		return
 	}
 
 	return

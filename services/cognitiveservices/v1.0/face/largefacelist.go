@@ -122,6 +122,7 @@ func (client LargeFaceListClient) AddFaceFromStream(ctx context.Context, largeFa
 	result, err = client.AddFaceFromStreamResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "AddFaceFromStream", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -264,6 +265,7 @@ func (client LargeFaceListClient) AddFaceFromURL(ctx context.Context, largeFaceL
 	result, err = client.AddFaceFromURLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "AddFaceFromURL", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -387,6 +389,7 @@ func (client LargeFaceListClient) Create(ctx context.Context, largeFaceListID st
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -465,6 +468,7 @@ func (client LargeFaceListClient) Delete(ctx context.Context, largeFaceListID st
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -544,6 +548,7 @@ func (client LargeFaceListClient) DeleteFace(ctx context.Context, largeFaceListI
 	result, err = client.DeleteFaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "DeleteFace", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -623,6 +628,7 @@ func (client LargeFaceListClient) Get(ctx context.Context, largeFaceListID strin
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -710,6 +716,7 @@ func (client LargeFaceListClient) GetFace(ctx context.Context, largeFaceListID s
 	result, err = client.GetFaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "GetFace", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -788,6 +795,7 @@ func (client LargeFaceListClient) GetTrainingStatus(ctx context.Context, largeFa
 	result, err = client.GetTrainingStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "GetTrainingStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -871,6 +879,7 @@ func (client LargeFaceListClient) List(ctx context.Context, returnRecognitionMod
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -960,6 +969,7 @@ func (client LargeFaceListClient) ListFaces(ctx context.Context, largeFaceListID
 	result, err = client.ListFacesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "ListFaces", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1046,6 +1056,7 @@ func (client LargeFaceListClient) Train(ctx context.Context, largeFaceListID str
 	result, err = client.TrainResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "Train", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1123,6 +1134,7 @@ func (client LargeFaceListClient) Update(ctx context.Context, largeFaceListID st
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1203,6 +1215,7 @@ func (client LargeFaceListClient) UpdateFace(ctx context.Context, largeFaceListI
 	result, err = client.UpdateFaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "UpdateFace", resp, "Failure responding to request")
+		return
 	}
 
 	return

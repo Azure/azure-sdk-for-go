@@ -79,6 +79,7 @@ func (client NameAvailabilityWithSubscriptionClient) Check(ctx context.Context, 
 	result, err = client.CheckResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.NameAvailabilityWithSubscriptionClient", "Check", resp, "Failure responding to request")
+		return
 	}
 
 	return

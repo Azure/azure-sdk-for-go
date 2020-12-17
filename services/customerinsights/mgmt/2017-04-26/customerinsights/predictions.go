@@ -253,6 +253,7 @@ func (client PredictionsClient) Get(ctx context.Context, resourceGroupName strin
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.PredictionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -330,6 +331,7 @@ func (client PredictionsClient) GetModelStatus(ctx context.Context, resourceGrou
 	result, err = client.GetModelStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.PredictionsClient", "GetModelStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -407,6 +409,7 @@ func (client PredictionsClient) GetTrainingResults(ctx context.Context, resource
 	result, err = client.GetTrainingResultsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.PredictionsClient", "GetTrainingResults", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -484,6 +487,7 @@ func (client PredictionsClient) ListByHub(ctx context.Context, resourceGroupName
 	result.plr, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.PredictionsClient", "ListByHub", resp, "Failure responding to request")
+		return
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -548,6 +552,7 @@ func (client PredictionsClient) listByHubNextResults(ctx context.Context, lastRe
 	result, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.PredictionsClient", "listByHubNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -601,6 +606,7 @@ func (client PredictionsClient) ModelStatus(ctx context.Context, resourceGroupNa
 	result, err = client.ModelStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.PredictionsClient", "ModelStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return

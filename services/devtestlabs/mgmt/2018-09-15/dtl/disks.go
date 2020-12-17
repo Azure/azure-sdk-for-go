@@ -405,6 +405,7 @@ func (client DisksClient) Get(ctx context.Context, resourceGroupName string, lab
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.DisksClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -491,6 +492,7 @@ func (client DisksClient) List(ctx context.Context, resourceGroupName string, la
 	result.dl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.DisksClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.dl.hasNextLink() && result.dl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -568,6 +570,7 @@ func (client DisksClient) listNextResults(ctx context.Context, lastResults DiskL
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.DisksClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -622,6 +625,7 @@ func (client DisksClient) Update(ctx context.Context, resourceGroupName string, 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.DisksClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

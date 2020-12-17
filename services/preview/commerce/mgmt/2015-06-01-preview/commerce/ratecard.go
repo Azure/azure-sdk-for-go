@@ -78,6 +78,7 @@ func (client RateCardClient) Get(ctx context.Context, filter string) (result Res
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commerce.RateCardClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

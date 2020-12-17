@@ -71,6 +71,7 @@ func (client LocationsClient) CheckQuotaAvailability(ctx context.Context, locati
 	result, err = client.CheckQuotaAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.LocationsClient", "CheckQuotaAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -144,6 +145,7 @@ func (client LocationsClient) CheckTrialAvailability(ctx context.Context, locati
 	result, err = client.CheckTrialAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.LocationsClient", "CheckTrialAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return

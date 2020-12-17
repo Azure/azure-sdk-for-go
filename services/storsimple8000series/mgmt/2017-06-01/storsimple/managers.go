@@ -86,6 +86,7 @@ func (client ManagersClient) CreateExtendedInfo(ctx context.Context, parameters 
 	result, err = client.CreateExtendedInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "CreateExtendedInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -176,6 +177,7 @@ func (client ManagersClient) CreateOrUpdate(ctx context.Context, parameters Mana
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -260,6 +262,7 @@ func (client ManagersClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -341,6 +344,7 @@ func (client ManagersClient) DeleteExtendedInfo(ctx context.Context, resourceGro
 	result, err = client.DeleteExtendedInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "DeleteExtendedInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -422,6 +426,7 @@ func (client ManagersClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -504,6 +509,7 @@ func (client ManagersClient) GetActivationKey(ctx context.Context, resourceGroup
 	result, err = client.GetActivationKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "GetActivationKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -587,6 +593,7 @@ func (client ManagersClient) GetDevicePublicEncryptionKey(ctx context.Context, d
 	result, err = client.GetDevicePublicEncryptionKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "GetDevicePublicEncryptionKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -670,6 +677,7 @@ func (client ManagersClient) GetEncryptionSettings(ctx context.Context, resource
 	result, err = client.GetEncryptionSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "GetEncryptionSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -752,6 +760,7 @@ func (client ManagersClient) GetExtendedInfo(ctx context.Context, resourceGroupN
 	result, err = client.GetExtendedInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "GetExtendedInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -834,6 +843,7 @@ func (client ManagersClient) GetPublicEncryptionKey(ctx context.Context, resourc
 	result, err = client.GetPublicEncryptionKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "GetPublicEncryptionKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -906,6 +916,7 @@ func (client ManagersClient) List(ctx context.Context) (result ManagerList, err 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -978,6 +989,7 @@ func (client ManagersClient) ListByResourceGroup(ctx context.Context, resourceGr
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1060,6 +1072,7 @@ func (client ManagersClient) ListFeatureSupportStatus(ctx context.Context, resou
 	result, err = client.ListFeatureSupportStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "ListFeatureSupportStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1145,6 +1158,7 @@ func (client ManagersClient) ListMetricDefinition(ctx context.Context, resourceG
 	result, err = client.ListMetricDefinitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "ListMetricDefinition", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1228,6 +1242,7 @@ func (client ManagersClient) ListMetrics(ctx context.Context, resourceGroupName 
 	result, err = client.ListMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "ListMetrics", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1311,6 +1326,7 @@ func (client ManagersClient) RegenerateActivationKey(ctx context.Context, resour
 	result, err = client.RegenerateActivationKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "RegenerateActivationKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1394,6 +1410,7 @@ func (client ManagersClient) Update(ctx context.Context, parameters ManagerPatch
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1480,6 +1497,7 @@ func (client ManagersClient) UpdateExtendedInfo(ctx context.Context, parameters 
 	result, err = client.UpdateExtendedInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "UpdateExtendedInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return

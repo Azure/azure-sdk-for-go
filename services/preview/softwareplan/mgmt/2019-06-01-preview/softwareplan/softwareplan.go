@@ -76,6 +76,7 @@ func (client Client) Register(ctx context.Context) (result autorest.Response, er
 	result, err = client.RegisterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "softwareplan.Client", "Register", resp, "Failure responding to request")
+		return
 	}
 
 	return

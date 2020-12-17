@@ -91,6 +91,7 @@ func (client IdentityProviderClient) CreateOrUpdate(ctx context.Context, resourc
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -180,6 +181,7 @@ func (client IdentityProviderClient) Delete(ctx context.Context, resourceGroupNa
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -265,6 +267,7 @@ func (client IdentityProviderClient) Get(ctx context.Context, resourceGroupName 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -350,6 +353,7 @@ func (client IdentityProviderClient) GetEntityTag(ctx context.Context, resourceG
 	result, err = client.GetEntityTagResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "GetEntityTag", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -433,6 +437,7 @@ func (client IdentityProviderClient) ListByService(ctx context.Context, resource
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -520,6 +525,7 @@ func (client IdentityProviderClient) Update(ctx context.Context, resourceGroupNa
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -83,6 +83,7 @@ func (client BaseClient) PublishCloudEventEvents(ctx context.Context, topicHostn
 	result, err = client.PublishCloudEventEventsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.BaseClient", "PublishCloudEventEvents", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -163,6 +164,7 @@ func (client BaseClient) PublishCustomEventEvents(ctx context.Context, topicHost
 	result, err = client.PublishCustomEventEventsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.BaseClient", "PublishCustomEventEvents", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -243,6 +245,7 @@ func (client BaseClient) PublishEvents(ctx context.Context, topicHostname string
 	result, err = client.PublishEventsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.BaseClient", "PublishEvents", resp, "Failure responding to request")
+		return
 	}
 
 	return

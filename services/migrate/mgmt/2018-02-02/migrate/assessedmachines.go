@@ -76,6 +76,7 @@ func (client AssessedMachinesClient) Get(ctx context.Context, resourceGroupName 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.AssessedMachinesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -166,6 +167,7 @@ func (client AssessedMachinesClient) ListByAssessment(ctx context.Context, resou
 	result, err = client.ListByAssessmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.AssessedMachinesClient", "ListByAssessment", resp, "Failure responding to request")
+		return
 	}
 
 	return

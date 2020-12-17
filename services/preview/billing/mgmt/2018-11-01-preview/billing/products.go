@@ -73,6 +73,7 @@ func (client ProductsClient) Get(ctx context.Context, billingAccountName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -151,6 +152,7 @@ func (client ProductsClient) ListByBillingAccountName(ctx context.Context, billi
 	result.plr, err = client.ListByBillingAccountNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "ListByBillingAccountName", resp, "Failure responding to request")
+		return
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -216,6 +218,7 @@ func (client ProductsClient) listByBillingAccountNameNextResults(ctx context.Con
 	result, err = client.ListByBillingAccountNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "listByBillingAccountNameNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -271,6 +274,7 @@ func (client ProductsClient) ListByInvoiceSectionName(ctx context.Context, billi
 	result.plr, err = client.ListByInvoiceSectionNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "ListByInvoiceSectionName", resp, "Failure responding to request")
+		return
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -337,6 +341,7 @@ func (client ProductsClient) listByInvoiceSectionNameNextResults(ctx context.Con
 	result, err = client.ListByInvoiceSectionNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "listByInvoiceSectionNameNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -390,6 +395,7 @@ func (client ProductsClient) Transfer(ctx context.Context, billingAccountName st
 	result, err = client.TransferResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "Transfer", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -468,6 +474,7 @@ func (client ProductsClient) UpdateAutoRenewByBillingAccountName(ctx context.Con
 	result, err = client.UpdateAutoRenewByBillingAccountNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "UpdateAutoRenewByBillingAccountName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -546,6 +553,7 @@ func (client ProductsClient) UpdateAutoRenewByInvoiceSectionName(ctx context.Con
 	result, err = client.UpdateAutoRenewByInvoiceSectionNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "UpdateAutoRenewByInvoiceSectionName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -625,6 +633,7 @@ func (client ProductsClient) ValidateTransfer(ctx context.Context, billingAccoun
 	result, err = client.ValidateTransferResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "ValidateTransfer", resp, "Failure responding to request")
+		return
 	}
 
 	return

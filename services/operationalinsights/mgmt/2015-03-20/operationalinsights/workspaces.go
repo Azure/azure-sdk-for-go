@@ -81,6 +81,7 @@ func (client WorkspacesClient) AvailableServiceTiers(ctx context.Context, resour
 	result, err = client.AvailableServiceTiersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "AvailableServiceTiers", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -165,6 +166,7 @@ func (client WorkspacesClient) DeleteGateways(ctx context.Context, resourceGroup
 	result, err = client.DeleteGatewaysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "DeleteGateways", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -248,6 +250,7 @@ func (client WorkspacesClient) GetPurgeStatus(ctx context.Context, resourceGroup
 	result, err = client.GetPurgeStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "GetPurgeStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -332,6 +335,7 @@ func (client WorkspacesClient) GetSchema(ctx context.Context, resourceGroupName 
 	result, err = client.GetSchemaResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "GetSchema", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -416,6 +420,7 @@ func (client WorkspacesClient) ListKeys(ctx context.Context, resourceGroupName s
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -489,6 +494,7 @@ func (client WorkspacesClient) ListLinkTargets(ctx context.Context) (result List
 	result, err = client.ListLinkTargetsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListLinkTargets", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -579,6 +585,7 @@ func (client WorkspacesClient) Purge(ctx context.Context, resourceGroupName stri
 	result, err = client.PurgeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "Purge", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -665,6 +672,7 @@ func (client WorkspacesClient) RegenerateSharedKeys(ctx context.Context, resourc
 	result, err = client.RegenerateSharedKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "RegenerateSharedKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return

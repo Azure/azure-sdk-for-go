@@ -70,6 +70,7 @@ func (client ADCOperationsClient) List(ctx context.Context) (result OperationEnt
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datacatalog.ADCOperationsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

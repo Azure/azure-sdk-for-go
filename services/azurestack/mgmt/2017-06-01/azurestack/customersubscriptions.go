@@ -75,6 +75,7 @@ func (client CustomerSubscriptionsClient) Create(ctx context.Context, resourceGr
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.CustomerSubscriptionsClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -154,6 +155,7 @@ func (client CustomerSubscriptionsClient) Delete(ctx context.Context, resourceGr
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.CustomerSubscriptionsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -230,6 +232,7 @@ func (client CustomerSubscriptionsClient) Get(ctx context.Context, resourceGroup
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.CustomerSubscriptionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -307,6 +310,7 @@ func (client CustomerSubscriptionsClient) List(ctx context.Context, resourceGrou
 	result.csl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.CustomerSubscriptionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.csl.hasNextLink() && result.csl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -371,6 +375,7 @@ func (client CustomerSubscriptionsClient) listNextResults(ctx context.Context, l
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.CustomerSubscriptionsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

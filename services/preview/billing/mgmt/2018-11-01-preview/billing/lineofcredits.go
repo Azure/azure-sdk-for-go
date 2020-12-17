@@ -69,6 +69,7 @@ func (client LineOfCreditsClient) Get(ctx context.Context) (result LineOfCredit,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.LineOfCreditsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -96,6 +96,7 @@ func (client AuthorizationServersClient) CreateOrUpdate(ctx context.Context, res
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -188,6 +189,7 @@ func (client AuthorizationServersClient) Delete(ctx context.Context, resourceGro
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -276,6 +278,7 @@ func (client AuthorizationServersClient) Get(ctx context.Context, resourceGroupN
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -373,6 +376,7 @@ func (client AuthorizationServersClient) ListByService(ctx context.Context, reso
 	result.asc, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 	if result.asc.hasNextLink() && result.asc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -446,6 +450,7 @@ func (client AuthorizationServersClient) listByServiceNextResults(ctx context.Co
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -512,6 +517,7 @@ func (client AuthorizationServersClient) Update(ctx context.Context, resourceGro
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -277,6 +277,7 @@ func (client ExportPipelinesClient) Get(ctx context.Context, resourceGroupName s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.ExportPipelinesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -364,6 +365,7 @@ func (client ExportPipelinesClient) List(ctx context.Context, resourceGroupName 
 	result.eplr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.ExportPipelinesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.eplr.hasNextLink() && result.eplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -428,6 +430,7 @@ func (client ExportPipelinesClient) listNextResults(ctx context.Context, lastRes
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.ExportPipelinesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

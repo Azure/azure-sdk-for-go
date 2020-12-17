@@ -275,6 +275,7 @@ func (client DiskPoolsClient) Get(ctx context.Context, resourceGroupName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -360,6 +361,7 @@ func (client DiskPoolsClient) ListByResourceGroup(ctx context.Context, resourceG
 	result.dplr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.dplr.hasNextLink() && result.dplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -423,6 +425,7 @@ func (client DiskPoolsClient) listByResourceGroupNextResults(ctx context.Context
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -478,6 +481,7 @@ func (client DiskPoolsClient) ListBySubscription(ctx context.Context) (result Di
 	result.dplr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.dplr.hasNextLink() && result.dplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -540,6 +544,7 @@ func (client DiskPoolsClient) listBySubscriptionNextResults(ctx context.Context,
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -606,6 +611,7 @@ func (client DiskPoolsClient) Update(ctx context.Context, resourceGroupName stri
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

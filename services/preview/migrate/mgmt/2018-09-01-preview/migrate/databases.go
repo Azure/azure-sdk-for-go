@@ -75,6 +75,7 @@ func (client DatabasesClient) EnumerateDatabases(ctx context.Context, resourceGr
 	result, err = client.EnumerateDatabasesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.DatabasesClient", "EnumerateDatabases", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -161,6 +162,7 @@ func (client DatabasesClient) GetDatabase(ctx context.Context, resourceGroupName
 	result, err = client.GetDatabaseResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.DatabasesClient", "GetDatabase", resp, "Failure responding to request")
+		return
 	}
 
 	return

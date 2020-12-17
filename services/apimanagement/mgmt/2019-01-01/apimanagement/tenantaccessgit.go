@@ -81,6 +81,7 @@ func (client TenantAccessGitClient) Get(ctx context.Context, resourceGroupName s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TenantAccessGitClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -165,6 +166,7 @@ func (client TenantAccessGitClient) RegeneratePrimaryKey(ctx context.Context, re
 	result, err = client.RegeneratePrimaryKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TenantAccessGitClient", "RegeneratePrimaryKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -248,6 +250,7 @@ func (client TenantAccessGitClient) RegenerateSecondaryKey(ctx context.Context, 
 	result, err = client.RegenerateSecondaryKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TenantAccessGitClient", "RegenerateSecondaryKey", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -65,6 +65,7 @@ func (client BigDataPoolsClient) Get(ctx context.Context, bigDataPoolName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.BigDataPoolsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -139,6 +140,7 @@ func (client BigDataPoolsClient) List(ctx context.Context) (result BigDataPoolRe
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.BigDataPoolsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

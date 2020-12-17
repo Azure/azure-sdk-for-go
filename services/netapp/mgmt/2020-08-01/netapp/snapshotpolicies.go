@@ -87,6 +87,7 @@ func (client SnapshotPoliciesClient) Create(ctx context.Context, body SnapshotPo
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.SnapshotPoliciesClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -261,6 +262,7 @@ func (client SnapshotPoliciesClient) Get(ctx context.Context, resourceGroupName 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.SnapshotPoliciesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -345,6 +347,7 @@ func (client SnapshotPoliciesClient) List(ctx context.Context, resourceGroupName
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.SnapshotPoliciesClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -429,6 +432,7 @@ func (client SnapshotPoliciesClient) ListVolumes(ctx context.Context, resourceGr
 	result, err = client.ListVolumesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.SnapshotPoliciesClient", "ListVolumes", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -515,6 +519,7 @@ func (client SnapshotPoliciesClient) Update(ctx context.Context, body SnapshotPo
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.SnapshotPoliciesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

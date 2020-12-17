@@ -73,6 +73,7 @@ func (client PrivateLinkResourcesClient) ListByRedisEnterpriseCache(ctx context.
 	result, err = client.ListByRedisEnterpriseCacheResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redisenterprise.PrivateLinkResourcesClient", "ListByRedisEnterpriseCache", resp, "Failure responding to request")
+		return
 	}
 
 	return

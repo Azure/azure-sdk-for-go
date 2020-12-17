@@ -82,6 +82,7 @@ func (client ManagementLocksClient) CreateOrUpdateAtResourceGroupLevel(ctx conte
 	result, err = client.CreateOrUpdateAtResourceGroupLevelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "CreateOrUpdateAtResourceGroupLevel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -174,6 +175,7 @@ func (client ManagementLocksClient) CreateOrUpdateAtResourceLevel(ctx context.Co
 	result, err = client.CreateOrUpdateAtResourceLevelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "CreateOrUpdateAtResourceLevel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -257,6 +259,7 @@ func (client ManagementLocksClient) CreateOrUpdateAtSubscriptionLevel(ctx contex
 	result, err = client.CreateOrUpdateAtSubscriptionLevelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "CreateOrUpdateAtSubscriptionLevel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -343,6 +346,7 @@ func (client ManagementLocksClient) DeleteAtResourceGroupLevel(ctx context.Conte
 	result, err = client.DeleteAtResourceGroupLevelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteAtResourceGroupLevel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -429,6 +433,7 @@ func (client ManagementLocksClient) DeleteAtResourceLevel(ctx context.Context, r
 	result, err = client.DeleteAtResourceLevelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteAtResourceLevel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -506,6 +511,7 @@ func (client ManagementLocksClient) DeleteAtSubscriptionLevel(ctx context.Contex
 	result, err = client.DeleteAtSubscriptionLevelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteAtSubscriptionLevel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -578,6 +584,7 @@ func (client ManagementLocksClient) Get(ctx context.Context, lockName string) (r
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -660,6 +667,7 @@ func (client ManagementLocksClient) GetAtResourceGroupLevel(ctx context.Context,
 	result, err = client.GetAtResourceGroupLevelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "GetAtResourceGroupLevel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -744,6 +752,7 @@ func (client ManagementLocksClient) ListAtResourceGroupLevel(ctx context.Context
 	result.mllr, err = client.ListAtResourceGroupLevelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "ListAtResourceGroupLevel", resp, "Failure responding to request")
+		return
 	}
 	if result.mllr.hasNextLink() && result.mllr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -810,6 +819,7 @@ func (client ManagementLocksClient) listAtResourceGroupLevelNextResults(ctx cont
 	result, err = client.ListAtResourceGroupLevelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "listAtResourceGroupLevelNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -874,6 +884,7 @@ func (client ManagementLocksClient) ListAtResourceLevel(ctx context.Context, res
 	result.mllr, err = client.ListAtResourceLevelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "ListAtResourceLevel", resp, "Failure responding to request")
+		return
 	}
 	if result.mllr.hasNextLink() && result.mllr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -944,6 +955,7 @@ func (client ManagementLocksClient) listAtResourceLevelNextResults(ctx context.C
 	result, err = client.ListAtResourceLevelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "listAtResourceLevelNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -995,6 +1007,7 @@ func (client ManagementLocksClient) ListAtSubscriptionLevel(ctx context.Context,
 	result.mllr, err = client.ListAtSubscriptionLevelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "ListAtSubscriptionLevel", resp, "Failure responding to request")
+		return
 	}
 	if result.mllr.hasNextLink() && result.mllr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1060,6 +1073,7 @@ func (client ManagementLocksClient) listAtSubscriptionLevelNextResults(ctx conte
 	result, err = client.ListAtSubscriptionLevelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "listAtSubscriptionLevelNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -69,6 +69,7 @@ func (client SKUsClient) List(ctx context.Context) (result SkuDescriptionList, e
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "engagementfabric.SKUsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

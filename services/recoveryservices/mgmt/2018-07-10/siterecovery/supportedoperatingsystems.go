@@ -70,6 +70,7 @@ func (client SupportedOperatingSystemsClient) Get(ctx context.Context) (result S
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "siterecovery.SupportedOperatingSystemsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

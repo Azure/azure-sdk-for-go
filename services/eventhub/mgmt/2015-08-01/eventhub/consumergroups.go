@@ -94,6 +94,7 @@ func (client ConsumerGroupsClient) CreateOrUpdate(ctx context.Context, resourceG
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -191,6 +192,7 @@ func (client ConsumerGroupsClient) Delete(ctx context.Context, resourceGroupName
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -285,6 +287,7 @@ func (client ConsumerGroupsClient) Get(ctx context.Context, resourceGroupName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -378,6 +381,7 @@ func (client ConsumerGroupsClient) ListAll(ctx context.Context, resourceGroupNam
 	result.cglr, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "ListAll", resp, "Failure responding to request")
+		return
 	}
 	if result.cglr.hasNextLink() && result.cglr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -443,6 +447,7 @@ func (client ConsumerGroupsClient) listAllNextResults(ctx context.Context, lastR
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "listAllNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

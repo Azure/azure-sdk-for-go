@@ -77,6 +77,7 @@ func (client ServerAdvisorsClient) CreateOrUpdate(ctx context.Context, resourceG
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerAdvisorsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -159,6 +160,7 @@ func (client ServerAdvisorsClient) Get(ctx context.Context, resourceGroupName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerAdvisorsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -236,6 +238,7 @@ func (client ServerAdvisorsClient) ListByServer(ctx context.Context, resourceGro
 	result, err = client.ListByServerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerAdvisorsClient", "ListByServer", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -314,6 +317,7 @@ func (client ServerAdvisorsClient) Update(ctx context.Context, resourceGroupName
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerAdvisorsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

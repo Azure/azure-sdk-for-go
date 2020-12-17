@@ -90,6 +90,7 @@ func (client LabAccountsClient) CreateLab(ctx context.Context, resourceGroupName
 	result, err = client.CreateLabResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabAccountsClient", "CreateLab", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -167,6 +168,7 @@ func (client LabAccountsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabAccountsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -319,6 +321,7 @@ func (client LabAccountsClient) Get(ctx context.Context, resourceGroupName strin
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabAccountsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -397,6 +400,7 @@ func (client LabAccountsClient) GetRegionalAvailability(ctx context.Context, res
 	result, err = client.GetRegionalAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabAccountsClient", "GetRegionalAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -476,6 +480,7 @@ func (client LabAccountsClient) ListByResourceGroup(ctx context.Context, resourc
 	result.rwcla, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabAccountsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.rwcla.hasNextLink() && result.rwcla.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -551,6 +556,7 @@ func (client LabAccountsClient) listByResourceGroupNextResults(ctx context.Conte
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabAccountsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -605,6 +611,7 @@ func (client LabAccountsClient) ListBySubscription(ctx context.Context, expand s
 	result.rwcla, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabAccountsClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.rwcla.hasNextLink() && result.rwcla.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -679,6 +686,7 @@ func (client LabAccountsClient) listBySubscriptionNextResults(ctx context.Contex
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabAccountsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -731,6 +739,7 @@ func (client LabAccountsClient) Update(ctx context.Context, resourceGroupName st
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabAccountsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

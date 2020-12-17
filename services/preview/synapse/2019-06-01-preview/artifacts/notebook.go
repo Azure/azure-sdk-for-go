@@ -261,6 +261,7 @@ func (client NotebookClient) GetNotebook(ctx context.Context, notebookName strin
 	result, err = client.GetNotebookResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "GetNotebook", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -340,6 +341,7 @@ func (client NotebookClient) GetNotebooksByWorkspace(ctx context.Context) (resul
 	result.nlr, err = client.GetNotebooksByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "GetNotebooksByWorkspace", resp, "Failure responding to request")
+		return
 	}
 	if result.nlr.hasNextLink() && result.nlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -402,6 +404,7 @@ func (client NotebookClient) getNotebooksByWorkspaceNextResults(ctx context.Cont
 	result, err = client.GetNotebooksByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "getNotebooksByWorkspaceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -451,6 +454,7 @@ func (client NotebookClient) GetNotebookSummaryByWorkSpace(ctx context.Context) 
 	result.nlr, err = client.GetNotebookSummaryByWorkSpaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "GetNotebookSummaryByWorkSpace", resp, "Failure responding to request")
+		return
 	}
 	if result.nlr.hasNextLink() && result.nlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -513,6 +517,7 @@ func (client NotebookClient) getNotebookSummaryByWorkSpaceNextResults(ctx contex
 	result, err = client.GetNotebookSummaryByWorkSpaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "getNotebookSummaryByWorkSpaceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

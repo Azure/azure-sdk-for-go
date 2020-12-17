@@ -72,6 +72,7 @@ func (client DefinitionsOperationMetadataClient) List(ctx context.Context) (resu
 	result.olr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.DefinitionsOperationMetadataClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.olr.hasNextLink() && result.olr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -130,6 +131,7 @@ func (client DefinitionsOperationMetadataClient) listNextResults(ctx context.Con
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.DefinitionsOperationMetadataClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

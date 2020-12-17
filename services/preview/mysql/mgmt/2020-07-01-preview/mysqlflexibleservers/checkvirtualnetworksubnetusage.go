@@ -82,6 +82,7 @@ func (client CheckVirtualNetworkSubnetUsageClient) Execute(ctx context.Context, 
 	result, err = client.ExecuteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mysqlflexibleservers.CheckVirtualNetworkSubnetUsageClient", "Execute", resp, "Failure responding to request")
+		return
 	}
 
 	return

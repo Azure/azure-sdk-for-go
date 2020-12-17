@@ -393,6 +393,7 @@ func (client VirtualMachineScaleSetsClient) Get(ctx context.Context, resourceGro
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -468,6 +469,7 @@ func (client VirtualMachineScaleSetsClient) GetInstanceView(ctx context.Context,
 	result, err = client.GetInstanceViewResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "GetInstanceView", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -543,6 +545,7 @@ func (client VirtualMachineScaleSetsClient) List(ctx context.Context, resourceGr
 	result.vmsslr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.vmsslr.hasNextLink() && result.vmsslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -606,6 +609,7 @@ func (client VirtualMachineScaleSetsClient) listNextResults(ctx context.Context,
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -657,6 +661,7 @@ func (client VirtualMachineScaleSetsClient) ListAll(ctx context.Context) (result
 	result.vmsslwlr, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "ListAll", resp, "Failure responding to request")
+		return
 	}
 	if result.vmsslwlr.hasNextLink() && result.vmsslwlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -719,6 +724,7 @@ func (client VirtualMachineScaleSetsClient) listAllNextResults(ctx context.Conte
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "listAllNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -772,6 +778,7 @@ func (client VirtualMachineScaleSetsClient) ListSkus(ctx context.Context, resour
 	result.vmsslsr, err = client.ListSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "ListSkus", resp, "Failure responding to request")
+		return
 	}
 	if result.vmsslsr.hasNextLink() && result.vmsslsr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -836,6 +843,7 @@ func (client VirtualMachineScaleSetsClient) listSkusNextResults(ctx context.Cont
 	result, err = client.ListSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "listSkusNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

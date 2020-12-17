@@ -80,6 +80,7 @@ func (client EvaluationsClient) Create(ctx context.Context, evaluation Evaluatio
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "personalizer.EvaluationsClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -154,6 +155,7 @@ func (client EvaluationsClient) Delete(ctx context.Context, evaluationID string)
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "personalizer.EvaluationsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -229,6 +231,7 @@ func (client EvaluationsClient) Get(ctx context.Context, evaluationID string) (r
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "personalizer.EvaluationsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -297,6 +300,7 @@ func (client EvaluationsClient) List(ctx context.Context) (result ListEvaluation
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "personalizer.EvaluationsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

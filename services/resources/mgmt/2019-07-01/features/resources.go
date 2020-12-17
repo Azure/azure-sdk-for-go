@@ -86,6 +86,7 @@ func (client ResourcesClient) CheckExistence(ctx context.Context, resourceGroupN
 	result, err = client.CheckExistenceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ResourcesClient", "CheckExistence", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -164,6 +165,7 @@ func (client ResourcesClient) CheckExistenceByID(ctx context.Context, resourceID
 	result, err = client.CheckExistenceByIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ResourcesClient", "CheckExistenceByID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -589,6 +591,7 @@ func (client ResourcesClient) Get(ctx context.Context, resourceGroupName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ResourcesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -668,6 +671,7 @@ func (client ResourcesClient) GetByID(ctx context.Context, resourceID string, AP
 	result, err = client.GetByIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ResourcesClient", "GetByID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -753,6 +757,7 @@ func (client ResourcesClient) List(ctx context.Context, filter string, expand st
 	result.rlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ResourcesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -824,6 +829,7 @@ func (client ResourcesClient) listNextResults(ctx context.Context, lastResults R
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ResourcesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -897,6 +903,7 @@ func (client ResourcesClient) ListByResourceGroup(ctx context.Context, resourceG
 	result.rlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ResourcesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -969,6 +976,7 @@ func (client ResourcesClient) listByResourceGroupNextResults(ctx context.Context
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ResourcesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

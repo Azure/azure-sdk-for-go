@@ -75,6 +75,7 @@ func (client HyperVHostClient) GetAllHostsInSite(ctx context.Context, subscripti
 	result.hvhc, err = client.GetAllHostsInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVHostClient", "GetAllHostsInSite", resp, "Failure responding to request")
+		return
 	}
 	if result.hvhc.hasNextLink() && result.hvhc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -141,6 +142,7 @@ func (client HyperVHostClient) getAllHostsInSiteNextResults(ctx context.Context,
 	result, err = client.GetAllHostsInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVHostClient", "getAllHostsInSiteNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -195,6 +197,7 @@ func (client HyperVHostClient) GetHost(ctx context.Context, subscriptionID strin
 	result, err = client.GetHostResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVHostClient", "GetHost", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -274,6 +277,7 @@ func (client HyperVHostClient) PutHost(ctx context.Context, subscriptionID strin
 	result, err = client.PutHostResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVHostClient", "PutHost", resp, "Failure responding to request")
+		return
 	}
 
 	return

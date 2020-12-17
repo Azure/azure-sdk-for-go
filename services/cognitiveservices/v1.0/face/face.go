@@ -129,6 +129,7 @@ func (client Client) DetectWithStream(ctx context.Context, imageParameter io.Rea
 	result, err = client.DetectWithStreamResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.Client", "DetectWithStream", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -296,6 +297,7 @@ func (client Client) DetectWithURL(ctx context.Context, imageURL ImageURL, retur
 	result, err = client.DetectWithURLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.Client", "DetectWithURL", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -430,6 +432,7 @@ func (client Client) FindSimilar(ctx context.Context, body FindSimilarRequest) (
 	result, err = client.FindSimilarResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.Client", "FindSimilar", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -514,6 +517,7 @@ func (client Client) Group(ctx context.Context, body GroupRequest) (result Group
 	result, err = client.GroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.Client", "Group", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -622,6 +626,7 @@ func (client Client) Identify(ctx context.Context, body IdentifyRequest) (result
 	result, err = client.IdentifyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.Client", "Identify", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -704,6 +709,7 @@ func (client Client) VerifyFaceToFace(ctx context.Context, body VerifyFaceToFace
 	result, err = client.VerifyFaceToFaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.Client", "VerifyFaceToFace", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -787,6 +793,7 @@ func (client Client) VerifyFaceToPerson(ctx context.Context, body VerifyFaceToPe
 	result, err = client.VerifyFaceToPersonResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.Client", "VerifyFaceToPerson", resp, "Failure responding to request")
+		return
 	}
 
 	return

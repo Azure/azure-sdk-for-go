@@ -81,6 +81,7 @@ func (client DevicesClient) AuthorizeForServiceEncryptionKeyRollover(ctx context
 	result, err = client.AuthorizeForServiceEncryptionKeyRolloverResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "AuthorizeForServiceEncryptionKeyRollover", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -510,6 +511,7 @@ func (client DevicesClient) Get(ctx context.Context, deviceName string, resource
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -597,6 +599,7 @@ func (client DevicesClient) GetUpdateSummary(ctx context.Context, deviceName str
 	result, err = client.GetUpdateSummaryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "GetUpdateSummary", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -766,6 +769,7 @@ func (client DevicesClient) ListByManager(ctx context.Context, resourceGroupName
 	result, err = client.ListByManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "ListByManager", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -854,6 +858,7 @@ func (client DevicesClient) ListFailoverSets(ctx context.Context, deviceName str
 	result, err = client.ListFailoverSetsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "ListFailoverSets", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -940,6 +945,7 @@ func (client DevicesClient) ListFailoverTargets(ctx context.Context, sourceDevic
 	result, err = client.ListFailoverTargetsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "ListFailoverTargets", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1026,6 +1032,7 @@ func (client DevicesClient) ListMetricDefinition(ctx context.Context, deviceName
 	result, err = client.ListMetricDefinitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "ListMetricDefinition", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1111,6 +1118,7 @@ func (client DevicesClient) ListMetrics(ctx context.Context, deviceName string, 
 	result, err = client.ListMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "ListMetrics", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1280,6 +1288,7 @@ func (client DevicesClient) Update(ctx context.Context, deviceName string, param
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

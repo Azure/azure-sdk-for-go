@@ -74,6 +74,7 @@ func (client ConfigServersClient) Get(ctx context.Context, resourceGroupName str
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.ConfigServersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

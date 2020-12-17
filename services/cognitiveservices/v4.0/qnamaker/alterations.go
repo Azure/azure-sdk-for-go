@@ -64,6 +64,7 @@ func (client AlterationsClient) Get(ctx context.Context) (result WordAlterations
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamaker.AlterationsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -136,6 +137,7 @@ func (client AlterationsClient) Replace(ctx context.Context, wordAlterations Wor
 	result, err = client.ReplaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamaker.AlterationsClient", "Replace", resp, "Failure responding to request")
+		return
 	}
 
 	return

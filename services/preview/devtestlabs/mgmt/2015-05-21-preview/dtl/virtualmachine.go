@@ -306,6 +306,7 @@ func (client VirtualMachineClient) GetResource(ctx context.Context, resourceGrou
 	result, err = client.GetResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineClient", "GetResource", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -384,6 +385,7 @@ func (client VirtualMachineClient) List(ctx context.Context, resourceGroupName s
 	result.rwclvm, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rwclvm.hasNextLink() && result.rwclvm.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -457,6 +459,7 @@ func (client VirtualMachineClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -509,6 +512,7 @@ func (client VirtualMachineClient) PatchResource(ctx context.Context, resourceGr
 	result, err = client.PatchResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineClient", "PatchResource", resp, "Failure responding to request")
+		return
 	}
 
 	return

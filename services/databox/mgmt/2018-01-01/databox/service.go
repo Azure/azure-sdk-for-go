@@ -82,6 +82,7 @@ func (client ServiceClient) ListAvailableSkus(ctx context.Context, location stri
 	result.asr, err = client.ListAvailableSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "ListAvailableSkus", resp, "Failure responding to request")
+		return
 	}
 	if result.asr.hasNextLink() && result.asr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -147,6 +148,7 @@ func (client ServiceClient) listAvailableSkusNextResults(ctx context.Context, la
 	result, err = client.ListAvailableSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "listAvailableSkusNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -208,6 +210,7 @@ func (client ServiceClient) ValidateAddressMethod(ctx context.Context, location 
 	result, err = client.ValidateAddressMethodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "ValidateAddressMethod", resp, "Failure responding to request")
+		return
 	}
 
 	return

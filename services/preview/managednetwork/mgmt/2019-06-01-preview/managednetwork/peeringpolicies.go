@@ -234,6 +234,7 @@ func (client PeeringPoliciesClient) Get(ctx context.Context, resourceGroupName s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.PeeringPoliciesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -325,6 +326,7 @@ func (client PeeringPoliciesClient) ListByManagedNetwork(ctx context.Context, re
 	result.pplr, err = client.ListByManagedNetworkResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.PeeringPoliciesClient", "ListByManagedNetwork", resp, "Failure responding to request")
+		return
 	}
 	if result.pplr.hasNextLink() && result.pplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -395,6 +397,7 @@ func (client PeeringPoliciesClient) listByManagedNetworkNextResults(ctx context.
 	result, err = client.ListByManagedNetworkResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.PeeringPoliciesClient", "listByManagedNetworkNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

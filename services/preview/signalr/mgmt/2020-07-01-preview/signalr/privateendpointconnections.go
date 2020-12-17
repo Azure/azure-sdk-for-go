@@ -154,6 +154,7 @@ func (client PrivateEndpointConnectionsClient) Get(ctx context.Context, privateE
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "signalr.PrivateEndpointConnectionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -234,6 +235,7 @@ func (client PrivateEndpointConnectionsClient) Update(ctx context.Context, priva
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "signalr.PrivateEndpointConnectionsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -74,6 +74,7 @@ func (client MonitoredResourcesClient) List(ctx context.Context, resourceGroupNa
 	result.mrlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.MonitoredResourcesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.mrlr.hasNextLink() && result.mrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -138,6 +139,7 @@ func (client MonitoredResourcesClient) listNextResults(ctx context.Context, last
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.MonitoredResourcesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

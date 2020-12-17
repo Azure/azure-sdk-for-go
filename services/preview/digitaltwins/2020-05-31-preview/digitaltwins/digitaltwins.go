@@ -79,6 +79,7 @@ func (client Client) Add(ctx context.Context, ID string, twin interface{}, ifNon
 	result, err = client.AddResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "Add", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -165,6 +166,7 @@ func (client Client) AddRelationship(ctx context.Context, ID string, relationshi
 	result, err = client.AddRelationshipResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "AddRelationship", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -253,6 +255,7 @@ func (client Client) Delete(ctx context.Context, ID string, ifMatch string) (res
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -334,6 +337,7 @@ func (client Client) DeleteRelationship(ctx context.Context, ID string, relation
 	result, err = client.DeleteRelationshipResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "DeleteRelationship", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -413,6 +417,7 @@ func (client Client) GetByID(ctx context.Context, ID string) (result SetObject, 
 	result, err = client.GetByIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "GetByID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -489,6 +494,7 @@ func (client Client) GetComponent(ctx context.Context, ID string, componentPath 
 	result, err = client.GetComponentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "GetComponent", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -566,6 +572,7 @@ func (client Client) GetRelationshipByID(ctx context.Context, ID string, relatio
 	result, err = client.GetRelationshipByIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "GetRelationshipByID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -644,6 +651,7 @@ func (client Client) ListIncomingRelationships(ctx context.Context, ID string) (
 	result.irc, err = client.ListIncomingRelationshipsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "ListIncomingRelationships", resp, "Failure responding to request")
+		return
 	}
 	if result.irc.hasNextLink() && result.irc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -706,6 +714,7 @@ func (client Client) listIncomingRelationshipsNextResults(ctx context.Context, l
 	result, err = client.ListIncomingRelationshipsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "listIncomingRelationshipsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -762,6 +771,7 @@ func (client Client) ListRelationships(ctx context.Context, ID string, relations
 	result.rc, err = client.ListRelationshipsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "ListRelationships", resp, "Failure responding to request")
+		return
 	}
 	if result.rc.hasNextLink() && result.rc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -827,6 +837,7 @@ func (client Client) listRelationshipsNextResults(ctx context.Context, lastResul
 	result, err = client.ListRelationshipsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "listRelationshipsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -886,6 +897,7 @@ func (client Client) SendComponentTelemetry(ctx context.Context, ID string, comp
 	result, err = client.SendComponentTelemetryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "SendComponentTelemetry", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -973,6 +985,7 @@ func (client Client) SendTelemetry(ctx context.Context, ID string, telemetry int
 	result, err = client.SendTelemetryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "SendTelemetry", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1065,6 +1078,7 @@ func (client Client) Update(ctx context.Context, ID string, patchDocument []inte
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1151,6 +1165,7 @@ func (client Client) UpdateComponent(ctx context.Context, ID string, componentPa
 	result, err = client.UpdateComponentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "UpdateComponent", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1240,6 +1255,7 @@ func (client Client) UpdateRelationship(ctx context.Context, ID string, relation
 	result, err = client.UpdateRelationshipResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "UpdateRelationship", resp, "Failure responding to request")
+		return
 	}
 
 	return

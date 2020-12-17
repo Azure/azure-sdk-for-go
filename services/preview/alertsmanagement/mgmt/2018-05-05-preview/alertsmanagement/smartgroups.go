@@ -73,6 +73,7 @@ func (client SmartGroupsClient) ChangeState(ctx context.Context, smartGroupID st
 	result, err = client.ChangeStateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "alertsmanagement.SmartGroupsClient", "ChangeState", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -157,6 +158,7 @@ func (client SmartGroupsClient) GetAll(ctx context.Context, targetResource strin
 	result, err = client.GetAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "alertsmanagement.SmartGroupsClient", "GetAll", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -262,6 +264,7 @@ func (client SmartGroupsClient) GetByID(ctx context.Context, smartGroupID string
 	result, err = client.GetByIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "alertsmanagement.SmartGroupsClient", "GetByID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -335,6 +338,7 @@ func (client SmartGroupsClient) GetHistory(ctx context.Context, smartGroupID str
 	result, err = client.GetHistoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "alertsmanagement.SmartGroupsClient", "GetHistory", resp, "Failure responding to request")
+		return
 	}
 
 	return

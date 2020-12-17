@@ -78,6 +78,7 @@ func (client SettingsClient) Get(ctx context.Context, settingName string) (resul
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.SettingsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -156,6 +157,7 @@ func (client SettingsClient) List(ctx context.Context) (result SettingsListPage,
 	result.sl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.SettingsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.sl.hasNextLink() && result.sl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -218,6 +220,7 @@ func (client SettingsClient) listNextResults(ctx context.Context, lastResults Se
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.SettingsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -275,6 +278,7 @@ func (client SettingsClient) Update(ctx context.Context, settingName string, set
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.SettingsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

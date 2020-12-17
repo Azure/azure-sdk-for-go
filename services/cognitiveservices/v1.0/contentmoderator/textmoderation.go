@@ -76,6 +76,7 @@ func (client TextModerationClient) DetectLanguage(ctx context.Context, textConte
 	result, err = client.DetectLanguageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.TextModerationClient", "DetectLanguage", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -151,6 +152,7 @@ func (client TextModerationClient) ScreenText(ctx context.Context, textContentTy
 	result, err = client.ScreenTextResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.TextModerationClient", "ScreenText", resp, "Failure responding to request")
+		return
 	}
 
 	return

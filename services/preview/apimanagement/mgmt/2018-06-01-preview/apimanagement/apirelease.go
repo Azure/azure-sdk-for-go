@@ -93,6 +93,7 @@ func (client APIReleaseClient) Create(ctx context.Context, resourceGroupName str
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIReleaseClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -196,6 +197,7 @@ func (client APIReleaseClient) Delete(ctx context.Context, resourceGroupName str
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIReleaseClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -291,6 +293,7 @@ func (client APIReleaseClient) Get(ctx context.Context, resourceGroupName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIReleaseClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -386,6 +389,7 @@ func (client APIReleaseClient) GetEntityTag(ctx context.Context, resourceGroupNa
 	result, err = client.GetEntityTagResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIReleaseClient", "GetEntityTag", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -490,6 +494,7 @@ func (client APIReleaseClient) List(ctx context.Context, resourceGroupName strin
 	result.arc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIReleaseClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.arc.hasNextLink() && result.arc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -564,6 +569,7 @@ func (client APIReleaseClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIReleaseClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -636,6 +642,7 @@ func (client APIReleaseClient) Update(ctx context.Context, resourceGroupName str
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIReleaseClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

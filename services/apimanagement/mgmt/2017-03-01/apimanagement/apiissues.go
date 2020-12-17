@@ -100,6 +100,7 @@ func (client APIIssuesClient) ListByService(ctx context.Context, resourceGroupNa
 	result.ic, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIIssuesClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 	if result.ic.hasNextLink() && result.ic.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -174,6 +175,7 @@ func (client APIIssuesClient) listByServiceNextResults(ctx context.Context, last
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIIssuesClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

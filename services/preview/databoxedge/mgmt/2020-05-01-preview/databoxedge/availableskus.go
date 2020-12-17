@@ -69,6 +69,7 @@ func (client AvailableSkusClient) List(ctx context.Context) (result SkuList, err
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.AvailableSkusClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

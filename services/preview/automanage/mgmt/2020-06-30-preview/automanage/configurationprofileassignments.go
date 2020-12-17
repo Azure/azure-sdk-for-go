@@ -176,6 +176,7 @@ func (client ConfigurationProfileAssignmentsClient) Delete(ctx context.Context, 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -262,6 +263,7 @@ func (client ConfigurationProfileAssignmentsClient) Get(ctx context.Context, res
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -347,6 +349,7 @@ func (client ConfigurationProfileAssignmentsClient) List(ctx context.Context, re
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -424,6 +427,7 @@ func (client ConfigurationProfileAssignmentsClient) ListBySubscription(ctx conte
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 
 	return

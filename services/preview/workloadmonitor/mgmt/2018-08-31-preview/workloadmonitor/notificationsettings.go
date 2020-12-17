@@ -86,6 +86,7 @@ func (client NotificationSettingsClient) Get(ctx context.Context, resourceGroupN
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.NotificationSettingsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -178,6 +179,7 @@ func (client NotificationSettingsClient) ListByResource(ctx context.Context, res
 	result.nsc, err = client.ListByResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.NotificationSettingsClient", "ListByResource", resp, "Failure responding to request")
+		return
 	}
 	if result.nsc.hasNextLink() && result.nsc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -247,6 +249,7 @@ func (client NotificationSettingsClient) listByResourceNextResults(ctx context.C
 	result, err = client.ListByResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.NotificationSettingsClient", "listByResourceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -311,6 +314,7 @@ func (client NotificationSettingsClient) Update(ctx context.Context, resourceGro
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.NotificationSettingsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

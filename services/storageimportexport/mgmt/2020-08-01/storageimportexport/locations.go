@@ -72,6 +72,7 @@ func (client LocationsClient) Get(ctx context.Context, locationName string) (res
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storageimportexport.LocationsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -147,6 +148,7 @@ func (client LocationsClient) List(ctx context.Context) (result LocationsRespons
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storageimportexport.LocationsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

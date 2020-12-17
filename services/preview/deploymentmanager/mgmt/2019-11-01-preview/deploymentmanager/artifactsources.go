@@ -83,6 +83,7 @@ func (client ArtifactSourcesClient) CreateOrUpdate(ctx context.Context, resource
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "deploymentmanager.ArtifactSourcesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -171,6 +172,7 @@ func (client ArtifactSourcesClient) Delete(ctx context.Context, resourceGroupNam
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "deploymentmanager.ArtifactSourcesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -253,6 +255,7 @@ func (client ArtifactSourcesClient) Get(ctx context.Context, resourceGroupName s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "deploymentmanager.ArtifactSourcesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -335,6 +338,7 @@ func (client ArtifactSourcesClient) List(ctx context.Context, resourceGroupName 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "deploymentmanager.ArtifactSourcesClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

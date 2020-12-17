@@ -236,6 +236,7 @@ func (client StorageAccountsClient) Get(ctx context.Context, deviceName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.StorageAccountsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -313,6 +314,7 @@ func (client StorageAccountsClient) ListByDataBoxEdgeDevice(ctx context.Context,
 	result.sal, err = client.ListByDataBoxEdgeDeviceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.StorageAccountsClient", "ListByDataBoxEdgeDevice", resp, "Failure responding to request")
+		return
 	}
 	if result.sal.hasNextLink() && result.sal.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -377,6 +379,7 @@ func (client StorageAccountsClient) listByDataBoxEdgeDeviceNextResults(ctx conte
 	result, err = client.ListByDataBoxEdgeDeviceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.StorageAccountsClient", "listByDataBoxEdgeDeviceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

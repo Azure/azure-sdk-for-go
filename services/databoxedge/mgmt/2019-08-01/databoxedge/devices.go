@@ -391,6 +391,7 @@ func (client DevicesClient) Get(ctx context.Context, deviceName string, resource
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -466,6 +467,7 @@ func (client DevicesClient) GetExtendedInformation(ctx context.Context, deviceNa
 	result, err = client.GetExtendedInformationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "GetExtendedInformation", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -541,6 +543,7 @@ func (client DevicesClient) GetNetworkSettings(ctx context.Context, deviceName s
 	result, err = client.GetNetworkSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "GetNetworkSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -616,6 +619,7 @@ func (client DevicesClient) GetUpdateSummary(ctx context.Context, deviceName str
 	result, err = client.GetUpdateSummaryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "GetUpdateSummary", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -767,6 +771,7 @@ func (client DevicesClient) ListByResourceGroup(ctx context.Context, resourceGro
 	result.dl, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.dl.hasNextLink() && result.dl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -833,6 +838,7 @@ func (client DevicesClient) listByResourceGroupNextResults(ctx context.Context, 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -885,6 +891,7 @@ func (client DevicesClient) ListBySubscription(ctx context.Context, expand strin
 	result.dl, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.dl.hasNextLink() && result.dl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -950,6 +957,7 @@ func (client DevicesClient) listBySubscriptionNextResults(ctx context.Context, l
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1076,6 +1084,7 @@ func (client DevicesClient) Update(ctx context.Context, deviceName string, param
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1161,6 +1170,7 @@ func (client DevicesClient) UploadCertificate(ctx context.Context, deviceName st
 	result, err = client.UploadCertificateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "UploadCertificate", resp, "Failure responding to request")
+		return
 	}
 
 	return

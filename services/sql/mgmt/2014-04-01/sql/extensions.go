@@ -76,6 +76,7 @@ func (client ExtensionsClient) Get(ctx context.Context, resourceGroupName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ExtensionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -154,6 +155,7 @@ func (client ExtensionsClient) ListByDatabase(ctx context.Context, resourceGroup
 	result, err = client.ListByDatabaseResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ExtensionsClient", "ListByDatabase", resp, "Failure responding to request")
+		return
 	}
 
 	return

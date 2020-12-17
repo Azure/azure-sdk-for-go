@@ -71,6 +71,7 @@ func (client PermissionsClient) ListByBillingAccount(ctx context.Context, billin
 	result, err = client.ListByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PermissionsClient", "ListByBillingAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -144,6 +145,7 @@ func (client PermissionsClient) ListByBillingProfile(ctx context.Context, billin
 	result, err = client.ListByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PermissionsClient", "ListByBillingProfile", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -218,6 +220,7 @@ func (client PermissionsClient) ListByCustomers(ctx context.Context, billingAcco
 	result, err = client.ListByCustomersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PermissionsClient", "ListByCustomers", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -292,6 +295,7 @@ func (client PermissionsClient) ListByInvoiceSections(ctx context.Context, billi
 	result, err = client.ListByInvoiceSectionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PermissionsClient", "ListByInvoiceSections", resp, "Failure responding to request")
+		return
 	}
 
 	return

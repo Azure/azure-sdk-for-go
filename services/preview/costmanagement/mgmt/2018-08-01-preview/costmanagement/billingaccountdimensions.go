@@ -90,6 +90,7 @@ func (client BillingAccountDimensionsClient) List(ctx context.Context, billingAc
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.BillingAccountDimensionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

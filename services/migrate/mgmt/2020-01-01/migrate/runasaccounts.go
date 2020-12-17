@@ -75,6 +75,7 @@ func (client RunAsAccountsClient) GetAllRunAsAccountsInSite(ctx context.Context,
 	result.vmraac, err = client.GetAllRunAsAccountsInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.RunAsAccountsClient", "GetAllRunAsAccountsInSite", resp, "Failure responding to request")
+		return
 	}
 	if result.vmraac.hasNextLink() && result.vmraac.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -138,6 +139,7 @@ func (client RunAsAccountsClient) getAllRunAsAccountsInSiteNextResults(ctx conte
 	result, err = client.GetAllRunAsAccountsInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.RunAsAccountsClient", "getAllRunAsAccountsInSiteNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -192,6 +194,7 @@ func (client RunAsAccountsClient) GetRunAsAccount(ctx context.Context, subscript
 	result, err = client.GetRunAsAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.RunAsAccountsClient", "GetRunAsAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return

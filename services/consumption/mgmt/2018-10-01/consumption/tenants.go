@@ -73,6 +73,7 @@ func (client TenantsClient) Get(ctx context.Context, billingAccountID string, bi
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.TenantsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

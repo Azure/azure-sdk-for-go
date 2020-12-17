@@ -82,6 +82,7 @@ func (client NetworkStatusClient) GetByService(ctx context.Context, resourceGrou
 	result, err = client.GetByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.NetworkStatusClient", "GetByService", resp, "Failure responding to request")
+		return
 	}
 
 	return

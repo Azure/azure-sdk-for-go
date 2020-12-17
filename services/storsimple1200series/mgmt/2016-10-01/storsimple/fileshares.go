@@ -266,6 +266,7 @@ func (client FileSharesClient) Get(ctx context.Context, deviceName string, fileS
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.FileSharesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -352,6 +353,7 @@ func (client FileSharesClient) ListByDevice(ctx context.Context, deviceName stri
 	result, err = client.ListByDeviceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.FileSharesClient", "ListByDevice", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -437,6 +439,7 @@ func (client FileSharesClient) ListByFileServer(ctx context.Context, deviceName 
 	result, err = client.ListByFileServerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.FileSharesClient", "ListByFileServer", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -524,6 +527,7 @@ func (client FileSharesClient) ListMetricDefinition(ctx context.Context, deviceN
 	result, err = client.ListMetricDefinitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.FileSharesClient", "ListMetricDefinition", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -613,6 +617,7 @@ func (client FileSharesClient) ListMetrics(ctx context.Context, deviceName strin
 	result, err = client.ListMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.FileSharesClient", "ListMetrics", resp, "Failure responding to request")
+		return
 	}
 
 	return

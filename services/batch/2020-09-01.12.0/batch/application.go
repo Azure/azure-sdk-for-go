@@ -77,6 +77,7 @@ func (client ApplicationClient) Get(ctx context.Context, applicationID string, t
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -193,6 +194,7 @@ func (client ApplicationClient) List(ctx context.Context, maxResults *int32, tim
 	result.alr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -280,6 +282,7 @@ func (client ApplicationClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

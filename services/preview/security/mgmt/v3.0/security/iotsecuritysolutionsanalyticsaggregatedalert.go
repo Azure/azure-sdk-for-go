@@ -88,6 +88,7 @@ func (client IotSecuritySolutionsAnalyticsAggregatedAlertClient) Dismiss(ctx con
 	result, err = client.DismissResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionsAnalyticsAggregatedAlertClient", "Dismiss", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -176,6 +177,7 @@ func (client IotSecuritySolutionsAnalyticsAggregatedAlertClient) Get(ctx context
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionsAnalyticsAggregatedAlertClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -265,6 +267,7 @@ func (client IotSecuritySolutionsAnalyticsAggregatedAlertClient) List(ctx contex
 	result.itsaal, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionsAnalyticsAggregatedAlertClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.itsaal.hasNextLink() && result.itsaal.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -332,6 +335,7 @@ func (client IotSecuritySolutionsAnalyticsAggregatedAlertClient) listNextResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionsAnalyticsAggregatedAlertClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

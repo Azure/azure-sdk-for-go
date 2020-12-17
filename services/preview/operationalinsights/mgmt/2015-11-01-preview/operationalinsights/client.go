@@ -86,6 +86,7 @@ func (client BaseClient) GetAsyncOperationsStatus(ctx context.Context, location 
 	result, err = client.GetAsyncOperationsStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.BaseClient", "GetAsyncOperationsStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return

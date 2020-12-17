@@ -223,6 +223,7 @@ func (client SupportPlanTypesClient) Get(ctx context.Context, providerName strin
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

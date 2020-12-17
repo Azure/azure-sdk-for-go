@@ -86,6 +86,7 @@ func (client WorkspaceManagedIdentitySQLControlSettingsClient) CreateOrUpdate(ct
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedIdentitySQLControlSettingsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -173,6 +174,7 @@ func (client WorkspaceManagedIdentitySQLControlSettingsClient) Get(ctx context.C
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedIdentitySQLControlSettingsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

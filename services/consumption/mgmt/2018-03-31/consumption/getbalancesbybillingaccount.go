@@ -75,6 +75,7 @@ func (client GetBalancesByBillingAccountClient) ByBillingPeriod(ctx context.Cont
 	result, err = client.ByBillingPeriodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.GetBalancesByBillingAccountClient", "ByBillingPeriod", resp, "Failure responding to request")
+		return
 	}
 
 	return

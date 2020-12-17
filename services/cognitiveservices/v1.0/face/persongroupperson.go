@@ -122,6 +122,7 @@ func (client PersonGroupPersonClient) AddFaceFromStream(ctx context.Context, per
 	result, err = client.AddFaceFromStreamResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddFaceFromStream", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -265,6 +266,7 @@ func (client PersonGroupPersonClient) AddFaceFromURL(ctx context.Context, person
 	result, err = client.AddFaceFromURLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddFaceFromURL", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -365,6 +367,7 @@ func (client PersonGroupPersonClient) Create(ctx context.Context, personGroupID 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -446,6 +449,7 @@ func (client PersonGroupPersonClient) Delete(ctx context.Context, personGroupID 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -527,6 +531,7 @@ func (client PersonGroupPersonClient) DeleteFace(ctx context.Context, personGrou
 	result, err = client.DeleteFaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "DeleteFace", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -606,6 +611,7 @@ func (client PersonGroupPersonClient) Get(ctx context.Context, personGroupID str
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -687,6 +693,7 @@ func (client PersonGroupPersonClient) GetFace(ctx context.Context, personGroupID
 	result, err = client.GetFaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "GetFace", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -774,6 +781,7 @@ func (client PersonGroupPersonClient) List(ctx context.Context, personGroupID st
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -862,6 +870,7 @@ func (client PersonGroupPersonClient) Update(ctx context.Context, personGroupID 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -963,6 +972,7 @@ func (client PersonGroupPersonClient) UpdateFace(ctx context.Context, personGrou
 	result, err = client.UpdateFaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "UpdateFace", resp, "Failure responding to request")
+		return
 	}
 
 	return

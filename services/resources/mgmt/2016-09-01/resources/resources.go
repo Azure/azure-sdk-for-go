@@ -86,6 +86,7 @@ func (client Client) CheckExistence(ctx context.Context, resourceGroupName strin
 	result, err = client.CheckExistenceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.Client", "CheckExistence", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -164,6 +165,7 @@ func (client Client) CheckExistenceByID(ctx context.Context, resourceID string, 
 	result, err = client.CheckExistenceByIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.Client", "CheckExistenceByID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -589,6 +591,7 @@ func (client Client) Get(ctx context.Context, resourceGroupName string, resource
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.Client", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -668,6 +671,7 @@ func (client Client) GetByID(ctx context.Context, resourceID string, APIVersion 
 	result, err = client.GetByIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.Client", "GetByID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -743,6 +747,7 @@ func (client Client) List(ctx context.Context, filter string, expand string, top
 	result.lr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.Client", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -814,6 +819,7 @@ func (client Client) listNextResults(ctx context.Context, lastResults ListResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.Client", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

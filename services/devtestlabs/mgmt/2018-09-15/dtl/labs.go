@@ -454,6 +454,7 @@ func (client LabsClient) GenerateUploadURI(ctx context.Context, resourceGroupNam
 	result, err = client.GenerateUploadURIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.LabsClient", "GenerateUploadURI", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -532,6 +533,7 @@ func (client LabsClient) Get(ctx context.Context, resourceGroupName string, name
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.LabsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -692,6 +694,7 @@ func (client LabsClient) ListByResourceGroup(ctx context.Context, resourceGroupN
 	result.ll, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.LabsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.ll.hasNextLink() && result.ll.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -767,6 +770,7 @@ func (client LabsClient) listByResourceGroupNextResults(ctx context.Context, las
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.LabsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -821,6 +825,7 @@ func (client LabsClient) ListBySubscription(ctx context.Context, expand string, 
 	result.ll, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.LabsClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.ll.hasNextLink() && result.ll.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -895,6 +900,7 @@ func (client LabsClient) listBySubscriptionNextResults(ctx context.Context, last
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.LabsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -947,6 +953,7 @@ func (client LabsClient) ListVhds(ctx context.Context, resourceGroupName string,
 	result.lvl, err = client.ListVhdsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.LabsClient", "ListVhds", resp, "Failure responding to request")
+		return
 	}
 	if result.lvl.hasNextLink() && result.lvl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1011,6 +1018,7 @@ func (client LabsClient) listVhdsNextResults(ctx context.Context, lastResults La
 	result, err = client.ListVhdsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.LabsClient", "listVhdsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1063,6 +1071,7 @@ func (client LabsClient) Update(ctx context.Context, resourceGroupName string, n
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.LabsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

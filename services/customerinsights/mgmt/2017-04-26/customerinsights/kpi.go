@@ -250,6 +250,7 @@ func (client KpiClient) Get(ctx context.Context, resourceGroupName string, hubNa
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -327,6 +328,7 @@ func (client KpiClient) ListByHub(ctx context.Context, resourceGroupName string,
 	result.klr, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "ListByHub", resp, "Failure responding to request")
+		return
 	}
 	if result.klr.hasNextLink() && result.klr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -391,6 +393,7 @@ func (client KpiClient) listByHubNextResults(ctx context.Context, lastResults Kp
 	result, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "listByHubNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -443,6 +446,7 @@ func (client KpiClient) Reprocess(ctx context.Context, resourceGroupName string,
 	result, err = client.ReprocessResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Reprocess", resp, "Failure responding to request")
+		return
 	}
 
 	return

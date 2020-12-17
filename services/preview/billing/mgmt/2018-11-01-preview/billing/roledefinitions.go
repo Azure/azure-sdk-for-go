@@ -72,6 +72,7 @@ func (client RoleDefinitionsClient) GetByBillingAccountName(ctx context.Context,
 	result, err = client.GetByBillingAccountNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "GetByBillingAccountName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -147,6 +148,7 @@ func (client RoleDefinitionsClient) GetByBillingProfileName(ctx context.Context,
 	result, err = client.GetByBillingProfileNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "GetByBillingProfileName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -223,6 +225,7 @@ func (client RoleDefinitionsClient) GetByInvoiceSectionName(ctx context.Context,
 	result, err = client.GetByInvoiceSectionNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "GetByInvoiceSectionName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -297,6 +300,7 @@ func (client RoleDefinitionsClient) ListByBillingAccountName(ctx context.Context
 	result, err = client.ListByBillingAccountNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "ListByBillingAccountName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -370,6 +374,7 @@ func (client RoleDefinitionsClient) ListByBillingProfileName(ctx context.Context
 	result, err = client.ListByBillingProfileNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "ListByBillingProfileName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -444,6 +449,7 @@ func (client RoleDefinitionsClient) ListByInvoiceSectionName(ctx context.Context
 	result, err = client.ListByInvoiceSectionNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "ListByInvoiceSectionName", resp, "Failure responding to request")
+		return
 	}
 
 	return

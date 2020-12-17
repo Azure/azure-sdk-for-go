@@ -93,6 +93,7 @@ func (client SubscriptionClient) CreateOrUpdate(ctx context.Context, apimBaseURL
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -188,6 +189,7 @@ func (client SubscriptionClient) Delete(ctx context.Context, apimBaseURL string,
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -274,6 +276,7 @@ func (client SubscriptionClient) Get(ctx context.Context, apimBaseURL string, si
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -372,6 +375,7 @@ func (client SubscriptionClient) List(ctx context.Context, apimBaseURL string, f
 	result.sc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.sc.hasNextLink() && result.sc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -443,6 +447,7 @@ func (client SubscriptionClient) listNextResults(ctx context.Context, lastResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -503,6 +508,7 @@ func (client SubscriptionClient) RegeneratePrimaryKey(ctx context.Context, apimB
 	result, err = client.RegeneratePrimaryKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionClient", "RegeneratePrimaryKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -588,6 +594,7 @@ func (client SubscriptionClient) RegenerateSecondaryKey(ctx context.Context, api
 	result, err = client.RegenerateSecondaryKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionClient", "RegenerateSecondaryKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -677,6 +684,7 @@ func (client SubscriptionClient) Update(ctx context.Context, apimBaseURL string,
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

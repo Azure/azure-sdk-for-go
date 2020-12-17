@@ -254,6 +254,7 @@ func (client MoveCollectionsClient) Create(ctx context.Context, resourceGroupNam
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -502,6 +503,7 @@ func (client MoveCollectionsClient) Get(ctx context.Context, resourceGroupName s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -667,6 +669,7 @@ func (client MoveCollectionsClient) ListMoveCollectionsByResourceGroup(ctx conte
 	result.mcrl, err = client.ListMoveCollectionsByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "ListMoveCollectionsByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.mcrl.hasNextLink() && result.mcrl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -730,6 +733,7 @@ func (client MoveCollectionsClient) listMoveCollectionsByResourceGroupNextResult
 	result, err = client.ListMoveCollectionsByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "listMoveCollectionsByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -779,6 +783,7 @@ func (client MoveCollectionsClient) ListMoveCollectionsBySubscription(ctx contex
 	result.mcrl, err = client.ListMoveCollectionsBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "ListMoveCollectionsBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.mcrl.hasNextLink() && result.mcrl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -841,6 +846,7 @@ func (client MoveCollectionsClient) listMoveCollectionsBySubscriptionNextResults
 	result, err = client.ListMoveCollectionsBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "listMoveCollectionsBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1057,6 +1063,7 @@ func (client MoveCollectionsClient) Update(ctx context.Context, resourceGroupNam
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -73,6 +73,7 @@ func (client DefinitionsClient) CreateOrUpdate(ctx context.Context, policyDefini
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -152,6 +153,7 @@ func (client DefinitionsClient) CreateOrUpdateAtManagementGroup(ctx context.Cont
 	result, err = client.CreateOrUpdateAtManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "CreateOrUpdateAtManagementGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -229,6 +231,7 @@ func (client DefinitionsClient) Delete(ctx context.Context, policyDefinitionName
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -302,6 +305,7 @@ func (client DefinitionsClient) DeleteAtManagementGroup(ctx context.Context, pol
 	result, err = client.DeleteAtManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "DeleteAtManagementGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -374,6 +378,7 @@ func (client DefinitionsClient) Get(ctx context.Context, policyDefinitionName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -448,6 +453,7 @@ func (client DefinitionsClient) GetAtManagementGroup(ctx context.Context, policy
 	result, err = client.GetAtManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "GetAtManagementGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -521,6 +527,7 @@ func (client DefinitionsClient) GetBuiltIn(ctx context.Context, policyDefinition
 	result, err = client.GetBuiltInResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "GetBuiltIn", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -592,6 +599,7 @@ func (client DefinitionsClient) List(ctx context.Context) (result DefinitionList
 	result.dlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -654,6 +662,7 @@ func (client DefinitionsClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -703,6 +712,7 @@ func (client DefinitionsClient) ListBuiltIn(ctx context.Context) (result Definit
 	result.dlr, err = client.ListBuiltInResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "ListBuiltIn", resp, "Failure responding to request")
+		return
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -761,6 +771,7 @@ func (client DefinitionsClient) listBuiltInNextResults(ctx context.Context, last
 	result, err = client.ListBuiltInResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "listBuiltInNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -812,6 +823,7 @@ func (client DefinitionsClient) ListByManagementGroup(ctx context.Context, manag
 	result.dlr, err = client.ListByManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "ListByManagementGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -874,6 +886,7 @@ func (client DefinitionsClient) listByManagementGroupNextResults(ctx context.Con
 	result, err = client.ListByManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "listByManagementGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

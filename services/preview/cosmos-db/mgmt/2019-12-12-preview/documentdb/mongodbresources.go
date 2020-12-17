@@ -464,6 +464,7 @@ func (client MongoDBResourcesClient) GetMongoDBCollection(ctx context.Context, r
 	result, err = client.GetMongoDBCollectionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "GetMongoDBCollection", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -556,6 +557,7 @@ func (client MongoDBResourcesClient) GetMongoDBCollectionThroughput(ctx context.
 	result, err = client.GetMongoDBCollectionThroughputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "GetMongoDBCollectionThroughput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -647,6 +649,7 @@ func (client MongoDBResourcesClient) GetMongoDBDatabase(ctx context.Context, res
 	result, err = client.GetMongoDBDatabaseResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "GetMongoDBDatabase", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -737,6 +740,7 @@ func (client MongoDBResourcesClient) GetMongoDBDatabaseThroughput(ctx context.Co
 	result, err = client.GetMongoDBDatabaseThroughputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "GetMongoDBDatabaseThroughput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -826,6 +830,7 @@ func (client MongoDBResourcesClient) ListMongoDBCollections(ctx context.Context,
 	result, err = client.ListMongoDBCollectionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "ListMongoDBCollections", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -914,6 +919,7 @@ func (client MongoDBResourcesClient) ListMongoDBDatabases(ctx context.Context, r
 	result, err = client.ListMongoDBDatabasesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "ListMongoDBDatabases", resp, "Failure responding to request")
+		return
 	}
 
 	return

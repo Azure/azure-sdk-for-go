@@ -72,6 +72,7 @@ func (client ProjectsClient) DeleteMigrateProject(ctx context.Context, resourceG
 	result, err = client.DeleteMigrateProjectResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "DeleteMigrateProject", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -150,6 +151,7 @@ func (client ProjectsClient) GetMigrateProject(ctx context.Context, resourceGrou
 	result, err = client.GetMigrateProjectResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "GetMigrateProject", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -227,6 +229,7 @@ func (client ProjectsClient) PatchMigrateProject(ctx context.Context, resourceGr
 	result, err = client.PatchMigrateProjectResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "PatchMigrateProject", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -312,6 +315,7 @@ func (client ProjectsClient) PutMigrateProject(ctx context.Context, resourceGrou
 	result, err = client.PutMigrateProjectResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "PutMigrateProject", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -397,6 +401,7 @@ func (client ProjectsClient) RefreshMigrateProjectSummary(ctx context.Context, r
 	result, err = client.RefreshMigrateProjectSummaryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "RefreshMigrateProjectSummary", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -475,6 +480,7 @@ func (client ProjectsClient) RegisterTool(ctx context.Context, resourceGroupName
 	result, err = client.RegisterToolResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "RegisterTool", resp, "Failure responding to request")
+		return
 	}
 
 	return

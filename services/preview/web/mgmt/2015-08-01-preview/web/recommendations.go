@@ -74,6 +74,7 @@ func (client RecommendationsClient) GetRecommendationBySubscription(ctx context.
 	result, err = client.GetRecommendationBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "GetRecommendationBySubscription", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -157,6 +158,7 @@ func (client RecommendationsClient) GetRecommendationHistoryForSite(ctx context.
 	result, err = client.GetRecommendationHistoryForSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "GetRecommendationHistoryForSite", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -242,6 +244,7 @@ func (client RecommendationsClient) GetRecommendedRulesForSite(ctx context.Conte
 	result, err = client.GetRecommendedRulesForSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "GetRecommendedRulesForSite", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -327,6 +330,7 @@ func (client RecommendationsClient) GetRuleDetailsBySiteName(ctx context.Context
 	result, err = client.GetRuleDetailsBySiteNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "GetRuleDetailsBySiteName", resp, "Failure responding to request")
+		return
 	}
 
 	return

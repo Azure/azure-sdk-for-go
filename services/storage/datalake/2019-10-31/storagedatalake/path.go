@@ -159,6 +159,7 @@ func (client PathClient) Create(ctx context.Context, filesystem string, pathPara
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagedatalake.PathClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -389,6 +390,7 @@ func (client PathClient) Delete(ctx context.Context, filesystem string, pathPara
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagedatalake.PathClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -552,6 +554,7 @@ func (client PathClient) GetProperties(ctx context.Context, filesystem string, p
 	result, err = client.GetPropertiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagedatalake.PathClient", "GetProperties", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -723,6 +726,7 @@ func (client PathClient) Lease(ctx context.Context, xMsLeaseAction PathLeaseActi
 	result, err = client.LeaseResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagedatalake.PathClient", "Lease", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -883,6 +887,7 @@ func (client PathClient) List(ctx context.Context, recursive bool, filesystem st
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagedatalake.PathClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1030,6 +1035,7 @@ func (client PathClient) Read(ctx context.Context, filesystem string, pathParame
 	result, err = client.ReadResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagedatalake.PathClient", "Read", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1269,6 +1275,7 @@ func (client PathClient) Update(ctx context.Context, action PathUpdateAction, fi
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagedatalake.PathClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -88,6 +88,7 @@ func (client IoTSecuritySolutionsAnalyticsRecommendationClient) Get(ctx context.
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsRecommendationClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -74,6 +74,7 @@ func (client PostgresInstancesClient) Create(ctx context.Context, resourceGroupN
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.PostgresInstancesClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -149,6 +150,7 @@ func (client PostgresInstancesClient) Delete(ctx context.Context, resourceGroupN
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.PostgresInstancesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -223,6 +225,7 @@ func (client PostgresInstancesClient) Get(ctx context.Context, resourceGroupName
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.PostgresInstancesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -296,6 +299,7 @@ func (client PostgresInstancesClient) List(ctx context.Context) (result Postgres
 	result.pilr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.PostgresInstancesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.pilr.hasNextLink() && result.pilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -358,6 +362,7 @@ func (client PostgresInstancesClient) listNextResults(ctx context.Context, lastR
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.PostgresInstancesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -409,6 +414,7 @@ func (client PostgresInstancesClient) ListByResourceGroup(ctx context.Context, r
 	result.pilr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.PostgresInstancesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.pilr.hasNextLink() && result.pilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -472,6 +478,7 @@ func (client PostgresInstancesClient) listByResourceGroupNextResults(ctx context
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.PostgresInstancesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -524,6 +531,7 @@ func (client PostgresInstancesClient) Update(ctx context.Context, resourceGroupN
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.PostgresInstancesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

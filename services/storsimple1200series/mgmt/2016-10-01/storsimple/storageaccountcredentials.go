@@ -259,6 +259,7 @@ func (client StorageAccountCredentialsClient) Get(ctx context.Context, credentia
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.StorageAccountCredentialsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -342,6 +343,7 @@ func (client StorageAccountCredentialsClient) ListByManager(ctx context.Context,
 	result, err = client.ListByManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.StorageAccountCredentialsClient", "ListByManager", resp, "Failure responding to request")
+		return
 	}
 
 	return

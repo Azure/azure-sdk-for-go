@@ -255,6 +255,7 @@ func (client BandwidthSettingsClient) Get(ctx context.Context, bandwidthSettingN
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BandwidthSettingsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -338,6 +339,7 @@ func (client BandwidthSettingsClient) ListByManager(ctx context.Context, resourc
 	result, err = client.ListByManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BandwidthSettingsClient", "ListByManager", resp, "Failure responding to request")
+		return
 	}
 
 	return

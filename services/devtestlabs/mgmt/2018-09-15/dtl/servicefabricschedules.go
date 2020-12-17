@@ -84,6 +84,7 @@ func (client ServiceFabricSchedulesClient) CreateOrUpdate(ctx context.Context, r
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ServiceFabricSchedulesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -167,6 +168,7 @@ func (client ServiceFabricSchedulesClient) Delete(ctx context.Context, resourceG
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ServiceFabricSchedulesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -328,6 +330,7 @@ func (client ServiceFabricSchedulesClient) Get(ctx context.Context, resourceGrou
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ServiceFabricSchedulesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -416,6 +419,7 @@ func (client ServiceFabricSchedulesClient) List(ctx context.Context, resourceGro
 	result.sl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ServiceFabricSchedulesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.sl.hasNextLink() && result.sl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -494,6 +498,7 @@ func (client ServiceFabricSchedulesClient) listNextResults(ctx context.Context, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ServiceFabricSchedulesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -549,6 +554,7 @@ func (client ServiceFabricSchedulesClient) Update(ctx context.Context, resourceG
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ServiceFabricSchedulesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

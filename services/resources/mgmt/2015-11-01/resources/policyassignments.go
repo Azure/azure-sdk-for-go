@@ -75,6 +75,7 @@ func (client PolicyAssignmentsClient) Create(ctx context.Context, scope string, 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.PolicyAssignmentsClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -152,6 +153,7 @@ func (client PolicyAssignmentsClient) CreateByID(ctx context.Context, policyAssi
 	result, err = client.CreateByIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.PolicyAssignmentsClient", "CreateByID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -228,6 +230,7 @@ func (client PolicyAssignmentsClient) Delete(ctx context.Context, scope string, 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.PolicyAssignmentsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -295,6 +298,7 @@ func (client PolicyAssignmentsClient) DeleteByID(ctx context.Context, policyAssi
 	result, err = client.DeleteByIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.PolicyAssignmentsClient", "DeleteByID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -368,6 +372,7 @@ func (client PolicyAssignmentsClient) Get(ctx context.Context, scope string, pol
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.PolicyAssignmentsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -441,6 +446,7 @@ func (client PolicyAssignmentsClient) GetByID(ctx context.Context, policyAssignm
 	result, err = client.GetByIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.PolicyAssignmentsClient", "GetByID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -514,6 +520,7 @@ func (client PolicyAssignmentsClient) List(ctx context.Context, filter string) (
 	result.palr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.PolicyAssignmentsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.palr.hasNextLink() && result.palr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -579,6 +586,7 @@ func (client PolicyAssignmentsClient) listNextResults(ctx context.Context, lastR
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.PolicyAssignmentsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -643,6 +651,7 @@ func (client PolicyAssignmentsClient) ListForResource(ctx context.Context, resou
 	result.palr, err = client.ListForResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.PolicyAssignmentsClient", "ListForResource", resp, "Failure responding to request")
+		return
 	}
 	if result.palr.hasNextLink() && result.palr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -713,6 +722,7 @@ func (client PolicyAssignmentsClient) listForResourceNextResults(ctx context.Con
 	result, err = client.ListForResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.PolicyAssignmentsClient", "listForResourceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -773,6 +783,7 @@ func (client PolicyAssignmentsClient) ListForResourceGroup(ctx context.Context, 
 	result.palr, err = client.ListForResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.PolicyAssignmentsClient", "ListForResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.palr.hasNextLink() && result.palr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -839,6 +850,7 @@ func (client PolicyAssignmentsClient) listForResourceGroupNextResults(ctx contex
 	result, err = client.ListForResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.PolicyAssignmentsClient", "listForResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -891,6 +903,7 @@ func (client PolicyAssignmentsClient) ListForScope(ctx context.Context, scope st
 	result.palr, err = client.ListForScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.PolicyAssignmentsClient", "ListForScope", resp, "Failure responding to request")
+		return
 	}
 	if result.palr.hasNextLink() && result.palr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -956,6 +969,7 @@ func (client PolicyAssignmentsClient) listForScopeNextResults(ctx context.Contex
 	result, err = client.ListForScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.PolicyAssignmentsClient", "listForScopeNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

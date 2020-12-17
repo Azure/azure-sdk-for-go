@@ -86,6 +86,7 @@ func (client HcxEnterpriseSitesClient) CreateOrUpdate(ctx context.Context, resou
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.HcxEnterpriseSitesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -176,6 +177,7 @@ func (client HcxEnterpriseSitesClient) Delete(ctx context.Context, resourceGroup
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.HcxEnterpriseSitesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -262,6 +264,7 @@ func (client HcxEnterpriseSitesClient) Get(ctx context.Context, resourceGroupNam
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.HcxEnterpriseSitesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -349,6 +352,7 @@ func (client HcxEnterpriseSitesClient) List(ctx context.Context, resourceGroupNa
 	result.hesl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.HcxEnterpriseSitesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.hesl.hasNextLink() && result.hesl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -413,6 +417,7 @@ func (client HcxEnterpriseSitesClient) listNextResults(ctx context.Context, last
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.HcxEnterpriseSitesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

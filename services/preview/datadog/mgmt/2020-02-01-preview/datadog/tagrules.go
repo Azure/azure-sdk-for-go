@@ -73,6 +73,7 @@ func (client TagRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.TagRulesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -158,6 +159,7 @@ func (client TagRulesClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.TagRulesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -235,6 +237,7 @@ func (client TagRulesClient) List(ctx context.Context, resourceGroupName string,
 	result.mtrlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.TagRulesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.mtrlr.hasNextLink() && result.mtrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -299,6 +302,7 @@ func (client TagRulesClient) listNextResults(ctx context.Context, lastResults Mo
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.TagRulesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

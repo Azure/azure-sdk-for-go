@@ -97,6 +97,7 @@ func (client DataFlowDebugSessionClient) AddDataFlow(ctx context.Context, resour
 	result, err = client.AddDataFlowResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionClient", "AddDataFlow", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -280,6 +281,7 @@ func (client DataFlowDebugSessionClient) Delete(ctx context.Context, resourceGro
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -462,6 +464,7 @@ func (client DataFlowDebugSessionClient) QueryByFactory(ctx context.Context, res
 	result.qdfdsr, err = client.QueryByFactoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionClient", "QueryByFactory", resp, "Failure responding to request")
+		return
 	}
 	if result.qdfdsr.hasNextLink() && result.qdfdsr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -526,6 +529,7 @@ func (client DataFlowDebugSessionClient) queryByFactoryNextResults(ctx context.C
 	result, err = client.QueryByFactoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionClient", "queryByFactoryNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

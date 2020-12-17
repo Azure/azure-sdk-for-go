@@ -77,6 +77,7 @@ func (client ReservationsDetailsClient) List(ctx context.Context, scope string, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ReservationsDetailsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

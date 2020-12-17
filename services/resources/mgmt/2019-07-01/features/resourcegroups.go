@@ -80,6 +80,7 @@ func (client ResourceGroupsClient) CheckExistence(ctx context.Context, resourceG
 	result, err = client.CheckExistenceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ResourceGroupsClient", "CheckExistence", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -165,6 +166,7 @@ func (client ResourceGroupsClient) CreateOrUpdate(ctx context.Context, resourceG
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ResourceGroupsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -333,6 +335,7 @@ func (client ResourceGroupsClient) ExportTemplate(ctx context.Context, resourceG
 	result, err = client.ExportTemplateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ResourceGroupsClient", "ExportTemplate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -416,6 +419,7 @@ func (client ResourceGroupsClient) Get(ctx context.Context, resourceGroupName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ResourceGroupsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -492,6 +496,7 @@ func (client ResourceGroupsClient) List(ctx context.Context, filter string, top 
 	result.rglr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ResourceGroupsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rglr.hasNextLink() && result.rglr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -560,6 +565,7 @@ func (client ResourceGroupsClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ResourceGroupsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -620,6 +626,7 @@ func (client ResourceGroupsClient) Update(ctx context.Context, resourceGroupName
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ResourceGroupsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -789,6 +789,7 @@ func (client WorkloadNetworksClient) GetDhcp(ctx context.Context, resourceGroupN
 	result, err = client.GetDhcpResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "GetDhcp", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -876,6 +877,7 @@ func (client WorkloadNetworksClient) GetGateway(ctx context.Context, resourceGro
 	result, err = client.GetGatewayResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "GetGateway", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -963,6 +965,7 @@ func (client WorkloadNetworksClient) GetPortMirroring(ctx context.Context, resou
 	result, err = client.GetPortMirroringResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "GetPortMirroring", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1050,6 +1053,7 @@ func (client WorkloadNetworksClient) GetSegment(ctx context.Context, resourceGro
 	result, err = client.GetSegmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "GetSegment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1137,6 +1141,7 @@ func (client WorkloadNetworksClient) GetVirtualMachine(ctx context.Context, reso
 	result, err = client.GetVirtualMachineResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "GetVirtualMachine", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1224,6 +1229,7 @@ func (client WorkloadNetworksClient) GetVMGroup(ctx context.Context, resourceGro
 	result, err = client.GetVMGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "GetVMGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1311,6 +1317,7 @@ func (client WorkloadNetworksClient) ListDhcp(ctx context.Context, resourceGroup
 	result.wndl, err = client.ListDhcpResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "ListDhcp", resp, "Failure responding to request")
+		return
 	}
 	if result.wndl.hasNextLink() && result.wndl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1375,6 +1382,7 @@ func (client WorkloadNetworksClient) listDhcpNextResults(ctx context.Context, la
 	result, err = client.ListDhcpResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listDhcpNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1437,6 +1445,7 @@ func (client WorkloadNetworksClient) ListGateways(ctx context.Context, resourceG
 	result.wngl, err = client.ListGatewaysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "ListGateways", resp, "Failure responding to request")
+		return
 	}
 	if result.wngl.hasNextLink() && result.wngl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1501,6 +1510,7 @@ func (client WorkloadNetworksClient) listGatewaysNextResults(ctx context.Context
 	result, err = client.ListGatewaysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listGatewaysNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1563,6 +1573,7 @@ func (client WorkloadNetworksClient) ListPortMirroring(ctx context.Context, reso
 	result.wnpml, err = client.ListPortMirroringResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "ListPortMirroring", resp, "Failure responding to request")
+		return
 	}
 	if result.wnpml.hasNextLink() && result.wnpml.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1627,6 +1638,7 @@ func (client WorkloadNetworksClient) listPortMirroringNextResults(ctx context.Co
 	result, err = client.ListPortMirroringResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listPortMirroringNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1689,6 +1701,7 @@ func (client WorkloadNetworksClient) ListSegments(ctx context.Context, resourceG
 	result.wnsl, err = client.ListSegmentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "ListSegments", resp, "Failure responding to request")
+		return
 	}
 	if result.wnsl.hasNextLink() && result.wnsl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1753,6 +1766,7 @@ func (client WorkloadNetworksClient) listSegmentsNextResults(ctx context.Context
 	result, err = client.ListSegmentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listSegmentsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1815,6 +1829,7 @@ func (client WorkloadNetworksClient) ListVirtualMachines(ctx context.Context, re
 	result.wnvml, err = client.ListVirtualMachinesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "ListVirtualMachines", resp, "Failure responding to request")
+		return
 	}
 	if result.wnvml.hasNextLink() && result.wnvml.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1879,6 +1894,7 @@ func (client WorkloadNetworksClient) listVirtualMachinesNextResults(ctx context.
 	result, err = client.ListVirtualMachinesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listVirtualMachinesNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1941,6 +1957,7 @@ func (client WorkloadNetworksClient) ListVMGroups(ctx context.Context, resourceG
 	result.wnvgl, err = client.ListVMGroupsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "ListVMGroups", resp, "Failure responding to request")
+		return
 	}
 	if result.wnvgl.hasNextLink() && result.wnvgl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -2005,6 +2022,7 @@ func (client WorkloadNetworksClient) listVMGroupsNextResults(ctx context.Context
 	result, err = client.ListVMGroupsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listVMGroupsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -66,6 +66,7 @@ func (client SessionClient) CancelSparkSession(ctx context.Context, sessionID in
 	result, err = client.CancelSparkSessionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "spark.SessionClient", "CancelSparkSession", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -138,6 +139,7 @@ func (client SessionClient) CancelSparkStatement(ctx context.Context, sessionID 
 	result, err = client.CancelSparkStatementResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "spark.SessionClient", "CancelSparkStatement", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -218,6 +220,7 @@ func (client SessionClient) CreateSparkSession(ctx context.Context, sparkSession
 	result, err = client.CreateSparkSessionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "spark.SessionClient", "CreateSparkSession", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -295,6 +298,7 @@ func (client SessionClient) CreateSparkStatement(ctx context.Context, sessionID 
 	result, err = client.CreateSparkStatementResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "spark.SessionClient", "CreateSparkStatement", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -370,6 +374,7 @@ func (client SessionClient) GetSparkSession(ctx context.Context, sessionID int32
 	result, err = client.GetSparkSessionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "spark.SessionClient", "GetSparkSession", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -451,6 +456,7 @@ func (client SessionClient) GetSparkSessions(ctx context.Context, from *int32, s
 	result, err = client.GetSparkSessionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "spark.SessionClient", "GetSparkSessions", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -532,6 +538,7 @@ func (client SessionClient) GetSparkStatement(ctx context.Context, sessionID int
 	result, err = client.GetSparkStatementResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "spark.SessionClient", "GetSparkStatement", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -605,6 +612,7 @@ func (client SessionClient) GetSparkStatements(ctx context.Context, sessionID in
 	result, err = client.GetSparkStatementsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "spark.SessionClient", "GetSparkStatements", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -677,6 +685,7 @@ func (client SessionClient) ResetSparkSessionTimeout(ctx context.Context, sessio
 	result, err = client.ResetSparkSessionTimeoutResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "spark.SessionClient", "ResetSparkSessionTimeout", resp, "Failure responding to request")
+		return
 	}
 
 	return

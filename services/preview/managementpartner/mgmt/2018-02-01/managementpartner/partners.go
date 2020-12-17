@@ -69,6 +69,7 @@ func (client PartnersClient) Get(ctx context.Context) (result PartnerResponse, e
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementpartner.PartnersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

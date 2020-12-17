@@ -88,6 +88,7 @@ func (client MsixImagesClient) Expand(ctx context.Context, resourceGroupName str
 	result.emil, err = client.ExpandResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "desktopvirtualization.MsixImagesClient", "Expand", resp, "Failure responding to request")
+		return
 	}
 	if result.emil.hasNextLink() && result.emil.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -154,6 +155,7 @@ func (client MsixImagesClient) expandNextResults(ctx context.Context, lastResult
 	result, err = client.ExpandResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "desktopvirtualization.MsixImagesClient", "expandNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

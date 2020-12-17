@@ -72,6 +72,7 @@ func (client NodesClient) ListByDataBoxEdgeDevice(ctx context.Context, deviceNam
 	result, err = client.ListByDataBoxEdgeDeviceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.NodesClient", "ListByDataBoxEdgeDevice", resp, "Failure responding to request")
+		return
 	}
 
 	return

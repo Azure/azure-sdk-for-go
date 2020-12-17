@@ -71,6 +71,7 @@ func (client PartnerClient) Create(ctx context.Context, partnerID string) (resul
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementpartner.PartnerClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -143,6 +144,7 @@ func (client PartnerClient) Delete(ctx context.Context, partnerID string) (resul
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementpartner.PartnerClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -214,6 +216,7 @@ func (client PartnerClient) Get(ctx context.Context, partnerID string) (result P
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementpartner.PartnerClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -286,6 +289,7 @@ func (client PartnerClient) Update(ctx context.Context, partnerID string) (resul
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementpartner.PartnerClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

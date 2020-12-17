@@ -99,6 +99,7 @@ func (client PortsClient) Get(ctx context.Context, resourceGroupName string, wor
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.PortsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -206,6 +207,7 @@ func (client PortsClient) GetLiveness(ctx context.Context, resourceGroupName str
 	result, err = client.GetLivenessResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.PortsClient", "GetLiveness", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -314,6 +316,7 @@ func (client PortsClient) ListAcceptingProcesses(ctx context.Context, resourceGr
 	result.pc, err = client.ListAcceptingProcessesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.PortsClient", "ListAcceptingProcesses", resp, "Failure responding to request")
+		return
 	}
 	if result.pc.hasNextLink() && result.pc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -386,6 +389,7 @@ func (client PortsClient) listAcceptingProcessesNextResults(ctx context.Context,
 	result, err = client.ListAcceptingProcessesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.PortsClient", "listAcceptingProcessesNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -462,6 +466,7 @@ func (client PortsClient) ListConnections(ctx context.Context, resourceGroupName
 	result.cc, err = client.ListConnectionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.PortsClient", "ListConnections", resp, "Failure responding to request")
+		return
 	}
 	if result.cc.hasNextLink() && result.cc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -534,6 +539,7 @@ func (client PortsClient) listConnectionsNextResults(ctx context.Context, lastRe
 	result, err = client.ListConnectionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.PortsClient", "listConnectionsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

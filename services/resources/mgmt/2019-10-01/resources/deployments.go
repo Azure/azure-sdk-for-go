@@ -72,6 +72,7 @@ func (client DeploymentsClient) CalculateTemplateHash(ctx context.Context, templ
 	result, err = client.CalculateTemplateHashResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "CalculateTemplateHash", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -157,6 +158,7 @@ func (client DeploymentsClient) Cancel(ctx context.Context, resourceGroupName st
 	result, err = client.CancelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "Cancel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -244,6 +246,7 @@ func (client DeploymentsClient) CancelAtManagementGroupScope(ctx context.Context
 	result, err = client.CancelAtManagementGroupScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "CancelAtManagementGroupScope", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -327,6 +330,7 @@ func (client DeploymentsClient) CancelAtScope(ctx context.Context, scope string,
 	result, err = client.CancelAtScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "CancelAtScope", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -409,6 +413,7 @@ func (client DeploymentsClient) CancelAtSubscriptionScope(ctx context.Context, d
 	result, err = client.CancelAtSubscriptionScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "CancelAtSubscriptionScope", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -491,6 +496,7 @@ func (client DeploymentsClient) CancelAtTenantScope(ctx context.Context, deploym
 	result, err = client.CancelAtTenantScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "CancelAtTenantScope", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -576,6 +582,7 @@ func (client DeploymentsClient) CheckExistence(ctx context.Context, resourceGrou
 	result, err = client.CheckExistenceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "CheckExistence", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -661,6 +668,7 @@ func (client DeploymentsClient) CheckExistenceAtManagementGroupScope(ctx context
 	result, err = client.CheckExistenceAtManagementGroupScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "CheckExistenceAtManagementGroupScope", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -742,6 +750,7 @@ func (client DeploymentsClient) CheckExistenceAtScope(ctx context.Context, scope
 	result, err = client.CheckExistenceAtScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "CheckExistenceAtScope", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -822,6 +831,7 @@ func (client DeploymentsClient) CheckExistenceAtSubscriptionScope(ctx context.Co
 	result, err = client.CheckExistenceAtSubscriptionScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "CheckExistenceAtSubscriptionScope", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -902,6 +912,7 @@ func (client DeploymentsClient) CheckExistenceAtTenantScope(ctx context.Context,
 	result, err = client.CheckExistenceAtTenantScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "CheckExistenceAtTenantScope", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1894,6 +1905,7 @@ func (client DeploymentsClient) ExportTemplate(ctx context.Context, resourceGrou
 	result, err = client.ExportTemplateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "ExportTemplate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1980,6 +1992,7 @@ func (client DeploymentsClient) ExportTemplateAtManagementGroupScope(ctx context
 	result, err = client.ExportTemplateAtManagementGroupScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "ExportTemplateAtManagementGroupScope", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2062,6 +2075,7 @@ func (client DeploymentsClient) ExportTemplateAtScope(ctx context.Context, scope
 	result, err = client.ExportTemplateAtScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "ExportTemplateAtScope", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2143,6 +2157,7 @@ func (client DeploymentsClient) ExportTemplateAtSubscriptionScope(ctx context.Co
 	result, err = client.ExportTemplateAtSubscriptionScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "ExportTemplateAtSubscriptionScope", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2224,6 +2239,7 @@ func (client DeploymentsClient) ExportTemplateAtTenantScope(ctx context.Context,
 	result, err = client.ExportTemplateAtTenantScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "ExportTemplateAtTenantScope", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2309,6 +2325,7 @@ func (client DeploymentsClient) Get(ctx context.Context, resourceGroupName strin
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2395,6 +2412,7 @@ func (client DeploymentsClient) GetAtManagementGroupScope(ctx context.Context, g
 	result, err = client.GetAtManagementGroupScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "GetAtManagementGroupScope", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2477,6 +2495,7 @@ func (client DeploymentsClient) GetAtScope(ctx context.Context, scope string, de
 	result, err = client.GetAtScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "GetAtScope", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2558,6 +2577,7 @@ func (client DeploymentsClient) GetAtSubscriptionScope(ctx context.Context, depl
 	result, err = client.GetAtSubscriptionScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "GetAtSubscriptionScope", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2639,6 +2659,7 @@ func (client DeploymentsClient) GetAtTenantScope(ctx context.Context, deployment
 	result, err = client.GetAtTenantScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "GetAtTenantScope", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2722,6 +2743,7 @@ func (client DeploymentsClient) ListAtManagementGroupScope(ctx context.Context, 
 	result.dlr, err = client.ListAtManagementGroupScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "ListAtManagementGroupScope", resp, "Failure responding to request")
+		return
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -2790,6 +2812,7 @@ func (client DeploymentsClient) listAtManagementGroupScopeNextResults(ctx contex
 	result, err = client.ListAtManagementGroupScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "listAtManagementGroupScopeNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -2844,6 +2867,7 @@ func (client DeploymentsClient) ListAtScope(ctx context.Context, scope string, f
 	result.dlr, err = client.ListAtScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "ListAtScope", resp, "Failure responding to request")
+		return
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -2912,6 +2936,7 @@ func (client DeploymentsClient) listAtScopeNextResults(ctx context.Context, last
 	result, err = client.ListAtScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "listAtScopeNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -2965,6 +2990,7 @@ func (client DeploymentsClient) ListAtSubscriptionScope(ctx context.Context, fil
 	result.dlr, err = client.ListAtSubscriptionScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "ListAtSubscriptionScope", resp, "Failure responding to request")
+		return
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -3033,6 +3059,7 @@ func (client DeploymentsClient) listAtSubscriptionScopeNextResults(ctx context.C
 	result, err = client.ListAtSubscriptionScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "listAtSubscriptionScopeNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -3086,6 +3113,7 @@ func (client DeploymentsClient) ListAtTenantScope(ctx context.Context, filter st
 	result.dlr, err = client.ListAtTenantScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "ListAtTenantScope", resp, "Failure responding to request")
+		return
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -3150,6 +3178,7 @@ func (client DeploymentsClient) listAtTenantScopeNextResults(ctx context.Context
 	result, err = client.ListAtTenantScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "listAtTenantScopeNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -3213,6 +3242,7 @@ func (client DeploymentsClient) ListByResourceGroup(ctx context.Context, resourc
 	result.dlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -3282,6 +3312,7 @@ func (client DeploymentsClient) listByResourceGroupNextResults(ctx context.Conte
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -261,6 +261,7 @@ func (client GlobalReachConnectionsClient) Get(ctx context.Context, resourceGrou
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.GlobalReachConnectionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -348,6 +349,7 @@ func (client GlobalReachConnectionsClient) List(ctx context.Context, resourceGro
 	result.grcl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.GlobalReachConnectionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.grcl.hasNextLink() && result.grcl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -412,6 +414,7 @@ func (client GlobalReachConnectionsClient) listNextResults(ctx context.Context, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.GlobalReachConnectionsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

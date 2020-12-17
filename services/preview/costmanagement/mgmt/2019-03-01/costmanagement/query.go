@@ -104,6 +104,7 @@ func (client QueryClient) UsageByBillingAccount(ctx context.Context, billingAcco
 	result, err = client.UsageByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.QueryClient", "UsageByBillingAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -211,6 +212,7 @@ func (client QueryClient) UsageByDepartment(ctx context.Context, billingAccountI
 	result, err = client.UsageByDepartmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.QueryClient", "UsageByDepartment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -319,6 +321,7 @@ func (client QueryClient) UsageByEnrollmentAccount(ctx context.Context, billingA
 	result, err = client.UsageByEnrollmentAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.QueryClient", "UsageByEnrollmentAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -426,6 +429,7 @@ func (client QueryClient) UsageByManagementGroup(ctx context.Context, management
 	result, err = client.UsageByManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.QueryClient", "UsageByManagementGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -532,6 +536,7 @@ func (client QueryClient) UsageByResourceGroup(ctx context.Context, resourceGrou
 	result, err = client.UsageByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.QueryClient", "UsageByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -638,6 +643,7 @@ func (client QueryClient) UsageBySubscription(ctx context.Context, parameters Re
 	result, err = client.UsageBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.QueryClient", "UsageBySubscription", resp, "Failure responding to request")
+		return
 	}
 
 	return

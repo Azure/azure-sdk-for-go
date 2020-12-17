@@ -86,6 +86,7 @@ func (client ReportsClient) CreateOrUpdate(ctx context.Context, reportName strin
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -176,6 +177,7 @@ func (client ReportsClient) CreateOrUpdateByBillingAccount(ctx context.Context, 
 	result, err = client.CreateOrUpdateByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "CreateOrUpdateByBillingAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -266,6 +268,7 @@ func (client ReportsClient) CreateOrUpdateByDepartment(ctx context.Context, depa
 	result, err = client.CreateOrUpdateByDepartmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "CreateOrUpdateByDepartment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -356,6 +359,7 @@ func (client ReportsClient) CreateOrUpdateByResourceGroupName(ctx context.Contex
 	result, err = client.CreateOrUpdateByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "CreateOrUpdateByResourceGroupName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -432,6 +436,7 @@ func (client ReportsClient) Delete(ctx context.Context, reportName string) (resu
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -505,6 +510,7 @@ func (client ReportsClient) DeleteByBillingAccount(ctx context.Context, billingA
 	result, err = client.DeleteByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "DeleteByBillingAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -578,6 +584,7 @@ func (client ReportsClient) DeleteByDepartment(ctx context.Context, departmentID
 	result, err = client.DeleteByDepartmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "DeleteByDepartment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -651,6 +658,7 @@ func (client ReportsClient) DeleteByResourceGroupName(ctx context.Context, resou
 	result, err = client.DeleteByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "DeleteByResourceGroupName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -724,6 +732,7 @@ func (client ReportsClient) Execute(ctx context.Context, reportName string) (res
 	result, err = client.ExecuteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "Execute", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -797,6 +806,7 @@ func (client ReportsClient) ExecuteByBillingAccount(ctx context.Context, billing
 	result, err = client.ExecuteByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "ExecuteByBillingAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -870,6 +880,7 @@ func (client ReportsClient) ExecuteByDepartment(ctx context.Context, departmentI
 	result, err = client.ExecuteByDepartmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "ExecuteByDepartment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -943,6 +954,7 @@ func (client ReportsClient) ExecuteByResourceGroupName(ctx context.Context, reso
 	result, err = client.ExecuteByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "ExecuteByResourceGroupName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1016,6 +1028,7 @@ func (client ReportsClient) Get(ctx context.Context, reportName string) (result 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1090,6 +1103,7 @@ func (client ReportsClient) GetByBillingAccount(ctx context.Context, billingAcco
 	result, err = client.GetByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "GetByBillingAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1164,6 +1178,7 @@ func (client ReportsClient) GetByDepartment(ctx context.Context, departmentID st
 	result, err = client.GetByDepartmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "GetByDepartment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1238,6 +1253,7 @@ func (client ReportsClient) GetByResourceGroupName(ctx context.Context, resource
 	result, err = client.GetByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "GetByResourceGroupName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1312,6 +1328,7 @@ func (client ReportsClient) GetExecutionHistory(ctx context.Context, reportName 
 	result, err = client.GetExecutionHistoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "GetExecutionHistory", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1386,6 +1403,7 @@ func (client ReportsClient) GetExecutionHistoryByBillingAccount(ctx context.Cont
 	result, err = client.GetExecutionHistoryByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "GetExecutionHistoryByBillingAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1460,6 +1478,7 @@ func (client ReportsClient) GetExecutionHistoryByDepartment(ctx context.Context,
 	result, err = client.GetExecutionHistoryByDepartmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "GetExecutionHistoryByDepartment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1534,6 +1553,7 @@ func (client ReportsClient) GetExecutionHistoryByResourceGroupName(ctx context.C
 	result, err = client.GetExecutionHistoryByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "GetExecutionHistoryByResourceGroupName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1606,6 +1626,7 @@ func (client ReportsClient) List(ctx context.Context) (result ReportListResult, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1678,6 +1699,7 @@ func (client ReportsClient) ListByBillingAccount(ctx context.Context, billingAcc
 	result, err = client.ListByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "ListByBillingAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1750,6 +1772,7 @@ func (client ReportsClient) ListByDepartment(ctx context.Context, departmentID s
 	result, err = client.ListByDepartmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "ListByDepartment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1822,6 +1845,7 @@ func (client ReportsClient) ListByResourceGroupName(ctx context.Context, resourc
 	result, err = client.ListByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "ListByResourceGroupName", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -254,6 +254,7 @@ func (client DomainServicesClient) Get(ctx context.Context, resourceGroupName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -328,6 +329,7 @@ func (client DomainServicesClient) List(ctx context.Context) (result DomainServi
 	result.dslr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.dslr.hasNextLink() && result.dslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -390,6 +392,7 @@ func (client DomainServicesClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -451,6 +454,7 @@ func (client DomainServicesClient) ListByResourceGroup(ctx context.Context, reso
 	result.dslr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.dslr.hasNextLink() && result.dslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -514,6 +518,7 @@ func (client DomainServicesClient) listByResourceGroupNextResults(ctx context.Co
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

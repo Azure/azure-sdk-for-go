@@ -75,6 +75,7 @@ func (client RolesClient) ListByHub(ctx context.Context, resourceGroupName strin
 	result.rlr, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RolesClient", "ListByHub", resp, "Failure responding to request")
+		return
 	}
 	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -139,6 +140,7 @@ func (client RolesClient) listByHubNextResults(ctx context.Context, lastResults 
 	result, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RolesClient", "listByHubNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

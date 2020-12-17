@@ -72,6 +72,7 @@ func (client ProfilesClient) CheckTrafficManagerRelativeDNSNameAvailability(ctx 
 	result, err = client.CheckTrafficManagerRelativeDNSNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "trafficmanager.ProfilesClient", "CheckTrafficManagerRelativeDNSNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -144,6 +145,7 @@ func (client ProfilesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "trafficmanager.ProfilesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -221,6 +223,7 @@ func (client ProfilesClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "trafficmanager.ProfilesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -295,6 +298,7 @@ func (client ProfilesClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "trafficmanager.ProfilesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -367,6 +371,7 @@ func (client ProfilesClient) ListAll(ctx context.Context) (result ProfileListRes
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "trafficmanager.ProfilesClient", "ListAll", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -439,6 +444,7 @@ func (client ProfilesClient) ListAllInResourceGroup(ctx context.Context, resourc
 	result, err = client.ListAllInResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "trafficmanager.ProfilesClient", "ListAllInResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -514,6 +520,7 @@ func (client ProfilesClient) Update(ctx context.Context, resourceGroupName strin
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "trafficmanager.ProfilesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -100,6 +100,7 @@ func (client UserGroupsClient) ListByUser(ctx context.Context, resourceGroupName
 	result.gc, err = client.ListByUserResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserGroupsClient", "ListByUser", resp, "Failure responding to request")
+		return
 	}
 	if result.gc.hasNextLink() && result.gc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -174,6 +175,7 @@ func (client UserGroupsClient) listByUserNextResults(ctx context.Context, lastRe
 	result, err = client.ListByUserResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserGroupsClient", "listByUserNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

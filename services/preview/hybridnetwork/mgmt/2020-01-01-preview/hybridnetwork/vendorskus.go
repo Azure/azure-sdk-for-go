@@ -243,6 +243,7 @@ func (client VendorSkusClient) Get(ctx context.Context, vendorName string, skuNa
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkusClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -324,6 +325,7 @@ func (client VendorSkusClient) List(ctx context.Context, vendorName string) (res
 	result.vslr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkusClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.vslr.hasNextLink() && result.vslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -387,6 +389,7 @@ func (client VendorSkusClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkusClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

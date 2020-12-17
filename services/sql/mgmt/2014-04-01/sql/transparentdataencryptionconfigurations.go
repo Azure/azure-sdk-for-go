@@ -79,6 +79,7 @@ func (client TransparentDataEncryptionConfigurationsClient) ListByDatabase(ctx c
 	result, err = client.ListByDatabaseResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.TransparentDataEncryptionConfigurationsClient", "ListByDatabase", resp, "Failure responding to request")
+		return
 	}
 
 	return

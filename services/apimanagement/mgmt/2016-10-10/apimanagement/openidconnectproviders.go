@@ -92,6 +92,7 @@ func (client OpenIDConnectProvidersClient) CreateOrUpdate(ctx context.Context, r
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProvidersClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -183,6 +184,7 @@ func (client OpenIDConnectProvidersClient) Delete(ctx context.Context, resourceG
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProvidersClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -272,6 +274,7 @@ func (client OpenIDConnectProvidersClient) Get(ctx context.Context, resourceGrou
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProvidersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -369,6 +372,7 @@ func (client OpenIDConnectProvidersClient) ListByService(ctx context.Context, re
 	result.oicpc, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProvidersClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 	if result.oicpc.hasNextLink() && result.oicpc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -442,6 +446,7 @@ func (client OpenIDConnectProvidersClient) listByServiceNextResults(ctx context.
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProvidersClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -508,6 +513,7 @@ func (client OpenIDConnectProvidersClient) Update(ctx context.Context, resourceG
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProvidersClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

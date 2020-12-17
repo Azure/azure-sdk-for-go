@@ -76,6 +76,7 @@ func (client RestorePointsClient) ListByDatabase(ctx context.Context, resourceGr
 	result, err = client.ListByDatabaseResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.RestorePointsClient", "ListByDatabase", resp, "Failure responding to request")
+		return
 	}
 
 	return

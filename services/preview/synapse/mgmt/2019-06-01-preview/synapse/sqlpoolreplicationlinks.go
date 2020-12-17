@@ -86,6 +86,7 @@ func (client SQLPoolReplicationLinksClient) GetByName(ctx context.Context, resou
 	result, err = client.GetByNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolReplicationLinksClient", "GetByName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -175,6 +176,7 @@ func (client SQLPoolReplicationLinksClient) List(ctx context.Context, resourceGr
 	result.rllr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolReplicationLinksClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rllr.hasNextLink() && result.rllr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -240,6 +242,7 @@ func (client SQLPoolReplicationLinksClient) listNextResults(ctx context.Context,
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolReplicationLinksClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

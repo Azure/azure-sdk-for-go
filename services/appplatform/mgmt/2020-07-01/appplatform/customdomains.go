@@ -237,6 +237,7 @@ func (client CustomDomainsClient) Get(ctx context.Context, resourceGroupName str
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.CustomDomainsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -317,6 +318,7 @@ func (client CustomDomainsClient) List(ctx context.Context, resourceGroupName st
 	result.cdrc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.CustomDomainsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.cdrc.hasNextLink() && result.cdrc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -382,6 +384,7 @@ func (client CustomDomainsClient) listNextResults(ctx context.Context, lastResul
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.CustomDomainsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

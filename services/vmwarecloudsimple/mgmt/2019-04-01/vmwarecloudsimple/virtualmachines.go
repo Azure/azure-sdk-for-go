@@ -247,6 +247,7 @@ func (client VirtualMachinesClient) Get(ctx context.Context, resourceGroupName s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -325,6 +326,7 @@ func (client VirtualMachinesClient) ListByResourceGroup(ctx context.Context, res
 	result.vmlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.vmlr.hasNextLink() && result.vmlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -397,6 +399,7 @@ func (client VirtualMachinesClient) listByResourceGroupNextResults(ctx context.C
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -450,6 +453,7 @@ func (client VirtualMachinesClient) ListBySubscription(ctx context.Context, filt
 	result.vmlr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.vmlr.hasNextLink() && result.vmlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -521,6 +525,7 @@ func (client VirtualMachinesClient) listBySubscriptionNextResults(ctx context.Co
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

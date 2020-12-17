@@ -177,6 +177,7 @@ func (client ServiceUnitsClient) Delete(ctx context.Context, resourceGroupName s
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceUnitsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -263,6 +264,7 @@ func (client ServiceUnitsClient) Get(ctx context.Context, resourceGroupName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceUnitsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -349,6 +351,7 @@ func (client ServiceUnitsClient) List(ctx context.Context, resourceGroupName str
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceUnitsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

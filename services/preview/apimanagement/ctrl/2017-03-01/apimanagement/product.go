@@ -77,6 +77,7 @@ func (client ProductClient) CreateOrUpdate(ctx context.Context, apimBaseURL stri
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -168,6 +169,7 @@ func (client ProductClient) Delete(ctx context.Context, apimBaseURL string, prod
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -257,6 +259,7 @@ func (client ProductClient) Get(ctx context.Context, apimBaseURL string, product
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -356,6 +359,7 @@ func (client ProductClient) List(ctx context.Context, apimBaseURL string, filter
 	result.pc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.pc.hasNextLink() && result.pc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -430,6 +434,7 @@ func (client ProductClient) listNextResults(ctx context.Context, lastResults Pro
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -493,6 +498,7 @@ func (client ProductClient) Update(ctx context.Context, apimBaseURL string, prod
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

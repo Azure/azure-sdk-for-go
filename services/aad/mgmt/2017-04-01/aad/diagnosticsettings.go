@@ -73,6 +73,7 @@ func (client DiagnosticSettingsClient) CreateOrUpdate(ctx context.Context, param
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DiagnosticSettingsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -147,6 +148,7 @@ func (client DiagnosticSettingsClient) Delete(ctx context.Context, name string) 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DiagnosticSettingsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -218,6 +220,7 @@ func (client DiagnosticSettingsClient) Get(ctx context.Context, name string) (re
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DiagnosticSettingsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -288,6 +291,7 @@ func (client DiagnosticSettingsClient) List(ctx context.Context) (result Diagnos
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DiagnosticSettingsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

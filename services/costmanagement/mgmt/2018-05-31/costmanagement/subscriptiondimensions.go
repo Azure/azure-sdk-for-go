@@ -89,6 +89,7 @@ func (client SubscriptionDimensionsClient) List(ctx context.Context, filter stri
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.SubscriptionDimensionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

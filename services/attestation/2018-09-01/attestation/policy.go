@@ -66,6 +66,7 @@ func (client PolicyClient) Get(ctx context.Context, tenantBaseURL string, tee Te
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "attestation.PolicyClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -141,6 +142,7 @@ func (client PolicyClient) PrepareToSet(ctx context.Context, tenantBaseURL strin
 	result, err = client.PrepareToSetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "attestation.PolicyClient", "PrepareToSet", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -218,6 +220,7 @@ func (client PolicyClient) Reset(ctx context.Context, tenantBaseURL string, tee 
 	result, err = client.ResetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "attestation.PolicyClient", "Reset", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -295,6 +298,7 @@ func (client PolicyClient) Set(ctx context.Context, tenantBaseURL string, tee Te
 	result, err = client.SetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "attestation.PolicyClient", "Set", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -67,6 +67,7 @@ func (client ManifestsClient) Create(ctx context.Context, name string, reference
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.ManifestsClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -142,6 +143,7 @@ func (client ManifestsClient) Delete(ctx context.Context, name string, reference
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.ManifestsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -215,6 +217,7 @@ func (client ManifestsClient) Get(ctx context.Context, name string, reference st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.ManifestsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -291,6 +294,7 @@ func (client ManifestsClient) GetAttributes(ctx context.Context, name string, re
 	result, err = client.GetAttributesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.ManifestsClient", "GetAttributes", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -366,6 +370,7 @@ func (client ManifestsClient) GetList(ctx context.Context, name string, last str
 	result, err = client.GetListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.ManifestsClient", "GetList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -450,6 +455,7 @@ func (client ManifestsClient) UpdateAttributes(ctx context.Context, name string,
 	result, err = client.UpdateAttributesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.ManifestsClient", "UpdateAttributes", resp, "Failure responding to request")
+		return
 	}
 
 	return

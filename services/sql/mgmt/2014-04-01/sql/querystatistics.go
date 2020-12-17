@@ -77,6 +77,7 @@ func (client QueryStatisticsClient) ListByQuery(ctx context.Context, resourceGro
 	result, err = client.ListByQueryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.QueryStatisticsClient", "ListByQuery", resp, "Failure responding to request")
+		return
 	}
 
 	return

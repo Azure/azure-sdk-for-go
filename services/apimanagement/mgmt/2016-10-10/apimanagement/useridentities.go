@@ -86,6 +86,7 @@ func (client UserIdentitiesClient) ListByUsers(ctx context.Context, resourceGrou
 	result, err = client.ListByUsersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserIdentitiesClient", "ListByUsers", resp, "Failure responding to request")
+		return
 	}
 
 	return

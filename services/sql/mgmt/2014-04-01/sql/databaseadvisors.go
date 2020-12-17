@@ -79,6 +79,7 @@ func (client DatabaseAdvisorsClient) CreateOrUpdate(ctx context.Context, resourc
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabaseAdvisorsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -163,6 +164,7 @@ func (client DatabaseAdvisorsClient) Get(ctx context.Context, resourceGroupName 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabaseAdvisorsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -242,6 +244,7 @@ func (client DatabaseAdvisorsClient) ListByDatabase(ctx context.Context, resourc
 	result, err = client.ListByDatabaseResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabaseAdvisorsClient", "ListByDatabase", resp, "Failure responding to request")
+		return
 	}
 
 	return

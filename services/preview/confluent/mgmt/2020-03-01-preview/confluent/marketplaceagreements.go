@@ -70,6 +70,7 @@ func (client MarketplaceAgreementsClient) Create(ctx context.Context, body *Agre
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "confluent.MarketplaceAgreementsClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -143,6 +144,7 @@ func (client MarketplaceAgreementsClient) List(ctx context.Context) (result Agre
 	result.arlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "confluent.MarketplaceAgreementsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.arlr.hasNextLink() && result.arlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -199,6 +201,7 @@ func (client MarketplaceAgreementsClient) listNextResults(ctx context.Context, l
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "confluent.MarketplaceAgreementsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

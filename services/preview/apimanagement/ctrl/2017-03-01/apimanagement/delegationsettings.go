@@ -67,6 +67,7 @@ func (client DelegationSettingsClient) CreateOrUpdate(ctx context.Context, apimB
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.DelegationSettingsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -142,6 +143,7 @@ func (client DelegationSettingsClient) Get(ctx context.Context, apimBaseURL stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.DelegationSettingsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -218,6 +220,7 @@ func (client DelegationSettingsClient) Update(ctx context.Context, apimBaseURL s
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.DelegationSettingsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -79,6 +79,7 @@ func (client IotHubResourceClient) CheckNameAvailability(ctx context.Context, op
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -156,6 +157,7 @@ func (client IotHubResourceClient) CreateEventHubConsumerGroup(ctx context.Conte
 	result, err = client.CreateEventHubConsumerGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "CreateEventHubConsumerGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -423,6 +425,7 @@ func (client IotHubResourceClient) DeleteEventHubConsumerGroup(ctx context.Conte
 	result, err = client.DeleteEventHubConsumerGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "DeleteEventHubConsumerGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -509,6 +512,7 @@ func (client IotHubResourceClient) ExportDevices(ctx context.Context, resourceGr
 	result, err = client.ExportDevicesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "ExportDevices", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -586,6 +590,7 @@ func (client IotHubResourceClient) Get(ctx context.Context, resourceGroupName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -663,6 +668,7 @@ func (client IotHubResourceClient) GetEventHubConsumerGroup(ctx context.Context,
 	result, err = client.GetEventHubConsumerGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "GetEventHubConsumerGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -742,6 +748,7 @@ func (client IotHubResourceClient) GetJob(ctx context.Context, resourceGroupName
 	result, err = client.GetJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "GetJob", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -820,6 +827,7 @@ func (client IotHubResourceClient) GetKeysForKeyName(ctx context.Context, resour
 	result, err = client.GetKeysForKeyNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "GetKeysForKeyName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -897,6 +905,7 @@ func (client IotHubResourceClient) GetQuotaMetrics(ctx context.Context, resource
 	result.ihqmilr, err = client.GetQuotaMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "GetQuotaMetrics", resp, "Failure responding to request")
+		return
 	}
 	if result.ihqmilr.hasNextLink() && result.ihqmilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -961,6 +970,7 @@ func (client IotHubResourceClient) getQuotaMetricsNextResults(ctx context.Contex
 	result, err = client.GetQuotaMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "getQuotaMetricsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1012,6 +1022,7 @@ func (client IotHubResourceClient) GetStats(ctx context.Context, resourceGroupNa
 	result, err = client.GetStatsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "GetStats", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1088,6 +1099,7 @@ func (client IotHubResourceClient) GetValidSkus(ctx context.Context, resourceGro
 	result.ihsdlr, err = client.GetValidSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "GetValidSkus", resp, "Failure responding to request")
+		return
 	}
 	if result.ihsdlr.hasNextLink() && result.ihsdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1152,6 +1164,7 @@ func (client IotHubResourceClient) getValidSkusNextResults(ctx context.Context, 
 	result, err = client.GetValidSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "getValidSkusNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1213,6 +1226,7 @@ func (client IotHubResourceClient) ImportDevices(ctx context.Context, resourceGr
 	result, err = client.ImportDevicesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "ImportDevices", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1290,6 +1304,7 @@ func (client IotHubResourceClient) ListByResourceGroup(ctx context.Context, reso
 	result.ihdlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.ihdlr.hasNextLink() && result.ihdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1353,6 +1368,7 @@ func (client IotHubResourceClient) listByResourceGroupNextResults(ctx context.Co
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1402,6 +1418,7 @@ func (client IotHubResourceClient) ListBySubscription(ctx context.Context) (resu
 	result.ihdlr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.ihdlr.hasNextLink() && result.ihdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1464,6 +1481,7 @@ func (client IotHubResourceClient) listBySubscriptionNextResults(ctx context.Con
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1518,6 +1536,7 @@ func (client IotHubResourceClient) ListEventHubConsumerGroups(ctx context.Contex
 	result.ehcglr, err = client.ListEventHubConsumerGroupsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "ListEventHubConsumerGroups", resp, "Failure responding to request")
+		return
 	}
 	if result.ehcglr.hasNextLink() && result.ehcglr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1583,6 +1602,7 @@ func (client IotHubResourceClient) listEventHubConsumerGroupsNextResults(ctx con
 	result, err = client.ListEventHubConsumerGroupsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "listEventHubConsumerGroupsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1636,6 +1656,7 @@ func (client IotHubResourceClient) ListJobs(ctx context.Context, resourceGroupNa
 	result.jrlr, err = client.ListJobsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "ListJobs", resp, "Failure responding to request")
+		return
 	}
 	if result.jrlr.hasNextLink() && result.jrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1700,6 +1721,7 @@ func (client IotHubResourceClient) listJobsNextResults(ctx context.Context, last
 	result, err = client.ListJobsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "listJobsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1753,6 +1775,7 @@ func (client IotHubResourceClient) ListKeys(ctx context.Context, resourceGroupNa
 	result.sasarlr, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "ListKeys", resp, "Failure responding to request")
+		return
 	}
 	if result.sasarlr.hasNextLink() && result.sasarlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1817,6 +1840,7 @@ func (client IotHubResourceClient) listKeysNextResults(ctx context.Context, last
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "listKeysNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

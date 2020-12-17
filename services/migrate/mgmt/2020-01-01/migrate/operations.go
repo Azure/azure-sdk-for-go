@@ -72,6 +72,7 @@ func (client OperationsClient) List(ctx context.Context, APIVersion string) (res
 	result.orl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.OperationsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.orl.hasNextLink() && result.orl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -129,6 +130,7 @@ func (client OperationsClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.OperationsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

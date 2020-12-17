@@ -81,6 +81,7 @@ func (client GlobalUsersClient) GetEnvironment(ctx context.Context, userName str
 	result, err = client.GetEnvironmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersClient", "GetEnvironment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -165,6 +166,7 @@ func (client GlobalUsersClient) GetOperationBatchStatus(ctx context.Context, use
 	result, err = client.GetOperationBatchStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersClient", "GetOperationBatchStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -246,6 +248,7 @@ func (client GlobalUsersClient) GetOperationStatus(ctx context.Context, userName
 	result, err = client.GetOperationStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersClient", "GetOperationStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -322,6 +325,7 @@ func (client GlobalUsersClient) GetPersonalPreferences(ctx context.Context, user
 	result, err = client.GetPersonalPreferencesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersClient", "GetPersonalPreferences", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -397,6 +401,7 @@ func (client GlobalUsersClient) ListEnvironments(ctx context.Context, userName s
 	result, err = client.ListEnvironmentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersClient", "ListEnvironments", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -471,6 +476,7 @@ func (client GlobalUsersClient) ListLabs(ctx context.Context, userName string) (
 	result, err = client.ListLabsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersClient", "ListLabs", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -544,6 +550,7 @@ func (client GlobalUsersClient) Register(ctx context.Context, userName string, r
 	result, err = client.RegisterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersClient", "Register", resp, "Failure responding to request")
+		return
 	}
 
 	return

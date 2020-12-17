@@ -109,6 +109,7 @@ func (client BaseClient) BackupPartition(ctx context.Context, partitionID uuid.U
 	result, err = client.BackupPartitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "BackupPartition", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -229,6 +230,7 @@ func (client BaseClient) CancelOperation(ctx context.Context, operationID uuid.U
 	result, err = client.CancelOperationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "CancelOperation", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -309,6 +311,7 @@ func (client BaseClient) CancelRepairTask(ctx context.Context, repairTaskCancelD
 	result, err = client.CancelRepairTaskResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "CancelRepairTask", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -394,6 +397,7 @@ func (client BaseClient) CommitImageStoreUploadSession(ctx context.Context, sess
 	result, err = client.CommitImageStoreUploadSessionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "CommitImageStoreUploadSession", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -483,6 +487,7 @@ func (client BaseClient) CopyImageStoreContent(ctx context.Context, imageStoreCo
 	result, err = client.CopyImageStoreContentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "CopyImageStoreContent", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -579,6 +584,7 @@ func (client BaseClient) CreateApplication(ctx context.Context, applicationDescr
 	result, err = client.CreateApplicationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "CreateApplication", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -675,6 +681,7 @@ func (client BaseClient) CreateBackupPolicy(ctx context.Context, backupPolicyDes
 	result, err = client.CreateBackupPolicyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "CreateBackupPolicy", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -766,6 +773,7 @@ func (client BaseClient) CreateComposeDeployment(ctx context.Context, createComp
 	result, err = client.CreateComposeDeploymentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "CreateComposeDeployment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -854,6 +862,7 @@ func (client BaseClient) CreateName(ctx context.Context, nameDescription NameDes
 	result, err = client.CreateNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "CreateName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -945,6 +954,7 @@ func (client BaseClient) CreateRepairTask(ctx context.Context, repairTask Repair
 	result, err = client.CreateRepairTaskResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "CreateRepairTask", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1038,6 +1048,7 @@ func (client BaseClient) CreateService(ctx context.Context, applicationID string
 	result, err = client.CreateServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "CreateService", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1140,6 +1151,7 @@ func (client BaseClient) CreateServiceFromTemplate(ctx context.Context, applicat
 	result, err = client.CreateServiceFromTemplateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "CreateServiceFromTemplate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1242,6 +1254,7 @@ func (client BaseClient) DeleteApplication(ctx context.Context, applicationID st
 	result, err = client.DeleteApplicationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "DeleteApplication", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1335,6 +1348,7 @@ func (client BaseClient) DeleteBackupPolicy(ctx context.Context, backupPolicyNam
 	result, err = client.DeleteBackupPolicyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "DeleteBackupPolicy", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1424,6 +1438,7 @@ func (client BaseClient) DeleteImageStoreContent(ctx context.Context, contentPat
 	result, err = client.DeleteImageStoreContentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "DeleteImageStoreContent", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1514,6 +1529,7 @@ func (client BaseClient) DeleteImageStoreUploadSession(ctx context.Context, sess
 	result, err = client.DeleteImageStoreUploadSessionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "DeleteImageStoreUploadSession", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1600,6 +1616,7 @@ func (client BaseClient) DeleteName(ctx context.Context, nameID string, timeout 
 	result, err = client.DeleteNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "DeleteName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1690,6 +1707,7 @@ func (client BaseClient) DeleteProperty(ctx context.Context, nameID string, prop
 	result, err = client.DeletePropertyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "DeleteProperty", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1773,6 +1791,7 @@ func (client BaseClient) DeleteRepairTask(ctx context.Context, repairTaskDeleteD
 	result, err = client.DeleteRepairTaskResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "DeleteRepairTask", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1865,6 +1884,7 @@ func (client BaseClient) DeleteService(ctx context.Context, serviceID string, fo
 	result, err = client.DeleteServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "DeleteService", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1966,6 +1986,7 @@ func (client BaseClient) DeployServicePackageToNode(ctx context.Context, nodeNam
 	result, err = client.DeployServicePackageToNodeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "DeployServicePackageToNode", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2060,6 +2081,7 @@ func (client BaseClient) DisableApplicationBackup(ctx context.Context, applicati
 	result, err = client.DisableApplicationBackupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "DisableApplicationBackup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2154,6 +2176,7 @@ func (client BaseClient) DisableNode(ctx context.Context, nodeName string, deact
 	result, err = client.DisableNodeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "DisableNode", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2247,6 +2270,7 @@ func (client BaseClient) DisablePartitionBackup(ctx context.Context, partitionID
 	result, err = client.DisablePartitionBackupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "DisablePartitionBackup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2342,6 +2366,7 @@ func (client BaseClient) DisableServiceBackup(ctx context.Context, serviceID str
 	result, err = client.DisableServiceBackupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "DisableServiceBackup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2439,6 +2464,7 @@ func (client BaseClient) EnableApplicationBackup(ctx context.Context, applicatio
 	result, err = client.EnableApplicationBackupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "EnableApplicationBackup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2531,6 +2557,7 @@ func (client BaseClient) EnableNode(ctx context.Context, nodeName string, timeou
 	result, err = client.EnableNodeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "EnableNode", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2626,6 +2653,7 @@ func (client BaseClient) EnablePartitionBackup(ctx context.Context, partitionID 
 	result, err = client.EnablePartitionBackupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "EnablePartitionBackup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2728,6 +2756,7 @@ func (client BaseClient) EnableServiceBackup(ctx context.Context, serviceID stri
 	result, err = client.EnableServiceBackupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "EnableServiceBackup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2813,6 +2842,7 @@ func (client BaseClient) ForceApproveRepairTask(ctx context.Context, repairTaskA
 	result, err = client.ForceApproveRepairTaskResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "ForceApproveRepairTask", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2896,6 +2926,7 @@ func (client BaseClient) GetAadMetadata(ctx context.Context, timeout *int64) (re
 	result, err = client.GetAadMetadataResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetAadMetadata", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2995,6 +3026,7 @@ func (client BaseClient) GetAllEntitiesBackedUpByPolicy(ctx context.Context, bac
 	result, err = client.GetAllEntitiesBackedUpByPolicyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetAllEntitiesBackedUpByPolicy", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3110,6 +3142,7 @@ func (client BaseClient) GetApplicationBackupConfigurationInfo(ctx context.Conte
 	result, err = client.GetApplicationBackupConfigurationInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetApplicationBackupConfigurationInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3235,6 +3268,7 @@ func (client BaseClient) GetApplicationBackupList(ctx context.Context, applicati
 	result, err = client.GetApplicationBackupListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetApplicationBackupList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3355,6 +3389,7 @@ func (client BaseClient) GetApplicationEventList(ctx context.Context, applicatio
 	result, err = client.GetApplicationEventListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetApplicationEventList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3513,6 +3548,7 @@ func (client BaseClient) GetApplicationHealth(ctx context.Context, applicationID
 	result, err = client.GetApplicationHealthResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetApplicationHealth", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3685,6 +3721,7 @@ func (client BaseClient) GetApplicationHealthUsingPolicy(ctx context.Context, ap
 	result, err = client.GetApplicationHealthUsingPolicyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetApplicationHealthUsingPolicy", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3807,6 +3844,7 @@ func (client BaseClient) GetApplicationInfo(ctx context.Context, applicationID s
 	result, err = client.GetApplicationInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetApplicationInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3928,6 +3966,7 @@ func (client BaseClient) GetApplicationInfoList(ctx context.Context, application
 	result, err = client.GetApplicationInfoListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetApplicationInfoList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4041,6 +4080,7 @@ func (client BaseClient) GetApplicationLoadInfo(ctx context.Context, application
 	result, err = client.GetApplicationLoadInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetApplicationLoadInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4132,6 +4172,7 @@ func (client BaseClient) GetApplicationManifest(ctx context.Context, application
 	result, err = client.GetApplicationManifestResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetApplicationManifest", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4227,6 +4268,7 @@ func (client BaseClient) GetApplicationNameInfo(ctx context.Context, serviceID s
 	result, err = client.GetApplicationNameInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetApplicationNameInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4323,6 +4365,7 @@ func (client BaseClient) GetApplicationsEventList(ctx context.Context, startTime
 	result, err = client.GetApplicationsEventListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetApplicationsEventList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4447,6 +4490,7 @@ func (client BaseClient) GetApplicationTypeInfoList(ctx context.Context, applica
 	result, err = client.GetApplicationTypeInfoListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetApplicationTypeInfoList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4575,6 +4619,7 @@ func (client BaseClient) GetApplicationTypeInfoListByName(ctx context.Context, a
 	result, err = client.GetApplicationTypeInfoListByNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetApplicationTypeInfoListByName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4685,6 +4730,7 @@ func (client BaseClient) GetApplicationUpgrade(ctx context.Context, applicationI
 	result, err = client.GetApplicationUpgradeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetApplicationUpgrade", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4774,6 +4820,7 @@ func (client BaseClient) GetBackupPolicyByName(ctx context.Context, backupPolicy
 	result, err = client.GetBackupPolicyByNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetBackupPolicyByName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4875,6 +4922,7 @@ func (client BaseClient) GetBackupPolicyList(ctx context.Context, continuationTo
 	result, err = client.GetBackupPolicyListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetBackupPolicyList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -4986,6 +5034,7 @@ func (client BaseClient) GetBackupsFromBackupLocation(ctx context.Context, getBa
 	result, err = client.GetBackupsFromBackupLocationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetBackupsFromBackupLocation", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5081,6 +5130,7 @@ func (client BaseClient) GetChaos(ctx context.Context, timeout *int64) (result C
 	result, err = client.GetChaosResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetChaos", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5190,6 +5240,7 @@ func (client BaseClient) GetChaosEvents(ctx context.Context, continuationToken s
 	result, err = client.GetChaosEventsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetChaosEvents", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5276,6 +5327,7 @@ func (client BaseClient) GetChaosSchedule(ctx context.Context) (result ChaosSche
 	result, err = client.GetChaosScheduleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetChaosSchedule", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5358,6 +5410,7 @@ func (client BaseClient) GetClusterConfiguration(ctx context.Context, configurat
 	result, err = client.GetClusterConfigurationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetClusterConfiguration", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5444,6 +5497,7 @@ func (client BaseClient) GetClusterConfigurationUpgradeStatus(ctx context.Contex
 	result, err = client.GetClusterConfigurationUpgradeStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetClusterConfigurationUpgradeStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5536,6 +5590,7 @@ func (client BaseClient) GetClusterEventList(ctx context.Context, startTimeUtc s
 	result, err = client.GetClusterEventListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetClusterEventList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5696,6 +5751,7 @@ func (client BaseClient) GetClusterHealth(ctx context.Context, nodesHealthStateF
 	result, err = client.GetClusterHealthResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetClusterHealth", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5808,6 +5864,7 @@ func (client BaseClient) GetClusterHealthChunk(ctx context.Context, timeout *int
 	result, err = client.GetClusterHealthChunkResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetClusterHealthChunk", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -5914,6 +5971,7 @@ func (client BaseClient) GetClusterHealthChunkUsingPolicyAndAdvancedFilters(ctx 
 	result, err = client.GetClusterHealthChunkUsingPolicyAndAdvancedFiltersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetClusterHealthChunkUsingPolicyAndAdvancedFilters", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6077,6 +6135,7 @@ func (client BaseClient) GetClusterHealthUsingPolicy(ctx context.Context, nodesH
 	result, err = client.GetClusterHealthUsingPolicyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetClusterHealthUsingPolicy", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6201,6 +6260,7 @@ func (client BaseClient) GetClusterManifest(ctx context.Context, timeout *int64)
 	result, err = client.GetClusterManifestResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetClusterManifest", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6286,6 +6346,7 @@ func (client BaseClient) GetClusterUpgradeProgress(ctx context.Context, timeout 
 	result, err = client.GetClusterUpgradeProgressResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetClusterUpgradeProgress", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6373,6 +6434,7 @@ func (client BaseClient) GetComposeDeploymentStatus(ctx context.Context, deploym
 	result, err = client.GetComposeDeploymentStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetComposeDeploymentStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6477,6 +6539,7 @@ func (client BaseClient) GetComposeDeploymentStatusList(ctx context.Context, con
 	result, err = client.GetComposeDeploymentStatusListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetComposeDeploymentStatusList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6571,6 +6634,7 @@ func (client BaseClient) GetComposeDeploymentUpgradeProgress(ctx context.Context
 	result, err = client.GetComposeDeploymentUpgradeProgressResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetComposeDeploymentUpgradeProgress", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6672,6 +6736,7 @@ func (client BaseClient) GetContainerLogsDeployedOnNode(ctx context.Context, nod
 	result, err = client.GetContainerLogsDeployedOnNodeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetContainerLogsDeployedOnNode", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6779,6 +6844,7 @@ func (client BaseClient) GetContainersEventList(ctx context.Context, startTimeUt
 	result, err = client.GetContainersEventListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetContainersEventList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6875,6 +6941,7 @@ func (client BaseClient) GetCorrelatedEventList(ctx context.Context, eventInstan
 	result, err = client.GetCorrelatedEventListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetCorrelatedEventList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -6971,6 +7038,7 @@ func (client BaseClient) GetDataLossProgress(ctx context.Context, serviceID stri
 	result, err = client.GetDataLossProgressResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetDataLossProgress", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7106,6 +7174,7 @@ func (client BaseClient) GetDeployedApplicationHealth(ctx context.Context, nodeN
 	result, err = client.GetDeployedApplicationHealthResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetDeployedApplicationHealth", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7262,6 +7331,7 @@ func (client BaseClient) GetDeployedApplicationHealthUsingPolicy(ctx context.Con
 	result, err = client.GetDeployedApplicationHealthUsingPolicyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetDeployedApplicationHealthUsingPolicy", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7386,6 +7456,7 @@ func (client BaseClient) GetDeployedApplicationInfo(ctx context.Context, nodeNam
 	result, err = client.GetDeployedApplicationInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetDeployedApplicationInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7503,6 +7574,7 @@ func (client BaseClient) GetDeployedApplicationInfoList(ctx context.Context, nod
 	result, err = client.GetDeployedApplicationInfoListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetDeployedApplicationInfoList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7615,6 +7687,7 @@ func (client BaseClient) GetDeployedCodePackageInfoList(ctx context.Context, nod
 	result, err = client.GetDeployedCodePackageInfoListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetDeployedCodePackageInfoList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7734,6 +7807,7 @@ func (client BaseClient) GetDeployedServicePackageHealth(ctx context.Context, no
 	result, err = client.GetDeployedServicePackageHealthResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetDeployedServicePackageHealth", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7860,6 +7934,7 @@ func (client BaseClient) GetDeployedServicePackageHealthUsingPolicy(ctx context.
 	result, err = client.GetDeployedServicePackageHealthUsingPolicyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetDeployedServicePackageHealthUsingPolicy", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -7967,6 +8042,7 @@ func (client BaseClient) GetDeployedServicePackageInfoList(ctx context.Context, 
 	result, err = client.GetDeployedServicePackageInfoListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetDeployedServicePackageInfoList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8065,6 +8141,7 @@ func (client BaseClient) GetDeployedServicePackageInfoListByName(ctx context.Con
 	result, err = client.GetDeployedServicePackageInfoListByNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetDeployedServicePackageInfoListByName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8160,6 +8237,7 @@ func (client BaseClient) GetDeployedServiceReplicaDetailInfo(ctx context.Context
 	result, err = client.GetDeployedServiceReplicaDetailInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetDeployedServiceReplicaDetailInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8254,6 +8332,7 @@ func (client BaseClient) GetDeployedServiceReplicaDetailInfoByPartitionID(ctx co
 	result, err = client.GetDeployedServiceReplicaDetailInfoByPartitionIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetDeployedServiceReplicaDetailInfoByPartitionID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8355,6 +8434,7 @@ func (client BaseClient) GetDeployedServiceReplicaInfoList(ctx context.Context, 
 	result, err = client.GetDeployedServiceReplicaInfoListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetDeployedServiceReplicaInfoList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8463,6 +8543,7 @@ func (client BaseClient) GetDeployedServiceTypeInfoByName(ctx context.Context, n
 	result, err = client.GetDeployedServiceTypeInfoByNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetDeployedServiceTypeInfoByName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8567,6 +8648,7 @@ func (client BaseClient) GetDeployedServiceTypeInfoList(ctx context.Context, nod
 	result, err = client.GetDeployedServiceTypeInfoListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetDeployedServiceTypeInfoList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8673,6 +8755,7 @@ func (client BaseClient) GetFaultOperationList(ctx context.Context, typeFilter i
 	result, err = client.GetFaultOperationListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetFaultOperationList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8761,6 +8844,7 @@ func (client BaseClient) GetImageStoreContent(ctx context.Context, contentPath s
 	result, err = client.GetImageStoreContentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetImageStoreContent", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8849,6 +8933,7 @@ func (client BaseClient) GetImageStoreRootContent(ctx context.Context, timeout *
 	result, err = client.GetImageStoreRootContentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetImageStoreRootContent", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -8936,6 +9021,7 @@ func (client BaseClient) GetImageStoreUploadSessionByID(ctx context.Context, ses
 	result, err = client.GetImageStoreUploadSessionByIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetImageStoreUploadSessionByID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -9023,6 +9109,7 @@ func (client BaseClient) GetImageStoreUploadSessionByPath(ctx context.Context, c
 	result, err = client.GetImageStoreUploadSessionByPathResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetImageStoreUploadSessionByPath", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -9112,6 +9199,7 @@ func (client BaseClient) GetNameExistsInfo(ctx context.Context, nameID string, t
 	result, err = client.GetNameExistsInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetNameExistsInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -9208,6 +9296,7 @@ func (client BaseClient) GetNodeEventList(ctx context.Context, nodeName string, 
 	result, err = client.GetNodeEventListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetNodeEventList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -9325,6 +9414,7 @@ func (client BaseClient) GetNodeHealth(ctx context.Context, nodeName string, eve
 	result, err = client.GetNodeHealthResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetNodeHealth", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -9439,6 +9529,7 @@ func (client BaseClient) GetNodeHealthUsingPolicy(ctx context.Context, nodeName 
 	result, err = client.GetNodeHealthUsingPolicyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetNodeHealthUsingPolicy", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -9539,6 +9630,7 @@ func (client BaseClient) GetNodeInfo(ctx context.Context, nodeName string, timeo
 	result, err = client.GetNodeInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetNodeInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -9635,6 +9727,7 @@ func (client BaseClient) GetNodeInfoList(ctx context.Context, continuationToken 
 	result, err = client.GetNodeInfoListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetNodeInfoList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -9729,6 +9822,7 @@ func (client BaseClient) GetNodeLoadInfo(ctx context.Context, nodeName string, t
 	result, err = client.GetNodeLoadInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetNodeLoadInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -9825,6 +9919,7 @@ func (client BaseClient) GetNodesEventList(ctx context.Context, startTimeUtc str
 	result, err = client.GetNodesEventListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetNodesEventList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -9924,6 +10019,7 @@ func (client BaseClient) GetNodeTransitionProgress(ctx context.Context, nodeName
 	result, err = client.GetNodeTransitionProgressResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetNodeTransitionProgress", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -10015,6 +10111,7 @@ func (client BaseClient) GetPartitionBackupConfigurationInfo(ctx context.Context
 	result, err = client.GetPartitionBackupConfigurationInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetPartitionBackupConfigurationInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -10114,6 +10211,7 @@ func (client BaseClient) GetPartitionBackupList(ctx context.Context, partitionID
 	result, err = client.GetPartitionBackupListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetPartitionBackupList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -10215,6 +10313,7 @@ func (client BaseClient) GetPartitionBackupProgress(ctx context.Context, partiti
 	result, err = client.GetPartitionBackupProgressResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetPartitionBackupProgress", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -10312,6 +10411,7 @@ func (client BaseClient) GetPartitionEventList(ctx context.Context, partitionID 
 	result, err = client.GetPartitionEventListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetPartitionEventList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -10449,6 +10549,7 @@ func (client BaseClient) GetPartitionHealth(ctx context.Context, partitionID uui
 	result, err = client.GetPartitionHealthResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetPartitionHealth", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -10598,6 +10699,7 @@ func (client BaseClient) GetPartitionHealthUsingPolicy(ctx context.Context, part
 	result, err = client.GetPartitionHealthUsingPolicyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetPartitionHealthUsingPolicy", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -10709,6 +10811,7 @@ func (client BaseClient) GetPartitionInfo(ctx context.Context, partitionID uuid.
 	result, err = client.GetPartitionInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetPartitionInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -10809,6 +10912,7 @@ func (client BaseClient) GetPartitionInfoList(ctx context.Context, serviceID str
 	result, err = client.GetPartitionInfoListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetPartitionInfoList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -10903,6 +11007,7 @@ func (client BaseClient) GetPartitionLoadInformation(ctx context.Context, partit
 	result, err = client.GetPartitionLoadInformationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetPartitionLoadInformation", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -11001,6 +11106,7 @@ func (client BaseClient) GetPartitionReplicaEventList(ctx context.Context, parti
 	result, err = client.GetPartitionReplicaEventListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetPartitionReplicaEventList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -11110,6 +11216,7 @@ func (client BaseClient) GetPartitionReplicasEventList(ctx context.Context, part
 	result, err = client.GetPartitionReplicasEventListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetPartitionReplicasEventList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -11218,6 +11325,7 @@ func (client BaseClient) GetPartitionRestartProgress(ctx context.Context, servic
 	result, err = client.GetPartitionRestartProgressResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetPartitionRestartProgress", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -11310,6 +11418,7 @@ func (client BaseClient) GetPartitionRestoreProgress(ctx context.Context, partit
 	result, err = client.GetPartitionRestoreProgressResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetPartitionRestoreProgress", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -11406,6 +11515,7 @@ func (client BaseClient) GetPartitionsEventList(ctx context.Context, startTimeUt
 	result, err = client.GetPartitionsEventListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetPartitionsEventList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -11504,6 +11614,7 @@ func (client BaseClient) GetPropertyInfo(ctx context.Context, nameID string, pro
 	result, err = client.GetPropertyInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetPropertyInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -11603,6 +11714,7 @@ func (client BaseClient) GetPropertyInfoList(ctx context.Context, nameID string,
 	result, err = client.GetPropertyInfoListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetPropertyInfoList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -11702,6 +11814,7 @@ func (client BaseClient) GetProvisionedFabricCodeVersionInfoList(ctx context.Con
 	result, err = client.GetProvisionedFabricCodeVersionInfoListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetProvisionedFabricCodeVersionInfoList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -11792,6 +11905,7 @@ func (client BaseClient) GetProvisionedFabricConfigVersionInfoList(ctx context.C
 	result, err = client.GetProvisionedFabricConfigVersionInfoListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetProvisionedFabricConfigVersionInfoList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -11888,6 +12002,7 @@ func (client BaseClient) GetQuorumLossProgress(ctx context.Context, serviceID st
 	result, err = client.GetQuorumLossProgressResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetQuorumLossProgress", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -11977,6 +12092,7 @@ func (client BaseClient) GetRepairTaskList(ctx context.Context, taskIDFilter str
 	result, err = client.GetRepairTaskListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetRepairTaskList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12084,6 +12200,7 @@ func (client BaseClient) GetReplicaHealth(ctx context.Context, partitionID uuid.
 	result, err = client.GetReplicaHealthResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetReplicaHealth", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12205,6 +12322,7 @@ func (client BaseClient) GetReplicaHealthUsingPolicy(ctx context.Context, partit
 	result, err = client.GetReplicaHealthUsingPolicyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetReplicaHealthUsingPolicy", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12307,6 +12425,7 @@ func (client BaseClient) GetReplicaInfo(ctx context.Context, partitionID uuid.UU
 	result, err = client.GetReplicaInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetReplicaInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12403,6 +12522,7 @@ func (client BaseClient) GetReplicaInfoList(ctx context.Context, partitionID uui
 	result, err = client.GetReplicaInfoListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetReplicaInfoList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12513,6 +12633,7 @@ func (client BaseClient) GetServiceBackupConfigurationInfo(ctx context.Context, 
 	result, err = client.GetServiceBackupConfigurationInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetServiceBackupConfigurationInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12638,6 +12759,7 @@ func (client BaseClient) GetServiceBackupList(ctx context.Context, serviceID str
 	result, err = client.GetServiceBackupListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetServiceBackupList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12751,6 +12873,7 @@ func (client BaseClient) GetServiceDescription(ctx context.Context, serviceID st
 	result, err = client.GetServiceDescriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetServiceDescription", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12852,6 +12975,7 @@ func (client BaseClient) GetServiceEventList(ctx context.Context, serviceID stri
 	result, err = client.GetServiceEventListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetServiceEventList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -12995,6 +13119,7 @@ func (client BaseClient) GetServiceHealth(ctx context.Context, serviceID string,
 	result, err = client.GetServiceHealthResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetServiceHealth", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -13149,6 +13274,7 @@ func (client BaseClient) GetServiceHealthUsingPolicy(ctx context.Context, servic
 	result, err = client.GetServiceHealthUsingPolicyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetServiceHealthUsingPolicy", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -13268,6 +13394,7 @@ func (client BaseClient) GetServiceInfo(ctx context.Context, applicationID strin
 	result, err = client.GetServiceInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetServiceInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -13369,6 +13496,7 @@ func (client BaseClient) GetServiceInfoList(ctx context.Context, applicationID s
 	result, err = client.GetServiceInfoListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetServiceInfoList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -13468,6 +13596,7 @@ func (client BaseClient) GetServiceManifest(ctx context.Context, applicationType
 	result, err = client.GetServiceManifestResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetServiceManifest", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -13560,6 +13689,7 @@ func (client BaseClient) GetServiceNameInfo(ctx context.Context, partitionID uui
 	result, err = client.GetServiceNameInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetServiceNameInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -13656,6 +13786,7 @@ func (client BaseClient) GetServicesEventList(ctx context.Context, startTimeUtc 
 	result, err = client.GetServicesEventListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetServicesEventList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -13756,6 +13887,7 @@ func (client BaseClient) GetServiceTypeInfoByName(ctx context.Context, applicati
 	result, err = client.GetServiceTypeInfoByNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetServiceTypeInfoByName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -13850,6 +13982,7 @@ func (client BaseClient) GetServiceTypeInfoList(ctx context.Context, application
 	result, err = client.GetServiceTypeInfoListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetServiceTypeInfoList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -13948,6 +14081,7 @@ func (client BaseClient) GetSubNameInfoList(ctx context.Context, nameID string, 
 	result, err = client.GetSubNameInfoListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetSubNameInfoList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -14045,6 +14179,7 @@ func (client BaseClient) GetUpgradeOrchestrationServiceState(ctx context.Context
 	result, err = client.GetUpgradeOrchestrationServiceStateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "GetUpgradeOrchestrationServiceState", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -14144,6 +14279,7 @@ func (client BaseClient) InvokeContainerAPI(ctx context.Context, nodeName string
 	result, err = client.InvokeContainerAPIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "InvokeContainerAPI", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -14249,6 +14385,7 @@ func (client BaseClient) InvokeInfrastructureCommand(ctx context.Context, comman
 	result, err = client.InvokeInfrastructureCommandResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "InvokeInfrastructureCommand", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -14348,6 +14485,7 @@ func (client BaseClient) InvokeInfrastructureQuery(ctx context.Context, command 
 	result, err = client.InvokeInfrastructureQueryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "InvokeInfrastructureQuery", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -14438,6 +14576,7 @@ func (client BaseClient) PostChaosSchedule(ctx context.Context, chaosSchedule Ch
 	result, err = client.PostChaosScheduleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "PostChaosSchedule", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -14525,6 +14664,7 @@ func (client BaseClient) ProvisionApplicationType(ctx context.Context, provision
 	result, err = client.ProvisionApplicationTypeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "ProvisionApplicationType", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -14611,6 +14751,7 @@ func (client BaseClient) ProvisionCluster(ctx context.Context, provisionFabricDe
 	result, err = client.ProvisionClusterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "ProvisionCluster", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -14701,6 +14842,7 @@ func (client BaseClient) PutProperty(ctx context.Context, nameID string, propert
 	result, err = client.PutPropertyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "PutProperty", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -14793,6 +14935,7 @@ func (client BaseClient) RecoverAllPartitions(ctx context.Context, timeout *int6
 	result, err = client.RecoverAllPartitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "RecoverAllPartitions", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -14879,6 +15022,7 @@ func (client BaseClient) RecoverPartition(ctx context.Context, partitionID uuid.
 	result, err = client.RecoverPartitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "RecoverPartition", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -14973,6 +15117,7 @@ func (client BaseClient) RecoverServicePartitions(ctx context.Context, serviceID
 	result, err = client.RecoverServicePartitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "RecoverServicePartitions", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -15062,6 +15207,7 @@ func (client BaseClient) RecoverSystemPartitions(ctx context.Context, timeout *i
 	result, err = client.RecoverSystemPartitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "RecoverSystemPartitions", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -15146,6 +15292,7 @@ func (client BaseClient) RemoveComposeDeployment(ctx context.Context, deployment
 	result, err = client.RemoveComposeDeploymentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "RemoveComposeDeployment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -15239,6 +15386,7 @@ func (client BaseClient) RemoveNodeState(ctx context.Context, nodeName string, t
 	result, err = client.RemoveNodeStateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "RemoveNodeState", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -15337,6 +15485,7 @@ func (client BaseClient) RemoveReplica(ctx context.Context, nodeName string, par
 	result, err = client.RemoveReplicaResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "RemoveReplica", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -15457,6 +15606,7 @@ func (client BaseClient) ReportApplicationHealth(ctx context.Context, applicatio
 	result, err = client.ReportApplicationHealthResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "ReportApplicationHealth", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -15574,6 +15724,7 @@ func (client BaseClient) ReportClusterHealth(ctx context.Context, healthInformat
 	result, err = client.ReportClusterHealthResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "ReportClusterHealth", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -15693,6 +15844,7 @@ func (client BaseClient) ReportDeployedApplicationHealth(ctx context.Context, no
 	result, err = client.ReportDeployedApplicationHealthResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "ReportDeployedApplicationHealth", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -15819,6 +15971,7 @@ func (client BaseClient) ReportDeployedServicePackageHealth(ctx context.Context,
 	result, err = client.ReportDeployedServicePackageHealthResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "ReportDeployedServicePackageHealth", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -15939,6 +16092,7 @@ func (client BaseClient) ReportNodeHealth(ctx context.Context, nodeName string, 
 	result, err = client.ReportNodeHealthResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "ReportNodeHealth", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -16057,6 +16211,7 @@ func (client BaseClient) ReportPartitionHealth(ctx context.Context, partitionID 
 	result, err = client.ReportPartitionHealthResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "ReportPartitionHealth", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -16178,6 +16333,7 @@ func (client BaseClient) ReportReplicaHealth(ctx context.Context, partitionID uu
 	result, err = client.ReportReplicaHealthResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "ReportReplicaHealth", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -16302,6 +16458,7 @@ func (client BaseClient) ReportServiceHealth(ctx context.Context, serviceID stri
 	result, err = client.ReportServiceHealthResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "ReportServiceHealth", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -16397,6 +16554,7 @@ func (client BaseClient) ResetPartitionLoad(ctx context.Context, partitionID uui
 	result, err = client.ResetPartitionLoadResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "ResetPartitionLoad", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -16501,6 +16659,7 @@ func (client BaseClient) ResolveService(ctx context.Context, serviceID string, p
 	result, err = client.ResolveServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "ResolveService", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -16611,6 +16770,7 @@ func (client BaseClient) RestartDeployedCodePackage(ctx context.Context, nodeNam
 	result, err = client.RestartDeployedCodePackageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "RestartDeployedCodePackage", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -16706,6 +16866,7 @@ func (client BaseClient) RestartNode(ctx context.Context, nodeName string, resta
 	result, err = client.RestartNodeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "RestartNode", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -16800,6 +16961,7 @@ func (client BaseClient) RestartReplica(ctx context.Context, nodeName string, pa
 	result, err = client.RestartReplicaResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "RestartReplica", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -16904,6 +17066,7 @@ func (client BaseClient) RestorePartition(ctx context.Context, partitionID uuid.
 	result, err = client.RestorePartitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "RestorePartition", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -17004,6 +17167,7 @@ func (client BaseClient) ResumeApplicationBackup(ctx context.Context, applicatio
 	result, err = client.ResumeApplicationBackupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "ResumeApplicationBackup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -17101,6 +17265,7 @@ func (client BaseClient) ResumeApplicationUpgrade(ctx context.Context, applicati
 	result, err = client.ResumeApplicationUpgradeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "ResumeApplicationUpgrade", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -17194,6 +17359,7 @@ func (client BaseClient) ResumeClusterUpgrade(ctx context.Context, resumeCluster
 	result, err = client.ResumeClusterUpgradeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "ResumeClusterUpgrade", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -17281,6 +17447,7 @@ func (client BaseClient) ResumePartitionBackup(ctx context.Context, partitionID 
 	result, err = client.ResumePartitionBackupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "ResumePartitionBackup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -17374,6 +17541,7 @@ func (client BaseClient) ResumeServiceBackup(ctx context.Context, serviceID stri
 	result, err = client.ResumeServiceBackupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "ResumeServiceBackup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -17469,6 +17637,7 @@ func (client BaseClient) RollbackApplicationUpgrade(ctx context.Context, applica
 	result, err = client.RollbackApplicationUpgradeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "RollbackApplicationUpgrade", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -17556,6 +17725,7 @@ func (client BaseClient) RollbackClusterUpgrade(ctx context.Context, timeout *in
 	result, err = client.RollbackClusterUpgradeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "RollbackClusterUpgrade", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -17641,6 +17811,7 @@ func (client BaseClient) SetUpgradeOrchestrationServiceState(ctx context.Context
 	result, err = client.SetUpgradeOrchestrationServiceStateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "SetUpgradeOrchestrationServiceState", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -17738,6 +17909,7 @@ func (client BaseClient) StartApplicationUpgrade(ctx context.Context, applicatio
 	result, err = client.StartApplicationUpgradeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "StartApplicationUpgrade", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -17849,6 +18021,7 @@ func (client BaseClient) StartChaos(ctx context.Context, chaosParameters ChaosPa
 	result, err = client.StartChaosResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "StartChaos", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -17938,6 +18111,7 @@ func (client BaseClient) StartClusterConfigurationUpgrade(ctx context.Context, c
 	result, err = client.StartClusterConfigurationUpgradeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "StartClusterConfigurationUpgrade", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -18036,6 +18210,7 @@ func (client BaseClient) StartClusterUpgrade(ctx context.Context, startClusterUp
 	result, err = client.StartClusterUpgradeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "StartClusterUpgrade", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -18127,6 +18302,7 @@ func (client BaseClient) StartComposeDeploymentUpgrade(ctx context.Context, depl
 	result, err = client.StartComposeDeploymentUpgradeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "StartComposeDeploymentUpgrade", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -18241,6 +18417,7 @@ func (client BaseClient) StartDataLoss(ctx context.Context, serviceID string, pa
 	result, err = client.StartDataLossResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "StartDataLoss", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -18345,6 +18522,7 @@ func (client BaseClient) StartNodeTransition(ctx context.Context, nodeName strin
 	result, err = client.StartNodeTransitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "StartNodeTransition", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -18449,6 +18627,7 @@ func (client BaseClient) StartPartitionRestart(ctx context.Context, serviceID st
 	result, err = client.StartPartitionRestartResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "StartPartitionRestart", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -18558,6 +18737,7 @@ func (client BaseClient) StartQuorumLoss(ctx context.Context, serviceID string, 
 	result, err = client.StartQuorumLossResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "StartQuorumLoss", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -18652,6 +18832,7 @@ func (client BaseClient) StopChaos(ctx context.Context, timeout *int64) (result 
 	result, err = client.StopChaosResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "StopChaos", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -18737,6 +18918,7 @@ func (client BaseClient) SubmitPropertyBatch(ctx context.Context, nameID string,
 	result, err = client.SubmitPropertyBatchResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "SubmitPropertyBatch", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -18834,6 +19016,7 @@ func (client BaseClient) SuspendApplicationBackup(ctx context.Context, applicati
 	result, err = client.SuspendApplicationBackupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "SuspendApplicationBackup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -18923,6 +19106,7 @@ func (client BaseClient) SuspendPartitionBackup(ctx context.Context, partitionID
 	result, err = client.SuspendPartitionBackupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "SuspendPartitionBackup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -19017,6 +19201,7 @@ func (client BaseClient) SuspendServiceBackup(ctx context.Context, serviceID str
 	result, err = client.SuspendServiceBackupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "SuspendServiceBackup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -19111,6 +19296,7 @@ func (client BaseClient) UnprovisionApplicationType(ctx context.Context, applica
 	result, err = client.UnprovisionApplicationTypeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "UnprovisionApplicationType", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -19202,6 +19388,7 @@ func (client BaseClient) UnprovisionCluster(ctx context.Context, unprovisionFabr
 	result, err = client.UnprovisionClusterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "UnprovisionCluster", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -19297,6 +19484,7 @@ func (client BaseClient) UpdateApplicationUpgrade(ctx context.Context, applicati
 	result, err = client.UpdateApplicationUpgradeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "UpdateApplicationUpgrade", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -19397,6 +19585,7 @@ func (client BaseClient) UpdateBackupPolicy(ctx context.Context, backupPolicyDes
 	result, err = client.UpdateBackupPolicyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "UpdateBackupPolicy", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -19498,6 +19687,7 @@ func (client BaseClient) UpdateClusterUpgrade(ctx context.Context, updateCluster
 	result, err = client.UpdateClusterUpgradeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "UpdateClusterUpgrade", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -19580,6 +19770,7 @@ func (client BaseClient) UpdateRepairExecutionState(ctx context.Context, repairT
 	result, err = client.UpdateRepairExecutionStateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "UpdateRepairExecutionState", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -19657,6 +19848,7 @@ func (client BaseClient) UpdateRepairTaskHealthPolicy(ctx context.Context, repai
 	result, err = client.UpdateRepairTaskHealthPolicyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "UpdateRepairTaskHealthPolicy", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -19749,6 +19941,7 @@ func (client BaseClient) UpdateService(ctx context.Context, serviceID string, se
 	result, err = client.UpdateServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "UpdateService", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -19845,6 +20038,7 @@ func (client BaseClient) UploadFile(ctx context.Context, contentPath string, tim
 	result, err = client.UploadFileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "UploadFile", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -19945,6 +20139,7 @@ func (client BaseClient) UploadFileChunk(ctx context.Context, contentPath string
 	result, err = client.UploadFileChunkResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.BaseClient", "UploadFileChunk", resp, "Failure responding to request")
+		return
 	}
 
 	return

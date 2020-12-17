@@ -80,6 +80,7 @@ func (client LocationClient) CheckNameAvailability(ctx context.Context, location
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.LocationClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -86,6 +86,7 @@ func (client AllowedConnectionsClient) Get(ctx context.Context, resourceGroupNam
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AllowedConnectionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -166,6 +167,7 @@ func (client AllowedConnectionsClient) List(ctx context.Context) (result Allowed
 	result.ACL, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AllowedConnectionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.ACL.hasNextLink() && result.ACL.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -228,6 +230,7 @@ func (client AllowedConnectionsClient) listNextResults(ctx context.Context, last
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AllowedConnectionsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -283,6 +286,7 @@ func (client AllowedConnectionsClient) ListByHomeRegion(ctx context.Context) (re
 	result.ACL, err = client.ListByHomeRegionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AllowedConnectionsClient", "ListByHomeRegion", resp, "Failure responding to request")
+		return
 	}
 	if result.ACL.hasNextLink() && result.ACL.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -346,6 +350,7 @@ func (client AllowedConnectionsClient) listByHomeRegionNextResults(ctx context.C
 	result, err = client.ListByHomeRegionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AllowedConnectionsClient", "listByHomeRegionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

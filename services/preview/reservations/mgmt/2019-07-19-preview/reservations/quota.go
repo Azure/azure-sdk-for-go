@@ -166,6 +166,7 @@ func (client QuotaClient) Get(ctx context.Context, subscriptionID string, provid
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.QuotaClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -245,6 +246,7 @@ func (client QuotaClient) List(ctx context.Context, subscriptionID string, provi
 	result.ql, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.QuotaClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.ql.hasNextLink() && result.ql.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -309,6 +311,7 @@ func (client QuotaClient) listNextResults(ctx context.Context, lastResults Quota
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.QuotaClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

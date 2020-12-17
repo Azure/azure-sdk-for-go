@@ -266,6 +266,7 @@ func (client ServerKeysClient) Get(ctx context.Context, resourceGroupName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mysqlflexibleservers.ServerKeysClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -353,6 +354,7 @@ func (client ServerKeysClient) ListByServer(ctx context.Context, resourceGroupNa
 	result.sklr, err = client.ListByServerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mysqlflexibleservers.ServerKeysClient", "ListByServer", resp, "Failure responding to request")
+		return
 	}
 	if result.sklr.hasNextLink() && result.sklr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -417,6 +419,7 @@ func (client ServerKeysClient) listByServerNextResults(ctx context.Context, last
 	result, err = client.ListByServerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mysqlflexibleservers.ServerKeysClient", "listByServerNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

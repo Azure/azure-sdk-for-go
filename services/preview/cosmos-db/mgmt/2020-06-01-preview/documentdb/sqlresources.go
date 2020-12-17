@@ -1443,6 +1443,7 @@ func (client SQLResourcesClient) GetSQLContainer(ctx context.Context, resourceGr
 	result, err = client.GetSQLContainerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "GetSQLContainer", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1537,6 +1538,7 @@ func (client SQLResourcesClient) GetSQLContainerThroughput(ctx context.Context, 
 	result, err = client.GetSQLContainerThroughputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "GetSQLContainerThroughput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1629,6 +1631,7 @@ func (client SQLResourcesClient) GetSQLDatabase(ctx context.Context, resourceGro
 	result, err = client.GetSQLDatabaseResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "GetSQLDatabase", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1721,6 +1724,7 @@ func (client SQLResourcesClient) GetSQLDatabaseThroughput(ctx context.Context, r
 	result, err = client.GetSQLDatabaseThroughputResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "GetSQLDatabaseThroughput", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1812,6 +1816,7 @@ func (client SQLResourcesClient) GetSQLRoleAssignment(ctx context.Context, roleA
 	result, err = client.GetSQLRoleAssignmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "GetSQLRoleAssignment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1903,6 +1908,7 @@ func (client SQLResourcesClient) GetSQLRoleDefinition(ctx context.Context, roleD
 	result, err = client.GetSQLRoleDefinitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "GetSQLRoleDefinition", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1996,6 +2002,7 @@ func (client SQLResourcesClient) GetSQLStoredProcedure(ctx context.Context, reso
 	result, err = client.GetSQLStoredProcedureResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "GetSQLStoredProcedure", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2091,6 +2098,7 @@ func (client SQLResourcesClient) GetSQLTrigger(ctx context.Context, resourceGrou
 	result, err = client.GetSQLTriggerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "GetSQLTrigger", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2186,6 +2194,7 @@ func (client SQLResourcesClient) GetSQLUserDefinedFunction(ctx context.Context, 
 	result, err = client.GetSQLUserDefinedFunctionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "GetSQLUserDefinedFunction", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2279,6 +2288,7 @@ func (client SQLResourcesClient) ListSQLContainers(ctx context.Context, resource
 	result, err = client.ListSQLContainersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "ListSQLContainers", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2369,6 +2379,7 @@ func (client SQLResourcesClient) ListSQLDatabases(ctx context.Context, resourceG
 	result, err = client.ListSQLDatabasesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "ListSQLDatabases", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2458,6 +2469,7 @@ func (client SQLResourcesClient) ListSQLRoleAssignments(ctx context.Context, res
 	result, err = client.ListSQLRoleAssignmentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "ListSQLRoleAssignments", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2547,6 +2559,7 @@ func (client SQLResourcesClient) ListSQLRoleDefinitions(ctx context.Context, res
 	result, err = client.ListSQLRoleDefinitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "ListSQLRoleDefinitions", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2638,6 +2651,7 @@ func (client SQLResourcesClient) ListSQLStoredProcedures(ctx context.Context, re
 	result, err = client.ListSQLStoredProceduresResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "ListSQLStoredProcedures", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2731,6 +2745,7 @@ func (client SQLResourcesClient) ListSQLTriggers(ctx context.Context, resourceGr
 	result, err = client.ListSQLTriggersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "ListSQLTriggers", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2824,6 +2839,7 @@ func (client SQLResourcesClient) ListSQLUserDefinedFunctions(ctx context.Context
 	result, err = client.ListSQLUserDefinedFunctionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "ListSQLUserDefinedFunctions", resp, "Failure responding to request")
+		return
 	}
 
 	return

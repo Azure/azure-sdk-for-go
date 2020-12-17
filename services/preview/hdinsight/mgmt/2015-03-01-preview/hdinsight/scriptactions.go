@@ -73,6 +73,7 @@ func (client ScriptActionsClient) Delete(ctx context.Context, resourceGroupName 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -149,6 +150,7 @@ func (client ScriptActionsClient) GetExecutionDetail(ctx context.Context, resour
 	result, err = client.GetExecutionDetailResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "GetExecutionDetail", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -226,6 +228,7 @@ func (client ScriptActionsClient) ListPersistedScripts(ctx context.Context, reso
 	result.sal, err = client.ListPersistedScriptsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "ListPersistedScripts", resp, "Failure responding to request")
+		return
 	}
 	if result.sal.hasNextLink() && result.sal.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -290,6 +293,7 @@ func (client ScriptActionsClient) listPersistedScriptsNextResults(ctx context.Co
 	result, err = client.ListPersistedScriptsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "listPersistedScriptsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

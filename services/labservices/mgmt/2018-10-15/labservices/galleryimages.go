@@ -74,6 +74,7 @@ func (client GalleryImagesClient) CreateOrUpdate(ctx context.Context, resourceGr
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.GalleryImagesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -153,6 +154,7 @@ func (client GalleryImagesClient) Delete(ctx context.Context, resourceGroupName 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.GalleryImagesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -230,6 +232,7 @@ func (client GalleryImagesClient) Get(ctx context.Context, resourceGroupName str
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.GalleryImagesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -314,6 +317,7 @@ func (client GalleryImagesClient) List(ctx context.Context, resourceGroupName st
 	result.rwcgi, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.GalleryImagesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rwcgi.hasNextLink() && result.rwcgi.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -390,6 +394,7 @@ func (client GalleryImagesClient) listNextResults(ctx context.Context, lastResul
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.GalleryImagesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -443,6 +448,7 @@ func (client GalleryImagesClient) Update(ctx context.Context, resourceGroupName 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.GalleryImagesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

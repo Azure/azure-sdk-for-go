@@ -87,6 +87,7 @@ func (client FactoriesClient) CancelPipelineRun(ctx context.Context, resourceGro
 	result, err = client.CancelPipelineRunResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "CancelPipelineRun", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -162,6 +163,7 @@ func (client FactoriesClient) ConfigureFactoryRepo(ctx context.Context, location
 	result, err = client.ConfigureFactoryRepoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "ConfigureFactoryRepo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -254,6 +256,7 @@ func (client FactoriesClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -343,6 +346,7 @@ func (client FactoriesClient) Delete(ctx context.Context, resourceGroupName stri
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -429,6 +433,7 @@ func (client FactoriesClient) Get(ctx context.Context, resourceGroupName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -502,6 +507,7 @@ func (client FactoriesClient) List(ctx context.Context) (result FactoryListRespo
 	result.flr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.flr.hasNextLink() && result.flr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -564,6 +570,7 @@ func (client FactoriesClient) listNextResults(ctx context.Context, lastResults F
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -623,6 +630,7 @@ func (client FactoriesClient) ListByResourceGroup(ctx context.Context, resourceG
 	result.flr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.flr.hasNextLink() && result.flr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -686,6 +694,7 @@ func (client FactoriesClient) listByResourceGroupNextResults(ctx context.Context
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -750,6 +759,7 @@ func (client FactoriesClient) Update(ctx context.Context, resourceGroupName stri
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

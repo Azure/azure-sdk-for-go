@@ -236,6 +236,7 @@ func (client TransactionNodesClient) Get(ctx context.Context, blockchainMemberNa
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -314,6 +315,7 @@ func (client TransactionNodesClient) List(ctx context.Context, blockchainMemberN
 	result.tnc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.tnc.hasNextLink() && result.tnc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -378,6 +380,7 @@ func (client TransactionNodesClient) listNextResults(ctx context.Context, lastRe
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -431,6 +434,7 @@ func (client TransactionNodesClient) ListAPIKeys(ctx context.Context, blockchain
 	result, err = client.ListAPIKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesClient", "ListAPIKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -510,6 +514,7 @@ func (client TransactionNodesClient) ListRegenerateAPIKeys(ctx context.Context, 
 	result, err = client.ListRegenerateAPIKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesClient", "ListRegenerateAPIKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -594,6 +599,7 @@ func (client TransactionNodesClient) Update(ctx context.Context, blockchainMembe
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

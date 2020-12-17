@@ -259,6 +259,7 @@ func (client ImagesClient) Details(ctx context.Context, query string, acceptLang
 	result, err = client.DetailsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "imagesearch.ImagesClient", "Details", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -601,6 +602,7 @@ func (client ImagesClient) Search(ctx context.Context, query string, acceptLangu
 	result, err = client.SearchResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "imagesearch.ImagesClient", "Search", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -877,6 +879,7 @@ func (client ImagesClient) Trending(ctx context.Context, acceptLanguage string, 
 	result, err = client.TrendingResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "imagesearch.ImagesClient", "Trending", resp, "Failure responding to request")
+		return
 	}
 
 	return

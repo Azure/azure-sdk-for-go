@@ -232,6 +232,7 @@ func (client ProfilesClient) GenerateSsoURI(ctx context.Context, profileName str
 	result, err = client.GenerateSsoURIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "GenerateSsoURI", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -307,6 +308,7 @@ func (client ProfilesClient) Get(ctx context.Context, profileName string, resour
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -381,6 +383,7 @@ func (client ProfilesClient) ListByResourceGroup(ctx context.Context, resourceGr
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -452,6 +455,7 @@ func (client ProfilesClient) ListBySubscriptionID(ctx context.Context) (result P
 	result, err = client.ListBySubscriptionIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListBySubscriptionID", resp, "Failure responding to request")
+		return
 	}
 
 	return

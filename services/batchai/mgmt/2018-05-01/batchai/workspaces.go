@@ -260,6 +260,7 @@ func (client WorkspacesClient) Get(ctx context.Context, resourceGroupName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.WorkspacesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -344,6 +345,7 @@ func (client WorkspacesClient) List(ctx context.Context, maxResults *int32) (res
 	result.wlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.WorkspacesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.wlr.hasNextLink() && result.wlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -411,6 +413,7 @@ func (client WorkspacesClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.WorkspacesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -474,6 +477,7 @@ func (client WorkspacesClient) ListByResourceGroup(ctx context.Context, resource
 	result.wlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.WorkspacesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.wlr.hasNextLink() && result.wlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -542,6 +546,7 @@ func (client WorkspacesClient) listByResourceGroupNextResults(ctx context.Contex
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.WorkspacesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -605,6 +610,7 @@ func (client WorkspacesClient) Update(ctx context.Context, resourceGroupName str
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.WorkspacesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

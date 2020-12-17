@@ -75,6 +75,7 @@ func (client MachinesClient) EnumerateMachines(ctx context.Context, resourceGrou
 	result, err = client.EnumerateMachinesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.MachinesClient", "EnumerateMachines", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -157,6 +158,7 @@ func (client MachinesClient) GetMachine(ctx context.Context, resourceGroupName s
 	result, err = client.GetMachineResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.MachinesClient", "GetMachine", resp, "Failure responding to request")
+		return
 	}
 
 	return

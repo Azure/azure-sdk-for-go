@@ -72,6 +72,7 @@ func (client AdminKeysClient) List(ctx context.Context, resourceGroupName string
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "search.AdminKeysClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

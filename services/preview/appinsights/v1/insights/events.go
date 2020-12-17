@@ -78,6 +78,7 @@ func (client EventsClient) Get(ctx context.Context, appID string, eventType Even
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.EventsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -168,6 +169,7 @@ func (client EventsClient) GetByType(ctx context.Context, appID string, eventTyp
 	result, err = client.GetByTypeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.EventsClient", "GetByType", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -269,6 +271,7 @@ func (client EventsClient) GetOdataMetadata(ctx context.Context, appID string) (
 	result, err = client.GetOdataMetadataResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.EventsClient", "GetOdataMetadata", resp, "Failure responding to request")
+		return
 	}
 
 	return

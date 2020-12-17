@@ -77,6 +77,7 @@ func (client Client) CreateOrUpdate(ctx context.Context, groupID string, createM
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -160,6 +161,7 @@ func (client Client) Delete(ctx context.Context, groupID string, cacheControl st
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -243,6 +245,7 @@ func (client Client) Get(ctx context.Context, groupID string, expand string, rec
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -332,6 +335,7 @@ func (client Client) List(ctx context.Context, cacheControl string, skiptoken st
 	result.lr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -400,6 +404,7 @@ func (client Client) listNextResults(ctx context.Context, lastResults ListResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -452,6 +457,7 @@ func (client Client) Update(ctx context.Context, groupID string, createManagemen
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

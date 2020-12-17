@@ -82,6 +82,7 @@ func (client SignInSettingsClient) CreateOrUpdate(ctx context.Context, resourceG
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SignInSettingsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -167,6 +168,7 @@ func (client SignInSettingsClient) Get(ctx context.Context, resourceGroupName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SignInSettingsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -250,6 +252,7 @@ func (client SignInSettingsClient) Head(ctx context.Context, resourceGroupName s
 	result, err = client.HeadResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SignInSettingsClient", "Head", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -335,6 +338,7 @@ func (client SignInSettingsClient) Update(ctx context.Context, resourceGroupName
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SignInSettingsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

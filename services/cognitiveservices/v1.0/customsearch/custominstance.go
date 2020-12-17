@@ -184,6 +184,7 @@ func (client CustomInstanceClient) Search(ctx context.Context, customConfig stri
 	result, err = client.SearchResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customsearch.CustomInstanceClient", "Search", resp, "Failure responding to request")
+		return
 	}
 
 	return

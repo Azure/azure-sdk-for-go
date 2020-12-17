@@ -95,6 +95,7 @@ func (client AssessmentsClient) CreateOrUpdate(ctx context.Context, resourceID s
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AssessmentsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -172,6 +173,7 @@ func (client AssessmentsClient) Delete(ctx context.Context, resourceID string, a
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AssessmentsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -246,6 +248,7 @@ func (client AssessmentsClient) Get(ctx context.Context, resourceID string, asse
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AssessmentsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -324,6 +327,7 @@ func (client AssessmentsClient) List(ctx context.Context, scope string) (result 
 	result.al, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AssessmentsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.al.hasNextLink() && result.al.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -386,6 +390,7 @@ func (client AssessmentsClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AssessmentsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

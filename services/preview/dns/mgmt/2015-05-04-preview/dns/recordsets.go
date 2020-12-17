@@ -89,6 +89,7 @@ func (client RecordSetsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -190,6 +191,7 @@ func (client RecordSetsClient) Delete(ctx context.Context, resourceGroupName str
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -282,6 +284,7 @@ func (client RecordSetsClient) Get(ctx context.Context, resourceGroupName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -373,6 +376,7 @@ func (client RecordSetsClient) List(ctx context.Context, resourceGroupName strin
 	result.rslr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rslr.hasNextLink() && result.rslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -444,6 +448,7 @@ func (client RecordSetsClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -508,6 +513,7 @@ func (client RecordSetsClient) ListAll(ctx context.Context, resourceGroupName st
 	result.rslr, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListAll", resp, "Failure responding to request")
+		return
 	}
 	if result.rslr.hasNextLink() && result.rslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -578,6 +584,7 @@ func (client RecordSetsClient) listAllNextResults(ctx context.Context, lastResul
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "listAllNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

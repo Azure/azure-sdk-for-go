@@ -81,6 +81,7 @@ func (client APIPolicyClient) CreateOrUpdate(ctx context.Context, apimBaseURL st
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIPolicyClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -173,6 +174,7 @@ func (client APIPolicyClient) Delete(ctx context.Context, apimBaseURL string, ap
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIPolicyClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -260,6 +262,7 @@ func (client APIPolicyClient) Get(ctx context.Context, apimBaseURL string, apiid
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIPolicyClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -347,6 +350,7 @@ func (client APIPolicyClient) ListByAPI(ctx context.Context, apimBaseURL string,
 	result, err = client.ListByAPIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIPolicyClient", "ListByAPI", resp, "Failure responding to request")
+		return
 	}
 
 	return

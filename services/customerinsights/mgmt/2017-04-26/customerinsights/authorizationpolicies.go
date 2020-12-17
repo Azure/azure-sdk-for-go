@@ -91,6 +91,7 @@ func (client AuthorizationPoliciesClient) CreateOrUpdate(ctx context.Context, re
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -170,6 +171,7 @@ func (client AuthorizationPoliciesClient) Get(ctx context.Context, resourceGroup
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -247,6 +249,7 @@ func (client AuthorizationPoliciesClient) ListByHub(ctx context.Context, resourc
 	result.aplr, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "ListByHub", resp, "Failure responding to request")
+		return
 	}
 	if result.aplr.hasNextLink() && result.aplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -311,6 +314,7 @@ func (client AuthorizationPoliciesClient) listByHubNextResults(ctx context.Conte
 	result, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "listByHubNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -363,6 +367,7 @@ func (client AuthorizationPoliciesClient) RegeneratePrimaryKey(ctx context.Conte
 	result, err = client.RegeneratePrimaryKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "RegeneratePrimaryKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -440,6 +445,7 @@ func (client AuthorizationPoliciesClient) RegenerateSecondaryKey(ctx context.Con
 	result, err = client.RegenerateSecondaryKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "RegenerateSecondaryKey", resp, "Failure responding to request")
+		return
 	}
 
 	return

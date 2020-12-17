@@ -167,6 +167,7 @@ func (client RoleAssignmentsClient) Delete(ctx context.Context, resourceGroupNam
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -243,6 +244,7 @@ func (client RoleAssignmentsClient) Get(ctx context.Context, resourceGroupName s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -320,6 +322,7 @@ func (client RoleAssignmentsClient) ListByHub(ctx context.Context, resourceGroup
 	result.ralr, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "ListByHub", resp, "Failure responding to request")
+		return
 	}
 	if result.ralr.hasNextLink() && result.ralr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -384,6 +387,7 @@ func (client RoleAssignmentsClient) listByHubNextResults(ctx context.Context, la
 	result, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "listByHubNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -82,6 +82,7 @@ func (client PartnersClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.PartnersClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -161,6 +162,7 @@ func (client PartnersClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.PartnersClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -237,6 +239,7 @@ func (client PartnersClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.PartnersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -316,6 +319,7 @@ func (client PartnersClient) ListByIntegrationAccounts(ctx context.Context, reso
 	result.iaplr, err = client.ListByIntegrationAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.PartnersClient", "ListByIntegrationAccounts", resp, "Failure responding to request")
+		return
 	}
 	if result.iaplr.hasNextLink() && result.iaplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -386,6 +390,7 @@ func (client PartnersClient) listByIntegrationAccountsNextResults(ctx context.Co
 	result, err = client.ListByIntegrationAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.PartnersClient", "listByIntegrationAccountsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -438,6 +443,7 @@ func (client PartnersClient) ListContentCallbackURL(ctx context.Context, resourc
 	result, err = client.ListContentCallbackURLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.PartnersClient", "ListContentCallbackURL", resp, "Failure responding to request")
+		return
 	}
 
 	return

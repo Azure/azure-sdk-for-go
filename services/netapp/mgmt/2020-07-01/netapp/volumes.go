@@ -616,6 +616,7 @@ func (client VolumesClient) Get(ctx context.Context, resourceGroupName string, a
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -706,6 +707,7 @@ func (client VolumesClient) List(ctx context.Context, resourceGroupName string, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -993,6 +995,7 @@ func (client VolumesClient) ReplicationStatusMethod(ctx context.Context, resourc
 	result, err = client.ReplicationStatusMethodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "ReplicationStatusMethod", resp, "Failure responding to request")
+		return
 	}
 
 	return

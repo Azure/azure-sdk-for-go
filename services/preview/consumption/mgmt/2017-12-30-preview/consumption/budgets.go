@@ -86,6 +86,7 @@ func (client BudgetsClient) CreateOrUpdate(ctx context.Context, parameters Budge
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -159,6 +160,7 @@ func (client BudgetsClient) Delete(ctx context.Context) (result autorest.Respons
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -229,6 +231,7 @@ func (client BudgetsClient) Get(ctx context.Context) (result Budget, err error) 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -300,6 +303,7 @@ func (client BudgetsClient) List(ctx context.Context) (result BudgetsListResult,
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

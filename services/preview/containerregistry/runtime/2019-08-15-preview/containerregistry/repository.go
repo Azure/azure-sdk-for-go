@@ -65,6 +65,7 @@ func (client RepositoryClient) Delete(ctx context.Context, name string) (result 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RepositoryClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -135,6 +136,7 @@ func (client RepositoryClient) GetAttributes(ctx context.Context, name string) (
 	result, err = client.GetAttributesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RepositoryClient", "GetAttributes", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -207,6 +209,7 @@ func (client RepositoryClient) GetList(ctx context.Context, last string, n *int3
 	result, err = client.GetListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RepositoryClient", "GetList", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -283,6 +286,7 @@ func (client RepositoryClient) UpdateAttributes(ctx context.Context, name string
 	result, err = client.UpdateAttributesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RepositoryClient", "UpdateAttributes", resp, "Failure responding to request")
+		return
 	}
 
 	return

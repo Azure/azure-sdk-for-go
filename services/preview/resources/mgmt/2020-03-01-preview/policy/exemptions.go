@@ -88,6 +88,7 @@ func (client ExemptionsClient) CreateOrUpdate(ctx context.Context, parameters Ex
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.ExemptionsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -171,6 +172,7 @@ func (client ExemptionsClient) Delete(ctx context.Context, scope string, policyE
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.ExemptionsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -248,6 +250,7 @@ func (client ExemptionsClient) Get(ctx context.Context, scope string, policyExem
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.ExemptionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -337,6 +340,7 @@ func (client ExemptionsClient) List(ctx context.Context, subscriptionID string, 
 	result.elr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.ExemptionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.elr.hasNextLink() && result.elr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -402,6 +406,7 @@ func (client ExemptionsClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.ExemptionsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -467,6 +472,7 @@ func (client ExemptionsClient) ListForManagementGroup(ctx context.Context, manag
 	result.elr, err = client.ListForManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.ExemptionsClient", "ListForManagementGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.elr.hasNextLink() && result.elr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -532,6 +538,7 @@ func (client ExemptionsClient) listForManagementGroupNextResults(ctx context.Con
 	result, err = client.ListForManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.ExemptionsClient", "listForManagementGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -622,6 +629,7 @@ func (client ExemptionsClient) ListForResource(ctx context.Context, subscription
 	result.elr, err = client.ListForResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.ExemptionsClient", "ListForResource", resp, "Failure responding to request")
+		return
 	}
 	if result.elr.hasNextLink() && result.elr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -692,6 +700,7 @@ func (client ExemptionsClient) listForResourceNextResults(ctx context.Context, l
 	result, err = client.ListForResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.ExemptionsClient", "listForResourceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -767,6 +776,7 @@ func (client ExemptionsClient) ListForResourceGroup(ctx context.Context, subscri
 	result.elr, err = client.ListForResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.ExemptionsClient", "ListForResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.elr.hasNextLink() && result.elr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -833,6 +843,7 @@ func (client ExemptionsClient) listForResourceGroupNextResults(ctx context.Conte
 	result, err = client.ListForResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.ExemptionsClient", "listForResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

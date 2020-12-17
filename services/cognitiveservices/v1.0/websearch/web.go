@@ -212,6 +212,7 @@ func (client WebClient) Search(ctx context.Context, query string, acceptLanguage
 	result, err = client.SearchResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "websearch.WebClient", "Search", resp, "Failure responding to request")
+		return
 	}
 
 	return

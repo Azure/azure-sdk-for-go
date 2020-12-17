@@ -96,6 +96,7 @@ func (client ProjectsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "experimentation.ProjectsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -193,6 +194,7 @@ func (client ProjectsClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "experimentation.ProjectsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -287,6 +289,7 @@ func (client ProjectsClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "experimentation.ProjectsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -378,6 +381,7 @@ func (client ProjectsClient) ListByWorkspace(ctx context.Context, accountName st
 	result.plr, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "experimentation.ProjectsClient", "ListByWorkspace", resp, "Failure responding to request")
+		return
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -443,6 +447,7 @@ func (client ProjectsClient) listByWorkspaceNextResults(ctx context.Context, las
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "experimentation.ProjectsClient", "listByWorkspaceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -513,6 +518,7 @@ func (client ProjectsClient) Update(ctx context.Context, resourceGroupName strin
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "experimentation.ProjectsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

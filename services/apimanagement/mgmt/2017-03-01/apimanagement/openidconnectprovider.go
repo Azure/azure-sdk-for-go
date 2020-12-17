@@ -94,6 +94,7 @@ func (client OpenIDConnectProviderClient) CreateOrUpdate(ctx context.Context, re
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProviderClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -186,6 +187,7 @@ func (client OpenIDConnectProviderClient) Delete(ctx context.Context, resourceGr
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProviderClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -274,6 +276,7 @@ func (client OpenIDConnectProviderClient) Get(ctx context.Context, resourceGroup
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProviderClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -362,6 +365,7 @@ func (client OpenIDConnectProviderClient) GetEntityTag(ctx context.Context, reso
 	result, err = client.GetEntityTagResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProviderClient", "GetEntityTag", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -458,6 +462,7 @@ func (client OpenIDConnectProviderClient) ListByService(ctx context.Context, res
 	result.oicpc, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProviderClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 	if result.oicpc.hasNextLink() && result.oicpc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -531,6 +536,7 @@ func (client OpenIDConnectProviderClient) listByServiceNextResults(ctx context.C
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProviderClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -597,6 +603,7 @@ func (client OpenIDConnectProviderClient) Update(ctx context.Context, resourceGr
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProviderClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

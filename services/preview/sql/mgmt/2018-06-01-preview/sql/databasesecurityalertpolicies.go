@@ -78,6 +78,7 @@ func (client DatabaseSecurityAlertPoliciesClient) CreateOrUpdate(ctx context.Con
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabaseSecurityAlertPoliciesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -159,6 +160,7 @@ func (client DatabaseSecurityAlertPoliciesClient) Get(ctx context.Context, resou
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabaseSecurityAlertPoliciesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -239,6 +241,7 @@ func (client DatabaseSecurityAlertPoliciesClient) ListByDatabase(ctx context.Con
 	result.dsalr, err = client.ListByDatabaseResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabaseSecurityAlertPoliciesClient", "ListByDatabase", resp, "Failure responding to request")
+		return
 	}
 	if result.dsalr.hasNextLink() && result.dsalr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -304,6 +307,7 @@ func (client DatabaseSecurityAlertPoliciesClient) listByDatabaseNextResults(ctx 
 	result, err = client.ListByDatabaseResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabaseSecurityAlertPoliciesClient", "listByDatabaseNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

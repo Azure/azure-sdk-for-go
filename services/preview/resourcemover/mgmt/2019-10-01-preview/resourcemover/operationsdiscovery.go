@@ -71,6 +71,7 @@ func (client OperationsDiscoveryClient) Get(ctx context.Context) (result Operati
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcemover.OperationsDiscoveryClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -92,6 +92,7 @@ func (client GroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -184,6 +185,7 @@ func (client GroupsClient) Delete(ctx context.Context, resourceGroupName string,
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -274,6 +276,7 @@ func (client GroupsClient) Get(ctx context.Context, resourceGroupName string, se
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -373,6 +376,7 @@ func (client GroupsClient) ListByService(ctx context.Context, resourceGroupName 
 	result.gc, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupsClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 	if result.gc.hasNextLink() && result.gc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -446,6 +450,7 @@ func (client GroupsClient) listByServiceNextResults(ctx context.Context, lastRes
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupsClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -513,6 +518,7 @@ func (client GroupsClient) Update(ctx context.Context, resourceGroupName string,
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

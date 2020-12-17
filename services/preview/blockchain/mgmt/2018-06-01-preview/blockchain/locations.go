@@ -72,6 +72,7 @@ func (client LocationsClient) CheckNameAvailability(ctx context.Context, locatio
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blockchain.LocationsClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -150,6 +151,7 @@ func (client LocationsClient) ListConsortiums(ctx context.Context, locationName 
 	result, err = client.ListConsortiumsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blockchain.LocationsClient", "ListConsortiums", resp, "Failure responding to request")
+		return
 	}
 
 	return

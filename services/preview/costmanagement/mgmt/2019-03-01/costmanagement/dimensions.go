@@ -89,6 +89,7 @@ func (client DimensionsClient) ListByBillingAccount(ctx context.Context, billing
 	result, err = client.ListByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.DimensionsClient", "ListByBillingAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -191,6 +192,7 @@ func (client DimensionsClient) ListByDepartment(ctx context.Context, billingAcco
 	result, err = client.ListByDepartmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.DimensionsClient", "ListByDepartment", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -294,6 +296,7 @@ func (client DimensionsClient) ListByEnrollmentAccount(ctx context.Context, bill
 	result, err = client.ListByEnrollmentAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.DimensionsClient", "ListByEnrollmentAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -396,6 +399,7 @@ func (client DimensionsClient) ListByManagementGroup(ctx context.Context, manage
 	result, err = client.ListByManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.DimensionsClient", "ListByManagementGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -497,6 +501,7 @@ func (client DimensionsClient) ListByResourceGroup(ctx context.Context, resource
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.DimensionsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -598,6 +603,7 @@ func (client DimensionsClient) ListBySubscription(ctx context.Context, filter st
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.DimensionsClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 
 	return

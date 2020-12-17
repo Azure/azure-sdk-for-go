@@ -103,6 +103,7 @@ func (client ApisClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ApisClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -200,6 +201,7 @@ func (client ApisClient) Delete(ctx context.Context, resourceGroupName string, s
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ApisClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -289,6 +291,7 @@ func (client ApisClient) Export(ctx context.Context, resourceGroupName string, s
 	result, err = client.ExportResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ApisClient", "Export", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -378,6 +381,7 @@ func (client ApisClient) Get(ctx context.Context, resourceGroupName string, serv
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ApisClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -478,6 +482,7 @@ func (client ApisClient) ListByService(ctx context.Context, resourceGroupName st
 	result.ac, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ApisClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 	if result.ac.hasNextLink() && result.ac.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -551,6 +556,7 @@ func (client ApisClient) listByServiceNextResults(ctx context.Context, lastResul
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ApisClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -618,6 +624,7 @@ func (client ApisClient) Update(ctx context.Context, resourceGroupName string, s
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ApisClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -76,6 +76,7 @@ func (client PropertyClient) CreateOrUpdate(ctx context.Context, apimBaseURL str
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.PropertyClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -165,6 +166,7 @@ func (client PropertyClient) Delete(ctx context.Context, apimBaseURL string, pro
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.PropertyClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -250,6 +252,7 @@ func (client PropertyClient) Get(ctx context.Context, apimBaseURL string, propID
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.PropertyClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -344,6 +347,7 @@ func (client PropertyClient) List(ctx context.Context, apimBaseURL string, filte
 	result.pc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.PropertyClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.pc.hasNextLink() && result.pc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -415,6 +419,7 @@ func (client PropertyClient) listNextResults(ctx context.Context, lastResults Pr
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.PropertyClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -477,6 +482,7 @@ func (client PropertyClient) Update(ctx context.Context, apimBaseURL string, pro
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.PropertyClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

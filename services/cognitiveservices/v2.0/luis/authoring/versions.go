@@ -69,6 +69,7 @@ func (client VersionsClient) Clone(ctx context.Context, appID uuid.UUID, version
 	result, err = client.CloneResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "Clone", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -143,6 +144,7 @@ func (client VersionsClient) Delete(ctx context.Context, appID uuid.UUID, versio
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -216,6 +218,7 @@ func (client VersionsClient) DeleteUnlabelledUtterance(ctx context.Context, appI
 	result, err = client.DeleteUnlabelledUtteranceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "DeleteUnlabelledUtterance", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -290,6 +293,7 @@ func (client VersionsClient) Export(ctx context.Context, appID uuid.UUID, versio
 	result, err = client.ExportResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "Export", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -363,6 +367,7 @@ func (client VersionsClient) Get(ctx context.Context, appID uuid.UUID, versionID
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -437,6 +442,7 @@ func (client VersionsClient) Import(ctx context.Context, appID uuid.UUID, luisAp
 	result, err = client.ImportResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "Import", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -529,6 +535,7 @@ func (client VersionsClient) List(ctx context.Context, appID uuid.UUID, skip *in
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -614,6 +621,7 @@ func (client VersionsClient) Update(ctx context.Context, appID uuid.UUID, versio
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

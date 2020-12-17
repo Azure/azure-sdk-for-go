@@ -159,6 +159,7 @@ func (client SingleSignOnConfigurationsClient) Get(ctx context.Context, resource
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.SingleSignOnConfigurationsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -236,6 +237,7 @@ func (client SingleSignOnConfigurationsClient) List(ctx context.Context, resourc
 	result.ssorlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.SingleSignOnConfigurationsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.ssorlr.hasNextLink() && result.ssorlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -300,6 +302,7 @@ func (client SingleSignOnConfigurationsClient) listNextResults(ctx context.Conte
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.SingleSignOnConfigurationsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

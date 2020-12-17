@@ -75,6 +75,7 @@ func (client CostTagsClient) CreateOrUpdate(ctx context.Context, billingAccountI
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.CostTagsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -149,6 +150,7 @@ func (client CostTagsClient) Get(ctx context.Context, billingAccountID string) (
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.CostTagsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

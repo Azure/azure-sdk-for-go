@@ -81,6 +81,7 @@ func (client VaultsClient) List(ctx context.Context, resourceGroupName string, a
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.VaultsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

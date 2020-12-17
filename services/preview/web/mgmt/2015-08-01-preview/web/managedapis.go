@@ -73,6 +73,7 @@ func (client ManagedApisClient) Get(ctx context.Context, location string, APINam
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ManagedApisClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -151,6 +152,7 @@ func (client ManagedApisClient) List(ctx context.Context, location string) (resu
 	result.ac, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ManagedApisClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.ac.hasNextLink() && result.ac.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -214,6 +216,7 @@ func (client ManagedApisClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ManagedApisClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

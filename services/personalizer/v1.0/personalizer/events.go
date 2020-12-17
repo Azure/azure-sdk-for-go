@@ -76,6 +76,7 @@ func (client EventsClient) Activate(ctx context.Context, eventID string) (result
 	result, err = client.ActivateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "personalizer.EventsClient", "Activate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -154,6 +155,7 @@ func (client EventsClient) Reward(ctx context.Context, eventID string, reward Re
 	result, err = client.RewardResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "personalizer.EventsClient", "Reward", resp, "Failure responding to request")
+		return
 	}
 
 	return

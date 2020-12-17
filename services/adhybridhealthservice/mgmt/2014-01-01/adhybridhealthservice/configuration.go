@@ -69,6 +69,7 @@ func (client ConfigurationClient) Add(ctx context.Context) (result Tenant, err e
 	result, err = client.AddResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "Add", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -135,6 +136,7 @@ func (client ConfigurationClient) Get(ctx context.Context) (result Tenant, err e
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -205,6 +207,7 @@ func (client ConfigurationClient) ListAddsConfigurations(ctx context.Context, se
 	result.ac, err = client.ListAddsConfigurationsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "ListAddsConfigurations", resp, "Failure responding to request")
+		return
 	}
 	if result.ac.hasNextLink() && result.ac.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -267,6 +270,7 @@ func (client ConfigurationClient) listAddsConfigurationsNextResults(ctx context.
 	result, err = client.ListAddsConfigurationsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "listAddsConfigurationsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -317,6 +321,7 @@ func (client ConfigurationClient) Update(ctx context.Context, tenant Tenant) (re
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

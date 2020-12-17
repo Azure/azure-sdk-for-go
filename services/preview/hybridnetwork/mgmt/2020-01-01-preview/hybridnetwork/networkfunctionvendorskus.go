@@ -82,6 +82,7 @@ func (client NetworkFunctionVendorSkusClient) ListBySku(ctx context.Context, ven
 	result.nfsd, err = client.ListBySkuResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionVendorSkusClient", "ListBySku", resp, "Failure responding to request")
+		return
 	}
 	if result.nfsd.hasNextLink() && result.nfsd.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -146,6 +147,7 @@ func (client NetworkFunctionVendorSkusClient) listBySkuNextResults(ctx context.C
 	result, err = client.ListBySkuResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionVendorSkusClient", "listBySkuNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -203,6 +205,7 @@ func (client NetworkFunctionVendorSkusClient) ListByVendor(ctx context.Context, 
 	result.nfslr, err = client.ListByVendorResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionVendorSkusClient", "ListByVendor", resp, "Failure responding to request")
+		return
 	}
 	if result.nfslr.hasNextLink() && result.nfslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -266,6 +269,7 @@ func (client NetworkFunctionVendorSkusClient) listByVendorNextResults(ctx contex
 	result, err = client.ListByVendorResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionVendorSkusClient", "listByVendorNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

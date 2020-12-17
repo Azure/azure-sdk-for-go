@@ -75,6 +75,7 @@ func (client Client) Get(ctx context.Context, resourceProviderNamespace string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.Client", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -150,6 +151,7 @@ func (client Client) List(ctx context.Context, resourceProviderNamespace string)
 	result.olr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.Client", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.olr.hasNextLink() && result.olr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -213,6 +215,7 @@ func (client Client) listNextResults(ctx context.Context, lastResults Operations
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.Client", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -262,6 +265,7 @@ func (client Client) ListAll(ctx context.Context) (result OperationsListResultPa
 	result.olr, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.Client", "ListAll", resp, "Failure responding to request")
+		return
 	}
 	if result.olr.hasNextLink() && result.olr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -324,6 +328,7 @@ func (client Client) listAllNextResults(ctx context.Context, lastResults Operati
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.Client", "listAllNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -375,6 +380,7 @@ func (client Client) Register(ctx context.Context, resourceProviderNamespace str
 	result, err = client.RegisterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.Client", "Register", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -450,6 +456,7 @@ func (client Client) Unregister(ctx context.Context, resourceProviderNamespace s
 	result, err = client.UnregisterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.Client", "Unregister", resp, "Failure responding to request")
+		return
 	}
 
 	return

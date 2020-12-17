@@ -86,6 +86,7 @@ func (client PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupN
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "healthcareapis.PrivateLinkResourcesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -173,6 +174,7 @@ func (client PrivateLinkResourcesClient) ListByService(ctx context.Context, reso
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "healthcareapis.PrivateLinkResourcesClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 
 	return

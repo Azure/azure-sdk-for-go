@@ -72,6 +72,7 @@ func (client CanonicalSupportPlanTypesClient) Get(ctx context.Context, providerN
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "addons.CanonicalSupportPlanTypesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

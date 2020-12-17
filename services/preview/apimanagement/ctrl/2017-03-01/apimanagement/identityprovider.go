@@ -68,6 +68,7 @@ func (client IdentityProviderClient) CreateOrUpdate(ctx context.Context, apimBas
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -150,6 +151,7 @@ func (client IdentityProviderClient) Delete(ctx context.Context, apimBaseURL str
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -228,6 +230,7 @@ func (client IdentityProviderClient) Get(ctx context.Context, apimBaseURL string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -305,6 +308,7 @@ func (client IdentityProviderClient) List(ctx context.Context, apimBaseURL strin
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -382,6 +386,7 @@ func (client IdentityProviderClient) Update(ctx context.Context, apimBaseURL str
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

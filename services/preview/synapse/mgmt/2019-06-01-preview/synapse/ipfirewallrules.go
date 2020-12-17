@@ -261,6 +261,7 @@ func (client IPFirewallRulesClient) Get(ctx context.Context, resourceGroupName s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.IPFirewallRulesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -348,6 +349,7 @@ func (client IPFirewallRulesClient) ListByWorkspace(ctx context.Context, resourc
 	result.ifrilr, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.IPFirewallRulesClient", "ListByWorkspace", resp, "Failure responding to request")
+		return
 	}
 	if result.ifrilr.hasNextLink() && result.ifrilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -412,6 +414,7 @@ func (client IPFirewallRulesClient) listByWorkspaceNextResults(ctx context.Conte
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.IPFirewallRulesClient", "listByWorkspaceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

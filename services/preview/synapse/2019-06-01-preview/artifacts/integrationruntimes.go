@@ -65,6 +65,7 @@ func (client IntegrationRuntimesClient) Get(ctx context.Context, integrationRunt
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.IntegrationRuntimesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -139,6 +140,7 @@ func (client IntegrationRuntimesClient) List(ctx context.Context) (result Integr
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.IntegrationRuntimesClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

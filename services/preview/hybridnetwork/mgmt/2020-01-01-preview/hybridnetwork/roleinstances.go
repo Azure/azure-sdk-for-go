@@ -81,6 +81,7 @@ func (client RoleInstancesClient) Get(ctx context.Context, locationName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -166,6 +167,7 @@ func (client RoleInstancesClient) List(ctx context.Context, locationName string,
 	result.nfrilr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.nfrilr.hasNextLink() && result.nfrilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -231,6 +233,7 @@ func (client RoleInstancesClient) listNextResults(ctx context.Context, lastResul
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -71,6 +71,7 @@ func (client DomainRegistrationProviderClient) ListOperations(ctx context.Contex
 	result.coc, err = client.ListOperationsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.DomainRegistrationProviderClient", "ListOperations", resp, "Failure responding to request")
+		return
 	}
 	if result.coc.hasNextLink() && result.coc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -129,6 +130,7 @@ func (client DomainRegistrationProviderClient) listOperationsNextResults(ctx con
 	result, err = client.ListOperationsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.DomainRegistrationProviderClient", "listOperationsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -231,6 +231,7 @@ func (client ExpressRouteCircuitPeeringsClient) Get(ctx context.Context, resourc
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitPeeringsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -308,6 +309,7 @@ func (client ExpressRouteCircuitPeeringsClient) List(ctx context.Context, resour
 	result.ercplr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitPeeringsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.ercplr.hasNextLink() && result.ercplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -372,6 +374,7 @@ func (client ExpressRouteCircuitPeeringsClient) listNextResults(ctx context.Cont
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitPeeringsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

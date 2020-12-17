@@ -263,6 +263,7 @@ func (client ClustersClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.ClustersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -350,6 +351,7 @@ func (client ClustersClient) List(ctx context.Context, resourceGroupName string,
 	result.cl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.ClustersClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.cl.hasNextLink() && result.cl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -414,6 +416,7 @@ func (client ClustersClient) listNextResults(ctx context.Context, lastResults Cl
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.ClustersClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

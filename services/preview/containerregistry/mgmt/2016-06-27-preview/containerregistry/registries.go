@@ -80,6 +80,7 @@ func (client RegistriesClient) CheckNameAvailability(ctx context.Context, regist
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -167,6 +168,7 @@ func (client RegistriesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -244,6 +246,7 @@ func (client RegistriesClient) Delete(ctx context.Context, resourceGroupName str
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -318,6 +321,7 @@ func (client RegistriesClient) GetCredentials(ctx context.Context, resourceGroup
 	result, err = client.GetCredentialsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "GetCredentials", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -393,6 +397,7 @@ func (client RegistriesClient) GetProperties(ctx context.Context, resourceGroupN
 	result, err = client.GetPropertiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "GetProperties", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -466,6 +471,7 @@ func (client RegistriesClient) List(ctx context.Context) (result RegistryListRes
 	result.rlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -528,6 +534,7 @@ func (client RegistriesClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -579,6 +586,7 @@ func (client RegistriesClient) ListByResourceGroup(ctx context.Context, resource
 	result.rlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -642,6 +650,7 @@ func (client RegistriesClient) listByResourceGroupNextResults(ctx context.Contex
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -693,6 +702,7 @@ func (client RegistriesClient) RegenerateCredentials(ctx context.Context, resour
 	result, err = client.RegenerateCredentialsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "RegenerateCredentials", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -769,6 +779,7 @@ func (client RegistriesClient) Update(ctx context.Context, resourceGroupName str
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

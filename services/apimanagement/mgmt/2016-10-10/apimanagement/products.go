@@ -96,6 +96,7 @@ func (client ProductsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -190,6 +191,7 @@ func (client ProductsClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -282,6 +284,7 @@ func (client ProductsClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -384,6 +387,7 @@ func (client ProductsClient) ListByService(ctx context.Context, resourceGroupNam
 	result.pc, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 	if result.pc.hasNextLink() && result.pc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -460,6 +464,7 @@ func (client ProductsClient) listByServiceNextResults(ctx context.Context, lastR
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -527,6 +532,7 @@ func (client ProductsClient) Update(ctx context.Context, resourceGroupName strin
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

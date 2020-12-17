@@ -346,6 +346,7 @@ func (client BackupPoliciesClient) Get(ctx context.Context, deviceName string, b
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupPoliciesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -431,6 +432,7 @@ func (client BackupPoliciesClient) ListByDevice(ctx context.Context, deviceName 
 	result, err = client.ListByDeviceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupPoliciesClient", "ListByDevice", resp, "Failure responding to request")
+		return
 	}
 
 	return

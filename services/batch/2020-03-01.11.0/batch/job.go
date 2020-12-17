@@ -148,6 +148,7 @@ func (client JobClient) Add(ctx context.Context, job JobAddParameter, timeout *i
 	result, err = client.AddResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "Add", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -264,6 +265,7 @@ func (client JobClient) Delete(ctx context.Context, jobID string, timeout *int32
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -399,6 +401,7 @@ func (client JobClient) Disable(ctx context.Context, jobID string, jobDisablePar
 	result, err = client.DisableResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "Disable", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -533,6 +536,7 @@ func (client JobClient) Enable(ctx context.Context, jobID string, timeout *int32
 	result, err = client.EnableResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "Enable", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -664,6 +668,7 @@ func (client JobClient) Get(ctx context.Context, jobID string, selectParameter s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -790,6 +795,7 @@ func (client JobClient) GetAllLifetimeStatistics(ctx context.Context, timeout *i
 	result, err = client.GetAllLifetimeStatisticsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "GetAllLifetimeStatistics", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -891,6 +897,7 @@ func (client JobClient) GetTaskCounts(ctx context.Context, jobID string, timeout
 	result, err = client.GetTaskCountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "GetTaskCounts", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1008,6 +1015,7 @@ func (client JobClient) List(ctx context.Context, filter string, selectParameter
 	result.cjlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.cjlr.hasNextLink() && result.cjlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1104,6 +1112,7 @@ func (client JobClient) listNextResults(ctx context.Context, lastResults CloudJo
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1176,6 +1185,7 @@ func (client JobClient) ListFromJobSchedule(ctx context.Context, jobScheduleID s
 	result.cjlr, err = client.ListFromJobScheduleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "ListFromJobSchedule", resp, "Failure responding to request")
+		return
 	}
 	if result.cjlr.hasNextLink() && result.cjlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1276,6 +1286,7 @@ func (client JobClient) listFromJobScheduleNextResults(ctx context.Context, last
 	result, err = client.ListFromJobScheduleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "listFromJobScheduleNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1350,6 +1361,7 @@ func (client JobClient) ListPreparationAndReleaseTaskStatus(ctx context.Context,
 	result.cjlpartsr, err = client.ListPreparationAndReleaseTaskStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "ListPreparationAndReleaseTaskStatus", resp, "Failure responding to request")
+		return
 	}
 	if result.cjlpartsr.hasNextLink() && result.cjlpartsr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1447,6 +1459,7 @@ func (client JobClient) listPreparationAndReleaseTaskStatusNextResults(ctx conte
 	result, err = client.ListPreparationAndReleaseTaskStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "listPreparationAndReleaseTaskStatusNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1517,6 +1530,7 @@ func (client JobClient) Patch(ctx context.Context, jobID string, jobPatchParamet
 	result, err = client.PatchResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "Patch", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1653,6 +1667,7 @@ func (client JobClient) Terminate(ctx context.Context, jobID string, jobTerminat
 	result, err = client.TerminateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "Terminate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1824,6 +1839,7 @@ func (client JobClient) Update(ctx context.Context, jobID string, jobUpdateParam
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

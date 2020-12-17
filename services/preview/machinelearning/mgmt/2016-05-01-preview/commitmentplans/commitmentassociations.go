@@ -77,6 +77,7 @@ func (client CommitmentAssociationsClient) Get(ctx context.Context, resourceGrou
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -155,6 +156,7 @@ func (client CommitmentAssociationsClient) List(ctx context.Context, resourceGro
 	result.calr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.calr.hasNextLink() && result.calr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -222,6 +224,7 @@ func (client CommitmentAssociationsClient) listNextResults(ctx context.Context, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -275,6 +278,7 @@ func (client CommitmentAssociationsClient) Move(ctx context.Context, resourceGro
 	result, err = client.MoveResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "Move", resp, "Failure responding to request")
+		return
 	}
 
 	return

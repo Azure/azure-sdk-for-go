@@ -77,6 +77,7 @@ func (client QueryTextsClient) ListByQuery(ctx context.Context, resourceGroupNam
 	result, err = client.ListByQueryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.QueryTextsClient", "ListByQuery", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -86,6 +86,7 @@ func (client ManagersClient) CreateExtendedInfo(ctx context.Context, managerExte
 	result, err = client.CreateExtendedInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "CreateExtendedInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -176,6 +177,7 @@ func (client ManagersClient) CreateOrUpdate(ctx context.Context, manager Manager
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -260,6 +262,7 @@ func (client ManagersClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -341,6 +344,7 @@ func (client ManagersClient) DeleteExtendedInfo(ctx context.Context, resourceGro
 	result, err = client.DeleteExtendedInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "DeleteExtendedInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -422,6 +426,7 @@ func (client ManagersClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -504,6 +509,7 @@ func (client ManagersClient) GetEncryptionKey(ctx context.Context, resourceGroup
 	result, err = client.GetEncryptionKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "GetEncryptionKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -586,6 +592,7 @@ func (client ManagersClient) GetEncryptionSettings(ctx context.Context, resource
 	result, err = client.GetEncryptionSettingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "GetEncryptionSettings", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -668,6 +675,7 @@ func (client ManagersClient) GetExtendedInfo(ctx context.Context, resourceGroupN
 	result, err = client.GetExtendedInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "GetExtendedInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -740,6 +748,7 @@ func (client ManagersClient) List(ctx context.Context) (result ManagerList, err 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -812,6 +821,7 @@ func (client ManagersClient) ListByResourceGroup(ctx context.Context, resourceGr
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -893,6 +903,7 @@ func (client ManagersClient) ListMetricDefinition(ctx context.Context, resourceG
 	result, err = client.ListMetricDefinitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "ListMetricDefinition", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -976,6 +987,7 @@ func (client ManagersClient) ListMetrics(ctx context.Context, resourceGroupName 
 	result, err = client.ListMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "ListMetrics", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1062,6 +1074,7 @@ func (client ManagersClient) Update(ctx context.Context, parameters ManagerPatch
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1148,6 +1161,7 @@ func (client ManagersClient) UpdateExtendedInfo(ctx context.Context, managerExte
 	result, err = client.UpdateExtendedInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "UpdateExtendedInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1239,6 +1253,7 @@ func (client ManagersClient) UploadRegistrationCertificate(ctx context.Context, 
 	result, err = client.UploadRegistrationCertificateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "UploadRegistrationCertificate", resp, "Failure responding to request")
+		return
 	}
 
 	return

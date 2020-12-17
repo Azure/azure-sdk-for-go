@@ -97,6 +97,7 @@ func (client IntegrationRuntimesClient) CreateOrUpdate(ctx context.Context, reso
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -196,6 +197,7 @@ func (client IntegrationRuntimesClient) Delete(ctx context.Context, resourceGrou
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -288,6 +290,7 @@ func (client IntegrationRuntimesClient) Get(ctx context.Context, resourceGroupNa
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -382,6 +385,7 @@ func (client IntegrationRuntimesClient) GetConnectionInfo(ctx context.Context, r
 	result, err = client.GetConnectionInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "GetConnectionInfo", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -476,6 +480,7 @@ func (client IntegrationRuntimesClient) GetMonitoringData(ctx context.Context, r
 	result, err = client.GetMonitoringDataResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "GetMonitoringData", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -569,6 +574,7 @@ func (client IntegrationRuntimesClient) GetStatus(ctx context.Context, resourceG
 	result, err = client.GetStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "GetStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -662,6 +668,7 @@ func (client IntegrationRuntimesClient) ListAuthKeys(ctx context.Context, resour
 	result, err = client.ListAuthKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "ListAuthKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -751,6 +758,7 @@ func (client IntegrationRuntimesClient) ListByFactory(ctx context.Context, resou
 	result.irlr, err = client.ListByFactoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "ListByFactory", resp, "Failure responding to request")
+		return
 	}
 	if result.irlr.hasNextLink() && result.irlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -815,6 +823,7 @@ func (client IntegrationRuntimesClient) listByFactoryNextResults(ctx context.Con
 	result, err = client.ListByFactoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "listByFactoryNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -884,6 +893,7 @@ func (client IntegrationRuntimesClient) RegenerateAuthKey(ctx context.Context, r
 	result, err = client.RegenerateAuthKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "RegenerateAuthKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -980,6 +990,7 @@ func (client IntegrationRuntimesClient) RemoveNode(ctx context.Context, resource
 	result, err = client.RemoveNodeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "RemoveNode", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1262,6 +1273,7 @@ func (client IntegrationRuntimesClient) SyncCredentials(ctx context.Context, res
 	result, err = client.SyncCredentialsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "SyncCredentials", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1355,6 +1367,7 @@ func (client IntegrationRuntimesClient) Update(ctx context.Context, resourceGrou
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1450,6 +1463,7 @@ func (client IntegrationRuntimesClient) Upgrade(ctx context.Context, resourceGro
 	result, err = client.UpgradeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "Upgrade", resp, "Failure responding to request")
+		return
 	}
 
 	return

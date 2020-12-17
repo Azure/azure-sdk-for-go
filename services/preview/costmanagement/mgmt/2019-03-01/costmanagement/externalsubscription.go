@@ -73,6 +73,7 @@ func (client ExternalSubscriptionClient) Get(ctx context.Context, externalSubscr
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ExternalSubscriptionClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -146,6 +147,7 @@ func (client ExternalSubscriptionClient) List(ctx context.Context) (result Exter
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ExternalSubscriptionClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -214,6 +216,7 @@ func (client ExternalSubscriptionClient) ListByExternalBillingAccount(ctx contex
 	result, err = client.ListByExternalBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ExternalSubscriptionClient", "ListByExternalBillingAccount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -288,6 +291,7 @@ func (client ExternalSubscriptionClient) ListByManagementGroup(ctx context.Conte
 	result, err = client.ListByManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ExternalSubscriptionClient", "ListByManagementGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -364,6 +368,7 @@ func (client ExternalSubscriptionClient) UpdateManagementGroup(ctx context.Conte
 	result, err = client.UpdateManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ExternalSubscriptionClient", "UpdateManagementGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -75,6 +75,7 @@ func (client IntegrationAccountPartnersClient) CreateOrUpdate(ctx context.Contex
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountPartnersClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -154,6 +155,7 @@ func (client IntegrationAccountPartnersClient) Delete(ctx context.Context, resou
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountPartnersClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -230,6 +232,7 @@ func (client IntegrationAccountPartnersClient) Get(ctx context.Context, resource
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountPartnersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -309,6 +312,7 @@ func (client IntegrationAccountPartnersClient) List(ctx context.Context, resourc
 	result.iaplr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountPartnersClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.iaplr.hasNextLink() && result.iaplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -379,6 +383,7 @@ func (client IntegrationAccountPartnersClient) listNextResults(ctx context.Conte
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountPartnersClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

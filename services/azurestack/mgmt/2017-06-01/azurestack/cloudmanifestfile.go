@@ -73,6 +73,7 @@ func (client CloudManifestFileClient) Get(ctx context.Context, verificationVersi
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.CloudManifestFileClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -146,6 +147,7 @@ func (client CloudManifestFileClient) List(ctx context.Context) (result CloudMan
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.CloudManifestFileClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

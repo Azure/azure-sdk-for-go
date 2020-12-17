@@ -85,6 +85,7 @@ func (client SQLPoolSchemasClient) Get(ctx context.Context, resourceGroupName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolSchemasClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -175,6 +176,7 @@ func (client SQLPoolSchemasClient) List(ctx context.Context, resourceGroupName s
 	result.spslr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolSchemasClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.spslr.hasNextLink() && result.spslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -243,6 +245,7 @@ func (client SQLPoolSchemasClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolSchemasClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

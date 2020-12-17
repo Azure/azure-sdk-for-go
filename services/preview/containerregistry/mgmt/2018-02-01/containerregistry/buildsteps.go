@@ -283,6 +283,7 @@ func (client BuildStepsClient) Get(ctx context.Context, resourceGroupName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -374,6 +375,7 @@ func (client BuildStepsClient) List(ctx context.Context, resourceGroupName strin
 	result.bsl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.bsl.hasNextLink() && result.bsl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -439,6 +441,7 @@ func (client BuildStepsClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -509,6 +512,7 @@ func (client BuildStepsClient) ListBuildArguments(ctx context.Context, resourceG
 	result.bal, err = client.ListBuildArgumentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "ListBuildArguments", resp, "Failure responding to request")
+		return
 	}
 	if result.bal.hasNextLink() && result.bal.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -575,6 +579,7 @@ func (client BuildStepsClient) listBuildArgumentsNextResults(ctx context.Context
 	result, err = client.ListBuildArgumentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "listBuildArgumentsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

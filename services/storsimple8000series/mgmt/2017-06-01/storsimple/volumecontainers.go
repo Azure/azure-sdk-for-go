@@ -263,6 +263,7 @@ func (client VolumeContainersClient) Get(ctx context.Context, deviceName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.VolumeContainersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -348,6 +349,7 @@ func (client VolumeContainersClient) ListByDevice(ctx context.Context, deviceNam
 	result, err = client.ListByDeviceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.VolumeContainersClient", "ListByDevice", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -433,6 +435,7 @@ func (client VolumeContainersClient) ListMetricDefinition(ctx context.Context, d
 	result, err = client.ListMetricDefinitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.VolumeContainersClient", "ListMetricDefinition", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -520,6 +523,7 @@ func (client VolumeContainersClient) ListMetrics(ctx context.Context, deviceName
 	result, err = client.ListMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.VolumeContainersClient", "ListMetrics", resp, "Failure responding to request")
+		return
 	}
 
 	return

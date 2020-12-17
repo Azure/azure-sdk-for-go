@@ -74,6 +74,7 @@ func (client ServicesClient) CheckChildrenNameAvailability(ctx context.Context, 
 	result, err = client.CheckChildrenNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServicesClient", "CheckChildrenNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -151,6 +152,7 @@ func (client ServicesClient) CheckNameAvailability(ctx context.Context, location
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServicesClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -228,6 +230,7 @@ func (client ServicesClient) CheckStatus(ctx context.Context, groupName string, 
 	result, err = client.CheckStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServicesClient", "CheckStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -474,6 +477,7 @@ func (client ServicesClient) Get(ctx context.Context, groupName string, serviceN
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServicesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -548,6 +552,7 @@ func (client ServicesClient) List(ctx context.Context) (result ServiceListPage, 
 	result.sl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServicesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.sl.hasNextLink() && result.sl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -610,6 +615,7 @@ func (client ServicesClient) listNextResults(ctx context.Context, lastResults Se
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServicesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -662,6 +668,7 @@ func (client ServicesClient) ListByResourceGroup(ctx context.Context, groupName 
 	result.sl, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServicesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.sl.hasNextLink() && result.sl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -725,6 +732,7 @@ func (client ServicesClient) listByResourceGroupNextResults(ctx context.Context,
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServicesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -778,6 +786,7 @@ func (client ServicesClient) ListSkus(ctx context.Context, groupName string, ser
 	result.ssl, err = client.ListSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServicesClient", "ListSkus", resp, "Failure responding to request")
+		return
 	}
 	if result.ssl.hasNextLink() && result.ssl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -842,6 +851,7 @@ func (client ServicesClient) listSkusNextResults(ctx context.Context, lastResult
 	result, err = client.ListSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServicesClient", "listSkusNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

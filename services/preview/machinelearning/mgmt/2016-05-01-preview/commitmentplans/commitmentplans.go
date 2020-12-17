@@ -76,6 +76,7 @@ func (client Client) CreateOrUpdate(ctx context.Context, createOrUpdatePayload C
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.Client", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -154,6 +155,7 @@ func (client Client) Get(ctx context.Context, resourceGroupName string, commitme
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.Client", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -229,6 +231,7 @@ func (client Client) List(ctx context.Context, skipToken string) (result ListRes
 	result.lr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.Client", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -294,6 +297,7 @@ func (client Client) listNextResults(ctx context.Context, lastResults ListResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.Client", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -346,6 +350,7 @@ func (client Client) ListInResourceGroup(ctx context.Context, resourceGroupName 
 	result.lr, err = client.ListInResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.Client", "ListInResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -412,6 +417,7 @@ func (client Client) listInResourceGroupNextResults(ctx context.Context, lastRes
 	result, err = client.ListInResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.Client", "listInResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -465,6 +471,7 @@ func (client Client) Patch(ctx context.Context, patchPayload PatchPayload, resou
 	result, err = client.PatchResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.Client", "Patch", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -542,6 +549,7 @@ func (client Client) Remove(ctx context.Context, resourceGroupName string, commi
 	result, err = client.RemoveResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.Client", "Remove", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -280,6 +280,7 @@ func (client BuildTasksClient) Get(ctx context.Context, resourceGroupName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BuildTasksClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -368,6 +369,7 @@ func (client BuildTasksClient) List(ctx context.Context, resourceGroupName strin
 	result.btlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BuildTasksClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.btlr.hasNextLink() && result.btlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -438,6 +440,7 @@ func (client BuildTasksClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BuildTasksClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -502,6 +505,7 @@ func (client BuildTasksClient) ListSourceRepositoryProperties(ctx context.Contex
 	result, err = client.ListSourceRepositoryPropertiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BuildTasksClient", "ListSourceRepositoryProperties", resp, "Failure responding to request")
+		return
 	}
 
 	return

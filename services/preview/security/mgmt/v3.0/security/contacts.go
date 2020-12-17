@@ -82,6 +82,7 @@ func (client ContactsClient) Create(ctx context.Context, securityContactName str
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ContactsClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -163,6 +164,7 @@ func (client ContactsClient) Delete(ctx context.Context, securityContactName str
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ContactsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -241,6 +243,7 @@ func (client ContactsClient) Get(ctx context.Context, securityContactName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ContactsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -319,6 +322,7 @@ func (client ContactsClient) List(ctx context.Context) (result ContactListPage, 
 	result.cl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ContactsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.cl.hasNextLink() && result.cl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -381,6 +385,7 @@ func (client ContactsClient) listNextResults(ctx context.Context, lastResults Co
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ContactsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -438,6 +443,7 @@ func (client ContactsClient) Update(ctx context.Context, securityContactName str
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ContactsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

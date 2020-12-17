@@ -77,6 +77,7 @@ func (client TransactionsClient) ListByBillingAccountName(ctx context.Context, b
 	result.tlr, err = client.ListByBillingAccountNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.TransactionsClient", "ListByBillingAccountName", resp, "Failure responding to request")
+		return
 	}
 	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -144,6 +145,7 @@ func (client TransactionsClient) listByBillingAccountNameNextResults(ctx context
 	result, err = client.ListByBillingAccountNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.TransactionsClient", "listByBillingAccountNameNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -201,6 +203,7 @@ func (client TransactionsClient) ListByBillingProfileName(ctx context.Context, b
 	result.tlr, err = client.ListByBillingProfileNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.TransactionsClient", "ListByBillingProfileName", resp, "Failure responding to request")
+		return
 	}
 	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -269,6 +272,7 @@ func (client TransactionsClient) listByBillingProfileNameNextResults(ctx context
 	result, err = client.ListByBillingProfileNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.TransactionsClient", "listByBillingProfileNameNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -326,6 +330,7 @@ func (client TransactionsClient) ListByCustomerName(ctx context.Context, billing
 	result.tlr, err = client.ListByCustomerNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.TransactionsClient", "ListByCustomerName", resp, "Failure responding to request")
+		return
 	}
 	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -394,6 +399,7 @@ func (client TransactionsClient) listByCustomerNameNextResults(ctx context.Conte
 	result, err = client.ListByCustomerNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.TransactionsClient", "listByCustomerNameNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -451,6 +457,7 @@ func (client TransactionsClient) ListByInvoiceSectionName(ctx context.Context, b
 	result.tlr, err = client.ListByInvoiceSectionNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.TransactionsClient", "ListByInvoiceSectionName", resp, "Failure responding to request")
+		return
 	}
 	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -519,6 +526,7 @@ func (client TransactionsClient) listByInvoiceSectionNameNextResults(ctx context
 	result, err = client.ListByInvoiceSectionNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.TransactionsClient", "listByInvoiceSectionNameNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

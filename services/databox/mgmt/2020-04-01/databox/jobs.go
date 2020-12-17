@@ -87,6 +87,7 @@ func (client JobsClient) BookShipmentPickUp(ctx context.Context, resourceGroupNa
 	result, err = client.BookShipmentPickUpResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.JobsClient", "BookShipmentPickUp", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -176,6 +177,7 @@ func (client JobsClient) Cancel(ctx context.Context, resourceGroupName string, j
 	result, err = client.CancelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.JobsClient", "Cancel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -451,6 +453,7 @@ func (client JobsClient) Get(ctx context.Context, resourceGroupName string, jobN
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.JobsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -529,6 +532,7 @@ func (client JobsClient) List(ctx context.Context, skipToken string) (result Job
 	result.jrl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.JobsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.jrl.hasNextLink() && result.jrl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -594,6 +598,7 @@ func (client JobsClient) listNextResults(ctx context.Context, lastResults JobRes
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.JobsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -646,6 +651,7 @@ func (client JobsClient) ListByResourceGroup(ctx context.Context, resourceGroupN
 	result.jrl, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.JobsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.jrl.hasNextLink() && result.jrl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -712,6 +718,7 @@ func (client JobsClient) listByResourceGroupNextResults(ctx context.Context, las
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.JobsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -772,6 +779,7 @@ func (client JobsClient) ListCredentials(ctx context.Context, resourceGroupName 
 	result, err = client.ListCredentialsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.JobsClient", "ListCredentials", resp, "Failure responding to request")
+		return
 	}
 
 	return

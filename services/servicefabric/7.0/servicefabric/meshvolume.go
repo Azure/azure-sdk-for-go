@@ -88,6 +88,7 @@ func (client MeshVolumeClient) CreateOrUpdate(ctx context.Context, volumeResourc
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.MeshVolumeClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -162,6 +163,7 @@ func (client MeshVolumeClient) Delete(ctx context.Context, volumeResourceName st
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.MeshVolumeClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -234,6 +236,7 @@ func (client MeshVolumeClient) Get(ctx context.Context, volumeResourceName strin
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.MeshVolumeClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -305,6 +308,7 @@ func (client MeshVolumeClient) List(ctx context.Context) (result PagedVolumeReso
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.MeshVolumeClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -69,6 +69,7 @@ func (client Client) ListOperations(ctx context.Context) (result Operations, err
 	result, err = client.ListOperationsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "maps.Client", "ListOperations", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -76,6 +76,7 @@ func (client UserIdentitiesClient) List(ctx context.Context, apimBaseURL string,
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserIdentitiesClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

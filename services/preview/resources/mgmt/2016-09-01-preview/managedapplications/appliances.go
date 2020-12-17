@@ -434,6 +434,7 @@ func (client AppliancesClient) Get(ctx context.Context, resourceGroupName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.AppliancesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -510,6 +511,7 @@ func (client AppliancesClient) GetByID(ctx context.Context, applianceID string) 
 	result, err = client.GetByIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.AppliancesClient", "GetByID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -591,6 +593,7 @@ func (client AppliancesClient) ListByResourceGroup(ctx context.Context, resource
 	result.alr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.AppliancesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -654,6 +657,7 @@ func (client AppliancesClient) listByResourceGroupNextResults(ctx context.Contex
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.AppliancesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -703,6 +707,7 @@ func (client AppliancesClient) ListBySubscription(ctx context.Context) (result A
 	result.alr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.AppliancesClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -765,6 +770,7 @@ func (client AppliancesClient) listBySubscriptionNextResults(ctx context.Context
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.AppliancesClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -828,6 +834,7 @@ func (client AppliancesClient) Update(ctx context.Context, resourceGroupName str
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.AppliancesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -910,6 +917,7 @@ func (client AppliancesClient) UpdateByID(ctx context.Context, applianceID strin
 	result, err = client.UpdateByIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.AppliancesClient", "UpdateByID", resp, "Failure responding to request")
+		return
 	}
 
 	return

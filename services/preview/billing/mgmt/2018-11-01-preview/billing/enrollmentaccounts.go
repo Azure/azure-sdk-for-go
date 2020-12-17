@@ -76,6 +76,7 @@ func (client EnrollmentAccountsClient) GetByEnrollmentAccountID(ctx context.Cont
 	result, err = client.GetByEnrollmentAccountIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "GetByEnrollmentAccountID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -159,6 +160,7 @@ func (client EnrollmentAccountsClient) ListByBillingAccountName(ctx context.Cont
 	result.ealr, err = client.ListByBillingAccountNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "ListByBillingAccountName", resp, "Failure responding to request")
+		return
 	}
 	if result.ealr.hasNextLink() && result.ealr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -227,6 +229,7 @@ func (client EnrollmentAccountsClient) listByBillingAccountNameNextResults(ctx c
 	result, err = client.ListByBillingAccountNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "listByBillingAccountNameNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

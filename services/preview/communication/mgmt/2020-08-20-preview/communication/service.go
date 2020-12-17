@@ -81,6 +81,7 @@ func (client ServiceClient) CheckNameAvailability(ctx context.Context, nameAvail
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "communication.ServiceClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -329,6 +330,7 @@ func (client ServiceClient) Get(ctx context.Context, resourceGroupName string, c
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "communication.ServiceClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -415,6 +417,7 @@ func (client ServiceClient) LinkNotificationHub(ctx context.Context, resourceGro
 	result, err = client.LinkNotificationHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "communication.ServiceClient", "LinkNotificationHub", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -496,6 +499,7 @@ func (client ServiceClient) ListByResourceGroup(ctx context.Context, resourceGro
 	result.srl, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "communication.ServiceClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.srl.hasNextLink() && result.srl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -559,6 +563,7 @@ func (client ServiceClient) listByResourceGroupNextResults(ctx context.Context, 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "communication.ServiceClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -608,6 +613,7 @@ func (client ServiceClient) ListBySubscription(ctx context.Context) (result Serv
 	result.srl, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "communication.ServiceClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.srl.hasNextLink() && result.srl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -670,6 +676,7 @@ func (client ServiceClient) listBySubscriptionNextResults(ctx context.Context, l
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "communication.ServiceClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -722,6 +729,7 @@ func (client ServiceClient) ListKeys(ctx context.Context, resourceGroupName stri
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "communication.ServiceClient", "ListKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -800,6 +808,7 @@ func (client ServiceClient) RegenerateKey(ctx context.Context, resourceGroupName
 	result, err = client.RegenerateKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "communication.ServiceClient", "RegenerateKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -882,6 +891,7 @@ func (client ServiceClient) Update(ctx context.Context, resourceGroupName string
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "communication.ServiceClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

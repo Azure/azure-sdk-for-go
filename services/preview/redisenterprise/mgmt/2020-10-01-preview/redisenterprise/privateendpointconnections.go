@@ -76,6 +76,7 @@ func (client PrivateEndpointConnectionsClient) Delete(ctx context.Context, resou
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redisenterprise.PrivateEndpointConnectionsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -153,6 +154,7 @@ func (client PrivateEndpointConnectionsClient) GetMethod(ctx context.Context, re
 	result, err = client.GetMethodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redisenterprise.PrivateEndpointConnectionsClient", "GetMethod", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -229,6 +231,7 @@ func (client PrivateEndpointConnectionsClient) List(ctx context.Context, resourc
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redisenterprise.PrivateEndpointConnectionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

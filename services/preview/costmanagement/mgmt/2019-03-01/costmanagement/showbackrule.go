@@ -73,6 +73,7 @@ func (client ShowbackRuleClient) CreateUpdateRule(ctx context.Context, billingAc
 	result, err = client.CreateUpdateRuleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ShowbackRuleClient", "CreateUpdateRule", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -152,6 +153,7 @@ func (client ShowbackRuleClient) GetBillingAccountID(ctx context.Context, billin
 	result, err = client.GetBillingAccountIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ShowbackRuleClient", "GetBillingAccountID", resp, "Failure responding to request")
+		return
 	}
 
 	return

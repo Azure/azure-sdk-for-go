@@ -67,6 +67,7 @@ func (client LogClient) Delete(ctx context.Context) (result autorest.Response, e
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "personalizer.LogClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -130,6 +131,7 @@ func (client LogClient) GetProperties(ctx context.Context) (result LogsPropertie
 	result, err = client.GetPropertiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "personalizer.LogClient", "GetProperties", resp, "Failure responding to request")
+		return
 	}
 
 	return

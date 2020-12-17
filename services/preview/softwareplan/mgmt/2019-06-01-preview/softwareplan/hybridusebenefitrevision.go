@@ -76,6 +76,7 @@ func (client HybridUseBenefitRevisionClient) List(ctx context.Context, scope str
 	result.hublr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "softwareplan.HybridUseBenefitRevisionClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.hublr.hasNextLink() && result.hublr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -139,6 +140,7 @@ func (client HybridUseBenefitRevisionClient) listNextResults(ctx context.Context
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "softwareplan.HybridUseBenefitRevisionClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

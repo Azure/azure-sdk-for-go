@@ -242,6 +242,7 @@ func (client EnvironmentsClient) Get(ctx context.Context, resourceGroupName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.EnvironmentsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -328,6 +329,7 @@ func (client EnvironmentsClient) List(ctx context.Context, resourceGroupName str
 	result.el, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.EnvironmentsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.el.hasNextLink() && result.el.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -405,6 +407,7 @@ func (client EnvironmentsClient) listNextResults(ctx context.Context, lastResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.EnvironmentsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -459,6 +462,7 @@ func (client EnvironmentsClient) Update(ctx context.Context, resourceGroupName s
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.EnvironmentsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

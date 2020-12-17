@@ -86,6 +86,7 @@ func (client ServiceTopologiesClient) CreateOrUpdate(ctx context.Context, servic
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceTopologiesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -171,6 +172,7 @@ func (client ServiceTopologiesClient) Delete(ctx context.Context, resourceGroupN
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceTopologiesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -253,6 +255,7 @@ func (client ServiceTopologiesClient) Get(ctx context.Context, resourceGroupName
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceTopologiesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -335,6 +338,7 @@ func (client ServiceTopologiesClient) List(ctx context.Context, resourceGroupNam
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceTopologiesClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

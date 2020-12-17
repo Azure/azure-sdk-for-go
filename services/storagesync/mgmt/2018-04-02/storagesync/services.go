@@ -82,6 +82,7 @@ func (client ServicesClient) CheckNameAvailability(ctx context.Context, location
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.ServicesClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -169,6 +170,7 @@ func (client ServicesClient) Create(ctx context.Context, resourceGroupName strin
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.ServicesClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -256,6 +258,7 @@ func (client ServicesClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.ServicesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -340,6 +343,7 @@ func (client ServicesClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.ServicesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -424,6 +428,7 @@ func (client ServicesClient) ListByResourceGroup(ctx context.Context, resourceGr
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.ServicesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -501,6 +506,7 @@ func (client ServicesClient) ListBySubscription(ctx context.Context) (result Ser
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.ServicesClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -585,6 +591,7 @@ func (client ServicesClient) Update(ctx context.Context, resourceGroupName strin
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.ServicesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

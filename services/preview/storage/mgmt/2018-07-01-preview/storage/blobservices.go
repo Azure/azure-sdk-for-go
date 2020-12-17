@@ -89,6 +89,7 @@ func (client BlobServicesClient) GetServiceProperties(ctx context.Context, resou
 	result, err = client.GetServicePropertiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storage.BlobServicesClient", "GetServiceProperties", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -192,6 +193,7 @@ func (client BlobServicesClient) SetServiceProperties(ctx context.Context, resou
 	result, err = client.SetServicePropertiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storage.BlobServicesClient", "SetServiceProperties", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -76,6 +76,7 @@ func (client AuthorizationServerClient) CreateOrUpdate(ctx context.Context, apim
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServerClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -165,6 +166,7 @@ func (client AuthorizationServerClient) Delete(ctx context.Context, apimBaseURL 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServerClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -250,6 +252,7 @@ func (client AuthorizationServerClient) Get(ctx context.Context, apimBaseURL str
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServerClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -344,6 +347,7 @@ func (client AuthorizationServerClient) List(ctx context.Context, apimBaseURL st
 	result.asc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServerClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.asc.hasNextLink() && result.asc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -415,6 +419,7 @@ func (client AuthorizationServerClient) listNextResults(ctx context.Context, las
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServerClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -477,6 +482,7 @@ func (client AuthorizationServerClient) Update(ctx context.Context, apimBaseURL 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServerClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

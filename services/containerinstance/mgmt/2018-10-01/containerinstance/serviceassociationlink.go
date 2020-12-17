@@ -75,6 +75,7 @@ func (client ServiceAssociationLinkClient) Delete(ctx context.Context, resourceG
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerinstance.ServiceAssociationLinkClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return

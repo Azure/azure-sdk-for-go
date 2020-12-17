@@ -96,6 +96,7 @@ func (client TriggersClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -195,6 +196,7 @@ func (client TriggersClient) Delete(ctx context.Context, resourceGroupName strin
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -289,6 +291,7 @@ func (client TriggersClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -386,6 +389,7 @@ func (client TriggersClient) GetEventSubscriptionStatus(ctx context.Context, res
 	result, err = client.GetEventSubscriptionStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "GetEventSubscriptionStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -475,6 +479,7 @@ func (client TriggersClient) ListByFactory(ctx context.Context, resourceGroupNam
 	result.tlr, err = client.ListByFactoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "ListByFactory", resp, "Failure responding to request")
+		return
 	}
 	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -539,6 +544,7 @@ func (client TriggersClient) listByFactoryNextResults(ctx context.Context, lastR
 	result, err = client.ListByFactoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "listByFactoryNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -603,6 +609,7 @@ func (client TriggersClient) QueryByFactory(ctx context.Context, resourceGroupNa
 	result, err = client.QueryByFactoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "QueryByFactory", resp, "Failure responding to request")
+		return
 	}
 
 	return

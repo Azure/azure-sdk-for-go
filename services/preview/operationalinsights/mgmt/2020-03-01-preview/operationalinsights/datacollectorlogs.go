@@ -94,6 +94,7 @@ func (client DataCollectorLogsClient) Delete(ctx context.Context, resourceGroupN
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.DataCollectorLogsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -192,6 +193,7 @@ func (client DataCollectorLogsClient) Get(ctx context.Context, resourceGroupName
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.DataCollectorLogsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -286,6 +288,7 @@ func (client DataCollectorLogsClient) ListByWorkspace(ctx context.Context, resou
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.DataCollectorLogsClient", "ListByWorkspace", resp, "Failure responding to request")
+		return
 	}
 
 	return

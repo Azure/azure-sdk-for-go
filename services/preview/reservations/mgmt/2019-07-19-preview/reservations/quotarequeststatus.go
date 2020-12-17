@@ -77,6 +77,7 @@ func (client QuotaRequestStatusClient) Get(ctx context.Context, subscriptionID s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestStatusClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -171,6 +172,7 @@ func (client QuotaRequestStatusClient) List(ctx context.Context, subscriptionID 
 	result.qrdl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestStatusClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.qrdl.hasNextLink() && result.qrdl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -244,6 +246,7 @@ func (client QuotaRequestStatusClient) listNextResults(ctx context.Context, last
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestStatusClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

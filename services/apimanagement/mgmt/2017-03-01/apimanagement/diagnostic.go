@@ -92,6 +92,7 @@ func (client DiagnosticClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.DiagnosticClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -189,6 +190,7 @@ func (client DiagnosticClient) Delete(ctx context.Context, resourceGroupName str
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.DiagnosticClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -278,6 +280,7 @@ func (client DiagnosticClient) Get(ctx context.Context, resourceGroupName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.DiagnosticClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -367,6 +370,7 @@ func (client DiagnosticClient) Head(ctx context.Context, resourceGroupName strin
 	result, err = client.HeadResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.DiagnosticClient", "Head", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -462,6 +466,7 @@ func (client DiagnosticClient) ListByService(ctx context.Context, resourceGroupN
 	result.dc, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.DiagnosticClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 	if result.dc.hasNextLink() && result.dc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -535,6 +540,7 @@ func (client DiagnosticClient) listByServiceNextResults(ctx context.Context, las
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.DiagnosticClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -602,6 +608,7 @@ func (client DiagnosticClient) Update(ctx context.Context, resourceGroupName str
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.DiagnosticClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

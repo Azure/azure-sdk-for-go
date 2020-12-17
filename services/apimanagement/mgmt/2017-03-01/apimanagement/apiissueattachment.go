@@ -106,6 +106,7 @@ func (client APIIssueAttachmentClient) CreateOrUpdate(ctx context.Context, resou
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueAttachmentClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -215,6 +216,7 @@ func (client APIIssueAttachmentClient) Delete(ctx context.Context, resourceGroup
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueAttachmentClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -316,6 +318,7 @@ func (client APIIssueAttachmentClient) Get(ctx context.Context, resourceGroupNam
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueAttachmentClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

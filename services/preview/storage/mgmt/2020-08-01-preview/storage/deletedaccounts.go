@@ -82,6 +82,7 @@ func (client DeletedAccountsClient) Get(ctx context.Context, deletedAccountName 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storage.DeletedAccountsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -161,6 +162,7 @@ func (client DeletedAccountsClient) List(ctx context.Context) (result DeletedAcc
 	result.dalr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storage.DeletedAccountsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.dalr.hasNextLink() && result.dalr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -223,6 +225,7 @@ func (client DeletedAccountsClient) listNextResults(ctx context.Context, lastRes
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storage.DeletedAccountsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

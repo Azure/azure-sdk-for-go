@@ -423,6 +423,7 @@ func (client ApplianceDefinitionsClient) Get(ctx context.Context, resourceGroupN
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -499,6 +500,7 @@ func (client ApplianceDefinitionsClient) GetByID(ctx context.Context, applianceD
 	result, err = client.GetByIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsClient", "GetByID", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -580,6 +582,7 @@ func (client ApplianceDefinitionsClient) ListByResourceGroup(ctx context.Context
 	result.adlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.adlr.hasNextLink() && result.adlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -643,6 +646,7 @@ func (client ApplianceDefinitionsClient) listByResourceGroupNextResults(ctx cont
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

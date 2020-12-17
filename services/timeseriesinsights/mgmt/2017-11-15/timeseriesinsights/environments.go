@@ -169,6 +169,7 @@ func (client EnvironmentsClient) Delete(ctx context.Context, resourceGroupName s
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "timeseriesinsights.EnvironmentsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -246,6 +247,7 @@ func (client EnvironmentsClient) Get(ctx context.Context, resourceGroupName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "timeseriesinsights.EnvironmentsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -324,6 +326,7 @@ func (client EnvironmentsClient) ListByResourceGroup(ctx context.Context, resour
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "timeseriesinsights.EnvironmentsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -395,6 +398,7 @@ func (client EnvironmentsClient) ListBySubscription(ctx context.Context) (result
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "timeseriesinsights.EnvironmentsClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 
 	return

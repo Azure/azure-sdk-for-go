@@ -100,6 +100,7 @@ func (client ConnectorMappingsClient) CreateOrUpdate(ctx context.Context, resour
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -181,6 +182,7 @@ func (client ConnectorMappingsClient) Delete(ctx context.Context, resourceGroupN
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -259,6 +261,7 @@ func (client ConnectorMappingsClient) Get(ctx context.Context, resourceGroupName
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -338,6 +341,7 @@ func (client ConnectorMappingsClient) ListByConnector(ctx context.Context, resou
 	result.cmlr, err = client.ListByConnectorResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "ListByConnector", resp, "Failure responding to request")
+		return
 	}
 	if result.cmlr.hasNextLink() && result.cmlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -403,6 +407,7 @@ func (client ConnectorMappingsClient) listByConnectorNextResults(ctx context.Con
 	result, err = client.ListByConnectorResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "listByConnectorNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

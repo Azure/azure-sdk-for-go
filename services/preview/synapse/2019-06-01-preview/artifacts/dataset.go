@@ -259,6 +259,7 @@ func (client DatasetClient) GetDataset(ctx context.Context, datasetName string, 
 	result, err = client.GetDatasetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.DatasetClient", "GetDataset", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -338,6 +339,7 @@ func (client DatasetClient) GetDatasetsByWorkspace(ctx context.Context) (result 
 	result.dlr, err = client.GetDatasetsByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.DatasetClient", "GetDatasetsByWorkspace", resp, "Failure responding to request")
+		return
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -400,6 +402,7 @@ func (client DatasetClient) getDatasetsByWorkspaceNextResults(ctx context.Contex
 	result, err = client.GetDatasetsByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.DatasetClient", "getDatasetsByWorkspaceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -80,6 +80,7 @@ func (client RegulatoryComplianceControlsClient) Get(ctx context.Context, regula
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.RegulatoryComplianceControlsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -162,6 +163,7 @@ func (client RegulatoryComplianceControlsClient) List(ctx context.Context, regul
 	result.rccl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.RegulatoryComplianceControlsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rccl.hasNextLink() && result.rccl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -228,6 +230,7 @@ func (client RegulatoryComplianceControlsClient) listNextResults(ctx context.Con
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.RegulatoryComplianceControlsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

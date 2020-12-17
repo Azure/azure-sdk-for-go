@@ -82,6 +82,7 @@ func (client RegistrationsClient) CreateOrUpdate(ctx context.Context, resourceGr
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.RegistrationsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -159,6 +160,7 @@ func (client RegistrationsClient) Delete(ctx context.Context, resourceGroup stri
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.RegistrationsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -233,6 +235,7 @@ func (client RegistrationsClient) Get(ctx context.Context, resourceGroup string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.RegistrationsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -308,6 +311,7 @@ func (client RegistrationsClient) GetActivationKey(ctx context.Context, resource
 	result, err = client.GetActivationKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.RegistrationsClient", "GetActivationKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -383,6 +387,7 @@ func (client RegistrationsClient) List(ctx context.Context, resourceGroup string
 	result.rl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.RegistrationsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rl.hasNextLink() && result.rl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -446,6 +451,7 @@ func (client RegistrationsClient) listNextResults(ctx context.Context, lastResul
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.RegistrationsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -498,6 +504,7 @@ func (client RegistrationsClient) Update(ctx context.Context, resourceGroup stri
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.RegistrationsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

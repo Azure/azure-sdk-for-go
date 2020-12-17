@@ -78,6 +78,7 @@ func (client AdDomainServiceMembersClient) List(ctx context.Context, serviceName
 	result.asm, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AdDomainServiceMembersClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.asm.hasNextLink() && result.asm.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -152,6 +153,7 @@ func (client AdDomainServiceMembersClient) listNextResults(ctx context.Context, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AdDomainServiceMembersClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

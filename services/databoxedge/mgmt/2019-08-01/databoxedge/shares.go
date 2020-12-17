@@ -241,6 +241,7 @@ func (client SharesClient) Get(ctx context.Context, deviceName string, name stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.SharesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -318,6 +319,7 @@ func (client SharesClient) ListByDataBoxEdgeDevice(ctx context.Context, deviceNa
 	result.sl, err = client.ListByDataBoxEdgeDeviceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.SharesClient", "ListByDataBoxEdgeDevice", resp, "Failure responding to request")
+		return
 	}
 	if result.sl.hasNextLink() && result.sl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -382,6 +384,7 @@ func (client SharesClient) listByDataBoxEdgeDeviceNextResults(ctx context.Contex
 	result, err = client.ListByDataBoxEdgeDeviceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.SharesClient", "listByDataBoxEdgeDeviceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

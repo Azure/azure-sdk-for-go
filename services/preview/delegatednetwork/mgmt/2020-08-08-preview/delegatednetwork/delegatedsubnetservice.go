@@ -174,6 +174,7 @@ func (client DelegatedSubnetServiceClient) GetDetails(ctx context.Context, resou
 	result, err = client.GetDetailsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceClient", "GetDetails", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -258,6 +259,7 @@ func (client DelegatedSubnetServiceClient) ListByResourceGroup(ctx context.Conte
 	result.ds, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.ds.hasNextLink() && result.ds.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -321,6 +323,7 @@ func (client DelegatedSubnetServiceClient) listByResourceGroupNextResults(ctx co
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -370,6 +373,7 @@ func (client DelegatedSubnetServiceClient) ListBySubscription(ctx context.Contex
 	result.ds, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.ds.hasNextLink() && result.ds.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -432,6 +436,7 @@ func (client DelegatedSubnetServiceClient) listBySubscriptionNextResults(ctx con
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

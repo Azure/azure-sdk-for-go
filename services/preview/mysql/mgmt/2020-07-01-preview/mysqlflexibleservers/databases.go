@@ -262,6 +262,7 @@ func (client DatabasesClient) Get(ctx context.Context, resourceGroupName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mysqlflexibleservers.DatabasesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -349,6 +350,7 @@ func (client DatabasesClient) ListByServer(ctx context.Context, resourceGroupNam
 	result.dlr, err = client.ListByServerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mysqlflexibleservers.DatabasesClient", "ListByServer", resp, "Failure responding to request")
+		return
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -413,6 +415,7 @@ func (client DatabasesClient) listByServerNextResults(ctx context.Context, lastR
 	result, err = client.ListByServerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mysqlflexibleservers.DatabasesClient", "listByServerNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

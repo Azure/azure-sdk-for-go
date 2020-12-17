@@ -76,6 +76,7 @@ func (client EnvironmentSettingsClient) ClaimAny(ctx context.Context, resourceGr
 	result, err = client.ClaimAnyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsClient", "ClaimAny", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -327,6 +328,7 @@ func (client EnvironmentSettingsClient) Get(ctx context.Context, resourceGroupNa
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -413,6 +415,7 @@ func (client EnvironmentSettingsClient) List(ctx context.Context, resourceGroupN
 	result.rwces, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rwces.hasNextLink() && result.rwces.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -490,6 +493,7 @@ func (client EnvironmentSettingsClient) listNextResults(ctx context.Context, las
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -545,6 +549,7 @@ func (client EnvironmentSettingsClient) Publish(ctx context.Context, resourceGro
 	result, err = client.PublishResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsClient", "Publish", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -783,6 +788,7 @@ func (client EnvironmentSettingsClient) Update(ctx context.Context, resourceGrou
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

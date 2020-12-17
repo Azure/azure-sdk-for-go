@@ -77,6 +77,7 @@ func (client Client) Recognize(ctx context.Context, body AnalysisRequest, xMsCli
 	result, err = client.RecognizeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "inkrecognizer.Client", "Recognize", resp, "Failure responding to request")
+		return
 	}
 
 	return

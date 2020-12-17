@@ -283,6 +283,7 @@ func (client ManagedClustersClient) Get(ctx context.Context, resourceGroupName s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -370,6 +371,7 @@ func (client ManagedClustersClient) GetAccessProfile(ctx context.Context, resour
 	result, err = client.GetAccessProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "GetAccessProfile", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -457,6 +459,7 @@ func (client ManagedClustersClient) GetUpgradeProfile(ctx context.Context, resou
 	result, err = client.GetUpgradeProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "GetUpgradeProfile", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -531,6 +534,7 @@ func (client ManagedClustersClient) List(ctx context.Context) (result ManagedClu
 	result.mclr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.mclr.hasNextLink() && result.mclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -593,6 +597,7 @@ func (client ManagedClustersClient) listNextResults(ctx context.Context, lastRes
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -651,6 +656,7 @@ func (client ManagedClustersClient) ListByResourceGroup(ctx context.Context, res
 	result.mclr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.mclr.hasNextLink() && result.mclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -714,6 +720,7 @@ func (client ManagedClustersClient) listByResourceGroupNextResults(ctx context.C
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -776,6 +783,7 @@ func (client ManagedClustersClient) ListClusterAdminCredentials(ctx context.Cont
 	result, err = client.ListClusterAdminCredentialsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "ListClusterAdminCredentials", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -862,6 +870,7 @@ func (client ManagedClustersClient) ListClusterUserCredentials(ctx context.Conte
 	result, err = client.ListClusterUserCredentialsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "ListClusterUserCredentials", resp, "Failure responding to request")
+		return
 	}
 
 	return

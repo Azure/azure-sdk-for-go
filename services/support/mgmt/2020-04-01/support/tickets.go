@@ -79,6 +79,7 @@ func (client TicketsClient) CheckNameAvailability(ctx context.Context, checkName
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "support.TicketsClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -266,6 +267,7 @@ func (client TicketsClient) Get(ctx context.Context, supportTicketName string) (
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "support.TicketsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -347,6 +349,7 @@ func (client TicketsClient) List(ctx context.Context, top *int32, filter string)
 	result.tlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "support.TicketsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -415,6 +418,7 @@ func (client TicketsClient) listNextResults(ctx context.Context, lastResults Tic
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "support.TicketsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -471,6 +475,7 @@ func (client TicketsClient) Update(ctx context.Context, supportTicketName string
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "support.TicketsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

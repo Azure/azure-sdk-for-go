@@ -85,6 +85,7 @@ func (client ConfigurationProfilePreferencesClient) CreateOrUpdate(ctx context.C
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfilePreferencesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -172,6 +173,7 @@ func (client ConfigurationProfilePreferencesClient) Delete(ctx context.Context, 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfilePreferencesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -256,6 +258,7 @@ func (client ConfigurationProfilePreferencesClient) Get(ctx context.Context, con
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfilePreferencesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -340,6 +343,7 @@ func (client ConfigurationProfilePreferencesClient) ListByResourceGroup(ctx cont
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfilePreferencesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -417,6 +421,7 @@ func (client ConfigurationProfilePreferencesClient) ListBySubscription(ctx conte
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfilePreferencesClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -501,6 +506,7 @@ func (client ConfigurationProfilePreferencesClient) Update(ctx context.Context, 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfilePreferencesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -83,6 +83,7 @@ func (client QueryClient) Execute(ctx context.Context, appID string, body QueryB
 	result, err = client.ExecuteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.QueryClient", "Execute", resp, "Failure responding to request")
+		return
 	}
 
 	return

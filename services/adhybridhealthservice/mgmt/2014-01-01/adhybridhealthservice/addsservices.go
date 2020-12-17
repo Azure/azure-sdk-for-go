@@ -73,6 +73,7 @@ func (client AddsServicesClient) Add(ctx context.Context, service ServicePropert
 	result, err = client.AddResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "Add", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -146,6 +147,7 @@ func (client AddsServicesClient) Delete(ctx context.Context, serviceName string,
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -221,6 +223,7 @@ func (client AddsServicesClient) Get(ctx context.Context, serviceName string) (r
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -294,6 +297,7 @@ func (client AddsServicesClient) GetForestSummary(ctx context.Context, serviceNa
 	result, err = client.GetForestSummaryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "GetForestSummary", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -367,6 +371,7 @@ func (client AddsServicesClient) GetMetricMetadata(ctx context.Context, serviceN
 	result, err = client.GetMetricMetadataResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "GetMetricMetadata", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -445,6 +450,7 @@ func (client AddsServicesClient) GetMetricMetadataForGroup(ctx context.Context, 
 	result, err = client.GetMetricMetadataForGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "GetMetricMetadataForGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -536,6 +542,7 @@ func (client AddsServicesClient) List(ctx context.Context, filter string, servic
 	result.s, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.s.hasNextLink() && result.s.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -606,6 +613,7 @@ func (client AddsServicesClient) listNextResults(ctx context.Context, lastResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -659,6 +667,7 @@ func (client AddsServicesClient) ListMetricMetadata(ctx context.Context, service
 	result.mml, err = client.ListMetricMetadataResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListMetricMetadata", resp, "Failure responding to request")
+		return
 	}
 	if result.mml.hasNextLink() && result.mml.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -727,6 +736,7 @@ func (client AddsServicesClient) listMetricMetadataNextResults(ctx context.Conte
 	result, err = client.ListMetricMetadataResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "listMetricMetadataNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -780,6 +790,7 @@ func (client AddsServicesClient) ListMetricsAverage(ctx context.Context, service
 	result.mVar, err = client.ListMetricsAverageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListMetricsAverage", resp, "Failure responding to request")
+		return
 	}
 	if result.mVar.hasNextLink() && result.mVar.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -844,6 +855,7 @@ func (client AddsServicesClient) listMetricsAverageNextResults(ctx context.Conte
 	result, err = client.ListMetricsAverageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "listMetricsAverageNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -897,6 +909,7 @@ func (client AddsServicesClient) ListMetricsSum(ctx context.Context, serviceName
 	result.mVar, err = client.ListMetricsSumResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListMetricsSum", resp, "Failure responding to request")
+		return
 	}
 	if result.mVar.hasNextLink() && result.mVar.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -961,6 +974,7 @@ func (client AddsServicesClient) listMetricsSumNextResults(ctx context.Context, 
 	result, err = client.ListMetricsSumResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "listMetricsSumNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1019,6 +1033,7 @@ func (client AddsServicesClient) ListPremiumServices(ctx context.Context, filter
 	result.s, err = client.ListPremiumServicesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListPremiumServices", resp, "Failure responding to request")
+		return
 	}
 	if result.s.hasNextLink() && result.s.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1089,6 +1104,7 @@ func (client AddsServicesClient) listPremiumServicesNextResults(ctx context.Cont
 	result, err = client.ListPremiumServicesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "listPremiumServicesNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1142,6 +1158,7 @@ func (client AddsServicesClient) ListReplicationDetails(ctx context.Context, ser
 	result, err = client.ListReplicationDetailsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListReplicationDetails", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1225,6 +1242,7 @@ func (client AddsServicesClient) ListReplicationSummary(ctx context.Context, ser
 	result, err = client.ListReplicationSummaryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListReplicationSummary", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1314,6 +1332,7 @@ func (client AddsServicesClient) ListServerAlerts(ctx context.Context, serviceMe
 	result.a, err = client.ListServerAlertsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListServerAlerts", resp, "Failure responding to request")
+		return
 	}
 	if result.a.hasNextLink() && result.a.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1389,6 +1408,7 @@ func (client AddsServicesClient) listServerAlertsNextResults(ctx context.Context
 	result, err = client.ListServerAlertsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "listServerAlertsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -1440,6 +1460,7 @@ func (client AddsServicesClient) Update(ctx context.Context, serviceName string,
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

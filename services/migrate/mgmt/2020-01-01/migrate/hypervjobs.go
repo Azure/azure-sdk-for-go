@@ -75,6 +75,7 @@ func (client HyperVJobsClient) GetAllJobsInSite(ctx context.Context, subscriptio
 	result.hvjc, err = client.GetAllJobsInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVJobsClient", "GetAllJobsInSite", resp, "Failure responding to request")
+		return
 	}
 	if result.hvjc.hasNextLink() && result.hvjc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -138,6 +139,7 @@ func (client HyperVJobsClient) getAllJobsInSiteNextResults(ctx context.Context, 
 	result, err = client.GetAllJobsInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVJobsClient", "getAllJobsInSiteNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -192,6 +194,7 @@ func (client HyperVJobsClient) GetJob(ctx context.Context, subscriptionID string
 	result, err = client.GetJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVJobsClient", "GetJob", resp, "Failure responding to request")
+		return
 	}
 
 	return

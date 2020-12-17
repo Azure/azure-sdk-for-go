@@ -69,6 +69,7 @@ func (client EmergingIssuesClient) Get(ctx context.Context) (result EmergingIssu
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.EmergingIssuesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -140,6 +141,7 @@ func (client EmergingIssuesClient) List(ctx context.Context) (result EmergingIss
 	result.eilr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.EmergingIssuesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.eilr.hasNextLink() && result.eilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -198,6 +200,7 @@ func (client EmergingIssuesClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.EmergingIssuesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

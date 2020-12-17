@@ -102,6 +102,7 @@ func (client UserClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -200,6 +201,7 @@ func (client UserClient) Delete(ctx context.Context, resourceGroupName string, s
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -295,6 +297,7 @@ func (client UserClient) GenerateSsoURL(ctx context.Context, resourceGroupName s
 	result, err = client.GenerateSsoURLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "GenerateSsoURL", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -383,6 +386,7 @@ func (client UserClient) Get(ctx context.Context, resourceGroupName string, serv
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -471,6 +475,7 @@ func (client UserClient) GetEntityTag(ctx context.Context, resourceGroupName str
 	result, err = client.GetEntityTagResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "GetEntityTag", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -562,6 +567,7 @@ func (client UserClient) GetSharedAccessToken(ctx context.Context, resourceGroup
 	result, err = client.GetSharedAccessTokenResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "GetSharedAccessToken", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -666,6 +672,7 @@ func (client UserClient) ListByService(ctx context.Context, resourceGroupName st
 	result.uc, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 	if result.uc.hasNextLink() && result.uc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -742,6 +749,7 @@ func (client UserClient) listByServiceNextResults(ctx context.Context, lastResul
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -808,6 +816,7 @@ func (client UserClient) Update(ctx context.Context, resourceGroupName string, s
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

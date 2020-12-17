@@ -68,6 +68,7 @@ func (client BlobClient) CancelUpload(ctx context.Context, location string) (res
 	result, err = client.CancelUploadResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BlobClient", "CancelUpload", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -138,6 +139,7 @@ func (client BlobClient) Check(ctx context.Context, name string, digest string) 
 	result, err = client.CheckResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BlobClient", "Check", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -210,6 +212,7 @@ func (client BlobClient) CheckChunk(ctx context.Context, name string, digest str
 	result, err = client.CheckChunkResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BlobClient", "CheckChunk", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -282,6 +285,7 @@ func (client BlobClient) Delete(ctx context.Context, name string, digest string)
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BlobClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -356,6 +360,7 @@ func (client BlobClient) EndUpload(ctx context.Context, digest string, location 
 	result, err = client.EndUploadResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BlobClient", "EndUpload", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -436,6 +441,7 @@ func (client BlobClient) Get(ctx context.Context, name string, digest string) (r
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BlobClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -510,6 +516,7 @@ func (client BlobClient) GetChunk(ctx context.Context, name string, digest strin
 	result, err = client.GetChunkResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BlobClient", "GetChunk", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -583,6 +590,7 @@ func (client BlobClient) GetStatus(ctx context.Context, location string) (result
 	result, err = client.GetStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BlobClient", "GetStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -654,6 +662,7 @@ func (client BlobClient) Mount(ctx context.Context, name string, from string, mo
 	result, err = client.MountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BlobClient", "Mount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -729,6 +738,7 @@ func (client BlobClient) StartUpload(ctx context.Context, name string) (result a
 	result, err = client.StartUploadResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BlobClient", "StartUpload", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -800,6 +810,7 @@ func (client BlobClient) Upload(ctx context.Context, value io.ReadCloser, locati
 	result, err = client.UploadResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BlobClient", "Upload", resp, "Failure responding to request")
+		return
 	}
 
 	return

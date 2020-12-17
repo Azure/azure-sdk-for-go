@@ -84,6 +84,7 @@ func (client SolutionsClient) Get(ctx context.Context, resourceGroupName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.SolutionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -164,6 +165,7 @@ func (client SolutionsClient) List(ctx context.Context) (result SolutionListPage
 	result.sl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.SolutionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.sl.hasNextLink() && result.sl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -226,6 +228,7 @@ func (client SolutionsClient) listNextResults(ctx context.Context, lastResults S
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.SolutionsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

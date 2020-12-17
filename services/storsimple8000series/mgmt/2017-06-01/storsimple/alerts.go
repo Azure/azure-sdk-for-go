@@ -83,6 +83,7 @@ func (client AlertsClient) Clear(ctx context.Context, parameters ClearAlertReque
 	result, err = client.ClearResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.AlertsClient", "Clear", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -168,6 +169,7 @@ func (client AlertsClient) ListByManager(ctx context.Context, resourceGroupName 
 	result.al, err = client.ListByManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.AlertsClient", "ListByManager", resp, "Failure responding to request")
+		return
 	}
 	if result.al.hasNextLink() && result.al.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -235,6 +237,7 @@ func (client AlertsClient) listByManagerNextResults(ctx context.Context, lastRes
 	result, err = client.ListByManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.AlertsClient", "listByManagerNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -297,6 +300,7 @@ func (client AlertsClient) SendTestEmail(ctx context.Context, deviceName string,
 	result, err = client.SendTestEmailResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.AlertsClient", "SendTestEmail", resp, "Failure responding to request")
+		return
 	}
 
 	return

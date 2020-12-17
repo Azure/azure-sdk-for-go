@@ -63,6 +63,7 @@ func (client V2SupportClient) Check(ctx context.Context) (result autorest.Respon
 	result, err = client.CheckResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.V2SupportClient", "Check", resp, "Failure responding to request")
+		return
 	}
 
 	return

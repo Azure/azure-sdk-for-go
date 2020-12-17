@@ -70,6 +70,7 @@ func (client OperationsClient) Get(ctx context.Context) (result OperationListPag
 	result.ol, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridkubernetes.OperationsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 	if result.ol.hasNextLink() && result.ol.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -128,6 +129,7 @@ func (client OperationsClient) getNextResults(ctx context.Context, lastResults O
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridkubernetes.OperationsClient", "getNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

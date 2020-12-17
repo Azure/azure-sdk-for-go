@@ -86,6 +86,7 @@ func (client BaseClient) CheckFilePathAvailability(ctx context.Context, body int
 	result, err = client.CheckFilePathAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.BaseClient", "CheckFilePathAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -162,6 +163,7 @@ func (client BaseClient) CheckNameAvailability(ctx context.Context, body interfa
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.BaseClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return

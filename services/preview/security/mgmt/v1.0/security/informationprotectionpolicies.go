@@ -75,6 +75,7 @@ func (client InformationProtectionPoliciesClient) CreateOrUpdate(ctx context.Con
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.InformationProtectionPoliciesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -152,6 +153,7 @@ func (client InformationProtectionPoliciesClient) Get(ctx context.Context, scope
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.InformationProtectionPoliciesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -227,6 +229,7 @@ func (client InformationProtectionPoliciesClient) List(ctx context.Context, scop
 	result.ippl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.InformationProtectionPoliciesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.ippl.hasNextLink() && result.ippl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -289,6 +292,7 @@ func (client InformationProtectionPoliciesClient) listNextResults(ctx context.Co
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.InformationProtectionPoliciesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

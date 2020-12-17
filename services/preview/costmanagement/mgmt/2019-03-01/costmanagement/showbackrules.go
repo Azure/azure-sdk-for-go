@@ -71,6 +71,7 @@ func (client ShowbackRulesClient) List(ctx context.Context, billingAccountID str
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ShowbackRulesClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -225,6 +225,7 @@ func (client ExpressRouteCircuitsClient) Get(ctx context.Context, resourceGroupN
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -300,6 +301,7 @@ func (client ExpressRouteCircuitsClient) List(ctx context.Context, resourceGroup
 	result.erclr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.erclr.hasNextLink() && result.erclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -363,6 +365,7 @@ func (client ExpressRouteCircuitsClient) listNextResults(ctx context.Context, la
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -412,6 +415,7 @@ func (client ExpressRouteCircuitsClient) ListAll(ctx context.Context) (result Ex
 	result.erclr, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "ListAll", resp, "Failure responding to request")
+		return
 	}
 	if result.erclr.hasNextLink() && result.erclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -474,6 +478,7 @@ func (client ExpressRouteCircuitsClient) listAllNextResults(ctx context.Context,
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "listAllNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -527,6 +532,7 @@ func (client ExpressRouteCircuitsClient) ListArpTable(ctx context.Context, resou
 	result.ercatlr, err = client.ListArpTableResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "ListArpTable", resp, "Failure responding to request")
+		return
 	}
 	if result.ercatlr.hasNextLink() && result.ercatlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -591,6 +597,7 @@ func (client ExpressRouteCircuitsClient) listArpTableNextResults(ctx context.Con
 	result, err = client.ListArpTableResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "listArpTableNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -644,6 +651,7 @@ func (client ExpressRouteCircuitsClient) ListRoutesTable(ctx context.Context, re
 	result.ercrtlr, err = client.ListRoutesTableResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "ListRoutesTable", resp, "Failure responding to request")
+		return
 	}
 	if result.ercrtlr.hasNextLink() && result.ercrtlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -708,6 +716,7 @@ func (client ExpressRouteCircuitsClient) listRoutesTableNextResults(ctx context.
 	result, err = client.ListRoutesTableResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "listRoutesTableNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -761,6 +770,7 @@ func (client ExpressRouteCircuitsClient) ListStats(ctx context.Context, resource
 	result.ercslr, err = client.ListStatsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "ListStats", resp, "Failure responding to request")
+		return
 	}
 	if result.ercslr.hasNextLink() && result.ercslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -825,6 +835,7 @@ func (client ExpressRouteCircuitsClient) listStatsNextResults(ctx context.Contex
 	result, err = client.ListStatsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "listStatsNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

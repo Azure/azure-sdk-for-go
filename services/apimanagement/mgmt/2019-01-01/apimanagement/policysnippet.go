@@ -82,6 +82,7 @@ func (client PolicySnippetClient) ListByService(ctx context.Context, resourceGro
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.PolicySnippetClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 
 	return

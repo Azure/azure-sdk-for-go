@@ -75,6 +75,7 @@ func (client StartContainerClient) LaunchExec(ctx context.Context, resourceGroup
 	result, err = client.LaunchExecResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerinstance.StartContainerClient", "LaunchExec", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -261,6 +261,7 @@ func (client AuthorizationsClient) Get(ctx context.Context, resourceGroupName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -348,6 +349,7 @@ func (client AuthorizationsClient) List(ctx context.Context, resourceGroupName s
 	result.eral, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.eral.hasNextLink() && result.eral.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -412,6 +414,7 @@ func (client AuthorizationsClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

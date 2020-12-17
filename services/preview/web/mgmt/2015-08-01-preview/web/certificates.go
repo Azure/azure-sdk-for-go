@@ -73,6 +73,7 @@ func (client CertificatesClient) CreateOrUpdateCertificate(ctx context.Context, 
 	result, err = client.CreateOrUpdateCertificateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "CreateOrUpdateCertificate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -151,6 +152,7 @@ func (client CertificatesClient) CreateOrUpdateCsr(ctx context.Context, resource
 	result, err = client.CreateOrUpdateCsrResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "CreateOrUpdateCsr", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -228,6 +230,7 @@ func (client CertificatesClient) DeleteCertificate(ctx context.Context, resource
 	result, err = client.DeleteCertificateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "DeleteCertificate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -303,6 +306,7 @@ func (client CertificatesClient) DeleteCsr(ctx context.Context, resourceGroupNam
 	result, err = client.DeleteCsrResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "DeleteCsr", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -378,6 +382,7 @@ func (client CertificatesClient) GetCertificate(ctx context.Context, resourceGro
 	result, err = client.GetCertificateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "GetCertificate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -453,6 +458,7 @@ func (client CertificatesClient) GetCertificates(ctx context.Context, resourceGr
 	result.cc, err = client.GetCertificatesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "GetCertificates", resp, "Failure responding to request")
+		return
 	}
 	if result.cc.hasNextLink() && result.cc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -516,6 +522,7 @@ func (client CertificatesClient) getCertificatesNextResults(ctx context.Context,
 	result, err = client.GetCertificatesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "getCertificatesNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -567,6 +574,7 @@ func (client CertificatesClient) GetCsr(ctx context.Context, resourceGroupName s
 	result, err = client.GetCsrResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "GetCsr", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -641,6 +649,7 @@ func (client CertificatesClient) GetCsrs(ctx context.Context, resourceGroupName 
 	result, err = client.GetCsrsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "GetCsrs", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -716,6 +725,7 @@ func (client CertificatesClient) UpdateCertificate(ctx context.Context, resource
 	result, err = client.UpdateCertificateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "UpdateCertificate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -794,6 +804,7 @@ func (client CertificatesClient) UpdateCsr(ctx context.Context, resourceGroupNam
 	result, err = client.UpdateCsrResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "UpdateCsr", resp, "Failure responding to request")
+		return
 	}
 
 	return

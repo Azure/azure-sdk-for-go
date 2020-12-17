@@ -76,6 +76,7 @@ func (client ReservationTransactionsClient) List(ctx context.Context, billingAcc
 	result.rtlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ReservationTransactionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.rtlr.hasNextLink() && result.rtlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -141,6 +142,7 @@ func (client ReservationTransactionsClient) listNextResults(ctx context.Context,
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ReservationTransactionsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -195,6 +197,7 @@ func (client ReservationTransactionsClient) ListByBillingProfile(ctx context.Con
 	result.mrtlr, err = client.ListByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ReservationTransactionsClient", "ListByBillingProfile", resp, "Failure responding to request")
+		return
 	}
 	if result.mrtlr.hasNextLink() && result.mrtlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -261,6 +264,7 @@ func (client ReservationTransactionsClient) listByBillingProfileNextResults(ctx 
 	result, err = client.ListByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ReservationTransactionsClient", "listByBillingProfileNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

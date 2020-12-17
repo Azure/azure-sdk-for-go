@@ -74,6 +74,7 @@ func (client ListManagementTermClient) AddTerm(ctx context.Context, listID strin
 	result, err = client.AddTermResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ListManagementTermClient", "AddTerm", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -150,6 +151,7 @@ func (client ListManagementTermClient) DeleteAllTerms(ctx context.Context, listI
 	result, err = client.DeleteAllTermsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ListManagementTermClient", "DeleteAllTerms", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -227,6 +229,7 @@ func (client ListManagementTermClient) DeleteTerm(ctx context.Context, listID st
 	result, err = client.DeleteTermResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ListManagementTermClient", "DeleteTerm", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -306,6 +309,7 @@ func (client ListManagementTermClient) GetAllTerms(ctx context.Context, listID s
 	result, err = client.GetAllTermsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ListManagementTermClient", "GetAllTerms", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -241,6 +241,7 @@ func (client VendorsClient) Get(ctx context.Context, vendorName string) (result 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -319,6 +320,7 @@ func (client VendorsClient) ListBySubscription(ctx context.Context) (result Vend
 	result.vlr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorsClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.vlr.hasNextLink() && result.vlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -381,6 +383,7 @@ func (client VendorsClient) listBySubscriptionNextResults(ctx context.Context, l
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

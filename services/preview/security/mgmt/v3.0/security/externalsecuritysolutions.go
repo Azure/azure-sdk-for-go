@@ -85,6 +85,7 @@ func (client ExternalSecuritySolutionsClient) Get(ctx context.Context, resourceG
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ExternalSecuritySolutionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -165,6 +166,7 @@ func (client ExternalSecuritySolutionsClient) List(ctx context.Context) (result 
 	result.essl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ExternalSecuritySolutionsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.essl.hasNextLink() && result.essl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -227,6 +229,7 @@ func (client ExternalSecuritySolutionsClient) listNextResults(ctx context.Contex
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ExternalSecuritySolutionsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -282,6 +285,7 @@ func (client ExternalSecuritySolutionsClient) ListByHomeRegion(ctx context.Conte
 	result.essl, err = client.ListByHomeRegionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ExternalSecuritySolutionsClient", "ListByHomeRegion", resp, "Failure responding to request")
+		return
 	}
 	if result.essl.hasNextLink() && result.essl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -345,6 +349,7 @@ func (client ExternalSecuritySolutionsClient) listByHomeRegionNextResults(ctx co
 	result, err = client.ListByHomeRegionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ExternalSecuritySolutionsClient", "listByHomeRegionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

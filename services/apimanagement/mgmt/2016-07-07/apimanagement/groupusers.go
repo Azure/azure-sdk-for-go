@@ -91,6 +91,7 @@ func (client GroupUsersClient) Add(ctx context.Context, resourceGroupName string
 	result, err = client.AddResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Add", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -199,6 +200,7 @@ func (client GroupUsersClient) ListByGroup(ctx context.Context, resourceGroupNam
 	result.uc, err = client.ListByGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "ListByGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.uc.hasNextLink() && result.uc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -273,6 +275,7 @@ func (client GroupUsersClient) listByGroupNextResults(ctx context.Context, lastR
 	result, err = client.ListByGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "listByGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -342,6 +345,7 @@ func (client GroupUsersClient) Remove(ctx context.Context, resourceGroupName str
 	result, err = client.RemoveResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Remove", resp, "Failure responding to request")
+		return
 	}
 
 	return

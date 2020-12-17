@@ -75,6 +75,7 @@ func (client IntegrationAccountMapsClient) CreateOrUpdate(ctx context.Context, r
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountMapsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -154,6 +155,7 @@ func (client IntegrationAccountMapsClient) Delete(ctx context.Context, resourceG
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountMapsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -230,6 +232,7 @@ func (client IntegrationAccountMapsClient) Get(ctx context.Context, resourceGrou
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountMapsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -309,6 +312,7 @@ func (client IntegrationAccountMapsClient) List(ctx context.Context, resourceGro
 	result.iamlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountMapsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.iamlr.hasNextLink() && result.iamlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -379,6 +383,7 @@ func (client IntegrationAccountMapsClient) listNextResults(ctx context.Context, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountMapsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -166,6 +166,7 @@ func (client AccountBackupsClient) Get(ctx context.Context, resourceGroupName st
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.AccountBackupsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -250,6 +251,7 @@ func (client AccountBackupsClient) List(ctx context.Context, resourceGroupName s
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.AccountBackupsClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -73,6 +73,7 @@ func (client TransfersClient) Cancel(ctx context.Context, billingAccountName str
 	result, err = client.CancelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.TransfersClient", "Cancel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -143,6 +144,7 @@ func (client TransfersClient) Get(ctx context.Context, billingAccountName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.TransfersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -213,6 +215,7 @@ func (client TransfersClient) Initiate(ctx context.Context, billingAccountName s
 	result, err = client.InitiateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.TransfersClient", "Initiate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -284,6 +287,7 @@ func (client TransfersClient) List(ctx context.Context, billingAccountName strin
 	result.tdlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.TransfersClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.tdlr.hasNextLink() && result.tdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -341,6 +345,7 @@ func (client TransfersClient) listNextResults(ctx context.Context, lastResults T
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.TransfersClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

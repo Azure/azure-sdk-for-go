@@ -172,6 +172,7 @@ func (client HardwareComponentGroupsClient) ListByDevice(ctx context.Context, de
 	result, err = client.ListByDeviceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.HardwareComponentGroupsClient", "ListByDevice", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -82,6 +82,7 @@ func (client GroupClient) CreateOrUpdate(ctx context.Context, apimBaseURL string
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -172,6 +173,7 @@ func (client GroupClient) Delete(ctx context.Context, apimBaseURL string, groupI
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -258,6 +260,7 @@ func (client GroupClient) Get(ctx context.Context, apimBaseURL string, groupID s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -354,6 +357,7 @@ func (client GroupClient) List(ctx context.Context, apimBaseURL string, filter s
 	result.gc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.gc.hasNextLink() && result.gc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -425,6 +429,7 @@ func (client GroupClient) listNextResults(ctx context.Context, lastResults Group
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -488,6 +493,7 @@ func (client GroupClient) Update(ctx context.Context, apimBaseURL string, groupI
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

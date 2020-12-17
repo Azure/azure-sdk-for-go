@@ -118,6 +118,7 @@ func (client ListClient) AddFaceFromStream(ctx context.Context, faceListID strin
 	result, err = client.AddFaceFromStreamResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.ListClient", "AddFaceFromStream", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -256,6 +257,7 @@ func (client ListClient) AddFaceFromURL(ctx context.Context, faceListID string, 
 	result, err = client.AddFaceFromURLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.ListClient", "AddFaceFromURL", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -375,6 +377,7 @@ func (client ListClient) Create(ctx context.Context, faceListID string, body Met
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.ListClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -453,6 +456,7 @@ func (client ListClient) Delete(ctx context.Context, faceListID string) (result 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.ListClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -532,6 +536,7 @@ func (client ListClient) DeleteFace(ctx context.Context, faceListID string, pers
 	result, err = client.DeleteFaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.ListClient", "DeleteFace", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -611,6 +616,7 @@ func (client ListClient) Get(ctx context.Context, faceListID string, returnRecog
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.ListClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -692,6 +698,7 @@ func (client ListClient) List(ctx context.Context, returnRecognitionModel *bool)
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.ListClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -774,6 +781,7 @@ func (client ListClient) Update(ctx context.Context, faceListID string, body Nam
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.ListClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

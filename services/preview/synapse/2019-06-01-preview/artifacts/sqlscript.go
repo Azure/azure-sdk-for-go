@@ -82,6 +82,7 @@ func (client SQLScriptClient) CreateOrUpdateSQLScript(ctx context.Context, SQLSc
 	result, err = client.CreateOrUpdateSQLScriptResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.SQLScriptClient", "CreateOrUpdateSQLScript", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -167,6 +168,7 @@ func (client SQLScriptClient) DeleteSQLScript(ctx context.Context, SQLScriptName
 	result, err = client.DeleteSQLScriptResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.SQLScriptClient", "DeleteSQLScript", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -244,6 +246,7 @@ func (client SQLScriptClient) GetSQLScript(ctx context.Context, SQLScriptName st
 	result, err = client.GetSQLScriptResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.SQLScriptClient", "GetSQLScript", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -323,6 +326,7 @@ func (client SQLScriptClient) GetSQLScriptsByWorkspace(ctx context.Context) (res
 	result.sslr, err = client.GetSQLScriptsByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.SQLScriptClient", "GetSQLScriptsByWorkspace", resp, "Failure responding to request")
+		return
 	}
 	if result.sslr.hasNextLink() && result.sslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -385,6 +389,7 @@ func (client SQLScriptClient) getSQLScriptsByWorkspaceNextResults(ctx context.Co
 	result, err = client.GetSQLScriptsByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.SQLScriptClient", "getSQLScriptsByWorkspaceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

@@ -74,6 +74,7 @@ func (client UnresolvedDependenciesClient) Get(ctx context.Context, resourceGrou
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcemover.UnresolvedDependenciesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

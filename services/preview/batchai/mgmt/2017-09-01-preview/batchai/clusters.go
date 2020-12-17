@@ -291,6 +291,7 @@ func (client ClustersClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -377,6 +378,7 @@ func (client ClustersClient) List(ctx context.Context, filter string, selectPara
 	result.clr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.clr.hasNextLink() && result.clr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -450,6 +452,7 @@ func (client ClustersClient) listNextResults(ctx context.Context, lastResults Cl
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -515,6 +518,7 @@ func (client ClustersClient) ListByResourceGroup(ctx context.Context, resourceGr
 	result.clr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.clr.hasNextLink() && result.clr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -589,6 +593,7 @@ func (client ClustersClient) listByResourceGroupNextResults(ctx context.Context,
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -653,6 +658,7 @@ func (client ClustersClient) ListRemoteLoginInformation(ctx context.Context, res
 	result.rlilr, err = client.ListRemoteLoginInformationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "ListRemoteLoginInformation", resp, "Failure responding to request")
+		return
 	}
 	if result.rlilr.hasNextLink() && result.rlilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -717,6 +723,7 @@ func (client ClustersClient) listRemoteLoginInformationNextResults(ctx context.C
 	result, err = client.ListRemoteLoginInformationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "listRemoteLoginInformationNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -781,6 +788,7 @@ func (client ClustersClient) Update(ctx context.Context, resourceGroupName strin
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

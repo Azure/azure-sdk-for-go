@@ -256,6 +256,7 @@ func (client SharedPrivateLinkResourcesClient) Get(ctx context.Context, resource
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "search.SharedPrivateLinkResourcesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -341,6 +342,7 @@ func (client SharedPrivateLinkResourcesClient) ListByService(ctx context.Context
 	result.splrlr, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "search.SharedPrivateLinkResourcesClient", "ListByService", resp, "Failure responding to request")
+		return
 	}
 	if result.splrlr.hasNextLink() && result.splrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -409,6 +411,7 @@ func (client SharedPrivateLinkResourcesClient) listByServiceNextResults(ctx cont
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "search.SharedPrivateLinkResourcesClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

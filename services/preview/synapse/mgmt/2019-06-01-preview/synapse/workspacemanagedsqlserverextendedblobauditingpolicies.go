@@ -174,6 +174,7 @@ func (client WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient) Get(ct
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -261,6 +262,7 @@ func (client WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient) ListBy
 	result.esbaplr, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient", "ListByWorkspace", resp, "Failure responding to request")
+		return
 	}
 	if result.esbaplr.hasNextLink() && result.esbaplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -325,6 +327,7 @@ func (client WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient) listBy
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient", "listByWorkspaceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

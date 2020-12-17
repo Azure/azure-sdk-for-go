@@ -261,6 +261,7 @@ func (client SQLPoolsClient) Get(ctx context.Context, resourceGroupName string, 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -348,6 +349,7 @@ func (client SQLPoolsClient) ListByWorkspace(ctx context.Context, resourceGroupN
 	result.spilr, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolsClient", "ListByWorkspace", resp, "Failure responding to request")
+		return
 	}
 	if result.spilr.hasNextLink() && result.spilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -412,6 +414,7 @@ func (client SQLPoolsClient) listByWorkspaceNextResults(ctx context.Context, las
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolsClient", "listByWorkspaceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -649,6 +652,7 @@ func (client SQLPoolsClient) Update(ctx context.Context, resourceGroupName strin
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -91,6 +91,7 @@ func (client BaseClient) Rank(ctx context.Context, rankRequest RankRequest) (res
 	result, err = client.RankResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "personalizer.BaseClient", "Rank", resp, "Failure responding to request")
+		return
 	}
 
 	return

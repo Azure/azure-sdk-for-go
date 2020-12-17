@@ -91,6 +91,7 @@ func (client PrivateEndpointsClient) CreateOrUpdate(ctx context.Context, private
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.PrivateEndpointsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -275,6 +276,7 @@ func (client PrivateEndpointsClient) Get(ctx context.Context, resourceGroupName 
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.PrivateEndpointsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -362,6 +364,7 @@ func (client PrivateEndpointsClient) ListByCluster(ctx context.Context, resource
 	result.pelr, err = client.ListByClusterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.PrivateEndpointsClient", "ListByCluster", resp, "Failure responding to request")
+		return
 	}
 	if result.pelr.hasNextLink() && result.pelr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -426,6 +429,7 @@ func (client PrivateEndpointsClient) listByClusterNextResults(ctx context.Contex
 	result, err = client.ListByClusterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.PrivateEndpointsClient", "listByClusterNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

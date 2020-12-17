@@ -97,6 +97,7 @@ func (client HubsClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.HubsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -248,6 +249,7 @@ func (client HubsClient) Get(ctx context.Context, resourceGroupName string, hubN
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.HubsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -321,6 +323,7 @@ func (client HubsClient) List(ctx context.Context) (result HubListResultPage, er
 	result.hlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.HubsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.hlr.hasNextLink() && result.hlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -383,6 +386,7 @@ func (client HubsClient) listNextResults(ctx context.Context, lastResults HubLis
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.HubsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -434,6 +438,7 @@ func (client HubsClient) ListByResourceGroup(ctx context.Context, resourceGroupN
 	result.hlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.HubsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.hlr.hasNextLink() && result.hlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -497,6 +502,7 @@ func (client HubsClient) listByResourceGroupNextResults(ctx context.Context, las
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.HubsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -549,6 +555,7 @@ func (client HubsClient) Update(ctx context.Context, resourceGroupName string, h
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.HubsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

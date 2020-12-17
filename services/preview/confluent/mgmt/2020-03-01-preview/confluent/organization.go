@@ -230,6 +230,7 @@ func (client OrganizationClient) Get(ctx context.Context, resourceGroupName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "confluent.OrganizationClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -305,6 +306,7 @@ func (client OrganizationClient) ListByResourceGroup(ctx context.Context, resour
 	result.orlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "confluent.OrganizationClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.orlr.hasNextLink() && result.orlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -368,6 +370,7 @@ func (client OrganizationClient) listByResourceGroupNextResults(ctx context.Cont
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "confluent.OrganizationClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -417,6 +420,7 @@ func (client OrganizationClient) ListBySubscription(ctx context.Context) (result
 	result.orlr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "confluent.OrganizationClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.orlr.hasNextLink() && result.orlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -479,6 +483,7 @@ func (client OrganizationClient) listBySubscriptionNextResults(ctx context.Conte
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "confluent.OrganizationClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -531,6 +536,7 @@ func (client OrganizationClient) Update(ctx context.Context, resourceGroupName s
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "confluent.OrganizationClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

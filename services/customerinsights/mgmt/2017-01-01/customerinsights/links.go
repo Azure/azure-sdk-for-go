@@ -170,6 +170,7 @@ func (client LinksClient) Delete(ctx context.Context, resourceGroupName string, 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.LinksClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -246,6 +247,7 @@ func (client LinksClient) Get(ctx context.Context, resourceGroupName string, hub
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.LinksClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -323,6 +325,7 @@ func (client LinksClient) ListByHub(ctx context.Context, resourceGroupName strin
 	result.llr, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.LinksClient", "ListByHub", resp, "Failure responding to request")
+		return
 	}
 	if result.llr.hasNextLink() && result.llr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -387,6 +390,7 @@ func (client LinksClient) listByHubNextResults(ctx context.Context, lastResults 
 	result, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.LinksClient", "listByHubNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

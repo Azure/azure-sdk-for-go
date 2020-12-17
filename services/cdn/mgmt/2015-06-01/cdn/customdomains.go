@@ -243,6 +243,7 @@ func (client CustomDomainsClient) Get(ctx context.Context, customDomainName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -321,6 +322,7 @@ func (client CustomDomainsClient) ListByEndpoint(ctx context.Context, endpointNa
 	result, err = client.ListByEndpointResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "ListByEndpoint", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -400,6 +402,7 @@ func (client CustomDomainsClient) Update(ctx context.Context, customDomainName s
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

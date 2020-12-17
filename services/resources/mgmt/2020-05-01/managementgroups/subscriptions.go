@@ -75,6 +75,7 @@ func (client SubscriptionsClient) Create(ctx context.Context, groupID string, su
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.SubscriptionsClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -157,6 +158,7 @@ func (client SubscriptionsClient) Delete(ctx context.Context, groupID string, su
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.SubscriptionsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -238,6 +240,7 @@ func (client SubscriptionsClient) GetSubscription(ctx context.Context, groupID s
 	result, err = client.GetSubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.SubscriptionsClient", "GetSubscription", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -320,6 +323,7 @@ func (client SubscriptionsClient) GetSubscriptionsUnderManagementGroup(ctx conte
 	result.lsumg, err = client.GetSubscriptionsUnderManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.SubscriptionsClient", "GetSubscriptionsUnderManagementGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.lsumg.hasNextLink() && result.lsumg.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -385,6 +389,7 @@ func (client SubscriptionsClient) getSubscriptionsUnderManagementGroupNextResult
 	result, err = client.GetSubscriptionsUnderManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.SubscriptionsClient", "getSubscriptionsUnderManagementGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

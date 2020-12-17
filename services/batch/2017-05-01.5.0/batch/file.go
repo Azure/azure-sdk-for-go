@@ -86,6 +86,7 @@ func (client FileClient) DeleteFromComputeNode(ctx context.Context, poolID strin
 	result, err = client.DeleteFromComputeNodeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.FileClient", "DeleteFromComputeNode", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -194,6 +195,7 @@ func (client FileClient) DeleteFromTask(ctx context.Context, jobID string, taskI
 	result, err = client.DeleteFromTaskResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.FileClient", "DeleteFromTask", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -306,6 +308,7 @@ func (client FileClient) GetFromComputeNode(ctx context.Context, poolID string, 
 	result, err = client.GetFromComputeNodeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.FileClient", "GetFromComputeNode", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -427,6 +430,7 @@ func (client FileClient) GetFromTask(ctx context.Context, jobID string, taskID s
 	result, err = client.GetFromTaskResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.FileClient", "GetFromTask", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -546,6 +550,7 @@ func (client FileClient) GetPropertiesFromComputeNode(ctx context.Context, poolI
 	result, err = client.GetPropertiesFromComputeNodeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.FileClient", "GetPropertiesFromComputeNode", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -661,6 +666,7 @@ func (client FileClient) GetPropertiesFromTask(ctx context.Context, jobID string
 	result, err = client.GetPropertiesFromTaskResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.FileClient", "GetPropertiesFromTask", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -783,6 +789,7 @@ func (client FileClient) ListFromComputeNode(ctx context.Context, poolID string,
 	result.nflr, err = client.ListFromComputeNodeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.FileClient", "ListFromComputeNode", resp, "Failure responding to request")
+		return
 	}
 	if result.nflr.hasNextLink() && result.nflr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -877,6 +884,7 @@ func (client FileClient) listFromComputeNodeNextResults(ctx context.Context, las
 	result, err = client.ListFromComputeNodeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.FileClient", "listFromComputeNodeNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -949,6 +957,7 @@ func (client FileClient) ListFromTask(ctx context.Context, jobID string, taskID 
 	result.nflr, err = client.ListFromTaskResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.FileClient", "ListFromTask", resp, "Failure responding to request")
+		return
 	}
 	if result.nflr.hasNextLink() && result.nflr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -1043,6 +1052,7 @@ func (client FileClient) listFromTaskNextResults(ctx context.Context, lastResult
 	result, err = client.ListFromTaskResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.FileClient", "listFromTaskNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

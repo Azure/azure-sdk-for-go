@@ -72,6 +72,7 @@ func (client AssessmentOptionsClient) Get(ctx context.Context, locationName stri
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.AssessmentOptionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -73,6 +73,7 @@ func (client WorkflowsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -150,6 +151,7 @@ func (client WorkflowsClient) Delete(ctx context.Context, resourceGroupName stri
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -224,6 +226,7 @@ func (client WorkflowsClient) Disable(ctx context.Context, resourceGroupName str
 	result, err = client.DisableResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Disable", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -298,6 +301,7 @@ func (client WorkflowsClient) Enable(ctx context.Context, resourceGroupName stri
 	result, err = client.EnableResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Enable", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -373,6 +377,7 @@ func (client WorkflowsClient) GenerateUpgradedDefinition(ctx context.Context, re
 	result, err = client.GenerateUpgradedDefinitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "GenerateUpgradedDefinition", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -450,6 +455,7 @@ func (client WorkflowsClient) Get(ctx context.Context, resourceGroupName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -528,6 +534,7 @@ func (client WorkflowsClient) ListByResourceGroup(ctx context.Context, resourceG
 	result.wlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.wlr.hasNextLink() && result.wlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -597,6 +604,7 @@ func (client WorkflowsClient) listByResourceGroupNextResults(ctx context.Context
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -650,6 +658,7 @@ func (client WorkflowsClient) ListBySubscription(ctx context.Context, top *int32
 	result.wlr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListBySubscription", resp, "Failure responding to request")
+		return
 	}
 	if result.wlr.hasNextLink() && result.wlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -718,6 +727,7 @@ func (client WorkflowsClient) listBySubscriptionNextResults(ctx context.Context,
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -770,6 +780,7 @@ func (client WorkflowsClient) ListCallbackURL(ctx context.Context, resourceGroup
 	result, err = client.ListCallbackURLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListCallbackURL", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -847,6 +858,7 @@ func (client WorkflowsClient) ListSwagger(ctx context.Context, resourceGroupName
 	result, err = client.ListSwaggerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListSwagger", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -923,6 +935,7 @@ func (client WorkflowsClient) Move(ctx context.Context, resourceGroupName string
 	result, err = client.MoveResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Move", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1000,6 +1013,7 @@ func (client WorkflowsClient) RegenerateAccessKey(ctx context.Context, resourceG
 	result, err = client.RegenerateAccessKeyResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "RegenerateAccessKey", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1077,6 +1091,7 @@ func (client WorkflowsClient) Update(ctx context.Context, resourceGroupName stri
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1156,6 +1171,7 @@ func (client WorkflowsClient) Validate(ctx context.Context, resourceGroupName st
 	result, err = client.ValidateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Validate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1234,6 +1250,7 @@ func (client WorkflowsClient) ValidateWorkflow(ctx context.Context, resourceGrou
 	result, err = client.ValidateWorkflowResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ValidateWorkflow", resp, "Failure responding to request")
+		return
 	}
 
 	return

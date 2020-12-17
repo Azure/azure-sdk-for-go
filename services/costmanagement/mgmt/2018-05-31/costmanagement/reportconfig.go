@@ -122,6 +122,7 @@ func (client ReportConfigClient) CreateOrUpdate(ctx context.Context, reportConfi
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportConfigClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -248,6 +249,7 @@ func (client ReportConfigClient) CreateOrUpdateByResourceGroupName(ctx context.C
 	result, err = client.CreateOrUpdateByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportConfigClient", "CreateOrUpdateByResourceGroupName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -324,6 +326,7 @@ func (client ReportConfigClient) Delete(ctx context.Context, reportConfigName st
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportConfigClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -397,6 +400,7 @@ func (client ReportConfigClient) DeleteByResourceGroupName(ctx context.Context, 
 	result, err = client.DeleteByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportConfigClient", "DeleteByResourceGroupName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -470,6 +474,7 @@ func (client ReportConfigClient) Get(ctx context.Context, reportConfigName strin
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportConfigClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -544,6 +549,7 @@ func (client ReportConfigClient) GetByResourceGroupName(ctx context.Context, res
 	result, err = client.GetByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportConfigClient", "GetByResourceGroupName", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -616,6 +622,7 @@ func (client ReportConfigClient) List(ctx context.Context) (result ReportConfigL
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportConfigClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -688,6 +695,7 @@ func (client ReportConfigClient) ListByResourceGroupName(ctx context.Context, re
 	result, err = client.ListByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportConfigClient", "ListByResourceGroupName", resp, "Failure responding to request")
+		return
 	}
 
 	return

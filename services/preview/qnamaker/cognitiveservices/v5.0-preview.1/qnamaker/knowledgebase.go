@@ -87,6 +87,7 @@ func (client KnowledgebaseClient) Create(ctx context.Context, createKbPayload Cr
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamaker.KnowledgebaseClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -155,6 +156,7 @@ func (client KnowledgebaseClient) Delete(ctx context.Context, kbID string) (resu
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamaker.KnowledgebaseClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -227,6 +229,7 @@ func (client KnowledgebaseClient) Download(ctx context.Context, kbID string, env
 	result, err = client.DownloadResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamaker.KnowledgebaseClient", "Download", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -308,6 +311,7 @@ func (client KnowledgebaseClient) GenerateAnswer(ctx context.Context, kbID strin
 	result, err = client.GenerateAnswerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamaker.KnowledgebaseClient", "GenerateAnswer", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -380,6 +384,7 @@ func (client KnowledgebaseClient) GetDetails(ctx context.Context, kbID string) (
 	result, err = client.GetDetailsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamaker.KnowledgebaseClient", "GetDetails", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -448,6 +453,7 @@ func (client KnowledgebaseClient) ListAll(ctx context.Context) (result Knowledge
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamaker.KnowledgebaseClient", "ListAll", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -514,6 +520,7 @@ func (client KnowledgebaseClient) Publish(ctx context.Context, kbID string) (res
 	result, err = client.PublishResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamaker.KnowledgebaseClient", "Publish", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -590,6 +597,7 @@ func (client KnowledgebaseClient) Replace(ctx context.Context, kbID string, repl
 	result, err = client.ReplaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamaker.KnowledgebaseClient", "Replace", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -662,6 +670,7 @@ func (client KnowledgebaseClient) Train(ctx context.Context, kbID string, trainP
 	result, err = client.TrainResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamaker.KnowledgebaseClient", "Train", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -734,6 +743,7 @@ func (client KnowledgebaseClient) Update(ctx context.Context, kbID string, updat
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamaker.KnowledgebaseClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -74,6 +74,7 @@ func (client ExtensionClient) Create(ctx context.Context, resourceGroupName stri
 	result, err = client.CreateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Create", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -152,6 +153,7 @@ func (client ExtensionClient) Delete(ctx context.Context, resourceGroupName stri
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -379,6 +381,7 @@ func (client ExtensionClient) Get(ctx context.Context, resourceGroupName string,
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -455,6 +458,7 @@ func (client ExtensionClient) GetMonitoringStatus(ctx context.Context, resourceG
 	result, err = client.GetMonitoringStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "GetMonitoringStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return

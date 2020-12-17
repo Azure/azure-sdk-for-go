@@ -81,6 +81,7 @@ func (client ProductGroupClient) CreateOrUpdate(ctx context.Context, apimBaseURL
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductGroupClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -173,6 +174,7 @@ func (client ProductGroupClient) Delete(ctx context.Context, apimBaseURL string,
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductGroupClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -274,6 +276,7 @@ func (client ProductGroupClient) ListByProduct(ctx context.Context, apimBaseURL 
 	result.gc, err = client.ListByProductResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductGroupClient", "ListByProduct", resp, "Failure responding to request")
+		return
 	}
 	if result.gc.hasNextLink() && result.gc.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -349,6 +352,7 @@ func (client ProductGroupClient) listByProductNextResults(ctx context.Context, l
 	result, err = client.ListByProductResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductGroupClient", "listByProductNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

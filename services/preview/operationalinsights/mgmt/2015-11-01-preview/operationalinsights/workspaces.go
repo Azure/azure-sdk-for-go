@@ -166,6 +166,7 @@ func (client WorkspacesClient) Delete(ctx context.Context, resourceGroupName str
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -249,6 +250,7 @@ func (client WorkspacesClient) DisableIntelligencePack(ctx context.Context, reso
 	result, err = client.DisableIntelligencePackResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "DisableIntelligencePack", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -333,6 +335,7 @@ func (client WorkspacesClient) EnableIntelligencePack(ctx context.Context, resou
 	result, err = client.EnableIntelligencePackResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "EnableIntelligencePack", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -408,6 +411,7 @@ func (client WorkspacesClient) Get(ctx context.Context, resourceGroupName string
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -491,6 +495,7 @@ func (client WorkspacesClient) GetSharedKeys(ctx context.Context, resourceGroupN
 	result, err = client.GetSharedKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "GetSharedKeys", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -563,6 +568,7 @@ func (client WorkspacesClient) List(ctx context.Context) (result WorkspaceListRe
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "List", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -643,6 +649,7 @@ func (client WorkspacesClient) ListByResourceGroup(ctx context.Context, resource
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -726,6 +733,7 @@ func (client WorkspacesClient) ListIntelligencePacks(ctx context.Context, resour
 	result, err = client.ListIntelligencePacksResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListIntelligencePacks", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -809,6 +817,7 @@ func (client WorkspacesClient) ListManagementGroups(ctx context.Context, resourc
 	result, err = client.ListManagementGroupsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListManagementGroups", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -892,6 +901,7 @@ func (client WorkspacesClient) ListUsages(ctx context.Context, resourceGroupName
 	result, err = client.ListUsagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListUsages", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -976,6 +986,7 @@ func (client WorkspacesClient) Update(ctx context.Context, resourceGroupName str
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

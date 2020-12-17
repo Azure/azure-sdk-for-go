@@ -252,6 +252,7 @@ func (client TriggerClient) GetEventSubscriptionStatus(ctx context.Context, trig
 	result, err = client.GetEventSubscriptionStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "GetEventSubscriptionStatus", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -338,6 +339,7 @@ func (client TriggerClient) GetTrigger(ctx context.Context, triggerName string, 
 	result, err = client.GetTriggerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "GetTrigger", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -417,6 +419,7 @@ func (client TriggerClient) GetTriggersByWorkspace(ctx context.Context) (result 
 	result.tlr, err = client.GetTriggersByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "GetTriggersByWorkspace", resp, "Failure responding to request")
+		return
 	}
 	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -479,6 +482,7 @@ func (client TriggerClient) getTriggersByWorkspaceNextResults(ctx context.Contex
 	result, err = client.GetTriggersByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "getTriggersByWorkspaceNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

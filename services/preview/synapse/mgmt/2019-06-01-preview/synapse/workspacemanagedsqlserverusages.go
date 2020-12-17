@@ -85,6 +85,7 @@ func (client WorkspaceManagedSQLServerUsagesClient) List(ctx context.Context, re
 	result.sulr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerUsagesClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.sulr.hasNextLink() && result.sulr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -149,6 +150,7 @@ func (client WorkspaceManagedSQLServerUsagesClient) listNextResults(ctx context.
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerUsagesClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

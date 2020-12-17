@@ -91,6 +91,7 @@ func (client BaseClient) CreateImageRegions(ctx context.Context, projectID uuid.
 	result, err = client.CreateImageRegionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "CreateImageRegions", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -163,6 +164,7 @@ func (client BaseClient) CreateImagesFromData(ctx context.Context, projectID uui
 	result, err = client.CreateImagesFromDataResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "CreateImagesFromData", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -243,6 +245,7 @@ func (client BaseClient) CreateImagesFromFiles(ctx context.Context, projectID uu
 	result, err = client.CreateImagesFromFilesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "CreateImagesFromFiles", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -314,6 +317,7 @@ func (client BaseClient) CreateImagesFromPredictions(ctx context.Context, projec
 	result, err = client.CreateImagesFromPredictionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "CreateImagesFromPredictions", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -385,6 +389,7 @@ func (client BaseClient) CreateImagesFromUrls(ctx context.Context, projectID uui
 	result, err = client.CreateImagesFromUrlsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "CreateImagesFromUrls", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -455,6 +460,7 @@ func (client BaseClient) CreateImageTags(ctx context.Context, projectID uuid.UUI
 	result, err = client.CreateImageTagsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "CreateImageTags", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -527,6 +533,7 @@ func (client BaseClient) CreateProject(ctx context.Context, name string, descrip
 	result, err = client.CreateProjectResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "CreateProject", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -606,6 +613,7 @@ func (client BaseClient) CreateTag(ctx context.Context, projectID uuid.UUID, nam
 	result, err = client.CreateTagResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "CreateTag", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -688,6 +696,7 @@ func (client BaseClient) DeleteImageRegions(ctx context.Context, projectID uuid.
 	result, err = client.DeleteImageRegionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "DeleteImageRegions", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -766,6 +775,7 @@ func (client BaseClient) DeleteImages(ctx context.Context, projectID uuid.UUID, 
 	result, err = client.DeleteImagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "DeleteImages", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -847,6 +857,7 @@ func (client BaseClient) DeleteImageTags(ctx context.Context, projectID uuid.UUI
 	result, err = client.DeleteImageTagsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "DeleteImageTags", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -920,6 +931,7 @@ func (client BaseClient) DeleteIteration(ctx context.Context, projectID uuid.UUI
 	result, err = client.DeleteIterationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "DeleteIteration", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -994,6 +1006,7 @@ func (client BaseClient) DeletePrediction(ctx context.Context, projectID uuid.UU
 	result, err = client.DeletePredictionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "DeletePrediction", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1065,6 +1078,7 @@ func (client BaseClient) DeleteProject(ctx context.Context, projectID uuid.UUID)
 	result, err = client.DeleteProjectResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "DeleteProject", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1132,6 +1146,7 @@ func (client BaseClient) DeleteTag(ctx context.Context, projectID uuid.UUID, tag
 	result, err = client.DeleteTagResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "DeleteTag", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1202,6 +1217,7 @@ func (client BaseClient) ExportIteration(ctx context.Context, projectID uuid.UUI
 	result, err = client.ExportIterationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "ExportIteration", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1278,6 +1294,7 @@ func (client BaseClient) GetDomain(ctx context.Context, domainID uuid.UUID) (res
 	result, err = client.GetDomainResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "GetDomain", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1343,6 +1360,7 @@ func (client BaseClient) GetDomains(ctx context.Context) (result ListDomain, err
 	result, err = client.GetDomainsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "GetDomains", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1407,6 +1425,7 @@ func (client BaseClient) GetExports(ctx context.Context, projectID uuid.UUID, it
 	result, err = client.GetExportsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "GetExports", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1479,6 +1498,7 @@ func (client BaseClient) GetImagePerformanceCount(ctx context.Context, projectID
 	result, err = client.GetImagePerformanceCountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "GetImagePerformanceCount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1562,6 +1582,7 @@ func (client BaseClient) GetImagePerformances(ctx context.Context, projectID uui
 	result, err = client.GetImagePerformancesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "GetImagePerformances", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1651,6 +1672,7 @@ func (client BaseClient) GetImageRegionProposals(ctx context.Context, projectID 
 	result, err = client.GetImageRegionProposalsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "GetImageRegionProposals", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1723,6 +1745,7 @@ func (client BaseClient) GetImagesByIds(ctx context.Context, projectID uuid.UUID
 	result, err = client.GetImagesByIdsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "GetImagesByIds", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1800,6 +1823,7 @@ func (client BaseClient) GetIteration(ctx context.Context, projectID uuid.UUID, 
 	result, err = client.GetIterationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "GetIteration", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1871,6 +1895,7 @@ func (client BaseClient) GetIterationPerformance(ctx context.Context, projectID 
 	result, err = client.GetIterationPerformanceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "GetIterationPerformance", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -1948,6 +1973,7 @@ func (client BaseClient) GetIterations(ctx context.Context, projectID uuid.UUID)
 	result, err = client.GetIterationsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "GetIterations", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2015,6 +2041,7 @@ func (client BaseClient) GetProject(ctx context.Context, projectID uuid.UUID) (r
 	result, err = client.GetProjectResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "GetProject", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2080,6 +2107,7 @@ func (client BaseClient) GetProjects(ctx context.Context) (result ListProject, e
 	result, err = client.GetProjectsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "GetProjects", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2145,6 +2173,7 @@ func (client BaseClient) GetTag(ctx context.Context, projectID uuid.UUID, tagID 
 	result, err = client.GetTagResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "GetTag", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2223,6 +2252,7 @@ func (client BaseClient) GetTaggedImageCount(ctx context.Context, projectID uuid
 	result, err = client.GetTaggedImageCountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "GetTaggedImageCount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2308,6 +2338,7 @@ func (client BaseClient) GetTaggedImages(ctx context.Context, projectID uuid.UUI
 	result, err = client.GetTaggedImagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "GetTaggedImages", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2398,6 +2429,7 @@ func (client BaseClient) GetTags(ctx context.Context, projectID uuid.UUID, itera
 	result, err = client.GetTagsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "GetTags", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2474,6 +2506,7 @@ func (client BaseClient) GetUntaggedImageCount(ctx context.Context, projectID uu
 	result, err = client.GetUntaggedImageCountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "GetUntaggedImageCount", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2553,6 +2586,7 @@ func (client BaseClient) GetUntaggedImages(ctx context.Context, projectID uuid.U
 	result, err = client.GetUntaggedImagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "GetUntaggedImages", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2640,6 +2674,7 @@ func (client BaseClient) QueryPredictions(ctx context.Context, projectID uuid.UU
 	result, err = client.QueryPredictionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "QueryPredictions", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2711,6 +2746,7 @@ func (client BaseClient) QuickTestImage(ctx context.Context, projectID uuid.UUID
 	result, err = client.QuickTestImageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "QuickTestImage", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2792,6 +2828,7 @@ func (client BaseClient) QuickTestImageURL(ctx context.Context, projectID uuid.U
 	result, err = client.QuickTestImageURLResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "QuickTestImageURL", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2867,6 +2904,7 @@ func (client BaseClient) TrainProject(ctx context.Context, projectID uuid.UUID) 
 	result, err = client.TrainProjectResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "TrainProject", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -2936,6 +2974,7 @@ func (client BaseClient) UpdateIteration(ctx context.Context, projectID uuid.UUI
 	result, err = client.UpdateIterationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "UpdateIteration", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3016,6 +3055,7 @@ func (client BaseClient) UpdateProject(ctx context.Context, projectID uuid.UUID,
 	result, err = client.UpdateProjectResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "UpdateProject", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -3091,6 +3131,7 @@ func (client BaseClient) UpdateTag(ctx context.Context, projectID uuid.UUID, tag
 	result, err = client.UpdateTagResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "training.BaseClient", "UpdateTag", resp, "Failure responding to request")
+		return
 	}
 
 	return

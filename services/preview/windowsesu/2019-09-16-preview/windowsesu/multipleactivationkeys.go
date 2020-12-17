@@ -180,6 +180,7 @@ func (client MultipleActivationKeysClient) Delete(ctx context.Context, resourceG
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysClient", "Delete", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -264,6 +265,7 @@ func (client MultipleActivationKeysClient) Get(ctx context.Context, resourceGrou
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -343,6 +345,7 @@ func (client MultipleActivationKeysClient) List(ctx context.Context) (result Mul
 	result.makl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.makl.hasNextLink() && result.makl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -405,6 +408,7 @@ func (client MultipleActivationKeysClient) listNextResults(ctx context.Context, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -466,6 +470,7 @@ func (client MultipleActivationKeysClient) ListByResourceGroup(ctx context.Conte
 	result.makl, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 	if result.makl.hasNextLink() && result.makl.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -529,6 +534,7 @@ func (client MultipleActivationKeysClient) listByResourceGroupNextResults(ctx co
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }
@@ -591,6 +597,7 @@ func (client MultipleActivationKeysClient) Update(ctx context.Context, resourceG
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

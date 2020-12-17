@@ -346,6 +346,7 @@ func (client IscsiServersClient) Get(ctx context.Context, deviceName string, isc
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.IscsiServersClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -431,6 +432,7 @@ func (client IscsiServersClient) ListByDevice(ctx context.Context, deviceName st
 	result, err = client.ListByDeviceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.IscsiServersClient", "ListByDevice", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -514,6 +516,7 @@ func (client IscsiServersClient) ListByManager(ctx context.Context, resourceGrou
 	result, err = client.ListByManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.IscsiServersClient", "ListByManager", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -598,6 +601,7 @@ func (client IscsiServersClient) ListMetricDefinition(ctx context.Context, devic
 	result, err = client.ListMetricDefinitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.IscsiServersClient", "ListMetricDefinition", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -685,6 +689,7 @@ func (client IscsiServersClient) ListMetrics(ctx context.Context, deviceName str
 	result, err = client.ListMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.IscsiServersClient", "ListMetrics", resp, "Failure responding to request")
+		return
 	}
 
 	return

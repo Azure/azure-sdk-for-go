@@ -85,6 +85,7 @@ func (client ADCCatalogsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datacatalog.ADCCatalogsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -252,6 +253,7 @@ func (client ADCCatalogsClient) Get(ctx context.Context, resourceGroupName strin
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datacatalog.ADCCatalogsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -336,6 +338,7 @@ func (client ADCCatalogsClient) ListtByResourceGroup(ctx context.Context, resour
 	result, err = client.ListtByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datacatalog.ADCCatalogsClient", "ListtByResourceGroup", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -420,6 +423,7 @@ func (client ADCCatalogsClient) Update(ctx context.Context, resourceGroupName st
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datacatalog.ADCCatalogsClient", "Update", resp, "Failure responding to request")
+		return
 	}
 
 	return

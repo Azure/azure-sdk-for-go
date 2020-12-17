@@ -74,6 +74,7 @@ func (client PeriodsClient) Get(ctx context.Context, billingPeriodName string) (
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PeriodsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -162,6 +163,7 @@ func (client PeriodsClient) List(ctx context.Context, filter string, skiptoken s
 	result.plr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PeriodsClient", "List", resp, "Failure responding to request")
+		return
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
@@ -233,6 +235,7 @@ func (client PeriodsClient) listNextResults(ctx context.Context, lastResults Per
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PeriodsClient", "listNextResults", resp, "Failure responding to next results request")
+		return
 	}
 	return
 }

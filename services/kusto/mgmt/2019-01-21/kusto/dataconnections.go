@@ -84,6 +84,7 @@ func (client DataConnectionsClient) CheckNameAvailability(ctx context.Context, r
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.DataConnectionsClient", "CheckNameAvailability", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -246,6 +247,7 @@ func (client DataConnectionsClient) DataConnectionValidationMethod(ctx context.C
 	result, err = client.DataConnectionValidationMethodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.DataConnectionsClient", "DataConnectionValidationMethod", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -404,6 +406,7 @@ func (client DataConnectionsClient) Get(ctx context.Context, resourceGroupName s
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.DataConnectionsClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -482,6 +485,7 @@ func (client DataConnectionsClient) ListByDatabase(ctx context.Context, resource
 	result, err = client.ListByDatabaseResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.DataConnectionsClient", "ListByDatabase", resp, "Failure responding to request")
+		return
 	}
 
 	return

@@ -72,6 +72,7 @@ func (client OperationClient) Get(ctx context.Context, operationID string) (resu
 	result, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.OperationClient", "Get", resp, "Failure responding to request")
+		return
 	}
 
 	return

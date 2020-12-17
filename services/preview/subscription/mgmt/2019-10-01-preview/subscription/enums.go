@@ -32,6 +32,23 @@ func PossibleOfferTypeValues() []OfferType {
 	return []OfferType{MSAZR0017P, MSAZR0148P}
 }
 
+// ProvisioningState enumerates the values for provisioning state.
+type ProvisioningState string
+
+const (
+	// Accepted ...
+	Accepted ProvisioningState = "Accepted"
+	// Failed ...
+	Failed ProvisioningState = "Failed"
+	// Succeeded ...
+	Succeeded ProvisioningState = "Succeeded"
+)
+
+// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{Accepted, Failed, Succeeded}
+}
+
 // SpendingLimit enumerates the values for spending limit.
 type SpendingLimit string
 
@@ -68,4 +85,19 @@ const (
 // PossibleStateValues returns an array of possible values for the State const type.
 func PossibleStateValues() []State {
 	return []State{Deleted, Disabled, Enabled, PastDue, Warned}
+}
+
+// Workload enumerates the values for workload.
+type Workload string
+
+const (
+	// DevTest ...
+	DevTest Workload = "DevTest"
+	// Production ...
+	Production Workload = "Production"
+)
+
+// PossibleWorkloadValues returns an array of possible values for the Workload const type.
+func PossibleWorkloadValues() []Workload {
+	return []Workload{DevTest, Production}
 }

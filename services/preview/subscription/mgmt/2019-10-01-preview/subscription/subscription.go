@@ -72,6 +72,7 @@ func (client Client) Cancel(ctx context.Context, subscriptionID string) (result 
 	result, err = client.CancelResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.Client", "Cancel", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -108,6 +109,89 @@ func (client Client) CancelResponder(resp *http.Response) (result CanceledSubscr
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// CreateAlias create Alias Subscription.
+// Parameters:
+// aliasName - alias Name
+func (client Client) CreateAlias(ctx context.Context, aliasName string, body PutAliasRequest) (result CreateAliasFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.CreateAlias")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: body,
+			Constraints: []validation.Constraint{{Target: "body.Properties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "body.Properties.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "body.Properties.BillingScope", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("subscription.Client", "CreateAlias", err.Error())
+	}
+
+	req, err := client.CreateAliasPreparer(ctx, aliasName, body)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "subscription.Client", "CreateAlias", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.CreateAliasSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "subscription.Client", "CreateAlias", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// CreateAliasPreparer prepares the CreateAlias request.
+func (client Client) CreateAliasPreparer(ctx context.Context, aliasName string, body PutAliasRequest) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"aliasName": autorest.Encode("path", aliasName),
+	}
+
+	const APIVersion = "2019-10-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Subscription/aliases/{aliasName}", pathParameters),
+		autorest.WithJSON(body),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateAliasSender sends the CreateAlias request. The method will close the
+// http.Response Body if it receives an error.
+func (client Client) CreateAliasSender(req *http.Request) (future CreateAliasFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// CreateAliasResponder handles the response to the CreateAlias request. The method always
+// closes the http.Response Body.
+func (client Client) CreateAliasResponder(resp *http.Response) (result PutAliasResponse, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -365,6 +449,78 @@ func (client Client) CreateSubscriptionInEnrollmentAccountResponder(resp *http.R
 	return
 }
 
+// DeleteAlias delete Alias.
+// Parameters:
+// aliasName - alias Name
+func (client Client) DeleteAlias(ctx context.Context, aliasName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.DeleteAlias")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.DeleteAliasPreparer(ctx, aliasName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "subscription.Client", "DeleteAlias", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteAliasSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "subscription.Client", "DeleteAlias", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteAliasResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "subscription.Client", "DeleteAlias", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// DeleteAliasPreparer prepares the DeleteAlias request.
+func (client Client) DeleteAliasPreparer(ctx context.Context, aliasName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"aliasName": autorest.Encode("path", aliasName),
+	}
+
+	const APIVersion = "2019-10-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Subscription/aliases/{aliasName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteAliasSender sends the DeleteAlias request. The method will close the
+// http.Response Body if it receives an error.
+func (client Client) DeleteAliasSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// DeleteAliasResponder handles the response to the DeleteAlias request. The method always
+// closes the http.Response Body.
+func (client Client) DeleteAliasResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Enable the operation to enable a subscription
 // Parameters:
 // subscriptionID - subscription Id.
@@ -395,6 +551,7 @@ func (client Client) Enable(ctx context.Context, subscriptionID string) (result 
 	result, err = client.EnableResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.Client", "Enable", resp, "Failure responding to request")
+		return
 	}
 
 	return
@@ -437,6 +594,146 @@ func (client Client) EnableResponder(resp *http.Response) (result EnabledSubscri
 	return
 }
 
+// GetAlias get Alias Subscription.
+// Parameters:
+// aliasName - alias Name
+func (client Client) GetAlias(ctx context.Context, aliasName string) (result PutAliasResponse, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.GetAlias")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetAliasPreparer(ctx, aliasName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "subscription.Client", "GetAlias", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetAliasSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "subscription.Client", "GetAlias", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetAliasResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "subscription.Client", "GetAlias", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// GetAliasPreparer prepares the GetAlias request.
+func (client Client) GetAliasPreparer(ctx context.Context, aliasName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"aliasName": autorest.Encode("path", aliasName),
+	}
+
+	const APIVersion = "2019-10-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Subscription/aliases/{aliasName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetAliasSender sends the GetAlias request. The method will close the
+// http.Response Body if it receives an error.
+func (client Client) GetAliasSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// GetAliasResponder handles the response to the GetAlias request. The method always
+// closes the http.Response Body.
+func (client Client) GetAliasResponder(resp *http.Response) (result PutAliasResponse, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListAlias get Alias Subscription.
+func (client Client) ListAlias(ctx context.Context) (result PutAliasListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ListAlias")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ListAliasPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "subscription.Client", "ListAlias", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListAliasSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "subscription.Client", "ListAlias", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListAliasResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "subscription.Client", "ListAlias", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// ListAliasPreparer prepares the ListAlias request.
+func (client Client) ListAliasPreparer(ctx context.Context) (*http.Request, error) {
+	const APIVersion = "2019-10-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/providers/Microsoft.Subscription/aliases"),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListAliasSender sends the ListAlias request. The method will close the
+// http.Response Body if it receives an error.
+func (client Client) ListAliasSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListAliasResponder handles the response to the ListAlias request. The method always
+// closes the http.Response Body.
+func (client Client) ListAliasResponder(resp *http.Response) (result PutAliasListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Rename the operation to rename a subscription
 // Parameters:
 // subscriptionID - subscription Id.
@@ -468,6 +765,7 @@ func (client Client) Rename(ctx context.Context, subscriptionID string, body Nam
 	result, err = client.RenameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.Client", "Rename", resp, "Failure responding to request")
+		return
 	}
 
 	return

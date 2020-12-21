@@ -19,7 +19,7 @@
 
 package computeapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2020-06-30/compute/computeapi"
+import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2020-12-01/compute/computeapi"
 
 type AvailabilitySetsClientAPI = original.AvailabilitySetsClientAPI
 type ContainerServicesClientAPI = original.ContainerServicesClientAPI
@@ -44,11 +44,11 @@ type UsageClientAPI = original.UsageClientAPI
 type VirtualMachineExtensionImagesClientAPI = original.VirtualMachineExtensionImagesClientAPI
 type VirtualMachineExtensionsClientAPI = original.VirtualMachineExtensionsClientAPI
 type VirtualMachineImagesClientAPI = original.VirtualMachineImagesClientAPI
+type VirtualMachineImagesEdgeZoneClientAPI = original.VirtualMachineImagesEdgeZoneClientAPI
 type VirtualMachineRunCommandsClientAPI = original.VirtualMachineRunCommandsClientAPI
 type VirtualMachineScaleSetExtensionsClientAPI = original.VirtualMachineScaleSetExtensionsClientAPI
 type VirtualMachineScaleSetRollingUpgradesClientAPI = original.VirtualMachineScaleSetRollingUpgradesClientAPI
 type VirtualMachineScaleSetVMExtensionsClientAPI = original.VirtualMachineScaleSetVMExtensionsClientAPI
-type VirtualMachineScaleSetVMRunCommandsClientAPI = original.VirtualMachineScaleSetVMRunCommandsClientAPI
 type VirtualMachineScaleSetVMsClientAPI = original.VirtualMachineScaleSetVMsClientAPI
 type VirtualMachineScaleSetsClientAPI = original.VirtualMachineScaleSetsClientAPI
 type VirtualMachineSizesClientAPI = original.VirtualMachineSizesClientAPI

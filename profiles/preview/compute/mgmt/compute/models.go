@@ -22,7 +22,7 @@ package compute
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2020-06-30/compute"
+	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2020-12-01/compute"
 )
 
 const (
@@ -169,6 +169,12 @@ const (
 	DiskCreateOptionTypesFromImage DiskCreateOptionTypes = original.DiskCreateOptionTypesFromImage
 )
 
+type DiskDetachOptionTypes = original.DiskDetachOptionTypes
+
+const (
+	ForceDetach DiskDetachOptionTypes = original.ForceDetach
+)
+
 type DiskEncryptionSetIdentityType = original.DiskEncryptionSetIdentityType
 
 const (
@@ -210,16 +216,10 @@ const (
 	EncryptionTypeEncryptionAtRestWithPlatformKey             EncryptionType = original.EncryptionTypeEncryptionAtRestWithPlatformKey
 )
 
-type ExecutionState = original.ExecutionState
+type ExtendedLocationTypes = original.ExtendedLocationTypes
 
 const (
-	ExecutionStateCanceled  ExecutionState = original.ExecutionStateCanceled
-	ExecutionStateFailed    ExecutionState = original.ExecutionStateFailed
-	ExecutionStatePending   ExecutionState = original.ExecutionStatePending
-	ExecutionStateRunning   ExecutionState = original.ExecutionStateRunning
-	ExecutionStateSucceeded ExecutionState = original.ExecutionStateSucceeded
-	ExecutionStateTimedOut  ExecutionState = original.ExecutionStateTimedOut
-	ExecutionStateUnknown   ExecutionState = original.ExecutionStateUnknown
+	EdgeZone ExtendedLocationTypes = original.EdgeZone
 )
 
 type HostCaching = original.HostCaching
@@ -258,14 +258,6 @@ const (
 	IPv6 IPVersion = original.IPv6
 )
 
-type InGuestPatchMode = original.InGuestPatchMode
-
-const (
-	AutomaticByOS       InGuestPatchMode = original.AutomaticByOS
-	AutomaticByPlatform InGuestPatchMode = original.AutomaticByPlatform
-	Manual              InGuestPatchMode = original.Manual
-)
-
 type InstanceViewTypes = original.InstanceViewTypes
 
 const (
@@ -279,6 +271,13 @@ const (
 	SixtyMins  IntervalInMins = original.SixtyMins
 	ThirtyMins IntervalInMins = original.ThirtyMins
 	ThreeMins  IntervalInMins = original.ThreeMins
+)
+
+type LinuxVMGuestPatchMode = original.LinuxVMGuestPatchMode
+
+const (
+	AutomaticByPlatform LinuxVMGuestPatchMode = original.AutomaticByPlatform
+	ImageDefault        LinuxVMGuestPatchMode = original.ImageDefault
 )
 
 type MaintenanceOperationResultCodeTypes = original.MaintenanceOperationResultCodeTypes
@@ -312,6 +311,13 @@ const (
 	Windows OperatingSystemTypes = original.Windows
 )
 
+type OrchestrationMode = original.OrchestrationMode
+
+const (
+	Flexible OrchestrationMode = original.Flexible
+	Uniform  OrchestrationMode = original.Uniform
+)
+
 type OrchestrationServiceNames = original.OrchestrationServiceNames
 
 const (
@@ -342,12 +348,19 @@ const (
 type PatchAssessmentState = original.PatchAssessmentState
 
 const (
-	PatchAssessmentStateAvailable   PatchAssessmentState = original.PatchAssessmentStateAvailable
-	PatchAssessmentStateExcluded    PatchAssessmentState = original.PatchAssessmentStateExcluded
-	PatchAssessmentStateFailed      PatchAssessmentState = original.PatchAssessmentStateFailed
-	PatchAssessmentStateInstalled   PatchAssessmentState = original.PatchAssessmentStateInstalled
-	PatchAssessmentStateNotSelected PatchAssessmentState = original.PatchAssessmentStateNotSelected
-	PatchAssessmentStatePending     PatchAssessmentState = original.PatchAssessmentStatePending
+	PatchAssessmentStateAvailable PatchAssessmentState = original.PatchAssessmentStateAvailable
+	PatchAssessmentStateUnknown   PatchAssessmentState = original.PatchAssessmentStateUnknown
+)
+
+type PatchInstallationState = original.PatchInstallationState
+
+const (
+	PatchInstallationStateExcluded    PatchInstallationState = original.PatchInstallationStateExcluded
+	PatchInstallationStateFailed      PatchInstallationState = original.PatchInstallationStateFailed
+	PatchInstallationStateInstalled   PatchInstallationState = original.PatchInstallationStateInstalled
+	PatchInstallationStateNotSelected PatchInstallationState = original.PatchInstallationStateNotSelected
+	PatchInstallationStatePending     PatchInstallationState = original.PatchInstallationStatePending
+	PatchInstallationStateUnknown     PatchInstallationState = original.PatchInstallationStateUnknown
 )
 
 type PatchOperationStatus = original.PatchOperationStatus
@@ -357,6 +370,7 @@ const (
 	PatchOperationStatusFailed                PatchOperationStatus = original.PatchOperationStatusFailed
 	PatchOperationStatusInProgress            PatchOperationStatus = original.PatchOperationStatusInProgress
 	PatchOperationStatusSucceeded             PatchOperationStatus = original.PatchOperationStatusSucceeded
+	PatchOperationStatusUnknown               PatchOperationStatus = original.PatchOperationStatusUnknown
 )
 
 type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
@@ -434,16 +448,6 @@ const (
 	Ultra    ProximityPlacementGroupType = original.Ultra
 )
 
-type RebootStatus = original.RebootStatus
-
-const (
-	RebootStatusCompleted RebootStatus = original.RebootStatusCompleted
-	RebootStatusFailed    RebootStatus = original.RebootStatusFailed
-	RebootStatusNotNeeded RebootStatus = original.RebootStatusNotNeeded
-	RebootStatusRequired  RebootStatus = original.RebootStatusRequired
-	RebootStatusStarted   RebootStatus = original.RebootStatusStarted
-)
-
 type ReplicationState = original.ReplicationState
 
 const (
@@ -506,6 +510,12 @@ const (
 	RollingUpgradeStatusCodeRollingForward RollingUpgradeStatusCode = original.RollingUpgradeStatusCodeRollingForward
 )
 
+type SecurityTypes = original.SecurityTypes
+
+const (
+	TrustedLaunch SecurityTypes = original.TrustedLaunch
+)
+
 type SettingNames = original.SettingNames
 
 const (
@@ -519,14 +529,6 @@ const (
 	SnapshotStorageAccountTypesPremiumLRS  SnapshotStorageAccountTypes = original.SnapshotStorageAccountTypesPremiumLRS
 	SnapshotStorageAccountTypesStandardLRS SnapshotStorageAccountTypes = original.SnapshotStorageAccountTypesStandardLRS
 	SnapshotStorageAccountTypesStandardZRS SnapshotStorageAccountTypes = original.SnapshotStorageAccountTypesStandardZRS
-)
-
-type SoftwareUpdateRebootBehavior = original.SoftwareUpdateRebootBehavior
-
-const (
-	AlwaysRequiresReboot SoftwareUpdateRebootBehavior = original.AlwaysRequiresReboot
-	CanRequestReboot     SoftwareUpdateRebootBehavior = original.CanRequestReboot
-	NeverReboots         SoftwareUpdateRebootBehavior = original.NeverReboots
 )
 
 type StatusLevelTypes = original.StatusLevelTypes
@@ -557,9 +559,9 @@ const (
 type UpgradeMode = original.UpgradeMode
 
 const (
-	UpgradeModeAutomatic UpgradeMode = original.UpgradeModeAutomatic
-	UpgradeModeManual    UpgradeMode = original.UpgradeModeManual
-	UpgradeModeRolling   UpgradeMode = original.UpgradeModeRolling
+	Automatic UpgradeMode = original.Automatic
+	Manual    UpgradeMode = original.Manual
+	Rolling   UpgradeMode = original.Rolling
 )
 
 type UpgradeOperationInvoker = original.UpgradeOperationInvoker
@@ -584,6 +586,55 @@ type VMDiskTypes = original.VMDiskTypes
 const (
 	VMDiskTypesNone      VMDiskTypes = original.VMDiskTypesNone
 	VMDiskTypesUnmanaged VMDiskTypes = original.VMDiskTypesUnmanaged
+)
+
+type VMGuestPatchClassificationLinux = original.VMGuestPatchClassificationLinux
+
+const (
+	Critical VMGuestPatchClassificationLinux = original.Critical
+	Other    VMGuestPatchClassificationLinux = original.Other
+	Security VMGuestPatchClassificationLinux = original.Security
+)
+
+type VMGuestPatchClassificationWindows = original.VMGuestPatchClassificationWindows
+
+const (
+	VMGuestPatchClassificationWindowsCritical     VMGuestPatchClassificationWindows = original.VMGuestPatchClassificationWindowsCritical
+	VMGuestPatchClassificationWindowsDefinition   VMGuestPatchClassificationWindows = original.VMGuestPatchClassificationWindowsDefinition
+	VMGuestPatchClassificationWindowsFeaturePack  VMGuestPatchClassificationWindows = original.VMGuestPatchClassificationWindowsFeaturePack
+	VMGuestPatchClassificationWindowsSecurity     VMGuestPatchClassificationWindows = original.VMGuestPatchClassificationWindowsSecurity
+	VMGuestPatchClassificationWindowsServicePack  VMGuestPatchClassificationWindows = original.VMGuestPatchClassificationWindowsServicePack
+	VMGuestPatchClassificationWindowsTools        VMGuestPatchClassificationWindows = original.VMGuestPatchClassificationWindowsTools
+	VMGuestPatchClassificationWindowsUpdateRollUp VMGuestPatchClassificationWindows = original.VMGuestPatchClassificationWindowsUpdateRollUp
+	VMGuestPatchClassificationWindowsUpdates      VMGuestPatchClassificationWindows = original.VMGuestPatchClassificationWindowsUpdates
+)
+
+type VMGuestPatchRebootBehavior = original.VMGuestPatchRebootBehavior
+
+const (
+	VMGuestPatchRebootBehaviorAlwaysRequiresReboot VMGuestPatchRebootBehavior = original.VMGuestPatchRebootBehaviorAlwaysRequiresReboot
+	VMGuestPatchRebootBehaviorCanRequestReboot     VMGuestPatchRebootBehavior = original.VMGuestPatchRebootBehaviorCanRequestReboot
+	VMGuestPatchRebootBehaviorNeverReboots         VMGuestPatchRebootBehavior = original.VMGuestPatchRebootBehaviorNeverReboots
+	VMGuestPatchRebootBehaviorUnknown              VMGuestPatchRebootBehavior = original.VMGuestPatchRebootBehaviorUnknown
+)
+
+type VMGuestPatchRebootSetting = original.VMGuestPatchRebootSetting
+
+const (
+	Always     VMGuestPatchRebootSetting = original.Always
+	IfRequired VMGuestPatchRebootSetting = original.IfRequired
+	Never      VMGuestPatchRebootSetting = original.Never
+)
+
+type VMGuestPatchRebootStatus = original.VMGuestPatchRebootStatus
+
+const (
+	VMGuestPatchRebootStatusCompleted VMGuestPatchRebootStatus = original.VMGuestPatchRebootStatusCompleted
+	VMGuestPatchRebootStatusFailed    VMGuestPatchRebootStatus = original.VMGuestPatchRebootStatusFailed
+	VMGuestPatchRebootStatusNotNeeded VMGuestPatchRebootStatus = original.VMGuestPatchRebootStatusNotNeeded
+	VMGuestPatchRebootStatusRequired  VMGuestPatchRebootStatus = original.VMGuestPatchRebootStatusRequired
+	VMGuestPatchRebootStatusStarted   VMGuestPatchRebootStatus = original.VMGuestPatchRebootStatusStarted
+	VMGuestPatchRebootStatusUnknown   VMGuestPatchRebootStatus = original.VMGuestPatchRebootStatusUnknown
 )
 
 type VirtualMachineEvictionPolicyTypes = original.VirtualMachineEvictionPolicyTypes
@@ -787,12 +838,21 @@ const (
 	VirtualMachineSizeTypesStandardNV6      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardNV6
 )
 
+type WindowsVMGuestPatchMode = original.WindowsVMGuestPatchMode
+
+const (
+	WindowsVMGuestPatchModeAutomaticByOS       WindowsVMGuestPatchMode = original.WindowsVMGuestPatchModeAutomaticByOS
+	WindowsVMGuestPatchModeAutomaticByPlatform WindowsVMGuestPatchMode = original.WindowsVMGuestPatchModeAutomaticByPlatform
+	WindowsVMGuestPatchModeManual              WindowsVMGuestPatchMode = original.WindowsVMGuestPatchModeManual
+)
+
 type APIEntityReference = original.APIEntityReference
 type APIError = original.APIError
 type APIErrorBase = original.APIErrorBase
 type AccessURI = original.AccessURI
 type AdditionalCapabilities = original.AdditionalCapabilities
 type AdditionalUnattendContent = original.AdditionalUnattendContent
+type ApplicationProfile = original.ApplicationProfile
 type AutomaticOSUpgradePolicy = original.AutomaticOSUpgradePolicy
 type AutomaticOSUpgradeProperties = original.AutomaticOSUpgradeProperties
 type AutomaticRepairsPolicy = original.AutomaticRepairsPolicy
@@ -902,6 +962,7 @@ type EncryptionSetIdentity = original.EncryptionSetIdentity
 type EncryptionSetProperties = original.EncryptionSetProperties
 type EncryptionSettingsCollection = original.EncryptionSettingsCollection
 type EncryptionSettingsElement = original.EncryptionSettingsElement
+type ExtendedLocation = original.ExtendedLocation
 type GalleriesClient = original.GalleriesClient
 type GalleriesCreateOrUpdateFuture = original.GalleriesCreateOrUpdateFuture
 type GalleriesDeleteFuture = original.GalleriesDeleteFuture
@@ -990,6 +1051,8 @@ type KeyVaultKeyReference = original.KeyVaultKeyReference
 type KeyVaultSecretReference = original.KeyVaultSecretReference
 type LastPatchInstallationSummary = original.LastPatchInstallationSummary
 type LinuxConfiguration = original.LinuxConfiguration
+type LinuxParameters = original.LinuxParameters
+type LinuxPatchSettings = original.LinuxPatchSettings
 type ListUsagesResult = original.ListUsagesResult
 type ListUsagesResultIterator = original.ListUsagesResultIterator
 type ListUsagesResultPage = original.ListUsagesResultPage
@@ -1017,7 +1080,7 @@ type OperationValueDisplay = original.OperationValueDisplay
 type OperationsClient = original.OperationsClient
 type OrchestrationServiceStateInput = original.OrchestrationServiceStateInput
 type OrchestrationServiceSummary = original.OrchestrationServiceSummary
-type PatchSettings = original.PatchSettings
+type PatchInstallationDetail = original.PatchInstallationDetail
 type Plan = original.Plan
 type PrivateEndpoint = original.PrivateEndpoint
 type PrivateEndpointConnection = original.PrivateEndpointConnection
@@ -1109,6 +1172,7 @@ type SubResourceWithColocationStatus = original.SubResourceWithColocationStatus
 type TargetRegion = original.TargetRegion
 type TerminateNotificationProfile = original.TerminateNotificationProfile
 type ThrottledRequestsInput = original.ThrottledRequestsInput
+type UefiSettings = original.UefiSettings
 type UpdateResource = original.UpdateResource
 type UpdateResourceDefinition = original.UpdateResourceDefinition
 type UpgradeOperationHistoricalStatusInfo = original.UpgradeOperationHistoricalStatusInfo
@@ -1119,6 +1183,7 @@ type Usage = original.Usage
 type UsageClient = original.UsageClient
 type UsageName = original.UsageName
 type UserArtifactSource = original.UserArtifactSource
+type VMGalleryApplication = original.VMGalleryApplication
 type VMScaleSetConvertToSinglePlacementGroupInput = original.VMScaleSetConvertToSinglePlacementGroupInput
 type VaultCertificate = original.VaultCertificate
 type VaultSecretGroup = original.VaultSecretGroup
@@ -1146,9 +1211,13 @@ type VirtualMachineHealthStatus = original.VirtualMachineHealthStatus
 type VirtualMachineIdentity = original.VirtualMachineIdentity
 type VirtualMachineIdentityUserAssignedIdentitiesValue = original.VirtualMachineIdentityUserAssignedIdentitiesValue
 type VirtualMachineImage = original.VirtualMachineImage
+type VirtualMachineImageFeature = original.VirtualMachineImageFeature
 type VirtualMachineImageProperties = original.VirtualMachineImageProperties
 type VirtualMachineImageResource = original.VirtualMachineImageResource
 type VirtualMachineImagesClient = original.VirtualMachineImagesClient
+type VirtualMachineImagesEdgeZoneClient = original.VirtualMachineImagesEdgeZoneClient
+type VirtualMachineInstallPatchesParameters = original.VirtualMachineInstallPatchesParameters
+type VirtualMachineInstallPatchesResult = original.VirtualMachineInstallPatchesResult
 type VirtualMachineInstanceView = original.VirtualMachineInstanceView
 type VirtualMachineListResult = original.VirtualMachineListResult
 type VirtualMachineListResultIterator = original.VirtualMachineListResultIterator
@@ -1156,18 +1225,7 @@ type VirtualMachineListResultPage = original.VirtualMachineListResultPage
 type VirtualMachinePatchStatus = original.VirtualMachinePatchStatus
 type VirtualMachineProperties = original.VirtualMachineProperties
 type VirtualMachineReimageParameters = original.VirtualMachineReimageParameters
-type VirtualMachineRunCommand = original.VirtualMachineRunCommand
-type VirtualMachineRunCommandInstanceView = original.VirtualMachineRunCommandInstanceView
-type VirtualMachineRunCommandProperties = original.VirtualMachineRunCommandProperties
-type VirtualMachineRunCommandScriptSource = original.VirtualMachineRunCommandScriptSource
-type VirtualMachineRunCommandUpdate = original.VirtualMachineRunCommandUpdate
 type VirtualMachineRunCommandsClient = original.VirtualMachineRunCommandsClient
-type VirtualMachineRunCommandsCreateOrUpdateFuture = original.VirtualMachineRunCommandsCreateOrUpdateFuture
-type VirtualMachineRunCommandsDeleteFuture = original.VirtualMachineRunCommandsDeleteFuture
-type VirtualMachineRunCommandsListResult = original.VirtualMachineRunCommandsListResult
-type VirtualMachineRunCommandsListResultIterator = original.VirtualMachineRunCommandsListResultIterator
-type VirtualMachineRunCommandsListResultPage = original.VirtualMachineRunCommandsListResultPage
-type VirtualMachineRunCommandsUpdateFuture = original.VirtualMachineRunCommandsUpdateFuture
 type VirtualMachineScaleSet = original.VirtualMachineScaleSet
 type VirtualMachineScaleSetDataDisk = original.VirtualMachineScaleSetDataDisk
 type VirtualMachineScaleSetExtension = original.VirtualMachineScaleSetExtension
@@ -1252,10 +1310,6 @@ type VirtualMachineScaleSetVMProfile = original.VirtualMachineScaleSetVMProfile
 type VirtualMachineScaleSetVMProperties = original.VirtualMachineScaleSetVMProperties
 type VirtualMachineScaleSetVMProtectionPolicy = original.VirtualMachineScaleSetVMProtectionPolicy
 type VirtualMachineScaleSetVMReimageParameters = original.VirtualMachineScaleSetVMReimageParameters
-type VirtualMachineScaleSetVMRunCommandsClient = original.VirtualMachineScaleSetVMRunCommandsClient
-type VirtualMachineScaleSetVMRunCommandsCreateOrUpdateFuture = original.VirtualMachineScaleSetVMRunCommandsCreateOrUpdateFuture
-type VirtualMachineScaleSetVMRunCommandsDeleteFuture = original.VirtualMachineScaleSetVMRunCommandsDeleteFuture
-type VirtualMachineScaleSetVMRunCommandsUpdateFuture = original.VirtualMachineScaleSetVMRunCommandsUpdateFuture
 type VirtualMachineScaleSetVMsClient = original.VirtualMachineScaleSetVMsClient
 type VirtualMachineScaleSetVMsDeallocateFuture = original.VirtualMachineScaleSetVMsDeallocateFuture
 type VirtualMachineScaleSetVMsDeleteFuture = original.VirtualMachineScaleSetVMsDeleteFuture
@@ -1296,6 +1350,7 @@ type VirtualMachinesConvertToManagedDisksFuture = original.VirtualMachinesConver
 type VirtualMachinesCreateOrUpdateFuture = original.VirtualMachinesCreateOrUpdateFuture
 type VirtualMachinesDeallocateFuture = original.VirtualMachinesDeallocateFuture
 type VirtualMachinesDeleteFuture = original.VirtualMachinesDeleteFuture
+type VirtualMachinesInstallPatchesFuture = original.VirtualMachinesInstallPatchesFuture
 type VirtualMachinesPerformMaintenanceFuture = original.VirtualMachinesPerformMaintenanceFuture
 type VirtualMachinesPowerOffFuture = original.VirtualMachinesPowerOffFuture
 type VirtualMachinesReapplyFuture = original.VirtualMachinesReapplyFuture
@@ -1308,6 +1363,8 @@ type VirtualMachinesUpdateFuture = original.VirtualMachinesUpdateFuture
 type WinRMConfiguration = original.WinRMConfiguration
 type WinRMListener = original.WinRMListener
 type WindowsConfiguration = original.WindowsConfiguration
+type WindowsParameters = original.WindowsParameters
+type WindowsPatchSettings = original.WindowsPatchSettings
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -1570,6 +1627,12 @@ func NewVirtualMachineImagesClient(subscriptionID string) VirtualMachineImagesCl
 func NewVirtualMachineImagesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineImagesClient {
 	return original.NewVirtualMachineImagesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewVirtualMachineImagesEdgeZoneClient(subscriptionID string) VirtualMachineImagesEdgeZoneClient {
+	return original.NewVirtualMachineImagesEdgeZoneClient(subscriptionID)
+}
+func NewVirtualMachineImagesEdgeZoneClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineImagesEdgeZoneClient {
+	return original.NewVirtualMachineImagesEdgeZoneClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewVirtualMachineListResultIterator(page VirtualMachineListResultPage) VirtualMachineListResultIterator {
 	return original.NewVirtualMachineListResultIterator(page)
 }
@@ -1581,12 +1644,6 @@ func NewVirtualMachineRunCommandsClient(subscriptionID string) VirtualMachineRun
 }
 func NewVirtualMachineRunCommandsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineRunCommandsClient {
 	return original.NewVirtualMachineRunCommandsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewVirtualMachineRunCommandsListResultIterator(page VirtualMachineRunCommandsListResultPage) VirtualMachineRunCommandsListResultIterator {
-	return original.NewVirtualMachineRunCommandsListResultIterator(page)
-}
-func NewVirtualMachineRunCommandsListResultPage(cur VirtualMachineRunCommandsListResult, getNextPage func(context.Context, VirtualMachineRunCommandsListResult) (VirtualMachineRunCommandsListResult, error)) VirtualMachineRunCommandsListResultPage {
-	return original.NewVirtualMachineRunCommandsListResultPage(cur, getNextPage)
 }
 func NewVirtualMachineScaleSetExtensionListResultIterator(page VirtualMachineScaleSetExtensionListResultPage) VirtualMachineScaleSetExtensionListResultIterator {
 	return original.NewVirtualMachineScaleSetExtensionListResultIterator(page)
@@ -1641,12 +1698,6 @@ func NewVirtualMachineScaleSetVMListResultIterator(page VirtualMachineScaleSetVM
 }
 func NewVirtualMachineScaleSetVMListResultPage(cur VirtualMachineScaleSetVMListResult, getNextPage func(context.Context, VirtualMachineScaleSetVMListResult) (VirtualMachineScaleSetVMListResult, error)) VirtualMachineScaleSetVMListResultPage {
 	return original.NewVirtualMachineScaleSetVMListResultPage(cur, getNextPage)
-}
-func NewVirtualMachineScaleSetVMRunCommandsClient(subscriptionID string) VirtualMachineScaleSetVMRunCommandsClient {
-	return original.NewVirtualMachineScaleSetVMRunCommandsClient(subscriptionID)
-}
-func NewVirtualMachineScaleSetVMRunCommandsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetVMRunCommandsClient {
-	return original.NewVirtualMachineScaleSetVMRunCommandsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVirtualMachineScaleSetVMsClient(subscriptionID string) VirtualMachineScaleSetVMsClient {
 	return original.NewVirtualMachineScaleSetVMsClient(subscriptionID)
@@ -1711,6 +1762,9 @@ func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 func PossibleDiskCreateOptionValues() []DiskCreateOption {
 	return original.PossibleDiskCreateOptionValues()
 }
+func PossibleDiskDetachOptionTypesValues() []DiskDetachOptionTypes {
+	return original.PossibleDiskDetachOptionTypesValues()
+}
 func PossibleDiskEncryptionSetIdentityTypeValues() []DiskEncryptionSetIdentityType {
 	return original.PossibleDiskEncryptionSetIdentityTypeValues()
 }
@@ -1726,8 +1780,8 @@ func PossibleDiskStorageAccountTypesValues() []DiskStorageAccountTypes {
 func PossibleEncryptionTypeValues() []EncryptionType {
 	return original.PossibleEncryptionTypeValues()
 }
-func PossibleExecutionStateValues() []ExecutionState {
-	return original.PossibleExecutionStateValues()
+func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
+	return original.PossibleExtendedLocationTypesValues()
 }
 func PossibleHostCachingValues() []HostCaching {
 	return original.PossibleHostCachingValues()
@@ -1744,14 +1798,14 @@ func PossibleHyperVGenerationValues() []HyperVGeneration {
 func PossibleIPVersionValues() []IPVersion {
 	return original.PossibleIPVersionValues()
 }
-func PossibleInGuestPatchModeValues() []InGuestPatchMode {
-	return original.PossibleInGuestPatchModeValues()
-}
 func PossibleInstanceViewTypesValues() []InstanceViewTypes {
 	return original.PossibleInstanceViewTypesValues()
 }
 func PossibleIntervalInMinsValues() []IntervalInMins {
 	return original.PossibleIntervalInMinsValues()
+}
+func PossibleLinuxVMGuestPatchModeValues() []LinuxVMGuestPatchMode {
+	return original.PossibleLinuxVMGuestPatchModeValues()
 }
 func PossibleMaintenanceOperationResultCodeTypesValues() []MaintenanceOperationResultCodeTypes {
 	return original.PossibleMaintenanceOperationResultCodeTypesValues()
@@ -1764,6 +1818,9 @@ func PossibleOperatingSystemStateTypesValues() []OperatingSystemStateTypes {
 }
 func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
 	return original.PossibleOperatingSystemTypesValues()
+}
+func PossibleOrchestrationModeValues() []OrchestrationMode {
+	return original.PossibleOrchestrationModeValues()
 }
 func PossibleOrchestrationServiceNamesValues() []OrchestrationServiceNames {
 	return original.PossibleOrchestrationServiceNamesValues()
@@ -1779,6 +1836,9 @@ func PossiblePassNamesValues() []PassNames {
 }
 func PossiblePatchAssessmentStateValues() []PatchAssessmentState {
 	return original.PossiblePatchAssessmentStateValues()
+}
+func PossiblePatchInstallationStateValues() []PatchInstallationState {
+	return original.PossiblePatchInstallationStateValues()
 }
 func PossiblePatchOperationStatusValues() []PatchOperationStatus {
 	return original.PossiblePatchOperationStatusValues()
@@ -1807,9 +1867,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 func PossibleProximityPlacementGroupTypeValues() []ProximityPlacementGroupType {
 	return original.PossibleProximityPlacementGroupTypeValues()
 }
-func PossibleRebootStatusValues() []RebootStatus {
-	return original.PossibleRebootStatusValues()
-}
 func PossibleReplicationStateValues() []ReplicationState {
 	return original.PossibleReplicationStateValues()
 }
@@ -1834,14 +1891,14 @@ func PossibleRollingUpgradeActionTypeValues() []RollingUpgradeActionType {
 func PossibleRollingUpgradeStatusCodeValues() []RollingUpgradeStatusCode {
 	return original.PossibleRollingUpgradeStatusCodeValues()
 }
+func PossibleSecurityTypesValues() []SecurityTypes {
+	return original.PossibleSecurityTypesValues()
+}
 func PossibleSettingNamesValues() []SettingNames {
 	return original.PossibleSettingNamesValues()
 }
 func PossibleSnapshotStorageAccountTypesValues() []SnapshotStorageAccountTypes {
 	return original.PossibleSnapshotStorageAccountTypesValues()
-}
-func PossibleSoftwareUpdateRebootBehaviorValues() []SoftwareUpdateRebootBehavior {
-	return original.PossibleSoftwareUpdateRebootBehaviorValues()
 }
 func PossibleStatusLevelTypesValues() []StatusLevelTypes {
 	return original.PossibleStatusLevelTypesValues()
@@ -1864,6 +1921,21 @@ func PossibleUpgradeStateValues() []UpgradeState {
 func PossibleVMDiskTypesValues() []VMDiskTypes {
 	return original.PossibleVMDiskTypesValues()
 }
+func PossibleVMGuestPatchClassificationLinuxValues() []VMGuestPatchClassificationLinux {
+	return original.PossibleVMGuestPatchClassificationLinuxValues()
+}
+func PossibleVMGuestPatchClassificationWindowsValues() []VMGuestPatchClassificationWindows {
+	return original.PossibleVMGuestPatchClassificationWindowsValues()
+}
+func PossibleVMGuestPatchRebootBehaviorValues() []VMGuestPatchRebootBehavior {
+	return original.PossibleVMGuestPatchRebootBehaviorValues()
+}
+func PossibleVMGuestPatchRebootSettingValues() []VMGuestPatchRebootSetting {
+	return original.PossibleVMGuestPatchRebootSettingValues()
+}
+func PossibleVMGuestPatchRebootStatusValues() []VMGuestPatchRebootStatus {
+	return original.PossibleVMGuestPatchRebootStatusValues()
+}
 func PossibleVirtualMachineEvictionPolicyTypesValues() []VirtualMachineEvictionPolicyTypes {
 	return original.PossibleVirtualMachineEvictionPolicyTypesValues()
 }
@@ -1878,6 +1950,9 @@ func PossibleVirtualMachineScaleSetSkuScaleTypeValues() []VirtualMachineScaleSet
 }
 func PossibleVirtualMachineSizeTypesValues() []VirtualMachineSizeTypes {
 	return original.PossibleVirtualMachineSizeTypesValues()
+}
+func PossibleWindowsVMGuestPatchModeValues() []WindowsVMGuestPatchMode {
+	return original.PossibleWindowsVMGuestPatchModeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

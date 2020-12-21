@@ -1,5 +1,22 @@
 # Change Log
 
+## `v0.10.8`
+- only retry with retryable amqp errors for sender [#201](https://github.com/Azure/azure-service-bus-go/issues/201)
+
+## `v0.10.7`
+- add AzureEnvironment namespace option and use its definition [#192](https://github.com/Azure/azure-service-bus-go/issues/192)
+- fix for Websocket behind Proxy Issue [#196](https://github.com/Azure/azure-service-bus-go/issues/196)
+- fix nil error dereference [#199](https://github.com/Azure/azure-service-bus-go/issues/199)
+
+## `v0.10.6`
+- fix a hang when closing a receiver
+
+## `v0.10.5`
+- recover must rebuild the link atomically [#187](https://github.com/Azure/azure-service-bus-go/issues/187)
+
+## `v0.10.4`
+- updates dependencies to their latest versions
+
 ## `v0.10.3`
 - Implements DefaultRuleDescription to allow setting a default rule for a subscription.
 

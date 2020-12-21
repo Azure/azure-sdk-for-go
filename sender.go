@@ -24,6 +24,7 @@ package servicebus
 
 import (
 	"context"
+	"errors"
 	"sync"
 	"time"
 
@@ -234,31 +235,10 @@ func (s *Sender) trySend(ctx context.Context, evt eventer) error {
 
 			switch err.(type) {
 			case *amqp.Error, *amqp.DetachError:
-				tab.For(ctx).Debug("recovering connection")
-				_, retryErr := common.Retry(10, 10*time.Second, func() (interface{}, error) {
-					ctx, sp := s.startProducerSpanFromContext(ctx, "sb.Sender.trySend.tryRecover")
-					defer sp.End()
-
-					err := s.Recover(ctx)
-					if err == nil {
-						tab.For(ctx).Debug("recovered connection")
-						return nil, nil
-					}
-
-					select {
-					case <-ctx.Done():
-						return nil, ctx.Err()
-					default:
-						return nil, common.Retryable(err.Error())
-					}
-				})
-
-				if retryErr != nil {
-					tab.For(ctx).Debug("sender recovering retried, but error was unrecoverable")
-					if err := s.Close(ctx); err != nil {
-						tab.For(ctx).Error(err)
-					}
-					return retryErr
+				err = s.handleAMQPError(ctx, err)
+				if err != nil {
+					tab.For(ctx).Error(err)
+					return err
 				}
 			default:
 				tab.For(ctx).Error(err)
@@ -266,6 +246,53 @@ func (s *Sender) trySend(ctx context.Context, evt eventer) error {
 			}
 		}
 	}
+}
+
+// handleAMQPError is called internally when an event has failed to send so we
+// can parse the error to determine whether we should attempt to retry sending the event again.
+func (s *Sender) handleAMQPError(ctx context.Context, err error) error {
+	var amqpError *amqp.Error
+	if errors.As(err, &amqpError) {
+		switch amqpError.Condition {
+		case errorServerBusy:
+			return s.retryRetryableAmqpError(ctx, amqpRetryDefaultTimes, amqpRetryBusyServerDelay)
+		case errorTimeout:
+			return s.retryRetryableAmqpError(ctx, amqpRetryDefaultTimes, amqpRetryDefaultDelay)
+		case errorOperationCancelled:
+			return s.retryRetryableAmqpError(ctx, amqpRetryDefaultTimes, amqpRetryDefaultDelay)
+		case errorContainerClose:
+			return s.retryRetryableAmqpError(ctx, amqpRetryDefaultTimes, amqpRetryDefaultDelay)
+		default:
+			return err
+		}
+	}
+	return s.retryRetryableAmqpError(ctx, amqpRetryDefaultTimes, amqpRetryDefaultDelay)
+}
+
+func (s *Sender) retryRetryableAmqpError(ctx context.Context, times int, delay time.Duration) error {
+	tab.For(ctx).Debug("recovering sender connection")
+	_, retryErr := common.Retry(times, delay, func() (interface{}, error) {
+		ctx, sp := s.startProducerSpanFromContext(ctx, "sb.Sender.trySend.tryRecover")
+		defer sp.End()
+
+		err := s.Recover(ctx)
+		if err == nil {
+			tab.For(ctx).Debug("recovered connection")
+			return nil, nil
+		}
+
+		select {
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		default:
+			return nil, common.Retryable(err.Error())
+		}
+	})
+	if retryErr != nil {
+		tab.For(ctx).Debug("sender recovering retried, but error was unrecoverable")
+		return retryErr
+	}
+	return nil
 }
 
 func (s *Sender) connClosedError(ctx context.Context) error {

@@ -3,8 +3,25 @@ package servicebus
 import (
 	"fmt"
 	"reflect"
+	"time"
 
 	"github.com/Azure/azure-amqp-common-go/v3/rpc"
+	"github.com/Azure/go-amqp"
+)
+
+// Error Conditions
+const (
+	// Service Bus Errors
+	errorServerBusy         amqp.ErrorCondition = "com.microsoft:server-busy"
+	errorTimeout            amqp.ErrorCondition = "com.microsoft:timeout"
+	errorOperationCancelled amqp.ErrorCondition = "com.microsoft:operation-cancelled"
+	errorContainerClose     amqp.ErrorCondition = "com.microsoft:container-close"
+)
+
+const (
+	amqpRetryDefaultTimes    int           = 3
+	amqpRetryDefaultDelay    time.Duration = time.Second
+	amqpRetryBusyServerDelay time.Duration = 10 * time.Second
 )
 
 type (

@@ -385,8 +385,8 @@ func (c *aadIdentityClient) createDeviceCodeNumberRequest(ctx context.Context, t
 // clientSecret: Gets the client secret that was generated for the App Registration used to authenticate the client.
 // redirectURI: The redirect URI that was used to request the authorization code. Must be the same URI that is configured for the App Registration.
 // scopes: The scopes required for the token
-func (c *aadIdentityClient) authenticateInteractiveBrowser(ctx context.Context, tenantID string, clientID string, clientSecret string, redirectURI string, scopes []string) (*azcore.AccessToken, error) {
-	cfg, err := authCodeReceiver(c.authorityHost, tenantID, clientID, redirectURI, scopes)
+func (c *aadIdentityClient) authenticateInteractiveBrowser(ctx context.Context, tenantID string, clientID string, clientSecret string, redirectURI string, port int, scopes []string) (*azcore.AccessToken, error) {
+	cfg, err := authCodeReceiver(c.authorityHost, tenantID, clientID, redirectURI, port, scopes)
 	if err != nil {
 		return nil, err
 	}

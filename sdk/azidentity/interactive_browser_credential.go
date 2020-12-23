@@ -26,6 +26,8 @@ type InteractiveBrowserCredentialOptions struct {
 	ClientSecret string
 	// The redirect URL used to request the authorization code. Must be the same URL that is configured for the App Registration.
 	RedirectURL string
+	// The localhost port for the local server that will be used to redirect back to
+	Port int
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost string
@@ -84,7 +86,7 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 // opts: TokenRequestOptions contains the list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	tk, err := c.client.authenticateInteractiveBrowser(ctx, c.options.TenantID, c.options.ClientID, c.options.ClientSecret, c.options.RedirectURL, opts.Scopes)
+	tk, err := c.client.authenticateInteractiveBrowser(ctx, c.options.TenantID, c.options.ClientID, c.options.ClientSecret, c.options.RedirectURL, c.options.Port, opts.Scopes)
 	if err != nil {
 		addGetTokenFailureLogs("Interactive Browser Credential", err, true)
 		return nil, err
@@ -102,13 +104,13 @@ func (c *InteractiveBrowserCredential) AuthenticationPolicy(options azcore.Authe
 var _ azcore.TokenCredential = (*InteractiveBrowserCredential)(nil)
 
 // authCodeReceiver is used to allow for testing without opening an interactive browser window. Allows mocking a response authorization code and redirect URI.
-var authCodeReceiver = func(authorityHost string, tenantID string, clientID string, redirectURI string, scopes []string) (*interactiveConfig, error) {
-	return interactiveBrowserLogin(authorityHost, tenantID, clientID, redirectURI, scopes)
+var authCodeReceiver = func(authorityHost string, tenantID string, clientID string, redirectURI string, port int, scopes []string) (*interactiveConfig, error) {
+	return interactiveBrowserLogin(authorityHost, tenantID, clientID, redirectURI, port, scopes)
 }
 
 // interactiveBrowserLogin opens an interactive browser with the specified tenant and client IDs provided then returns the authorization code
 // received or an error.
-func interactiveBrowserLogin(authorityHost string, tenantID string, clientID string, redirectURL string, scopes []string) (*interactiveConfig, error) {
+func interactiveBrowserLogin(authorityHost string, tenantID string, clientID string, redirectURL string, port int, scopes []string) (*interactiveConfig, error) {
 	const authURLFormat = "%s/%s/oauth2/v2.0/authorize?response_type=code&response_mode=query&client_id=%s&redirect_uri=%s&state=%s&scope=%s&prompt=select_account"
 	state := func() string {
 		rand.Seed(time.Now().Unix())
@@ -123,10 +125,10 @@ func interactiveBrowserLogin(authorityHost string, tenantID string, clientID str
 	// start local redirect server so login can call us back
 	rs := newServer()
 	if redirectURL == "" {
-		redirectURL = rs.Start(state)
+		redirectURL = rs.Start(state, port)
 	}
 	defer rs.Stop()
-	authURL := fmt.Sprintf(authURLFormat, authorityHost, tenantID, clientID, redirectURL, state, strings.Join(scopes, " "))
+	authURL := fmt.Sprintf(authURLFormat, checkAuthHostFormat(authorityHost), tenantID, clientID, redirectURL, state, strings.Join(scopes, " "))
 	// open browser window so user can select credentials
 	err := browser.OpenURL(authURL)
 	if err != nil {
@@ -143,4 +145,12 @@ func interactiveBrowserLogin(authorityHost string, tenantID string, clientID str
 		authCode:    authCode,
 		redirectURI: redirectURL,
 	}, nil
+}
+
+func checkAuthHostFormat(s string) string {
+	// if the authority host ends with a / remove it and return
+	if string(s[len(s)-1]) == "/" {
+		return s[:len(s)-1]
+	}
+	return s
 }

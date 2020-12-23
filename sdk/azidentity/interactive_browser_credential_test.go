@@ -63,7 +63,7 @@ func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	authCodeReceiver = func(authorityHost string, tenantID string, clientID string, redirectURI string, scopes []string) (*interactiveConfig, error) {
+	authCodeReceiver = func(authorityHost string, tenantID string, clientID string, redirectURI string, port int, scopes []string) (*interactiveConfig, error) {
 		return &interactiveConfig{
 			authCode:    "12345",
 			redirectURI: srv.URL(),
@@ -96,7 +96,7 @@ func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	authCodeReceiver = func(authorityHost string, tenantID string, clientID string, redirectURI string, scopes []string) (*interactiveConfig, error) {
+	authCodeReceiver = func(authorityHost string, tenantID string, clientID string, redirectURI string, port int, scopes []string) (*interactiveConfig, error) {
 		return &interactiveConfig{
 			authCode:    "12345",
 			redirectURI: srv.URL(),

@@ -408,6 +408,7 @@ func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName 
 	}
 	if result.rl.hasNextLink() && result.rl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -468,7 +469,6 @@ func (client Client) listByResourceGroupNextResults(ctx context.Context, lastRes
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "signalr.Client", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -522,6 +522,7 @@ func (client Client) ListBySubscription(ctx context.Context) (result ResourceLis
 	}
 	if result.rl.hasNextLink() && result.rl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -581,7 +582,6 @@ func (client Client) listBySubscriptionNextResults(ctx context.Context, lastResu
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "signalr.Client", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

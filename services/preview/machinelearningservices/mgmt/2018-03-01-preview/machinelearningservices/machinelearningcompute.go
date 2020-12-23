@@ -316,6 +316,7 @@ func (client MachineLearningComputeClient) ListByWorkspace(ctx context.Context, 
 	}
 	if result.pcrl.hasNextLink() && result.pcrl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -380,7 +381,6 @@ func (client MachineLearningComputeClient) listByWorkspaceNextResults(ctx contex
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "listByWorkspaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

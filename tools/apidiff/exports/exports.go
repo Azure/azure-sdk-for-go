@@ -15,6 +15,7 @@
 package exports
 
 import (
+	"fmt"
 	"go/ast"
 	"strings"
 )
@@ -59,6 +60,10 @@ type Func struct {
 
 // Interface contains the list of methods for an interface.
 type Interface struct {
+	// a list of embedded interfaces
+	AnonymousFields []string `json:"anon,omitempty"`
+
+	// key/value pairs of the methd names and their definitions
 	Methods map[string]Func
 }
 
@@ -106,7 +111,7 @@ func (c *Content) addConst(pkg Package, g *ast.GenDecl) {
 				co.Type = pkg.getText(ce.Fun.Pos(), ce.Fun.End())
 				v = pkg.getText(ce.Args[0].Pos(), ce.Args[0].End())
 			} else {
-				panic("unhandled case for adding constant")
+				panic(fmt.Sprintf("unhandled case for adding constant: %s", pkg.getText(vs.Pos(), vs.End())))
 			}
 		}
 		// remove any surrounding quotes
@@ -133,13 +138,18 @@ func (c *Content) addFunc(pkg Package, f *ast.FuncDecl) {
 
 // adds the specified interface type to the exports list.
 func (c *Content) addInterface(pkg Package, name string, i *ast.InterfaceType) {
-	in := Interface{Methods: map[string]Func{}}
+	in := Interface{}
 	if i.Methods != nil {
-		for _, m := range i.Methods.List {
-			n := m.Names[0].Name
-			f := pkg.buildFunc(m.Type.(*ast.FuncType))
-			in.Methods[n] = f
-		}
+		pkg.translateFieldList(i.Methods.List, func(n *string, t string, f *ast.Field) {
+			if n == nil {
+				in.AnonymousFields = append(in.AnonymousFields, t)
+			} else {
+				if in.Methods == nil {
+					in.Methods = map[string]Func{}
+				}
+				in.Methods[*n] = pkg.buildFunc(f.Type.(*ast.FuncType))
+			}
+		})
 	}
 	c.Interfaces[name] = in
 }
@@ -148,7 +158,7 @@ func (c *Content) addInterface(pkg Package, name string, i *ast.InterfaceType) {
 func (c *Content) addStruct(pkg Package, name string, s *ast.StructType) {
 	sd := Struct{}
 	// assumes all struct types have fields
-	pkg.translateFieldList(s.Fields.List, func(n *string, t string) {
+	pkg.translateFieldList(s.Fields.List, func(n *string, t string, f *ast.Field) {
 		if n == nil {
 			sd.AnonymousFields = append(sd.AnonymousFields, t)
 		} else {

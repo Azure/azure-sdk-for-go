@@ -319,6 +319,7 @@ func (client MachineLearningComputeClient) ListByWorkspace(ctx context.Context, 
 	}
 	if result.pcrl.hasNextLink() && result.pcrl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -383,7 +384,6 @@ func (client MachineLearningComputeClient) listByWorkspaceNextResults(ctx contex
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "listByWorkspaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -519,6 +519,7 @@ func (client MachineLearningComputeClient) ListNodes(ctx context.Context, resour
 	}
 	if result.acni.hasNextLink() && result.acni.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -581,7 +582,6 @@ func (client MachineLearningComputeClient) listNodesNextResults(ctx context.Cont
 	result, err = client.ListNodesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "listNodesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

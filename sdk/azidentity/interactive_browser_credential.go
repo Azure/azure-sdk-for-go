@@ -147,8 +147,8 @@ func interactiveBrowserLogin(authorityHost string, tenantID string, clientID str
 	}, nil
 }
 
+// if the authority host ends with a "/"" remove it and return
 func checkAuthHostFormat(s string) string {
-	// if the authority host ends with a / remove it and return
 	if string(s[len(s)-1]) == "/" {
 		return s[:len(s)-1]
 	}

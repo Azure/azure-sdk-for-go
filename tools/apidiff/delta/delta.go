@@ -224,16 +224,20 @@ func GetFuncSigChanges(lhs, rhs exports.Content) map[string]FuncSig {
 			continue
 		}
 		sig := FuncSig{}
-		if !safeStrCmp(lhs.Funcs[rhsKey].Params, rhsValue.Params) {
+		fromParam := lhs.Funcs[rhsKey].Params.String()
+		toParam := rhsValue.Params.String()
+		if fromParam != toParam {
 			sig.Params = &Signature{
-				From: safeFuncSig(lhs.Funcs[rhsKey].Params),
-				To:   safeFuncSig(rhsValue.Params),
+				From: safeFuncSig(fromParam),
+				To:   safeFuncSig(toParam),
 			}
 		}
-		if !safeStrCmp(lhs.Funcs[rhsKey].Returns, rhsValue.Returns) {
+		fromReturn := lhs.Funcs[rhsKey].Returns.String()
+		toReturn := rhsValue.Returns.String()
+		if fromReturn != toReturn {
 			sig.Returns = &Signature{
-				From: safeFuncSig(lhs.Funcs[rhsKey].Returns),
-				To:   safeFuncSig(rhsValue.Returns),
+				From: safeFuncSig(fromReturn),
+				To:   safeFuncSig(toReturn),
 			}
 		}
 
@@ -266,16 +270,20 @@ func GetInterfaceMethodSigChanges(lhs, rhs exports.Content) map[string]Interface
 				continue
 			}
 			sig := FuncSig{}
-			if !safeStrCmp(lhs.Interfaces[rhsKey].Methods[rhsMethod].Params, rhsSig.Params) {
+			fromParam := lhs.Interfaces[rhsKey].Methods[rhsMethod].Params.String()
+			toParam := rhsSig.Params.String()
+			if fromParam != toParam {
 				sig.Params = &Signature{
-					From: safeFuncSig(lhs.Interfaces[rhsKey].Methods[rhsMethod].Params),
-					To:   safeFuncSig(rhsSig.Params),
+					From: safeFuncSig(fromParam),
+					To:   safeFuncSig(toParam),
 				}
 			}
-			if !safeStrCmp(lhs.Interfaces[rhsKey].Methods[rhsMethod].Returns, rhsSig.Returns) {
+			fromReturn := lhs.Interfaces[rhsKey].Methods[rhsMethod].Returns.String()
+			toReturn := rhsSig.Returns.String()
+			if fromReturn != toReturn {
 				sig.Returns = &Signature{
-					From: safeFuncSig(lhs.Interfaces[rhsKey].Methods[rhsMethod].Returns),
-					To:   safeFuncSig(rhsSig.Returns),
+					From: safeFuncSig(fromReturn),
+					To:   safeFuncSig(toReturn),
 				}
 			}
 
@@ -333,19 +341,9 @@ func GetStructFieldChanges(lhs, rhs exports.Content) map[string]StructDef {
 	return sfc
 }
 
-func safeFuncSig(s *string) string {
-	if s == nil {
+func safeFuncSig(s string) string {
+	if len(s) == 0 {
 		return None
 	}
-	return *s
-}
-
-func safeStrCmp(lhs, rhs *string) bool {
-	if lhs == nil && rhs == nil {
-		return true
-	}
-	if lhs == nil || rhs == nil {
-		return false
-	}
-	return *lhs == *rhs
+	return s
 }

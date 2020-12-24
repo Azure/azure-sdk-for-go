@@ -169,31 +169,25 @@ func (pkg Package) translateFieldList(fl []*ast.Field, cb func(*string, string, 
 
 // creates a Func object from the specified ast.FuncType
 func (pkg Package) buildFunc(ft *ast.FuncType) (f Func) {
-	// appends a to s, comma-delimited style, and returns s
-	appendString := func(s, a string) string {
-		if s != "" {
-			s += ", "
-		}
-		s += a
-		return s
-	}
-
 	// build the params type list
 	if ft.Params.List != nil {
-		p := ""
+		var pl ParameterList
 		pkg.translateFieldList(ft.Params.List, func(n *string, t string, f *ast.Field) {
-			p = appendString(p, t)
+			pl = append(pl, Parameter{
+				Name: n,
+				Type: t,
+			})
 		})
-		f.Params = &p
+		f.Params = pl
 	}
 
 	// build the return types list
 	if ft.Results != nil {
-		r := ""
+		var rl ReturnList
 		pkg.translateFieldList(ft.Results.List, func(n *string, t string, f *ast.Field) {
-			r = appendString(r, t)
+			rl = append(rl, t)
 		})
-		f.Returns = &r
+		f.Returns = rl
 	}
 	return
 }

@@ -16,12 +16,10 @@ package report
 
 import (
 	"fmt"
-	"sort"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/delta"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/markdown"
+	"sort"
 )
 
 // Package represents a per-package report that contains additive and breaking changes.
@@ -219,16 +217,10 @@ func writeFuncs(funcs map[string]exports.Func, subheader string, md *markdown.Wr
 	items := make([]string, len(funcs))
 	i := 0
 	for k, v := range funcs {
-		params := ""
-		if v.Params != nil {
-			params = *v.Params
-		}
-		returns := ""
-		if v.Returns != nil {
-			returns = *v.Returns
-			if strings.Index(returns, ",") > -1 {
-				returns = fmt.Sprintf("(%s)", returns)
-			}
+		params := v.Params.String()
+		returns := v.Returns.String()
+		if len(v.Returns) > 1 {
+			returns = fmt.Sprintf("(%s)", v.Returns.String())
 		}
 		items[i] = fmt.Sprintf("1. %s(%s) %s", k, params, returns)
 		i++

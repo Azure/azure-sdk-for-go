@@ -51,11 +51,47 @@ type Const struct {
 
 // Func contains parameter and return types of a function/method.
 type Func struct {
-	// a comma-delimited list of the param types
-	Params *string `json:"params,omitempty"`
+	// Params is a list of the parameters
+	Params ParameterList `json:"params"`
 
-	// a comma-delimited list of the return types
-	Returns *string `json:"returns,omitempty"`
+	// Returns is a list of the return types
+	Returns ReturnList `json:"returns"`
+}
+
+// ParameterList represents a list of parameters
+type ParameterList []Parameter
+
+// String ...
+func (pl ParameterList) String() string {
+	pList := make([]string, len(pl))
+	for i := range pl {
+		pList[i] = pl[i].String()
+	}
+	return strings.Join(pList, ", ")
+}
+
+// Parameter is the parameter of a function
+type Parameter struct {
+	// Name is the name of the parameter
+	Name *string `json:"name,omitempty"`
+	// Type is the type of the parameter
+	Type string `json:"type"`
+}
+
+// String ...
+func (p Parameter) String() string {
+	if p.Name == nil {
+		return p.Type
+	}
+	return fmt.Sprintf("%s %s", *p.Name, p.Type)
+}
+
+// ReturnList represent the return types of a function
+type ReturnList []string
+
+// String ...
+func (rl ReturnList) String() string {
+	return strings.Join(rl, ", ")
 }
 
 // Interface contains the list of methods for an interface.
@@ -63,7 +99,7 @@ type Interface struct {
 	// a list of embedded interfaces
 	AnonymousFields []string `json:"anon,omitempty"`
 
-	// key/value pairs of the methd names and their definitions
+	// key/value pairs of the method names and their definitions
 	Methods map[string]Func
 }
 

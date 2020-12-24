@@ -75,6 +75,7 @@ func (client PipelineTemplateDefinitionsClient) List(ctx context.Context) (resul
 	}
 	if result.ptdlr.hasNextLink() && result.ptdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -130,7 +131,6 @@ func (client PipelineTemplateDefinitionsClient) listNextResults(ctx context.Cont
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devops.PipelineTemplateDefinitionsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

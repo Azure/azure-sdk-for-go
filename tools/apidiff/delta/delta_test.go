@@ -73,11 +73,52 @@ func Test_GetAddedExports(t *testing.T) {
 
 	fAdded := map[string]exports.Func{
 		"DoNothing2":                 {},
-		"Client.ExportData":          {Params: strPtr("context.Context, string, string, ExportRDBParameters"), Returns: strPtr("ExportDataFuture, error")},
-		"Client.ExportDataPreparer":  {Params: strPtr("context.Context, string, string, ExportRDBParameters"), Returns: strPtr("*http.Request, error")},
-		"Client.ExportDataSender":    {Params: strPtr("*http.Request"), Returns: strPtr("ExportDataFuture, error")},
-		"Client.ExportDataResponder": {Params: strPtr("*http.Response"), Returns: strPtr("autorest.Response, error")},
-		"ExportDataFuture.Result":    {Params: strPtr("Client"), Returns: strPtr("autorest.Response, error")},
+		"Client.ExportData":          {
+			Params: exports.ParameterList{
+				exports.Parameter{Name: strPtr("ctx"), Type: "context.Context"},
+				exports.Parameter{Name: strPtr("resourceGroupName"), Type: "string"},
+				exports.Parameter{Name: strPtr("name"), Type: "string"},
+				exports.Parameter{Name: strPtr("parameters"), Type: "ExportRDBParameters"},
+			},
+			Returns: exports.ReturnList{
+				"ExportDataFuture", "error",
+			},
+		},
+		"Client.ExportDataPreparer":  {
+			Params:exports.ParameterList{
+				exports.Parameter{Name: strPtr("ctx"), Type: "context.Context"},
+				exports.Parameter{Name: strPtr("resourceGroupName"), Type: "string"},
+				exports.Parameter{Name: strPtr("name"), Type: "string"},
+				exports.Parameter{Name: strPtr("parameters"), Type: "ExportRDBParameters"},
+			},
+			Returns: exports.ReturnList{
+				"*http.Request", "error",
+			},
+		},
+		"Client.ExportDataSender":    {
+			Params: exports.ParameterList{
+				exports.Parameter{Name: strPtr("req"), Type: "*http.Request"},
+			},
+			Returns: exports.ReturnList{
+				"ExportDataFuture", "error",
+			},
+		},
+		"Client.ExportDataResponder": {
+			Params: exports.ParameterList{
+				exports.Parameter{Name: strPtr("resp"), Type: "*http.Response"},
+			},
+			Returns: exports.ReturnList{
+				"autorest.Response", "error",
+			},
+		},
+		"ExportDataFuture.Result":    {
+			Params: exports.ParameterList{
+				exports.Parameter{Name: strPtr("client"), Type: "Client"},
+			},
+			Returns: exports.ReturnList{
+				"autorest.Response", "error",
+			},
+		},
 	}
 
 	for k, v := range fAdded {
@@ -101,11 +142,26 @@ func Test_GetAddedExports(t *testing.T) {
 
 	iAdded := map[string]exports.Interface{
 		"NewInterface": {Methods: map[string]exports.Func{
-			"One": {Params: strPtr("int")},
-			"Two": {Returns: strPtr("error")},
+			"One": {
+				Params: exports.ParameterList{
+					exports.Parameter{Type: "int"},
+				},
+			},
+			"Two": {
+				Returns: exports.ReturnList{
+					"error",
+				},
+			},
 		}},
 		"SomeInterface": {Methods: map[string]exports.Func{
-			"NewMethod": {Params: strPtr("string"), Returns: strPtr("bool, error")},
+			"NewMethod": {
+				Params: exports.ParameterList{
+					exports.Parameter{Type: "string"},
+				},
+				Returns: exports.ReturnList{
+					"bool", "error",
+				},
+			},
 		}},
 	}
 
@@ -199,7 +255,14 @@ func Test_GetAddedInterfaceMethods(t *testing.T) {
 	added := map[string]exports.Interface{
 		"SomeInterface": {
 			Methods: map[string]exports.Func{
-				"NewMethod": {Params: strPtr("string"), Returns: strPtr("bool, error")},
+				"NewMethod": {
+					Params: exports.ParameterList{
+						exports.Parameter{Type: "string"},
+					},
+					Returns: exports.ReturnList{
+						"bool", "error",
+					},
+				},
 			},
 		},
 	}
@@ -269,23 +332,23 @@ func Test_GetFuncSigChanges(t *testing.T) {
 
 	changed := map[string]delta.FuncSig{
 		"DoNothing": {
-			Params: &delta.Signature{From: delta.None, To: "string"},
+			Params: &delta.Signature{From: delta.None, To: "s string"},
 		},
 		"DoNothingWithParam": {
-			Params: &delta.Signature{From: "int", To: delta.None},
+			Params: &delta.Signature{From: "foo int", To: delta.None},
 		},
 		"Client.List": {
-			Params:  &delta.Signature{From: "context.Context", To: "context.Context, string"},
+			Params:  &delta.Signature{From: "ctx context.Context", To: "ctx context.Context, s string"},
 			Returns: &delta.Signature{From: "ListResultPage, error", To: "ListResult, error"},
 		},
 		"Client.ListPreparer": {
-			Params: &delta.Signature{From: "context.Context", To: "context.Context, string"},
+			Params: &delta.Signature{From: "ctx context.Context", To: "ctx context.Context, s string"},
 		},
 		"Client.Delete": {
-			Params: &delta.Signature{From: "context.Context, string, string", To: "context.Context, string"},
+			Params: &delta.Signature{From: "ctx context.Context, resourceGroupName string, name string", To: "ctx context.Context, resourceGroupName string"},
 		},
 		"Client.DeletePreparer": {
-			Params: &delta.Signature{From: "context.Context, string, string", To: "context.Context, string"},
+			Params: &delta.Signature{From: "ctx context.Context, resourceGroupName string, name string", To: "ctx context.Context, resourceGroupName string"},
 		},
 	}
 

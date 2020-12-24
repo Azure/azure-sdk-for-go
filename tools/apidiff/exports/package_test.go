@@ -71,21 +71,41 @@ func Test_Funcs(t *testing.T) {
 		exports.Func
 	}{
 		{"DoNothing", exports.Func{}},
-		{"DoNothingWithParam", exports.Func{Params: strPtr("int"), Returns: nil}},
-		{"UserAgent", exports.Func{Params: nil, Returns: strPtr("string")}},
-		{"Client.Delete", exports.Func{Params: strPtr("context.Context, string, string"), Returns: strPtr("DeleteFuture, error")}},
-		{"Client.ListSender", exports.Func{Params: strPtr("*http.Request"), Returns: strPtr("*http.Response, error")}},
+		{"DoNothingWithParam", exports.Func{
+			Params: exports.ParameterList{
+				exports.Parameter{Name: strPtr("foo"), Type: "int"},
+			},
+			Returns: nil,
+		}},
+		{"UserAgent", exports.Func{
+			Params: nil,
+			Returns: []string{"string"},
+		}},
+		{"Client.Delete", exports.Func{
+			Params: exports.ParameterList{
+				exports.Parameter{Name: strPtr("ctx"), Type: "context.Context"},
+				exports.Parameter{Name: strPtr("resourceGroupName"), Type: "string"},
+				exports.Parameter{Name: strPtr("name"), Type: "string"},
+			},
+			Returns: []string{"DeleteFuture", "error"},
+		}},
+		{"Client.ListSender", exports.Func{
+			Params: exports.ParameterList{
+				exports.Parameter{Name: strPtr("req"), Type: "*http.Request"},
+			},
+			Returns: []string{"*http.Response", "error"},
+		}},
 	}
 
 	for _, test := range tests {
 		t.Run(test.fn, func(t *testing.T) {
 			f := exp.Funcs[test.fn]
 			if !reflect.DeepEqual(f.Params, test.Params) {
-				t.Logf("mismatched params, %s != %s", safeStr(f.Params), safeStr(test.Params))
+				t.Logf("mismatched params, %s != %s", f.Params.String(), test.Params.String())
 				t.Fail()
 			}
 			if !reflect.DeepEqual(f.Returns, test.Returns) {
-				t.Logf("mismatched returns, %s != %s", safeStr(f.Returns), safeStr(test.Returns))
+				t.Logf("mismatched returns, %s != %s", f.Returns.String(), test.Returns.String())
 				t.Fail()
 			}
 		})
@@ -109,20 +129,27 @@ func Test_Interfaces(t *testing.T) {
 					Returns: nil,
 				},
 				"Two": {
-					Params:  strPtr("bool"),
+					Params:  exports.ParameterList{
+						exports.Parameter{Type: "bool"},
+					},
 					Returns: nil,
 				},
 				"Three": {
 					Params:  nil,
-					Returns: strPtr("string"),
+					Returns: []string{"string"},
 				},
 				"Four": {
-					Params:  strPtr("int"),
-					Returns: strPtr("error"),
+					Params:  exports.ParameterList{
+						exports.Parameter{Type: "int"},
+					},
+					Returns: []string{"error"},
 				},
 				"Five": {
-					Params:  strPtr("int, bool"),
-					Returns: strPtr("int, error"),
+					Params:  exports.ParameterList{
+						exports.Parameter{Type: "int"},
+						exports.Parameter{Type: "bool"},
+					},
+					Returns: []string{"int", "error"},
 				},
 			},
 		}},

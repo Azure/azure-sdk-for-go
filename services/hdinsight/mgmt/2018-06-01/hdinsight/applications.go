@@ -311,6 +311,7 @@ func (client ApplicationsClient) ListByCluster(ctx context.Context, resourceGrou
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -372,7 +373,6 @@ func (client ApplicationsClient) listByClusterNextResults(ctx context.Context, l
 	result, err = client.ListByClusterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "listByClusterNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -165,6 +165,7 @@ type ClustersResizeFuture = original.ClustersResizeFuture
 type ClustersRotateDiskEncryptionKeyFuture = original.ClustersRotateDiskEncryptionKeyFuture
 type ClustersUpdateAutoScaleConfigurationFuture = original.ClustersUpdateAutoScaleConfigurationFuture
 type ClustersUpdateGatewaySettingsFuture = original.ClustersUpdateGatewaySettingsFuture
+type ComputeIsolationProperties = original.ComputeIsolationProperties
 type ComputeProfile = original.ComputeProfile
 type ConfigurationsClient = original.ConfigurationsClient
 type ConfigurationsUpdateFuture = original.ConfigurationsUpdateFuture

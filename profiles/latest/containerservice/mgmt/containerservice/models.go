@@ -22,7 +22,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-11-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-12-01/containerservice"
 )
 
 const (
@@ -59,12 +59,28 @@ const (
 	Rejected     ConnectionStatus = original.Rejected
 )
 
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+)
+
 type Expander = original.Expander
 
 const (
 	LeastWaste Expander = original.LeastWaste
 	MostPods   Expander = original.MostPods
+	Priority   Expander = original.Priority
 	Random     Expander = original.Random
+)
+
+type KubeletDiskType = original.KubeletDiskType
+
+const (
+	OS KubeletDiskType = original.OS
 )
 
 type LicenseType = original.LicenseType
@@ -371,6 +387,18 @@ const (
 	StandardNV6         VMSizeTypes = original.StandardNV6
 )
 
+type WeekDay = original.WeekDay
+
+const (
+	Friday    WeekDay = original.Friday
+	Monday    WeekDay = original.Monday
+	Saturday  WeekDay = original.Saturday
+	Sunday    WeekDay = original.Sunday
+	Thursday  WeekDay = original.Thursday
+	Tuesday   WeekDay = original.Tuesday
+	Wednesday WeekDay = original.Wednesday
+)
+
 type AccessProfile = original.AccessProfile
 type AgentPool = original.AgentPool
 type AgentPoolAvailableVersions = original.AgentPoolAvailableVersions
@@ -396,6 +424,12 @@ type DiagnosticsProfile = original.DiagnosticsProfile
 type KubeletConfig = original.KubeletConfig
 type LinuxOSConfig = original.LinuxOSConfig
 type LinuxProfile = original.LinuxProfile
+type MaintenanceConfiguration = original.MaintenanceConfiguration
+type MaintenanceConfigurationListResult = original.MaintenanceConfigurationListResult
+type MaintenanceConfigurationListResultIterator = original.MaintenanceConfigurationListResultIterator
+type MaintenanceConfigurationListResultPage = original.MaintenanceConfigurationListResultPage
+type MaintenanceConfigurationProperties = original.MaintenanceConfigurationProperties
+type MaintenanceConfigurationsClient = original.MaintenanceConfigurationsClient
 type ManagedCluster = original.ManagedCluster
 type ManagedClusterAADProfile = original.ManagedClusterAADProfile
 type ManagedClusterAPIServerAccessProfile = original.ManagedClusterAPIServerAccessProfile
@@ -461,7 +495,10 @@ type SSHConfiguration = original.SSHConfiguration
 type SSHPublicKey = original.SSHPublicKey
 type SubResource = original.SubResource
 type SysctlConfig = original.SysctlConfig
+type SystemData = original.SystemData
 type TagsObject = original.TagsObject
+type TimeInWeek = original.TimeInWeek
+type TimeSpan = original.TimeSpan
 type UserAssignedIdentity = original.UserAssignedIdentity
 type VMDiagnostics = original.VMDiagnostics
 
@@ -479,6 +516,18 @@ func NewAgentPoolsClient(subscriptionID string) AgentPoolsClient {
 }
 func NewAgentPoolsClientWithBaseURI(baseURI string, subscriptionID string) AgentPoolsClient {
 	return original.NewAgentPoolsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMaintenanceConfigurationListResultIterator(page MaintenanceConfigurationListResultPage) MaintenanceConfigurationListResultIterator {
+	return original.NewMaintenanceConfigurationListResultIterator(page)
+}
+func NewMaintenanceConfigurationListResultPage(cur MaintenanceConfigurationListResult, getNextPage func(context.Context, MaintenanceConfigurationListResult) (MaintenanceConfigurationListResult, error)) MaintenanceConfigurationListResultPage {
+	return original.NewMaintenanceConfigurationListResultPage(cur, getNextPage)
+}
+func NewMaintenanceConfigurationsClient(subscriptionID string) MaintenanceConfigurationsClient {
+	return original.NewMaintenanceConfigurationsClient(subscriptionID)
+}
+func NewMaintenanceConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) MaintenanceConfigurationsClient {
+	return original.NewMaintenanceConfigurationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewManagedClusterListResultIterator(page ManagedClusterListResultPage) ManagedClusterListResultIterator {
 	return original.NewManagedClusterListResultIterator(page)
@@ -531,8 +580,14 @@ func PossibleCodeValues() []Code {
 func PossibleConnectionStatusValues() []ConnectionStatus {
 	return original.PossibleConnectionStatusValues()
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
 func PossibleExpanderValues() []Expander {
 	return original.PossibleExpanderValues()
+}
+func PossibleKubeletDiskTypeValues() []KubeletDiskType {
+	return original.PossibleKubeletDiskTypeValues()
 }
 func PossibleLicenseTypeValues() []LicenseType {
 	return original.PossibleLicenseTypeValues()
@@ -587,6 +642,9 @@ func PossibleUpgradeChannelValues() []UpgradeChannel {
 }
 func PossibleVMSizeTypesValues() []VMSizeTypes {
 	return original.PossibleVMSizeTypesValues()
+}
+func PossibleWeekDayValues() []WeekDay {
+	return original.PossibleWeekDayValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

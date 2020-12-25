@@ -78,7 +78,7 @@ func Test_Funcs(t *testing.T) {
 			Returns: nil,
 		}},
 		{"UserAgent", exports.Func{
-			Params: nil,
+			Params:  nil,
 			Returns: []string{"string"},
 		}},
 		{"Client.Delete", exports.Func{
@@ -129,7 +129,7 @@ func Test_Interfaces(t *testing.T) {
 					Returns: nil,
 				},
 				"Two": {
-					Params:  exports.ParameterList{
+					Params: exports.ParameterList{
 						exports.Parameter{Type: "bool"},
 					},
 					Returns: nil,
@@ -139,13 +139,13 @@ func Test_Interfaces(t *testing.T) {
 					Returns: []string{"string"},
 				},
 				"Four": {
-					Params:  exports.ParameterList{
+					Params: exports.ParameterList{
 						exports.Parameter{Type: "int"},
 					},
 					Returns: []string{"error"},
 				},
 				"Five": {
-					Params:  exports.ParameterList{
+					Params: exports.ParameterList{
 						exports.Parameter{Type: "int"},
 						exports.Parameter{Type: "bool"},
 					},

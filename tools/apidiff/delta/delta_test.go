@@ -72,8 +72,8 @@ func Test_GetAddedExports(t *testing.T) {
 	}
 
 	fAdded := map[string]exports.Func{
-		"DoNothing2":                 {},
-		"Client.ExportData":          {
+		"DoNothing2": {},
+		"Client.ExportData": {
 			Params: exports.ParameterList{
 				exports.Parameter{Name: strPtr("ctx"), Type: "context.Context"},
 				exports.Parameter{Name: strPtr("resourceGroupName"), Type: "string"},
@@ -84,8 +84,8 @@ func Test_GetAddedExports(t *testing.T) {
 				"ExportDataFuture", "error",
 			},
 		},
-		"Client.ExportDataPreparer":  {
-			Params:exports.ParameterList{
+		"Client.ExportDataPreparer": {
+			Params: exports.ParameterList{
 				exports.Parameter{Name: strPtr("ctx"), Type: "context.Context"},
 				exports.Parameter{Name: strPtr("resourceGroupName"), Type: "string"},
 				exports.Parameter{Name: strPtr("name"), Type: "string"},
@@ -95,7 +95,7 @@ func Test_GetAddedExports(t *testing.T) {
 				"*http.Request", "error",
 			},
 		},
-		"Client.ExportDataSender":    {
+		"Client.ExportDataSender": {
 			Params: exports.ParameterList{
 				exports.Parameter{Name: strPtr("req"), Type: "*http.Request"},
 			},
@@ -111,7 +111,7 @@ func Test_GetAddedExports(t *testing.T) {
 				"autorest.Response", "error",
 			},
 		},
-		"ExportDataFuture.Result":    {
+		"ExportDataFuture.Result": {
 			Params: exports.ParameterList{
 				exports.Parameter{Name: strPtr("client"), Type: "Client"},
 			},

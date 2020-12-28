@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## `v49.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-12-01/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/guestconfiguration/mgmt/2020-06-25/guestconfiguration`
+- `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-09-01/netapp`
+- `github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2020-11-01-preview/appplatform`
+- `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2019-06-01-preview/templatespecs`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/hdinsight/mgmt/2018-06-01/hdinsight` | [details](services/hdinsight/mgmt/2018-06-01/hdinsight/CHANGELOG.md) |
+
 ## `v49.1.0`
 
 ### New Packages

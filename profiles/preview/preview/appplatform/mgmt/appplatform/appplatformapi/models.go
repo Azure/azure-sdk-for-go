@@ -19,14 +19,16 @@
 
 package appplatformapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2019-05-01-preview/appplatform/appplatformapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2020-11-01-preview/appplatform/appplatformapi"
 
 type AppsClientAPI = original.AppsClientAPI
 type BindingsClientAPI = original.BindingsClientAPI
 type CertificatesClientAPI = original.CertificatesClientAPI
+type ConfigServersClientAPI = original.ConfigServersClientAPI
 type CustomDomainsClientAPI = original.CustomDomainsClientAPI
 type DeploymentsClientAPI = original.DeploymentsClientAPI
+type MonitoringSettingsClientAPI = original.MonitoringSettingsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type RuntimeVersionsClientAPI = original.RuntimeVersionsClientAPI
 type ServicesClientAPI = original.ServicesClientAPI
-type SkuClientAPI = original.SkuClientAPI
+type SkusClientAPI = original.SkusClientAPI

@@ -78,6 +78,7 @@ func (client ScriptExecutionHistoryClient) ListByCluster(ctx context.Context, re
 	}
 	if result.saehl.hasNextLink() && result.saehl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -139,7 +140,6 @@ func (client ScriptExecutionHistoryClient) listByClusterNextResults(ctx context.
 	result, err = client.ListByClusterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "listByClusterNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

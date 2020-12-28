@@ -399,6 +399,12 @@ func (dcup *DedicatedCapacityUpdateParameters) UnmarshalJSON(body []byte) error 
 
 // ErrorResponse describes the format of Error response.
 type ErrorResponse struct {
+	// Error - The error object
+	Error *ErrorResponseError `json:"error,omitempty"`
+}
+
+// ErrorResponseError the error object
+type ErrorResponseError struct {
 	// Code - Error code
 	Code *string `json:"code,omitempty"`
 	// Message - Error message indicating why the operation failed.

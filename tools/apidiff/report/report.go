@@ -55,6 +55,15 @@ type BreakingChanges struct {
 	Removed    *delta.Content                `json:"removed,omitempty"`
 }
 
+// Count returns the count of breaking changes
+func (bc BreakingChanges) Count() int {
+	removed := 0
+	if bc.Removed != nil {
+		removed = bc.Removed.Count()
+	}
+	return len(bc.Consts) + len(bc.Funcs) + len(bc.Interfaces) + len(bc.Structs) + removed
+}
+
 // IsEmpty returns true if there are no breaking changes.
 func (bc BreakingChanges) IsEmpty() bool {
 	return len(bc.Consts) == 0 && len(bc.Funcs) == 0 && len(bc.Interfaces) == 0 && len(bc.Structs) == 0 &&

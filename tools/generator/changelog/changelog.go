@@ -48,7 +48,22 @@ func writeChangelogForPackage(r *report.Package) string {
 	// write additional changes
 	writeNewContent(r.AdditiveChanges, md)
 
+	writeSummaries(r.BreakingChanges, r.AdditiveChanges, md)
+
 	return md.String()
+}
+
+func writeSummaries(breaking *report.BreakingChanges, additive *delta.Content, md *markdown.Writer) {
+	bc := 0
+	if breaking != nil {
+		bc = breaking.Count()
+	}
+	ac := 0
+	if additive != nil {
+		ac = additive.Count()
+	}
+	md.WriteLine("")
+	md.WriteLine(fmt.Sprintf("Total %d breaking change(s), %d additive change(s).", bc, ac))
 }
 
 func writeNewContent(c *delta.Content, md *markdown.Writer) {

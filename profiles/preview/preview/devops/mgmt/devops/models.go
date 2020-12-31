@@ -22,7 +22,7 @@ package devops
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/devops/mgmt/2019-07-01-preview/devops"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/devops/mgmt/2020-07-13-preview/devops"
 )
 
 const (
@@ -36,6 +36,15 @@ const (
 	VstsGit CodeRepositoryType = original.VstsGit
 )
 
+type CreatedByType = original.CreatedByType
+
+const (
+	Application     CreatedByType = original.Application
+	Key             CreatedByType = original.Key
+	ManagedIdentity CreatedByType = original.ManagedIdentity
+	User            CreatedByType = original.User
+)
+
 type InputDataType = original.InputDataType
 
 const (
@@ -46,12 +55,23 @@ const (
 	InputDataTypeString        InputDataType = original.InputDataTypeString
 )
 
+type PipelineType = original.PipelineType
+
+const (
+	PipelineTypeAzurePipeline      PipelineType = original.PipelineTypeAzurePipeline
+	PipelineTypeGithubWorkflow     PipelineType = original.PipelineTypeGithubWorkflow
+	PipelineTypePipelineProperties PipelineType = original.PipelineTypePipelineProperties
+)
+
 type Authorization = original.Authorization
+type AzurePipelineProperties = original.AzurePipelineProperties
 type BaseClient = original.BaseClient
+type BasicPipelineProperties = original.BasicPipelineProperties
 type BootstrapConfiguration = original.BootstrapConfiguration
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type CodeRepository = original.CodeRepository
+type GithubWorkflowProperties = original.GithubWorkflowProperties
 type InputDescriptor = original.InputDescriptor
 type InputValue = original.InputValue
 type Operation = original.Operation
@@ -77,6 +97,7 @@ type PipelinesClient = original.PipelinesClient
 type PipelinesCreateOrUpdateFuture = original.PipelinesCreateOrUpdateFuture
 type ProjectReference = original.ProjectReference
 type Resource = original.Resource
+type SystemData = original.SystemData
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -123,8 +144,14 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleCodeRepositoryTypeValues() []CodeRepositoryType {
 	return original.PossibleCodeRepositoryTypeValues()
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
 func PossibleInputDataTypeValues() []InputDataType {
 	return original.PossibleInputDataTypeValues()
+}
+func PossiblePipelineTypeValues() []PipelineType {
+	return original.PossiblePipelineTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

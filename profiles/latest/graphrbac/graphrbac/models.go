@@ -47,11 +47,12 @@ const (
 type ObjectType = original.ObjectType
 
 const (
-	ObjectTypeApplication      ObjectType = original.ObjectTypeApplication
-	ObjectTypeDirectoryObject  ObjectType = original.ObjectTypeDirectoryObject
-	ObjectTypeGroup            ObjectType = original.ObjectTypeGroup
-	ObjectTypeServicePrincipal ObjectType = original.ObjectTypeServicePrincipal
-	ObjectTypeUser             ObjectType = original.ObjectTypeUser
+	ObjectTypeApplication       ObjectType = original.ObjectTypeApplication
+	ObjectTypeAppRoleAssignment ObjectType = original.ObjectTypeAppRoleAssignment
+	ObjectTypeDirectoryObject   ObjectType = original.ObjectTypeDirectoryObject
+	ObjectTypeGroup             ObjectType = original.ObjectTypeGroup
+	ObjectTypeServicePrincipal  ObjectType = original.ObjectTypeServicePrincipal
+	ObjectTypeUser              ObjectType = original.ObjectTypeUser
 )
 
 type UserType = original.UserType
@@ -64,6 +65,10 @@ const (
 type ADGroup = original.ADGroup
 type AddOwnerParameters = original.AddOwnerParameters
 type AppRole = original.AppRole
+type AppRoleAssignment = original.AppRoleAssignment
+type AppRoleAssignmentListResult = original.AppRoleAssignmentListResult
+type AppRoleAssignmentListResultIterator = original.AppRoleAssignmentListResultIterator
+type AppRoleAssignmentListResultPage = original.AppRoleAssignmentListResultPage
 type Application = original.Application
 type ApplicationBase = original.ApplicationBase
 type ApplicationCreateParameters = original.ApplicationCreateParameters
@@ -142,6 +147,12 @@ type UsersClient = original.UsersClient
 
 func New(tenantID string) BaseClient {
 	return original.New(tenantID)
+}
+func NewAppRoleAssignmentListResultIterator(page AppRoleAssignmentListResultPage) AppRoleAssignmentListResultIterator {
+	return original.NewAppRoleAssignmentListResultIterator(page)
+}
+func NewAppRoleAssignmentListResultPage(cur AppRoleAssignmentListResult, getNextPage func(context.Context, AppRoleAssignmentListResult) (AppRoleAssignmentListResult, error)) AppRoleAssignmentListResultPage {
+	return original.NewAppRoleAssignmentListResultPage(cur, getNextPage)
 }
 func NewApplicationListResultIterator(page ApplicationListResultPage) ApplicationListResultIterator {
 	return original.NewApplicationListResultIterator(page)

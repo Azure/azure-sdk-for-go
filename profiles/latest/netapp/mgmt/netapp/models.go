@@ -19,7 +19,11 @@
 
 package netapp
 
-import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-08-01/netapp"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-09-01/netapp"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -194,6 +198,8 @@ type Volume = original.Volume
 type VolumeBackupProperties = original.VolumeBackupProperties
 type VolumeBackups = original.VolumeBackups
 type VolumeList = original.VolumeList
+type VolumeListIterator = original.VolumeListIterator
+type VolumeListPage = original.VolumeListPage
 type VolumePatch = original.VolumePatch
 type VolumePatchProperties = original.VolumePatchProperties
 type VolumePatchPropertiesDataProtection = original.VolumePatchPropertiesDataProtection
@@ -278,6 +284,12 @@ func NewVaultsClient(subscriptionID string) VaultsClient {
 }
 func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsClient {
 	return original.NewVaultsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVolumeListIterator(page VolumeListPage) VolumeListIterator {
+	return original.NewVolumeListIterator(page)
+}
+func NewVolumeListPage(cur VolumeList, getNextPage func(context.Context, VolumeList) (VolumeList, error)) VolumeListPage {
+	return original.NewVolumeListPage(cur, getNextPage)
 }
 func NewVolumesClient(subscriptionID string) VolumesClient {
 	return original.NewVolumesClient(subscriptionID)

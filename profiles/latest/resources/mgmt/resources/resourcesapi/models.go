@@ -19,12 +19,13 @@
 
 package resourcesapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-06-01/resources/resourcesapi"
+import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources/resourcesapi"
 
 type ClientAPI = original.ClientAPI
 type DeploymentOperationsClientAPI = original.DeploymentOperationsClientAPI
 type DeploymentsClientAPI = original.DeploymentsClientAPI
 type GroupsClientAPI = original.GroupsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type ProviderResourceTypesClientAPI = original.ProviderResourceTypesClientAPI
 type ProvidersClientAPI = original.ProvidersClientAPI
 type TagsClientAPI = original.TagsClientAPI

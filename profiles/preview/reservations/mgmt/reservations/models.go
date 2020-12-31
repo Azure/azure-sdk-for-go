@@ -22,7 +22,7 @@ package reservations
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/reservations/mgmt/2017-11-01/reservations"
+	original "github.com/Azure/azure-sdk-for-go/services/reservations/mgmt/2020-10-25/reservations"
 )
 
 const (
@@ -201,7 +201,11 @@ type AppliedReservationsProperties = original.AppliedReservationsProperties
 type BaseClient = original.BaseClient
 type Catalog = original.Catalog
 type Client = original.Client
+type CreateGenericQuotaRequestParameters = original.CreateGenericQuotaRequestParameters
+type CurrentQuotaLimit = original.CurrentQuotaLimit
+type CurrentQuotaLimitBase = original.CurrentQuotaLimitBase
 type Error = original.Error
+type ExceptionResponse = original.ExceptionResponse
 type ExtendedErrorInfo = original.ExtendedErrorInfo
 type ExtendedStatusInfo = original.ExtendedStatusInfo
 type List = original.List
@@ -227,9 +231,32 @@ type OrderResponse = original.OrderResponse
 type Patch = original.Patch
 type PatchProperties = original.PatchProperties
 type Properties = original.Properties
+type QuotaClient = original.QuotaClient
+type QuotaCreateOrUpdateFuture = original.QuotaCreateOrUpdateFuture
+type QuotaLimits = original.QuotaLimits
+type QuotaLimitsIterator = original.QuotaLimitsIterator
+type QuotaLimitsPage = original.QuotaLimitsPage
+type QuotaLimitsResponse = original.QuotaLimitsResponse
+type QuotaProperties = original.QuotaProperties
+type QuotaRequestDetails = original.QuotaRequestDetails
+type QuotaRequestDetailsList = original.QuotaRequestDetailsList
+type QuotaRequestDetailsListIterator = original.QuotaRequestDetailsListIterator
+type QuotaRequestDetailsListPage = original.QuotaRequestDetailsListPage
+type QuotaRequestOneResourceProperties = original.QuotaRequestOneResourceProperties
+type QuotaRequestOneResourceSubmitResponse = original.QuotaRequestOneResourceSubmitResponse
+type QuotaRequestProperties = original.QuotaRequestProperties
+type QuotaRequestStatusClient = original.QuotaRequestStatusClient
+type QuotaRequestStatusDetails = original.QuotaRequestStatusDetails
+type QuotaRequestSubmitResponse = original.QuotaRequestSubmitResponse
+type QuotaRequestSubmitResponse201 = original.QuotaRequestSubmitResponse201
+type QuotaUpdateFuture = original.QuotaUpdateFuture
 type ReservationMergeFuture = original.ReservationMergeFuture
 type ReservationUpdateFuture = original.ReservationUpdateFuture
+type ResourceName = original.ResourceName
 type Response = original.Response
+type ServiceError = original.ServiceError
+type ServiceErrorDetail = original.ServiceErrorDetail
+type SetObject = original.SetObject
 type SkuCapability = original.SkuCapability
 type SkuName = original.SkuName
 type SkuRestriction = original.SkuRestriction
@@ -237,6 +264,7 @@ type SplitFuture = original.SplitFuture
 type SplitProperties = original.SplitProperties
 type SplitPropertiesType = original.SplitPropertiesType
 type SplitRequest = original.SplitRequest
+type SubRequest = original.SubRequest
 
 func New() BaseClient {
 	return original.New()
@@ -276,6 +304,30 @@ func NewOrderListIterator(page OrderListPage) OrderListIterator {
 }
 func NewOrderListPage(cur OrderList, getNextPage func(context.Context, OrderList) (OrderList, error)) OrderListPage {
 	return original.NewOrderListPage(cur, getNextPage)
+}
+func NewQuotaClient() QuotaClient {
+	return original.NewQuotaClient()
+}
+func NewQuotaClientWithBaseURI(baseURI string) QuotaClient {
+	return original.NewQuotaClientWithBaseURI(baseURI)
+}
+func NewQuotaLimitsIterator(page QuotaLimitsPage) QuotaLimitsIterator {
+	return original.NewQuotaLimitsIterator(page)
+}
+func NewQuotaLimitsPage(cur QuotaLimits, getNextPage func(context.Context, QuotaLimits) (QuotaLimits, error)) QuotaLimitsPage {
+	return original.NewQuotaLimitsPage(cur, getNextPage)
+}
+func NewQuotaRequestDetailsListIterator(page QuotaRequestDetailsListPage) QuotaRequestDetailsListIterator {
+	return original.NewQuotaRequestDetailsListIterator(page)
+}
+func NewQuotaRequestDetailsListPage(cur QuotaRequestDetailsList, getNextPage func(context.Context, QuotaRequestDetailsList) (QuotaRequestDetailsList, error)) QuotaRequestDetailsListPage {
+	return original.NewQuotaRequestDetailsListPage(cur, getNextPage)
+}
+func NewQuotaRequestStatusClient() QuotaRequestStatusClient {
+	return original.NewQuotaRequestStatusClient()
+}
+func NewQuotaRequestStatusClientWithBaseURI(baseURI string) QuotaRequestStatusClient {
+	return original.NewQuotaRequestStatusClientWithBaseURI(baseURI)
 }
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)

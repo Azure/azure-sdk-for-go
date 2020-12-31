@@ -22,7 +22,7 @@ package appplatform
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2019-05-01-preview/appplatform"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2020-11-01-preview/appplatform"
 )
 
 const (
@@ -76,6 +76,15 @@ const (
 	SystemAssigned             ManagedIdentityType = original.SystemAssigned
 	SystemAssignedUserAssigned ManagedIdentityType = original.SystemAssignedUserAssigned
 	UserAssigned               ManagedIdentityType = original.UserAssigned
+)
+
+type MonitoringSettingState = original.MonitoringSettingState
+
+const (
+	MonitoringSettingStateFailed       MonitoringSettingState = original.MonitoringSettingStateFailed
+	MonitoringSettingStateNotAvailable MonitoringSettingState = original.MonitoringSettingStateNotAvailable
+	MonitoringSettingStateSucceeded    MonitoringSettingState = original.MonitoringSettingStateSucceeded
+	MonitoringSettingStateUpdating     MonitoringSettingState = original.MonitoringSettingStateUpdating
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -144,13 +153,11 @@ const (
 	Secondary TestKeyType = original.Secondary
 )
 
-type TraceProxyState = original.TraceProxyState
+type TrafficDirection = original.TrafficDirection
 
 const (
-	TraceProxyStateFailed       TraceProxyState = original.TraceProxyStateFailed
-	TraceProxyStateNotAvailable TraceProxyState = original.TraceProxyStateNotAvailable
-	TraceProxyStateSucceeded    TraceProxyState = original.TraceProxyStateSucceeded
-	TraceProxyStateUpdating     TraceProxyState = original.TraceProxyStateUpdating
+	Inbound  TrafficDirection = original.Inbound
+	Outbound TrafficDirection = original.Outbound
 )
 
 type UserSourceType = original.UserSourceType
@@ -166,8 +173,10 @@ type AppResourceCollection = original.AppResourceCollection
 type AppResourceCollectionIterator = original.AppResourceCollectionIterator
 type AppResourceCollectionPage = original.AppResourceCollectionPage
 type AppResourceProperties = original.AppResourceProperties
+type ApplicationInsightsAgentVersions = original.ApplicationInsightsAgentVersions
 type AppsClient = original.AppsClient
 type AppsCreateOrUpdateFuture = original.AppsCreateOrUpdateFuture
+type AppsDeleteFuture = original.AppsDeleteFuture
 type AppsUpdateFuture = original.AppsUpdateFuture
 type AvailableOperations = original.AvailableOperations
 type AvailableOperationsIterator = original.AvailableOperationsIterator
@@ -180,18 +189,30 @@ type BindingResourceCollectionIterator = original.BindingResourceCollectionItera
 type BindingResourceCollectionPage = original.BindingResourceCollectionPage
 type BindingResourceProperties = original.BindingResourceProperties
 type BindingsClient = original.BindingsClient
+type BindingsCreateOrUpdateFuture = original.BindingsCreateOrUpdateFuture
+type BindingsDeleteFuture = original.BindingsDeleteFuture
+type BindingsUpdateFuture = original.BindingsUpdateFuture
 type CertificateProperties = original.CertificateProperties
 type CertificateResource = original.CertificateResource
 type CertificateResourceCollection = original.CertificateResourceCollection
 type CertificateResourceCollectionIterator = original.CertificateResourceCollectionIterator
 type CertificateResourceCollectionPage = original.CertificateResourceCollectionPage
 type CertificatesClient = original.CertificatesClient
+type CertificatesCreateOrUpdateFuture = original.CertificatesCreateOrUpdateFuture
+type CertificatesDeleteFuture = original.CertificatesDeleteFuture
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type ClusterResourceProperties = original.ClusterResourceProperties
 type ConfigServerGitProperty = original.ConfigServerGitProperty
 type ConfigServerProperties = original.ConfigServerProperties
+type ConfigServerResource = original.ConfigServerResource
 type ConfigServerSettings = original.ConfigServerSettings
+type ConfigServerSettingsErrorRecord = original.ConfigServerSettingsErrorRecord
+type ConfigServerSettingsValidateResult = original.ConfigServerSettingsValidateResult
+type ConfigServersClient = original.ConfigServersClient
+type ConfigServersUpdatePatchFuture = original.ConfigServersUpdatePatchFuture
+type ConfigServersUpdatePutFuture = original.ConfigServersUpdatePutFuture
+type ConfigServersValidateFuture = original.ConfigServersValidateFuture
 type CustomDomainProperties = original.CustomDomainProperties
 type CustomDomainResource = original.CustomDomainResource
 type CustomDomainResourceCollection = original.CustomDomainResourceCollection
@@ -200,6 +221,9 @@ type CustomDomainResourceCollectionPage = original.CustomDomainResourceCollectio
 type CustomDomainValidatePayload = original.CustomDomainValidatePayload
 type CustomDomainValidateResult = original.CustomDomainValidateResult
 type CustomDomainsClient = original.CustomDomainsClient
+type CustomDomainsCreateOrUpdateFuture = original.CustomDomainsCreateOrUpdateFuture
+type CustomDomainsDeleteFuture = original.CustomDomainsDeleteFuture
+type CustomDomainsUpdateFuture = original.CustomDomainsUpdateFuture
 type DeploymentInstance = original.DeploymentInstance
 type DeploymentResource = original.DeploymentResource
 type DeploymentResourceCollection = original.DeploymentResourceCollection
@@ -209,6 +233,7 @@ type DeploymentResourceProperties = original.DeploymentResourceProperties
 type DeploymentSettings = original.DeploymentSettings
 type DeploymentsClient = original.DeploymentsClient
 type DeploymentsCreateOrUpdateFuture = original.DeploymentsCreateOrUpdateFuture
+type DeploymentsDeleteFuture = original.DeploymentsDeleteFuture
 type DeploymentsRestartFuture = original.DeploymentsRestartFuture
 type DeploymentsStartFuture = original.DeploymentsStartFuture
 type DeploymentsStopFuture = original.DeploymentsStopFuture
@@ -220,6 +245,11 @@ type LogSpecification = original.LogSpecification
 type ManagedIdentityProperties = original.ManagedIdentityProperties
 type MetricDimension = original.MetricDimension
 type MetricSpecification = original.MetricSpecification
+type MonitoringSettingProperties = original.MonitoringSettingProperties
+type MonitoringSettingResource = original.MonitoringSettingResource
+type MonitoringSettingsClient = original.MonitoringSettingsClient
+type MonitoringSettingsUpdatePatchFuture = original.MonitoringSettingsUpdatePatchFuture
+type MonitoringSettingsUpdatePutFuture = original.MonitoringSettingsUpdatePutFuture
 type NameAvailability = original.NameAvailability
 type NameAvailabilityParameters = original.NameAvailabilityParameters
 type NetworkProfile = original.NetworkProfile
@@ -231,6 +261,7 @@ type OperationsClient = original.OperationsClient
 type PersistentDisk = original.PersistentDisk
 type ProxyResource = original.ProxyResource
 type RegenerateTestKeyRequestPayload = original.RegenerateTestKeyRequestPayload
+type RequiredTraffic = original.RequiredTraffic
 type Resource = original.Resource
 type ResourceSku = original.ResourceSku
 type ResourceSkuCapabilities = original.ResourceSkuCapabilities
@@ -254,11 +285,10 @@ type ServicesDeleteFuture = original.ServicesDeleteFuture
 type ServicesUpdateFuture = original.ServicesUpdateFuture
 type Sku = original.Sku
 type SkuCapacity = original.SkuCapacity
-type SkuClient = original.SkuClient
+type SkusClient = original.SkusClient
 type SupportedRuntimeVersion = original.SupportedRuntimeVersion
 type TemporaryDisk = original.TemporaryDisk
 type TestKeys = original.TestKeys
-type TraceProperties = original.TraceProperties
 type TrackedResource = original.TrackedResource
 type UserSourceInfo = original.UserSourceInfo
 
@@ -307,6 +337,12 @@ func NewCertificatesClient(subscriptionID string) CertificatesClient {
 func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
 	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewConfigServersClient(subscriptionID string) ConfigServersClient {
+	return original.NewConfigServersClient(subscriptionID)
+}
+func NewConfigServersClientWithBaseURI(baseURI string, subscriptionID string) ConfigServersClient {
+	return original.NewConfigServersClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewCustomDomainResourceCollectionIterator(page CustomDomainResourceCollectionPage) CustomDomainResourceCollectionIterator {
 	return original.NewCustomDomainResourceCollectionIterator(page)
 }
@@ -330,6 +366,12 @@ func NewDeploymentsClient(subscriptionID string) DeploymentsClient {
 }
 func NewDeploymentsClientWithBaseURI(baseURI string, subscriptionID string) DeploymentsClient {
 	return original.NewDeploymentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMonitoringSettingsClient(subscriptionID string) MonitoringSettingsClient {
+	return original.NewMonitoringSettingsClient(subscriptionID)
+}
+func NewMonitoringSettingsClientWithBaseURI(baseURI string, subscriptionID string) MonitoringSettingsClient {
+	return original.NewMonitoringSettingsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -361,11 +403,11 @@ func NewServicesClient(subscriptionID string) ServicesClient {
 func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
 	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSkuClient(subscriptionID string) SkuClient {
-	return original.NewSkuClient(subscriptionID)
+func NewSkusClient(subscriptionID string) SkusClient {
+	return original.NewSkusClient(subscriptionID)
 }
-func NewSkuClientWithBaseURI(baseURI string, subscriptionID string) SkuClient {
-	return original.NewSkuClientWithBaseURI(baseURI, subscriptionID)
+func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient {
+	return original.NewSkusClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
@@ -384,6 +426,9 @@ func PossibleDeploymentResourceStatusValues() []DeploymentResourceStatus {
 }
 func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
 	return original.PossibleManagedIdentityTypeValues()
+}
+func PossibleMonitoringSettingStateValues() []MonitoringSettingState {
+	return original.PossibleMonitoringSettingStateValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
@@ -409,8 +454,8 @@ func PossibleSupportedRuntimeValueValues() []SupportedRuntimeValue {
 func PossibleTestKeyTypeValues() []TestKeyType {
 	return original.PossibleTestKeyTypeValues()
 }
-func PossibleTraceProxyStateValues() []TraceProxyState {
-	return original.PossibleTraceProxyStateValues()
+func PossibleTrafficDirectionValues() []TrafficDirection {
+	return original.PossibleTrafficDirectionValues()
 }
 func PossibleUserSourceTypeValues() []UserSourceType {
 	return original.PossibleUserSourceTypeValues()

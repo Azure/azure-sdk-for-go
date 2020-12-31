@@ -86,6 +86,13 @@ const (
 	PublicNetworkAccessEnumEnabled  PublicNetworkAccessEnum = original.PublicNetworkAccessEnumEnabled
 )
 
+type QueryPerformanceInsightResetDataResultState = original.QueryPerformanceInsightResetDataResultState
+
+const (
+	QueryPerformanceInsightResetDataResultStateFailed    QueryPerformanceInsightResetDataResultState = original.QueryPerformanceInsightResetDataResultStateFailed
+	QueryPerformanceInsightResetDataResultStateSucceeded QueryPerformanceInsightResetDataResultState = original.QueryPerformanceInsightResetDataResultStateSucceeded
+)
+
 type ServerSecurityAlertPolicyState = original.ServerSecurityAlertPolicyState
 
 const (
@@ -204,6 +211,7 @@ type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
 type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type PrivateLinkServiceConnectionStateProperty = original.PrivateLinkServiceConnectionStateProperty
 type ProxyResource = original.ProxyResource
+type QueryPerformanceInsightResetDataResult = original.QueryPerformanceInsightResetDataResult
 type QueryStatistic = original.QueryStatistic
 type QueryStatisticProperties = original.QueryStatisticProperties
 type QueryText = original.QueryText
@@ -219,12 +227,18 @@ type RecommendationActionsResultListIterator = original.RecommendationActionsRes
 type RecommendationActionsResultListPage = original.RecommendationActionsResultListPage
 type RecommendedActionSessionsOperationStatus = original.RecommendedActionSessionsOperationStatus
 type RecommendedActionsClient = original.RecommendedActionsClient
+type RecoverableServerProperties = original.RecoverableServerProperties
+type RecoverableServerResource = original.RecoverableServerResource
+type RecoverableServersClient = original.RecoverableServersClient
 type ReplicasClient = original.ReplicasClient
 type Resource = original.Resource
 type SecurityAlertPolicyProperties = original.SecurityAlertPolicyProperties
 type Server = original.Server
+type ServerBasedPerformanceTierClient = original.ServerBasedPerformanceTierClient
 type ServerForCreate = original.ServerForCreate
 type ServerListResult = original.ServerListResult
+type ServerParametersClient = original.ServerParametersClient
+type ServerParametersListUpdateConfigurationsFuture = original.ServerParametersListUpdateConfigurationsFuture
 type ServerPrivateEndpointConnection = original.ServerPrivateEndpointConnection
 type ServerPrivateEndpointConnectionProperties = original.ServerPrivateEndpointConnectionProperties
 type ServerPrivateLinkServiceConnectionStateProperty = original.ServerPrivateLinkServiceConnectionStateProperty
@@ -390,11 +404,29 @@ func NewRecommendedActionsClient(subscriptionID string) RecommendedActionsClient
 func NewRecommendedActionsClientWithBaseURI(baseURI string, subscriptionID string) RecommendedActionsClient {
 	return original.NewRecommendedActionsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewRecoverableServersClient(subscriptionID string) RecoverableServersClient {
+	return original.NewRecoverableServersClient(subscriptionID)
+}
+func NewRecoverableServersClientWithBaseURI(baseURI string, subscriptionID string) RecoverableServersClient {
+	return original.NewRecoverableServersClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewReplicasClient(subscriptionID string) ReplicasClient {
 	return original.NewReplicasClient(subscriptionID)
 }
 func NewReplicasClientWithBaseURI(baseURI string, subscriptionID string) ReplicasClient {
 	return original.NewReplicasClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServerBasedPerformanceTierClient(subscriptionID string) ServerBasedPerformanceTierClient {
+	return original.NewServerBasedPerformanceTierClient(subscriptionID)
+}
+func NewServerBasedPerformanceTierClientWithBaseURI(baseURI string, subscriptionID string) ServerBasedPerformanceTierClient {
+	return original.NewServerBasedPerformanceTierClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServerParametersClient(subscriptionID string) ServerParametersClient {
+	return original.NewServerParametersClient(subscriptionID)
+}
+func NewServerParametersClientWithBaseURI(baseURI string, subscriptionID string) ServerParametersClient {
+	return original.NewServerParametersClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewServerSecurityAlertPoliciesClient(subscriptionID string) ServerSecurityAlertPoliciesClient {
 	return original.NewServerSecurityAlertPoliciesClient(subscriptionID)
@@ -467,6 +499,9 @@ func PossiblePrivateLinkServiceConnectionStateStatusValues() []PrivateLinkServic
 }
 func PossiblePublicNetworkAccessEnumValues() []PublicNetworkAccessEnum {
 	return original.PossiblePublicNetworkAccessEnumValues()
+}
+func PossibleQueryPerformanceInsightResetDataResultStateValues() []QueryPerformanceInsightResetDataResultState {
+	return original.PossibleQueryPerformanceInsightResetDataResultStateValues()
 }
 func PossibleServerSecurityAlertPolicyStateValues() []ServerSecurityAlertPolicyState {
 	return original.PossibleServerSecurityAlertPolicyStateValues()

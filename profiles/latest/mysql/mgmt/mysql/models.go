@@ -108,6 +108,13 @@ const (
 	PublicNetworkAccessEnumEnabled  PublicNetworkAccessEnum = original.PublicNetworkAccessEnumEnabled
 )
 
+type QueryPerformanceInsightResetDataResultState = original.QueryPerformanceInsightResetDataResultState
+
+const (
+	QueryPerformanceInsightResetDataResultStateFailed    QueryPerformanceInsightResetDataResultState = original.QueryPerformanceInsightResetDataResultStateFailed
+	QueryPerformanceInsightResetDataResultStateSucceeded QueryPerformanceInsightResetDataResultState = original.QueryPerformanceInsightResetDataResultStateSucceeded
+)
+
 type ServerSecurityAlertPolicyState = original.ServerSecurityAlertPolicyState
 
 const (
@@ -228,6 +235,7 @@ type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
 type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type PrivateLinkServiceConnectionStateProperty = original.PrivateLinkServiceConnectionStateProperty
 type ProxyResource = original.ProxyResource
+type QueryPerformanceInsightResetDataResult = original.QueryPerformanceInsightResetDataResult
 type QueryStatistic = original.QueryStatistic
 type QueryStatisticProperties = original.QueryStatisticProperties
 type QueryText = original.QueryText
@@ -243,6 +251,9 @@ type RecommendationActionsResultListIterator = original.RecommendationActionsRes
 type RecommendationActionsResultListPage = original.RecommendationActionsResultListPage
 type RecommendedActionSessionsOperationStatus = original.RecommendedActionSessionsOperationStatus
 type RecommendedActionsClient = original.RecommendedActionsClient
+type RecoverableServerProperties = original.RecoverableServerProperties
+type RecoverableServerResource = original.RecoverableServerResource
+type RecoverableServersClient = original.RecoverableServersClient
 type ReplicasClient = original.ReplicasClient
 type Resource = original.Resource
 type ResourceIdentity = original.ResourceIdentity
@@ -254,6 +265,7 @@ type ServerAdministratorResourceListResult = original.ServerAdministratorResourc
 type ServerAdministratorsClient = original.ServerAdministratorsClient
 type ServerAdministratorsCreateOrUpdateFuture = original.ServerAdministratorsCreateOrUpdateFuture
 type ServerAdministratorsDeleteFuture = original.ServerAdministratorsDeleteFuture
+type ServerBasedPerformanceTierClient = original.ServerBasedPerformanceTierClient
 type ServerForCreate = original.ServerForCreate
 type ServerKey = original.ServerKey
 type ServerKeyListResult = original.ServerKeyListResult
@@ -264,6 +276,8 @@ type ServerKeysClient = original.ServerKeysClient
 type ServerKeysCreateOrUpdateFuture = original.ServerKeysCreateOrUpdateFuture
 type ServerKeysDeleteFuture = original.ServerKeysDeleteFuture
 type ServerListResult = original.ServerListResult
+type ServerParametersClient = original.ServerParametersClient
+type ServerParametersListUpdateConfigurationsFuture = original.ServerParametersListUpdateConfigurationsFuture
 type ServerPrivateEndpointConnection = original.ServerPrivateEndpointConnection
 type ServerPrivateEndpointConnectionProperties = original.ServerPrivateEndpointConnectionProperties
 type ServerPrivateLinkServiceConnectionStateProperty = original.ServerPrivateLinkServiceConnectionStateProperty
@@ -432,6 +446,12 @@ func NewRecommendedActionsClient(subscriptionID string) RecommendedActionsClient
 func NewRecommendedActionsClientWithBaseURI(baseURI string, subscriptionID string) RecommendedActionsClient {
 	return original.NewRecommendedActionsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewRecoverableServersClient(subscriptionID string) RecoverableServersClient {
+	return original.NewRecoverableServersClient(subscriptionID)
+}
+func NewRecoverableServersClientWithBaseURI(baseURI string, subscriptionID string) RecoverableServersClient {
+	return original.NewRecoverableServersClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewReplicasClient(subscriptionID string) ReplicasClient {
 	return original.NewReplicasClient(subscriptionID)
 }
@@ -444,6 +464,12 @@ func NewServerAdministratorsClient(subscriptionID string) ServerAdministratorsCl
 func NewServerAdministratorsClientWithBaseURI(baseURI string, subscriptionID string) ServerAdministratorsClient {
 	return original.NewServerAdministratorsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewServerBasedPerformanceTierClient(subscriptionID string) ServerBasedPerformanceTierClient {
+	return original.NewServerBasedPerformanceTierClient(subscriptionID)
+}
+func NewServerBasedPerformanceTierClientWithBaseURI(baseURI string, subscriptionID string) ServerBasedPerformanceTierClient {
+	return original.NewServerBasedPerformanceTierClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewServerKeyListResultIterator(page ServerKeyListResultPage) ServerKeyListResultIterator {
 	return original.NewServerKeyListResultIterator(page)
 }
@@ -455,6 +481,12 @@ func NewServerKeysClient(subscriptionID string) ServerKeysClient {
 }
 func NewServerKeysClientWithBaseURI(baseURI string, subscriptionID string) ServerKeysClient {
 	return original.NewServerKeysClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServerParametersClient(subscriptionID string) ServerParametersClient {
+	return original.NewServerParametersClient(subscriptionID)
+}
+func NewServerParametersClientWithBaseURI(baseURI string, subscriptionID string) ServerParametersClient {
+	return original.NewServerParametersClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewServerSecurityAlertPoliciesClient(subscriptionID string) ServerSecurityAlertPoliciesClient {
 	return original.NewServerSecurityAlertPoliciesClient(subscriptionID)
@@ -536,6 +568,9 @@ func PossiblePrivateLinkServiceConnectionStateStatusValues() []PrivateLinkServic
 }
 func PossiblePublicNetworkAccessEnumValues() []PublicNetworkAccessEnum {
 	return original.PossiblePublicNetworkAccessEnumValues()
+}
+func PossibleQueryPerformanceInsightResetDataResultStateValues() []QueryPerformanceInsightResetDataResultState {
+	return original.PossibleQueryPerformanceInsightResetDataResultStateValues()
 }
 func PossibleServerSecurityAlertPolicyStateValues() []ServerSecurityAlertPolicyState {
 	return original.PossibleServerSecurityAlertPolicyStateValues()

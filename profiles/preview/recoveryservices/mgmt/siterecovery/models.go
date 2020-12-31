@@ -753,6 +753,7 @@ type ResourceTypeBasicRecoveryVirtualNetworkCustomDetails = original.ResourceTyp
 
 const (
 	ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeExisting                            ResourceTypeBasicRecoveryVirtualNetworkCustomDetails = original.ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeExisting
+	ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeNew                                 ResourceTypeBasicRecoveryVirtualNetworkCustomDetails = original.ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeNew
 	ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeRecoveryVirtualNetworkCustomDetails ResourceTypeBasicRecoveryVirtualNetworkCustomDetails = original.ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeRecoveryVirtualNetworkCustomDetails
 )
 
@@ -1132,6 +1133,7 @@ type NetworkMappingFabricSpecificSettings = original.NetworkMappingFabricSpecifi
 type NetworkMappingProperties = original.NetworkMappingProperties
 type NetworkProperties = original.NetworkProperties
 type NewProtectionProfile = original.NewProtectionProfile
+type NewRecoveryVirtualNetwork = original.NewRecoveryVirtualNetwork
 type OSDetails = original.OSDetails
 type OSDiskDetails = original.OSDiskDetails
 type OSVersionWrapper = original.OSVersionWrapper

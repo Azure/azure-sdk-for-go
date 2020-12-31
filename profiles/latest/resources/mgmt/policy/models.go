@@ -22,11 +22,46 @@ package policy
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-09-01/policy"
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-09-01/policy"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type AliasPathAttributes = original.AliasPathAttributes
+
+const (
+	Modifiable AliasPathAttributes = original.Modifiable
+	None       AliasPathAttributes = original.None
+)
+
+type AliasPathTokenType = original.AliasPathTokenType
+
+const (
+	Any          AliasPathTokenType = original.Any
+	Array        AliasPathTokenType = original.Array
+	Boolean      AliasPathTokenType = original.Boolean
+	Integer      AliasPathTokenType = original.Integer
+	NotSpecified AliasPathTokenType = original.NotSpecified
+	Number       AliasPathTokenType = original.Number
+	Object       AliasPathTokenType = original.Object
+	String       AliasPathTokenType = original.String
+)
+
+type AliasPatternType = original.AliasPatternType
+
+const (
+	AliasPatternTypeExtract      AliasPatternType = original.AliasPatternTypeExtract
+	AliasPatternTypeNotSpecified AliasPatternType = original.AliasPatternTypeNotSpecified
+)
+
+type AliasType = original.AliasType
+
+const (
+	AliasTypeMask         AliasType = original.AliasTypeMask
+	AliasTypeNotSpecified AliasType = original.AliasTypeNotSpecified
+	AliasTypePlainText    AliasType = original.AliasTypePlainText
 )
 
 type EnforcementMode = original.EnforcementMode
@@ -39,31 +74,35 @@ const (
 type ParameterType = original.ParameterType
 
 const (
-	Array    ParameterType = original.Array
-	Boolean  ParameterType = original.Boolean
-	DateTime ParameterType = original.DateTime
-	Float    ParameterType = original.Float
-	Integer  ParameterType = original.Integer
-	Object   ParameterType = original.Object
-	String   ParameterType = original.String
+	ParameterTypeArray    ParameterType = original.ParameterTypeArray
+	ParameterTypeBoolean  ParameterType = original.ParameterTypeBoolean
+	ParameterTypeDateTime ParameterType = original.ParameterTypeDateTime
+	ParameterTypeFloat    ParameterType = original.ParameterTypeFloat
+	ParameterTypeInteger  ParameterType = original.ParameterTypeInteger
+	ParameterTypeObject   ParameterType = original.ParameterTypeObject
+	ParameterTypeString   ParameterType = original.ParameterTypeString
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
-	None           ResourceIdentityType = original.None
-	SystemAssigned ResourceIdentityType = original.SystemAssigned
+	ResourceIdentityTypeNone           ResourceIdentityType = original.ResourceIdentityTypeNone
+	ResourceIdentityTypeSystemAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
 )
 
 type Type = original.Type
 
 const (
-	BuiltIn      Type = original.BuiltIn
-	Custom       Type = original.Custom
-	NotSpecified Type = original.NotSpecified
-	Static       Type = original.Static
+	TypeBuiltIn      Type = original.TypeBuiltIn
+	TypeCustom       Type = original.TypeCustom
+	TypeNotSpecified Type = original.TypeNotSpecified
+	TypeStatic       Type = original.TypeStatic
 )
 
+type Alias = original.Alias
+type AliasPath = original.AliasPath
+type AliasPathMetadata = original.AliasPathMetadata
+type AliasPattern = original.AliasPattern
 type Assignment = original.Assignment
 type AssignmentListResult = original.AssignmentListResult
 type AssignmentListResultIterator = original.AssignmentListResultIterator
@@ -72,6 +111,15 @@ type AssignmentProperties = original.AssignmentProperties
 type AssignmentsClient = original.AssignmentsClient
 type BaseClient = original.BaseClient
 type CloudError = original.CloudError
+type DataEffect = original.DataEffect
+type DataManifestCustomResourceFunctionDefinition = original.DataManifestCustomResourceFunctionDefinition
+type DataManifestResourceFunctionsDefinition = original.DataManifestResourceFunctionsDefinition
+type DataPolicyManifest = original.DataPolicyManifest
+type DataPolicyManifestListResult = original.DataPolicyManifestListResult
+type DataPolicyManifestListResultIterator = original.DataPolicyManifestListResultIterator
+type DataPolicyManifestListResultPage = original.DataPolicyManifestListResultPage
+type DataPolicyManifestProperties = original.DataPolicyManifestProperties
+type DataPolicyManifestsClient = original.DataPolicyManifestsClient
 type Definition = original.Definition
 type DefinitionGroup = original.DefinitionGroup
 type DefinitionListResult = original.DefinitionListResult
@@ -81,18 +129,19 @@ type DefinitionProperties = original.DefinitionProperties
 type DefinitionReference = original.DefinitionReference
 type DefinitionsClient = original.DefinitionsClient
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
-type ErrorResponse = original.ErrorResponse
+type ErrorDetail = original.ErrorDetail
 type Identity = original.Identity
+type NonComplianceMessage = original.NonComplianceMessage
 type ParameterDefinitionsValue = original.ParameterDefinitionsValue
 type ParameterDefinitionsValueMetadata = original.ParameterDefinitionsValueMetadata
 type ParameterValuesValue = original.ParameterValuesValue
+type ResourceTypeAliases = original.ResourceTypeAliases
 type SetDefinition = original.SetDefinition
 type SetDefinitionListResult = original.SetDefinitionListResult
 type SetDefinitionListResultIterator = original.SetDefinitionListResultIterator
 type SetDefinitionListResultPage = original.SetDefinitionListResultPage
 type SetDefinitionProperties = original.SetDefinitionProperties
 type SetDefinitionsClient = original.SetDefinitionsClient
-type Sku = original.Sku
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -108,6 +157,18 @@ func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
 }
 func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
 	return original.NewAssignmentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDataPolicyManifestListResultIterator(page DataPolicyManifestListResultPage) DataPolicyManifestListResultIterator {
+	return original.NewDataPolicyManifestListResultIterator(page)
+}
+func NewDataPolicyManifestListResultPage(cur DataPolicyManifestListResult, getNextPage func(context.Context, DataPolicyManifestListResult) (DataPolicyManifestListResult, error)) DataPolicyManifestListResultPage {
+	return original.NewDataPolicyManifestListResultPage(cur, getNextPage)
+}
+func NewDataPolicyManifestsClient(subscriptionID string) DataPolicyManifestsClient {
+	return original.NewDataPolicyManifestsClient(subscriptionID)
+}
+func NewDataPolicyManifestsClientWithBaseURI(baseURI string, subscriptionID string) DataPolicyManifestsClient {
+	return original.NewDataPolicyManifestsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDefinitionListResultIterator(page DefinitionListResultPage) DefinitionListResultIterator {
 	return original.NewDefinitionListResultIterator(page)
@@ -135,6 +196,18 @@ func NewSetDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) S
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAliasPathAttributesValues() []AliasPathAttributes {
+	return original.PossibleAliasPathAttributesValues()
+}
+func PossibleAliasPathTokenTypeValues() []AliasPathTokenType {
+	return original.PossibleAliasPathTokenTypeValues()
+}
+func PossibleAliasPatternTypeValues() []AliasPatternType {
+	return original.PossibleAliasPatternTypeValues()
+}
+func PossibleAliasTypeValues() []AliasType {
+	return original.PossibleAliasTypeValues()
 }
 func PossibleEnforcementModeValues() []EnforcementMode {
 	return original.PossibleEnforcementModeValues()

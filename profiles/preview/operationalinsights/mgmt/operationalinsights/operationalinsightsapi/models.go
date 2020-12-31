@@ -24,4 +24,5 @@ import original "github.com/Azure/azure-sdk-for-go/services/operationalinsights/
 type ClustersClientAPI = original.ClustersClientAPI
 type DeletedWorkspacesClientAPI = original.DeletedWorkspacesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type TablesClientAPI = original.TablesClientAPI
 type WorkspacesClientAPI = original.WorkspacesClientAPI

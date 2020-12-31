@@ -39,6 +39,23 @@ const (
 	Updating  ClusterProvisioningState = original.Updating
 )
 
+type DNSServiceLogLevelEnum = original.DNSServiceLogLevelEnum
+
+const (
+	DEBUG   DNSServiceLogLevelEnum = original.DEBUG
+	ERROR   DNSServiceLogLevelEnum = original.ERROR
+	FATAL   DNSServiceLogLevelEnum = original.FATAL
+	INFO    DNSServiceLogLevelEnum = original.INFO
+	WARNING DNSServiceLogLevelEnum = original.WARNING
+)
+
+type DNSServiceStatusEnum = original.DNSServiceStatusEnum
+
+const (
+	FAILURE DNSServiceStatusEnum = original.FAILURE
+	SUCCESS DNSServiceStatusEnum = original.SUCCESS
+)
+
 type DhcpType = original.DhcpType
 
 const (
@@ -163,6 +180,26 @@ const (
 	VcsaAdminRotateEnumOnetimeRotate VcsaAdminRotateEnum = original.VcsaAdminRotateEnumOnetimeRotate
 )
 
+type WorkloadNetworkDNSServiceProvisioningState = original.WorkloadNetworkDNSServiceProvisioningState
+
+const (
+	WorkloadNetworkDNSServiceProvisioningStateBuilding  WorkloadNetworkDNSServiceProvisioningState = original.WorkloadNetworkDNSServiceProvisioningStateBuilding
+	WorkloadNetworkDNSServiceProvisioningStateDeleting  WorkloadNetworkDNSServiceProvisioningState = original.WorkloadNetworkDNSServiceProvisioningStateDeleting
+	WorkloadNetworkDNSServiceProvisioningStateFailed    WorkloadNetworkDNSServiceProvisioningState = original.WorkloadNetworkDNSServiceProvisioningStateFailed
+	WorkloadNetworkDNSServiceProvisioningStateSucceeded WorkloadNetworkDNSServiceProvisioningState = original.WorkloadNetworkDNSServiceProvisioningStateSucceeded
+	WorkloadNetworkDNSServiceProvisioningStateUpdating  WorkloadNetworkDNSServiceProvisioningState = original.WorkloadNetworkDNSServiceProvisioningStateUpdating
+)
+
+type WorkloadNetworkDNSZoneProvisioningState = original.WorkloadNetworkDNSZoneProvisioningState
+
+const (
+	WorkloadNetworkDNSZoneProvisioningStateBuilding  WorkloadNetworkDNSZoneProvisioningState = original.WorkloadNetworkDNSZoneProvisioningStateBuilding
+	WorkloadNetworkDNSZoneProvisioningStateDeleting  WorkloadNetworkDNSZoneProvisioningState = original.WorkloadNetworkDNSZoneProvisioningStateDeleting
+	WorkloadNetworkDNSZoneProvisioningStateFailed    WorkloadNetworkDNSZoneProvisioningState = original.WorkloadNetworkDNSZoneProvisioningStateFailed
+	WorkloadNetworkDNSZoneProvisioningStateSucceeded WorkloadNetworkDNSZoneProvisioningState = original.WorkloadNetworkDNSZoneProvisioningStateSucceeded
+	WorkloadNetworkDNSZoneProvisioningStateUpdating  WorkloadNetworkDNSZoneProvisioningState = original.WorkloadNetworkDNSZoneProvisioningStateUpdating
+)
+
 type WorkloadNetworkDhcpProvisioningState = original.WorkloadNetworkDhcpProvisioningState
 
 const (
@@ -276,6 +313,16 @@ type ServiceSpecification = original.ServiceSpecification
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
 type Trial = original.Trial
+type WorkloadNetworkDNSService = original.WorkloadNetworkDNSService
+type WorkloadNetworkDNSServiceProperties = original.WorkloadNetworkDNSServiceProperties
+type WorkloadNetworkDNSServicesList = original.WorkloadNetworkDNSServicesList
+type WorkloadNetworkDNSServicesListIterator = original.WorkloadNetworkDNSServicesListIterator
+type WorkloadNetworkDNSServicesListPage = original.WorkloadNetworkDNSServicesListPage
+type WorkloadNetworkDNSZone = original.WorkloadNetworkDNSZone
+type WorkloadNetworkDNSZoneProperties = original.WorkloadNetworkDNSZoneProperties
+type WorkloadNetworkDNSZonesList = original.WorkloadNetworkDNSZonesList
+type WorkloadNetworkDNSZonesListIterator = original.WorkloadNetworkDNSZonesListIterator
+type WorkloadNetworkDNSZonesListPage = original.WorkloadNetworkDNSZonesListPage
 type WorkloadNetworkDhcp = original.WorkloadNetworkDhcp
 type WorkloadNetworkDhcpEntity = original.WorkloadNetworkDhcpEntity
 type WorkloadNetworkDhcpList = original.WorkloadNetworkDhcpList
@@ -311,14 +358,20 @@ type WorkloadNetworkVirtualMachinesList = original.WorkloadNetworkVirtualMachine
 type WorkloadNetworkVirtualMachinesListIterator = original.WorkloadNetworkVirtualMachinesListIterator
 type WorkloadNetworkVirtualMachinesListPage = original.WorkloadNetworkVirtualMachinesListPage
 type WorkloadNetworksClient = original.WorkloadNetworksClient
+type WorkloadNetworksCreateDNSServiceFuture = original.WorkloadNetworksCreateDNSServiceFuture
+type WorkloadNetworksCreateDNSZoneFuture = original.WorkloadNetworksCreateDNSZoneFuture
 type WorkloadNetworksCreateDhcpFuture = original.WorkloadNetworksCreateDhcpFuture
 type WorkloadNetworksCreatePortMirroringFuture = original.WorkloadNetworksCreatePortMirroringFuture
 type WorkloadNetworksCreateSegmentsFuture = original.WorkloadNetworksCreateSegmentsFuture
 type WorkloadNetworksCreateVMGroupFuture = original.WorkloadNetworksCreateVMGroupFuture
+type WorkloadNetworksDeleteDNSServiceFuture = original.WorkloadNetworksDeleteDNSServiceFuture
+type WorkloadNetworksDeleteDNSZoneFuture = original.WorkloadNetworksDeleteDNSZoneFuture
 type WorkloadNetworksDeleteDhcpFuture = original.WorkloadNetworksDeleteDhcpFuture
 type WorkloadNetworksDeletePortMirroringFuture = original.WorkloadNetworksDeletePortMirroringFuture
 type WorkloadNetworksDeleteSegmentFuture = original.WorkloadNetworksDeleteSegmentFuture
 type WorkloadNetworksDeleteVMGroupFuture = original.WorkloadNetworksDeleteVMGroupFuture
+type WorkloadNetworksUpdateDNSServiceFuture = original.WorkloadNetworksUpdateDNSServiceFuture
+type WorkloadNetworksUpdateDNSZoneFuture = original.WorkloadNetworksUpdateDNSZoneFuture
 type WorkloadNetworksUpdateDhcpFuture = original.WorkloadNetworksUpdateDhcpFuture
 type WorkloadNetworksUpdatePortMirroringFuture = original.WorkloadNetworksUpdatePortMirroringFuture
 type WorkloadNetworksUpdateSegmentsFuture = original.WorkloadNetworksUpdateSegmentsFuture
@@ -408,6 +461,18 @@ func NewPrivateCloudsClientWithBaseURI(baseURI string, subscriptionID string) Pr
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func NewWorkloadNetworkDNSServicesListIterator(page WorkloadNetworkDNSServicesListPage) WorkloadNetworkDNSServicesListIterator {
+	return original.NewWorkloadNetworkDNSServicesListIterator(page)
+}
+func NewWorkloadNetworkDNSServicesListPage(cur WorkloadNetworkDNSServicesList, getNextPage func(context.Context, WorkloadNetworkDNSServicesList) (WorkloadNetworkDNSServicesList, error)) WorkloadNetworkDNSServicesListPage {
+	return original.NewWorkloadNetworkDNSServicesListPage(cur, getNextPage)
+}
+func NewWorkloadNetworkDNSZonesListIterator(page WorkloadNetworkDNSZonesListPage) WorkloadNetworkDNSZonesListIterator {
+	return original.NewWorkloadNetworkDNSZonesListIterator(page)
+}
+func NewWorkloadNetworkDNSZonesListPage(cur WorkloadNetworkDNSZonesList, getNextPage func(context.Context, WorkloadNetworkDNSZonesList) (WorkloadNetworkDNSZonesList, error)) WorkloadNetworkDNSZonesListPage {
+	return original.NewWorkloadNetworkDNSZonesListPage(cur, getNextPage)
+}
 func NewWorkloadNetworkDhcpListIterator(page WorkloadNetworkDhcpListPage) WorkloadNetworkDhcpListIterator {
 	return original.NewWorkloadNetworkDhcpListIterator(page)
 }
@@ -452,6 +517,12 @@ func NewWorkloadNetworksClientWithBaseURI(baseURI string, subscriptionID string)
 }
 func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
 	return original.PossibleClusterProvisioningStateValues()
+}
+func PossibleDNSServiceLogLevelEnumValues() []DNSServiceLogLevelEnum {
+	return original.PossibleDNSServiceLogLevelEnumValues()
+}
+func PossibleDNSServiceStatusEnumValues() []DNSServiceStatusEnum {
+	return original.PossibleDNSServiceStatusEnumValues()
 }
 func PossibleDhcpTypeValues() []DhcpType {
 	return original.PossibleDhcpTypeValues()
@@ -503,6 +574,12 @@ func PossibleVMTypeEnumValues() []VMTypeEnum {
 }
 func PossibleVcsaAdminRotateEnumValues() []VcsaAdminRotateEnum {
 	return original.PossibleVcsaAdminRotateEnumValues()
+}
+func PossibleWorkloadNetworkDNSServiceProvisioningStateValues() []WorkloadNetworkDNSServiceProvisioningState {
+	return original.PossibleWorkloadNetworkDNSServiceProvisioningStateValues()
+}
+func PossibleWorkloadNetworkDNSZoneProvisioningStateValues() []WorkloadNetworkDNSZoneProvisioningState {
+	return original.PossibleWorkloadNetworkDNSZoneProvisioningStateValues()
 }
 func PossibleWorkloadNetworkDhcpProvisioningStateValues() []WorkloadNetworkDhcpProvisioningState {
 	return original.PossibleWorkloadNetworkDhcpProvisioningStateValues()

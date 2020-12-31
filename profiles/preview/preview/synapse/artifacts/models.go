@@ -71,11 +71,11 @@ const (
 	Upload AzureSearchIndexWriteBehaviorType = original.Upload
 )
 
-type BlobEventTypes = original.BlobEventTypes
+type BlobEventType = original.BlobEventType
 
 const (
-	MicrosoftStorageBlobCreated BlobEventTypes = original.MicrosoftStorageBlobCreated
-	MicrosoftStorageBlobDeleted BlobEventTypes = original.MicrosoftStorageBlobDeleted
+	MicrosoftStorageBlobCreated BlobEventType = original.MicrosoftStorageBlobCreated
+	MicrosoftStorageBlobDeleted BlobEventType = original.MicrosoftStorageBlobDeleted
 )
 
 type CassandraSourceReadConsistencyLevels = original.CassandraSourceReadConsistencyLevels
@@ -2292,8 +2292,8 @@ func PossibleAzureFunctionActivityMethodValues() []AzureFunctionActivityMethod {
 func PossibleAzureSearchIndexWriteBehaviorTypeValues() []AzureSearchIndexWriteBehaviorType {
 	return original.PossibleAzureSearchIndexWriteBehaviorTypeValues()
 }
-func PossibleBlobEventTypesValues() []BlobEventTypes {
-	return original.PossibleBlobEventTypesValues()
+func PossibleBlobEventTypeValues() []BlobEventType {
+	return original.PossibleBlobEventTypeValues()
 }
 func PossibleCassandraSourceReadConsistencyLevelsValues() []CassandraSourceReadConsistencyLevels {
 	return original.PossibleCassandraSourceReadConsistencyLevelsValues()

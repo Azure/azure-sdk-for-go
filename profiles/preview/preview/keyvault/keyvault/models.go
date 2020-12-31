@@ -247,6 +247,7 @@ type RoleAssignmentProperties = original.RoleAssignmentProperties
 type RoleAssignmentPropertiesWithScope = original.RoleAssignmentPropertiesWithScope
 type RoleAssignmentsClient = original.RoleAssignmentsClient
 type RoleDefinition = original.RoleDefinition
+type RoleDefinitionCreateParameters = original.RoleDefinitionCreateParameters
 type RoleDefinitionFilter = original.RoleDefinitionFilter
 type RoleDefinitionListResult = original.RoleDefinitionListResult
 type RoleDefinitionListResultIterator = original.RoleDefinitionListResultIterator

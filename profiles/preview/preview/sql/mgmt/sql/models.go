@@ -47,7 +47,9 @@ const (
 type IdentityType = original.IdentityType
 
 const (
+	None           IdentityType = original.None
 	SystemAssigned IdentityType = original.SystemAssigned
+	UserAssigned   IdentityType = original.UserAssigned
 )
 
 type InstancePoolLicenseType = original.InstancePoolLicenseType
@@ -130,11 +132,11 @@ const (
 type SensitivityLabelRank = original.SensitivityLabelRank
 
 const (
-	Critical SensitivityLabelRank = original.Critical
-	High     SensitivityLabelRank = original.High
-	Low      SensitivityLabelRank = original.Low
-	Medium   SensitivityLabelRank = original.Medium
-	None     SensitivityLabelRank = original.None
+	SensitivityLabelRankCritical SensitivityLabelRank = original.SensitivityLabelRankCritical
+	SensitivityLabelRankHigh     SensitivityLabelRank = original.SensitivityLabelRankHigh
+	SensitivityLabelRankLow      SensitivityLabelRank = original.SensitivityLabelRankLow
+	SensitivityLabelRankMedium   SensitivityLabelRank = original.SensitivityLabelRankMedium
+	SensitivityLabelRankNone     SensitivityLabelRank = original.SensitivityLabelRankNone
 )
 
 type SensitivityLabelSource = original.SensitivityLabelSource

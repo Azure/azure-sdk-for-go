@@ -205,6 +205,9 @@ type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionPro
 type PrivateEndpointProperty = original.PrivateEndpointProperty
 type PrivateLinkServiceConnectionStateProperty = original.PrivateLinkServiceConnectionStateProperty
 type ProxyResource = original.ProxyResource
+type RecoverableServerProperties = original.RecoverableServerProperties
+type RecoverableServerResource = original.RecoverableServerResource
+type RecoverableServersClient = original.RecoverableServersClient
 type ReplicasClient = original.ReplicasClient
 type Resource = original.Resource
 type ResourceIdentity = original.ResourceIdentity
@@ -216,8 +219,11 @@ type ServerAdministratorResourceListResult = original.ServerAdministratorResourc
 type ServerAdministratorsClient = original.ServerAdministratorsClient
 type ServerAdministratorsCreateOrUpdateFuture = original.ServerAdministratorsCreateOrUpdateFuture
 type ServerAdministratorsDeleteFuture = original.ServerAdministratorsDeleteFuture
+type ServerBasedPerformanceTierClient = original.ServerBasedPerformanceTierClient
 type ServerForCreate = original.ServerForCreate
 type ServerListResult = original.ServerListResult
+type ServerParametersClient = original.ServerParametersClient
+type ServerParametersListUpdateConfigurationsFuture = original.ServerParametersListUpdateConfigurationsFuture
 type ServerPrivateEndpointConnection = original.ServerPrivateEndpointConnection
 type ServerProperties = original.ServerProperties
 type ServerPropertiesForCreate = original.ServerPropertiesForCreate
@@ -292,6 +298,12 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewRecoverableServersClient(subscriptionID string) RecoverableServersClient {
+	return original.NewRecoverableServersClient(subscriptionID)
+}
+func NewRecoverableServersClientWithBaseURI(baseURI string, subscriptionID string) RecoverableServersClient {
+	return original.NewRecoverableServersClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewReplicasClient(subscriptionID string) ReplicasClient {
 	return original.NewReplicasClient(subscriptionID)
 }
@@ -303,6 +315,18 @@ func NewServerAdministratorsClient(subscriptionID string) ServerAdministratorsCl
 }
 func NewServerAdministratorsClientWithBaseURI(baseURI string, subscriptionID string) ServerAdministratorsClient {
 	return original.NewServerAdministratorsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServerBasedPerformanceTierClient(subscriptionID string) ServerBasedPerformanceTierClient {
+	return original.NewServerBasedPerformanceTierClient(subscriptionID)
+}
+func NewServerBasedPerformanceTierClientWithBaseURI(baseURI string, subscriptionID string) ServerBasedPerformanceTierClient {
+	return original.NewServerBasedPerformanceTierClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServerParametersClient(subscriptionID string) ServerParametersClient {
+	return original.NewServerParametersClient(subscriptionID)
+}
+func NewServerParametersClientWithBaseURI(baseURI string, subscriptionID string) ServerParametersClient {
+	return original.NewServerParametersClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewServerSecurityAlertPoliciesClient(subscriptionID string) ServerSecurityAlertPoliciesClient {
 	return original.NewServerSecurityAlertPoliciesClient(subscriptionID)

@@ -19,8 +19,10 @@
 
 package digitaltwinsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/digitaltwins/mgmt/2020-10-31/digitaltwins/digitaltwinsapi"
+import original "github.com/Azure/azure-sdk-for-go/services/digitaltwins/mgmt/2020-12-01/digitaltwins/digitaltwinsapi"
 
 type ClientAPI = original.ClientAPI
 type EndpointClientAPI = original.EndpointClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI

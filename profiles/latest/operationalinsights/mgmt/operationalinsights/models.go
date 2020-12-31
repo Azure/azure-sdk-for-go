@@ -135,6 +135,10 @@ type OperationsClient = original.OperationsClient
 type PrivateLinkScopedResource = original.PrivateLinkScopedResource
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
+type Table = original.Table
+type TableProperties = original.TableProperties
+type TablesClient = original.TablesClient
+type TablesListResult = original.TablesListResult
 type TrackedResource = original.TrackedResource
 type UserIdentityProperties = original.UserIdentityProperties
 type Workspace = original.Workspace
@@ -179,6 +183,12 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTablesClient(subscriptionID string) TablesClient {
+	return original.NewTablesClient(subscriptionID)
+}
+func NewTablesClientWithBaseURI(baseURI string, subscriptionID string) TablesClient {
+	return original.NewTablesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

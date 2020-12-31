@@ -264,11 +264,12 @@ const (
 type EventSource = original.EventSource
 
 const (
-	Alerts              EventSource = original.Alerts
-	Assessments         EventSource = original.Assessments
-	SecureScoreControls EventSource = original.SecureScoreControls
-	SecureScores        EventSource = original.SecureScores
-	SubAssessments      EventSource = original.SubAssessments
+	EventSourceAlerts                         EventSource = original.EventSourceAlerts
+	EventSourceAssessments                    EventSource = original.EventSourceAssessments
+	EventSourceRegulatoryComplianceAssessment EventSource = original.EventSourceRegulatoryComplianceAssessment
+	EventSourceSecureScoreControls            EventSource = original.EventSourceSecureScoreControls
+	EventSourceSecureScores                   EventSource = original.EventSourceSecureScores
+	EventSourceSubAssessments                 EventSource = original.EventSourceSubAssessments
 )
 
 type Exe = original.Exe

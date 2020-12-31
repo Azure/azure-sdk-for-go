@@ -327,6 +327,7 @@ func (client SubscriptionsClient) GetSubscriptionsUnderManagementGroup(ctx conte
 	}
 	if result.lsumg.hasNextLink() && result.lsumg.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -389,7 +390,6 @@ func (client SubscriptionsClient) getSubscriptionsUnderManagementGroupNextResult
 	result, err = client.GetSubscriptionsUnderManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.SubscriptionsClient", "getSubscriptionsUnderManagementGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

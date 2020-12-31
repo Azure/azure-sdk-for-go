@@ -102,7 +102,7 @@ func (client TopicsClient) CreateOrUpdatePreparer(ctx context.Context, resourceG
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -203,7 +203,7 @@ func (client TopicsClient) CreateOrUpdateAuthorizationRulePreparer(ctx context.C
 		"topicName":             autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -295,7 +295,7 @@ func (client TopicsClient) DeletePreparer(ctx context.Context, resourceGroupName
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -389,7 +389,7 @@ func (client TopicsClient) DeleteAuthorizationRulePreparer(ctx context.Context, 
 		"topicName":             autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -478,7 +478,7 @@ func (client TopicsClient) GetPreparer(ctx context.Context, resourceGroupName st
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -573,7 +573,7 @@ func (client TopicsClient) GetAuthorizationRulePreparer(ctx context.Context, res
 		"topicName":             autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -653,6 +653,7 @@ func (client TopicsClient) ListAuthorizationRules(ctx context.Context, resourceG
 	}
 	if result.sarlr.hasNextLink() && result.sarlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -667,7 +668,7 @@ func (client TopicsClient) ListAuthorizationRulesPreparer(ctx context.Context, r
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -715,7 +716,6 @@ func (client TopicsClient) listAuthorizationRulesNextResults(ctx context.Context
 	result, err = client.ListAuthorizationRulesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "listAuthorizationRulesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -796,6 +796,7 @@ func (client TopicsClient) ListByNamespace(ctx context.Context, resourceGroupNam
 	}
 	if result.stlr.hasNextLink() && result.stlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -809,7 +810,7 @@ func (client TopicsClient) ListByNamespacePreparer(ctx context.Context, resource
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -863,7 +864,6 @@ func (client TopicsClient) listByNamespaceNextResults(ctx context.Context, lastR
 	result, err = client.ListByNamespaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "listByNamespaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -948,7 +948,7 @@ func (client TopicsClient) ListKeysPreparer(ctx context.Context, resourceGroupNa
 		"topicName":             autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1044,7 +1044,7 @@ func (client TopicsClient) RegenerateKeysPreparer(ctx context.Context, resourceG
 		"topicName":             autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

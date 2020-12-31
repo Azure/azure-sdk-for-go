@@ -88,6 +88,7 @@ func (client UsageAggregatesClient) List(ctx context.Context, reportedStartTime 
 	}
 	if result.ualr.hasNextLink() && result.ualr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -160,7 +161,6 @@ func (client UsageAggregatesClient) listNextResults(ctx context.Context, lastRes
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commerce.UsageAggregatesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

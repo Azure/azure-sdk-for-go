@@ -478,6 +478,7 @@ func (client ProductClient) ListByService(ctx context.Context, resourceGroupName
 	}
 	if result.pc.hasNextLink() && result.pc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -551,7 +552,6 @@ func (client ProductClient) listByServiceNextResults(ctx context.Context, lastRe
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductClient", "listByServiceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

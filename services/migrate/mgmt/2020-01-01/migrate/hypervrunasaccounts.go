@@ -80,6 +80,7 @@ func (client HyperVRunAsAccountsClient) GetAllRunAsAccountsInSite(ctx context.Co
 	}
 	if result.hvraac.hasNextLink() && result.hvraac.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -140,7 +141,6 @@ func (client HyperVRunAsAccountsClient) getAllRunAsAccountsInSiteNextResults(ctx
 	result, err = client.GetAllRunAsAccountsInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVRunAsAccountsClient", "getAllRunAsAccountsInSiteNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -165,6 +165,7 @@ func (client SmartGroupsClient) GetAll(ctx context.Context, targetResource strin
 	}
 	if result.sgl.hasNextLink() && result.sgl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -257,7 +258,6 @@ func (client SmartGroupsClient) getAllNextResults(ctx context.Context, lastResul
 	result, err = client.GetAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "alertsmanagement.SmartGroupsClient", "getAllNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

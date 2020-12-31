@@ -68,7 +68,7 @@ func (client TransactionNodesClient) Create(ctx context.Context, blockchainMembe
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -110,7 +110,29 @@ func (client TransactionNodesClient) CreateSender(req *http.Request) (future Tra
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client TransactionNodesClient) (tn TransactionNode, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("blockchain.TransactionNodesCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if tn.Response.Response, err = future.GetResult(sender); err == nil && tn.Response.Response.StatusCode != http.StatusNoContent {
+			tn, err = client.CreateResponder(tn.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesCreateFuture", "Result", tn.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -151,7 +173,7 @@ func (client TransactionNodesClient) Delete(ctx context.Context, blockchainMembe
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -188,7 +210,23 @@ func (client TransactionNodesClient) DeleteSender(req *http.Request) (future Tra
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client TransactionNodesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("blockchain.TransactionNodesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -319,6 +357,7 @@ func (client TransactionNodesClient) List(ctx context.Context, blockchainMemberN
 	}
 	if result.tnc.hasNextLink() && result.tnc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -380,7 +419,6 @@ func (client TransactionNodesClient) listNextResults(ctx context.Context, lastRe
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

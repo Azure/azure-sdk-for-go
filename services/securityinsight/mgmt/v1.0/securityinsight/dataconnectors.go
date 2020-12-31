@@ -370,6 +370,7 @@ func (client DataConnectorsClient) List(ctx context.Context, resourceGroupName s
 	}
 	if result.dcl.hasNextLink() && result.dcl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -431,7 +432,6 @@ func (client DataConnectorsClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

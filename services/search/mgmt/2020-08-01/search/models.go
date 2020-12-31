@@ -559,8 +559,8 @@ type PrivateLinkResourcesResult struct {
 	Value *[]PrivateLinkResource `json:"value,omitempty"`
 }
 
-// ProxyResource the resource model definition for an Azure Resource Manager proxy resource. It will have
-// everything other than required location and tags
+// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
+// have tags and a location
 type ProxyResource struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -926,30 +926,10 @@ func (sp ServiceProperties) MarshalJSON() ([]byte, error) {
 // ServicesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ServicesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServicesCreateOrUpdateFuture) Result(client ServicesClient) (s Service, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "search.ServicesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("search.ServicesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
-		s, err = client.CreateOrUpdateResponder(s.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "search.ServicesCreateOrUpdateFuture", "Result", s.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ServicesClient) (Service, error)
 }
 
 // ServiceUpdate the parameters used to update an Azure Cognitive Search service.
@@ -1312,53 +1292,19 @@ type SharedPrivateLinkResourceProperties struct {
 // SharedPrivateLinkResourcesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
 // of a long-running operation.
 type SharedPrivateLinkResourcesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SharedPrivateLinkResourcesCreateOrUpdateFuture) Result(client SharedPrivateLinkResourcesClient) (splr SharedPrivateLinkResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "search.SharedPrivateLinkResourcesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("search.SharedPrivateLinkResourcesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if splr.Response.Response, err = future.GetResult(sender); err == nil && splr.Response.Response.StatusCode != http.StatusNoContent {
-		splr, err = client.CreateOrUpdateResponder(splr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "search.SharedPrivateLinkResourcesCreateOrUpdateFuture", "Result", splr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SharedPrivateLinkResourcesClient) (SharedPrivateLinkResource, error)
 }
 
 // SharedPrivateLinkResourcesDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type SharedPrivateLinkResourcesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SharedPrivateLinkResourcesDeleteFuture) Result(client SharedPrivateLinkResourcesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "search.SharedPrivateLinkResourcesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("search.SharedPrivateLinkResourcesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SharedPrivateLinkResourcesClient) (autorest.Response, error)
 }
 
 // Sku defines the SKU of an Azure Cognitive Search Service, which determines price tier and capacity
@@ -1369,6 +1315,7 @@ type Sku struct {
 }
 
 // TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
+// which has 'tags' and a 'location'
 type TrackedResource struct {
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`

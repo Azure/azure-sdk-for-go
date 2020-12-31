@@ -55,6 +55,42 @@ func PossibleDhcpTypeValues() []DhcpType {
 	return []DhcpType{DhcpTypeRELAY, DhcpTypeSERVER, DhcpTypeWorkloadNetworkDhcpEntity}
 }
 
+// DNSServiceLogLevelEnum enumerates the values for dns service log level enum.
+type DNSServiceLogLevelEnum string
+
+const (
+	// DEBUG ...
+	DEBUG DNSServiceLogLevelEnum = "DEBUG"
+	// ERROR ...
+	ERROR DNSServiceLogLevelEnum = "ERROR"
+	// FATAL ...
+	FATAL DNSServiceLogLevelEnum = "FATAL"
+	// INFO ...
+	INFO DNSServiceLogLevelEnum = "INFO"
+	// WARNING ...
+	WARNING DNSServiceLogLevelEnum = "WARNING"
+)
+
+// PossibleDNSServiceLogLevelEnumValues returns an array of possible values for the DNSServiceLogLevelEnum const type.
+func PossibleDNSServiceLogLevelEnumValues() []DNSServiceLogLevelEnum {
+	return []DNSServiceLogLevelEnum{DEBUG, ERROR, FATAL, INFO, WARNING}
+}
+
+// DNSServiceStatusEnum enumerates the values for dns service status enum.
+type DNSServiceStatusEnum string
+
+const (
+	// FAILURE ...
+	FAILURE DNSServiceStatusEnum = "FAILURE"
+	// SUCCESS ...
+	SUCCESS DNSServiceStatusEnum = "SUCCESS"
+)
+
+// PossibleDNSServiceStatusEnumValues returns an array of possible values for the DNSServiceStatusEnum const type.
+func PossibleDNSServiceStatusEnumValues() []DNSServiceStatusEnum {
+	return []DNSServiceStatusEnum{FAILURE, SUCCESS}
+}
+
 // ExpressRouteAuthorizationProvisioningState enumerates the values for express route authorization
 // provisioning state.
 type ExpressRouteAuthorizationProvisioningState string
@@ -323,6 +359,50 @@ const (
 // PossibleWorkloadNetworkDhcpProvisioningStateValues returns an array of possible values for the WorkloadNetworkDhcpProvisioningState const type.
 func PossibleWorkloadNetworkDhcpProvisioningStateValues() []WorkloadNetworkDhcpProvisioningState {
 	return []WorkloadNetworkDhcpProvisioningState{WorkloadNetworkDhcpProvisioningStateBuilding, WorkloadNetworkDhcpProvisioningStateDeleting, WorkloadNetworkDhcpProvisioningStateFailed, WorkloadNetworkDhcpProvisioningStateSucceeded, WorkloadNetworkDhcpProvisioningStateUpdating}
+}
+
+// WorkloadNetworkDNSServiceProvisioningState enumerates the values for workload network dns service
+// provisioning state.
+type WorkloadNetworkDNSServiceProvisioningState string
+
+const (
+	// WorkloadNetworkDNSServiceProvisioningStateBuilding ...
+	WorkloadNetworkDNSServiceProvisioningStateBuilding WorkloadNetworkDNSServiceProvisioningState = "Building"
+	// WorkloadNetworkDNSServiceProvisioningStateDeleting ...
+	WorkloadNetworkDNSServiceProvisioningStateDeleting WorkloadNetworkDNSServiceProvisioningState = "Deleting"
+	// WorkloadNetworkDNSServiceProvisioningStateFailed ...
+	WorkloadNetworkDNSServiceProvisioningStateFailed WorkloadNetworkDNSServiceProvisioningState = "Failed"
+	// WorkloadNetworkDNSServiceProvisioningStateSucceeded ...
+	WorkloadNetworkDNSServiceProvisioningStateSucceeded WorkloadNetworkDNSServiceProvisioningState = "Succeeded"
+	// WorkloadNetworkDNSServiceProvisioningStateUpdating ...
+	WorkloadNetworkDNSServiceProvisioningStateUpdating WorkloadNetworkDNSServiceProvisioningState = "Updating"
+)
+
+// PossibleWorkloadNetworkDNSServiceProvisioningStateValues returns an array of possible values for the WorkloadNetworkDNSServiceProvisioningState const type.
+func PossibleWorkloadNetworkDNSServiceProvisioningStateValues() []WorkloadNetworkDNSServiceProvisioningState {
+	return []WorkloadNetworkDNSServiceProvisioningState{WorkloadNetworkDNSServiceProvisioningStateBuilding, WorkloadNetworkDNSServiceProvisioningStateDeleting, WorkloadNetworkDNSServiceProvisioningStateFailed, WorkloadNetworkDNSServiceProvisioningStateSucceeded, WorkloadNetworkDNSServiceProvisioningStateUpdating}
+}
+
+// WorkloadNetworkDNSZoneProvisioningState enumerates the values for workload network dns zone provisioning
+// state.
+type WorkloadNetworkDNSZoneProvisioningState string
+
+const (
+	// WorkloadNetworkDNSZoneProvisioningStateBuilding ...
+	WorkloadNetworkDNSZoneProvisioningStateBuilding WorkloadNetworkDNSZoneProvisioningState = "Building"
+	// WorkloadNetworkDNSZoneProvisioningStateDeleting ...
+	WorkloadNetworkDNSZoneProvisioningStateDeleting WorkloadNetworkDNSZoneProvisioningState = "Deleting"
+	// WorkloadNetworkDNSZoneProvisioningStateFailed ...
+	WorkloadNetworkDNSZoneProvisioningStateFailed WorkloadNetworkDNSZoneProvisioningState = "Failed"
+	// WorkloadNetworkDNSZoneProvisioningStateSucceeded ...
+	WorkloadNetworkDNSZoneProvisioningStateSucceeded WorkloadNetworkDNSZoneProvisioningState = "Succeeded"
+	// WorkloadNetworkDNSZoneProvisioningStateUpdating ...
+	WorkloadNetworkDNSZoneProvisioningStateUpdating WorkloadNetworkDNSZoneProvisioningState = "Updating"
+)
+
+// PossibleWorkloadNetworkDNSZoneProvisioningStateValues returns an array of possible values for the WorkloadNetworkDNSZoneProvisioningState const type.
+func PossibleWorkloadNetworkDNSZoneProvisioningStateValues() []WorkloadNetworkDNSZoneProvisioningState {
+	return []WorkloadNetworkDNSZoneProvisioningState{WorkloadNetworkDNSZoneProvisioningStateBuilding, WorkloadNetworkDNSZoneProvisioningStateDeleting, WorkloadNetworkDNSZoneProvisioningStateFailed, WorkloadNetworkDNSZoneProvisioningStateSucceeded, WorkloadNetworkDNSZoneProvisioningStateUpdating}
 }
 
 // WorkloadNetworkPortMirroringProvisioningState enumerates the values for workload network port mirroring

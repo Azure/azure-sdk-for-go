@@ -222,6 +222,7 @@ func (client OrderClient) List(ctx context.Context) (result OrderListPage, err e
 	}
 	if result.ol.hasNextLink() && result.ol.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -277,7 +278,6 @@ func (client OrderClient) listNextResults(ctx context.Context, lastResults Order
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -321,7 +321,7 @@ func (client OrderClient) Purchase(ctx context.Context, reservationOrderID strin
 
 	result, err = client.PurchaseSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "Purchase", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "Purchase", nil, "Failure sending request")
 		return
 	}
 
@@ -357,7 +357,29 @@ func (client OrderClient) PurchaseSender(req *http.Request) (future OrderPurchas
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client OrderClient) (or OrderResponse, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "reservations.OrderPurchaseFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("reservations.OrderPurchaseFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if or.Response.Response, err = future.GetResult(sender); err == nil && or.Response.Response.StatusCode != http.StatusNoContent {
+			or, err = client.PurchaseResponder(or.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "reservations.OrderPurchaseFuture", "Result", or.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

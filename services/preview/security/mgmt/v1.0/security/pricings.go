@@ -339,6 +339,7 @@ func (client PricingsClient) List(ctx context.Context) (result PricingListPage, 
 	}
 	if result.pl.hasNextLink() && result.pl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -398,7 +399,6 @@ func (client PricingsClient) listNextResults(ctx context.Context, lastResults Pr
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.PricingsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -465,6 +465,7 @@ func (client PricingsClient) ListByResourceGroup(ctx context.Context, resourceGr
 	}
 	if result.pl.hasNextLink() && result.pl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -525,7 +526,6 @@ func (client PricingsClient) listByResourceGroupNextResults(ctx context.Context,
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.PricingsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -160,7 +160,7 @@ func (client EnvironmentSettingsClient) CreateOrUpdate(ctx context.Context, reso
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -200,7 +200,29 @@ func (client EnvironmentSettingsClient) CreateOrUpdateSender(req *http.Request) 
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client EnvironmentSettingsClient) (es EnvironmentSetting, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentSettingsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if es.Response.Response, err = future.GetResult(sender); err == nil && es.Response.Response.StatusCode != http.StatusNoContent {
+			es, err = client.CreateOrUpdateResponder(es.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsCreateOrUpdateFuture", "Result", es.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -241,7 +263,7 @@ func (client EnvironmentSettingsClient) Delete(ctx context.Context, resourceGrou
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -279,7 +301,23 @@ func (client EnvironmentSettingsClient) DeleteSender(req *http.Request) (future 
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client EnvironmentSettingsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentSettingsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -419,6 +457,7 @@ func (client EnvironmentSettingsClient) List(ctx context.Context, resourceGroupN
 	}
 	if result.rwces.hasNextLink() && result.rwces.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -493,7 +532,6 @@ func (client EnvironmentSettingsClient) listNextResults(ctx context.Context, las
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -622,7 +660,7 @@ func (client EnvironmentSettingsClient) Start(ctx context.Context, resourceGroup
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsClient", "Start", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsClient", "Start", nil, "Failure sending request")
 		return
 	}
 
@@ -660,7 +698,23 @@ func (client EnvironmentSettingsClient) StartSender(req *http.Request) (future E
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client EnvironmentSettingsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsStartFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentSettingsStartFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -700,7 +754,7 @@ func (client EnvironmentSettingsClient) Stop(ctx context.Context, resourceGroupN
 
 	result, err = client.StopSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsClient", "Stop", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsClient", "Stop", nil, "Failure sending request")
 		return
 	}
 
@@ -738,7 +792,23 @@ func (client EnvironmentSettingsClient) StopSender(req *http.Request) (future En
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client EnvironmentSettingsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsStopFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentSettingsStopFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

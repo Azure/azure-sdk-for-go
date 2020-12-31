@@ -119,7 +119,7 @@ func (client ClustersClient) Create(ctx context.Context, resourceGroupName strin
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -157,7 +157,29 @@ func (client ClustersClient) CreateSender(req *http.Request) (future ClustersCre
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ClustersClient) (c Cluster, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batchai.ClustersCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("batchai.ClustersCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if c.Response.Response, err = future.GetResult(sender); err == nil && c.Response.Response.StatusCode != http.StatusNoContent {
+			c, err = client.CreateResponder(c.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "batchai.ClustersCreateFuture", "Result", c.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -208,7 +230,7 @@ func (client ClustersClient) Delete(ctx context.Context, resourceGroupName strin
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -244,7 +266,23 @@ func (client ClustersClient) DeleteSender(req *http.Request) (future ClustersDel
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ClustersClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batchai.ClustersDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("batchai.ClustersDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -393,6 +431,7 @@ func (client ClustersClient) List(ctx context.Context, filter string, selectPara
 	}
 	if result.clr.hasNextLink() && result.clr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -463,7 +502,6 @@ func (client ClustersClient) listNextResults(ctx context.Context, lastResults Cl
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -533,6 +571,7 @@ func (client ClustersClient) ListByResourceGroup(ctx context.Context, resourceGr
 	}
 	if result.clr.hasNextLink() && result.clr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -604,7 +643,6 @@ func (client ClustersClient) listByResourceGroupNextResults(ctx context.Context,
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -673,6 +711,7 @@ func (client ClustersClient) ListRemoteLoginInformation(ctx context.Context, res
 	}
 	if result.rlilr.hasNextLink() && result.rlilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -734,7 +773,6 @@ func (client ClustersClient) listRemoteLoginInformationNextResults(ctx context.C
 	result, err = client.ListRemoteLoginInformationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "listRemoteLoginInformationNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

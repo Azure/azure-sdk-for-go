@@ -69,7 +69,7 @@ func (client MachineLearningComputeClient) CreateOrUpdate(ctx context.Context, r
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -108,7 +108,29 @@ func (client MachineLearningComputeClient) CreateOrUpdateSender(req *http.Reques
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client MachineLearningComputeClient) (cr ComputeResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("machinelearningservices.MachineLearningComputeCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if cr.Response.Response, err = future.GetResult(sender); err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
+			cr, err = client.CreateOrUpdateResponder(cr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeCreateOrUpdateFuture", "Result", cr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -148,7 +170,7 @@ func (client MachineLearningComputeClient) Delete(ctx context.Context, resourceG
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -185,7 +207,23 @@ func (client MachineLearningComputeClient) DeleteSender(req *http.Request) (futu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client MachineLearningComputeClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("machinelearningservices.MachineLearningComputeDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -316,6 +354,7 @@ func (client MachineLearningComputeClient) ListByWorkspace(ctx context.Context, 
 	}
 	if result.pcrl.hasNextLink() && result.pcrl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -380,7 +419,6 @@ func (client MachineLearningComputeClient) listByWorkspaceNextResults(ctx contex
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "listByWorkspaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -503,7 +541,7 @@ func (client MachineLearningComputeClient) SystemUpdate(ctx context.Context, res
 
 	result, err = client.SystemUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "SystemUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "SystemUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -540,7 +578,23 @@ func (client MachineLearningComputeClient) SystemUpdateSender(req *http.Request)
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client MachineLearningComputeClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeSystemUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("machinelearningservices.MachineLearningComputeSystemUpdateFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

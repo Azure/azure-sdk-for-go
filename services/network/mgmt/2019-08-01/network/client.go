@@ -157,7 +157,7 @@ func (client BaseClient) Generatevirtualwanvpnserverconfigurationvpnprofile(ctx 
 
 	result, err = client.GeneratevirtualwanvpnserverconfigurationvpnprofileSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.BaseClient", "Generatevirtualwanvpnserverconfigurationvpnprofile", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.BaseClient", "Generatevirtualwanvpnserverconfigurationvpnprofile", nil, "Failure sending request")
 		return
 	}
 
@@ -195,7 +195,29 @@ func (client BaseClient) GeneratevirtualwanvpnserverconfigurationvpnprofileSende
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client BaseClient) (vpr VpnProfileResponse, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.GeneratevirtualwanvpnserverconfigurationvpnprofileFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("network.GeneratevirtualwanvpnserverconfigurationvpnprofileFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if vpr.Response.Response, err = future.GetResult(sender); err == nil && vpr.Response.Response.StatusCode != http.StatusNoContent {
+			vpr, err = client.GeneratevirtualwanvpnserverconfigurationvpnprofileResponder(vpr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "network.GeneratevirtualwanvpnserverconfigurationvpnprofileFuture", "Result", vpr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

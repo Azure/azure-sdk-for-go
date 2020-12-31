@@ -683,6 +683,7 @@ func (client RecommendationsClient) List(ctx context.Context, featured *bool, fi
 	}
 	if result.rc.hasNextLink() && result.rc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -748,7 +749,6 @@ func (client RecommendationsClient) listNextResults(ctx context.Context, lastRes
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -818,6 +818,7 @@ func (client RecommendationsClient) ListHistoryForHostingEnvironment(ctx context
 	}
 	if result.rc.hasNextLink() && result.rc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -885,7 +886,6 @@ func (client RecommendationsClient) listHistoryForHostingEnvironmentNextResults(
 	result, err = client.ListHistoryForHostingEnvironmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "listHistoryForHostingEnvironmentNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -955,6 +955,7 @@ func (client RecommendationsClient) ListHistoryForWebApp(ctx context.Context, re
 	}
 	if result.rc.hasNextLink() && result.rc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1022,7 +1023,6 @@ func (client RecommendationsClient) listHistoryForWebAppNextResults(ctx context.
 	result, err = client.ListHistoryForWebAppResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "listHistoryForWebAppNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1091,6 +1091,7 @@ func (client RecommendationsClient) ListRecommendedRulesForHostingEnvironment(ct
 	}
 	if result.rc.hasNextLink() && result.rc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1158,7 +1159,6 @@ func (client RecommendationsClient) listRecommendedRulesForHostingEnvironmentNex
 	result, err = client.ListRecommendedRulesForHostingEnvironmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "listRecommendedRulesForHostingEnvironmentNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1227,6 +1227,7 @@ func (client RecommendationsClient) ListRecommendedRulesForWebApp(ctx context.Co
 	}
 	if result.rc.hasNextLink() && result.rc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1294,7 +1295,6 @@ func (client RecommendationsClient) listRecommendedRulesForWebAppNextResults(ctx
 	result, err = client.ListRecommendedRulesForWebAppResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "listRecommendedRulesForWebAppNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

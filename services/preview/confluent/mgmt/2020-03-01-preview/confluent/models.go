@@ -442,53 +442,19 @@ type OperationResult struct {
 // OrganizationCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type OrganizationCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *OrganizationCreateFuture) Result(client OrganizationClient) (or OrganizationResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "confluent.OrganizationCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("confluent.OrganizationCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if or.Response.Response, err = future.GetResult(sender); err == nil && or.Response.Response.StatusCode != http.StatusNoContent {
-		or, err = client.CreateResponder(or.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "confluent.OrganizationCreateFuture", "Result", or.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(OrganizationClient) (OrganizationResource, error)
 }
 
 // OrganizationDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type OrganizationDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *OrganizationDeleteFuture) Result(client OrganizationClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "confluent.OrganizationDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("confluent.OrganizationDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(OrganizationClient) (autorest.Response, error)
 }
 
 // OrganizationResource organization resource.

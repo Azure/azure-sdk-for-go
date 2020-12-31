@@ -45,117 +45,37 @@ type CanceledSubscriptionID struct {
 
 // CreateAliasFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type CreateAliasFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *CreateAliasFuture) Result(client Client) (par PutAliasResponse, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.CreateAliasFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("subscription.CreateAliasFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if par.Response.Response, err = future.GetResult(sender); err == nil && par.Response.Response.StatusCode != http.StatusNoContent {
-		par, err = client.CreateAliasResponder(par.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "subscription.CreateAliasFuture", "Result", par.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(Client) (PutAliasResponse, error)
 }
 
 // CreateCspSubscriptionFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type CreateCspSubscriptionFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *CreateCspSubscriptionFuture) Result(client Client) (cr CreationResult, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.CreateCspSubscriptionFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("subscription.CreateCspSubscriptionFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if cr.Response.Response, err = future.GetResult(sender); err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
-		cr, err = client.CreateCspSubscriptionResponder(cr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "subscription.CreateCspSubscriptionFuture", "Result", cr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(Client) (CreationResult, error)
 }
 
 // CreateSubscriptionFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type CreateSubscriptionFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *CreateSubscriptionFuture) Result(client Client) (cr CreationResult, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.CreateSubscriptionFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("subscription.CreateSubscriptionFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if cr.Response.Response, err = future.GetResult(sender); err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
-		cr, err = client.CreateSubscriptionResponder(cr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "subscription.CreateSubscriptionFuture", "Result", cr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(Client) (CreationResult, error)
 }
 
 // CreateSubscriptionInEnrollmentAccountFuture an abstraction for monitoring and retrieving the results of
 // a long-running operation.
 type CreateSubscriptionInEnrollmentAccountFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *CreateSubscriptionInEnrollmentAccountFuture) Result(client Client) (cr CreationResult, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.CreateSubscriptionInEnrollmentAccountFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("subscription.CreateSubscriptionInEnrollmentAccountFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if cr.Response.Response, err = future.GetResult(sender); err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
-		cr, err = client.CreateSubscriptionInEnrollmentAccountResponder(cr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "subscription.CreateSubscriptionInEnrollmentAccountFuture", "Result", cr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(Client) (CreationResult, error)
 }
 
 // CreationParameters subscription Creation Parameters required to create a new Azure subscription.

@@ -373,24 +373,10 @@ type EnvironmentPropertiesFragment struct {
 // EnvironmentsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type EnvironmentsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *EnvironmentsDeleteFuture) Result(client EnvironmentsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(EnvironmentsClient) (autorest.Response, error)
 }
 
 // EnvironmentSetting represents settings of an environment, from which environment instances would be
@@ -669,99 +655,37 @@ type EnvironmentSettingPropertiesFragment struct {
 // EnvironmentSettingsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type EnvironmentSettingsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *EnvironmentSettingsCreateOrUpdateFuture) Result(client EnvironmentSettingsClient) (es EnvironmentSetting, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentSettingsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if es.Response.Response, err = future.GetResult(sender); err == nil && es.Response.Response.StatusCode != http.StatusNoContent {
-		es, err = client.CreateOrUpdateResponder(es.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsCreateOrUpdateFuture", "Result", es.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(EnvironmentSettingsClient) (EnvironmentSetting, error)
 }
 
 // EnvironmentSettingsDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type EnvironmentSettingsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *EnvironmentSettingsDeleteFuture) Result(client EnvironmentSettingsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentSettingsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(EnvironmentSettingsClient) (autorest.Response, error)
 }
 
 // EnvironmentSettingsStartFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type EnvironmentSettingsStartFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *EnvironmentSettingsStartFuture) Result(client EnvironmentSettingsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsStartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentSettingsStartFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(EnvironmentSettingsClient) (autorest.Response, error)
 }
 
 // EnvironmentSettingsStopFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type EnvironmentSettingsStopFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *EnvironmentSettingsStopFuture) Result(client EnvironmentSettingsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsStopFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentSettingsStopFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(EnvironmentSettingsClient) (autorest.Response, error)
 }
 
 // EnvironmentSize represents a size category supported by this Lab Account (small, medium or large)
@@ -802,70 +726,28 @@ type EnvironmentSizeFragment struct {
 // EnvironmentsResetPasswordFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type EnvironmentsResetPasswordFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *EnvironmentsResetPasswordFuture) Result(client EnvironmentsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsResetPasswordFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentsResetPasswordFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(EnvironmentsClient) (autorest.Response, error)
 }
 
 // EnvironmentsStartFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type EnvironmentsStartFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *EnvironmentsStartFuture) Result(client EnvironmentsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsStartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentsStartFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(EnvironmentsClient) (autorest.Response, error)
 }
 
 // EnvironmentsStopFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type EnvironmentsStopFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *EnvironmentsStopFuture) Result(client EnvironmentsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsStopFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentsStopFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(EnvironmentsClient) (autorest.Response, error)
 }
 
 // GalleryImage represents an image from the Azure Marketplace
@@ -1186,70 +1068,28 @@ type GetRegionalAvailabilityResponse struct {
 // GlobalUsersResetPasswordFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type GlobalUsersResetPasswordFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *GlobalUsersResetPasswordFuture) Result(client GlobalUsersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersResetPasswordFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("labservices.GlobalUsersResetPasswordFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(GlobalUsersClient) (autorest.Response, error)
 }
 
 // GlobalUsersStartEnvironmentFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type GlobalUsersStartEnvironmentFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *GlobalUsersStartEnvironmentFuture) Result(client GlobalUsersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersStartEnvironmentFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("labservices.GlobalUsersStartEnvironmentFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(GlobalUsersClient) (autorest.Response, error)
 }
 
 // GlobalUsersStopEnvironmentFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type GlobalUsersStopEnvironmentFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *GlobalUsersStopEnvironmentFuture) Result(client GlobalUsersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersStopEnvironmentFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("labservices.GlobalUsersStopEnvironmentFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(GlobalUsersClient) (autorest.Response, error)
 }
 
 // Lab represents a lab.
@@ -1596,24 +1436,10 @@ type LabAccountPropertiesFragment struct {
 // LabAccountsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type LabAccountsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *LabAccountsDeleteFuture) Result(client LabAccountsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.LabAccountsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("labservices.LabAccountsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(LabAccountsClient) (autorest.Response, error)
 }
 
 // LabCreationParameters settings related to creating a lab
@@ -1812,24 +1638,10 @@ type LabPropertiesFragment struct {
 
 // LabsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type LabsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *LabsDeleteFuture) Result(client LabsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.LabsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("labservices.LabsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(LabsClient) (autorest.Response, error)
 }
 
 // LatestOperationResult details of the status of an operation.
@@ -3540,24 +3352,10 @@ type UserPropertiesFragment struct {
 
 // UsersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type UsersDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *UsersDeleteFuture) Result(client UsersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.UsersDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("labservices.UsersDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(UsersClient) (autorest.Response, error)
 }
 
 // VirtualMachineDetails details of the backing virtual machine.

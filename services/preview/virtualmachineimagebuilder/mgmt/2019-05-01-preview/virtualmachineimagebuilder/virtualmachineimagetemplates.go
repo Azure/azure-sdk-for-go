@@ -62,8 +62,7 @@ func (client VirtualMachineImageTemplatesClient) CreateOrUpdate(ctx context.Cont
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.ImageTemplateProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.ImageTemplateProperties.Source", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.ImageTemplateProperties.Distribute", Name: validation.Null, Rule: true, Chain: nil},
+				Chain: []validation.Constraint{{Target: "parameters.ImageTemplateProperties.Distribute", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.ImageTemplateProperties.BuildTimeoutInMinutes", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "parameters.ImageTemplateProperties.BuildTimeoutInMinutes", Name: validation.InclusiveMaximum, Rule: int64(960), Chain: nil},
 							{Target: "parameters.ImageTemplateProperties.BuildTimeoutInMinutes", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
@@ -82,7 +81,7 @@ func (client VirtualMachineImageTemplatesClient) CreateOrUpdate(ctx context.Cont
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -120,7 +119,29 @@ func (client VirtualMachineImageTemplatesClient) CreateOrUpdateSender(req *http.
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachineImageTemplatesClient) (it ImageTemplate, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplatesCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if it.Response.Response, err = future.GetResult(sender); err == nil && it.Response.Response.StatusCode != http.StatusNoContent {
+			it, err = client.CreateOrUpdateResponder(it.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesCreateOrUpdateFuture", "Result", it.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -165,7 +186,7 @@ func (client VirtualMachineImageTemplatesClient) Delete(ctx context.Context, res
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -201,7 +222,23 @@ func (client VirtualMachineImageTemplatesClient) DeleteSender(req *http.Request)
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachineImageTemplatesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplatesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -417,6 +454,7 @@ func (client VirtualMachineImageTemplatesClient) List(ctx context.Context) (resu
 	}
 	if result.itlr.hasNextLink() && result.itlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -476,7 +514,6 @@ func (client VirtualMachineImageTemplatesClient) listNextResults(ctx context.Con
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -532,6 +569,7 @@ func (client VirtualMachineImageTemplatesClient) ListByResourceGroup(ctx context
 	}
 	if result.itlr.hasNextLink() && result.itlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -592,7 +630,6 @@ func (client VirtualMachineImageTemplatesClient) listByResourceGroupNextResults(
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -655,6 +692,7 @@ func (client VirtualMachineImageTemplatesClient) ListRunOutputs(ctx context.Cont
 	}
 	if result.roc.hasNextLink() && result.roc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -716,7 +754,6 @@ func (client VirtualMachineImageTemplatesClient) listRunOutputsNextResults(ctx c
 	result, err = client.ListRunOutputsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesClient", "listRunOutputsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -766,7 +803,7 @@ func (client VirtualMachineImageTemplatesClient) Run(ctx context.Context, resour
 
 	result, err = client.RunSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesClient", "Run", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesClient", "Run", nil, "Failure sending request")
 		return
 	}
 
@@ -802,7 +839,23 @@ func (client VirtualMachineImageTemplatesClient) RunSender(req *http.Request) (f
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachineImageTemplatesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesRunFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplatesRunFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -847,7 +900,7 @@ func (client VirtualMachineImageTemplatesClient) Update(ctx context.Context, par
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -885,7 +938,29 @@ func (client VirtualMachineImageTemplatesClient) UpdateSender(req *http.Request)
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachineImageTemplatesClient) (it ImageTemplate, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplatesUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if it.Response.Response, err = future.GetResult(sender); err == nil && it.Response.Response.StatusCode != http.StatusNoContent {
+			it, err = client.UpdateResponder(it.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesUpdateFuture", "Result", it.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

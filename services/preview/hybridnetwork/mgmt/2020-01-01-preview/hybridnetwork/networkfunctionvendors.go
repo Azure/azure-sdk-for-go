@@ -82,6 +82,7 @@ func (client NetworkFunctionVendorsClient) List(ctx context.Context) (result Net
 	}
 	if result.nfvlr.hasNextLink() && result.nfvlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -141,7 +142,6 @@ func (client NetworkFunctionVendorsClient) listNextResults(ctx context.Context, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionVendorsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

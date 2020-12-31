@@ -87,7 +87,7 @@ func (client StorageTargetsClient) Create(ctx context.Context, resourceGroupName
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -132,7 +132,29 @@ func (client StorageTargetsClient) CreateSender(req *http.Request) (future Stora
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client StorageTargetsClient) (st StorageTarget, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storagecache.StorageTargetsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if st.Response.Response, err = future.GetResult(sender); err == nil && st.Response.Response.StatusCode != http.StatusNoContent {
+			st, err = client.CreateResponder(st.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsCreateFuture", "Result", st.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -181,7 +203,7 @@ func (client StorageTargetsClient) Delete(ctx context.Context, resourceGroupName
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -218,7 +240,29 @@ func (client StorageTargetsClient) DeleteSender(req *http.Request) (future Stora
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client StorageTargetsClient) (so SetObject, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storagecache.StorageTargetsDeleteFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+			so, err = client.DeleteResponder(so.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsDeleteFuture", "Result", so.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -362,6 +406,7 @@ func (client StorageTargetsClient) ListByCache(ctx context.Context, resourceGrou
 	}
 	if result.str.hasNextLink() && result.str.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -423,7 +468,6 @@ func (client StorageTargetsClient) listByCacheNextResults(ctx context.Context, l
 	result, err = client.ListByCacheResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsClient", "listByCacheNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -157,6 +157,7 @@ func (client VCenterClient) GetAllVCentersInSite(ctx context.Context, subscripti
 	}
 	if result.vcc.hasNextLink() && result.vcc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -220,7 +221,6 @@ func (client VCenterClient) getAllVCentersInSiteNextResults(ctx context.Context,
 	result, err = client.GetAllVCentersInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.VCenterClient", "getAllVCentersInSiteNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

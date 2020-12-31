@@ -1,7 +1,30 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/b08824e05817297a4b2874d8db5e6fc8c29349c9
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator C:\Users\dapzhang\Documents\workspace\autorest.go
 
 ## Breaking Changes
 
-- Function `NewDedicatedHsmListResultPage` parameter(s) have been changed from `(func(context.Context, DedicatedHsmListResult) (DedicatedHsmListResult, error))` to `(DedicatedHsmListResult, func(context.Context, DedicatedHsmListResult) (DedicatedHsmListResult, error))`
+### Removed Funcs
+
+1. *DedicatedHsmCreateOrUpdateFuture.Result(DedicatedHsmClient) (DedicatedHsm, error)
+1. *DedicatedHsmDeleteFuture.Result(DedicatedHsmClient) (autorest.Response, error)
+1. *DedicatedHsmUpdateFuture.Result(DedicatedHsmClient) (DedicatedHsm, error)
+
+## Struct Changes
+
+### Removed Struct Fields
+
+1. DedicatedHsmCreateOrUpdateFuture.azure.Future
+1. DedicatedHsmDeleteFuture.azure.Future
+1. DedicatedHsmUpdateFuture.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. DedicatedHsmCreateOrUpdateFuture.Result
+1. DedicatedHsmCreateOrUpdateFuture.azure.FutureAPI
+1. DedicatedHsmDeleteFuture.Result
+1. DedicatedHsmDeleteFuture.azure.FutureAPI
+1. DedicatedHsmUpdateFuture.Result
+1. DedicatedHsmUpdateFuture.azure.FutureAPI

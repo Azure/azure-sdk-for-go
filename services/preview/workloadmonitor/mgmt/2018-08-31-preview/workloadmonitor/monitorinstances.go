@@ -199,6 +199,7 @@ func (client MonitorInstancesClient) ListByResource(ctx context.Context, resourc
 	}
 	if result.mic.hasNextLink() && result.mic.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -283,7 +284,6 @@ func (client MonitorInstancesClient) listByResourceNextResults(ctx context.Conte
 	result, err = client.ListByResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.MonitorInstancesClient", "listByResourceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

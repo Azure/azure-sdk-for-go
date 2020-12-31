@@ -385,6 +385,7 @@ func (client BaseClient) ListGeoRegions(ctx context.Context, sku SkuName, linuxW
 	}
 	if result.grc.hasNextLink() && result.grc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -450,7 +451,6 @@ func (client BaseClient) listGeoRegionsNextResults(ctx context.Context, lastResu
 	result, err = client.ListGeoRegionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "listGeoRegionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -504,6 +504,7 @@ func (client BaseClient) ListPremierAddOnOffers(ctx context.Context) (result Pre
 	}
 	if result.paooc.hasNextLink() && result.paooc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -563,7 +564,6 @@ func (client BaseClient) listPremierAddOnOffersNextResults(ctx context.Context, 
 	result, err = client.ListPremierAddOnOffersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "listPremierAddOnOffersNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -619,6 +619,7 @@ func (client BaseClient) ListSiteIdentifiersAssignedToHostName(ctx context.Conte
 	}
 	if result.ic.hasNextLink() && result.ic.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -680,7 +681,6 @@ func (client BaseClient) listSiteIdentifiersAssignedToHostNameNextResults(ctx co
 	result, err = client.ListSiteIdentifiersAssignedToHostNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "listSiteIdentifiersAssignedToHostNameNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -805,6 +805,7 @@ func (client BaseClient) ListSourceControls(ctx context.Context) (result SourceC
 	}
 	if result.scc.hasNextLink() && result.scc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -860,7 +861,6 @@ func (client BaseClient) listSourceControlsNextResults(ctx context.Context, last
 	result, err = client.ListSourceControlsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "listSourceControlsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

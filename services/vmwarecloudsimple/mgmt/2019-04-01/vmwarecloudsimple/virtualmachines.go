@@ -83,7 +83,7 @@ func (client VirtualMachinesClient) CreateOrUpdate(ctx context.Context, resource
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -125,7 +125,29 @@ func (client VirtualMachinesClient) CreateOrUpdateSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachinesClient) (VM VirtualMachine, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachinesCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if VM.Response.Response, err = future.GetResult(sender); err == nil && VM.Response.Response.StatusCode != http.StatusNoContent {
+			VM, err = client.CreateOrUpdateResponder(VM.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesCreateOrUpdateFuture", "Result", VM.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -164,7 +186,7 @@ func (client VirtualMachinesClient) Delete(ctx context.Context, resourceGroupNam
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -201,7 +223,23 @@ func (client VirtualMachinesClient) DeleteSender(req *http.Request) (future Virt
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachinesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachinesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -330,6 +368,7 @@ func (client VirtualMachinesClient) ListByResourceGroup(ctx context.Context, res
 	}
 	if result.vmlr.hasNextLink() && result.vmlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -399,7 +438,6 @@ func (client VirtualMachinesClient) listByResourceGroupNextResults(ctx context.C
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -457,6 +495,7 @@ func (client VirtualMachinesClient) ListBySubscription(ctx context.Context, filt
 	}
 	if result.vmlr.hasNextLink() && result.vmlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -525,7 +564,6 @@ func (client VirtualMachinesClient) listBySubscriptionNextResults(ctx context.Co
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -569,7 +607,7 @@ func (client VirtualMachinesClient) Start(ctx context.Context, resourceGroupName
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "Start", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "Start", nil, "Failure sending request")
 		return
 	}
 
@@ -606,7 +644,23 @@ func (client VirtualMachinesClient) StartSender(req *http.Request) (future Virtu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachinesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesStartFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachinesStartFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -646,7 +700,7 @@ func (client VirtualMachinesClient) Stop(ctx context.Context, resourceGroupName 
 
 	result, err = client.StopSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "Stop", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "Stop", nil, "Failure sending request")
 		return
 	}
 
@@ -691,7 +745,23 @@ func (client VirtualMachinesClient) StopSender(req *http.Request) (future Virtua
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachinesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesStopFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachinesStopFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -730,7 +800,7 @@ func (client VirtualMachinesClient) Update(ctx context.Context, resourceGroupNam
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -768,7 +838,29 @@ func (client VirtualMachinesClient) UpdateSender(req *http.Request) (future Virt
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachinesClient) (VM VirtualMachine, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachinesUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if VM.Response.Response, err = future.GetResult(sender); err == nil && VM.Response.Response.StatusCode != http.StatusNoContent {
+			VM, err = client.UpdateResponder(VM.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesUpdateFuture", "Result", VM.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

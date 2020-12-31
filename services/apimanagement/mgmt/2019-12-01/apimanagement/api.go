@@ -81,7 +81,7 @@ func (client APIClient) CreateOrUpdate(ctx context.Context, resourceGroupName st
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -124,7 +124,29 @@ func (client APIClient) CreateOrUpdateSender(req *http.Request) (future APICreat
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client APIClient) (ac APIContract, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.APICreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("apimanagement.APICreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ac.Response.Response, err = future.GetResult(sender); err == nil && ac.Response.Response.StatusCode != http.StatusNoContent {
+			ac, err = client.CreateOrUpdateResponder(ac.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "apimanagement.APICreateOrUpdateFuture", "Result", ac.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -479,6 +501,7 @@ func (client APIClient) ListByService(ctx context.Context, resourceGroupName str
 	}
 	if result.ac.hasNextLink() && result.ac.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -555,7 +578,6 @@ func (client APIClient) listByServiceNextResults(ctx context.Context, lastResult
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "listByServiceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -639,6 +661,7 @@ func (client APIClient) ListByTags(ctx context.Context, resourceGroupName string
 	}
 	if result.trc.hasNextLink() && result.trc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -712,7 +735,6 @@ func (client APIClient) listByTagsNextResults(ctx context.Context, lastResults T
 	result, err = client.ListByTagsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "listByTagsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

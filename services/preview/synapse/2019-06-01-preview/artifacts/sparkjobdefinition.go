@@ -182,7 +182,7 @@ func (client SparkJobDefinitionClient) DebugSparkJobDefinition(ctx context.Conte
 
 	result, err = client.DebugSparkJobDefinitionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "DebugSparkJobDefinition", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "DebugSparkJobDefinition", nil, "Failure sending request")
 		return
 	}
 
@@ -218,7 +218,29 @@ func (client SparkJobDefinitionClient) DebugSparkJobDefinitionSender(req *http.R
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SparkJobDefinitionClient) (sbj SparkBatchJob, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionDebugSparkJobDefinitionFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.SparkJobDefinitionDebugSparkJobDefinitionFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if sbj.Response.Response, err = future.GetResult(sender); err == nil && sbj.Response.Response.StatusCode != http.StatusNoContent {
+			sbj, err = client.DebugSparkJobDefinitionResponder(sbj.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionDebugSparkJobDefinitionFuture", "Result", sbj.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -332,7 +354,7 @@ func (client SparkJobDefinitionClient) ExecuteSparkJobDefinition(ctx context.Con
 
 	result, err = client.ExecuteSparkJobDefinitionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "ExecuteSparkJobDefinition", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "ExecuteSparkJobDefinition", nil, "Failure sending request")
 		return
 	}
 
@@ -370,7 +392,29 @@ func (client SparkJobDefinitionClient) ExecuteSparkJobDefinitionSender(req *http
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SparkJobDefinitionClient) (sbj SparkBatchJob, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionExecuteSparkJobDefinitionFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.SparkJobDefinitionExecuteSparkJobDefinitionFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if sbj.Response.Response, err = future.GetResult(sender); err == nil && sbj.Response.Response.StatusCode != http.StatusNoContent {
+			sbj, err = client.ExecuteSparkJobDefinitionResponder(sbj.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionExecuteSparkJobDefinitionFuture", "Result", sbj.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -502,6 +546,7 @@ func (client SparkJobDefinitionClient) GetSparkJobDefinitionsByWorkspace(ctx con
 	}
 	if result.sjdlr.hasNextLink() && result.sjdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -561,7 +606,6 @@ func (client SparkJobDefinitionClient) getSparkJobDefinitionsByWorkspaceNextResu
 	result, err = client.GetSparkJobDefinitionsByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "getSparkJobDefinitionsByWorkspaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -615,7 +659,7 @@ func (client SparkJobDefinitionClient) RenameSparkJobDefinition(ctx context.Cont
 
 	result, err = client.RenameSparkJobDefinitionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "RenameSparkJobDefinition", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "RenameSparkJobDefinition", nil, "Failure sending request")
 		return
 	}
 
@@ -655,7 +699,23 @@ func (client SparkJobDefinitionClient) RenameSparkJobDefinitionSender(req *http.
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SparkJobDefinitionClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionRenameSparkJobDefinitionFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.SparkJobDefinitionRenameSparkJobDefinitionFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

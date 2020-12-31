@@ -1084,6 +1084,7 @@ func (client PoolClient) List(ctx context.Context, filter string, selectParamete
 	}
 	if result.cplr.hasNextLink() && result.cplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1177,7 +1178,6 @@ func (client PoolClient) listNextResults(ctx context.Context, lastResults CloudP
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1260,6 +1260,7 @@ func (client PoolClient) ListUsageMetrics(ctx context.Context, startTime *date.T
 	}
 	if result.plumr.hasNextLink() && result.plumr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1353,7 +1354,6 @@ func (client PoolClient) listUsageMetricsNextResults(ctx context.Context, lastRe
 	result, err = client.ListUsageMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "listUsageMetricsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

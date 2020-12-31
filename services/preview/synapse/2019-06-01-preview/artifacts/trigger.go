@@ -57,9 +57,7 @@ func (client TriggerClient) CreateOrUpdateTrigger(ctx context.Context, triggerNa
 		{TargetValue: triggerName,
 			Constraints: []validation.Constraint{{Target: "triggerName", Name: validation.MaxLength, Rule: 260, Chain: nil},
 				{Target: "triggerName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "triggerName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}},
-		{TargetValue: trigger,
-			Constraints: []validation.Constraint{{Target: "trigger.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "triggerName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("artifacts.TriggerClient", "CreateOrUpdateTrigger", err.Error())
 	}
 
@@ -71,7 +69,7 @@ func (client TriggerClient) CreateOrUpdateTrigger(ctx context.Context, triggerNa
 
 	result, err = client.CreateOrUpdateTriggerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "CreateOrUpdateTrigger", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "CreateOrUpdateTrigger", nil, "Failure sending request")
 		return
 	}
 
@@ -115,7 +113,29 @@ func (client TriggerClient) CreateOrUpdateTriggerSender(req *http.Request) (futu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client TriggerClient) (tr TriggerResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.TriggerCreateOrUpdateTriggerFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.TriggerCreateOrUpdateTriggerFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if tr.Response.Response, err = future.GetResult(sender); err == nil && tr.Response.Response.StatusCode != http.StatusNoContent {
+			tr, err = client.CreateOrUpdateTriggerResponder(tr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "artifacts.TriggerCreateOrUpdateTriggerFuture", "Result", tr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -161,7 +181,7 @@ func (client TriggerClient) DeleteTrigger(ctx context.Context, triggerName strin
 
 	result, err = client.DeleteTriggerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "DeleteTrigger", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "DeleteTrigger", nil, "Failure sending request")
 		return
 	}
 
@@ -199,7 +219,23 @@ func (client TriggerClient) DeleteTriggerSender(req *http.Request) (future Trigg
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client TriggerClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.TriggerDeleteTriggerFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.TriggerDeleteTriggerFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -423,6 +459,7 @@ func (client TriggerClient) GetTriggersByWorkspace(ctx context.Context) (result 
 	}
 	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -482,7 +519,6 @@ func (client TriggerClient) getTriggersByWorkspaceNextResults(ctx context.Contex
 	result, err = client.GetTriggersByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "getTriggersByWorkspaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -533,7 +569,7 @@ func (client TriggerClient) StartTrigger(ctx context.Context, triggerName string
 
 	result, err = client.StartTriggerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "StartTrigger", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "StartTrigger", nil, "Failure sending request")
 		return
 	}
 
@@ -571,7 +607,23 @@ func (client TriggerClient) StartTriggerSender(req *http.Request) (future Trigge
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client TriggerClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.TriggerStartTriggerFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.TriggerStartTriggerFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -616,7 +668,7 @@ func (client TriggerClient) StopTrigger(ctx context.Context, triggerName string)
 
 	result, err = client.StopTriggerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "StopTrigger", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "StopTrigger", nil, "Failure sending request")
 		return
 	}
 
@@ -654,7 +706,23 @@ func (client TriggerClient) StopTriggerSender(req *http.Request) (future Trigger
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client TriggerClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.TriggerStopTriggerFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.TriggerStopTriggerFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -699,7 +767,7 @@ func (client TriggerClient) SubscribeTriggerToEvents(ctx context.Context, trigge
 
 	result, err = client.SubscribeTriggerToEventsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "SubscribeTriggerToEvents", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "SubscribeTriggerToEvents", nil, "Failure sending request")
 		return
 	}
 
@@ -737,7 +805,29 @@ func (client TriggerClient) SubscribeTriggerToEventsSender(req *http.Request) (f
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client TriggerClient) (tsos TriggerSubscriptionOperationStatus, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.TriggerSubscribeTriggerToEventsFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.TriggerSubscribeTriggerToEventsFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if tsos.Response.Response, err = future.GetResult(sender); err == nil && tsos.Response.Response.StatusCode != http.StatusNoContent {
+			tsos, err = client.SubscribeTriggerToEventsResponder(tsos.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "artifacts.TriggerSubscribeTriggerToEventsFuture", "Result", tsos.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -783,7 +873,7 @@ func (client TriggerClient) UnsubscribeTriggerFromEvents(ctx context.Context, tr
 
 	result, err = client.UnsubscribeTriggerFromEventsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "UnsubscribeTriggerFromEvents", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "UnsubscribeTriggerFromEvents", nil, "Failure sending request")
 		return
 	}
 
@@ -821,7 +911,29 @@ func (client TriggerClient) UnsubscribeTriggerFromEventsSender(req *http.Request
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client TriggerClient) (tsos TriggerSubscriptionOperationStatus, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.TriggerUnsubscribeTriggerFromEventsFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.TriggerUnsubscribeTriggerFromEventsFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if tsos.Response.Response, err = future.GetResult(sender); err == nil && tsos.Response.Response.StatusCode != http.StatusNoContent {
+			tsos, err = client.UnsubscribeTriggerFromEventsResponder(tsos.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "artifacts.TriggerUnsubscribeTriggerFromEventsFuture", "Result", tsos.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

@@ -84,6 +84,7 @@ func (client RegionsClient) ListBySku(ctx context.Context, sku string) (result M
 	}
 	if result.mrlr.hasNextLink() && result.mrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -96,7 +97,7 @@ func (client RegionsClient) ListBySkuPreparer(ctx context.Context, sku string) (
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -144,7 +145,6 @@ func (client RegionsClient) listBySkuNextResults(ctx context.Context, lastResult
 	result, err = client.ListBySkuResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.RegionsClient", "listBySkuNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

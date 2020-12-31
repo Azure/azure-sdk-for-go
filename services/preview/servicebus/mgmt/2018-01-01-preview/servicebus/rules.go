@@ -121,7 +121,7 @@ func (client RulesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGr
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -223,7 +223,7 @@ func (client RulesClient) DeletePreparer(ctx context.Context, resourceGroupName 
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -322,7 +322,7 @@ func (client RulesClient) GetPreparer(ctx context.Context, resourceGroupName str
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -420,6 +420,7 @@ func (client RulesClient) ListBySubscriptions(ctx context.Context, resourceGroup
 	}
 	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -435,7 +436,7 @@ func (client RulesClient) ListBySubscriptionsPreparer(ctx context.Context, resou
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -489,7 +490,6 @@ func (client RulesClient) listBySubscriptionsNextResults(ctx context.Context, la
 	result, err = client.ListBySubscriptionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.RulesClient", "listBySubscriptionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

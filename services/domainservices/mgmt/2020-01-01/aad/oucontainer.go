@@ -76,7 +76,7 @@ func (client OuContainerClient) Create(ctx context.Context, resourceGroupName st
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "aad.OuContainerClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "aad.OuContainerClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -115,7 +115,29 @@ func (client OuContainerClient) CreateSender(req *http.Request) (future OuContai
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client OuContainerClient) (oc OuContainer, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "aad.OuContainerCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("aad.OuContainerCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if oc.Response.Response, err = future.GetResult(sender); err == nil && oc.Response.Response.StatusCode != http.StatusNoContent {
+			oc, err = client.CreateResponder(oc.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "aad.OuContainerCreateFuture", "Result", oc.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -164,7 +186,7 @@ func (client OuContainerClient) Delete(ctx context.Context, resourceGroupName st
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "aad.OuContainerClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "aad.OuContainerClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -201,7 +223,23 @@ func (client OuContainerClient) DeleteSender(req *http.Request) (future OuContai
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client OuContainerClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "aad.OuContainerDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("aad.OuContainerDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -348,6 +386,7 @@ func (client OuContainerClient) List(ctx context.Context, resourceGroupName stri
 	}
 	if result.oclr.hasNextLink() && result.oclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -409,7 +448,6 @@ func (client OuContainerClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.OuContainerClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -464,7 +502,7 @@ func (client OuContainerClient) Update(ctx context.Context, resourceGroupName st
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "aad.OuContainerClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "aad.OuContainerClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -503,7 +541,29 @@ func (client OuContainerClient) UpdateSender(req *http.Request) (future OuContai
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client OuContainerClient) (oc OuContainer, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "aad.OuContainerUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("aad.OuContainerUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if oc.Response.Response, err = future.GetResult(sender); err == nil && oc.Response.Response.StatusCode != http.StatusNoContent {
+			oc, err = client.UpdateResponder(oc.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "aad.OuContainerUpdateFuture", "Result", oc.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

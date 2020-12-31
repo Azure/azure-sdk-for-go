@@ -253,6 +253,7 @@ func (client AuthorizationPoliciesClient) ListByHub(ctx context.Context, resourc
 	}
 	if result.aplr.hasNextLink() && result.aplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -314,7 +315,6 @@ func (client AuthorizationPoliciesClient) listByHubNextResults(ctx context.Conte
 	result, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "listByHubNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

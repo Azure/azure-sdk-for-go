@@ -68,7 +68,7 @@ func (client ReplicationNetworkMappingsClient) Create(ctx context.Context, fabri
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationNetworkMappingsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationNetworkMappingsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -109,7 +109,29 @@ func (client ReplicationNetworkMappingsClient) CreateSender(req *http.Request) (
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ReplicationNetworkMappingsClient) (nm NetworkMapping, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationNetworkMappingsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("siterecovery.ReplicationNetworkMappingsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if nm.Response.Response, err = future.GetResult(sender); err == nil && nm.Response.Response.StatusCode != http.StatusNoContent {
+			nm, err = client.CreateResponder(nm.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationNetworkMappingsCreateFuture", "Result", nm.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -149,7 +171,7 @@ func (client ReplicationNetworkMappingsClient) Delete(ctx context.Context, fabri
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationNetworkMappingsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationNetworkMappingsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -188,7 +210,23 @@ func (client ReplicationNetworkMappingsClient) DeleteSender(req *http.Request) (
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ReplicationNetworkMappingsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationNetworkMappingsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("siterecovery.ReplicationNetworkMappingsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -316,6 +354,7 @@ func (client ReplicationNetworkMappingsClient) List(ctx context.Context) (result
 	}
 	if result.nmc.hasNextLink() && result.nmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -377,7 +416,6 @@ func (client ReplicationNetworkMappingsClient) listNextResults(ctx context.Conte
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationNetworkMappingsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -434,6 +472,7 @@ func (client ReplicationNetworkMappingsClient) ListByReplicationNetworks(ctx con
 	}
 	if result.nmc.hasNextLink() && result.nmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -497,7 +536,6 @@ func (client ReplicationNetworkMappingsClient) listByReplicationNetworksNextResu
 	result, err = client.ListByReplicationNetworksResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationNetworkMappingsClient", "listByReplicationNetworksNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -543,7 +581,7 @@ func (client ReplicationNetworkMappingsClient) Update(ctx context.Context, fabri
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationNetworkMappingsClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationNetworkMappingsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -584,7 +622,29 @@ func (client ReplicationNetworkMappingsClient) UpdateSender(req *http.Request) (
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ReplicationNetworkMappingsClient) (nm NetworkMapping, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationNetworkMappingsUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("siterecovery.ReplicationNetworkMappingsUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if nm.Response.Response, err = future.GetResult(sender); err == nil && nm.Response.Response.StatusCode != http.StatusNoContent {
+			nm, err = client.UpdateResponder(nm.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationNetworkMappingsUpdateFuture", "Result", nm.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

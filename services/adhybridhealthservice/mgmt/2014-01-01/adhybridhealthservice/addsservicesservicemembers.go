@@ -158,6 +158,7 @@ func (client AddsServicesServiceMembersClient) List(ctx context.Context, service
 	}
 	if result.sm.hasNextLink() && result.sm.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -226,7 +227,6 @@ func (client AddsServicesServiceMembersClient) listNextResults(ctx context.Conte
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesServiceMembersClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

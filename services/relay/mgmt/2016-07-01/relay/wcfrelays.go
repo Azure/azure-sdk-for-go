@@ -662,6 +662,7 @@ func (client WCFRelaysClient) ListAuthorizationRules(ctx context.Context, resour
 	}
 	if result.arlr.hasNextLink() && result.arlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -724,7 +725,6 @@ func (client WCFRelaysClient) listAuthorizationRulesNextResults(ctx context.Cont
 	result, err = client.ListAuthorizationRulesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "relay.WCFRelaysClient", "listAuthorizationRulesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -791,6 +791,7 @@ func (client WCFRelaysClient) ListByNamespace(ctx context.Context, resourceGroup
 	}
 	if result.wrlr.hasNextLink() && result.wrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -852,7 +853,6 @@ func (client WCFRelaysClient) listByNamespaceNextResults(ctx context.Context, la
 	result, err = client.ListByNamespaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "relay.WCFRelaysClient", "listByNamespaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1019,6 +1019,7 @@ func (client WCFRelaysClient) ListPostAuthorizationRules(ctx context.Context, re
 	}
 	if result.arlr.hasNextLink() && result.arlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1081,7 +1082,6 @@ func (client WCFRelaysClient) listPostAuthorizationRulesNextResults(ctx context.
 	result, err = client.ListPostAuthorizationRulesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "relay.WCFRelaysClient", "listPostAuthorizationRulesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -230,6 +230,7 @@ func (client SubscriptionsClient) ListByBillingAccountName(ctx context.Context, 
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -289,7 +290,6 @@ func (client SubscriptionsClient) listByBillingAccountNameNextResults(ctx contex
 	result, err = client.ListByBillingAccountNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "listByBillingAccountNameNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -346,6 +346,7 @@ func (client SubscriptionsClient) ListByBillingProfileName(ctx context.Context, 
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -406,7 +407,6 @@ func (client SubscriptionsClient) listByBillingProfileNameNextResults(ctx contex
 	result, err = client.ListByBillingProfileNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "listByBillingProfileNameNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -463,6 +463,7 @@ func (client SubscriptionsClient) ListByCustomerName(ctx context.Context, billin
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -523,7 +524,6 @@ func (client SubscriptionsClient) listByCustomerNameNextResults(ctx context.Cont
 	result, err = client.ListByCustomerNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "listByCustomerNameNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -580,6 +580,7 @@ func (client SubscriptionsClient) ListByInvoiceSectionName(ctx context.Context, 
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -640,7 +641,6 @@ func (client SubscriptionsClient) listByInvoiceSectionNameNextResults(ctx contex
 	result, err = client.ListByInvoiceSectionNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "listByInvoiceSectionNameNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -686,7 +686,7 @@ func (client SubscriptionsClient) Transfer(ctx context.Context, billingAccountNa
 
 	result, err = client.TransferSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "Transfer", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "Transfer", nil, "Failure sending request")
 		return
 	}
 
@@ -718,7 +718,29 @@ func (client SubscriptionsClient) TransferSender(req *http.Request) (future Subs
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SubscriptionsClient) (tbsr TransferBillingSubscriptionResult, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.SubscriptionsTransferFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("billing.SubscriptionsTransferFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if tbsr.Response.Response, err = future.GetResult(sender); err == nil && tbsr.Response.Response.StatusCode != http.StatusNoContent {
+			tbsr, err = client.TransferResponder(tbsr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "billing.SubscriptionsTransferFuture", "Result", tbsr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

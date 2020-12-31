@@ -235,6 +235,7 @@ func (client Client) List(ctx context.Context, skipToken string) (result ListRes
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -297,7 +298,6 @@ func (client Client) listNextResults(ctx context.Context, lastResults ListResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.Client", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -354,6 +354,7 @@ func (client Client) ListInResourceGroup(ctx context.Context, resourceGroupName 
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -417,7 +418,6 @@ func (client Client) listInResourceGroupNextResults(ctx context.Context, lastRes
 	result, err = client.ListInResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.Client", "listInResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

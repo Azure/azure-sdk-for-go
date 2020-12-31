@@ -511,6 +511,7 @@ func (client FactoriesClient) List(ctx context.Context) (result FactoryListRespo
 	}
 	if result.flr.hasNextLink() && result.flr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -570,7 +571,6 @@ func (client FactoriesClient) listNextResults(ctx context.Context, lastResults F
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -634,6 +634,7 @@ func (client FactoriesClient) ListByResourceGroup(ctx context.Context, resourceG
 	}
 	if result.flr.hasNextLink() && result.flr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -694,7 +695,6 @@ func (client FactoriesClient) listByResourceGroupNextResults(ctx context.Context
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

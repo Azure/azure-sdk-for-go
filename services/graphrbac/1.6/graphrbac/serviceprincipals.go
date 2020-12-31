@@ -312,6 +312,7 @@ func (client ServicePrincipalsClient) List(ctx context.Context, filter string) (
 	}
 	if result.splr.hasNextLink() && result.splr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -370,6 +371,238 @@ func (client ServicePrincipalsClient) ListComplete(ctx context.Context, filter s
 		}()
 	}
 	result.page, err = client.List(ctx, filter)
+	return
+}
+
+// ListAppRoleAssignedTo sends the list app role assigned to request.
+// Parameters:
+// objectID - the object ID of the service principal for which to get owners.
+func (client ServicePrincipalsClient) ListAppRoleAssignedTo(ctx context.Context, objectID string) (result AppRoleAssignmentListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServicePrincipalsClient.ListAppRoleAssignedTo")
+		defer func() {
+			sc := -1
+			if result.aralr.Response.Response != nil {
+				sc = result.aralr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listAppRoleAssignedToNextResults
+	req, err := client.ListAppRoleAssignedToPreparer(ctx, objectID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListAppRoleAssignedTo", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListAppRoleAssignedToSender(req)
+	if err != nil {
+		result.aralr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListAppRoleAssignedTo", resp, "Failure sending request")
+		return
+	}
+
+	result.aralr, err = client.ListAppRoleAssignedToResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListAppRoleAssignedTo", resp, "Failure responding to request")
+		return
+	}
+	if result.aralr.hasNextLink() && result.aralr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+		return
+	}
+
+	return
+}
+
+// ListAppRoleAssignedToPreparer prepares the ListAppRoleAssignedTo request.
+func (client ServicePrincipalsClient) ListAppRoleAssignedToPreparer(ctx context.Context, objectID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"objectId": autorest.Encode("path", objectID),
+		"tenantID": autorest.Encode("path", client.TenantID),
+	}
+
+	const APIVersion = "1.6"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{tenantID}/servicePrincipals/{objectId}/appRoleAssignedTo", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListAppRoleAssignedToSender sends the ListAppRoleAssignedTo request. The method will close the
+// http.Response Body if it receives an error.
+func (client ServicePrincipalsClient) ListAppRoleAssignedToSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListAppRoleAssignedToResponder handles the response to the ListAppRoleAssignedTo request. The method always
+// closes the http.Response Body.
+func (client ServicePrincipalsClient) ListAppRoleAssignedToResponder(resp *http.Response) (result AppRoleAssignmentListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listAppRoleAssignedToNextResults retrieves the next set of results, if any.
+func (client ServicePrincipalsClient) listAppRoleAssignedToNextResults(ctx context.Context, lastResults AppRoleAssignmentListResult) (result AppRoleAssignmentListResult, err error) {
+	req, err := lastResults.appRoleAssignmentListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "listAppRoleAssignedToNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListAppRoleAssignedToSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "listAppRoleAssignedToNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListAppRoleAssignedToResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "listAppRoleAssignedToNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListAppRoleAssignedToComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ServicePrincipalsClient) ListAppRoleAssignedToComplete(ctx context.Context, objectID string) (result AppRoleAssignmentListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServicePrincipalsClient.ListAppRoleAssignedTo")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListAppRoleAssignedTo(ctx, objectID)
+	return
+}
+
+// ListAppRoleAssignments sends the list app role assignments request.
+// Parameters:
+// objectID - the object ID of the service principal for which to get owners.
+func (client ServicePrincipalsClient) ListAppRoleAssignments(ctx context.Context, objectID string) (result AppRoleAssignmentListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServicePrincipalsClient.ListAppRoleAssignments")
+		defer func() {
+			sc := -1
+			if result.aralr.Response.Response != nil {
+				sc = result.aralr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listAppRoleAssignmentsNextResults
+	req, err := client.ListAppRoleAssignmentsPreparer(ctx, objectID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListAppRoleAssignments", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListAppRoleAssignmentsSender(req)
+	if err != nil {
+		result.aralr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListAppRoleAssignments", resp, "Failure sending request")
+		return
+	}
+
+	result.aralr, err = client.ListAppRoleAssignmentsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListAppRoleAssignments", resp, "Failure responding to request")
+		return
+	}
+	if result.aralr.hasNextLink() && result.aralr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+		return
+	}
+
+	return
+}
+
+// ListAppRoleAssignmentsPreparer prepares the ListAppRoleAssignments request.
+func (client ServicePrincipalsClient) ListAppRoleAssignmentsPreparer(ctx context.Context, objectID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"objectId": autorest.Encode("path", objectID),
+		"tenantID": autorest.Encode("path", client.TenantID),
+	}
+
+	const APIVersion = "1.6"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{tenantID}/servicePrincipals/{objectId}/appRoleAssignments", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListAppRoleAssignmentsSender sends the ListAppRoleAssignments request. The method will close the
+// http.Response Body if it receives an error.
+func (client ServicePrincipalsClient) ListAppRoleAssignmentsSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListAppRoleAssignmentsResponder handles the response to the ListAppRoleAssignments request. The method always
+// closes the http.Response Body.
+func (client ServicePrincipalsClient) ListAppRoleAssignmentsResponder(resp *http.Response) (result AppRoleAssignmentListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listAppRoleAssignmentsNextResults retrieves the next set of results, if any.
+func (client ServicePrincipalsClient) listAppRoleAssignmentsNextResults(ctx context.Context, lastResults AppRoleAssignmentListResult) (result AppRoleAssignmentListResult, err error) {
+	req, err := lastResults.appRoleAssignmentListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "listAppRoleAssignmentsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListAppRoleAssignmentsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "listAppRoleAssignmentsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListAppRoleAssignmentsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "listAppRoleAssignmentsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListAppRoleAssignmentsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ServicePrincipalsClient) ListAppRoleAssignmentsComplete(ctx context.Context, objectID string) (result AppRoleAssignmentListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServicePrincipalsClient.ListAppRoleAssignments")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListAppRoleAssignments(ctx, objectID)
 	return
 }
 
@@ -556,6 +789,7 @@ func (client ServicePrincipalsClient) ListOwners(ctx context.Context, objectID s
 	}
 	if result.dolr.hasNextLink() && result.dolr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -616,7 +850,6 @@ func (client ServicePrincipalsClient) listOwnersNextResults(ctx context.Context,
 	result, err = client.ListOwnersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "listOwnersNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

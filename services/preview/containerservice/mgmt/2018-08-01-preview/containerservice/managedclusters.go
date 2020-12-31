@@ -98,7 +98,7 @@ func (client ManagedClustersClient) CreateOrUpdate(ctx context.Context, resource
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -136,7 +136,29 @@ func (client ManagedClustersClient) CreateOrUpdateSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ManagedClustersClient) (mc ManagedCluster, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if mc.Response.Response, err = future.GetResult(sender); err == nil && mc.Response.Response.StatusCode != http.StatusNoContent {
+			mc, err = client.CreateOrUpdateResponder(mc.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersCreateOrUpdateFuture", "Result", mc.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -181,7 +203,7 @@ func (client ManagedClustersClient) Delete(ctx context.Context, resourceGroupNam
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -217,7 +239,23 @@ func (client ManagedClustersClient) DeleteSender(req *http.Request) (future Mana
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ManagedClustersClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -516,6 +554,7 @@ func (client ManagedClustersClient) List(ctx context.Context) (result ManagedClu
 	}
 	if result.mclr.hasNextLink() && result.mclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -575,7 +614,6 @@ func (client ManagedClustersClient) listNextResults(ctx context.Context, lastRes
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -638,6 +676,7 @@ func (client ManagedClustersClient) ListByResourceGroup(ctx context.Context, res
 	}
 	if result.mclr.hasNextLink() && result.mclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -698,7 +737,6 @@ func (client ManagedClustersClient) listByResourceGroupNextResults(ctx context.C
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -918,7 +956,7 @@ func (client ManagedClustersClient) ResetAADProfile(ctx context.Context, resourc
 
 	result, err = client.ResetAADProfileSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "ResetAADProfile", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "ResetAADProfile", nil, "Failure sending request")
 		return
 	}
 
@@ -956,7 +994,23 @@ func (client ManagedClustersClient) ResetAADProfileSender(req *http.Request) (fu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ManagedClustersClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersResetAADProfileFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersResetAADProfileFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -1003,7 +1057,7 @@ func (client ManagedClustersClient) ResetServicePrincipalProfile(ctx context.Con
 
 	result, err = client.ResetServicePrincipalProfileSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "ResetServicePrincipalProfile", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "ResetServicePrincipalProfile", nil, "Failure sending request")
 		return
 	}
 
@@ -1041,7 +1095,23 @@ func (client ManagedClustersClient) ResetServicePrincipalProfileSender(req *http
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ManagedClustersClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersResetServicePrincipalProfileFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersResetServicePrincipalProfileFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -1086,7 +1156,7 @@ func (client ManagedClustersClient) UpdateTags(ctx context.Context, resourceGrou
 
 	result, err = client.UpdateTagsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "UpdateTags", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "UpdateTags", nil, "Failure sending request")
 		return
 	}
 
@@ -1124,7 +1194,29 @@ func (client ManagedClustersClient) UpdateTagsSender(req *http.Request) (future 
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ManagedClustersClient) (mc ManagedCluster, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersUpdateTagsFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersUpdateTagsFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if mc.Response.Response, err = future.GetResult(sender); err == nil && mc.Response.Response.StatusCode != http.StatusNoContent {
+			mc, err = client.UpdateTagsResponder(mc.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersUpdateTagsFuture", "Result", mc.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

@@ -86,7 +86,7 @@ func (client IscsiTargetsClient) CreateOrUpdate(ctx context.Context, resourceGro
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -125,7 +125,29 @@ func (client IscsiTargetsClient) CreateOrUpdateSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client IscsiTargetsClient) (it IscsiTarget, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storagepool.IscsiTargetsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if it.Response.Response, err = future.GetResult(sender); err == nil && it.Response.Response.StatusCode != http.StatusNoContent {
+			it, err = client.CreateOrUpdateResponder(it.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsCreateOrUpdateFuture", "Result", it.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -179,7 +201,7 @@ func (client IscsiTargetsClient) Delete(ctx context.Context, resourceGroupName s
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -216,7 +238,23 @@ func (client IscsiTargetsClient) DeleteSender(req *http.Request) (future IscsiTa
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client IscsiTargetsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storagepool.IscsiTargetsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -373,6 +411,7 @@ func (client IscsiTargetsClient) ListByDiskPool(ctx context.Context, resourceGro
 	}
 	if result.itl.hasNextLink() && result.itl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -434,7 +473,6 @@ func (client IscsiTargetsClient) listByDiskPoolNextResults(ctx context.Context, 
 	result, err = client.ListByDiskPoolResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsClient", "listByDiskPoolNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

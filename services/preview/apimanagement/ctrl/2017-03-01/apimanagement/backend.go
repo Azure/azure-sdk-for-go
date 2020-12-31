@@ -354,6 +354,7 @@ func (client BackendClient) List(ctx context.Context, apimBaseURL string, filter
 	}
 	if result.bc.hasNextLink() && result.bc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -422,7 +423,6 @@ func (client BackendClient) listNextResults(ctx context.Context, lastResults Bac
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.BackendClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

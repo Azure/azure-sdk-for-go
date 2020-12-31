@@ -359,30 +359,10 @@ func (ap AccountProperties) MarshalJSON() ([]byte, error) {
 // AccountsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type AccountsUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *AccountsUpdateFuture) Result(client AccountsClient) (a Account, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AccountsUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("billing.AccountsUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
-		a, err = client.UpdateResponder(a.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "billing.AccountsUpdateFuture", "Result", a.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AccountsClient) (Account, error)
 }
 
 // AccountUpdateProperties the properties of the billing account that can be updated.
@@ -2129,59 +2109,19 @@ type InvoiceSectionProperties struct {
 // InvoiceSectionsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type InvoiceSectionsCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *InvoiceSectionsCreateFuture) Result(client InvoiceSectionsClient) (is InvoiceSection, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("billing.InvoiceSectionsCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if is.Response.Response, err = future.GetResult(sender); err == nil && is.Response.Response.StatusCode != http.StatusNoContent {
-		is, err = client.CreateResponder(is.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsCreateFuture", "Result", is.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(InvoiceSectionsClient) (InvoiceSection, error)
 }
 
 // InvoiceSectionsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type InvoiceSectionsUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *InvoiceSectionsUpdateFuture) Result(client InvoiceSectionsClient) (is InvoiceSection, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("billing.InvoiceSectionsUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if is.Response.Response, err = future.GetResult(sender); err == nil && is.Response.Response.StatusCode != http.StatusNoContent {
-		is, err = client.UpdateResponder(is.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsUpdateFuture", "Result", is.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(InvoiceSectionsClient) (InvoiceSection, error)
 }
 
 // InvoiceSummary an invoice resource.
@@ -2385,30 +2325,10 @@ func (locp LineOfCreditProperties) MarshalJSON() ([]byte, error) {
 // LineOfCreditsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type LineOfCreditsUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *LineOfCreditsUpdateFuture) Result(client LineOfCreditsClient) (loc LineOfCredit, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.LineOfCreditsUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("billing.LineOfCreditsUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if loc.Response.Response, err = future.GetResult(sender); err == nil && loc.Response.Response.StatusCode != http.StatusNoContent {
-		loc, err = client.UpdateResponder(loc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "billing.LineOfCreditsUpdateFuture", "Result", loc.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(LineOfCreditsClient) (LineOfCredit, error)
 }
 
 // Operation a Billing REST API operation.
@@ -2992,30 +2912,10 @@ type PolicyProperties struct {
 // PriceSheetDownloadFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type PriceSheetDownloadFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *PriceSheetDownloadFuture) Result(client PriceSheetClient) (du DownloadURL, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.PriceSheetDownloadFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("billing.PriceSheetDownloadFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if du.Response.Response, err = future.GetResult(sender); err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
-		du, err = client.DownloadResponder(du.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "billing.PriceSheetDownloadFuture", "Result", du.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(PriceSheetClient) (DownloadURL, error)
 }
 
 // ProductDetails details of the product to be transferred.
@@ -3602,59 +3502,19 @@ func (pp ProfileProperties) MarshalJSON() ([]byte, error) {
 // ProfilesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ProfilesCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ProfilesCreateFuture) Result(client ProfilesClient) (p Profile, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.ProfilesCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("billing.ProfilesCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if p.Response.Response, err = future.GetResult(sender); err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
-		p, err = client.CreateResponder(p.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "billing.ProfilesCreateFuture", "Result", p.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ProfilesClient) (Profile, error)
 }
 
 // ProfilesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ProfilesUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ProfilesUpdateFuture) Result(client ProfilesClient) (p Profile, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.ProfilesUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("billing.ProfilesUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if p.Response.Response, err = future.GetResult(sender); err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
-		p, err = client.UpdateResponder(p.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "billing.ProfilesUpdateFuture", "Result", p.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ProfilesClient) (Profile, error)
 }
 
 // Property a billing property resource.
@@ -4451,30 +4311,10 @@ func NewSubscriptionsListResultPage(cur SubscriptionsListResult, getNextPage fun
 // SubscriptionsTransferFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SubscriptionsTransferFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SubscriptionsTransferFuture) Result(client SubscriptionsClient) (tbsr TransferBillingSubscriptionResult, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.SubscriptionsTransferFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("billing.SubscriptionsTransferFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if tbsr.Response.Response, err = future.GetResult(sender); err == nil && tbsr.Response.Response.StatusCode != http.StatusNoContent {
-		tbsr, err = client.TransferResponder(tbsr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "billing.SubscriptionsTransferFuture", "Result", tbsr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SubscriptionsClient) (TransferBillingSubscriptionResult, error)
 }
 
 // SubscriptionSummary a billing Subscription summary resource.

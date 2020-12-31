@@ -108,6 +108,7 @@ func (client OperationClient) ListByTags(ctx context.Context, resourceGroupName 
 	}
 	if result.trc.hasNextLink() && result.trc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -179,7 +180,6 @@ func (client OperationClient) listByTagsNextResults(ctx context.Context, lastRes
 	result, err = client.ListByTagsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OperationClient", "listByTagsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

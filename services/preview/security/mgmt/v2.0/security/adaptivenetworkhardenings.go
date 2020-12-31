@@ -83,7 +83,7 @@ func (client AdaptiveNetworkHardeningsClient) Enforce(ctx context.Context, resou
 
 	result, err = client.EnforceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.AdaptiveNetworkHardeningsClient", "Enforce", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "security.AdaptiveNetworkHardeningsClient", "Enforce", nil, "Failure sending request")
 		return
 	}
 
@@ -125,7 +125,23 @@ func (client AdaptiveNetworkHardeningsClient) EnforceSender(req *http.Request) (
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AdaptiveNetworkHardeningsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "security.AdaptiveNetworkHardeningsEnforceFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("security.AdaptiveNetworkHardeningsEnforceFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -282,6 +298,7 @@ func (client AdaptiveNetworkHardeningsClient) ListByExtendedResource(ctx context
 	}
 	if result.anhl.hasNextLink() && result.anhl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -345,7 +362,6 @@ func (client AdaptiveNetworkHardeningsClient) listByExtendedResourceNextResults(
 	result, err = client.ListByExtendedResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AdaptiveNetworkHardeningsClient", "listByExtendedResourceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

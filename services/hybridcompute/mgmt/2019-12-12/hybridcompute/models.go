@@ -469,53 +469,19 @@ func (mepm MachineExtensionPropertiesModel) MarshalJSON() ([]byte, error) {
 // MachineExtensionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type MachineExtensionsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MachineExtensionsCreateOrUpdateFuture) Result(client MachineExtensionsClient) (me MachineExtension, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybridcompute.MachineExtensionsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if me.Response.Response, err = future.GetResult(sender); err == nil && me.Response.Response.StatusCode != http.StatusNoContent {
-		me, err = client.CreateOrUpdateResponder(me.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsCreateOrUpdateFuture", "Result", me.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MachineExtensionsClient) (MachineExtension, error)
 }
 
 // MachineExtensionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type MachineExtensionsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MachineExtensionsDeleteFuture) Result(client MachineExtensionsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybridcompute.MachineExtensionsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MachineExtensionsClient) (autorest.Response, error)
 }
 
 // MachineExtensionsListResult describes the Machine Extensions List Result.
@@ -680,30 +646,10 @@ func NewMachineExtensionsListResultPage(cur MachineExtensionsListResult, getNext
 // MachineExtensionsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type MachineExtensionsUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MachineExtensionsUpdateFuture) Result(client MachineExtensionsClient) (me MachineExtension, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybridcompute.MachineExtensionsUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if me.Response.Response, err = future.GetResult(sender); err == nil && me.Response.Response.StatusCode != http.StatusNoContent {
-		me, err = client.UpdateResponder(me.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsUpdateFuture", "Result", me.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MachineExtensionsClient) (MachineExtension, error)
 }
 
 // MachineExtensionUpdate describes a Machine Extension Update.
@@ -1379,7 +1325,7 @@ type ResourceModelWithAllowedPropertySet struct {
 	Type *string `json:"type,omitempty"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ManagedBy - The  fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another azure resource. If this is present, complete mode deployment will not delete the resource if it is removed from the template since it is managed by another resource.
+	// ManagedBy - The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another Azure resource. If this is present, complete mode deployment will not delete the resource if it is removed from the template since it is managed by another resource.
 	ManagedBy *string `json:"managedBy,omitempty"`
 	// Kind - Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value.
 	Kind *string `json:"kind,omitempty"`

@@ -167,6 +167,7 @@ func (client ChildAvailabilityStatusesClient) List(ctx context.Context, resource
 	}
 	if result.aslr.hasNextLink() && result.aslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -232,7 +233,6 @@ func (client ChildAvailabilityStatusesClient) listNextResults(ctx context.Contex
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.ChildAvailabilityStatusesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

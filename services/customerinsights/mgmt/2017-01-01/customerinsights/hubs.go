@@ -167,7 +167,7 @@ func (client HubsClient) Delete(ctx context.Context, resourceGroupName string, h
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.HubsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.HubsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -203,7 +203,23 @@ func (client HubsClient) DeleteSender(req *http.Request) (future HubsDeleteFutur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client HubsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.HubsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("customerinsights.HubsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -327,6 +343,7 @@ func (client HubsClient) List(ctx context.Context) (result HubListResultPage, er
 	}
 	if result.hlr.hasNextLink() && result.hlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -386,7 +403,6 @@ func (client HubsClient) listNextResults(ctx context.Context, lastResults HubLis
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.HubsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -442,6 +458,7 @@ func (client HubsClient) ListByResourceGroup(ctx context.Context, resourceGroupN
 	}
 	if result.hlr.hasNextLink() && result.hlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -502,7 +519,6 @@ func (client HubsClient) listByResourceGroupNextResults(ctx context.Context, las
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.HubsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -377,6 +377,7 @@ func (client MSIXPackagesClient) List(ctx context.Context, resourceGroupName str
 	}
 	if result.mpl.hasNextLink() && result.mpl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -438,7 +439,6 @@ func (client MSIXPackagesClient) listNextResults(ctx context.Context, lastResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "desktopvirtualization.MSIXPackagesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

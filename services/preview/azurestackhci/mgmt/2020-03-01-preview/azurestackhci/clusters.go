@@ -346,6 +346,7 @@ func (client ClustersClient) List(ctx context.Context) (result ClusterListPage, 
 	}
 	if result.cl.hasNextLink() && result.cl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -405,7 +406,6 @@ func (client ClustersClient) listNextResults(ctx context.Context, lastResults Cl
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestackhci.ClustersClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -471,6 +471,7 @@ func (client ClustersClient) ListByResourceGroup(ctx context.Context, resourceGr
 	}
 	if result.cl.hasNextLink() && result.cl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -531,7 +532,6 @@ func (client ClustersClient) listByResourceGroupNextResults(ctx context.Context,
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestackhci.ClustersClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

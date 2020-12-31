@@ -291,6 +291,7 @@ func (client TransfersClient) List(ctx context.Context, billingAccountName strin
 	}
 	if result.tdlr.hasNextLink() && result.tdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -345,7 +346,6 @@ func (client TransfersClient) listNextResults(ctx context.Context, lastResults T
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.TransfersClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

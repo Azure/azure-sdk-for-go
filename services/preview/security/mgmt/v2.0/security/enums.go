@@ -348,21 +348,23 @@ func PossibleEnforcementSupportValues() []EnforcementSupport {
 type EventSource string
 
 const (
-	// Alerts ...
-	Alerts EventSource = "Alerts"
-	// Assessments ...
-	Assessments EventSource = "Assessments"
-	// SecureScoreControls ...
-	SecureScoreControls EventSource = "SecureScoreControls"
-	// SecureScores ...
-	SecureScores EventSource = "SecureScores"
-	// SubAssessments ...
-	SubAssessments EventSource = "SubAssessments"
+	// EventSourceAlerts ...
+	EventSourceAlerts EventSource = "Alerts"
+	// EventSourceAssessments ...
+	EventSourceAssessments EventSource = "Assessments"
+	// EventSourceRegulatoryComplianceAssessment ...
+	EventSourceRegulatoryComplianceAssessment EventSource = "RegulatoryComplianceAssessment"
+	// EventSourceSecureScoreControls ...
+	EventSourceSecureScoreControls EventSource = "SecureScoreControls"
+	// EventSourceSecureScores ...
+	EventSourceSecureScores EventSource = "SecureScores"
+	// EventSourceSubAssessments ...
+	EventSourceSubAssessments EventSource = "SubAssessments"
 )
 
 // PossibleEventSourceValues returns an array of possible values for the EventSource const type.
 func PossibleEventSourceValues() []EventSource {
-	return []EventSource{Alerts, Assessments, SecureScoreControls, SecureScores, SubAssessments}
+	return []EventSource{EventSourceAlerts, EventSourceAssessments, EventSourceRegulatoryComplianceAssessment, EventSourceSecureScoreControls, EventSourceSecureScores, EventSourceSubAssessments}
 }
 
 // Exe enumerates the values for exe.
@@ -528,19 +530,34 @@ func PossibleIssueValues() []Issue {
 type KindEnum string
 
 const (
-	// KindAAD ...
-	KindAAD KindEnum = "AAD"
-	// KindATA ...
-	KindATA KindEnum = "ATA"
-	// KindCEF ...
-	KindCEF KindEnum = "CEF"
-	// KindExternalSecuritySolution ...
-	KindExternalSecuritySolution KindEnum = "ExternalSecuritySolution"
+	// KindDataExportSetting ...
+	KindDataExportSetting KindEnum = "DataExportSetting"
+	// KindSetting ...
+	KindSetting KindEnum = "Setting"
 )
 
 // PossibleKindEnumValues returns an array of possible values for the KindEnum const type.
 func PossibleKindEnumValues() []KindEnum {
-	return []KindEnum{KindAAD, KindATA, KindCEF, KindExternalSecuritySolution}
+	return []KindEnum{KindDataExportSetting, KindSetting}
+}
+
+// KindEnum1 enumerates the values for kind enum 1.
+type KindEnum1 string
+
+const (
+	// KindAAD ...
+	KindAAD KindEnum1 = "AAD"
+	// KindATA ...
+	KindATA KindEnum1 = "ATA"
+	// KindCEF ...
+	KindCEF KindEnum1 = "CEF"
+	// KindExternalSecuritySolution ...
+	KindExternalSecuritySolution KindEnum1 = "ExternalSecuritySolution"
+)
+
+// PossibleKindEnum1Values returns an array of possible values for the KindEnum1 const type.
+func PossibleKindEnum1Values() []KindEnum1 {
+	return []KindEnum1{KindAAD, KindATA, KindCEF, KindExternalSecuritySolution}
 }
 
 // Msi enumerates the values for msi.
@@ -1007,21 +1024,6 @@ const (
 // PossibleScriptValues returns an array of possible values for the Script const type.
 func PossibleScriptValues() []Script {
 	return []Script{ScriptAudit, ScriptEnforce, ScriptNone}
-}
-
-// SettingKind enumerates the values for setting kind.
-type SettingKind string
-
-const (
-	// SettingKindAlertSuppressionSetting ...
-	SettingKindAlertSuppressionSetting SettingKind = "AlertSuppressionSetting"
-	// SettingKindDataExportSetting ...
-	SettingKindDataExportSetting SettingKind = "DataExportSetting"
-)
-
-// PossibleSettingKindValues returns an array of possible values for the SettingKind const type.
-func PossibleSettingKindValues() []SettingKind {
-	return []SettingKind{SettingKindAlertSuppressionSetting, SettingKindDataExportSetting}
 }
 
 // Severity enumerates the values for severity.

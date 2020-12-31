@@ -78,6 +78,7 @@ func (client SkusAvailabilityClient) List(ctx context.Context, regionID string, 
 	}
 	if result.salr.hasNextLink() && result.salr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -141,7 +142,6 @@ func (client SkusAvailabilityClient) listNextResults(ctx context.Context, lastRe
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.SkusAvailabilityClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

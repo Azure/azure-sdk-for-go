@@ -79,7 +79,7 @@ func (client ControllerClient) Create(ctx context.Context, resourceGroupName str
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "delegatednetwork.ControllerClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "delegatednetwork.ControllerClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -118,7 +118,29 @@ func (client ControllerClient) CreateSender(req *http.Request) (future Controlle
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ControllerClient) (dc DelegatedController, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "delegatednetwork.ControllerCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("delegatednetwork.ControllerCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if dc.Response.Response, err = future.GetResult(sender); err == nil && dc.Response.Response.StatusCode != http.StatusNoContent {
+			dc, err = client.CreateResponder(dc.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "delegatednetwork.ControllerCreateFuture", "Result", dc.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -170,7 +192,7 @@ func (client ControllerClient) Delete(ctx context.Context, resourceGroupName str
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "delegatednetwork.ControllerClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "delegatednetwork.ControllerClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -206,7 +228,23 @@ func (client ControllerClient) DeleteSender(req *http.Request) (future Controlle
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ControllerClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "delegatednetwork.ControllerDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("delegatednetwork.ControllerDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

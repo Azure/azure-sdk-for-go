@@ -1,8 +1,26 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/b08824e05817297a4b2874d8db5e6fc8c29349c9
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator C:\Users\dapzhang\Documents\workspace\autorest.go
 
 ## Breaking Changes
 
-- Function `NewResourceProviderOperationListPage` parameter(s) have been changed from `(func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error))` to `(ResourceProviderOperationList, func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error))`
-- Function `NewControllerListPage` parameter(s) have been changed from `(func(context.Context, ControllerList) (ControllerList, error))` to `(ControllerList, func(context.Context, ControllerList) (ControllerList, error))`
+### Removed Funcs
+
+1. *ControllersCreateFuture.Result(ControllersClient) (Controller, error)
+1. *ControllersDeleteFuture.Result(ControllersClient) (autorest.Response, error)
+
+## Struct Changes
+
+### Removed Struct Fields
+
+1. ControllersCreateFuture.azure.Future
+1. ControllersDeleteFuture.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. ControllersCreateFuture.Result
+1. ControllersCreateFuture.azure.FutureAPI
+1. ControllersDeleteFuture.Result
+1. ControllersDeleteFuture.azure.FutureAPI

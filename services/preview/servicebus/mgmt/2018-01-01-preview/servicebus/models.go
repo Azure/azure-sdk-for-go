@@ -1409,85 +1409,31 @@ func (mcp MigrationConfigPropertiesProperties) MarshalJSON() ([]byte, error) {
 // MigrationConfigsCreateAndStartMigrationFuture an abstraction for monitoring and retrieving the results
 // of a long-running operation.
 type MigrationConfigsCreateAndStartMigrationFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MigrationConfigsCreateAndStartMigrationFuture) Result(client MigrationConfigsClient) (mcp MigrationConfigProperties, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsCreateAndStartMigrationFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicebus.MigrationConfigsCreateAndStartMigrationFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if mcp.Response.Response, err = future.GetResult(sender); err == nil && mcp.Response.Response.StatusCode != http.StatusNoContent {
-		mcp, err = client.CreateAndStartMigrationResponder(mcp.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsCreateAndStartMigrationFuture", "Result", mcp.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MigrationConfigsClient) (MigrationConfigProperties, error)
 }
 
 // NamespacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type NamespacesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *NamespacesCreateOrUpdateFuture) Result(client NamespacesClient) (sn SBNamespace, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicebus.NamespacesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicebus.NamespacesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sn.Response.Response, err = future.GetResult(sender); err == nil && sn.Response.Response.StatusCode != http.StatusNoContent {
-		sn, err = client.CreateOrUpdateResponder(sn.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "servicebus.NamespacesCreateOrUpdateFuture", "Result", sn.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(NamespacesClient) (SBNamespace, error)
 }
 
 // NamespacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type NamespacesDeleteFuture struct {
-	azure.Future
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(NamespacesClient) (autorest.Response, error)
 }
 
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *NamespacesDeleteFuture) Result(client NamespacesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicebus.NamespacesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicebus.NamespacesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
-// NetworkRuleSet description of topic resource.
+// NetworkRuleSet description of NetworkRuleSet resource.
 type NetworkRuleSet struct {
 	autorest.Response `json:"-"`
 	// NetworkRuleSetProperties - NetworkRuleSet properties
@@ -1560,6 +1506,165 @@ func (nrs *NetworkRuleSet) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// NetworkRuleSetListResult the response of the List NetworkRuleSet operation.
+type NetworkRuleSetListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Result of the List NetworkRuleSet operation.
+	Value *[]NetworkRuleSet `json:"value,omitempty"`
+	// NextLink - Link to the next set of results. Not empty if Value contains incomplete list of NetworkRuleSet.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// NetworkRuleSetListResultIterator provides access to a complete listing of NetworkRuleSet values.
+type NetworkRuleSetListResultIterator struct {
+	i    int
+	page NetworkRuleSetListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *NetworkRuleSetListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkRuleSetListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *NetworkRuleSetListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter NetworkRuleSetListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter NetworkRuleSetListResultIterator) Response() NetworkRuleSetListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter NetworkRuleSetListResultIterator) Value() NetworkRuleSet {
+	if !iter.page.NotDone() {
+		return NetworkRuleSet{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the NetworkRuleSetListResultIterator type.
+func NewNetworkRuleSetListResultIterator(page NetworkRuleSetListResultPage) NetworkRuleSetListResultIterator {
+	return NetworkRuleSetListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (nrslr NetworkRuleSetListResult) IsEmpty() bool {
+	return nrslr.Value == nil || len(*nrslr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (nrslr NetworkRuleSetListResult) hasNextLink() bool {
+	return nrslr.NextLink != nil && len(*nrslr.NextLink) != 0
+}
+
+// networkRuleSetListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (nrslr NetworkRuleSetListResult) networkRuleSetListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !nrslr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(nrslr.NextLink)))
+}
+
+// NetworkRuleSetListResultPage contains a page of NetworkRuleSet values.
+type NetworkRuleSetListResultPage struct {
+	fn    func(context.Context, NetworkRuleSetListResult) (NetworkRuleSetListResult, error)
+	nrslr NetworkRuleSetListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *NetworkRuleSetListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkRuleSetListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.nrslr)
+		if err != nil {
+			return err
+		}
+		page.nrslr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *NetworkRuleSetListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page NetworkRuleSetListResultPage) NotDone() bool {
+	return !page.nrslr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page NetworkRuleSetListResultPage) Response() NetworkRuleSetListResult {
+	return page.nrslr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page NetworkRuleSetListResultPage) Values() []NetworkRuleSet {
+	if page.nrslr.IsEmpty() {
+		return nil
+	}
+	return *page.nrslr.Value
+}
+
+// Creates a new instance of the NetworkRuleSetListResultPage type.
+func NewNetworkRuleSetListResultPage(cur NetworkRuleSetListResult, getNextPage func(context.Context, NetworkRuleSetListResult) (NetworkRuleSetListResult, error)) NetworkRuleSetListResultPage {
+	return NetworkRuleSetListResultPage{
+		fn:    getNextPage,
+		nrslr: cur,
+	}
+}
+
 // NetworkRuleSetProperties networkRuleSet properties
 type NetworkRuleSetProperties struct {
 	// DefaultAction - Default Action for Network Rule Set. Possible values include: 'Allow', 'Deny'
@@ -1570,7 +1675,7 @@ type NetworkRuleSetProperties struct {
 	IPRules *[]NWRuleSetIPRules `json:"ipRules,omitempty"`
 }
 
-// NWRuleSetIPRules the response from the List namespace operation.
+// NWRuleSetIPRules description of NetWorkRuleSet - IpRules resource.
 type NWRuleSetIPRules struct {
 	// IPMask - IP Mask
 	IPMask *string `json:"ipMask,omitempty"`
@@ -1578,11 +1683,11 @@ type NWRuleSetIPRules struct {
 	Action NetworkRuleIPAction `json:"action,omitempty"`
 }
 
-// NWRuleSetVirtualNetworkRules the response from the List namespace operation.
+// NWRuleSetVirtualNetworkRules description of VirtualNetworkRules - NetworkRules resource.
 type NWRuleSetVirtualNetworkRules struct {
 	// Subnet - Subnet properties
 	Subnet *Subnet `json:"subnet,omitempty"`
-	// IgnoreMissingVnetServiceEndpoint - Value that indicates whether to ignore missing Vnet Service Endpoint
+	// IgnoreMissingVnetServiceEndpoint - Value that indicates whether to ignore missing VNet Service Endpoint
 	IgnoreMissingVnetServiceEndpoint *bool `json:"ignoreMissingVnetServiceEndpoint,omitempty"`
 }
 
@@ -2232,24 +2337,10 @@ type PrivateEndpointConnectionProperties struct {
 // PrivateEndpointConnectionsDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type PrivateEndpointConnectionsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *PrivateEndpointConnectionsDeleteFuture) Result(client PrivateEndpointConnectionsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicebus.PrivateEndpointConnectionsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicebus.PrivateEndpointConnectionsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(PrivateEndpointConnectionsClient) (autorest.Response, error)
 }
 
 // PrivateLinkResource information of the private link resource.

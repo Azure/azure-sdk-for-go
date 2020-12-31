@@ -154,6 +154,7 @@ func (client APIKeysClient) List(ctx context.Context, resourceGroupName string, 
 	}
 	if result.aklr.hasNextLink() && result.aklr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -215,7 +216,6 @@ func (client APIKeysClient) listNextResults(ctx context.Context, lastResults API
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.APIKeysClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

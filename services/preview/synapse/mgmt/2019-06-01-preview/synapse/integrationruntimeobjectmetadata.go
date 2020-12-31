@@ -171,7 +171,7 @@ func (client IntegrationRuntimeObjectMetadataClient) Refresh(ctx context.Context
 
 	result, err = client.RefreshSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeObjectMetadataClient", "Refresh", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeObjectMetadataClient", "Refresh", nil, "Failure sending request")
 		return
 	}
 
@@ -208,7 +208,29 @@ func (client IntegrationRuntimeObjectMetadataClient) RefreshSender(req *http.Req
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client IntegrationRuntimeObjectMetadataClient) (somsr SsisObjectMetadataStatusResponse, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeObjectMetadataRefreshFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("synapse.IntegrationRuntimeObjectMetadataRefreshFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if somsr.Response.Response, err = future.GetResult(sender); err == nil && somsr.Response.Response.StatusCode != http.StatusNoContent {
+			somsr, err = client.RefreshResponder(somsr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeObjectMetadataRefreshFuture", "Result", somsr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

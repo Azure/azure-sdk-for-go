@@ -969,53 +969,19 @@ func (crf *ConnectorResourceFormat) UnmarshalJSON(body []byte) error {
 // ConnectorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ConnectorsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ConnectorsCreateOrUpdateFuture) Result(client ConnectorsClient) (crf ConnectorResourceFormat, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("customerinsights.ConnectorsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if crf.Response.Response, err = future.GetResult(sender); err == nil && crf.Response.Response.StatusCode != http.StatusNoContent {
-		crf, err = client.CreateOrUpdateResponder(crf.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "customerinsights.ConnectorsCreateOrUpdateFuture", "Result", crf.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ConnectorsClient) (ConnectorResourceFormat, error)
 }
 
 // ConnectorsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ConnectorsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ConnectorsDeleteFuture) Result(client ConnectorsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("customerinsights.ConnectorsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ConnectorsClient) (autorest.Response, error)
 }
 
 // CrmConnectorEntities the CRM connector entities.
@@ -1592,24 +1558,10 @@ func (hpf HubPropertiesFormat) MarshalJSON() ([]byte, error) {
 
 // HubsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type HubsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *HubsDeleteFuture) Result(client HubsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.HubsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("customerinsights.HubsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(HubsClient) (autorest.Response, error)
 }
 
 // ImageDefinition the image definition.
@@ -1857,30 +1809,10 @@ func (irf *InteractionResourceFormat) UnmarshalJSON(body []byte) error {
 // InteractionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type InteractionsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *InteractionsCreateOrUpdateFuture) Result(client InteractionsClient) (irf InteractionResourceFormat, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.InteractionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("customerinsights.InteractionsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if irf.Response.Response, err = future.GetResult(sender); err == nil && irf.Response.Response.StatusCode != http.StatusNoContent {
-		irf, err = client.CreateOrUpdateResponder(irf.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "customerinsights.InteractionsCreateOrUpdateFuture", "Result", irf.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(InteractionsClient) (InteractionResourceFormat, error)
 }
 
 // InteractionTypeDefinition the Interaction Type Definition
@@ -2229,30 +2161,10 @@ type KpiAlias struct {
 // KpiCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type KpiCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *KpiCreateOrUpdateFuture) Result(client KpiClient) (krf KpiResourceFormat, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.KpiCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("customerinsights.KpiCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if krf.Response.Response, err = future.GetResult(sender); err == nil && krf.Response.Response.StatusCode != http.StatusNoContent {
-		krf, err = client.CreateOrUpdateResponder(krf.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "customerinsights.KpiCreateOrUpdateFuture", "Result", krf.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(KpiClient) (KpiResourceFormat, error)
 }
 
 // KpiDefinition defines the KPI Threshold limits.
@@ -2347,24 +2259,10 @@ func (kd KpiDefinition) MarshalJSON() ([]byte, error) {
 
 // KpiDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type KpiDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *KpiDeleteFuture) Result(client KpiClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.KpiDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("customerinsights.KpiDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(KpiClient) (autorest.Response, error)
 }
 
 // KpiExtract the KPI extract.
@@ -2937,30 +2835,10 @@ func (lrf *LinkResourceFormat) UnmarshalJSON(body []byte) error {
 // LinksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type LinksCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *LinksCreateOrUpdateFuture) Result(client LinksClient) (lrf LinkResourceFormat, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.LinksCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("customerinsights.LinksCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if lrf.Response.Response, err = future.GetResult(sender); err == nil && lrf.Response.Response.StatusCode != http.StatusNoContent {
-		lrf, err = client.CreateOrUpdateResponder(lrf.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "customerinsights.LinksCreateOrUpdateFuture", "Result", lrf.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(LinksClient) (LinkResourceFormat, error)
 }
 
 // ListKpiDefinition ...
@@ -3503,53 +3381,19 @@ func (prf *ProfileResourceFormat) UnmarshalJSON(body []byte) error {
 // ProfilesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ProfilesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ProfilesCreateOrUpdateFuture) Result(client ProfilesClient) (prf ProfileResourceFormat, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.ProfilesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("customerinsights.ProfilesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if prf.Response.Response, err = future.GetResult(sender); err == nil && prf.Response.Response.StatusCode != http.StatusNoContent {
-		prf, err = client.CreateOrUpdateResponder(prf.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "customerinsights.ProfilesCreateOrUpdateFuture", "Result", prf.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ProfilesClient) (ProfileResourceFormat, error)
 }
 
 // ProfilesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ProfilesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ProfilesDeleteFuture) Result(client ProfilesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.ProfilesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("customerinsights.ProfilesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ProfilesClient) (autorest.Response, error)
 }
 
 // ProfileTypeDefinition the profile type definition.
@@ -4096,53 +3940,19 @@ func (rlrf *RelationshipLinkResourceFormat) UnmarshalJSON(body []byte) error {
 // RelationshipLinksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type RelationshipLinksCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *RelationshipLinksCreateOrUpdateFuture) Result(client RelationshipLinksClient) (rlrf RelationshipLinkResourceFormat, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("customerinsights.RelationshipLinksCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if rlrf.Response.Response, err = future.GetResult(sender); err == nil && rlrf.Response.Response.StatusCode != http.StatusNoContent {
-		rlrf, err = client.CreateOrUpdateResponder(rlrf.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksCreateOrUpdateFuture", "Result", rlrf.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(RelationshipLinksClient) (RelationshipLinkResourceFormat, error)
 }
 
 // RelationshipLinksDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type RelationshipLinksDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *RelationshipLinksDeleteFuture) Result(client RelationshipLinksClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("customerinsights.RelationshipLinksDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(RelationshipLinksClient) (autorest.Response, error)
 }
 
 // RelationshipListResult the response of list relationship operation.
@@ -4380,53 +4190,19 @@ func (rrf *RelationshipResourceFormat) UnmarshalJSON(body []byte) error {
 // RelationshipsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type RelationshipsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *RelationshipsCreateOrUpdateFuture) Result(client RelationshipsClient) (rrf RelationshipResourceFormat, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("customerinsights.RelationshipsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if rrf.Response.Response, err = future.GetResult(sender); err == nil && rrf.Response.Response.StatusCode != http.StatusNoContent {
-		rrf, err = client.CreateOrUpdateResponder(rrf.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "customerinsights.RelationshipsCreateOrUpdateFuture", "Result", rrf.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(RelationshipsClient) (RelationshipResourceFormat, error)
 }
 
 // RelationshipsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type RelationshipsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *RelationshipsDeleteFuture) Result(client RelationshipsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("customerinsights.RelationshipsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(RelationshipsClient) (autorest.Response, error)
 }
 
 // RelationshipsLookup the definition of suggested relationship for the type.
@@ -4835,30 +4611,10 @@ func (rarf *RoleAssignmentResourceFormat) UnmarshalJSON(body []byte) error {
 // RoleAssignmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type RoleAssignmentsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *RoleAssignmentsCreateOrUpdateFuture) Result(client RoleAssignmentsClient) (rarf RoleAssignmentResourceFormat, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("customerinsights.RoleAssignmentsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if rarf.Response.Response, err = future.GetResult(sender); err == nil && rarf.Response.Response.StatusCode != http.StatusNoContent {
-		rarf, err = client.CreateOrUpdateResponder(rarf.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsCreateOrUpdateFuture", "Result", rarf.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(RoleAssignmentsClient) (RoleAssignmentResourceFormat, error)
 }
 
 // RoleListResult the response of list role assignment operation.

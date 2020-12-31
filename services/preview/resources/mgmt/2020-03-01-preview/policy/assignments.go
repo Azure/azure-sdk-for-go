@@ -610,6 +610,7 @@ func (client AssignmentsClient) List(ctx context.Context, subscriptionID string,
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -675,7 +676,6 @@ func (client AssignmentsClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -754,6 +754,7 @@ func (client AssignmentsClient) ListForManagementGroup(ctx context.Context, mana
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -819,7 +820,6 @@ func (client AssignmentsClient) listForManagementGroupNextResults(ctx context.Co
 	result, err = client.ListForManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listForManagementGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -921,6 +921,7 @@ func (client AssignmentsClient) ListForResource(ctx context.Context, resourceGro
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -991,7 +992,6 @@ func (client AssignmentsClient) listForResourceNextResults(ctx context.Context, 
 	result, err = client.ListForResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listForResourceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1078,6 +1078,7 @@ func (client AssignmentsClient) ListForResourceGroup(ctx context.Context, resour
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1144,7 +1145,6 @@ func (client AssignmentsClient) listForResourceGroupNextResults(ctx context.Cont
 	result, err = client.ListForResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listForResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

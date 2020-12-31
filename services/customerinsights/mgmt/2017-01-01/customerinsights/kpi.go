@@ -87,7 +87,7 @@ func (client KpiClient) CreateOrUpdate(ctx context.Context, resourceGroupName st
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -126,7 +126,29 @@ func (client KpiClient) CreateOrUpdateSender(req *http.Request) (future KpiCreat
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client KpiClient) (krf KpiResourceFormat, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.KpiCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("customerinsights.KpiCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if krf.Response.Response, err = future.GetResult(sender); err == nil && krf.Response.Response.StatusCode != http.StatusNoContent {
+			krf, err = client.CreateOrUpdateResponder(krf.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "customerinsights.KpiCreateOrUpdateFuture", "Result", krf.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -166,7 +188,7 @@ func (client KpiClient) Delete(ctx context.Context, resourceGroupName string, hu
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -203,7 +225,23 @@ func (client KpiClient) DeleteSender(req *http.Request) (future KpiDeleteFuture,
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client KpiClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.KpiDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("customerinsights.KpiDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -332,6 +370,7 @@ func (client KpiClient) ListByHub(ctx context.Context, resourceGroupName string,
 	}
 	if result.klr.hasNextLink() && result.klr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -393,7 +432,6 @@ func (client KpiClient) listByHubNextResults(ctx context.Context, lastResults Kp
 	result, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "listByHubNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

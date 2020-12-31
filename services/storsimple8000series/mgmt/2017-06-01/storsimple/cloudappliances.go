@@ -159,7 +159,7 @@ func (client CloudAppliancesClient) Provision(ctx context.Context, parameters Cl
 
 	result, err = client.ProvisionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.CloudAppliancesClient", "Provision", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.CloudAppliancesClient", "Provision", nil, "Failure sending request")
 		return
 	}
 
@@ -197,7 +197,23 @@ func (client CloudAppliancesClient) ProvisionSender(req *http.Request) (future C
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client CloudAppliancesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.CloudAppliancesProvisionFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.CloudAppliancesProvisionFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

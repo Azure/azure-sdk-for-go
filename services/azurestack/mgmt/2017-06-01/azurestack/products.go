@@ -325,6 +325,7 @@ func (client ProductsClient) List(ctx context.Context, resourceGroup string, reg
 	}
 	if result.pl.hasNextLink() && result.pl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -386,7 +387,6 @@ func (client ProductsClient) listNextResults(ctx context.Context, lastResults Pr
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.ProductsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

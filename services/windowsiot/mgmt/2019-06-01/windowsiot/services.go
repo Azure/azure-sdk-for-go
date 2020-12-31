@@ -398,6 +398,7 @@ func (client ServicesClient) List(ctx context.Context) (result DeviceServiceDesc
 	}
 	if result.dsdlr.hasNextLink() && result.dsdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -457,7 +458,6 @@ func (client ServicesClient) listNextResults(ctx context.Context, lastResults De
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsiot.ServicesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -513,6 +513,7 @@ func (client ServicesClient) ListByResourceGroup(ctx context.Context, resourceGr
 	}
 	if result.dsdlr.hasNextLink() && result.dsdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -573,7 +574,6 @@ func (client ServicesClient) listByResourceGroupNextResults(ctx context.Context,
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsiot.ServicesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

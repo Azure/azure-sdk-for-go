@@ -114,19 +114,19 @@ func PossibleAzureSearchIndexWriteBehaviorTypeValues() []AzureSearchIndexWriteBe
 	return []AzureSearchIndexWriteBehaviorType{Merge, Upload}
 }
 
-// BlobEventTypes enumerates the values for blob event types.
-type BlobEventTypes string
+// BlobEventType enumerates the values for blob event type.
+type BlobEventType string
 
 const (
 	// MicrosoftStorageBlobCreated ...
-	MicrosoftStorageBlobCreated BlobEventTypes = "Microsoft.Storage.BlobCreated"
+	MicrosoftStorageBlobCreated BlobEventType = "Microsoft.Storage.BlobCreated"
 	// MicrosoftStorageBlobDeleted ...
-	MicrosoftStorageBlobDeleted BlobEventTypes = "Microsoft.Storage.BlobDeleted"
+	MicrosoftStorageBlobDeleted BlobEventType = "Microsoft.Storage.BlobDeleted"
 )
 
-// PossibleBlobEventTypesValues returns an array of possible values for the BlobEventTypes const type.
-func PossibleBlobEventTypesValues() []BlobEventTypes {
-	return []BlobEventTypes{MicrosoftStorageBlobCreated, MicrosoftStorageBlobDeleted}
+// PossibleBlobEventTypeValues returns an array of possible values for the BlobEventType const type.
+func PossibleBlobEventTypeValues() []BlobEventType {
+	return []BlobEventType{MicrosoftStorageBlobCreated, MicrosoftStorageBlobDeleted}
 }
 
 // CassandraSourceReadConsistencyLevels enumerates the values for cassandra source read consistency levels.

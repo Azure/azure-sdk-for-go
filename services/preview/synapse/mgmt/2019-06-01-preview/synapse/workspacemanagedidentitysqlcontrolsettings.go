@@ -78,7 +78,7 @@ func (client WorkspaceManagedIdentitySQLControlSettingsClient) CreateOrUpdate(ct
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedIdentitySQLControlSettingsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedIdentitySQLControlSettingsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -116,7 +116,29 @@ func (client WorkspaceManagedIdentitySQLControlSettingsClient) CreateOrUpdateSen
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client WorkspaceManagedIdentitySQLControlSettingsClient) (miscsm ManagedIdentitySQLControlSettingsModel, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("synapse.WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if miscsm.Response.Response, err = future.GetResult(sender); err == nil && miscsm.Response.Response.StatusCode != http.StatusNoContent {
+			miscsm, err = client.CreateOrUpdateResponder(miscsm.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdateFuture", "Result", miscsm.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

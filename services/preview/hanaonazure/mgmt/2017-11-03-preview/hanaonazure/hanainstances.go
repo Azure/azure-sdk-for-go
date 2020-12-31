@@ -65,7 +65,7 @@ func (client HanaInstancesClient) Create(ctx context.Context, resourceGroupName 
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -103,7 +103,29 @@ func (client HanaInstancesClient) CreateSender(req *http.Request) (future HanaIn
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client HanaInstancesClient) (hi HanaInstance, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if hi.Response.Response, err = future.GetResult(sender); err == nil && hi.Response.Response.StatusCode != http.StatusNoContent {
+			hi, err = client.CreateResponder(hi.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesCreateFuture", "Result", hi.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -142,7 +164,7 @@ func (client HanaInstancesClient) Delete(ctx context.Context, resourceGroupName 
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -178,7 +200,23 @@ func (client HanaInstancesClient) DeleteSender(req *http.Request) (future HanaIn
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client HanaInstancesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -303,6 +341,7 @@ func (client HanaInstancesClient) List(ctx context.Context) (result HanaInstance
 	}
 	if result.hilr.hasNextLink() && result.hilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -362,7 +401,6 @@ func (client HanaInstancesClient) listNextResults(ctx context.Context, lastResul
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -419,6 +457,7 @@ func (client HanaInstancesClient) ListByResourceGroup(ctx context.Context, resou
 	}
 	if result.hilr.hasNextLink() && result.hilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -479,7 +518,6 @@ func (client HanaInstancesClient) listByResourceGroupNextResults(ctx context.Con
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -523,7 +561,7 @@ func (client HanaInstancesClient) Restart(ctx context.Context, resourceGroupName
 
 	result, err = client.RestartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Restart", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Restart", nil, "Failure sending request")
 		return
 	}
 
@@ -559,7 +597,23 @@ func (client HanaInstancesClient) RestartSender(req *http.Request) (future HanaI
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client HanaInstancesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesRestartFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesRestartFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -597,7 +651,7 @@ func (client HanaInstancesClient) Shutdown(ctx context.Context, resourceGroupNam
 
 	result, err = client.ShutdownSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Shutdown", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Shutdown", nil, "Failure sending request")
 		return
 	}
 
@@ -633,7 +687,23 @@ func (client HanaInstancesClient) ShutdownSender(req *http.Request) (future Hana
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client HanaInstancesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesShutdownFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesShutdownFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -671,7 +741,7 @@ func (client HanaInstancesClient) Start(ctx context.Context, resourceGroupName s
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Start", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Start", nil, "Failure sending request")
 		return
 	}
 
@@ -707,7 +777,23 @@ func (client HanaInstancesClient) StartSender(req *http.Request) (future HanaIns
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client HanaInstancesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesStartFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesStartFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

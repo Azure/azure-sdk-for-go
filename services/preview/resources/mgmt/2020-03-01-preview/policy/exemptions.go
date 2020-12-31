@@ -344,6 +344,7 @@ func (client ExemptionsClient) List(ctx context.Context, subscriptionID string, 
 	}
 	if result.elr.hasNextLink() && result.elr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -406,7 +407,6 @@ func (client ExemptionsClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.ExemptionsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -476,6 +476,7 @@ func (client ExemptionsClient) ListForManagementGroup(ctx context.Context, manag
 	}
 	if result.elr.hasNextLink() && result.elr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -538,7 +539,6 @@ func (client ExemptionsClient) listForManagementGroupNextResults(ctx context.Con
 	result, err = client.ListForManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.ExemptionsClient", "listForManagementGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -633,6 +633,7 @@ func (client ExemptionsClient) ListForResource(ctx context.Context, subscription
 	}
 	if result.elr.hasNextLink() && result.elr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -700,7 +701,6 @@ func (client ExemptionsClient) listForResourceNextResults(ctx context.Context, l
 	result, err = client.ListForResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.ExemptionsClient", "listForResourceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -780,6 +780,7 @@ func (client ExemptionsClient) ListForResourceGroup(ctx context.Context, subscri
 	}
 	if result.elr.hasNextLink() && result.elr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -843,7 +844,6 @@ func (client ExemptionsClient) listForResourceGroupNextResults(ctx context.Conte
 	result, err = client.ListForResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.ExemptionsClient", "listForResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

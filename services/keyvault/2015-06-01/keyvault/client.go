@@ -1224,6 +1224,7 @@ func (client BaseClient) GetCertificateIssuers(ctx context.Context, vaultBaseURL
 	}
 	if result.cilr.hasNextLink() && result.cilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1286,7 +1287,6 @@ func (client BaseClient) getCertificateIssuersNextResults(ctx context.Context, l
 	result, err = client.GetCertificateIssuersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getCertificateIssuersNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1509,6 +1509,7 @@ func (client BaseClient) GetCertificates(ctx context.Context, vaultBaseURL strin
 	}
 	if result.clr.hasNextLink() && result.clr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1571,7 +1572,6 @@ func (client BaseClient) getCertificatesNextResults(ctx context.Context, lastRes
 	result, err = client.GetCertificatesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getCertificatesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1639,6 +1639,7 @@ func (client BaseClient) GetCertificateVersions(ctx context.Context, vaultBaseUR
 	}
 	if result.clr.hasNextLink() && result.clr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1705,7 +1706,6 @@ func (client BaseClient) getCertificateVersionsNextResults(ctx context.Context, 
 	result, err = client.GetCertificateVersionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getCertificateVersionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1852,6 +1852,7 @@ func (client BaseClient) GetKeys(ctx context.Context, vaultBaseURL string, maxre
 	}
 	if result.klr.hasNextLink() && result.klr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1914,7 +1915,6 @@ func (client BaseClient) getKeysNextResults(ctx context.Context, lastResults Key
 	result, err = client.GetKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getKeysNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1982,6 +1982,7 @@ func (client BaseClient) GetKeyVersions(ctx context.Context, vaultBaseURL string
 	}
 	if result.klr.hasNextLink() && result.klr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2048,7 +2049,6 @@ func (client BaseClient) getKeyVersionsNextResults(ctx context.Context, lastResu
 	result, err = client.GetKeyVersionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getKeyVersionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2195,6 +2195,7 @@ func (client BaseClient) GetSecrets(ctx context.Context, vaultBaseURL string, ma
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2257,7 +2258,6 @@ func (client BaseClient) getSecretsNextResults(ctx context.Context, lastResults 
 	result, err = client.GetSecretsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getSecretsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2325,6 +2325,7 @@ func (client BaseClient) GetSecretVersions(ctx context.Context, vaultBaseURL str
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2391,7 +2392,6 @@ func (client BaseClient) getSecretVersionsNextResults(ctx context.Context, lastR
 	result, err = client.GetSecretVersionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getSecretVersionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

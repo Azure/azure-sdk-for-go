@@ -79,6 +79,7 @@ func (client HyperVJobsClient) GetAllJobsInSite(ctx context.Context, subscriptio
 	}
 	if result.hvjc.hasNextLink() && result.hvjc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -139,7 +140,6 @@ func (client HyperVJobsClient) getAllJobsInSiteNextResults(ctx context.Context, 
 	result, err = client.GetAllJobsInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVJobsClient", "getAllJobsInSiteNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

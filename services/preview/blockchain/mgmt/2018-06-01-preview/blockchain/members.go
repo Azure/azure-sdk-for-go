@@ -66,7 +66,7 @@ func (client MembersClient) Create(ctx context.Context, blockchainMemberName str
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "blockchain.MembersClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "blockchain.MembersClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -107,7 +107,29 @@ func (client MembersClient) CreateSender(req *http.Request) (future MembersCreat
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client MembersClient) (mVar Member, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "blockchain.MembersCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("blockchain.MembersCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if mVar.Response.Response, err = future.GetResult(sender); err == nil && mVar.Response.Response.StatusCode != http.StatusNoContent {
+			mVar, err = client.CreateResponder(mVar.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "blockchain.MembersCreateFuture", "Result", mVar.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -147,7 +169,7 @@ func (client MembersClient) Delete(ctx context.Context, blockchainMemberName str
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "blockchain.MembersClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "blockchain.MembersClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -183,7 +205,23 @@ func (client MembersClient) DeleteSender(req *http.Request) (future MembersDelet
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client MembersClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "blockchain.MembersDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("blockchain.MembersDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -311,6 +349,7 @@ func (client MembersClient) List(ctx context.Context, resourceGroupName string) 
 	}
 	if result.mc.hasNextLink() && result.mc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -371,7 +410,6 @@ func (client MembersClient) listNextResults(ctx context.Context, lastResults Mem
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blockchain.MembersClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -425,6 +463,7 @@ func (client MembersClient) ListAll(ctx context.Context) (result MemberCollectio
 	}
 	if result.mc.hasNextLink() && result.mc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -484,7 +523,6 @@ func (client MembersClient) listAllNextResults(ctx context.Context, lastResults 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blockchain.MembersClient", "listAllNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -619,6 +657,7 @@ func (client MembersClient) ListConsortiumMembers(ctx context.Context, blockchai
 	}
 	if result.cmc.hasNextLink() && result.cmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -680,7 +719,6 @@ func (client MembersClient) listConsortiumMembersNextResults(ctx context.Context
 	result, err = client.ListConsortiumMembersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blockchain.MembersClient", "listConsortiumMembersNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

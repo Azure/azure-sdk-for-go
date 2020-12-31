@@ -221,7 +221,7 @@ func (client ExtensionClient) DisableMonitoring(ctx context.Context, resourceGro
 
 	result, err = client.DisableMonitoringSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "DisableMonitoring", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "DisableMonitoring", nil, "Failure sending request")
 		return
 	}
 
@@ -257,7 +257,23 @@ func (client ExtensionClient) DisableMonitoringSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ExtensionClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hdinsight.ExtensionDisableMonitoringFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionDisableMonitoringFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -296,7 +312,7 @@ func (client ExtensionClient) EnableMonitoring(ctx context.Context, resourceGrou
 
 	result, err = client.EnableMonitoringSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "EnableMonitoring", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "EnableMonitoring", nil, "Failure sending request")
 		return
 	}
 
@@ -334,7 +350,23 @@ func (client ExtensionClient) EnableMonitoringSender(req *http.Request) (future 
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ExtensionClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hdinsight.ExtensionEnableMonitoringFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionEnableMonitoringFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

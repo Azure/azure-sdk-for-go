@@ -74,14 +74,7 @@ func (client DatasetsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 		{TargetValue: datasetName,
 			Constraints: []validation.Constraint{{Target: "datasetName", Name: validation.MaxLength, Rule: 260, Chain: nil},
 				{Target: "datasetName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "datasetName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}},
-		{TargetValue: dataset,
-			Constraints: []validation.Constraint{{Target: "dataset.Properties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "dataset.Properties.LinkedServiceName", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "dataset.Properties.LinkedServiceName.Type", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "dataset.Properties.LinkedServiceName.ReferenceName", Name: validation.Null, Rule: true, Chain: nil},
-					}},
-				}}}}}); err != nil {
+				{Target: "datasetName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("datafactory.DatasetsClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -388,6 +381,7 @@ func (client DatasetsClient) ListByFactory(ctx context.Context, resourceGroupNam
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -449,7 +443,6 @@ func (client DatasetsClient) listByFactoryNextResults(ctx context.Context, lastR
 	result, err = client.ListByFactoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.DatasetsClient", "listByFactoryNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

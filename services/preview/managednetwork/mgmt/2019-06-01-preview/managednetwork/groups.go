@@ -69,7 +69,7 @@ func (client GroupsClient) CreateOrUpdate(ctx context.Context, managedNetworkGro
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "managednetwork.GroupsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managednetwork.GroupsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -108,7 +108,29 @@ func (client GroupsClient) CreateOrUpdateSender(req *http.Request) (future Group
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client GroupsClient) (g Group, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "managednetwork.GroupsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("managednetwork.GroupsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if g.Response.Response, err = future.GetResult(sender); err == nil && g.Response.Response.StatusCode != http.StatusNoContent {
+			g, err = client.CreateOrUpdateResponder(g.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "managednetwork.GroupsCreateOrUpdateFuture", "Result", g.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -149,7 +171,7 @@ func (client GroupsClient) Delete(ctx context.Context, resourceGroupName string,
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "managednetwork.GroupsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managednetwork.GroupsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -186,7 +208,23 @@ func (client GroupsClient) DeleteSender(req *http.Request) (future GroupsDeleteF
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client GroupsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "managednetwork.GroupsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("managednetwork.GroupsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -330,6 +368,7 @@ func (client GroupsClient) ListByManagedNetwork(ctx context.Context, resourceGro
 	}
 	if result.glr.hasNextLink() && result.glr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -397,7 +436,6 @@ func (client GroupsClient) listByManagedNetworkNextResults(ctx context.Context, 
 	result, err = client.ListByManagedNetworkResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.GroupsClient", "listByManagedNetworkNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

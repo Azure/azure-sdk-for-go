@@ -82,7 +82,7 @@ func (client ExperimentsClient) Create(ctx context.Context, resourceGroupName st
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batchai.ExperimentsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batchai.ExperimentsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -119,7 +119,29 @@ func (client ExperimentsClient) CreateSender(req *http.Request) (future Experime
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ExperimentsClient) (e Experiment, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batchai.ExperimentsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("batchai.ExperimentsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if e.Response.Response, err = future.GetResult(sender); err == nil && e.Response.Response.StatusCode != http.StatusNoContent {
+			e, err = client.CreateResponder(e.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "batchai.ExperimentsCreateFuture", "Result", e.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -175,7 +197,7 @@ func (client ExperimentsClient) Delete(ctx context.Context, resourceGroupName st
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batchai.ExperimentsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batchai.ExperimentsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -212,7 +234,23 @@ func (client ExperimentsClient) DeleteSender(req *http.Request) (future Experime
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ExperimentsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batchai.ExperimentsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("batchai.ExperimentsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -374,6 +412,7 @@ func (client ExperimentsClient) ListByWorkspace(ctx context.Context, resourceGro
 	}
 	if result.elr.hasNextLink() && result.elr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -440,7 +479,6 @@ func (client ExperimentsClient) listByWorkspaceNextResults(ctx context.Context, 
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.ExperimentsClient", "listByWorkspaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

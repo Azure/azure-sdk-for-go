@@ -320,6 +320,7 @@ func (client PolicyClient) List(ctx context.Context, resourceGroupName string, l
 	}
 	if result.rwcp.hasNextLink() && result.rwcp.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -391,7 +392,6 @@ func (client PolicyClient) listNextResults(ctx context.Context, lastResults Resp
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.PolicyClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

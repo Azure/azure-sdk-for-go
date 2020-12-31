@@ -174,6 +174,7 @@ func (client DataStoreTypesClient) ListByDataManager(ctx context.Context, resour
 	}
 	if result.dstl.hasNextLink() && result.dstl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -235,7 +236,6 @@ func (client DataStoreTypesClient) listByDataManagerNextResults(ctx context.Cont
 	result, err = client.ListByDataManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.DataStoreTypesClient", "listByDataManagerNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

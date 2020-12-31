@@ -76,7 +76,7 @@ func (client DeviceSettingsClient) CreateOrUpdateAlertSettings(ctx context.Conte
 
 	result, err = client.CreateOrUpdateAlertSettingsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "CreateOrUpdateAlertSettings", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "CreateOrUpdateAlertSettings", nil, "Failure sending request")
 		return
 	}
 
@@ -115,7 +115,29 @@ func (client DeviceSettingsClient) CreateOrUpdateAlertSettingsSender(req *http.R
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DeviceSettingsClient) (as AlertSettings, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsCreateOrUpdateAlertSettingsFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.DeviceSettingsCreateOrUpdateAlertSettingsFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if as.Response.Response, err = future.GetResult(sender); err == nil && as.Response.Response.StatusCode != http.StatusNoContent {
+			as, err = client.CreateOrUpdateAlertSettingsResponder(as.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsCreateOrUpdateAlertSettingsFuture", "Result", as.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -166,7 +188,7 @@ func (client DeviceSettingsClient) CreateOrUpdateTimeSettings(ctx context.Contex
 
 	result, err = client.CreateOrUpdateTimeSettingsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "CreateOrUpdateTimeSettings", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "CreateOrUpdateTimeSettings", nil, "Failure sending request")
 		return
 	}
 
@@ -205,7 +227,29 @@ func (client DeviceSettingsClient) CreateOrUpdateTimeSettingsSender(req *http.Re
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DeviceSettingsClient) (ts TimeSettings, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsCreateOrUpdateTimeSettingsFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.DeviceSettingsCreateOrUpdateTimeSettingsFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ts.Response.Response, err = future.GetResult(sender); err == nil && ts.Response.Response.StatusCode != http.StatusNoContent {
+			ts, err = client.CreateOrUpdateTimeSettingsResponder(ts.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsCreateOrUpdateTimeSettingsFuture", "Result", ts.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -592,7 +636,7 @@ func (client DeviceSettingsClient) SyncRemotemanagementCertificate(ctx context.C
 
 	result, err = client.SyncRemotemanagementCertificateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "SyncRemotemanagementCertificate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "SyncRemotemanagementCertificate", nil, "Failure sending request")
 		return
 	}
 
@@ -629,7 +673,23 @@ func (client DeviceSettingsClient) SyncRemotemanagementCertificateSender(req *ht
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DeviceSettingsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsSyncRemotemanagementCertificateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.DeviceSettingsSyncRemotemanagementCertificateFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -676,7 +736,7 @@ func (client DeviceSettingsClient) UpdateNetworkSettings(ctx context.Context, de
 
 	result, err = client.UpdateNetworkSettingsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "UpdateNetworkSettings", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "UpdateNetworkSettings", nil, "Failure sending request")
 		return
 	}
 
@@ -715,7 +775,29 @@ func (client DeviceSettingsClient) UpdateNetworkSettingsSender(req *http.Request
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DeviceSettingsClient) (ns NetworkSettings, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsUpdateNetworkSettingsFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.DeviceSettingsUpdateNetworkSettingsFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ns.Response.Response, err = future.GetResult(sender); err == nil && ns.Response.Response.StatusCode != http.StatusNoContent {
+			ns, err = client.UpdateNetworkSettingsResponder(ns.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsUpdateNetworkSettingsFuture", "Result", ns.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -763,7 +845,7 @@ func (client DeviceSettingsClient) UpdateSecuritySettings(ctx context.Context, d
 
 	result, err = client.UpdateSecuritySettingsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "UpdateSecuritySettings", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "UpdateSecuritySettings", nil, "Failure sending request")
 		return
 	}
 
@@ -802,7 +884,29 @@ func (client DeviceSettingsClient) UpdateSecuritySettingsSender(req *http.Reques
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DeviceSettingsClient) (ss SecuritySettings, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsUpdateSecuritySettingsFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.DeviceSettingsUpdateSecuritySettingsFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ss.Response.Response, err = future.GetResult(sender); err == nil && ss.Response.Response.StatusCode != http.StatusNoContent {
+			ss, err = client.UpdateSecuritySettingsResponder(ss.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsUpdateSecuritySettingsFuture", "Result", ss.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

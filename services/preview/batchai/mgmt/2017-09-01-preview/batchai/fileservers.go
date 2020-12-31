@@ -93,7 +93,7 @@ func (client FileServersClient) Create(ctx context.Context, resourceGroupName st
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batchai.FileServersClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batchai.FileServersClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -131,7 +131,29 @@ func (client FileServersClient) CreateSender(req *http.Request) (future FileServ
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client FileServersClient) (fs FileServer, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batchai.FileServersCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("batchai.FileServersCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if fs.Response.Response, err = future.GetResult(sender); err == nil && fs.Response.Response.StatusCode != http.StatusNoContent {
+			fs, err = client.CreateResponder(fs.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "batchai.FileServersCreateFuture", "Result", fs.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -182,7 +204,7 @@ func (client FileServersClient) Delete(ctx context.Context, resourceGroupName st
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batchai.FileServersClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batchai.FileServersClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -218,7 +240,23 @@ func (client FileServersClient) DeleteSender(req *http.Request) (future FileServ
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client FileServersClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batchai.FileServersDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("batchai.FileServersDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -368,6 +406,7 @@ func (client FileServersClient) List(ctx context.Context, filter string, selectP
 	}
 	if result.fslr.hasNextLink() && result.fslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -438,7 +477,6 @@ func (client FileServersClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.FileServersClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -509,6 +547,7 @@ func (client FileServersClient) ListByResourceGroup(ctx context.Context, resourc
 	}
 	if result.fslr.hasNextLink() && result.fslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -580,7 +619,6 @@ func (client FileServersClient) listByResourceGroupNextResults(ctx context.Conte
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.FileServersClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

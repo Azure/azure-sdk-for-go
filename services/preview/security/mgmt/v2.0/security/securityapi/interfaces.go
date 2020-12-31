@@ -215,10 +215,10 @@ var _ DeviceSecurityGroupsClientAPI = (*security.DeviceSecurityGroupsClient)(nil
 
 // SettingsClientAPI contains the set of methods on the SettingsClient type.
 type SettingsClientAPI interface {
-	Get(ctx context.Context, settingName string) (result security.Setting, err error)
+	Get(ctx context.Context, settingName string) (result security.SettingModel, err error)
 	List(ctx context.Context) (result security.SettingsListPage, err error)
 	ListComplete(ctx context.Context) (result security.SettingsListIterator, err error)
-	Update(ctx context.Context, settingName string, setting security.Setting) (result security.Setting, err error)
+	Update(ctx context.Context, settingName string, setting security.BasicSetting) (result security.SettingModel, err error)
 }
 
 var _ SettingsClientAPI = (*security.SettingsClient)(nil)

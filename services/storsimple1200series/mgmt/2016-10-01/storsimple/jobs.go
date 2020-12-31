@@ -174,6 +174,7 @@ func (client JobsClient) ListByDevice(ctx context.Context, deviceName string, re
 	}
 	if result.jl.hasNextLink() && result.jl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -239,7 +240,6 @@ func (client JobsClient) listByDeviceNextResults(ctx context.Context, lastResult
 	result, err = client.ListByDeviceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.JobsClient", "listByDeviceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -304,6 +304,7 @@ func (client JobsClient) ListByManager(ctx context.Context, resourceGroupName st
 	}
 	if result.jl.hasNextLink() && result.jl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -368,7 +369,6 @@ func (client JobsClient) listByManagerNextResults(ctx context.Context, lastResul
 	result, err = client.ListByManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.JobsClient", "listByManagerNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

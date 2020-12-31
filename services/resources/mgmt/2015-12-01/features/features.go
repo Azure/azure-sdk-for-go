@@ -155,6 +155,7 @@ func (client Client) List(ctx context.Context, resourceProviderNamespace string)
 	}
 	if result.olr.hasNextLink() && result.olr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -215,7 +216,6 @@ func (client Client) listNextResults(ctx context.Context, lastResults Operations
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.Client", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -269,6 +269,7 @@ func (client Client) ListAll(ctx context.Context) (result OperationsListResultPa
 	}
 	if result.olr.hasNextLink() && result.olr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -328,7 +329,6 @@ func (client Client) listAllNextResults(ctx context.Context, lastResults Operati
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.Client", "listAllNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -75,9 +75,7 @@ func (client TriggersClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 		{TargetValue: triggerName,
 			Constraints: []validation.Constraint{{Target: "triggerName", Name: validation.MaxLength, Rule: 260, Chain: nil},
 				{Target: "triggerName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "triggerName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}},
-		{TargetValue: trigger,
-			Constraints: []validation.Constraint{{Target: "trigger.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "triggerName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("datafactory.TriggersClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -384,6 +382,7 @@ func (client TriggersClient) ListByFactory(ctx context.Context, resourceGroupNam
 	}
 	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -445,7 +444,6 @@ func (client TriggersClient) listByFactoryNextResults(ctx context.Context, lastR
 	result, err = client.ListByFactoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "listByFactoryNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -521,6 +519,7 @@ func (client TriggersClient) ListRuns(ctx context.Context, resourceGroupName str
 	}
 	if result.trlr.hasNextLink() && result.trlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -585,7 +584,6 @@ func (client TriggersClient) listRunsNextResults(ctx context.Context, lastResult
 	result, err = client.ListRunsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "listRunsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -646,7 +644,7 @@ func (client TriggersClient) Start(ctx context.Context, resourceGroupName string
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "Start", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "Start", nil, "Failure sending request")
 		return
 	}
 
@@ -683,7 +681,23 @@ func (client TriggersClient) StartSender(req *http.Request) (future TriggersStar
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client TriggersClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "datafactory.TriggersStartFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("datafactory.TriggersStartFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -738,7 +752,7 @@ func (client TriggersClient) Stop(ctx context.Context, resourceGroupName string,
 
 	result, err = client.StopSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "Stop", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "Stop", nil, "Failure sending request")
 		return
 	}
 
@@ -775,7 +789,23 @@ func (client TriggersClient) StopSender(req *http.Request) (future TriggersStopF
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client TriggersClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "datafactory.TriggersStopFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("datafactory.TriggersStopFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

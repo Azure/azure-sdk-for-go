@@ -582,6 +582,7 @@ func (client BudgetsClient) List(ctx context.Context) (result BudgetsListResultP
 	}
 	if result.blr.hasNextLink() && result.blr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -641,7 +642,6 @@ func (client BudgetsClient) listNextResults(ctx context.Context, lastResults Bud
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -697,6 +697,7 @@ func (client BudgetsClient) ListByResourceGroupName(ctx context.Context, resourc
 	}
 	if result.blr.hasNextLink() && result.blr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -757,7 +758,6 @@ func (client BudgetsClient) listByResourceGroupNameNextResults(ctx context.Conte
 	result, err = client.ListByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "listByResourceGroupNameNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

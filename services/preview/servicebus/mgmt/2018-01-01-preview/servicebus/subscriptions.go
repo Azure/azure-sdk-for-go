@@ -107,7 +107,7 @@ func (client SubscriptionsClient) CreateOrUpdatePreparer(ctx context.Context, re
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -204,7 +204,7 @@ func (client SubscriptionsClient) DeletePreparer(ctx context.Context, resourceGr
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -298,7 +298,7 @@ func (client SubscriptionsClient) GetPreparer(ctx context.Context, resourceGroup
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -392,6 +392,7 @@ func (client SubscriptionsClient) ListByTopic(ctx context.Context, resourceGroup
 	}
 	if result.sslr.hasNextLink() && result.sslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -406,7 +407,7 @@ func (client SubscriptionsClient) ListByTopicPreparer(ctx context.Context, resou
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -460,7 +461,6 @@ func (client SubscriptionsClient) listByTopicNextResults(ctx context.Context, la
 	result, err = client.ListByTopicResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.SubscriptionsClient", "listByTopicNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

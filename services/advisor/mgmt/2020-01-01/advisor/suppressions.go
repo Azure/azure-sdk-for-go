@@ -49,7 +49,7 @@ func NewSuppressionsClientWithBaseURI(baseURI string, subscriptionID string) Sup
 // recommendationID - the recommendation ID.
 // name - the name of the suppression.
 // suppressionContract - the snoozed or dismissed attribute; for example, the snooze duration.
-func (client SuppressionsClient) Create(ctx context.Context, resourceURI string, recommendationID string, name string, suppressionContract SuppressionContract) (result SuppressionContract, err error) {
+func (client SuppressionsClient) Create(ctx context.Context, resourceURI string, recommendationID string, name string, suppressionContract SuppressionContract) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SuppressionsClient.Create")
 		defer func() {
@@ -113,11 +113,11 @@ func (client SuppressionsClient) CreateSender(req *http.Request) (*http.Response
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client SuppressionsClient) CreateResponder(resp *http.Response) (result SuppressionContract, err error) {
+func (client SuppressionsClient) CreateResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -316,6 +316,7 @@ func (client SuppressionsClient) List(ctx context.Context, top *int32, skipToken
 	}
 	if result.sclr.hasNextLink() && result.sclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -381,7 +382,6 @@ func (client SuppressionsClient) listNextResults(ctx context.Context, lastResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "advisor.SuppressionsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -160,6 +160,7 @@ func (client CommitmentAssociationsClient) List(ctx context.Context, resourceGro
 	}
 	if result.calr.hasNextLink() && result.calr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -224,7 +225,6 @@ func (client CommitmentAssociationsClient) listNextResults(ctx context.Context, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -145,53 +145,19 @@ func (acrp AccessControlRecordProperties) MarshalJSON() ([]byte, error) {
 // AccessControlRecordsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type AccessControlRecordsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *AccessControlRecordsCreateOrUpdateFuture) Result(client AccessControlRecordsClient) (acr AccessControlRecord, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.AccessControlRecordsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if acr.Response.Response, err = future.GetResult(sender); err == nil && acr.Response.Response.StatusCode != http.StatusNoContent {
-		acr, err = client.CreateOrUpdateResponder(acr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsCreateOrUpdateFuture", "Result", acr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AccessControlRecordsClient) (AccessControlRecord, error)
 }
 
 // AccessControlRecordsDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type AccessControlRecordsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *AccessControlRecordsDeleteFuture) Result(client AccessControlRecordsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.AccessControlRecordsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AccessControlRecordsClient) (autorest.Response, error)
 }
 
 // AcsConfiguration the ACS configuration.
@@ -1134,76 +1100,28 @@ func NewBackupListPage(cur BackupList, getNextPage func(context.Context, BackupL
 // BackupPoliciesBackupNowFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type BackupPoliciesBackupNowFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *BackupPoliciesBackupNowFuture) Result(client BackupPoliciesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupPoliciesBackupNowFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.BackupPoliciesBackupNowFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BackupPoliciesClient) (autorest.Response, error)
 }
 
 // BackupPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type BackupPoliciesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *BackupPoliciesCreateOrUpdateFuture) Result(client BackupPoliciesClient) (bp BackupPolicy, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.BackupPoliciesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if bp.Response.Response, err = future.GetResult(sender); err == nil && bp.Response.Response.StatusCode != http.StatusNoContent {
-		bp, err = client.CreateOrUpdateResponder(bp.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storsimple.BackupPoliciesCreateOrUpdateFuture", "Result", bp.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BackupPoliciesClient) (BackupPolicy, error)
 }
 
 // BackupPoliciesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type BackupPoliciesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *BackupPoliciesDeleteFuture) Result(client BackupPoliciesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupPoliciesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.BackupPoliciesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BackupPoliciesClient) (autorest.Response, error)
 }
 
 // BackupPolicy the backup policy.
@@ -1479,121 +1397,45 @@ func (bsp BackupScheduleProperties) MarshalJSON() ([]byte, error) {
 // BackupSchedulesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type BackupSchedulesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *BackupSchedulesCreateOrUpdateFuture) Result(client BackupSchedulesClient) (bs BackupSchedule, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupSchedulesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.BackupSchedulesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if bs.Response.Response, err = future.GetResult(sender); err == nil && bs.Response.Response.StatusCode != http.StatusNoContent {
-		bs, err = client.CreateOrUpdateResponder(bs.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storsimple.BackupSchedulesCreateOrUpdateFuture", "Result", bs.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BackupSchedulesClient) (BackupSchedule, error)
 }
 
 // BackupSchedulesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type BackupSchedulesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *BackupSchedulesDeleteFuture) Result(client BackupSchedulesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupSchedulesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.BackupSchedulesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BackupSchedulesClient) (autorest.Response, error)
 }
 
 // BackupsCloneFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type BackupsCloneFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *BackupsCloneFuture) Result(client BackupsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupsCloneFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.BackupsCloneFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BackupsClient) (autorest.Response, error)
 }
 
 // BackupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type BackupsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *BackupsDeleteFuture) Result(client BackupsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.BackupsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BackupsClient) (autorest.Response, error)
 }
 
 // BackupsRestoreFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type BackupsRestoreFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *BackupsRestoreFuture) Result(client BackupsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupsRestoreFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.BackupsRestoreFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BackupsClient) (autorest.Response, error)
 }
 
 // BandwidthRateSettingProperties the properties of the bandwidth setting.
@@ -1722,53 +1564,19 @@ type BandwidthSettingList struct {
 // BandwidthSettingsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type BandwidthSettingsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *BandwidthSettingsCreateOrUpdateFuture) Result(client BandwidthSettingsClient) (bs BandwidthSetting, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BandwidthSettingsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.BandwidthSettingsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if bs.Response.Response, err = future.GetResult(sender); err == nil && bs.Response.Response.StatusCode != http.StatusNoContent {
-		bs, err = client.CreateOrUpdateResponder(bs.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storsimple.BandwidthSettingsCreateOrUpdateFuture", "Result", bs.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BandwidthSettingsClient) (BandwidthSetting, error)
 }
 
 // BandwidthSettingsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type BandwidthSettingsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *BandwidthSettingsDeleteFuture) Result(client BandwidthSettingsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BandwidthSettingsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.BandwidthSettingsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BandwidthSettingsClient) (autorest.Response, error)
 }
 
 // BaseModel represents the base class for all other ARM object models
@@ -1972,24 +1780,10 @@ type CloudApplianceSettings struct {
 // CloudAppliancesProvisionFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type CloudAppliancesProvisionFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *CloudAppliancesProvisionFuture) Result(client CloudAppliancesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.CloudAppliancesProvisionFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.CloudAppliancesProvisionFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(CloudAppliancesClient) (autorest.Response, error)
 }
 
 // ConfigureDeviceRequest the mandatory device configuration request.
@@ -2505,278 +2299,100 @@ type DeviceRolloverDetails struct {
 // DevicesConfigureFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DevicesConfigureFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DevicesConfigureFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesConfigureFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.DevicesConfigureFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DevicesClient) (autorest.Response, error)
 }
 
 // DevicesDeactivateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DevicesDeactivateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DevicesDeactivateFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesDeactivateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.DevicesDeactivateFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DevicesClient) (autorest.Response, error)
 }
 
 // DevicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DevicesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DevicesDeleteFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.DevicesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DevicesClient) (autorest.Response, error)
 }
 
 // DeviceSettingsCreateOrUpdateAlertSettingsFuture an abstraction for monitoring and retrieving the results
 // of a long-running operation.
 type DeviceSettingsCreateOrUpdateAlertSettingsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DeviceSettingsCreateOrUpdateAlertSettingsFuture) Result(client DeviceSettingsClient) (as AlertSettings, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsCreateOrUpdateAlertSettingsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.DeviceSettingsCreateOrUpdateAlertSettingsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if as.Response.Response, err = future.GetResult(sender); err == nil && as.Response.Response.StatusCode != http.StatusNoContent {
-		as, err = client.CreateOrUpdateAlertSettingsResponder(as.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsCreateOrUpdateAlertSettingsFuture", "Result", as.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DeviceSettingsClient) (AlertSettings, error)
 }
 
 // DeviceSettingsCreateOrUpdateTimeSettingsFuture an abstraction for monitoring and retrieving the results
 // of a long-running operation.
 type DeviceSettingsCreateOrUpdateTimeSettingsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DeviceSettingsCreateOrUpdateTimeSettingsFuture) Result(client DeviceSettingsClient) (ts TimeSettings, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsCreateOrUpdateTimeSettingsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.DeviceSettingsCreateOrUpdateTimeSettingsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ts.Response.Response, err = future.GetResult(sender); err == nil && ts.Response.Response.StatusCode != http.StatusNoContent {
-		ts, err = client.CreateOrUpdateTimeSettingsResponder(ts.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsCreateOrUpdateTimeSettingsFuture", "Result", ts.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DeviceSettingsClient) (TimeSettings, error)
 }
 
 // DeviceSettingsSyncRemotemanagementCertificateFuture an abstraction for monitoring and retrieving the
 // results of a long-running operation.
 type DeviceSettingsSyncRemotemanagementCertificateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DeviceSettingsSyncRemotemanagementCertificateFuture) Result(client DeviceSettingsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsSyncRemotemanagementCertificateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.DeviceSettingsSyncRemotemanagementCertificateFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DeviceSettingsClient) (autorest.Response, error)
 }
 
 // DeviceSettingsUpdateNetworkSettingsFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type DeviceSettingsUpdateNetworkSettingsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DeviceSettingsUpdateNetworkSettingsFuture) Result(client DeviceSettingsClient) (ns NetworkSettings, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsUpdateNetworkSettingsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.DeviceSettingsUpdateNetworkSettingsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ns.Response.Response, err = future.GetResult(sender); err == nil && ns.Response.Response.StatusCode != http.StatusNoContent {
-		ns, err = client.UpdateNetworkSettingsResponder(ns.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsUpdateNetworkSettingsFuture", "Result", ns.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DeviceSettingsClient) (NetworkSettings, error)
 }
 
 // DeviceSettingsUpdateSecuritySettingsFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type DeviceSettingsUpdateSecuritySettingsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DeviceSettingsUpdateSecuritySettingsFuture) Result(client DeviceSettingsClient) (ss SecuritySettings, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsUpdateSecuritySettingsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.DeviceSettingsUpdateSecuritySettingsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ss.Response.Response, err = future.GetResult(sender); err == nil && ss.Response.Response.StatusCode != http.StatusNoContent {
-		ss, err = client.UpdateSecuritySettingsResponder(ss.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsUpdateSecuritySettingsFuture", "Result", ss.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DeviceSettingsClient) (SecuritySettings, error)
 }
 
 // DevicesFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DevicesFailoverFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DevicesFailoverFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesFailoverFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.DevicesFailoverFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DevicesClient) (autorest.Response, error)
 }
 
 // DevicesInstallUpdatesFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DevicesInstallUpdatesFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DevicesInstallUpdatesFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesInstallUpdatesFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.DevicesInstallUpdatesFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DevicesClient) (autorest.Response, error)
 }
 
 // DevicesScanForUpdatesFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DevicesScanForUpdatesFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DevicesScanForUpdatesFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesScanForUpdatesFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.DevicesScanForUpdatesFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DevicesClient) (autorest.Response, error)
 }
 
 // DimensionFilter the dimension filter.
@@ -3099,24 +2715,10 @@ type HardwareComponentGroupProperties struct {
 // HardwareComponentGroupsChangeControllerPowerStateFuture an abstraction for monitoring and retrieving the
 // results of a long-running operation.
 type HardwareComponentGroupsChangeControllerPowerStateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *HardwareComponentGroupsChangeControllerPowerStateFuture) Result(client HardwareComponentGroupsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.HardwareComponentGroupsChangeControllerPowerStateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.HardwareComponentGroupsChangeControllerPowerStateFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(HardwareComponentGroupsClient) (autorest.Response, error)
 }
 
 // Job the job.
@@ -3491,24 +3093,10 @@ type JobProperties struct {
 
 // JobsCancelFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type JobsCancelFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *JobsCancelFuture) Result(client JobsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.JobsCancelFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.JobsCancelFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(JobsClient) (autorest.Response, error)
 }
 
 // JobStage the details about the specific stage of a job.
@@ -4480,53 +4068,19 @@ func (sacp StorageAccountCredentialProperties) MarshalJSON() ([]byte, error) {
 // StorageAccountCredentialsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
 // of a long-running operation.
 type StorageAccountCredentialsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *StorageAccountCredentialsCreateOrUpdateFuture) Result(client StorageAccountCredentialsClient) (sac StorageAccountCredential, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.StorageAccountCredentialsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.StorageAccountCredentialsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sac.Response.Response, err = future.GetResult(sender); err == nil && sac.Response.Response.StatusCode != http.StatusNoContent {
-		sac, err = client.CreateOrUpdateResponder(sac.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storsimple.StorageAccountCredentialsCreateOrUpdateFuture", "Result", sac.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(StorageAccountCredentialsClient) (StorageAccountCredential, error)
 }
 
 // StorageAccountCredentialsDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type StorageAccountCredentialsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *StorageAccountCredentialsDeleteFuture) Result(client StorageAccountCredentialsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.StorageAccountCredentialsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.StorageAccountCredentialsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(StorageAccountCredentialsClient) (autorest.Response, error)
 }
 
 // SymmetricEncryptedSecret represents the secrets encrypted using Symmetric Encryption Key.
@@ -5010,53 +4564,19 @@ func (vcp VolumeContainerProperties) MarshalJSON() ([]byte, error) {
 // VolumeContainersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type VolumeContainersCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VolumeContainersCreateOrUpdateFuture) Result(client VolumeContainersClient) (vc VolumeContainer, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.VolumeContainersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.VolumeContainersCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vc.Response.Response, err = future.GetResult(sender); err == nil && vc.Response.Response.StatusCode != http.StatusNoContent {
-		vc, err = client.CreateOrUpdateResponder(vc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storsimple.VolumeContainersCreateOrUpdateFuture", "Result", vc.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VolumeContainersClient) (VolumeContainer, error)
 }
 
 // VolumeContainersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type VolumeContainersDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VolumeContainersDeleteFuture) Result(client VolumeContainersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.VolumeContainersDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.VolumeContainersDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VolumeContainersClient) (autorest.Response, error)
 }
 
 // VolumeFailoverMetadata the metadata of a volume that has valid cloud snapshot.
@@ -5130,53 +4650,19 @@ func (vp VolumeProperties) MarshalJSON() ([]byte, error) {
 // VolumesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type VolumesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VolumesCreateOrUpdateFuture) Result(client VolumesClient) (vVar Volume, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.VolumesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.VolumesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vVar.Response.Response, err = future.GetResult(sender); err == nil && vVar.Response.Response.StatusCode != http.StatusNoContent {
-		vVar, err = client.CreateOrUpdateResponder(vVar.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storsimple.VolumesCreateOrUpdateFuture", "Result", vVar.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VolumesClient) (Volume, error)
 }
 
 // VolumesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type VolumesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VolumesDeleteFuture) Result(client VolumesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.VolumesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.VolumesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VolumesClient) (autorest.Response, error)
 }
 
 // WebproxySettings the web proxy settings on the device.

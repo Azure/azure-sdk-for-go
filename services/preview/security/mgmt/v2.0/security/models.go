@@ -51,7 +51,7 @@ type AadExternalSecuritySolution struct {
 	// Location - READ-ONLY; Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindExternalSecuritySolution', 'KindCEF', 'KindATA', 'KindAAD'
-	Kind KindEnum `json:"kind,omitempty"`
+	Kind KindEnum1 `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AadExternalSecuritySolution.
@@ -386,24 +386,10 @@ type AdaptiveNetworkHardeningProperties struct {
 // AdaptiveNetworkHardeningsEnforceFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type AdaptiveNetworkHardeningsEnforceFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *AdaptiveNetworkHardeningsEnforceFuture) Result(client AdaptiveNetworkHardeningsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.AdaptiveNetworkHardeningsEnforceFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("security.AdaptiveNetworkHardeningsEnforceFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AdaptiveNetworkHardeningsClient) (autorest.Response, error)
 }
 
 // AdaptiveNetworkHardeningsList response for ListAdaptiveNetworkHardenings API service call
@@ -2761,7 +2747,7 @@ type AtaExternalSecuritySolution struct {
 	// Location - READ-ONLY; Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindExternalSecuritySolution', 'KindCEF', 'KindATA', 'KindAAD'
-	Kind KindEnum `json:"kind,omitempty"`
+	Kind KindEnum1 `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AtaExternalSecuritySolution.
@@ -3635,7 +3621,7 @@ type AutomationScope struct {
 // - security alerts and security assessments. To learn more about the supported security events data
 // models schemas - please visit https://aka.ms/ASCAutomationSchemas.
 type AutomationSource struct {
-	// EventSource - A valid event source type. Possible values include: 'Assessments', 'SubAssessments', 'Alerts', 'SecureScores', 'SecureScoreControls'
+	// EventSource - A valid event source type. Possible values include: 'EventSourceAssessments', 'EventSourceSubAssessments', 'EventSourceAlerts', 'EventSourceSecureScores', 'EventSourceSecureScoreControls', 'EventSourceRegulatoryComplianceAssessment'
 	EventSource EventSource `json:"eventSource,omitempty"`
 	// RuleSets - A set of rules which evaluate upon event interception. A logical disjunction is applied between defined rule sets (logical 'or').
 	RuleSets *[]AutomationRuleSet `json:"ruleSets,omitempty"`
@@ -4132,7 +4118,7 @@ type CefExternalSecuritySolution struct {
 	// Location - READ-ONLY; Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindExternalSecuritySolution', 'KindCEF', 'KindATA', 'KindAAD'
-	Kind KindEnum `json:"kind,omitempty"`
+	Kind KindEnum1 `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for CefExternalSecuritySolution.
@@ -5748,18 +5734,19 @@ type CVSS struct {
 type DataExportSetting struct {
 	// DataExportSettingProperties - Data export setting data
 	*DataExportSettingProperties `json:"properties,omitempty"`
-	// Kind - the kind of the settings string (DataExportSetting). Possible values include: 'SettingKindDataExportSetting', 'SettingKindAlertSuppressionSetting'
-	Kind SettingKind `json:"kind,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
+	// Kind - Possible values include: 'KindSetting', 'KindDataExportSetting'
+	Kind KindEnum `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DataExportSetting.
 func (desVar DataExportSetting) MarshalJSON() ([]byte, error) {
+	desVar.Kind = KindDataExportSetting
 	objectMap := make(map[string]interface{})
 	if desVar.DataExportSettingProperties != nil {
 		objectMap["properties"] = desVar.DataExportSettingProperties
@@ -5768,6 +5755,21 @@ func (desVar DataExportSetting) MarshalJSON() ([]byte, error) {
 		objectMap["kind"] = desVar.Kind
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDataExportSetting is the BasicSetting implementation for DataExportSetting.
+func (desVar DataExportSetting) AsDataExportSetting() (*DataExportSetting, bool) {
+	return &desVar, true
+}
+
+// AsSetting is the BasicSetting implementation for DataExportSetting.
+func (desVar DataExportSetting) AsSetting() (*Setting, bool) {
+	return nil, false
+}
+
+// AsBasicSetting is the BasicSetting implementation for DataExportSetting.
+func (desVar DataExportSetting) AsBasicSetting() (BasicSetting, bool) {
+	return &desVar, true
 }
 
 // UnmarshalJSON is the custom unmarshaler for DataExportSetting struct.
@@ -5790,7 +5792,7 @@ func (desVar *DataExportSetting) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind SettingKind
+				var kind KindEnum
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -6809,7 +6811,7 @@ type ExternalSecuritySolution struct {
 	// Location - READ-ONLY; Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindExternalSecuritySolution', 'KindCEF', 'KindATA', 'KindAAD'
-	Kind KindEnum `json:"kind,omitempty"`
+	Kind KindEnum1 `json:"kind,omitempty"`
 }
 
 func unmarshalBasicExternalSecuritySolution(body []byte) (BasicExternalSecuritySolution, error) {
@@ -14152,11 +14154,17 @@ type ServicePrincipalProperties struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
-// Setting represents a security setting in Azure Security Center.
+// BasicSetting the kind of the security setting
+type BasicSetting interface {
+	AsDataExportSetting() (*DataExportSetting, bool)
+	AsSetting() (*Setting, bool)
+}
+
+// Setting the kind of the security setting
 type Setting struct {
 	autorest.Response `json:"-"`
-	// Kind - the kind of the settings string (DataExportSetting). Possible values include: 'SettingKindDataExportSetting', 'SettingKindAlertSuppressionSetting'
-	Kind SettingKind `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindSetting', 'KindDataExportSetting'
+	Kind KindEnum `json:"kind,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
@@ -14165,8 +14173,46 @@ type Setting struct {
 	Type *string `json:"type,omitempty"`
 }
 
+func unmarshalBasicSetting(body []byte) (BasicSetting, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["kind"] {
+	case string(KindDataExportSetting):
+		var desVar DataExportSetting
+		err := json.Unmarshal(body, &desVar)
+		return desVar, err
+	default:
+		var s Setting
+		err := json.Unmarshal(body, &s)
+		return s, err
+	}
+}
+func unmarshalBasicSettingArray(body []byte) ([]BasicSetting, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	sArray := make([]BasicSetting, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		s, err := unmarshalBasicSetting(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		sArray[index] = s
+	}
+	return sArray, nil
+}
+
 // MarshalJSON is the custom marshaler for Setting.
 func (s Setting) MarshalJSON() ([]byte, error) {
+	s.Kind = KindSetting
 	objectMap := make(map[string]interface{})
 	if s.Kind != "" {
 		objectMap["kind"] = s.Kind
@@ -14174,32 +14220,43 @@ func (s Setting) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SettingResource the kind of the security setting
-type SettingResource struct {
-	// Kind - the kind of the settings string (DataExportSetting). Possible values include: 'SettingKindDataExportSetting', 'SettingKindAlertSuppressionSetting'
-	Kind SettingKind `json:"kind,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
+// AsDataExportSetting is the BasicSetting implementation for Setting.
+func (s Setting) AsDataExportSetting() (*DataExportSetting, bool) {
+	return nil, false
 }
 
-// MarshalJSON is the custom marshaler for SettingResource.
-func (sr SettingResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if sr.Kind != "" {
-		objectMap["kind"] = sr.Kind
+// AsSetting is the BasicSetting implementation for Setting.
+func (s Setting) AsSetting() (*Setting, bool) {
+	return &s, true
+}
+
+// AsBasicSetting is the BasicSetting implementation for Setting.
+func (s Setting) AsBasicSetting() (BasicSetting, bool) {
+	return &s, true
+}
+
+// SettingModel ...
+type SettingModel struct {
+	autorest.Response `json:"-"`
+	Value             BasicSetting `json:"value,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SettingModel struct.
+func (sm *SettingModel) UnmarshalJSON(body []byte) error {
+	s, err := unmarshalBasicSetting(body)
+	if err != nil {
+		return err
 	}
-	return json.Marshal(objectMap)
+	sm.Value = s
+
+	return nil
 }
 
 // SettingsList subscription settings list.
 type SettingsList struct {
 	autorest.Response `json:"-"`
 	// Value - The settings list.
-	Value *[]Setting `json:"value,omitempty"`
+	Value *[]BasicSetting `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URI to fetch the next page.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -14211,6 +14268,38 @@ func (sl SettingsList) MarshalJSON() ([]byte, error) {
 		objectMap["value"] = sl.Value
 	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SettingsList struct.
+func (sl *SettingsList) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "value":
+			if v != nil {
+				value, err := unmarshalBasicSettingArray(*v)
+				if err != nil {
+					return err
+				}
+				sl.Value = &value
+			}
+		case "nextLink":
+			if v != nil {
+				var nextLink string
+				err = json.Unmarshal(*v, &nextLink)
+				if err != nil {
+					return err
+				}
+				sl.NextLink = &nextLink
+			}
+		}
+	}
+
+	return nil
 }
 
 // SettingsListIterator provides access to a complete listing of Setting values.
@@ -14264,7 +14353,7 @@ func (iter SettingsListIterator) Response() SettingsList {
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter SettingsListIterator) Value() Setting {
+func (iter SettingsListIterator) Value() BasicSetting {
 	if !iter.page.NotDone() {
 		return Setting{}
 	}
@@ -14298,7 +14387,7 @@ func (sl SettingsList) settingsListPreparer(ctx context.Context) (*http.Request,
 		autorest.WithBaseURL(to.String(sl.NextLink)))
 }
 
-// SettingsListPage contains a page of Setting values.
+// SettingsListPage contains a page of BasicSetting values.
 type SettingsListPage struct {
 	fn func(context.Context, SettingsList) (SettingsList, error)
 	sl SettingsList
@@ -14348,7 +14437,7 @@ func (page SettingsListPage) Response() SettingsList {
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page SettingsListPage) Values() []Setting {
+func (page SettingsListPage) Values() []BasicSetting {
 	if page.sl.IsEmpty() {
 		return nil
 	}

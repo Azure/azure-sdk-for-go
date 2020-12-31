@@ -156,6 +156,7 @@ func (client SubAssessmentsClient) List(ctx context.Context, scope string, asses
 	}
 	if result.sal.hasNextLink() && result.sal.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -216,7 +217,6 @@ func (client SubAssessmentsClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.SubAssessmentsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -273,6 +273,7 @@ func (client SubAssessmentsClient) ListAll(ctx context.Context, scope string) (r
 	}
 	if result.sal.hasNextLink() && result.sal.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -332,7 +333,6 @@ func (client SubAssessmentsClient) listAllNextResults(ctx context.Context, lastR
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.SubAssessmentsClient", "listAllNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

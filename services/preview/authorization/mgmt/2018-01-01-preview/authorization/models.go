@@ -278,6 +278,19 @@ type ClassicAdministratorProperties struct {
 	Role *string `json:"role,omitempty"`
 }
 
+// Error object to be thrown in case of an unsuccessful response
+type Error struct {
+	Error *ErrorError `json:"error,omitempty"`
+}
+
+// ErrorError ...
+type ErrorError struct {
+	// Code - Brief error code
+	Code *string `json:"code,omitempty"`
+	// Message - Longer message explaining the details of the error
+	Message *string `json:"message,omitempty"`
+}
+
 // Permission role definition permissions.
 type Permission struct {
 	// Actions - Allowed actions.

@@ -372,6 +372,7 @@ func (client DataCollectionRulesClient) ListByResourceGroup(ctx context.Context,
 	}
 	if result.dcrrlr.hasNextLink() && result.dcrrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -432,7 +433,6 @@ func (client DataCollectionRulesClient) listByResourceGroupNextResults(ctx conte
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.DataCollectionRulesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -492,6 +492,7 @@ func (client DataCollectionRulesClient) ListBySubscription(ctx context.Context) 
 	}
 	if result.dcrrlr.hasNextLink() && result.dcrrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -551,7 +552,6 @@ func (client DataCollectionRulesClient) listBySubscriptionNextResults(ctx contex
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.DataCollectionRulesClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

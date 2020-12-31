@@ -979,30 +979,10 @@ type OrderProperties struct {
 // OrderPurchaseFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type OrderPurchaseFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *OrderPurchaseFuture) Result(client OrderClient) (or OrderResponse, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.OrderPurchaseFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("reservations.OrderPurchaseFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if or.Response.Response, err = future.GetResult(sender); err == nil && or.Response.Response.StatusCode != http.StatusNoContent {
-		or, err = client.PurchaseResponder(or.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "reservations.OrderPurchaseFuture", "Result", or.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(OrderClient) (OrderResponse, error)
 }
 
 // OrderResponse ...
@@ -1383,30 +1363,10 @@ type PurchaseRequestPropertiesReservedResourceProperties struct {
 // QuotaCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type QuotaCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *QuotaCreateOrUpdateFuture) Result(client QuotaClient) (so SetObject, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.QuotaCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("reservations.QuotaCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
-		so, err = client.CreateOrUpdateResponder(so.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "reservations.QuotaCreateOrUpdateFuture", "Result", so.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(QuotaClient) (SetObject, error)
 }
 
 // QuotaLimits quota limits.
@@ -2118,30 +2078,10 @@ func (qrsr2 *QuotaRequestSubmitResponse201) UnmarshalJSON(body []byte) error {
 
 // QuotaUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type QuotaUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *QuotaUpdateFuture) Result(client QuotaClient) (so SetObject, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.QuotaUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("reservations.QuotaUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
-		so, err = client.UpdateResponder(so.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "reservations.QuotaUpdateFuture", "Result", so.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(QuotaClient) (SetObject, error)
 }
 
 // RenewPropertiesResponse ...
@@ -2170,88 +2110,28 @@ type RenewPropertiesResponsePricingCurrencyTotal struct {
 // ReservationAvailableScopesFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ReservationAvailableScopesFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ReservationAvailableScopesFuture) Result(client Client) (p Properties, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.ReservationAvailableScopesFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("reservations.ReservationAvailableScopesFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if p.Response.Response, err = future.GetResult(sender); err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
-		p, err = client.AvailableScopesResponder(p.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "reservations.ReservationAvailableScopesFuture", "Result", p.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(Client) (Properties, error)
 }
 
 // ReservationMergeFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ReservationMergeFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ReservationMergeFuture) Result(client Client) (lr ListResponse, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.ReservationMergeFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("reservations.ReservationMergeFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if lr.Response.Response, err = future.GetResult(sender); err == nil && lr.Response.Response.StatusCode != http.StatusNoContent {
-		lr, err = client.MergeResponder(lr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "reservations.ReservationMergeFuture", "Result", lr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(Client) (ListResponse, error)
 }
 
 // ReservationUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ReservationUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ReservationUpdateFuture) Result(client Client) (r Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.ReservationUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("reservations.ReservationUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if r.Response.Response, err = future.GetResult(sender); err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
-		r, err = client.UpdateResponder(r.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "reservations.ReservationUpdateFuture", "Result", r.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(Client) (Response, error)
 }
 
 // ResourceName name of the resource provide by the resource Provider. Please use this name property for
@@ -2370,30 +2250,10 @@ type SkuRestriction struct {
 
 // SplitFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type SplitFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SplitFuture) Result(client Client) (lr ListResponse, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.SplitFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("reservations.SplitFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if lr.Response.Response, err = future.GetResult(sender); err == nil && lr.Response.Response.StatusCode != http.StatusNoContent {
-		lr, err = client.SplitResponder(lr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "reservations.SplitFuture", "Result", lr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(Client) (ListResponse, error)
 }
 
 // SplitProperties ...

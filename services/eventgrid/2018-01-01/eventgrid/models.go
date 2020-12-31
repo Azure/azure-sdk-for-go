@@ -382,6 +382,8 @@ type AppConfigurationKeyValueDeletedEventData struct {
 	Label *string `json:"label,omitempty"`
 	// Etag - The etag representing the key-value that was deleted.
 	Etag *string `json:"etag,omitempty"`
+	// SyncToken - The sync token representing the server state after the event.
+	SyncToken *string `json:"syncToken,omitempty"`
 }
 
 // AppConfigurationKeyValueModifiedEventData schema of the Data property of an EventGridEvent for an
@@ -393,6 +395,8 @@ type AppConfigurationKeyValueModifiedEventData struct {
 	Label *string `json:"label,omitempty"`
 	// Etag - The etag representing the new state of the key-value.
 	Etag *string `json:"etag,omitempty"`
+	// SyncToken - The sync token representing the server state after the event.
+	SyncToken *string `json:"syncToken,omitempty"`
 }
 
 // AppEventTypeDetail detail of action on the app.
@@ -2722,9 +2726,43 @@ type ResourceWriteSuccessData struct {
 	HTTPRequest *string `json:"httpRequest,omitempty"`
 }
 
+// ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData schema of the Data property of an
+// EventGridEvent for a Microsoft.ServiceBus.ActiveMessagesAvailablePeriodicNotifications event.
+type ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData struct {
+	// NamespaceName - The namespace name of the Microsoft.ServiceBus resource.
+	NamespaceName *string `json:"namespaceName,omitempty"`
+	// RequestURI - The endpoint of the Microsoft.ServiceBus resource.
+	RequestURI *string `json:"requestUri,omitempty"`
+	// EntityType - The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
+	EntityType *string `json:"entityType,omitempty"`
+	// QueueName - The name of the Microsoft.ServiceBus queue. If the entity type is of type 'subscriber', then this value will be null.
+	QueueName *string `json:"queueName,omitempty"`
+	// TopicName - The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue', then this value will be null.
+	TopicName *string `json:"topicName,omitempty"`
+	// SubscriptionName - The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value will be null.
+	SubscriptionName *string `json:"subscriptionName,omitempty"`
+}
+
 // ServiceBusActiveMessagesAvailableWithNoListenersEventData schema of the Data property of an
 // EventGridEvent for a Microsoft.ServiceBus.ActiveMessagesAvailableWithNoListeners event.
 type ServiceBusActiveMessagesAvailableWithNoListenersEventData struct {
+	// NamespaceName - The namespace name of the Microsoft.ServiceBus resource.
+	NamespaceName *string `json:"namespaceName,omitempty"`
+	// RequestURI - The endpoint of the Microsoft.ServiceBus resource.
+	RequestURI *string `json:"requestUri,omitempty"`
+	// EntityType - The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
+	EntityType *string `json:"entityType,omitempty"`
+	// QueueName - The name of the Microsoft.ServiceBus queue. If the entity type is of type 'subscriber', then this value will be null.
+	QueueName *string `json:"queueName,omitempty"`
+	// TopicName - The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue', then this value will be null.
+	TopicName *string `json:"topicName,omitempty"`
+	// SubscriptionName - The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value will be null.
+	SubscriptionName *string `json:"subscriptionName,omitempty"`
+}
+
+// ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData schema of the Data property of an
+// EventGridEvent for a Microsoft.ServiceBus.DeadletterMessagesAvailablePeriodicNotifications event.
+type ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData struct {
 	// NamespaceName - The namespace name of the Microsoft.ServiceBus resource.
 	NamespaceName *string `json:"namespaceName,omitempty"`
 	// RequestURI - The endpoint of the Microsoft.ServiceBus resource.

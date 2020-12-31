@@ -1079,7 +1079,6 @@ type ShortDescription struct {
 // SuppressionContract the details of the snoozed or dismissed rule; for example, the duration, name, and
 // GUID associated with the rule.
 type SuppressionContract struct {
-	autorest.Response `json:"-"`
 	// SuppressionProperties - The properties of the suppression.
 	*SuppressionProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; The resource ID.

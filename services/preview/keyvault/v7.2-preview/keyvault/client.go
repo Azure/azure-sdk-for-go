@@ -1509,7 +1509,7 @@ func (client BaseClient) FullBackup(ctx context.Context, vaultBaseURL string, az
 
 	result, err = client.FullBackupSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "FullBackup", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "FullBackup", nil, "Failure sending request")
 		return
 	}
 
@@ -1548,7 +1548,29 @@ func (client BaseClient) FullBackupSender(req *http.Request) (future FullBackupF
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client BaseClient) (fbo FullBackupOperation, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "keyvault.FullBackupFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("keyvault.FullBackupFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if fbo.Response.Response, err = future.GetResult(sender); err == nil && fbo.Response.Response.StatusCode != http.StatusNoContent {
+			fbo, err = client.FullBackupResponder(fbo.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "keyvault.FullBackupFuture", "Result", fbo.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -1679,7 +1701,7 @@ func (client BaseClient) FullRestoreOperation(ctx context.Context, vaultBaseURL 
 
 	result, err = client.FullRestoreOperationSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "FullRestoreOperation", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "FullRestoreOperation", nil, "Failure sending request")
 		return
 	}
 
@@ -1718,7 +1740,29 @@ func (client BaseClient) FullRestoreOperationSender(req *http.Request) (future F
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client BaseClient) (ro RestoreOperation, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "keyvault.FullRestoreOperationFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("keyvault.FullRestoreOperationFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ro.Response.Response, err = future.GetResult(sender); err == nil && ro.Response.Response.StatusCode != http.StatusNoContent {
+			ro, err = client.FullRestoreOperationResponder(ro.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "keyvault.FullRestoreOperationFuture", "Result", ro.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -2016,6 +2060,7 @@ func (client BaseClient) GetCertificateIssuers(ctx context.Context, vaultBaseURL
 	}
 	if result.cilr.hasNextLink() && result.cilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2078,7 +2123,6 @@ func (client BaseClient) getCertificateIssuersNextResults(ctx context.Context, l
 	result, err = client.GetCertificateIssuersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getCertificateIssuersNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2305,6 +2349,7 @@ func (client BaseClient) GetCertificates(ctx context.Context, vaultBaseURL strin
 	}
 	if result.clr.hasNextLink() && result.clr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2370,7 +2415,6 @@ func (client BaseClient) getCertificatesNextResults(ctx context.Context, lastRes
 	result, err = client.GetCertificatesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getCertificatesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2439,6 +2483,7 @@ func (client BaseClient) GetCertificateVersions(ctx context.Context, vaultBaseUR
 	}
 	if result.clr.hasNextLink() && result.clr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2505,7 +2550,6 @@ func (client BaseClient) getCertificateVersionsNextResults(ctx context.Context, 
 	result, err = client.GetCertificateVersionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getCertificateVersionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2656,6 +2700,7 @@ func (client BaseClient) GetDeletedCertificates(ctx context.Context, vaultBaseUR
 	}
 	if result.dclr.hasNextLink() && result.dclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2721,7 +2766,6 @@ func (client BaseClient) getDeletedCertificatesNextResults(ctx context.Context, 
 	result, err = client.GetDeletedCertificatesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getDeletedCertificatesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2871,6 +2915,7 @@ func (client BaseClient) GetDeletedKeys(ctx context.Context, vaultBaseURL string
 	}
 	if result.dklr.hasNextLink() && result.dklr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2933,7 +2978,6 @@ func (client BaseClient) getDeletedKeysNextResults(ctx context.Context, lastResu
 	result, err = client.GetDeletedKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getDeletedKeysNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -3093,6 +3137,7 @@ func (client BaseClient) GetDeletedSasDefinitions(ctx context.Context, vaultBase
 	}
 	if result.dsdlr.hasNextLink() && result.dsdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -3159,7 +3204,6 @@ func (client BaseClient) getDeletedSasDefinitionsNextResults(ctx context.Context
 	result, err = client.GetDeletedSasDefinitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getDeletedSasDefinitionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -3306,6 +3350,7 @@ func (client BaseClient) GetDeletedSecrets(ctx context.Context, vaultBaseURL str
 	}
 	if result.dslr.hasNextLink() && result.dslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -3368,7 +3413,6 @@ func (client BaseClient) getDeletedSecretsNextResults(ctx context.Context, lastR
 	result, err = client.GetDeletedSecretsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getDeletedSecretsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -3521,6 +3565,7 @@ func (client BaseClient) GetDeletedStorageAccounts(ctx context.Context, vaultBas
 	}
 	if result.dslr.hasNextLink() && result.dslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -3583,7 +3628,6 @@ func (client BaseClient) getDeletedStorageAccountsNextResults(ctx context.Contex
 	result, err = client.GetDeletedStorageAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getDeletedStorageAccountsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -3735,6 +3779,7 @@ func (client BaseClient) GetKeys(ctx context.Context, vaultBaseURL string, maxre
 	}
 	if result.klr.hasNextLink() && result.klr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -3797,7 +3842,6 @@ func (client BaseClient) getKeysNextResults(ctx context.Context, lastResults Key
 	result, err = client.GetKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getKeysNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -3866,6 +3910,7 @@ func (client BaseClient) GetKeyVersions(ctx context.Context, vaultBaseURL string
 	}
 	if result.klr.hasNextLink() && result.klr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -3932,7 +3977,6 @@ func (client BaseClient) getKeyVersionsNextResults(ctx context.Context, lastResu
 	result, err = client.GetKeyVersionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getKeyVersionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -4092,6 +4136,7 @@ func (client BaseClient) GetSasDefinitions(ctx context.Context, vaultBaseURL str
 	}
 	if result.sdlr.hasNextLink() && result.sdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -4158,7 +4203,6 @@ func (client BaseClient) getSasDefinitionsNextResults(ctx context.Context, lastR
 	result, err = client.GetSasDefinitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getSasDefinitionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -4309,6 +4353,7 @@ func (client BaseClient) GetSecrets(ctx context.Context, vaultBaseURL string, ma
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -4371,7 +4416,6 @@ func (client BaseClient) getSecretsNextResults(ctx context.Context, lastResults 
 	result, err = client.GetSecretsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getSecretsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -4440,6 +4484,7 @@ func (client BaseClient) GetSecretVersions(ctx context.Context, vaultBaseURL str
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -4506,7 +4551,6 @@ func (client BaseClient) getSecretVersionsNextResults(ctx context.Context, lastR
 	result, err = client.GetSecretVersionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getSecretVersionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -4659,6 +4703,7 @@ func (client BaseClient) GetStorageAccounts(ctx context.Context, vaultBaseURL st
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -4721,7 +4766,6 @@ func (client BaseClient) getStorageAccountsNextResults(ctx context.Context, last
 	result, err = client.GetStorageAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "getStorageAccountsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -6299,7 +6343,7 @@ func (client BaseClient) SelectiveKeyRestoreOperationMethod(ctx context.Context,
 
 	result, err = client.SelectiveKeyRestoreOperationMethodSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "SelectiveKeyRestoreOperationMethod", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "SelectiveKeyRestoreOperationMethod", nil, "Failure sending request")
 		return
 	}
 
@@ -6342,7 +6386,29 @@ func (client BaseClient) SelectiveKeyRestoreOperationMethodSender(req *http.Requ
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client BaseClient) (skro SelectiveKeyRestoreOperation, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "keyvault.SelectiveKeyRestoreOperationMethodFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("keyvault.SelectiveKeyRestoreOperationMethodFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if skro.Response.Response, err = future.GetResult(sender); err == nil && skro.Response.Response.StatusCode != http.StatusNoContent {
+			skro, err = client.SelectiveKeyRestoreOperationMethodResponder(skro.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "keyvault.SelectiveKeyRestoreOperationMethodFuture", "Result", skro.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

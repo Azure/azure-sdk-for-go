@@ -238,7 +238,7 @@ func (client LabAccountsClient) Delete(ctx context.Context, resourceGroupName st
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.LabAccountsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.LabAccountsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -274,7 +274,23 @@ func (client LabAccountsClient) DeleteSender(req *http.Request) (future LabAccou
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client LabAccountsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "labservices.LabAccountsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("labservices.LabAccountsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -484,6 +500,7 @@ func (client LabAccountsClient) ListByResourceGroup(ctx context.Context, resourc
 	}
 	if result.rwcla.hasNextLink() && result.rwcla.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -556,7 +573,6 @@ func (client LabAccountsClient) listByResourceGroupNextResults(ctx context.Conte
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabAccountsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -615,6 +631,7 @@ func (client LabAccountsClient) ListBySubscription(ctx context.Context, expand s
 	}
 	if result.rwcla.hasNextLink() && result.rwcla.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -686,7 +703,6 @@ func (client LabAccountsClient) listBySubscriptionNextResults(ctx context.Contex
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabAccountsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

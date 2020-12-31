@@ -81,6 +81,7 @@ func (client HyperVMachinesClient) GetAllMachinesInSite(ctx context.Context, sub
 	}
 	if result.hvmc.hasNextLink() && result.hvmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -153,7 +154,6 @@ func (client HyperVMachinesClient) getAllMachinesInSiteNextResults(ctx context.C
 	result, err = client.GetAllMachinesInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVMachinesClient", "getAllMachinesInSiteNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

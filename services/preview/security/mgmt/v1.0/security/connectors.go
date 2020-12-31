@@ -324,6 +324,7 @@ func (client ConnectorsClient) List(ctx context.Context) (result ConnectorSettin
 	}
 	if result.csl.hasNextLink() && result.csl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -383,7 +384,6 @@ func (client ConnectorsClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ConnectorsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

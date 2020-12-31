@@ -72,7 +72,7 @@ func (client VendorSkusClient) CreateOrUpdate(ctx context.Context, vendorName st
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkusClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkusClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -110,7 +110,29 @@ func (client VendorSkusClient) CreateOrUpdateSender(req *http.Request) (future V
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VendorSkusClient) (vs VendorSku, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkusCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hybridnetwork.VendorSkusCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if vs.Response.Response, err = future.GetResult(sender); err == nil && vs.Response.Response.StatusCode != http.StatusNoContent {
+			vs, err = client.CreateOrUpdateResponder(vs.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkusCreateOrUpdateFuture", "Result", vs.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -155,7 +177,7 @@ func (client VendorSkusClient) Delete(ctx context.Context, vendorName string, sk
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkusClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkusClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -191,7 +213,23 @@ func (client VendorSkusClient) DeleteSender(req *http.Request) (future VendorSku
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VendorSkusClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkusDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hybridnetwork.VendorSkusDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -329,6 +367,7 @@ func (client VendorSkusClient) List(ctx context.Context, vendorName string) (res
 	}
 	if result.vslr.hasNextLink() && result.vslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -389,7 +428,6 @@ func (client VendorSkusClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkusClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

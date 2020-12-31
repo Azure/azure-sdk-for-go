@@ -436,6 +436,7 @@ func (client JobClient) ListByAutomationAccount(ctx context.Context, resourceGro
 	}
 	if result.jlr.hasNextLink() && result.jlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -500,7 +501,6 @@ func (client JobClient) listByAutomationAccountNextResults(ctx context.Context, 
 	result, err = client.ListByAutomationAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.JobClient", "listByAutomationAccountNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

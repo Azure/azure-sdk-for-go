@@ -1,8 +1,36 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/b08824e05817297a4b2874d8db5e6fc8c29349c9
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator C:\Users\dapzhang\Documents\workspace\autorest.go
 
 ## Breaking Changes
 
-- Function `NewListResultPage` parameter(s) have been changed from `(func(context.Context, ListResult) (ListResult, error))` to `(ListResult, func(context.Context, ListResult) (ListResult, error))`
-- Function `NewTenantListResultPage` parameter(s) have been changed from `(func(context.Context, TenantListResult) (TenantListResult, error))` to `(TenantListResult, func(context.Context, TenantListResult) (TenantListResult, error))`
+### Removed Funcs
+
+1. *FactoryCreateSubscriptionInEnrollmentAccountFuture.Result(FactoryClient) (CreationResult, error)
+
+## Struct Changes
+
+### Removed Struct Fields
+
+1. FactoryCreateSubscriptionInEnrollmentAccountFuture.azure.Future
+
+### New Funcs
+
+1. NewOperationClient() OperationClient
+1. NewOperationClientWithBaseURI(string) OperationClient
+1. OperationClient.Get(context.Context, string) (CreationResult, error)
+1. OperationClient.GetPreparer(context.Context, string) (*http.Request, error)
+1. OperationClient.GetResponder(*http.Response) (CreationResult, error)
+1. OperationClient.GetSender(*http.Request) (*http.Response, error)
+
+## Struct Changes
+
+### New Structs
+
+1. ErrorResponseBody
+1. OperationClient
+
+### New Struct Fields
+
+1. FactoryCreateSubscriptionInEnrollmentAccountFuture.Result
+1. FactoryCreateSubscriptionInEnrollmentAccountFuture.azure.FutureAPI

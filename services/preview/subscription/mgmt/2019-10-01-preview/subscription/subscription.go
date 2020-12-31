@@ -146,7 +146,7 @@ func (client Client) CreateAlias(ctx context.Context, aliasName string, body Put
 
 	result, err = client.CreateAliasSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.Client", "CreateAlias", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "subscription.Client", "CreateAlias", nil, "Failure sending request")
 		return
 	}
 
@@ -182,7 +182,29 @@ func (client Client) CreateAliasSender(req *http.Request) (future CreateAliasFut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client Client) (par PutAliasResponse, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "subscription.CreateAliasFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("subscription.CreateAliasFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if par.Response.Response, err = future.GetResult(sender); err == nil && par.Response.Response.StatusCode != http.StatusNoContent {
+			par, err = client.CreateAliasResponder(par.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "subscription.CreateAliasFuture", "Result", par.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -230,7 +252,7 @@ func (client Client) CreateCspSubscription(ctx context.Context, billingAccountNa
 
 	result, err = client.CreateCspSubscriptionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.Client", "CreateCspSubscription", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "subscription.Client", "CreateCspSubscription", nil, "Failure sending request")
 		return
 	}
 
@@ -267,7 +289,29 @@ func (client Client) CreateCspSubscriptionSender(req *http.Request) (future Crea
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client Client) (cr CreationResult, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "subscription.CreateCspSubscriptionFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("subscription.CreateCspSubscriptionFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if cr.Response.Response, err = future.GetResult(sender); err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
+			cr, err = client.CreateCspSubscriptionResponder(cr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "subscription.CreateCspSubscriptionFuture", "Result", cr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -320,7 +364,7 @@ func (client Client) CreateSubscription(ctx context.Context, billingAccountName 
 
 	result, err = client.CreateSubscriptionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.Client", "CreateSubscription", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "subscription.Client", "CreateSubscription", nil, "Failure sending request")
 		return
 	}
 
@@ -358,7 +402,29 @@ func (client Client) CreateSubscriptionSender(req *http.Request) (future CreateS
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client Client) (cr CreationResult, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "subscription.CreateSubscriptionFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("subscription.CreateSubscriptionFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if cr.Response.Response, err = future.GetResult(sender); err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
+			cr, err = client.CreateSubscriptionResponder(cr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "subscription.CreateSubscriptionFuture", "Result", cr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -397,7 +463,7 @@ func (client Client) CreateSubscriptionInEnrollmentAccount(ctx context.Context, 
 
 	result, err = client.CreateSubscriptionInEnrollmentAccountSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.Client", "CreateSubscriptionInEnrollmentAccount", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "subscription.Client", "CreateSubscriptionInEnrollmentAccount", nil, "Failure sending request")
 		return
 	}
 
@@ -433,7 +499,29 @@ func (client Client) CreateSubscriptionInEnrollmentAccountSender(req *http.Reque
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client Client) (cr CreationResult, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "subscription.CreateSubscriptionInEnrollmentAccountFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("subscription.CreateSubscriptionInEnrollmentAccountFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if cr.Response.Response, err = future.GetResult(sender); err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
+			cr, err = client.CreateSubscriptionInEnrollmentAccountResponder(cr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "subscription.CreateSubscriptionInEnrollmentAccountFuture", "Result", cr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

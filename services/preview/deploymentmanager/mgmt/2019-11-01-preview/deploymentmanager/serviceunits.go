@@ -80,7 +80,7 @@ func (client ServiceUnitsClient) CreateOrUpdate(ctx context.Context, resourceGro
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceUnitsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceUnitsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -120,7 +120,29 @@ func (client ServiceUnitsClient) CreateOrUpdateSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ServiceUnitsClient) (sur ServiceUnitResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceUnitsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("deploymentmanager.ServiceUnitsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if sur.Response.Response, err = future.GetResult(sender); err == nil && sur.Response.Response.StatusCode != http.StatusNoContent {
+			sur, err = client.CreateOrUpdateResponder(sur.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceUnitsCreateOrUpdateFuture", "Result", sur.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

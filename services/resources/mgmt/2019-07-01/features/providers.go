@@ -236,6 +236,7 @@ func (client ProvidersClient) List(ctx context.Context, top *int32, expand strin
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -301,7 +302,6 @@ func (client ProvidersClient) listNextResults(ctx context.Context, lastResults P
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ProvidersClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -360,6 +360,7 @@ func (client ProvidersClient) ListAtTenantScope(ctx context.Context, top *int32,
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -421,7 +422,6 @@ func (client ProvidersClient) listAtTenantScopeNextResults(ctx context.Context, 
 	result, err = client.ListAtTenantScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ProvidersClient", "listAtTenantScopeNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

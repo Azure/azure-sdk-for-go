@@ -129,6 +129,9 @@ var _ BaseClientAPI = (*keyvault.BaseClient)(nil)
 
 // RoleDefinitionsClientAPI contains the set of methods on the RoleDefinitionsClient type.
 type RoleDefinitionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, vaultBaseURL string, scope string, roleDefinitionName string, parameters keyvault.RoleDefinitionCreateParameters) (result keyvault.RoleDefinition, err error)
+	Delete(ctx context.Context, vaultBaseURL string, scope string, roleDefinitionName string) (result keyvault.RoleDefinition, err error)
+	Get(ctx context.Context, vaultBaseURL string, scope string, roleDefinitionName string) (result keyvault.RoleDefinition, err error)
 	List(ctx context.Context, vaultBaseURL string, scope string, filter string) (result keyvault.RoleDefinitionListResultPage, err error)
 	ListComplete(ctx context.Context, vaultBaseURL string, scope string, filter string) (result keyvault.RoleDefinitionListResultIterator, err error)
 }

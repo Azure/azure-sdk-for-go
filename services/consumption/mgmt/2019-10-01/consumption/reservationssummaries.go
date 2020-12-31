@@ -90,6 +90,7 @@ func (client ReservationsSummariesClient) List(ctx context.Context, scope string
 	}
 	if result.rslr.hasNextLink() && result.rslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -165,7 +166,6 @@ func (client ReservationsSummariesClient) listNextResults(ctx context.Context, l
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -224,6 +224,7 @@ func (client ReservationsSummariesClient) ListByReservationOrder(ctx context.Con
 	}
 	if result.rslr.hasNextLink() && result.rslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -287,7 +288,6 @@ func (client ReservationsSummariesClient) listByReservationOrderNextResults(ctx 
 	result, err = client.ListByReservationOrderResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesClient", "listByReservationOrderNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -347,6 +347,7 @@ func (client ReservationsSummariesClient) ListByReservationOrderAndReservation(c
 	}
 	if result.rslr.hasNextLink() && result.rslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -411,7 +412,6 @@ func (client ReservationsSummariesClient) listByReservationOrderAndReservationNe
 	result, err = client.ListByReservationOrderAndReservationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesClient", "listByReservationOrderAndReservationNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

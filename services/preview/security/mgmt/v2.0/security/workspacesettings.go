@@ -331,6 +331,7 @@ func (client WorkspaceSettingsClient) List(ctx context.Context) (result Workspac
 	}
 	if result.wsl.hasNextLink() && result.wsl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -390,7 +391,6 @@ func (client WorkspaceSettingsClient) listNextResults(ctx context.Context, lastR
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.WorkspaceSettingsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

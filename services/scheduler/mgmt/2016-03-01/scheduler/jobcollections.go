@@ -145,7 +145,7 @@ func (client JobCollectionsClient) Delete(ctx context.Context, resourceGroupName
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -181,7 +181,23 @@ func (client JobCollectionsClient) DeleteSender(req *http.Request) (future JobCo
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client JobCollectionsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("scheduler.JobCollectionsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -219,7 +235,7 @@ func (client JobCollectionsClient) Disable(ctx context.Context, resourceGroupNam
 
 	result, err = client.DisableSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Disable", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Disable", nil, "Failure sending request")
 		return
 	}
 
@@ -255,7 +271,23 @@ func (client JobCollectionsClient) DisableSender(req *http.Request) (future JobC
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client JobCollectionsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsDisableFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("scheduler.JobCollectionsDisableFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -293,7 +325,7 @@ func (client JobCollectionsClient) Enable(ctx context.Context, resourceGroupName
 
 	result, err = client.EnableSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Enable", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Enable", nil, "Failure sending request")
 		return
 	}
 
@@ -329,7 +361,23 @@ func (client JobCollectionsClient) EnableSender(req *http.Request) (future JobCo
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client JobCollectionsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsEnableFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("scheduler.JobCollectionsEnableFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -455,6 +503,7 @@ func (client JobCollectionsClient) ListByResourceGroup(ctx context.Context, reso
 	}
 	if result.jclr.hasNextLink() && result.jclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -515,7 +564,6 @@ func (client JobCollectionsClient) listByResourceGroupNextResults(ctx context.Co
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -569,6 +617,7 @@ func (client JobCollectionsClient) ListBySubscription(ctx context.Context) (resu
 	}
 	if result.jclr.hasNextLink() && result.jclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -628,7 +677,6 @@ func (client JobCollectionsClient) listBySubscriptionNextResults(ctx context.Con
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -1,59 +1,58 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/b08824e05817297a4b2874d8db5e6fc8c29349c9
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator C:\Users\dapzhang\Documents\workspace\autorest.go
 
 ## Breaking Changes
 
-- Function `NewOperationListResultPage` parameter(s) have been changed from `(func(context.Context, OperationListResult) (OperationListResult, error))` to `(OperationListResult, func(context.Context, OperationListResult) (OperationListResult, error))`
-- Function `NewClusterListPage` parameter(s) have been changed from `(func(context.Context, ClusterList) (ClusterList, error))` to `(ClusterList, func(context.Context, ClusterList) (ClusterList, error))`
-- Function `NewDatabaseListPage` parameter(s) have been changed from `(func(context.Context, DatabaseList) (DatabaseList, error))` to `(DatabaseList, func(context.Context, DatabaseList) (DatabaseList, error))`
-- Function `DatabaseClient.RegenerateKeyResponder` has been removed
-- Function `DatabaseClient.Import` has been removed
-- Function `DatabaseClient.ExportPreparer` has been removed
-- Function `DatabaseClient.RegenerateKeyPreparer` has been removed
-- Function `DatabaseClient.ImportPreparer` has been removed
-- Function `DatabaseClient.ImportSender` has been removed
-- Function `*DatabaseImportFuture.Result` has been removed
-- Function `*DatabaseRegenerateKeyFuture.Result` has been removed
-- Function `DatabaseClient.RegenerateKey` has been removed
-- Function `DatabaseClient.ExportSender` has been removed
-- Function `NewDatabaseClient` has been removed
-- Function `DatabaseClient.ListKeysSender` has been removed
-- Function `DatabaseClient.Export` has been removed
-- Function `DatabaseClient.ExportResponder` has been removed
-- Function `DatabaseClient.ListKeysResponder` has been removed
-- Function `DatabaseClient.RegenerateKeySender` has been removed
-- Function `*DatabaseExportFuture.Result` has been removed
-- Function `NewDatabaseClientWithBaseURI` has been removed
-- Function `DatabaseClient.ListKeysPreparer` has been removed
-- Function `DatabaseClient.ImportResponder` has been removed
-- Function `DatabaseClient.ListKeys` has been removed
-- Struct `DatabaseClient` has been removed
-- Struct `DatabaseExportFuture` has been removed
-- Struct `DatabaseImportFuture` has been removed
-- Struct `DatabaseRegenerateKeyFuture` has been removed
+### Removed Funcs
 
-## New Content
+1. *CreateFuture.Result(Client) (Cluster, error)
+1. *DatabasesCreateFuture.Result(DatabasesClient) (Database, error)
+1. *DatabasesDeleteFuture.Result(DatabasesClient) (autorest.Response, error)
+1. *DatabasesExportFuture.Result(DatabasesClient) (autorest.Response, error)
+1. *DatabasesImportFuture.Result(DatabasesClient) (autorest.Response, error)
+1. *DatabasesRegenerateKeyFuture.Result(DatabasesClient) (AccessKeys, error)
+1. *DatabasesUpdateFuture.Result(DatabasesClient) (Database, error)
+1. *DeleteFuture.Result(Client) (autorest.Response, error)
+1. *PrivateEndpointConnectionsPutFuture.Result(PrivateEndpointConnectionsClient) (PrivateEndpointConnection, error)
+1. *UpdateFuture.Result(Client) (Cluster, error)
 
-- New function `DatabasesClient.ImportSender(*http.Request) (DatabasesImportFuture, error)`
-- New function `DatabasesClient.ExportSender(*http.Request) (DatabasesExportFuture, error)`
-- New function `DatabasesClient.ImportPreparer(context.Context, string, string, string, ImportClusterParameters) (*http.Request, error)`
-- New function `*DatabasesImportFuture.Result(DatabasesClient) (autorest.Response, error)`
-- New function `DatabasesClient.ExportPreparer(context.Context, string, string, string, ExportClusterParameters) (*http.Request, error)`
-- New function `DatabasesClient.ListKeys(context.Context, string, string, string) (AccessKeys, error)`
-- New function `DatabasesClient.ImportResponder(*http.Response) (autorest.Response, error)`
-- New function `*DatabasesRegenerateKeyFuture.Result(DatabasesClient) (AccessKeys, error)`
-- New function `DatabasesClient.ExportResponder(*http.Response) (autorest.Response, error)`
-- New function `DatabasesClient.ListKeysPreparer(context.Context, string, string, string) (*http.Request, error)`
-- New function `DatabasesClient.Export(context.Context, string, string, string, ExportClusterParameters) (DatabasesExportFuture, error)`
-- New function `DatabasesClient.ListKeysResponder(*http.Response) (AccessKeys, error)`
-- New function `DatabasesClient.Import(context.Context, string, string, string, ImportClusterParameters) (DatabasesImportFuture, error)`
-- New function `DatabasesClient.RegenerateKeySender(*http.Request) (DatabasesRegenerateKeyFuture, error)`
-- New function `DatabasesClient.RegenerateKeyPreparer(context.Context, string, string, string, RegenerateKeyParameters) (*http.Request, error)`
-- New function `*DatabasesExportFuture.Result(DatabasesClient) (autorest.Response, error)`
-- New function `DatabasesClient.ListKeysSender(*http.Request) (*http.Response, error)`
-- New function `DatabasesClient.RegenerateKey(context.Context, string, string, string, RegenerateKeyParameters) (DatabasesRegenerateKeyFuture, error)`
-- New function `DatabasesClient.RegenerateKeyResponder(*http.Response) (AccessKeys, error)`
-- New struct `DatabasesExportFuture`
-- New struct `DatabasesImportFuture`
-- New struct `DatabasesRegenerateKeyFuture`
+## Struct Changes
+
+### Removed Struct Fields
+
+1. CreateFuture.azure.Future
+1. DatabasesCreateFuture.azure.Future
+1. DatabasesDeleteFuture.azure.Future
+1. DatabasesExportFuture.azure.Future
+1. DatabasesImportFuture.azure.Future
+1. DatabasesRegenerateKeyFuture.azure.Future
+1. DatabasesUpdateFuture.azure.Future
+1. DeleteFuture.azure.Future
+1. PrivateEndpointConnectionsPutFuture.azure.Future
+1. UpdateFuture.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. CreateFuture.Result
+1. CreateFuture.azure.FutureAPI
+1. DatabasesCreateFuture.Result
+1. DatabasesCreateFuture.azure.FutureAPI
+1. DatabasesDeleteFuture.Result
+1. DatabasesDeleteFuture.azure.FutureAPI
+1. DatabasesExportFuture.Result
+1. DatabasesExportFuture.azure.FutureAPI
+1. DatabasesImportFuture.Result
+1. DatabasesImportFuture.azure.FutureAPI
+1. DatabasesRegenerateKeyFuture.Result
+1. DatabasesRegenerateKeyFuture.azure.FutureAPI
+1. DatabasesUpdateFuture.Result
+1. DatabasesUpdateFuture.azure.FutureAPI
+1. DeleteFuture.Result
+1. DeleteFuture.azure.FutureAPI
+1. PrivateEndpointConnectionsPutFuture.Result
+1. PrivateEndpointConnectionsPutFuture.azure.FutureAPI
+1. UpdateFuture.Result
+1. UpdateFuture.azure.FutureAPI

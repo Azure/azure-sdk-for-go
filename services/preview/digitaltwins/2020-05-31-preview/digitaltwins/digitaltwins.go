@@ -655,6 +655,7 @@ func (client Client) ListIncomingRelationships(ctx context.Context, ID string) (
 	}
 	if result.irc.hasNextLink() && result.irc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -714,7 +715,6 @@ func (client Client) listIncomingRelationshipsNextResults(ctx context.Context, l
 	result, err = client.ListIncomingRelationshipsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "listIncomingRelationshipsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -775,6 +775,7 @@ func (client Client) ListRelationships(ctx context.Context, ID string, relations
 	}
 	if result.rc.hasNextLink() && result.rc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -837,7 +838,6 @@ func (client Client) listRelationshipsNextResults(ctx context.Context, lastResul
 	result, err = client.ListRelationshipsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "listRelationshipsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

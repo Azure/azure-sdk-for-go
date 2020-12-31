@@ -420,82 +420,28 @@ type OpenShiftClusterProperties struct {
 // OpenShiftClustersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type OpenShiftClustersCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *OpenShiftClustersCreateOrUpdateFuture) Result(client OpenShiftClustersClient) (osc OpenShiftCluster, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("redhatopenshift.OpenShiftClustersCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osc.Response.Response, err = future.GetResult(sender); err == nil && osc.Response.Response.StatusCode != http.StatusNoContent {
-		osc, err = client.CreateOrUpdateResponder(osc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersCreateOrUpdateFuture", "Result", osc.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(OpenShiftClustersClient) (OpenShiftCluster, error)
 }
 
 // OpenShiftClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type OpenShiftClustersDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *OpenShiftClustersDeleteFuture) Result(client OpenShiftClustersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("redhatopenshift.OpenShiftClustersDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(OpenShiftClustersClient) (autorest.Response, error)
 }
 
 // OpenShiftClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type OpenShiftClustersUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *OpenShiftClustersUpdateFuture) Result(client OpenShiftClustersClient) (osc OpenShiftCluster, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("redhatopenshift.OpenShiftClustersUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osc.Response.Response, err = future.GetResult(sender); err == nil && osc.Response.Response.StatusCode != http.StatusNoContent {
-		osc, err = client.UpdateResponder(osc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersUpdateFuture", "Result", osc.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(OpenShiftClustersClient) (OpenShiftCluster, error)
 }
 
 // OpenShiftClusterUpdate openShiftCluster represents an Azure Red Hat OpenShift cluster.

@@ -1,5 +1,5 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3a3a9452f965a227ce43e6b545035b99dd175f23
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/b08824e05817297a4b2874d8db5e6fc8c29349c9
 
-Code generator @microsoft.azure/autorest.go@~2.1.165
+Code generator C:\Users\dapzhang\Documents\workspace\autorest.go
 
 No exported changes

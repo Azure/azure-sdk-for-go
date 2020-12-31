@@ -316,6 +316,7 @@ func (client RegisteredAsnsClient) ListByPeering(ctx context.Context, resourceGr
 	}
 	if result.ralr.hasNextLink() && result.ralr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -377,7 +378,6 @@ func (client RegisteredAsnsClient) listByPeeringNextResults(ctx context.Context,
 	result, err = client.ListByPeeringResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.RegisteredAsnsClient", "listByPeeringNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -376,6 +376,7 @@ func (client OpenIDConnectProvidersClient) ListByService(ctx context.Context, re
 	}
 	if result.oicpc.hasNextLink() && result.oicpc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -446,7 +447,6 @@ func (client OpenIDConnectProvidersClient) listByServiceNextResults(ctx context.
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProvidersClient", "listByServiceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

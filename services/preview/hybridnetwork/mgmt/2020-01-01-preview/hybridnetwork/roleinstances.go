@@ -171,6 +171,7 @@ func (client RoleInstancesClient) List(ctx context.Context, locationName string,
 	}
 	if result.nfrilr.hasNextLink() && result.nfrilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -233,7 +234,6 @@ func (client RoleInstancesClient) listNextResults(ctx context.Context, lastResul
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -285,7 +285,7 @@ func (client RoleInstancesClient) Restart(ctx context.Context, locationName stri
 
 	result, err = client.RestartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesClient", "Restart", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesClient", "Restart", nil, "Failure sending request")
 		return
 	}
 
@@ -323,7 +323,23 @@ func (client RoleInstancesClient) RestartSender(req *http.Request) (future RoleI
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client RoleInstancesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesRestartFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hybridnetwork.RoleInstancesRestartFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -369,7 +385,7 @@ func (client RoleInstancesClient) Start(ctx context.Context, locationName string
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesClient", "Start", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesClient", "Start", nil, "Failure sending request")
 		return
 	}
 
@@ -407,7 +423,23 @@ func (client RoleInstancesClient) StartSender(req *http.Request) (future RoleIns
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client RoleInstancesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesStartFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hybridnetwork.RoleInstancesStartFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -453,7 +485,7 @@ func (client RoleInstancesClient) Stop(ctx context.Context, locationName string,
 
 	result, err = client.StopSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesClient", "Stop", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesClient", "Stop", nil, "Failure sending request")
 		return
 	}
 
@@ -491,7 +523,23 @@ func (client RoleInstancesClient) StopSender(req *http.Request) (future RoleInst
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client RoleInstancesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesStopFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hybridnetwork.RoleInstancesStopFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

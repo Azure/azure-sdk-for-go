@@ -185,53 +185,19 @@ type ConnectedClusterAADProfile struct {
 // ConnectedClusterCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ConnectedClusterCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ConnectedClusterCreateFuture) Result(client ConnectedClusterClient) (cc ConnectedCluster, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybridkubernetes.ConnectedClusterCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if cc.Response.Response, err = future.GetResult(sender); err == nil && cc.Response.Response.StatusCode != http.StatusNoContent {
-		cc, err = client.CreateResponder(cc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterCreateFuture", "Result", cc.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ConnectedClusterClient) (ConnectedCluster, error)
 }
 
 // ConnectedClusterDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ConnectedClusterDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ConnectedClusterDeleteFuture) Result(client ConnectedClusterClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybridkubernetes.ConnectedClusterDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ConnectedClusterClient) (autorest.Response, error)
 }
 
 // ConnectedClusterIdentity identity for the connected cluster.
@@ -771,8 +737,8 @@ func NewOperationListPage(cur OperationList, getNextPage func(context.Context, O
 	}
 }
 
-// ProxyResource the resource model definition for an Azure Resource Manager proxy resource. It will have
-// everything other than required location and tags
+// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
+// have tags and a location
 type ProxyResource struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -793,6 +759,7 @@ type Resource struct {
 }
 
 // TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
+// which has 'tags' and a 'location'
 type TrackedResource struct {
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`

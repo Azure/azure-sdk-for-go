@@ -424,6 +424,8 @@ type MoveCollection struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
+	// Etag - READ-ONLY; The etag of the resource.
+	Etag *string `json:"etag,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives.
@@ -458,6 +460,29 @@ type MoveCollectionProperties struct {
 	TargetRegion *string `json:"targetRegion,omitempty"`
 	// ProvisioningState - Possible values include: 'Succeeded', 'Updating', 'Creating', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// Errors - READ-ONLY; Defines the move collection errors.
+	Errors *MoveCollectionPropertiesErrors `json:"errors,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MoveCollectionProperties.
+func (mcp MoveCollectionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mcp.SourceRegion != nil {
+		objectMap["sourceRegion"] = mcp.SourceRegion
+	}
+	if mcp.TargetRegion != nil {
+		objectMap["targetRegion"] = mcp.TargetRegion
+	}
+	if mcp.ProvisioningState != "" {
+		objectMap["provisioningState"] = mcp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
+// MoveCollectionPropertiesErrors defines the move collection errors.
+type MoveCollectionPropertiesErrors struct {
+	// Properties - The move resource error body.
+	Properties *MoveResourceErrorBody `json:"properties,omitempty"`
 }
 
 // MoveCollectionResultList defines the collection of move collections.
@@ -622,204 +647,64 @@ func NewMoveCollectionResultListPage(cur MoveCollectionResultList, getNextPage f
 // MoveCollectionsBulkRemoveFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type MoveCollectionsBulkRemoveFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MoveCollectionsBulkRemoveFuture) Result(client MoveCollectionsClient) (osVar OperationStatus, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsBulkRemoveFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsBulkRemoveFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
-		osVar, err = client.BulkRemoveResponder(osVar.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsBulkRemoveFuture", "Result", osVar.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MoveCollectionsClient) (OperationStatus, error)
 }
 
 // MoveCollectionsCommitFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type MoveCollectionsCommitFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MoveCollectionsCommitFuture) Result(client MoveCollectionsClient) (osVar OperationStatus, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsCommitFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsCommitFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
-		osVar, err = client.CommitResponder(osVar.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsCommitFuture", "Result", osVar.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MoveCollectionsClient) (OperationStatus, error)
 }
 
 // MoveCollectionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type MoveCollectionsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MoveCollectionsDeleteFuture) Result(client MoveCollectionsClient) (osVar OperationStatus, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsDeleteFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
-		osVar, err = client.DeleteResponder(osVar.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsDeleteFuture", "Result", osVar.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MoveCollectionsClient) (OperationStatus, error)
 }
 
 // MoveCollectionsDiscardFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type MoveCollectionsDiscardFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MoveCollectionsDiscardFuture) Result(client MoveCollectionsClient) (osVar OperationStatus, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsDiscardFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsDiscardFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
-		osVar, err = client.DiscardResponder(osVar.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsDiscardFuture", "Result", osVar.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MoveCollectionsClient) (OperationStatus, error)
 }
 
 // MoveCollectionsInitiateMoveFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type MoveCollectionsInitiateMoveFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MoveCollectionsInitiateMoveFuture) Result(client MoveCollectionsClient) (osVar OperationStatus, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsInitiateMoveFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsInitiateMoveFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
-		osVar, err = client.InitiateMoveResponder(osVar.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsInitiateMoveFuture", "Result", osVar.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MoveCollectionsClient) (OperationStatus, error)
 }
 
 // MoveCollectionsPrepareFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type MoveCollectionsPrepareFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MoveCollectionsPrepareFuture) Result(client MoveCollectionsClient) (osVar OperationStatus, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsPrepareFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsPrepareFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
-		osVar, err = client.PrepareResponder(osVar.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsPrepareFuture", "Result", osVar.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MoveCollectionsClient) (OperationStatus, error)
 }
 
 // MoveCollectionsResolveDependenciesFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type MoveCollectionsResolveDependenciesFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MoveCollectionsResolveDependenciesFuture) Result(client MoveCollectionsClient) (osVar OperationStatus, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsResolveDependenciesFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsResolveDependenciesFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
-		osVar, err = client.ResolveDependenciesResponder(osVar.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsResolveDependenciesFuture", "Result", osVar.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MoveCollectionsClient) (OperationStatus, error)
 }
 
 // MoveErrorInfo the move custom error info.
@@ -856,8 +741,25 @@ type MoveResourceCollection struct {
 	Value *[]MoveResource `json:"value,omitempty"`
 	// NextLink - Gets the value of  next link.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Summary - Gets or the list of summary items.
-	Summary *[]SummaryItem `json:"summary,omitempty"`
+	// SummaryCollection - Gets or sets the list of summary items and the field on which summary is done.
+	SummaryCollection *SummaryCollection `json:"summaryCollection,omitempty"`
+	// TotalCount - READ-ONLY; Gets the total count.
+	TotalCount *int64 `json:"totalCount,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MoveResourceCollection.
+func (mrc MoveResourceCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mrc.Value != nil {
+		objectMap["value"] = mrc.Value
+	}
+	if mrc.NextLink != nil {
+		objectMap["nextLink"] = mrc.NextLink
+	}
+	if mrc.SummaryCollection != nil {
+		objectMap["summaryCollection"] = mrc.SummaryCollection
+	}
+	return json.Marshal(objectMap)
 }
 
 // MoveResourceCollectionIterator provides access to a complete listing of MoveResource values.
@@ -1084,6 +986,8 @@ type MoveResourceProperties struct {
 	DependsOn *[]MoveResourceDependency `json:"dependsOn,omitempty"`
 	// DependsOnOverrides - Gets or sets the move resource dependencies overrides.
 	DependsOnOverrides *[]MoveResourceDependencyOverride `json:"dependsOnOverrides,omitempty"`
+	// IsResolveRequired - READ-ONLY; Gets a value indicating whether the resolve action is required over the move collection.
+	IsResolveRequired *bool `json:"isResolveRequired,omitempty"`
 	// Errors - READ-ONLY; Defines the move resource errors.
 	Errors *MoveResourcePropertiesErrors `json:"errors,omitempty"`
 }
@@ -1195,6 +1099,15 @@ func (mrp *MoveResourceProperties) UnmarshalJSON(body []byte) error {
 				}
 				mrp.DependsOnOverrides = &dependsOnOverrides
 			}
+		case "isResolveRequired":
+			if v != nil {
+				var isResolveRequired bool
+				err = json.Unmarshal(*v, &isResolveRequired)
+				if err != nil {
+					return err
+				}
+				mrp.IsResolveRequired = &isResolveRequired
+			}
 		case "errors":
 			if v != nil {
 				var errorsVar MoveResourcePropertiesErrors
@@ -1244,59 +1157,19 @@ func (mrpS MoveResourcePropertiesMoveStatus) MarshalJSON() ([]byte, error) {
 // MoveResourcesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type MoveResourcesCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MoveResourcesCreateFuture) Result(client MoveResourcesClient) (mr MoveResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveResourcesCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if mr.Response.Response, err = future.GetResult(sender); err == nil && mr.Response.Response.StatusCode != http.StatusNoContent {
-		mr, err = client.CreateResponder(mr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesCreateFuture", "Result", mr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MoveResourcesClient) (MoveResource, error)
 }
 
 // MoveResourcesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type MoveResourcesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MoveResourcesDeleteFuture) Result(client MoveResourcesClient) (osVar OperationStatus, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveResourcesDeleteFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
-		osVar, err = client.DeleteResponder(osVar.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesDeleteFuture", "Result", osVar.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MoveResourcesClient) (OperationStatus, error)
 }
 
 // MoveResourceStatus defines the move resource status.
@@ -2333,12 +2206,20 @@ type SubnetResourceSettings struct {
 	AddressPrefix *string `json:"addressPrefix,omitempty"`
 }
 
-// SummaryItem summary item.
-type SummaryItem struct {
+// Summary summary item.
+type Summary struct {
 	// Count - Gets the count.
 	Count *int32 `json:"count,omitempty"`
 	// Item - Gets the item.
 	Item *string `json:"item,omitempty"`
+}
+
+// SummaryCollection summary Collection.
+type SummaryCollection struct {
+	// FieldName - Gets or sets the field name on which summary is done.
+	FieldName *string `json:"fieldName,omitempty"`
+	// Summary - Gets or sets the list of summary items.
+	Summary *[]Summary `json:"summary,omitempty"`
 }
 
 // UnresolvedDependency unresolved dependency.

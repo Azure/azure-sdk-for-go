@@ -75,7 +75,7 @@ func (client SharedPrivateLinkResourcesClient) CreateOrUpdate(ctx context.Contex
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "search.SharedPrivateLinkResourcesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "search.SharedPrivateLinkResourcesClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -118,7 +118,29 @@ func (client SharedPrivateLinkResourcesClient) CreateOrUpdateSender(req *http.Re
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SharedPrivateLinkResourcesClient) (splr SharedPrivateLinkResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "search.SharedPrivateLinkResourcesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("search.SharedPrivateLinkResourcesCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if splr.Response.Response, err = future.GetResult(sender); err == nil && splr.Response.Response.StatusCode != http.StatusNoContent {
+			splr, err = client.CreateOrUpdateResponder(splr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "search.SharedPrivateLinkResourcesCreateOrUpdateFuture", "Result", splr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -163,7 +185,7 @@ func (client SharedPrivateLinkResourcesClient) Delete(ctx context.Context, resou
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "search.SharedPrivateLinkResourcesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "search.SharedPrivateLinkResourcesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -204,7 +226,23 @@ func (client SharedPrivateLinkResourcesClient) DeleteSender(req *http.Request) (
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SharedPrivateLinkResourcesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "search.SharedPrivateLinkResourcesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("search.SharedPrivateLinkResourcesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -346,6 +384,7 @@ func (client SharedPrivateLinkResourcesClient) ListByService(ctx context.Context
 	}
 	if result.splrlr.hasNextLink() && result.splrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -411,7 +450,6 @@ func (client SharedPrivateLinkResourcesClient) listByServiceNextResults(ctx cont
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "search.SharedPrivateLinkResourcesClient", "listByServiceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

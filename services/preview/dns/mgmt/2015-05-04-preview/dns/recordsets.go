@@ -380,6 +380,7 @@ func (client RecordSetsClient) List(ctx context.Context, resourceGroupName strin
 	}
 	if result.rslr.hasNextLink() && result.rslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -448,7 +449,6 @@ func (client RecordSetsClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -517,6 +517,7 @@ func (client RecordSetsClient) ListAll(ctx context.Context, resourceGroupName st
 	}
 	if result.rslr.hasNextLink() && result.rslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -584,7 +585,6 @@ func (client RecordSetsClient) listAllNextResults(ctx context.Context, lastResul
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "listAllNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

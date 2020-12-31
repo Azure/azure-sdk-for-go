@@ -151,8 +151,10 @@ var _ DataConnectorsCheckRequirementsClientAPI = (*securityinsight.DataConnector
 type EntitiesClientAPI interface {
 	Expand(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string, parameters securityinsight.EntityExpandParameters) (result securityinsight.EntityExpandResponse, err error)
 	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string) (result securityinsight.EntityModel, err error)
+	GetInsights(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string, parameters securityinsight.EntityGetInsightsParameters) (result securityinsight.EntityGetInsightsResponse, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.EntityListPage, err error)
 	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.EntityListIterator, err error)
+	Queries(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string) (result securityinsight.GetQueriesResponse, err error)
 }
 
 var _ EntitiesClientAPI = (*securityinsight.EntitiesClient)(nil)
@@ -208,7 +210,7 @@ var _ CasesAggregationsClientAPI = (*securityinsight.CasesAggregationsClient)(ni
 
 // EntityQueriesClientAPI contains the set of methods on the EntityQueriesClient type.
 type EntityQueriesClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityQueryID string) (result securityinsight.EntityQuery, err error)
+	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityQueryID string) (result securityinsight.EntityQueryModel, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.EntityQueryListPage, err error)
 	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.EntityQueryListIterator, err error)
 }

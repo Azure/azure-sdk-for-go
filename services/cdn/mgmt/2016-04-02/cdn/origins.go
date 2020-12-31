@@ -75,7 +75,7 @@ func (client OriginsClient) Create(ctx context.Context, originName string, origi
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -115,7 +115,29 @@ func (client OriginsClient) CreateSender(req *http.Request) (future OriginsCreat
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client OriginsClient) (o Origin, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.OriginsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.OriginsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if o.Response.Response, err = future.GetResult(sender); err == nil && o.Response.Response.StatusCode != http.StatusNoContent {
+			o, err = client.CreateResponder(o.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "cdn.OriginsCreateFuture", "Result", o.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -156,7 +178,7 @@ func (client OriginsClient) DeleteIfExists(ctx context.Context, originName strin
 
 	result, err = client.DeleteIfExistsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "DeleteIfExists", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "DeleteIfExists", nil, "Failure sending request")
 		return
 	}
 
@@ -194,7 +216,29 @@ func (client OriginsClient) DeleteIfExistsSender(req *http.Request) (future Orig
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client OriginsClient) (o Origin, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.OriginsDeleteIfExistsFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.OriginsDeleteIfExistsFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if o.Response.Response, err = future.GetResult(sender); err == nil && o.Response.Response.StatusCode != http.StatusNoContent {
+			o, err = client.DeleteIfExistsResponder(o.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "cdn.OriginsDeleteIfExistsFuture", "Result", o.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -394,7 +438,7 @@ func (client OriginsClient) Update(ctx context.Context, originName string, origi
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -434,7 +478,29 @@ func (client OriginsClient) UpdateSender(req *http.Request) (future OriginsUpdat
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client OriginsClient) (o Origin, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.OriginsUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.OriginsUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if o.Response.Response, err = future.GetResult(sender); err == nil && o.Response.Response.StatusCode != http.StatusNoContent {
+			o, err = client.UpdateResponder(o.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "cdn.OriginsUpdateFuture", "Result", o.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

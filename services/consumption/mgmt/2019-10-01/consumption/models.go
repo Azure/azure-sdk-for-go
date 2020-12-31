@@ -1453,7 +1453,7 @@ type LegacyReservationRecommendationProperties struct {
 	// LookBackPeriod - READ-ONLY; The number of days of usage to look back for recommendation.
 	LookBackPeriod *string `json:"lookBackPeriod,omitempty"`
 	// InstanceFlexibilityRatio - READ-ONLY; The instance Flexibility Ratio.
-	InstanceFlexibilityRatio *int32 `json:"instanceFlexibilityRatio,omitempty"`
+	InstanceFlexibilityRatio *float64 `json:"instanceFlexibilityRatio,omitempty"`
 	// InstanceFlexibilityGroup - READ-ONLY; The instance Flexibility Group.
 	InstanceFlexibilityGroup *string `json:"instanceFlexibilityGroup,omitempty"`
 	// NormalizedSize - READ-ONLY; The normalized Size.
@@ -2752,7 +2752,7 @@ type ModernReservationRecommendationProperties struct {
 	// LookBackPeriod - READ-ONLY; The number of days of usage to look back for recommendation.
 	LookBackPeriod *string `json:"lookBackPeriod,omitempty"`
 	// InstanceFlexibilityRatio - READ-ONLY; The instance Flexibility Ratio.
-	InstanceFlexibilityRatio *int32 `json:"instanceFlexibilityRatio,omitempty"`
+	InstanceFlexibilityRatio *float64 `json:"instanceFlexibilityRatio,omitempty"`
 	// InstanceFlexibilityGroup - READ-ONLY; The instance Flexibility Group.
 	InstanceFlexibilityGroup *string `json:"instanceFlexibilityGroup,omitempty"`
 	// NormalizedSize - READ-ONLY; The normalized Size.

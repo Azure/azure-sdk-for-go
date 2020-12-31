@@ -65,7 +65,7 @@ func (client SupportPlanTypesClient) CreateOrUpdate(ctx context.Context, provide
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -101,7 +101,29 @@ func (client SupportPlanTypesClient) CreateOrUpdateSender(req *http.Request) (fu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SupportPlanTypesClient) (cspre CanonicalSupportPlanResponseEnvelope, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("addons.SupportPlanTypesCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if cspre.Response.Response, err = future.GetResult(sender); err == nil && cspre.Response.Response.StatusCode != http.StatusNoContent {
+			cspre, err = client.CreateOrUpdateResponder(cspre.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesCreateOrUpdateFuture", "Result", cspre.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -140,7 +162,7 @@ func (client SupportPlanTypesClient) Delete(ctx context.Context, providerName st
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -176,7 +198,29 @@ func (client SupportPlanTypesClient) DeleteSender(req *http.Request) (future Sup
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SupportPlanTypesClient) (cspre CanonicalSupportPlanResponseEnvelope, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("addons.SupportPlanTypesDeleteFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if cspre.Response.Response, err = future.GetResult(sender); err == nil && cspre.Response.Response.StatusCode != http.StatusNoContent {
+			cspre, err = client.DeleteResponder(cspre.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesDeleteFuture", "Result", cspre.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

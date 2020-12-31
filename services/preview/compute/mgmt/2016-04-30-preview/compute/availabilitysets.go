@@ -308,6 +308,7 @@ func (client AvailabilitySetsClient) List(ctx context.Context, resourceGroupName
 	}
 	if result.aslr.hasNextLink() && result.aslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -368,7 +369,6 @@ func (client AvailabilitySetsClient) listNextResults(ctx context.Context, lastRe
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -499,6 +499,7 @@ func (client AvailabilitySetsClient) ListBySubscription(ctx context.Context) (re
 	}
 	if result.aslr.hasNextLink() && result.aslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -558,7 +559,6 @@ func (client AvailabilitySetsClient) listBySubscriptionNextResults(ctx context.C
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

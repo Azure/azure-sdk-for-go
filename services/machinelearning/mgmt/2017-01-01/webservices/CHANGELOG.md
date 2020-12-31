@@ -1,7 +1,34 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/b08824e05817297a4b2874d8db5e6fc8c29349c9
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator C:\Users\dapzhang\Documents\workspace\autorest.go
 
 ## Breaking Changes
 
-- Function `NewPaginatedWebServicesListPage` parameter(s) have been changed from `(func(context.Context, PaginatedWebServicesList) (PaginatedWebServicesList, error))` to `(PaginatedWebServicesList, func(context.Context, PaginatedWebServicesList) (PaginatedWebServicesList, error))`
+### Removed Funcs
+
+1. *CreateOrUpdateFuture.Result(Client) (WebService, error)
+1. *CreateRegionalPropertiesFuture.Result(Client) (AsyncOperationStatus, error)
+1. *PatchFuture.Result(Client) (WebService, error)
+1. *RemoveFuture.Result(Client) (autorest.Response, error)
+
+## Struct Changes
+
+### Removed Struct Fields
+
+1. CreateOrUpdateFuture.azure.Future
+1. CreateRegionalPropertiesFuture.azure.Future
+1. PatchFuture.azure.Future
+1. RemoveFuture.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. CreateOrUpdateFuture.Result
+1. CreateOrUpdateFuture.azure.FutureAPI
+1. CreateRegionalPropertiesFuture.Result
+1. CreateRegionalPropertiesFuture.azure.FutureAPI
+1. PatchFuture.Result
+1. PatchFuture.azure.FutureAPI
+1. RemoveFuture.Result
+1. RemoveFuture.azure.FutureAPI

@@ -44,6 +44,15 @@ type OperationsClientAPI interface {
 
 var _ OperationsClientAPI = (*operationalinsights.OperationsClient)(nil)
 
+// TablesClientAPI contains the set of methods on the TablesClient type.
+type TablesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, tableName string) (result operationalinsights.Table, err error)
+	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.TablesListResult, err error)
+	Update(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, parameters operationalinsights.Table) (result operationalinsights.Table, err error)
+}
+
+var _ TablesClientAPI = (*operationalinsights.TablesClient)(nil)
+
 // WorkspacesClientAPI contains the set of methods on the WorkspacesClient type.
 type WorkspacesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, parameters operationalinsights.Workspace) (result operationalinsights.WorkspacesCreateOrUpdateFuture, err error)

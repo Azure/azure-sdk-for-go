@@ -18,11 +18,9 @@ package automanage
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
 )
 
 // The package's fully qualified name.
@@ -194,30 +192,10 @@ func (cpap ConfigurationProfileAssignmentProperties) MarshalJSON() ([]byte, erro
 // ConfigurationProfileAssignmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the
 // results of a long-running operation.
 type ConfigurationProfileAssignmentsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ConfigurationProfileAssignmentsCreateOrUpdateFuture) Result(client ConfigurationProfileAssignmentsClient) (cpa ConfigurationProfileAssignment, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("automanage.ConfigurationProfileAssignmentsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if cpa.Response.Response, err = future.GetResult(sender); err == nil && cpa.Response.Response.StatusCode != http.StatusNoContent {
-		cpa, err = client.CreateOrUpdateResponder(cpa.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsCreateOrUpdateFuture", "Result", cpa.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ConfigurationProfileAssignmentsClient) (ConfigurationProfileAssignment, error)
 }
 
 // ConfigurationProfilePreference definition of the configuration profile preference.
@@ -450,8 +428,8 @@ type OperationProperties struct {
 	StatusCode *string `json:"statusCode,omitempty"`
 }
 
-// ProxyResource the resource model definition for an Azure Resource Manager proxy resource. It will have
-// everything other than required location and tags
+// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
+// have tags and a location
 type ProxyResource struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -472,6 +450,7 @@ type Resource struct {
 }
 
 // TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
+// which has 'tags' and a 'location'
 type TrackedResource struct {
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`

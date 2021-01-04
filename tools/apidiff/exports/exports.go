@@ -99,8 +99,16 @@ func (c *Content) addConst(pkg Package, g *ast.GenDecl) {
 		v := ""
 		// Type is nil for untyped consts
 		if vs.Type != nil {
-			co.Type = vs.Type.(*ast.Ident).Name
-			v = vs.Values[0].(*ast.BasicLit).Value
+			switch x := vs.Type.(type) {
+			case *ast.Ident:
+				co.Type = x.Name
+				v = vs.Values[0].(*ast.BasicLit).Value
+			case *ast.SelectorExpr:
+				co.Type = x.Sel.Name
+				v = vs.Values[0].(*ast.BasicLit).Value
+			default:
+				panic(fmt.Sprintf("wrong type %T", vs.Type))
+			}
 		} else {
 			// get the type from the token type
 			if bl, ok := vs.Values[0].(*ast.BasicLit); ok {
@@ -110,10 +118,15 @@ func (c *Content) addConst(pkg Package, g *ast.GenDecl) {
 				// const FooConst = FooType("value")
 				co.Type = pkg.getText(ce.Fun.Pos(), ce.Fun.End())
 				v = pkg.getText(ce.Args[0].Pos(), ce.Args[0].End())
+			} else if ce, ok := vs.Values[0].(*ast.BinaryExpr); ok {
+				// const FooConst = "value" + Bar
+				co.Type = "*ast.BinaryExpr"
+				v = pkg.getText(ce.X.Pos(), ce.Y.End())
 			} else {
 				panic(fmt.Sprintf("unhandled case for adding constant: %s", pkg.getText(vs.Pos(), vs.End())))
 			}
 		}
+		// TODO should this also be removed?
 		// remove any surrounding quotes
 		if v[0] == '"' {
 			v = v[1 : len(v)-1]
@@ -138,7 +151,7 @@ func (c *Content) addFunc(pkg Package, f *ast.FuncDecl) {
 
 // adds the specified interface type to the exports list.
 func (c *Content) addInterface(pkg Package, name string, i *ast.InterfaceType) {
-	in := Interface{}
+	in := Interface{Methods: map[string]Func{}}
 	if i.Methods != nil {
 		pkg.translateFieldList(i.Methods.List, func(n *string, t string, f *ast.Field) {
 			if n == nil {

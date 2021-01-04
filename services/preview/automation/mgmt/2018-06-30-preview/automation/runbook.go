@@ -449,6 +449,7 @@ func (client RunbookClient) ListByAutomationAccount(ctx context.Context, resourc
 	}
 	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -510,7 +511,6 @@ func (client RunbookClient) listByAutomationAccountNextResults(ctx context.Conte
 	result, err = client.ListByAutomationAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.RunbookClient", "listByAutomationAccountNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

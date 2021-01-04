@@ -176,6 +176,7 @@ func (client JobStreamClient) ListByJob(ctx context.Context, resourceGroupName s
 	}
 	if result.jslr.hasNextLink() && result.jslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -241,7 +242,6 @@ func (client JobStreamClient) listByJobNextResults(ctx context.Context, lastResu
 	result, err = client.ListByJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.JobStreamClient", "listByJobNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

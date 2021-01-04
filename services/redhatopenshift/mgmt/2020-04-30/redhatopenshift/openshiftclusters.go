@@ -340,6 +340,7 @@ func (client OpenShiftClustersClient) List(ctx context.Context) (result OpenShif
 	}
 	if result.oscl.hasNextLink() && result.oscl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -399,7 +400,6 @@ func (client OpenShiftClustersClient) listNextResults(ctx context.Context, lastR
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -465,6 +465,7 @@ func (client OpenShiftClustersClient) ListByResourceGroup(ctx context.Context, r
 	}
 	if result.oscl.hasNextLink() && result.oscl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -525,7 +526,6 @@ func (client OpenShiftClustersClient) listByResourceGroupNextResults(ctx context
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

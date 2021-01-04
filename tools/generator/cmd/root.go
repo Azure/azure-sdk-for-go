@@ -2,13 +2,13 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
 	"log"
 	"os"
 	"path/filepath"
 	"sort"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/changelog"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/pipeline"
@@ -137,31 +137,18 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 		if err := g.generate(); err != nil {
 			return nil, err
 		}
-		// get the metadata map
-		m := autorest.NewMetadataProcessorFromLocation(g.metadataOutput)
-		metadataMap, err := m.Process()
+		m := metadataContext{
+			sdkRoot: ctx.cwd,
+			readme:  readme,
+		}
+		packages, err := m.processMetadata(g.metadataOutput)
 		if err != nil {
 			return nil, err
-		}
-		var packages []string
-		for _, metadata := range metadataMap {
-			// TODO -- first validate the output folder is valid
-			outputFolder := filepath.Clean(metadata.PackagePath())
-			// first format the package
-			if err := autorest.FormatPackage(outputFolder); err != nil {
-				return nil, err
-			}
-			// get the package path - which is a relative path to the sdk root
-			packagePath, err := filepath.Rel(ctx.cwd, outputFolder)
-			if err != nil {
-				return nil, err
-			}
-			packages = append(packages, packagePath)
 		}
 		log.Printf("Packages changed: %+v", packages)
 		// iterate over the changed packages
 		for _, p := range packages {
-			p = normalizePath(p)
+			p = utils.NormalizePath(p)
 			log.Printf("Getting package result for package '%s'", p)
 			c, err := changelog.NewChangelogForPackage(p)
 			if err != nil {
@@ -191,10 +178,6 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 	return &pipeline.GenerateOutput{
 		Packages: results,
 	}, nil
-}
-
-func normalizePath(path string) string {
-	return strings.ReplaceAll(path, "\\", "/")
 }
 
 func getPackageIdentifier(pkg string) string {

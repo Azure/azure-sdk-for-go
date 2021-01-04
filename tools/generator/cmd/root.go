@@ -69,7 +69,7 @@ func execute(inputPath, outputPath string, flags Flags) error {
 	}
 	output, err := ctx.generate(input)
 	if err != nil {
-		return fmt.Errorf("cannot generate: %+v", err)
+		return err
 	}
 	log.Printf("Output generated: \n%s", output.String())
 	log.Printf("Writing output to file '%s'...", outputPath)

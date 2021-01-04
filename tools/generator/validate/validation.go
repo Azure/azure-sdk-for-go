@@ -11,7 +11,7 @@ import (
 )
 
 // MetadataValidateFunc is a function that validates a metadata is legal or not
-type MetadataValidateFunc func(ctx *MetadataValidateContext, metadata model.Metadata) error
+type MetadataValidateFunc func(ctx *MetadataValidateContext, tag string, metadata model.Metadata) error
 
 // MetadataValidateContext describes the context needed in validation of the metadata
 type MetadataValidateContext struct {
@@ -21,10 +21,10 @@ type MetadataValidateContext struct {
 }
 
 // Validate validates the metadata
-func (ctx *MetadataValidateContext) Validate(metadata model.Metadata) error {
+func (ctx *MetadataValidateContext) Validate(tag string, metadata model.Metadata) error {
 	builder := metadataValidationErrorBuilder{}
 	for _, validator := range ctx.Validators {
-		err := validator(ctx, metadata)
+		err := validator(ctx, tag, metadata)
 		builder.add(err)
 	}
 	return builder.build()
@@ -83,7 +83,7 @@ func rootCheck(ctx *MetadataValidateContext, metadata model.Metadata) error {
 }
 
 // PreviewCheck ensures the output-folder of a preview package is under the preview sub-directory
-func PreviewCheck(ctx *MetadataValidateContext, metadata model.Metadata) error {
+func PreviewCheck(ctx *MetadataValidateContext, tag string, metadata model.Metadata) error {
 	if err := rootCheck(ctx, metadata); err != nil {
 		return err
 	}
@@ -93,21 +93,21 @@ func PreviewCheck(ctx *MetadataValidateContext, metadata model.Metadata) error {
 			return err
 		}
 		if !previewOutputRegex.MatchString(rel) {
-			return fmt.Errorf("the output-folder of a preview package must be under the `services/preview` subdirectory")
+			return fmt.Errorf("the output-folder of a preview package '%s' must be under the `services/preview` subdirectory", tag)
 		}
 	}
 	return nil
 }
 
 // MgmtCheck ensures that the management plane package has the correct output-folder
-func MgmtCheck(ctx *MetadataValidateContext, metadata model.Metadata) error {
+func MgmtCheck(ctx *MetadataValidateContext, tag string, metadata model.Metadata) error {
 	if isMgmtPackage(ctx.Readme) {
 		rel, err := ctx.getRelPackagePath(metadata.PackagePath())
 		if err != nil {
 			return err
 		}
 		if !mgmtOutputRegex.MatchString(rel) {
-			return fmt.Errorf("the output-folder of a management plane package must be in this pattern: '^services(/preview)?/[^/]+/mgmt/[^/]+/[^/]+$'")
+			return fmt.Errorf("the output-folder of a management plane package '%s' must be in this pattern: '^services(/preview)?/[^/]+/mgmt/[^/]+/[^/]+$'", tag)
 		}
 	}
 	return nil

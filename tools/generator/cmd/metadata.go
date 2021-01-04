@@ -33,9 +33,9 @@ func (ctx metadataContext) processMetadata(metadataOutput string) ([]string, err
 			validate.MgmtCheck,
 		},
 	}
-	for _, metadata := range metadataMap {
+	for tag, metadata := range metadataMap {
 		// first validate the output folder is valid
-		if err := mCtx.Validate(metadata); err != nil {
+		if err := mCtx.Validate(tag, metadata); err != nil {
 			builder.add(err)
 			continue
 		}

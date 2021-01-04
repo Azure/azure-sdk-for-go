@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"math/rand"
+	"net/url"
 	"strings"
 	"time"
 
@@ -26,7 +27,8 @@ type InteractiveBrowserCredentialOptions struct {
 	ClientSecret string
 	// The redirect URL used to request the authorization code. Must be the same URL that is configured for the App Registration.
 	RedirectURL string
-	// The localhost port for the local server that will be used to redirect back to
+	// The localhost port for the local server that will be used to redirect back. If left with a zero value, a random port
+	// will be selected.
 	Port int
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
@@ -111,7 +113,7 @@ var authCodeReceiver = func(authorityHost string, tenantID string, clientID stri
 // interactiveBrowserLogin opens an interactive browser with the specified tenant and client IDs provided then returns the authorization code
 // received or an error.
 func interactiveBrowserLogin(authorityHost string, tenantID string, clientID string, redirectURL string, port int, scopes []string) (*interactiveConfig, error) {
-	const authURLFormat = "%s/%s/oauth2/v2.0/authorize?response_type=code&response_mode=query&client_id=%s&redirect_uri=%s&state=%s&scope=%s&prompt=select_account"
+	const authPathFormat = "%s/oauth2/v2.0/authorize?response_type=code&response_mode=query&client_id=%s&redirect_uri=%s&state=%s&scope=%s&prompt=select_account"
 	state := func() string {
 		rand.Seed(time.Now().Unix())
 		// generate a 20-char random alpha-numeric string
@@ -128,9 +130,14 @@ func interactiveBrowserLogin(authorityHost string, tenantID string, clientID str
 		redirectURL = rs.Start(state, port)
 	}
 	defer rs.Stop()
-	authURL := fmt.Sprintf(authURLFormat, checkAuthHostFormat(authorityHost), tenantID, clientID, redirectURL, state, strings.Join(scopes, " "))
+	u, err := url.Parse(authorityHost)
+	if err != nil {
+		return nil, err
+	}
+	authPath := fmt.Sprintf(authPathFormat, tenantID, clientID, redirectURL, state, strings.Join(scopes, " "))
+	u.Path = azcore.JoinPaths(u.Path, authPath)
 	// open browser window so user can select credentials
-	err := browser.OpenURL(authURL)
+	err = browser.OpenURL(u.String())
 	if err != nil {
 		return nil, err
 	}

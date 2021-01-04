@@ -123,7 +123,7 @@ func (c *Content) addConst(pkg Package, g *ast.GenDecl) {
 				co.Type = "*ast.BinaryExpr"
 				v = pkg.getText(ce.X.Pos(), ce.Y.End())
 			} else {
-				panic("unhandled case for adding constant")
+				panic(fmt.Sprintf("unhandled case for adding constant: %s", pkg.getText(vs.Pos(), vs.End())))
 			}
 		}
 		// TODO should this also be removed?

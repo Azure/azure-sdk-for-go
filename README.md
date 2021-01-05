@@ -409,7 +409,7 @@ Combined, these techniques will ensure that breaking changes should not occur. I
 Starting with `go-autorest v10.15.0` you can enable basic logging of requests and responses through setting environment variables.
 Setting `AZURE_GO_SDK_LOG_LEVEL` to `INFO` will log request/response without their bodies. To include the bodies set the log level to `DEBUG`.
 
-By default the logger writes to strerr, however it can also write to stdout or a file
+By default the logger writes to stderr, however it can also write to stdout or a file
 if specified in `AZURE_GO_SDK_LOG_FILE`. Note that if the specified file already exists it will be truncated.
 
 **IMPORTANT:** by default the logger will redact the Authorization and Ocp-Apim-Subscription-Key

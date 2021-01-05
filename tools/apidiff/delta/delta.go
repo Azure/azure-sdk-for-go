@@ -28,6 +28,11 @@ type Content struct {
 	CompleteStructs []string `json:"newStructs,omitempty"`
 }
 
+// Count returns the count of items
+func (c Content) Count() int {
+	return c.Content.Count() + len(c.CompleteStructs)
+}
+
 // NewContent returns an initialized Content object.
 func NewContent() Content {
 	return Content{

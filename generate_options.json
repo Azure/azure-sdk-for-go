@@ -7,8 +7,5 @@
     "--multiapi",
     "--use-onever",
     "--version=V2"
-  ],
-  "afterScripts": [
-    "gofmt -w ./services/"
   ]
 }

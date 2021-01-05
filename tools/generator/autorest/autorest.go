@@ -50,8 +50,7 @@ func (g *Generator) WithReadme(readme string) *Generator {
 // Generate executes the autorest generation. The error will be of type *GenerateError
 func (g *Generator) Generate() error {
 	g.buildCommand()
-	c := exec.Command("autorest", g.arguments...)
-	o, err := c.CombinedOutput()
+	o, err := g.cmd.CombinedOutput()
 	if err != nil {
 		return &GenerateError{
 			Arguments: g.arguments,

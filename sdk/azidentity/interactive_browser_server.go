@@ -58,8 +58,10 @@ func newServer() *server {
 
 // Start starts the local HTTP server on a separate go routine.
 // The return value is the full URL plus port number.
-func (s *server) Start(reqState string) string {
-	port := rand.Intn(600) + 8400
+func (s *server) Start(reqState string, port int) string {
+	if port == 0 {
+		port = rand.Intn(600) + 8400
+	}
 	s.s.Addr = fmt.Sprintf(":%d", port)
 	s.s.Handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer s.wg.Done()

@@ -33,13 +33,22 @@ func NewBlockBlobClient(blobURL string, cred azcore.Credential, options *connect
 		return BlockBlobClient{}, err
 	}
 	con := newConnection(blobURL, cred, options)
-	return BlockBlobClient{client: &blockBlobClient{con: con}, u: *u}, nil
+	return BlockBlobClient{
+		client:     &blockBlobClient{con: con},
+		u:          *u,
+		BlobClient: BlobClient{client: &blobClient{con: con}},
+	}, nil
+	//return bbc, nil
 }
 
 // WithPipeline creates a new BlockBlobClient object identical to the source but with the specific request policy pipeline.
 func (bb BlockBlobClient) WithPipeline(pipeline azcore.Pipeline) BlockBlobClient {
 	con := newConnectionWithPipeline(bb.u.String(), pipeline)
-	return BlockBlobClient{client: &blockBlobClient{con}, u: bb.u}
+	return BlockBlobClient{
+		client:     &blockBlobClient{con},
+		u:          bb.u,
+		BlobClient: BlobClient{client: &blobClient{con: con}},
+	}
 }
 
 // URL returns the URL endpoint used by the BlobClient object.
@@ -53,11 +62,13 @@ func (bb BlockBlobClient) WithSnapshot(snapshot string) BlockBlobClient {
 	p := NewBlobURLParts(bb.URL())
 	p.Snapshot = snapshot
 	snapshotURL := p.URL()
+	con := newConnectionWithPipeline(snapshotURL.String(), bb.client.con.p)
 	return BlockBlobClient{
 		client: &blockBlobClient{
-			newConnectionWithPipeline(snapshotURL.String(), bb.client.con.p),
+			con: con,
 		},
-		u: bb.u,
+		u:          bb.u,
+		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }
 
@@ -117,7 +128,7 @@ func (bb BlockBlobClient) CommitBlockList(ctx context.Context, base64BlockIDs []
 	commitOptions, headers, cpkInfo, cpkScope, modifiedAccess, leaseAccess := options.pointers()
 
 	return bb.client.CommitBlockList(ctx, BlockLookupList{
-		Committed: &base64BlockIDs,
+		Latest: &base64BlockIDs,
 	}, commitOptions, headers, leaseAccess, cpkInfo, cpkScope, modifiedAccess)
 }
 

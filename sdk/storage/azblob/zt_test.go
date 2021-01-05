@@ -3,6 +3,8 @@ package azblob
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
+	"encoding/binary"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -51,16 +53,24 @@ const (
 
 var ctx = context.Background()
 
-//var basicHeaders = BlobHTTPHeaders{
-//	ContentType:        "my_type",
-//	ContentDisposition: "my_disposition",
-//	CacheControl:       "control",
-//	ContentMD5:         nil,
-//	ContentLanguage:    "my_language",
-//	ContentEncoding:    "my_encoding",
-//}
-//
-//var basicMetadata = Metadata{"foo": "bar"}
+var (
+	blobContentType        string = "my_type"
+	blobContentDisposition string = "my_disposition"
+	blobCacheControl       string = "control"
+	blobContentLanguage    string = "my_language"
+	blobContentEncoding    string = "my_encoding"
+)
+
+var basicHeaders = BlobHttpHeaders{
+	BlobContentType:        &blobContentType,
+	BlobContentDisposition: &blobContentDisposition,
+	BlobCacheControl:       &blobCacheControl,
+	BlobContentMd5:         nil,
+	BlobContentLanguage:    &blobContentLanguage,
+	BlobContentEncoding:    &blobContentEncoding,
+}
+
+var basicMetadata = map[string]string{"foo": "bar"}
 
 const testPipelineMessage string = "test factory invoked"
 
@@ -287,11 +297,6 @@ func getBlobStorageBSU() (ServiceClient, error) {
 	return getGenericBSU("BLOB_STORAGE_")
 }
 
-//func validateStorageError(c *chk.C, err error, code ServiceCodeType) {
-//	serr, _ := err.(StorageError)
-//	c.Assert(serr.ServiceCode(), chk.Equals, code)
-//}
-
 func getRelativeTimeGMT(amount time.Duration) time.Time {
 	currentTime := time.Now().In(time.FixedZone("GMT", 0))
 	currentTime = currentTime.Add(amount * time.Second)
@@ -340,4 +345,10 @@ func validateUpload(c *chk.C, blobURL BlockBlobClient) {
 	c.Assert(err, chk.IsNil)
 	data, _ := ioutil.ReadAll(resp.Response().Body)
 	c.Assert(data, chk.HasLen, 0)
+}
+
+func blockIDIntToBase64(blockID int) string {
+	binaryBlockID := (&[4]byte{})[:]
+	binary.LittleEndian.PutUint32(binaryBlockID, uint32(blockID))
+	return base64.StdEncoding.EncodeToString(binaryBlockID)
 }

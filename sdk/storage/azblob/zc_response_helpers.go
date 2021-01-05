@@ -4,6 +4,7 @@ import (
 	"context"
 	"io"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -17,6 +18,23 @@ func (bgpr BlobGetPropertiesResponse) NewHTTPHeaders() BlobHttpHeaders {
 		BlobCacheControl:       bgpr.CacheControl,
 		BlobContentMd5:         bgpr.ContentMD5,
 	}
+}
+
+const mdPrefix = "x-ms-meta-"
+
+const mdPrefixLen = len(mdPrefix)
+
+// NewMetadata returns user-defined key/value pairs.
+func (bgpr BlobGetPropertiesResponse) NewMetadata() map[string]string {
+	md := map[string]string{}
+	for k, v := range bgpr.RawResponse.Header {
+		if len(k) > mdPrefixLen {
+			if prefix := k[0:mdPrefixLen]; strings.EqualFold(prefix, mdPrefix) {
+				md[strings.ToLower(k[mdPrefixLen:])] = v[0]
+			}
+		}
+	}
+	return md
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -227,9 +245,3 @@ func (r DownloadResponse) RequestID() *string {
 func (r DownloadResponse) Version() *string {
 	return r.r.Version
 }
-
-// TODO need generator fix
-// NewMetadata returns user-defined key/value pairs.
-//func (r DownloadResponse) NewMetadata() *map[string]string {
-//	return r.r.Meta
-//}

@@ -68,8 +68,9 @@ func (b BlobClient) ToAppendBlobURL() AppendBlobClient {
 func (b BlobClient) ToBlockBlobClient() BlockBlobClient {
 	con := newConnectionWithPipeline(b.String(), b.client.con.p)
 	return BlockBlobClient{
-		client: &blockBlobClient{con},
-		u:      b.u,
+		client:     &blockBlobClient{con},
+		u:          b.u,
+		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }
 
@@ -213,7 +214,6 @@ func (b BlobClient) ChangeLease(ctx context.Context, leaseID string, proposedID 
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/copy-blob.
 func (b BlobClient) StartCopyFromURL(ctx context.Context, copySource url.URL, options *StartCopyBlobOptions) (BlobStartCopyFromURLResponse, error) {
 	basics, srcAccess, destAccess, lease := options.pointers()
-
 	return b.client.StartCopyFromURL(ctx, copySource, basics, srcAccess, destAccess, lease)
 }
 

@@ -83,8 +83,9 @@ func (c ContainerClient) NewBlockBlobClient(blobName string) BlockBlobClient {
 	newCon := newConnectionWithPipeline(blobURL.String(), c.client.con.p)
 
 	return BlockBlobClient{
-		client: &blockBlobClient{newCon},
-		u:      blobURL,
+		client:     &blockBlobClient{newCon},
+		u:          blobURL,
+		BlobClient: BlobClient{client: &blobClient{con: newCon}},
 	}
 }
 

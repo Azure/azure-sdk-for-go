@@ -912,6 +912,7 @@ func (client IotHubResourceClient) GetQuotaMetrics(ctx context.Context, resource
 	}
 	if result.ihqmilr.hasNextLink() && result.ihqmilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -973,7 +974,6 @@ func (client IotHubResourceClient) getQuotaMetricsNextResults(ctx context.Contex
 	result, err = client.GetQuotaMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "getQuotaMetricsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1106,6 +1106,7 @@ func (client IotHubResourceClient) GetValidSkus(ctx context.Context, resourceGro
 	}
 	if result.ihsdlr.hasNextLink() && result.ihsdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1167,7 +1168,6 @@ func (client IotHubResourceClient) getValidSkusNextResults(ctx context.Context, 
 	result, err = client.GetValidSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "getValidSkusNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1311,6 +1311,7 @@ func (client IotHubResourceClient) ListByResourceGroup(ctx context.Context, reso
 	}
 	if result.ihdlr.hasNextLink() && result.ihdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1371,7 +1372,6 @@ func (client IotHubResourceClient) listByResourceGroupNextResults(ctx context.Co
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1425,6 +1425,7 @@ func (client IotHubResourceClient) ListBySubscription(ctx context.Context) (resu
 	}
 	if result.ihdlr.hasNextLink() && result.ihdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1484,7 +1485,6 @@ func (client IotHubResourceClient) listBySubscriptionNextResults(ctx context.Con
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1543,6 +1543,7 @@ func (client IotHubResourceClient) ListEventHubConsumerGroups(ctx context.Contex
 	}
 	if result.ehcglr.hasNextLink() && result.ehcglr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1605,7 +1606,6 @@ func (client IotHubResourceClient) listEventHubConsumerGroupsNextResults(ctx con
 	result, err = client.ListEventHubConsumerGroupsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "listEventHubConsumerGroupsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1663,6 +1663,7 @@ func (client IotHubResourceClient) ListJobs(ctx context.Context, resourceGroupNa
 	}
 	if result.jrlr.hasNextLink() && result.jrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1724,7 +1725,6 @@ func (client IotHubResourceClient) listJobsNextResults(ctx context.Context, last
 	result, err = client.ListJobsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "listJobsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1782,6 +1782,7 @@ func (client IotHubResourceClient) ListKeys(ctx context.Context, resourceGroupNa
 	}
 	if result.sasarlr.hasNextLink() && result.sasarlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1843,7 +1844,6 @@ func (client IotHubResourceClient) listKeysNextResults(ctx context.Context, last
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "listKeysNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

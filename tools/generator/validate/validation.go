@@ -21,48 +21,14 @@ type MetadataValidateContext struct {
 }
 
 // Validate validates the metadata
-func (ctx *MetadataValidateContext) Validate(tag string, metadata model.Metadata) error {
-	builder := metadataValidationErrorBuilder{}
+func (ctx *MetadataValidateContext) Validate(tag string, metadata model.Metadata) []error {
+	var errors []error
 	for _, validator := range ctx.Validators {
-		err := validator(ctx, tag, metadata)
-		builder.add(err)
+		if err := validator(ctx, tag, metadata); err != nil {
+			errors = append(errors, err)
+		}
 	}
-	return builder.build()
-}
-
-type metadataValidationErrorBuilder struct {
-	errors []error
-}
-
-func (b *metadataValidationErrorBuilder) add(err error) {
-	if err != nil {
-		b.errors = append(b.errors, err)
-	}
-}
-
-func (b *metadataValidationErrorBuilder) build() error {
-	if len(b.errors) == 0 {
-		return nil
-	}
-	var messages []string
-	for _, e := range b.errors {
-		messages = append(messages, e.Error())
-	}
-	return &MetadataValidationError{
-		errors:  b.errors,
-		message: strings.Join(messages, "\n"),
-	}
-}
-
-// MetadataValidationError ...
-type MetadataValidationError struct {
-	errors  []error
-	message string
-}
-
-// Error ...
-func (e *MetadataValidationError) Error() string {
-	return fmt.Sprintf("metadata validation failed with %d errors: \n%s", len(e.errors), e.message)
+	return errors
 }
 
 func (ctx *MetadataValidateContext) getRelPackagePath(pkgPath string) (string, error) {
@@ -87,13 +53,17 @@ func PreviewCheck(ctx *MetadataValidateContext, tag string, metadata model.Metad
 	if err := rootCheck(ctx, metadata); err != nil {
 		return err
 	}
+	rel, err := ctx.getRelPackagePath(metadata.PackagePath())
+	if err != nil {
+		return err
+	}
 	if isPreviewPackage(metadata.SwaggerFiles()) {
-		rel, err := ctx.getRelPackagePath(metadata.PackagePath())
-		if err != nil {
-			return err
-		}
 		if !previewOutputRegex.MatchString(rel) {
-			return fmt.Errorf("the output-folder of a preview package '%s' must be under the `services/preview` subdirectory", tag)
+			return fmt.Errorf("the output-folder of a preview package '%s' must be under the `preview` subdirectory", tag)
+		}
+	} else {
+		if previewOutputRegex.MatchString(rel) {
+			return fmt.Errorf("the output-folder of a stable package '%s' must NOT be under the `preview` subdirectory", tag)
 		}
 	}
 	return nil

@@ -35,8 +35,8 @@ func (ctx metadataContext) processMetadata(metadataOutput string) ([]string, err
 	}
 	for tag, metadata := range metadataMap {
 		// first validate the output folder is valid
-		if err := mCtx.Validate(tag, metadata); err != nil {
-			builder.add(err)
+		if errors := mCtx.Validate(tag, metadata); len(errors) != 0 {
+			builder.addMultiple(errors)
 			continue
 		}
 		outputFolder := filepath.Clean(metadata.PackagePath())
@@ -58,6 +58,10 @@ func (ctx metadataContext) processMetadata(metadataOutput string) ([]string, err
 type validationErrorBuilder struct {
 	readme string
 	errors []error
+}
+
+func (b *validationErrorBuilder) addMultiple(errors []error) {
+	b.errors = append(b.errors, errors...)
 }
 
 func (b *validationErrorBuilder) add(err error) {

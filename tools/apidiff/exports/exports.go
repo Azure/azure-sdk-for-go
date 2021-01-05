@@ -40,6 +40,11 @@ type Content struct {
 	Structs map[string]Struct `json:"structs,omitempty"`
 }
 
+// Count returns the count of items
+func (c Content) Count() int {
+	return len(c.Consts) + len(c.Funcs) + len(c.Interfaces) + len(c.Structs)
+}
+
 // Const is a const definition.
 type Const struct {
 	// the type of the constant

@@ -7,11 +7,13 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/changelog"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/pipeline"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/ioext"
 	"github.com/spf13/cobra"
 )
 
@@ -63,8 +65,16 @@ func execute(inputPath, outputPath string, flags Flags) error {
 	if err != nil {
 		return err
 	}
+	log.Printf("Backuping azure-sdk-for-go to temp directory...")
+	backupRoot, err := backupSDKRepository(cwd)
+	if err != nil {
+		return err
+	}
+	defer eraseBackup(backupRoot)
+	log.Printf("Finished backuping to '%s'", backupRoot)
 	ctx := generateContext{
-		cwd:        cwd,
+		sdkRoot:    normalizePath(cwd),
+		backupRoot: backupRoot,
 		optionPath: flags.OptionPath,
 	}
 	output, err := ctx.generate(input)
@@ -79,28 +89,28 @@ func execute(inputPath, outputPath string, flags Flags) error {
 	return nil
 }
 
-func readInputFrom(inputPath string) (*pipeline.GenerateInput, error) {
-	inputFile, err := os.Open(inputPath)
-	if err != nil {
-		return nil, err
+func backupSDKRepository(sdk string) (string, error) {
+	tempRepoDir := filepath.Join(tempDir(), fmt.Sprintf("generator-%v", time.Now().Unix()))
+	if err := ioext.CopyDir(sdk, tempRepoDir); err != nil {
+		return "", fmt.Errorf("failed to backup azure-sdk-for-go to '%s': %+v", tempRepoDir, err)
 	}
-	return pipeline.NewGenerateInputFrom(inputFile)
+	return tempRepoDir, nil
 }
 
-func writeOutputTo(outputPath string, output *pipeline.GenerateOutput) error {
-	file, err := os.Create(outputPath)
-	if err != nil {
-		return err
+func eraseBackup(tempDir string) error {
+	return os.RemoveAll(tempDir)
+}
+
+func tempDir() string {
+	if dir := os.Getenv("TMP_DIR"); dir != "" {
+		return dir
 	}
-	defer file.Close()
-	if _, err := output.WriteTo(file); err != nil {
-		return err
-	}
-	return nil
+	return os.TempDir()
 }
 
 type generateContext struct {
-	cwd        string
+	sdkRoot    string
+	backupRoot string
 	optionPath string
 }
 
@@ -144,15 +154,20 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 			return nil, err
 		}
 		var packages []string
-		for _, metadata := range metadataMap {
-			// TODO -- first validate the output folder is valid
-			outputFolder := filepath.Clean(metadata.PackagePath())
+		for tag, metadata := range metadataMap {
+			// first validate the output folder is valid
+			outputFolder := normalizePath(filepath.Clean(metadata.PackagePath()))
+			if !strings.HasPrefix(outputFolder, ctx.sdkRoot) {
+				// TODO -- we might need to record this result, and throw an error when the script ends, because this usually means the output-folder is not configured correctly
+				log.Printf("[WARNING] Output folder '%s' of tag '%s' is not under root of azure-sdk-for-go, skipping", outputFolder, tag)
+				continue
+			}
 			// first format the package
 			if err := autorest.FormatPackage(outputFolder); err != nil {
 				return nil, err
 			}
 			// get the package path - which is a relative path to the sdk root
-			packagePath, err := filepath.Rel(ctx.cwd, outputFolder)
+			packagePath, err := filepath.Rel(ctx.sdkRoot, outputFolder)
 			if err != nil {
 				return nil, err
 			}
@@ -163,7 +178,11 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 		for _, p := range packages {
 			p = normalizePath(p)
 			log.Printf("Getting package result for package '%s'", p)
-			c, err := changelog.NewChangelogForPackage(p)
+			exporter := changelog.Exporter{
+				SDKRoot:    ctx.sdkRoot,
+				BackupRoot: ctx.backupRoot,
+			}
+			c, err := exporter.ExportForPackage(p)
 			if err != nil {
 				return nil, err
 			}

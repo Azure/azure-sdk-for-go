@@ -3,58 +3,32 @@ package changelog
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 )
 
-// NewChangelogForPackage returns the changelog for the given pkgDir.
-// This function must be used when the new changes are generated, but not committed to git
-// This function will first fetch all the exported content of the given package
-// Then it add everything to git and then do a `git stash`, temporary revert the package to the previous state
-// and fetch all the exported content of the given package again
-// compare and generate a changelog report for the package
-// This function will undo all the git changes before return
-func NewChangelogForPackage(pkgDir string) (c *Changelog, err error) {
-	// first we need to get the current status of the package
-	rhs, err := getExportForPackage(pkgDir)
+// Exporter ...
+type Exporter struct {
+	// SDKRoot ...
+	SDKRoot string
+	// BackupRoot ...
+	BackupRoot string
+}
+
+// ExportForPackage generates the Changelog for the given relPkgDir
+// relPkgDir is the package path relative to the root of SDK, e.g. services/compute/mgmt/2020-06-01/compute
+func (p Exporter) ExportForPackage(relPkgDir string) (*Changelog, error) {
+	lhs, err := getExportForPackage(filepath.Join(p.BackupRoot, relPkgDir))
 	if err != nil {
 		return nil, err
 	}
-	// stash everything and get the previous status of the package
-	if err := stashEverything(); err != nil {
-		return nil, err
-	}
-	// reset everything when we are done
-	defer func() {
-		err = resetEverything()
-	}()
-	// get the original state of the package
-	lhs, err := getExportForPackage(pkgDir)
+	rhs, err := getExportForPackage(filepath.Join(p.SDKRoot, relPkgDir))
 	if err != nil {
 		return nil, err
 	}
-	return getChangelogForPackage(pkgDir, lhs, rhs)
-}
-
-func stashEverything() error {
-	if err := gitAddAll(); err != nil {
-		return err
-	}
-	if err := gitStash(); err != nil {
-		return err
-	}
-	return nil
-}
-
-func resetEverything() error {
-	if err := gitStashPop(); err != nil {
-		return err
-	}
-	if err := gitResetHead(); err != nil {
-		return err
-	}
-	return nil
+	return getChangelogForPackage(relPkgDir, lhs, rhs)
 }
 
 func getChangelogForPackage(pkgDir string, lhs, rhs *exports.Content) (*Changelog, error) {

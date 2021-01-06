@@ -85,7 +85,7 @@ func (bb BlockBlobClient) GetAccountInfo(ctx context.Context) (BlobGetAccountInf
 // This method panics if the stream is not at position 0.
 // Note that the http client closes the body stream after the request is sent to the service.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-blob.
-func (bb BlockBlobClient) Upload(ctx context.Context, body azcore.ReadSeekCloser, options *UploadBlockBlobOptions) (BlockBlobUploadResponse, error) {
+func (bb BlockBlobClient) Upload(ctx context.Context, body io.ReadSeeker, options *UploadBlockBlobOptions) (BlockBlobUploadResponse, error) {
 	count, err := validateSeekableStreamAt0AndGetCount(body)
 	if err != nil {
 		return BlockBlobUploadResponse{}, err
@@ -93,7 +93,7 @@ func (bb BlockBlobClient) Upload(ctx context.Context, body azcore.ReadSeekCloser
 
 	basics, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions := options.pointers()
 
-	return bb.client.Upload(ctx, count, body, basics, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions)
+	return bb.client.Upload(ctx, count, azcore.NopCloser(body), basics, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions)
 }
 
 // StageBlock uploads the specified block to the block blob's "staging area" to be later committed by a call to CommitBlockList.

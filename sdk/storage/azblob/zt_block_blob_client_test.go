@@ -10,6 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	guuid "github.com/google/uuid"
 	chk "gopkg.in/check.v1" // go get gopkg.in/check.v1
+	"io"
 	"io/ioutil"
 	"math"
 	"strings"
@@ -347,51 +348,547 @@ func (s *aztestsSuite) TestBlobSASQueryParamOverrideResponseHeaders(c *chk.C) {
 	c.Assert(*gResp.ContentType, chk.Equals, contentTypeVal)
 }
 
-//func (s *aztestsSuite) TestStageBlockWithMD5(c *chk.C) {
-//	bsu := getBSU()
-//	container, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, container)
-//
-//	blob := container.NewBlockBlobClient(generateBlobName())
-//
-//	// test put block with valid MD5 value
-//	contentSize := 8 * 1024  // 8 KB
-//	content := make([]byte, contentSize)
-//	body := bytes.NewReader(content)
-//	rsc := azcore.NopCloser(body)
-//	md5Value := md5.Sum(content)
-//	contentMD5 := md5Value[:]
-//
-//	stageBlockOptions := StageBlockOptions{
-//		BlockBlobStageBlockOptions: &BlockBlobStageBlockOptions {
-//			TransactionalContentMd5: &contentMD5,
-//		},
-//	}
-//	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
-//	putResp, err := blob.StageBlock(context.Background(), blockID1, rsc, &stageBlockOptions)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(putResp.RawResponse.StatusCode, chk.Equals, 201)
-//	c.Assert(*(putResp.ContentMD5), chk.DeepEquals, contentMD5)
-//	c.Assert(putResp.RequestID, chk.NotNil)
-//	c.Assert(putResp.Version, chk.NotNil)
-//	c.Assert(putResp.Date, chk.NotNil)
-//	c.Assert((*putResp.Date).IsZero(), chk.Equals, false)
-//
-//	// test put block with bad MD5 value
-//	badContent := make([]byte, 8 * 1024)
-//	badMD5Value := md5.Sum(badContent)
-//	badContentMD5 := badMD5Value[:]
-//
-//	badStageBlockOptions := StageBlockOptions{
-//		BlockBlobStageBlockOptions: &BlockBlobStageBlockOptions {
-//			TransactionalContentMd5: &badContentMD5,
-//		},
-//	}
-//	rsc.Seek(0, io.SeekStart)
-//	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
-//	_, err = blob.StageBlock(context.Background(), blockID2, rsc, &badStageBlockOptions)
-//	c.Assert(err.(StorageError), chk.Equals, ServiceCodeMd5Mismatch)
-//}
+func (s *aztestsSuite) TestStageBlockWithMD5(c *chk.C) {
+	bsu := getBSU()
+	container, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, container)
+
+	blob := container.NewBlockBlobClient(generateBlobName())
+
+	// test put block with valid MD5 value
+	contentSize := 8 * 1024 // 8 KB
+	content := make([]byte, contentSize)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+	md5Value := md5.Sum(content)
+	contentMD5 := md5Value[:]
+
+	stageBlockOptions := StageBlockOptions{
+		BlockBlobStageBlockOptions: &BlockBlobStageBlockOptions{
+			TransactionalContentMd5: &contentMD5,
+		},
+	}
+	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
+	putResp, err := blob.StageBlock(context.Background(), blockID1, rsc, &stageBlockOptions)
+	c.Assert(err, chk.IsNil)
+	c.Assert(putResp.RawResponse.StatusCode, chk.Equals, 201)
+	c.Assert(*(putResp.ContentMD5), chk.DeepEquals, contentMD5)
+	c.Assert(putResp.RequestID, chk.NotNil)
+	c.Assert(putResp.Version, chk.NotNil)
+	c.Assert(putResp.Date, chk.NotNil)
+	c.Assert((*putResp.Date).IsZero(), chk.Equals, false)
+
+	// test put block with bad MD5 value
+	badContent := make([]byte, 8*1024)
+	badMD5Value := md5.Sum(badContent)
+	badContentMD5 := badMD5Value[:]
+
+	badStageBlockOptions := StageBlockOptions{
+		BlockBlobStageBlockOptions: &BlockBlobStageBlockOptions{
+			TransactionalContentMd5: &badContentMD5,
+		},
+	}
+	_, _ = rsc.Seek(0, io.SeekStart)
+	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
+	_, err = blob.StageBlock(context.Background(), blockID2, rsc, &badStageBlockOptions)
+	c.Assert(err, chk.NotNil)
+	// TODO: Issue with Storage Error
+	c.Assert(err.(StorageError), chk.Equals, ServiceCodeMd5Mismatch)
+}
+
+func (s *aztestsSuite) TestBlobPutBlobHTTPHeaders(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := getBlockBlobClient(c, containerURL)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		BlobHttpHeaders: &basicHeaders,
+	}
+	_, err := blobURL.Upload(ctx, rsc, &uploadBlockBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	resp, err := blobURL.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	h := resp.NewHTTPHeaders()
+	h.BlobContentMd5 = nil // the service generates a MD5 value, omit before comparing
+	c.Assert(h, chk.DeepEquals, basicHeaders)
+}
+
+func (s *aztestsSuite) TestBlobPutBlobMetadataNotEmpty(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := getBlockBlobClient(c, containerURL)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		Metadata: &basicMetadata,
+	}
+	_, err := blobURL.Upload(ctx, rsc, &uploadBlockBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	resp, err := blobURL.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	actualMetadata := resp.NewMetadata()
+	c.Assert(actualMetadata, chk.NotNil)
+	c.Assert(actualMetadata, chk.DeepEquals, basicMetadata)
+}
+
+func (s *aztestsSuite) TestBlobPutBlobMetadataEmpty(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := getBlockBlobClient(c, containerURL)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+
+	_, err := blobURL.Upload(ctx, rsc, nil)
+	c.Assert(err, chk.IsNil)
+
+	resp, err := blobURL.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.NewMetadata(), chk.HasLen, 0)
+}
+
+func (s *aztestsSuite) TestBlobPutBlobMetadataInvalid(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := getBlockBlobClient(c, containerURL)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		Metadata: &map[string]string{"In valid!": "bar"},
+	}
+	_, err := blobURL.Upload(ctx, rsc, &uploadBlockBlobOptions)
+	c.Assert(err, chk.NotNil)
+	c.Assert(strings.Contains(err.Error(), invalidHeaderErrorSubstring), chk.Equals, true)
+}
+
+func (s *aztestsSuite) TestBlobPutBlobIfModifiedSinceTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+
+	blobClient, _ := createNewBlockBlob(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(-10)
+
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfModifiedSince: &currentTime,
+		},
+	}
+	_, err := blobClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
+	c.Assert(err, chk.IsNil)
+	validateUpload(c, blobClient)
+}
+
+func (s *aztestsSuite) TestBlobPutBlobIfModifiedSinceFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewBlockBlob(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(10)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfModifiedSince: &currentTime,
+		},
+	}
+
+	_, err := blobURL.Upload(ctx, rsc, &uploadBlockBlobOptions)
+	c.Assert(err, chk.NotNil)
+	stgErr := err.(StorageError).Message
+	_ = stgErr
+	c.Assert(strings.Contains(err.Error(), string(ServiceCodeConditionNotMet)), chk.Equals, true)
+	// TODO: Issue with Storage Error
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobPutBlobIfUnmodifiedSinceTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewBlockBlob(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(10)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfUnmodifiedSince: &currentTime,
+		},
+	}
+	_, err := blobURL.Upload(ctx, rsc, &uploadBlockBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateUpload(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobPutBlobIfUnmodifiedSinceFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewBlockBlob(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(-10)
+
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfUnmodifiedSince: &currentTime,
+		},
+	}
+	_, err := blobURL.Upload(ctx, bytes.NewReader(nil), &uploadBlockBlobOptions)
+	_ = err
+	// TODO: Issue with Storage Error
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobPutBlobIfMatchTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewBlockBlob(c, containerURL)
+
+	resp, err := blobURL.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfMatch: resp.ETag,
+		},
+	}
+	_, err = blobURL.Upload(ctx, rsc, &uploadBlockBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateUpload(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobPutBlobIfMatchFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewBlockBlob(c, containerURL)
+
+	_, err := blobURL.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+
+	ifNoneMatch := "garbage"
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfNoneMatch: &ifNoneMatch,
+		},
+	}
+	_, err = blobURL.Upload(ctx, rsc, &uploadBlockBlobOptions)
+	// TODO: Issue with Storage Error
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobPutBlobIfNoneMatchTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewBlockBlob(c, containerURL)
+
+	_, err := blobURL.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+
+	ifNoneMatch := "garbage"
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfNoneMatch: &ifNoneMatch,
+		},
+	}
+
+	_, err = blobURL.Upload(ctx, rsc, &uploadBlockBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateUpload(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobPutBlobIfNoneMatchFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewBlockBlob(c, containerURL)
+
+	resp, err := blobURL.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfNoneMatch: resp.ETag,
+		},
+	}
+	_, err = blobURL.Upload(ctx, rsc, &uploadBlockBlobOptions)
+	// TODO: Issue with Storage Error
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func setupPutBlockListTest(c *chk.C) (containerClient ContainerClient, blobClient BlockBlobClient, id string) {
+	bsu := getBSU()
+	containerClient, _ = createNewContainer(c, bsu)
+	blobClient, _ = getBlockBlobClient(c, containerClient)
+
+	_, err := blobClient.StageBlock(ctx, blockID, strings.NewReader(blockBlobDefaultData), nil)
+	c.Assert(err, chk.IsNil)
+	return containerClient, blobClient, blockID
+}
+
+func (s *aztestsSuite) TestBlobPutBlockListHTTPHeadersEmpty(c *chk.C) {
+	containerURL, blobURL, blockId := setupPutBlockListTest(c)
+	defer deleteContainer(c, containerURL)
+
+	commitBlockListOptions := CommitBlockListOptions{
+		BlobHTTPHeaders: &BlobHttpHeaders{BlobContentDisposition: &blobContentDisposition},
+	}
+	_, err := blobURL.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
+	c.Assert(err, chk.IsNil)
+
+	_, err = blobURL.CommitBlockList(ctx, []string{blockId}, nil)
+	c.Assert(err, chk.IsNil)
+
+	resp, err := blobURL.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.ContentDisposition, chk.IsNil)
+}
+
+func validateBlobCommitted(c *chk.C, blobClient BlockBlobClient) {
+	resp, err := blobClient.GetBlockList(ctx, BlockListTypeAll, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(*(resp.BlockList.CommittedBlocks), chk.HasLen, 1)
+}
+
+func (s *aztestsSuite) TestBlobPutBlockListIfModifiedSinceTrue(c *chk.C) {
+	containerURL, blobURL, blockId := setupPutBlockListTest(c)
+	defer deleteContainer(c, containerURL)
+	_, err := blobURL.CommitBlockList(ctx, []string{blockId}, nil) // The blob must actually exist to have a modifed time
+	c.Assert(err, chk.IsNil)
+
+	currentTime := getRelativeTimeGMT(-10)
+
+	commitBlockListOptions := CommitBlockListOptions{
+		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}},
+	}
+	_, err = blobURL.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateBlobCommitted(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobPutBlockListIfModifiedSinceFalse(c *chk.C) {
+	containerURL, blobURL, blockId := setupPutBlockListTest(c)
+	defer deleteContainer(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(10)
+
+	commitBlockListOptions := CommitBlockListOptions{
+		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}},
+	}
+	_, err := blobURL.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
+	_ = err
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue(c *chk.C) {
+	containerURL, blobURL, blockId := setupPutBlockListTest(c)
+	defer deleteContainer(c, containerURL)
+	_, err := blobURL.CommitBlockList(ctx, []string{blockId}, nil) // The blob must actually exist to have a modifed time
+	c.Assert(err, chk.IsNil)
+
+	currentTime := getRelativeTimeGMT(10)
+
+	commitBlockListOptions := CommitBlockListOptions{
+		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}},
+	}
+	_, err = blobURL.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateBlobCommitted(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse(c *chk.C) {
+	containerURL, blobURL, blockId := setupPutBlockListTest(c)
+	_, err := blobURL.CommitBlockList(ctx, []string{blockId}, nil) // The blob must actually exist to have a modifed time
+	c.Assert(err, chk.IsNil)
+	defer deleteContainer(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(-10)
+
+	commitBlockListOptions := CommitBlockListOptions{
+		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}},
+	}
+	_, err = blobURL.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
+
+	// TODO: Fix the storage issue
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobPutBlockListIfMatchTrue(c *chk.C) {
+	containerURL, blobURL, blockId := setupPutBlockListTest(c)
+	defer deleteContainer(c, containerURL)
+	resp, err := blobURL.CommitBlockList(ctx, []string{blockId}, nil) // The blob must actually exist to have a modifed time
+	c.Assert(err, chk.IsNil)
+
+	commitBlockListOptions := CommitBlockListOptions{
+		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag}},
+	}
+	_, err = blobURL.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateBlobCommitted(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobPutBlockListIfMatchFalse(c *chk.C) {
+	containerURL, blobURL, blockId := setupPutBlockListTest(c)
+	defer deleteContainer(c, containerURL)
+	_, err := blobURL.CommitBlockList(ctx, []string{blockId}, nil) // The blob must actually exist to have a modifed time
+	c.Assert(err, chk.IsNil)
+
+	eTag := "garbage"
+	commitBlockListOptions := CommitBlockListOptions{
+		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &eTag}},
+	}
+	_, err = blobURL.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
+
+	// TODO: Fix the storage error
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+
+}
+
+func (s *aztestsSuite) TestBlobPutBlockListIfNoneMatchTrue(c *chk.C) {
+	containerURL, blobURL, blockId := setupPutBlockListTest(c)
+	defer deleteContainer(c, containerURL)
+	_, err := blobURL.CommitBlockList(ctx, []string{blockId}, nil) // The blob must actually exist to have a modifed time
+	c.Assert(err, chk.IsNil)
+
+	eTag := "garbage"
+	commitBlockListOptions := CommitBlockListOptions{
+		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: &eTag}},
+	}
+	_, err = blobURL.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateBlobCommitted(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobPutBlockListIfNoneMatchFalse(c *chk.C) {
+	containerURL, blobURL, blockId := setupPutBlockListTest(c)
+	defer deleteContainer(c, containerURL)
+	resp, err := blobURL.CommitBlockList(ctx, []string{blockId}, nil) // The blob must actually exist to have a modifed time
+	c.Assert(err, chk.IsNil)
+
+	commitBlockListOptions := CommitBlockListOptions{
+		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag}},
+	}
+	_, err = blobURL.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
+
+	// TODO: Fix the storage error
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobPutBlockListValidateData(c *chk.C) {
+	containerURL, blobURL, blockId := setupPutBlockListTest(c)
+	defer deleteContainer(c, containerURL)
+
+	_, err := blobURL.CommitBlockList(ctx, []string{blockId}, nil)
+
+	resp, err := blobURL.Download(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	data, _ := ioutil.ReadAll(resp.Response().Body)
+	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
+}
+
+func (s *aztestsSuite) TestBlobPutBlockListModifyBlob(c *chk.C) {
+	containerURL, blobURL, blockId := setupPutBlockListTest(c)
+	defer deleteContainer(c, containerURL)
+
+	_, err := blobURL.CommitBlockList(ctx, []string{blockId}, nil)
+	c.Assert(err, chk.IsNil)
+
+	_, err = blobURL.StageBlock(ctx, "0001", bytes.NewReader([]byte("new data")), nil)
+	c.Assert(err, chk.IsNil)
+	_, err = blobURL.StageBlock(ctx, "0010", bytes.NewReader([]byte("new data")), nil)
+	c.Assert(err, chk.IsNil)
+	_, err = blobURL.StageBlock(ctx, "0011", bytes.NewReader([]byte("new data")), nil)
+	c.Assert(err, chk.IsNil)
+	_, err = blobURL.StageBlock(ctx, "0100", bytes.NewReader([]byte("new data")), nil)
+	c.Assert(err, chk.IsNil)
+
+	_, err = blobURL.CommitBlockList(ctx, []string{"0001", "0011"}, nil)
+	c.Assert(err, chk.IsNil)
+
+	resp, err := blobURL.GetBlockList(ctx, BlockListTypeAll, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(*(resp.BlockList.CommittedBlocks), chk.HasLen, 2)
+	commited := *(resp.BlockList.CommittedBlocks)
+	c.Assert(*(commited[0].Name), chk.Equals, "0001")
+	c.Assert(*(commited[1].Name), chk.Equals, "0011")
+	c.Assert(resp.BlockList.UncommittedBlocks, chk.IsNil)
+}
+
+func (s *aztestsSuite) TestSetTierOnBlobUpload(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	for _, tier := range []AccessTier{AccessTierArchive, AccessTierCool, AccessTierHot} {
+		blobURL, _ := getBlockBlobClient(c, containerURL)
+
+		uploadBlockBlobOptions := UploadBlockBlobOptions{
+			BlobHttpHeaders: &basicHeaders,
+			Tier:            &tier,
+		}
+		_, err := blobURL.Upload(ctx, strings.NewReader(blockBlobDefaultData), &uploadBlockBlobOptions)
+		c.Assert(err, chk.IsNil)
+
+		resp, err := blobURL.GetProperties(ctx, nil)
+		c.Assert(err, chk.IsNil)
+		c.Assert(*resp.AccessTier, chk.Equals, string(tier))
+	}
+}
 
 func (s *aztestsSuite) TestBlobSetTierOnCommit(c *chk.C) {
 	bsu := getBSU()
@@ -575,267 +1072,3 @@ func (s *aztestsSuite) TestSetTierOnStageBlockFromURL(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	c.Assert(*destBlobPropResp.AccessTier, chk.Equals, string(tier))
 }
-
-func (s *aztestsSuite) TestBlobPutBlobHTTPHeaders(c *chk.C) {
-	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := getBlockBlobClient(c, containerURL)
-
-	content := make([]byte, 0)
-	body := bytes.NewReader(content)
-	rsc := azcore.NopCloser(body)
-
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
-		BlobHttpHeaders: &basicHeaders,
-	}
-	_, err := blobURL.Upload(ctx, rsc, &uploadBlockBlobOptions)
-	c.Assert(err, chk.IsNil)
-
-	resp, err := blobURL.GetProperties(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	h := resp.NewHTTPHeaders()
-	h.BlobContentMd5 = nil // the service generates a MD5 value, omit before comparing
-	c.Assert(h, chk.DeepEquals, basicHeaders)
-}
-
-func (s *aztestsSuite) TestBlobPutBlobMetadataNotEmpty(c *chk.C) {
-	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := getBlockBlobClient(c, containerURL)
-
-	content := make([]byte, 0)
-	body := bytes.NewReader(content)
-	rsc := azcore.NopCloser(body)
-
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
-		Metadata: &basicMetadata,
-	}
-	_, err := blobURL.Upload(ctx, rsc, &uploadBlockBlobOptions)
-	c.Assert(err, chk.IsNil)
-
-	resp, err := blobURL.GetProperties(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	actualMetadata := resp.NewMetadata()
-	c.Assert(actualMetadata, chk.NotNil)
-	c.Assert(actualMetadata, chk.DeepEquals, basicMetadata)
-}
-
-func (s *aztestsSuite) TestBlobPutBlobMetadataEmpty(c *chk.C) {
-	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := getBlockBlobClient(c, containerURL)
-
-	content := make([]byte, 0)
-	body := bytes.NewReader(content)
-	rsc := azcore.NopCloser(body)
-
-	_, err := blobURL.Upload(ctx, rsc, nil)
-	c.Assert(err, chk.IsNil)
-
-	resp, err := blobURL.GetProperties(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(resp.NewMetadata(), chk.HasLen, 0)
-}
-
-func (s *aztestsSuite) TestBlobPutBlobMetadataInvalid(c *chk.C) {
-	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := getBlockBlobClient(c, containerURL)
-
-	content := make([]byte, 0)
-	body := bytes.NewReader(content)
-	rsc := azcore.NopCloser(body)
-
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
-		Metadata: &map[string]string{"In valid!": "bar"},
-	}
-	_, err := blobURL.Upload(ctx, rsc, &uploadBlockBlobOptions)
-	c.Assert(err, chk.NotNil)
-	c.Assert(strings.Contains(err.Error(), invalidHeaderErrorSubstring), chk.Equals, true)
-}
-
-func (s *aztestsSuite) TestBlobPutBlobIfModifiedSinceTrue(c *chk.C) {
-	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-
-	content := make([]byte, 0)
-	body := bytes.NewReader(content)
-	rsc := azcore.NopCloser(body)
-
-	blobClient, _ := createNewBlockBlob(c, containerURL)
-
-	currentTime := getRelativeTimeGMT(-10)
-
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{
-			IfModifiedSince: &currentTime,
-		},
-	}
-	_, err := blobClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
-	c.Assert(err, chk.IsNil)
-	validateUpload(c, blobClient)
-}
-
-// TODO: Issue with storage error
-//func (s *aztestsSuite) TestBlobPutBlobIfModifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewBlockBlob(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	content := make([]byte, 0)
-//	body := bytes.NewReader(content)
-//	rsc := azcore.NopCloser(body)
-//
-//	uploadBlockBlobOptions := UploadBlockBlobOptions{
-//		ModifiedAccessConditions: &ModifiedAccessConditions{
-//			IfModifiedSince: &currentTime,
-//		},
-//	}
-//
-//	_, err := blobURL.Upload(ctx, rsc, &uploadBlockBlobOptions)
-//	c.Assert(err, chk.NotNil)
-//	stgErr := err.(StorageError).Message
-//	_ = stgErr
-//	c.Assert(strings.Contains(err.Error(), string(ServiceCodeConditionNotMet)), chk.Equals, true)
-//	//validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-
-func (s *aztestsSuite) TestBlobPutBlobIfUnmodifiedSinceTrue(c *chk.C) {
-	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewBlockBlob(c, containerURL)
-
-	currentTime := getRelativeTimeGMT(10)
-
-	content := make([]byte, 0)
-	body := bytes.NewReader(content)
-	rsc := azcore.NopCloser(body)
-
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{
-			IfUnmodifiedSince: &currentTime,
-		},
-	}
-	_, err := blobURL.Upload(ctx, rsc, &uploadBlockBlobOptions)
-	c.Assert(err, chk.IsNil)
-
-	validateUpload(c, blobURL)
-}
-
-//
-//func (s *aztestsSuite) TestBlobPutBlobIfUnmodifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewBlockBlob(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	_, err := blobURL.Upload(ctx, bytes.NewReader(nil), BlobHTTPHeaders{}, nil, BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfUnmodifiedSince: currentTime}}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-
-func (s *aztestsSuite) TestBlobPutBlobIfMatchTrue(c *chk.C) {
-	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewBlockBlob(c, containerURL)
-
-	resp, err := blobURL.GetProperties(ctx, nil)
-	c.Assert(err, chk.IsNil)
-
-	content := make([]byte, 0)
-	body := bytes.NewReader(content)
-	rsc := azcore.NopCloser(body)
-
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{
-			IfMatch: resp.ETag,
-		},
-	}
-	_, err = blobURL.Upload(ctx, rsc, &uploadBlockBlobOptions)
-	c.Assert(err, chk.IsNil)
-
-	validateUpload(c, blobURL)
-}
-
-//func (s *aztestsSuite) TestBlobPutBlobIfMatchFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewBlockBlob(c, containerURL)
-//
-//	_, err := blobURL.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	content := make([]byte, 0)
-//	body := bytes.NewReader(content)
-//	rsc := azcore.NopCloser(body)
-//
-//	ifNoneMatch := "garbage"
-//	uploadBlockBlobOptions := UploadBlockBlobOptions{
-//		ModifiedAccessConditions: &ModifiedAccessConditions{
-//			IfNoneMatch: &ifNoneMatch,
-//		},
-//	}
-//	_, err = blobURL.Upload(ctx, rsc, &uploadBlockBlobOptions)
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-
-func (s *aztestsSuite) TestBlobPutBlobIfNoneMatchTrue(c *chk.C) {
-	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewBlockBlob(c, containerURL)
-
-	_, err := blobURL.GetProperties(ctx, nil)
-	c.Assert(err, chk.IsNil)
-
-	content := make([]byte, 0)
-	body := bytes.NewReader(content)
-	rsc := azcore.NopCloser(body)
-
-	ifNoneMatch := "garbage"
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{
-			IfNoneMatch: &ifNoneMatch,
-		},
-	}
-
-	_, err = blobURL.Upload(ctx, rsc, &uploadBlockBlobOptions)
-	c.Assert(err, chk.IsNil)
-
-	validateUpload(c, blobURL)
-}
-
-// TODO: Issue with Storage Error
-//func (s *aztestsSuite) TestBlobPutBlobIfNoneMatchFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewBlockBlob(c, containerURL)
-//
-//	resp, err := blobURL.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	content := make([]byte, 0)
-//	body := bytes.NewReader(content)
-//	rsc := azcore.NopCloser(body)
-//
-//	uploadBlockBlobOptions := UploadBlockBlobOptions{
-//		ModifiedAccessConditions: &ModifiedAccessConditions{
-//			IfNoneMatch: resp.ETag,
-//		},
-//	}
-//	_, err = blobURL.Upload(ctx, rsc, &uploadBlockBlobOptions)
-//	//validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}

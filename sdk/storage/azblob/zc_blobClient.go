@@ -3,6 +3,7 @@ package azblob
 import (
 	"context"
 	"net/url"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -59,8 +60,9 @@ func (b BlobClient) WithSnapshot(snapshot string) BlobClient {
 func (b BlobClient) ToAppendBlobURL() AppendBlobClient {
 	con := newConnectionWithPipeline(b.String(), b.client.con.p)
 	return AppendBlobClient{
-		client: &appendBlobClient{con},
-		u:      b.u,
+		client:     &appendBlobClient{con},
+		u:          b.u,
+		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }
 
@@ -97,7 +99,7 @@ func (b BlobClient) Download(ctx context.Context, options *DownloadBlobOptions) 
 	}
 
 	offset := int64(0)
-	count := int64(0)
+	count := int64(CountToEnd)
 
 	if options != nil && options.Offset != nil {
 		offset = *options.Offset
@@ -223,3 +225,27 @@ func (b BlobClient) AbortCopyFromURL(ctx context.Context, copyID string, options
 	basics, lease := options.pointers()
 	return b.client.AbortCopyFromURL(ctx, copyID, basics, lease)
 }
+
+func SerializeBlobTags(blobTagsMap *map[string]string) *string {
+	if blobTagsMap == nil {
+		return nil
+	}
+	tags := make([]string, 0)
+	for key, val := range *blobTagsMap {
+		tags = append(tags, url.QueryEscape(key)+"="+url.QueryEscape(val))
+	}
+	//tags = tags[:len(tags)-1]
+	blobTagsString := strings.Join(tags, "&")
+	return &blobTagsString
+}
+
+//func SerializeBlobTags(blobTagsMap *map[string]string) BlobTags {
+//	if blobTagsMap == nil {
+//		return BlobTags{}
+//	}
+//	blobTagSet := make([]BlobTag, 0, len(*blobTagsMap))
+//	for key, val := range *blobTagsMap {
+//		blobTagSet = append(blobTagSet, BlobTag{Key: &key, Value: &val})
+//	}
+//	return BlobTags{BlobTagSet: &blobTagSet}
+//}

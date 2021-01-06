@@ -2,7 +2,7 @@ package azblob
 
 type UploadBlockBlobOptions struct {
 	// Optional. Used to set blob tags in various blob operations.
-	BlobTagsString *string
+	BlobTagsMap *map[string]string
 
 	// Optional. Specifies a user-defined name-value pair associated with the blob.
 	Metadata *map[string]string
@@ -27,7 +27,7 @@ func (o *UploadBlockBlobOptions) pointers() (*BlockBlobUploadOptions, *BlobHttpH
 	}
 
 	basics := BlockBlobUploadOptions{
-		BlobTagsString:          o.BlobTagsString,
+		BlobTagsString:          SerializeBlobTags(o.BlobTagsMap),
 		Metadata:                o.Metadata,
 		Tier:                    o.Tier,
 		TransactionalContentMd5: o.TransactionalContentMd5,
@@ -37,7 +37,7 @@ func (o *UploadBlockBlobOptions) pointers() (*BlockBlobUploadOptions, *BlobHttpH
 }
 
 type StageBlockOptions struct {
-	LeaseAccessConditions *LeaseAccessConditions
+	LeaseAccessConditions      *LeaseAccessConditions
 	BlockBlobStageBlockOptions *BlockBlobStageBlockOptions
 }
 
@@ -50,12 +50,11 @@ func (o *StageBlockOptions) pointers() (*LeaseAccessConditions, *BlockBlobStageB
 }
 
 type StageBlockFromURLOptions struct {
-	LeaseAccessConditions *LeaseAccessConditions
+	LeaseAccessConditions          *LeaseAccessConditions
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
-	BlockBlobStageBlockOptions *BlockBlobStageBlockFromURLOptions
-	CpkInfo *CpkInfo
-	CpkScopeInfo *CpkScopeInfo
-
+	BlockBlobStageBlockOptions     *BlockBlobStageBlockFromURLOptions
+	CpkInfo                        *CpkInfo
+	CpkScopeInfo                   *CpkScopeInfo
 }
 
 func (o *StageBlockFromURLOptions) pointers() (*LeaseAccessConditions, *SourceModifiedAccessConditions, *BlockBlobStageBlockFromURLOptions, *CpkInfo, *CpkScopeInfo) {
@@ -68,9 +67,9 @@ func (o *StageBlockFromURLOptions) pointers() (*LeaseAccessConditions, *SourceMo
 
 type CommitBlockListOptions struct {
 	BlockBlobCommitBlockListOptions *BlockBlobCommitBlockListOptions
-	BlobHTTPHeaders *BlobHttpHeaders
-	CpkInfo *CpkInfo
-	CpkScope *CpkScopeInfo
+	BlobHTTPHeaders                 *BlobHttpHeaders
+	CpkInfo                         *CpkInfo
+	CpkScope                        *CpkScopeInfo
 	BlobAccessConditions
 }
 
@@ -96,7 +95,7 @@ func (o *GetBlockListOptions) pointers() (*BlockBlobGetBlockListOptions, *Modifi
 }
 
 type CopyBlockBlobFromURLOptions struct {
-	BlobCopyFromURLOptions *BlobCopyFromURLOptions
+	BlobCopyFromURLOptions         *BlobCopyFromURLOptions
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
 	BlobAccessConditions
 }

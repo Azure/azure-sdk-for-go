@@ -68,8 +68,9 @@ func (c ContainerClient) NewAppendBlobURL(blobName string) AppendBlobClient {
 	newCon := newConnectionWithPipeline(blobURL.String(), c.client.con.p)
 
 	return AppendBlobClient{
-		client: &appendBlobClient{newCon},
-		u:      blobURL,
+		client:     &appendBlobClient{newCon},
+		u:          blobURL,
+		BlobClient: BlobClient{client: &blobClient{con: newCon}},
 	}
 }
 

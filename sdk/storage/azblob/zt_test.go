@@ -132,12 +132,13 @@ func getBlockBlobClient(c *chk.C, container ContainerClient) (blob BlockBlobClie
 	return blob, name
 }
 
-//func getAppendBlobURL(c *chk.C, container ContainerClient) (blob AppendBlobURL, name string) {
-//	name = generateBlobName()
-//	blob = container.NewAppendBlobURL(name)
-//
-//	return blob, name
-//}
+func getAppendBlobClient(c *chk.C, container ContainerClient) (blob AppendBlobClient, name string) {
+	name = generateBlobName()
+	blob = container.NewAppendBlobURL(name)
+
+	return blob, name
+}
+
 //
 //func getPageBlobURL(c *chk.C, container ContainerClient) (blob PageBlobURL, name string) {
 //	name = generateBlobName()
@@ -196,15 +197,16 @@ func createNewBlockBlob(c *chk.C, container ContainerClient) (blob BlockBlobClie
 	return
 }
 
-//func createNewAppendBlob(c *chk.C, container ContainerClient) (blob AppendBlobURL, name string) {
-//	blob, name = getAppendBlobURL(c, container)
-//
-//	resp, err := blob.Create(ctx, BlobHTTPHeaders{}, nil, BlobAccessConditions{})
-//
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.StatusCode(), chk.Equals, 201)
-//	return
-//}
+func createNewAppendBlob(c *chk.C, container ContainerClient) (blob AppendBlobClient, name string) {
+	blob, name = getAppendBlobClient(c, container)
+
+	resp, err := blob.Create(ctx, nil)
+
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
+	return
+}
+
 //
 //func createNewPageBlob(c *chk.C, container ContainerClient) (blob PageBlobURL, name string) {
 //	blob, name = getPageBlobURL(c, container)
@@ -340,8 +342,15 @@ func disableSoftDelete(c *chk.C, bsu ServiceClient) {
 	c.Assert(err, chk.IsNil)
 }
 
-func validateUpload(c *chk.C, blobURL BlockBlobClient) {
-	resp, err := blobURL.Download(ctx, nil)
+//func validateUpload(c *chk.C, blobClient AppendBlobClient) {
+//	resp, err := blobClient.Download(ctx, nil)
+//	c.Assert(err, chk.IsNil)
+//	data, _ := ioutil.ReadAll(resp.Response().Body)
+//	c.Assert(data, chk.HasLen, 0)
+//}
+
+func validateUpload(c *chk.C, blobClient BlobClient) {
+	resp, err := blobClient.Download(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	data, _ := ioutil.ReadAll(resp.Response().Body)
 	c.Assert(data, chk.HasLen, 0)

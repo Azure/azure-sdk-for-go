@@ -39,7 +39,7 @@ func (o *DeleteContainerOptions) pointers() (*ContainerDeleteOptions, *LeaseAcce
 
 type GetPropertiesOptionsContainer struct {
 	ContainerGetPropertiesOptions *ContainerGetPropertiesOptions
-	LeaseAccessConditions *LeaseAccessConditions
+	LeaseAccessConditions         *LeaseAccessConditions
 }
 
 func (o *GetPropertiesOptionsContainer) pointers() (*ContainerGetPropertiesOptions, *LeaseAccessConditions) {
@@ -52,7 +52,7 @@ func (o *GetPropertiesOptionsContainer) pointers() (*ContainerGetPropertiesOptio
 
 type GetAccessPolicyOptions struct {
 	ContainerGetAccessPolicyOptions *ContainerGetAccessPolicyOptions
-	LeaseAccessConditions *LeaseAccessConditions
+	LeaseAccessConditions           *LeaseAccessConditions
 }
 
 func (o *GetAccessPolicyOptions) pointers() (*ContainerGetAccessPolicyOptions, *LeaseAccessConditions) {
@@ -66,18 +66,18 @@ func (o *GetAccessPolicyOptions) pointers() (*ContainerGetAccessPolicyOptions, *
 type SetAccessPolicyOptions struct {
 	// At least Access and ContainerAcl must be specified
 	ContainerSetAccessPolicyOptions ContainerSetAccessPolicyOptions
-	ContainerAccessConditions *ContainerAccessConditions
+	ContainerAccessConditions       *ContainerAccessConditions
 }
 
 type AcquireLeaseOptionsContainer struct {
 	// At least Access and ContainerAcl must be specified
 	ContainerSetAccessPolicyOptions *ContainerAcquireLeaseOptions
-	ModifiedAccessConditions *ModifiedAccessConditions
+	ModifiedAccessConditions        *ModifiedAccessConditions
 }
 
 type RenewLeaseOptionsContainer struct {
 	ContainerRenewLeaseOptions *ContainerRenewLeaseOptions
-	ModifiedAccessConditions *ModifiedAccessConditions
+	ModifiedAccessConditions   *ModifiedAccessConditions
 }
 
 func (o *RenewLeaseOptionsContainer) pointers() (*ContainerRenewLeaseOptions, *ModifiedAccessConditions) {
@@ -90,7 +90,7 @@ func (o *RenewLeaseOptionsContainer) pointers() (*ContainerRenewLeaseOptions, *M
 
 type ReleaseLeaseOptionsContainer struct {
 	ContainerReleaseLeaseOptions *ContainerReleaseLeaseOptions
-	ModifiedAccessConditions *ModifiedAccessConditions
+	ModifiedAccessConditions     *ModifiedAccessConditions
 }
 
 func (o *ReleaseLeaseOptionsContainer) pointers() (*ContainerReleaseLeaseOptions, *ModifiedAccessConditions) {
@@ -103,7 +103,7 @@ func (o *ReleaseLeaseOptionsContainer) pointers() (*ContainerReleaseLeaseOptions
 
 type BreakLeaseOptionsContainer struct {
 	ContainerBreakLeaseOptions *ContainerBreakLeaseOptions
-	ModifiedAccessConditions *ModifiedAccessConditions
+	ModifiedAccessConditions   *ModifiedAccessConditions
 }
 
 func (o *BreakLeaseOptionsContainer) pointers() (*ContainerBreakLeaseOptions, *ModifiedAccessConditions) {
@@ -116,7 +116,7 @@ func (o *BreakLeaseOptionsContainer) pointers() (*ContainerBreakLeaseOptions, *M
 
 type ChangeLeaseOptionsContainer struct {
 	ContainerChangeLeaseOptions *ContainerChangeLeaseOptions
-	ModifiedAccessConditions *ModifiedAccessConditions
+	ModifiedAccessConditions    *ModifiedAccessConditions
 }
 
 func (o *ChangeLeaseOptionsContainer) pointers() (*ContainerChangeLeaseOptions, *ModifiedAccessConditions) {

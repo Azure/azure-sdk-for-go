@@ -80,8 +80,9 @@ func (b BlobClient) ToBlockBlobClient() BlockBlobClient {
 func (b BlobClient) ToPageBlobURL() PageBlobClient {
 	con := newConnectionWithPipeline(b.String(), b.client.con.p)
 	return PageBlobClient{
-		client: &pageBlobClient{con},
-		u:      b.u,
+		client:     &pageBlobClient{con},
+		u:          b.u,
+		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }
 

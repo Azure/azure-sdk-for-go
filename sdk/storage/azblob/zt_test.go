@@ -139,13 +139,12 @@ func getAppendBlobClient(c *chk.C, container ContainerClient) (blob AppendBlobCl
 	return blob, name
 }
 
-//
-//func getPageBlobURL(c *chk.C, container ContainerClient) (blob PageBlobURL, name string) {
-//	name = generateBlobName()
-//	blob = container.NewPageBlobURL(name)
-//
-//	return
-//}
+func getPageBlobClient(c *chk.C, container ContainerClient) (blob PageBlobClient, name string) {
+	name = generateBlobName()
+	blob = container.NewPageBlobClient(name)
+
+	return
+}
 
 func getReaderToRandomBytes(n int) *bytes.Reader {
 	r, _ := getRandomDataAndReader(n)
@@ -207,25 +206,25 @@ func createNewAppendBlob(c *chk.C, container ContainerClient) (blob AppendBlobCl
 	return
 }
 
-//
-//func createNewPageBlob(c *chk.C, container ContainerClient) (blob PageBlobURL, name string) {
-//	blob, name = getPageBlobURL(c, container)
-//
-//	resp, err := blob.Create(ctx, PageBlobPageBytes*10, 0, BlobHTTPHeaders{}, nil, BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.StatusCode(), chk.Equals, 201)
-//	return
-//}
-//
-//func createNewPageBlobWithSize(c *chk.C, container ContainerClient, sizeInBytes int64) (blob PageBlobURL, name string) {
-//	blob, name = getPageBlobURL(c, container)
-//
-//	resp, err := blob.Create(ctx, sizeInBytes, 0, BlobHTTPHeaders{}, nil, BlobAccessConditions{})
-//
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.StatusCode(), chk.Equals, 201)
-//	return
-//}
+func createNewPageBlob(c *chk.C, container ContainerClient) (blob PageBlobClient, name string) {
+	blob, name = getPageBlobClient(c, container)
+
+	resp, err := blob.Create(ctx, PageBlobPageBytes*10, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
+	return
+}
+
+func createNewPageBlobWithSize(c *chk.C, container ContainerClient, sizeInBytes int64) (blob PageBlobClient, name string) {
+	blob, name = getPageBlobClient(c, container)
+
+	resp, err := blob.Create(ctx, sizeInBytes, nil)
+
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
+	return
+}
+
 //
 //func createBlockBlobWithPrefix(c *chk.C, container ContainerClient, prefix string) (blob BlockBlobClient, name string) {
 //	name = prefix + generateName(blobPrefix)
@@ -239,11 +238,6 @@ func createNewAppendBlob(c *chk.C, container ContainerClient) (blob AppendBlobCl
 //	return
 //}
 //
-//func deleteContainer(c *chk.C, container ContainerClient) {
-//	resp, err := container.Delete(ctx, ContainerAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.StatusCode(), chk.Equals, 202)
-//}
 
 func getGenericCredential(accountType string) (*SharedKeyCredential, error) {
 	accountNameEnvVar := accountType + "AZURE_STORAGE_ACCOUNT_NAME"

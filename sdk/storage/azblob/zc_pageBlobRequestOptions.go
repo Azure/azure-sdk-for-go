@@ -1,16 +1,24 @@
 package azblob
 
 import (
+	"fmt"
 	"strconv"
 )
 
 func rangeToString(offset, count int64) string {
-	return strconv.FormatInt(offset, 10) + "-" + strconv.FormatInt(offset+count, 10)
+	return "bytes=" + strconv.FormatInt(offset, 10) + "-" + strconv.FormatInt(offset+count-1, 10)
 }
 
 func rangeToStringPtr(offset, count int64) *string {
-	out := strconv.FormatInt(offset, 10) + "-" + strconv.FormatInt(offset+count, 10)
+	out := rangeToString(offset, count)
 	return &out
+}
+
+func (pr PageRange) pointers() *string {
+	startOffset := strconv.FormatInt(*pr.Start, 10)
+	endOffset := strconv.FormatInt(*pr.End, 10)
+	asString := fmt.Sprintf("bytes=%v-%s", startOffset, endOffset)
+	return &asString
 }
 
 type CreatePageBlobOptions struct {
@@ -50,9 +58,9 @@ func (o *CreatePageBlobOptions) pointers() (*PageBlobCreateOptions, *BlobHttpHea
 }
 
 type UploadPagesOptions struct {
-	// Return only the bytes of the blob in the specified range.
-	RangeParameter *string
 	// Specify the transactional crc64 for the body, to be validated by the service.
+	Offset                    *int64
+	Count                     *int64
 	TransactionalContentCrc64 *[]byte
 	// Specify the transactional md5 for the body, to be validated by the service.
 	TransactionalContentMd5 *[]byte
@@ -68,8 +76,9 @@ func (o *UploadPagesOptions) pointers() (*PageBlobUploadPagesOptions, *CpkInfo, 
 		return nil, nil, nil, nil, nil, nil
 	}
 
+	endOffSet := *o.Offset + *o.Count - 1
 	options := &PageBlobUploadPagesOptions{
-		RangeParameter:            o.RangeParameter,
+		RangeParameter:            PageRange{Start: o.Offset, End: &endOffSet}.pointers(),
 		TransactionalContentCrc64: o.TransactionalContentCrc64,
 		TransactionalContentMd5:   o.TransactionalContentMd5,
 	}

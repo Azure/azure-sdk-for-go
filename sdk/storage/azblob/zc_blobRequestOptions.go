@@ -1,10 +1,5 @@
 package azblob
 
-import (
-	"fmt"
-	"strconv"
-)
-
 type DeleteBlobOptions struct {
 	// Required if the blob has associated snapshots. Specify one of the following two options: include: Delete the base blob
 	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob itself
@@ -46,7 +41,7 @@ func (o *DownloadBlobOptions) pointers() (blobDownloadOptions *BlobDownloadOptio
 	}
 
 	offset := int64(0)
-	count := int64(0)
+	count := int64(CountToEnd)
 
 	if o.Offset != nil {
 		offset = *o.Offset
@@ -65,26 +60,6 @@ func (o *DownloadBlobOptions) pointers() (blobDownloadOptions *BlobDownloadOptio
 	}
 
 	return &basics, o.LeaseAccessConditions, o.CpkInfo, o.ModifiedAccessConditions
-}
-
-// httpRange defines a range of bytes within an HTTP resource, starting at offset and
-// ending at offset+count. A zero-value httpRange indicates the entire resource. An httpRange
-// which has an offset but na zero value count indicates from the offset to the resource's end.
-type httpRange struct {
-	offset int64
-	count  int64
-}
-
-func (r httpRange) pointers() *string {
-	if r.offset == 0 && r.count == 0 { // Do common case first for performance
-		return nil // No specified range
-	}
-	endOffset := "" // if count == CountToEnd (0)
-	if r.count > 0 {
-		endOffset = strconv.FormatInt((r.offset+r.count)-1, 10)
-	}
-	dataRange := fmt.Sprintf("bytes=%v-%s", r.offset, endOffset)
-	return &dataRange
 }
 
 type SetTierOptions struct {

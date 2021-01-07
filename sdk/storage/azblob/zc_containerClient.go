@@ -100,8 +100,9 @@ func (c ContainerClient) NewPageBlobClient(blobName string) PageBlobClient {
 	newCon := newConnectionWithPipeline(blobURL.String(), c.client.con.p)
 
 	return PageBlobClient{
-		client: &pageBlobClient{newCon},
-		u:      blobURL,
+		client:     &pageBlobClient{newCon},
+		u:          blobURL,
+		BlobClient: BlobClient{client: &blobClient{con: newCon}},
 	}
 }
 

@@ -2,30 +2,32 @@ package azblob
 
 import (
 	"errors"
+	"fmt"
 	"io"
+	"strconv"
 )
 
-//// httpRange defines a range of bytes within an HTTP resource, starting at offset and
-//// ending at offset+count. A zero-value httpRange indicates the entire resource. An httpRange
-//// which has an offset but na zero value count indicates from the offset to the resource's end.
-//type httpRange struct {
-//	offset int64
-//	count  int64
-//}
-//
-//func (r httpRange) pointers() *string {
-//	if r.offset == 0 && r.count == CountToEnd { // Do common case first for performance
-//		return nil // No specified range
-//	}
-//	endOffset := "" // if count == CountToEnd (0)
-//	if r.count > 0 {
-//		endOffset = strconv.FormatInt((r.offset+r.count)-1, 10)
-//	}
-//	dataRange := fmt.Sprintf("bytes=%v-%s", r.offset, endOffset)
-//	return &dataRange
-//}
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// httpRange defines a range of bytes within an HTTP resource, starting at offset and
+// ending at offset+count. A zero-value httpRange indicates the entire resource. An httpRange
+// which has an offset but na zero value count indicates from the offset to the resource's end.
+type httpRange struct {
+	offset int64
+	count  int64
+}
+
+func (r httpRange) pointers() *string {
+	if r.offset == 0 && r.count == 0 { // Do common case first for performance
+		return nil // No specified range
+	}
+	endOffset := "" // if count == CountToEnd (0)
+	if r.count > 0 {
+		endOffset = strconv.FormatInt((r.offset+r.count)-1, 10)
+	}
+	dataRange := fmt.Sprintf("bytes=%v-%s", r.offset, endOffset)
+	return &dataRange
+}
 
 func validateSeekableStreamAt0AndGetCount(body io.ReadSeeker) (int64, error) {
 	if body == nil { // nil body's are "logically" seekable to 0 and are 0 bytes long

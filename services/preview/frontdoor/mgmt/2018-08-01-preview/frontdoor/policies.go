@@ -156,7 +156,7 @@ func (client PoliciesClient) Delete(ctx context.Context, resourceGroupName strin
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "frontdoor.PoliciesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "frontdoor.PoliciesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -192,7 +192,23 @@ func (client PoliciesClient) DeleteSender(req *http.Request) (future PoliciesDel
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client PoliciesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "frontdoor.PoliciesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("frontdoor.PoliciesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -324,6 +340,7 @@ func (client PoliciesClient) List(ctx context.Context, resourceGroupName string)
 	}
 	if result.wafplr.hasNextLink() && result.wafplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -384,7 +401,6 @@ func (client PoliciesClient) listNextResults(ctx context.Context, lastResults We
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.PoliciesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

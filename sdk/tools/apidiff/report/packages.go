@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/markdown"
+	"github.com/Azure/azure-sdk-for-go/sdk/tools/apidiff/markdown"
 )
 
 const apiDirSuffix = "api"

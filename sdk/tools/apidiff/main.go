@@ -15,7 +15,7 @@
 package main
 
 import (
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/cmd"
+	"github.com/Azure/azure-sdk-for-go/sdk/tools/apidiff/cmd"
 )
 
 // breaking changes definitions

@@ -21,9 +21,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
+	"github.com/Azure/azure-sdk-for-go/sdk/tools/apidiff/exports"
+	"github.com/Azure/azure-sdk-for-go/sdk/tools/apidiff/repo"
+	"github.com/Azure/azure-sdk-for-go/sdk/tools/apidiff/report"
 	"github.com/spf13/cobra"
 )
 

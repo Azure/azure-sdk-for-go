@@ -19,8 +19,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/delta"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
+	"github.com/Azure/azure-sdk-for-go/sdk/tools/apidiff/delta"
+	"github.com/Azure/azure-sdk-for-go/sdk/tools/apidiff/exports"
 )
 
 var oContent exports.Content

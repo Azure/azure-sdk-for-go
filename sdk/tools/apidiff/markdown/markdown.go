@@ -37,10 +37,26 @@ func (md *Writer) checkNL() {
 	}
 }
 
+// WriteTitle writes a title to the markdown document
+func (md *Writer) WriteTitle(h string) {
+	md.checkNL()
+	md.sb.WriteString("# ")
+	md.sb.WriteString(h)
+	md.sb.WriteString("\n\n")
+}
+
+// WriteTopLevelHeader writes a header to the markdown document
+func (md *Writer) WriteTopLevelHeader(h string) {
+	md.checkNL()
+	md.sb.WriteString("## ")
+	md.sb.WriteString(h)
+	md.sb.WriteString("\n\n")
+}
+
 // WriteHeader writes a header to the markdown document
 func (md *Writer) WriteHeader(h string) {
 	md.checkNL()
-	md.sb.WriteString("## ")
+	md.sb.WriteString("### ")
 	md.sb.WriteString(h)
 	md.sb.WriteString("\n\n")
 }
@@ -48,7 +64,7 @@ func (md *Writer) WriteHeader(h string) {
 // WriteSubheader writes a sub-header to the markdown document
 func (md *Writer) WriteSubheader(sh string) {
 	md.checkNL()
-	md.sb.WriteString("### ")
+	md.sb.WriteString("#### ")
 	md.sb.WriteString(sh)
 	md.sb.WriteString("\n\n")
 }

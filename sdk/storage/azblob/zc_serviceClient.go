@@ -121,12 +121,19 @@ func NewKeyInfo(Start, Expiry time.Time) KeyInfo {
 // The returned channel contains individual container items.
 // AutoPagerTimeout specifies the amount of time with no read operations before the channel times out and closes. Specify no time and it will be ignored.
 // AutoPagerBufferSize specifies the channel's buffer size.
-func (s ServiceClient) ListContainersSegment(ctx context.Context, AutoPagerBufferSize uint, AutoPagerTimeout time.Duration, o *ListContainersSegmentOptions) (chan ContainerItem, error) {
+// Both the blob item channel and error channel should be watched. Only one error will be released via this channel.
+func (s ServiceClient) ListContainersSegment(ctx context.Context, AutoPagerBufferSize uint, AutoPagerTimeout time.Duration, o *ListContainersSegmentOptions) (chan ContainerItem, chan error) {
+	output := make(chan ContainerItem, AutoPagerBufferSize)
+	errChan := make(chan error, 1)
+
 	listOptions := o.pointers()
 	pager := s.client.ListContainersSegment(listOptions)
 	// override the generated advancer, which is incorrect
 	if pager.Err() != nil {
-		return nil, pager.Err()
+		errChan <- pager.Err()
+		close(output)
+		close(errChan)
+		return output, errChan
 	}
 
 	p := pager.(*listContainersSegmentResponsePager) // cast to the internal type first
@@ -144,10 +151,11 @@ func (s ServiceClient) ListContainersSegment(ctx context.Context, AutoPagerBuffe
 		req.URL.RawQuery = queryValues.Encode()
 		return req, nil
 	}
-	output := make(chan ContainerItem, AutoPagerBufferSize)
+
 	go listContainersSegmentAutoPager{
 		pager,
 		output,
+		errChan,
 		ctx,
 		AutoPagerTimeout,
 		nil,

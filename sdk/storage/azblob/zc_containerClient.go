@@ -234,19 +234,30 @@ func (c ContainerClient) ChangeLease(ctx context.Context, leaseID string, propos
 // The returned channel contains individual blob items.
 // AutoPagerTimeout specifies the amount of time with no read operations before the channel times out and closes. Specify no time and it will be ignored.
 // AutoPagerBufferSize specifies the channel's buffer size.
-func (c ContainerClient) ListBlobsFlatSegment(ctx context.Context, AutoPagerBufferSize uint, AutoPagerTimeout time.Duration, listOptions *ContainerListBlobFlatSegmentOptions) (chan BlobItemInternal, error) {
+// Both the blob item channel and error channel should be watched. Only one error will be released via this channel.
+func (c ContainerClient) ListBlobsFlatSegment(ctx context.Context, AutoPagerBufferSize uint, AutoPagerTimeout time.Duration, listOptions *ContainerListBlobFlatSegmentOptions) (chan BlobItemInternal, chan error) {
 	pager := c.client.ListBlobFlatSegment(listOptions)
 
 	output := make(chan BlobItemInternal, AutoPagerBufferSize)
+	errChan := make(chan error, 1)
+
+	if err := pager.Err(); err  != nil {
+		errChan <- err
+		close(output)
+		close(errChan)
+		return output, errChan
+	}
+
 	go listBlobsFlatSegmentAutoPager{
 		pager,
 		output,
+		errChan,
 		ctx,
 		AutoPagerTimeout,
 		nil,
 	}.Go()
 
-	return output, nil
+	return output, errChan
 }
 
 // ListBlobsHierarchySegment returns a channel of blobs starting from the specified Marker. Use an empty
@@ -256,17 +267,29 @@ func (c ContainerClient) ListBlobsFlatSegment(ctx context.Context, AutoPagerBuff
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-blobs.
 // AutoPagerTimeout specifies the amount of time with no read operations before the channel times out and closes. Specify no time and it will be ignored.
 // AutoPagerBufferSize specifies the channel's buffer size.
-func (c ContainerClient) ListBlobsHierarchySegment(ctx context.Context, delimiter string, AutoPagerBufferSize uint, AutoPagerTimeout time.Duration, listOptions *ContainerListBlobHierarchySegmentOptions) (chan BlobItemInternal, error) {
+// Both the blob item channel and error channel should be watched. Only one error will be released via this channel.
+func (c ContainerClient) ListBlobsHierarchySegment(ctx context.Context, delimiter string, AutoPagerBufferSize uint, AutoPagerTimeout time.Duration, listOptions *ContainerListBlobHierarchySegmentOptions) (chan BlobItemInternal, chan error) {
 	pager := c.client.ListBlobHierarchySegment(delimiter, listOptions)
 
+
 	output := make(chan BlobItemInternal, AutoPagerBufferSize)
+	errChan := make(chan error, 1)
+
+	if err := pager.Err(); err  != nil {
+		errChan <- err
+		close(output)
+		close(errChan)
+		return output, errChan
+	}
+
 	go listBlobsHierarchySegmentAutoPager{
 		pager,
 		output,
+		errChan,
 		ctx,
 		AutoPagerTimeout,
 		nil,
 	}.Go()
 
-	return output, nil
+	return output, errChan
 }

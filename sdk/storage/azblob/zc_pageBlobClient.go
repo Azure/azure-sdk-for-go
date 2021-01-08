@@ -179,10 +179,9 @@ func (pb PageBlobClient) Resize(ctx context.Context, size int64, options *Resize
 }
 
 // UpdateSequenceNumber sets the page blob's sequence number.
-func (pb PageBlobClient) UpdateSequenceNumber(ctx context.Context, actionType SequenceNumberActionType, options *UpdateSequenceNumberPageBlob) (PageBlobUpdateSequenceNumberResponse, error) {
-	updateOptions, lac, mac := options.pointers()
-
-	return pb.client.UpdateSequenceNumber(ctx, actionType, updateOptions, lac, mac)
+func (pb PageBlobClient) UpdateSequenceNumber(ctx context.Context, options *UpdateSequenceNumberPageBlob) (PageBlobUpdateSequenceNumberResponse, error) {
+	updateOptions, actionType, lac, mac := options.pointers()
+	return pb.client.UpdateSequenceNumber(ctx, *actionType, updateOptions, lac, mac)
 }
 
 // StartCopyIncremental begins an operation to start an incremental copy from one page blob's snapshot to this page blob.
@@ -190,6 +189,11 @@ func (pb PageBlobClient) UpdateSequenceNumber(ctx context.Context, actionType Se
 // The copied snapshots are complete copies of the original snapshot and can be read or copied from as usual.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob and
 // https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots.
-func (pb PageBlobClient) StartCopyIncremental(ctx context.Context, source url.URL, conditions *ModifiedAccessConditions) (PageBlobCopyIncrementalResponse, error) {
-	return pb.client.CopyIncremental(ctx, source, nil, conditions)
+func (pb PageBlobClient) StartCopyIncremental(ctx context.Context, source url.URL, prevSnapshot string, options *CopyIncrementalPageBlobOptions) (PageBlobCopyIncrementalResponse, error) {
+	queryParams := source.Query()
+	queryParams.Set("snapshot", prevSnapshot)
+	source.RawQuery = queryParams.Encode()
+
+	pageBlobCopyIncrementalOptions, modifiedAccessConditions := options.pointers()
+	return pb.client.CopyIncremental(ctx, source, pageBlobCopyIncrementalOptions, modifiedAccessConditions)
 }

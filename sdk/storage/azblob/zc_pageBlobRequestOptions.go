@@ -156,19 +156,45 @@ func (o *ResizePageBlobOptions) pointers() (*CpkInfo, *CpkScopeInfo, *LeaseAcces
 }
 
 type UpdateSequenceNumberPageBlob struct {
+	ActionType         *SequenceNumberActionType
 	BlobSequenceNumber *int64
 
 	BlobAccessConditions
 }
 
-func (o *UpdateSequenceNumberPageBlob) pointers() (*PageBlobUpdateSequenceNumberOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
+func (o *UpdateSequenceNumberPageBlob) pointers() (*PageBlobUpdateSequenceNumberOptions, *SequenceNumberActionType, *LeaseAccessConditions, *ModifiedAccessConditions) {
 	if o == nil {
-		return nil, nil, nil
+		return nil, nil, nil, nil
 	}
 
 	options := &PageBlobUpdateSequenceNumberOptions{
 		BlobSequenceNumber: o.BlobSequenceNumber,
 	}
 
-	return options, o.LeaseAccessConditions, o.ModifiedAccessConditions
+	if *o.ActionType == SequenceNumberActionTypeIncrement {
+		options.BlobSequenceNumber = nil
+	}
+
+	return options, o.ActionType, o.LeaseAccessConditions, o.ModifiedAccessConditions
+}
+
+type CopyIncrementalPageBlobOptions struct {
+	conditions *ModifiedAccessConditions
+
+	RequestId *string
+
+	Timeout *int32
+}
+
+func (o *CopyIncrementalPageBlobOptions) pointers() (*PageBlobCopyIncrementalOptions, *ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	options := PageBlobCopyIncrementalOptions{
+		RequestId: o.RequestId,
+		Timeout:   o.Timeout,
+	}
+
+	return &options, o.conditions
 }

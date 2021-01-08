@@ -174,12 +174,13 @@ func (c ContainerClient) GetAccessPolicy(ctx context.Context, options *GetAccess
 func (c ContainerClient) SetAccessPolicy(ctx context.Context, options SetAccessPolicyOptions) (ContainerSetAccessPolicyResponse, error) {
 
 	accessPolicy := options.ContainerSetAccessPolicyOptions
-	if accessPolicy.Access == nil || accessPolicy.ContainerAcl == nil {
-		return ContainerSetAccessPolicyResponse{}, errors.New("ContainerSetAccess must be specified with AT LEAST Access and ContainerAcl")
-	}
+	// TODO: Ask Adele: Why we introduced this check. Service returned "200 OK" without this. And we should let service do this kind of validations.
+	//if accessPolicy.Access == nil || accessPolicy.ContainerAcl == nil {
+	//	return ContainerSetAccessPolicyResponse{}, errors.New("ContainerSetAccess must be specified with AT LEAST Access and ContainerAcl")
+	//}
 
 	ac := options.ContainerAccessConditions
-	if *ac.ModifiedAccessConditions.IfMatch != ETagNone || *ac.ModifiedAccessConditions.IfNoneMatch != ETagNone {
+	if ac != nil && (*ac.ModifiedAccessConditions.IfMatch != ETagNone || *ac.ModifiedAccessConditions.IfNoneMatch != ETagNone) {
 		return ContainerSetAccessPolicyResponse{}, errors.New("the IfMatch and IfNoneMatch access conditions must have their default values because they are ignored by the service")
 	}
 

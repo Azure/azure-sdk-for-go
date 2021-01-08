@@ -202,151 +202,238 @@ func (s *aztestsSuite) TestUploadPagesFromURLWithMD5(c *chk.C) {
 	//validateStorageError(c, err, ServiceCodeMd5Mismatch)
 }
 
-//func (s *aztestsSuite) TestClearDiffPages(c *chk.C) {
-//	bsu := getBSU()
-//	container, _ := createNewContainer(c, bsu)
-//	defer delContainer(c, container)
-//
-//	blob, _ := createNewPageBlob(c, container)
-//	_, err := blob.UploadPages(context.Background(), 0, getReaderToRandomBytes(2048), PageBlobAccessConditions{}, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	snapshotResp, err := blob.CreateSnapshot(context.Background(), nil, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	_, err = blob.UploadPages(context.Background(), 2048, getReaderToRandomBytes(2048), PageBlobAccessConditions{}, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	pageList, err := blob.GetPageRangesDiff(context.Background(), 0, 4096, snapshotResp.Snapshot(), BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(pageList.PageRange, chk.HasLen, 1)
-//	c.Assert(pageList.PageRange[0].Start, chk.Equals, int64(2048))
-//	c.Assert(pageList.PageRange[0].End, chk.Equals, int64(4095))
-//
-//	clearResp, err := blob.ClearPages(context.Background(), 2048, 2048, PageBlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(clearResp.Response().StatusCode, chk.Equals, 201)
-//
-//	pageList, err = blob.GetPageRangesDiff(context.Background(), 0, 4095, snapshotResp.Snapshot(), BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(pageList.PageRange, chk.HasLen, 0)
-//}
-//
-//func (s *aztestsSuite) TestIncrementalCopy(c *chk.C) {
-//	bsu := getBSU()
-//	container, _ := createNewContainer(c, bsu)
-//	defer delContainer(c, container)
-//	_, err := container.SetAccessPolicy(context.Background(), PublicAccessBlob, nil, ContainerAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	srcBlob, _ := createNewPageBlob(c, container)
-//	_, err = srcBlob.UploadPages(context.Background(), 0, getReaderToRandomBytes(1024), PageBlobAccessConditions{}, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//	snapshotResp, err := srcBlob.CreateSnapshot(context.Background(), nil, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	dstBlob := container.NewPageBlobURL(generateBlobName())
-//
-//	resp, err := dstBlob.StartCopyIncremental(context.Background(), srcBlob.URL(), snapshotResp.Snapshot(), BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Response().StatusCode, chk.Equals, 202)
-//	c.Assert(resp.LastModified().IsZero(), chk.Equals, false)
-//	c.Assert(resp.ETag(), chk.Not(chk.Equals), ETagNone)
-//	c.Assert(resp.RequestID(), chk.Not(chk.Equals), "")
-//	c.Assert(resp.Version(), chk.Not(chk.Equals), "")
-//	c.Assert(resp.Date().IsZero(), chk.Equals, false)
-//	c.Assert(resp.CopyID(), chk.Not(chk.Equals), "")
-//	c.Assert(resp.CopyStatus(), chk.Equals, CopyStatusPending)
-//
-//	waitForIncrementalCopy(c, dstBlob, resp)
-//}
-//
-//func (s *aztestsSuite) TestResizePageBlob(c *chk.C) {
-//	bsu := getBSU()
-//	container, _ := createNewContainer(c, bsu)
-//	defer delContainer(c, container)
-//
-//	blob, _ := createNewPageBlob(c, container)
-//	resp, err := blob.Resize(context.Background(), 2048, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Response().StatusCode, chk.Equals, 200)
-//
-//	resp, err = blob.Resize(context.Background(), 8192, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Response().StatusCode, chk.Equals, 200)
-//
-//	resp2, err := blob.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp2.ContentLength(), chk.Equals, int64(8192))
-//}
-//
-//func (s *aztestsSuite) TestPageSequenceNumbers(c *chk.C) {
-//	bsu := getBSU()
-//	container, _ := createNewContainer(c, bsu)
-//	blob, _ := createNewPageBlob(c, container)
-//
-//	defer delContainer(c, container)
-//
-//	resp, err := blob.UpdateSequenceNumber(context.Background(), SequenceNumberActionIncrement, 0, BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Response().StatusCode, chk.Equals, 200)
-//
-//	resp, err = blob.UpdateSequenceNumber(context.Background(), SequenceNumberActionMax, 7, BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Response().StatusCode, chk.Equals, 200)
-//
-//	resp, err = blob.UpdateSequenceNumber(context.Background(), SequenceNumberActionUpdate, 11, BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Response().StatusCode, chk.Equals, 200)
-//}
-//
-//func (s *aztestsSuite) TestPutPagesWithMD5(c *chk.C) {
-//	bsu := getBSU()
-//	container, _ := createNewContainer(c, bsu)
-//	defer delContainer(c, container)
-//
-//	blob, _ := createNewPageBlob(c, container)
-//
-//	// put page with valid MD5
-//	readerToBody, body := getRandomDataAndReader(1024)
-//	md5Value := md5.Sum(body)
-//	putResp, err := blob.UploadPages(context.Background(), 0, readerToBody, PageBlobAccessConditions{}, md5Value[:], ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(putResp.Response().StatusCode, chk.Equals, 201)
-//	c.Assert(putResp.LastModified().IsZero(), chk.Equals, false)
-//	c.Assert(putResp.ETag(), chk.Not(chk.Equals), ETagNone)
-//	c.Assert(putResp.ContentMD5(), chk.DeepEquals, md5Value[:])
-//	c.Assert(putResp.BlobSequenceNumber(), chk.Equals, int64(0))
-//	c.Assert(putResp.RequestID(), chk.Not(chk.Equals), "")
-//	c.Assert(putResp.Version(), chk.Not(chk.Equals), "")
-//	c.Assert(putResp.Date().IsZero(), chk.Equals, false)
-//
-//	// put page with bad MD5
-//	readerToBody, body = getRandomDataAndReader(1024)
-//	_, badMD5 := getRandomDataAndReader(16)
-//	putResp, err = blob.UploadPages(context.Background(), 0, readerToBody, PageBlobAccessConditions{}, badMD5[:], ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeMd5Mismatch)
-//}
-//
-//func (s *aztestsSuite) TestBlobCreatePageSizeInvalid(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := getPageBlobURL(c, containerURL)
-//
-//	_, err := blobURL.Create(ctx, 1, 0, BlobHTTPHeaders{}, nil, BlobAccessConditions{}, DefaultPremiumBlobAccessTier, nil, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeInvalidHeaderValue)
-//}
-//
-//func (s *aztestsSuite) TestBlobCreatePageSequenceInvalid(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := getPageBlobURL(c, containerURL)
-//
-//	_, err := blobURL.Create(ctx, PageBlobPageBytes, -1, BlobHTTPHeaders{}, nil, BlobAccessConditions{}, DefaultPremiumBlobAccessTier, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.Not(chk.IsNil))
-//}
+func (s *aztestsSuite) TestClearDiffPages(c *chk.C) {
+	bsu := getBSU()
+	container, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, container)
+
+	blob, _ := createNewPageBlob(c, container)
+
+	testSize := 2 * 1024
+	r := getReaderToRandomBytes(testSize)
+	offset, _, count := int64(0), int64(testSize-1), int64(testSize)
+	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
+	_, err := blob.UploadPages(context.Background(), r, &uploadPagesOptions)
+	c.Assert(err, chk.IsNil)
+
+	snapshotResp, err := blob.CreateSnapshot(context.Background(), nil)
+	c.Assert(err, chk.IsNil)
+
+	offset1, end1, count1 := int64(testSize), int64(2*testSize-1), int64(testSize)
+	uploadPagesOptions1 := UploadPagesOptions{Offset: &offset1, Count: &count1}
+	_, err = blob.UploadPages(context.Background(), getReaderToRandomBytes(2048), &uploadPagesOptions1)
+	c.Assert(err, chk.IsNil)
+
+	pageListResp, err := blob.GetPageRangesDiff(context.Background(), 0, 4096, *snapshotResp.Snapshot, nil)
+	c.Assert(err, chk.IsNil)
+	pageRangeResp := pageListResp.PageList.PageRange
+	c.Assert(pageRangeResp, chk.NotNil)
+	c.Assert(*pageRangeResp, chk.HasLen, 1)
+	c.Assert((*pageRangeResp)[0], chk.DeepEquals, PageRange{Start: &offset1, End: &end1})
+
+	clearResp, err := blob.ClearPages(context.Background(), 2048, 2048, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(clearResp.RawResponse.StatusCode, chk.Equals, 201)
+
+	pageListResp, err = blob.GetPageRangesDiff(context.Background(), 0, 4095, *snapshotResp.Snapshot, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(pageListResp.PageList.PageRange, chk.IsNil)
+}
+
+func waitForIncrementalCopy(c *chk.C, copyBlobClient PageBlobClient, blobCopyResponse *PageBlobCopyIncrementalResponse) *string {
+	status := *blobCopyResponse.CopyStatus
+	var getPropertiesAndMetadataResult BlobGetPropertiesResponse
+	// Wait for the copy to finish
+	start := time.Now()
+	for status != CopyStatusTypeSuccess {
+		getPropertiesAndMetadataResult, _ = copyBlobClient.GetProperties(ctx, nil)
+		status = *getPropertiesAndMetadataResult.CopyStatus
+		currentTime := time.Now()
+		if currentTime.Sub(start) >= time.Minute {
+			c.Fail()
+		}
+	}
+	return getPropertiesAndMetadataResult.DestinationSnapshot
+}
+
+func (s *aztestsSuite) TestIncrementalCopy(c *chk.C) {
+	bsu := getBSU()
+
+	container, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, container)
+	accessType := PublicAccessTypeBlob
+	setAccessPolicyOptions := SetAccessPolicyOptions{
+		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: &accessType},
+	}
+	_, err := container.SetAccessPolicy(context.Background(), setAccessPolicyOptions)
+	c.Assert(err, chk.IsNil)
+
+	srcBlob, _ := createNewPageBlob(c, container)
+	testSize := 1024
+	r := getReaderToRandomBytes(testSize)
+	offset, _, count := int64(0), int64(0)+int64(testSize-1), int64(testSize)
+	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
+	_, err = srcBlob.UploadPages(context.Background(), r, &uploadPagesOptions)
+	c.Assert(err, chk.IsNil)
+
+	snapshotResp, err := srcBlob.CreateSnapshot(context.Background(), nil)
+	c.Assert(err, chk.IsNil)
+
+	dstBlob := container.NewPageBlobClient(generateBlobName())
+
+	resp, err := dstBlob.StartCopyIncremental(context.Background(), srcBlob.URL(), *snapshotResp.Snapshot, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 202)
+	c.Assert(resp.LastModified, chk.NotNil)
+	c.Assert((*resp.LastModified).IsZero(), chk.Equals, false)
+	c.Assert(resp.ETag, chk.NotNil)
+	c.Assert(*resp.RequestID, chk.Not(chk.Equals), "")
+	c.Assert(*resp.Version, chk.Not(chk.Equals), "")
+	c.Assert(resp.Date, chk.NotNil)
+	c.Assert((*resp.Date).IsZero(), chk.Equals, false)
+	c.Assert(*resp.CopyID, chk.Not(chk.Equals), "")
+	c.Assert(*resp.CopyStatus, chk.Equals, CopyStatusTypePending)
+
+	waitForIncrementalCopy(c, dstBlob, &resp)
+}
+
+func (s *aztestsSuite) TestResizePageBlob(c *chk.C) {
+	bsu := getBSU()
+	container, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, container)
+
+	blob, _ := createNewPageBlob(c, container)
+	resp, err := blob.Resize(context.Background(), 2048, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 200)
+
+	resp, err = blob.Resize(context.Background(), 8192, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 200)
+
+	resp2, err := blob.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(*resp2.ContentLength, chk.Equals, int64(8192))
+}
+
+func (s *aztestsSuite) TestPageSequenceNumbers(c *chk.C) {
+	bsu := getBSU()
+	container, _ := createNewContainer(c, bsu)
+	blob, _ := createNewPageBlob(c, container)
+
+	defer deleteContainer(c, container)
+
+	sequenceNumber := int64(0)
+	actionType := SequenceNumberActionTypeIncrement
+	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+		BlobSequenceNumber: &sequenceNumber,
+		ActionType:         &actionType,
+	}
+	resp, err := blob.UpdateSequenceNumber(context.Background(), &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 200)
+
+	sequenceNumber = int64(7)
+	actionType = SequenceNumberActionTypeMax
+	updateSequenceNumberPageBlob = UpdateSequenceNumberPageBlob{
+		BlobSequenceNumber: &sequenceNumber,
+		ActionType:         &actionType,
+	}
+	resp, err = blob.UpdateSequenceNumber(context.Background(), &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 200)
+
+	sequenceNumber = int64(11)
+	actionType = SequenceNumberActionTypeUpdate
+	updateSequenceNumberPageBlob = UpdateSequenceNumberPageBlob{
+		BlobSequenceNumber: &sequenceNumber,
+		ActionType:         &actionType,
+	}
+	resp, err = blob.UpdateSequenceNumber(context.Background(), &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 200)
+}
+
+func (s *aztestsSuite) TestPutPagesWithMD5(c *chk.C) {
+	bsu := getBSU()
+	container, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, container)
+
+	blob, _ := createNewPageBlob(c, container)
+
+	// put page with valid MD5
+	testSize := 1024
+	readerToBody, body := getRandomDataAndReader(testSize)
+	offset, _, count := int64(0), int64(0)+int64(testSize-1), int64(testSize)
+	md5Value := md5.Sum(body)
+	contentMD5 := md5Value[:]
+	uploadPagesOptions := UploadPagesOptions{
+		Offset:                  &offset,
+		Count:                   &count,
+		TransactionalContentMd5: &contentMD5,
+	}
+
+	putResp, err := blob.UploadPages(context.Background(), readerToBody, &uploadPagesOptions)
+	c.Assert(err, chk.IsNil)
+	c.Assert(putResp.RawResponse.StatusCode, chk.Equals, 201)
+	c.Assert(putResp.LastModified, chk.NotNil)
+	c.Assert((*putResp.LastModified).IsZero(), chk.Equals, false)
+	c.Assert(putResp.ETag, chk.NotNil)
+	c.Assert(putResp.ContentMD5, chk.NotNil)
+	c.Assert(*putResp.ContentMD5, chk.DeepEquals, contentMD5)
+	c.Assert(*putResp.BlobSequenceNumber, chk.Equals, int64(0))
+	c.Assert(*putResp.RequestID, chk.NotNil)
+	c.Assert(*putResp.Version, chk.NotNil)
+	c.Assert(putResp.Date, chk.NotNil)
+	c.Assert((*putResp.Date).IsZero(), chk.Equals, false)
+
+	// put page with bad MD5
+	readerToBody, body = getRandomDataAndReader(1024)
+	_, badMD5 := getRandomDataAndReader(16)
+	basContentMD5 := badMD5[:]
+	uploadPagesOptions = UploadPagesOptions{
+		Offset:                  &offset,
+		Count:                   &count,
+		TransactionalContentMd5: &basContentMD5,
+	}
+	putResp, err = blob.UploadPages(context.Background(), readerToBody, &uploadPagesOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeMd5Mismatch)
+}
+
+func (s *aztestsSuite) TestBlobCreatePageSizeInvalid(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := getPageBlobClient(c, containerURL)
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := CreatePageBlobOptions{
+		BlobSequenceNumber: &sequenceNumber,
+	}
+	_, err := blobURL.Create(ctx, 1, &createPageBlobOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeInvalidHeaderValue)
+}
+
+func (s *aztestsSuite) TestBlobCreatePageSequenceInvalid(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := getPageBlobClient(c, containerURL)
+
+	sequenceNumber := int64(-1)
+	createPageBlobOptions := CreatePageBlobOptions{
+		BlobSequenceNumber: &sequenceNumber,
+	}
+	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	c.Assert(err, chk.NotNil)
+}
+
 //
 //func (s *aztestsSuite) TestBlobCreatePageMetadataNonEmpty(c *chk.C) {
 //	bsu := getBSU()
@@ -1523,22 +1610,7 @@ func (s *aztestsSuite) TestUploadPagesFromURLWithMD5(c *chk.C) {
 //	validateStorageError(c, err, ServiceCodeConditionNotMet)
 //}
 //
-//func waitForIncrementalCopy(c *chk.C, copyBlobURL PageBlobURL, blobCopyResponse *PageBlobCopyIncrementalResponse) string {
-//	status := blobCopyResponse.CopyStatus()
-//	var getPropertiesAndMetadataResult *BlobGetPropertiesResponse
-//	// Wait for the copy to finish
-//	start := time.Now()
-//	for status != CopyStatusSuccess {
-//		getPropertiesAndMetadataResult, _ = copyBlobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//		status = getPropertiesAndMetadataResult.CopyStatus()
-//		currentTime := time.Now()
-//		if currentTime.Sub(start) >= time.Minute {
-//			c.Fail()
-//		}
-//	}
-//	return getPropertiesAndMetadataResult.DestinationSnapshot()
-//}
-//
+
 //func setupStartIncrementalCopyTest(c *chk.C) (containerURL ContainerURL, blobURL PageBlobURL, copyBlobURL PageBlobURL, snapshot string) {
 //	bsu := getBSU()
 //	containerURL, _ = createNewContainer(c, bsu)

@@ -337,6 +337,7 @@ func (client SourceControlConfigurationsClient) List(ctx context.Context, resour
 	}
 	if result.sccl.hasNextLink() && result.sccl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -400,7 +401,6 @@ func (client SourceControlConfigurationsClient) listNextResults(ctx context.Cont
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kubernetesconfiguration.SourceControlConfigurationsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

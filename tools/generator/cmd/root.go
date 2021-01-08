@@ -9,10 +9,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/changelog"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/pipeline"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/ioext"
 	"github.com/spf13/cobra"
 )
@@ -73,13 +73,13 @@ func execute(inputPath, outputPath string, flags Flags) error {
 	defer eraseBackup(backupRoot)
 	log.Printf("Finished backuping to '%s'", backupRoot)
 	ctx := generateContext{
-		sdkRoot:    normalizePath(cwd),
+		sdkRoot:    utils.NormalizePath(cwd),
 		backupRoot: backupRoot,
 		optionPath: flags.OptionPath,
 	}
 	output, err := ctx.generate(input)
 	if err != nil {
-		return fmt.Errorf("cannot generate: %+v", err)
+		return err
 	}
 	log.Printf("Output generated: \n%s", output.String())
 	log.Printf("Writing output to file '%s'...", outputPath)
@@ -147,36 +147,18 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 		if err := g.generate(); err != nil {
 			return nil, err
 		}
-		// get the metadata map
-		m := autorest.NewMetadataProcessorFromLocation(g.metadataOutput)
-		metadataMap, err := m.Process()
+		m := metadataContext{
+			sdkRoot: ctx.sdkRoot,
+			readme:  readme,
+		}
+		packages, err := m.processMetadata(g.metadataOutput)
 		if err != nil {
 			return nil, err
-		}
-		var packages []string
-		for tag, metadata := range metadataMap {
-			// first validate the output folder is valid
-			outputFolder := normalizePath(filepath.Clean(metadata.PackagePath()))
-			if !strings.HasPrefix(outputFolder, ctx.sdkRoot) {
-				// TODO -- we might need to record this result, and throw an error when the script ends, because this usually means the output-folder is not configured correctly
-				log.Printf("[WARNING] Output folder '%s' of tag '%s' is not under root of azure-sdk-for-go, skipping", outputFolder, tag)
-				continue
-			}
-			// first format the package
-			if err := autorest.FormatPackage(outputFolder); err != nil {
-				return nil, err
-			}
-			// get the package path - which is a relative path to the sdk root
-			packagePath, err := filepath.Rel(ctx.sdkRoot, outputFolder)
-			if err != nil {
-				return nil, err
-			}
-			packages = append(packages, packagePath)
 		}
 		log.Printf("Packages changed: %+v", packages)
 		// iterate over the changed packages
 		for _, p := range packages {
-			p = normalizePath(p)
+			p = utils.NormalizePath(p)
 			log.Printf("Getting package result for package '%s'", p)
 			exporter := changelog.Exporter{
 				SDKRoot:    ctx.sdkRoot,
@@ -210,10 +192,6 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 	return &pipeline.GenerateOutput{
 		Packages: results,
 	}, nil
-}
-
-func normalizePath(path string) string {
-	return strings.ReplaceAll(path, "\\", "/")
 }
 
 func getPackageIdentifier(pkg string) string {

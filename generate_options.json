@@ -6,7 +6,6 @@
     "--go-sdk-folder=.",
     "--multiapi",
     "--use-onever",
-    "--preview-chk",
     "--version=V2"
   ]
 }

@@ -81,7 +81,7 @@ func (client DiskEncryptionSetsClient) CreateOrUpdate(ctx context.Context, resou
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.DiskEncryptionSetsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.DiskEncryptionSetsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -119,7 +119,29 @@ func (client DiskEncryptionSetsClient) CreateOrUpdateSender(req *http.Request) (
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DiskEncryptionSetsClient) (desVar DiskEncryptionSet, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.DiskEncryptionSetsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("compute.DiskEncryptionSetsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if desVar.Response.Response, err = future.GetResult(sender); err == nil && desVar.Response.Response.StatusCode != http.StatusNoContent {
+			desVar, err = client.CreateOrUpdateResponder(desVar.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "compute.DiskEncryptionSetsCreateOrUpdateFuture", "Result", desVar.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -160,7 +182,7 @@ func (client DiskEncryptionSetsClient) Delete(ctx context.Context, resourceGroup
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.DiskEncryptionSetsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.DiskEncryptionSetsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -196,7 +218,23 @@ func (client DiskEncryptionSetsClient) DeleteSender(req *http.Request) (future D
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DiskEncryptionSetsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.DiskEncryptionSetsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("compute.DiskEncryptionSetsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -322,6 +360,7 @@ func (client DiskEncryptionSetsClient) List(ctx context.Context) (result DiskEnc
 	}
 	if result.desl.hasNextLink() && result.desl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -381,7 +420,6 @@ func (client DiskEncryptionSetsClient) listNextResults(ctx context.Context, last
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DiskEncryptionSetsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -440,6 +478,7 @@ func (client DiskEncryptionSetsClient) ListAssociatedResources(ctx context.Conte
 	}
 	if result.rul.hasNextLink() && result.rul.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -501,7 +540,6 @@ func (client DiskEncryptionSetsClient) listAssociatedResourcesNextResults(ctx co
 	result, err = client.ListAssociatedResourcesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DiskEncryptionSetsClient", "listAssociatedResourcesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -557,6 +595,7 @@ func (client DiskEncryptionSetsClient) ListByResourceGroup(ctx context.Context, 
 	}
 	if result.desl.hasNextLink() && result.desl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -617,7 +656,6 @@ func (client DiskEncryptionSetsClient) listByResourceGroupNextResults(ctx contex
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DiskEncryptionSetsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -665,7 +703,7 @@ func (client DiskEncryptionSetsClient) Update(ctx context.Context, resourceGroup
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.DiskEncryptionSetsClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.DiskEncryptionSetsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -703,7 +741,29 @@ func (client DiskEncryptionSetsClient) UpdateSender(req *http.Request) (future D
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DiskEncryptionSetsClient) (desVar DiskEncryptionSet, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.DiskEncryptionSetsUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("compute.DiskEncryptionSetsUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if desVar.Response.Response, err = future.GetResult(sender); err == nil && desVar.Response.Response.StatusCode != http.StatusNoContent {
+			desVar, err = client.UpdateResponder(desVar.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "compute.DiskEncryptionSetsUpdateFuture", "Result", desVar.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

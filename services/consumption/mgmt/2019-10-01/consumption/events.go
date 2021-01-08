@@ -80,6 +80,7 @@ func (client EventsClient) List(ctx context.Context, billingAccountID string, bi
 	}
 	if result.e.hasNextLink() && result.e.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -142,7 +143,6 @@ func (client EventsClient) listNextResults(ctx context.Context, lastResults Even
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.EventsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

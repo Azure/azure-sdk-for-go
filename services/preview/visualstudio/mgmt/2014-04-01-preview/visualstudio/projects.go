@@ -74,7 +74,7 @@ func (client ProjectsClient) Create(ctx context.Context, body ProjectResource, r
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "visualstudio.ProjectsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "visualstudio.ProjectsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -116,7 +116,29 @@ func (client ProjectsClient) CreateSender(req *http.Request) (future ProjectsCre
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ProjectsClient) (pr ProjectResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "visualstudio.ProjectsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("visualstudio.ProjectsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if pr.Response.Response, err = future.GetResult(sender); err == nil && pr.Response.Response.StatusCode != http.StatusNoContent {
+			pr, err = client.CreateResponder(pr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "visualstudio.ProjectsCreateFuture", "Result", pr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

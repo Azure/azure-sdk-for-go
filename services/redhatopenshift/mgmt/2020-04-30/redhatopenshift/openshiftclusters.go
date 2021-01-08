@@ -77,7 +77,7 @@ func (client OpenShiftClustersClient) CreateOrUpdate(ctx context.Context, resour
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -115,7 +115,29 @@ func (client OpenShiftClustersClient) CreateOrUpdateSender(req *http.Request) (f
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client OpenShiftClustersClient) (osc OpenShiftCluster, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("redhatopenshift.OpenShiftClustersCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if osc.Response.Response, err = future.GetResult(sender); err == nil && osc.Response.Response.StatusCode != http.StatusNoContent {
+			osc, err = client.CreateOrUpdateResponder(osc.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersCreateOrUpdateFuture", "Result", osc.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -164,7 +186,7 @@ func (client OpenShiftClustersClient) Delete(ctx context.Context, resourceGroupN
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -200,7 +222,23 @@ func (client OpenShiftClustersClient) DeleteSender(req *http.Request) (future Op
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client OpenShiftClustersClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("redhatopenshift.OpenShiftClustersDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -340,6 +378,7 @@ func (client OpenShiftClustersClient) List(ctx context.Context) (result OpenShif
 	}
 	if result.oscl.hasNextLink() && result.oscl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -399,7 +438,6 @@ func (client OpenShiftClustersClient) listNextResults(ctx context.Context, lastR
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -465,6 +503,7 @@ func (client OpenShiftClustersClient) ListByResourceGroup(ctx context.Context, r
 	}
 	if result.oscl.hasNextLink() && result.oscl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -525,7 +564,6 @@ func (client OpenShiftClustersClient) listByResourceGroupNextResults(ctx context
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -666,7 +704,7 @@ func (client OpenShiftClustersClient) Update(ctx context.Context, resourceGroupN
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -704,7 +742,29 @@ func (client OpenShiftClustersClient) UpdateSender(req *http.Request) (future Op
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client OpenShiftClustersClient) (osc OpenShiftCluster, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("redhatopenshift.OpenShiftClustersUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if osc.Response.Response, err = future.GetResult(sender); err == nil && osc.Response.Response.StatusCode != http.StatusNoContent {
+			osc, err = client.UpdateResponder(osc.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersUpdateFuture", "Result", osc.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

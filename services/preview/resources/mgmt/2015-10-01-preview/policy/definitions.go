@@ -302,6 +302,7 @@ func (client DefinitionsClient) List(ctx context.Context, filter string) (result
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -364,7 +365,6 @@ func (client DefinitionsClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

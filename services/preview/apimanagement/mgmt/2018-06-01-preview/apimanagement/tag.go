@@ -1663,6 +1663,7 @@ func (client TagClient) ListByAPI(ctx context.Context, resourceGroupName string,
 	}
 	if result.tc.hasNextLink() && result.tc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1734,7 +1735,6 @@ func (client TagClient) listByAPINextResults(ctx context.Context, lastResults Ta
 	result, err = client.ListByAPIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "listByAPINextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1824,6 +1824,7 @@ func (client TagClient) ListByOperation(ctx context.Context, resourceGroupName s
 	}
 	if result.tc.hasNextLink() && result.tc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1896,7 +1897,6 @@ func (client TagClient) listByOperationNextResults(ctx context.Context, lastResu
 	result, err = client.ListByOperationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "listByOperationNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1979,6 +1979,7 @@ func (client TagClient) ListByProduct(ctx context.Context, resourceGroupName str
 	}
 	if result.tc.hasNextLink() && result.tc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2050,7 +2051,6 @@ func (client TagClient) listByProductNextResults(ctx context.Context, lastResult
 	result, err = client.ListByProductResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "listByProductNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2129,6 +2129,7 @@ func (client TagClient) ListByService(ctx context.Context, resourceGroupName str
 	}
 	if result.tc.hasNextLink() && result.tc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2202,7 +2203,6 @@ func (client TagClient) listByServiceNextResults(ctx context.Context, lastResult
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "listByServiceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

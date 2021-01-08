@@ -139,30 +139,10 @@ type AccountBaseProperties struct {
 // AccountCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type AccountCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *AccountCreateFuture) Result(client AccountClient) (a Account, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.AccountCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("batch.AccountCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
-		a, err = client.CreateResponder(a.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "batch.AccountCreateFuture", "Result", a.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AccountClient) (Account, error)
 }
 
 // AccountCreateParameters parameters supplied to the Create operation.
@@ -235,24 +215,10 @@ func (acp *AccountCreateParameters) UnmarshalJSON(body []byte) error {
 // AccountDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type AccountDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *AccountDeleteFuture) Result(client AccountClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.AccountDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("batch.AccountDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AccountClient) (autorest.Response, error)
 }
 
 // AccountKeys a set of Azure Batch account keys.

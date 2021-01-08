@@ -479,6 +479,7 @@ func (client VaultsClient) List(ctx context.Context, top *int32) (result Resourc
 	}
 	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -542,7 +543,6 @@ func (client VaultsClient) listNextResults(ctx context.Context, lastResults Reso
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -600,6 +600,7 @@ func (client VaultsClient) ListByResourceGroup(ctx context.Context, resourceGrou
 	}
 	if result.vlr.hasNextLink() && result.vlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -663,7 +664,6 @@ func (client VaultsClient) listByResourceGroupNextResults(ctx context.Context, l
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -719,6 +719,7 @@ func (client VaultsClient) ListBySubscription(ctx context.Context, top *int32) (
 	}
 	if result.vlr.hasNextLink() && result.vlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -781,7 +782,6 @@ func (client VaultsClient) listBySubscriptionNextResults(ctx context.Context, la
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -835,6 +835,7 @@ func (client VaultsClient) ListDeleted(ctx context.Context) (result DeletedVault
 	}
 	if result.dvlr.hasNextLink() && result.dvlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -894,7 +895,6 @@ func (client VaultsClient) listDeletedNextResults(ctx context.Context, lastResul
 	result, err = client.ListDeletedResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "listDeletedNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -938,7 +938,7 @@ func (client VaultsClient) PurgeDeleted(ctx context.Context, vaultName string, l
 
 	result, err = client.PurgeDeletedSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "PurgeDeleted", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "PurgeDeleted", nil, "Failure sending request")
 		return
 	}
 
@@ -974,7 +974,23 @@ func (client VaultsClient) PurgeDeletedSender(req *http.Request) (future VaultsP
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VaultsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "keyvault.VaultsPurgeDeletedFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("keyvault.VaultsPurgeDeletedFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

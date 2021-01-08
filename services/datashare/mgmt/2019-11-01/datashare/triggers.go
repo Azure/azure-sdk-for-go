@@ -67,7 +67,7 @@ func (client TriggersClient) Create(ctx context.Context, resourceGroupName strin
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datashare.TriggersClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "datashare.TriggersClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -107,7 +107,29 @@ func (client TriggersClient) CreateSender(req *http.Request) (future TriggersCre
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client TriggersClient) (tm TriggerModel, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "datashare.TriggersCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("datashare.TriggersCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if tm.Response.Response, err = future.GetResult(sender); err == nil && tm.Response.Response.StatusCode != http.StatusNoContent {
+			tm, err = client.CreateResponder(tm.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "datashare.TriggersCreateFuture", "Result", tm.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -148,7 +170,7 @@ func (client TriggersClient) Delete(ctx context.Context, resourceGroupName strin
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datashare.TriggersClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "datashare.TriggersClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -186,7 +208,29 @@ func (client TriggersClient) DeleteSender(req *http.Request) (future TriggersDel
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client TriggersClient) (or OperationResponse, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "datashare.TriggersDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("datashare.TriggersDeleteFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if or.Response.Response, err = future.GetResult(sender); err == nil && or.Response.Response.StatusCode != http.StatusNoContent {
+			or, err = client.DeleteResponder(or.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "datashare.TriggersDeleteFuture", "Result", or.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -320,6 +364,7 @@ func (client TriggersClient) ListByShareSubscription(ctx context.Context, resour
 	}
 	if result.tl.hasNextLink() && result.tl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -385,7 +430,6 @@ func (client TriggersClient) listByShareSubscriptionNextResults(ctx context.Cont
 	result, err = client.ListByShareSubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datashare.TriggersClient", "listByShareSubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

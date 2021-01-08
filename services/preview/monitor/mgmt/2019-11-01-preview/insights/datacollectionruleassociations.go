@@ -351,6 +351,7 @@ func (client DataCollectionRuleAssociationsClient) ListByResource(ctx context.Co
 	}
 	if result.dcraporlr.hasNextLink() && result.dcraporlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -410,7 +411,6 @@ func (client DataCollectionRuleAssociationsClient) listByResourceNextResults(ctx
 	result, err = client.ListByResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.DataCollectionRuleAssociationsClient", "listByResourceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -481,6 +481,7 @@ func (client DataCollectionRuleAssociationsClient) ListByRule(ctx context.Contex
 	}
 	if result.dcraporlr.hasNextLink() && result.dcraporlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -542,7 +543,6 @@ func (client DataCollectionRuleAssociationsClient) listByRuleNextResults(ctx con
 	result, err = client.ListByRuleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.DataCollectionRuleAssociationsClient", "listByRuleNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

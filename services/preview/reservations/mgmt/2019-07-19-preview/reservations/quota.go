@@ -76,7 +76,7 @@ func (client QuotaClient) CreateOrUpdate(ctx context.Context, subscriptionID str
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.QuotaClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "reservations.QuotaClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -115,7 +115,29 @@ func (client QuotaClient) CreateOrUpdateSender(req *http.Request) (future QuotaC
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client QuotaClient) (so SetObject, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "reservations.QuotaCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("reservations.QuotaCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+			so, err = client.CreateOrUpdateResponder(so.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "reservations.QuotaCreateOrUpdateFuture", "Result", so.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -250,6 +272,7 @@ func (client QuotaClient) List(ctx context.Context, subscriptionID string, provi
 	}
 	if result.ql.hasNextLink() && result.ql.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -311,7 +334,6 @@ func (client QuotaClient) listNextResults(ctx context.Context, lastResults Quota
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.QuotaClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -367,7 +389,7 @@ func (client QuotaClient) Update(ctx context.Context, subscriptionID string, pro
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.QuotaClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "reservations.QuotaClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -406,7 +428,29 @@ func (client QuotaClient) UpdateSender(req *http.Request) (future QuotaUpdateFut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client QuotaClient) (so SetObject, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "reservations.QuotaUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("reservations.QuotaUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+			so, err = client.UpdateResponder(so.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "reservations.QuotaUpdateFuture", "Result", so.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

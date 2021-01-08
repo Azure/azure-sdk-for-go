@@ -80,7 +80,7 @@ func (client ChapSettingsClient) CreateOrUpdate(ctx context.Context, deviceName 
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.ChapSettingsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.ChapSettingsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -120,7 +120,29 @@ func (client ChapSettingsClient) CreateOrUpdateSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ChapSettingsClient) (cs ChapSettings, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.ChapSettingsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.ChapSettingsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if cs.Response.Response, err = future.GetResult(sender); err == nil && cs.Response.Response.StatusCode != http.StatusNoContent {
+			cs, err = client.CreateOrUpdateResponder(cs.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "storsimple.ChapSettingsCreateOrUpdateFuture", "Result", cs.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -168,7 +190,7 @@ func (client ChapSettingsClient) Delete(ctx context.Context, deviceName string, 
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.ChapSettingsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.ChapSettingsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -206,7 +228,23 @@ func (client ChapSettingsClient) DeleteSender(req *http.Request) (future ChapSet
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ChapSettingsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.ChapSettingsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.ChapSettingsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

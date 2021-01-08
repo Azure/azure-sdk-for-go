@@ -372,30 +372,10 @@ func (mak MultipleActivationKeyProperties) MarshalJSON() ([]byte, error) {
 // MultipleActivationKeysCreateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type MultipleActivationKeysCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MultipleActivationKeysCreateFuture) Result(client MultipleActivationKeysClient) (mak MultipleActivationKey, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("windowsesu.MultipleActivationKeysCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if mak.Response.Response, err = future.GetResult(sender); err == nil && mak.Response.Response.StatusCode != http.StatusNoContent {
-		mak, err = client.CreateResponder(mak.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysCreateFuture", "Result", mak.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MultipleActivationKeysClient) (MultipleActivationKey, error)
 }
 
 // MultipleActivationKeyUpdate MAK key details.

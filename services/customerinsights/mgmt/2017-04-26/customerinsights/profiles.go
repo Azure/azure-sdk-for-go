@@ -77,7 +77,7 @@ func (client ProfilesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.ProfilesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ProfilesClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -116,7 +116,29 @@ func (client ProfilesClient) CreateOrUpdateSender(req *http.Request) (future Pro
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ProfilesClient) (prf ProfileResourceFormat, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.ProfilesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("customerinsights.ProfilesCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if prf.Response.Response, err = future.GetResult(sender); err == nil && prf.Response.Response.StatusCode != http.StatusNoContent {
+			prf, err = client.CreateOrUpdateResponder(prf.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "customerinsights.ProfilesCreateOrUpdateFuture", "Result", prf.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -157,7 +179,7 @@ func (client ProfilesClient) Delete(ctx context.Context, resourceGroupName strin
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.ProfilesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ProfilesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -199,7 +221,23 @@ func (client ProfilesClient) DeleteSender(req *http.Request) (future ProfilesDel
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ProfilesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.ProfilesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("customerinsights.ProfilesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -414,6 +452,7 @@ func (client ProfilesClient) ListByHub(ctx context.Context, resourceGroupName st
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -480,7 +519,6 @@ func (client ProfilesClient) listByHubNextResults(ctx context.Context, lastResul
 	result, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ProfilesClient", "listByHubNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

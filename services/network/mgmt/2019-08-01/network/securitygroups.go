@@ -65,7 +65,7 @@ func (client SecurityGroupsClient) CreateOrUpdate(ctx context.Context, resourceG
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.SecurityGroupsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.SecurityGroupsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -103,7 +103,29 @@ func (client SecurityGroupsClient) CreateOrUpdateSender(req *http.Request) (futu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SecurityGroupsClient) (sg SecurityGroup, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.SecurityGroupsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("network.SecurityGroupsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if sg.Response.Response, err = future.GetResult(sender); err == nil && sg.Response.Response.StatusCode != http.StatusNoContent {
+			sg, err = client.CreateOrUpdateResponder(sg.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "network.SecurityGroupsCreateOrUpdateFuture", "Result", sg.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -142,7 +164,7 @@ func (client SecurityGroupsClient) Delete(ctx context.Context, resourceGroupName
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.SecurityGroupsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.SecurityGroupsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -178,7 +200,23 @@ func (client SecurityGroupsClient) DeleteSender(req *http.Request) (future Secur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SecurityGroupsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.SecurityGroupsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("network.SecurityGroupsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -308,6 +346,7 @@ func (client SecurityGroupsClient) List(ctx context.Context, resourceGroupName s
 	}
 	if result.sglr.hasNextLink() && result.sglr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -368,7 +407,6 @@ func (client SecurityGroupsClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.SecurityGroupsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -422,6 +460,7 @@ func (client SecurityGroupsClient) ListAll(ctx context.Context) (result Security
 	}
 	if result.sglr.hasNextLink() && result.sglr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -481,7 +520,6 @@ func (client SecurityGroupsClient) listAllNextResults(ctx context.Context, lastR
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.SecurityGroupsClient", "listAllNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -526,7 +564,7 @@ func (client SecurityGroupsClient) UpdateTags(ctx context.Context, resourceGroup
 
 	result, err = client.UpdateTagsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.SecurityGroupsClient", "UpdateTags", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.SecurityGroupsClient", "UpdateTags", nil, "Failure sending request")
 		return
 	}
 
@@ -564,7 +602,29 @@ func (client SecurityGroupsClient) UpdateTagsSender(req *http.Request) (future S
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SecurityGroupsClient) (sg SecurityGroup, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.SecurityGroupsUpdateTagsFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("network.SecurityGroupsUpdateTagsFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if sg.Response.Response, err = future.GetResult(sender); err == nil && sg.Response.Response.StatusCode != http.StatusNoContent {
+			sg, err = client.UpdateTagsResponder(sg.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "network.SecurityGroupsUpdateTagsFuture", "Result", sg.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

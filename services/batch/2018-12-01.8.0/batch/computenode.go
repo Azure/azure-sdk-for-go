@@ -855,6 +855,7 @@ func (client ComputeNodeClient) List(ctx context.Context, poolID string, filter 
 	}
 	if result.cnlr.hasNextLink() && result.cnlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -949,7 +950,6 @@ func (client ComputeNodeClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

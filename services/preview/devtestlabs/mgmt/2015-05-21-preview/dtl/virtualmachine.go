@@ -65,7 +65,7 @@ func (client VirtualMachineClient) ApplyArtifacts(ctx context.Context, resourceG
 
 	result, err = client.ApplyArtifactsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineClient", "ApplyArtifacts", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineClient", "ApplyArtifacts", nil, "Failure sending request")
 		return
 	}
 
@@ -104,7 +104,23 @@ func (client VirtualMachineClient) ApplyArtifactsSender(req *http.Request) (futu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachineClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "dtl.VirtualMachineApplyArtifactsFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("dtl.VirtualMachineApplyArtifactsFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -143,7 +159,7 @@ func (client VirtualMachineClient) CreateOrUpdateResource(ctx context.Context, r
 
 	result, err = client.CreateOrUpdateResourceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineClient", "CreateOrUpdateResource", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineClient", "CreateOrUpdateResource", nil, "Failure sending request")
 		return
 	}
 
@@ -182,7 +198,29 @@ func (client VirtualMachineClient) CreateOrUpdateResourceSender(req *http.Reques
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachineClient) (lvm LabVirtualMachine, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "dtl.VirtualMachineCreateOrUpdateResourceFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("dtl.VirtualMachineCreateOrUpdateResourceFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if lvm.Response.Response, err = future.GetResult(sender); err == nil && lvm.Response.Response.StatusCode != http.StatusNoContent {
+			lvm, err = client.CreateOrUpdateResourceResponder(lvm.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "dtl.VirtualMachineCreateOrUpdateResourceFuture", "Result", lvm.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -222,7 +260,7 @@ func (client VirtualMachineClient) DeleteResource(ctx context.Context, resourceG
 
 	result, err = client.DeleteResourceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineClient", "DeleteResource", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineClient", "DeleteResource", nil, "Failure sending request")
 		return
 	}
 
@@ -259,7 +297,23 @@ func (client VirtualMachineClient) DeleteResourceSender(req *http.Request) (futu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachineClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "dtl.VirtualMachineDeleteResourceFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("dtl.VirtualMachineDeleteResourceFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -389,6 +443,7 @@ func (client VirtualMachineClient) List(ctx context.Context, resourceGroupName s
 	}
 	if result.rwclvm.hasNextLink() && result.rwclvm.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -459,7 +514,6 @@ func (client VirtualMachineClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -584,7 +638,7 @@ func (client VirtualMachineClient) Start(ctx context.Context, resourceGroupName 
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineClient", "Start", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineClient", "Start", nil, "Failure sending request")
 		return
 	}
 
@@ -621,7 +675,23 @@ func (client VirtualMachineClient) StartSender(req *http.Request) (future Virtua
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachineClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "dtl.VirtualMachineStartFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("dtl.VirtualMachineStartFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -660,7 +730,7 @@ func (client VirtualMachineClient) Stop(ctx context.Context, resourceGroupName s
 
 	result, err = client.StopSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineClient", "Stop", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineClient", "Stop", nil, "Failure sending request")
 		return
 	}
 
@@ -697,7 +767,23 @@ func (client VirtualMachineClient) StopSender(req *http.Request) (future Virtual
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachineClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "dtl.VirtualMachineStopFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("dtl.VirtualMachineStopFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

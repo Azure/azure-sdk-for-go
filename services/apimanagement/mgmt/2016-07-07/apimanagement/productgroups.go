@@ -200,6 +200,7 @@ func (client ProductGroupsClient) ListByProduct(ctx context.Context, resourceGro
 	}
 	if result.gc.hasNextLink() && result.gc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -271,7 +272,6 @@ func (client ProductGroupsClient) listByProductNextResults(ctx context.Context, 
 	result, err = client.ListByProductResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductGroupsClient", "listByProductNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

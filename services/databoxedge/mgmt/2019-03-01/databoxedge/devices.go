@@ -72,7 +72,7 @@ func (client DevicesClient) CreateOrUpdate(ctx context.Context, deviceName strin
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -110,7 +110,29 @@ func (client DevicesClient) CreateOrUpdateSender(req *http.Request) (future Devi
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DevicesClient) (d Device, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "databoxedge.DevicesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("databoxedge.DevicesCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
+			d, err = client.CreateOrUpdateResponder(d.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "databoxedge.DevicesCreateOrUpdateFuture", "Result", d.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -159,7 +181,7 @@ func (client DevicesClient) CreateOrUpdateSecuritySettings(ctx context.Context, 
 
 	result, err = client.CreateOrUpdateSecuritySettingsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "CreateOrUpdateSecuritySettings", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "CreateOrUpdateSecuritySettings", nil, "Failure sending request")
 		return
 	}
 
@@ -197,7 +219,23 @@ func (client DevicesClient) CreateOrUpdateSecuritySettingsSender(req *http.Reque
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DevicesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "databoxedge.DevicesCreateOrUpdateSecuritySettingsFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("databoxedge.DevicesCreateOrUpdateSecuritySettingsFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -235,7 +273,7 @@ func (client DevicesClient) Delete(ctx context.Context, deviceName string, resou
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -271,7 +309,23 @@ func (client DevicesClient) DeleteSender(req *http.Request) (future DevicesDelet
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DevicesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "databoxedge.DevicesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("databoxedge.DevicesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -309,7 +363,7 @@ func (client DevicesClient) DownloadUpdates(ctx context.Context, deviceName stri
 
 	result, err = client.DownloadUpdatesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "DownloadUpdates", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "DownloadUpdates", nil, "Failure sending request")
 		return
 	}
 
@@ -345,7 +399,23 @@ func (client DevicesClient) DownloadUpdatesSender(req *http.Request) (future Dev
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DevicesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "databoxedge.DevicesDownloadUpdatesFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("databoxedge.DevicesDownloadUpdatesFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -687,7 +757,7 @@ func (client DevicesClient) InstallUpdates(ctx context.Context, deviceName strin
 
 	result, err = client.InstallUpdatesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "InstallUpdates", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "InstallUpdates", nil, "Failure sending request")
 		return
 	}
 
@@ -723,7 +793,23 @@ func (client DevicesClient) InstallUpdatesSender(req *http.Request) (future Devi
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DevicesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "databoxedge.DevicesInstallUpdatesFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("databoxedge.DevicesInstallUpdatesFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -775,6 +861,7 @@ func (client DevicesClient) ListByResourceGroup(ctx context.Context, resourceGro
 	}
 	if result.dl.hasNextLink() && result.dl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -838,7 +925,6 @@ func (client DevicesClient) listByResourceGroupNextResults(ctx context.Context, 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -895,6 +981,7 @@ func (client DevicesClient) ListBySubscription(ctx context.Context, expand strin
 	}
 	if result.dl.hasNextLink() && result.dl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -957,7 +1044,6 @@ func (client DevicesClient) listBySubscriptionNextResults(ctx context.Context, l
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1001,7 +1087,7 @@ func (client DevicesClient) ScanForUpdates(ctx context.Context, deviceName strin
 
 	result, err = client.ScanForUpdatesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "ScanForUpdates", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "ScanForUpdates", nil, "Failure sending request")
 		return
 	}
 
@@ -1037,7 +1123,23 @@ func (client DevicesClient) ScanForUpdatesSender(req *http.Request) (future Devi
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DevicesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "databoxedge.DevicesScanForUpdatesFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("databoxedge.DevicesScanForUpdatesFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

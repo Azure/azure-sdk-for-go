@@ -166,6 +166,7 @@ func (client VirtualMachineRunCommandsClient) List(ctx context.Context, location
 	}
 	if result.rclr.hasNextLink() && result.rclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -226,7 +227,6 @@ func (client VirtualMachineRunCommandsClient) listNextResults(ctx context.Contex
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineRunCommandsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -151,6 +151,7 @@ func (client OperationsClient) List(ctx context.Context) (result AvailableOperat
 	}
 	if result.aolr.hasNextLink() && result.aolr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -206,7 +207,6 @@ func (client OperationsClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.OperationsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

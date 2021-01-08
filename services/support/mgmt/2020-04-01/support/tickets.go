@@ -180,7 +180,7 @@ func (client TicketsClient) Create(ctx context.Context, supportTicketName string
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "support.TicketsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "support.TicketsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -220,7 +220,29 @@ func (client TicketsClient) CreateSender(req *http.Request) (future TicketsCreat
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client TicketsClient) (td TicketDetails, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "support.TicketsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("support.TicketsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if td.Response.Response, err = future.GetResult(sender); err == nil && td.Response.Response.StatusCode != http.StatusNoContent {
+			td, err = client.CreateResponder(td.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "support.TicketsCreateFuture", "Result", td.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -353,6 +375,7 @@ func (client TicketsClient) List(ctx context.Context, top *int32, filter string)
 	}
 	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -418,7 +441,6 @@ func (client TicketsClient) listNextResults(ctx context.Context, lastResults Tic
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "support.TicketsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

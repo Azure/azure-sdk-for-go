@@ -332,6 +332,7 @@ func (client RegistrationAssignmentsClient) List(ctx context.Context, scope stri
 	}
 	if result.ral.hasNextLink() && result.ral.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -393,7 +394,6 @@ func (client RegistrationAssignmentsClient) listNextResults(ctx context.Context,
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedservices.RegistrationAssignmentsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

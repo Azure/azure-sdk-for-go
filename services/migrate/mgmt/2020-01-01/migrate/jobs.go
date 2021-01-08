@@ -79,6 +79,7 @@ func (client JobsClient) GetAllJobsInSite(ctx context.Context, subscriptionID st
 	}
 	if result.vmjc.hasNextLink() && result.vmjc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -139,7 +140,6 @@ func (client JobsClient) getAllJobsInSiteNextResults(ctx context.Context, lastRe
 	result, err = client.GetAllJobsInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.JobsClient", "getAllJobsInSiteNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

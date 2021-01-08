@@ -78,7 +78,7 @@ func (client BigDataPoolsClient) CreateOrUpdate(ctx context.Context, resourceGro
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.BigDataPoolsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.BigDataPoolsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -122,7 +122,29 @@ func (client BigDataPoolsClient) CreateOrUpdateSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client BigDataPoolsClient) (bdpri BigDataPoolResourceInfo, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "synapse.BigDataPoolsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("synapse.BigDataPoolsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if bdpri.Response.Response, err = future.GetResult(sender); err == nil && bdpri.Response.Response.StatusCode != http.StatusNoContent {
+			bdpri, err = client.CreateOrUpdateResponder(bdpri.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "synapse.BigDataPoolsCreateOrUpdateFuture", "Result", bdpri.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -172,7 +194,7 @@ func (client BigDataPoolsClient) Delete(ctx context.Context, resourceGroupName s
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.BigDataPoolsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.BigDataPoolsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -209,7 +231,29 @@ func (client BigDataPoolsClient) DeleteSender(req *http.Request) (future BigData
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client BigDataPoolsClient) (so SetObject, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "synapse.BigDataPoolsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("synapse.BigDataPoolsDeleteFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+			so, err = client.DeleteResponder(so.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "synapse.BigDataPoolsDeleteFuture", "Result", so.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

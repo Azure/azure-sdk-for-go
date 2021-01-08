@@ -366,6 +366,7 @@ func (client ZonesClient) ListZonesInResourceGroup(ctx context.Context, resource
 	}
 	if result.zlr.hasNextLink() && result.zlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -432,7 +433,6 @@ func (client ZonesClient) listZonesInResourceGroupNextResults(ctx context.Contex
 	result, err = client.ListZonesInResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "listZonesInResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -495,6 +495,7 @@ func (client ZonesClient) ListZonesInSubscription(ctx context.Context, top strin
 	}
 	if result.zlr.hasNextLink() && result.zlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -560,7 +561,6 @@ func (client ZonesClient) listZonesInSubscriptionNextResults(ctx context.Context
 	result, err = client.ListZonesInSubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "listZonesInSubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

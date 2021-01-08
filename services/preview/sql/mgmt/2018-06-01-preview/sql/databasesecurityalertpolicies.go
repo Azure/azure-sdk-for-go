@@ -245,6 +245,7 @@ func (client DatabaseSecurityAlertPoliciesClient) ListByDatabase(ctx context.Con
 	}
 	if result.dsalr.hasNextLink() && result.dsalr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -307,7 +308,6 @@ func (client DatabaseSecurityAlertPoliciesClient) listByDatabaseNextResults(ctx 
 	result, err = client.ListByDatabaseResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabaseSecurityAlertPoliciesClient", "listByDatabaseNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

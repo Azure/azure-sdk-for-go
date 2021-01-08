@@ -81,7 +81,7 @@ func (client StorageAccountCredentialsClient) CreateOrUpdate(ctx context.Context
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.StorageAccountCredentialsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.StorageAccountCredentialsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -120,7 +120,29 @@ func (client StorageAccountCredentialsClient) CreateOrUpdateSender(req *http.Req
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client StorageAccountCredentialsClient) (sac StorageAccountCredential, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.StorageAccountCredentialsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.StorageAccountCredentialsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if sac.Response.Response, err = future.GetResult(sender); err == nil && sac.Response.Response.StatusCode != http.StatusNoContent {
+			sac, err = client.CreateOrUpdateResponder(sac.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "storsimple.StorageAccountCredentialsCreateOrUpdateFuture", "Result", sac.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -167,7 +189,7 @@ func (client StorageAccountCredentialsClient) Delete(ctx context.Context, storag
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.StorageAccountCredentialsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.StorageAccountCredentialsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -204,7 +226,23 @@ func (client StorageAccountCredentialsClient) DeleteSender(req *http.Request) (f
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client StorageAccountCredentialsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.StorageAccountCredentialsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.StorageAccountCredentialsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

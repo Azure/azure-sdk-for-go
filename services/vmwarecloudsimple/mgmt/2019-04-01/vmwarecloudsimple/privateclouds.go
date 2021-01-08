@@ -152,6 +152,7 @@ func (client PrivateCloudsClient) List(ctx context.Context, regionID string) (re
 	}
 	if result.pcl.hasNextLink() && result.pcl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -212,7 +213,6 @@ func (client PrivateCloudsClient) listNextResults(ctx context.Context, lastResul
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.PrivateCloudsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

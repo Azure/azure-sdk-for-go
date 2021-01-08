@@ -77,6 +77,7 @@ func (client CdnPeeringPrefixesClient) List(ctx context.Context, peeringLocation
 	}
 	if result.cpplr.hasNextLink() && result.cpplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -137,7 +138,6 @@ func (client CdnPeeringPrefixesClient) listNextResults(ctx context.Context, last
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.CdnPeeringPrefixesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

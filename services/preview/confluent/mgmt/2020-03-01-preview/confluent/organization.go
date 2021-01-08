@@ -65,7 +65,7 @@ func (client OrganizationClient) Create(ctx context.Context, resourceGroupName s
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "confluent.OrganizationClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "confluent.OrganizationClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -109,7 +109,29 @@ func (client OrganizationClient) CreateSender(req *http.Request) (future Organiz
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client OrganizationClient) (or OrganizationResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "confluent.OrganizationCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("confluent.OrganizationCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if or.Response.Response, err = future.GetResult(sender); err == nil && or.Response.Response.StatusCode != http.StatusNoContent {
+			or, err = client.CreateResponder(or.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "confluent.OrganizationCreateFuture", "Result", or.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -148,7 +170,7 @@ func (client OrganizationClient) Delete(ctx context.Context, resourceGroupName s
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "confluent.OrganizationClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "confluent.OrganizationClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -184,7 +206,23 @@ func (client OrganizationClient) DeleteSender(req *http.Request) (future Organiz
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client OrganizationClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "confluent.OrganizationDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("confluent.OrganizationDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -310,6 +348,7 @@ func (client OrganizationClient) ListByResourceGroup(ctx context.Context, resour
 	}
 	if result.orlr.hasNextLink() && result.orlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -370,7 +409,6 @@ func (client OrganizationClient) listByResourceGroupNextResults(ctx context.Cont
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "confluent.OrganizationClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -424,6 +462,7 @@ func (client OrganizationClient) ListBySubscription(ctx context.Context) (result
 	}
 	if result.orlr.hasNextLink() && result.orlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -483,7 +522,6 @@ func (client OrganizationClient) listBySubscriptionNextResults(ctx context.Conte
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "confluent.OrganizationClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

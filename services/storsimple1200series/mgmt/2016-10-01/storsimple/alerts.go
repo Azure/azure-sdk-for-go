@@ -173,6 +173,7 @@ func (client AlertsClient) ListByManager(ctx context.Context, resourceGroupName 
 	}
 	if result.al.hasNextLink() && result.al.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -237,7 +238,6 @@ func (client AlertsClient) listByManagerNextResults(ctx context.Context, lastRes
 	result, err = client.ListByManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.AlertsClient", "listByManagerNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

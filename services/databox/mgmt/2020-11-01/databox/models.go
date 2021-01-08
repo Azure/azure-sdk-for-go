@@ -3074,52 +3074,18 @@ func (jrup *JobResourceUpdateParameter) UnmarshalJSON(body []byte) error {
 
 // JobsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type JobsCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *JobsCreateFuture) Result(client JobsClient) (jr JobResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "databox.JobsCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("databox.JobsCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if jr.Response.Response, err = future.GetResult(sender); err == nil && jr.Response.Response.StatusCode != http.StatusNoContent {
-		jr, err = client.CreateResponder(jr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "databox.JobsCreateFuture", "Result", jr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(JobsClient) (JobResource, error)
 }
 
 // JobsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type JobsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *JobsDeleteFuture) Result(client JobsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "databox.JobsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("databox.JobsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(JobsClient) (autorest.Response, error)
 }
 
 // BasicJobSecrets the base class for the secrets
@@ -3286,30 +3252,10 @@ type JobStages struct {
 
 // JobsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type JobsUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *JobsUpdateFuture) Result(client JobsClient) (jr JobResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "databox.JobsUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("databox.JobsUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if jr.Response.Response, err = future.GetResult(sender); err == nil && jr.Response.Response.StatusCode != http.StatusNoContent {
-		jr, err = client.UpdateResponder(jr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "databox.JobsUpdateFuture", "Result", jr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(JobsClient) (JobResource, error)
 }
 
 // KeyEncryptionKey encryption key containing details about key to encrypt different keys.

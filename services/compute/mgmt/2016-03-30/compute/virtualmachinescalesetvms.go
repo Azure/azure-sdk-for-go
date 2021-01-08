@@ -68,7 +68,7 @@ func (client VirtualMachineScaleSetVMsClient) Deallocate(ctx context.Context, re
 
 	result, err = client.DeallocateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsClient", "Deallocate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsClient", "Deallocate", nil, "Failure sending request")
 		return
 	}
 
@@ -105,7 +105,29 @@ func (client VirtualMachineScaleSetVMsClient) DeallocateSender(req *http.Request
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsDeallocateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsDeallocateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
+			osr, err = client.DeallocateResponder(osr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsDeallocateFuture", "Result", osr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -145,7 +167,7 @@ func (client VirtualMachineScaleSetVMsClient) Delete(ctx context.Context, resour
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -182,7 +204,29 @@ func (client VirtualMachineScaleSetVMsClient) DeleteSender(req *http.Request) (f
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsDeleteFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
+			osr, err = client.DeleteResponder(osr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsDeleteFuture", "Result", osr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -394,6 +438,7 @@ func (client VirtualMachineScaleSetVMsClient) List(ctx context.Context, resource
 	}
 	if result.vmssvlr.hasNextLink() && result.vmssvlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -464,7 +509,6 @@ func (client VirtualMachineScaleSetVMsClient) listNextResults(ctx context.Contex
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -510,7 +554,7 @@ func (client VirtualMachineScaleSetVMsClient) PowerOff(ctx context.Context, reso
 
 	result, err = client.PowerOffSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsClient", "PowerOff", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsClient", "PowerOff", nil, "Failure sending request")
 		return
 	}
 
@@ -547,7 +591,29 @@ func (client VirtualMachineScaleSetVMsClient) PowerOffSender(req *http.Request) 
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsPowerOffFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsPowerOffFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
+			osr, err = client.PowerOffResponder(osr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsPowerOffFuture", "Result", osr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -587,7 +653,7 @@ func (client VirtualMachineScaleSetVMsClient) Reimage(ctx context.Context, resou
 
 	result, err = client.ReimageSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsClient", "Reimage", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsClient", "Reimage", nil, "Failure sending request")
 		return
 	}
 
@@ -624,7 +690,29 @@ func (client VirtualMachineScaleSetVMsClient) ReimageSender(req *http.Request) (
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsReimageFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsReimageFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
+			osr, err = client.ReimageResponder(osr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsReimageFuture", "Result", osr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -664,7 +752,7 @@ func (client VirtualMachineScaleSetVMsClient) Restart(ctx context.Context, resou
 
 	result, err = client.RestartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsClient", "Restart", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsClient", "Restart", nil, "Failure sending request")
 		return
 	}
 
@@ -701,7 +789,29 @@ func (client VirtualMachineScaleSetVMsClient) RestartSender(req *http.Request) (
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsRestartFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsRestartFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
+			osr, err = client.RestartResponder(osr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsRestartFuture", "Result", osr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -741,7 +851,7 @@ func (client VirtualMachineScaleSetVMsClient) Start(ctx context.Context, resourc
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsClient", "Start", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsClient", "Start", nil, "Failure sending request")
 		return
 	}
 
@@ -778,7 +888,29 @@ func (client VirtualMachineScaleSetVMsClient) StartSender(req *http.Request) (fu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsStartFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsStartFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
+			osr, err = client.StartResponder(osr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsStartFuture", "Result", osr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

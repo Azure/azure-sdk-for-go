@@ -148,7 +148,7 @@ func (client ManagedNetworksClient) Delete(ctx context.Context, resourceGroupNam
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -184,7 +184,23 @@ func (client ManagedNetworksClient) DeleteSender(req *http.Request) (future Mana
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ManagedNetworksClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksDeleteFutureType", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("managednetwork.ManagedNetworksDeleteFutureType")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -325,6 +341,7 @@ func (client ManagedNetworksClient) ListByResourceGroup(ctx context.Context, res
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -391,7 +408,6 @@ func (client ManagedNetworksClient) listByResourceGroupNextResults(ctx context.C
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -460,6 +476,7 @@ func (client ManagedNetworksClient) ListBySubscription(ctx context.Context, top 
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -525,7 +542,6 @@ func (client ManagedNetworksClient) listBySubscriptionNextResults(ctx context.Co
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -570,7 +586,7 @@ func (client ManagedNetworksClient) Update(ctx context.Context, parameters Updat
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -608,7 +624,29 @@ func (client ManagedNetworksClient) UpdateSender(req *http.Request) (future Mana
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ManagedNetworksClient) (mn ManagedNetwork, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksUpdateFutureType", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("managednetwork.ManagedNetworksUpdateFutureType")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if mn.Response.Response, err = future.GetResult(sender); err == nil && mn.Response.Response.StatusCode != http.StatusNoContent {
+			mn, err = client.UpdateResponder(mn.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksUpdateFutureType", "Result", mn.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

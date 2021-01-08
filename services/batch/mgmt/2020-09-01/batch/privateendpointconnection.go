@@ -179,6 +179,7 @@ func (client PrivateEndpointConnectionClient) ListByBatchAccount(ctx context.Con
 	}
 	if result.lpecr.hasNextLink() && result.lpecr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -243,7 +244,6 @@ func (client PrivateEndpointConnectionClient) listByBatchAccountNextResults(ctx 
 	result, err = client.ListByBatchAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PrivateEndpointConnectionClient", "listByBatchAccountNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -305,7 +305,7 @@ func (client PrivateEndpointConnectionClient) Update(ctx context.Context, resour
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.PrivateEndpointConnectionClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.PrivateEndpointConnectionClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -348,7 +348,29 @@ func (client PrivateEndpointConnectionClient) UpdateSender(req *http.Request) (f
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client PrivateEndpointConnectionClient) (pec PrivateEndpointConnection, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batch.PrivateEndpointConnectionUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("batch.PrivateEndpointConnectionUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if pec.Response.Response, err = future.GetResult(sender); err == nil && pec.Response.Response.StatusCode != http.StatusNoContent {
+			pec, err = client.UpdateResponder(pec.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "batch.PrivateEndpointConnectionUpdateFuture", "Result", pec.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

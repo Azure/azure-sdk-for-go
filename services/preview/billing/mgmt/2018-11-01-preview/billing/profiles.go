@@ -64,7 +64,7 @@ func (client ProfilesClient) Create(ctx context.Context, billingAccountName stri
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.ProfilesClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.ProfilesClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -100,7 +100,29 @@ func (client ProfilesClient) CreateSender(req *http.Request) (future ProfilesCre
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ProfilesClient) (p Profile, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.ProfilesCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("billing.ProfilesCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if p.Response.Response, err = future.GetResult(sender); err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
+			p, err = client.CreateResponder(p.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "billing.ProfilesCreateFuture", "Result", p.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -231,6 +253,7 @@ func (client ProfilesClient) ListByBillingAccountName(ctx context.Context, billi
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -293,7 +316,6 @@ func (client ProfilesClient) listByBillingAccountNameNextResults(ctx context.Con
 	result, err = client.ListByBillingAccountNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProfilesClient", "listByBillingAccountNameNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -338,7 +360,7 @@ func (client ProfilesClient) Update(ctx context.Context, billingAccountName stri
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.ProfilesClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.ProfilesClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -375,7 +397,29 @@ func (client ProfilesClient) UpdateSender(req *http.Request) (future ProfilesUpd
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ProfilesClient) (p Profile, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.ProfilesUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("billing.ProfilesUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if p.Response.Response, err = future.GetResult(sender); err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
+			p, err = client.UpdateResponder(p.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "billing.ProfilesUpdateFuture", "Result", p.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

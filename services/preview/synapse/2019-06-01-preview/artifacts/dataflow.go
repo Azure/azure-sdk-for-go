@@ -57,9 +57,7 @@ func (client DataFlowClient) CreateOrUpdateDataFlow(ctx context.Context, dataFlo
 		{TargetValue: dataFlowName,
 			Constraints: []validation.Constraint{{Target: "dataFlowName", Name: validation.MaxLength, Rule: 260, Chain: nil},
 				{Target: "dataFlowName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "dataFlowName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}},
-		{TargetValue: dataFlow,
-			Constraints: []validation.Constraint{{Target: "dataFlow.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "dataFlowName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("artifacts.DataFlowClient", "CreateOrUpdateDataFlow", err.Error())
 	}
 
@@ -71,7 +69,7 @@ func (client DataFlowClient) CreateOrUpdateDataFlow(ctx context.Context, dataFlo
 
 	result, err = client.CreateOrUpdateDataFlowSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "CreateOrUpdateDataFlow", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "CreateOrUpdateDataFlow", nil, "Failure sending request")
 		return
 	}
 
@@ -115,7 +113,29 @@ func (client DataFlowClient) CreateOrUpdateDataFlowSender(req *http.Request) (fu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DataFlowClient) (dfr DataFlowResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.DataFlowCreateOrUpdateDataFlowFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.DataFlowCreateOrUpdateDataFlowFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if dfr.Response.Response, err = future.GetResult(sender); err == nil && dfr.Response.Response.StatusCode != http.StatusNoContent {
+			dfr, err = client.CreateOrUpdateDataFlowResponder(dfr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "artifacts.DataFlowCreateOrUpdateDataFlowFuture", "Result", dfr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -161,7 +181,7 @@ func (client DataFlowClient) DeleteDataFlow(ctx context.Context, dataFlowName st
 
 	result, err = client.DeleteDataFlowSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "DeleteDataFlow", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "DeleteDataFlow", nil, "Failure sending request")
 		return
 	}
 
@@ -199,7 +219,23 @@ func (client DataFlowClient) DeleteDataFlowSender(req *http.Request) (future Dat
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DataFlowClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.DataFlowDeleteDataFlowFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.DataFlowDeleteDataFlowFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -338,6 +374,7 @@ func (client DataFlowClient) GetDataFlowsByWorkspace(ctx context.Context) (resul
 	}
 	if result.dflr.hasNextLink() && result.dflr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -397,7 +434,6 @@ func (client DataFlowClient) getDataFlowsByWorkspaceNextResults(ctx context.Cont
 	result, err = client.GetDataFlowsByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "getDataFlowsByWorkspaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -455,7 +491,7 @@ func (client DataFlowClient) RenameDataFlow(ctx context.Context, dataFlowName st
 
 	result, err = client.RenameDataFlowSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "RenameDataFlow", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "RenameDataFlow", nil, "Failure sending request")
 		return
 	}
 
@@ -495,7 +531,23 @@ func (client DataFlowClient) RenameDataFlowSender(req *http.Request) (future Dat
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DataFlowClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.DataFlowRenameDataFlowFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.DataFlowRenameDataFlowFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

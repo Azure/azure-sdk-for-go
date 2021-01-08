@@ -68,7 +68,7 @@ func (client DeploymentsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "appplatform.DeploymentsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "appplatform.DeploymentsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -108,7 +108,29 @@ func (client DeploymentsClient) CreateOrUpdateSender(req *http.Request) (future 
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DeploymentsClient) (dr DeploymentResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "appplatform.DeploymentsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("appplatform.DeploymentsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if dr.Response.Response, err = future.GetResult(sender); err == nil && dr.Response.Response.StatusCode != http.StatusNoContent {
+			dr, err = client.CreateOrUpdateResponder(dr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "appplatform.DeploymentsCreateOrUpdateFuture", "Result", dr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -405,6 +427,7 @@ func (client DeploymentsClient) List(ctx context.Context, resourceGroupName stri
 	}
 	if result.drc.hasNextLink() && result.drc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -470,7 +493,6 @@ func (client DeploymentsClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.DeploymentsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -529,6 +551,7 @@ func (client DeploymentsClient) ListClusterAllDeployments(ctx context.Context, r
 	}
 	if result.drc.hasNextLink() && result.drc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -593,7 +616,6 @@ func (client DeploymentsClient) listClusterAllDeploymentsNextResults(ctx context
 	result, err = client.ListClusterAllDeploymentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.DeploymentsClient", "listClusterAllDeploymentsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -640,7 +662,7 @@ func (client DeploymentsClient) Restart(ctx context.Context, resourceGroupName s
 
 	result, err = client.RestartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "appplatform.DeploymentsClient", "Restart", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "appplatform.DeploymentsClient", "Restart", nil, "Failure sending request")
 		return
 	}
 
@@ -678,7 +700,23 @@ func (client DeploymentsClient) RestartSender(req *http.Request) (future Deploym
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DeploymentsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "appplatform.DeploymentsRestartFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("appplatform.DeploymentsRestartFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -719,7 +757,7 @@ func (client DeploymentsClient) Start(ctx context.Context, resourceGroupName str
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "appplatform.DeploymentsClient", "Start", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "appplatform.DeploymentsClient", "Start", nil, "Failure sending request")
 		return
 	}
 
@@ -757,7 +795,23 @@ func (client DeploymentsClient) StartSender(req *http.Request) (future Deploymen
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DeploymentsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "appplatform.DeploymentsStartFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("appplatform.DeploymentsStartFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -798,7 +852,7 @@ func (client DeploymentsClient) Stop(ctx context.Context, resourceGroupName stri
 
 	result, err = client.StopSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "appplatform.DeploymentsClient", "Stop", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "appplatform.DeploymentsClient", "Stop", nil, "Failure sending request")
 		return
 	}
 
@@ -836,7 +890,23 @@ func (client DeploymentsClient) StopSender(req *http.Request) (future Deployment
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DeploymentsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "appplatform.DeploymentsStopFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("appplatform.DeploymentsStopFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -878,7 +948,7 @@ func (client DeploymentsClient) Update(ctx context.Context, resourceGroupName st
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "appplatform.DeploymentsClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "appplatform.DeploymentsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -918,7 +988,29 @@ func (client DeploymentsClient) UpdateSender(req *http.Request) (future Deployme
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DeploymentsClient) (dr DeploymentResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "appplatform.DeploymentsUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("appplatform.DeploymentsUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if dr.Response.Response, err = future.GetResult(sender); err == nil && dr.Response.Response.StatusCode != http.StatusNoContent {
+			dr, err = client.UpdateResponder(dr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "appplatform.DeploymentsUpdateFuture", "Result", dr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

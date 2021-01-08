@@ -524,6 +524,7 @@ func (client PolicyAssignmentsClient) List(ctx context.Context, filter string) (
 	}
 	if result.palr.hasNextLink() && result.palr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -586,7 +587,6 @@ func (client PolicyAssignmentsClient) listNextResults(ctx context.Context, lastR
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.PolicyAssignmentsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -655,6 +655,7 @@ func (client PolicyAssignmentsClient) ListForResource(ctx context.Context, resou
 	}
 	if result.palr.hasNextLink() && result.palr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -722,7 +723,6 @@ func (client PolicyAssignmentsClient) listForResourceNextResults(ctx context.Con
 	result, err = client.ListForResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.PolicyAssignmentsClient", "listForResourceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -787,6 +787,7 @@ func (client PolicyAssignmentsClient) ListForResourceGroup(ctx context.Context, 
 	}
 	if result.palr.hasNextLink() && result.palr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -850,7 +851,6 @@ func (client PolicyAssignmentsClient) listForResourceGroupNextResults(ctx contex
 	result, err = client.ListForResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.PolicyAssignmentsClient", "listForResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -907,6 +907,7 @@ func (client PolicyAssignmentsClient) ListForScope(ctx context.Context, scope st
 	}
 	if result.palr.hasNextLink() && result.palr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -969,7 +970,6 @@ func (client PolicyAssignmentsClient) listForScopeNextResults(ctx context.Contex
 	result, err = client.ListForScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.PolicyAssignmentsClient", "listForScopeNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

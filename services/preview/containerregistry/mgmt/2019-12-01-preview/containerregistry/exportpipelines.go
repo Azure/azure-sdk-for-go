@@ -86,7 +86,7 @@ func (client ExportPipelinesClient) Create(ctx context.Context, resourceGroupNam
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.ExportPipelinesClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.ExportPipelinesClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -125,7 +125,29 @@ func (client ExportPipelinesClient) CreateSender(req *http.Request) (future Expo
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ExportPipelinesClient) (ep ExportPipeline, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.ExportPipelinesCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("containerregistry.ExportPipelinesCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ep.Response.Response, err = future.GetResult(sender); err == nil && ep.Response.Response.StatusCode != http.StatusNoContent {
+			ep, err = client.CreateResponder(ep.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "containerregistry.ExportPipelinesCreateFuture", "Result", ep.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -179,7 +201,7 @@ func (client ExportPipelinesClient) Delete(ctx context.Context, resourceGroupNam
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.ExportPipelinesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.ExportPipelinesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -216,7 +238,23 @@ func (client ExportPipelinesClient) DeleteSender(req *http.Request) (future Expo
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ExportPipelinesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.ExportPipelinesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("containerregistry.ExportPipelinesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -369,6 +407,7 @@ func (client ExportPipelinesClient) List(ctx context.Context, resourceGroupName 
 	}
 	if result.eplr.hasNextLink() && result.eplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -430,7 +469,6 @@ func (client ExportPipelinesClient) listNextResults(ctx context.Context, lastRes
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.ExportPipelinesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

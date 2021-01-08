@@ -650,59 +650,19 @@ func (dp DatabaseProperties) MarshalJSON() ([]byte, error) {
 // DatabasesCreateImportOperationFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type DatabasesCreateImportOperationFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DatabasesCreateImportOperationFuture) Result(client DatabasesClient) (ier ImportExportResponse, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesCreateImportOperationFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.DatabasesCreateImportOperationFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ier.Response.Response, err = future.GetResult(sender); err == nil && ier.Response.Response.StatusCode != http.StatusNoContent {
-		ier, err = client.CreateImportOperationResponder(ier.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.DatabasesCreateImportOperationFuture", "Result", ier.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DatabasesClient) (ImportExportResponse, error)
 }
 
 // DatabasesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DatabasesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DatabasesCreateOrUpdateFuture) Result(client DatabasesClient) (d Database, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.DatabasesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
-		d, err = client.CreateOrUpdateResponder(d.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.DatabasesCreateOrUpdateFuture", "Result", d.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DatabasesClient) (Database, error)
 }
 
 // DatabaseSecurityAlertPolicy contains information about a database Threat Detection policy.
@@ -826,134 +786,46 @@ type DatabaseSecurityAlertPolicyProperties struct {
 // DatabasesExportFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DatabasesExportFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DatabasesExportFuture) Result(client DatabasesClient) (ier ImportExportResponse, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesExportFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.DatabasesExportFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ier.Response.Response, err = future.GetResult(sender); err == nil && ier.Response.Response.StatusCode != http.StatusNoContent {
-		ier, err = client.ExportResponder(ier.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.DatabasesExportFuture", "Result", ier.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DatabasesClient) (ImportExportResponse, error)
 }
 
 // DatabasesImportFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DatabasesImportFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DatabasesImportFuture) Result(client DatabasesClient) (ier ImportExportResponse, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesImportFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.DatabasesImportFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ier.Response.Response, err = future.GetResult(sender); err == nil && ier.Response.Response.StatusCode != http.StatusNoContent {
-		ier, err = client.ImportResponder(ier.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.DatabasesImportFuture", "Result", ier.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DatabasesClient) (ImportExportResponse, error)
 }
 
 // DatabasesPauseFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DatabasesPauseFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DatabasesPauseFuture) Result(client DatabasesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesPauseFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.DatabasesPauseFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DatabasesClient) (autorest.Response, error)
 }
 
 // DatabasesResumeFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DatabasesResumeFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DatabasesResumeFuture) Result(client DatabasesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesResumeFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.DatabasesResumeFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DatabasesClient) (autorest.Response, error)
 }
 
 // DatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DatabasesUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DatabasesUpdateFuture) Result(client DatabasesClient) (d Database, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.DatabasesUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
-		d, err = client.UpdateResponder(d.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.DatabasesUpdateFuture", "Result", d.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DatabasesClient) (Database, error)
 }
 
 // DatabaseUpdate represents a database update.
@@ -1897,59 +1769,19 @@ func (epp ElasticPoolProperties) MarshalJSON() ([]byte, error) {
 // ElasticPoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ElasticPoolsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ElasticPoolsCreateOrUpdateFuture) Result(client ElasticPoolsClient) (ep ElasticPool, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.ElasticPoolsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ep.Response.Response, err = future.GetResult(sender); err == nil && ep.Response.Response.StatusCode != http.StatusNoContent {
-		ep, err = client.CreateOrUpdateResponder(ep.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ElasticPoolsCreateOrUpdateFuture", "Result", ep.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ElasticPoolsClient) (ElasticPool, error)
 }
 
 // ElasticPoolsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ElasticPoolsUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ElasticPoolsUpdateFuture) Result(client ElasticPoolsClient) (ep ElasticPool, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.ElasticPoolsUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ep.Response.Response, err = future.GetResult(sender); err == nil && ep.Response.Response.StatusCode != http.StatusNoContent {
-		ep, err = client.UpdateResponder(ep.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ElasticPoolsUpdateFuture", "Result", ep.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ElasticPoolsClient) (ElasticPool, error)
 }
 
 // ElasticPoolUpdate represents an elastic pool update.
@@ -2322,53 +2154,19 @@ func (epp EncryptionProtectorProperties) MarshalJSON() ([]byte, error) {
 // EncryptionProtectorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type EncryptionProtectorsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *EncryptionProtectorsCreateOrUpdateFuture) Result(client EncryptionProtectorsClient) (ep EncryptionProtector, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.EncryptionProtectorsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.EncryptionProtectorsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ep.Response.Response, err = future.GetResult(sender); err == nil && ep.Response.Response.StatusCode != http.StatusNoContent {
-		ep, err = client.CreateOrUpdateResponder(ep.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.EncryptionProtectorsCreateOrUpdateFuture", "Result", ep.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(EncryptionProtectorsClient) (EncryptionProtector, error)
 }
 
 // EncryptionProtectorsRevalidateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type EncryptionProtectorsRevalidateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *EncryptionProtectorsRevalidateFuture) Result(client EncryptionProtectorsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.EncryptionProtectorsRevalidateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.EncryptionProtectorsRevalidateFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(EncryptionProtectorsClient) (autorest.Response, error)
 }
 
 // ExportRequest export database parameters.
@@ -2695,140 +2493,46 @@ type FailoverGroupReadWriteEndpoint struct {
 // FailoverGroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type FailoverGroupsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *FailoverGroupsCreateOrUpdateFuture) Result(client FailoverGroupsClient) (fg FailoverGroup, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.FailoverGroupsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if fg.Response.Response, err = future.GetResult(sender); err == nil && fg.Response.Response.StatusCode != http.StatusNoContent {
-		fg, err = client.CreateOrUpdateResponder(fg.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.FailoverGroupsCreateOrUpdateFuture", "Result", fg.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(FailoverGroupsClient) (FailoverGroup, error)
 }
 
 // FailoverGroupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type FailoverGroupsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *FailoverGroupsDeleteFuture) Result(client FailoverGroupsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.FailoverGroupsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(FailoverGroupsClient) (autorest.Response, error)
 }
 
 // FailoverGroupsFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type FailoverGroupsFailoverFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *FailoverGroupsFailoverFuture) Result(client FailoverGroupsClient) (fg FailoverGroup, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsFailoverFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.FailoverGroupsFailoverFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if fg.Response.Response, err = future.GetResult(sender); err == nil && fg.Response.Response.StatusCode != http.StatusNoContent {
-		fg, err = client.FailoverResponder(fg.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.FailoverGroupsFailoverFuture", "Result", fg.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(FailoverGroupsClient) (FailoverGroup, error)
 }
 
 // FailoverGroupsForceFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the results
 // of a long-running operation.
 type FailoverGroupsForceFailoverAllowDataLossFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *FailoverGroupsForceFailoverAllowDataLossFuture) Result(client FailoverGroupsClient) (fg FailoverGroup, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsForceFailoverAllowDataLossFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.FailoverGroupsForceFailoverAllowDataLossFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if fg.Response.Response, err = future.GetResult(sender); err == nil && fg.Response.Response.StatusCode != http.StatusNoContent {
-		fg, err = client.ForceFailoverAllowDataLossResponder(fg.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.FailoverGroupsForceFailoverAllowDataLossFuture", "Result", fg.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(FailoverGroupsClient) (FailoverGroup, error)
 }
 
 // FailoverGroupsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type FailoverGroupsUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *FailoverGroupsUpdateFuture) Result(client FailoverGroupsClient) (fg FailoverGroup, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.FailoverGroupsUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if fg.Response.Response, err = future.GetResult(sender); err == nil && fg.Response.Response.StatusCode != http.StatusNoContent {
-		fg, err = client.UpdateResponder(fg.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.FailoverGroupsUpdateFuture", "Result", fg.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(FailoverGroupsClient) (FailoverGroup, error)
 }
 
 // FailoverGroupUpdate a failover group update request.
@@ -3761,82 +3465,28 @@ func (mip ManagedInstanceProperties) MarshalJSON() ([]byte, error) {
 // ManagedInstancesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ManagedInstancesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ManagedInstancesCreateOrUpdateFuture) Result(client ManagedInstancesClient) (mi ManagedInstance, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ManagedInstancesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.ManagedInstancesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if mi.Response.Response, err = future.GetResult(sender); err == nil && mi.Response.Response.StatusCode != http.StatusNoContent {
-		mi, err = client.CreateOrUpdateResponder(mi.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ManagedInstancesCreateOrUpdateFuture", "Result", mi.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ManagedInstancesClient) (ManagedInstance, error)
 }
 
 // ManagedInstancesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ManagedInstancesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ManagedInstancesDeleteFuture) Result(client ManagedInstancesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ManagedInstancesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.ManagedInstancesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ManagedInstancesClient) (autorest.Response, error)
 }
 
 // ManagedInstancesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ManagedInstancesUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ManagedInstancesUpdateFuture) Result(client ManagedInstancesClient) (mi ManagedInstance, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ManagedInstancesUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.ManagedInstancesUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if mi.Response.Response, err = future.GetResult(sender); err == nil && mi.Response.Response.StatusCode != http.StatusNoContent {
-		mi, err = client.UpdateResponder(mi.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ManagedInstancesUpdateFuture", "Result", mi.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ManagedInstancesClient) (ManagedInstance, error)
 }
 
 // ManagedInstanceUpdate an update request for an Azure SQL Database managed instance.
@@ -4548,70 +4198,28 @@ type ReplicationLinkProperties struct {
 // ReplicationLinksFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the results of
 // a long-running operation.
 type ReplicationLinksFailoverAllowDataLossFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ReplicationLinksFailoverAllowDataLossFuture) Result(client ReplicationLinksClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksFailoverAllowDataLossFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.ReplicationLinksFailoverAllowDataLossFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ReplicationLinksClient) (autorest.Response, error)
 }
 
 // ReplicationLinksFailoverFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ReplicationLinksFailoverFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ReplicationLinksFailoverFuture) Result(client ReplicationLinksClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksFailoverFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.ReplicationLinksFailoverFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ReplicationLinksClient) (autorest.Response, error)
 }
 
 // ReplicationLinksUnlinkFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ReplicationLinksUnlinkFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ReplicationLinksUnlinkFuture) Result(client ReplicationLinksClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksUnlinkFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.ReplicationLinksUnlinkFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ReplicationLinksClient) (autorest.Response, error)
 }
 
 // Resource ARM resource.
@@ -5064,59 +4672,19 @@ func (saaa *ServerAzureADAdministrator) UnmarshalJSON(body []byte) error {
 // ServerAzureADAdministratorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
 // of a long-running operation.
 type ServerAzureADAdministratorsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServerAzureADAdministratorsCreateOrUpdateFuture) Result(client ServerAzureADAdministratorsClient) (saaa ServerAzureADAdministrator, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.ServerAzureADAdministratorsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if saaa.Response.Response, err = future.GetResult(sender); err == nil && saaa.Response.Response.StatusCode != http.StatusNoContent {
-		saaa, err = client.CreateOrUpdateResponder(saaa.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsCreateOrUpdateFuture", "Result", saaa.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ServerAzureADAdministratorsClient) (ServerAzureADAdministrator, error)
 }
 
 // ServerAzureADAdministratorsDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ServerAzureADAdministratorsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServerAzureADAdministratorsDeleteFuture) Result(client ServerAzureADAdministratorsClient) (saaa ServerAzureADAdministrator, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.ServerAzureADAdministratorsDeleteFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if saaa.Response.Response, err = future.GetResult(sender); err == nil && saaa.Response.Response.StatusCode != http.StatusNoContent {
-		saaa, err = client.DeleteResponder(saaa.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsDeleteFuture", "Result", saaa.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ServerAzureADAdministratorsClient) (ServerAzureADAdministrator, error)
 }
 
 // ServerCommunicationLink server communication link.
@@ -5241,30 +4809,10 @@ func (sclp ServerCommunicationLinkProperties) MarshalJSON() ([]byte, error) {
 // ServerCommunicationLinksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
 // a long-running operation.
 type ServerCommunicationLinksCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServerCommunicationLinksCreateOrUpdateFuture) Result(client ServerCommunicationLinksClient) (scl ServerCommunicationLink, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerCommunicationLinksCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.ServerCommunicationLinksCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if scl.Response.Response, err = future.GetResult(sender); err == nil && scl.Response.Response.StatusCode != http.StatusNoContent {
-		scl, err = client.CreateOrUpdateResponder(scl.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ServerCommunicationLinksCreateOrUpdateFuture", "Result", scl.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ServerCommunicationLinksClient) (ServerCommunicationLink, error)
 }
 
 // ServerConnectionPolicy a server secure connection policy.
@@ -5660,53 +5208,19 @@ func (skp ServerKeyProperties) MarshalJSON() ([]byte, error) {
 // ServerKeysCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ServerKeysCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServerKeysCreateOrUpdateFuture) Result(client ServerKeysClient) (sk ServerKey, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerKeysCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.ServerKeysCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sk.Response.Response, err = future.GetResult(sender); err == nil && sk.Response.Response.StatusCode != http.StatusNoContent {
-		sk, err = client.CreateOrUpdateResponder(sk.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ServerKeysCreateOrUpdateFuture", "Result", sk.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ServerKeysClient) (ServerKey, error)
 }
 
 // ServerKeysDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ServerKeysDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServerKeysDeleteFuture) Result(client ServerKeysClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerKeysDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.ServerKeysDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ServerKeysClient) (autorest.Response, error)
 }
 
 // ServerListResult a list of servers.
@@ -5900,82 +5414,28 @@ func (sp ServerProperties) MarshalJSON() ([]byte, error) {
 // ServersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ServersCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServersCreateOrUpdateFuture) Result(client ServersClient) (s Server, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.ServersCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
-		s, err = client.CreateOrUpdateResponder(s.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ServersCreateOrUpdateFuture", "Result", s.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ServersClient) (Server, error)
 }
 
 // ServersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ServersDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServersDeleteFuture) Result(client ServersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServersDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.ServersDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ServersClient) (autorest.Response, error)
 }
 
 // ServersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ServersUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServersUpdateFuture) Result(client ServersClient) (s Server, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServersUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.ServersUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
-		s, err = client.UpdateResponder(s.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ServersUpdateFuture", "Result", s.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ServersClient) (Server, error)
 }
 
 // ServerUpdate an update request for an Azure SQL Database server.
@@ -7104,53 +6564,19 @@ func (sap SyncAgentProperties) MarshalJSON() ([]byte, error) {
 // SyncAgentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type SyncAgentsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SyncAgentsCreateOrUpdateFuture) Result(client SyncAgentsClient) (sa SyncAgent, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncAgentsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.SyncAgentsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sa.Response.Response, err = future.GetResult(sender); err == nil && sa.Response.Response.StatusCode != http.StatusNoContent {
-		sa, err = client.CreateOrUpdateResponder(sa.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.SyncAgentsCreateOrUpdateFuture", "Result", sa.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SyncAgentsClient) (SyncAgent, error)
 }
 
 // SyncAgentsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SyncAgentsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SyncAgentsDeleteFuture) Result(client SyncAgentsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncAgentsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.SyncAgentsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SyncAgentsClient) (autorest.Response, error)
 }
 
 // SyncDatabaseIDListResult a list of sync database ID properties.
@@ -7999,105 +7425,37 @@ type SyncGroupSchemaTableColumn struct {
 // SyncGroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type SyncGroupsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SyncGroupsCreateOrUpdateFuture) Result(client SyncGroupsClient) (sg SyncGroup, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncGroupsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.SyncGroupsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sg.Response.Response, err = future.GetResult(sender); err == nil && sg.Response.Response.StatusCode != http.StatusNoContent {
-		sg, err = client.CreateOrUpdateResponder(sg.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.SyncGroupsCreateOrUpdateFuture", "Result", sg.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SyncGroupsClient) (SyncGroup, error)
 }
 
 // SyncGroupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SyncGroupsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SyncGroupsDeleteFuture) Result(client SyncGroupsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncGroupsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.SyncGroupsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SyncGroupsClient) (autorest.Response, error)
 }
 
 // SyncGroupsRefreshHubSchemaFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type SyncGroupsRefreshHubSchemaFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SyncGroupsRefreshHubSchemaFuture) Result(client SyncGroupsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncGroupsRefreshHubSchemaFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.SyncGroupsRefreshHubSchemaFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SyncGroupsClient) (autorest.Response, error)
 }
 
 // SyncGroupsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SyncGroupsUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SyncGroupsUpdateFuture) Result(client SyncGroupsClient) (sg SyncGroup, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncGroupsUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.SyncGroupsUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sg.Response.Response, err = future.GetResult(sender); err == nil && sg.Response.Response.StatusCode != http.StatusNoContent {
-		sg, err = client.UpdateResponder(sg.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.SyncGroupsUpdateFuture", "Result", sg.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SyncGroupsClient) (SyncGroup, error)
 }
 
 // SyncMember an Azure SQL Database sync member.
@@ -8387,105 +7745,37 @@ func (smp SyncMemberProperties) MarshalJSON() ([]byte, error) {
 // SyncMembersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type SyncMembersCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SyncMembersCreateOrUpdateFuture) Result(client SyncMembersClient) (sm SyncMember, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncMembersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.SyncMembersCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sm.Response.Response, err = future.GetResult(sender); err == nil && sm.Response.Response.StatusCode != http.StatusNoContent {
-		sm, err = client.CreateOrUpdateResponder(sm.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.SyncMembersCreateOrUpdateFuture", "Result", sm.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SyncMembersClient) (SyncMember, error)
 }
 
 // SyncMembersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SyncMembersDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SyncMembersDeleteFuture) Result(client SyncMembersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncMembersDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.SyncMembersDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SyncMembersClient) (autorest.Response, error)
 }
 
 // SyncMembersRefreshMemberSchemaFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type SyncMembersRefreshMemberSchemaFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SyncMembersRefreshMemberSchemaFuture) Result(client SyncMembersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncMembersRefreshMemberSchemaFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.SyncMembersRefreshMemberSchemaFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SyncMembersClient) (autorest.Response, error)
 }
 
 // SyncMembersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SyncMembersUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SyncMembersUpdateFuture) Result(client SyncMembersClient) (sm SyncMember, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncMembersUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.SyncMembersUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sm.Response.Response, err = future.GetResult(sender); err == nil && sm.Response.Response.StatusCode != http.StatusNoContent {
-		sm, err = client.UpdateResponder(sm.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.SyncMembersUpdateFuture", "Result", sm.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SyncMembersClient) (SyncMember, error)
 }
 
 // TrackedResource ARM tracked top level resource.
@@ -8992,53 +8282,19 @@ func (vcp VirtualClusterProperties) MarshalJSON() ([]byte, error) {
 // VirtualClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type VirtualClustersDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualClustersDeleteFuture) Result(client VirtualClustersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.VirtualClustersDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.VirtualClustersDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VirtualClustersClient) (autorest.Response, error)
 }
 
 // VirtualClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type VirtualClustersUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualClustersUpdateFuture) Result(client VirtualClustersClient) (vc VirtualCluster, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.VirtualClustersUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.VirtualClustersUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vc.Response.Response, err = future.GetResult(sender); err == nil && vc.Response.Response.StatusCode != http.StatusNoContent {
-		vc, err = client.UpdateResponder(vc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.VirtualClustersUpdateFuture", "Result", vc.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VirtualClustersClient) (VirtualCluster, error)
 }
 
 // VirtualClusterUpdate an update request for an Azure SQL Database virtual cluster.
@@ -9351,51 +8607,17 @@ func (vnrp VirtualNetworkRuleProperties) MarshalJSON() ([]byte, error) {
 // VirtualNetworkRulesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type VirtualNetworkRulesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualNetworkRulesCreateOrUpdateFuture) Result(client VirtualNetworkRulesClient) (vnr VirtualNetworkRule, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.VirtualNetworkRulesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vnr.Response.Response, err = future.GetResult(sender); err == nil && vnr.Response.Response.StatusCode != http.StatusNoContent {
-		vnr, err = client.CreateOrUpdateResponder(vnr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesCreateOrUpdateFuture", "Result", vnr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VirtualNetworkRulesClient) (VirtualNetworkRule, error)
 }
 
 // VirtualNetworkRulesDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type VirtualNetworkRulesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualNetworkRulesDeleteFuture) Result(client VirtualNetworkRulesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.VirtualNetworkRulesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VirtualNetworkRulesClient) (autorest.Response, error)
 }

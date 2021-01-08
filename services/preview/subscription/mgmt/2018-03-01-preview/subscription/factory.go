@@ -64,7 +64,7 @@ func (client FactoryClient) CreateSubscriptionInEnrollmentAccount(ctx context.Co
 
 	result, err = client.CreateSubscriptionInEnrollmentAccountSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.FactoryClient", "CreateSubscriptionInEnrollmentAccount", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "subscription.FactoryClient", "CreateSubscriptionInEnrollmentAccount", nil, "Failure sending request")
 		return
 	}
 
@@ -100,7 +100,29 @@ func (client FactoryClient) CreateSubscriptionInEnrollmentAccountSender(req *htt
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client FactoryClient) (cr CreationResult, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "subscription.FactoryCreateSubscriptionInEnrollmentAccountFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("subscription.FactoryCreateSubscriptionInEnrollmentAccountFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if cr.Response.Response, err = future.GetResult(sender); err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
+			cr, err = client.CreateSubscriptionInEnrollmentAccountResponder(cr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "subscription.FactoryCreateSubscriptionInEnrollmentAccountFuture", "Result", cr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

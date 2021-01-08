@@ -387,6 +387,7 @@ func (client DiagnosticLoggerClient) ListByService(ctx context.Context, resource
 	}
 	if result.lc.hasNextLink() && result.lc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -458,7 +459,6 @@ func (client DiagnosticLoggerClient) listByServiceNextResults(ctx context.Contex
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.DiagnosticLoggerClient", "listByServiceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

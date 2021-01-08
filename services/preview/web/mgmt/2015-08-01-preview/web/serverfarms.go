@@ -66,7 +66,7 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarm(ctx context.Context, re
 
 	result, err = client.CreateOrUpdateServerFarmSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "CreateOrUpdateServerFarm", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "CreateOrUpdateServerFarm", nil, "Failure sending request")
 		return
 	}
 
@@ -107,7 +107,29 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarmSender(req *http.Request
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ServerFarmsClient) (sfwrs ServerFarmWithRichSku, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.ServerFarmsCreateOrUpdateServerFarmFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.ServerFarmsCreateOrUpdateServerFarmFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if sfwrs.Response.Response, err = future.GetResult(sender); err == nil && sfwrs.Response.Response.StatusCode != http.StatusNoContent {
+			sfwrs, err = client.CreateOrUpdateServerFarmResponder(sfwrs.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.ServerFarmsCreateOrUpdateServerFarmFuture", "Result", sfwrs.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -632,6 +654,7 @@ func (client ServerFarmsClient) GetServerFarmMetricDefintions(ctx context.Contex
 	}
 	if result.mdc.hasNextLink() && result.mdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -693,7 +716,6 @@ func (client ServerFarmsClient) getServerFarmMetricDefintionsNextResults(ctx con
 	result, err = client.GetServerFarmMetricDefintionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "getServerFarmMetricDefintionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -754,6 +776,7 @@ func (client ServerFarmsClient) GetServerFarmMetrics(ctx context.Context, resour
 	}
 	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -821,7 +844,6 @@ func (client ServerFarmsClient) getServerFarmMetricsNextResults(ctx context.Cont
 	result, err = client.GetServerFarmMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "getServerFarmMetricsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -955,6 +977,7 @@ func (client ServerFarmsClient) GetServerFarms(ctx context.Context, resourceGrou
 	}
 	if result.sfc.hasNextLink() && result.sfc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1015,7 +1038,6 @@ func (client ServerFarmsClient) getServerFarmsNextResults(ctx context.Context, l
 	result, err = client.GetServerFarmsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "getServerFarmsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1076,6 +1098,7 @@ func (client ServerFarmsClient) GetServerFarmSites(ctx context.Context, resource
 	}
 	if result.sc.hasNextLink() && result.sc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1146,7 +1169,6 @@ func (client ServerFarmsClient) getServerFarmSitesNextResults(ctx context.Contex
 	result, err = client.GetServerFarmSitesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "getServerFarmSitesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

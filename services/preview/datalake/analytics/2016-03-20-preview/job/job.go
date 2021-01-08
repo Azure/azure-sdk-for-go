@@ -55,9 +55,7 @@ func (client Client) Build(ctx context.Context, accountName string, parameters I
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Name", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.Properties", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "parameters.Properties.Script", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.Name", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("job.Client", "Build", err.Error())
 	}
 
@@ -228,9 +226,7 @@ func (client Client) Create(ctx context.Context, accountName string, jobIdentity
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Name", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.Properties", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "parameters.Properties.Script", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.Name", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("job.Client", "Create", err.Error())
 	}
 
@@ -598,6 +594,7 @@ func (client Client) List(ctx context.Context, accountName string, filter string
 	}
 	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -685,7 +682,6 @@ func (client Client) listNextResults(ctx context.Context, lastResults InfoListRe
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.Client", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

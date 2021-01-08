@@ -480,6 +480,7 @@ func (client APIVersionSetClient) ListByService(ctx context.Context, resourceGro
 	}
 	if result.avsc.hasNextLink() && result.avsc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -550,7 +551,6 @@ func (client APIVersionSetClient) listByServiceNextResults(ctx context.Context, 
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIVersionSetClient", "listByServiceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

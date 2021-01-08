@@ -546,6 +546,7 @@ func (client AlertsClient) List(ctx context.Context, filter string, skiptoken st
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -614,7 +615,6 @@ func (client AlertsClient) listNextResults(ctx context.Context, lastResults Aler
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -687,6 +687,7 @@ func (client AlertsClient) ListByAccount(ctx context.Context, billingAccountID s
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -756,7 +757,6 @@ func (client AlertsClient) listByAccountNextResults(ctx context.Context, lastRes
 	result, err = client.ListByAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByAccountNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -829,6 +829,7 @@ func (client AlertsClient) ListByDepartment(ctx context.Context, billingAccountI
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -898,7 +899,6 @@ func (client AlertsClient) listByDepartmentNextResults(ctx context.Context, last
 	result, err = client.ListByDepartmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByDepartmentNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -970,6 +970,7 @@ func (client AlertsClient) ListByEnrollment(ctx context.Context, billingAccountI
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1038,7 +1039,6 @@ func (client AlertsClient) listByEnrollmentNextResults(ctx context.Context, last
 	result, err = client.ListByEnrollmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByEnrollmentNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1110,6 +1110,7 @@ func (client AlertsClient) ListByManagementGroups(ctx context.Context, managemen
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1178,7 +1179,6 @@ func (client AlertsClient) listByManagementGroupsNextResults(ctx context.Context
 	result, err = client.ListByManagementGroupsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByManagementGroupsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1250,6 +1250,7 @@ func (client AlertsClient) ListByResourceGroupName(ctx context.Context, resource
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1319,7 +1320,6 @@ func (client AlertsClient) listByResourceGroupNameNextResults(ctx context.Contex
 	result, err = client.ListByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByResourceGroupNameNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

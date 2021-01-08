@@ -83,7 +83,7 @@ func (client ApplianceDefinitionsClient) CreateOrUpdate(ctx context.Context, res
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -121,7 +121,29 @@ func (client ApplianceDefinitionsClient) CreateOrUpdateSender(req *http.Request)
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ApplianceDefinitionsClient) (ad ApplianceDefinition, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("managedapplications.ApplianceDefinitionsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ad.Response.Response, err = future.GetResult(sender); err == nil && ad.Response.Response.StatusCode != http.StatusNoContent {
+			ad, err = client.CreateOrUpdateResponder(ad.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsCreateOrUpdateFuture", "Result", ad.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -171,7 +193,7 @@ func (client ApplianceDefinitionsClient) CreateOrUpdateByID(ctx context.Context,
 
 	result, err = client.CreateOrUpdateByIDSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsClient", "CreateOrUpdateByID", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsClient", "CreateOrUpdateByID", nil, "Failure sending request")
 		return
 	}
 
@@ -207,7 +229,29 @@ func (client ApplianceDefinitionsClient) CreateOrUpdateByIDSender(req *http.Requ
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ApplianceDefinitionsClient) (ad ApplianceDefinition, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsCreateOrUpdateByIDFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("managedapplications.ApplianceDefinitionsCreateOrUpdateByIDFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ad.Response.Response, err = future.GetResult(sender); err == nil && ad.Response.Response.StatusCode != http.StatusNoContent {
+			ad, err = client.CreateOrUpdateByIDResponder(ad.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsCreateOrUpdateByIDFuture", "Result", ad.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -257,7 +301,7 @@ func (client ApplianceDefinitionsClient) Delete(ctx context.Context, resourceGro
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -293,7 +337,23 @@ func (client ApplianceDefinitionsClient) DeleteSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ApplianceDefinitionsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("managedapplications.ApplianceDefinitionsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -332,7 +392,7 @@ func (client ApplianceDefinitionsClient) DeleteByID(ctx context.Context, applian
 
 	result, err = client.DeleteByIDSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsClient", "DeleteByID", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsClient", "DeleteByID", nil, "Failure sending request")
 		return
 	}
 
@@ -366,7 +426,23 @@ func (client ApplianceDefinitionsClient) DeleteByIDSender(req *http.Request) (fu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ApplianceDefinitionsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsDeleteByIDFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("managedapplications.ApplianceDefinitionsDeleteByIDFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -586,6 +662,7 @@ func (client ApplianceDefinitionsClient) ListByResourceGroup(ctx context.Context
 	}
 	if result.adlr.hasNextLink() && result.adlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -646,7 +723,6 @@ func (client ApplianceDefinitionsClient) listByResourceGroupNextResults(ctx cont
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

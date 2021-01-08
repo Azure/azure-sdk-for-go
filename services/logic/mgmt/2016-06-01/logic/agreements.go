@@ -751,6 +751,7 @@ func (client AgreementsClient) ListByIntegrationAccounts(ctx context.Context, re
 	}
 	if result.iaalr.hasNextLink() && result.iaalr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -818,7 +819,6 @@ func (client AgreementsClient) listByIntegrationAccountsNextResults(ctx context.
 	result, err = client.ListByIntegrationAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.AgreementsClient", "listByIntegrationAccountsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

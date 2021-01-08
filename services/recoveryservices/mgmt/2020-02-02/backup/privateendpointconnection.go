@@ -66,7 +66,7 @@ func (client PrivateEndpointConnectionClient) Delete(ctx context.Context, vaultN
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.PrivateEndpointConnectionClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "backup.PrivateEndpointConnectionClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -103,7 +103,23 @@ func (client PrivateEndpointConnectionClient) DeleteSender(req *http.Request) (f
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client PrivateEndpointConnectionClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "backup.PrivateEndpointConnectionDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("backup.PrivateEndpointConnectionDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -221,7 +237,7 @@ func (client PrivateEndpointConnectionClient) Put(ctx context.Context, vaultName
 
 	result, err = client.PutSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.PrivateEndpointConnectionClient", "Put", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "backup.PrivateEndpointConnectionClient", "Put", nil, "Failure sending request")
 		return
 	}
 
@@ -260,7 +276,29 @@ func (client PrivateEndpointConnectionClient) PutSender(req *http.Request) (futu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client PrivateEndpointConnectionClient) (pecr PrivateEndpointConnectionResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "backup.PrivateEndpointConnectionPutFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("backup.PrivateEndpointConnectionPutFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if pecr.Response.Response, err = future.GetResult(sender); err == nil && pecr.Response.Response.StatusCode != http.StatusNoContent {
+			pecr, err = client.PutResponder(pecr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "backup.PrivateEndpointConnectionPutFuture", "Result", pecr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

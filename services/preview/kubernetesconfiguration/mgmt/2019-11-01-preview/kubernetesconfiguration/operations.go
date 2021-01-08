@@ -75,6 +75,7 @@ func (client OperationsClient) List(ctx context.Context) (result ResourceProvide
 	}
 	if result.rpol.hasNextLink() && result.rpol.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -130,7 +131,6 @@ func (client OperationsClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kubernetesconfiguration.OperationsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

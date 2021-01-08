@@ -74,7 +74,7 @@ func (client AppServicePlansClient) CreateOrUpdate(ctx context.Context, resource
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -112,7 +112,29 @@ func (client AppServicePlansClient) CreateOrUpdateSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AppServicePlansClient) (asp AppServicePlan, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServicePlansCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.AppServicePlansCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if asp.Response.Response, err = future.GetResult(sender); err == nil && asp.Response.Response.StatusCode != http.StatusNoContent {
+			asp, err = client.CreateOrUpdateResponder(asp.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.AppServicePlansCreateOrUpdateFuture", "Result", asp.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -1115,6 +1137,7 @@ func (client AppServicePlansClient) List(ctx context.Context, detailed *bool) (r
 	}
 	if result.aspc.hasNextLink() && result.aspc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1177,7 +1200,6 @@ func (client AppServicePlansClient) listNextResults(ctx context.Context, lastRes
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1241,6 +1263,7 @@ func (client AppServicePlansClient) ListByResourceGroup(ctx context.Context, res
 	}
 	if result.aspc.hasNextLink() && result.aspc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1301,7 +1324,6 @@ func (client AppServicePlansClient) listByResourceGroupNextResults(ctx context.C
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1538,6 +1560,7 @@ func (client AppServicePlansClient) ListHybridConnections(ctx context.Context, r
 	}
 	if result.hcc.hasNextLink() && result.hcc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1599,7 +1622,6 @@ func (client AppServicePlansClient) listHybridConnectionsNextResults(ctx context
 	result, err = client.ListHybridConnectionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "listHybridConnectionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1664,6 +1686,7 @@ func (client AppServicePlansClient) ListMetricDefintions(ctx context.Context, re
 	}
 	if result.rmdc.hasNextLink() && result.rmdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1725,7 +1748,6 @@ func (client AppServicePlansClient) listMetricDefintionsNextResults(ctx context.
 	result, err = client.ListMetricDefintionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "listMetricDefintionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1794,6 +1816,7 @@ func (client AppServicePlansClient) ListMetrics(ctx context.Context, resourceGro
 	}
 	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1861,7 +1884,6 @@ func (client AppServicePlansClient) listMetricsNextResults(ctx context.Context, 
 	result, err = client.ListMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "listMetricsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2014,6 +2036,7 @@ func (client AppServicePlansClient) ListUsages(ctx context.Context, resourceGrou
 	}
 	if result.cuqc.hasNextLink() && result.cuqc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2078,7 +2101,6 @@ func (client AppServicePlansClient) listUsagesNextResults(ctx context.Context, l
 	result, err = client.ListUsagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "listUsagesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2232,6 +2254,7 @@ func (client AppServicePlansClient) ListWebApps(ctx context.Context, resourceGro
 	}
 	if result.ac.hasNextLink() && result.ac.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2302,7 +2325,6 @@ func (client AppServicePlansClient) listWebAppsNextResults(ctx context.Context, 
 	result, err = client.ListWebAppsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "listWebAppsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2369,6 +2391,7 @@ func (client AppServicePlansClient) ListWebAppsByHybridConnection(ctx context.Co
 	}
 	if result.rc.hasNextLink() && result.rc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2432,7 +2455,6 @@ func (client AppServicePlansClient) listWebAppsByHybridConnectionNextResults(ctx
 	result, err = client.ListWebAppsByHybridConnectionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "listWebAppsByHybridConnectionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

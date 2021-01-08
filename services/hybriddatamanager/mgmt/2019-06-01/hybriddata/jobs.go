@@ -77,7 +77,7 @@ func (client JobsClient) Cancel(ctx context.Context, dataServiceName string, job
 
 	result, err = client.CancelSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.JobsClient", "Cancel", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybriddata.JobsClient", "Cancel", nil, "Failure sending request")
 		return
 	}
 
@@ -116,7 +116,23 @@ func (client JobsClient) CancelSender(req *http.Request) (future JobsCancelFutur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client JobsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybriddata.JobsCancelFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hybriddata.JobsCancelFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -272,6 +288,7 @@ func (client JobsClient) ListByDataManager(ctx context.Context, resourceGroupNam
 	}
 	if result.jl.hasNextLink() && result.jl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -336,7 +353,6 @@ func (client JobsClient) listByDataManagerNextResults(ctx context.Context, lastR
 	result, err = client.ListByDataManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.JobsClient", "listByDataManagerNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -404,6 +420,7 @@ func (client JobsClient) ListByDataService(ctx context.Context, dataServiceName 
 	}
 	if result.jl.hasNextLink() && result.jl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -469,7 +486,6 @@ func (client JobsClient) listByDataServiceNextResults(ctx context.Context, lastR
 	result, err = client.ListByDataServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.JobsClient", "listByDataServiceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -538,6 +554,7 @@ func (client JobsClient) ListByJobDefinition(ctx context.Context, dataServiceNam
 	}
 	if result.jl.hasNextLink() && result.jl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -604,7 +621,6 @@ func (client JobsClient) listByJobDefinitionNextResults(ctx context.Context, las
 	result, err = client.ListByJobDefinitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.JobsClient", "listByJobDefinitionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -660,7 +676,7 @@ func (client JobsClient) Resume(ctx context.Context, dataServiceName string, job
 
 	result, err = client.ResumeSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.JobsClient", "Resume", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybriddata.JobsClient", "Resume", nil, "Failure sending request")
 		return
 	}
 
@@ -699,7 +715,23 @@ func (client JobsClient) ResumeSender(req *http.Request) (future JobsResumeFutur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client JobsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybriddata.JobsResumeFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hybriddata.JobsResumeFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

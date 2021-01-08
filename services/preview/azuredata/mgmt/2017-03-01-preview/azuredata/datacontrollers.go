@@ -227,6 +227,7 @@ func (client DataControllersClient) ListInGroup(ctx context.Context, resourceGro
 	}
 	if result.podcr.hasNextLink() && result.podcr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -287,7 +288,6 @@ func (client DataControllersClient) listInGroupNextResults(ctx context.Context, 
 	result, err = client.ListInGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.DataControllersClient", "listInGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -341,6 +341,7 @@ func (client DataControllersClient) ListInSubscription(ctx context.Context) (res
 	}
 	if result.podcr.hasNextLink() && result.podcr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -400,7 +401,6 @@ func (client DataControllersClient) listInSubscriptionNextResults(ctx context.Co
 	result, err = client.ListInSubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.DataControllersClient", "listInSubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

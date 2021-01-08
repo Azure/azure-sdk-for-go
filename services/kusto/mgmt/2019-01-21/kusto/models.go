@@ -261,127 +261,45 @@ func (cp ClusterProperties) MarshalJSON() ([]byte, error) {
 // ClustersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ClustersCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ClustersCreateOrUpdateFuture) Result(client ClustersClient) (c Cluster, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("kusto.ClustersCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if c.Response.Response, err = future.GetResult(sender); err == nil && c.Response.Response.StatusCode != http.StatusNoContent {
-		c, err = client.CreateOrUpdateResponder(c.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "kusto.ClustersCreateOrUpdateFuture", "Result", c.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ClustersClient) (Cluster, error)
 }
 
 // ClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ClustersDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ClustersDeleteFuture) Result(client ClustersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("kusto.ClustersDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ClustersClient) (autorest.Response, error)
 }
 
 // ClustersStartFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ClustersStartFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ClustersStartFuture) Result(client ClustersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersStartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("kusto.ClustersStartFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ClustersClient) (autorest.Response, error)
 }
 
 // ClustersStopFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ClustersStopFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ClustersStopFuture) Result(client ClustersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersStopFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("kusto.ClustersStopFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ClustersClient) (autorest.Response, error)
 }
 
 // ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ClustersUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ClustersUpdateFuture) Result(client ClustersClient) (c Cluster, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("kusto.ClustersUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if c.Response.Response, err = future.GetResult(sender); err == nil && c.Response.Response.StatusCode != http.StatusNoContent {
-		c, err = client.UpdateResponder(c.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "kusto.ClustersUpdateFuture", "Result", c.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ClustersClient) (Cluster, error)
 }
 
 // ClusterUpdate class representing an update to a Kusto cluster.
@@ -659,53 +577,19 @@ func (dp DatabaseProperties) MarshalJSON() ([]byte, error) {
 // DatabasesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DatabasesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DatabasesCreateOrUpdateFuture) Result(client DatabasesClient) (d Database, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.DatabasesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("kusto.DatabasesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
-		d, err = client.CreateOrUpdateResponder(d.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "kusto.DatabasesCreateOrUpdateFuture", "Result", d.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DatabasesClient) (Database, error)
 }
 
 // DatabasesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DatabasesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DatabasesDeleteFuture) Result(client DatabasesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.DatabasesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("kusto.DatabasesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DatabasesClient) (autorest.Response, error)
 }
 
 // DatabaseStatistics a class that contains database statistics information.
@@ -717,30 +601,10 @@ type DatabaseStatistics struct {
 // DatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DatabasesUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DatabasesUpdateFuture) Result(client DatabasesClient) (d Database, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.DatabasesUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("kusto.DatabasesUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
-		d, err = client.UpdateResponder(d.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "kusto.DatabasesUpdateFuture", "Result", d.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DatabasesClient) (Database, error)
 }
 
 // DatabaseUpdate class representing an update to a Kusto database.
@@ -984,82 +848,28 @@ func (dcm *DataConnectionModel) UnmarshalJSON(body []byte) error {
 // DataConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type DataConnectionsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DataConnectionsCreateOrUpdateFuture) Result(client DataConnectionsClient) (dcm DataConnectionModel, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.DataConnectionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("kusto.DataConnectionsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if dcm.Response.Response, err = future.GetResult(sender); err == nil && dcm.Response.Response.StatusCode != http.StatusNoContent {
-		dcm, err = client.CreateOrUpdateResponder(dcm.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "kusto.DataConnectionsCreateOrUpdateFuture", "Result", dcm.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DataConnectionsClient) (DataConnectionModel, error)
 }
 
 // DataConnectionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DataConnectionsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DataConnectionsDeleteFuture) Result(client DataConnectionsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.DataConnectionsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("kusto.DataConnectionsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DataConnectionsClient) (autorest.Response, error)
 }
 
 // DataConnectionsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DataConnectionsUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DataConnectionsUpdateFuture) Result(client DataConnectionsClient) (dcm DataConnectionModel, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.DataConnectionsUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("kusto.DataConnectionsUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if dcm.Response.Response, err = future.GetResult(sender); err == nil && dcm.Response.Response.StatusCode != http.StatusNoContent {
-		dcm, err = client.UpdateResponder(dcm.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "kusto.DataConnectionsUpdateFuture", "Result", dcm.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DataConnectionsClient) (DataConnectionModel, error)
 }
 
 // DataConnectionValidation class representing an data connection validation.

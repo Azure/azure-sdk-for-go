@@ -311,6 +311,7 @@ func (client ClientGroupsClient) ListMembers(ctx context.Context, resourceGroupN
 	}
 	if result.cgmc.hasNextLink() && result.cgmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -382,7 +383,6 @@ func (client ClientGroupsClient) listMembersNextResults(ctx context.Context, las
 	result, err = client.ListMembersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.ClientGroupsClient", "listMembersNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

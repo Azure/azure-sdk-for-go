@@ -78,7 +78,7 @@ func (client HardwareComponentGroupsClient) ChangeControllerPowerState(ctx conte
 
 	result, err = client.ChangeControllerPowerStateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.HardwareComponentGroupsClient", "ChangeControllerPowerState", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.HardwareComponentGroupsClient", "ChangeControllerPowerState", nil, "Failure sending request")
 		return
 	}
 
@@ -118,7 +118,23 @@ func (client HardwareComponentGroupsClient) ChangeControllerPowerStateSender(req
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client HardwareComponentGroupsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.HardwareComponentGroupsChangeControllerPowerStateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.HardwareComponentGroupsChangeControllerPowerStateFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

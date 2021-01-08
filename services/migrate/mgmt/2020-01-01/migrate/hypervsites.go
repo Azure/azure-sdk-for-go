@@ -232,6 +232,7 @@ func (client HyperVSitesClient) GetSiteHealthSummary(ctx context.Context, subscr
 	}
 	if result.shsc.hasNextLink() && result.shsc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -292,7 +293,6 @@ func (client HyperVSitesClient) getSiteHealthSummaryNextResults(ctx context.Cont
 	result, err = client.GetSiteHealthSummaryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVSitesClient", "getSiteHealthSummaryNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

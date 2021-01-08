@@ -398,6 +398,7 @@ func (client APIReleaseClient) List(ctx context.Context, resourceGroupName strin
 	}
 	if result.arc.hasNextLink() && result.arc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -469,7 +470,6 @@ func (client APIReleaseClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIReleaseClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

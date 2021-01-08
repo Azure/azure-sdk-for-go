@@ -18,11 +18,9 @@ package addons
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
 )
 
 // The package's fully qualified name.
@@ -162,57 +160,17 @@ type OperationsDisplayDefinition struct {
 // SupportPlanTypesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type SupportPlanTypesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SupportPlanTypesCreateOrUpdateFuture) Result(client SupportPlanTypesClient) (cspre CanonicalSupportPlanResponseEnvelope, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("addons.SupportPlanTypesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if cspre.Response.Response, err = future.GetResult(sender); err == nil && cspre.Response.Response.StatusCode != http.StatusNoContent {
-		cspre, err = client.CreateOrUpdateResponder(cspre.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesCreateOrUpdateFuture", "Result", cspre.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SupportPlanTypesClient) (CanonicalSupportPlanResponseEnvelope, error)
 }
 
 // SupportPlanTypesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SupportPlanTypesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SupportPlanTypesDeleteFuture) Result(client SupportPlanTypesClient) (cspre CanonicalSupportPlanResponseEnvelope, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("addons.SupportPlanTypesDeleteFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if cspre.Response.Response, err = future.GetResult(sender); err == nil && cspre.Response.Response.StatusCode != http.StatusNoContent {
-		cspre, err = client.DeleteResponder(cspre.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesDeleteFuture", "Result", cspre.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SupportPlanTypesClient) (CanonicalSupportPlanResponseEnvelope, error)
 }

@@ -74,7 +74,7 @@ func (client FileServersClient) BackupNow(ctx context.Context, deviceName string
 
 	result, err = client.BackupNowSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.FileServersClient", "BackupNow", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.FileServersClient", "BackupNow", nil, "Failure sending request")
 		return
 	}
 
@@ -112,7 +112,23 @@ func (client FileServersClient) BackupNowSender(req *http.Request) (future FileS
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client FileServersClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.FileServersBackupNowFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.FileServersBackupNowFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -166,7 +182,7 @@ func (client FileServersClient) CreateOrUpdate(ctx context.Context, deviceName s
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.FileServersClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.FileServersClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -206,7 +222,29 @@ func (client FileServersClient) CreateOrUpdateSender(req *http.Request) (future 
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client FileServersClient) (fs FileServer, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.FileServersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.FileServersCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if fs.Response.Response, err = future.GetResult(sender); err == nil && fs.Response.Response.StatusCode != http.StatusNoContent {
+			fs, err = client.CreateOrUpdateResponder(fs.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "storsimple.FileServersCreateOrUpdateFuture", "Result", fs.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -254,7 +292,7 @@ func (client FileServersClient) Delete(ctx context.Context, deviceName string, f
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.FileServersClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.FileServersClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -292,7 +330,23 @@ func (client FileServersClient) DeleteSender(req *http.Request) (future FileServ
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client FileServersClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.FileServersDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.FileServersDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

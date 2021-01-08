@@ -163,7 +163,7 @@ func (client CommunicationsClient) Create(ctx context.Context, supportTicketName
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "support.CommunicationsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "support.CommunicationsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -204,7 +204,29 @@ func (client CommunicationsClient) CreateSender(req *http.Request) (future Commu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client CommunicationsClient) (cd CommunicationDetails, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "support.CommunicationsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("support.CommunicationsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if cd.Response.Response, err = future.GetResult(sender); err == nil && cd.Response.Response.StatusCode != http.StatusNoContent {
+			cd, err = client.CreateResponder(cd.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "support.CommunicationsCreateFuture", "Result", cd.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -341,6 +363,7 @@ func (client CommunicationsClient) List(ctx context.Context, supportTicketName s
 	}
 	if result.clr.hasNextLink() && result.clr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -407,7 +430,6 @@ func (client CommunicationsClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "support.CommunicationsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

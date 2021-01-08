@@ -878,7 +878,7 @@ func (client SitesClient) CreateOrUpdateSite(ctx context.Context, resourceGroupN
 
 	result, err = client.CreateOrUpdateSiteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSite", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSite", nil, "Failure sending request")
 		return
 	}
 
@@ -928,7 +928,29 @@ func (client SitesClient) CreateOrUpdateSiteSender(req *http.Request) (future Si
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SitesClient) (s Site, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.SitesCreateOrUpdateSiteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.SitesCreateOrUpdateSiteFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+			s, err = client.CreateOrUpdateSiteResponder(s.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.SitesCreateOrUpdateSiteFuture", "Result", s.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -1463,7 +1485,7 @@ func (client SitesClient) CreateOrUpdateSiteSlot(ctx context.Context, resourceGr
 
 	result, err = client.CreateOrUpdateSiteSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteSlot", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteSlot", nil, "Failure sending request")
 		return
 	}
 
@@ -1514,7 +1536,29 @@ func (client SitesClient) CreateOrUpdateSiteSlotSender(req *http.Request) (futur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SitesClient) (s Site, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.SitesCreateOrUpdateSiteSlotFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.SitesCreateOrUpdateSiteSlotFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+			s, err = client.CreateOrUpdateSiteSlotResponder(s.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.SitesCreateOrUpdateSiteSlotFuture", "Result", s.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -3816,6 +3860,7 @@ func (client SitesClient) GetDeletedSites(ctx context.Context, resourceGroupName
 	}
 	if result.dsc.hasNextLink() && result.dsc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -3882,7 +3927,6 @@ func (client SitesClient) getDeletedSitesNextResults(ctx context.Context, lastRe
 	result, err = client.GetDeletedSitesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getDeletedSitesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -4017,6 +4061,7 @@ func (client SitesClient) GetDeployments(ctx context.Context, resourceGroupName 
 	}
 	if result.dc.hasNextLink() && result.dc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -4078,7 +4123,6 @@ func (client SitesClient) getDeploymentsNextResults(ctx context.Context, lastRes
 	result, err = client.GetDeploymentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getDeploymentsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -4216,6 +4260,7 @@ func (client SitesClient) GetDeploymentsSlot(ctx context.Context, resourceGroupN
 	}
 	if result.dc.hasNextLink() && result.dc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -4278,7 +4323,6 @@ func (client SitesClient) getDeploymentsSlotNextResults(ctx context.Context, las
 	result, err = client.GetDeploymentsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getDeploymentsSlotNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -4416,6 +4460,7 @@ func (client SitesClient) GetInstanceDeployments(ctx context.Context, resourceGr
 	}
 	if result.dc.hasNextLink() && result.dc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -4478,7 +4523,6 @@ func (client SitesClient) getInstanceDeploymentsNextResults(ctx context.Context,
 	result, err = client.GetInstanceDeploymentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getInstanceDeploymentsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -4619,6 +4663,7 @@ func (client SitesClient) GetInstanceDeploymentsSlot(ctx context.Context, resour
 	}
 	if result.dc.hasNextLink() && result.dc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -4682,7 +4727,6 @@ func (client SitesClient) getInstanceDeploymentsSlotNextResults(ctx context.Cont
 	result, err = client.GetInstanceDeploymentsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getInstanceDeploymentsSlotNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -5527,6 +5571,7 @@ func (client SitesClient) GetSiteHostNameBindings(ctx context.Context, resourceG
 	}
 	if result.hnbc.hasNextLink() && result.hnbc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -5588,7 +5633,6 @@ func (client SitesClient) getSiteHostNameBindingsNextResults(ctx context.Context
 	result, err = client.GetSiteHostNameBindingsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteHostNameBindingsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -5726,6 +5770,7 @@ func (client SitesClient) GetSiteHostNameBindingsSlot(ctx context.Context, resou
 	}
 	if result.hnbc.hasNextLink() && result.hnbc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -5788,7 +5833,6 @@ func (client SitesClient) getSiteHostNameBindingsSlotNextResults(ctx context.Con
 	result, err = client.GetSiteHostNameBindingsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteHostNameBindingsSlotNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -5845,6 +5889,7 @@ func (client SitesClient) GetSiteInstanceIdentifiers(ctx context.Context, resour
 	}
 	if result.sic.hasNextLink() && result.sic.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -5906,7 +5951,6 @@ func (client SitesClient) getSiteInstanceIdentifiersNextResults(ctx context.Cont
 	result, err = client.GetSiteInstanceIdentifiersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteInstanceIdentifiersNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -5964,6 +6008,7 @@ func (client SitesClient) GetSiteInstanceIdentifiersSlot(ctx context.Context, re
 	}
 	if result.sic.hasNextLink() && result.sic.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -6026,7 +6071,6 @@ func (client SitesClient) getSiteInstanceIdentifiersSlotNextResults(ctx context.
 	result, err = client.GetSiteInstanceIdentifiersSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteInstanceIdentifiersSlotNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -6237,6 +6281,7 @@ func (client SitesClient) GetSiteMetricDefinitions(ctx context.Context, resource
 	}
 	if result.mdc.hasNextLink() && result.mdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -6298,7 +6343,6 @@ func (client SitesClient) getSiteMetricDefinitionsNextResults(ctx context.Contex
 	result, err = client.GetSiteMetricDefinitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteMetricDefinitionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -6356,6 +6400,7 @@ func (client SitesClient) GetSiteMetricDefinitionsSlot(ctx context.Context, reso
 	}
 	if result.mdc.hasNextLink() && result.mdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -6418,7 +6463,6 @@ func (client SitesClient) getSiteMetricDefinitionsSlotNextResults(ctx context.Co
 	result, err = client.GetSiteMetricDefinitionsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteMetricDefinitionsSlotNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -6479,6 +6523,7 @@ func (client SitesClient) GetSiteMetrics(ctx context.Context, resourceGroupName 
 	}
 	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -6546,7 +6591,6 @@ func (client SitesClient) getSiteMetricsNextResults(ctx context.Context, lastRes
 	result, err = client.GetSiteMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteMetricsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -6608,6 +6652,7 @@ func (client SitesClient) GetSiteMetricsSlot(ctx context.Context, resourceGroupN
 	}
 	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -6676,7 +6721,6 @@ func (client SitesClient) getSiteMetricsSlotNextResults(ctx context.Context, las
 	result, err = client.GetSiteMetricsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteMetricsSlotNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -7358,6 +7402,7 @@ func (client SitesClient) GetSites(ctx context.Context, resourceGroupName string
 	}
 	if result.sc.hasNextLink() && result.sc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -7427,7 +7472,6 @@ func (client SitesClient) getSitesNextResults(ctx context.Context, lastResults S
 	result, err = client.GetSitesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSitesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -7567,6 +7611,7 @@ func (client SitesClient) GetSiteSlots(ctx context.Context, resourceGroupName st
 	}
 	if result.sc.hasNextLink() && result.sc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -7631,7 +7676,6 @@ func (client SitesClient) getSiteSlotsNextResults(ctx context.Context, lastResul
 	result, err = client.GetSiteSlotsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteSlotsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -7999,6 +8043,7 @@ func (client SitesClient) GetSiteUsages(ctx context.Context, resourceGroupName s
 	}
 	if result.cuqc.hasNextLink() && result.cuqc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -8063,7 +8108,6 @@ func (client SitesClient) getSiteUsagesNextResults(ctx context.Context, lastResu
 	result, err = client.GetSiteUsagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteUsagesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -8124,6 +8168,7 @@ func (client SitesClient) GetSiteUsagesSlot(ctx context.Context, resourceGroupNa
 	}
 	if result.cuqc.hasNextLink() && result.cuqc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -8189,7 +8234,6 @@ func (client SitesClient) getSiteUsagesSlotNextResults(ctx context.Context, last
 	result, err = client.GetSiteUsagesSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSiteUsagesSlotNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -8797,6 +8841,7 @@ func (client SitesClient) GetSlotsDifferencesFromProduction(ctx context.Context,
 	}
 	if result.sdc.hasNextLink() && result.sdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -8860,7 +8905,6 @@ func (client SitesClient) getSlotsDifferencesFromProductionNextResults(ctx conte
 	result, err = client.GetSlotsDifferencesFromProductionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSlotsDifferencesFromProductionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -8919,6 +8963,7 @@ func (client SitesClient) GetSlotsDifferencesSlot(ctx context.Context, resourceG
 	}
 	if result.sdc.hasNextLink() && result.sdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -8983,7 +9028,6 @@ func (client SitesClient) getSlotsDifferencesSlotNextResults(ctx context.Context
 	result, err = client.GetSlotsDifferencesSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "getSlotsDifferencesSlotNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -9502,6 +9546,7 @@ func (client SitesClient) ListSiteBackups(ctx context.Context, resourceGroupName
 	}
 	if result.bic.hasNextLink() && result.bic.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -9563,7 +9608,6 @@ func (client SitesClient) listSiteBackupsNextResults(ctx context.Context, lastRe
 	result, err = client.ListSiteBackupsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "listSiteBackupsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -9621,6 +9665,7 @@ func (client SitesClient) ListSiteBackupsSlot(ctx context.Context, resourceGroup
 	}
 	if result.bic.hasNextLink() && result.bic.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -9683,7 +9728,6 @@ func (client SitesClient) listSiteBackupsSlotNextResults(ctx context.Context, la
 	result, err = client.ListSiteBackupsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "listSiteBackupsSlotNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -10182,7 +10226,7 @@ func (client SitesClient) ListSitePublishingCredentials(ctx context.Context, res
 
 	result, err = client.ListSitePublishingCredentialsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSitePublishingCredentials", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSitePublishingCredentials", nil, "Failure sending request")
 		return
 	}
 
@@ -10218,7 +10262,29 @@ func (client SitesClient) ListSitePublishingCredentialsSender(req *http.Request)
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SitesClient) (u User, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.SitesListSitePublishingCredentialsFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.SitesListSitePublishingCredentialsFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if u.Response.Response, err = future.GetResult(sender); err == nil && u.Response.Response.StatusCode != http.StatusNoContent {
+			u, err = client.ListSitePublishingCredentialsResponder(u.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.SitesListSitePublishingCredentialsFuture", "Result", u.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -10258,7 +10324,7 @@ func (client SitesClient) ListSitePublishingCredentialsSlot(ctx context.Context,
 
 	result, err = client.ListSitePublishingCredentialsSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSitePublishingCredentialsSlot", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSitePublishingCredentialsSlot", nil, "Failure sending request")
 		return
 	}
 
@@ -10295,7 +10361,29 @@ func (client SitesClient) ListSitePublishingCredentialsSlotSender(req *http.Requ
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SitesClient) (u User, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.SitesListSitePublishingCredentialsSlotFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.SitesListSitePublishingCredentialsSlotFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if u.Response.Response, err = future.GetResult(sender); err == nil && u.Response.Response.StatusCode != http.StatusNoContent {
+			u, err = client.ListSitePublishingCredentialsSlotResponder(u.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.SitesListSitePublishingCredentialsSlotFuture", "Result", u.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -10650,7 +10738,7 @@ func (client SitesClient) RecoverSite(ctx context.Context, resourceGroupName str
 
 	result, err = client.RecoverSiteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.SitesClient", "RecoverSite", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "RecoverSite", nil, "Failure sending request")
 		return
 	}
 
@@ -10688,7 +10776,29 @@ func (client SitesClient) RecoverSiteSender(req *http.Request) (future SitesReco
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SitesClient) (s Site, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.SitesRecoverSiteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.SitesRecoverSiteFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+			s, err = client.RecoverSiteResponder(s.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.SitesRecoverSiteFuture", "Result", s.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -10730,7 +10840,7 @@ func (client SitesClient) RecoverSiteSlot(ctx context.Context, resourceGroupName
 
 	result, err = client.RecoverSiteSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.SitesClient", "RecoverSiteSlot", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "RecoverSiteSlot", nil, "Failure sending request")
 		return
 	}
 
@@ -10769,7 +10879,29 @@ func (client SitesClient) RecoverSiteSlotSender(req *http.Request) (future Sites
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SitesClient) (s Site, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.SitesRecoverSiteSlotFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.SitesRecoverSiteSlotFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+			s, err = client.RecoverSiteSlotResponder(s.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.SitesRecoverSiteSlotFuture", "Result", s.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -11136,7 +11268,7 @@ func (client SitesClient) RestoreSite(ctx context.Context, resourceGroupName str
 
 	result, err = client.RestoreSiteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.SitesClient", "RestoreSite", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "RestoreSite", nil, "Failure sending request")
 		return
 	}
 
@@ -11175,7 +11307,29 @@ func (client SitesClient) RestoreSiteSender(req *http.Request) (future SitesRest
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SitesClient) (rr RestoreResponse, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.SitesRestoreSiteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.SitesRestoreSiteFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if rr.Response.Response, err = future.GetResult(sender); err == nil && rr.Response.Response.StatusCode != http.StatusNoContent {
+			rr, err = client.RestoreSiteResponder(rr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.SitesRestoreSiteFuture", "Result", rr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -11217,7 +11371,7 @@ func (client SitesClient) RestoreSiteSlot(ctx context.Context, resourceGroupName
 
 	result, err = client.RestoreSiteSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.SitesClient", "RestoreSiteSlot", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "RestoreSiteSlot", nil, "Failure sending request")
 		return
 	}
 
@@ -11257,7 +11411,29 @@ func (client SitesClient) RestoreSiteSlotSender(req *http.Request) (future Sites
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SitesClient) (rr RestoreResponse, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.SitesRestoreSiteSlotFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.SitesRestoreSiteSlotFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if rr.Response.Response, err = future.GetResult(sender); err == nil && rr.Response.Response.StatusCode != http.StatusNoContent {
+			rr, err = client.RestoreSiteSlotResponder(rr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.SitesRestoreSiteSlotFuture", "Result", rr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -11606,7 +11782,7 @@ func (client SitesClient) SwapSlotsSlot(ctx context.Context, resourceGroupName s
 
 	result, err = client.SwapSlotsSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.SitesClient", "SwapSlotsSlot", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "SwapSlotsSlot", nil, "Failure sending request")
 		return
 	}
 
@@ -11645,7 +11821,29 @@ func (client SitesClient) SwapSlotsSlotSender(req *http.Request) (future SitesSw
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SitesClient) (so SetObject, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.SitesSwapSlotsSlotFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.SitesSwapSlotsSlotFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+			so, err = client.SwapSlotsSlotResponder(so.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.SitesSwapSlotsSlotFuture", "Result", so.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -11685,7 +11883,7 @@ func (client SitesClient) SwapSlotWithProduction(ctx context.Context, resourceGr
 
 	result, err = client.SwapSlotWithProductionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.SitesClient", "SwapSlotWithProduction", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "SwapSlotWithProduction", nil, "Failure sending request")
 		return
 	}
 
@@ -11723,7 +11921,29 @@ func (client SitesClient) SwapSlotWithProductionSender(req *http.Request) (futur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SitesClient) (so SetObject, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.SitesSwapSlotWithProductionFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.SitesSwapSlotWithProductionFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+			so, err = client.SwapSlotWithProductionResponder(so.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.SitesSwapSlotWithProductionFuture", "Result", so.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

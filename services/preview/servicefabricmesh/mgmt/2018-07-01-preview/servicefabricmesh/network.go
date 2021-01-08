@@ -320,6 +320,7 @@ func (client NetworkClient) ListByResourceGroup(ctx context.Context, resourceGro
 	}
 	if result.nrdl.hasNextLink() && result.nrdl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -380,7 +381,6 @@ func (client NetworkClient) listByResourceGroupNextResults(ctx context.Context, 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.NetworkClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -435,6 +435,7 @@ func (client NetworkClient) ListBySubscription(ctx context.Context) (result Netw
 	}
 	if result.nrdl.hasNextLink() && result.nrdl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -494,7 +495,6 @@ func (client NetworkClient) listBySubscriptionNextResults(ctx context.Context, l
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.NetworkClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

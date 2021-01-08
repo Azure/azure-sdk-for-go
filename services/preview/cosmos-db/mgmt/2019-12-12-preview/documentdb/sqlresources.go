@@ -93,7 +93,7 @@ func (client SQLResourcesClient) CreateUpdateSQLContainer(ctx context.Context, r
 
 	result, err = client.CreateUpdateSQLContainerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLContainer", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLContainer", nil, "Failure sending request")
 		return
 	}
 
@@ -133,7 +133,29 @@ func (client SQLResourcesClient) CreateUpdateSQLContainerSender(req *http.Reques
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SQLResourcesClient) (scgr SQLContainerGetResults, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLContainerFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesCreateUpdateSQLContainerFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if scgr.Response.Response, err = future.GetResult(sender); err == nil && scgr.Response.Response.StatusCode != http.StatusNoContent {
+			scgr, err = client.CreateUpdateSQLContainerResponder(scgr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLContainerFuture", "Result", scgr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -192,7 +214,7 @@ func (client SQLResourcesClient) CreateUpdateSQLDatabase(ctx context.Context, re
 
 	result, err = client.CreateUpdateSQLDatabaseSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLDatabase", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLDatabase", nil, "Failure sending request")
 		return
 	}
 
@@ -231,7 +253,29 @@ func (client SQLResourcesClient) CreateUpdateSQLDatabaseSender(req *http.Request
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SQLResourcesClient) (sdgr SQLDatabaseGetResults, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLDatabaseFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesCreateUpdateSQLDatabaseFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if sdgr.Response.Response, err = future.GetResult(sender); err == nil && sdgr.Response.Response.StatusCode != http.StatusNoContent {
+			sdgr, err = client.CreateUpdateSQLDatabaseResponder(sdgr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLDatabaseFuture", "Result", sdgr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -292,7 +336,7 @@ func (client SQLResourcesClient) CreateUpdateSQLStoredProcedure(ctx context.Cont
 
 	result, err = client.CreateUpdateSQLStoredProcedureSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLStoredProcedure", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLStoredProcedure", nil, "Failure sending request")
 		return
 	}
 
@@ -333,7 +377,29 @@ func (client SQLResourcesClient) CreateUpdateSQLStoredProcedureSender(req *http.
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SQLResourcesClient) (sspgr SQLStoredProcedureGetResults, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLStoredProcedureFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesCreateUpdateSQLStoredProcedureFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if sspgr.Response.Response, err = future.GetResult(sender); err == nil && sspgr.Response.Response.StatusCode != http.StatusNoContent {
+			sspgr, err = client.CreateUpdateSQLStoredProcedureResponder(sspgr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLStoredProcedureFuture", "Result", sspgr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -394,7 +460,7 @@ func (client SQLResourcesClient) CreateUpdateSQLTrigger(ctx context.Context, res
 
 	result, err = client.CreateUpdateSQLTriggerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLTrigger", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLTrigger", nil, "Failure sending request")
 		return
 	}
 
@@ -435,7 +501,29 @@ func (client SQLResourcesClient) CreateUpdateSQLTriggerSender(req *http.Request)
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SQLResourcesClient) (stgr SQLTriggerGetResults, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLTriggerFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesCreateUpdateSQLTriggerFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if stgr.Response.Response, err = future.GetResult(sender); err == nil && stgr.Response.Response.StatusCode != http.StatusNoContent {
+			stgr, err = client.CreateUpdateSQLTriggerResponder(stgr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLTriggerFuture", "Result", stgr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -497,7 +585,7 @@ func (client SQLResourcesClient) CreateUpdateSQLUserDefinedFunction(ctx context.
 
 	result, err = client.CreateUpdateSQLUserDefinedFunctionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLUserDefinedFunction", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLUserDefinedFunction", nil, "Failure sending request")
 		return
 	}
 
@@ -538,7 +626,29 @@ func (client SQLResourcesClient) CreateUpdateSQLUserDefinedFunctionSender(req *h
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SQLResourcesClient) (sudfgr SQLUserDefinedFunctionGetResults, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLUserDefinedFunctionFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesCreateUpdateSQLUserDefinedFunctionFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if sudfgr.Response.Response, err = future.GetResult(sender); err == nil && sudfgr.Response.Response.StatusCode != http.StatusNoContent {
+			sudfgr, err = client.CreateUpdateSQLUserDefinedFunctionResponder(sudfgr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLUserDefinedFunctionFuture", "Result", sudfgr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -591,7 +701,7 @@ func (client SQLResourcesClient) DeleteSQLContainer(ctx context.Context, resourc
 
 	result, err = client.DeleteSQLContainerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLContainer", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLContainer", nil, "Failure sending request")
 		return
 	}
 
@@ -629,7 +739,23 @@ func (client SQLResourcesClient) DeleteSQLContainerSender(req *http.Request) (fu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SQLResourcesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesDeleteSQLContainerFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesDeleteSQLContainerFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -680,7 +806,7 @@ func (client SQLResourcesClient) DeleteSQLDatabase(ctx context.Context, resource
 
 	result, err = client.DeleteSQLDatabaseSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLDatabase", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLDatabase", nil, "Failure sending request")
 		return
 	}
 
@@ -717,7 +843,23 @@ func (client SQLResourcesClient) DeleteSQLDatabaseSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SQLResourcesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesDeleteSQLDatabaseFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesDeleteSQLDatabaseFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -770,7 +912,7 @@ func (client SQLResourcesClient) DeleteSQLStoredProcedure(ctx context.Context, r
 
 	result, err = client.DeleteSQLStoredProcedureSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLStoredProcedure", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLStoredProcedure", nil, "Failure sending request")
 		return
 	}
 
@@ -809,7 +951,23 @@ func (client SQLResourcesClient) DeleteSQLStoredProcedureSender(req *http.Reques
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SQLResourcesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesDeleteSQLStoredProcedureFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesDeleteSQLStoredProcedureFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -862,7 +1020,7 @@ func (client SQLResourcesClient) DeleteSQLTrigger(ctx context.Context, resourceG
 
 	result, err = client.DeleteSQLTriggerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLTrigger", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLTrigger", nil, "Failure sending request")
 		return
 	}
 
@@ -901,7 +1059,23 @@ func (client SQLResourcesClient) DeleteSQLTriggerSender(req *http.Request) (futu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SQLResourcesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesDeleteSQLTriggerFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesDeleteSQLTriggerFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -954,7 +1128,7 @@ func (client SQLResourcesClient) DeleteSQLUserDefinedFunction(ctx context.Contex
 
 	result, err = client.DeleteSQLUserDefinedFunctionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLUserDefinedFunction", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLUserDefinedFunction", nil, "Failure sending request")
 		return
 	}
 
@@ -993,7 +1167,23 @@ func (client SQLResourcesClient) DeleteSQLUserDefinedFunctionSender(req *http.Re
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SQLResourcesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesDeleteSQLUserDefinedFunctionFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesDeleteSQLUserDefinedFunctionFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -2155,7 +2345,7 @@ func (client SQLResourcesClient) UpdateSQLContainerThroughput(ctx context.Contex
 
 	result, err = client.UpdateSQLContainerThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "UpdateSQLContainerThroughput", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "UpdateSQLContainerThroughput", nil, "Failure sending request")
 		return
 	}
 
@@ -2195,7 +2385,29 @@ func (client SQLResourcesClient) UpdateSQLContainerThroughputSender(req *http.Re
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SQLResourcesClient) (tsgr ThroughputSettingsGetResults, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesUpdateSQLContainerThroughputFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesUpdateSQLContainerThroughputFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if tsgr.Response.Response, err = future.GetResult(sender); err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
+			tsgr, err = client.UpdateSQLContainerThroughputResponder(tsgr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesUpdateSQLContainerThroughputFuture", "Result", tsgr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -2255,7 +2467,7 @@ func (client SQLResourcesClient) UpdateSQLDatabaseThroughput(ctx context.Context
 
 	result, err = client.UpdateSQLDatabaseThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "UpdateSQLDatabaseThroughput", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "UpdateSQLDatabaseThroughput", nil, "Failure sending request")
 		return
 	}
 
@@ -2294,7 +2506,29 @@ func (client SQLResourcesClient) UpdateSQLDatabaseThroughputSender(req *http.Req
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SQLResourcesClient) (tsgr ThroughputSettingsGetResults, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesUpdateSQLDatabaseThroughputFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesUpdateSQLDatabaseThroughputFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if tsgr.Response.Response, err = future.GetResult(sender); err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
+			tsgr, err = client.UpdateSQLDatabaseThroughputResponder(tsgr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesUpdateSQLDatabaseThroughputFuture", "Result", tsgr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

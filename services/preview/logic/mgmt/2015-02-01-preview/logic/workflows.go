@@ -458,6 +458,7 @@ func (client WorkflowsClient) ListByResourceGroup(ctx context.Context, resourceG
 	}
 	if result.wlr.hasNextLink() && result.wlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -524,7 +525,6 @@ func (client WorkflowsClient) listByResourceGroupNextResults(ctx context.Context
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -581,6 +581,7 @@ func (client WorkflowsClient) ListBySubscription(ctx context.Context, top *int32
 	}
 	if result.wlr.hasNextLink() && result.wlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -646,7 +647,6 @@ func (client WorkflowsClient) listBySubscriptionNextResults(ctx context.Context,
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -691,7 +691,7 @@ func (client WorkflowsClient) Run(ctx context.Context, resourceGroupName string,
 
 	result, err = client.RunSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Run", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Run", nil, "Failure sending request")
 		return
 	}
 
@@ -729,7 +729,29 @@ func (client WorkflowsClient) RunSender(req *http.Request) (future WorkflowsRunF
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client WorkflowsClient) (wr WorkflowRun, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "logic.WorkflowsRunFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("logic.WorkflowsRunFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if wr.Response.Response, err = future.GetResult(sender); err == nil && wr.Response.Response.StatusCode != http.StatusNoContent {
+			wr, err = client.RunResponder(wr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "logic.WorkflowsRunFuture", "Result", wr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

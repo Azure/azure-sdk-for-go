@@ -84,7 +84,7 @@ func (client ControllersClient) Create(ctx context.Context, resourceGroupName st
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "devspaces.ControllersClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "devspaces.ControllersClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -122,7 +122,29 @@ func (client ControllersClient) CreateSender(req *http.Request) (future Controll
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ControllersClient) (c Controller, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "devspaces.ControllersCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("devspaces.ControllersCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if c.Response.Response, err = future.GetResult(sender); err == nil && c.Response.Response.StatusCode != http.StatusNoContent {
+			c, err = client.CreateResponder(c.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "devspaces.ControllersCreateFuture", "Result", c.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -172,7 +194,7 @@ func (client ControllersClient) Delete(ctx context.Context, resourceGroupName st
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "devspaces.ControllersClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "devspaces.ControllersClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -208,7 +230,23 @@ func (client ControllersClient) DeleteSender(req *http.Request) (future Controll
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ControllersClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "devspaces.ControllersDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("devspaces.ControllersDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -343,6 +381,7 @@ func (client ControllersClient) List(ctx context.Context) (result ControllerList
 	}
 	if result.cl.hasNextLink() && result.cl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -402,7 +441,6 @@ func (client ControllersClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devspaces.ControllersClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -466,6 +504,7 @@ func (client ControllersClient) ListByResourceGroup(ctx context.Context, resourc
 	}
 	if result.cl.hasNextLink() && result.cl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -526,7 +565,6 @@ func (client ControllersClient) listByResourceGroupNextResults(ctx context.Conte
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devspaces.ControllersClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

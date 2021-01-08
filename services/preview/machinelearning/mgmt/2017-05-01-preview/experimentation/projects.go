@@ -385,6 +385,7 @@ func (client ProjectsClient) ListByWorkspace(ctx context.Context, accountName st
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -447,7 +448,6 @@ func (client ProjectsClient) listByWorkspaceNextResults(ctx context.Context, las
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "experimentation.ProjectsClient", "listByWorkspaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

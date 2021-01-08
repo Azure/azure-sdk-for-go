@@ -168,6 +168,7 @@ func (client PeriodsClient) List(ctx context.Context, filter string, skiptoken s
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -236,7 +237,6 @@ func (client PeriodsClient) listNextResults(ctx context.Context, lastResults Per
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PeriodsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

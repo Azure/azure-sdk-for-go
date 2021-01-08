@@ -86,7 +86,7 @@ func (client InboundNatRulesClient) CreateOrUpdate(ctx context.Context, resource
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InboundNatRulesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.InboundNatRulesClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -125,7 +125,29 @@ func (client InboundNatRulesClient) CreateOrUpdateSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client InboundNatRulesClient) (inr InboundNatRule, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.InboundNatRulesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("network.InboundNatRulesCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if inr.Response.Response, err = future.GetResult(sender); err == nil && inr.Response.Response.StatusCode != http.StatusNoContent {
+			inr, err = client.CreateOrUpdateResponder(inr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "network.InboundNatRulesCreateOrUpdateFuture", "Result", inr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -165,7 +187,7 @@ func (client InboundNatRulesClient) Delete(ctx context.Context, resourceGroupNam
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InboundNatRulesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.InboundNatRulesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -202,7 +224,23 @@ func (client InboundNatRulesClient) DeleteSender(req *http.Request) (future Inbo
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client InboundNatRulesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.InboundNatRulesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("network.InboundNatRulesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -335,6 +373,7 @@ func (client InboundNatRulesClient) List(ctx context.Context, resourceGroupName 
 	}
 	if result.inrlr.hasNextLink() && result.inrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -396,7 +435,6 @@ func (client InboundNatRulesClient) listNextResults(ctx context.Context, lastRes
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InboundNatRulesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

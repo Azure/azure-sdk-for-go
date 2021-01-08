@@ -233,6 +233,7 @@ func (client InformationProtectionPoliciesClient) List(ctx context.Context, scop
 	}
 	if result.ippl.hasNextLink() && result.ippl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -292,7 +293,6 @@ func (client InformationProtectionPoliciesClient) listNextResults(ctx context.Co
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.InformationProtectionPoliciesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

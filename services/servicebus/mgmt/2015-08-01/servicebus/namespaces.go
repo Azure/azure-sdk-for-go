@@ -157,7 +157,7 @@ func (client NamespacesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -195,7 +195,29 @@ func (client NamespacesClient) CreateOrUpdateSender(req *http.Request) (future N
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client NamespacesClient) (nr NamespaceResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "servicebus.NamespacesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("servicebus.NamespacesCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if nr.Response.Response, err = future.GetResult(sender); err == nil && nr.Response.Response.StatusCode != http.StatusNoContent {
+			nr, err = client.CreateOrUpdateResponder(nr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "servicebus.NamespacesCreateOrUpdateFuture", "Result", nr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -341,7 +363,7 @@ func (client NamespacesClient) Delete(ctx context.Context, resourceGroupName str
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -377,7 +399,23 @@ func (client NamespacesClient) DeleteSender(req *http.Request) (future Namespace
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client NamespacesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "servicebus.NamespacesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("servicebus.NamespacesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -705,6 +743,7 @@ func (client NamespacesClient) ListAuthorizationRules(ctx context.Context, resou
 	}
 	if result.saarlr.hasNextLink() && result.saarlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -766,7 +805,6 @@ func (client NamespacesClient) listAuthorizationRulesNextResults(ctx context.Con
 	result, err = client.ListAuthorizationRulesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "listAuthorizationRulesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -829,6 +867,7 @@ func (client NamespacesClient) ListByResourceGroup(ctx context.Context, resource
 	}
 	if result.nlr.hasNextLink() && result.nlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -889,7 +928,6 @@ func (client NamespacesClient) listByResourceGroupNextResults(ctx context.Contex
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -943,6 +981,7 @@ func (client NamespacesClient) ListBySubscription(ctx context.Context) (result N
 	}
 	if result.nlr.hasNextLink() && result.nlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1002,7 +1041,6 @@ func (client NamespacesClient) listBySubscriptionNextResults(ctx context.Context
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

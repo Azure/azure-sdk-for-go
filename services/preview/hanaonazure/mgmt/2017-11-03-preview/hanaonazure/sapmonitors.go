@@ -65,7 +65,7 @@ func (client SapMonitorsClient) Create(ctx context.Context, resourceGroupName st
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -103,7 +103,29 @@ func (client SapMonitorsClient) CreateSender(req *http.Request) (future SapMonit
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SapMonitorsClient) (sm SapMonitor, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hanaonazure.SapMonitorsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if sm.Response.Response, err = future.GetResult(sender); err == nil && sm.Response.Response.StatusCode != http.StatusNoContent {
+			sm, err = client.CreateResponder(sm.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsCreateFuture", "Result", sm.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -142,7 +164,7 @@ func (client SapMonitorsClient) Delete(ctx context.Context, resourceGroupName st
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -178,7 +200,23 @@ func (client SapMonitorsClient) DeleteSender(req *http.Request) (future SapMonit
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SapMonitorsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hanaonazure.SapMonitorsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -303,6 +341,7 @@ func (client SapMonitorsClient) List(ctx context.Context) (result SapMonitorList
 	}
 	if result.smlr.hasNextLink() && result.smlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -362,7 +401,6 @@ func (client SapMonitorsClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

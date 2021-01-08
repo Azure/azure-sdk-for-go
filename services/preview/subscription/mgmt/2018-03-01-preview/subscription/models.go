@@ -84,30 +84,10 @@ type ErrorResponse struct {
 // FactoryCreateSubscriptionInEnrollmentAccountFuture an abstraction for monitoring and retrieving the
 // results of a long-running operation.
 type FactoryCreateSubscriptionInEnrollmentAccountFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *FactoryCreateSubscriptionInEnrollmentAccountFuture) Result(client FactoryClient) (cr CreationResult, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.FactoryCreateSubscriptionInEnrollmentAccountFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("subscription.FactoryCreateSubscriptionInEnrollmentAccountFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if cr.Response.Response, err = future.GetResult(sender); err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
-		cr, err = client.CreateSubscriptionInEnrollmentAccountResponder(cr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "subscription.FactoryCreateSubscriptionInEnrollmentAccountFuture", "Result", cr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(FactoryClient) (CreationResult, error)
 }
 
 // ListResult subscription list operation response.

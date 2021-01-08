@@ -78,7 +78,7 @@ func (client ProfilesClient) CreateOrUpdate(ctx context.Context, billingAccountN
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.ProfilesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.ProfilesClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -115,7 +115,29 @@ func (client ProfilesClient) CreateOrUpdateSender(req *http.Request) (future Pro
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ProfilesClient) (p Profile, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.ProfilesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("billing.ProfilesCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if p.Response.Response, err = future.GetResult(sender); err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
+			p, err = client.CreateOrUpdateResponder(p.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "billing.ProfilesCreateOrUpdateFuture", "Result", p.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -248,6 +270,7 @@ func (client ProfilesClient) ListByBillingAccount(ctx context.Context, billingAc
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -310,7 +333,6 @@ func (client ProfilesClient) listByBillingAccountNextResults(ctx context.Context
 	result, err = client.ListByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProfilesClient", "listByBillingAccountNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

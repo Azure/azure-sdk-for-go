@@ -145,7 +145,7 @@ func (client MonitoringSettingsClient) UpdatePatch(ctx context.Context, resource
 
 	result, err = client.UpdatePatchSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "appplatform.MonitoringSettingsClient", "UpdatePatch", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "appplatform.MonitoringSettingsClient", "UpdatePatch", nil, "Failure sending request")
 		return
 	}
 
@@ -183,7 +183,29 @@ func (client MonitoringSettingsClient) UpdatePatchSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client MonitoringSettingsClient) (msr MonitoringSettingResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "appplatform.MonitoringSettingsUpdatePatchFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("appplatform.MonitoringSettingsUpdatePatchFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if msr.Response.Response, err = future.GetResult(sender); err == nil && msr.Response.Response.StatusCode != http.StatusNoContent {
+			msr, err = client.UpdatePatchResponder(msr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "appplatform.MonitoringSettingsUpdatePatchFuture", "Result", msr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -235,7 +257,7 @@ func (client MonitoringSettingsClient) UpdatePut(ctx context.Context, resourceGr
 
 	result, err = client.UpdatePutSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "appplatform.MonitoringSettingsClient", "UpdatePut", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "appplatform.MonitoringSettingsClient", "UpdatePut", nil, "Failure sending request")
 		return
 	}
 
@@ -273,7 +295,29 @@ func (client MonitoringSettingsClient) UpdatePutSender(req *http.Request) (futur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client MonitoringSettingsClient) (msr MonitoringSettingResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "appplatform.MonitoringSettingsUpdatePutFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("appplatform.MonitoringSettingsUpdatePutFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if msr.Response.Response, err = future.GetResult(sender); err == nil && msr.Response.Response.StatusCode != http.StatusNoContent {
+			msr, err = client.UpdatePutResponder(msr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "appplatform.MonitoringSettingsUpdatePutFuture", "Result", msr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

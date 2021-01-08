@@ -69,7 +69,7 @@ func (client DatabasesClient) Failover(ctx context.Context, resourceGroupName st
 
 	result, err = client.FailoverSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesClient", "Failover", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.DatabasesClient", "Failover", nil, "Failure sending request")
 		return
 	}
 
@@ -109,7 +109,23 @@ func (client DatabasesClient) FailoverSender(req *http.Request) (future Database
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DatabasesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.DatabasesFailoverFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("sql.DatabasesFailoverFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

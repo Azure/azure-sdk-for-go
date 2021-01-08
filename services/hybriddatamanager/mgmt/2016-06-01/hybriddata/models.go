@@ -295,82 +295,28 @@ type DataManagerList struct {
 // DataManagersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DataManagersCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DataManagersCreateFuture) Result(client DataManagersClient) (dm DataManager, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.DataManagersCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybriddata.DataManagersCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if dm.Response.Response, err = future.GetResult(sender); err == nil && dm.Response.Response.StatusCode != http.StatusNoContent {
-		dm, err = client.CreateResponder(dm.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "hybriddata.DataManagersCreateFuture", "Result", dm.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DataManagersClient) (DataManager, error)
 }
 
 // DataManagersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DataManagersDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DataManagersDeleteFuture) Result(client DataManagersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.DataManagersDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybriddata.DataManagersDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DataManagersClient) (autorest.Response, error)
 }
 
 // DataManagersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DataManagersUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DataManagersUpdateFuture) Result(client DataManagersClient) (dm DataManager, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.DataManagersUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybriddata.DataManagersUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if dm.Response.Response, err = future.GetResult(sender); err == nil && dm.Response.Response.StatusCode != http.StatusNoContent {
-		dm, err = client.UpdateResponder(dm.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "hybriddata.DataManagersUpdateFuture", "Result", dm.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DataManagersClient) (DataManager, error)
 }
 
 // DataManagerUpdateParameter the DataManagerUpdateParameter.
@@ -891,53 +837,19 @@ type DataStoreProperties struct {
 // DataStoresCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type DataStoresCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DataStoresCreateOrUpdateFuture) Result(client DataStoresClient) (ds DataStore, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.DataStoresCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybriddata.DataStoresCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ds.Response.Response, err = future.GetResult(sender); err == nil && ds.Response.Response.StatusCode != http.StatusNoContent {
-		ds, err = client.CreateOrUpdateResponder(ds.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "hybriddata.DataStoresCreateOrUpdateFuture", "Result", ds.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DataStoresClient) (DataStore, error)
 }
 
 // DataStoresDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DataStoresDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DataStoresDeleteFuture) Result(client DataStoresClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.DataStoresDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybriddata.DataStoresDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DataStoresClient) (autorest.Response, error)
 }
 
 // DataStoreType data Store Type.
@@ -1610,76 +1522,28 @@ type JobDefinitionProperties struct {
 // JobDefinitionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type JobDefinitionsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *JobDefinitionsCreateOrUpdateFuture) Result(client JobDefinitionsClient) (jd JobDefinition, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybriddata.JobDefinitionsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if jd.Response.Response, err = future.GetResult(sender); err == nil && jd.Response.Response.StatusCode != http.StatusNoContent {
-		jd, err = client.CreateOrUpdateResponder(jd.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsCreateOrUpdateFuture", "Result", jd.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(JobDefinitionsClient) (JobDefinition, error)
 }
 
 // JobDefinitionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type JobDefinitionsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *JobDefinitionsDeleteFuture) Result(client JobDefinitionsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybriddata.JobDefinitionsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(JobDefinitionsClient) (autorest.Response, error)
 }
 
 // JobDefinitionsRunFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type JobDefinitionsRunFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *JobDefinitionsRunFuture) Result(client JobDefinitionsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsRunFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybriddata.JobDefinitionsRunFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(JobDefinitionsClient) (autorest.Response, error)
 }
 
 // JobDetails job details.
@@ -1883,46 +1747,18 @@ type JobProperties struct {
 
 // JobsCancelFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type JobsCancelFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *JobsCancelFuture) Result(client JobsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.JobsCancelFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybriddata.JobsCancelFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(JobsClient) (autorest.Response, error)
 }
 
 // JobsResumeFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type JobsResumeFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *JobsResumeFuture) Result(client JobsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.JobsResumeFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybriddata.JobsResumeFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(JobsClient) (autorest.Response, error)
 }
 
 // JobStages job stages.

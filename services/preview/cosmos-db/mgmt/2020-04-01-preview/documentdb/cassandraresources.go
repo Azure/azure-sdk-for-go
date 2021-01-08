@@ -88,7 +88,7 @@ func (client CassandraResourcesClient) CreateUpdateCassandraKeyspace(ctx context
 
 	result, err = client.CreateUpdateCassandraKeyspaceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "CreateUpdateCassandraKeyspace", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "CreateUpdateCassandraKeyspace", nil, "Failure sending request")
 		return
 	}
 
@@ -127,7 +127,29 @@ func (client CassandraResourcesClient) CreateUpdateCassandraKeyspaceSender(req *
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client CassandraResourcesClient) (ckgr CassandraKeyspaceGetResults, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesCreateUpdateCassandraKeyspaceFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.CassandraResourcesCreateUpdateCassandraKeyspaceFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ckgr.Response.Response, err = future.GetResult(sender); err == nil && ckgr.Response.Response.StatusCode != http.StatusNoContent {
+			ckgr, err = client.CreateUpdateCassandraKeyspaceResponder(ckgr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesCreateUpdateCassandraKeyspaceFuture", "Result", ckgr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -189,7 +211,7 @@ func (client CassandraResourcesClient) CreateUpdateCassandraTable(ctx context.Co
 
 	result, err = client.CreateUpdateCassandraTableSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "CreateUpdateCassandraTable", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "CreateUpdateCassandraTable", nil, "Failure sending request")
 		return
 	}
 
@@ -229,7 +251,29 @@ func (client CassandraResourcesClient) CreateUpdateCassandraTableSender(req *htt
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client CassandraResourcesClient) (ctgr CassandraTableGetResults, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesCreateUpdateCassandraTableFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.CassandraResourcesCreateUpdateCassandraTableFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ctgr.Response.Response, err = future.GetResult(sender); err == nil && ctgr.Response.Response.StatusCode != http.StatusNoContent {
+			ctgr, err = client.CreateUpdateCassandraTableResponder(ctgr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesCreateUpdateCassandraTableFuture", "Result", ctgr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -283,7 +327,7 @@ func (client CassandraResourcesClient) DeleteCassandraKeyspace(ctx context.Conte
 
 	result, err = client.DeleteCassandraKeyspaceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "DeleteCassandraKeyspace", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "DeleteCassandraKeyspace", nil, "Failure sending request")
 		return
 	}
 
@@ -320,7 +364,23 @@ func (client CassandraResourcesClient) DeleteCassandraKeyspaceSender(req *http.R
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client CassandraResourcesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesDeleteCassandraKeyspaceFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.CassandraResourcesDeleteCassandraKeyspaceFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -374,7 +434,7 @@ func (client CassandraResourcesClient) DeleteCassandraTable(ctx context.Context,
 
 	result, err = client.DeleteCassandraTableSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "DeleteCassandraTable", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "DeleteCassandraTable", nil, "Failure sending request")
 		return
 	}
 
@@ -412,7 +472,23 @@ func (client CassandraResourcesClient) DeleteCassandraTableSender(req *http.Requ
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client CassandraResourcesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesDeleteCassandraTableFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.CassandraResourcesDeleteCassandraTableFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -1023,7 +1099,7 @@ func (client CassandraResourcesClient) MigrateCassandraKeyspaceToAutoscale(ctx c
 
 	result, err = client.MigrateCassandraKeyspaceToAutoscaleSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "MigrateCassandraKeyspaceToAutoscale", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "MigrateCassandraKeyspaceToAutoscale", nil, "Failure sending request")
 		return
 	}
 
@@ -1060,7 +1136,29 @@ func (client CassandraResourcesClient) MigrateCassandraKeyspaceToAutoscaleSender
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client CassandraResourcesClient) (tsgr ThroughputSettingsGetResults, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesMigrateCassandraKeyspaceToAutoscaleFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.CassandraResourcesMigrateCassandraKeyspaceToAutoscaleFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if tsgr.Response.Response, err = future.GetResult(sender); err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
+			tsgr, err = client.MigrateCassandraKeyspaceToAutoscaleResponder(tsgr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesMigrateCassandraKeyspaceToAutoscaleFuture", "Result", tsgr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -1115,7 +1213,7 @@ func (client CassandraResourcesClient) MigrateCassandraKeyspaceToManualThroughpu
 
 	result, err = client.MigrateCassandraKeyspaceToManualThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "MigrateCassandraKeyspaceToManualThroughput", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "MigrateCassandraKeyspaceToManualThroughput", nil, "Failure sending request")
 		return
 	}
 
@@ -1152,7 +1250,29 @@ func (client CassandraResourcesClient) MigrateCassandraKeyspaceToManualThroughpu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client CassandraResourcesClient) (tsgr ThroughputSettingsGetResults, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesMigrateCassandraKeyspaceToManualThroughputFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.CassandraResourcesMigrateCassandraKeyspaceToManualThroughputFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if tsgr.Response.Response, err = future.GetResult(sender); err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
+			tsgr, err = client.MigrateCassandraKeyspaceToManualThroughputResponder(tsgr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesMigrateCassandraKeyspaceToManualThroughputFuture", "Result", tsgr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -1207,7 +1327,7 @@ func (client CassandraResourcesClient) MigrateCassandraTableToAutoscale(ctx cont
 
 	result, err = client.MigrateCassandraTableToAutoscaleSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "MigrateCassandraTableToAutoscale", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "MigrateCassandraTableToAutoscale", nil, "Failure sending request")
 		return
 	}
 
@@ -1245,7 +1365,29 @@ func (client CassandraResourcesClient) MigrateCassandraTableToAutoscaleSender(re
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client CassandraResourcesClient) (tsgr ThroughputSettingsGetResults, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesMigrateCassandraTableToAutoscaleFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.CassandraResourcesMigrateCassandraTableToAutoscaleFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if tsgr.Response.Response, err = future.GetResult(sender); err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
+			tsgr, err = client.MigrateCassandraTableToAutoscaleResponder(tsgr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesMigrateCassandraTableToAutoscaleFuture", "Result", tsgr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -1301,7 +1443,7 @@ func (client CassandraResourcesClient) MigrateCassandraTableToManualThroughput(c
 
 	result, err = client.MigrateCassandraTableToManualThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "MigrateCassandraTableToManualThroughput", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "MigrateCassandraTableToManualThroughput", nil, "Failure sending request")
 		return
 	}
 
@@ -1339,7 +1481,29 @@ func (client CassandraResourcesClient) MigrateCassandraTableToManualThroughputSe
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client CassandraResourcesClient) (tsgr ThroughputSettingsGetResults, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesMigrateCassandraTableToManualThroughputFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.CassandraResourcesMigrateCassandraTableToManualThroughputFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if tsgr.Response.Response, err = future.GetResult(sender); err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
+			tsgr, err = client.MigrateCassandraTableToManualThroughputResponder(tsgr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesMigrateCassandraTableToManualThroughputFuture", "Result", tsgr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -1402,7 +1566,7 @@ func (client CassandraResourcesClient) UpdateCassandraKeyspaceThroughput(ctx con
 
 	result, err = client.UpdateCassandraKeyspaceThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "UpdateCassandraKeyspaceThroughput", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "UpdateCassandraKeyspaceThroughput", nil, "Failure sending request")
 		return
 	}
 
@@ -1441,7 +1605,29 @@ func (client CassandraResourcesClient) UpdateCassandraKeyspaceThroughputSender(r
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client CassandraResourcesClient) (tsgr ThroughputSettingsGetResults, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesUpdateCassandraKeyspaceThroughputFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.CassandraResourcesUpdateCassandraKeyspaceThroughputFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if tsgr.Response.Response, err = future.GetResult(sender); err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
+			tsgr, err = client.UpdateCassandraKeyspaceThroughputResponder(tsgr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesUpdateCassandraKeyspaceThroughputFuture", "Result", tsgr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -1505,7 +1691,7 @@ func (client CassandraResourcesClient) UpdateCassandraTableThroughput(ctx contex
 
 	result, err = client.UpdateCassandraTableThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "UpdateCassandraTableThroughput", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "UpdateCassandraTableThroughput", nil, "Failure sending request")
 		return
 	}
 
@@ -1545,7 +1731,29 @@ func (client CassandraResourcesClient) UpdateCassandraTableThroughputSender(req 
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client CassandraResourcesClient) (tsgr ThroughputSettingsGetResults, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesUpdateCassandraTableThroughputFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("documentdb.CassandraResourcesUpdateCassandraTableThroughputFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if tsgr.Response.Response, err = future.GetResult(sender); err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
+			tsgr, err = client.UpdateCassandraTableThroughputResponder(tsgr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesUpdateCassandraTableThroughputFuture", "Result", tsgr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

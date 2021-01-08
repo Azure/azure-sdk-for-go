@@ -241,6 +241,7 @@ func (client TagRulesClient) List(ctx context.Context, resourceGroupName string,
 	}
 	if result.mtrlr.hasNextLink() && result.mtrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -302,7 +303,6 @@ func (client TagRulesClient) listNextResults(ctx context.Context, lastResults Mo
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.TagRulesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

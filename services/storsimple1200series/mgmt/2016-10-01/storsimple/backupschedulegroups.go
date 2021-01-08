@@ -89,7 +89,7 @@ func (client BackupScheduleGroupsClient) CreateOrUpdate(ctx context.Context, dev
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupScheduleGroupsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.BackupScheduleGroupsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -129,7 +129,29 @@ func (client BackupScheduleGroupsClient) CreateOrUpdateSender(req *http.Request)
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client BackupScheduleGroupsClient) (bsg BackupScheduleGroup, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.BackupScheduleGroupsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.BackupScheduleGroupsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if bsg.Response.Response, err = future.GetResult(sender); err == nil && bsg.Response.Response.StatusCode != http.StatusNoContent {
+			bsg, err = client.CreateOrUpdateResponder(bsg.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "storsimple.BackupScheduleGroupsCreateOrUpdateFuture", "Result", bsg.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -177,7 +199,7 @@ func (client BackupScheduleGroupsClient) Delete(ctx context.Context, deviceName 
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupScheduleGroupsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.BackupScheduleGroupsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -215,7 +237,23 @@ func (client BackupScheduleGroupsClient) DeleteSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client BackupScheduleGroupsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.BackupScheduleGroupsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.BackupScheduleGroupsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

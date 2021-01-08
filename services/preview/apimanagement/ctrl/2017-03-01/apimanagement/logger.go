@@ -351,6 +351,7 @@ func (client LoggerClient) List(ctx context.Context, apimBaseURL string, filter 
 	}
 	if result.lc.hasNextLink() && result.lc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -419,7 +420,6 @@ func (client LoggerClient) listNextResults(ctx context.Context, lastResults Logg
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.LoggerClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

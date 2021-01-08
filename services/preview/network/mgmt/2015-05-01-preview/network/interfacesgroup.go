@@ -65,7 +65,7 @@ func (client InterfacesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -103,7 +103,29 @@ func (client InterfacesClient) CreateOrUpdateSender(req *http.Request) (future I
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client InterfacesClient) (i Interface, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.InterfacesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("network.InterfacesCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if i.Response.Response, err = future.GetResult(sender); err == nil && i.Response.Response.StatusCode != http.StatusNoContent {
+			i, err = client.CreateOrUpdateResponder(i.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "network.InterfacesCreateOrUpdateFuture", "Result", i.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -142,7 +164,7 @@ func (client InterfacesClient) Delete(ctx context.Context, resourceGroupName str
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -178,7 +200,23 @@ func (client InterfacesClient) DeleteSender(req *http.Request) (future Interface
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client InterfacesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.InterfacesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("network.InterfacesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -385,6 +423,7 @@ func (client InterfacesClient) List(ctx context.Context, resourceGroupName strin
 	}
 	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -445,7 +484,6 @@ func (client InterfacesClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -499,6 +537,7 @@ func (client InterfacesClient) ListAll(ctx context.Context) (result InterfaceLis
 	}
 	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -558,7 +597,6 @@ func (client InterfacesClient) listAllNextResults(ctx context.Context, lastResul
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "listAllNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -616,6 +654,7 @@ func (client InterfacesClient) ListVirtualMachineScaleSetNetworkInterfaces(ctx c
 	}
 	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -677,7 +716,6 @@ func (client InterfacesClient) listVirtualMachineScaleSetNetworkInterfacesNextRe
 	result, err = client.ListVirtualMachineScaleSetNetworkInterfacesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "listVirtualMachineScaleSetNetworkInterfacesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -736,6 +774,7 @@ func (client InterfacesClient) ListVirtualMachineScaleSetVMNetworkInterfaces(ctx
 	}
 	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -798,7 +837,6 @@ func (client InterfacesClient) listVirtualMachineScaleSetVMNetworkInterfacesNext
 	result, err = client.ListVirtualMachineScaleSetVMNetworkInterfacesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "listVirtualMachineScaleSetVMNetworkInterfacesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -81,7 +81,7 @@ func (client RulesClient) Create(ctx context.Context, resourceGroupName string, 
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.RulesClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.RulesClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -121,7 +121,29 @@ func (client RulesClient) CreateSender(req *http.Request) (future RulesCreateFut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client RulesClient) (r Rule, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.RulesCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.RulesCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if r.Response.Response, err = future.GetResult(sender); err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
+			r, err = client.CreateResponder(r.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "cdn.RulesCreateFuture", "Result", r.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -170,7 +192,7 @@ func (client RulesClient) Delete(ctx context.Context, resourceGroupName string, 
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.RulesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.RulesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -208,7 +230,23 @@ func (client RulesClient) DeleteSender(req *http.Request) (future RulesDeleteFut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client RulesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.RulesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.RulesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -473,7 +511,7 @@ func (client RulesClient) Update(ctx context.Context, resourceGroupName string, 
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.RulesClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.RulesClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -513,7 +551,29 @@ func (client RulesClient) UpdateSender(req *http.Request) (future RulesUpdateFut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client RulesClient) (r Rule, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.RulesUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.RulesUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if r.Response.Response, err = future.GetResult(sender); err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
+			r, err = client.UpdateResponder(r.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "cdn.RulesUpdateFuture", "Result", r.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

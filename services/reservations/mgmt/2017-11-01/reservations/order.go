@@ -147,6 +147,7 @@ func (client OrderClient) List(ctx context.Context) (result OrderListPage, err e
 	}
 	if result.ol.hasNextLink() && result.ol.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -202,7 +203,6 @@ func (client OrderClient) listNextResults(ctx context.Context, lastResults Order
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

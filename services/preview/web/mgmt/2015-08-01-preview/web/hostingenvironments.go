@@ -66,7 +66,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironment(ctx con
 
 	result, err = client.CreateOrUpdateHostingEnvironmentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateHostingEnvironment", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateHostingEnvironment", nil, "Failure sending request")
 		return
 	}
 
@@ -104,7 +104,29 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentSender(r
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client HostingEnvironmentsClient) (he HostingEnvironment, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if he.Response.Response, err = future.GetResult(sender); err == nil && he.Response.Response.StatusCode != http.StatusNoContent {
+			he, err = client.CreateOrUpdateHostingEnvironmentResponder(he.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture", "Result", he.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -144,7 +166,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePool(ctx context.
 
 	result, err = client.CreateOrUpdateMultiRolePoolSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateMultiRolePool", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateMultiRolePool", nil, "Failure sending request")
 		return
 	}
 
@@ -182,7 +204,29 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolSender(req *h
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client HostingEnvironmentsClient) (wp WorkerPool, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if wp.Response.Response, err = future.GetResult(sender); err == nil && wp.Response.Response.StatusCode != http.StatusNoContent {
+			wp, err = client.CreateOrUpdateMultiRolePoolResponder(wp.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture", "Result", wp.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -223,7 +267,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPool(ctx context.Con
 
 	result, err = client.CreateOrUpdateWorkerPoolSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateWorkerPool", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateWorkerPool", nil, "Failure sending request")
 		return
 	}
 
@@ -262,7 +306,29 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolSender(req *http
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client HostingEnvironmentsClient) (wp WorkerPool, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsCreateOrUpdateWorkerPoolFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.HostingEnvironmentsCreateOrUpdateWorkerPoolFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if wp.Response.Response, err = future.GetResult(sender); err == nil && wp.Response.Response.StatusCode != http.StatusNoContent {
+			wp, err = client.CreateOrUpdateWorkerPoolResponder(wp.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsCreateOrUpdateWorkerPoolFuture", "Result", wp.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -302,7 +368,7 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironment(ctx context.Con
 
 	result, err = client.DeleteHostingEnvironmentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "DeleteHostingEnvironment", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "DeleteHostingEnvironment", nil, "Failure sending request")
 		return
 	}
 
@@ -341,7 +407,29 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironmentSender(req *http
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client HostingEnvironmentsClient) (so SetObject, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsDeleteHostingEnvironmentFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.HostingEnvironmentsDeleteHostingEnvironmentFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+			so, err = client.DeleteHostingEnvironmentResponder(so.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsDeleteHostingEnvironmentFuture", "Result", so.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -469,6 +557,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacities(ctx cont
 	}
 	if result.scc.hasNextLink() && result.scc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -530,7 +619,6 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentCapacitiesNextResul
 	result, err = client.GetHostingEnvironmentCapacitiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentCapacitiesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -821,6 +909,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetrics(ctx context
 	}
 	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -888,7 +977,6 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentMetricsNextResults(
 	result, err = client.GetHostingEnvironmentMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentMetricsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -946,6 +1034,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefi
 	}
 	if result.mdc.hasNextLink() && result.mdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1007,7 +1096,6 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentMultiRoleMetricDefi
 	result, err = client.GetHostingEnvironmentMultiRoleMetricDefinitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentMultiRoleMetricDefinitionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1071,6 +1159,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetrics(ct
 	}
 	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1147,7 +1236,6 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentMultiRoleMetricsNex
 	result, err = client.GetHostingEnvironmentMultiRoleMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentMultiRoleMetricsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1204,6 +1292,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsages(ctx
 	}
 	if result.uc.hasNextLink() && result.uc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1265,7 +1354,6 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentMultiRoleUsagesNext
 	result, err = client.GetHostingEnvironmentMultiRoleUsagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentMultiRoleUsagesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1475,6 +1563,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironments(ctx context.Conte
 	}
 	if result.hec.hasNextLink() && result.hec.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1535,7 +1624,6 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentsNextResults(ctx co
 	result, err = client.GetHostingEnvironmentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1592,6 +1680,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarms(ctx con
 	}
 	if result.sfc.hasNextLink() && result.sfc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1653,7 +1742,6 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentServerFarmsNextResu
 	result, err = client.GetHostingEnvironmentServerFarmsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentServerFarmsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1711,6 +1799,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentSites(ctx context.C
 	}
 	if result.sc.hasNextLink() && result.sc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1775,7 +1864,6 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentSitesNextResults(ct
 	result, err = client.GetHostingEnvironmentSitesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentSitesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1835,6 +1923,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentUsages(ctx context.
 	}
 	if result.cuqc.hasNextLink() && result.cuqc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1899,7 +1988,6 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentUsagesNextResults(c
 	result, err = client.GetHostingEnvironmentUsagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentUsagesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2032,6 +2120,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlans(ctx
 	}
 	if result.sfc.hasNextLink() && result.sfc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2093,7 +2182,6 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentWebHostingPlansNext
 	result, err = client.GetHostingEnvironmentWebHostingPlansResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentWebHostingPlansNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2152,6 +2240,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefi
 	}
 	if result.mdc.hasNextLink() && result.mdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2214,7 +2303,6 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentWebWorkerMetricDefi
 	result, err = client.GetHostingEnvironmentWebWorkerMetricDefinitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentWebWorkerMetricDefinitionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2276,6 +2364,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetrics(ct
 	}
 	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2344,7 +2433,6 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentWebWorkerMetricsNex
 	result, err = client.GetHostingEnvironmentWebWorkerMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentWebWorkerMetricsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2402,6 +2490,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsages(ctx
 	}
 	if result.uc.hasNextLink() && result.uc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2464,7 +2553,6 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentWebWorkerUsagesNext
 	result, err = client.GetHostingEnvironmentWebWorkerUsagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentWebWorkerUsagesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2757,6 +2845,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePools(ctx context.Context, r
 	}
 	if result.wpc.hasNextLink() && result.wpc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2818,7 +2907,6 @@ func (client HostingEnvironmentsClient) getMultiRolePoolsNextResults(ctx context
 	result, err = client.GetMultiRolePoolsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getMultiRolePoolsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2875,6 +2963,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolSkus(ctx context.Context
 	}
 	if result.sic.hasNextLink() && result.sic.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2936,7 +3025,6 @@ func (client HostingEnvironmentsClient) getMultiRolePoolSkusNextResults(ctx cont
 	result, err = client.GetMultiRolePoolSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getMultiRolePoolSkusNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -3241,6 +3329,7 @@ func (client HostingEnvironmentsClient) GetWorkerPools(ctx context.Context, reso
 	}
 	if result.wpc.hasNextLink() && result.wpc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -3302,7 +3391,6 @@ func (client HostingEnvironmentsClient) getWorkerPoolsNextResults(ctx context.Co
 	result, err = client.GetWorkerPoolsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getWorkerPoolsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -3360,6 +3448,7 @@ func (client HostingEnvironmentsClient) GetWorkerPoolSkus(ctx context.Context, r
 	}
 	if result.sic.hasNextLink() && result.sic.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -3422,7 +3511,6 @@ func (client HostingEnvironmentsClient) getWorkerPoolSkusNextResults(ctx context
 	result, err = client.GetWorkerPoolSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getWorkerPoolSkusNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -3542,7 +3630,7 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironment(ctx context.Con
 
 	result, err = client.ResumeHostingEnvironmentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "ResumeHostingEnvironment", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "ResumeHostingEnvironment", nil, "Failure sending request")
 		return
 	}
 
@@ -3578,7 +3666,29 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironmentSender(req *http
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client HostingEnvironmentsClient) (scp SiteCollectionPage, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsResumeHostingEnvironmentFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.HostingEnvironmentsResumeHostingEnvironmentFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if scp.sc.Response.Response, err = future.GetResult(sender); err == nil && scp.sc.Response.Response.StatusCode != http.StatusNoContent {
+			scp, err = client.ResumeHostingEnvironmentResponder(scp.sc.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsResumeHostingEnvironmentFuture", "Result", scp.sc.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -3631,7 +3741,7 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironmentComplete(ctx con
 	}
 	var future HostingEnvironmentsResumeHostingEnvironmentFuture
 	future, err = client.ResumeHostingEnvironment(ctx, resourceGroupName, name)
-	result.Future = future.Future
+	result.FutureAPI = future.FutureAPI
 	return
 }
 
@@ -3658,7 +3768,7 @@ func (client HostingEnvironmentsClient) SuspendHostingEnvironment(ctx context.Co
 
 	result, err = client.SuspendHostingEnvironmentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "SuspendHostingEnvironment", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "SuspendHostingEnvironment", nil, "Failure sending request")
 		return
 	}
 
@@ -3694,7 +3804,29 @@ func (client HostingEnvironmentsClient) SuspendHostingEnvironmentSender(req *htt
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client HostingEnvironmentsClient) (scp SiteCollectionPage, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsSuspendHostingEnvironmentFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.HostingEnvironmentsSuspendHostingEnvironmentFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if scp.sc.Response.Response, err = future.GetResult(sender); err == nil && scp.sc.Response.Response.StatusCode != http.StatusNoContent {
+			scp, err = client.SuspendHostingEnvironmentResponder(scp.sc.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsSuspendHostingEnvironmentFuture", "Result", scp.sc.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -3747,6 +3879,6 @@ func (client HostingEnvironmentsClient) SuspendHostingEnvironmentComplete(ctx co
 	}
 	var future HostingEnvironmentsSuspendHostingEnvironmentFuture
 	future, err = client.SuspendHostingEnvironment(ctx, resourceGroupName, name)
-	result.Future = future.Future
+	result.FutureAPI = future.FutureAPI
 	return
 }

@@ -340,6 +340,7 @@ func (client EmailTemplateClient) List(ctx context.Context, apimBaseURL string, 
 	}
 	if result.etc.hasNextLink() && result.etc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -408,7 +409,6 @@ func (client EmailTemplateClient) listNextResults(ctx context.Context, lastResul
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.EmailTemplateClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

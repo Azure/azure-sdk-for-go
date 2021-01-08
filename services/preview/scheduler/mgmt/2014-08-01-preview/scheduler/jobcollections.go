@@ -458,6 +458,7 @@ func (client JobCollectionsClient) ListByResourceGroup(ctx context.Context, reso
 	}
 	if result.jclr.hasNextLink() && result.jclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -518,7 +519,6 @@ func (client JobCollectionsClient) listByResourceGroupNextResults(ctx context.Co
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -572,6 +572,7 @@ func (client JobCollectionsClient) ListBySubscription(ctx context.Context) (resu
 	}
 	if result.jclr.hasNextLink() && result.jclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -631,7 +632,6 @@ func (client JobCollectionsClient) listBySubscriptionNextResults(ctx context.Con
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

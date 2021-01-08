@@ -486,6 +486,7 @@ func (client PipelinesClient) ListByFactory(ctx context.Context, resourceGroupNa
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -547,7 +548,6 @@ func (client PipelinesClient) listByFactoryNextResults(ctx context.Context, last
 	result, err = client.ListByFactoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.PipelinesClient", "listByFactoryNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

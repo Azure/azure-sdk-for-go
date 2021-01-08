@@ -171,7 +171,7 @@ func (client KeyValuesClient) Delete(ctx context.Context, resourceGroupName stri
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "appconfiguration.KeyValuesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "appconfiguration.KeyValuesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -208,7 +208,23 @@ func (client KeyValuesClient) DeleteSender(req *http.Request) (future KeyValuesD
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client KeyValuesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "appconfiguration.KeyValuesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("appconfiguration.KeyValuesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -357,6 +373,7 @@ func (client KeyValuesClient) ListByConfigurationStore(ctx context.Context, reso
 	}
 	if result.kvlr.hasNextLink() && result.kvlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -421,7 +438,6 @@ func (client KeyValuesClient) listByConfigurationStoreNextResults(ctx context.Co
 	result, err = client.ListByConfigurationStoreResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.KeyValuesClient", "listByConfigurationStoreNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

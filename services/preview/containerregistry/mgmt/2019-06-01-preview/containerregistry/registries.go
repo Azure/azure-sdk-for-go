@@ -169,7 +169,7 @@ func (client RegistriesClient) Create(ctx context.Context, resourceGroupName str
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -207,7 +207,29 @@ func (client RegistriesClient) CreateSender(req *http.Request) (future Registrie
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client RegistriesClient) (r Registry, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.RegistriesCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("containerregistry.RegistriesCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if r.Response.Response, err = future.GetResult(sender); err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
+			r, err = client.CreateResponder(r.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "containerregistry.RegistriesCreateFuture", "Result", r.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -256,7 +278,7 @@ func (client RegistriesClient) Delete(ctx context.Context, resourceGroupName str
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -292,7 +314,23 @@ func (client RegistriesClient) DeleteSender(req *http.Request) (future Registrie
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client RegistriesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.RegistriesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("containerregistry.RegistriesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -341,7 +379,7 @@ func (client RegistriesClient) GenerateCredentials(ctx context.Context, resource
 
 	result, err = client.GenerateCredentialsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "GenerateCredentials", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "GenerateCredentials", nil, "Failure sending request")
 		return
 	}
 
@@ -379,7 +417,29 @@ func (client RegistriesClient) GenerateCredentialsSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client RegistriesClient) (gcr GenerateCredentialsResult, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.RegistriesGenerateCredentialsFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("containerregistry.RegistriesGenerateCredentialsFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if gcr.Response.Response, err = future.GetResult(sender); err == nil && gcr.Response.Response.StatusCode != http.StatusNoContent {
+			gcr, err = client.GenerateCredentialsResponder(gcr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "containerregistry.RegistriesGenerateCredentialsFuture", "Result", gcr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -607,7 +667,7 @@ func (client RegistriesClient) ImportImage(ctx context.Context, resourceGroupNam
 
 	result, err = client.ImportImageSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ImportImage", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ImportImage", nil, "Failure sending request")
 		return
 	}
 
@@ -645,7 +705,23 @@ func (client RegistriesClient) ImportImageSender(req *http.Request) (future Regi
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client RegistriesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.RegistriesImportImageFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("containerregistry.RegistriesImportImageFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -693,6 +769,7 @@ func (client RegistriesClient) List(ctx context.Context) (result RegistryListRes
 	}
 	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -752,7 +829,6 @@ func (client RegistriesClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -814,6 +890,7 @@ func (client RegistriesClient) ListByResourceGroup(ctx context.Context, resource
 	}
 	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -874,7 +951,6 @@ func (client RegistriesClient) listByResourceGroupNextResults(ctx context.Contex
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1191,7 +1267,7 @@ func (client RegistriesClient) ScheduleRun(ctx context.Context, resourceGroupNam
 
 	result, err = client.ScheduleRunSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ScheduleRun", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ScheduleRun", nil, "Failure sending request")
 		return
 	}
 
@@ -1229,7 +1305,29 @@ func (client RegistriesClient) ScheduleRunSender(req *http.Request) (future Regi
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client RegistriesClient) (r Run, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.RegistriesScheduleRunFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("containerregistry.RegistriesScheduleRunFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if r.Response.Response, err = future.GetResult(sender); err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
+			r, err = client.ScheduleRunResponder(r.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "containerregistry.RegistriesScheduleRunFuture", "Result", r.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -1279,7 +1377,7 @@ func (client RegistriesClient) Update(ctx context.Context, resourceGroupName str
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -1317,7 +1415,29 @@ func (client RegistriesClient) UpdateSender(req *http.Request) (future Registrie
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client RegistriesClient) (r Registry, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.RegistriesUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("containerregistry.RegistriesUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if r.Response.Response, err = future.GetResult(sender); err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
+			r, err = client.UpdateResponder(r.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "containerregistry.RegistriesUpdateFuture", "Result", r.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

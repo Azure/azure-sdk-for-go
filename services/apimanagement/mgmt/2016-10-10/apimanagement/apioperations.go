@@ -411,6 +411,7 @@ func (client APIOperationsClient) ListByApis(ctx context.Context, resourceGroupN
 	}
 	if result.oc.hasNextLink() && result.oc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -482,7 +483,6 @@ func (client APIOperationsClient) listByApisNextResults(ctx context.Context, las
 	result, err = client.ListByApisResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationsClient", "listByApisNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

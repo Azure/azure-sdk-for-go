@@ -377,6 +377,7 @@ func (client AuthorizationServersClient) ListByService(ctx context.Context, reso
 	}
 	if result.asc.hasNextLink() && result.asc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -447,7 +448,6 @@ func (client AuthorizationServersClient) listByServiceNextResults(ctx context.Co
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "listByServiceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

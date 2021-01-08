@@ -80,7 +80,7 @@ func (client EventHubConnectionsClient) CreateOrUpdate(ctx context.Context, reso
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -120,7 +120,29 @@ func (client EventHubConnectionsClient) CreateOrUpdateSender(req *http.Request) 
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client EventHubConnectionsClient) (ehc EventHubConnection, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("kusto.EventHubConnectionsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ehc.Response.Response, err = future.GetResult(sender); err == nil && ehc.Response.Response.StatusCode != http.StatusNoContent {
+			ehc, err = client.CreateOrUpdateResponder(ehc.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsCreateOrUpdateFuture", "Result", ehc.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -161,7 +183,7 @@ func (client EventHubConnectionsClient) Delete(ctx context.Context, resourceGrou
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -199,7 +221,23 @@ func (client EventHubConnectionsClient) DeleteSender(req *http.Request) (future 
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client EventHubConnectionsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("kusto.EventHubConnectionsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -488,7 +526,7 @@ func (client EventHubConnectionsClient) Update(ctx context.Context, resourceGrou
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -528,7 +566,29 @@ func (client EventHubConnectionsClient) UpdateSender(req *http.Request) (future 
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client EventHubConnectionsClient) (ehc EventHubConnection, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("kusto.EventHubConnectionsUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ehc.Response.Response, err = future.GetResult(sender); err == nil && ehc.Response.Response.StatusCode != http.StatusNoContent {
+			ehc, err = client.UpdateResponder(ehc.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsUpdateFuture", "Result", ehc.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

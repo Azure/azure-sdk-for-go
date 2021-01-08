@@ -103,7 +103,7 @@ func (client InterfaceTapConfigurationsClient) CreateOrUpdate(ctx context.Contex
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfaceTapConfigurationsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.InterfaceTapConfigurationsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -143,7 +143,29 @@ func (client InterfaceTapConfigurationsClient) CreateOrUpdateSender(req *http.Re
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client InterfaceTapConfigurationsClient) (itc InterfaceTapConfiguration, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.InterfaceTapConfigurationsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("network.InterfaceTapConfigurationsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if itc.Response.Response, err = future.GetResult(sender); err == nil && itc.Response.Response.StatusCode != http.StatusNoContent {
+			itc, err = client.CreateOrUpdateResponder(itc.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "network.InterfaceTapConfigurationsCreateOrUpdateFuture", "Result", itc.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -183,7 +205,7 @@ func (client InterfaceTapConfigurationsClient) Delete(ctx context.Context, resou
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfaceTapConfigurationsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.InterfaceTapConfigurationsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -220,7 +242,23 @@ func (client InterfaceTapConfigurationsClient) DeleteSender(req *http.Request) (
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client InterfaceTapConfigurationsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.InterfaceTapConfigurationsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("network.InterfaceTapConfigurationsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -349,6 +387,7 @@ func (client InterfaceTapConfigurationsClient) List(ctx context.Context, resourc
 	}
 	if result.itclr.hasNextLink() && result.itclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -410,7 +449,6 @@ func (client InterfaceTapConfigurationsClient) listNextResults(ctx context.Conte
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfaceTapConfigurationsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

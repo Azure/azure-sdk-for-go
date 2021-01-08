@@ -78,7 +78,7 @@ func (client WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient) Create
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -117,7 +117,29 @@ func (client WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient) Create
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient) (esbap ExtendedServerBlobAuditingPolicy, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("synapse.WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if esbap.Response.Response, err = future.GetResult(sender); err == nil && esbap.Response.Response.StatusCode != http.StatusNoContent {
+			esbap, err = client.CreateOrUpdateResponder(esbap.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdateFuture", "Result", esbap.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

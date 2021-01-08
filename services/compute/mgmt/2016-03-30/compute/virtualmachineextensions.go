@@ -67,7 +67,7 @@ func (client VirtualMachineExtensionsClient) CreateOrUpdate(ctx context.Context,
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -106,7 +106,29 @@ func (client VirtualMachineExtensionsClient) CreateOrUpdateSender(req *http.Requ
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachineExtensionsClient) (vme VirtualMachineExtension, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineExtensionsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if vme.Response.Response, err = future.GetResult(sender); err == nil && vme.Response.Response.StatusCode != http.StatusNoContent {
+			vme, err = client.CreateOrUpdateResponder(vme.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsCreateOrUpdateFuture", "Result", vme.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -146,7 +168,7 @@ func (client VirtualMachineExtensionsClient) Delete(ctx context.Context, resourc
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -183,7 +205,29 @@ func (client VirtualMachineExtensionsClient) DeleteSender(req *http.Request) (fu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachineExtensionsClient) (osr OperationStatusResponse, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineExtensionsDeleteFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
+			osr, err = client.DeleteResponder(osr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsDeleteFuture", "Result", osr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -306,7 +350,7 @@ func (client VirtualMachineExtensionsClient) Update(ctx context.Context, resourc
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -345,7 +389,29 @@ func (client VirtualMachineExtensionsClient) UpdateSender(req *http.Request) (fu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualMachineExtensionsClient) (vme VirtualMachineExtension, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineExtensionsUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if vme.Response.Response, err = future.GetResult(sender); err == nil && vme.Response.Response.StatusCode != http.StatusNoContent {
+			vme, err = client.UpdateResponder(vme.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsUpdateFuture", "Result", vme.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

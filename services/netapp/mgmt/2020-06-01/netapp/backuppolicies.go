@@ -78,7 +78,7 @@ func (client BackupPoliciesClient) Create(ctx context.Context, resourceGroupName
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "netapp.BackupPoliciesClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "netapp.BackupPoliciesClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -120,7 +120,29 @@ func (client BackupPoliciesClient) CreateSender(req *http.Request) (future Backu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client BackupPoliciesClient) (bp BackupPolicy, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "netapp.BackupPoliciesCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("netapp.BackupPoliciesCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if bp.Response.Response, err = future.GetResult(sender); err == nil && bp.Response.Response.StatusCode != http.StatusNoContent {
+			bp, err = client.CreateResponder(bp.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "netapp.BackupPoliciesCreateFuture", "Result", bp.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -168,7 +190,7 @@ func (client BackupPoliciesClient) Delete(ctx context.Context, resourceGroupName
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "netapp.BackupPoliciesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "netapp.BackupPoliciesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -205,7 +227,23 @@ func (client BackupPoliciesClient) DeleteSender(req *http.Request) (future Backu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client BackupPoliciesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "netapp.BackupPoliciesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("netapp.BackupPoliciesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

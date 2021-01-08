@@ -96,6 +96,7 @@ func (client MarketplacesByEnrollmentAccountsClient) List(ctx context.Context, e
 	}
 	if result.mlr.hasNextLink() && result.mlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -164,7 +165,6 @@ func (client MarketplacesByEnrollmentAccountsClient) listNextResults(ctx context
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.MarketplacesByEnrollmentAccountsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -238,6 +238,7 @@ func (client MarketplacesByEnrollmentAccountsClient) ListByBillingPeriod(ctx con
 	}
 	if result.mlr.hasNextLink() && result.mlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -307,7 +308,6 @@ func (client MarketplacesByEnrollmentAccountsClient) listByBillingPeriodNextResu
 	result, err = client.ListByBillingPeriodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.MarketplacesByEnrollmentAccountsClient", "listByBillingPeriodNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

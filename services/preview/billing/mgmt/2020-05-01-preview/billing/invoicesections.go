@@ -67,7 +67,7 @@ func (client InvoiceSectionsClient) CreateOrUpdate(ctx context.Context, billingA
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -105,7 +105,29 @@ func (client InvoiceSectionsClient) CreateOrUpdateSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client InvoiceSectionsClient) (is InvoiceSection, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("billing.InvoiceSectionsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if is.Response.Response, err = future.GetResult(sender); err == nil && is.Response.Response.StatusCode != http.StatusNoContent {
+			is, err = client.CreateOrUpdateResponder(is.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsCreateOrUpdateFuture", "Result", is.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -236,6 +258,7 @@ func (client InvoiceSectionsClient) ListByBillingProfile(ctx context.Context, bi
 	}
 	if result.islr.hasNextLink() && result.islr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -296,7 +319,6 @@ func (client InvoiceSectionsClient) listByBillingProfileNextResults(ctx context.
 	result, err = client.ListByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "listByBillingProfileNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

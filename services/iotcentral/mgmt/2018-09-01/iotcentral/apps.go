@@ -238,7 +238,7 @@ func (client AppsClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -276,7 +276,29 @@ func (client AppsClient) CreateOrUpdateSender(req *http.Request) (future AppsCre
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AppsClient) (a App, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "iotcentral.AppsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("iotcentral.AppsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
+			a, err = client.CreateOrUpdateResponder(a.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "iotcentral.AppsCreateOrUpdateFuture", "Result", a.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -315,7 +337,7 @@ func (client AppsClient) Delete(ctx context.Context, resourceGroupName string, r
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -351,7 +373,23 @@ func (client AppsClient) DeleteSender(req *http.Request) (future AppsDeleteFutur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AppsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "iotcentral.AppsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("iotcentral.AppsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -477,6 +515,7 @@ func (client AppsClient) ListByResourceGroup(ctx context.Context, resourceGroupN
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -537,7 +576,6 @@ func (client AppsClient) listByResourceGroupNextResults(ctx context.Context, las
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -591,6 +629,7 @@ func (client AppsClient) ListBySubscription(ctx context.Context) (result AppList
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -650,7 +689,6 @@ func (client AppsClient) listBySubscriptionNextResults(ctx context.Context, last
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -704,6 +742,7 @@ func (client AppsClient) ListTemplates(ctx context.Context) (result AppTemplates
 	}
 	if result.atr.hasNextLink() && result.atr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -763,7 +802,6 @@ func (client AppsClient) listTemplatesNextResults(ctx context.Context, lastResul
 	result, err = client.ListTemplatesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "listTemplatesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -808,7 +846,7 @@ func (client AppsClient) Update(ctx context.Context, resourceGroupName string, r
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -846,7 +884,29 @@ func (client AppsClient) UpdateSender(req *http.Request) (future AppsUpdateFutur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AppsClient) (a App, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "iotcentral.AppsUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("iotcentral.AppsUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
+			a, err = client.UpdateResponder(a.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "iotcentral.AppsUpdateFuture", "Result", a.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

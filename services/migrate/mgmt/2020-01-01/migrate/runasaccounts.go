@@ -79,6 +79,7 @@ func (client RunAsAccountsClient) GetAllRunAsAccountsInSite(ctx context.Context,
 	}
 	if result.vmraac.hasNextLink() && result.vmraac.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -139,7 +140,6 @@ func (client RunAsAccountsClient) getAllRunAsAccountsInSiteNextResults(ctx conte
 	result, err = client.GetAllRunAsAccountsInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.RunAsAccountsClient", "getAllRunAsAccountsInSiteNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

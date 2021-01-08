@@ -165,6 +165,7 @@ func (client RecurrenceClient) List(ctx context.Context, accountName string, sta
 	}
 	if result.rilr.hasNextLink() && result.rilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -231,7 +232,6 @@ func (client RecurrenceClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.RecurrenceClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

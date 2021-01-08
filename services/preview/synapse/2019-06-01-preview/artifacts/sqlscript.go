@@ -330,6 +330,7 @@ func (client SQLScriptClient) GetSQLScriptsByWorkspace(ctx context.Context) (res
 	}
 	if result.sslr.hasNextLink() && result.sslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -389,7 +390,6 @@ func (client SQLScriptClient) getSQLScriptsByWorkspaceNextResults(ctx context.Co
 	result, err = client.GetSQLScriptsByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.SQLScriptClient", "getSQLScriptsByWorkspaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -443,7 +443,7 @@ func (client SQLScriptClient) RenameSQLScript(ctx context.Context, SQLScriptName
 
 	result, err = client.RenameSQLScriptSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.SQLScriptClient", "RenameSQLScript", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.SQLScriptClient", "RenameSQLScript", nil, "Failure sending request")
 		return
 	}
 
@@ -483,7 +483,23 @@ func (client SQLScriptClient) RenameSQLScriptSender(req *http.Request) (future S
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SQLScriptClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.SQLScriptRenameSQLScriptFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.SQLScriptRenameSQLScriptFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

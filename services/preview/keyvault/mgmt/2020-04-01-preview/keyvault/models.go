@@ -581,53 +581,19 @@ func (mhr ManagedHsmResource) MarshalJSON() ([]byte, error) {
 // ManagedHsmsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ManagedHsmsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ManagedHsmsCreateOrUpdateFuture) Result(client ManagedHsmsClient) (mh ManagedHsm, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("keyvault.ManagedHsmsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if mh.Response.Response, err = future.GetResult(sender); err == nil && mh.Response.Response.StatusCode != http.StatusNoContent {
-		mh, err = client.CreateOrUpdateResponder(mh.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsCreateOrUpdateFuture", "Result", mh.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ManagedHsmsClient) (ManagedHsm, error)
 }
 
 // ManagedHsmsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ManagedHsmsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ManagedHsmsDeleteFuture) Result(client ManagedHsmsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("keyvault.ManagedHsmsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ManagedHsmsClient) (autorest.Response, error)
 }
 
 // ManagedHsmSku SKU details
@@ -641,30 +607,10 @@ type ManagedHsmSku struct {
 // ManagedHsmsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ManagedHsmsUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ManagedHsmsUpdateFuture) Result(client ManagedHsmsClient) (mh ManagedHsm, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("keyvault.ManagedHsmsUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if mh.Response.Response, err = future.GetResult(sender); err == nil && mh.Response.Response.StatusCode != http.StatusNoContent {
-		mh, err = client.UpdateResponder(mh.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsUpdateFuture", "Result", mh.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ManagedHsmsClient) (ManagedHsm, error)
 }
 
 // NetworkRuleSet a set of rules governing the network accessibility of a vault.
@@ -1103,30 +1049,10 @@ type PrivateEndpointConnectionProperties struct {
 // PrivateEndpointConnectionsDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type PrivateEndpointConnectionsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *PrivateEndpointConnectionsDeleteFuture) Result(client PrivateEndpointConnectionsClient) (pec PrivateEndpointConnection, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.PrivateEndpointConnectionsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("keyvault.PrivateEndpointConnectionsDeleteFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if pec.Response.Response, err = future.GetResult(sender); err == nil && pec.Response.Response.StatusCode != http.StatusNoContent {
-		pec, err = client.DeleteResponder(pec.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "keyvault.PrivateEndpointConnectionsDeleteFuture", "Result", pec.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(PrivateEndpointConnectionsClient) (PrivateEndpointConnection, error)
 }
 
 // PrivateLinkResource a private link resource
@@ -1835,53 +1761,19 @@ func (vp VaultProperties) MarshalJSON() ([]byte, error) {
 // VaultsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type VaultsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VaultsCreateOrUpdateFuture) Result(client VaultsClient) (vVar Vault, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.VaultsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("keyvault.VaultsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vVar.Response.Response, err = future.GetResult(sender); err == nil && vVar.Response.Response.StatusCode != http.StatusNoContent {
-		vVar, err = client.CreateOrUpdateResponder(vVar.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "keyvault.VaultsCreateOrUpdateFuture", "Result", vVar.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VaultsClient) (Vault, error)
 }
 
 // VaultsPurgeDeletedFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type VaultsPurgeDeletedFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VaultsPurgeDeletedFuture) Result(client VaultsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.VaultsPurgeDeletedFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("keyvault.VaultsPurgeDeletedFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VaultsClient) (autorest.Response, error)
 }
 
 // VirtualNetworkRule a rule governing the accessibility of a vault from a specific virtual network.

@@ -14553,53 +14553,19 @@ type PrivateEndpointConnection struct {
 // PrivateEndpointConnectionDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type PrivateEndpointConnectionDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *PrivateEndpointConnectionDeleteFuture) Result(client PrivateEndpointConnectionClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.PrivateEndpointConnectionDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("backup.PrivateEndpointConnectionDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(PrivateEndpointConnectionClient) (autorest.Response, error)
 }
 
 // PrivateEndpointConnectionPutFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type PrivateEndpointConnectionPutFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *PrivateEndpointConnectionPutFuture) Result(client PrivateEndpointConnectionClient) (pecr PrivateEndpointConnectionResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.PrivateEndpointConnectionPutFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("backup.PrivateEndpointConnectionPutFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if pecr.Response.Response, err = future.GetResult(sender); err == nil && pecr.Response.Response.StatusCode != http.StatusNoContent {
-		pecr, err = client.PutResponder(pecr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "backup.PrivateEndpointConnectionPutFuture", "Result", pecr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(PrivateEndpointConnectionClient) (PrivateEndpointConnectionResource, error)
 }
 
 // PrivateEndpointConnectionResource private Endpoint Connection Response Properties

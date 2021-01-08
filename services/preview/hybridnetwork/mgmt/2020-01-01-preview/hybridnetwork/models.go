@@ -411,53 +411,19 @@ type DeviceRegistrationKey struct {
 // DevicesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DevicesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DevicesCreateOrUpdateFuture) Result(client DevicesClient) (d Device, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.DevicesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybridnetwork.DevicesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
-		d, err = client.CreateOrUpdateResponder(d.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "hybridnetwork.DevicesCreateOrUpdateFuture", "Result", d.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DevicesClient) (Device, error)
 }
 
 // DevicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DevicesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DevicesDeleteFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.DevicesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybridnetwork.DevicesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DevicesClient) (autorest.Response, error)
 }
 
 // ErrorAdditionalInfo the resource management error additional info.
@@ -1022,53 +988,19 @@ func NewNetworkFunctionRoleInstanceListResultPage(cur NetworkFunctionRoleInstanc
 // NetworkFunctionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type NetworkFunctionsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *NetworkFunctionsCreateOrUpdateFuture) Result(client NetworkFunctionsClient) (nf NetworkFunction, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybridnetwork.NetworkFunctionsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if nf.Response.Response, err = future.GetResult(sender); err == nil && nf.Response.Response.StatusCode != http.StatusNoContent {
-		nf, err = client.CreateOrUpdateResponder(nf.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsCreateOrUpdateFuture", "Result", nf.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(NetworkFunctionsClient) (NetworkFunction, error)
 }
 
 // NetworkFunctionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type NetworkFunctionsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *NetworkFunctionsDeleteFuture) Result(client NetworkFunctionsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybridnetwork.NetworkFunctionsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(NetworkFunctionsClient) (autorest.Response, error)
 }
 
 // NetworkFunctionSkuDetails the network function sku details.
@@ -2208,70 +2140,28 @@ type RoleInstanceProperties struct {
 // RoleInstancesRestartFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type RoleInstancesRestartFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *RoleInstancesRestartFuture) Result(client RoleInstancesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesRestartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybridnetwork.RoleInstancesRestartFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(RoleInstancesClient) (autorest.Response, error)
 }
 
 // RoleInstancesStartFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type RoleInstancesStartFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *RoleInstancesStartFuture) Result(client RoleInstancesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesStartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybridnetwork.RoleInstancesStartFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(RoleInstancesClient) (autorest.Response, error)
 }
 
 // RoleInstancesStopFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type RoleInstancesStopFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *RoleInstancesStopFuture) Result(client RoleInstancesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesStopFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybridnetwork.RoleInstancesStopFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(RoleInstancesClient) (autorest.Response, error)
 }
 
 // SkuOverview the network function sku overview.
@@ -2874,30 +2764,10 @@ func (vnfpf VendorNetworkFunctionPropertiesFormat) MarshalJSON() ([]byte, error)
 // VendorNetworkFunctionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type VendorNetworkFunctionsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VendorNetworkFunctionsCreateOrUpdateFuture) Result(client VendorNetworkFunctionsClient) (vnf VendorNetworkFunction, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorNetworkFunctionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybridnetwork.VendorNetworkFunctionsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vnf.Response.Response, err = future.GetResult(sender); err == nil && vnf.Response.Response.StatusCode != http.StatusNoContent {
-		vnf, err = client.CreateOrUpdateResponder(vnf.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "hybridnetwork.VendorNetworkFunctionsCreateOrUpdateFuture", "Result", vnf.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VendorNetworkFunctionsClient) (VendorNetworkFunction, error)
 }
 
 // VendorPropertiesFormat vendor properties.
@@ -2911,53 +2781,19 @@ type VendorPropertiesFormat struct {
 // VendorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type VendorsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VendorsCreateOrUpdateFuture) Result(client VendorsClient) (vVar Vendor, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybridnetwork.VendorsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vVar.Response.Response, err = future.GetResult(sender); err == nil && vVar.Response.Response.StatusCode != http.StatusNoContent {
-		vVar, err = client.CreateOrUpdateResponder(vVar.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "hybridnetwork.VendorsCreateOrUpdateFuture", "Result", vVar.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VendorsClient) (Vendor, error)
 }
 
 // VendorsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type VendorsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VendorsDeleteFuture) Result(client VendorsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybridnetwork.VendorsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VendorsClient) (autorest.Response, error)
 }
 
 // VendorSku sku sub resource.
@@ -3204,53 +3040,19 @@ func NewVendorSkuListResultPage(cur VendorSkuListResult, getNextPage func(contex
 // VendorSkuPreviewCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type VendorSkuPreviewCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VendorSkuPreviewCreateOrUpdateFuture) Result(client VendorSkuPreviewClient) (ps PreviewSubscription, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkuPreviewCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybridnetwork.VendorSkuPreviewCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ps.Response.Response, err = future.GetResult(sender); err == nil && ps.Response.Response.StatusCode != http.StatusNoContent {
-		ps, err = client.CreateOrUpdateResponder(ps.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkuPreviewCreateOrUpdateFuture", "Result", ps.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VendorSkuPreviewClient) (PreviewSubscription, error)
 }
 
 // VendorSkuPreviewDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type VendorSkuPreviewDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VendorSkuPreviewDeleteFuture) Result(client VendorSkuPreviewClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkuPreviewDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybridnetwork.VendorSkuPreviewDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VendorSkuPreviewClient) (autorest.Response, error)
 }
 
 // VendorSkuPropertiesFormat sku properties
@@ -3298,53 +3100,19 @@ func (vspf VendorSkuPropertiesFormat) MarshalJSON() ([]byte, error) {
 // VendorSkusCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type VendorSkusCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VendorSkusCreateOrUpdateFuture) Result(client VendorSkusClient) (vs VendorSku, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkusCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybridnetwork.VendorSkusCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vs.Response.Response, err = future.GetResult(sender); err == nil && vs.Response.Response.StatusCode != http.StatusNoContent {
-		vs, err = client.CreateOrUpdateResponder(vs.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkusCreateOrUpdateFuture", "Result", vs.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VendorSkusClient) (VendorSku, error)
 }
 
 // VendorSkusDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type VendorSkusDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VendorSkusDeleteFuture) Result(client VendorSkusClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkusDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hybridnetwork.VendorSkusDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VendorSkusClient) (autorest.Response, error)
 }
 
 // VirtualHardDisk describes the uri of a disk.

@@ -79,7 +79,7 @@ func (client ConfigurationProfileAssignmentsClient) CreateOrUpdate(ctx context.C
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -118,7 +118,29 @@ func (client ConfigurationProfileAssignmentsClient) CreateOrUpdateSender(req *ht
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ConfigurationProfileAssignmentsClient) (cpa ConfigurationProfileAssignment, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("automanage.ConfigurationProfileAssignmentsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if cpa.Response.Response, err = future.GetResult(sender); err == nil && cpa.Response.Response.StatusCode != http.StatusNoContent {
+			cpa, err = client.CreateOrUpdateResponder(cpa.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsCreateOrUpdateFuture", "Result", cpa.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

@@ -76,7 +76,7 @@ func (client OriginGroupsClient) Create(ctx context.Context, resourceGroupName s
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.OriginGroupsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginGroupsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -116,7 +116,29 @@ func (client OriginGroupsClient) CreateSender(req *http.Request) (future OriginG
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client OriginGroupsClient) (og OriginGroup, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.OriginGroupsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.OriginGroupsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if og.Response.Response, err = future.GetResult(sender); err == nil && og.Response.Response.StatusCode != http.StatusNoContent {
+			og, err = client.CreateResponder(og.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "cdn.OriginGroupsCreateFuture", "Result", og.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -165,7 +187,7 @@ func (client OriginGroupsClient) Delete(ctx context.Context, resourceGroupName s
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.OriginGroupsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginGroupsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -203,7 +225,23 @@ func (client OriginGroupsClient) DeleteSender(req *http.Request) (future OriginG
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client OriginGroupsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.OriginGroupsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.OriginGroupsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -468,7 +506,7 @@ func (client OriginGroupsClient) Update(ctx context.Context, resourceGroupName s
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.OriginGroupsClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginGroupsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -508,7 +546,29 @@ func (client OriginGroupsClient) UpdateSender(req *http.Request) (future OriginG
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client OriginGroupsClient) (og OriginGroup, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.OriginGroupsUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.OriginGroupsUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if og.Response.Response, err = future.GetResult(sender); err == nil && og.Response.Response.StatusCode != http.StatusNoContent {
+			og, err = client.UpdateResponder(og.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "cdn.OriginGroupsUpdateFuture", "Result", og.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

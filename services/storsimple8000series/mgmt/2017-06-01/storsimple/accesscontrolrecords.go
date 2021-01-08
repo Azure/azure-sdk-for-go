@@ -78,7 +78,7 @@ func (client AccessControlRecordsClient) CreateOrUpdate(ctx context.Context, acc
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -117,7 +117,29 @@ func (client AccessControlRecordsClient) CreateOrUpdateSender(req *http.Request)
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AccessControlRecordsClient) (acr AccessControlRecord, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.AccessControlRecordsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if acr.Response.Response, err = future.GetResult(sender); err == nil && acr.Response.Response.StatusCode != http.StatusNoContent {
+			acr, err = client.CreateOrUpdateResponder(acr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsCreateOrUpdateFuture", "Result", acr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -164,7 +186,7 @@ func (client AccessControlRecordsClient) Delete(ctx context.Context, accessContr
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -201,7 +223,23 @@ func (client AccessControlRecordsClient) DeleteSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AccessControlRecordsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.AccessControlRecordsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

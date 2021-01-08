@@ -388,6 +388,7 @@ func (client WatchlistsClient) List(ctx context.Context, resourceGroupName strin
 	}
 	if result.wl.hasNextLink() && result.wl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -450,7 +451,6 @@ func (client WatchlistsClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.WatchlistsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

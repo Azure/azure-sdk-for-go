@@ -322,6 +322,7 @@ func (client ResourceLinksClient) ListAtSourceScope(ctx context.Context, scope s
 	}
 	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -384,7 +385,6 @@ func (client ResourceLinksClient) listAtSourceScopeNextResults(ctx context.Conte
 	result, err = client.ListAtSourceScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "listAtSourceScopeNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -441,6 +441,7 @@ func (client ResourceLinksClient) ListAtSubscription(ctx context.Context, filter
 	}
 	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -503,7 +504,6 @@ func (client ResourceLinksClient) listAtSubscriptionNextResults(ctx context.Cont
 	result, err = client.ListAtSubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "listAtSubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

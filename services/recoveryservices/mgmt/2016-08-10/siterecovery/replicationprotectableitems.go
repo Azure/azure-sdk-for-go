@@ -159,6 +159,7 @@ func (client ReplicationProtectableItemsClient) ListByReplicationProtectionConta
 	}
 	if result.pic.hasNextLink() && result.pic.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -222,7 +223,6 @@ func (client ReplicationProtectableItemsClient) listByReplicationProtectionConta
 	result, err = client.ListByReplicationProtectionContainersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectableItemsClient", "listByReplicationProtectionContainersNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

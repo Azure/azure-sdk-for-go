@@ -389,53 +389,19 @@ type PrivateEndpointConnectionProperties struct {
 // PrivateEndpointConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
 // of a long-running operation.
 type PrivateEndpointConnectionsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *PrivateEndpointConnectionsCreateOrUpdateFuture) Result(client PrivateEndpointConnectionsClient) (pec PrivateEndpointConnection, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "healthcareapis.PrivateEndpointConnectionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("healthcareapis.PrivateEndpointConnectionsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if pec.Response.Response, err = future.GetResult(sender); err == nil && pec.Response.Response.StatusCode != http.StatusNoContent {
-		pec, err = client.CreateOrUpdateResponder(pec.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "healthcareapis.PrivateEndpointConnectionsCreateOrUpdateFuture", "Result", pec.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(PrivateEndpointConnectionsClient) (PrivateEndpointConnection, error)
 }
 
 // PrivateEndpointConnectionsDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type PrivateEndpointConnectionsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *PrivateEndpointConnectionsDeleteFuture) Result(client PrivateEndpointConnectionsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "healthcareapis.PrivateEndpointConnectionsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("healthcareapis.PrivateEndpointConnectionsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(PrivateEndpointConnectionsClient) (autorest.Response, error)
 }
 
 // PrivateLinkResource a private link resource
@@ -616,53 +582,19 @@ type ServiceExportConfigurationInfo struct {
 // ServicesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ServicesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServicesCreateOrUpdateFuture) Result(client ServicesClient) (sd ServicesDescription, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "healthcareapis.ServicesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("healthcareapis.ServicesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sd.Response.Response, err = future.GetResult(sender); err == nil && sd.Response.Response.StatusCode != http.StatusNoContent {
-		sd, err = client.CreateOrUpdateResponder(sd.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "healthcareapis.ServicesCreateOrUpdateFuture", "Result", sd.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ServicesClient) (ServicesDescription, error)
 }
 
 // ServicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ServicesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServicesDeleteFuture) Result(client ServicesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "healthcareapis.ServicesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("healthcareapis.ServicesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ServicesClient) (autorest.Response, error)
 }
 
 // ServicesDescription the description of the service.
@@ -1062,30 +994,10 @@ func (sr ServicesResourceIdentity) MarshalJSON() ([]byte, error) {
 // ServicesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ServicesUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServicesUpdateFuture) Result(client ServicesClient) (sd ServicesDescription, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "healthcareapis.ServicesUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("healthcareapis.ServicesUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sd.Response.Response, err = future.GetResult(sender); err == nil && sd.Response.Response.StatusCode != http.StatusNoContent {
-		sd, err = client.UpdateResponder(sd.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "healthcareapis.ServicesUpdateFuture", "Result", sd.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ServicesClient) (ServicesDescription, error)
 }
 
 // SetObject ...

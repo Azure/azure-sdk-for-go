@@ -310,6 +310,7 @@ func (client ScopeAssignmentsClient) List(ctx context.Context, scope string) (re
 	}
 	if result.salr.hasNextLink() && result.salr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -369,7 +370,6 @@ func (client ScopeAssignmentsClient) listNextResults(ctx context.Context, lastRe
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.ScopeAssignmentsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

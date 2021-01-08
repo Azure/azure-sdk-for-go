@@ -317,6 +317,7 @@ func (client RegisteredPrefixesClient) ListByPeering(ctx context.Context, resour
 	}
 	if result.rplr.hasNextLink() && result.rplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -378,7 +379,6 @@ func (client RegisteredPrefixesClient) listByPeeringNextResults(ctx context.Cont
 	result, err = client.ListByPeeringResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.RegisteredPrefixesClient", "listByPeeringNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

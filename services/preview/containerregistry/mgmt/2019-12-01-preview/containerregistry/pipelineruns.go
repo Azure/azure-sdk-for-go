@@ -90,7 +90,7 @@ func (client PipelineRunsClient) Create(ctx context.Context, resourceGroupName s
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.PipelineRunsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.PipelineRunsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -129,7 +129,29 @@ func (client PipelineRunsClient) CreateSender(req *http.Request) (future Pipelin
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client PipelineRunsClient) (pr PipelineRun, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.PipelineRunsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("containerregistry.PipelineRunsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if pr.Response.Response, err = future.GetResult(sender); err == nil && pr.Response.Response.StatusCode != http.StatusNoContent {
+			pr, err = client.CreateResponder(pr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "containerregistry.PipelineRunsCreateFuture", "Result", pr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -183,7 +205,7 @@ func (client PipelineRunsClient) Delete(ctx context.Context, resourceGroupName s
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.PipelineRunsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.PipelineRunsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -220,7 +242,23 @@ func (client PipelineRunsClient) DeleteSender(req *http.Request) (future Pipelin
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client PipelineRunsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.PipelineRunsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("containerregistry.PipelineRunsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -373,6 +411,7 @@ func (client PipelineRunsClient) List(ctx context.Context, resourceGroupName str
 	}
 	if result.prlr.hasNextLink() && result.prlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -434,7 +473,6 @@ func (client PipelineRunsClient) listNextResults(ctx context.Context, lastResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.PipelineRunsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

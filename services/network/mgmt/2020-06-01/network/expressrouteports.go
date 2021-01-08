@@ -67,7 +67,7 @@ func (client ExpressRoutePortsClient) CreateOrUpdate(ctx context.Context, resour
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -106,7 +106,29 @@ func (client ExpressRoutePortsClient) CreateOrUpdateSender(req *http.Request) (f
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ExpressRoutePortsClient) (erp ExpressRoutePort, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("network.ExpressRoutePortsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if erp.Response.Response, err = future.GetResult(sender); err == nil && erp.Response.Response.StatusCode != http.StatusNoContent {
+			erp, err = client.CreateOrUpdateResponder(erp.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsCreateOrUpdateFuture", "Result", erp.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -145,7 +167,7 @@ func (client ExpressRoutePortsClient) Delete(ctx context.Context, resourceGroupN
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -181,7 +203,23 @@ func (client ExpressRoutePortsClient) DeleteSender(req *http.Request) (future Ex
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ExpressRoutePortsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("network.ExpressRoutePortsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -390,6 +428,7 @@ func (client ExpressRoutePortsClient) List(ctx context.Context) (result ExpressR
 	}
 	if result.erplr.hasNextLink() && result.erplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -449,7 +488,6 @@ func (client ExpressRoutePortsClient) listNextResults(ctx context.Context, lastR
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -505,6 +543,7 @@ func (client ExpressRoutePortsClient) ListByResourceGroup(ctx context.Context, r
 	}
 	if result.erplr.hasNextLink() && result.erplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -565,7 +604,6 @@ func (client ExpressRoutePortsClient) listByResourceGroupNextResults(ctx context
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

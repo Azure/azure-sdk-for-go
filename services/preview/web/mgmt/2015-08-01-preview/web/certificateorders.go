@@ -545,6 +545,7 @@ func (client CertificateOrdersClient) GetCertificateOrders(ctx context.Context, 
 	}
 	if result.coc.hasNextLink() && result.coc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -605,7 +606,6 @@ func (client CertificateOrdersClient) getCertificateOrdersNextResults(ctx contex
 	result, err = client.GetCertificateOrdersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "getCertificateOrdersNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -662,6 +662,7 @@ func (client CertificateOrdersClient) GetCertificates(ctx context.Context, resou
 	}
 	if result.cocc.hasNextLink() && result.cocc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -723,7 +724,6 @@ func (client CertificateOrdersClient) getCertificatesNextResults(ctx context.Con
 	result, err = client.GetCertificatesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "getCertificatesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

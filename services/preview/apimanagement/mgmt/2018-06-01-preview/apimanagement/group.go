@@ -477,6 +477,7 @@ func (client GroupClient) ListByService(ctx context.Context, resourceGroupName s
 	}
 	if result.gc.hasNextLink() && result.gc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -547,7 +548,6 @@ func (client GroupClient) listByServiceNextResults(ctx context.Context, lastResu
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "listByServiceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

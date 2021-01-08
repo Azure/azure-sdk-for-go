@@ -78,6 +78,7 @@ func (client TransactionsClient) ListByInvoice(ctx context.Context, billingAccou
 	}
 	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -138,7 +139,6 @@ func (client TransactionsClient) listByInvoiceNextResults(ctx context.Context, l
 	result, err = client.ListByInvoiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.TransactionsClient", "listByInvoiceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

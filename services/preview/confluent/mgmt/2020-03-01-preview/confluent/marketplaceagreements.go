@@ -148,6 +148,7 @@ func (client MarketplaceAgreementsClient) List(ctx context.Context) (result Agre
 	}
 	if result.arlr.hasNextLink() && result.arlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -201,7 +202,6 @@ func (client MarketplaceAgreementsClient) listNextResults(ctx context.Context, l
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "confluent.MarketplaceAgreementsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

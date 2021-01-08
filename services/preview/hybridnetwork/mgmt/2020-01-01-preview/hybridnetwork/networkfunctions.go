@@ -77,7 +77,7 @@ func (client NetworkFunctionsClient) CreateOrUpdate(ctx context.Context, resourc
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -115,7 +115,29 @@ func (client NetworkFunctionsClient) CreateOrUpdateSender(req *http.Request) (fu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client NetworkFunctionsClient) (nf NetworkFunction, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hybridnetwork.NetworkFunctionsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if nf.Response.Response, err = future.GetResult(sender); err == nil && nf.Response.Response.StatusCode != http.StatusNoContent {
+			nf, err = client.CreateOrUpdateResponder(nf.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsCreateOrUpdateFuture", "Result", nf.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -164,7 +186,7 @@ func (client NetworkFunctionsClient) Delete(ctx context.Context, resourceGroupNa
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -200,7 +222,23 @@ func (client NetworkFunctionsClient) DeleteSender(req *http.Request) (future Net
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client NetworkFunctionsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hybridnetwork.NetworkFunctionsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -346,6 +384,7 @@ func (client NetworkFunctionsClient) ListByResourceGroup(ctx context.Context, re
 	}
 	if result.nflr.hasNextLink() && result.nflr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -406,7 +445,6 @@ func (client NetworkFunctionsClient) listByResourceGroupNextResults(ctx context.
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -466,6 +504,7 @@ func (client NetworkFunctionsClient) ListBySubscription(ctx context.Context) (re
 	}
 	if result.nflr.hasNextLink() && result.nflr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -525,7 +564,6 @@ func (client NetworkFunctionsClient) listBySubscriptionNextResults(ctx context.C
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

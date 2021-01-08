@@ -76,7 +76,7 @@ func (client AzureBareMetalInstancesClient) Delete(ctx context.Context, resource
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -112,7 +112,23 @@ func (client AzureBareMetalInstancesClient) DeleteSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AzureBareMetalInstancesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("baremetalinfrastructure.AzureBareMetalInstancesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -258,6 +274,7 @@ func (client AzureBareMetalInstancesClient) List(ctx context.Context, resourceGr
 	}
 	if result.abmilr.hasNextLink() && result.abmilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -318,7 +335,6 @@ func (client AzureBareMetalInstancesClient) listNextResults(ctx context.Context,
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -379,6 +395,7 @@ func (client AzureBareMetalInstancesClient) ListBySubscription(ctx context.Conte
 	}
 	if result.abmilr.hasNextLink() && result.abmilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -438,7 +455,6 @@ func (client AzureBareMetalInstancesClient) listBySubscriptionNextResults(ctx co
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -492,7 +508,7 @@ func (client AzureBareMetalInstancesClient) Restart(ctx context.Context, resourc
 
 	result, err = client.RestartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "Restart", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "Restart", nil, "Failure sending request")
 		return
 	}
 
@@ -528,7 +544,23 @@ func (client AzureBareMetalInstancesClient) RestartSender(req *http.Request) (fu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AzureBareMetalInstancesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesRestartFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("baremetalinfrastructure.AzureBareMetalInstancesRestartFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -576,7 +608,7 @@ func (client AzureBareMetalInstancesClient) Shutdown(ctx context.Context, resour
 
 	result, err = client.ShutdownSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "Shutdown", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "Shutdown", nil, "Failure sending request")
 		return
 	}
 
@@ -612,7 +644,23 @@ func (client AzureBareMetalInstancesClient) ShutdownSender(req *http.Request) (f
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AzureBareMetalInstancesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesShutdownFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("baremetalinfrastructure.AzureBareMetalInstancesShutdownFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -660,7 +708,7 @@ func (client AzureBareMetalInstancesClient) Start(ctx context.Context, resourceG
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "Start", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "Start", nil, "Failure sending request")
 		return
 	}
 
@@ -696,7 +744,23 @@ func (client AzureBareMetalInstancesClient) StartSender(req *http.Request) (futu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AzureBareMetalInstancesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesStartFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("baremetalinfrastructure.AzureBareMetalInstancesStartFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

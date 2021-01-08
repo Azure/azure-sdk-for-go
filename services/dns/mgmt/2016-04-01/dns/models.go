@@ -828,28 +828,8 @@ func (zp ZoneProperties) MarshalJSON() ([]byte, error) {
 
 // ZonesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ZonesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ZonesDeleteFuture) Result(client ZonesClient) (zdr ZoneDeleteResult, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "dns.ZonesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("dns.ZonesDeleteFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if zdr.Response.Response, err = future.GetResult(sender); err == nil && zdr.Response.Response.StatusCode != http.StatusNoContent {
-		zdr, err = client.DeleteResponder(zdr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "dns.ZonesDeleteFuture", "Result", zdr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ZonesClient) (ZoneDeleteResult, error)
 }

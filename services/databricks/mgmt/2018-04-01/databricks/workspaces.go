@@ -99,7 +99,7 @@ func (client WorkspacesClient) CreateOrUpdate(ctx context.Context, parameters Wo
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databricks.WorkspacesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databricks.WorkspacesClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -137,7 +137,29 @@ func (client WorkspacesClient) CreateOrUpdateSender(req *http.Request) (future W
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client WorkspacesClient) (w Workspace, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "databricks.WorkspacesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("databricks.WorkspacesCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if w.Response.Response, err = future.GetResult(sender); err == nil && w.Response.Response.StatusCode != http.StatusNoContent {
+			w, err = client.CreateOrUpdateResponder(w.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "databricks.WorkspacesCreateOrUpdateFuture", "Result", w.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -187,7 +209,7 @@ func (client WorkspacesClient) Delete(ctx context.Context, resourceGroupName str
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databricks.WorkspacesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databricks.WorkspacesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -223,7 +245,23 @@ func (client WorkspacesClient) DeleteSender(req *http.Request) (future Workspace
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client WorkspacesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "databricks.WorkspacesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("databricks.WorkspacesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -368,6 +406,7 @@ func (client WorkspacesClient) ListByResourceGroup(ctx context.Context, resource
 	}
 	if result.wlr.hasNextLink() && result.wlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -428,7 +467,6 @@ func (client WorkspacesClient) listByResourceGroupNextResults(ctx context.Contex
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databricks.WorkspacesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -482,6 +520,7 @@ func (client WorkspacesClient) ListBySubscription(ctx context.Context) (result W
 	}
 	if result.wlr.hasNextLink() && result.wlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -541,7 +580,6 @@ func (client WorkspacesClient) listBySubscriptionNextResults(ctx context.Context
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databricks.WorkspacesClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -597,7 +635,7 @@ func (client WorkspacesClient) Update(ctx context.Context, parameters WorkspaceU
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databricks.WorkspacesClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databricks.WorkspacesClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -635,7 +673,29 @@ func (client WorkspacesClient) UpdateSender(req *http.Request) (future Workspace
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client WorkspacesClient) (w Workspace, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "databricks.WorkspacesUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("databricks.WorkspacesUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if w.Response.Response, err = future.GetResult(sender); err == nil && w.Response.Response.StatusCode != http.StatusNoContent {
+			w, err = client.UpdateResponder(w.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "databricks.WorkspacesUpdateFuture", "Result", w.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

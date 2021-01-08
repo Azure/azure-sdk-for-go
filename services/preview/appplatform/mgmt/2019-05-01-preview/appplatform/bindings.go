@@ -324,6 +324,7 @@ func (client BindingsClient) List(ctx context.Context, resourceGroupName string,
 	}
 	if result.brc.hasNextLink() && result.brc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -386,7 +387,6 @@ func (client BindingsClient) listNextResults(ctx context.Context, lastResults Bi
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.BindingsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

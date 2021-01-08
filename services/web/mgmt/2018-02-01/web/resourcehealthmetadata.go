@@ -246,6 +246,7 @@ func (client ResourceHealthMetadataClient) List(ctx context.Context) (result Res
 	}
 	if result.rhmc.hasNextLink() && result.rhmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -305,7 +306,6 @@ func (client ResourceHealthMetadataClient) listNextResults(ctx context.Context, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -369,6 +369,7 @@ func (client ResourceHealthMetadataClient) ListByResourceGroup(ctx context.Conte
 	}
 	if result.rhmc.hasNextLink() && result.rhmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -429,7 +430,6 @@ func (client ResourceHealthMetadataClient) listByResourceGroupNextResults(ctx co
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -494,6 +494,7 @@ func (client ResourceHealthMetadataClient) ListBySite(ctx context.Context, resou
 	}
 	if result.rhmc.hasNextLink() && result.rhmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -555,7 +556,6 @@ func (client ResourceHealthMetadataClient) listBySiteNextResults(ctx context.Con
 	result, err = client.ListBySiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "listBySiteNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -621,6 +621,7 @@ func (client ResourceHealthMetadataClient) ListBySiteSlot(ctx context.Context, r
 	}
 	if result.rhmc.hasNextLink() && result.rhmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -683,7 +684,6 @@ func (client ResourceHealthMetadataClient) listBySiteSlotNextResults(ctx context
 	result, err = client.ListBySiteSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "listBySiteSlotNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

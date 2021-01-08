@@ -108,6 +108,7 @@ func (client ProductSubscriptionsClient) ListByProduct(ctx context.Context, reso
 	}
 	if result.sc.hasNextLink() && result.sc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -179,7 +180,6 @@ func (client ProductSubscriptionsClient) listByProductNextResults(ctx context.Co
 	result, err = client.ListByProductResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductSubscriptionsClient", "listByProductNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -64,7 +64,7 @@ func (client PriceSheetClient) Download(ctx context.Context, billingAccountName 
 
 	result, err = client.DownloadSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.PriceSheetClient", "Download", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.PriceSheetClient", "Download", nil, "Failure sending request")
 		return
 	}
 
@@ -99,7 +99,29 @@ func (client PriceSheetClient) DownloadSender(req *http.Request) (future PriceSh
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client PriceSheetClient) (du DownloadURL, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.PriceSheetDownloadFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("billing.PriceSheetDownloadFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if du.Response.Response, err = future.GetResult(sender); err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
+			du, err = client.DownloadResponder(du.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "billing.PriceSheetDownloadFuture", "Result", du.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

@@ -623,7 +623,7 @@ func (client GlobalUsersClient) ResetPassword(ctx context.Context, userName stri
 
 	result, err = client.ResetPasswordSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersClient", "ResetPassword", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersClient", "ResetPassword", nil, "Failure sending request")
 		return
 	}
 
@@ -659,7 +659,23 @@ func (client GlobalUsersClient) ResetPasswordSender(req *http.Request) (future G
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client GlobalUsersClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "labservices.GlobalUsersResetPasswordFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("labservices.GlobalUsersResetPasswordFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -705,7 +721,7 @@ func (client GlobalUsersClient) StartEnvironment(ctx context.Context, userName s
 
 	result, err = client.StartEnvironmentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersClient", "StartEnvironment", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersClient", "StartEnvironment", nil, "Failure sending request")
 		return
 	}
 
@@ -741,7 +757,23 @@ func (client GlobalUsersClient) StartEnvironmentSender(req *http.Request) (futur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client GlobalUsersClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "labservices.GlobalUsersStartEnvironmentFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("labservices.GlobalUsersStartEnvironmentFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -787,7 +819,7 @@ func (client GlobalUsersClient) StopEnvironment(ctx context.Context, userName st
 
 	result, err = client.StopEnvironmentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersClient", "StopEnvironment", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersClient", "StopEnvironment", nil, "Failure sending request")
 		return
 	}
 
@@ -823,7 +855,23 @@ func (client GlobalUsersClient) StopEnvironmentSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client GlobalUsersClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "labservices.GlobalUsersStopEnvironmentFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("labservices.GlobalUsersStopEnvironmentFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

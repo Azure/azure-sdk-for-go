@@ -85,6 +85,7 @@ func (client ProtectableItemsClient) List(ctx context.Context, vaultName string,
 	}
 	if result.wpirl.hasNextLink() && result.wpirl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -152,7 +153,6 @@ func (client ProtectableItemsClient) listNextResults(ctx context.Context, lastRe
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ProtectableItemsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

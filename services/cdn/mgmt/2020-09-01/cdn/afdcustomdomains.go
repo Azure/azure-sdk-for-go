@@ -79,7 +79,7 @@ func (client AFDCustomDomainsClient) Create(ctx context.Context, resourceGroupNa
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -118,7 +118,29 @@ func (client AFDCustomDomainsClient) CreateSender(req *http.Request) (future AFD
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AFDCustomDomainsClient) (ad AFDDomain, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.AFDCustomDomainsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ad.Response.Response, err = future.GetResult(sender); err == nil && ad.Response.Response.StatusCode != http.StatusNoContent {
+			ad, err = client.CreateResponder(ad.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsCreateFuture", "Result", ad.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -167,7 +189,7 @@ func (client AFDCustomDomainsClient) Delete(ctx context.Context, resourceGroupNa
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -204,7 +226,23 @@ func (client AFDCustomDomainsClient) DeleteSender(req *http.Request) (future AFD
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AFDCustomDomainsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.AFDCustomDomainsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -464,7 +502,7 @@ func (client AFDCustomDomainsClient) RefreshValidationToken(ctx context.Context,
 
 	result, err = client.RefreshValidationTokenSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsClient", "RefreshValidationToken", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsClient", "RefreshValidationToken", nil, "Failure sending request")
 		return
 	}
 
@@ -501,7 +539,29 @@ func (client AFDCustomDomainsClient) RefreshValidationTokenSender(req *http.Requ
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AFDCustomDomainsClient) (vt ValidationToken, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsRefreshValidationTokenFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.AFDCustomDomainsRefreshValidationTokenFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if vt.Response.Response, err = future.GetResult(sender); err == nil && vt.Response.Response.StatusCode != http.StatusNoContent {
+			vt, err = client.RefreshValidationTokenResponder(vt.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsRefreshValidationTokenFuture", "Result", vt.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -550,7 +610,7 @@ func (client AFDCustomDomainsClient) Update(ctx context.Context, resourceGroupNa
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -589,7 +649,29 @@ func (client AFDCustomDomainsClient) UpdateSender(req *http.Request) (future AFD
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AFDCustomDomainsClient) (ad AFDDomain, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.AFDCustomDomainsUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ad.Response.Response, err = future.GetResult(sender); err == nil && ad.Response.Response.StatusCode != http.StatusNoContent {
+			ad, err = client.UpdateResponder(ad.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsUpdateFuture", "Result", ad.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

@@ -749,9 +749,7 @@ func (client BaseClient) CreateBackupPolicy(ctx context.Context, backupPolicyDes
 				{Target: "backupPolicyDescription.MaxIncrementalBackups", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "backupPolicyDescription.MaxIncrementalBackups", Name: validation.InclusiveMaximum, Rule: int64(255), Chain: nil},
 						{Target: "backupPolicyDescription.MaxIncrementalBackups", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
-					}},
-				{Target: "backupPolicyDescription.Schedule", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "backupPolicyDescription.Storage", Name: validation.Null, Rule: true, Chain: nil}}},
+					}}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},
@@ -1117,8 +1115,7 @@ func (client BaseClient) CreateService(ctx context.Context, applicationID string
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceDescription,
 			Constraints: []validation.Constraint{{Target: "serviceDescription.ServiceName", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "serviceDescription.ServiceTypeName", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "serviceDescription.PartitionDescription", Name: validation.Null, Rule: true, Chain: nil}}},
+				{Target: "serviceDescription.ServiceTypeName", Name: validation.Null, Rule: true, Chain: nil}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},
@@ -5130,10 +5127,7 @@ func (client BaseClient) GetBackupsFromBackupLocation(ctx context.Context, getBa
 				}}}},
 		{TargetValue: maxResults,
 			Constraints: []validation.Constraint{{Target: "maxResults", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil}}}}},
-		{TargetValue: getBackupByStorageQueryDescription,
-			Constraints: []validation.Constraint{{Target: "getBackupByStorageQueryDescription.Storage", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "getBackupByStorageQueryDescription.BackupEntity", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("servicefabric.BaseClient", "GetBackupsFromBackupLocation", err.Error())
 	}
 
@@ -15820,8 +15814,7 @@ func (client BaseClient) PutProperty(ctx context.Context, nameID string, propert
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: propertyDescription,
-			Constraints: []validation.Constraint{{Target: "propertyDescription.PropertyName", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "propertyDescription.Value", Name: validation.Null, Rule: true, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "propertyDescription.PropertyName", Name: validation.Null, Rule: true, Chain: nil}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},
@@ -20839,9 +20832,7 @@ func (client BaseClient) UpdateBackupPolicy(ctx context.Context, backupPolicyDes
 				{Target: "backupPolicyDescription.MaxIncrementalBackups", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "backupPolicyDescription.MaxIncrementalBackups", Name: validation.InclusiveMaximum, Rule: int64(255), Chain: nil},
 						{Target: "backupPolicyDescription.MaxIncrementalBackups", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
-					}},
-				{Target: "backupPolicyDescription.Schedule", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "backupPolicyDescription.Storage", Name: validation.Null, Rule: true, Chain: nil}}},
+					}}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},

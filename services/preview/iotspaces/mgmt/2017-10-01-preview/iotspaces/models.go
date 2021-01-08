@@ -33,58 +33,18 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/iotspaces/mgmt/
 // CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type CreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *CreateOrUpdateFuture) Result(client Client) (d Description, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "iotspaces.CreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("iotspaces.CreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
-		d, err = client.CreateOrUpdateResponder(d.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "iotspaces.CreateOrUpdateFuture", "Result", d.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(Client) (Description, error)
 }
 
 // DeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DeleteFuture) Result(client Client) (d Description, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "iotspaces.DeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("iotspaces.DeleteFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
-		d, err = client.DeleteResponder(d.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "iotspaces.DeleteFuture", "Result", d.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(Client) (Description, error)
 }
 
 // Description the description of the IoTSpaces service.
@@ -603,28 +563,8 @@ type StorageContainerProperties struct {
 
 // UpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type UpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *UpdateFuture) Result(client Client) (d Description, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "iotspaces.UpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("iotspaces.UpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
-		d, err = client.UpdateResponder(d.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "iotspaces.UpdateFuture", "Result", d.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(Client) (Description, error)
 }

@@ -74,7 +74,7 @@ func (client VendorSkuPreviewClient) CreateOrUpdate(ctx context.Context, vendorN
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkuPreviewClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkuPreviewClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -116,7 +116,29 @@ func (client VendorSkuPreviewClient) CreateOrUpdateSender(req *http.Request) (fu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VendorSkuPreviewClient) (ps PreviewSubscription, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkuPreviewCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hybridnetwork.VendorSkuPreviewCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ps.Response.Response, err = future.GetResult(sender); err == nil && ps.Response.Response.StatusCode != http.StatusNoContent {
+			ps, err = client.CreateOrUpdateResponder(ps.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkuPreviewCreateOrUpdateFuture", "Result", ps.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -162,7 +184,7 @@ func (client VendorSkuPreviewClient) Delete(ctx context.Context, vendorName stri
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkuPreviewClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkuPreviewClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -199,7 +221,23 @@ func (client VendorSkuPreviewClient) DeleteSender(req *http.Request) (future Ven
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VendorSkuPreviewClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkuPreviewDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hybridnetwork.VendorSkuPreviewDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -340,6 +378,7 @@ func (client VendorSkuPreviewClient) List(ctx context.Context, vendorName string
 	}
 	if result.psl.hasNextLink() && result.psl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -401,7 +440,6 @@ func (client VendorSkuPreviewClient) listNextResults(ctx context.Context, lastRe
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkuPreviewClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

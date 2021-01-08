@@ -73,7 +73,7 @@ func (client CustomImagesClient) CreateOrUpdate(ctx context.Context, resourceGro
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.CustomImagesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.CustomImagesClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -112,7 +112,29 @@ func (client CustomImagesClient) CreateOrUpdateSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client CustomImagesClient) (ci CustomImage, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "dtl.CustomImagesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("dtl.CustomImagesCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ci.Response.Response, err = future.GetResult(sender); err == nil && ci.Response.Response.StatusCode != http.StatusNoContent {
+			ci, err = client.CreateOrUpdateResponder(ci.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "dtl.CustomImagesCreateOrUpdateFuture", "Result", ci.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -152,7 +174,7 @@ func (client CustomImagesClient) Delete(ctx context.Context, resourceGroupName s
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.CustomImagesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.CustomImagesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -189,7 +211,23 @@ func (client CustomImagesClient) DeleteSender(req *http.Request) (future CustomI
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client CustomImagesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "dtl.CustomImagesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("dtl.CustomImagesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -326,6 +364,7 @@ func (client CustomImagesClient) List(ctx context.Context, resourceGroupName str
 	}
 	if result.cil.hasNextLink() && result.cil.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -399,7 +438,6 @@ func (client CustomImagesClient) listNextResults(ctx context.Context, lastResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.CustomImagesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

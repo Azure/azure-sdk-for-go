@@ -330,6 +330,7 @@ func (client ModelsClient) List(ctx context.Context, dependenciesFor []string, i
 	}
 	if result.pmdc.hasNextLink() && result.pmdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -400,7 +401,6 @@ func (client ModelsClient) listNextResults(ctx context.Context, lastResults Page
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.ModelsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

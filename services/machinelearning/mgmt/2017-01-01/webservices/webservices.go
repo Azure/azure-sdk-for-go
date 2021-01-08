@@ -21,7 +21,6 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -63,33 +62,6 @@ func (client Client) CreateOrUpdate(ctx context.Context, resourceGroupName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: createOrUpdatePayload,
-			Constraints: []validation.Constraint{{Target: "createOrUpdatePayload.Properties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "createOrUpdatePayload.Properties.RealtimeConfiguration", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "createOrUpdatePayload.Properties.RealtimeConfiguration.MaxConcurrentCalls", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "createOrUpdatePayload.Properties.RealtimeConfiguration.MaxConcurrentCalls", Name: validation.InclusiveMaximum, Rule: int64(200), Chain: nil},
-							{Target: "createOrUpdatePayload.Properties.RealtimeConfiguration.MaxConcurrentCalls", Name: validation.InclusiveMinimum, Rule: int64(4), Chain: nil},
-						}},
-					}},
-					{Target: "createOrUpdatePayload.Properties.MachineLearningWorkspace", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "createOrUpdatePayload.Properties.MachineLearningWorkspace.ID", Name: validation.Null, Rule: true, Chain: nil}}},
-					{Target: "createOrUpdatePayload.Properties.CommitmentPlan", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "createOrUpdatePayload.Properties.CommitmentPlan.ID", Name: validation.Null, Rule: true, Chain: nil}}},
-					{Target: "createOrUpdatePayload.Properties.Input", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "createOrUpdatePayload.Properties.Input.Type", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "createOrUpdatePayload.Properties.Input.Properties", Name: validation.Null, Rule: true, Chain: nil},
-						}},
-					{Target: "createOrUpdatePayload.Properties.Output", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "createOrUpdatePayload.Properties.Output.Type", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "createOrUpdatePayload.Properties.Output.Properties", Name: validation.Null, Rule: true, Chain: nil},
-						}},
-					{Target: "createOrUpdatePayload.Properties.PayloadsLocation", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "createOrUpdatePayload.Properties.PayloadsLocation.URI", Name: validation.Null, Rule: true, Chain: nil}}},
-				}}}}}); err != nil {
-		return result, validation.NewError("webservices.Client", "CreateOrUpdate", err.Error())
-	}
-
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, webServiceName, createOrUpdatePayload)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.Client", "CreateOrUpdate", nil, "Failure preparing request")
@@ -98,7 +70,7 @@ func (client Client) CreateOrUpdate(ctx context.Context, resourceGroupName strin
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.Client", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "webservices.Client", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -136,7 +108,29 @@ func (client Client) CreateOrUpdateSender(req *http.Request) (future CreateOrUpd
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client Client) (ws WebService, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.CreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("webservices.CreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ws.Response.Response, err = future.GetResult(sender); err == nil && ws.Response.Response.StatusCode != http.StatusNoContent {
+			ws, err = client.CreateOrUpdateResponder(ws.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "webservices.CreateOrUpdateFuture", "Result", ws.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -179,7 +173,7 @@ func (client Client) CreateRegionalProperties(ctx context.Context, resourceGroup
 
 	result, err = client.CreateRegionalPropertiesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.Client", "CreateRegionalProperties", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "webservices.Client", "CreateRegionalProperties", nil, "Failure sending request")
 		return
 	}
 
@@ -216,7 +210,29 @@ func (client Client) CreateRegionalPropertiesSender(req *http.Request) (future C
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client Client) (aos AsyncOperationStatus, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.CreateRegionalPropertiesFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("webservices.CreateRegionalPropertiesFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if aos.Response.Response, err = future.GetResult(sender); err == nil && aos.Response.Response.StatusCode != http.StatusNoContent {
+			aos, err = client.CreateRegionalPropertiesResponder(aos.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "webservices.CreateRegionalPropertiesFuture", "Result", aos.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -349,6 +365,7 @@ func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName 
 	}
 	if result.pwsl.hasNextLink() && result.pwsl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -412,7 +429,6 @@ func (client Client) listByResourceGroupNextResults(ctx context.Context, lastRes
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.Client", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -468,6 +484,7 @@ func (client Client) ListBySubscriptionID(ctx context.Context, skiptoken string)
 	}
 	if result.pwsl.hasNextLink() && result.pwsl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -530,7 +547,6 @@ func (client Client) listBySubscriptionIDNextResults(ctx context.Context, lastRe
 	result, err = client.ListBySubscriptionIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.Client", "listBySubscriptionIDNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -652,7 +668,7 @@ func (client Client) Patch(ctx context.Context, resourceGroupName string, webSer
 
 	result, err = client.PatchSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.Client", "Patch", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "webservices.Client", "Patch", nil, "Failure sending request")
 		return
 	}
 
@@ -690,7 +706,29 @@ func (client Client) PatchSender(req *http.Request) (future PatchFuture, err err
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client Client) (ws WebService, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.PatchFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("webservices.PatchFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ws.Response.Response, err = future.GetResult(sender); err == nil && ws.Response.Response.StatusCode != http.StatusNoContent {
+			ws, err = client.PatchResponder(ws.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "webservices.PatchFuture", "Result", ws.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -729,7 +767,7 @@ func (client Client) Remove(ctx context.Context, resourceGroupName string, webSe
 
 	result, err = client.RemoveSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.Client", "Remove", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "webservices.Client", "Remove", nil, "Failure sending request")
 		return
 	}
 
@@ -765,7 +803,23 @@ func (client Client) RemoveSender(req *http.Request) (future RemoveFuture, err e
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client Client) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.RemoveFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("webservices.RemoveFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

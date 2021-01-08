@@ -345,52 +345,18 @@ func (gp GroupProperties) MarshalJSON() ([]byte, error) {
 // GroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type GroupsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *GroupsCreateOrUpdateFuture) Result(client GroupsClient) (g Group, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managednetwork.GroupsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("managednetwork.GroupsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if g.Response.Response, err = future.GetResult(sender); err == nil && g.Response.Response.StatusCode != http.StatusNoContent {
-		g, err = client.CreateOrUpdateResponder(g.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "managednetwork.GroupsCreateOrUpdateFuture", "Result", g.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(GroupsClient) (Group, error)
 }
 
 // GroupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type GroupsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *GroupsDeleteFuture) Result(client GroupsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managednetwork.GroupsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("managednetwork.GroupsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(GroupsClient) (autorest.Response, error)
 }
 
 // HubAndSpokePeeringPolicyProperties properties of a Hub and Spoke Peering Policy
@@ -691,53 +657,19 @@ func (mn *ManagedNetwork) UnmarshalJSON(body []byte) error {
 // ManagedNetworksDeleteFutureType an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ManagedNetworksDeleteFutureType struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ManagedNetworksDeleteFutureType) Result(client ManagedNetworksClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksDeleteFutureType", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("managednetwork.ManagedNetworksDeleteFutureType")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ManagedNetworksClient) (autorest.Response, error)
 }
 
 // ManagedNetworksUpdateFutureType an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ManagedNetworksUpdateFutureType struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ManagedNetworksUpdateFutureType) Result(client ManagedNetworksClient) (mn ManagedNetwork, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksUpdateFutureType", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("managednetwork.ManagedNetworksUpdateFutureType")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if mn.Response.Response, err = future.GetResult(sender); err == nil && mn.Response.Response.StatusCode != http.StatusNoContent {
-		mn, err = client.UpdateResponder(mn.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksUpdateFutureType", "Result", mn.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ManagedNetworksClient) (ManagedNetwork, error)
 }
 
 // MeshPeeringPolicyProperties properties of a Mesh Peering Policy
@@ -955,53 +887,19 @@ func NewOperationListResultPage(cur OperationListResult, getNextPage func(contex
 // PeeringPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type PeeringPoliciesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *PeeringPoliciesCreateOrUpdateFuture) Result(client PeeringPoliciesClient) (pp PeeringPolicy, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managednetwork.PeeringPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("managednetwork.PeeringPoliciesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if pp.Response.Response, err = future.GetResult(sender); err == nil && pp.Response.Response.StatusCode != http.StatusNoContent {
-		pp, err = client.CreateOrUpdateResponder(pp.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "managednetwork.PeeringPoliciesCreateOrUpdateFuture", "Result", pp.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(PeeringPoliciesClient) (PeeringPolicy, error)
 }
 
 // PeeringPoliciesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type PeeringPoliciesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *PeeringPoliciesDeleteFuture) Result(client PeeringPoliciesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managednetwork.PeeringPoliciesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("managednetwork.PeeringPoliciesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(PeeringPoliciesClient) (autorest.Response, error)
 }
 
 // PeeringPolicy the Managed Network Peering Policy resource

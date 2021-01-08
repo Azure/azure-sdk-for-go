@@ -108,6 +108,7 @@ func (client UserSubscriptionsClient) ListByUsers(ctx context.Context, resourceG
 	}
 	if result.sc.hasNextLink() && result.sc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -179,7 +180,6 @@ func (client UserSubscriptionsClient) listByUsersNextResults(ctx context.Context
 	result, err = client.ListByUsersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserSubscriptionsClient", "listByUsersNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -401,9 +401,9 @@ func (s *aztestsSuite) TestStageBlockWithMD5(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutBlobHTTPHeaders(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	bbClient, _ := getBlockBlobClient(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	bbClient, _ := getBlockBlobClient(c, containerClient)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -424,9 +424,9 @@ func (s *aztestsSuite) TestBlobPutBlobHTTPHeaders(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutBlobMetadataNotEmpty(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	bbClient, _ := getBlockBlobClient(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	bbClient, _ := getBlockBlobClient(c, containerClient)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -447,9 +447,9 @@ func (s *aztestsSuite) TestBlobPutBlobMetadataNotEmpty(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutBlobMetadataEmpty(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	bbClient, _ := getBlockBlobClient(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	bbClient, _ := getBlockBlobClient(c, containerClient)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -465,9 +465,9 @@ func (s *aztestsSuite) TestBlobPutBlobMetadataEmpty(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutBlobMetadataInvalid(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	bbClient, _ := getBlockBlobClient(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	bbClient, _ := getBlockBlobClient(c, containerClient)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -483,14 +483,14 @@ func (s *aztestsSuite) TestBlobPutBlobMetadataInvalid(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutBlobIfModifiedSinceTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
 	rsc := azcore.NopCloser(body)
 
-	bbClient, _ := createNewBlockBlob(c, containerURL)
+	bbClient, _ := createNewBlockBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -506,9 +506,9 @@ func (s *aztestsSuite) TestBlobPutBlobIfModifiedSinceTrue(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutBlobIfModifiedSinceFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	bbClient, _ := createNewBlockBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	bbClient, _ := createNewBlockBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
 
@@ -532,9 +532,9 @@ func (s *aztestsSuite) TestBlobPutBlobIfModifiedSinceFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutBlobIfUnmodifiedSinceTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	bbClient, _ := createNewBlockBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	bbClient, _ := createNewBlockBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
 
@@ -555,9 +555,9 @@ func (s *aztestsSuite) TestBlobPutBlobIfUnmodifiedSinceTrue(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutBlobIfUnmodifiedSinceFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	bbClient, _ := createNewBlockBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	bbClient, _ := createNewBlockBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -574,9 +574,9 @@ func (s *aztestsSuite) TestBlobPutBlobIfUnmodifiedSinceFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutBlobIfMatchTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	bbClient, _ := createNewBlockBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	bbClient, _ := createNewBlockBlob(c, containerClient)
 
 	resp, err := bbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
@@ -598,9 +598,9 @@ func (s *aztestsSuite) TestBlobPutBlobIfMatchTrue(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutBlobIfMatchFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	bbClient, _ := createNewBlockBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	bbClient, _ := createNewBlockBlob(c, containerClient)
 
 	_, err := bbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
@@ -622,9 +622,9 @@ func (s *aztestsSuite) TestBlobPutBlobIfMatchFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutBlobIfNoneMatchTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	bbClient, _ := createNewBlockBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	bbClient, _ := createNewBlockBlob(c, containerClient)
 
 	_, err := bbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
@@ -648,9 +648,9 @@ func (s *aztestsSuite) TestBlobPutBlobIfNoneMatchTrue(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutBlobIfNoneMatchFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	bbClient, _ := createNewBlockBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	bbClient, _ := createNewBlockBlob(c, containerClient)
 
 	resp, err := bbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
@@ -874,10 +874,10 @@ func (s *aztestsSuite) TestBlobPutBlockListModifyBlob(c *chk.C) {
 
 func (s *aztestsSuite) TestSetTierOnBlobUpload(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 	for _, tier := range []AccessTier{AccessTierArchive, AccessTierCool, AccessTierHot} {
-		bbClient, _ := getBlockBlobClient(c, containerURL)
+		bbClient, _ := getBlockBlobClient(c, containerClient)
 
 		uploadBlockBlobOptions := UploadBlockBlobOptions{
 			BlobHttpHeaders: &basicHeaders,
@@ -894,11 +894,11 @@ func (s *aztestsSuite) TestSetTierOnBlobUpload(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobSetTierOnCommit(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 
 	for _, tier := range []AccessTier{AccessTierCool, AccessTierHot} {
-		bbClient, _ := getBlockBlobClient(c, containerURL)
+		bbClient, _ := getBlockBlobClient(c, containerClient)
 
 		_, err := bbClient.StageBlock(ctx, blockID, strings.NewReader(blockBlobDefaultData), nil)
 		c.Assert(err, chk.IsNil)

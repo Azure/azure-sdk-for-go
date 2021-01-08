@@ -15,13 +15,13 @@ func (s *aztestsSuite) TestAppendBlock(c *chk.C) {
 	container, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, container)
 
-	blob := container.NewAppendBlobURL(generateBlobName())
+	abClient := container.NewAppendBlobURL(generateBlobName())
 
-	resp, err := blob.Create(context.Background(), nil)
+	resp, err := abClient.Create(context.Background(), nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
 
-	appendResp, err := blob.AppendBlock(context.Background(), getReaderToRandomBytes(1024), nil)
+	appendResp, err := abClient.AppendBlock(context.Background(), getReaderToRandomBytes(1024), nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(appendResp.RawResponse.StatusCode, chk.Equals, 201)
 	c.Assert(*appendResp.BlobAppendOffset, chk.Equals, "0")
@@ -35,7 +35,7 @@ func (s *aztestsSuite) TestAppendBlock(c *chk.C) {
 	c.Assert(appendResp.Date, chk.NotNil)
 	c.Assert((*appendResp.Date).IsZero(), chk.Equals, false)
 
-	appendResp, err = blob.AppendBlock(context.Background(), getReaderToRandomBytes(1024), nil)
+	appendResp, err = abClient.AppendBlock(context.Background(), getReaderToRandomBytes(1024), nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(*appendResp.BlobAppendOffset, chk.Equals, "1024")
 	c.Assert(*appendResp.BlobCommittedBlockCount, chk.Equals, int32(2))
@@ -46,9 +46,9 @@ func (s *aztestsSuite) TestAppendBlockWithMD5(c *chk.C) {
 	container, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, container)
 
-	// set up blob to test
-	blob := container.NewAppendBlobURL(generateBlobName())
-	resp, err := blob.Create(context.Background(), nil)
+	// set up abClient to test
+	abClient := container.NewAppendBlobURL(generateBlobName())
+	resp, err := abClient.Create(context.Background(), nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
 
@@ -59,7 +59,7 @@ func (s *aztestsSuite) TestAppendBlockWithMD5(c *chk.C) {
 	appendBlockOptions := AppendBlockOptions{
 		TransactionalContentMd5: &contentMD5,
 	}
-	appendResp, err := blob.AppendBlock(context.Background(), readerToBody, &appendBlockOptions)
+	appendResp, err := abClient.AppendBlock(context.Background(), readerToBody, &appendBlockOptions)
 	c.Assert(err, chk.IsNil)
 	c.Assert(appendResp.RawResponse.StatusCode, chk.Equals, 201)
 	c.Assert(*appendResp.BlobAppendOffset, chk.Equals, "0")
@@ -80,7 +80,7 @@ func (s *aztestsSuite) TestAppendBlockWithMD5(c *chk.C) {
 	appendBlockOptions = AppendBlockOptions{
 		TransactionalContentMd5: &badMD5,
 	}
-	appendResp, err = blob.AppendBlock(context.Background(), readerToBody, &appendBlockOptions)
+	appendResp, err = abClient.AppendBlock(context.Background(), readerToBody, &appendBlockOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -103,7 +103,7 @@ func (s *aztestsSuite) TestAppendBlockFromURL(c *chk.C) {
 	srcBlob := container.NewAppendBlobURL(generateName("appendsrc"))
 	destBlob := container.NewAppendBlobURL(generateName("appenddest"))
 
-	// Prepare source blob for copy.
+	// Prepare source abClient for copy.
 	cResp1, err := srcBlob.Create(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(cResp1.RawResponse.StatusCode, chk.Equals, 201)
@@ -121,7 +121,7 @@ func (s *aztestsSuite) TestAppendBlockFromURL(c *chk.C) {
 	c.Assert(appendResp.Date, chk.NotNil)
 	c.Assert((*appendResp.Date).IsZero(), chk.Equals, false)
 
-	// Get source blob URL with SAS for AppendBlockFromURL.
+	// Get source abClient URL with SAS for AppendBlockFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -190,7 +190,7 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithMD5(c *chk.C) {
 	srcBlob := container.NewAppendBlobURL(generateName("appendsrc"))
 	destBlob := container.NewAppendBlobURL(generateName("appenddest"))
 
-	// Prepare source blob for copy.
+	// Prepare source abClient for copy.
 	cResp1, err := srcBlob.Create(context.Background(), nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(cResp1.RawResponse.StatusCode, chk.Equals, 201)
@@ -209,7 +209,7 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithMD5(c *chk.C) {
 	c.Assert(appendResp.Date, chk.NotNil)
 	c.Assert((*appendResp.Date).IsZero(), chk.Equals, false)
 
-	// Get source blob URL with SAS for AppendBlockFromURL.
+	// Get source abClient URL with SAS for AppendBlockFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -275,72 +275,72 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithMD5(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobCreateAppendMetadataNonEmpty(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := getAppendBlobClient(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := getAppendBlobClient(c, containerClient)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		Metadata: &basicMetadata,
 	}
-	_, err := blobURL.Create(ctx, &createAppendBlobOptions)
+	_, err := abClient.Create(ctx, &createAppendBlobOptions)
 	c.Assert(err, chk.IsNil)
 
-	resp, err := blobURL.GetProperties(ctx, nil)
+	resp, err := abClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestBlobCreateAppendMetadataEmpty(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := getAppendBlobClient(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := getAppendBlobClient(c, containerClient)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		Metadata: &map[string]string{},
 	}
-	_, err := blobURL.Create(ctx, &createAppendBlobOptions)
+	_, err := abClient.Create(ctx, &createAppendBlobOptions)
 	c.Assert(err, chk.IsNil)
 
-	resp, err := blobURL.GetProperties(ctx, nil)
+	resp, err := abClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.NewMetadata(), chk.HasLen, 0)
 }
 
 func (s *aztestsSuite) TestBlobCreateAppendMetadataInvalid(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := getAppendBlobClient(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := getAppendBlobClient(c, containerClient)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		Metadata: &map[string]string{"In valid!": "bar"},
 	}
-	_, err := blobURL.Create(ctx, &createAppendBlobOptions)
+	_, err := abClient.Create(ctx, &createAppendBlobOptions)
 	c.Assert(err, chk.NotNil)
 	c.Assert(strings.Contains(err.Error(), invalidHeaderErrorSubstring), chk.Equals, true)
 }
 
 func (s *aztestsSuite) TestBlobCreateAppendHTTPHeaders(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := getAppendBlobClient(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := getAppendBlobClient(c, containerClient)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHttpHeaders: &basicHeaders,
 	}
-	_, err := blobURL.Create(ctx, &createAppendBlobOptions)
+	_, err := abClient.Create(ctx, &createAppendBlobOptions)
 	c.Assert(err, chk.IsNil)
 
-	resp, err := blobURL.GetProperties(ctx, nil)
+	resp, err := abClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	h := resp.NewHTTPHeaders()
 	c.Assert(h, chk.DeepEquals, basicHeaders)
 }
 
-func validateAppendBlobPut(c *chk.C, blobURL AppendBlobClient) {
-	resp, err := blobURL.GetProperties(ctx, nil)
+func validateAppendBlobPut(c *chk.C, abClient AppendBlobClient) {
+	resp, err := abClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
 	c.Assert(resp.NewHTTPHeaders(), chk.DeepEquals, basicHeaders)
@@ -348,9 +348,9 @@ func validateAppendBlobPut(c *chk.C, blobURL AppendBlobClient) {
 
 func (s *aztestsSuite) TestBlobCreateAppendIfModifiedSinceTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -363,17 +363,17 @@ func (s *aztestsSuite) TestBlobCreateAppendIfModifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Create(ctx, &createAppendBlobOptions)
+	_, err := abClient.Create(ctx, &createAppendBlobOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateAppendBlobPut(c, blobURL)
+	validateAppendBlobPut(c, abClient)
 }
 
 func (s *aztestsSuite) TestBlobCreateAppendIfModifiedSinceFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
 
@@ -386,7 +386,7 @@ func (s *aztestsSuite) TestBlobCreateAppendIfModifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Create(ctx, &createAppendBlobOptions)
+	_, err := abClient.Create(ctx, &createAppendBlobOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -395,9 +395,9 @@ func (s *aztestsSuite) TestBlobCreateAppendIfModifiedSinceFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobCreateAppendIfUnmodifiedSinceTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
 
@@ -410,17 +410,17 @@ func (s *aztestsSuite) TestBlobCreateAppendIfUnmodifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Create(ctx, &createAppendBlobOptions)
+	_, err := abClient.Create(ctx, &createAppendBlobOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateAppendBlobPut(c, blobURL)
+	validateAppendBlobPut(c, abClient)
 }
 
 func (s *aztestsSuite) TestBlobCreateAppendIfUnmodifiedSinceFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -433,7 +433,7 @@ func (s *aztestsSuite) TestBlobCreateAppendIfUnmodifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Create(ctx, &createAppendBlobOptions)
+	_, err := abClient.Create(ctx, &createAppendBlobOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -442,11 +442,11 @@ func (s *aztestsSuite) TestBlobCreateAppendIfUnmodifiedSinceFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobCreateAppendIfMatchTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
-	resp, _ := blobURL.GetProperties(ctx, nil)
+	resp, _ := abClient.GetProperties(ctx, nil)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHttpHeaders: &basicHeaders,
@@ -457,17 +457,17 @@ func (s *aztestsSuite) TestBlobCreateAppendIfMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Create(ctx, &createAppendBlobOptions)
+	_, err := abClient.Create(ctx, &createAppendBlobOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateAppendBlobPut(c, blobURL)
+	validateAppendBlobPut(c, abClient)
 }
 
 func (s *aztestsSuite) TestBlobCreateAppendIfMatchFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
 	eTag := "garbage"
 	createAppendBlobOptions := CreateAppendBlobOptions{
@@ -479,7 +479,7 @@ func (s *aztestsSuite) TestBlobCreateAppendIfMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Create(ctx, &createAppendBlobOptions)
+	_, err := abClient.Create(ctx, &createAppendBlobOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -488,9 +488,9 @@ func (s *aztestsSuite) TestBlobCreateAppendIfMatchFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobCreateAppendIfNoneMatchTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
 	eTag := "garbage"
 	createAppendBlobOptions := CreateAppendBlobOptions{
@@ -502,19 +502,19 @@ func (s *aztestsSuite) TestBlobCreateAppendIfNoneMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Create(ctx, &createAppendBlobOptions)
+	_, err := abClient.Create(ctx, &createAppendBlobOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateAppendBlobPut(c, blobURL)
+	validateAppendBlobPut(c, abClient)
 }
 
 func (s *aztestsSuite) TestBlobCreateAppendIfNoneMatchFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
-	resp, _ := blobURL.GetProperties(ctx, nil)
+	resp, _ := abClient.GetProperties(ctx, nil)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHttpHeaders: &basicHeaders,
@@ -525,7 +525,7 @@ func (s *aztestsSuite) TestBlobCreateAppendIfNoneMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Create(ctx, &createAppendBlobOptions)
+	_, err := abClient.Create(ctx, &createAppendBlobOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -534,11 +534,11 @@ func (s *aztestsSuite) TestBlobCreateAppendIfNoneMatchFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobAppendBlockNilBody(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
-	_, err := blobURL.AppendBlock(ctx, bytes.NewReader(nil), nil)
+	_, err := abClient.AppendBlock(ctx, bytes.NewReader(nil), nil)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -547,11 +547,11 @@ func (s *aztestsSuite) TestBlobAppendBlockNilBody(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobAppendBlockEmptyBody(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
-	_, err := blobURL.AppendBlock(ctx, strings.NewReader(""), nil)
+	_, err := abClient.AppendBlock(ctx, strings.NewReader(""), nil)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -560,11 +560,11 @@ func (s *aztestsSuite) TestBlobAppendBlockEmptyBody(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobAppendBlockNonExistentBlob(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := getAppendBlobClient(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := getAppendBlobClient(c, containerClient)
 
-	_, err := blobURL.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil)
+	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -579,9 +579,9 @@ func validateBlockAppended(c *chk.C, abClient AppendBlobClient, expectedSize int
 
 func (s *aztestsSuite) TestBlobAppendBlockIfModifiedSinceTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -592,17 +592,17 @@ func (s *aztestsSuite) TestBlobAppendBlockIfModifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateBlockAppended(c, blobURL, len(blockBlobDefaultData))
+	validateBlockAppended(c, abClient, len(blockBlobDefaultData))
 }
 
 func (s *aztestsSuite) TestBlobAppendBlockIfModifiedSinceFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
 	appendBlockOptions := AppendBlockOptions{
@@ -612,7 +612,7 @@ func (s *aztestsSuite) TestBlobAppendBlockIfModifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -622,9 +622,9 @@ func (s *aztestsSuite) TestBlobAppendBlockIfModifiedSinceFalse(c *chk.C) {
 // Ping Pong
 func (s *aztestsSuite) TestBlobAppendBlockIfUnmodifiedSinceTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
 
@@ -635,17 +635,17 @@ func (s *aztestsSuite) TestBlobAppendBlockIfUnmodifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateBlockAppended(c, blobURL, len(blockBlobDefaultData))
+	validateBlockAppended(c, abClient, len(blockBlobDefaultData))
 }
 
 func (s *aztestsSuite) TestBlobAppendBlockIfUnmodifiedSinceFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -656,7 +656,7 @@ func (s *aztestsSuite) TestBlobAppendBlockIfUnmodifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -665,11 +665,11 @@ func (s *aztestsSuite) TestBlobAppendBlockIfUnmodifiedSinceFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobAppendBlockIfMatchTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
-	resp, _ := blobURL.GetProperties(ctx, nil)
+	resp, _ := abClient.GetProperties(ctx, nil)
 
 	appendBlockOptions := AppendBlockOptions{
 		BlobAccessConditions: BlobAccessConditions{
@@ -678,17 +678,17 @@ func (s *aztestsSuite) TestBlobAppendBlockIfMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateBlockAppended(c, blobURL, len(blockBlobDefaultData))
+	validateBlockAppended(c, abClient, len(blockBlobDefaultData))
 }
 
 func (s *aztestsSuite) TestBlobAppendBlockIfMatchFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
 	eTag := "garbage"
 	appendBlockOptions := AppendBlockOptions{
@@ -698,7 +698,7 @@ func (s *aztestsSuite) TestBlobAppendBlockIfMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -707,9 +707,9 @@ func (s *aztestsSuite) TestBlobAppendBlockIfMatchFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobAppendBlockIfNoneMatchTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
 	eTag := "garbage"
 	appendBlockOptions := AppendBlockOptions{
@@ -719,19 +719,19 @@ func (s *aztestsSuite) TestBlobAppendBlockIfNoneMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateBlockAppended(c, blobURL, len(blockBlobDefaultData))
+	validateBlockAppended(c, abClient, len(blockBlobDefaultData))
 }
 
 func (s *aztestsSuite) TestBlobAppendBlockIfNoneMatchFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
-	resp, _ := blobURL.GetProperties(ctx, nil)
+	resp, _ := abClient.GetProperties(ctx, nil)
 
 	appendBlockOptions := AppendBlockOptions{
 		BlobAccessConditions: BlobAccessConditions{
@@ -740,7 +740,7 @@ func (s *aztestsSuite) TestBlobAppendBlockIfNoneMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -750,9 +750,9 @@ func (s *aztestsSuite) TestBlobAppendBlockIfNoneMatchFalse(c *chk.C) {
 // TODO: Fix this
 //func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchTrueNegOne(c *chk.C) {
 //	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	abClient, _ := createNewAppendBlob(c, containerURL)
+//	containerClient, _ := createNewContainer(c, bsu)
+//	defer deleteContainer(c, containerClient)
+//	abClient, _ := createNewAppendBlob(c, containerClient)
 //
 //	appendPosition := int64(-1)
 //	appendBlockOptions := AppendBlockOptions{
@@ -768,11 +768,11 @@ func (s *aztestsSuite) TestBlobAppendBlockIfNoneMatchFalse(c *chk.C) {
 
 //func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchZero(c *chk.C) {
 //	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewAppendBlob(c, containerURL)
+//	containerClient, _ := createNewContainer(c, bsu)
+//	defer deleteContainer(c, containerClient)
+//	abClient, _ := createNewAppendBlob(c, containerClient)
 //
-//	_, err := blobURL.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil) // The position will not match, but the condition should be ignored
+//	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil) // The position will not match, but the condition should be ignored
 //	c.Assert(err, chk.IsNil)
 //
 //	appendPosition := int64(0)
@@ -781,19 +781,19 @@ func (s *aztestsSuite) TestBlobAppendBlockIfNoneMatchFalse(c *chk.C) {
 //			AppendPosition: &appendPosition,
 //		},
 //	}
-//	_, err = blobURL.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+//	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 //	c.Assert(err, chk.IsNil)
 //
-//	validateBlockAppended(c, blobURL, 2*len(blockBlobDefaultData))
+//	validateBlockAppended(c, abClient, 2*len(blockBlobDefaultData))
 //}
 
 func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchTrueNonZero(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
-	_, err := blobURL.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil)
+	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil)
 	c.Assert(err, chk.IsNil)
 
 	appendPosition := int64(len(blockBlobDefaultData))
@@ -802,19 +802,19 @@ func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchTrueNonZero(c *ch
 			AppendPosition: &appendPosition,
 		},
 	}
-	_, err = blobURL.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateBlockAppended(c, blobURL, len(blockBlobDefaultData)*2)
+	validateBlockAppended(c, abClient, len(blockBlobDefaultData)*2)
 }
 
 func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNegOne(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
-	_, err := blobURL.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil)
+	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil)
 	c.Assert(err, chk.IsNil)
 
 	appendPosition := int64(-1)
@@ -823,7 +823,7 @@ func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNegOne(c *ch
 			AppendPosition: &appendPosition,
 		},
 	}
-	_, err = blobURL.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -832,9 +832,9 @@ func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNegOne(c *ch
 
 func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNonZero(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
 	appendPosition := int64(12)
 	appendBlockOptions := AppendBlockOptions{
@@ -842,7 +842,7 @@ func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNonZero(c *c
 			AppendPosition: &appendPosition,
 		},
 	}
-	_, err := blobURL.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -851,9 +851,9 @@ func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNonZero(c *c
 
 func (s *aztestsSuite) TestBlobAppendBlockIfMaxSizeTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
 	maxSize := int64(len(blockBlobDefaultData) + 1)
 	appendBlockOptions := AppendBlockOptions{
@@ -861,17 +861,17 @@ func (s *aztestsSuite) TestBlobAppendBlockIfMaxSizeTrue(c *chk.C) {
 			MaxSize: &maxSize,
 		},
 	}
-	_, err := blobURL.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateBlockAppended(c, blobURL, len(blockBlobDefaultData))
+	validateBlockAppended(c, abClient, len(blockBlobDefaultData))
 }
 
 func (s *aztestsSuite) TestBlobAppendBlockIfMaxSizeFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewAppendBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := createNewAppendBlob(c, containerClient)
 
 	maxSize := int64(len(blockBlobDefaultData) - 1)
 	appendBlockOptions := AppendBlockOptions{
@@ -879,7 +879,7 @@ func (s *aztestsSuite) TestBlobAppendBlockIfMaxSizeFalse(c *chk.C) {
 			MaxSize: &maxSize,
 		},
 	}
-	_, err := blobURL.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface

@@ -15,12 +15,12 @@ func (s *aztestsSuite) TestPutGetPages(c *chk.C) {
 	container, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, container)
 
-	blob, _ := createNewPageBlob(c, container)
+	pbClient, _ := createNewPageBlob(c, container)
 
 	testSize := 1024
 	offset, end, count := int64(0), int64(testSize-1), int64(testSize)
 	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
-	putResp, err := blob.UploadPages(context.Background(), getReaderToRandomBytes(1024), &uploadPagesOptions)
+	putResp, err := pbClient.UploadPages(context.Background(), getReaderToRandomBytes(1024), &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 	c.Assert(putResp.RawResponse.StatusCode, chk.Equals, 201)
 	c.Assert(putResp.LastModified, chk.NotNil)
@@ -33,7 +33,7 @@ func (s *aztestsSuite) TestPutGetPages(c *chk.C) {
 	c.Assert(putResp.Date, chk.NotNil)
 	c.Assert((*putResp.Date).IsZero(), chk.Equals, false)
 
-	pageList, err := blob.GetPageRanges(context.Background(), 0, 1023, nil)
+	pageList, err := pbClient.GetPageRanges(context.Background(), 0, 1023, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(pageList.RawResponse.StatusCode, chk.Equals, 200)
 	c.Assert(pageList.LastModified, chk.NotNil)
@@ -80,7 +80,7 @@ func (s *aztestsSuite) TestUploadPagesFromURL(c *chk.C) {
 	c.Assert(uploadSrcResp1.Date, chk.NotNil)
 	c.Assert((*uploadSrcResp1.Date).IsZero(), chk.Equals, false)
 
-	// Get source blob URL with SAS for UploadPagesFromURL.
+	// Get source pbClient URL with SAS for UploadPagesFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -133,14 +133,14 @@ func (s *aztestsSuite) TestUploadPagesFromURLWithMD5(c *chk.C) {
 	srcBlob, _ := createNewPageBlobWithSize(c, container, int64(testSize))
 	destBlob, _ := createNewPageBlobWithSize(c, container, int64(testSize))
 
-	// Prepare source blob for copy.
+	// Prepare source pbClient for copy.
 	offset, _, count := int64(0), int64(testSize-1), int64(testSize)
 	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
 	uploadSrcResp1, err := srcBlob.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 	c.Assert(uploadSrcResp1.RawResponse.StatusCode, chk.Equals, 201)
 
-	// Get source blob URL with SAS for UploadPagesFromURL.
+	// Get source pbClient URL with SAS for UploadPagesFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -198,35 +198,35 @@ func (s *aztestsSuite) TestClearDiffPages(c *chk.C) {
 	container, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, container)
 
-	blob, _ := createNewPageBlob(c, container)
+	pbClient, _ := createNewPageBlob(c, container)
 
 	testSize := 2 * 1024
 	r := getReaderToRandomBytes(testSize)
 	offset, _, count := int64(0), int64(testSize-1), int64(testSize)
 	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
-	_, err := blob.UploadPages(context.Background(), r, &uploadPagesOptions)
+	_, err := pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 
-	snapshotResp, err := blob.CreateSnapshot(context.Background(), nil)
+	snapshotResp, err := pbClient.CreateSnapshot(context.Background(), nil)
 	c.Assert(err, chk.IsNil)
 
 	offset1, end1, count1 := int64(testSize), int64(2*testSize-1), int64(testSize)
 	uploadPagesOptions1 := UploadPagesOptions{Offset: &offset1, Count: &count1}
-	_, err = blob.UploadPages(context.Background(), getReaderToRandomBytes(2048), &uploadPagesOptions1)
+	_, err = pbClient.UploadPages(context.Background(), getReaderToRandomBytes(2048), &uploadPagesOptions1)
 	c.Assert(err, chk.IsNil)
 
-	pageListResp, err := blob.GetPageRangesDiff(context.Background(), 0, 4096, *snapshotResp.Snapshot, nil)
+	pageListResp, err := pbClient.GetPageRangesDiff(context.Background(), 0, 4096, *snapshotResp.Snapshot, nil)
 	c.Assert(err, chk.IsNil)
 	pageRangeResp := pageListResp.PageList.PageRange
 	c.Assert(pageRangeResp, chk.NotNil)
 	c.Assert(*pageRangeResp, chk.HasLen, 1)
 	c.Assert((*pageRangeResp)[0], chk.DeepEquals, PageRange{Start: &offset1, End: &end1})
 
-	clearResp, err := blob.ClearPages(context.Background(), 2048, 2048, nil)
+	clearResp, err := pbClient.ClearPages(context.Background(), 2048, 2048, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(clearResp.RawResponse.StatusCode, chk.Equals, 201)
 
-	pageListResp, err = blob.GetPageRangesDiff(context.Background(), 0, 4095, *snapshotResp.Snapshot, nil)
+	pageListResp, err = pbClient.GetPageRangesDiff(context.Background(), 0, 4095, *snapshotResp.Snapshot, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(pageListResp.PageList.PageRange, chk.IsNil)
 }
@@ -293,16 +293,16 @@ func (s *aztestsSuite) TestResizePageBlob(c *chk.C) {
 	container, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, container)
 
-	blob, _ := createNewPageBlob(c, container)
-	resp, err := blob.Resize(context.Background(), 2048, nil)
+	pbClient, _ := createNewPageBlob(c, container)
+	resp, err := pbClient.Resize(context.Background(), 2048, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 200)
 
-	resp, err = blob.Resize(context.Background(), 8192, nil)
+	resp, err = pbClient.Resize(context.Background(), 8192, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 200)
 
-	resp2, err := blob.GetProperties(ctx, nil)
+	resp2, err := pbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(*resp2.ContentLength, chk.Equals, int64(8192))
 }
@@ -310,7 +310,7 @@ func (s *aztestsSuite) TestResizePageBlob(c *chk.C) {
 func (s *aztestsSuite) TestPageSequenceNumbers(c *chk.C) {
 	bsu := getBSU()
 	container, _ := createNewContainer(c, bsu)
-	blob, _ := createNewPageBlob(c, container)
+	pbClient, _ := createNewPageBlob(c, container)
 
 	defer deleteContainer(c, container)
 
@@ -320,7 +320,7 @@ func (s *aztestsSuite) TestPageSequenceNumbers(c *chk.C) {
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
-	resp, err := blob.UpdateSequenceNumber(context.Background(), &updateSequenceNumberPageBlob)
+	resp, err := pbClient.UpdateSequenceNumber(context.Background(), &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 200)
 
@@ -330,7 +330,7 @@ func (s *aztestsSuite) TestPageSequenceNumbers(c *chk.C) {
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
-	resp, err = blob.UpdateSequenceNumber(context.Background(), &updateSequenceNumberPageBlob)
+	resp, err = pbClient.UpdateSequenceNumber(context.Background(), &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 200)
 
@@ -340,7 +340,7 @@ func (s *aztestsSuite) TestPageSequenceNumbers(c *chk.C) {
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
-	resp, err = blob.UpdateSequenceNumber(context.Background(), &updateSequenceNumberPageBlob)
+	resp, err = pbClient.UpdateSequenceNumber(context.Background(), &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 200)
 }
@@ -350,7 +350,7 @@ func (s *aztestsSuite) TestPutPagesWithMD5(c *chk.C) {
 	container, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, container)
 
-	blob, _ := createNewPageBlob(c, container)
+	pbClient, _ := createNewPageBlob(c, container)
 
 	// put page with valid MD5
 	testSize := 1024
@@ -364,7 +364,7 @@ func (s *aztestsSuite) TestPutPagesWithMD5(c *chk.C) {
 		TransactionalContentMd5: &contentMD5,
 	}
 
-	putResp, err := blob.UploadPages(context.Background(), readerToBody, &uploadPagesOptions)
+	putResp, err := pbClient.UploadPages(context.Background(), readerToBody, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 	c.Assert(putResp.RawResponse.StatusCode, chk.Equals, 201)
 	c.Assert(putResp.LastModified, chk.NotNil)
@@ -387,7 +387,7 @@ func (s *aztestsSuite) TestPutPagesWithMD5(c *chk.C) {
 		Count:                   &count,
 		TransactionalContentMd5: &basContentMD5,
 	}
-	putResp, err = blob.UploadPages(context.Background(), readerToBody, &uploadPagesOptions)
+	putResp, err = pbClient.UploadPages(context.Background(), readerToBody, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -396,15 +396,15 @@ func (s *aztestsSuite) TestPutPagesWithMD5(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobCreatePageSizeInvalid(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := getPageBlobClient(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := getPageBlobClient(c, containerClient)
 
 	sequenceNumber := int64(0)
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 	}
-	_, err := blobURL.Create(ctx, 1, &createPageBlobOptions)
+	_, err := pbClient.Create(ctx, 1, &createPageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -413,67 +413,67 @@ func (s *aztestsSuite) TestBlobCreatePageSizeInvalid(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobCreatePageSequenceInvalid(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := getPageBlobClient(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := getPageBlobClient(c, containerClient)
 
 	sequenceNumber := int64(-1)
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 	}
-	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
 	c.Assert(err, chk.NotNil)
 }
 
 func (s *aztestsSuite) TestBlobCreatePageMetadataNonEmpty(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := getPageBlobClient(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := getPageBlobClient(c, containerClient)
 
 	sequenceNumber := int64(0)
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           &basicMetadata,
 	}
-	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
 	c.Assert(err, chk.IsNil)
 
-	resp, err := blobURL.GetProperties(ctx, nil)
+	resp, err := pbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestBlobCreatePageMetadataEmpty(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := getPageBlobClient(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := getPageBlobClient(c, containerClient)
 
 	sequenceNumber := int64(0)
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           &map[string]string{},
 	}
-	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
 
-	resp, err := blobURL.GetProperties(ctx, nil)
+	resp, err := pbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.NewMetadata(), chk.HasLen, 0)
 }
 
 func (s *aztestsSuite) TestBlobCreatePageMetadataInvalid(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := getPageBlobClient(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := getPageBlobClient(c, containerClient)
 
 	sequenceNumber := int64(0)
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           &map[string]string{"In valid1": "bar"},
 	}
-	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
 	c.Assert(err, chk.NotNil)
 	c.Assert(strings.Contains(err.Error(), invalidHeaderErrorSubstring), chk.Equals, true)
 
@@ -481,26 +481,26 @@ func (s *aztestsSuite) TestBlobCreatePageMetadataInvalid(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobCreatePageHTTPHeaders(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := getPageBlobClient(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := getPageBlobClient(c, containerClient)
 
 	sequenceNumber := int64(0)
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		BlobHttpHeaders:    &basicHeaders,
 	}
-	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
 	c.Assert(err, chk.IsNil)
 
-	resp, err := blobURL.GetProperties(ctx, nil)
+	resp, err := pbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	h := resp.NewHTTPHeaders()
 	c.Assert(h, chk.DeepEquals, basicHeaders)
 }
 
-func validatePageBlobPut(c *chk.C, blobURL PageBlobClient) {
-	resp, err := blobURL.GetProperties(ctx, nil)
+func validatePageBlobPut(c *chk.C, pbClient PageBlobClient) {
+	resp, err := pbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
 	c.Assert(resp.NewHTTPHeaders(), chk.DeepEquals, basicHeaders)
@@ -508,9 +508,9 @@ func validatePageBlobPut(c *chk.C, blobURL PageBlobClient) {
 
 func (s *aztestsSuite) TestBlobCreatePageIfModifiedSinceTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient) // Originally created without metadata
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -525,17 +525,17 @@ func (s *aztestsSuite) TestBlobCreatePageIfModifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
 	c.Assert(err, chk.IsNil)
 
-	validatePageBlobPut(c, blobURL)
+	validatePageBlobPut(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobCreatePageIfModifiedSinceFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient) // Originally created without metadata
 
 	currentTime := getRelativeTimeGMT(10)
 
@@ -550,7 +550,7 @@ func (s *aztestsSuite) TestBlobCreatePageIfModifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -559,9 +559,9 @@ func (s *aztestsSuite) TestBlobCreatePageIfModifiedSinceFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobCreatePageIfUnmodifiedSinceTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient) // Originally created without metadata
 
 	currentTime := getRelativeTimeGMT(10)
 
@@ -576,17 +576,17 @@ func (s *aztestsSuite) TestBlobCreatePageIfUnmodifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
 	c.Assert(err, chk.IsNil)
 
-	validatePageBlobPut(c, blobURL)
+	validatePageBlobPut(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobCreatePageIfUnmodifiedSinceFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient) // Originally created without metadata
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -601,7 +601,7 @@ func (s *aztestsSuite) TestBlobCreatePageIfUnmodifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -610,11 +610,11 @@ func (s *aztestsSuite) TestBlobCreatePageIfUnmodifiedSinceFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobCreatePageIfMatchTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient) // Originally created without metadata
 
-	resp, err := blobURL.GetProperties(ctx, nil)
+	resp, err := pbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
 
 	sequenceNumber := int64(0)
@@ -628,17 +628,17 @@ func (s *aztestsSuite) TestBlobCreatePageIfMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err = blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	_, err = pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
 	c.Assert(err, chk.IsNil)
 
-	validatePageBlobPut(c, blobURL)
+	validatePageBlobPut(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobCreatePageIfMatchFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient) // Originally created without metadata
 
 	sequenceNumber := int64(0)
 	eTag := "garbage"
@@ -652,7 +652,7 @@ func (s *aztestsSuite) TestBlobCreatePageIfMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -661,9 +661,9 @@ func (s *aztestsSuite) TestBlobCreatePageIfMatchFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobCreatePageIfNoneMatchTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient) // Originally created without metadata
 
 	sequenceNumber := int64(0)
 	eTag := "garbage"
@@ -677,19 +677,19 @@ func (s *aztestsSuite) TestBlobCreatePageIfNoneMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
 	c.Assert(err, chk.IsNil)
 
-	validatePageBlobPut(c, blobURL)
+	validatePageBlobPut(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobCreatePageIfNoneMatchFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient) // Originally created without metadata
 
-	resp, _ := blobURL.GetProperties(ctx, nil)
+	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	sequenceNumber := int64(0)
 	createPageBlobOptions := CreatePageBlobOptions{
@@ -702,7 +702,7 @@ func (s *aztestsSuite) TestBlobCreatePageIfNoneMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -711,61 +711,61 @@ func (s *aztestsSuite) TestBlobCreatePageIfNoneMatchFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutPagesInvalidRange(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	testSize := 1024
 	r := getReaderToRandomBytes(testSize)
 	offset, count := int64(0), int64(testSize/2)
 	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
-	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.Not(chk.IsNil))
 }
 
 // Body cannot be nil check already added in the request preparer
 //func (s *aztestsSuite) TestBlobPutPagesNilBody(c *chk.C) {
 //	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
+//	containerClient, _ := createNewContainer(c, bsu)
+//	defer deleteContainer(c, containerClient)
+//	pbClient, _ := createNewPageBlob(c, containerClient)
 //
-//	_, err := blobURL.UploadPages(ctx, nil, nil)
+//	_, err := pbClient.UploadPages(ctx, nil, nil)
 //	c.Assert(err, chk.NotNil)
 //}
 
 func (s *aztestsSuite) TestBlobPutPagesEmptyBody(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	r := bytes.NewReader([]byte{})
 	offset, count := int64(0), int64(0)
 	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
-	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 }
 
 func (s *aztestsSuite) TestBlobPutPagesNonExistentBlob(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := getPageBlobClient(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := getPageBlobClient(c, containerClient)
 
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
-	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
 	//validateStorageError(c, err, ServiceCodeBlobNotFound)
 }
 
-func validateUploadPages(c *chk.C, blobURL PageBlobClient) {
+func validateUploadPages(c *chk.C, pbClient PageBlobClient) {
 	// This will only validate a single put page at 0-PageBlobPageBytes-1
-	resp, err := blobURL.GetPageRanges(ctx, 0, CountToEnd, nil)
+	resp, err := pbClient.GetPageRanges(ctx, 0, CountToEnd, nil)
 	c.Assert(err, chk.IsNil)
 	pageListResp := resp.PageList.PageRange
 	start, end := int64(0), int64(PageBlobPageBytes-1)
@@ -774,9 +774,9 @@ func validateUploadPages(c *chk.C, blobURL PageBlobClient) {
 
 func (s *aztestsSuite) TestBlobPutPagesIfModifiedSinceTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -791,17 +791,17 @@ func (s *aztestsSuite) TestBlobPutPagesIfModifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateUploadPages(c, blobURL)
+	validateUploadPages(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobPutPagesIfModifiedSinceFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
 	r := getReaderToRandomBytes(PageBlobPageBytes)
@@ -815,7 +815,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfModifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -824,9 +824,9 @@ func (s *aztestsSuite) TestBlobPutPagesIfModifiedSinceFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutPagesIfUnmodifiedSinceTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
 
@@ -841,17 +841,17 @@ func (s *aztestsSuite) TestBlobPutPagesIfUnmodifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateUploadPages(c, blobURL)
+	validateUploadPages(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobPutPagesIfUnmodifiedSinceFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -866,7 +866,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfUnmodifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -875,11 +875,11 @@ func (s *aztestsSuite) TestBlobPutPagesIfUnmodifiedSinceFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutPagesIfMatchTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	resp, _ := blobURL.GetProperties(ctx, nil)
+	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -892,17 +892,17 @@ func (s *aztestsSuite) TestBlobPutPagesIfMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateUploadPages(c, blobURL)
+	validateUploadPages(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobPutPagesIfMatchFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -916,7 +916,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -925,9 +925,9 @@ func (s *aztestsSuite) TestBlobPutPagesIfMatchFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutPagesIfNoneMatchTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -941,19 +941,19 @@ func (s *aztestsSuite) TestBlobPutPagesIfNoneMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateUploadPages(c, blobURL)
+	validateUploadPages(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobPutPagesIfNoneMatchFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	resp, _ := blobURL.GetProperties(ctx, nil)
+	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -966,7 +966,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfNoneMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -975,9 +975,9 @@ func (s *aztestsSuite) TestBlobPutPagesIfNoneMatchFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -989,17 +989,17 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanTrue(c *chk.C) {
 			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 		},
 	}
-	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateUploadPages(c, blobURL)
+	validateUploadPages(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	sequenceNumber := int64(10)
 	actionType := SequenceNumberActionTypeUpdate
@@ -1007,7 +1007,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse(c *chk.C) {
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
-	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.IsNil)
 
 	r := getReaderToRandomBytes(PageBlobPageBytes)
@@ -1020,7 +1020,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse(c *chk.C) {
 			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 		},
 	}
-	_, err = blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1029,9 +1029,9 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanNegOne(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1043,7 +1043,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanNegOne(c *chk.C) 
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
 	}
-	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1052,9 +1052,9 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanNegOne(c *chk.C) 
 
 func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTETrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	sequenceNumber := int64(1)
 	actionType := SequenceNumberActionTypeUpdate
@@ -1062,7 +1062,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTETrue(c *chk.C) {
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
-	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.IsNil)
 
 	r := getReaderToRandomBytes(PageBlobPageBytes)
@@ -1075,17 +1075,17 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTETrue(c *chk.C) {
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
 	}
-	_, err = blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateUploadPages(c, blobURL)
+	validateUploadPages(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	sequenceNumber := int64(10)
 	actionType := SequenceNumberActionTypeUpdate
@@ -1093,7 +1093,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse(c *chk.C) {
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
-	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.IsNil)
 
 	r := getReaderToRandomBytes(PageBlobPageBytes)
@@ -1106,7 +1106,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse(c *chk.C) {
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
 	}
-	_, err = blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1115,9 +1115,9 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTENegOne(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1129,7 +1129,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTENegOne(c *chk.C) {
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
 	}
-	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1138,9 +1138,9 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTENegOne(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	sequenceNumber := int64(1)
 	actionType := SequenceNumberActionTypeUpdate
@@ -1148,7 +1148,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualTrue(c *chk.C) {
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
-	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.IsNil)
 
 	r := getReaderToRandomBytes(PageBlobPageBytes)
@@ -1161,17 +1161,17 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualTrue(c *chk.C) {
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 		},
 	}
-	_, err = blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateUploadPages(c, blobURL)
+	validateUploadPages(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1183,7 +1183,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualFalse(c *chk.C) {
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 		},
 	}
-	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1192,9 +1192,9 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualNegOne(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1206,7 +1206,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualNegOne(c *chk.C) {
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 		},
 	}
-	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions) // This will cause the library to set the value of the header to 0
+	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions) // This will cause the library to set the value of the header to 0
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1215,8 +1215,8 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualNegOne(c *chk.C) {
 
 func setupClearPagesTest(c *chk.C) (ContainerClient, PageBlobClient) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1224,30 +1224,30 @@ func setupClearPagesTest(c *chk.C) (ContainerClient, PageBlobClient) {
 		Offset: &offset,
 		Count:  &count,
 	}
-	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 
-	return containerURL, blobURL
+	return containerClient, pbClient
 }
 
-func validateClearPagesTest(c *chk.C, blobURL PageBlobClient) {
-	resp, err := blobURL.GetPageRanges(ctx, 0, 0, nil)
+func validateClearPagesTest(c *chk.C, pbClient PageBlobClient) {
+	resp, err := pbClient.GetPageRanges(ctx, 0, 0, nil)
 	c.Assert(err, chk.IsNil)
 	pageListResp := resp.PageList.PageRange
 	c.Assert(pageListResp, chk.IsNil)
 }
 
 func (s *aztestsSuite) TestBlobClearPagesInvalidRange(c *chk.C) {
-	containerURL, blobURL := setupClearPagesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupClearPagesTest(c)
+	defer deleteContainer(c, containerClient)
 
-	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes+1, nil)
+	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes+1, nil)
 	c.Assert(err, chk.Not(chk.IsNil))
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfModifiedSinceTrue(c *chk.C) {
-	containerURL, blobURL := setupClearPagesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupClearPagesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -1258,15 +1258,15 @@ func (s *aztestsSuite) TestBlobClearPagesIfModifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateClearPagesTest(c, blobURL)
+	validateClearPagesTest(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfModifiedSinceFalse(c *chk.C) {
-	containerURL, blobURL := setupClearPagesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupClearPagesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
 
@@ -1277,7 +1277,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfModifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1285,8 +1285,8 @@ func (s *aztestsSuite) TestBlobClearPagesIfModifiedSinceFalse(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfUnmodifiedSinceTrue(c *chk.C) {
-	containerURL, blobURL := setupClearPagesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupClearPagesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
 
@@ -1297,15 +1297,15 @@ func (s *aztestsSuite) TestBlobClearPagesIfUnmodifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateClearPagesTest(c, blobURL)
+	validateClearPagesTest(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfUnmodifiedSinceFalse(c *chk.C) {
-	containerURL, blobURL := setupClearPagesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupClearPagesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -1316,7 +1316,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfUnmodifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1324,10 +1324,10 @@ func (s *aztestsSuite) TestBlobClearPagesIfUnmodifiedSinceFalse(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfMatchTrue(c *chk.C) {
-	containerURL, blobURL := setupClearPagesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupClearPagesTest(c)
+	defer deleteContainer(c, containerClient)
 
-	resp, _ := blobURL.GetProperties(ctx, nil)
+	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	clearPageOptions := ClearPagesOptions{
 		BlobAccessConditions: BlobAccessConditions{
@@ -1336,15 +1336,15 @@ func (s *aztestsSuite) TestBlobClearPagesIfMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateClearPagesTest(c, blobURL)
+	validateClearPagesTest(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfMatchFalse(c *chk.C) {
-	containerURL, blobURL := setupClearPagesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupClearPagesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	eTag := "garbage"
 	clearPageOptions := ClearPagesOptions{
@@ -1354,7 +1354,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1362,8 +1362,8 @@ func (s *aztestsSuite) TestBlobClearPagesIfMatchFalse(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfNoneMatchTrue(c *chk.C) {
-	containerURL, blobURL := setupClearPagesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupClearPagesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	eTag := "garbage"
 	clearPageOptions := ClearPagesOptions{
@@ -1373,17 +1373,17 @@ func (s *aztestsSuite) TestBlobClearPagesIfNoneMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateClearPagesTest(c, blobURL)
+	validateClearPagesTest(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfNoneMatchFalse(c *chk.C) {
-	containerURL, blobURL := setupClearPagesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupClearPagesTest(c)
+	defer deleteContainer(c, containerClient)
 
-	resp, _ := blobURL.GetProperties(ctx, nil)
+	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	clearPageOptions := ClearPagesOptions{
 		BlobAccessConditions: BlobAccessConditions{
@@ -1392,7 +1392,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfNoneMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1400,8 +1400,8 @@ func (s *aztestsSuite) TestBlobClearPagesIfNoneMatchFalse(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanTrue(c *chk.C) {
-	containerURL, blobURL := setupClearPagesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupClearPagesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	ifSequenceNumberLessThan := int64(10)
 	clearPageOptions := ClearPagesOptions{
@@ -1409,15 +1409,15 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanTrue(c *chk.C) 
 			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 		},
 	}
-	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateClearPagesTest(c, blobURL)
+	validateClearPagesTest(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse(c *chk.C) {
-	containerURL, blobURL := setupClearPagesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupClearPagesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	sequenceNumber := int64(10)
 	actionType := SequenceNumberActionTypeUpdate
@@ -1425,7 +1425,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse(c *chk.C)
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
-	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.IsNil)
 
 	ifSequenceNumberLessThan := int64(1)
@@ -1434,7 +1434,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse(c *chk.C)
 			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 		},
 	}
-	_, err = blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err = pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1442,8 +1442,8 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse(c *chk.C)
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanNegOne(c *chk.C) {
-	containerURL, blobURL := setupClearPagesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupClearPagesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	ifSequenceNumberLessThan := int64(-1)
 	clearPageOptions := ClearPagesOptions{
@@ -1451,7 +1451,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanNegOne(c *chk.C
 			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 		},
 	}
-	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1459,8 +1459,8 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanNegOne(c *chk.C
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTETrue(c *chk.C) {
-	containerURL, blobURL := setupClearPagesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupClearPagesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	ifSequenceNumberLessThanOrEqualTo := int64(10)
 	clearPageOptions := ClearPagesOptions{
@@ -1468,15 +1468,15 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTETrue(c *chk.C) {
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
 	}
-	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateClearPagesTest(c, blobURL)
+	validateClearPagesTest(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTEFalse(c *chk.C) {
-	containerURL, blobURL := setupClearPagesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupClearPagesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	sequenceNumber := int64(10)
 	actionType := SequenceNumberActionTypeUpdate
@@ -1484,7 +1484,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTEFalse(c *chk.C) {
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
-	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.IsNil)
 
 	ifSequenceNumberLessThanOrEqualTo := int64(1)
@@ -1493,7 +1493,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTEFalse(c *chk.C) {
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
 	}
-	_, err = blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err = pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1501,8 +1501,8 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTEFalse(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTENegOne(c *chk.C) {
-	containerURL, blobURL := setupClearPagesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupClearPagesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	ifSequenceNumberLessThanOrEqualTo := int64(-1)
 	clearPageOptions := ClearPagesOptions{
@@ -1510,7 +1510,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTENegOne(c *chk.C) {
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
 	}
-	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions) // This will cause the library to set the value of the header to 0
+	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions) // This will cause the library to set the value of the header to 0
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1518,8 +1518,8 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTENegOne(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualTrue(c *chk.C) {
-	containerURL, blobURL := setupClearPagesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupClearPagesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	sequenceNumber := int64(10)
 	actionType := SequenceNumberActionTypeUpdate
@@ -1527,7 +1527,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualTrue(c *chk.C) {
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
-	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.IsNil)
 
 	ifSequenceNumberEqualTo := int64(10)
@@ -1536,15 +1536,15 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualTrue(c *chk.C) {
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 		},
 	}
-	_, err = blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err = pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateClearPagesTest(c, blobURL)
+	validateClearPagesTest(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualFalse(c *chk.C) {
-	containerURL, blobURL := setupClearPagesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupClearPagesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	sequenceNumber := int64(10)
 	actionType := SequenceNumberActionTypeUpdate
@@ -1552,7 +1552,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualFalse(c *chk.C) {
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
-	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.IsNil)
 
 	ifSequenceNumberEqualTo := int64(1)
@@ -1561,7 +1561,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualFalse(c *chk.C) {
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 		},
 	}
-	_, err = blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err = pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1569,8 +1569,8 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualFalse(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualNegOne(c *chk.C) {
-	containerURL, blobURL := setupClearPagesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupClearPagesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	ifSequenceNumberEqualTo := int64(-1)
 	clearPageOptions := ClearPagesOptions{
@@ -1578,7 +1578,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualNegOne(c *chk.C) {
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 		},
 	}
-	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions) // This will cause the library to set the value of the header to 0
+	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions) // This will cause the library to set the value of the header to 0
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1612,35 +1612,35 @@ func validateBasicGetPageRanges(c *chk.C, resp *PageList, err error) {
 
 func (s *aztestsSuite) TestBlobGetPageRangesEmptyBlob(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	resp, err := blobURL.GetPageRanges(ctx, 0, 0, nil)
+	resp, err := pbClient.GetPageRanges(ctx, 0, 0, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.PageList.PageRange, chk.IsNil)
 }
 
 func (s *aztestsSuite) TestBlobGetPageRangesEmptyRange(c *chk.C) {
-	containerURL, blobURL := setupGetPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
-	resp, err := blobURL.GetPageRanges(ctx, 0, 0, nil)
+	resp, err := pbClient.GetPageRanges(ctx, 0, 0, nil)
 	c.Assert(err, chk.IsNil)
 	validateBasicGetPageRanges(c, resp.PageList, err)
 }
 
 func (s *aztestsSuite) TestBlobGetPageRangesInvalidRange(c *chk.C) {
-	containerURL, blobURL := setupGetPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
-	_, err := blobURL.GetPageRanges(ctx, -2, 500, nil)
+	_, err := pbClient.GetPageRanges(ctx, -2, 500, nil)
 	c.Assert(err, chk.IsNil)
 }
 
 func (s *aztestsSuite) TestBlobGetPageRangesNonContiguousRanges(c *chk.C) {
-	containerURL, blobURL := setupGetPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(2*PageBlobPageBytes), int64(PageBlobPageBytes)
@@ -1648,10 +1648,10 @@ func (s *aztestsSuite) TestBlobGetPageRangesNonContiguousRanges(c *chk.C) {
 		Offset: &offset,
 		Count:  &count,
 	}
-	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 
-	resp, err := blobURL.GetPageRanges(ctx, 0, 0, nil)
+	resp, err := pbClient.GetPageRanges(ctx, 0, 0, nil)
 	c.Assert(err, chk.IsNil)
 	pageListResp := resp.PageList.PageRange
 	c.Assert(pageListResp, chk.NotNil)
@@ -1663,31 +1663,31 @@ func (s *aztestsSuite) TestBlobGetPageRangesNonContiguousRanges(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestBlobGetPageRangesNotPageAligned(c *chk.C) {
-	containerURL, blobURL := setupGetPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
-	resp, err := blobURL.GetPageRanges(ctx, 0, 2000, nil)
+	resp, err := pbClient.GetPageRanges(ctx, 0, 2000, nil)
 	c.Assert(err, chk.IsNil)
 	validateBasicGetPageRanges(c, resp.PageList, err)
 }
 
 func (s *aztestsSuite) TestBlobGetPageRangesSnapshot(c *chk.C) {
-	containerURL, blobURL := setupGetPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
-	resp, err := blobURL.CreateSnapshot(ctx, nil)
+	resp, err := pbClient.CreateSnapshot(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.Snapshot, chk.NotNil)
 
-	snapshotURL := blobURL.WithSnapshot(*resp.Snapshot)
+	snapshotURL := pbClient.WithSnapshot(*resp.Snapshot)
 	resp2, err := snapshotURL.GetPageRanges(ctx, 0, 0, nil)
 	c.Assert(err, chk.IsNil)
 	validateBasicGetPageRanges(c, resp2.PageList, err)
 }
 
 func (s *aztestsSuite) TestBlobGetPageRangesIfModifiedSinceTrue(c *chk.C) {
-	containerURL, blobURL := setupGetPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -1698,14 +1698,14 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfModifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	resp, err := blobURL.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	resp, err := pbClient.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
 	c.Assert(err, chk.IsNil)
 	validateBasicGetPageRanges(c, resp.PageList, err)
 }
 
 func (s *aztestsSuite) TestBlobGetPageRangesIfModifiedSinceFalse(c *chk.C) {
-	containerURL, blobURL := setupGetPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
 
@@ -1716,7 +1716,7 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfModifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	_, err := pbClient.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1725,8 +1725,8 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfModifiedSinceFalse(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestBlobGetPageRangesIfUnmodifiedSinceTrue(c *chk.C) {
-	containerURL, blobURL := setupGetPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
 
@@ -1737,14 +1737,14 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfUnmodifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	resp, err := blobURL.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	resp, err := pbClient.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
 	c.Assert(err, chk.IsNil)
 	validateBasicGetPageRanges(c, resp.PageList, err)
 }
 
 func (s *aztestsSuite) TestBlobGetPageRangesIfUnmodifiedSinceFalse(c *chk.C) {
-	containerURL, blobURL := setupGetPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -1755,7 +1755,7 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfUnmodifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	_, err := pbClient.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1763,10 +1763,10 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfUnmodifiedSinceFalse(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestBlobGetPageRangesIfMatchTrue(c *chk.C) {
-	containerURL, blobURL := setupGetPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
-	resp, err := blobURL.GetProperties(ctx, nil)
+	resp, err := pbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
 
 	getPageRangesOptions := GetPageRangesOptions{
@@ -1776,14 +1776,14 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	resp2, err := blobURL.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	resp2, err := pbClient.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
 	c.Assert(err, chk.IsNil)
 	validateBasicGetPageRanges(c, resp2.PageList, err)
 }
 
 func (s *aztestsSuite) TestBlobGetPageRangesIfMatchFalse(c *chk.C) {
-	containerURL, blobURL := setupGetPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	eTag := "garbage"
 	getPageRangesOptions := GetPageRangesOptions{
@@ -1793,7 +1793,7 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	_, err := pbClient.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1801,8 +1801,8 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfMatchFalse(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestBlobGetPageRangesIfNoneMatchTrue(c *chk.C) {
-	containerURL, blobURL := setupGetPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	eTag := "garbage"
 	getPageRangesOptions := GetPageRangesOptions{
@@ -1812,16 +1812,16 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfNoneMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	resp, err := blobURL.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	resp, err := pbClient.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
 	c.Assert(err, chk.IsNil)
 	validateBasicGetPageRanges(c, resp.PageList, err)
 }
 
 func (s *aztestsSuite) TestBlobGetPageRangesIfNoneMatchFalse(c *chk.C) {
-	containerURL, blobURL := setupGetPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
-	resp, _ := blobURL.GetProperties(ctx, nil)
+	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	getPageRangesOptions := GetPageRangesOptions{
 		BlobAccessConditions: BlobAccessConditions{
@@ -1830,7 +1830,7 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfNoneMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	_, err := pbClient.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 	//serr := err.(StorageError)
 	//c.Assert(serr.RawResponse.StatusCode, chk.Equals, 304) // Service Code not returned in the body for a HEAD
@@ -1875,12 +1875,12 @@ func validateDiffPageRanges(c *chk.C, resp *PageList, err error) {
 }
 
 func (s *aztestsSuite) TestBlobDiffPageRangesNonExistentSnapshot(c *chk.C) {
-	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	snapshotTime, _ := time.Parse(SnapshotTimeFormat, snapshot)
 	snapshotTime = snapshotTime.Add(time.Minute)
-	_, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshotTime.Format(SnapshotTimeFormat), nil)
+	_, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshotTime.Format(SnapshotTimeFormat), nil)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1888,15 +1888,15 @@ func (s *aztestsSuite) TestBlobDiffPageRangesNonExistentSnapshot(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestBlobDiffPageRangeInvalidRange(c *chk.C) {
-	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
-	_, err := blobURL.GetPageRangesDiff(ctx, -22, 14, snapshot, nil)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
+	_, err := pbClient.GetPageRangesDiff(ctx, -22, 14, snapshot, nil)
 	c.Assert(err, chk.IsNil)
 }
 
 func (s *aztestsSuite) TestBlobDiffPageRangeIfModifiedSinceTrue(c *chk.C) {
-	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -1907,14 +1907,14 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfModifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	resp, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	resp, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
 	c.Assert(err, chk.IsNil)
 	validateDiffPageRanges(c, resp.PageList, err)
 }
 
 func (s *aztestsSuite) TestBlobDiffPageRangeIfModifiedSinceFalse(c *chk.C) {
-	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
 
@@ -1925,7 +1925,7 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfModifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	_, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1934,8 +1934,8 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfModifiedSinceFalse(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue(c *chk.C) {
-	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
 
@@ -1946,14 +1946,14 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	resp, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	resp, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
 	c.Assert(err, chk.IsNil)
 	validateDiffPageRanges(c, resp.PageList, err)
 }
 
 func (s *aztestsSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse(c *chk.C) {
-	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -1964,7 +1964,7 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	_, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -1972,10 +1972,10 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestBlobDiffPageRangeIfMatchTrue(c *chk.C) {
-	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
-	resp, _ := blobURL.GetProperties(ctx, nil)
+	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	getPageRangesOptions := GetPageRangesOptions{
 		BlobAccessConditions: BlobAccessConditions{
@@ -1984,14 +1984,14 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	resp2, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	resp2, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
 	c.Assert(err, chk.IsNil)
 	validateDiffPageRanges(c, resp2.PageList, err)
 }
 
 func (s *aztestsSuite) TestBlobDiffPageRangeIfMatchFalse(c *chk.C) {
-	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	eTag := "garbage"
 	getPageRangesOptions := GetPageRangesOptions{
@@ -2001,7 +2001,7 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	_, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -2009,8 +2009,8 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfMatchFalse(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestBlobDiffPageRangeIfNoneMatchTrue(c *chk.C) {
-	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
 	eTag := "garbage"
 	getPageRangesOptions := GetPageRangesOptions{
@@ -2020,16 +2020,16 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfNoneMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	resp, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	resp, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
 	c.Assert(err, chk.IsNil)
 	validateDiffPageRanges(c, resp.PageList, err)
 }
 
 func (s *aztestsSuite) TestBlobDiffPageRangeIfNoneMatchFalse(c *chk.C) {
-	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
-	defer deleteContainer(c, containerURL)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
+	defer deleteContainer(c, containerClient)
 
-	resp, _ := blobURL.GetProperties(ctx, nil)
+	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	getPageRangesOptions := GetPageRangesOptions{
 		BlobAccessConditions: BlobAccessConditions{
@@ -2038,7 +2038,7 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfNoneMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	_, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -2048,36 +2048,36 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfNoneMatchFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobResizeZero(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	// The default blob is created with size > 0, so this should actually update
-	_, err := blobURL.Resize(ctx, 0, nil)
+	// The default pbClient is created with size > 0, so this should actually update
+	_, err := pbClient.Resize(ctx, 0, nil)
 	c.Assert(err, chk.IsNil)
 
-	resp, err := blobURL.GetProperties(ctx, nil)
+	resp, err := pbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(*resp.ContentLength, chk.Equals, int64(0))
 }
 
 func (s *aztestsSuite) TestBlobResizeInvalidSizeNegative(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	_, err := blobURL.Resize(ctx, -4, nil)
+	_, err := pbClient.Resize(ctx, -4, nil)
 	c.Assert(err, chk.NotNil)
 }
 
 func (s *aztestsSuite) TestBlobResizeInvalidSizeMisaligned(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	_, err := blobURL.Resize(ctx, 12, nil)
+	_, err := pbClient.Resize(ctx, 12, nil)
 	c.Assert(err, chk.NotNil)
 }
 
@@ -2088,9 +2088,9 @@ func validateResize(c *chk.C, pbClient PageBlobClient) {
 
 func (s *aztestsSuite) TestBlobResizeIfModifiedSinceTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -2101,17 +2101,17 @@ func (s *aztestsSuite) TestBlobResizeIfModifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
+	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateResize(c, blobURL)
+	validateResize(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobResizeIfModifiedSinceFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
 
@@ -2122,7 +2122,7 @@ func (s *aztestsSuite) TestBlobResizeIfModifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
+	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -2131,9 +2131,9 @@ func (s *aztestsSuite) TestBlobResizeIfModifiedSinceFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobResizeIfUnmodifiedSinceTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
 
@@ -2144,17 +2144,17 @@ func (s *aztestsSuite) TestBlobResizeIfUnmodifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
+	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateResize(c, blobURL)
+	validateResize(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobResizeIfUnmodifiedSinceFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -2165,7 +2165,7 @@ func (s *aztestsSuite) TestBlobResizeIfUnmodifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
+	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -2174,11 +2174,11 @@ func (s *aztestsSuite) TestBlobResizeIfUnmodifiedSinceFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobResizeIfMatchTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	resp, _ := blobURL.GetProperties(ctx, nil)
+	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	resizePageBlobOptions := ResizePageBlobOptions{
 		BlobAccessConditions: BlobAccessConditions{
@@ -2187,17 +2187,17 @@ func (s *aztestsSuite) TestBlobResizeIfMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
+	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateResize(c, blobURL)
+	validateResize(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobResizeIfMatchFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	eTag := "garbage"
 	resizePageBlobOptions := ResizePageBlobOptions{
@@ -2207,7 +2207,7 @@ func (s *aztestsSuite) TestBlobResizeIfMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
+	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -2216,9 +2216,9 @@ func (s *aztestsSuite) TestBlobResizeIfMatchFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobResizeIfNoneMatchTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	eTag := "garbage"
 	resizePageBlobOptions := ResizePageBlobOptions{
@@ -2228,19 +2228,19 @@ func (s *aztestsSuite) TestBlobResizeIfNoneMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
+	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
 	c.Assert(err, chk.IsNil)
 
-	validateResize(c, blobURL)
+	validateResize(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobResizeIfNoneMatchFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	resp, _ := blobURL.GetProperties(ctx, nil)
+	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	resizePageBlobOptions := ResizePageBlobOptions{
 		BlobAccessConditions: BlobAccessConditions{
@@ -2249,7 +2249,7 @@ func (s *aztestsSuite) TestBlobResizeIfNoneMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
+	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -2258,9 +2258,9 @@ func (s *aztestsSuite) TestBlobResizeIfNoneMatchFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobSetSequenceNumberActionTypeInvalid(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	sequenceNumber := int64(1)
 	actionType := SequenceNumberActionType("garbage")
@@ -2268,7 +2268,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberActionTypeInvalid(c *chk.C) {
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
-	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -2277,9 +2277,9 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberActionTypeInvalid(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobSetSequenceNumberSequenceNumberInvalid(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	defer func() { // Invalid sequence number should panic
 		recover()
@@ -2292,7 +2292,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberSequenceNumberInvalid(c *chk.C) 
 		ActionType:         &actionType,
 	}
 
-	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -2307,9 +2307,9 @@ func validateSequenceNumberSet(c *chk.C, pbClient PageBlobClient) {
 
 func (s *aztestsSuite) TestBlobSetSequenceNumberIfModifiedSinceTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -2322,17 +2322,17 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfModifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.IsNil)
 
-	validateSequenceNumberSet(c, blobURL)
+	validateSequenceNumberSet(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobSetSequenceNumberIfModifiedSinceFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
 
@@ -2345,7 +2345,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfModifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -2354,9 +2354,9 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfModifiedSinceFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
 
@@ -2369,17 +2369,17 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceTrue(c *chk.C) 
 			},
 		},
 	}
-	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.IsNil)
 
-	validateSequenceNumberSet(c, blobURL)
+	validateSequenceNumberSet(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -2392,7 +2392,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceFalse(c *chk.C)
 			},
 		},
 	}
-	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -2401,11 +2401,11 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceFalse(c *chk.C)
 
 func (s *aztestsSuite) TestBlobSetSequenceNumberIfMatchTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	resp, _ := blobURL.GetProperties(ctx, nil)
+	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	actionType := SequenceNumberActionTypeIncrement
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
@@ -2416,17 +2416,17 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.IsNil)
 
-	validateSequenceNumberSet(c, blobURL)
+	validateSequenceNumberSet(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobSetSequenceNumberIfMatchFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	eTag := "garbage"
 	actionType := SequenceNumberActionTypeIncrement
@@ -2438,7 +2438,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -2447,9 +2447,9 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfMatchFalse(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobSetSequenceNumberIfNoneMatchTrue(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	eTag := "garbage"
 	actionType := SequenceNumberActionTypeIncrement
@@ -2461,19 +2461,19 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfNoneMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.IsNil)
 
-	validateSequenceNumberSet(c, blobURL)
+	validateSequenceNumberSet(c, pbClient)
 }
 
 func (s *aztestsSuite) TestBlobSetSequenceNumberIfNoneMatchFalse(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	resp, _ := blobURL.GetProperties(ctx, nil)
+	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	actionType := SequenceNumberActionTypeIncrement
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
@@ -2484,7 +2484,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfNoneMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -2506,7 +2506,7 @@ func setupStartIncrementalCopyTest(c *chk.C) (containerClient ContainerClient, p
 	resp, _ := pbClient.CreateSnapshot(ctx, nil)
 	copyPBClient, _ = getPageBlobClient(c, containerClient)
 
-	// Must create the incremental copy blob so that the access conditions work on it
+	// Must create the incremental copy pbClient so that the access conditions work on it
 	resp2, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), *resp.Snapshot, nil)
 	c.Assert(err, chk.IsNil)
 	waitForIncrementalCopy(c, copyPBClient, &resp2)
@@ -2527,13 +2527,13 @@ func validateIncrementalCopy(c *chk.C, copyBlobURL PageBlobClient, resp *PageBlo
 
 func (s *aztestsSuite) TestBlobStartIncrementalCopySnapshotNotExist(c *chk.C) {
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
-	blobURL, _ := createNewPageBlob(c, containerURL)
-	copyBlobURL, _ := getPageBlobClient(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
+	copyBlobURL, _ := getPageBlobClient(c, containerClient)
 
 	snapshot := time.Now().UTC().Format(SnapshotTimeFormat)
-	_, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot, nil)
+	_, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, nil)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -2541,9 +2541,9 @@ func (s *aztestsSuite) TestBlobStartIncrementalCopySnapshotNotExist(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestBlobStartIncrementalCopyIfModifiedSinceTrue(c *chk.C) {
-	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
+	containerClient, pbClient, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
 
-	defer deleteContainer(c, containerURL)
+	defer deleteContainer(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(-20)
 
@@ -2552,16 +2552,16 @@ func (s *aztestsSuite) TestBlobStartIncrementalCopyIfModifiedSinceTrue(c *chk.C)
 			IfModifiedSince: &currentTime,
 		},
 	}
-	resp, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot, &copyIncrementalPageBlobOptions)
+	resp, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
 	c.Assert(err, chk.IsNil)
 
 	validateIncrementalCopy(c, copyBlobURL, &resp)
 }
 
 func (s *aztestsSuite) TestBlobStartIncrementalCopyIfModifiedSinceFalse(c *chk.C) {
-	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
+	containerClient, pbClient, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
 
-	defer deleteContainer(c, containerURL)
+	defer deleteContainer(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(20)
 
@@ -2570,7 +2570,7 @@ func (s *aztestsSuite) TestBlobStartIncrementalCopyIfModifiedSinceFalse(c *chk.C
 			IfModifiedSince: &currentTime,
 		},
 	}
-	_, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot, &copyIncrementalPageBlobOptions)
+	_, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -2578,9 +2578,9 @@ func (s *aztestsSuite) TestBlobStartIncrementalCopyIfModifiedSinceFalse(c *chk.C
 }
 
 func (s *aztestsSuite) TestBlobStartIncrementalCopyIfUnmodifiedSinceTrue(c *chk.C) {
-	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
+	containerClient, pbClient, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
 
-	defer deleteContainer(c, containerURL)
+	defer deleteContainer(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(20)
 
@@ -2589,16 +2589,16 @@ func (s *aztestsSuite) TestBlobStartIncrementalCopyIfUnmodifiedSinceTrue(c *chk.
 			IfUnmodifiedSince: &currentTime,
 		},
 	}
-	resp, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot, &copyIncrementalPageBlobOptions)
+	resp, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
 	c.Assert(err, chk.IsNil)
 
 	validateIncrementalCopy(c, copyBlobURL, &resp)
 }
 
 func (s *aztestsSuite) TestBlobStartIncrementalCopyIfUnmodifiedSinceFalse(c *chk.C) {
-	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
+	containerClient, pbClient, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
 
-	defer deleteContainer(c, containerURL)
+	defer deleteContainer(c, containerClient)
 
 	currentTime := getRelativeTimeGMT(-20)
 
@@ -2607,7 +2607,7 @@ func (s *aztestsSuite) TestBlobStartIncrementalCopyIfUnmodifiedSinceFalse(c *chk
 			IfUnmodifiedSince: &currentTime,
 		},
 	}
-	_, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot, &copyIncrementalPageBlobOptions)
+	_, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -2615,9 +2615,9 @@ func (s *aztestsSuite) TestBlobStartIncrementalCopyIfUnmodifiedSinceFalse(c *chk
 }
 
 func (s *aztestsSuite) TestBlobStartIncrementalCopyIfMatchTrue(c *chk.C) {
-	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
+	containerClient, pbClient, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
 
-	defer deleteContainer(c, containerURL)
+	defer deleteContainer(c, containerClient)
 
 	resp, _ := copyBlobURL.GetProperties(ctx, nil)
 
@@ -2626,16 +2626,16 @@ func (s *aztestsSuite) TestBlobStartIncrementalCopyIfMatchTrue(c *chk.C) {
 			IfMatch: resp.ETag,
 		},
 	}
-	resp2, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot, &copyIncrementalPageBlobOptions)
+	resp2, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
 	c.Assert(err, chk.IsNil)
 
 	validateIncrementalCopy(c, copyBlobURL, &resp2)
 }
 
 func (s *aztestsSuite) TestBlobStartIncrementalCopyIfMatchFalse(c *chk.C) {
-	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
+	containerClient, pbClient, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
 
-	defer deleteContainer(c, containerURL)
+	defer deleteContainer(c, containerClient)
 
 	eTag := "garbage"
 	copyIncrementalPageBlobOptions := CopyIncrementalPageBlobOptions{
@@ -2643,7 +2643,7 @@ func (s *aztestsSuite) TestBlobStartIncrementalCopyIfMatchFalse(c *chk.C) {
 			IfMatch: &eTag,
 		},
 	}
-	_, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot, &copyIncrementalPageBlobOptions)
+	_, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -2651,9 +2651,9 @@ func (s *aztestsSuite) TestBlobStartIncrementalCopyIfMatchFalse(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestBlobStartIncrementalCopyIfNoneMatchTrue(c *chk.C) {
-	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
+	containerClient, pbClient, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
 
-	defer deleteContainer(c, containerURL)
+	defer deleteContainer(c, containerClient)
 
 	eTag := "garbage"
 	copyIncrementalPageBlobOptions := CopyIncrementalPageBlobOptions{
@@ -2661,16 +2661,16 @@ func (s *aztestsSuite) TestBlobStartIncrementalCopyIfNoneMatchTrue(c *chk.C) {
 			IfNoneMatch: &eTag,
 		},
 	}
-	resp, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot, &copyIncrementalPageBlobOptions)
+	resp, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
 	c.Assert(err, chk.IsNil)
 
 	validateIncrementalCopy(c, copyBlobURL, &resp)
 }
 
 func (s *aztestsSuite) TestBlobStartIncrementalCopyIfNoneMatchFalse(c *chk.C) {
-	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
+	containerClient, pbClient, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
 
-	defer deleteContainer(c, containerURL)
+	defer deleteContainer(c, containerClient)
 
 	resp, _ := copyBlobURL.GetProperties(ctx, nil)
 
@@ -2679,7 +2679,7 @@ func (s *aztestsSuite) TestBlobStartIncrementalCopyIfNoneMatchFalse(c *chk.C) {
 			IfNoneMatch: resp.ETag,
 		},
 	}
-	_, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot, &copyIncrementalPageBlobOptions)
+	_, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface

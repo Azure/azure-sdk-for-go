@@ -1,23 +1,14 @@
 package azblob
 
 import (
+	"bytes"
 	"context"
 	"crypto/md5"
 	chk "gopkg.in/check.v1"
 	"io/ioutil"
+	"strings"
 	"time"
 )
-
-//
-//import (
-//	"bytes"
-//	"crypto/md5"
-//	chk "gopkg.in/check.v1"
-//	"io/ioutil"
-//	"strings"
-//	"time"
-//)
-//
 
 func (s *aztestsSuite) TestPutGetPages(c *chk.C) {
 	bsu := getBSU()
@@ -434,1318 +425,2263 @@ func (s *aztestsSuite) TestBlobCreatePageSequenceInvalid(c *chk.C) {
 	c.Assert(err, chk.NotNil)
 }
 
-//
-//func (s *aztestsSuite) TestBlobCreatePageMetadataNonEmpty(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := getPageBlobURL(c, containerURL)
-//
-//	_, err := blobURL.Create(ctx, PageBlobPageBytes, 0, BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultPremiumBlobAccessTier, nil, ClientProvidedKeyOptions{})
-//
-//	resp, err := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
-//}
-//
-//func (s *aztestsSuite) TestBlobCreatePageMetadataEmpty(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := getPageBlobURL(c, containerURL)
-//
-//	_, err := blobURL.Create(ctx, PageBlobPageBytes, 0, BlobHTTPHeaders{}, Metadata{}, BlobAccessConditions{}, DefaultPremiumBlobAccessTier, nil, ClientProvidedKeyOptions{})
-//
-//	resp, err := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.NewMetadata(), chk.HasLen, 0)
-//}
-//
-//func (s *aztestsSuite) TestBlobCreatePageMetadataInvalid(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := getPageBlobURL(c, containerURL)
-//
-//	_, err := blobURL.Create(ctx, PageBlobPageBytes, 0, BlobHTTPHeaders{}, Metadata{"In valid1": "bar"}, BlobAccessConditions{}, PremiumPageBlobAccessTierNone, nil, ClientProvidedKeyOptions{})
-//	c.Assert(strings.Contains(err.Error(), invalidHeaderErrorSubstring), chk.Equals, true)
-//
-//}
-//
-//func (s *aztestsSuite) TestBlobCreatePageHTTPHeaders(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := getPageBlobURL(c, containerURL)
-//
-//	_, err := blobURL.Create(ctx, PageBlobPageBytes, 0, basicHeaders, nil, BlobAccessConditions{}, PremiumPageBlobAccessTierNone, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	resp, err := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//	h := resp.NewHTTPHeaders()
-//	c.Assert(h, chk.DeepEquals, basicHeaders)
-//}
-//
-//func validatePageBlobPut(c *chk.C, blobURL PageBlobURL) {
-//	resp, err := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
-//}
-//
-//func (s *aztestsSuite) TestBlobCreatePageIfModifiedSinceTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
-//
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	_, err := blobURL.Create(ctx, PageBlobPageBytes, 0, BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfModifiedSince: currentTime}}, DefaultPremiumBlobAccessTier, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validatePageBlobPut(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobCreatePageIfModifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	_, err := blobURL.Create(ctx, PageBlobPageBytes, 0, BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfModifiedSince: currentTime}}, DefaultPremiumBlobAccessTier, nil, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobCreatePageIfUnmodifiedSinceTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	_, err := blobURL.Create(ctx, PageBlobPageBytes, 0, BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfUnmodifiedSince: currentTime}}, DefaultPremiumBlobAccessTier, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validatePageBlobPut(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobCreatePageIfUnmodifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
-//
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	_, err := blobURL.Create(ctx, PageBlobPageBytes, 0, BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfUnmodifiedSince: currentTime}}, DefaultPremiumBlobAccessTier, nil, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobCreatePageIfMatchTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
-//
-//	resp, _ := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//
-//	_, err := blobURL.Create(ctx, PageBlobPageBytes, 0, BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfMatch: resp.ETag()}}, PremiumPageBlobAccessTierNone, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validatePageBlobPut(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobCreatePageIfMatchFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
-//
-//	_, err := blobURL.Create(ctx, PageBlobPageBytes, 0, BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfMatch: ETag("garbage")}}, PremiumPageBlobAccessTierNone, nil, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobCreatePageIfNoneMatchTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
-//
-//	_, err := blobURL.Create(ctx, PageBlobPageBytes, 0, BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfNoneMatch: ETag("garbage")}}, PremiumPageBlobAccessTierNone, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validatePageBlobPut(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobCreatePageIfNoneMatchFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
-//
-//	resp, _ := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//
-//	_, err := blobURL.Create(ctx, PageBlobPageBytes, 0, BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfNoneMatch: resp.ETag()}}, DefaultPremiumBlobAccessTier, nil, ClientProvidedKeyOptions{})
-//
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobPutPagesInvalidRange(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	_, err := blobURL.UploadPages(ctx, 0, strings.NewReader(blockBlobDefaultData), PageBlobAccessConditions{}, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.Not(chk.IsNil))
-//}
-//
+func (s *aztestsSuite) TestBlobCreatePageMetadataNonEmpty(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := getPageBlobClient(c, containerURL)
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := CreatePageBlobOptions{
+		BlobSequenceNumber: &sequenceNumber,
+		Metadata:           &basicMetadata,
+	}
+	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	resp, err := blobURL.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
+}
+
+func (s *aztestsSuite) TestBlobCreatePageMetadataEmpty(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := getPageBlobClient(c, containerURL)
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := CreatePageBlobOptions{
+		BlobSequenceNumber: &sequenceNumber,
+		Metadata:           &map[string]string{},
+	}
+	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+
+	resp, err := blobURL.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.NewMetadata(), chk.HasLen, 0)
+}
+
+func (s *aztestsSuite) TestBlobCreatePageMetadataInvalid(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := getPageBlobClient(c, containerURL)
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := CreatePageBlobOptions{
+		BlobSequenceNumber: &sequenceNumber,
+		Metadata:           &map[string]string{"In valid1": "bar"},
+	}
+	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	c.Assert(err, chk.NotNil)
+	c.Assert(strings.Contains(err.Error(), invalidHeaderErrorSubstring), chk.Equals, true)
+
+}
+
+func (s *aztestsSuite) TestBlobCreatePageHTTPHeaders(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := getPageBlobClient(c, containerURL)
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := CreatePageBlobOptions{
+		BlobSequenceNumber: &sequenceNumber,
+		BlobHttpHeaders:    &basicHeaders,
+	}
+	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	resp, err := blobURL.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	h := resp.NewHTTPHeaders()
+	c.Assert(h, chk.DeepEquals, basicHeaders)
+}
+
+func validatePageBlobPut(c *chk.C, blobURL PageBlobClient) {
+	resp, err := blobURL.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
+	c.Assert(resp.NewHTTPHeaders(), chk.DeepEquals, basicHeaders)
+}
+
+func (s *aztestsSuite) TestBlobCreatePageIfModifiedSinceTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
+
+	currentTime := getRelativeTimeGMT(-10)
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := CreatePageBlobOptions{
+		BlobSequenceNumber: &sequenceNumber,
+		Metadata:           &basicMetadata,
+		BlobHttpHeaders:    &basicHeaders,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	validatePageBlobPut(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobCreatePageIfModifiedSinceFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
+
+	currentTime := getRelativeTimeGMT(10)
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := CreatePageBlobOptions{
+		BlobSequenceNumber: &sequenceNumber,
+		Metadata:           &basicMetadata,
+		BlobHttpHeaders:    &basicHeaders,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobCreatePageIfUnmodifiedSinceTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
+
+	currentTime := getRelativeTimeGMT(10)
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := CreatePageBlobOptions{
+		BlobSequenceNumber: &sequenceNumber,
+		Metadata:           &basicMetadata,
+		BlobHttpHeaders:    &basicHeaders,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	validatePageBlobPut(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobCreatePageIfUnmodifiedSinceFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
+
+	currentTime := getRelativeTimeGMT(-10)
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := CreatePageBlobOptions{
+		BlobSequenceNumber: &sequenceNumber,
+		Metadata:           &basicMetadata,
+		BlobHttpHeaders:    &basicHeaders,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobCreatePageIfMatchTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
+
+	resp, err := blobURL.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := CreatePageBlobOptions{
+		BlobSequenceNumber: &sequenceNumber,
+		Metadata:           &basicMetadata,
+		BlobHttpHeaders:    &basicHeaders,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfMatch: resp.ETag,
+			},
+		},
+	}
+	_, err = blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	validatePageBlobPut(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobCreatePageIfMatchFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
+
+	sequenceNumber := int64(0)
+	eTag := "garbage"
+	createPageBlobOptions := CreatePageBlobOptions{
+		BlobSequenceNumber: &sequenceNumber,
+		Metadata:           &basicMetadata,
+		BlobHttpHeaders:    &basicHeaders,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfMatch: &eTag,
+			},
+		},
+	}
+	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobCreatePageIfNoneMatchTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
+
+	sequenceNumber := int64(0)
+	eTag := "garbage"
+	createPageBlobOptions := CreatePageBlobOptions{
+		BlobSequenceNumber: &sequenceNumber,
+		Metadata:           &basicMetadata,
+		BlobHttpHeaders:    &basicHeaders,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfNoneMatch: &eTag,
+			},
+		},
+	}
+	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	validatePageBlobPut(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobCreatePageIfNoneMatchFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL) // Originally created without metadata
+
+	resp, _ := blobURL.GetProperties(ctx, nil)
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := CreatePageBlobOptions{
+		BlobSequenceNumber: &sequenceNumber,
+		Metadata:           &basicMetadata,
+		BlobHttpHeaders:    &basicHeaders,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfNoneMatch: resp.ETag,
+			},
+		},
+	}
+	_, err := blobURL.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobPutPagesInvalidRange(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	testSize := 1024
+	r := getReaderToRandomBytes(testSize)
+	offset, count := int64(0), int64(testSize/2)
+	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
+	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.Not(chk.IsNil))
+}
+
+// Body cannot be nil check already added in the request preparer
 //func (s *aztestsSuite) TestBlobPutPagesNilBody(c *chk.C) {
 //	bsu := getBSU()
 //	containerURL, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(c, containerURL)
 //	blobURL, _ := createNewPageBlob(c, containerURL)
 //
-//	_, err := blobURL.UploadPages(ctx, 0, nil, PageBlobAccessConditions{}, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.Not(chk.IsNil))
+//	_, err := blobURL.UploadPages(ctx, nil, nil)
+//	c.Assert(err, chk.NotNil)
 //}
-//
-//func (s *aztestsSuite) TestBlobPutPagesEmptyBody(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	_, err := blobURL.UploadPages(ctx, 0, bytes.NewReader([]byte{}), PageBlobAccessConditions{}, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.Not(chk.IsNil))
-//}
-//
-//func (s *aztestsSuite) TestBlobPutPagesNonExistantBlob(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := getPageBlobURL(c, containerURL)
-//
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{}, nil, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeBlobNotFound)
-//}
-//
-//func validateUploadPages(c *chk.C, blobURL PageBlobURL) {
-//	// This will only validate a single put page at 0-PageBlobPageBytes-1
-//	resp, err := blobURL.GetPageRanges(ctx, 0, 0, BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.PageRange[0], chk.Equals, PageRange{Start: 0, End: PageBlobPageBytes - 1})
-//}
-//
-//func (s *aztestsSuite) TestBlobPutPagesIfModifiedSinceTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfModifiedSince: currentTime}}, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateUploadPages(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobPutPagesIfModifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfModifiedSince: currentTime}}, nil, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobPutPagesIfUnmodifiedSinceTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfUnmodifiedSince: currentTime}}, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateUploadPages(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobPutPagesIfUnmodifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfUnmodifiedSince: currentTime}}, nil, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobPutPagesIfMatchTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	resp, _ := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfMatch: resp.ETag()}}, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateUploadPages(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobPutPagesIfMatchFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfMatch: ETag("garbage")}}, nil, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobPutPagesIfNoneMatchTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfNoneMatch: ETag("garbage")}}, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateUploadPages(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobPutPagesIfNoneMatchFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	resp, _ := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfNoneMatch: resp.ETag()}}, nil, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{SequenceNumberAccessConditions: SequenceNumberAccessConditions{IfSequenceNumberLessThan: 10}}, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateUploadPages(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	blobURL.UpdateSequenceNumber(ctx, SequenceNumberActionUpdate, 10, BlobAccessConditions{})
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{SequenceNumberAccessConditions: SequenceNumberAccessConditions{IfSequenceNumberLessThan: 1}}, nil, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanNegOne(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{SequenceNumberAccessConditions: SequenceNumberAccessConditions{IfSequenceNumberLessThan: -1}}, nil, ClientProvidedKeyOptions{}) // This will cause the library to set the value of the header to 0
-//	validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTETrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	blobURL.UpdateSequenceNumber(ctx, SequenceNumberActionUpdate, 1, BlobAccessConditions{})
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{SequenceNumberAccessConditions: SequenceNumberAccessConditions{IfSequenceNumberLessThanOrEqual: 1}}, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateUploadPages(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	blobURL.UpdateSequenceNumber(ctx, SequenceNumberActionUpdate, 10, BlobAccessConditions{})
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{SequenceNumberAccessConditions: SequenceNumberAccessConditions{IfSequenceNumberLessThanOrEqual: 1}}, nil, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTENegOne(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{SequenceNumberAccessConditions: SequenceNumberAccessConditions{IfSequenceNumberLessThanOrEqual: -1}}, nil, ClientProvidedKeyOptions{}) // This will cause the library to set the value of the header to 0
-//	c.Assert(err, chk.IsNil)
-//
-//	validateUploadPages(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	blobURL.UpdateSequenceNumber(ctx, SequenceNumberActionUpdate, 1, BlobAccessConditions{})
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{SequenceNumberAccessConditions: SequenceNumberAccessConditions{IfSequenceNumberEqual: 1}}, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateUploadPages(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{SequenceNumberAccessConditions: SequenceNumberAccessConditions{IfSequenceNumberEqual: 1}}, nil, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualNegOne(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{SequenceNumberAccessConditions: SequenceNumberAccessConditions{IfSequenceNumberEqual: -1}}, nil, ClientProvidedKeyOptions{}) // This will cause the library to set the value of the header to 0
-//	c.Assert(err, chk.IsNil)
-//
-//	validateUploadPages(c, blobURL)
-//}
-//
-//func setupClearPagesTest(c *chk.C) (ContainerURL, PageBlobURL) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{}, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	return containerURL, blobURL
-//}
-//
-//func validateClearPagesTest(c *chk.C, blobURL PageBlobURL) {
-//	resp, err := blobURL.GetPageRanges(ctx, 0, 0, BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.PageRange, chk.HasLen, 0)
-//}
-//
-//func (s *aztestsSuite) TestBlobClearPagesInvalidRange(c *chk.C) {
-//	containerURL, blobURL := setupClearPagesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes+1, PageBlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.Not(chk.IsNil))
-//}
-//
-//func (s *aztestsSuite) TestBlobClearPagesIfModifiedSinceTrue(c *chk.C) {
-//	containerURL, blobURL := setupClearPagesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, PageBlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfModifiedSince: currentTime}}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateClearPagesTest(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobClearPagesIfModifiedSinceFalse(c *chk.C) {
-//	containerURL, blobURL := setupClearPagesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, PageBlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfModifiedSince: currentTime}}, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobClearPagesIfUnmodifiedSinceTrue(c *chk.C) {
-//	containerURL, blobURL := setupClearPagesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, PageBlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfUnmodifiedSince: currentTime}}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateClearPagesTest(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobClearPagesIfUnmodifiedSinceFalse(c *chk.C) {
-//	containerURL, blobURL := setupClearPagesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, PageBlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfUnmodifiedSince: currentTime}}, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobClearPagesIfMatchTrue(c *chk.C) {
-//	containerURL, blobURL := setupClearPagesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	resp, _ := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//
-//	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, PageBlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfMatch: resp.ETag()}}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateClearPagesTest(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobClearPagesIfMatchFalse(c *chk.C) {
-//	containerURL, blobURL := setupClearPagesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, PageBlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfMatch: ETag("garbage")}}, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobClearPagesIfNoneMatchTrue(c *chk.C) {
-//	containerURL, blobURL := setupClearPagesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, PageBlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfNoneMatch: ETag("garbage")}}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateClearPagesTest(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobClearPagesIfNoneMatchFalse(c *chk.C) {
-//	containerURL, blobURL := setupClearPagesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	resp, _ := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//
-//	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, PageBlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfNoneMatch: resp.ETag()}}, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanTrue(c *chk.C) {
-//	containerURL, blobURL := setupClearPagesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, PageBlobAccessConditions{SequenceNumberAccessConditions: SequenceNumberAccessConditions{IfSequenceNumberLessThan: 10}}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateClearPagesTest(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse(c *chk.C) {
-//	containerURL, blobURL := setupClearPagesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	_, err := blobURL.UpdateSequenceNumber(ctx, SequenceNumberActionUpdate, 10, BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	_, err = blobURL.ClearPages(ctx, 0, PageBlobPageBytes, PageBlobAccessConditions{SequenceNumberAccessConditions: SequenceNumberAccessConditions{IfSequenceNumberLessThan: 1}}, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanNegOne(c *chk.C) {
-//	containerURL, blobURL := setupClearPagesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, PageBlobAccessConditions{SequenceNumberAccessConditions: SequenceNumberAccessConditions{IfSequenceNumberLessThan: -1}}, ClientProvidedKeyOptions{}) // This will cause the library to set the value of the header to 0
-//	validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTETrue(c *chk.C) {
-//	containerURL, blobURL := setupClearPagesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, PageBlobAccessConditions{SequenceNumberAccessConditions: SequenceNumberAccessConditions{IfSequenceNumberLessThanOrEqual: 10}}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateClearPagesTest(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTEFalse(c *chk.C) {
-//	containerURL, blobURL := setupClearPagesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	_, err := blobURL.UpdateSequenceNumber(ctx, SequenceNumberActionUpdate, 10, BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	_, err = blobURL.ClearPages(ctx, 0, PageBlobPageBytes, PageBlobAccessConditions{SequenceNumberAccessConditions: SequenceNumberAccessConditions{IfSequenceNumberLessThanOrEqual: 1}}, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTENegOne(c *chk.C) {
-//	containerURL, blobURL := setupClearPagesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, PageBlobAccessConditions{SequenceNumberAccessConditions: SequenceNumberAccessConditions{IfSequenceNumberLessThanOrEqual: -1}}, ClientProvidedKeyOptions{}) // This will cause the library to set the value of the header to 0
-//	c.Assert(err, chk.IsNil)
-//
-//	validateClearPagesTest(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualTrue(c *chk.C) {
-//	containerURL, blobURL := setupClearPagesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	_, err := blobURL.UpdateSequenceNumber(ctx, SequenceNumberActionUpdate, 10, BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	_, err = blobURL.ClearPages(ctx, 0, PageBlobPageBytes, PageBlobAccessConditions{SequenceNumberAccessConditions: SequenceNumberAccessConditions{IfSequenceNumberEqual: 10}}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateClearPagesTest(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualFalse(c *chk.C) {
-//	containerURL, blobURL := setupClearPagesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	_, err := blobURL.UpdateSequenceNumber(ctx, SequenceNumberActionUpdate, 10, BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	_, err = blobURL.ClearPages(ctx, 0, PageBlobPageBytes, PageBlobAccessConditions{SequenceNumberAccessConditions: SequenceNumberAccessConditions{IfSequenceNumberEqual: 1}}, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualNegOne(c *chk.C) {
-//	containerURL, blobURL := setupClearPagesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, PageBlobAccessConditions{SequenceNumberAccessConditions: SequenceNumberAccessConditions{IfSequenceNumberEqual: -1}}, ClientProvidedKeyOptions{}) // This will cause the library to set the value of the header to 0
-//	c.Assert(err, chk.IsNil)
-//
-//	validateClearPagesTest(c, blobURL)
-//}
-//
-//func setupGetPageRangesTest(c *chk.C) (containerURL ContainerURL, blobURL PageBlobURL) {
-//	bsu := getBSU()
-//	containerURL, _ = createNewContainer(c, bsu)
-//	blobURL, _ = createNewPageBlob(c, containerURL)
-//
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{}, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	return
-//}
-//
-//func validateBasicGetPageRanges(c *chk.C, resp *PageList, err error) {
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.PageRange, chk.HasLen, 1)
-//	c.Assert(resp.PageRange[0], chk.Equals, PageRange{Start: 0, End: PageBlobPageBytes - 1})
-//}
-//
-//func (s *aztestsSuite) TestBlobGetPageRangesEmptyBlob(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	resp, err := blobURL.GetPageRanges(ctx, 0, 0, BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.PageRange, chk.HasLen, 0)
-//}
-//
-//func (s *aztestsSuite) TestBlobGetPageRangesEmptyRange(c *chk.C) {
-//	containerURL, blobURL := setupGetPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	resp, err := blobURL.GetPageRanges(ctx, 0, 0, BlobAccessConditions{})
-//	validateBasicGetPageRanges(c, resp, err)
-//}
-//
-//func (s *aztestsSuite) TestBlobGetPageRangesInvalidRange(c *chk.C) {
-//	containerURL, blobURL := setupGetPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	_, err := blobURL.GetPageRanges(ctx, -2, 500, BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//}
-//
-//func (s *aztestsSuite) TestBlobGetPageRangesNonContiguousRanges(c *chk.C) {
-//	containerURL, blobURL := setupGetPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	_, err := blobURL.UploadPages(ctx, PageBlobPageBytes*2, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{}, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//	resp, err := blobURL.GetPageRanges(ctx, 0, 0, BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.PageRange, chk.HasLen, 2)
-//	c.Assert(resp.PageRange[0], chk.Equals, PageRange{Start: 0, End: PageBlobPageBytes - 1})
-//	c.Assert(resp.PageRange[1], chk.Equals, PageRange{Start: PageBlobPageBytes * 2, End: (PageBlobPageBytes * 3) - 1})
-//}
-//func (s *aztestsSuite) TestblobGetPageRangesNotPageAligned(c *chk.C) {
-//	containerURL, blobURL := setupGetPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	resp, err := blobURL.GetPageRanges(ctx, 0, 2000, BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	validateBasicGetPageRanges(c, resp, err)
-//}
-//
-//func (s *aztestsSuite) TestBlobGetPageRangesSnapshot(c *chk.C) {
-//	containerURL, blobURL := setupGetPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	resp, _ := blobURL.CreateSnapshot(ctx, nil, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	snapshotURL := blobURL.WithSnapshot(resp.Snapshot())
-//	resp2, err := snapshotURL.GetPageRanges(ctx, 0, 0, BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	validateBasicGetPageRanges(c, resp2, err)
-//}
-//
-//func (s *aztestsSuite) TestBlobGetPageRangesIfModifiedSinceTrue(c *chk.C) {
-//	containerURL, blobURL := setupGetPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	resp, err := blobURL.GetPageRanges(ctx, 0, 0,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfModifiedSince: currentTime}})
-//	validateBasicGetPageRanges(c, resp, err)
-//}
-//
-//func (s *aztestsSuite) TestBlobGetPageRangesIfModifiedSinceFalse(c *chk.C) {
-//	containerURL, blobURL := setupGetPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	_, err := blobURL.GetPageRanges(ctx, 0, 0,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfModifiedSince: currentTime}})
-//	serr := err.(StorageError)
-//	c.Assert(serr.Response().StatusCode, chk.Equals, 304) // Service Code not returned in the body for a HEAD
-//}
-//
-//func (s *aztestsSuite) TestBlobGetPageRangesIfUnmodifiedSinceTrue(c *chk.C) {
-//	containerURL, blobURL := setupGetPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	resp, err := blobURL.GetPageRanges(ctx, 0, 0,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfUnmodifiedSince: currentTime}})
-//	validateBasicGetPageRanges(c, resp, err)
-//}
-//
-//func (s *aztestsSuite) TestBlobGetPageRangesIfUnmodifiedSinceFalse(c *chk.C) {
-//	containerURL, blobURL := setupGetPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	_, err := blobURL.GetPageRanges(ctx, 0, 0,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfUnmodifiedSince: currentTime}})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobGetPageRangesIfMatchTrue(c *chk.C) {
-//	containerURL, blobURL := setupGetPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	resp, _ := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//
-//	resp2, err := blobURL.GetPageRanges(ctx, 0, 0,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfMatch: resp.ETag()}})
-//	validateBasicGetPageRanges(c, resp2, err)
-//}
-//
-//func (s *aztestsSuite) TestBlobGetPageRangesIfMatchFalse(c *chk.C) {
-//	containerURL, blobURL := setupGetPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	_, err := blobURL.GetPageRanges(ctx, 0, 0,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfMatch: ETag("garbage")}})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobGetPageRangesIfNoneMatchTrue(c *chk.C) {
-//	containerURL, blobURL := setupGetPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	resp, err := blobURL.GetPageRanges(ctx, 0, 0,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfNoneMatch: ETag("garbage")}})
-//	validateBasicGetPageRanges(c, resp, err)
-//}
-//
-//func (s *aztestsSuite) TestBlobGetPageRangesIfNoneMatchFalse(c *chk.C) {
-//	containerURL, blobURL := setupGetPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	resp, _ := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//
-//	_, err := blobURL.GetPageRanges(ctx, 0, 0,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfNoneMatch: resp.ETag()}})
-//	serr := err.(StorageError)
-//	c.Assert(serr.Response().StatusCode, chk.Equals, 304) // Service Code not returned in the body for a HEAD
-//}
-//
-//func setupDiffPageRangesTest(c *chk.C) (containerURL ContainerURL, blobURL PageBlobURL, snapshot string) {
-//	bsu := getBSU()
-//	containerURL, _ = createNewContainer(c, bsu)
-//	blobURL, _ = createNewPageBlob(c, containerURL)
-//
-//	_, err := blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{}, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	resp, err := blobURL.CreateSnapshot(ctx, nil, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//	snapshot = resp.Snapshot()
-//
-//	_, err = blobURL.UploadPages(ctx, 0, getReaderToRandomBytes(PageBlobPageBytes), PageBlobAccessConditions{}, nil, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil) // This ensures there is a diff on the first page
-//	return
-//}
-//
-//func validateDiffPageRanges(c *chk.C, resp *PageList, err error) {
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.PageRange, chk.HasLen, 1)
-//	c.Assert(resp.PageRange[0].Start, chk.Equals, int64(0))
-//	c.Assert(resp.PageRange[0].End, chk.Equals, int64(PageBlobPageBytes-1))
-//}
-//
-//func (s *aztestsSuite) TestBlobDiffPageRangesNonExistantSnapshot(c *chk.C) {
-//	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	snapshotTime, _ := time.Parse(SnapshotTimeFormat, snapshot)
-//	snapshotTime = snapshotTime.Add(time.Minute)
-//	_, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshotTime.Format(SnapshotTimeFormat), BlobAccessConditions{})
-//	validateStorageError(c, err, ServiceCodePreviousSnapshotNotFound)
-//}
-//
-//func (s *aztestsSuite) TestBlobDiffPageRangeInvalidRange(c *chk.C) {
-//	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//	_, err := blobURL.GetPageRangesDiff(ctx, -22, 14, snapshot, BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//}
-//
-//func (s *aztestsSuite) TestBlobDiffPageRangeIfModifiedSinceTrue(c *chk.C) {
-//	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	resp, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfModifiedSince: currentTime}})
-//	validateDiffPageRanges(c, resp, err)
-//}
-//
-//func (s *aztestsSuite) TestBlobDiffPageRangeIfModifiedSinceFalse(c *chk.C) {
-//	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	_, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfModifiedSince: currentTime}})
-//	serr := err.(StorageError)
-//	c.Assert(serr.Response().StatusCode, chk.Equals, 304) // Service Code not returned in the body for a HEAD
-//}
-//
-//func (s *aztestsSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue(c *chk.C) {
-//	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	resp, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfUnmodifiedSince: currentTime}})
-//	validateDiffPageRanges(c, resp, err)
-//}
-//
-//func (s *aztestsSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse(c *chk.C) {
-//	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	_, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfUnmodifiedSince: currentTime}})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobDiffPageRangeIfMatchTrue(c *chk.C) {
-//	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	resp, _ := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//
-//	resp2, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfMatch: resp.ETag()}})
-//	validateDiffPageRanges(c, resp2, err)
-//}
-//
-//func (s *aztestsSuite) TestBlobDiffPageRangeIfMatchFalse(c *chk.C) {
-//	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	_, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfMatch: ETag("garbage")}})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobDiffPageRangeIfNoneMatchTrue(c *chk.C) {
-//	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	resp, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfNoneMatch: ETag("garbage")}})
-//	validateDiffPageRanges(c, resp, err)
-//}
-//
-//func (s *aztestsSuite) TestBlobDiffPageRangeIfNoneMatchFalse(c *chk.C) {
-//	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
-//	defer deleteContainer(c, containerURL)
-//
-//	resp, _ := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//
-//	_, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfNoneMatch: resp.ETag()}})
-//	serr := err.(StorageError)
-//	c.Assert(serr.Response().StatusCode, chk.Equals, 304) // Service Code not returned in the body for a HEAD
-//}
-//
-//func (s *aztestsSuite) TestBlobResizeZero(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	// The default blob is created with size > 0, so this should actually update
-//	_, err := blobURL.Resize(ctx, 0, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	resp, err := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.ContentLength(), chk.Equals, int64(0))
-//}
-//
-//func (s *aztestsSuite) TestBlobResizeInvalidSizeNegative(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	_, err := blobURL.Resize(ctx, -4, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.Not(chk.IsNil))
-//}
-//
-//func (s *aztestsSuite) TestBlobResizeInvalidSizeMisaligned(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	_, err := blobURL.Resize(ctx, 12, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.Not(chk.IsNil))
-//}
-//
-//func validateResize(c *chk.C, blobURL PageBlobURL) {
-//	resp, _ := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(resp.ContentLength(), chk.Equals, int64(PageBlobPageBytes))
-//}
-//
-//func (s *aztestsSuite) TestBlobResizeIfModifiedSinceTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	_, err := blobURL.Resize(ctx, PageBlobPageBytes, BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfModifiedSince: currentTime}}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateResize(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobResizeIfModifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	_, err := blobURL.Resize(ctx, PageBlobPageBytes, BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfModifiedSince: currentTime}}, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobResizeIfUnmodifiedSinceTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	_, err := blobURL.Resize(ctx, PageBlobPageBytes, BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfUnmodifiedSince: currentTime}}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateResize(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobResizeIfUnmodifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	_, err := blobURL.Resize(ctx, PageBlobPageBytes, BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfUnmodifiedSince: currentTime}}, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobResizeIfMatchTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	resp, _ := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//
-//	_, err := blobURL.Resize(ctx, PageBlobPageBytes, BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfMatch: resp.ETag()}}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateResize(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobResizeIfMatchFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	_, err := blobURL.Resize(ctx, PageBlobPageBytes, BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfMatch: ETag("garbage")}}, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobResizeIfNoneMatchTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	_, err := blobURL.Resize(ctx, PageBlobPageBytes, BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfNoneMatch: ETag("garbage")}}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateResize(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobResizeIfNoneMatchFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	resp, _ := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//
-//	_, err := blobURL.Resize(ctx, PageBlobPageBytes, BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfNoneMatch: resp.ETag()}}, ClientProvidedKeyOptions{})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobSetSequenceNumberActionTypeInvalid(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	_, err := blobURL.UpdateSequenceNumber(ctx, SequenceNumberActionType("garbage"), 1, BlobAccessConditions{})
-//	validateStorageError(c, err, ServiceCodeInvalidHeaderValue)
-//}
-//
-//func (s *aztestsSuite) TestBlobSetSequenceNumberSequenceNumberInvalid(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	defer func() { // Invalid sequence number should panic
-//		recover()
-//	}()
-//
-//	blobURL.UpdateSequenceNumber(ctx, SequenceNumberActionUpdate, -1, BlobAccessConditions{})
-//}
-//
-//func validateSequenceNumberSet(c *chk.C, blobURL PageBlobURL) {
-//	resp, err := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.BlobSequenceNumber(), chk.Equals, int64(1))
-//}
-//
-//func (s *aztestsSuite) TestBlobSetSequenceNumberIfModifiedSinceTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	_, err := blobURL.UpdateSequenceNumber(ctx, SequenceNumberActionIncrement, 0,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfModifiedSince: currentTime}})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateSequenceNumberSet(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobSetSequenceNumberIfModifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	_, err := blobURL.UpdateSequenceNumber(ctx, SequenceNumberActionIncrement, 0,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfModifiedSince: currentTime}})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	_, err := blobURL.UpdateSequenceNumber(ctx, SequenceNumberActionIncrement, 0,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfUnmodifiedSince: currentTime}})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateSequenceNumberSet(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	_, err := blobURL.UpdateSequenceNumber(ctx, SequenceNumberActionIncrement, 0,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfUnmodifiedSince: currentTime}})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobSetSequenceNumberIfMatchTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	resp, _ := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//
-//	_, err := blobURL.UpdateSequenceNumber(ctx, SequenceNumberActionIncrement, 0,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfMatch: resp.ETag()}})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateSequenceNumberSet(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobSetSequenceNumberIfMatchFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	_, err := blobURL.UpdateSequenceNumber(ctx, SequenceNumberActionIncrement, 0,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfMatch: ETag("garbage")}})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobSetSequenceNumberIfNoneMatchTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	_, err := blobURL.UpdateSequenceNumber(ctx, SequenceNumberActionIncrement, 0,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfNoneMatch: ETag("garbage")}})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateSequenceNumberSet(c, blobURL)
-//}
-//
-//func (s *aztestsSuite) TestBlobSetSequenceNumberIfNoneMatchFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//
-//	resp, _ := blobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//
-//	_, err := blobURL.UpdateSequenceNumber(ctx, SequenceNumberActionIncrement, 0,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfNoneMatch: resp.ETag()}})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
 
-//func setupStartIncrementalCopyTest(c *chk.C) (containerURL ContainerURL, blobURL PageBlobURL, copyBlobURL PageBlobURL, snapshot string) {
-//	bsu := getBSU()
-//	containerURL, _ = createNewContainer(c, bsu)
-//	containerURL.SetAccessPolicy(ctx, PublicAccessBlob, nil, ContainerAccessConditions{})
-//	blobURL, _ = createNewPageBlob(c, containerURL)
-//	resp, _ := blobURL.CreateSnapshot(ctx, nil, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	copyBlobURL, _ = getPageBlobURL(c, containerURL)
-//
-//	// Must create the incremental copy blob so that the access conditions work on it
-//	resp2, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), resp.Snapshot(), BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	waitForIncrementalCopy(c, copyBlobURL, resp2)
-//
-//	resp, _ = blobURL.CreateSnapshot(ctx, nil, BlobAccessConditions{}, ClientProvidedKeyOptions{}) // Take a new snapshot so the next copy will succeed
-//	snapshot = resp.Snapshot()
-//	return
-//}
-//
-//func validateIncrementalCopy(c *chk.C, copyBlobURL PageBlobURL, resp *PageBlobCopyIncrementalResponse) {
-//	t := waitForIncrementalCopy(c, copyBlobURL, resp)
-//
-//	// If we can access the snapshot without error, we are satisfied that it was created as a result of the copy
-//	copySnapshotURL := copyBlobURL.WithSnapshot(t)
-//	_, err := copySnapshotURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//}
-//
-//func (s *aztestsSuite) TestBlobStartIncrementalCopySnapshotNotExist(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, _ := createNewPageBlob(c, containerURL)
-//	copyBlobURL, _ := getPageBlobURL(c, containerURL)
-//
-//	snapshot := time.Now().UTC().Format(SnapshotTimeFormat)
-//	_, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot, BlobAccessConditions{})
-//	validateStorageError(c, err, ServiceCodeCannotVerifyCopySource)
-//}
-//
-//func (s *aztestsSuite) TestBlobStartIncrementalCopyIfModifiedSinceTrue(c *chk.C) {
-//	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
-//
-//	defer deleteContainer(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(-20)
-//
-//	resp, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfModifiedSince: currentTime}})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateIncrementalCopy(c, copyBlobURL, resp)
-//}
-//
-//func (s *aztestsSuite) TestBlobStartIncrementalCopyIfModifiedSinceFalse(c *chk.C) {
-//	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
-//
-//	defer deleteContainer(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(20)
-//
-//	_, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfModifiedSince: currentTime}})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobStartIncrementalCopyIfUnmodifiedSinceTrue(c *chk.C) {
-//	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
-//
-//	defer deleteContainer(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(20)
-//
-//	resp, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfUnmodifiedSince: currentTime}})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateIncrementalCopy(c, copyBlobURL, resp)
-//}
-//
-//func (s *aztestsSuite) TestBlobStartIncrementalCopyIfUnmodifiedSinceFalse(c *chk.C) {
-//	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
-//
-//	defer deleteContainer(c, containerURL)
-//
-//	currentTime := getRelativeTimeGMT(-20)
-//
-//	_, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfUnmodifiedSince: currentTime}})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobStartIncrementalCopyIfMatchTrue(c *chk.C) {
-//	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
-//
-//	defer deleteContainer(c, containerURL)
-//
-//	resp, _ := copyBlobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//
-//	resp2, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfMatch: resp.ETag()}})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateIncrementalCopy(c, copyBlobURL, resp2)
-//}
-//
-//func (s *aztestsSuite) TestBlobStartIncrementalCopyIfMatchFalse(c *chk.C) {
-//	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
-//
-//	defer deleteContainer(c, containerURL)
-//
-//	_, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfMatch: ETag("garbage")}})
-//	validateStorageError(c, err, ServiceCodeTargetConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobStartIncrementalCopyIfNoneMatchTrue(c *chk.C) {
-//	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
-//
-//	defer deleteContainer(c, containerURL)
-//
-//	resp, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfNoneMatch: ETag("garbage")}})
-//	c.Assert(err, chk.IsNil)
-//
-//	validateIncrementalCopy(c, copyBlobURL, resp)
-//}
-//
-//func (s *aztestsSuite) TestBlobStartIncrementalCopyIfNoneMatchFalse(c *chk.C) {
-//	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
-//
-//	defer deleteContainer(c, containerURL)
-//
-//	resp, _ := copyBlobURL.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//
-//	_, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot,
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfNoneMatch: resp.ETag()}})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
+func (s *aztestsSuite) TestBlobPutPagesEmptyBody(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	r := bytes.NewReader([]byte{})
+	offset, count := int64(0), int64(0)
+	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
+	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.NotNil)
+}
+
+func (s *aztestsSuite) TestBlobPutPagesNonExistentBlob(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := getPageBlobClient(c, containerURL)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
+	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeBlobNotFound)
+}
+
+func validateUploadPages(c *chk.C, blobURL PageBlobClient) {
+	// This will only validate a single put page at 0-PageBlobPageBytes-1
+	resp, err := blobURL.GetPageRanges(ctx, 0, CountToEnd, nil)
+	c.Assert(err, chk.IsNil)
+	pageListResp := resp.PageList.PageRange
+	start, end := int64(0), int64(PageBlobPageBytes-1)
+	c.Assert((*pageListResp)[0], chk.DeepEquals, PageRange{Start: &start, End: &end})
+}
+
+func (s *aztestsSuite) TestBlobPutPagesIfModifiedSinceTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(-10)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateUploadPages(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobPutPagesIfModifiedSinceFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(10)
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobPutPagesIfUnmodifiedSinceTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(10)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateUploadPages(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobPutPagesIfUnmodifiedSinceFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(-10)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobPutPagesIfMatchTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	resp, _ := blobURL.GetProperties(ctx, nil)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfMatch: resp.ETag,
+			},
+		},
+	}
+	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateUploadPages(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobPutPagesIfMatchFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	eTag := "garbage"
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfMatch: &eTag,
+			},
+		},
+	}
+	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobPutPagesIfNoneMatchTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	eTag := "garbage"
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfNoneMatch: &eTag,
+			},
+		},
+	}
+	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateUploadPages(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobPutPagesIfNoneMatchFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	resp, _ := blobURL.GetProperties(ctx, nil)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfNoneMatch: resp.ETag,
+			},
+		},
+	}
+	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	ifSequenceNumberLessThan := int64(10)
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
+			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
+		},
+	}
+	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateUploadPages(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	sequenceNumber := int64(10)
+	actionType := SequenceNumberActionTypeUpdate
+	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+		BlobSequenceNumber: &sequenceNumber,
+		ActionType:         &actionType,
+	}
+	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.IsNil)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	ifSequenceNumberLessThan := int64(1)
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
+			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
+		},
+	}
+	_, err = blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanNegOne(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	ifSequenceNumberLessThanOrEqualTo := int64(-1)
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
+			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
+		},
+	}
+	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTETrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	sequenceNumber := int64(1)
+	actionType := SequenceNumberActionTypeUpdate
+	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+		BlobSequenceNumber: &sequenceNumber,
+		ActionType:         &actionType,
+	}
+	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.IsNil)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	ifSequenceNumberLessThanOrEqualTo := int64(1)
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
+			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
+		},
+	}
+	_, err = blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateUploadPages(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	sequenceNumber := int64(10)
+	actionType := SequenceNumberActionTypeUpdate
+	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+		BlobSequenceNumber: &sequenceNumber,
+		ActionType:         &actionType,
+	}
+	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.IsNil)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	ifSequenceNumberLessThanOrEqualTo := int64(1)
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
+			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
+		},
+	}
+	_, err = blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTENegOne(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	ifSequenceNumberLessThanOrEqualTo := int64(-1)
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
+			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
+		},
+	}
+	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, )
+}
+
+func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	sequenceNumber := int64(1)
+	actionType := SequenceNumberActionTypeUpdate
+	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+		BlobSequenceNumber: &sequenceNumber,
+		ActionType:         &actionType,
+	}
+	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.IsNil)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	ifSequenceNumberEqualTo := int64(1)
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
+			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
+		},
+	}
+	_, err = blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateUploadPages(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	ifSequenceNumberEqualTo := int64(1)
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
+			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
+		},
+	}
+	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualNegOne(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	ifSequenceNumberEqualTo := int64(-1)
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
+			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
+		},
+	}
+	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions) // This will cause the library to set the value of the header to 0
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, )
+}
+
+func setupClearPagesTest(c *chk.C) (ContainerClient, PageBlobClient) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+	}
+	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.IsNil)
+
+	return containerURL, blobURL
+}
+
+func validateClearPagesTest(c *chk.C, blobURL PageBlobClient) {
+	resp, err := blobURL.GetPageRanges(ctx, 0, 0, nil)
+	c.Assert(err, chk.IsNil)
+	pageListResp := resp.PageList.PageRange
+	c.Assert(pageListResp, chk.IsNil)
+}
+
+func (s *aztestsSuite) TestBlobClearPagesInvalidRange(c *chk.C) {
+	containerURL, blobURL := setupClearPagesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes+1, nil)
+	c.Assert(err, chk.Not(chk.IsNil))
+}
+
+func (s *aztestsSuite) TestBlobClearPagesIfModifiedSinceTrue(c *chk.C) {
+	containerURL, blobURL := setupClearPagesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(-10)
+
+	clearPageOptions := ClearPagesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateClearPagesTest(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobClearPagesIfModifiedSinceFalse(c *chk.C) {
+	containerURL, blobURL := setupClearPagesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(10)
+
+	clearPageOptions := ClearPagesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobClearPagesIfUnmodifiedSinceTrue(c *chk.C) {
+	containerURL, blobURL := setupClearPagesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(10)
+
+	clearPageOptions := ClearPagesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateClearPagesTest(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobClearPagesIfUnmodifiedSinceFalse(c *chk.C) {
+	containerURL, blobURL := setupClearPagesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(-10)
+
+	clearPageOptions := ClearPagesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobClearPagesIfMatchTrue(c *chk.C) {
+	containerURL, blobURL := setupClearPagesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	resp, _ := blobURL.GetProperties(ctx, nil)
+
+	clearPageOptions := ClearPagesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfMatch: resp.ETag,
+			},
+		},
+	}
+	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateClearPagesTest(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobClearPagesIfMatchFalse(c *chk.C) {
+	containerURL, blobURL := setupClearPagesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	eTag := "garbage"
+	clearPageOptions := ClearPagesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfMatch: &eTag,
+			},
+		},
+	}
+	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobClearPagesIfNoneMatchTrue(c *chk.C) {
+	containerURL, blobURL := setupClearPagesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	eTag := "garbage"
+	clearPageOptions := ClearPagesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfNoneMatch: &eTag,
+			},
+		},
+	}
+	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateClearPagesTest(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobClearPagesIfNoneMatchFalse(c *chk.C) {
+	containerURL, blobURL := setupClearPagesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	resp, _ := blobURL.GetProperties(ctx, nil)
+
+	clearPageOptions := ClearPagesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfNoneMatch: resp.ETag,
+			},
+		},
+	}
+	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanTrue(c *chk.C) {
+	containerURL, blobURL := setupClearPagesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	ifSequenceNumberLessThan := int64(10)
+	clearPageOptions := ClearPagesOptions{
+		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
+			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
+		},
+	}
+	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateClearPagesTest(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse(c *chk.C) {
+	containerURL, blobURL := setupClearPagesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	sequenceNumber := int64(10)
+	actionType := SequenceNumberActionTypeUpdate
+	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+		BlobSequenceNumber: &sequenceNumber,
+		ActionType:         &actionType,
+	}
+	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.IsNil)
+
+	ifSequenceNumberLessThan := int64(1)
+	clearPageOptions := ClearPagesOptions{
+		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
+			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
+		},
+	}
+	_, err = blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanNegOne(c *chk.C) {
+	containerURL, blobURL := setupClearPagesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	ifSequenceNumberLessThan := int64(-1)
+	clearPageOptions := ClearPagesOptions{
+		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
+			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
+		},
+	}
+	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTETrue(c *chk.C) {
+	containerURL, blobURL := setupClearPagesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	ifSequenceNumberLessThanOrEqualTo := int64(10)
+	clearPageOptions := ClearPagesOptions{
+		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
+			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
+		},
+	}
+	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateClearPagesTest(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTEFalse(c *chk.C) {
+	containerURL, blobURL := setupClearPagesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	sequenceNumber := int64(10)
+	actionType := SequenceNumberActionTypeUpdate
+	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+		BlobSequenceNumber: &sequenceNumber,
+		ActionType:         &actionType,
+	}
+	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.IsNil)
+
+	ifSequenceNumberLessThanOrEqualTo := int64(1)
+	clearPageOptions := ClearPagesOptions{
+		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
+			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
+		},
+	}
+	_, err = blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTENegOne(c *chk.C) {
+	containerURL, blobURL := setupClearPagesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	ifSequenceNumberLessThanOrEqualTo := int64(-1)
+	clearPageOptions := ClearPagesOptions{
+		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
+			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
+		},
+	}
+	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions) // This will cause the library to set the value of the header to 0
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualTrue(c *chk.C) {
+	containerURL, blobURL := setupClearPagesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	sequenceNumber := int64(10)
+	actionType := SequenceNumberActionTypeUpdate
+	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+		BlobSequenceNumber: &sequenceNumber,
+		ActionType:         &actionType,
+	}
+	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.IsNil)
+
+	ifSequenceNumberEqualTo := int64(10)
+	clearPageOptions := ClearPagesOptions{
+		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
+			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
+		},
+	}
+	_, err = blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateClearPagesTest(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualFalse(c *chk.C) {
+	containerURL, blobURL := setupClearPagesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	sequenceNumber := int64(10)
+	actionType := SequenceNumberActionTypeUpdate
+	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+		BlobSequenceNumber: &sequenceNumber,
+		ActionType:         &actionType,
+	}
+	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.IsNil)
+
+	ifSequenceNumberEqualTo := int64(1)
+	clearPageOptions := ClearPagesOptions{
+		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
+			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
+		},
+	}
+	_, err = blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualNegOne(c *chk.C) {
+	containerURL, blobURL := setupClearPagesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	ifSequenceNumberEqualTo := int64(-1)
+	clearPageOptions := ClearPagesOptions{
+		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
+			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
+		},
+	}
+	_, err := blobURL.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions) // This will cause the library to set the value of the header to 0
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
+}
+
+func setupGetPageRangesTest(c *chk.C) (containerClient ContainerClient, pbClient PageBlobClient) {
+	bsu := getBSU()
+	containerClient, _ = createNewContainer(c, bsu)
+	pbClient, _ = createNewPageBlob(c, containerClient)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+	}
+	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.IsNil)
+
+	return
+}
+
+func validateBasicGetPageRanges(c *chk.C, resp *PageList, err error) {
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.PageRange, chk.NotNil)
+	c.Assert(*resp.PageRange, chk.HasLen, 1)
+	start, end := int64(0), int64(PageBlobPageBytes-1)
+	c.Assert((*resp.PageRange)[0], chk.DeepEquals, PageRange{Start: &start, End: &end})
+}
+
+func (s *aztestsSuite) TestBlobGetPageRangesEmptyBlob(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	resp, err := blobURL.GetPageRanges(ctx, 0, 0, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.PageList.PageRange, chk.IsNil)
+}
+
+func (s *aztestsSuite) TestBlobGetPageRangesEmptyRange(c *chk.C) {
+	containerURL, blobURL := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	resp, err := blobURL.GetPageRanges(ctx, 0, 0, nil)
+	c.Assert(err, chk.IsNil)
+	validateBasicGetPageRanges(c, resp.PageList, err)
+}
+
+func (s *aztestsSuite) TestBlobGetPageRangesInvalidRange(c *chk.C) {
+	containerURL, blobURL := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	_, err := blobURL.GetPageRanges(ctx, -2, 500, nil)
+	c.Assert(err, chk.IsNil)
+}
+
+func (s *aztestsSuite) TestBlobGetPageRangesNonContiguousRanges(c *chk.C) {
+	containerURL, blobURL := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(2*PageBlobPageBytes), int64(PageBlobPageBytes)
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+	}
+	_, err := blobURL.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.IsNil)
+
+	resp, err := blobURL.GetPageRanges(ctx, 0, 0, nil)
+	c.Assert(err, chk.IsNil)
+	pageListResp := resp.PageList.PageRange
+	c.Assert(pageListResp, chk.NotNil)
+	c.Assert(*pageListResp, chk.HasLen, 2)
+	start, end := int64(0), int64(PageBlobPageBytes-1)
+	c.Assert((*pageListResp)[0], chk.DeepEquals, PageRange{Start: &start, End: &end})
+	start, end = int64(PageBlobPageBytes*2), int64((PageBlobPageBytes*3)-1)
+	c.Assert((*pageListResp)[1], chk.DeepEquals, PageRange{Start: &start, End: &end})
+}
+
+func (s *aztestsSuite) TestBlobGetPageRangesNotPageAligned(c *chk.C) {
+	containerURL, blobURL := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	resp, err := blobURL.GetPageRanges(ctx, 0, 2000, nil)
+	c.Assert(err, chk.IsNil)
+	validateBasicGetPageRanges(c, resp.PageList, err)
+}
+
+func (s *aztestsSuite) TestBlobGetPageRangesSnapshot(c *chk.C) {
+	containerURL, blobURL := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	resp, err := blobURL.CreateSnapshot(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.Snapshot, chk.NotNil)
+
+	snapshotURL := blobURL.WithSnapshot(*resp.Snapshot)
+	resp2, err := snapshotURL.GetPageRanges(ctx, 0, 0, nil)
+	c.Assert(err, chk.IsNil)
+	validateBasicGetPageRanges(c, resp2.PageList, err)
+}
+
+func (s *aztestsSuite) TestBlobGetPageRangesIfModifiedSinceTrue(c *chk.C) {
+	containerURL, blobURL := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(-10)
+
+	getPageRangesOptions := GetPageRangesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	resp, err := blobURL.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	c.Assert(err, chk.IsNil)
+	validateBasicGetPageRanges(c, resp.PageList, err)
+}
+
+func (s *aztestsSuite) TestBlobGetPageRangesIfModifiedSinceFalse(c *chk.C) {
+	containerURL, blobURL := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(10)
+
+	getPageRangesOptions := GetPageRangesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//serr := err.(StorageError)
+	//c.Assert(serr.RawResponse.StatusCode, chk.Equals, 304)
+}
+
+func (s *aztestsSuite) TestBlobGetPageRangesIfUnmodifiedSinceTrue(c *chk.C) {
+	containerURL, blobURL := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(10)
+
+	getPageRangesOptions := GetPageRangesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+	resp, err := blobURL.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	c.Assert(err, chk.IsNil)
+	validateBasicGetPageRanges(c, resp.PageList, err)
+}
+
+func (s *aztestsSuite) TestBlobGetPageRangesIfUnmodifiedSinceFalse(c *chk.C) {
+	containerURL, blobURL := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(-10)
+
+	getPageRangesOptions := GetPageRangesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobGetPageRangesIfMatchTrue(c *chk.C) {
+	containerURL, blobURL := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	resp, err := blobURL.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+
+	getPageRangesOptions := GetPageRangesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfMatch: resp.ETag,
+			},
+		},
+	}
+	resp2, err := blobURL.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	c.Assert(err, chk.IsNil)
+	validateBasicGetPageRanges(c, resp2.PageList, err)
+}
+
+func (s *aztestsSuite) TestBlobGetPageRangesIfMatchFalse(c *chk.C) {
+	containerURL, blobURL := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	eTag := "garbage"
+	getPageRangesOptions := GetPageRangesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfMatch: &eTag,
+			},
+		},
+	}
+	_, err := blobURL.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobGetPageRangesIfNoneMatchTrue(c *chk.C) {
+	containerURL, blobURL := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	eTag := "garbage"
+	getPageRangesOptions := GetPageRangesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfNoneMatch: &eTag,
+			},
+		},
+	}
+	resp, err := blobURL.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	c.Assert(err, chk.IsNil)
+	validateBasicGetPageRanges(c, resp.PageList, err)
+}
+
+func (s *aztestsSuite) TestBlobGetPageRangesIfNoneMatchFalse(c *chk.C) {
+	containerURL, blobURL := setupGetPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	resp, _ := blobURL.GetProperties(ctx, nil)
+
+	getPageRangesOptions := GetPageRangesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfNoneMatch: resp.ETag,
+			},
+		},
+	}
+	_, err := blobURL.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	c.Assert(err, chk.NotNil)
+	//serr := err.(StorageError)
+	//c.Assert(serr.RawResponse.StatusCode, chk.Equals, 304) // Service Code not returned in the body for a HEAD
+}
+
+func setupDiffPageRangesTest(c *chk.C) (containerClient ContainerClient, pbClient PageBlobClient, snapshot string) {
+	bsu := getBSU()
+	containerClient, _ = createNewContainer(c, bsu)
+	pbClient, _ = createNewPageBlob(c, containerClient)
+
+	r := getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count := int64(0), int64(PageBlobPageBytes)
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+	}
+	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.IsNil)
+
+	resp, err := pbClient.CreateSnapshot(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	snapshot = *resp.Snapshot
+
+	r = getReaderToRandomBytes(PageBlobPageBytes)
+	offset, count = int64(0), int64(PageBlobPageBytes)
+	uploadPagesOptions = UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+	}
+	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
+	c.Assert(err, chk.IsNil)
+	return
+}
+
+func validateDiffPageRanges(c *chk.C, resp *PageList, err error) {
+	c.Assert(err, chk.IsNil)
+	pageListResp := resp.PageRange
+	c.Assert(pageListResp, chk.NotNil)
+	c.Assert(*resp.PageRange, chk.HasLen, 1)
+	start, end := int64(0), int64(PageBlobPageBytes-1)
+	c.Assert((*pageListResp)[0], chk.DeepEquals, PageRange{Start: &start, End: &end})
+}
+
+func (s *aztestsSuite) TestBlobDiffPageRangesNonExistentSnapshot(c *chk.C) {
+	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	snapshotTime, _ := time.Parse(SnapshotTimeFormat, snapshot)
+	snapshotTime = snapshotTime.Add(time.Minute)
+	_, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshotTime.Format(SnapshotTimeFormat), nil)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodePreviousSnapshotNotFound)
+}
+
+func (s *aztestsSuite) TestBlobDiffPageRangeInvalidRange(c *chk.C) {
+	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+	_, err := blobURL.GetPageRangesDiff(ctx, -22, 14, snapshot, nil)
+	c.Assert(err, chk.IsNil)
+}
+
+func (s *aztestsSuite) TestBlobDiffPageRangeIfModifiedSinceTrue(c *chk.C) {
+	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(-10)
+
+	getPageRangesOptions := GetPageRangesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	resp, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	c.Assert(err, chk.IsNil)
+	validateDiffPageRanges(c, resp.PageList, err)
+}
+
+func (s *aztestsSuite) TestBlobDiffPageRangeIfModifiedSinceFalse(c *chk.C) {
+	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(10)
+
+	getPageRangesOptions := GetPageRangesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//stgErr := err.(StorageError)
+	//c.Assert(stgErr.Response().StatusCode, chk.Equals, 304)
+}
+
+func (s *aztestsSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue(c *chk.C) {
+	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(10)
+
+	getPageRangesOptions := GetPageRangesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+	resp, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	c.Assert(err, chk.IsNil)
+	validateDiffPageRanges(c, resp.PageList, err)
+}
+
+func (s *aztestsSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse(c *chk.C) {
+	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(-10)
+
+	getPageRangesOptions := GetPageRangesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobDiffPageRangeIfMatchTrue(c *chk.C) {
+	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	resp, _ := blobURL.GetProperties(ctx, nil)
+
+	getPageRangesOptions := GetPageRangesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfMatch: resp.ETag,
+			},
+		},
+	}
+	resp2, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	c.Assert(err, chk.IsNil)
+	validateDiffPageRanges(c, resp2.PageList, err)
+}
+
+func (s *aztestsSuite) TestBlobDiffPageRangeIfMatchFalse(c *chk.C) {
+	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	eTag := "garbage"
+	getPageRangesOptions := GetPageRangesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfMatch: &eTag,
+			},
+		},
+	}
+	_, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobDiffPageRangeIfNoneMatchTrue(c *chk.C) {
+	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	eTag := "garbage"
+	getPageRangesOptions := GetPageRangesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfNoneMatch: &eTag,
+			},
+		},
+	}
+	resp, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	c.Assert(err, chk.IsNil)
+	validateDiffPageRanges(c, resp.PageList, err)
+}
+
+func (s *aztestsSuite) TestBlobDiffPageRangeIfNoneMatchFalse(c *chk.C) {
+	containerURL, blobURL, snapshot := setupDiffPageRangesTest(c)
+	defer deleteContainer(c, containerURL)
+
+	resp, _ := blobURL.GetProperties(ctx, nil)
+
+	getPageRangesOptions := GetPageRangesOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfNoneMatch: resp.ETag,
+			},
+		},
+	}
+	_, err := blobURL.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//serr := err.(StorageError)
+	//c.Assert(serr.Response().StatusCode, chk.Equals, 304)
+}
+
+func (s *aztestsSuite) TestBlobResizeZero(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	// The default blob is created with size > 0, so this should actually update
+	_, err := blobURL.Resize(ctx, 0, nil)
+	c.Assert(err, chk.IsNil)
+
+	resp, err := blobURL.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(*resp.ContentLength, chk.Equals, int64(0))
+}
+
+func (s *aztestsSuite) TestBlobResizeInvalidSizeNegative(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	_, err := blobURL.Resize(ctx, -4, nil)
+	c.Assert(err, chk.NotNil)
+}
+
+func (s *aztestsSuite) TestBlobResizeInvalidSizeMisaligned(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	_, err := blobURL.Resize(ctx, 12, nil)
+	c.Assert(err, chk.NotNil)
+}
+
+func validateResize(c *chk.C, pbClient PageBlobClient) {
+	resp, _ := pbClient.GetProperties(ctx, nil)
+	c.Assert(*resp.ContentLength, chk.Equals, int64(PageBlobPageBytes))
+}
+
+func (s *aztestsSuite) TestBlobResizeIfModifiedSinceTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(-10)
+
+	resizePageBlobOptions := ResizePageBlobOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateResize(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobResizeIfModifiedSinceFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(10)
+
+	resizePageBlobOptions := ResizePageBlobOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobResizeIfUnmodifiedSinceTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(10)
+
+	resizePageBlobOptions := ResizePageBlobOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateResize(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobResizeIfUnmodifiedSinceFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(-10)
+
+	resizePageBlobOptions := ResizePageBlobOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobResizeIfMatchTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	resp, _ := blobURL.GetProperties(ctx, nil)
+
+	resizePageBlobOptions := ResizePageBlobOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfMatch: resp.ETag,
+			},
+		},
+	}
+	_, err := blobURL.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateResize(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobResizeIfMatchFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	eTag := "garbage"
+	resizePageBlobOptions := ResizePageBlobOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfMatch: &eTag,
+			},
+		},
+	}
+	_, err := blobURL.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobResizeIfNoneMatchTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	eTag := "garbage"
+	resizePageBlobOptions := ResizePageBlobOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfNoneMatch: &eTag,
+			},
+		},
+	}
+	_, err := blobURL.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateResize(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobResizeIfNoneMatchFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	resp, _ := blobURL.GetProperties(ctx, nil)
+
+	resizePageBlobOptions := ResizePageBlobOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfNoneMatch: resp.ETag,
+			},
+		},
+	}
+	_, err := blobURL.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobSetSequenceNumberActionTypeInvalid(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	sequenceNumber := int64(1)
+	actionType := SequenceNumberActionType("garbage")
+	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+		BlobSequenceNumber: &sequenceNumber,
+		ActionType:         &actionType,
+	}
+	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeInvalidHeaderValue)
+}
+
+func (s *aztestsSuite) TestBlobSetSequenceNumberSequenceNumberInvalid(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	defer func() { // Invalid sequence number should panic
+		recover()
+	}()
+
+	sequenceNumber := int64(-1)
+	actionType := SequenceNumberActionTypeUpdate
+	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+		BlobSequenceNumber: &sequenceNumber,
+		ActionType:         &actionType,
+	}
+
+	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, )
+}
+
+func validateSequenceNumberSet(c *chk.C, pbClient PageBlobClient) {
+	resp, err := pbClient.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(*resp.BlobSequenceNumber, chk.Equals, int64(1))
+}
+
+func (s *aztestsSuite) TestBlobSetSequenceNumberIfModifiedSinceTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(-10)
+
+	actionType := SequenceNumberActionTypeIncrement
+	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+		ActionType: &actionType,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.IsNil)
+
+	validateSequenceNumberSet(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobSetSequenceNumberIfModifiedSinceFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(10)
+
+	actionType := SequenceNumberActionTypeIncrement
+	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+		ActionType: &actionType,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(10)
+
+	actionType := SequenceNumberActionTypeIncrement
+	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+		ActionType: &actionType,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.IsNil)
+
+	validateSequenceNumberSet(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(-10)
+
+	actionType := SequenceNumberActionTypeIncrement
+	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+		ActionType: &actionType,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobSetSequenceNumberIfMatchTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	resp, _ := blobURL.GetProperties(ctx, nil)
+
+	actionType := SequenceNumberActionTypeIncrement
+	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+		ActionType: &actionType,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfMatch: resp.ETag,
+			},
+		},
+	}
+	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.IsNil)
+
+	validateSequenceNumberSet(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobSetSequenceNumberIfMatchFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	eTag := "garbage"
+	actionType := SequenceNumberActionTypeIncrement
+	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+		ActionType: &actionType,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfMatch: &eTag,
+			},
+		},
+	}
+	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobSetSequenceNumberIfNoneMatchTrue(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	eTag := "garbage"
+	actionType := SequenceNumberActionTypeIncrement
+	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+		ActionType: &actionType,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfNoneMatch: &eTag,
+			},
+		},
+	}
+	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.IsNil)
+
+	validateSequenceNumberSet(c, blobURL)
+}
+
+func (s *aztestsSuite) TestBlobSetSequenceNumberIfNoneMatchFalse(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+
+	resp, _ := blobURL.GetProperties(ctx, nil)
+
+	actionType := SequenceNumberActionTypeIncrement
+	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+		ActionType: &actionType,
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfNoneMatch: resp.ETag,
+			},
+		},
+	}
+	_, err := blobURL.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func setupStartIncrementalCopyTest(c *chk.C) (containerClient ContainerClient, pbClient PageBlobClient, copyPBClient PageBlobClient, snapshot string) {
+	bsu := getBSU()
+	containerClient, _ = createNewContainer(c, bsu)
+
+	accessType := PublicAccessTypeBlob
+	setAccessPolicyOptions := SetAccessPolicyOptions{
+		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: &accessType},
+	}
+	_, err := containerClient.SetAccessPolicy(context.Background(), setAccessPolicyOptions)
+	c.Assert(err, chk.IsNil)
+
+	pbClient, _ = createNewPageBlob(c, containerClient)
+	resp, _ := pbClient.CreateSnapshot(ctx, nil)
+	copyPBClient, _ = getPageBlobClient(c, containerClient)
+
+	// Must create the incremental copy blob so that the access conditions work on it
+	resp2, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), *resp.Snapshot, nil)
+	c.Assert(err, chk.IsNil)
+	waitForIncrementalCopy(c, copyPBClient, &resp2)
+
+	resp, _ = pbClient.CreateSnapshot(ctx, nil) // Take a new snapshot so the next copy will succeed
+	snapshot = *resp.Snapshot
+	return
+}
+
+func validateIncrementalCopy(c *chk.C, copyBlobURL PageBlobClient, resp *PageBlobCopyIncrementalResponse) {
+	t := waitForIncrementalCopy(c, copyBlobURL, resp)
+
+	// If we can access the snapshot without error, we are satisfied that it was created as a result of the copy
+	copySnapshotURL := copyBlobURL.WithSnapshot(*t)
+	_, err := copySnapshotURL.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+}
+
+func (s *aztestsSuite) TestBlobStartIncrementalCopySnapshotNotExist(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+	blobURL, _ := createNewPageBlob(c, containerURL)
+	copyBlobURL, _ := getPageBlobClient(c, containerURL)
+
+	snapshot := time.Now().UTC().Format(SnapshotTimeFormat)
+	_, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot, nil)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeCannotVerifyCopySource)
+}
+
+func (s *aztestsSuite) TestBlobStartIncrementalCopyIfModifiedSinceTrue(c *chk.C) {
+	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
+
+	defer deleteContainer(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(-20)
+
+	copyIncrementalPageBlobOptions := CopyIncrementalPageBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfModifiedSince: &currentTime,
+		},
+	}
+	resp, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot, &copyIncrementalPageBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateIncrementalCopy(c, copyBlobURL, &resp)
+}
+
+func (s *aztestsSuite) TestBlobStartIncrementalCopyIfModifiedSinceFalse(c *chk.C) {
+	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
+
+	defer deleteContainer(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(20)
+
+	copyIncrementalPageBlobOptions := CopyIncrementalPageBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfModifiedSince: &currentTime,
+		},
+	}
+	_, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot, &copyIncrementalPageBlobOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobStartIncrementalCopyIfUnmodifiedSinceTrue(c *chk.C) {
+	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
+
+	defer deleteContainer(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(20)
+
+	copyIncrementalPageBlobOptions := CopyIncrementalPageBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfUnmodifiedSince: &currentTime,
+		},
+	}
+	resp, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot, &copyIncrementalPageBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateIncrementalCopy(c, copyBlobURL, &resp)
+}
+
+func (s *aztestsSuite) TestBlobStartIncrementalCopyIfUnmodifiedSinceFalse(c *chk.C) {
+	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
+
+	defer deleteContainer(c, containerURL)
+
+	currentTime := getRelativeTimeGMT(-20)
+
+	copyIncrementalPageBlobOptions := CopyIncrementalPageBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfUnmodifiedSince: &currentTime,
+		},
+	}
+	_, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot, &copyIncrementalPageBlobOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobStartIncrementalCopyIfMatchTrue(c *chk.C) {
+	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
+
+	defer deleteContainer(c, containerURL)
+
+	resp, _ := copyBlobURL.GetProperties(ctx, nil)
+
+	copyIncrementalPageBlobOptions := CopyIncrementalPageBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfMatch: resp.ETag,
+		},
+	}
+	resp2, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot, &copyIncrementalPageBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateIncrementalCopy(c, copyBlobURL, &resp2)
+}
+
+func (s *aztestsSuite) TestBlobStartIncrementalCopyIfMatchFalse(c *chk.C) {
+	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
+
+	defer deleteContainer(c, containerURL)
+
+	eTag := "garbage"
+	copyIncrementalPageBlobOptions := CopyIncrementalPageBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfMatch: &eTag,
+		},
+	}
+	_, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot, &copyIncrementalPageBlobOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeTargetConditionNotMet)
+}
+
+func (s *aztestsSuite) TestBlobStartIncrementalCopyIfNoneMatchTrue(c *chk.C) {
+	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
+
+	defer deleteContainer(c, containerURL)
+
+	eTag := "garbage"
+	copyIncrementalPageBlobOptions := CopyIncrementalPageBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfNoneMatch: &eTag,
+		},
+	}
+	resp, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot, &copyIncrementalPageBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	validateIncrementalCopy(c, copyBlobURL, &resp)
+}
+
+func (s *aztestsSuite) TestBlobStartIncrementalCopyIfNoneMatchFalse(c *chk.C) {
+	containerURL, blobURL, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
+
+	defer deleteContainer(c, containerURL)
+
+	resp, _ := copyBlobURL.GetProperties(ctx, nil)
+
+	copyIncrementalPageBlobOptions := CopyIncrementalPageBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfNoneMatch: resp.ETag,
+		},
+	}
+	_, err := copyBlobURL.StartCopyIncremental(ctx, blobURL.URL(), snapshot, &copyIncrementalPageBlobOptions)
+	c.Assert(err, chk.NotNil)
+
+	// TODO: Fix issue with storage error interface
+	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}

@@ -179,7 +179,7 @@ func (o *UpdateSequenceNumberPageBlob) pointers() (*PageBlobUpdateSequenceNumber
 }
 
 type CopyIncrementalPageBlobOptions struct {
-	conditions *ModifiedAccessConditions
+	ModifiedAccessConditions *ModifiedAccessConditions
 
 	RequestId *string
 
@@ -196,5 +196,5 @@ func (o *CopyIncrementalPageBlobOptions) pointers() (*PageBlobCopyIncrementalOpt
 		Timeout:   o.Timeout,
 	}
 
-	return &options, o.conditions
+	return &options, o.ModifiedAccessConditions
 }

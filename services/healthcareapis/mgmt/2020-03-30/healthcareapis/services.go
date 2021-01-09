@@ -434,6 +434,7 @@ func (client ServicesClient) List(ctx context.Context) (result ServicesDescripti
 	}
 	if result.sdlr.hasNextLink() && result.sdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -493,7 +494,6 @@ func (client ServicesClient) listNextResults(ctx context.Context, lastResults Se
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "healthcareapis.ServicesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -557,6 +557,7 @@ func (client ServicesClient) ListByResourceGroup(ctx context.Context, resourceGr
 	}
 	if result.sdlr.hasNextLink() && result.sdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -617,7 +618,6 @@ func (client ServicesClient) listByResourceGroupNextResults(ctx context.Context,
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "healthcareapis.ServicesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

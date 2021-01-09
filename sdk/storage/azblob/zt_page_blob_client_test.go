@@ -12,10 +12,10 @@ import (
 
 func (s *aztestsSuite) TestPutGetPages(c *chk.C) {
 	bsu := getBSU()
-	container, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, container)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 
-	pbClient, _ := createNewPageBlob(c, container)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	testSize := 1024
 	offset, end, count := int64(0), int64(testSize-1), int64(testSize)
@@ -56,14 +56,14 @@ func (s *aztestsSuite) TestUploadPagesFromURL(c *chk.C) {
 	if err != nil {
 		c.Fatal("Invalid credential")
 	}
-	container, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, container)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 
 	testSize := 8 * 1024 // 8KB
 	r, sourceData := getRandomDataAndReader(testSize)
 	ctx := context.Background() // Use default Background context
-	srcBlob, _ := createNewPageBlobWithSize(c, container, int64(testSize))
-	destBlob, _ := createNewPageBlobWithSize(c, container, int64(testSize))
+	srcBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(testSize))
+	destBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(testSize))
 
 	offset, _, count := int64(0), int64(testSize-1), int64(testSize)
 	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
@@ -80,7 +80,7 @@ func (s *aztestsSuite) TestUploadPagesFromURL(c *chk.C) {
 	c.Assert(uploadSrcResp1.Date, chk.NotNil)
 	c.Assert((*uploadSrcResp1.Date).IsZero(), chk.Equals, false)
 
-	// Get source pbClient URL with SAS for UploadPagesFromURL.
+	// Get source page blob url URL with SAS for UploadPagesFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -122,25 +122,25 @@ func (s *aztestsSuite) TestUploadPagesFromURLWithMD5(c *chk.C) {
 	if err != nil {
 		c.Fatal("Invalid credential")
 	}
-	container, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, container)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 
 	testSize := 8 * 1024 // 8KB
 	r, sourceData := getRandomDataAndReader(testSize)
 	md5Value := md5.Sum(sourceData)
 	contentMD5 := md5Value[:]
 	ctx := context.Background() // Use default Background context
-	srcBlob, _ := createNewPageBlobWithSize(c, container, int64(testSize))
-	destBlob, _ := createNewPageBlobWithSize(c, container, int64(testSize))
+	srcBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(testSize))
+	destBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(testSize))
 
-	// Prepare source pbClient for copy.
+	// Prepare source page blob url for copy.
 	offset, _, count := int64(0), int64(testSize-1), int64(testSize)
 	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
 	uploadSrcResp1, err := srcBlob.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 	c.Assert(uploadSrcResp1.RawResponse.StatusCode, chk.Equals, 201)
 
-	// Get source pbClient URL with SAS for UploadPagesFromURL.
+	// Get source page blob url URL with SAS for UploadPagesFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -195,10 +195,10 @@ func (s *aztestsSuite) TestUploadPagesFromURLWithMD5(c *chk.C) {
 
 func (s *aztestsSuite) TestClearDiffPages(c *chk.C) {
 	bsu := getBSU()
-	container, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, container)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 
-	pbClient, _ := createNewPageBlob(c, container)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	testSize := 2 * 1024
 	r := getReaderToRandomBytes(testSize)
@@ -250,16 +250,16 @@ func waitForIncrementalCopy(c *chk.C, copyBlobClient PageBlobClient, blobCopyRes
 func (s *aztestsSuite) TestIncrementalCopy(c *chk.C) {
 	bsu := getBSU()
 
-	container, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, container)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 	accessType := PublicAccessTypeBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: &accessType},
 	}
-	_, err := container.SetAccessPolicy(context.Background(), setAccessPolicyOptions)
+	_, err := containerClient.SetAccessPolicy(context.Background(), setAccessPolicyOptions)
 	c.Assert(err, chk.IsNil)
 
-	srcBlob, _ := createNewPageBlob(c, container)
+	srcBlob, _ := createNewPageBlob(c, containerClient)
 	testSize := 1024
 	r := getReaderToRandomBytes(testSize)
 	offset, _, count := int64(0), int64(0)+int64(testSize-1), int64(testSize)
@@ -270,7 +270,7 @@ func (s *aztestsSuite) TestIncrementalCopy(c *chk.C) {
 	snapshotResp, err := srcBlob.CreateSnapshot(context.Background(), nil)
 	c.Assert(err, chk.IsNil)
 
-	dstBlob := container.NewPageBlobClient(generateBlobName())
+	dstBlob := containerClient.NewPageBlobClient(generateBlobName())
 
 	resp, err := dstBlob.StartCopyIncremental(context.Background(), srcBlob.URL(), *snapshotResp.Snapshot, nil)
 	c.Assert(err, chk.IsNil)
@@ -290,10 +290,10 @@ func (s *aztestsSuite) TestIncrementalCopy(c *chk.C) {
 
 func (s *aztestsSuite) TestResizePageBlob(c *chk.C) {
 	bsu := getBSU()
-	container, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, container)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 
-	pbClient, _ := createNewPageBlob(c, container)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 	resp, err := pbClient.Resize(context.Background(), 2048, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 200)
@@ -309,10 +309,10 @@ func (s *aztestsSuite) TestResizePageBlob(c *chk.C) {
 
 func (s *aztestsSuite) TestPageSequenceNumbers(c *chk.C) {
 	bsu := getBSU()
-	container, _ := createNewContainer(c, bsu)
-	pbClient, _ := createNewPageBlob(c, container)
+	containerClient, _ := createNewContainer(c, bsu)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	defer deleteContainer(c, container)
+	defer deleteContainer(c, containerClient)
 
 	sequenceNumber := int64(0)
 	actionType := SequenceNumberActionTypeIncrement
@@ -347,10 +347,10 @@ func (s *aztestsSuite) TestPageSequenceNumbers(c *chk.C) {
 
 func (s *aztestsSuite) TestPutPagesWithMD5(c *chk.C) {
 	bsu := getBSU()
-	container, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, container)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 
-	pbClient, _ := createNewPageBlob(c, container)
+	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	// put page with valid MD5
 	testSize := 1024
@@ -728,9 +728,9 @@ func (s *aztestsSuite) TestBlobPutPagesInvalidRange(c *chk.C) {
 //	bsu := getBSU()
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(c, containerClient)
-//	pbClient, _ := createNewPageBlob(c, containerClient)
+//	page blob url, _ := createNewPageBlob(c, containerClient)
 //
-//	_, err := pbClient.UploadPages(ctx, nil, nil)
+//	_, err := page blob url.UploadPages(ctx, nil, nil)
 //	c.Assert(err, chk.NotNil)
 //}
 
@@ -2052,7 +2052,7 @@ func (s *aztestsSuite) TestBlobResizeZero(c *chk.C) {
 	defer deleteContainer(c, containerClient)
 	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	// The default pbClient is created with size > 0, so this should actually update
+	// The default page blob url is created with size > 0, so this should actually update
 	_, err := pbClient.Resize(ctx, 0, nil)
 	c.Assert(err, chk.IsNil)
 
@@ -2506,7 +2506,7 @@ func setupStartIncrementalCopyTest(c *chk.C) (containerClient ContainerClient, p
 	resp, _ := pbClient.CreateSnapshot(ctx, nil)
 	copyPBClient, _ = getPageBlobClient(c, containerClient)
 
-	// Must create the incremental copy pbClient so that the access conditions work on it
+	// Must create the incremental copy page blob url so that the access conditions work on it
 	resp2, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), *resp.Snapshot, nil)
 	c.Assert(err, chk.IsNil)
 	waitForIncrementalCopy(c, copyPBClient, &resp2)
@@ -2684,4 +2684,105 @@ func (s *aztestsSuite) TestBlobStartIncrementalCopyIfNoneMatchFalse(c *chk.C) {
 
 	// TODO: Fix issue with storage error interface
 	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestCreatePageBlobWithTags(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+
+	pbClient, _ := createNewPageBlob(c, containerClient)
+
+	contentSize := 1 * 1024
+	offset, count := int64(0), int64(contentSize)
+	uploadPagesOptions := UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+	}
+	putResp, err := pbClient.UploadPages(ctx, getReaderToRandomBytes(1024), &uploadPagesOptions)
+	c.Assert(err, chk.IsNil)
+	c.Assert(putResp.RawResponse.StatusCode, chk.Equals, 201)
+	c.Assert(putResp.LastModified.IsZero(), chk.Equals, false)
+	c.Assert(putResp.ETag, chk.Not(chk.Equals), ETagNone)
+	c.Assert(putResp.Version, chk.Not(chk.Equals), "")
+
+	setTagsBlobOptions := SetTagsBlobOptions{
+		BlobTagsMap: &basicBlobTagsMap,
+	}
+	setTagResp, err := pbClient.SetTags(ctx, &setTagsBlobOptions)
+	c.Assert(err, chk.IsNil)
+	c.Assert(setTagResp.RawResponse.StatusCode, chk.Equals, 204)
+
+	gpResp, err := pbClient.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(gpResp, chk.NotNil)
+	c.Assert(*gpResp.TagCount, chk.Equals, int64(len(basicBlobTagsMap)))
+
+	blobGetTagsResponse, err := pbClient.GetTags(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
+	blobTagsSet := blobGetTagsResponse.Tags.BlobTagSet
+	c.Assert(blobTagsSet, chk.NotNil)
+	c.Assert(*blobTagsSet, chk.HasLen, len(basicBlobTagsMap))
+	for _, blobTag := range *blobTagsSet {
+		c.Assert(basicBlobTagsMap[*blobTag.Key], chk.Equals, *blobTag.Value)
+	}
+
+	modifiedBlobTags := map[string]string{
+		"a0z1u2r3e4": "b0l1o2b3",
+		"b0l1o2b3":   "s0d1k2",
+	}
+
+	setTagsBlobOptions2 := SetTagsBlobOptions{
+		BlobTagsMap: &modifiedBlobTags,
+	}
+	setTagResp, err = pbClient.SetTags(ctx, &setTagsBlobOptions2)
+	c.Assert(err, chk.IsNil)
+	c.Assert(setTagResp.RawResponse.StatusCode, chk.Equals, 204)
+
+	gpResp, err = pbClient.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(gpResp, chk.NotNil)
+	c.Assert(*gpResp.TagCount, chk.Equals, int64(len(modifiedBlobTags)))
+
+	blobGetTagsResponse, err = pbClient.GetTags(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
+	blobTagsSet = blobGetTagsResponse.Tags.BlobTagSet
+	c.Assert(blobTagsSet, chk.NotNil)
+	c.Assert(*blobTagsSet, chk.HasLen, len(modifiedBlobTags))
+	for _, blobTag := range *blobTagsSet {
+		c.Assert(modifiedBlobTags[*blobTag.Key], chk.Equals, *blobTag.Value)
+	}
+}
+
+func (s *aztestsSuite) TestPageBlobSetBlobTagForSnapshot(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	pbClient, _ := createNewPageBlob(c, containerClient)
+
+	setTagsBlobOptions := SetTagsBlobOptions{
+		BlobTagsMap: &specialCharBlobTagsMap,
+	}
+	_, err := pbClient.SetTags(ctx, &setTagsBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	resp, err := pbClient.CreateSnapshot(ctx, nil)
+	c.Assert(err, chk.IsNil)
+
+	snapshotURL := pbClient.WithSnapshot(*resp.Snapshot)
+	resp2, err := snapshotURL.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(*resp2.TagCount, chk.Equals, int64(len(specialCharBlobTagsMap)))
+
+	blobGetTagsResponse, err := pbClient.GetTags(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
+	blobTagsSet := blobGetTagsResponse.Tags.BlobTagSet
+	c.Assert(blobTagsSet, chk.NotNil)
+	c.Assert(*blobTagsSet, chk.HasLen, len(specialCharBlobTagsMap))
+	for _, blobTag := range *blobTagsSet {
+		c.Assert(specialCharBlobTagsMap[*blobTag.Key], chk.Equals, *blobTag.Value)
+	}
 }

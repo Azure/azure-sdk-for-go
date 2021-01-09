@@ -12,10 +12,10 @@ import (
 
 func (s *aztestsSuite) TestAppendBlock(c *chk.C) {
 	bsu := getBSU()
-	container, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, container)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 
-	abClient := container.NewAppendBlobURL(generateBlobName())
+	abClient := containerClient.NewAppendBlobURL(generateBlobName())
 
 	resp, err := abClient.Create(context.Background(), nil)
 	c.Assert(err, chk.IsNil)
@@ -43,11 +43,11 @@ func (s *aztestsSuite) TestAppendBlock(c *chk.C) {
 
 func (s *aztestsSuite) TestAppendBlockWithMD5(c *chk.C) {
 	bsu := getBSU()
-	container, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, container)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 
-	// set up abClient to test
-	abClient := container.NewAppendBlobURL(generateBlobName())
+	// set up append blob url to test
+	abClient := containerClient.NewAppendBlobURL(generateBlobName())
 	resp, err := abClient.Create(context.Background(), nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
@@ -93,17 +93,17 @@ func (s *aztestsSuite) TestAppendBlockFromURL(c *chk.C) {
 	if err != nil {
 		c.Fatal("Invalid credential")
 	}
-	container, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, container)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 
 	//ctx := context.Background()
 	testSize := 8 * 1024 // 8KB
 	r, sourceData := getRandomDataAndReader(testSize)
 	contentMD5 := md5.Sum(sourceData)
-	srcBlob := container.NewAppendBlobURL(generateName("appendsrc"))
-	destBlob := container.NewAppendBlobURL(generateName("appenddest"))
+	srcBlob := containerClient.NewAppendBlobURL(generateName("appendsrc"))
+	destBlob := containerClient.NewAppendBlobURL(generateName("appenddest"))
 
-	// Prepare source abClient for copy.
+	// Prepare source append blob url for copy.
 	cResp1, err := srcBlob.Create(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(cResp1.RawResponse.StatusCode, chk.Equals, 201)
@@ -121,7 +121,7 @@ func (s *aztestsSuite) TestAppendBlockFromURL(c *chk.C) {
 	c.Assert(appendResp.Date, chk.NotNil)
 	c.Assert((*appendResp.Date).IsZero(), chk.Equals, false)
 
-	// Get source abClient URL with SAS for AppendBlockFromURL.
+	// Get source append blob url URL with SAS for AppendBlockFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -180,17 +180,17 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithMD5(c *chk.C) {
 	if err != nil {
 		c.Fatal("Invalid credential")
 	}
-	container, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, container)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 
 	testSize := 8 * 1024 // 8KB
 	r, sourceData := getRandomDataAndReader(testSize)
 	md5Value := md5.Sum(sourceData)
 	ctx := context.Background() // Use default Background context
-	srcBlob := container.NewAppendBlobURL(generateName("appendsrc"))
-	destBlob := container.NewAppendBlobURL(generateName("appenddest"))
+	srcBlob := containerClient.NewAppendBlobURL(generateName("appendsrc"))
+	destBlob := containerClient.NewAppendBlobURL(generateName("appenddest"))
 
-	// Prepare source abClient for copy.
+	// Prepare source append blob url for copy.
 	cResp1, err := srcBlob.Create(context.Background(), nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(cResp1.RawResponse.StatusCode, chk.Equals, 201)
@@ -209,7 +209,7 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithMD5(c *chk.C) {
 	c.Assert(appendResp.Date, chk.NotNil)
 	c.Assert((*appendResp.Date).IsZero(), chk.Equals, false)
 
-	// Get source abClient URL with SAS for AppendBlockFromURL.
+	// Get source append blob url URL with SAS for AppendBlockFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -752,7 +752,7 @@ func (s *aztestsSuite) TestBlobAppendBlockIfNoneMatchFalse(c *chk.C) {
 //	bsu := getBSU()
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(c, containerClient)
-//	abClient, _ := createNewAppendBlob(c, containerClient)
+//	append blob url, _ := createNewAppendBlob(c, containerClient)
 //
 //	appendPosition := int64(-1)
 //	appendBlockOptions := AppendBlockOptions{
@@ -760,19 +760,19 @@ func (s *aztestsSuite) TestBlobAppendBlockIfNoneMatchFalse(c *chk.C) {
 //			AppendPosition: &appendPosition,
 //		},
 //	}
-//	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions) // This will cause the library to set the value of the header to 0
+//	_, err := append blob url.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions) // This will cause the library to set the value of the header to 0
 //	c.Assert(err, chk.NotNil)
 //
-//	validateBlockAppended(c, abClient, len(blockBlobDefaultData))
+//	validateBlockAppended(c, append blob url, len(blockBlobDefaultData))
 //}
 
 //func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchZero(c *chk.C) {
 //	bsu := getBSU()
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(c, containerClient)
-//	abClient, _ := createNewAppendBlob(c, containerClient)
+//	append blob url, _ := createNewAppendBlob(c, containerClient)
 //
-//	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil) // The position will not match, but the condition should be ignored
+//	_, err := append blob url.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil) // The position will not match, but the condition should be ignored
 //	c.Assert(err, chk.IsNil)
 //
 //	appendPosition := int64(0)
@@ -781,10 +781,10 @@ func (s *aztestsSuite) TestBlobAppendBlockIfNoneMatchFalse(c *chk.C) {
 //			AppendPosition: &appendPosition,
 //		},
 //	}
-//	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+//	_, err = append blob url.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 //	c.Assert(err, chk.IsNil)
 //
-//	validateBlockAppended(c, abClient, 2*len(blockBlobDefaultData))
+//	validateBlockAppended(c, append blob url, 2*len(blockBlobDefaultData))
 //}
 
 func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchTrueNonZero(c *chk.C) {
@@ -884,4 +884,49 @@ func (s *aztestsSuite) TestBlobAppendBlockIfMaxSizeFalse(c *chk.C) {
 
 	// TODO: Fix issue with storage error interface
 	//validateStorageError(c, err, ServiceCodeMaxBlobSizeConditionNotMet)
+}
+
+func (s *aztestsSuite) TestCreateAppendBlobWithTags(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	abClient, _ := getAppendBlobClient(c, containerClient)
+
+	createAppendBlobOptions := CreateAppendBlobOptions{
+		BlobTagsMap: &specialCharBlobTagsMap,
+	}
+	createResp, err := abClient.Create(ctx, &createAppendBlobOptions)
+	c.Assert(err, chk.IsNil)
+	c.Assert(createResp.VersionID, chk.NotNil)
+
+	_, err = abClient.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+
+	blobGetTagsResponse, err := abClient.GetTags(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
+	blobTagsSet := blobGetTagsResponse.Tags.BlobTagSet
+	c.Assert(blobTagsSet, chk.NotNil)
+	c.Assert(*blobTagsSet, chk.HasLen, len(specialCharBlobTagsMap))
+	for _, blobTag := range *blobTagsSet {
+		c.Assert(specialCharBlobTagsMap[*blobTag.Key], chk.Equals, *blobTag.Value)
+	}
+
+	resp, err := abClient.CreateSnapshot(ctx, nil)
+	c.Assert(err, chk.IsNil)
+
+	snapshotURL := abClient.WithSnapshot(*resp.Snapshot)
+	resp2, err := snapshotURL.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(*resp2.TagCount, chk.Equals, int64(len(specialCharBlobTagsMap)))
+
+	blobGetTagsResponse, err = abClient.GetTags(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
+	blobTagsSet = blobGetTagsResponse.Tags.BlobTagSet
+	c.Assert(blobTagsSet, chk.NotNil)
+	c.Assert(*blobTagsSet, chk.HasLen, len(specialCharBlobTagsMap))
+	for _, blobTag := range *blobTagsSet {
+		c.Assert(specialCharBlobTagsMap[*blobTag.Key], chk.Equals, *blobTag.Value)
+	}
 }

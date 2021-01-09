@@ -49,7 +49,7 @@ func (o *CreatePageBlobOptions) pointers() (*PageBlobCreateOptions, *BlobHttpHea
 
 	options := &PageBlobCreateOptions{
 		BlobSequenceNumber: o.BlobSequenceNumber,
-		BlobTagsString:     SerializeBlobTags(o.BlobTagsMap),
+		BlobTagsString:     SerializeBlobTagsToStrPtr(o.BlobTagsMap),
 		Metadata:           o.Metadata,
 		Tier:               o.Tier,
 	}

@@ -72,6 +72,21 @@ var basicHeaders = BlobHttpHeaders{
 
 var basicMetadata = map[string]string{"foo": "bar"}
 
+var basicBlobTagsMap = map[string]string{
+	"azure": "blob",
+	"blob":  "sdk",
+	"sdk":   "go",
+}
+
+var specialCharBlobTagsMap = map[string]string{
+	"+-./:=_ ":        "firsttag",
+	"tag2":            "+-./:=_",
+	"+-./:=_1":        "+-./:=_",
+	"Microsoft Azure": "Azure Storage",
+	"Storage+SDK":     "SDK/GO",
+	"GO ":             ".Net",
+}
+
 const testPipelineMessage string = "test factory invoked"
 
 func newTestPipeline() azcore.Pipeline {

@@ -31,14 +31,14 @@ func (s *aztestsSuite) TestStageGetBlocks(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	blob := containerClient.NewBlockBlobClient(generateBlobName())
+	bbClient := containerClient.NewBlockBlobClient(generateBlobName())
 
 	data := []string{"Azure ", "Storage ", "Block ", "Blob."}
 	base64BlockIDs := make([]string, len(data))
 
 	for index, d := range data {
 		base64BlockIDs[index] = blockIDIntToBase64(index)
-		putResp, err := blob.StageBlock(context.Background(), base64BlockIDs[index], strings.NewReader(d), nil)
+		putResp, err := bbClient.StageBlock(context.Background(), base64BlockIDs[index], strings.NewReader(d), nil)
 		c.Assert(err, chk.IsNil)
 		c.Assert(putResp.RawResponse.StatusCode, chk.Equals, 201)
 		c.Assert(putResp.ContentMD5, chk.IsNil)
@@ -48,7 +48,7 @@ func (s *aztestsSuite) TestStageGetBlocks(c *chk.C) {
 		c.Assert((*putResp.Date).IsZero(), chk.Equals, false)
 	}
 
-	blockList, err := blob.GetBlockList(context.Background(), BlockListTypeAll, nil)
+	blockList, err := bbClient.GetBlockList(context.Background(), BlockListTypeAll, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
 	c.Assert(blockList.LastModified, chk.IsNil)
@@ -64,7 +64,7 @@ func (s *aztestsSuite) TestStageGetBlocks(c *chk.C) {
 	c.Assert(blockList.BlockList.UncommittedBlocks, chk.NotNil)
 	c.Assert(*blockList.BlockList.UncommittedBlocks, chk.HasLen, len(data))
 
-	listResp, err := blob.CommitBlockList(context.Background(), base64BlockIDs, nil)
+	listResp, err := bbClient.CommitBlockList(context.Background(), base64BlockIDs, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(listResp.RawResponse.StatusCode, chk.Equals, 201)
 	c.Assert(listResp.LastModified, chk.NotNil)
@@ -75,7 +75,7 @@ func (s *aztestsSuite) TestStageGetBlocks(c *chk.C) {
 	c.Assert(listResp.Date, chk.NotNil)
 	c.Assert((*listResp.Date).IsZero(), chk.Equals, false)
 
-	blockList, err = blob.GetBlockList(context.Background(), BlockListTypeAll, nil)
+	blockList, err = bbClient.GetBlockList(context.Background(), BlockListTypeAll, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
 	c.Assert(blockList.LastModified, chk.NotNil)
@@ -111,12 +111,12 @@ func (s *aztestsSuite) TestStageBlockFromURL(c *chk.C) {
 	srcBlob := containerClient.NewBlockBlobClient(generateBlobName())
 	destBlob := containerClient.NewBlockBlobClient(generateBlobName())
 
-	// Prepare source blob for copy.
+	// Prepare source bbClient for copy.
 	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(uploadSrcResp.RawResponse.StatusCode, chk.Equals, 201)
 
-	// Get source blob URL with SAS for StageFromURL.
+	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -133,10 +133,10 @@ func (s *aztestsSuite) TestStageBlockFromURL(c *chk.C) {
 	// Stage blocks from URL.
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 
+	offset, count := int64(0), int64(contentSize/2)
 	options1 := StageBlockFromURLOptions{
-		BlockBlobStageBlockOptions: &BlockBlobStageBlockFromURLOptions{
-			SourceRange: httpRange{offset: 0, count: 4 * 1024}.pointers(),
-		},
+		Offset: &offset,
+		Count:  &count,
 	}
 
 	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
@@ -149,10 +149,10 @@ func (s *aztestsSuite) TestStageBlockFromURL(c *chk.C) {
 
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 
+	offset2, count2 := int64(contentSize/2), int64(CountToEnd)
 	options2 := StageBlockFromURLOptions{
-		BlockBlobStageBlockOptions: &BlockBlobStageBlockFromURLOptions{
-			SourceRange: httpRange{offset: 4 * 1024, count: CountToEnd}.pointers(),
-		},
+		Offset: &offset2,
+		Count:  &count2,
 	}
 
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
@@ -198,8 +198,8 @@ func (s *aztestsSuite) TestCopyBlockBlobFromURL(c *chk.C) {
 	if err != nil {
 		c.Fatal("Invalid credential")
 	}
-	container, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, container)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 
 	const contentSize = 8 * 1024 // 8 KB
 	content := make([]byte, contentSize)
@@ -208,15 +208,15 @@ func (s *aztestsSuite) TestCopyBlockBlobFromURL(c *chk.C) {
 	rsc := azcore.NopCloser(body)
 	ctx := context.Background()
 
-	srcBlob := container.NewBlockBlobClient("srcblob")
-	destBlob := container.NewBlockBlobClient("destblob")
+	srcBlob := containerClient.NewBlockBlobClient("srcblob")
+	destBlob := containerClient.NewBlockBlobClient("destblob")
 
-	// Prepare source blob for copy.
+	// Prepare source bbClient for copy.
 	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(uploadSrcResp.RawResponse.StatusCode, chk.Equals, 201)
 
-	// Get source blob URL with SAS for StageFromURL.
+	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -232,13 +232,11 @@ func (s *aztestsSuite) TestCopyBlockBlobFromURL(c *chk.C) {
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
-	// Invoke copy blob from URL.
+	// Invoke copy bbClient from URL.
 	sourceContentMD5 := contentMD5[:]
 	copyBlockBlobFromURLOptions := CopyBlockBlobFromURLOptions{
-		BlobCopyFromURLOptions: &BlobCopyFromURLOptions{
-			Metadata:         &map[string]string{"foo": "bar"},
-			SourceContentMd5: &sourceContentMD5,
-		},
+		Metadata:         &map[string]string{"foo": "bar"},
+		SourceContentMd5: &sourceContentMD5,
 	}
 	resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions)
 	c.Assert(err, chk.IsNil)
@@ -270,16 +268,14 @@ func (s *aztestsSuite) TestCopyBlockBlobFromURL(c *chk.C) {
 	// Edge case 1: Provide bad MD5 and make sure the copy fails
 	_, badMD5 := getRandomDataAndReader(16)
 	copyBlockBlobFromURLOptions1 := CopyBlockBlobFromURLOptions{
-		BlobCopyFromURLOptions: &BlobCopyFromURLOptions{SourceContentMd5: &badMD5},
+		SourceContentMd5: &badMD5,
 	}
 	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions1)
 	c.Assert(err, chk.NotNil)
 
 	// Edge case 2: Not providing any source MD5 should see the CRC getting returned instead
 	copyBlockBlobFromURLOptions2 := CopyBlockBlobFromURLOptions{
-		BlobCopyFromURLOptions: &BlobCopyFromURLOptions{
-			SourceContentMd5: &sourceContentMD5,
-		},
+		SourceContentMd5: &sourceContentMD5,
 	}
 	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions2)
 	c.Assert(err, chk.IsNil)
@@ -293,8 +289,8 @@ func (s *aztestsSuite) TestBlobSASQueryParamOverrideResponseHeaders(c *chk.C) {
 	if err != nil {
 		c.Fatal("Invalid credential")
 	}
-	container, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, container)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 
 	const contentSize = 8 * 1024 // 8 KB
 	content := make([]byte, contentSize)
@@ -304,14 +300,14 @@ func (s *aztestsSuite) TestBlobSASQueryParamOverrideResponseHeaders(c *chk.C) {
 	rsc := azcore.NopCloser(body)
 	ctx := context.Background()
 
-	blob := container.NewBlockBlobClient(generateBlobName())
+	bbClient := containerClient.NewBlockBlobClient(generateBlobName())
 
-	uploadSrcResp, err := blob.Upload(ctx, rsc, nil)
+	uploadSrcResp, err := bbClient.Upload(ctx, rsc, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(uploadSrcResp.RawResponse.StatusCode, chk.Equals, 201)
 
-	// Get blob URL with SAS.
-	blobParts := NewBlobURLParts(blob.URL())
+	// Get blob url with SAS.
+	blobParts := NewBlobURLParts(bbClient.URL())
 
 	cacheControlVal := "cache-control-override"
 	contentDispositionVal := "content-disposition-override"
@@ -334,7 +330,7 @@ func (s *aztestsSuite) TestBlobSASQueryParamOverrideResponseHeaders(c *chk.C) {
 	}.NewSASQueryParameters(credential)
 	c.Assert(err, chk.IsNil)
 
-	// Generate new blob client
+	// Generate new bbClient client
 	blobURLWithSAS := blobParts.URL()
 	blobRawURL := blobURLWithSAS.String()
 	c.Assert(blobRawURL, chk.NotNil)
@@ -352,10 +348,10 @@ func (s *aztestsSuite) TestBlobSASQueryParamOverrideResponseHeaders(c *chk.C) {
 
 func (s *aztestsSuite) TestStageBlockWithMD5(c *chk.C) {
 	bsu := getBSU()
-	container, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, container)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 
-	blob := container.NewBlockBlobClient(generateBlobName())
+	bbClient := containerClient.NewBlockBlobClient(generateBlobName())
 
 	// test put block with valid MD5 value
 	contentSize := 8 * 1024 // 8 KB
@@ -371,7 +367,7 @@ func (s *aztestsSuite) TestStageBlockWithMD5(c *chk.C) {
 		},
 	}
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
-	putResp, err := blob.StageBlock(context.Background(), blockID1, rsc, &stageBlockOptions)
+	putResp, err := bbClient.StageBlock(context.Background(), blockID1, rsc, &stageBlockOptions)
 	c.Assert(err, chk.IsNil)
 	c.Assert(putResp.RawResponse.StatusCode, chk.Equals, 201)
 	c.Assert(*(putResp.ContentMD5), chk.DeepEquals, contentMD5)
@@ -392,7 +388,7 @@ func (s *aztestsSuite) TestStageBlockWithMD5(c *chk.C) {
 	}
 	_, _ = rsc.Seek(0, io.SeekStart)
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
-	_, err = blob.StageBlock(context.Background(), blockID2, rsc, &badStageBlockOptions)
+	_, err = bbClient.StageBlock(context.Background(), blockID2, rsc, &badStageBlockOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -706,7 +702,7 @@ func validateBlobCommitted(c *chk.C, bbClient BlockBlobClient) {
 func (s *aztestsSuite) TestBlobPutBlockListIfModifiedSinceTrue(c *chk.C) {
 	contClient, bbClient, blockId := setupPutBlockListTest(c)
 	defer deleteContainer(c, contClient)
-	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The blob must actually exist to have a modifed time
+	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
 	c.Assert(err, chk.IsNil)
 
 	currentTime := getRelativeTimeGMT(-10)
@@ -738,7 +734,7 @@ func (s *aztestsSuite) TestBlobPutBlockListIfModifiedSinceFalse(c *chk.C) {
 func (s *aztestsSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue(c *chk.C) {
 	contClient, bbClient, blockId := setupPutBlockListTest(c)
 	defer deleteContainer(c, contClient)
-	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The blob must actually exist to have a modifed time
+	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
 	c.Assert(err, chk.IsNil)
 
 	currentTime := getRelativeTimeGMT(10)
@@ -754,7 +750,7 @@ func (s *aztestsSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue(c *chk.C) {
 
 func (s *aztestsSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse(c *chk.C) {
 	contClient, bbClient, blockId := setupPutBlockListTest(c)
-	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The blob must actually exist to have a modifed time
+	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
 	c.Assert(err, chk.IsNil)
 	defer deleteContainer(c, contClient)
 
@@ -772,7 +768,7 @@ func (s *aztestsSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse(c *chk.C) {
 func (s *aztestsSuite) TestBlobPutBlockListIfMatchTrue(c *chk.C) {
 	contClient, bbClient, blockId := setupPutBlockListTest(c)
 	defer deleteContainer(c, contClient)
-	resp, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The blob must actually exist to have a modifed time
+	resp, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
 	c.Assert(err, chk.IsNil)
 
 	commitBlockListOptions := CommitBlockListOptions{
@@ -787,7 +783,7 @@ func (s *aztestsSuite) TestBlobPutBlockListIfMatchTrue(c *chk.C) {
 func (s *aztestsSuite) TestBlobPutBlockListIfMatchFalse(c *chk.C) {
 	contClient, bbClient, blockId := setupPutBlockListTest(c)
 	defer deleteContainer(c, contClient)
-	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The blob must actually exist to have a modifed time
+	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
 	c.Assert(err, chk.IsNil)
 
 	eTag := "garbage"
@@ -804,7 +800,7 @@ func (s *aztestsSuite) TestBlobPutBlockListIfMatchFalse(c *chk.C) {
 func (s *aztestsSuite) TestBlobPutBlockListIfNoneMatchTrue(c *chk.C) {
 	contClient, bbClient, blockId := setupPutBlockListTest(c)
 	defer deleteContainer(c, contClient)
-	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The blob must actually exist to have a modifed time
+	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
 	c.Assert(err, chk.IsNil)
 
 	eTag := "garbage"
@@ -820,7 +816,7 @@ func (s *aztestsSuite) TestBlobPutBlockListIfNoneMatchTrue(c *chk.C) {
 func (s *aztestsSuite) TestBlobPutBlockListIfNoneMatchFalse(c *chk.C) {
 	contClient, bbClient, blockId := setupPutBlockListTest(c)
 	defer deleteContainer(c, contClient)
-	resp, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The blob must actually exist to have a modifed time
+	resp, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
 	c.Assert(err, chk.IsNil)
 
 	commitBlockListOptions := CommitBlockListOptions{
@@ -904,7 +900,7 @@ func (s *aztestsSuite) TestBlobSetTierOnCommit(c *chk.C) {
 		c.Assert(err, chk.IsNil)
 
 		commitBlockListOptions := CommitBlockListOptions{
-			BlockBlobCommitBlockListOptions: &BlockBlobCommitBlockListOptions{Tier: &tier},
+			Tier: &tier,
 		}
 		_, err = bbClient.CommitBlockList(ctx, []string{blockID}, &commitBlockListOptions)
 		c.Assert(err, chk.IsNil)
@@ -921,22 +917,22 @@ func (s *aztestsSuite) TestBlobSetTierOnCommit(c *chk.C) {
 
 func (s *aztestsSuite) TestSetTierOnCopyBlockBlobFromURL(c *chk.C) {
 	bsu := getBSU()
-	container, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, container)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 
 	const contentSize = 1 * 1024 // 1 KB
 	content := make([]byte, contentSize)
 	body := bytes.NewReader(content)
 	rsc := azcore.NopCloser(body)
 	ctx := context.Background()
-	srcBlob := container.NewBlockBlobClient(generateBlobName())
+	srcBlob := containerClient.NewBlockBlobClient(generateBlobName())
 
 	tier := AccessTierCool
 	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, &UploadBlockBlobOptions{Tier: &tier})
 	c.Assert(err, chk.IsNil)
 	c.Assert(uploadSrcResp.RawResponse.StatusCode, chk.Equals, 201)
 
-	// Get source blob URL with SAS for StageFromURL.
+	// Get source blob url with SAS for StageFromURL.
 	currentTime := time.Now().UTC()
 	credential, err := getGenericCredential("")
 	if err != nil {
@@ -956,13 +952,11 @@ func (s *aztestsSuite) TestSetTierOnCopyBlockBlobFromURL(c *chk.C) {
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
 	for _, tier := range []AccessTier{AccessTierArchive, AccessTierCool, AccessTierHot} {
-		destBlob := container.NewBlockBlobClient(generateBlobName())
+		destBlob := containerClient.NewBlockBlobClient(generateBlobName())
 
 		copyBlockBlobFromURLOptions := CopyBlockBlobFromURLOptions{
-			BlobCopyFromURLOptions: &BlobCopyFromURLOptions{
-				Tier:     &tier,
-				Metadata: &map[string]string{"foo": "bar"},
-			},
+			Tier:     &tier,
+			Metadata: &map[string]string{"foo": "bar"},
 		}
 		resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions)
 		c.Assert(err, chk.IsNil)
@@ -978,22 +972,22 @@ func (s *aztestsSuite) TestSetTierOnCopyBlockBlobFromURL(c *chk.C) {
 
 func (s *aztestsSuite) TestSetTierOnStageBlockFromURL(c *chk.C) {
 	bsu := getBSU()
-	container, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, container)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 
 	contentSize := 8 * 1024 // 8 KB
 	content := make([]byte, contentSize)
 	body := bytes.NewReader(content)
 	rsc := azcore.NopCloser(body)
 	ctx := context.Background()
-	srcBlob := container.NewBlockBlobClient(generateBlobName())
-	destBlob := container.NewBlockBlobClient(generateBlobName())
+	srcBlob := containerClient.NewBlockBlobClient(generateBlobName())
+	destBlob := containerClient.NewBlockBlobClient(generateBlobName())
 	tier := AccessTierCool
 	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, &UploadBlockBlobOptions{Tier: &tier})
 	c.Assert(err, chk.IsNil)
 	c.Assert(uploadSrcResp.RawResponse.StatusCode, chk.Equals, 201)
 
-	// Get source blob URL with SAS for StageFromURL.
+	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 	credential, err := getGenericCredential("")
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -1011,10 +1005,10 @@ func (s *aztestsSuite) TestSetTierOnStageBlockFromURL(c *chk.C) {
 
 	// Stage blocks from URL.
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
+	offset1, count1 := int64(0), int64(4*1024)
 	options1 := StageBlockFromURLOptions{
-		BlockBlobStageBlockOptions: &BlockBlobStageBlockFromURLOptions{
-			SourceRange: httpRange{offset: 0, count: 4 * 1024}.pointers(),
-		},
+		Offset: &offset1,
+		Count:  &count1,
 	}
 	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
 	c.Assert(err, chk.IsNil)
@@ -1025,10 +1019,10 @@ func (s *aztestsSuite) TestSetTierOnStageBlockFromURL(c *chk.C) {
 	c.Assert(stageResp1.Date.IsZero(), chk.Equals, false)
 
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
+	offset2, count2 := int64(4*1024), int64(CountToEnd)
 	options2 := StageBlockFromURLOptions{
-		BlockBlobStageBlockOptions: &BlockBlobStageBlockFromURLOptions{
-			SourceRange: httpRange{offset: 4 * 1024, count: CountToEnd}.pointers(),
-		},
+		Offset: &offset2,
+		Count:  &count2,
 	}
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
 	c.Assert(err, chk.IsNil)
@@ -1049,7 +1043,7 @@ func (s *aztestsSuite) TestSetTierOnStageBlockFromURL(c *chk.C) {
 
 	// Commit block list.
 	commitBlockListOptions := CommitBlockListOptions{
-		BlockBlobCommitBlockListOptions: &BlockBlobCommitBlockListOptions{Tier: &tier},
+		Tier: &tier,
 	}
 	listResp, err := destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, &commitBlockListOptions)
 	c.Assert(err, chk.IsNil)
@@ -1074,3 +1068,549 @@ func (s *aztestsSuite) TestSetTierOnStageBlockFromURL(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	c.Assert(*destBlobPropResp.AccessTier, chk.Equals, string(tier))
 }
+
+func (s *aztestsSuite) TestSetBlobTags(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+
+	bbClient, _ := getBlockBlobClient(c, containerClient)
+	blobTagsMap := map[string]string{
+		"azure":    "bbClient",
+		"bbClient": "sdk",
+		"sdk":      "go",
+	}
+
+	contentSize := 8 * 1024 // 8KB
+	r, _ := getRandomDataAndReader(contentSize)
+
+	blockBlobUploadResp, err := bbClient.Upload(ctx, r, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blockBlobUploadResp.RawResponse.StatusCode, chk.Equals, 201)
+
+	setTagsBlobOptions := SetTagsBlobOptions{
+		BlobTagsMap: &blobTagsMap,
+	}
+	blobSetTagsResponse, err := bbClient.SetTags(ctx, &setTagsBlobOptions)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobSetTagsResponse.RawResponse.StatusCode, chk.Equals, 204)
+
+	blobGetTagsResponse, err := bbClient.GetTags(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
+	blobTagsSet := blobGetTagsResponse.Tags.BlobTagSet
+	c.Assert(blobTagsSet, chk.NotNil)
+	c.Assert(*blobTagsSet, chk.HasLen, 3)
+	for _, blobTag := range *blobTagsSet {
+		c.Assert(blobTagsMap[*blobTag.Key], chk.Equals, *blobTag.Value)
+	}
+}
+
+func (s *aztestsSuite) TestSetBlobTagsWithVID(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	bbClient, _ := getBlockBlobClient(c, containerClient)
+	blobTagsMap := map[string]string{
+		"Go":         "CPlusPlus",
+		"Python":     "CSharp",
+		"Javascript": "Android",
+	}
+	blockBlobUploadResp, err := bbClient.Upload(ctx, bytes.NewReader([]byte("data")), nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blockBlobUploadResp.RawResponse.StatusCode, chk.Equals, 201)
+	versionId1 := blockBlobUploadResp.VersionID
+
+	blockBlobUploadResp, err = bbClient.Upload(ctx, bytes.NewReader([]byte("updated_data")), nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blockBlobUploadResp.RawResponse.StatusCode, chk.Equals, 201)
+	versionId2 := blockBlobUploadResp.VersionID
+
+	setTagsBlobOptions := SetTagsBlobOptions{
+		BlobTagsMap: &blobTagsMap,
+		VersionId:   versionId1,
+	}
+	blobSetTagsResponse, err := bbClient.SetTags(ctx, &setTagsBlobOptions)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobSetTagsResponse.RawResponse.StatusCode, chk.Equals, 204)
+
+	getTagsBlobOptions1 := GetTagsBlobOptions{
+		VersionId: versionId1,
+	}
+	blobGetTagsResponse, err := bbClient.GetTags(ctx, &getTagsBlobOptions1)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
+	c.Assert(blobGetTagsResponse.Tags.BlobTagSet, chk.NotNil)
+	c.Assert(*blobGetTagsResponse.Tags.BlobTagSet, chk.HasLen, 3)
+	for _, blobTag := range *blobGetTagsResponse.Tags.BlobTagSet {
+		c.Assert(blobTagsMap[*blobTag.Key], chk.Equals, *blobTag.Value)
+	}
+
+	getTagsBlobOptions2 := GetTagsBlobOptions{
+		VersionId: versionId2,
+	}
+	blobGetTagsResponse, err = bbClient.GetTags(ctx, &getTagsBlobOptions2)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
+	c.Assert(blobGetTagsResponse.Tags.BlobTagSet, chk.IsNil)
+}
+
+func (s *aztestsSuite) TestUploadBlockBlobWithSpecialCharactersInTags(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	bbClient, _ := getBlockBlobClient(c, containerClient)
+	blobTagsMap := map[string]string{
+		"+-./:=_ ": "firsttag",
+		"tag2":     "+-./:=_",
+		"+-./:=_1": "+-./:=_",
+	}
+
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		Metadata:        &basicMetadata,
+		BlobHttpHeaders: &basicHeaders,
+		BlobTagsMap:     &blobTagsMap,
+	}
+	blockBlobUploadResp, err := bbClient.Upload(ctx, bytes.NewReader([]byte("data")), &uploadBlockBlobOptions)
+	c.Assert(err, chk.IsNil)
+	// TODO: Check for metadata and header
+	c.Assert(blockBlobUploadResp.RawResponse.StatusCode, chk.Equals, 201)
+
+	blobGetTagsResponse, err := bbClient.GetTags(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
+	c.Assert(*blobGetTagsResponse.Tags.BlobTagSet, chk.HasLen, 3)
+	for _, blobTag := range *blobGetTagsResponse.Tags.BlobTagSet {
+		c.Assert(blobTagsMap[*blobTag.Key], chk.Equals, *blobTag.Value)
+	}
+}
+
+func (s *aztestsSuite) TestStageBlockWithTags(c *chk.C) {
+	blockIDIntToBase64 := func(blockID int) string {
+		binaryBlockID := (&[4]byte{})[:]
+		binary.LittleEndian.PutUint32(binaryBlockID, uint32(blockID))
+		return base64.StdEncoding.EncodeToString(binaryBlockID)
+	}
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+
+	bbClient := containerClient.NewBlockBlobClient(generateBlobName())
+
+	data := []string{"Azure ", "Storage ", "Block ", "Blob."}
+	base64BlockIDs := make([]string, len(data))
+
+	for index, d := range data {
+		base64BlockIDs[index] = blockIDIntToBase64(index)
+		resp, err := bbClient.StageBlock(ctx, base64BlockIDs[index], strings.NewReader(d), nil)
+		c.Assert(err, chk.IsNil)
+		c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
+		c.Assert(*resp.Version, chk.Not(chk.Equals), "")
+	}
+
+	blobTagsMap := map[string]string{
+		"azure":    "bbClient",
+		"bbClient": "sdk",
+		"sdk":      "go",
+	}
+
+	commitBlockListOptions := CommitBlockListOptions{
+		BlobTagsMap: &blobTagsMap,
+	}
+	commitResp, err := bbClient.CommitBlockList(ctx, base64BlockIDs, &commitBlockListOptions)
+	c.Assert(err, chk.IsNil)
+	c.Assert(commitResp.VersionID, chk.NotNil)
+	versionId := commitResp.VersionID
+
+	contentResp, err := bbClient.Download(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	contentData, err := ioutil.ReadAll(contentResp.Body(RetryReaderOptions{}))
+	c.Assert(contentData, chk.DeepEquals, []uint8(strings.Join(data, "")))
+
+	getTagsBlobOptions := GetTagsBlobOptions{
+		VersionId: versionId,
+	}
+	blobGetTagsResp, err := bbClient.GetTags(ctx, &getTagsBlobOptions)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobGetTagsResp, chk.NotNil)
+	c.Assert(*blobGetTagsResp.Tags.BlobTagSet, chk.HasLen, 3)
+	for _, blobTag := range *blobGetTagsResp.Tags.BlobTagSet {
+		c.Assert(blobTagsMap[*blobTag.Key], chk.Equals, *blobTag.Value)
+	}
+
+	blobGetTagsResp, err = bbClient.GetTags(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobGetTagsResp, chk.NotNil)
+	c.Assert(*blobGetTagsResp.Tags.BlobTagSet, chk.HasLen, 3)
+	for _, blobTag := range *blobGetTagsResp.Tags.BlobTagSet {
+		c.Assert(blobTagsMap[*blobTag.Key], chk.Equals, *blobTag.Value)
+	}
+}
+
+func (s *aztestsSuite) TestStageBlockFromURLWithTags(c *chk.C) {
+	bsu := getBSU()
+	credential, err := getGenericCredential("")
+	if err != nil {
+		c.Fatal("Invalid credential")
+	}
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+
+	contentSize := 8 * 1024 // 8KB
+	r, sourceData := getRandomDataAndReader(contentSize)
+	ctx := ctx // Use default Background context
+	srcBlob := containerClient.NewBlockBlobClient("sourceBlob")
+	destBlob := containerClient.NewBlockBlobClient("destBlob")
+
+	blobTagsMap := map[string]string{
+		"Go":         "CPlusPlus",
+		"Python":     "CSharp",
+		"Javascript": "Android",
+	}
+
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		BlobTagsMap: &blobTagsMap,
+	}
+	uploadSrcResp, err := srcBlob.Upload(ctx, r, &uploadBlockBlobOptions)
+	c.Assert(err, chk.IsNil)
+	c.Assert(uploadSrcResp.RawResponse.StatusCode, chk.Equals, 201)
+
+	// Get source blob url with SAS for StageFromURL.
+	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+
+	srcBlobParts.SAS, err = BlobSASSignatureValues{
+		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ContainerName: srcBlobParts.ContainerName,
+		BlobName:      srcBlobParts.BlobName,
+		Permissions:   BlobSASPermissions{Read: true}.String(),
+	}.NewSASQueryParameters(credential)
+	if err != nil {
+		c.Fatal(err)
+	}
+
+	srcBlobURLWithSAS := srcBlobParts.URL()
+
+	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
+	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
+
+	offset1, count1 := int64(0), int64(contentSize/2)
+	options1 := StageBlockFromURLOptions{
+		Offset: &offset1,
+		Count:  &count1,
+	}
+	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
+	c.Assert(err, chk.IsNil)
+	c.Assert(stageResp1.RawResponse.StatusCode, chk.Equals, 201)
+	c.Assert(*stageResp1.RequestID, chk.Not(chk.Equals), "")
+	c.Assert(*stageResp1.Version, chk.Not(chk.Equals), "")
+	c.Assert(stageResp1.Date, chk.NotNil)
+	c.Assert((*stageResp1.Date).IsZero(), chk.Equals, false)
+
+	offset2, count2 := int64(contentSize/2), int64(CountToEnd)
+	options2 := StageBlockFromURLOptions{
+		Offset: &offset2,
+		Count:  &count2,
+	}
+	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
+	c.Assert(err, chk.IsNil)
+	c.Assert(stageResp2.RawResponse.StatusCode, chk.Equals, 201)
+	c.Assert(*stageResp2.RequestID, chk.Not(chk.Equals), "")
+	c.Assert(*stageResp2.Version, chk.Not(chk.Equals), "")
+	c.Assert(stageResp2.Date, chk.NotNil)
+	c.Assert((*stageResp2.Date).IsZero(), chk.Equals, false)
+
+	blockList, err := destBlob.GetBlockList(ctx, BlockListTypeAll, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
+	c.Assert(blockList.BlockList.CommittedBlocks, chk.IsNil)
+	c.Assert(*blockList.BlockList.UncommittedBlocks, chk.HasLen, 2)
+
+	commitBlockListOptions := CommitBlockListOptions{
+		BlobTagsMap: &blobTagsMap,
+	}
+	listResp, err := destBlob.CommitBlockList(ctx, []string{blockID1, blockID2}, &commitBlockListOptions)
+	c.Assert(err, chk.IsNil)
+	c.Assert(listResp.RawResponse.StatusCode, chk.Equals, 201)
+	//versionId := listResp.VersionID()
+
+	blobGetTagsResp, err := destBlob.GetTags(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(*blobGetTagsResp.Tags.BlobTagSet, chk.HasLen, 3)
+	for _, blobTag := range *blobGetTagsResp.Tags.BlobTagSet {
+		c.Assert(blobTagsMap[*blobTag.Key], chk.Equals, *blobTag.Value)
+	}
+
+	downloadResp, err := destBlob.Download(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
+	c.Assert(err, chk.IsNil)
+	c.Assert(destData, chk.DeepEquals, sourceData)
+}
+
+func (s *aztestsSuite) TestCopyBlockBlobFromURLWithTags(c *chk.C) {
+	bsu := getBSU()
+	credential, err := getGenericCredential("")
+	if err != nil {
+		c.Fatal("Invalid credential")
+	}
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+
+	contentSize := 8 * 1024 // 1MB
+	r, sourceData := getRandomDataAndReader(contentSize)
+	sourceDataMD5Value := md5.Sum(sourceData)
+	srcBlob := containerClient.NewBlockBlobClient("srcBlob")
+	destBlob := containerClient.NewBlockBlobClient("destBlob")
+
+	blobTagsMap := map[string]string{
+		"Go":         "CPlusPlus",
+		"Python":     "CSharp",
+		"Javascript": "Android",
+	}
+
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		BlobTagsMap: &blobTagsMap,
+	}
+	uploadSrcResp, err := srcBlob.Upload(ctx, r, &uploadBlockBlobOptions)
+	c.Assert(err, chk.IsNil)
+	c.Assert(uploadSrcResp.RawResponse.StatusCode, chk.Equals, 201)
+
+	// Get source blob url with SAS for StageFromURL.
+	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+
+	srcBlobParts.SAS, err = BlobSASSignatureValues{
+		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ContainerName: srcBlobParts.ContainerName,
+		BlobName:      srcBlobParts.BlobName,
+		Permissions:   BlobSASPermissions{Read: true}.String(),
+	}.NewSASQueryParameters(credential)
+	if err != nil {
+		c.Fatal(err)
+	}
+
+	srcBlobURLWithSAS := srcBlobParts.URL()
+	sourceContentMD5 := sourceDataMD5Value[:]
+	copyBlockBlobFromURLOptions1 := CopyBlockBlobFromURLOptions{
+		BlobTagsMap:      &map[string]string{"foo": "bar"},
+		SourceContentMd5: &sourceContentMD5,
+	}
+	resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions1)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 202)
+	c.Assert(*resp.ETag, chk.Not(chk.Equals), "")
+	c.Assert(*resp.RequestID, chk.Not(chk.Equals), "")
+	c.Assert(*resp.Version, chk.Not(chk.Equals), "")
+	c.Assert((*resp.Date).IsZero(), chk.Equals, false)
+	c.Assert(*resp.CopyID, chk.Not(chk.Equals), "")
+	c.Assert(*resp.ContentMD5, chk.DeepEquals, sourceDataMD5Value[:])
+	c.Assert(*resp.CopyStatus, chk.DeepEquals, "success")
+
+	downloadResp, err := destBlob.Download(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
+	c.Assert(err, chk.IsNil)
+	c.Assert(destData, chk.DeepEquals, sourceData)
+	c.Assert(*downloadResp.r.TagCount, chk.Equals, int64(1))
+
+	_, badMD5 := getRandomDataAndReader(16)
+	copyBlockBlobFromURLOptions2 := CopyBlockBlobFromURLOptions{
+		BlobTagsMap:      &blobTagsMap,
+		SourceContentMd5: &badMD5,
+	}
+	_, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions2)
+	c.Assert(err, chk.NotNil)
+
+	copyBlockBlobFromURLOptions3 := CopyBlockBlobFromURLOptions{
+		BlobTagsMap: &blobTagsMap,
+	}
+	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions3)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 202)
+	c.Assert(resp.RawResponse.Header.Get("x-ms-content-crc64"), chk.Not(chk.Equals), "")
+}
+
+func (s *aztestsSuite) TestGetPropertiesReturnsTagsCount(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	bbClient, _ := getBlockBlobClient(c, containerClient)
+
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		BlobTagsMap:     &basicBlobTagsMap,
+		BlobHttpHeaders: &basicHeaders,
+		Metadata:        &basicMetadata,
+	}
+	blockBlobUploadResp, err := bbClient.Upload(ctx, bytes.NewReader([]byte("data")), &uploadBlockBlobOptions)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blockBlobUploadResp.RawResponse.StatusCode, chk.Equals, 201)
+
+	getPropertiesResponse, err := bbClient.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(*getPropertiesResponse.TagCount, chk.Equals, int64(3))
+
+	downloadResp, err := bbClient.Download(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(downloadResp, chk.NotNil)
+	c.Assert(downloadResp.r.RawResponse.Header.Get("x-ms-tag-count"), chk.Equals, "3")
+}
+
+func (s *aztestsSuite) TestSetBlobTagForSnapshot(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	bbClient, _ := createNewBlockBlob(c, containerClient)
+	blobTagsMap := map[string]string{
+		"Microsoft Azure": "Azure Storage",
+		"Storage+SDK":     "SDK/GO",
+		"GO ":             ".Net",
+	}
+	setTagsBlobOptions := SetTagsBlobOptions{
+		BlobTagsMap: &blobTagsMap,
+	}
+	_, err := bbClient.SetTags(ctx, &setTagsBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	resp, err := bbClient.CreateSnapshot(ctx, nil)
+	c.Assert(err, chk.IsNil)
+
+	snapshotURL := bbClient.WithSnapshot(*resp.Snapshot)
+	resp2, err := snapshotURL.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(*resp2.TagCount, chk.Equals, int64(3))
+}
+
+// TODO: Once new pacer is done.
+//func (s *aztestsSuite) TestListBlobReturnsTags(c *chk.C) {
+//	bsu := getBSU()
+//	containerURL, _ := createNewContainer(c, bsu)
+//	defer deleteContainer(c, containerURL)
+//	blobURL, blobName := createNewBlockBlob(c, containerURL)
+//	blobTagsMap := BlobTagsMap{
+//		"+-./:=_ ": "firsttag",
+//		"tag2":     "+-./:=_",
+//		"+-./:=_1": "+-./:=_",
+//	}
+//	resp, err := blobURL.SetTags(ctx, nil, nil, nil, nil, nil, nil, blobTagsMap)
+//	c.Assert(err, chk.IsNil)
+//	c.Assert(resp.StatusCode(), chk.Equals, 204)
+//
+//	listBlobResp, err := containerURL.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Tags: true}})
+//
+//	c.Assert(err, chk.IsNil)
+//	c.Assert(listBlobResp.Segment.BlobItems[0].Name, chk.Equals, blobName)
+//	c.Assert(listBlobResp.Segment.BlobItems[0].BlobTags.BlobTagSet, chk.HasLen, 3)
+//	for _, blobTag := range listBlobResp.Segment.BlobItems[0].BlobTags.BlobTagSet {
+//		c.Assert(blobTagsMap[blobTag.Key], chk.Equals, blobTag.Value)
+//	}
+//}
+//
+//func (s *aztestsSuite) TestFindBlobsByTags(c *chk.C) {
+//	bsu := getBSU()
+//	containerURL1, _ := createNewContainer(c, bsu)
+//	defer deleteContainer(c, containerURL1)
+//	containerURL2, _ := createNewContainer(c, bsu)
+//	defer deleteContainer(c, containerURL2)
+//	containerURL3, _ := createNewContainer(c, bsu)
+//	defer deleteContainer(c, containerURL3)
+//
+//	blobTagsMap1 := BlobTagsMap{
+//		"tag2": "tagsecond",
+//		"tag3": "tagthird",
+//	}
+//	blobTagsMap2 := BlobTagsMap{
+//		"tag1": "firsttag",
+//		"tag2": "secondtag",
+//		"tag3": "thirdtag",
+//	}
+//	blobURL11, _ := getBlockBlobURL(c, containerURL1)
+//	_, err := blobURL11.Upload(ctx, bytes.NewReader([]byte("random data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, blobTagsMap1, ClientProvidedKeyOptions{})
+//	c.Assert(err, chk.IsNil)
+//	blobURL12, _ := getBlockBlobURL(c, containerURL1)
+//	_, err = blobURL12.Upload(ctx, bytes.NewReader([]byte("another random data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, blobTagsMap2, ClientProvidedKeyOptions{})
+//	c.Assert(err, chk.IsNil)
+//
+//	blobURL21, _ := getBlockBlobURL(c, containerURL2)
+//	_, err = blobURL21.Upload(ctx, bytes.NewReader([]byte("random data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	c.Assert(err, chk.IsNil)
+//	blobURL22, _ := getBlockBlobURL(c, containerURL2)
+//	_, err = blobURL22.Upload(ctx, bytes.NewReader([]byte("another random data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, blobTagsMap2, ClientProvidedKeyOptions{})
+//	c.Assert(err, chk.IsNil)
+//
+//	blobURL31, _ := getBlockBlobURL(c, containerURL3)
+//	_, err = blobURL31.Upload(ctx, bytes.NewReader([]byte("random data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	c.Assert(err, chk.IsNil)
+//
+//	where := "\"tag4\"='fourthtag'"
+//	lResp, err := bsu.FindBlobsByTags(ctx, nil, nil, &where, Marker{}, nil)
+//	c.Assert(err, chk.IsNil)
+//	c.Assert(lResp.Blobs, chk.HasLen, 0)
+//
+//	//where = "\"tag1\"='firsttag'AND\"tag2\"='secondtag'AND\"@container\"='"+ containerName1 + "'"
+//	//TODO: Figure out how to do a composite query based on container.
+//	where = "\"tag1\"='firsttag'AND\"tag2\"='secondtag'"
+//
+//	lResp, err = bsu.FindBlobsByTags(ctx, nil, nil, &where, Marker{}, nil)
+//	c.Assert(err, chk.IsNil)
+//
+//	for _, blob := range lResp.Blobs {
+//		c.Assert(blob.TagValue, chk.Equals, "firsttag")
+//	}
+//}
+//
+//func (s *aztestsSuite) TestFilterBlobsUsingAccountSAS(c *chk.C) {
+//	accountName, accountKey := accountInfo()
+//	credential, err := NewSharedKeyCredential(accountName, accountKey)
+//	if err != nil {
+//		c.Fail()
+//	}
+//
+//	sasQueryParams, err := AccountSASSignatureValues{
+//		Protocol:      SASProtocolHTTPS,
+//		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
+//		Permissions:   AccountSASPermissions{Read: true, List: true, Write: true, DeletePreviousVersion: true, Tag: true, FilterByTags: true, Create: true}.String(),
+//		Services:      AccountSASServices{Blob: true}.String(),
+//		ResourceTypes: AccountSASResourceTypes{Service: true, Container: true, Object: true}.String(),
+//	}.NewSASQueryParameters(credential)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	qp := sasQueryParams.Encode()
+//	urlToSendToSomeone := fmt.Sprintf("https://%s.blob.core.windows.net?%s", accountName, qp)
+//	u, _ := url.Parse(urlToSendToSomeone)
+//	serviceURL := NewServiceURL(*u, NewPipeline(NewAnonymousCredential(), PipelineOptions{}))
+//
+//	containerName := generateContainerName()
+//	containerURL := serviceURL.NewContainerURL(containerName)
+//	_, err = containerURL.Create(ctx, Metadata{}, PublicAccessNone)
+//	defer containerURL.Delete(ctx, ContainerAccessConditions{})
+//	if err != nil {
+//		c.Fatal(err)
+//	}
+//
+//	blobURL := containerURL.NewBlockBlobURL("temp")
+//	_, err = blobURL.Upload(ctx, bytes.NewReader([]byte("random data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	if err != nil {
+//		c.Fail()
+//	}
+//
+//	blobTagsMap := BlobTagsMap{"tag1": "firsttag", "tag2": "secondtag", "tag3": "thirdtag"}
+//	setBlobTagsResp, err := blobURL.SetTags(ctx, nil, nil, nil, nil, nil, nil, blobTagsMap)
+//	c.Assert(err, chk.IsNil)
+//	c.Assert(setBlobTagsResp.StatusCode(), chk.Equals, 204)
+//
+//	blobGetTagsResp, err := blobURL.GetTags(ctx, nil, nil, nil, nil, nil)
+//	c.Assert(err, chk.IsNil)
+//	c.Assert(blobGetTagsResp.StatusCode(), chk.Equals, 200)
+//	c.Assert(blobGetTagsResp.BlobTagSet, chk.HasLen, 3)
+//	for _, blobTag := range blobGetTagsResp.BlobTagSet {
+//		c.Assert(blobTagsMap[blobTag.Key], chk.Equals, blobTag.Value)
+//	}
+//
+//	time.Sleep(30 * time.Second)
+//	where := "\"tag1\"='firsttag'AND\"tag2\"='secondtag'AND@container='" + containerName + "'"
+//	_, err = serviceURL.FindBlobsByTags(ctx, nil, nil, &where, Marker{}, nil)
+//	c.Assert(err, chk.IsNil)
+//}

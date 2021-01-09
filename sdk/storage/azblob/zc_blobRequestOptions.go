@@ -1,5 +1,10 @@
 package azblob
 
+import (
+	"net/url"
+	"strings"
+)
+
 type DeleteBlobOptions struct {
 	// Required if the blob has associated snapshots. Specify one of the following two options: include: Delete the base blob
 	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob itself
@@ -265,7 +270,7 @@ func (o *StartCopyBlobOptions) pointers() (blobStartCopyFromUrlOptions *BlobStar
 	}
 
 	basics := BlobStartCopyFromURLOptions{
-		BlobTagsString:    SerializeBlobTags(o.BlobTagsMap),
+		BlobTagsString:    SerializeBlobTagsToStrPtr(o.BlobTagsMap),
 		Metadata:          o.Metadata,
 		RehydratePriority: o.RehydratePriority,
 		SealBlob:          o.SealBlob,
@@ -284,4 +289,93 @@ func (o *AbortCopyBlobOptions) pointers() (blobAbortCopyFromUrlOptions *BlobAbor
 		return nil, nil
 	}
 	return nil, o.LeaseAccessConditions
+}
+
+func SerializeBlobTagsToStrPtr(blobTagsMap *map[string]string) *string {
+	if blobTagsMap == nil {
+		return nil
+	}
+	tags := make([]string, 0)
+	for key, val := range *blobTagsMap {
+		tags = append(tags, url.QueryEscape(key)+"="+url.QueryEscape(val))
+	}
+	//tags = tags[:len(tags)-1]
+	blobTagsString := strings.Join(tags, "&")
+	return &blobTagsString
+}
+
+func SerializeBlobTags(blobTagsMap *map[string]string) *BlobTags {
+	if blobTagsMap == nil {
+		return nil
+	}
+	blobTagSet := make([]BlobTag, 0)
+	for key, val := range *blobTagsMap {
+		newKey, newVal := key, val
+		blobTagSet = append(blobTagSet, BlobTag{Key: &newKey, Value: &newVal})
+	}
+	return &BlobTags{BlobTagSet: &blobTagSet}
+}
+
+type SetTagsBlobOptions struct {
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+	RequestId *string
+	// The timeout parameter is expressed in seconds.
+	Timeout *int32
+	// The version id parameter is an opaque DateTime value that, when present,
+	// specifies the version of the blob to operate on. It's for service version 2019-10-10 and newer.
+	VersionId *string
+	// Optional header, Specifies the transactional crc64 for the body, to be validated by the service.
+	TransactionalContentCrc64 *[]byte
+	// Optional header, Specifies the transactional md5 for the body, to be validated by the service.
+	TransactionalContentMd5 *[]byte
+
+	BlobTagsMap *map[string]string
+
+	ModifiedAccessConditions *ModifiedAccessConditions
+}
+
+func (o *SetTagsBlobOptions) pointers() (*BlobSetTagsOptions, *ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	options := &BlobSetTagsOptions{
+		RequestId:                 o.RequestId,
+		Tags:                      SerializeBlobTags(o.BlobTagsMap),
+		Timeout:                   o.Timeout,
+		TransactionalContentMd5:   o.TransactionalContentMd5,
+		TransactionalContentCrc64: o.TransactionalContentCrc64,
+		VersionId:                 o.VersionId,
+	}
+
+	return options, o.ModifiedAccessConditions
+}
+
+type GetTagsBlobOptions struct {
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+	RequestId *string
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve.
+	Snapshot *string
+	// The timeout parameter is expressed in seconds.
+	Timeout *int32
+	// The version id parameter is an opaque DateTime value that, when present, specifies the version of the blob to operate on.
+	// It's for service version 2019-10-10 and newer.
+	VersionId *string
+
+	ModifiedAccessConditions *ModifiedAccessConditions
+}
+
+func (o *GetTagsBlobOptions) pointers() (*BlobGetTagsOptions, *ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	options := &BlobGetTagsOptions{
+		RequestId: o.RequestId,
+		Snapshot:  o.Snapshot,
+		Timeout:   o.Timeout,
+		VersionId: o.VersionId,
+	}
+
+	return options, o.ModifiedAccessConditions
 }

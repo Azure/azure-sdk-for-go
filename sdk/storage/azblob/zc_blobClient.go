@@ -2,10 +2,8 @@ package azblob
 
 import (
 	"context"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"net/url"
 )
 
 // A BlobClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
@@ -227,26 +225,18 @@ func (b BlobClient) AbortCopyFromURL(ctx context.Context, copyID string, options
 	return b.client.AbortCopyFromURL(ctx, copyID, basics, lease)
 }
 
-func SerializeBlobTags(blobTagsMap *map[string]string) *string {
-	if blobTagsMap == nil {
-		return nil
-	}
-	tags := make([]string, 0)
-	for key, val := range *blobTagsMap {
-		tags = append(tags, url.QueryEscape(key)+"="+url.QueryEscape(val))
-	}
-	//tags = tags[:len(tags)-1]
-	blobTagsString := strings.Join(tags, "&")
-	return &blobTagsString
+// SetTags operation enables users to set tags on a blob or specific blob version, but not snapshot.
+// Each call to this operation replaces all existing tags attached to the blob.
+// To remove all tags from the blob, call this operation with no tags set.
+// https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags
+func (b BlobClient) SetTags(ctx context.Context, options *SetTagsBlobOptions) (BlobSetTagsResponse, error) {
+	blobSetTagsOptions, modifiedAccessConditions := options.pointers()
+	return b.client.SetTags(ctx, blobSetTagsOptions, modifiedAccessConditions)
 }
 
-//func SerializeBlobTags(blobTagsMap *map[string]string) BlobTags {
-//	if blobTagsMap == nil {
-//		return BlobTags{}
-//	}
-//	blobTagSet := make([]BlobTag, 0, len(*blobTagsMap))
-//	for key, val := range *blobTagsMap {
-//		blobTagSet = append(blobTagSet, BlobTag{Key: &key, Value: &val})
-//	}
-//	return BlobTags{BlobTagSet: &blobTagSet}
-//}
+// GetTags operation enables users to get tags on a blob or specific blob version, or snapshot.
+// https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-tags
+func (b BlobClient) GetTags(ctx context.Context, options *GetTagsBlobOptions) (BlobTagsResponse, error) {
+	blobGetTagsOptions, modifiedAccessConditions := options.pointers()
+	return b.client.GetTags(ctx, blobGetTagsOptions, modifiedAccessConditions)
+}

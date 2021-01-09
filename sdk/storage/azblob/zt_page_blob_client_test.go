@@ -80,7 +80,7 @@ func (s *aztestsSuite) TestUploadPagesFromURL(c *chk.C) {
 	c.Assert(uploadSrcResp1.Date, chk.NotNil)
 	c.Assert((*uploadSrcResp1.Date).IsZero(), chk.Equals, false)
 
-	// Get source page blob url URL with SAS for UploadPagesFromURL.
+	// Get source pbClient URL with SAS for UploadPagesFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -133,14 +133,14 @@ func (s *aztestsSuite) TestUploadPagesFromURLWithMD5(c *chk.C) {
 	srcBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(testSize))
 	destBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(testSize))
 
-	// Prepare source page blob url for copy.
+	// Prepare source pbClient for copy.
 	offset, _, count := int64(0), int64(testSize-1), int64(testSize)
 	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
 	uploadSrcResp1, err := srcBlob.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 	c.Assert(uploadSrcResp1.RawResponse.StatusCode, chk.Equals, 201)
 
-	// Get source page blob url URL with SAS for UploadPagesFromURL.
+	// Get source pbClient URL with SAS for UploadPagesFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -728,9 +728,9 @@ func (s *aztestsSuite) TestBlobPutPagesInvalidRange(c *chk.C) {
 //	bsu := getBSU()
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(c, containerClient)
-//	page blob url, _ := createNewPageBlob(c, containerClient)
+//	pbClient, _ := createNewPageBlob(c, containerClient)
 //
-//	_, err := page blob url.UploadPages(ctx, nil, nil)
+//	_, err := pbClient.UploadPages(ctx, nil, nil)
 //	c.Assert(err, chk.NotNil)
 //}
 
@@ -2052,7 +2052,7 @@ func (s *aztestsSuite) TestBlobResizeZero(c *chk.C) {
 	defer deleteContainer(c, containerClient)
 	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	// The default page blob url is created with size > 0, so this should actually update
+	// The default pbClient is created with size > 0, so this should actually update
 	_, err := pbClient.Resize(ctx, 0, nil)
 	c.Assert(err, chk.IsNil)
 
@@ -2506,7 +2506,7 @@ func setupStartIncrementalCopyTest(c *chk.C) (containerClient ContainerClient, p
 	resp, _ := pbClient.CreateSnapshot(ctx, nil)
 	copyPBClient, _ = getPageBlobClient(c, containerClient)
 
-	// Must create the incremental copy page blob url so that the access conditions work on it
+	// Must create the incremental copy pbClient so that the access conditions work on it
 	resp2, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), *resp.Snapshot, nil)
 	c.Assert(err, chk.IsNil)
 	waitForIncrementalCopy(c, copyPBClient, &resp2)

@@ -46,7 +46,7 @@ func (s *aztestsSuite) TestAppendBlockWithMD5(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	// set up append blob url to test
+	// set up abClient to test
 	abClient := containerClient.NewAppendBlobURL(generateBlobName())
 	resp, err := abClient.Create(context.Background(), nil)
 	c.Assert(err, chk.IsNil)
@@ -103,7 +103,7 @@ func (s *aztestsSuite) TestAppendBlockFromURL(c *chk.C) {
 	srcBlob := containerClient.NewAppendBlobURL(generateName("appendsrc"))
 	destBlob := containerClient.NewAppendBlobURL(generateName("appenddest"))
 
-	// Prepare source append blob url for copy.
+	// Prepare source abClient for copy.
 	cResp1, err := srcBlob.Create(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(cResp1.RawResponse.StatusCode, chk.Equals, 201)
@@ -121,7 +121,7 @@ func (s *aztestsSuite) TestAppendBlockFromURL(c *chk.C) {
 	c.Assert(appendResp.Date, chk.NotNil)
 	c.Assert((*appendResp.Date).IsZero(), chk.Equals, false)
 
-	// Get source append blob url URL with SAS for AppendBlockFromURL.
+	// Get source abClient URL with SAS for AppendBlockFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -190,7 +190,7 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithMD5(c *chk.C) {
 	srcBlob := containerClient.NewAppendBlobURL(generateName("appendsrc"))
 	destBlob := containerClient.NewAppendBlobURL(generateName("appenddest"))
 
-	// Prepare source append blob url for copy.
+	// Prepare source abClient for copy.
 	cResp1, err := srcBlob.Create(context.Background(), nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(cResp1.RawResponse.StatusCode, chk.Equals, 201)
@@ -209,7 +209,7 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithMD5(c *chk.C) {
 	c.Assert(appendResp.Date, chk.NotNil)
 	c.Assert((*appendResp.Date).IsZero(), chk.Equals, false)
 
-	// Get source append blob url URL with SAS for AppendBlockFromURL.
+	// Get source abClient URL with SAS for AppendBlockFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -752,7 +752,7 @@ func (s *aztestsSuite) TestBlobAppendBlockIfNoneMatchFalse(c *chk.C) {
 //	bsu := getBSU()
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(c, containerClient)
-//	append blob url, _ := createNewAppendBlob(c, containerClient)
+//	abClient, _ := createNewAppendBlob(c, containerClient)
 //
 //	appendPosition := int64(-1)
 //	appendBlockOptions := AppendBlockOptions{
@@ -760,19 +760,19 @@ func (s *aztestsSuite) TestBlobAppendBlockIfNoneMatchFalse(c *chk.C) {
 //			AppendPosition: &appendPosition,
 //		},
 //	}
-//	_, err := append blob url.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions) // This will cause the library to set the value of the header to 0
+//	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions) // This will cause the library to set the value of the header to 0
 //	c.Assert(err, chk.NotNil)
 //
-//	validateBlockAppended(c, append blob url, len(blockBlobDefaultData))
+//	validateBlockAppended(c, abClient, len(blockBlobDefaultData))
 //}
 
 //func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchZero(c *chk.C) {
 //	bsu := getBSU()
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(c, containerClient)
-//	append blob url, _ := createNewAppendBlob(c, containerClient)
+//	abClient, _ := createNewAppendBlob(c, containerClient)
 //
-//	_, err := append blob url.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil) // The position will not match, but the condition should be ignored
+//	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil) // The position will not match, but the condition should be ignored
 //	c.Assert(err, chk.IsNil)
 //
 //	appendPosition := int64(0)
@@ -781,10 +781,10 @@ func (s *aztestsSuite) TestBlobAppendBlockIfNoneMatchFalse(c *chk.C) {
 //			AppendPosition: &appendPosition,
 //		},
 //	}
-//	_, err = append blob url.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+//	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 //	c.Assert(err, chk.IsNil)
 //
-//	validateBlockAppended(c, append blob url, 2*len(blockBlobDefaultData))
+//	validateBlockAppended(c, abClient, 2*len(blockBlobDefaultData))
 //}
 
 func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchTrueNonZero(c *chk.C) {

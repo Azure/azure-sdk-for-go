@@ -4,6 +4,10 @@
 
 NOTE: Due to the changes requested in [this issue](https://github.com/Azure/azure-sdk-for-go/issues/14010), we changed the properties and functions of all future types, which does not affect their functionality and usage, but leads to a very long list of breaking changes. This change requires the latest version of `github.com/Azure/go-autorest/autorest v0.11.15` to work properly.
 
+### Renamed Packages
+
+- `github.com/Azure/azure-sdk-for-go/profiles/2020-09-01/compute` renamed to `github.com/Azure/azure-sdk-for-go/profiles/2020-09-01/compute/mgmt/compute` to align other naming pattern of the profile packages
+
 ### New Packages
 
 - `github.com/Azure/azure-sdk-for-go/services/healthbot/mgmt/2020-12-08/healthbot`

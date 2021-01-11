@@ -37,6 +37,19 @@ func (bgpr BlobGetPropertiesResponse) NewMetadata() map[string]string {
 	return md
 }
 
+// NewMetadata returns user-defined key/value pairs.
+func (cgpr ContainerGetPropertiesResponse) NewMetadata() map[string]string {
+	md := map[string]string{}
+	for k, v := range cgpr.RawResponse.Header {
+		if len(k) > mdPrefixLen {
+			if prefix := k[0:mdPrefixLen]; strings.EqualFold(prefix, mdPrefix) {
+				md[strings.ToLower(k[mdPrefixLen:])] = v[0]
+			}
+		}
+	}
+	return md
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // NewHTTPHeaders returns the user-modifiable properties for this blob.

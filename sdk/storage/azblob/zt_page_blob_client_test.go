@@ -256,7 +256,7 @@ func (s *aztestsSuite) TestIncrementalCopy(c *chk.C) {
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: &accessType},
 	}
-	_, err := containerClient.SetAccessPolicy(context.Background(), setAccessPolicyOptions)
+	_, err := containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	c.Assert(err, chk.IsNil)
 
 	srcBlob, _ := createNewPageBlob(c, containerClient)
@@ -2499,7 +2499,7 @@ func setupStartIncrementalCopyTest(c *chk.C) (containerClient ContainerClient, p
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: &accessType},
 	}
-	_, err := containerClient.SetAccessPolicy(context.Background(), setAccessPolicyOptions)
+	_, err := containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	c.Assert(err, chk.IsNil)
 
 	pbClient, _ = createNewPageBlob(c, containerClient)

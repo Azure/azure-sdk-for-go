@@ -48,7 +48,7 @@ func (c ContainerClient) WithPipeline(pipeline azcore.Pipeline) ContainerClient 
 // To change the pipeline, create the BlobClient and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewBlobClient instead of calling this object's
 // NewBlobClient method.
-func (c ContainerClient) NewBlobURL(blobName string, mode *PathRenameMode) BlobClient {
+func (c ContainerClient) NewBlobClient(blobName string, mode *PathRenameMode) BlobClient {
 	blobURL := appendToURLPath(c.URL(), blobName)
 	newCon := newConnectionWithPipeline(blobURL.String(), c.client.con.p)
 
@@ -148,17 +148,19 @@ func (c ContainerClient) GetProperties(ctx context.Context, gpo *GetPropertiesOp
 
 //// SetMetadata sets the container's metadata.
 //// For more information, see https://docs.microsoft.com/rest/api/storageservices/set-container-metadata.
-func (c ContainerClient) SetMetadata(ctx context.Context, metadata map[string]string, ac *ContainerAccessConditions) (ContainerSetMetadataResponse, error) {
-	if !ac.ModifiedAccessConditions.IfUnmodifiedSince.IsZero() || *ac.ModifiedAccessConditions.IfMatch != ETagNone || *ac.ModifiedAccessConditions.IfNoneMatch != ETagNone {
-		return ContainerSetMetadataResponse{}, errors.New("the IfUnmodifiedSince, IfMatch, and IfNoneMatch must have their default values because they are ignored by the blob service")
-	}
-	metadataOptions := ContainerSetMetadataOptions{
-		Metadata: &metadata,
-	}
+func (c ContainerClient) SetMetadata(ctx context.Context, options *SetMetadataContainerOptions) (ContainerSetMetadataResponse, error) {
+	// TODO: Ask Ze/Adele: Why we introduced this check. We should let service do this kind of validations.
+	//if ac != nil && ac.ModifiedAccessConditions != nil {
+	//	if (ac.ModifiedAccessConditions.IfUnmodifiedSince != nil && !(*ac.ModifiedAccessConditions.IfUnmodifiedSince).IsZero()) ||
+	//	ac.ModifiedAccessConditions.IfMatch != nil || ac.ModifiedAccessConditions.IfNoneMatch != nil {
+	//		return ContainerSetMetadataResponse{}, errors.New("the IfUnmodifiedSince, IfMatch, and IfNoneMatch must " +
+	//			"have their default values because they are ignored by the blob service")
+	//	}
+	//}
 
-	mac, lac := ac.pointers()
+	metadataOptions, lac, mac := options.pointers()
 
-	return c.client.SetMetadata(ctx, &metadataOptions, lac, mac)
+	return c.client.SetMetadata(ctx, metadataOptions, lac, mac)
 }
 
 // GetAccessPolicy returns the container's access policy. The access policy indicates whether container's blobs may be accessed publicly.
@@ -171,22 +173,21 @@ func (c ContainerClient) GetAccessPolicy(ctx context.Context, options *GetAccess
 
 // SetAccessPolicy sets the container's permissions. The access policy indicates whether blobs in a container may be accessed publicly.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-container-acl.
-func (c ContainerClient) SetAccessPolicy(ctx context.Context, options SetAccessPolicyOptions) (ContainerSetAccessPolicyResponse, error) {
-
-	accessPolicy := options.ContainerSetAccessPolicyOptions
-	// TODO: Ask Adele: Why we introduced this check. Service returned "200 OK" without this. And we should let service do this kind of validations.
+func (c ContainerClient) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOptions) (ContainerSetAccessPolicyResponse, error) {
+	//accessPolicy := options.ContainerSetAccessPolicyOptions
+	// TODO: Ask Ze/Adele: Why we introduced this check. Service returned "200 OK" without this. And we should let service do this kind of validations.
 	//if accessPolicy.Access == nil || accessPolicy.ContainerAcl == nil {
 	//	return ContainerSetAccessPolicyResponse{}, errors.New("ContainerSetAccess must be specified with AT LEAST Access and ContainerAcl")
 	//}
 
-	ac := options.ContainerAccessConditions
-	if ac != nil && (*ac.ModifiedAccessConditions.IfMatch != ETagNone || *ac.ModifiedAccessConditions.IfNoneMatch != ETagNone) {
-		return ContainerSetAccessPolicyResponse{}, errors.New("the IfMatch and IfNoneMatch access conditions must have their default values because they are ignored by the service")
-	}
+	//ac := options.ContainerAccessConditions
+	//if ac != nil && (*ac.ModifiedAccessConditions.IfMatch != ETagNone || *ac.ModifiedAccessConditions.IfNoneMatch != ETagNone) {
+	//	return ContainerSetAccessPolicyResponse{}, errors.New("the IfMatch and IfNoneMatch access conditions must have their default values because they are ignored by the service")
+	//}
 
-	mac, lac := ac.pointers()
+	accessPolicy, mac, lac := options.pointers()
 
-	return c.client.SetAccessPolicy(ctx, &accessPolicy, lac, mac)
+	return c.client.SetAccessPolicy(ctx, &accessPolicy, mac, lac)
 }
 
 // AcquireLease acquires a lease on the container for delete operations. The lease duration must be between 15 to 60 seconds, or infinite (-1).

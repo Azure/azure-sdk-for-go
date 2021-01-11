@@ -69,6 +69,14 @@ type SetAccessPolicyOptions struct {
 	ContainerAccessConditions       *ContainerAccessConditions
 }
 
+func (o *SetAccessPolicyOptions) pointers() (ContainerSetAccessPolicyOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
+	if o == nil {
+		return ContainerSetAccessPolicyOptions{}, nil, nil
+	}
+	mac, lac := o.ContainerAccessConditions.pointers()
+	return o.ContainerSetAccessPolicyOptions, lac, mac
+}
+
 type AcquireLeaseOptionsContainer struct {
 	// At least Access and ContainerAcl must be specified
 	ContainerSetAccessPolicyOptions *ContainerAcquireLeaseOptions
@@ -125,4 +133,19 @@ func (o *ChangeLeaseOptionsContainer) pointers() (*ContainerChangeLeaseOptions, 
 	}
 
 	return o.ContainerChangeLeaseOptions, o.ModifiedAccessConditions
+}
+
+type SetMetadataContainerOptions struct {
+	Metadata                 *map[string]string
+	LeaseAccessConditions    *LeaseAccessConditions
+	ModifiedAccessConditions *ModifiedAccessConditions
+}
+
+func (o *SetMetadataContainerOptions) pointers() (*ContainerSetMetadataOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil, nil
+	}
+
+	options := ContainerSetMetadataOptions{Metadata: o.Metadata}
+	return &options, o.LeaseAccessConditions, o.ModifiedAccessConditions
 }

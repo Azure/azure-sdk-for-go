@@ -447,8 +447,8 @@ type AppTemplate struct {
 	ManifestID *string `json:"manifestId,omitempty"`
 	// ManifestVersion - READ-ONLY; The version of the template.
 	ManifestVersion *string `json:"manifestVersion,omitempty"`
-	// AppTemplateName - READ-ONLY; The name of the template.
-	AppTemplateName *string `json:"appTemplateName,omitempty"`
+	// Name - READ-ONLY; The name of the template.
+	Name *string `json:"name,omitempty"`
 	// Title - READ-ONLY; The title of the template.
 	Title *string `json:"title,omitempty"`
 	// Order - READ-ONLY; The order of the template in the templates list.

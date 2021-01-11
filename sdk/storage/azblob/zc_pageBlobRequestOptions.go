@@ -76,9 +76,8 @@ func (o *UploadPagesOptions) pointers() (*PageBlobUploadPagesOptions, *CpkInfo, 
 		return nil, nil, nil, nil, nil, nil
 	}
 
-	endOffSet := *o.Offset + *o.Count - 1
 	options := &PageBlobUploadPagesOptions{
-		RangeParameter:            PageRange{Start: o.Offset, End: &endOffSet}.pointers(),
+		RangeParameter:            getSourceRange(o.Offset, o.Count),
 		TransactionalContentCrc64: o.TransactionalContentCrc64,
 		TransactionalContentMd5:   o.TransactionalContentMd5,
 	}

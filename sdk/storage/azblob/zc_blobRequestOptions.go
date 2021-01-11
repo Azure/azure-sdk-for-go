@@ -37,6 +37,7 @@ type DownloadBlobOptions struct {
 
 	LeaseAccessConditions    *LeaseAccessConditions
 	CpkInfo                  *CpkInfo
+	CpkScopeInfo             *CpkScopeInfo
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 

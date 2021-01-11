@@ -76,6 +76,8 @@ func (r *DownloadResponse) Body(o RetryReaderOptions) io.ReadCloser {
 				Offset:                   &getInfo.Offset,
 				Count:                    &getInfo.Count,
 				ModifiedAccessConditions: &accessConditions,
+				CpkInfo:                  o.CpkInfo,
+				//CpkScopeInfo: 			  o.CpkScopeInfo,
 			}
 			resp, err := r.b.Download(ctx, &options)
 			if err != nil {

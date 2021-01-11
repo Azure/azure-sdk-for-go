@@ -365,6 +365,7 @@ func validateUpload(c *chk.C, blobClient BlobClient) {
 	c.Assert(data, chk.HasLen, 0)
 }
 
+// blockIDIntToBase64 functions convert an int block ID to a base-64 string and vice versa
 func blockIDIntToBase64(blockID int) string {
 	binaryBlockID := (&[4]byte{})[:]
 	binary.LittleEndian.PutUint32(binaryBlockID, uint32(blockID))

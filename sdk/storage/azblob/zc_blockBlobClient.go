@@ -105,8 +105,8 @@ func (bb BlockBlobClient) StageBlock(ctx context.Context, base64BlockID string, 
 		return BlockBlobStageBlockResponse{}, err
 	}
 
-	ac, stageBlockOptions := options.pointers()
-	return bb.client.StageBlock(ctx, base64BlockID, count, azcore.NopCloser(body), stageBlockOptions, ac, nil, nil)
+	ac, stageBlockOptions, cpkInfo, cpkScopeInfo := options.pointers()
+	return bb.client.StageBlock(ctx, base64BlockID, count, azcore.NopCloser(body), stageBlockOptions, ac, cpkInfo, cpkScopeInfo)
 }
 
 // StageBlockFromURL copies the specified block from a source URL to the block blob's "staging area" to be later committed by a call to CommitBlockList.

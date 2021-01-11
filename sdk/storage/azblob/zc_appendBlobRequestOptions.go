@@ -85,7 +85,7 @@ func (o *AppendBlockURLOptions) pointers() (*AppendBlobAppendBlockFromURLOptions
 	}
 
 	options := &AppendBlobAppendBlockFromURLOptions{
-		SourceRange:             httpRange{count: *o.Count, offset: *o.Offset}.pointers(),
+		SourceRange:             getSourceRange(o.Offset, o.Count),
 		SourceContentMd5:        o.SourceContentMd5,
 		SourceContentcrc64:      o.SourceContentCrc64,
 		TransactionalContentMd5: o.TransactionalContentMd5,

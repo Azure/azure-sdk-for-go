@@ -29,6 +29,24 @@ func (r httpRange) pointers() *string {
 	return &dataRange
 }
 
+func getSourceRange(offset, count *int64) *string {
+	if offset == nil && count == nil {
+		return nil
+	}
+	newOffset := int64(0)
+	newCount := int64(CountToEnd)
+
+	if offset != nil {
+		newOffset = *offset
+	}
+
+	if count != nil {
+		newCount = *count
+	}
+
+	return httpRange{offset: newOffset, count: newCount}.pointers()
+}
+
 func validateSeekableStreamAt0AndGetCount(body io.ReadSeeker) (int64, error) {
 	if body == nil { // nil body's are "logically" seekable to 0 and are 0 bytes long
 		return 0, nil

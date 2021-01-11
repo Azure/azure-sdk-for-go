@@ -97,8 +97,8 @@ func (s *aztestsSuite) TestAppendBlockFromURL(c *chk.C) {
 	defer deleteContainer(c, containerClient)
 
 	//ctx := context.Background()
-	testSize := 8 * 1024 // 8KB
-	r, sourceData := getRandomDataAndReader(testSize)
+	contentSize := 8 * 1024 // 8KB
+	r, sourceData := getRandomDataAndReader(contentSize)
 	contentMD5 := md5.Sum(sourceData)
 	srcBlob := containerClient.NewAppendBlobURL(generateName("appendsrc"))
 	destBlob := containerClient.NewAppendBlobURL(generateName("appenddest"))
@@ -107,6 +107,7 @@ func (s *aztestsSuite) TestAppendBlockFromURL(c *chk.C) {
 	cResp1, err := srcBlob.Create(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(cResp1.RawResponse.StatusCode, chk.Equals, 201)
+
 	appendResp, err := srcBlob.AppendBlock(context.Background(), r, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(appendResp.RawResponse.StatusCode, chk.Equals, 201)
@@ -183,8 +184,8 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithMD5(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	testSize := 8 * 1024 // 8KB
-	r, sourceData := getRandomDataAndReader(testSize)
+	contentSize := 8 * 1024 // 8KB
+	r, sourceData := getRandomDataAndReader(contentSize)
 	md5Value := md5.Sum(sourceData)
 	ctx := context.Background() // Use default Background context
 	srcBlob := containerClient.NewAppendBlobURL(generateName("appendsrc"))
@@ -231,7 +232,7 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithMD5(c *chk.C) {
 	c.Assert(cResp2.RawResponse.StatusCode, chk.Equals, 201)
 
 	offset := int64(0)
-	count := int64(testSize)
+	count := int64(contentSize)
 	contentMD5 := md5Value[:]
 	appendBlockURLOptions := AppendBlockURLOptions{
 		Offset:           &offset,
@@ -267,7 +268,7 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithMD5(c *chk.C) {
 		Count:            &count,
 		SourceContentMd5: &badMD5,
 	}
-	_, err = destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, int64(testSize), nil)
+	_, err = destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, int64(contentSize), nil)
 	c.Assert(err, chk.NotNil)
 	// TODO: Fix issue with storage error interface
 	//validateStorageError(c, err, ServiceCodeMd5Mismatch)
@@ -884,49 +885,4 @@ func (s *aztestsSuite) TestBlobAppendBlockIfMaxSizeFalse(c *chk.C) {
 
 	// TODO: Fix issue with storage error interface
 	//validateStorageError(c, err, ServiceCodeMaxBlobSizeConditionNotMet)
-}
-
-func (s *aztestsSuite) TestCreateAppendBlobWithTags(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := getAppendBlobClient(c, containerClient)
-
-	createAppendBlobOptions := CreateAppendBlobOptions{
-		BlobTagsMap: &specialCharBlobTagsMap,
-	}
-	createResp, err := abClient.Create(ctx, &createAppendBlobOptions)
-	c.Assert(err, chk.IsNil)
-	c.Assert(createResp.VersionID, chk.NotNil)
-
-	_, err = abClient.GetProperties(ctx, nil)
-	c.Assert(err, chk.IsNil)
-
-	blobGetTagsResponse, err := abClient.GetTags(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
-	blobTagsSet := blobGetTagsResponse.Tags.BlobTagSet
-	c.Assert(blobTagsSet, chk.NotNil)
-	c.Assert(*blobTagsSet, chk.HasLen, len(specialCharBlobTagsMap))
-	for _, blobTag := range *blobTagsSet {
-		c.Assert(specialCharBlobTagsMap[*blobTag.Key], chk.Equals, *blobTag.Value)
-	}
-
-	resp, err := abClient.CreateSnapshot(ctx, nil)
-	c.Assert(err, chk.IsNil)
-
-	snapshotURL := abClient.WithSnapshot(*resp.Snapshot)
-	resp2, err := snapshotURL.GetProperties(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(*resp2.TagCount, chk.Equals, int64(len(specialCharBlobTagsMap)))
-
-	blobGetTagsResponse, err = abClient.GetTags(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
-	blobTagsSet = blobGetTagsResponse.Tags.BlobTagSet
-	c.Assert(blobTagsSet, chk.NotNil)
-	c.Assert(*blobTagsSet, chk.HasLen, len(specialCharBlobTagsMap))
-	for _, blobTag := range *blobTagsSet {
-		c.Assert(specialCharBlobTagsMap[*blobTag.Key], chk.Equals, *blobTag.Value)
-	}
 }

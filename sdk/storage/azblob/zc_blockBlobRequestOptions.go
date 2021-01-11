@@ -37,16 +37,18 @@ func (o *UploadBlockBlobOptions) pointers() (*BlockBlobUploadOptions, *BlobHttpH
 }
 
 type StageBlockOptions struct {
+	CpkInfo                    *CpkInfo
+	CpkScopeInfo               *CpkScopeInfo
 	LeaseAccessConditions      *LeaseAccessConditions
 	BlockBlobStageBlockOptions *BlockBlobStageBlockOptions
 }
 
-func (o *StageBlockOptions) pointers() (*LeaseAccessConditions, *BlockBlobStageBlockOptions) {
+func (o *StageBlockOptions) pointers() (*LeaseAccessConditions, *BlockBlobStageBlockOptions, *CpkInfo, *CpkScopeInfo) {
 	if o == nil {
-		return nil, nil
+		return nil, nil, nil, nil
 	}
 
-	return o.LeaseAccessConditions, o.BlockBlobStageBlockOptions
+	return o.LeaseAccessConditions, o.BlockBlobStageBlockOptions, o.CpkInfo, o.CpkScopeInfo
 }
 
 type StageBlockFromURLOptions struct {
@@ -74,12 +76,11 @@ func (o *StageBlockFromURLOptions) pointers() (*LeaseAccessConditions, *SourceMo
 		return nil, nil, nil, nil, nil
 	}
 
-	endOffSet := *o.Offset + *o.Count - 1
 	options := &BlockBlobStageBlockFromURLOptions{
 		RequestId:          o.RequestId,
 		SourceContentMd5:   o.SourceContentMd5,
 		SourceContentcrc64: o.SourceContentcrc64,
-		SourceRange:        PageRange{Start: o.Offset, End: &endOffSet}.pointers(),
+		SourceRange:        getSourceRange(o.Offset, o.Count),
 		Timeout:            o.Timeout,
 	}
 

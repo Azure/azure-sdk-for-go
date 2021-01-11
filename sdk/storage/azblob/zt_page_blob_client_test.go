@@ -17,8 +17,8 @@ func (s *aztestsSuite) TestPutGetPages(c *chk.C) {
 
 	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	testSize := 1024
-	offset, end, count := int64(0), int64(testSize-1), int64(testSize)
+	contentSize := 1024
+	offset, end, count := int64(0), int64(contentSize-1), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
 	putResp, err := pbClient.UploadPages(context.Background(), getReaderToRandomBytes(1024), &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
@@ -59,13 +59,13 @@ func (s *aztestsSuite) TestUploadPagesFromURL(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	testSize := 8 * 1024 // 8KB
-	r, sourceData := getRandomDataAndReader(testSize)
+	contentSize := 8 * 1024 // 8KB
+	r, sourceData := getRandomDataAndReader(contentSize)
 	ctx := context.Background() // Use default Background context
-	srcBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(testSize))
-	destBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(testSize))
+	srcBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(contentSize))
+	destBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(contentSize))
 
-	offset, _, count := int64(0), int64(testSize-1), int64(testSize)
+	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
 	uploadSrcResp1, err := srcBlob.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
@@ -97,7 +97,7 @@ func (s *aztestsSuite) TestUploadPagesFromURL(c *chk.C) {
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
 	// Upload page from URL.
-	pResp1, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(testSize), nil)
+	pResp1, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(pResp1.RawResponse.StatusCode, chk.Equals, 201)
 	c.Assert(pResp1.ETag, chk.NotNil)
@@ -125,16 +125,16 @@ func (s *aztestsSuite) TestUploadPagesFromURLWithMD5(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	testSize := 8 * 1024 // 8KB
-	r, sourceData := getRandomDataAndReader(testSize)
+	contentSize := 8 * 1024 // 8KB
+	r, sourceData := getRandomDataAndReader(contentSize)
 	md5Value := md5.Sum(sourceData)
 	contentMD5 := md5Value[:]
 	ctx := context.Background() // Use default Background context
-	srcBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(testSize))
-	destBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(testSize))
+	srcBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(contentSize))
+	destBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(contentSize))
 
 	// Prepare source pbClient for copy.
-	offset, _, count := int64(0), int64(testSize-1), int64(testSize)
+	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
 	uploadSrcResp1, err := srcBlob.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
@@ -160,7 +160,7 @@ func (s *aztestsSuite) TestUploadPagesFromURLWithMD5(c *chk.C) {
 	uploadPagesFromURLOptions := UploadPagesFromURLOptions{
 		SourceContentMd5: &contentMD5,
 	}
-	pResp1, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(testSize), &uploadPagesFromURLOptions)
+	pResp1, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
 	c.Assert(err, chk.IsNil)
 	c.Assert(pResp1.RawResponse.StatusCode, chk.Equals, 201)
 	c.Assert(pResp1.ETag, chk.NotNil)
@@ -186,7 +186,7 @@ func (s *aztestsSuite) TestUploadPagesFromURLWithMD5(c *chk.C) {
 	uploadPagesFromURLOptions = UploadPagesFromURLOptions{
 		SourceContentMd5: &badContentMD5,
 	}
-	_, err = destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(testSize), &uploadPagesFromURLOptions)
+	_, err = destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
 	c.Assert(err, chk.NotNil)
 
 	// TODO: Fix issue with storage error interface
@@ -200,9 +200,9 @@ func (s *aztestsSuite) TestClearDiffPages(c *chk.C) {
 
 	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	testSize := 2 * 1024
-	r := getReaderToRandomBytes(testSize)
-	offset, _, count := int64(0), int64(testSize-1), int64(testSize)
+	contentSize := 2 * 1024
+	r := getReaderToRandomBytes(contentSize)
+	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
 	_, err := pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
@@ -210,7 +210,7 @@ func (s *aztestsSuite) TestClearDiffPages(c *chk.C) {
 	snapshotResp, err := pbClient.CreateSnapshot(context.Background(), nil)
 	c.Assert(err, chk.IsNil)
 
-	offset1, end1, count1 := int64(testSize), int64(2*testSize-1), int64(testSize)
+	offset1, end1, count1 := int64(contentSize), int64(2*contentSize-1), int64(contentSize)
 	uploadPagesOptions1 := UploadPagesOptions{Offset: &offset1, Count: &count1}
 	_, err = pbClient.UploadPages(context.Background(), getReaderToRandomBytes(2048), &uploadPagesOptions1)
 	c.Assert(err, chk.IsNil)
@@ -260,9 +260,9 @@ func (s *aztestsSuite) TestIncrementalCopy(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 
 	srcBlob, _ := createNewPageBlob(c, containerClient)
-	testSize := 1024
-	r := getReaderToRandomBytes(testSize)
-	offset, _, count := int64(0), int64(0)+int64(testSize-1), int64(testSize)
+	contentSize := 1024
+	r := getReaderToRandomBytes(contentSize)
+	offset, _, count := int64(0), int64(0)+int64(contentSize-1), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
 	_, err = srcBlob.UploadPages(context.Background(), r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
@@ -353,9 +353,9 @@ func (s *aztestsSuite) TestPutPagesWithMD5(c *chk.C) {
 	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	// put page with valid MD5
-	testSize := 1024
-	readerToBody, body := getRandomDataAndReader(testSize)
-	offset, _, count := int64(0), int64(0)+int64(testSize-1), int64(testSize)
+	contentSize := 1024
+	readerToBody, body := getRandomDataAndReader(contentSize)
+	offset, _, count := int64(0), int64(0)+int64(contentSize-1), int64(contentSize)
 	md5Value := md5.Sum(body)
 	contentMD5 := md5Value[:]
 	uploadPagesOptions := UploadPagesOptions{
@@ -715,9 +715,9 @@ func (s *aztestsSuite) TestBlobPutPagesInvalidRange(c *chk.C) {
 	defer deleteContainer(c, containerClient)
 	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	testSize := 1024
-	r := getReaderToRandomBytes(testSize)
-	offset, count := int64(0), int64(testSize/2)
+	contentSize := 1024
+	r := getReaderToRandomBytes(contentSize)
+	offset, count := int64(0), int64(contentSize/2)
 	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
 	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.Not(chk.IsNil))
@@ -2684,105 +2684,4 @@ func (s *aztestsSuite) TestBlobStartIncrementalCopyIfNoneMatchFalse(c *chk.C) {
 
 	// TODO: Fix issue with storage error interface
 	//validateStorageError(c, err, ServiceCodeConditionNotMet)
-}
-
-func (s *aztestsSuite) TestCreatePageBlobWithTags(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-
-	pbClient, _ := createNewPageBlob(c, containerClient)
-
-	contentSize := 1 * 1024
-	offset, count := int64(0), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
-	}
-	putResp, err := pbClient.UploadPages(ctx, getReaderToRandomBytes(1024), &uploadPagesOptions)
-	c.Assert(err, chk.IsNil)
-	c.Assert(putResp.RawResponse.StatusCode, chk.Equals, 201)
-	c.Assert(putResp.LastModified.IsZero(), chk.Equals, false)
-	c.Assert(putResp.ETag, chk.Not(chk.Equals), ETagNone)
-	c.Assert(putResp.Version, chk.Not(chk.Equals), "")
-
-	setTagsBlobOptions := SetTagsBlobOptions{
-		BlobTagsMap: &basicBlobTagsMap,
-	}
-	setTagResp, err := pbClient.SetTags(ctx, &setTagsBlobOptions)
-	c.Assert(err, chk.IsNil)
-	c.Assert(setTagResp.RawResponse.StatusCode, chk.Equals, 204)
-
-	gpResp, err := pbClient.GetProperties(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(gpResp, chk.NotNil)
-	c.Assert(*gpResp.TagCount, chk.Equals, int64(len(basicBlobTagsMap)))
-
-	blobGetTagsResponse, err := pbClient.GetTags(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
-	blobTagsSet := blobGetTagsResponse.Tags.BlobTagSet
-	c.Assert(blobTagsSet, chk.NotNil)
-	c.Assert(*blobTagsSet, chk.HasLen, len(basicBlobTagsMap))
-	for _, blobTag := range *blobTagsSet {
-		c.Assert(basicBlobTagsMap[*blobTag.Key], chk.Equals, *blobTag.Value)
-	}
-
-	modifiedBlobTags := map[string]string{
-		"a0z1u2r3e4": "b0l1o2b3",
-		"b0l1o2b3":   "s0d1k2",
-	}
-
-	setTagsBlobOptions2 := SetTagsBlobOptions{
-		BlobTagsMap: &modifiedBlobTags,
-	}
-	setTagResp, err = pbClient.SetTags(ctx, &setTagsBlobOptions2)
-	c.Assert(err, chk.IsNil)
-	c.Assert(setTagResp.RawResponse.StatusCode, chk.Equals, 204)
-
-	gpResp, err = pbClient.GetProperties(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(gpResp, chk.NotNil)
-	c.Assert(*gpResp.TagCount, chk.Equals, int64(len(modifiedBlobTags)))
-
-	blobGetTagsResponse, err = pbClient.GetTags(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
-	blobTagsSet = blobGetTagsResponse.Tags.BlobTagSet
-	c.Assert(blobTagsSet, chk.NotNil)
-	c.Assert(*blobTagsSet, chk.HasLen, len(modifiedBlobTags))
-	for _, blobTag := range *blobTagsSet {
-		c.Assert(modifiedBlobTags[*blobTag.Key], chk.Equals, *blobTag.Value)
-	}
-}
-
-func (s *aztestsSuite) TestPageBlobSetBlobTagForSnapshot(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	pbClient, _ := createNewPageBlob(c, containerClient)
-
-	setTagsBlobOptions := SetTagsBlobOptions{
-		BlobTagsMap: &specialCharBlobTagsMap,
-	}
-	_, err := pbClient.SetTags(ctx, &setTagsBlobOptions)
-	c.Assert(err, chk.IsNil)
-
-	resp, err := pbClient.CreateSnapshot(ctx, nil)
-	c.Assert(err, chk.IsNil)
-
-	snapshotURL := pbClient.WithSnapshot(*resp.Snapshot)
-	resp2, err := snapshotURL.GetProperties(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(*resp2.TagCount, chk.Equals, int64(len(specialCharBlobTagsMap)))
-
-	blobGetTagsResponse, err := pbClient.GetTags(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
-	blobTagsSet := blobGetTagsResponse.Tags.BlobTagSet
-	c.Assert(blobTagsSet, chk.NotNil)
-	c.Assert(*blobTagsSet, chk.HasLen, len(specialCharBlobTagsMap))
-	for _, blobTag := range *blobTagsSet {
-		c.Assert(specialCharBlobTagsMap[*blobTag.Key], chk.Equals, *blobTag.Value)
-	}
 }

@@ -2,9 +2,11 @@
 
 
 [[projects]]
-  digest = "1:69b95736654c490366f5c1322f08b88c6ca7a324fb5a7cd48d4cdeea32dd4f17"
+  branch = "master"
+  digest = "1:a36370557512e79e9c865b01ddf3db8f1d115f4d44f0439516fccfc49bbbb98f"
   name = "github.com/Azure/go-autorest"
   packages = [
+    ".",
     "autorest",
     "autorest/adal",
     "autorest/azure",
@@ -17,8 +19,7 @@
     "tracing",
   ]
   pruneopts = "UT"
-  revision = "2368760b211997f3c5dd61e85e8665a523a09247"
-  version = "v14.0.0"
+  revision = "3fb5326fea196cd5af02cf105ca246a0fba59021"
 
 [[projects]]
   digest = "1:f313598719f69ec4edbcd75b0f2ef1c8ed9e00f6ff3d7583ac3966db2d70d326"
@@ -27,14 +28,6 @@
   pruneopts = "UT"
   revision = "910aa146bd66780c2815d652b92a7fc5331e533c"
   version = "v3.0.3"
-
-[[projects]]
-  digest = "1:76dc72490af7174349349838f2fe118996381b31ea83243812a97e5a0fd5ed55"
-  name = "github.com/dgrijalva/jwt-go"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
-  version = "v3.2.0"
 
 [[projects]]
   digest = "1:cf0d2e435fd4ce45b789e93ef24b5f08e86be0e9807a16beb3694e2d8c9af965"
@@ -54,6 +47,14 @@
   ]
   pruneopts = "UT"
   revision = "9384691f0462689770c3e930cd8aff05c7075a5b"
+
+[[projects]]
+  digest = "1:3be7b7206a3fd8686175fd974eb33a1c9dd109c149bdf19801e32b8f48733530"
+  name = "github.com/form3tech-oss/jwt-go"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "9162a5abdbc046b7c8b03ee90052cee67e25caa7"
+  version = "v3.2.2"
 
 [[projects]]
   branch = "master"

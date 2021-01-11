@@ -2,6 +2,8 @@
 
 ## `v50.0.0`
 
+NOTE: Due to the changes requested in [this issue](https://github.com/Azure/azure-sdk-for-go/issues/14010), we changed the properties and functions of all future types, which does not affect their functionality and usage, but leads to a very long list of breaking changes. This change requires the latest version of `github.com/Azure/go-autorest/autorest v0.11.15` to work properly.
+
 ### New Packages
 
 - `github.com/Azure/azure-sdk-for-go/services/healthbot/mgmt/2020-12-08/healthbot`

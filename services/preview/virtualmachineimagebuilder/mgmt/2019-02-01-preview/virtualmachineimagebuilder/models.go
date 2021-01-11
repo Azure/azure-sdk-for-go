@@ -1742,74 +1742,26 @@ func (sr SubResource) MarshalJSON() ([]byte, error) {
 // VirtualMachineImageTemplatesCreateOrUpdateFuture an abstraction for monitoring and retrieving the
 // results of a long-running operation.
 type VirtualMachineImageTemplatesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualMachineImageTemplatesCreateOrUpdateFuture) Result(client VirtualMachineImageTemplatesClient) (it ImageTemplate, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplatesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if it.Response.Response, err = future.GetResult(sender); err == nil && it.Response.Response.StatusCode != http.StatusNoContent {
-		it, err = client.CreateOrUpdateResponder(it.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesCreateOrUpdateFuture", "Result", it.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VirtualMachineImageTemplatesClient) (ImageTemplate, error)
 }
 
 // VirtualMachineImageTemplatesDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type VirtualMachineImageTemplatesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualMachineImageTemplatesDeleteFuture) Result(client VirtualMachineImageTemplatesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplatesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VirtualMachineImageTemplatesClient) (autorest.Response, error)
 }
 
 // VirtualMachineImageTemplatesRunFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type VirtualMachineImageTemplatesRunFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualMachineImageTemplatesRunFuture) Result(client VirtualMachineImageTemplatesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesRunFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplatesRunFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VirtualMachineImageTemplatesClient) (autorest.Response, error)
 }

@@ -65,7 +65,7 @@ func (client DomainTopicsClient) CreateOrUpdate(ctx context.Context, resourceGro
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "eventgrid.DomainTopicsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventgrid.DomainTopicsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -102,7 +102,29 @@ func (client DomainTopicsClient) CreateOrUpdateSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DomainTopicsClient) (dt DomainTopic, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "eventgrid.DomainTopicsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("eventgrid.DomainTopicsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if dt.Response.Response, err = future.GetResult(sender); err == nil && dt.Response.Response.StatusCode != http.StatusNoContent {
+			dt, err = client.CreateOrUpdateResponder(dt.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "eventgrid.DomainTopicsCreateOrUpdateFuture", "Result", dt.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -142,7 +164,7 @@ func (client DomainTopicsClient) Delete(ctx context.Context, resourceGroupName s
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "eventgrid.DomainTopicsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventgrid.DomainTopicsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -179,7 +201,23 @@ func (client DomainTopicsClient) DeleteSender(req *http.Request) (future DomainT
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DomainTopicsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "eventgrid.DomainTopicsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("eventgrid.DomainTopicsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -310,6 +348,7 @@ func (client DomainTopicsClient) ListByDomain(ctx context.Context, resourceGroup
 	}
 	if result.dtlr.hasNextLink() && result.dtlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -377,7 +416,6 @@ func (client DomainTopicsClient) listByDomainNextResults(ctx context.Context, la
 	result, err = client.ListByDomainResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.DomainTopicsClient", "listByDomainNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

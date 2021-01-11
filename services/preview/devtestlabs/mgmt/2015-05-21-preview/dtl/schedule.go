@@ -65,7 +65,7 @@ func (client ScheduleClient) CreateOrUpdateResource(ctx context.Context, resourc
 
 	result, err = client.CreateOrUpdateResourceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.ScheduleClient", "CreateOrUpdateResource", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.ScheduleClient", "CreateOrUpdateResource", nil, "Failure sending request")
 		return
 	}
 
@@ -104,7 +104,29 @@ func (client ScheduleClient) CreateOrUpdateResourceSender(req *http.Request) (fu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ScheduleClient) (s Schedule, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "dtl.ScheduleCreateOrUpdateResourceFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("dtl.ScheduleCreateOrUpdateResourceFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+			s, err = client.CreateOrUpdateResourceResponder(s.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "dtl.ScheduleCreateOrUpdateResourceFuture", "Result", s.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -144,7 +166,7 @@ func (client ScheduleClient) DeleteResource(ctx context.Context, resourceGroupNa
 
 	result, err = client.DeleteResourceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.ScheduleClient", "DeleteResource", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.ScheduleClient", "DeleteResource", nil, "Failure sending request")
 		return
 	}
 
@@ -181,7 +203,23 @@ func (client ScheduleClient) DeleteResourceSender(req *http.Request) (future Sch
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ScheduleClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "dtl.ScheduleDeleteResourceFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("dtl.ScheduleDeleteResourceFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -220,7 +258,7 @@ func (client ScheduleClient) Execute(ctx context.Context, resourceGroupName stri
 
 	result, err = client.ExecuteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.ScheduleClient", "Execute", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.ScheduleClient", "Execute", nil, "Failure sending request")
 		return
 	}
 
@@ -257,7 +295,23 @@ func (client ScheduleClient) ExecuteSender(req *http.Request) (future ScheduleEx
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ScheduleClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "dtl.ScheduleExecuteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("dtl.ScheduleExecuteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -387,6 +441,7 @@ func (client ScheduleClient) List(ctx context.Context, resourceGroupName string,
 	}
 	if result.rwcs.hasNextLink() && result.rwcs.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -457,7 +512,6 @@ func (client ScheduleClient) listNextResults(ctx context.Context, lastResults Re
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ScheduleClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

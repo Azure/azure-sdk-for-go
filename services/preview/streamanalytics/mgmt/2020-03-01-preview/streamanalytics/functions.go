@@ -370,6 +370,7 @@ func (client FunctionsClient) ListByStreamingJob(ctx context.Context, resourceGr
 	}
 	if result.flr.hasNextLink() && result.flr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -434,7 +435,6 @@ func (client FunctionsClient) listByStreamingJobNextResults(ctx context.Context,
 	result, err = client.ListByStreamingJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.FunctionsClient", "listByStreamingJobNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -590,7 +590,7 @@ func (client FunctionsClient) Test(ctx context.Context, resourceGroupName string
 
 	result, err = client.TestSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "streamanalytics.FunctionsClient", "Test", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "streamanalytics.FunctionsClient", "Test", nil, "Failure sending request")
 		return
 	}
 
@@ -632,7 +632,29 @@ func (client FunctionsClient) TestSender(req *http.Request) (future FunctionsTes
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client FunctionsClient) (rts ResourceTestStatus, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "streamanalytics.FunctionsTestFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("streamanalytics.FunctionsTestFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if rts.Response.Response, err = future.GetResult(sender); err == nil && rts.Response.Response.StatusCode != http.StatusNoContent {
+			rts, err = client.TestResponder(rts.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "streamanalytics.FunctionsTestFuture", "Result", rts.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

@@ -1018,6 +1018,7 @@ func (client JobClient) List(ctx context.Context, filter string, selectParameter
 	}
 	if result.cjlr.hasNextLink() && result.cjlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1111,7 +1112,6 @@ func (client JobClient) listNextResults(ctx context.Context, lastResults CloudJo
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1188,6 +1188,7 @@ func (client JobClient) ListFromJobSchedule(ctx context.Context, jobScheduleID s
 	}
 	if result.cjlr.hasNextLink() && result.cjlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1285,7 +1286,6 @@ func (client JobClient) listFromJobScheduleNextResults(ctx context.Context, last
 	result, err = client.ListFromJobScheduleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "listFromJobScheduleNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1364,6 +1364,7 @@ func (client JobClient) ListPreparationAndReleaseTaskStatus(ctx context.Context,
 	}
 	if result.cjlpartsr.hasNextLink() && result.cjlpartsr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1458,7 +1459,6 @@ func (client JobClient) listPreparationAndReleaseTaskStatusNextResults(ctx conte
 	result, err = client.ListPreparationAndReleaseTaskStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "listPreparationAndReleaseTaskStatusNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

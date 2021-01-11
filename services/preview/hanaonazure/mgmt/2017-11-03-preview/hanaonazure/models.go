@@ -220,53 +220,19 @@ func (hip HanaInstanceProperties) MarshalJSON() ([]byte, error) {
 // HanaInstancesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type HanaInstancesCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *HanaInstancesCreateFuture) Result(client HanaInstancesClient) (hi HanaInstance, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if hi.Response.Response, err = future.GetResult(sender); err == nil && hi.Response.Response.StatusCode != http.StatusNoContent {
-		hi, err = client.CreateResponder(hi.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesCreateFuture", "Result", hi.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(HanaInstancesClient) (HanaInstance, error)
 }
 
 // HanaInstancesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type HanaInstancesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *HanaInstancesDeleteFuture) Result(client HanaInstancesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(HanaInstancesClient) (autorest.Response, error)
 }
 
 // HanaInstancesListResult the response from the List HANA Instances operation.
@@ -431,70 +397,28 @@ func NewHanaInstancesListResultPage(cur HanaInstancesListResult, getNextPage fun
 // HanaInstancesRestartFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type HanaInstancesRestartFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *HanaInstancesRestartFuture) Result(client HanaInstancesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesRestartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesRestartFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(HanaInstancesClient) (autorest.Response, error)
 }
 
 // HanaInstancesShutdownFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type HanaInstancesShutdownFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *HanaInstancesShutdownFuture) Result(client HanaInstancesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesShutdownFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesShutdownFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(HanaInstancesClient) (autorest.Response, error)
 }
 
 // HanaInstancesStartFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type HanaInstancesStartFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *HanaInstancesStartFuture) Result(client HanaInstancesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesStartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesStartFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(HanaInstancesClient) (autorest.Response, error)
 }
 
 // HardwareProfile specifies the hardware settings for the HANA instance.
@@ -954,53 +878,19 @@ func (smp SapMonitorProperties) MarshalJSON() ([]byte, error) {
 // SapMonitorsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SapMonitorsCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SapMonitorsCreateFuture) Result(client SapMonitorsClient) (sm SapMonitor, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hanaonazure.SapMonitorsCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sm.Response.Response, err = future.GetResult(sender); err == nil && sm.Response.Response.StatusCode != http.StatusNoContent {
-		sm, err = client.CreateResponder(sm.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsCreateFuture", "Result", sm.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SapMonitorsClient) (SapMonitor, error)
 }
 
 // SapMonitorsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SapMonitorsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SapMonitorsDeleteFuture) Result(client SapMonitorsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hanaonazure.SapMonitorsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SapMonitorsClient) (autorest.Response, error)
 }
 
 // StorageProfile specifies the storage settings for the HANA instance disks.

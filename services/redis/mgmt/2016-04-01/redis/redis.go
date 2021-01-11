@@ -75,7 +75,7 @@ func (client Client) Create(ctx context.Context, resourceGroupName string, name 
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redis.Client", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "redis.Client", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -113,7 +113,29 @@ func (client Client) CreateSender(req *http.Request) (future CreateFuture, err e
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client Client) (rt ResourceType, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "redis.CreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("redis.CreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if rt.Response.Response, err = future.GetResult(sender); err == nil && rt.Response.Response.StatusCode != http.StatusNoContent {
+			rt, err = client.CreateResponder(rt.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "redis.CreateFuture", "Result", rt.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -152,7 +174,7 @@ func (client Client) Delete(ctx context.Context, resourceGroupName string, name 
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redis.Client", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "redis.Client", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -188,7 +210,23 @@ func (client Client) DeleteSender(req *http.Request) (future DeleteFuture, err e
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client Client) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "redis.DeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("redis.DeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -234,7 +272,7 @@ func (client Client) ExportData(ctx context.Context, resourceGroupName string, n
 
 	result, err = client.ExportDataSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redis.Client", "ExportData", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "redis.Client", "ExportData", nil, "Failure sending request")
 		return
 	}
 
@@ -272,7 +310,23 @@ func (client Client) ExportDataSender(req *http.Request) (future ExportDataFutur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client Client) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "redis.ExportDataFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("redis.ExportDataFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -473,7 +527,7 @@ func (client Client) ImportData(ctx context.Context, resourceGroupName string, n
 
 	result, err = client.ImportDataSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redis.Client", "ImportData", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "redis.Client", "ImportData", nil, "Failure sending request")
 		return
 	}
 
@@ -511,7 +565,23 @@ func (client Client) ImportDataSender(req *http.Request) (future ImportDataFutur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client Client) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "redis.ImportDataFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("redis.ImportDataFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -559,6 +629,7 @@ func (client Client) List(ctx context.Context) (result ListResultPage, err error
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -618,7 +689,6 @@ func (client Client) listNextResults(ctx context.Context, lastResults ListResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.Client", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -674,6 +744,7 @@ func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName 
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -734,7 +805,6 @@ func (client Client) listByResourceGroupNextResults(ctx context.Context, lastRes
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.Client", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

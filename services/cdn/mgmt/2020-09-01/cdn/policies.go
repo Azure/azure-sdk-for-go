@@ -84,7 +84,7 @@ func (client PoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.PoliciesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.PoliciesClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -122,7 +122,29 @@ func (client PoliciesClient) CreateOrUpdateSender(req *http.Request) (future Pol
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client PoliciesClient) (wafp WebApplicationFirewallPolicy, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.PoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.PoliciesCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if wafp.Response.Response, err = future.GetResult(sender); err == nil && wafp.Response.Response.StatusCode != http.StatusNoContent {
+			wafp, err = client.CreateOrUpdateResponder(wafp.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "cdn.PoliciesCreateOrUpdateFuture", "Result", wafp.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -468,7 +490,7 @@ func (client PoliciesClient) Update(ctx context.Context, resourceGroupName strin
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.PoliciesClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.PoliciesClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -506,7 +528,29 @@ func (client PoliciesClient) UpdateSender(req *http.Request) (future PoliciesUpd
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client PoliciesClient) (wafp WebApplicationFirewallPolicy, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.PoliciesUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.PoliciesUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if wafp.Response.Response, err = future.GetResult(sender); err == nil && wafp.Response.Response.StatusCode != http.StatusNoContent {
+			wafp, err = client.UpdateResponder(wafp.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "cdn.PoliciesUpdateFuture", "Result", wafp.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

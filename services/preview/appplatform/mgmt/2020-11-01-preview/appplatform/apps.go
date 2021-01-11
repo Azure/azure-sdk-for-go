@@ -91,7 +91,7 @@ func (client AppsClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "appplatform.AppsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "appplatform.AppsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -130,7 +130,29 @@ func (client AppsClient) CreateOrUpdateSender(req *http.Request) (future AppsCre
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AppsClient) (ar AppResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "appplatform.AppsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("appplatform.AppsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ar.Response.Response, err = future.GetResult(sender); err == nil && ar.Response.Response.StatusCode != http.StatusNoContent {
+			ar, err = client.CreateOrUpdateResponder(ar.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "appplatform.AppsCreateOrUpdateFuture", "Result", ar.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -171,7 +193,7 @@ func (client AppsClient) Delete(ctx context.Context, resourceGroupName string, s
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "appplatform.AppsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "appplatform.AppsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -208,7 +230,23 @@ func (client AppsClient) DeleteSender(req *http.Request) (future AppsDeleteFutur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AppsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "appplatform.AppsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("appplatform.AppsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -530,7 +568,7 @@ func (client AppsClient) Update(ctx context.Context, resourceGroupName string, s
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "appplatform.AppsClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "appplatform.AppsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -569,7 +607,29 @@ func (client AppsClient) UpdateSender(req *http.Request) (future AppsUpdateFutur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AppsClient) (ar AppResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "appplatform.AppsUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("appplatform.AppsUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ar.Response.Response, err = future.GetResult(sender); err == nil && ar.Response.Response.StatusCode != http.StatusNoContent {
+			ar, err = client.UpdateResponder(ar.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "appplatform.AppsUpdateFuture", "Result", ar.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

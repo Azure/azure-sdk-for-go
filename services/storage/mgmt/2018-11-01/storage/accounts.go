@@ -178,7 +178,7 @@ func (client AccountsClient) Create(ctx context.Context, resourceGroupName strin
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storage.AccountsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storage.AccountsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -216,7 +216,29 @@ func (client AccountsClient) CreateSender(req *http.Request) (future AccountsCre
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AccountsClient) (a Account, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storage.AccountsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storage.AccountsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
+			a, err = client.CreateResponder(a.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "storage.AccountsCreateFuture", "Result", a.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -362,7 +384,7 @@ func (client AccountsClient) Failover(ctx context.Context, resourceGroupName str
 
 	result, err = client.FailoverSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storage.AccountsClient", "Failover", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storage.AccountsClient", "Failover", nil, "Failure sending request")
 		return
 	}
 
@@ -398,7 +420,23 @@ func (client AccountsClient) FailoverSender(req *http.Request) (future AccountsF
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AccountsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storage.AccountsFailoverFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storage.AccountsFailoverFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

@@ -86,6 +86,7 @@ func (client LocationBasedCapabilitiesClient) List(ctx context.Context, location
 	}
 	if result.clr.hasNextLink() && result.clr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -146,7 +147,6 @@ func (client LocationBasedCapabilitiesClient) listNextResults(ctx context.Contex
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mysqlflexibleservers.LocationBasedCapabilitiesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

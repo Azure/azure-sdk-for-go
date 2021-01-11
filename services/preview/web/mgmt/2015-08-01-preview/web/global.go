@@ -149,6 +149,7 @@ func (client GlobalClient) GetAllCertificates(ctx context.Context) (result Certi
 	}
 	if result.cc.hasNextLink() && result.cc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -208,7 +209,6 @@ func (client GlobalClient) getAllCertificatesNextResults(ctx context.Context, la
 	result, err = client.GetAllCertificatesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalClient", "getAllCertificatesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -262,6 +262,7 @@ func (client GlobalClient) GetAllClassicMobileServices(ctx context.Context) (res
 	}
 	if result.cmsc.hasNextLink() && result.cmsc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -321,7 +322,6 @@ func (client GlobalClient) getAllClassicMobileServicesNextResults(ctx context.Co
 	result, err = client.GetAllClassicMobileServicesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalClient", "getAllClassicMobileServicesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -375,6 +375,7 @@ func (client GlobalClient) GetAllHostingEnvironments(ctx context.Context) (resul
 	}
 	if result.hec.hasNextLink() && result.hec.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -434,7 +435,6 @@ func (client GlobalClient) getAllHostingEnvironmentsNextResults(ctx context.Cont
 	result, err = client.GetAllHostingEnvironmentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalClient", "getAllHostingEnvironmentsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -488,6 +488,7 @@ func (client GlobalClient) GetAllManagedHostingEnvironments(ctx context.Context)
 	}
 	if result.mhec.hasNextLink() && result.mhec.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -547,7 +548,6 @@ func (client GlobalClient) getAllManagedHostingEnvironmentsNextResults(ctx conte
 	result, err = client.GetAllManagedHostingEnvironmentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalClient", "getAllManagedHostingEnvironmentsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -604,6 +604,7 @@ func (client GlobalClient) GetAllServerFarms(ctx context.Context, detailed *bool
 	}
 	if result.sfc.hasNextLink() && result.sfc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -666,7 +667,6 @@ func (client GlobalClient) getAllServerFarmsNextResults(ctx context.Context, las
 	result, err = client.GetAllServerFarmsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalClient", "getAllServerFarmsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -720,6 +720,7 @@ func (client GlobalClient) GetAllSites(ctx context.Context) (result SiteCollecti
 	}
 	if result.sc.hasNextLink() && result.sc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -779,7 +780,6 @@ func (client GlobalClient) getAllSitesNextResults(ctx context.Context, lastResul
 	result, err = client.GetAllSitesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalClient", "getAllSitesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -836,6 +836,7 @@ func (client GlobalClient) GetSubscriptionGeoRegions(ctx context.Context, sku st
 	}
 	if result.grc.hasNextLink() && result.grc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -901,7 +902,6 @@ func (client GlobalClient) getSubscriptionGeoRegionsNextResults(ctx context.Cont
 	result, err = client.GetSubscriptionGeoRegionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalClient", "getSubscriptionGeoRegionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

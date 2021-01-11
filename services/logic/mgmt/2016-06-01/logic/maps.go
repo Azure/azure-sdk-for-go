@@ -322,6 +322,7 @@ func (client MapsClient) ListByIntegrationAccounts(ctx context.Context, resource
 	}
 	if result.iamlr.hasNextLink() && result.iamlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -389,7 +390,6 @@ func (client MapsClient) listByIntegrationAccountsNextResults(ctx context.Contex
 	result, err = client.ListByIntegrationAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.MapsClient", "listByIntegrationAccountsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

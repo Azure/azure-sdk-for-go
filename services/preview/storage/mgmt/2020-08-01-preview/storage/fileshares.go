@@ -418,6 +418,7 @@ func (client FileSharesClient) List(ctx context.Context, resourceGroupName strin
 	}
 	if result.fsi.hasNextLink() && result.fsi.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -488,7 +489,6 @@ func (client FileSharesClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storage.FileSharesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

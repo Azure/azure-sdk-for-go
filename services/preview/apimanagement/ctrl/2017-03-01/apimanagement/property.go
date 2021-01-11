@@ -351,6 +351,7 @@ func (client PropertyClient) List(ctx context.Context, apimBaseURL string, filte
 	}
 	if result.pc.hasNextLink() && result.pc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -419,7 +420,6 @@ func (client PropertyClient) listNextResults(ctx context.Context, lastResults Pr
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.PropertyClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

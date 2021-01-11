@@ -658,6 +658,7 @@ func (client EventHubsClient) ListAll(ctx context.Context, resourceGroupName str
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -719,7 +720,6 @@ func (client EventHubsClient) listAllNextResults(ctx context.Context, lastResult
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "listAllNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -790,6 +790,7 @@ func (client EventHubsClient) ListAuthorizationRules(ctx context.Context, resour
 	}
 	if result.saarlr.hasNextLink() && result.saarlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -852,7 +853,6 @@ func (client EventHubsClient) listAuthorizationRulesNextResults(ctx context.Cont
 	result, err = client.ListAuthorizationRulesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "listAuthorizationRulesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

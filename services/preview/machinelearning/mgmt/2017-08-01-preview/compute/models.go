@@ -448,82 +448,28 @@ func (ocp OperationalizationClusterProperties) MarshalJSON() ([]byte, error) {
 // OperationalizationClustersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
 // of a long-running operation.
 type OperationalizationClustersCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *OperationalizationClustersCreateOrUpdateFuture) Result(client OperationalizationClustersClient) (oc OperationalizationCluster, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("compute.OperationalizationClustersCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if oc.Response.Response, err = future.GetResult(sender); err == nil && oc.Response.Response.StatusCode != http.StatusNoContent {
-		oc, err = client.CreateOrUpdateResponder(oc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersCreateOrUpdateFuture", "Result", oc.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(OperationalizationClustersClient) (OperationalizationCluster, error)
 }
 
 // OperationalizationClustersDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type OperationalizationClustersDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *OperationalizationClustersDeleteFuture) Result(client OperationalizationClustersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("compute.OperationalizationClustersDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(OperationalizationClustersClient) (autorest.Response, error)
 }
 
 // OperationalizationClustersUpdateSystemServicesFuture an abstraction for monitoring and retrieving the
 // results of a long-running operation.
 type OperationalizationClustersUpdateSystemServicesFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *OperationalizationClustersUpdateSystemServicesFuture) Result(client OperationalizationClustersClient) (ussr UpdateSystemServicesResponse, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersUpdateSystemServicesFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("compute.OperationalizationClustersUpdateSystemServicesFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ussr.Response.Response, err = future.GetResult(sender); err == nil && ussr.Response.Response.StatusCode != http.StatusNoContent {
-		ussr, err = client.UpdateSystemServicesResponder(ussr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersUpdateSystemServicesFuture", "Result", ussr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(OperationalizationClustersClient) (UpdateSystemServicesResponse, error)
 }
 
 // OperationalizationClusterUpdateParameters parameters for PATCH operation on an operationalization

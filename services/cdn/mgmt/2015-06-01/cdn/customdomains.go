@@ -75,7 +75,7 @@ func (client CustomDomainsClient) Create(ctx context.Context, customDomainName s
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -115,7 +115,29 @@ func (client CustomDomainsClient) CreateSender(req *http.Request) (future Custom
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client CustomDomainsClient) (cd CustomDomain, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.CustomDomainsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.CustomDomainsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if cd.Response.Response, err = future.GetResult(sender); err == nil && cd.Response.Response.StatusCode != http.StatusNoContent {
+			cd, err = client.CreateResponder(cd.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "cdn.CustomDomainsCreateFuture", "Result", cd.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -156,7 +178,7 @@ func (client CustomDomainsClient) DeleteIfExists(ctx context.Context, customDoma
 
 	result, err = client.DeleteIfExistsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "DeleteIfExists", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "DeleteIfExists", nil, "Failure sending request")
 		return
 	}
 
@@ -194,7 +216,29 @@ func (client CustomDomainsClient) DeleteIfExistsSender(req *http.Request) (futur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client CustomDomainsClient) (cd CustomDomain, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.CustomDomainsDeleteIfExistsFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.CustomDomainsDeleteIfExistsFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if cd.Response.Response, err = future.GetResult(sender); err == nil && cd.Response.Response.StatusCode != http.StatusNoContent {
+			cd, err = client.DeleteIfExistsResponder(cd.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "cdn.CustomDomainsDeleteIfExistsFuture", "Result", cd.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

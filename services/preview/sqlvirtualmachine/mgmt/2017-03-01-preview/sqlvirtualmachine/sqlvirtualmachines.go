@@ -70,7 +70,7 @@ func (client SQLVirtualMachinesClient) CreateOrUpdate(ctx context.Context, resou
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -108,7 +108,29 @@ func (client SQLVirtualMachinesClient) CreateOrUpdateSender(req *http.Request) (
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SQLVirtualMachinesClient) (svm SQLVirtualMachine, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesCreateOrUpdateFutureType", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("sqlvirtualmachine.SQLVirtualMachinesCreateOrUpdateFutureType")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if svm.Response.Response, err = future.GetResult(sender); err == nil && svm.Response.Response.StatusCode != http.StatusNoContent {
+			svm, err = client.CreateOrUpdateResponder(svm.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesCreateOrUpdateFutureType", "Result", svm.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -148,7 +170,7 @@ func (client SQLVirtualMachinesClient) Delete(ctx context.Context, resourceGroup
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -184,7 +206,23 @@ func (client SQLVirtualMachinesClient) DeleteSender(req *http.Request) (future S
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SQLVirtualMachinesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesDeleteFutureType", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("sqlvirtualmachine.SQLVirtualMachinesDeleteFutureType")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -313,6 +351,7 @@ func (client SQLVirtualMachinesClient) List(ctx context.Context) (result ListRes
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -372,7 +411,6 @@ func (client SQLVirtualMachinesClient) listNextResults(ctx context.Context, last
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -429,6 +467,7 @@ func (client SQLVirtualMachinesClient) ListByResourceGroup(ctx context.Context, 
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -489,7 +528,6 @@ func (client SQLVirtualMachinesClient) listByResourceGroupNextResults(ctx contex
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -547,6 +585,7 @@ func (client SQLVirtualMachinesClient) ListBySQLVMGroup(ctx context.Context, res
 	}
 	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -608,7 +647,6 @@ func (client SQLVirtualMachinesClient) listBySQLVMGroupNextResults(ctx context.C
 	result, err = client.ListBySQLVMGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesClient", "listBySQLVMGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -654,7 +692,7 @@ func (client SQLVirtualMachinesClient) Update(ctx context.Context, resourceGroup
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -692,7 +730,29 @@ func (client SQLVirtualMachinesClient) UpdateSender(req *http.Request) (future S
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SQLVirtualMachinesClient) (svm SQLVirtualMachine, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesUpdateFutureType", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("sqlvirtualmachine.SQLVirtualMachinesUpdateFutureType")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if svm.Response.Response, err = future.GetResult(sender); err == nil && svm.Response.Response.StatusCode != http.StatusNoContent {
+			svm, err = client.UpdateResponder(svm.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesUpdateFutureType", "Result", svm.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

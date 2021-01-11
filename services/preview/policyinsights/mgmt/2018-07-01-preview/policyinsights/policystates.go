@@ -174,6 +174,7 @@ func (client PolicyStatesClient) ListQueryResultsForManagementGroup(ctx context.
 	}
 	if result.psqr.hasNextLink() && result.psqr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -259,7 +260,6 @@ func (client PolicyStatesClient) listQueryResultsForManagementGroupNextResults(c
 	result, err = client.ListQueryResultsForManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyStatesClient", "listQueryResultsForManagementGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -338,6 +338,7 @@ func (client PolicyStatesClient) ListQueryResultsForPolicyDefinition(ctx context
 	}
 	if result.psqr.hasNextLink() && result.psqr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -424,7 +425,6 @@ func (client PolicyStatesClient) listQueryResultsForPolicyDefinitionNextResults(
 	result, err = client.ListQueryResultsForPolicyDefinitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyStatesClient", "listQueryResultsForPolicyDefinitionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -503,6 +503,7 @@ func (client PolicyStatesClient) ListQueryResultsForPolicySetDefinition(ctx cont
 	}
 	if result.psqr.hasNextLink() && result.psqr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -589,7 +590,6 @@ func (client PolicyStatesClient) listQueryResultsForPolicySetDefinitionNextResul
 	result, err = client.ListQueryResultsForPolicySetDefinitionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyStatesClient", "listQueryResultsForPolicySetDefinitionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -669,6 +669,7 @@ func (client PolicyStatesClient) ListQueryResultsForResource(ctx context.Context
 	}
 	if result.psqr.hasNextLink() && result.psqr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -756,7 +757,6 @@ func (client PolicyStatesClient) listQueryResultsForResourceNextResults(ctx cont
 	result, err = client.ListQueryResultsForResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyStatesClient", "listQueryResultsForResourceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -835,6 +835,7 @@ func (client PolicyStatesClient) ListQueryResultsForResourceGroup(ctx context.Co
 	}
 	if result.psqr.hasNextLink() && result.psqr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -920,7 +921,6 @@ func (client PolicyStatesClient) listQueryResultsForResourceGroupNextResults(ctx
 	result, err = client.ListQueryResultsForResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyStatesClient", "listQueryResultsForResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1001,6 +1001,7 @@ func (client PolicyStatesClient) ListQueryResultsForResourceGroupLevelPolicyAssi
 	}
 	if result.psqr.hasNextLink() && result.psqr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1088,7 +1089,6 @@ func (client PolicyStatesClient) listQueryResultsForResourceGroupLevelPolicyAssi
 	result, err = client.ListQueryResultsForResourceGroupLevelPolicyAssignmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyStatesClient", "listQueryResultsForResourceGroupLevelPolicyAssignmentNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1166,6 +1166,7 @@ func (client PolicyStatesClient) ListQueryResultsForSubscription(ctx context.Con
 	}
 	if result.psqr.hasNextLink() && result.psqr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1250,7 +1251,6 @@ func (client PolicyStatesClient) listQueryResultsForSubscriptionNextResults(ctx 
 	result, err = client.ListQueryResultsForSubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyStatesClient", "listQueryResultsForSubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1330,6 +1330,7 @@ func (client PolicyStatesClient) ListQueryResultsForSubscriptionLevelPolicyAssig
 	}
 	if result.psqr.hasNextLink() && result.psqr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1416,7 +1417,6 @@ func (client PolicyStatesClient) listQueryResultsForSubscriptionLevelPolicyAssig
 	result, err = client.ListQueryResultsForSubscriptionLevelPolicyAssignmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyStatesClient", "listQueryResultsForSubscriptionLevelPolicyAssignmentNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

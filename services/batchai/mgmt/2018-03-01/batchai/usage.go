@@ -83,6 +83,7 @@ func (client UsageClient) List(ctx context.Context, location string) (result Lis
 	}
 	if result.lur.hasNextLink() && result.lur.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -143,7 +144,6 @@ func (client UsageClient) listNextResults(ctx context.Context, lastResults ListU
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.UsageClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -234,7 +234,7 @@ func (client EnvironmentsClient) Delete(ctx context.Context, resourceGroupName s
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -273,7 +273,23 @@ func (client EnvironmentsClient) DeleteSender(req *http.Request) (future Environ
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client EnvironmentsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "labservices.EnvironmentsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -416,6 +432,7 @@ func (client EnvironmentsClient) List(ctx context.Context, resourceGroupName str
 	}
 	if result.rwce.hasNextLink() && result.rwce.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -491,7 +508,6 @@ func (client EnvironmentsClient) listNextResults(ctx context.Context, lastResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -545,7 +561,7 @@ func (client EnvironmentsClient) ResetPassword(ctx context.Context, resourceGrou
 
 	result, err = client.ResetPasswordSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "ResetPassword", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "ResetPassword", nil, "Failure sending request")
 		return
 	}
 
@@ -586,7 +602,23 @@ func (client EnvironmentsClient) ResetPasswordSender(req *http.Request) (future 
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client EnvironmentsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "labservices.EnvironmentsResetPasswordFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentsResetPasswordFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -628,7 +660,7 @@ func (client EnvironmentsClient) Start(ctx context.Context, resourceGroupName st
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "Start", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "Start", nil, "Failure sending request")
 		return
 	}
 
@@ -667,7 +699,23 @@ func (client EnvironmentsClient) StartSender(req *http.Request) (future Environm
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client EnvironmentsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "labservices.EnvironmentsStartFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentsStartFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -709,7 +757,7 @@ func (client EnvironmentsClient) Stop(ctx context.Context, resourceGroupName str
 
 	result, err = client.StopSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "Stop", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "Stop", nil, "Failure sending request")
 		return
 	}
 
@@ -748,7 +796,23 @@ func (client EnvironmentsClient) StopSender(req *http.Request) (future Environme
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client EnvironmentsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "labservices.EnvironmentsStopFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentsStopFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

@@ -97,6 +97,7 @@ func (client ProductSubscriptionsClient) List(ctx context.Context, apimBaseURL s
 	}
 	if result.sc.hasNextLink() && result.sc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -169,7 +170,6 @@ func (client ProductSubscriptionsClient) listNextResults(ctx context.Context, la
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductSubscriptionsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

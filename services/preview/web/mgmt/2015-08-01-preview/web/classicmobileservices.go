@@ -229,6 +229,7 @@ func (client ClassicMobileServicesClient) GetClassicMobileServices(ctx context.C
 	}
 	if result.cmsc.hasNextLink() && result.cmsc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -289,7 +290,6 @@ func (client ClassicMobileServicesClient) getClassicMobileServicesNextResults(ct
 	result, err = client.GetClassicMobileServicesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ClassicMobileServicesClient", "getClassicMobileServicesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -322,6 +322,7 @@ func (client SessionsClient) ListByIntegrationAccounts(ctx context.Context, reso
 	}
 	if result.iaslr.hasNextLink() && result.iaslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -389,7 +390,6 @@ func (client SessionsClient) listByIntegrationAccountsNextResults(ctx context.Co
 	result, err = client.ListByIntegrationAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.SessionsClient", "listByIntegrationAccountsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

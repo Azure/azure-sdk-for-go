@@ -876,6 +876,7 @@ func (client JobScheduleClient) List(ctx context.Context, filter string, selectP
 	}
 	if result.cjslr.hasNextLink() && result.cjslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -965,7 +966,6 @@ func (client JobScheduleClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobScheduleClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

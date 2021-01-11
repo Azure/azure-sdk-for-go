@@ -385,82 +385,28 @@ func (dsp DomainServiceProperties) MarshalJSON() ([]byte, error) {
 // DomainServicesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type DomainServicesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DomainServicesCreateOrUpdateFuture) Result(client DomainServicesClient) (ds DomainService, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "aad.DomainServicesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("aad.DomainServicesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ds.Response.Response, err = future.GetResult(sender); err == nil && ds.Response.Response.StatusCode != http.StatusNoContent {
-		ds, err = client.CreateOrUpdateResponder(ds.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "aad.DomainServicesCreateOrUpdateFuture", "Result", ds.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DomainServicesClient) (DomainService, error)
 }
 
 // DomainServicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DomainServicesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DomainServicesDeleteFuture) Result(client DomainServicesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "aad.DomainServicesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("aad.DomainServicesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DomainServicesClient) (autorest.Response, error)
 }
 
 // DomainServicesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DomainServicesUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DomainServicesUpdateFuture) Result(client DomainServicesClient) (ds DomainService, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "aad.DomainServicesUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("aad.DomainServicesUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ds.Response.Response, err = future.GetResult(sender); err == nil && ds.Response.Response.StatusCode != http.StatusNoContent {
-		ds, err = client.UpdateResponder(ds.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "aad.DomainServicesUpdateFuture", "Result", ds.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DomainServicesClient) (DomainService, error)
 }
 
 // HealthAlert health Alert Description

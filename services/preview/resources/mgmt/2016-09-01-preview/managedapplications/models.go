@@ -533,105 +533,37 @@ type ApplianceDefinitionProperties struct {
 // ApplianceDefinitionsCreateOrUpdateByIDFuture an abstraction for monitoring and retrieving the results of
 // a long-running operation.
 type ApplianceDefinitionsCreateOrUpdateByIDFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ApplianceDefinitionsCreateOrUpdateByIDFuture) Result(client ApplianceDefinitionsClient) (ad ApplianceDefinition, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsCreateOrUpdateByIDFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplianceDefinitionsCreateOrUpdateByIDFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ad.Response.Response, err = future.GetResult(sender); err == nil && ad.Response.Response.StatusCode != http.StatusNoContent {
-		ad, err = client.CreateOrUpdateByIDResponder(ad.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsCreateOrUpdateByIDFuture", "Result", ad.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ApplianceDefinitionsClient) (ApplianceDefinition, error)
 }
 
 // ApplianceDefinitionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ApplianceDefinitionsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ApplianceDefinitionsCreateOrUpdateFuture) Result(client ApplianceDefinitionsClient) (ad ApplianceDefinition, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplianceDefinitionsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ad.Response.Response, err = future.GetResult(sender); err == nil && ad.Response.Response.StatusCode != http.StatusNoContent {
-		ad, err = client.CreateOrUpdateResponder(ad.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsCreateOrUpdateFuture", "Result", ad.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ApplianceDefinitionsClient) (ApplianceDefinition, error)
 }
 
 // ApplianceDefinitionsDeleteByIDFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ApplianceDefinitionsDeleteByIDFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ApplianceDefinitionsDeleteByIDFuture) Result(client ApplianceDefinitionsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsDeleteByIDFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplianceDefinitionsDeleteByIDFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ApplianceDefinitionsClient) (autorest.Response, error)
 }
 
 // ApplianceDefinitionsDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ApplianceDefinitionsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ApplianceDefinitionsDeleteFuture) Result(client ApplianceDefinitionsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplianceDefinitionsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ApplianceDefinitionsClient) (autorest.Response, error)
 }
 
 // ApplianceListResult list of appliances.
@@ -1042,105 +974,37 @@ type ApplianceProviderAuthorization struct {
 // AppliancesCreateOrUpdateByIDFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type AppliancesCreateOrUpdateByIDFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *AppliancesCreateOrUpdateByIDFuture) Result(client AppliancesClient) (a Appliance, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managedapplications.AppliancesCreateOrUpdateByIDFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("managedapplications.AppliancesCreateOrUpdateByIDFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
-		a, err = client.CreateOrUpdateByIDResponder(a.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "managedapplications.AppliancesCreateOrUpdateByIDFuture", "Result", a.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AppliancesClient) (Appliance, error)
 }
 
 // AppliancesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type AppliancesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *AppliancesCreateOrUpdateFuture) Result(client AppliancesClient) (a Appliance, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managedapplications.AppliancesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("managedapplications.AppliancesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
-		a, err = client.CreateOrUpdateResponder(a.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "managedapplications.AppliancesCreateOrUpdateFuture", "Result", a.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AppliancesClient) (Appliance, error)
 }
 
 // AppliancesDeleteByIDFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type AppliancesDeleteByIDFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *AppliancesDeleteByIDFuture) Result(client AppliancesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managedapplications.AppliancesDeleteByIDFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("managedapplications.AppliancesDeleteByIDFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AppliancesClient) (autorest.Response, error)
 }
 
 // AppliancesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type AppliancesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *AppliancesDeleteFuture) Result(client AppliancesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managedapplications.AppliancesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("managedapplications.AppliancesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AppliancesClient) (autorest.Response, error)
 }
 
 // ErrorResponse error response indicates ARM appliance is not able to process the incoming request. The

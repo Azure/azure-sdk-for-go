@@ -98,6 +98,7 @@ func (client PropertiesClient) ListByService(ctx context.Context, resourceGroupN
 	}
 	if result.pc.hasNextLink() && result.pc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -168,7 +169,6 @@ func (client PropertiesClient) listByServiceNextResults(ctx context.Context, las
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.PropertiesClient", "listByServiceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

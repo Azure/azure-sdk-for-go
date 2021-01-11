@@ -516,59 +516,19 @@ func (erp EnvironmentResourceProperties) MarshalJSON() ([]byte, error) {
 // EnvironmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type EnvironmentsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *EnvironmentsCreateOrUpdateFuture) Result(client EnvironmentsClient) (er EnvironmentResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "timeseriesinsights.EnvironmentsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("timeseriesinsights.EnvironmentsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if er.Response.Response, err = future.GetResult(sender); err == nil && er.Response.Response.StatusCode != http.StatusNoContent {
-		er, err = client.CreateOrUpdateResponder(er.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "timeseriesinsights.EnvironmentsCreateOrUpdateFuture", "Result", er.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(EnvironmentsClient) (EnvironmentResource, error)
 }
 
 // EnvironmentsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type EnvironmentsUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *EnvironmentsUpdateFuture) Result(client EnvironmentsClient) (er EnvironmentResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "timeseriesinsights.EnvironmentsUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("timeseriesinsights.EnvironmentsUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if er.Response.Response, err = future.GetResult(sender); err == nil && er.Response.Response.StatusCode != http.StatusNoContent {
-		er, err = client.UpdateResponder(er.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "timeseriesinsights.EnvironmentsUpdateFuture", "Result", er.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(EnvironmentsClient) (EnvironmentResource, error)
 }
 
 // EnvironmentUpdateParameters parameters supplied to the Update Environment operation.

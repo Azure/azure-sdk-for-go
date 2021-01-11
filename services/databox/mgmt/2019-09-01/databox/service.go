@@ -86,6 +86,7 @@ func (client ServiceClient) ListAvailableSkus(ctx context.Context, location stri
 	}
 	if result.asr.hasNextLink() && result.asr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -148,7 +149,6 @@ func (client ServiceClient) listAvailableSkusNextResults(ctx context.Context, la
 	result, err = client.ListAvailableSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "listAvailableSkusNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -215,6 +215,7 @@ func (client ServiceClient) ListAvailableSkusByResourceGroup(ctx context.Context
 	}
 	if result.asr.hasNextLink() && result.asr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -278,7 +279,6 @@ func (client ServiceClient) listAvailableSkusByResourceGroupNextResults(ctx cont
 	result, err = client.ListAvailableSkusByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "listAvailableSkusByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -314,13 +314,6 @@ func (client ServiceClient) RegionConfiguration(ctx context.Context, location st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: regionConfigurationRequest,
-			Constraints: []validation.Constraint{{Target: "regionConfigurationRequest.ScheduleAvailabilityRequest", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "regionConfigurationRequest.ScheduleAvailabilityRequest.StorageLocation", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("databox.ServiceClient", "RegionConfiguration", err.Error())
-	}
-
 	req, err := client.RegionConfigurationPreparer(ctx, location, regionConfigurationRequest)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "RegionConfiguration", nil, "Failure preparing request")

@@ -83,7 +83,7 @@ func (client LinksClient) CreateOrUpdate(ctx context.Context, resourceGroupName 
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.LinksClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.LinksClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -122,7 +122,29 @@ func (client LinksClient) CreateOrUpdateSender(req *http.Request) (future LinksC
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client LinksClient) (lrf LinkResourceFormat, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.LinksCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("customerinsights.LinksCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if lrf.Response.Response, err = future.GetResult(sender); err == nil && lrf.Response.Response.StatusCode != http.StatusNoContent {
+			lrf, err = client.CreateOrUpdateResponder(lrf.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "customerinsights.LinksCreateOrUpdateFuture", "Result", lrf.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -329,6 +351,7 @@ func (client LinksClient) ListByHub(ctx context.Context, resourceGroupName strin
 	}
 	if result.llr.hasNextLink() && result.llr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -390,7 +413,6 @@ func (client LinksClient) listByHubNextResults(ctx context.Context, lastResults 
 	result, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.LinksClient", "listByHubNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

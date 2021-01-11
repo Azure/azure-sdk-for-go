@@ -57,14 +57,7 @@ func (client LinkedServiceClient) CreateOrUpdateLinkedService(ctx context.Contex
 		{TargetValue: linkedServiceName,
 			Constraints: []validation.Constraint{{Target: "linkedServiceName", Name: validation.MaxLength, Rule: 260, Chain: nil},
 				{Target: "linkedServiceName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "linkedServiceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}},
-		{TargetValue: linkedService,
-			Constraints: []validation.Constraint{{Target: "linkedService.Properties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "linkedService.Properties.ConnectVia", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "linkedService.Properties.ConnectVia.Type", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "linkedService.Properties.ConnectVia.ReferenceName", Name: validation.Null, Rule: true, Chain: nil},
-					}},
-				}}}}}); err != nil {
+				{Target: "linkedServiceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("artifacts.LinkedServiceClient", "CreateOrUpdateLinkedService", err.Error())
 	}
 
@@ -76,7 +69,7 @@ func (client LinkedServiceClient) CreateOrUpdateLinkedService(ctx context.Contex
 
 	result, err = client.CreateOrUpdateLinkedServiceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceClient", "CreateOrUpdateLinkedService", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceClient", "CreateOrUpdateLinkedService", nil, "Failure sending request")
 		return
 	}
 
@@ -120,7 +113,29 @@ func (client LinkedServiceClient) CreateOrUpdateLinkedServiceSender(req *http.Re
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client LinkedServiceClient) (lsr LinkedServiceResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceCreateOrUpdateLinkedServiceFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.LinkedServiceCreateOrUpdateLinkedServiceFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if lsr.Response.Response, err = future.GetResult(sender); err == nil && lsr.Response.Response.StatusCode != http.StatusNoContent {
+			lsr, err = client.CreateOrUpdateLinkedServiceResponder(lsr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceCreateOrUpdateLinkedServiceFuture", "Result", lsr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -166,7 +181,7 @@ func (client LinkedServiceClient) DeleteLinkedService(ctx context.Context, linke
 
 	result, err = client.DeleteLinkedServiceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceClient", "DeleteLinkedService", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceClient", "DeleteLinkedService", nil, "Failure sending request")
 		return
 	}
 
@@ -204,7 +219,23 @@ func (client LinkedServiceClient) DeleteLinkedServiceSender(req *http.Request) (
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client LinkedServiceClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceDeleteLinkedServiceFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.LinkedServiceDeleteLinkedServiceFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -343,6 +374,7 @@ func (client LinkedServiceClient) GetLinkedServicesByWorkspace(ctx context.Conte
 	}
 	if result.lslr.hasNextLink() && result.lslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -402,7 +434,6 @@ func (client LinkedServiceClient) getLinkedServicesByWorkspaceNextResults(ctx co
 	result, err = client.GetLinkedServicesByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceClient", "getLinkedServicesByWorkspaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -460,7 +491,7 @@ func (client LinkedServiceClient) RenameLinkedService(ctx context.Context, linke
 
 	result, err = client.RenameLinkedServiceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceClient", "RenameLinkedService", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceClient", "RenameLinkedService", nil, "Failure sending request")
 		return
 	}
 
@@ -500,7 +531,23 @@ func (client LinkedServiceClient) RenameLinkedServiceSender(req *http.Request) (
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client LinkedServiceClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceRenameLinkedServiceFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.LinkedServiceRenameLinkedServiceFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

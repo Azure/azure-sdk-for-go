@@ -67,7 +67,7 @@ func (client MachineExtensionsClient) CreateOrUpdate(ctx context.Context, resour
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -106,7 +106,29 @@ func (client MachineExtensionsClient) CreateOrUpdateSender(req *http.Request) (f
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client MachineExtensionsClient) (me MachineExtension, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hybridcompute.MachineExtensionsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if me.Response.Response, err = future.GetResult(sender); err == nil && me.Response.Response.StatusCode != http.StatusNoContent {
+			me, err = client.CreateOrUpdateResponder(me.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsCreateOrUpdateFuture", "Result", me.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -146,7 +168,7 @@ func (client MachineExtensionsClient) Delete(ctx context.Context, resourceGroupN
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -183,7 +205,23 @@ func (client MachineExtensionsClient) DeleteSender(req *http.Request) (future Ma
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client MachineExtensionsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hybridcompute.MachineExtensionsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -313,6 +351,7 @@ func (client MachineExtensionsClient) List(ctx context.Context, resourceGroupNam
 	}
 	if result.melr.hasNextLink() && result.melr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -377,7 +416,6 @@ func (client MachineExtensionsClient) listNextResults(ctx context.Context, lastR
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -423,7 +461,7 @@ func (client MachineExtensionsClient) Update(ctx context.Context, resourceGroupN
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -462,7 +500,29 @@ func (client MachineExtensionsClient) UpdateSender(req *http.Request) (future Ma
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client MachineExtensionsClient) (me MachineExtension, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hybridcompute.MachineExtensionsUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if me.Response.Response, err = future.GetResult(sender); err == nil && me.Response.Response.StatusCode != http.StatusNoContent {
+			me, err = client.UpdateResponder(me.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsUpdateFuture", "Result", me.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

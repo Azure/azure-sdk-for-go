@@ -474,6 +474,7 @@ func (client BackendClient) ListByService(ctx context.Context, resourceGroupName
 	}
 	if result.bc.hasNextLink() && result.bc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -544,7 +545,6 @@ func (client BackendClient) listByServiceNextResults(ctx context.Context, lastRe
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.BackendClient", "listByServiceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

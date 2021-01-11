@@ -75,7 +75,7 @@ func (client DedicatedHsmClient) CreateOrUpdate(ctx context.Context, resourceGro
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hardwaresecuritymodules.DedicatedHsmClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hardwaresecuritymodules.DedicatedHsmClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -113,7 +113,29 @@ func (client DedicatedHsmClient) CreateOrUpdateSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DedicatedHsmClient) (dh DedicatedHsm, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hardwaresecuritymodules.DedicatedHsmCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hardwaresecuritymodules.DedicatedHsmCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if dh.Response.Response, err = future.GetResult(sender); err == nil && dh.Response.Response.StatusCode != http.StatusNoContent {
+			dh, err = client.CreateOrUpdateResponder(dh.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "hardwaresecuritymodules.DedicatedHsmCreateOrUpdateFuture", "Result", dh.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -152,7 +174,7 @@ func (client DedicatedHsmClient) Delete(ctx context.Context, resourceGroupName s
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hardwaresecuritymodules.DedicatedHsmClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hardwaresecuritymodules.DedicatedHsmClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -188,7 +210,23 @@ func (client DedicatedHsmClient) DeleteSender(req *http.Request) (future Dedicat
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DedicatedHsmClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hardwaresecuritymodules.DedicatedHsmDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hardwaresecuritymodules.DedicatedHsmDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -316,6 +354,7 @@ func (client DedicatedHsmClient) ListByResourceGroup(ctx context.Context, resour
 	}
 	if result.dhlr.hasNextLink() && result.dhlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -379,7 +418,6 @@ func (client DedicatedHsmClient) listByResourceGroupNextResults(ctx context.Cont
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hardwaresecuritymodules.DedicatedHsmClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -435,6 +473,7 @@ func (client DedicatedHsmClient) ListBySubscription(ctx context.Context, top *in
 	}
 	if result.dhlr.hasNextLink() && result.dhlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -497,7 +536,6 @@ func (client DedicatedHsmClient) listBySubscriptionNextResults(ctx context.Conte
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hardwaresecuritymodules.DedicatedHsmClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -548,7 +586,7 @@ func (client DedicatedHsmClient) Update(ctx context.Context, resourceGroupName s
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hardwaresecuritymodules.DedicatedHsmClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hardwaresecuritymodules.DedicatedHsmClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -586,7 +624,29 @@ func (client DedicatedHsmClient) UpdateSender(req *http.Request) (future Dedicat
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DedicatedHsmClient) (dh DedicatedHsm, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hardwaresecuritymodules.DedicatedHsmUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hardwaresecuritymodules.DedicatedHsmUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if dh.Response.Response, err = future.GetResult(sender); err == nil && dh.Response.Response.StatusCode != http.StatusNoContent {
+			dh, err = client.UpdateResponder(dh.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "hardwaresecuritymodules.DedicatedHsmUpdateFuture", "Result", dh.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

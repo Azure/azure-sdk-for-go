@@ -64,7 +64,7 @@ func (client InvoiceSectionsClient) Create(ctx context.Context, billingAccountNa
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -100,7 +100,29 @@ func (client InvoiceSectionsClient) CreateSender(req *http.Request) (future Invo
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client InvoiceSectionsClient) (is InvoiceSection, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("billing.InvoiceSectionsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if is.Response.Response, err = future.GetResult(sender); err == nil && is.Response.Response.StatusCode != http.StatusNoContent {
+			is, err = client.CreateResponder(is.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsCreateFuture", "Result", is.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -376,6 +398,7 @@ func (client InvoiceSectionsClient) ListByBillingProfileName(ctx context.Context
 	}
 	if result.islr.hasNextLink() && result.islr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -436,7 +459,6 @@ func (client InvoiceSectionsClient) listByBillingProfileNameNextResults(ctx cont
 	result, err = client.ListByBillingProfileNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "listByBillingProfileNameNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -493,6 +515,7 @@ func (client InvoiceSectionsClient) ListByCreateSubscriptionPermission(ctx conte
 	}
 	if result.islr.hasNextLink() && result.islr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -555,7 +578,6 @@ func (client InvoiceSectionsClient) listByCreateSubscriptionPermissionNextResult
 	result, err = client.ListByCreateSubscriptionPermissionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "listByCreateSubscriptionPermissionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -600,7 +622,7 @@ func (client InvoiceSectionsClient) Update(ctx context.Context, billingAccountNa
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -637,7 +659,29 @@ func (client InvoiceSectionsClient) UpdateSender(req *http.Request) (future Invo
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client InvoiceSectionsClient) (is InvoiceSection, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("billing.InvoiceSectionsUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if is.Response.Response, err = future.GetResult(sender); err == nil && is.Response.Response.StatusCode != http.StatusNoContent {
+			is, err = client.UpdateResponder(is.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsUpdateFuture", "Result", is.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

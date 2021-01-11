@@ -155,6 +155,7 @@ func (client RequestsClient) List(ctx context.Context, subscriptionID string, fi
 	}
 	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -214,7 +215,6 @@ func (client RequestsClient) listNextResults(ctx context.Context, lastResults Re
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerlockbox.RequestsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

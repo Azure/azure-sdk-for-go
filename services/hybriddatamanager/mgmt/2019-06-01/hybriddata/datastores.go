@@ -79,7 +79,7 @@ func (client DataStoresClient) CreateOrUpdate(ctx context.Context, dataStoreName
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.DataStoresClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybriddata.DataStoresClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -118,7 +118,29 @@ func (client DataStoresClient) CreateOrUpdateSender(req *http.Request) (future D
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DataStoresClient) (ds DataStore, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybriddata.DataStoresCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hybriddata.DataStoresCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ds.Response.Response, err = future.GetResult(sender); err == nil && ds.Response.Response.StatusCode != http.StatusNoContent {
+			ds, err = client.CreateOrUpdateResponder(ds.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "hybriddata.DataStoresCreateOrUpdateFuture", "Result", ds.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -167,7 +189,7 @@ func (client DataStoresClient) Delete(ctx context.Context, dataStoreName string,
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.DataStoresClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybriddata.DataStoresClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -204,7 +226,23 @@ func (client DataStoresClient) DeleteSender(req *http.Request) (future DataStore
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DataStoresClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybriddata.DataStoresDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hybriddata.DataStoresDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -352,6 +390,7 @@ func (client DataStoresClient) ListByDataManager(ctx context.Context, resourceGr
 	}
 	if result.dsl.hasNextLink() && result.dsl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -416,7 +455,6 @@ func (client DataStoresClient) listByDataManagerNextResults(ctx context.Context,
 	result, err = client.ListByDataManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.DataStoresClient", "listByDataManagerNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

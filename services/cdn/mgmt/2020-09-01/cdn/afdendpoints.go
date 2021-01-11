@@ -81,7 +81,7 @@ func (client AFDEndpointsClient) Create(ctx context.Context, resourceGroupName s
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.AFDEndpointsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.AFDEndpointsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -120,7 +120,29 @@ func (client AFDEndpointsClient) CreateSender(req *http.Request) (future AFDEndp
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AFDEndpointsClient) (ae AFDEndpoint, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.AFDEndpointsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.AFDEndpointsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ae.Response.Response, err = future.GetResult(sender); err == nil && ae.Response.Response.StatusCode != http.StatusNoContent {
+			ae, err = client.CreateResponder(ae.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "cdn.AFDEndpointsCreateFuture", "Result", ae.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -169,7 +191,7 @@ func (client AFDEndpointsClient) Delete(ctx context.Context, resourceGroupName s
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.AFDEndpointsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.AFDEndpointsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -206,7 +228,23 @@ func (client AFDEndpointsClient) DeleteSender(req *http.Request) (future AFDEndp
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AFDEndpointsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.AFDEndpointsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.AFDEndpointsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -599,7 +637,7 @@ func (client AFDEndpointsClient) PurgeContent(ctx context.Context, resourceGroup
 
 	result, err = client.PurgeContentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.AFDEndpointsClient", "PurgeContent", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.AFDEndpointsClient", "PurgeContent", nil, "Failure sending request")
 		return
 	}
 
@@ -638,7 +676,23 @@ func (client AFDEndpointsClient) PurgeContentSender(req *http.Request) (future A
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AFDEndpointsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.AFDEndpointsPurgeContentFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.AFDEndpointsPurgeContentFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -689,7 +743,7 @@ func (client AFDEndpointsClient) Update(ctx context.Context, resourceGroupName s
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.AFDEndpointsClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.AFDEndpointsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -728,7 +782,29 @@ func (client AFDEndpointsClient) UpdateSender(req *http.Request) (future AFDEndp
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AFDEndpointsClient) (ae AFDEndpoint, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.AFDEndpointsUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.AFDEndpointsUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ae.Response.Response, err = future.GetResult(sender); err == nil && ae.Response.Response.StatusCode != http.StatusNoContent {
+			ae, err = client.UpdateResponder(ae.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "cdn.AFDEndpointsUpdateFuture", "Result", ae.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

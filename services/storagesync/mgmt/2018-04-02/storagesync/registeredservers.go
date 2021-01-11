@@ -78,7 +78,7 @@ func (client RegisteredServersClient) Create(ctx context.Context, resourceGroupN
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -117,7 +117,29 @@ func (client RegisteredServersClient) CreateSender(req *http.Request) (future Re
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client RegisteredServersClient) (rs RegisteredServer, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storagesync.RegisteredServersCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if rs.Response.Response, err = future.GetResult(sender); err == nil && rs.Response.Response.StatusCode != http.StatusNoContent {
+			rs, err = client.CreateResponder(rs.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersCreateFuture", "Result", rs.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -167,7 +189,7 @@ func (client RegisteredServersClient) Delete(ctx context.Context, resourceGroupN
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -204,7 +226,23 @@ func (client RegisteredServersClient) DeleteSender(req *http.Request) (future Re
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client RegisteredServersClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storagesync.RegisteredServersDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

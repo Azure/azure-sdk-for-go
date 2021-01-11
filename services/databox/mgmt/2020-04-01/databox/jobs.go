@@ -247,20 +247,7 @@ func (client JobsClient) Create(ctx context.Context, resourceGroupName string, j
 				{Target: "jobName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "jobName", Name: validation.Pattern, Rule: `^[-\w\.]+$`, Chain: nil}}},
 		{TargetValue: jobResource,
-			Constraints: []validation.Constraint{{Target: "jobResource.JobProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "jobResource.JobProperties.Details", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "jobResource.JobProperties.Details.ContactDetails", Name: validation.Null, Rule: true,
-						Chain: []validation.Constraint{{Target: "jobResource.JobProperties.Details.ContactDetails.ContactName", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "jobResource.JobProperties.Details.ContactDetails.Phone", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "jobResource.JobProperties.Details.ContactDetails.EmailList", Name: validation.Null, Rule: true, Chain: nil},
-						}},
-						{Target: "jobResource.JobProperties.Details.ShippingAddress", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "jobResource.JobProperties.Details.ShippingAddress.StreetAddress1", Name: validation.Null, Rule: true, Chain: nil},
-								{Target: "jobResource.JobProperties.Details.ShippingAddress.Country", Name: validation.Null, Rule: true, Chain: nil},
-								{Target: "jobResource.JobProperties.Details.ShippingAddress.PostalCode", Name: validation.Null, Rule: true, Chain: nil},
-							}},
-					}},
-				}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "jobResource.JobProperties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("databox.JobsClient", "Create", err.Error())
 	}
 
@@ -272,7 +259,7 @@ func (client JobsClient) Create(ctx context.Context, resourceGroupName string, j
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databox.JobsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databox.JobsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -313,7 +300,29 @@ func (client JobsClient) CreateSender(req *http.Request) (future JobsCreateFutur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client JobsClient) (jr JobResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "databox.JobsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("databox.JobsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if jr.Response.Response, err = future.GetResult(sender); err == nil && jr.Response.Response.StatusCode != http.StatusNoContent {
+			jr, err = client.CreateResponder(jr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "databox.JobsCreateFuture", "Result", jr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -361,7 +370,7 @@ func (client JobsClient) Delete(ctx context.Context, resourceGroupName string, j
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databox.JobsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databox.JobsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -397,7 +406,23 @@ func (client JobsClient) DeleteSender(req *http.Request) (future JobsDeleteFutur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client JobsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "databox.JobsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("databox.JobsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -536,6 +561,7 @@ func (client JobsClient) List(ctx context.Context, skipToken string) (result Job
 	}
 	if result.jrl.hasNextLink() && result.jrl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -598,7 +624,6 @@ func (client JobsClient) listNextResults(ctx context.Context, lastResults JobRes
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.JobsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -655,6 +680,7 @@ func (client JobsClient) ListByResourceGroup(ctx context.Context, resourceGroupN
 	}
 	if result.jrl.hasNextLink() && result.jrl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -718,7 +744,6 @@ func (client JobsClient) listByResourceGroupNextResults(ctx context.Context, las
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.JobsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -859,7 +884,7 @@ func (client JobsClient) Update(ctx context.Context, resourceGroupName string, j
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databox.JobsClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databox.JobsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -901,7 +926,29 @@ func (client JobsClient) UpdateSender(req *http.Request) (future JobsUpdateFutur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client JobsClient) (jr JobResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "databox.JobsUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("databox.JobsUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if jr.Response.Response, err = future.GetResult(sender); err == nil && jr.Response.Response.StatusCode != http.StatusNoContent {
+			jr, err = client.UpdateResponder(jr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "databox.JobsUpdateFuture", "Result", jr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

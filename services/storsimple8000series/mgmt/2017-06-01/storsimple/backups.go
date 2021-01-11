@@ -88,7 +88,7 @@ func (client BackupsClient) Clone(ctx context.Context, deviceName string, backup
 
 	result, err = client.CloneSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "Clone", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "Clone", nil, "Failure sending request")
 		return
 	}
 
@@ -129,7 +129,23 @@ func (client BackupsClient) CloneSender(req *http.Request) (future BackupsCloneF
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client BackupsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.BackupsCloneFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.BackupsCloneFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -176,7 +192,7 @@ func (client BackupsClient) Delete(ctx context.Context, deviceName string, backu
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -214,7 +230,23 @@ func (client BackupsClient) DeleteSender(req *http.Request) (future BackupsDelet
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client BackupsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.BackupsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.BackupsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -274,6 +306,7 @@ func (client BackupsClient) ListByDevice(ctx context.Context, deviceName string,
 	}
 	if result.bl.hasNextLink() && result.bl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -339,7 +372,6 @@ func (client BackupsClient) listByDeviceNextResults(ctx context.Context, lastRes
 	result, err = client.ListByDeviceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "listByDeviceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -392,7 +424,7 @@ func (client BackupsClient) Restore(ctx context.Context, deviceName string, back
 
 	result, err = client.RestoreSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "Restore", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "Restore", nil, "Failure sending request")
 		return
 	}
 
@@ -430,7 +462,23 @@ func (client BackupsClient) RestoreSender(req *http.Request) (future BackupsRest
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client BackupsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.BackupsRestoreFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.BackupsRestoreFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

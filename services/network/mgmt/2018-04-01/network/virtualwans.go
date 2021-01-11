@@ -65,7 +65,7 @@ func (client VirtualWANsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualWANsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.VirtualWANsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -104,7 +104,29 @@ func (client VirtualWANsClient) CreateOrUpdateSender(req *http.Request) (future 
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualWANsClient) (vw VirtualWAN, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualWANsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("network.VirtualWANsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if vw.Response.Response, err = future.GetResult(sender); err == nil && vw.Response.Response.StatusCode != http.StatusNoContent {
+			vw, err = client.CreateOrUpdateResponder(vw.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "network.VirtualWANsCreateOrUpdateFuture", "Result", vw.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -143,7 +165,7 @@ func (client VirtualWANsClient) Delete(ctx context.Context, resourceGroupName st
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualWANsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.VirtualWANsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -179,7 +201,23 @@ func (client VirtualWANsClient) DeleteSender(req *http.Request) (future VirtualW
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualWANsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualWANsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("network.VirtualWANsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -303,6 +341,7 @@ func (client VirtualWANsClient) List(ctx context.Context) (result ListVirtualWAN
 	}
 	if result.lvwnr.hasNextLink() && result.lvwnr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -362,7 +401,6 @@ func (client VirtualWANsClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualWANsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -418,6 +456,7 @@ func (client VirtualWANsClient) ListByResourceGroup(ctx context.Context, resourc
 	}
 	if result.lvwnr.hasNextLink() && result.lvwnr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -478,7 +517,6 @@ func (client VirtualWANsClient) listByResourceGroupNextResults(ctx context.Conte
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualWANsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -523,7 +561,7 @@ func (client VirtualWANsClient) UpdateTags(ctx context.Context, resourceGroupNam
 
 	result, err = client.UpdateTagsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualWANsClient", "UpdateTags", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.VirtualWANsClient", "UpdateTags", nil, "Failure sending request")
 		return
 	}
 
@@ -561,7 +599,29 @@ func (client VirtualWANsClient) UpdateTagsSender(req *http.Request) (future Virt
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualWANsClient) (vw VirtualWAN, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualWANsUpdateTagsFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("network.VirtualWANsUpdateTagsFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if vw.Response.Response, err = future.GetResult(sender); err == nil && vw.Response.Response.StatusCode != http.StatusNoContent {
+			vw, err = client.UpdateTagsResponder(vw.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "network.VirtualWANsUpdateTagsFuture", "Result", vw.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

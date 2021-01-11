@@ -109,7 +109,7 @@ func (client PoolClient) Create(ctx context.Context, resourceGroupName string, a
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -156,7 +156,29 @@ func (client PoolClient) CreateSender(req *http.Request) (future PoolCreateFutur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client PoolClient) (p Pool, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batch.PoolCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("batch.PoolCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if p.Response.Response, err = future.GetResult(sender); err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
+			p, err = client.CreateResponder(p.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "batch.PoolCreateFuture", "Result", p.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -208,7 +230,7 @@ func (client PoolClient) Delete(ctx context.Context, resourceGroupName string, a
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -245,7 +267,23 @@ func (client PoolClient) DeleteSender(req *http.Request) (future PoolDeleteFutur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client PoolClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batch.PoolDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("batch.PoolDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -500,6 +538,7 @@ func (client PoolClient) ListByBatchAccount(ctx context.Context, resourceGroupNa
 	}
 	if result.lpr.hasNextLink() && result.lpr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -570,7 +609,6 @@ func (client PoolClient) listByBatchAccountNextResults(ctx context.Context, last
 	result, err = client.ListByBatchAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "listByBatchAccountNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

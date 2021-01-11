@@ -357,6 +357,7 @@ func (client DscNodeConfigurationClient) ListByAutomationAccount(ctx context.Con
 	}
 	if result.dnclr.hasNextLink() && result.dnclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -421,7 +422,6 @@ func (client DscNodeConfigurationClient) listByAutomationAccountNextResults(ctx 
 	result, err = client.ListByAutomationAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationClient", "listByAutomationAccountNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

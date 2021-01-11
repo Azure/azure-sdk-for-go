@@ -306,6 +306,7 @@ func (client SQLManagedInstancesClient) List(ctx context.Context) (result SQLMan
 	}
 	if result.smilr.hasNextLink() && result.smilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -365,7 +366,6 @@ func (client SQLManagedInstancesClient) listNextResults(ctx context.Context, las
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.SQLManagedInstancesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -421,6 +421,7 @@ func (client SQLManagedInstancesClient) ListByResourceGroup(ctx context.Context,
 	}
 	if result.smilr.hasNextLink() && result.smilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -481,7 +482,6 @@ func (client SQLManagedInstancesClient) listByResourceGroupNextResults(ctx conte
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.SQLManagedInstancesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

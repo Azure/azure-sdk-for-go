@@ -327,6 +327,7 @@ func (client CertificatesClient) List(ctx context.Context, resourceGroupName str
 	}
 	if result.crc.hasNextLink() && result.crc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -388,7 +389,6 @@ func (client CertificatesClient) listNextResults(ctx context.Context, lastResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.CertificatesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

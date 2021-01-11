@@ -150,6 +150,7 @@ func (client GlobalDomainRegistrationClient) GetAllDomains(ctx context.Context) 
 	}
 	if result.dc.hasNextLink() && result.dc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -209,7 +210,6 @@ func (client GlobalDomainRegistrationClient) getAllDomainsNextResults(ctx contex
 	result, err = client.GetAllDomainsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "getAllDomainsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -336,6 +336,7 @@ func (client GlobalDomainRegistrationClient) ListDomainRecommendations(ctx conte
 	}
 	if result.nic.hasNextLink() && result.nic.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -397,7 +398,6 @@ func (client GlobalDomainRegistrationClient) listDomainRecommendationsNextResult
 	result, err = client.ListDomainRecommendationsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "listDomainRecommendationsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

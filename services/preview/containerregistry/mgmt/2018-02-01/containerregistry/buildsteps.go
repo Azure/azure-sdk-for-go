@@ -84,7 +84,7 @@ func (client BuildStepsClient) Create(ctx context.Context, resourceGroupName str
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -124,7 +124,29 @@ func (client BuildStepsClient) CreateSender(req *http.Request) (future BuildStep
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client BuildStepsClient) (bs BuildStep, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("containerregistry.BuildStepsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if bs.Response.Response, err = future.GetResult(sender); err == nil && bs.Response.Response.StatusCode != http.StatusNoContent {
+			bs, err = client.CreateResponder(bs.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsCreateFuture", "Result", bs.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -181,7 +203,7 @@ func (client BuildStepsClient) Delete(ctx context.Context, resourceGroupName str
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -219,7 +241,23 @@ func (client BuildStepsClient) DeleteSender(req *http.Request) (future BuildStep
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client BuildStepsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("containerregistry.BuildStepsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -379,6 +417,7 @@ func (client BuildStepsClient) List(ctx context.Context, resourceGroupName strin
 	}
 	if result.bsl.hasNextLink() && result.bsl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -441,7 +480,6 @@ func (client BuildStepsClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -516,6 +554,7 @@ func (client BuildStepsClient) ListBuildArguments(ctx context.Context, resourceG
 	}
 	if result.bal.hasNextLink() && result.bal.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -579,7 +618,6 @@ func (client BuildStepsClient) listBuildArgumentsNextResults(ctx context.Context
 	result, err = client.ListBuildArgumentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "listBuildArgumentsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -642,7 +680,7 @@ func (client BuildStepsClient) Update(ctx context.Context, resourceGroupName str
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -682,7 +720,29 @@ func (client BuildStepsClient) UpdateSender(req *http.Request) (future BuildStep
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client BuildStepsClient) (bs BuildStep, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("containerregistry.BuildStepsUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if bs.Response.Response, err = future.GetResult(sender); err == nil && bs.Response.Response.StatusCode != http.StatusNoContent {
+			bs, err = client.UpdateResponder(bs.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsUpdateFuture", "Result", bs.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

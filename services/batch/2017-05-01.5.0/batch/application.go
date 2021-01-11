@@ -198,6 +198,7 @@ func (client ApplicationClient) List(ctx context.Context, maxResults *int32, tim
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -278,7 +279,6 @@ func (client ApplicationClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

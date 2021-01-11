@@ -578,70 +578,28 @@ type JobCollectionQuota struct {
 // JobCollectionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type JobCollectionsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *JobCollectionsDeleteFuture) Result(client JobCollectionsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("scheduler.JobCollectionsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(JobCollectionsClient) (autorest.Response, error)
 }
 
 // JobCollectionsDisableFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type JobCollectionsDisableFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *JobCollectionsDisableFuture) Result(client JobCollectionsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsDisableFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("scheduler.JobCollectionsDisableFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(JobCollectionsClient) (autorest.Response, error)
 }
 
 // JobCollectionsEnableFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type JobCollectionsEnableFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *JobCollectionsEnableFuture) Result(client JobCollectionsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsEnableFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("scheduler.JobCollectionsEnableFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(JobCollectionsClient) (autorest.Response, error)
 }
 
 // JobDefinition ...

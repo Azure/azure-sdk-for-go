@@ -182,7 +182,7 @@ func (client PrivateEndpointsClient) Delete(ctx context.Context, resourceGroupNa
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "streamanalytics.PrivateEndpointsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "streamanalytics.PrivateEndpointsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -219,7 +219,23 @@ func (client PrivateEndpointsClient) DeleteSender(req *http.Request) (future Pri
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client PrivateEndpointsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "streamanalytics.PrivateEndpointsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("streamanalytics.PrivateEndpointsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -368,6 +384,7 @@ func (client PrivateEndpointsClient) ListByCluster(ctx context.Context, resource
 	}
 	if result.pelr.hasNextLink() && result.pelr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -429,7 +446,6 @@ func (client PrivateEndpointsClient) listByClusterNextResults(ctx context.Contex
 	result, err = client.ListByClusterResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.PrivateEndpointsClient", "listByClusterNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

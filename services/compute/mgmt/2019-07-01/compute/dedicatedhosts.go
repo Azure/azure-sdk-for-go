@@ -79,7 +79,7 @@ func (client DedicatedHostsClient) CreateOrUpdate(ctx context.Context, resourceG
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.DedicatedHostsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.DedicatedHostsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -118,7 +118,29 @@ func (client DedicatedHostsClient) CreateOrUpdateSender(req *http.Request) (futu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DedicatedHostsClient) (dh DedicatedHost, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.DedicatedHostsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("compute.DedicatedHostsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if dh.Response.Response, err = future.GetResult(sender); err == nil && dh.Response.Response.StatusCode != http.StatusNoContent {
+			dh, err = client.CreateOrUpdateResponder(dh.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "compute.DedicatedHostsCreateOrUpdateFuture", "Result", dh.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -158,7 +180,7 @@ func (client DedicatedHostsClient) Delete(ctx context.Context, resourceGroupName
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.DedicatedHostsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.DedicatedHostsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -195,7 +217,23 @@ func (client DedicatedHostsClient) DeleteSender(req *http.Request) (future Dedic
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DedicatedHostsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.DedicatedHostsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("compute.DedicatedHostsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -329,6 +367,7 @@ func (client DedicatedHostsClient) ListByHostGroup(ctx context.Context, resource
 	}
 	if result.dhlr.hasNextLink() && result.dhlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -390,7 +429,6 @@ func (client DedicatedHostsClient) listByHostGroupNextResults(ctx context.Contex
 	result, err = client.ListByHostGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DedicatedHostsClient", "listByHostGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -436,7 +474,7 @@ func (client DedicatedHostsClient) Update(ctx context.Context, resourceGroupName
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.DedicatedHostsClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.DedicatedHostsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -475,7 +513,29 @@ func (client DedicatedHostsClient) UpdateSender(req *http.Request) (future Dedic
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DedicatedHostsClient) (dh DedicatedHost, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.DedicatedHostsUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("compute.DedicatedHostsUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if dh.Response.Response, err = future.GetResult(sender); err == nil && dh.Response.Response.StatusCode != http.StatusNoContent {
+			dh, err = client.UpdateResponder(dh.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "compute.DedicatedHostsUpdateFuture", "Result", dh.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

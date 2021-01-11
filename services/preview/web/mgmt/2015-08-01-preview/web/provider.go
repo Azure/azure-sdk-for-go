@@ -214,6 +214,7 @@ func (client ProviderClient) GetSourceControls(ctx context.Context) (result Sour
 	}
 	if result.scc.hasNextLink() && result.scc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -269,7 +270,6 @@ func (client ProviderClient) getSourceControlsNextResults(ctx context.Context, l
 	result, err = client.GetSourceControlsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ProviderClient", "getSourceControlsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -437,53 +437,19 @@ func (dpp DiskPoolProperties) MarshalJSON() ([]byte, error) {
 // DiskPoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DiskPoolsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DiskPoolsCreateOrUpdateFuture) Result(client DiskPoolsClient) (dp DiskPool, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storagepool.DiskPoolsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if dp.Response.Response, err = future.GetResult(sender); err == nil && dp.Response.Response.StatusCode != http.StatusNoContent {
-		dp, err = client.CreateOrUpdateResponder(dp.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsCreateOrUpdateFuture", "Result", dp.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DiskPoolsClient) (DiskPool, error)
 }
 
 // DiskPoolsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DiskPoolsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DiskPoolsDeleteFuture) Result(client DiskPoolsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storagepool.DiskPoolsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DiskPoolsClient) (autorest.Response, error)
 }
 
 // Error the resource management error response.
@@ -798,53 +764,19 @@ func (itp IscsiTargetProperties) MarshalJSON() ([]byte, error) {
 // IscsiTargetsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type IscsiTargetsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *IscsiTargetsCreateOrUpdateFuture) Result(client IscsiTargetsClient) (it IscsiTarget, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storagepool.IscsiTargetsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if it.Response.Response, err = future.GetResult(sender); err == nil && it.Response.Response.StatusCode != http.StatusNoContent {
-		it, err = client.CreateOrUpdateResponder(it.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsCreateOrUpdateFuture", "Result", it.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(IscsiTargetsClient) (IscsiTarget, error)
 }
 
 // IscsiTargetsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type IscsiTargetsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *IscsiTargetsDeleteFuture) Result(client IscsiTargetsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storagepool.IscsiTargetsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(IscsiTargetsClient) (autorest.Response, error)
 }
 
 // OperationDisplay metadata about an operation.

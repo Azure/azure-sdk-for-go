@@ -94,6 +94,7 @@ func (client UserGroupClient) List(ctx context.Context, apimBaseURL string, UID 
 	}
 	if result.gc.hasNextLink() && result.gc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -166,7 +167,6 @@ func (client UserGroupClient) listNextResults(ctx context.Context, lastResults G
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserGroupClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

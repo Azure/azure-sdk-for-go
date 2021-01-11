@@ -85,7 +85,7 @@ func (client MonitorsClient) Create(ctx context.Context, resourceGroupName strin
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -129,7 +129,29 @@ func (client MonitorsClient) CreateSender(req *http.Request) (future MonitorsCre
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client MonitorsClient) (mr MonitorResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "datadog.MonitorsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("datadog.MonitorsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if mr.Response.Response, err = future.GetResult(sender); err == nil && mr.Response.Response.StatusCode != http.StatusNoContent {
+			mr, err = client.CreateResponder(mr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "datadog.MonitorsCreateFuture", "Result", mr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -168,7 +190,7 @@ func (client MonitorsClient) Delete(ctx context.Context, resourceGroupName strin
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -204,7 +226,23 @@ func (client MonitorsClient) DeleteSender(req *http.Request) (future MonitorsDel
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client MonitorsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "datadog.MonitorsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("datadog.MonitorsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -328,6 +366,7 @@ func (client MonitorsClient) List(ctx context.Context) (result MonitorResourceLi
 	}
 	if result.mrlr.hasNextLink() && result.mrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -387,7 +426,6 @@ func (client MonitorsClient) listNextResults(ctx context.Context, lastResults Mo
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -443,6 +481,7 @@ func (client MonitorsClient) ListByResourceGroup(ctx context.Context, resourceGr
 	}
 	if result.mrlr.hasNextLink() && result.mrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -503,7 +542,6 @@ func (client MonitorsClient) listByResourceGroupNextResults(ctx context.Context,
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

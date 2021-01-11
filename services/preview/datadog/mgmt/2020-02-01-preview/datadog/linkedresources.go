@@ -77,6 +77,7 @@ func (client LinkedResourcesClient) List(ctx context.Context, resourceGroupName 
 	}
 	if result.lrlr.hasNextLink() && result.lrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -138,7 +139,6 @@ func (client LinkedResourcesClient) listNextResults(ctx context.Context, lastRes
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.LinkedResourcesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

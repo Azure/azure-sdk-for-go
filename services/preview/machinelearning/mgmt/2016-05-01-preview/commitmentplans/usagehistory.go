@@ -81,6 +81,7 @@ func (client UsageHistoryClient) List(ctx context.Context, resourceGroupName str
 	}
 	if result.puhlr.hasNextLink() && result.puhlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -145,7 +146,6 @@ func (client UsageHistoryClient) listNextResults(ctx context.Context, lastResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.UsageHistoryClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

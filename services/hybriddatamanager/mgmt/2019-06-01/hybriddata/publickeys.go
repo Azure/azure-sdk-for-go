@@ -174,6 +174,7 @@ func (client PublicKeysClient) ListByDataManager(ctx context.Context, resourceGr
 	}
 	if result.pkl.hasNextLink() && result.pkl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -235,7 +236,6 @@ func (client PublicKeysClient) listByDataManagerNextResults(ctx context.Context,
 	result, err = client.ListByDataManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.PublicKeysClient", "listByDataManagerNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

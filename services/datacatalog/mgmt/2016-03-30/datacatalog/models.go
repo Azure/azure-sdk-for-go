@@ -18,7 +18,6 @@ package datacatalog
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
@@ -161,24 +160,10 @@ type ADCCatalogProperties struct {
 // ADCCatalogsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ADCCatalogsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ADCCatalogsDeleteFuture) Result(client ADCCatalogsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datacatalog.ADCCatalogsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("datacatalog.ADCCatalogsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ADCCatalogsClient) (autorest.Response, error)
 }
 
 // ADCCatalogsListResult the response from the List Azure Data Catalog operation.

@@ -245,6 +245,7 @@ func (client AutoProvisioningSettingsClient) List(ctx context.Context) (result A
 	}
 	if result.apsl.hasNextLink() && result.apsl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -304,7 +305,6 @@ func (client AutoProvisioningSettingsClient) listNextResults(ctx context.Context
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AutoProvisioningSettingsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

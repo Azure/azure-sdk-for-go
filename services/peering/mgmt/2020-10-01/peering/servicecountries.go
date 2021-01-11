@@ -75,6 +75,7 @@ func (client ServiceCountriesClient) List(ctx context.Context) (result ServiceCo
 	}
 	if result.sclr.hasNextLink() && result.sclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -134,7 +135,6 @@ func (client ServiceCountriesClient) listNextResults(ctx context.Context, lastRe
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.ServiceCountriesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

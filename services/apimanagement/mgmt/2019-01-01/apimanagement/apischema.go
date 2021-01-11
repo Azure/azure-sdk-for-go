@@ -507,6 +507,7 @@ func (client APISchemaClient) ListByAPI(ctx context.Context, resourceGroupName s
 	}
 	if result.sc.hasNextLink() && result.sc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -578,7 +579,6 @@ func (client APISchemaClient) listByAPINextResults(ctx context.Context, lastResu
 	result, err = client.ListByAPIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "listByAPINextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -67,7 +67,7 @@ func (client DatabasesClient) Create(ctx context.Context, resourceGroupName stri
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -106,7 +106,29 @@ func (client DatabasesClient) CreateSender(req *http.Request) (future DatabasesC
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DatabasesClient) (d Database, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("redisenterprise.DatabasesCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
+			d, err = client.CreateResponder(d.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesCreateFuture", "Result", d.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -146,7 +168,7 @@ func (client DatabasesClient) Delete(ctx context.Context, resourceGroupName stri
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -183,7 +205,23 @@ func (client DatabasesClient) DeleteSender(req *http.Request) (future DatabasesD
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DatabasesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("redisenterprise.DatabasesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -229,7 +267,7 @@ func (client DatabasesClient) Export(ctx context.Context, resourceGroupName stri
 
 	result, err = client.ExportSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Export", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Export", nil, "Failure sending request")
 		return
 	}
 
@@ -268,7 +306,23 @@ func (client DatabasesClient) ExportSender(req *http.Request) (future DatabasesE
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DatabasesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesExportFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("redisenterprise.DatabasesExportFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -392,7 +446,7 @@ func (client DatabasesClient) Import(ctx context.Context, resourceGroupName stri
 
 	result, err = client.ImportSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Import", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Import", nil, "Failure sending request")
 		return
 	}
 
@@ -431,7 +485,23 @@ func (client DatabasesClient) ImportSender(req *http.Request) (future DatabasesI
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DatabasesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesImportFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("redisenterprise.DatabasesImportFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -667,7 +737,7 @@ func (client DatabasesClient) RegenerateKey(ctx context.Context, resourceGroupNa
 
 	result, err = client.RegenerateKeySender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "RegenerateKey", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "RegenerateKey", nil, "Failure sending request")
 		return
 	}
 
@@ -706,7 +776,29 @@ func (client DatabasesClient) RegenerateKeySender(req *http.Request) (future Dat
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DatabasesClient) (ak AccessKeys, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesRegenerateKeyFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("redisenterprise.DatabasesRegenerateKeyFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ak.Response.Response, err = future.GetResult(sender); err == nil && ak.Response.Response.StatusCode != http.StatusNoContent {
+			ak, err = client.RegenerateKeyResponder(ak.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesRegenerateKeyFuture", "Result", ak.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -747,7 +839,7 @@ func (client DatabasesClient) Update(ctx context.Context, resourceGroupName stri
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -786,7 +878,29 @@ func (client DatabasesClient) UpdateSender(req *http.Request) (future DatabasesU
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DatabasesClient) (d Database, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("redisenterprise.DatabasesUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
+			d, err = client.UpdateResponder(d.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesUpdateFuture", "Result", d.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

@@ -39,30 +39,10 @@ type CorsSettings struct {
 // CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type CreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *CreateOrUpdateFuture) Result(client Client) (rt ResourceType, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "signalr.CreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("signalr.CreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if rt.Response.Response, err = future.GetResult(sender); err == nil && rt.Response.Response.StatusCode != http.StatusNoContent {
-		rt, err = client.CreateOrUpdateResponder(rt.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "signalr.CreateOrUpdateFuture", "Result", rt.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(Client) (ResourceType, error)
 }
 
 // CreateOrUpdateProperties settings used to provision or configure the resource.
@@ -87,24 +67,10 @@ type CreateOrUpdateProperties struct {
 
 // DeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DeleteFuture) Result(client Client) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "signalr.DeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("signalr.DeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(Client) (autorest.Response, error)
 }
 
 // Dimension specifications of the Dimension of metrics.
@@ -552,24 +518,10 @@ func (pecp PrivateEndpointConnectionProperties) MarshalJSON() ([]byte, error) {
 // PrivateEndpointConnectionsDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type PrivateEndpointConnectionsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *PrivateEndpointConnectionsDeleteFuture) Result(client PrivateEndpointConnectionsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "signalr.PrivateEndpointConnectionsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("signalr.PrivateEndpointConnectionsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(PrivateEndpointConnectionsClient) (autorest.Response, error)
 }
 
 // PrivateLinkResource private link resource
@@ -895,30 +847,10 @@ type ProxyResource struct {
 // RegenerateKeyFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type RegenerateKeyFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *RegenerateKeyFuture) Result(client Client) (kVar Keys, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "signalr.RegenerateKeyFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("signalr.RegenerateKeyFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if kVar.Response.Response, err = future.GetResult(sender); err == nil && kVar.Response.Response.StatusCode != http.StatusNoContent {
-		kVar, err = client.RegenerateKeyResponder(kVar.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "signalr.RegenerateKeyFuture", "Result", kVar.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(Client) (Keys, error)
 }
 
 // RegenerateKeyParameters parameters describes the request to regenerate access keys
@@ -1250,24 +1182,10 @@ func (rt *ResourceType) UnmarshalJSON(body []byte) error {
 
 // RestartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type RestartFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *RestartFuture) Result(client Client) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "signalr.RestartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("signalr.RestartFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(Client) (autorest.Response, error)
 }
 
 // ServerlessUpstreamSettings the settings for the Upstream when the Azure SignalR is in server-less mode.
@@ -1312,30 +1230,10 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 
 // UpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type UpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *UpdateFuture) Result(client Client) (rt ResourceType, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "signalr.UpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("signalr.UpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if rt.Response.Response, err = future.GetResult(sender); err == nil && rt.Response.Response.StatusCode != http.StatusNoContent {
-		rt, err = client.UpdateResponder(rt.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "signalr.UpdateFuture", "Result", rt.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(Client) (ResourceType, error)
 }
 
 // UpstreamTemplate upstream template item settings. It defines the Upstream URL of the incoming requests.

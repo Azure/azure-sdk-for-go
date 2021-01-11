@@ -153,7 +153,7 @@ func (client JobExecutionsClient) Create(ctx context.Context, resourceGroupName 
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.JobExecutionsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.JobExecutionsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -191,7 +191,29 @@ func (client JobExecutionsClient) CreateSender(req *http.Request) (future JobExe
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client JobExecutionsClient) (je JobExecution, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.JobExecutionsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("sql.JobExecutionsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if je.Response.Response, err = future.GetResult(sender); err == nil && je.Response.Response.StatusCode != http.StatusNoContent {
+			je, err = client.CreateResponder(je.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "sql.JobExecutionsCreateFuture", "Result", je.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -234,7 +256,7 @@ func (client JobExecutionsClient) CreateOrUpdate(ctx context.Context, resourceGr
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.JobExecutionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.JobExecutionsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -273,7 +295,29 @@ func (client JobExecutionsClient) CreateOrUpdateSender(req *http.Request) (futur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client JobExecutionsClient) (je JobExecution, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.JobExecutionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("sql.JobExecutionsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if je.Response.Response, err = future.GetResult(sender); err == nil && je.Response.Response.StatusCode != http.StatusNoContent {
+			je, err = client.CreateOrUpdateResponder(je.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "sql.JobExecutionsCreateOrUpdateFuture", "Result", je.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -417,6 +461,7 @@ func (client JobExecutionsClient) ListByAgent(ctx context.Context, resourceGroup
 	}
 	if result.jelr.hasNextLink() && result.jelr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -500,7 +545,6 @@ func (client JobExecutionsClient) listByAgentNextResults(ctx context.Context, la
 	result, err = client.ListByAgentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.JobExecutionsClient", "listByAgentNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -567,6 +611,7 @@ func (client JobExecutionsClient) ListByJob(ctx context.Context, resourceGroupNa
 	}
 	if result.jelr.hasNextLink() && result.jelr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -651,7 +696,6 @@ func (client JobExecutionsClient) listByJobNextResults(ctx context.Context, last
 	result, err = client.ListByJobResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.JobExecutionsClient", "listByJobNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

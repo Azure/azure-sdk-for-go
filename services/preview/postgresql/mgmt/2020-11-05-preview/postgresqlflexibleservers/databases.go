@@ -79,7 +79,7 @@ func (client DatabasesClient) Create(ctx context.Context, resourceGroupName stri
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "postgresqlflexibleservers.DatabasesClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "postgresqlflexibleservers.DatabasesClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -118,7 +118,29 @@ func (client DatabasesClient) CreateSender(req *http.Request) (future DatabasesC
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DatabasesClient) (d Database, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "postgresqlflexibleservers.DatabasesCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("postgresqlflexibleservers.DatabasesCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
+			d, err = client.CreateResponder(d.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "postgresqlflexibleservers.DatabasesCreateFuture", "Result", d.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -168,7 +190,7 @@ func (client DatabasesClient) Delete(ctx context.Context, resourceGroupName stri
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "postgresqlflexibleservers.DatabasesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "postgresqlflexibleservers.DatabasesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -205,7 +227,23 @@ func (client DatabasesClient) DeleteSender(req *http.Request) (future DatabasesD
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DatabasesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "postgresqlflexibleservers.DatabasesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("postgresqlflexibleservers.DatabasesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -354,6 +392,7 @@ func (client DatabasesClient) ListByServer(ctx context.Context, resourceGroupNam
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -415,7 +454,6 @@ func (client DatabasesClient) listByServerNextResults(ctx context.Context, lastR
 	result, err = client.ListByServerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "postgresqlflexibleservers.DatabasesClient", "listByServerNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

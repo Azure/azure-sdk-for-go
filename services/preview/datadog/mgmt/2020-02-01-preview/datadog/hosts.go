@@ -77,6 +77,7 @@ func (client HostsClient) List(ctx context.Context, resourceGroupName string, mo
 	}
 	if result.hlr.hasNextLink() && result.hlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -138,7 +139,6 @@ func (client HostsClient) listNextResults(ctx context.Context, lastResults HostL
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.HostsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

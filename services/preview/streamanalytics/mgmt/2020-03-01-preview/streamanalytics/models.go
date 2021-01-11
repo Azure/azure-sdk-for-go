@@ -2135,53 +2135,19 @@ func (cp ClusterProperties) MarshalJSON() ([]byte, error) {
 // ClustersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ClustersCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ClustersCreateOrUpdateFuture) Result(client ClustersClient) (c Cluster, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "streamanalytics.ClustersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("streamanalytics.ClustersCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if c.Response.Response, err = future.GetResult(sender); err == nil && c.Response.Response.StatusCode != http.StatusNoContent {
-		c, err = client.CreateOrUpdateResponder(c.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "streamanalytics.ClustersCreateOrUpdateFuture", "Result", c.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ClustersClient) (Cluster, error)
 }
 
 // ClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ClustersDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ClustersDeleteFuture) Result(client ClustersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "streamanalytics.ClustersDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("streamanalytics.ClustersDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ClustersClient) (autorest.Response, error)
 }
 
 // ClusterSku the SKU of the cluster. This determines the size/capacity of the cluster. Required on PUT
@@ -2196,30 +2162,10 @@ type ClusterSku struct {
 // ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ClustersUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ClustersUpdateFuture) Result(client ClustersClient) (c Cluster, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "streamanalytics.ClustersUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("streamanalytics.ClustersUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if c.Response.Response, err = future.GetResult(sender); err == nil && c.Response.Response.StatusCode != http.StatusNoContent {
-		c, err = client.UpdateResponder(c.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "streamanalytics.ClustersUpdateFuture", "Result", c.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ClustersClient) (Cluster, error)
 }
 
 // Compression describes how input data is compressed
@@ -3921,30 +3867,10 @@ func (frddp FunctionRetrieveDefaultDefinitionParameters) AsBasicFunctionRetrieve
 // FunctionsTestFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type FunctionsTestFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *FunctionsTestFuture) Result(client FunctionsClient) (rts ResourceTestStatus, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "streamanalytics.FunctionsTestFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("streamanalytics.FunctionsTestFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if rts.Response.Response, err = future.GetResult(sender); err == nil && rts.Response.Response.StatusCode != http.StatusNoContent {
-		rts, err = client.TestResponder(rts.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "streamanalytics.FunctionsTestFuture", "Result", rts.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(FunctionsClient) (ResourceTestStatus, error)
 }
 
 // Identity describes how identity is verified
@@ -4357,30 +4283,10 @@ func (IP *InputProperties) UnmarshalJSON(body []byte) error {
 
 // InputsTestFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type InputsTestFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *InputsTestFuture) Result(client InputsClient) (rts ResourceTestStatus, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "streamanalytics.InputsTestFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("streamanalytics.InputsTestFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if rts.Response.Response, err = future.GetResult(sender); err == nil && rts.Response.Response.StatusCode != http.StatusNoContent {
-		rts, err = client.TestResponder(rts.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "streamanalytics.InputsTestFuture", "Result", rts.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(InputsClient) (ResourceTestStatus, error)
 }
 
 // IoTHubStreamInputDataSource describes an IoT Hub input data source that contains stream data.
@@ -5482,30 +5388,10 @@ func (op *OutputProperties) UnmarshalJSON(body []byte) error {
 
 // OutputsTestFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type OutputsTestFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *OutputsTestFuture) Result(client OutputsClient) (rts ResourceTestStatus, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "streamanalytics.OutputsTestFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("streamanalytics.OutputsTestFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if rts.Response.Response, err = future.GetResult(sender); err == nil && rts.Response.Response.StatusCode != http.StatusNoContent {
-		rts, err = client.TestResponder(rts.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "streamanalytics.OutputsTestFuture", "Result", rts.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(OutputsClient) (ResourceTestStatus, error)
 }
 
 // ParquetSerialization describes how data from an input is serialized or how data is serialized when
@@ -5912,24 +5798,10 @@ func (pep PrivateEndpointProperties) MarshalJSON() ([]byte, error) {
 // PrivateEndpointsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type PrivateEndpointsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *PrivateEndpointsDeleteFuture) Result(client PrivateEndpointsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "streamanalytics.PrivateEndpointsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("streamanalytics.PrivateEndpointsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(PrivateEndpointsClient) (autorest.Response, error)
 }
 
 // PrivateLinkConnectionState a collection of read-only information about the state of the connection to
@@ -7153,53 +7025,19 @@ func (sjp StreamingJobProperties) MarshalJSON() ([]byte, error) {
 // StreamingJobsCreateOrReplaceFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type StreamingJobsCreateOrReplaceFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *StreamingJobsCreateOrReplaceFuture) Result(client StreamingJobsClient) (sj StreamingJob, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsCreateOrReplaceFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("streamanalytics.StreamingJobsCreateOrReplaceFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sj.Response.Response, err = future.GetResult(sender); err == nil && sj.Response.Response.StatusCode != http.StatusNoContent {
-		sj, err = client.CreateOrReplaceResponder(sj.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsCreateOrReplaceFuture", "Result", sj.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(StreamingJobsClient) (StreamingJob, error)
 }
 
 // StreamingJobsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type StreamingJobsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *StreamingJobsDeleteFuture) Result(client StreamingJobsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("streamanalytics.StreamingJobsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(StreamingJobsClient) (autorest.Response, error)
 }
 
 // StreamingJobSku the properties that are associated with a SKU.
@@ -7211,47 +7049,19 @@ type StreamingJobSku struct {
 // StreamingJobsStartFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type StreamingJobsStartFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *StreamingJobsStartFuture) Result(client StreamingJobsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsStartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("streamanalytics.StreamingJobsStartFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(StreamingJobsClient) (autorest.Response, error)
 }
 
 // StreamingJobsStopFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type StreamingJobsStopFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *StreamingJobsStopFuture) Result(client StreamingJobsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsStopFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("streamanalytics.StreamingJobsStopFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(StreamingJobsClient) (autorest.Response, error)
 }
 
 // BasicStreamInputDataSource describes an input data source that contains stream data.

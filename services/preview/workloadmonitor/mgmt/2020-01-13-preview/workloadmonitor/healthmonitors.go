@@ -263,6 +263,7 @@ func (client HealthMonitorsClient) List(ctx context.Context, subscriptionID stri
 	}
 	if result.hml.hasNextLink() && result.hml.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -332,7 +333,6 @@ func (client HealthMonitorsClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.HealthMonitorsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -398,6 +398,7 @@ func (client HealthMonitorsClient) ListStateChanges(ctx context.Context, subscri
 	}
 	if result.hmscl.hasNextLink() && result.hmscl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -474,7 +475,6 @@ func (client HealthMonitorsClient) listStateChangesNextResults(ctx context.Conte
 	result, err = client.ListStateChangesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.HealthMonitorsClient", "listStateChangesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

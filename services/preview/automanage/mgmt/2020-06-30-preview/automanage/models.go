@@ -18,11 +18,9 @@ package automanage
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
 )
 
 // The package's fully qualified name.
@@ -194,30 +192,10 @@ func (cpap ConfigurationProfileAssignmentProperties) MarshalJSON() ([]byte, erro
 // ConfigurationProfileAssignmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the
 // results of a long-running operation.
 type ConfigurationProfileAssignmentsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ConfigurationProfileAssignmentsCreateOrUpdateFuture) Result(client ConfigurationProfileAssignmentsClient) (cpa ConfigurationProfileAssignment, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("automanage.ConfigurationProfileAssignmentsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if cpa.Response.Response, err = future.GetResult(sender); err == nil && cpa.Response.Response.StatusCode != http.StatusNoContent {
-		cpa, err = client.CreateOrUpdateResponder(cpa.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsCreateOrUpdateFuture", "Result", cpa.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ConfigurationProfileAssignmentsClient) (ConfigurationProfileAssignment, error)
 }
 
 // ConfigurationProfilePreference definition of the configuration profile preference.

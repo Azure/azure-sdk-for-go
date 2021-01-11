@@ -78,6 +78,7 @@ func (client ScriptExecutionHistoryClient) List(ctx context.Context, resourceGro
 	}
 	if result.saehl.hasNextLink() && result.saehl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -139,7 +140,6 @@ func (client ScriptExecutionHistoryClient) listNextResults(ctx context.Context, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

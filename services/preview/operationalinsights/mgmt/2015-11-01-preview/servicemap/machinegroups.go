@@ -388,6 +388,7 @@ func (client MachineGroupsClient) ListByWorkspace(ctx context.Context, resourceG
 	}
 	if result.mgc.hasNextLink() && result.mgc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -455,7 +456,6 @@ func (client MachineGroupsClient) listByWorkspaceNextResults(ctx context.Context
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "listByWorkspaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

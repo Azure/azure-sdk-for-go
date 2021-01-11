@@ -85,7 +85,7 @@ func (client RelationshipLinksClient) CreateOrUpdate(ctx context.Context, resour
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -124,7 +124,29 @@ func (client RelationshipLinksClient) CreateOrUpdateSender(req *http.Request) (f
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client RelationshipLinksClient) (rlrf RelationshipLinkResourceFormat, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("customerinsights.RelationshipLinksCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if rlrf.Response.Response, err = future.GetResult(sender); err == nil && rlrf.Response.Response.StatusCode != http.StatusNoContent {
+			rlrf, err = client.CreateOrUpdateResponder(rlrf.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksCreateOrUpdateFuture", "Result", rlrf.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -164,7 +186,7 @@ func (client RelationshipLinksClient) Delete(ctx context.Context, resourceGroupN
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -201,7 +223,23 @@ func (client RelationshipLinksClient) DeleteSender(req *http.Request) (future Re
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client RelationshipLinksClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("customerinsights.RelationshipLinksDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -330,6 +368,7 @@ func (client RelationshipLinksClient) ListByHub(ctx context.Context, resourceGro
 	}
 	if result.rllr.hasNextLink() && result.rllr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -391,7 +430,6 @@ func (client RelationshipLinksClient) listByHubNextResults(ctx context.Context, 
 	result, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "listByHubNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

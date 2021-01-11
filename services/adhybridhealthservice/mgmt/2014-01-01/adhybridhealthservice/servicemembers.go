@@ -631,6 +631,7 @@ func (client ServiceMembersClient) List(ctx context.Context, serviceName string,
 	}
 	if result.sm.hasNextLink() && result.sm.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -699,7 +700,6 @@ func (client ServiceMembersClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServiceMembersClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -760,6 +760,7 @@ func (client ServiceMembersClient) ListAlerts(ctx context.Context, serviceMember
 	}
 	if result.a.hasNextLink() && result.a.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -832,7 +833,6 @@ func (client ServiceMembersClient) listAlertsNextResults(ctx context.Context, la
 	result, err = client.ListAlertsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServiceMembersClient", "listAlertsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1119,6 +1119,7 @@ func (client ServiceMembersClient) ListExportStatus(ctx context.Context, service
 	}
 	if result.es.hasNextLink() && result.es.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1179,7 +1180,6 @@ func (client ServiceMembersClient) listExportStatusNextResults(ctx context.Conte
 	result, err = client.ListExportStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServiceMembersClient", "listExportStatusNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

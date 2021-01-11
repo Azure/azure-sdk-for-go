@@ -385,6 +385,7 @@ func (client ConsumerGroupsClient) ListAll(ctx context.Context, resourceGroupNam
 	}
 	if result.cglr.hasNextLink() && result.cglr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -447,7 +448,6 @@ func (client ConsumerGroupsClient) listAllNextResults(ctx context.Context, lastR
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "listAllNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

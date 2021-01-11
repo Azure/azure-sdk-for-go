@@ -328,6 +328,7 @@ func (client RoleAssignmentsClient) ListForScope(ctx context.Context, vaultBaseU
 	}
 	if result.ralr.hasNextLink() && result.ralr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -394,7 +395,6 @@ func (client RoleAssignmentsClient) listForScopeNextResults(ctx context.Context,
 	result, err = client.ListForScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.RoleAssignmentsClient", "listForScopeNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

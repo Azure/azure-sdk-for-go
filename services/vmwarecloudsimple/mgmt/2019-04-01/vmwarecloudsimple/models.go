@@ -1153,30 +1153,10 @@ func (dcnp *DedicatedCloudNodeProperties) UnmarshalJSON(body []byte) error {
 // DedicatedCloudNodesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type DedicatedCloudNodesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DedicatedCloudNodesCreateOrUpdateFuture) Result(client DedicatedCloudNodesClient) (dcn DedicatedCloudNode, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudNodesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.DedicatedCloudNodesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if dcn.Response.Response, err = future.GetResult(sender); err == nil && dcn.Response.Response.StatusCode != http.StatusNoContent {
-		dcn, err = client.CreateOrUpdateResponder(dcn.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudNodesCreateOrUpdateFuture", "Result", dcn.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DedicatedCloudNodesClient) (DedicatedCloudNode, error)
 }
 
 // DedicatedCloudService dedicated cloud service model
@@ -1464,24 +1444,10 @@ func (dcsp DedicatedCloudServiceProperties) MarshalJSON() ([]byte, error) {
 // DedicatedCloudServicesDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type DedicatedCloudServicesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DedicatedCloudServicesDeleteFuture) Result(client DedicatedCloudServicesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.DedicatedCloudServicesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DedicatedCloudServicesClient) (autorest.Response, error)
 }
 
 // GuestOSCustomization guest OS Customization properties
@@ -2921,99 +2887,37 @@ func (vmp VirtualMachineProperties) MarshalJSON() ([]byte, error) {
 // VirtualMachinesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type VirtualMachinesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualMachinesCreateOrUpdateFuture) Result(client VirtualMachinesClient) (VM VirtualMachine, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachinesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if VM.Response.Response, err = future.GetResult(sender); err == nil && VM.Response.Response.StatusCode != http.StatusNoContent {
-		VM, err = client.CreateOrUpdateResponder(VM.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesCreateOrUpdateFuture", "Result", VM.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VirtualMachinesClient) (VirtualMachine, error)
 }
 
 // VirtualMachinesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type VirtualMachinesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualMachinesDeleteFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachinesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VirtualMachinesClient) (autorest.Response, error)
 }
 
 // VirtualMachinesStartFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type VirtualMachinesStartFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualMachinesStartFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesStartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachinesStartFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VirtualMachinesClient) (autorest.Response, error)
 }
 
 // VirtualMachinesStopFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type VirtualMachinesStopFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualMachinesStopFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesStopFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachinesStopFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VirtualMachinesClient) (autorest.Response, error)
 }
 
 // VirtualMachineStopMode list of virtual machine stop modes
@@ -3025,30 +2929,10 @@ type VirtualMachineStopMode struct {
 // VirtualMachinesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type VirtualMachinesUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualMachinesUpdateFuture) Result(client VirtualMachinesClient) (VM VirtualMachine, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachinesUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if VM.Response.Response, err = future.GetResult(sender); err == nil && VM.Response.Response.StatusCode != http.StatusNoContent {
-		VM, err = client.UpdateResponder(VM.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesUpdateFuture", "Result", VM.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VirtualMachinesClient) (VirtualMachine, error)
 }
 
 // VirtualMachineTemplate virtual machine template model

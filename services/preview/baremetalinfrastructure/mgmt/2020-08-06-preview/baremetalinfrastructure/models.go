@@ -180,24 +180,10 @@ func (abmip AzureBareMetalInstanceProperties) MarshalJSON() ([]byte, error) {
 // AzureBareMetalInstancesDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type AzureBareMetalInstancesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *AzureBareMetalInstancesDeleteFuture) Result(client AzureBareMetalInstancesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("baremetalinfrastructure.AzureBareMetalInstancesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AzureBareMetalInstancesClient) (autorest.Response, error)
 }
 
 // AzureBareMetalInstancesListResult the response from the List AzureBareMetal Instances operation.
@@ -363,70 +349,28 @@ func NewAzureBareMetalInstancesListResultPage(cur AzureBareMetalInstancesListRes
 // AzureBareMetalInstancesRestartFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type AzureBareMetalInstancesRestartFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *AzureBareMetalInstancesRestartFuture) Result(client AzureBareMetalInstancesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesRestartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("baremetalinfrastructure.AzureBareMetalInstancesRestartFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AzureBareMetalInstancesClient) (autorest.Response, error)
 }
 
 // AzureBareMetalInstancesShutdownFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type AzureBareMetalInstancesShutdownFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *AzureBareMetalInstancesShutdownFuture) Result(client AzureBareMetalInstancesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesShutdownFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("baremetalinfrastructure.AzureBareMetalInstancesShutdownFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AzureBareMetalInstancesClient) (autorest.Response, error)
 }
 
 // AzureBareMetalInstancesStartFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type AzureBareMetalInstancesStartFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *AzureBareMetalInstancesStartFuture) Result(client AzureBareMetalInstancesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesStartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("baremetalinfrastructure.AzureBareMetalInstancesStartFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AzureBareMetalInstancesClient) (autorest.Response, error)
 }
 
 // AzureEntityResource the resource model definition for an Azure Resource Manager resource with an etag.

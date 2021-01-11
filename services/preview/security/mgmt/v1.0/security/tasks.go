@@ -252,6 +252,7 @@ func (client TasksClient) List(ctx context.Context, filter string) (result TaskL
 	}
 	if result.tl.hasNextLink() && result.tl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -314,7 +315,6 @@ func (client TasksClient) listNextResults(ctx context.Context, lastResults TaskL
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.TasksClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -376,6 +376,7 @@ func (client TasksClient) ListByHomeRegion(ctx context.Context, filter string) (
 	}
 	if result.tl.hasNextLink() && result.tl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -439,7 +440,6 @@ func (client TasksClient) listByHomeRegionNextResults(ctx context.Context, lastR
 	result, err = client.ListByHomeRegionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.TasksClient", "listByHomeRegionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -507,6 +507,7 @@ func (client TasksClient) ListByResourceGroup(ctx context.Context, resourceGroup
 	}
 	if result.tl.hasNextLink() && result.tl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -571,7 +572,6 @@ func (client TasksClient) listByResourceGroupNextResults(ctx context.Context, la
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.TasksClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

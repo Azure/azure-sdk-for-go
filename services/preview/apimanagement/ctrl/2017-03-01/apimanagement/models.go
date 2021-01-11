@@ -4259,59 +4259,19 @@ type SubscriptionUpdateParameters struct {
 // TenantConfigurationDeployFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type TenantConfigurationDeployFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *TenantConfigurationDeployFuture) Result(client TenantConfigurationClient) (orc OperationResultContract, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationDeployFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("apimanagement.TenantConfigurationDeployFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if orc.Response.Response, err = future.GetResult(sender); err == nil && orc.Response.Response.StatusCode != http.StatusNoContent {
-		orc, err = client.DeployResponder(orc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationDeployFuture", "Result", orc.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(TenantConfigurationClient) (OperationResultContract, error)
 }
 
 // TenantConfigurationSaveFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type TenantConfigurationSaveFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *TenantConfigurationSaveFuture) Result(client TenantConfigurationClient) (orc OperationResultContract, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationSaveFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("apimanagement.TenantConfigurationSaveFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if orc.Response.Response, err = future.GetResult(sender); err == nil && orc.Response.Response.StatusCode != http.StatusNoContent {
-		orc, err = client.SaveResponder(orc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationSaveFuture", "Result", orc.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(TenantConfigurationClient) (OperationResultContract, error)
 }
 
 // TenantConfigurationSyncStateContract tenant Configuration Synchronization State.
@@ -4336,30 +4296,10 @@ type TenantConfigurationSyncStateContract struct {
 // TenantConfigurationValidateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type TenantConfigurationValidateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *TenantConfigurationValidateFuture) Result(client TenantConfigurationClient) (orc OperationResultContract, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationValidateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("apimanagement.TenantConfigurationValidateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if orc.Response.Response, err = future.GetResult(sender); err == nil && orc.Response.Response.StatusCode != http.StatusNoContent {
-		orc, err = client.ValidateResponder(orc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationValidateFuture", "Result", orc.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(TenantConfigurationClient) (OperationResultContract, error)
 }
 
 // TermsOfServiceProperties terms of service contract properties.

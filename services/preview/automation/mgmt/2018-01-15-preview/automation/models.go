@@ -2480,30 +2480,10 @@ func (dcj *DscCompilationJob) UnmarshalJSON(body []byte) error {
 // DscCompilationJobCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DscCompilationJobCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DscCompilationJobCreateFuture) Result(client DscCompilationJobClient) (dcj DscCompilationJob, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("automation.DscCompilationJobCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if dcj.Response.Response, err = future.GetResult(sender); err == nil && dcj.Response.Response.StatusCode != http.StatusNoContent {
-		dcj, err = client.CreateResponder(dcj.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "automation.DscCompilationJobCreateFuture", "Result", dcj.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DscCompilationJobClient) (DscCompilationJob, error)
 }
 
 // DscCompilationJobCreateParameters the parameters supplied to the create compilation job operation.
@@ -3539,30 +3519,10 @@ type DscNodeConfigurationAssociationProperty struct {
 // DscNodeConfigurationCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type DscNodeConfigurationCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DscNodeConfigurationCreateOrUpdateFuture) Result(client DscNodeConfigurationClient) (dnc DscNodeConfiguration, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("automation.DscNodeConfigurationCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if dnc.Response.Response, err = future.GetResult(sender); err == nil && dnc.Response.Response.StatusCode != http.StatusNoContent {
-		dnc, err = client.CreateOrUpdateResponder(dnc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationCreateOrUpdateFuture", "Result", dnc.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DscNodeConfigurationClient) (DscNodeConfiguration, error)
 }
 
 // DscNodeConfigurationCreateOrUpdateParameters the parameters supplied to the create or update node
@@ -6636,53 +6596,19 @@ func (rd RunbookDraft) MarshalJSON() ([]byte, error) {
 // RunbookDraftPublishFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type RunbookDraftPublishFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *RunbookDraftPublishFuture) Result(client RunbookDraftClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.RunbookDraftPublishFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("automation.RunbookDraftPublishFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(RunbookDraftClient) (autorest.Response, error)
 }
 
 // RunbookDraftReplaceContentFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type RunbookDraftReplaceContentFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *RunbookDraftReplaceContentFuture) Result(client RunbookDraftClient) (rc ReadCloser, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.RunbookDraftReplaceContentFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("automation.RunbookDraftReplaceContentFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if rc.Response.Response, err = future.GetResult(sender); err == nil && rc.Response.Response.StatusCode != http.StatusNoContent {
-		rc, err = client.ReplaceContentResponder(rc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "automation.RunbookDraftReplaceContentFuture", "Result", rc.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(RunbookDraftClient) (ReadCloser, error)
 }
 
 // RunbookDraftUndoEditResult the response model for the undo edit runbook operation.

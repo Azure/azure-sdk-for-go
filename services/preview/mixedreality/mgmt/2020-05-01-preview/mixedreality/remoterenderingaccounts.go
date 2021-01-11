@@ -352,6 +352,7 @@ func (client RemoteRenderingAccountsClient) ListByResourceGroup(ctx context.Cont
 	}
 	if result.rrap.hasNextLink() && result.rrap.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -412,7 +413,6 @@ func (client RemoteRenderingAccountsClient) listByResourceGroupNextResults(ctx c
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mixedreality.RemoteRenderingAccountsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -466,6 +466,7 @@ func (client RemoteRenderingAccountsClient) ListBySubscription(ctx context.Conte
 	}
 	if result.rrap.hasNextLink() && result.rrap.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -525,7 +526,6 @@ func (client RemoteRenderingAccountsClient) listBySubscriptionNextResults(ctx co
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mixedreality.RemoteRenderingAccountsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

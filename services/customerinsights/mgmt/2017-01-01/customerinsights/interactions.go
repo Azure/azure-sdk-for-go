@@ -77,7 +77,7 @@ func (client InteractionsClient) CreateOrUpdate(ctx context.Context, resourceGro
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.InteractionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.InteractionsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -116,7 +116,29 @@ func (client InteractionsClient) CreateOrUpdateSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client InteractionsClient) (irf InteractionResourceFormat, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.InteractionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("customerinsights.InteractionsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if irf.Response.Response, err = future.GetResult(sender); err == nil && irf.Response.Response.StatusCode != http.StatusNoContent {
+			irf, err = client.CreateOrUpdateResponder(irf.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "customerinsights.InteractionsCreateOrUpdateFuture", "Result", irf.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -253,6 +275,7 @@ func (client InteractionsClient) ListByHub(ctx context.Context, resourceGroupNam
 	}
 	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -319,7 +342,6 @@ func (client InteractionsClient) listByHubNextResults(ctx context.Context, lastR
 	result, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.InteractionsClient", "listByHubNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

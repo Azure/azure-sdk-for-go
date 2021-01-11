@@ -1438,53 +1438,19 @@ func (mrup MonitorResourceUpdateParameters) MarshalJSON() ([]byte, error) {
 // MonitorsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type MonitorsCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MonitorsCreateFuture) Result(client MonitorsClient) (mr MonitorResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datadog.MonitorsCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("datadog.MonitorsCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if mr.Response.Response, err = future.GetResult(sender); err == nil && mr.Response.Response.StatusCode != http.StatusNoContent {
-		mr, err = client.CreateResponder(mr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "datadog.MonitorsCreateFuture", "Result", mr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MonitorsClient) (MonitorResource, error)
 }
 
 // MonitorsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type MonitorsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MonitorsDeleteFuture) Result(client MonitorsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datadog.MonitorsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("datadog.MonitorsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MonitorsClient) (autorest.Response, error)
 }
 
 // MonitorUpdateProperties the set of properties that can be update in a PATCH request to a monitor
@@ -1723,30 +1689,10 @@ type SetPasswordLink struct {
 // SingleSignOnConfigurationsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
 // of a long-running operation.
 type SingleSignOnConfigurationsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SingleSignOnConfigurationsCreateOrUpdateFuture) Result(client SingleSignOnConfigurationsClient) (ssor SingleSignOnResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datadog.SingleSignOnConfigurationsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("datadog.SingleSignOnConfigurationsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ssor.Response.Response, err = future.GetResult(sender); err == nil && ssor.Response.Response.StatusCode != http.StatusNoContent {
-		ssor, err = client.CreateOrUpdateResponder(ssor.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "datadog.SingleSignOnConfigurationsCreateOrUpdateFuture", "Result", ssor.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SingleSignOnConfigurationsClient) (SingleSignOnResource, error)
 }
 
 // SingleSignOnProperties ...

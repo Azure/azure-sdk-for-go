@@ -65,7 +65,7 @@ func (client FormulaClient) CreateOrUpdateResource(ctx context.Context, resource
 
 	result, err = client.CreateOrUpdateResourceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.FormulaClient", "CreateOrUpdateResource", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.FormulaClient", "CreateOrUpdateResource", nil, "Failure sending request")
 		return
 	}
 
@@ -104,7 +104,29 @@ func (client FormulaClient) CreateOrUpdateResourceSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client FormulaClient) (f Formula, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "dtl.FormulaCreateOrUpdateResourceFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("dtl.FormulaCreateOrUpdateResourceFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if f.Response.Response, err = future.GetResult(sender); err == nil && f.Response.Response.StatusCode != http.StatusNoContent {
+			f, err = client.CreateOrUpdateResourceResponder(f.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "dtl.FormulaCreateOrUpdateResourceFuture", "Result", f.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -312,6 +334,7 @@ func (client FormulaClient) List(ctx context.Context, resourceGroupName string, 
 	}
 	if result.rwcf.hasNextLink() && result.rwcf.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -382,7 +405,6 @@ func (client FormulaClient) listNextResults(ctx context.Context, lastResults Res
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.FormulaClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

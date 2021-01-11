@@ -75,7 +75,7 @@ func (client AppServiceEnvironmentsClient) ChangeVnet(ctx context.Context, resou
 
 	result, err = client.ChangeVnetSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ChangeVnet", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ChangeVnet", nil, "Failure sending request")
 		return
 	}
 
@@ -115,7 +115,29 @@ func (client AppServiceEnvironmentsClient) ChangeVnetSender(req *http.Request) (
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AppServiceEnvironmentsClient) (acp AppCollectionPage, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsChangeVnetFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsChangeVnetFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if acp.ac.Response.Response, err = future.GetResult(sender); err == nil && acp.ac.Response.Response.StatusCode != http.StatusNoContent {
+			acp, err = client.ChangeVnetResponder(acp.ac.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsChangeVnetFuture", "Result", acp.ac.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -168,7 +190,7 @@ func (client AppServiceEnvironmentsClient) ChangeVnetComplete(ctx context.Contex
 	}
 	var future AppServiceEnvironmentsChangeVnetFuture
 	future, err = client.ChangeVnet(ctx, resourceGroupName, name, vnetInfo)
-	result.Future = future.Future
+	result.FutureAPI = future.FutureAPI
 	return
 }
 
@@ -211,7 +233,7 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdate(ctx context.Context, r
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -249,7 +271,29 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateSender(req *http.Reques
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AppServiceEnvironmentsClient) (aser AppServiceEnvironmentResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if aser.Response.Response, err = future.GetResult(sender); err == nil && aser.Response.Response.StatusCode != http.StatusNoContent {
+			aser, err = client.CreateOrUpdateResponder(aser.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsCreateOrUpdateFuture", "Result", aser.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -297,7 +341,7 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePool(ctx conte
 
 	result, err = client.CreateOrUpdateMultiRolePoolSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateMultiRolePool", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateMultiRolePool", nil, "Failure sending request")
 		return
 	}
 
@@ -335,7 +379,29 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePoolSender(req
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AppServiceEnvironmentsClient) (wpr WorkerPoolResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsCreateOrUpdateMultiRolePoolFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsCreateOrUpdateMultiRolePoolFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if wpr.Response.Response, err = future.GetResult(sender); err == nil && wpr.Response.Response.StatusCode != http.StatusNoContent {
+			wpr, err = client.CreateOrUpdateMultiRolePoolResponder(wpr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsCreateOrUpdateMultiRolePoolFuture", "Result", wpr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -384,7 +450,7 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPool(ctx context.
 
 	result, err = client.CreateOrUpdateWorkerPoolSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateWorkerPool", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateWorkerPool", nil, "Failure sending request")
 		return
 	}
 
@@ -423,7 +489,29 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPoolSender(req *h
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AppServiceEnvironmentsClient) (wpr WorkerPoolResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsCreateOrUpdateWorkerPoolFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsCreateOrUpdateWorkerPoolFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if wpr.Response.Response, err = future.GetResult(sender); err == nil && wpr.Response.Response.StatusCode != http.StatusNoContent {
+			wpr, err = client.CreateOrUpdateWorkerPoolResponder(wpr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsCreateOrUpdateWorkerPoolFuture", "Result", wpr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -472,7 +560,7 @@ func (client AppServiceEnvironmentsClient) Delete(ctx context.Context, resourceG
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -511,7 +599,23 @@ func (client AppServiceEnvironmentsClient) DeleteSender(req *http.Request) (futu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AppServiceEnvironmentsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -741,6 +845,7 @@ func (client AppServiceEnvironmentsClient) GetInboundNetworkDependenciesEndpoint
 	}
 	if result.ieec.hasNextLink() && result.ieec.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -802,7 +907,6 @@ func (client AppServiceEnvironmentsClient) getInboundNetworkDependenciesEndpoint
 	result, err = client.GetInboundNetworkDependenciesEndpointsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "getInboundNetworkDependenciesEndpointsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -952,6 +1056,7 @@ func (client AppServiceEnvironmentsClient) GetOutboundNetworkDependenciesEndpoin
 	}
 	if result.oeec.hasNextLink() && result.oeec.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1013,7 +1118,6 @@ func (client AppServiceEnvironmentsClient) getOutboundNetworkDependenciesEndpoin
 	result, err = client.GetOutboundNetworkDependenciesEndpointsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "getOutboundNetworkDependenciesEndpointsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1237,6 +1341,7 @@ func (client AppServiceEnvironmentsClient) List(ctx context.Context) (result App
 	}
 	if result.asec.hasNextLink() && result.asec.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1296,7 +1401,6 @@ func (client AppServiceEnvironmentsClient) listNextResults(ctx context.Context, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1361,6 +1465,7 @@ func (client AppServiceEnvironmentsClient) ListAppServicePlans(ctx context.Conte
 	}
 	if result.aspc.hasNextLink() && result.aspc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1422,7 +1527,6 @@ func (client AppServiceEnvironmentsClient) listAppServicePlansNextResults(ctx co
 	result, err = client.ListAppServicePlansResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "listAppServicePlansNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1486,6 +1590,7 @@ func (client AppServiceEnvironmentsClient) ListByResourceGroup(ctx context.Conte
 	}
 	if result.asec.hasNextLink() && result.asec.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1546,7 +1651,6 @@ func (client AppServiceEnvironmentsClient) listByResourceGroupNextResults(ctx co
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1611,6 +1715,7 @@ func (client AppServiceEnvironmentsClient) ListCapacities(ctx context.Context, r
 	}
 	if result.scc.hasNextLink() && result.scc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1672,7 +1777,6 @@ func (client AppServiceEnvironmentsClient) listCapacitiesNextResults(ctx context
 	result, err = client.ListCapacitiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "listCapacitiesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1822,6 +1926,7 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleMetricDefinitions(ctx co
 	}
 	if result.rmdc.hasNextLink() && result.rmdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1883,7 +1988,6 @@ func (client AppServiceEnvironmentsClient) listMultiRoleMetricDefinitionsNextRes
 	result, err = client.ListMultiRoleMetricDefinitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "listMultiRoleMetricDefinitionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1950,6 +2054,7 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricDefini
 	}
 	if result.rmdc.hasNextLink() && result.rmdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2012,7 +2117,6 @@ func (client AppServiceEnvironmentsClient) listMultiRolePoolInstanceMetricDefini
 	result, err = client.ListMultiRolePoolInstanceMetricDefinitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "listMultiRolePoolInstanceMetricDefinitionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2077,6 +2181,7 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePools(ctx context.Contex
 	}
 	if result.wpc.hasNextLink() && result.wpc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2138,7 +2243,6 @@ func (client AppServiceEnvironmentsClient) listMultiRolePoolsNextResults(ctx con
 	result, err = client.ListMultiRolePoolsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "listMultiRolePoolsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2203,6 +2307,7 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolSkus(ctx context.Con
 	}
 	if result.sic.hasNextLink() && result.sic.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2264,7 +2369,6 @@ func (client AppServiceEnvironmentsClient) listMultiRolePoolSkusNextResults(ctx 
 	result, err = client.ListMultiRolePoolSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "listMultiRolePoolSkusNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2329,6 +2433,7 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleUsages(ctx context.Conte
 	}
 	if result.uc.hasNextLink() && result.uc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2390,7 +2495,6 @@ func (client AppServiceEnvironmentsClient) listMultiRoleUsagesNextResults(ctx co
 	result, err = client.ListMultiRoleUsagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "listMultiRoleUsagesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2542,6 +2646,7 @@ func (client AppServiceEnvironmentsClient) ListUsages(ctx context.Context, resou
 	}
 	if result.cuqc.hasNextLink() && result.cuqc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2606,7 +2711,6 @@ func (client AppServiceEnvironmentsClient) listUsagesNextResults(ctx context.Con
 	result, err = client.ListUsagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "listUsagesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2672,6 +2776,7 @@ func (client AppServiceEnvironmentsClient) ListWebApps(ctx context.Context, reso
 	}
 	if result.ac.hasNextLink() && result.ac.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2736,7 +2841,6 @@ func (client AppServiceEnvironmentsClient) listWebAppsNextResults(ctx context.Co
 	result, err = client.ListWebAppsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "listWebAppsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2803,6 +2907,7 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerMetricDefinitions(ctx co
 	}
 	if result.rmdc.hasNextLink() && result.rmdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2865,7 +2970,6 @@ func (client AppServiceEnvironmentsClient) listWebWorkerMetricDefinitionsNextRes
 	result, err = client.ListWebWorkerMetricDefinitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "listWebWorkerMetricDefinitionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2931,6 +3035,7 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerUsages(ctx context.Conte
 	}
 	if result.uc.hasNextLink() && result.uc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2993,7 +3098,6 @@ func (client AppServiceEnvironmentsClient) listWebWorkerUsagesNextResults(ctx co
 	result, err = client.ListWebWorkerUsagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "listWebWorkerUsagesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -3061,6 +3165,7 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricDefinitio
 	}
 	if result.rmdc.hasNextLink() && result.rmdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -3124,7 +3229,6 @@ func (client AppServiceEnvironmentsClient) listWorkerPoolInstanceMetricDefinitio
 	result, err = client.ListWorkerPoolInstanceMetricDefinitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "listWorkerPoolInstanceMetricDefinitionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -3189,6 +3293,7 @@ func (client AppServiceEnvironmentsClient) ListWorkerPools(ctx context.Context, 
 	}
 	if result.wpc.hasNextLink() && result.wpc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -3250,7 +3355,6 @@ func (client AppServiceEnvironmentsClient) listWorkerPoolsNextResults(ctx contex
 	result, err = client.ListWorkerPoolsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "listWorkerPoolsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -3316,6 +3420,7 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolSkus(ctx context.Contex
 	}
 	if result.sic.hasNextLink() && result.sic.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -3378,7 +3483,6 @@ func (client AppServiceEnvironmentsClient) listWorkerPoolSkusNextResults(ctx con
 	result, err = client.ListWorkerPoolSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "listWorkerPoolSkusNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -3513,7 +3617,7 @@ func (client AppServiceEnvironmentsClient) Resume(ctx context.Context, resourceG
 
 	result, err = client.ResumeSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Resume", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Resume", nil, "Failure sending request")
 		return
 	}
 
@@ -3549,7 +3653,29 @@ func (client AppServiceEnvironmentsClient) ResumeSender(req *http.Request) (futu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AppServiceEnvironmentsClient) (acp AppCollectionPage, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsResumeFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsResumeFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if acp.ac.Response.Response, err = future.GetResult(sender); err == nil && acp.ac.Response.Response.StatusCode != http.StatusNoContent {
+			acp, err = client.ResumeResponder(acp.ac.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsResumeFuture", "Result", acp.ac.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -3602,7 +3728,7 @@ func (client AppServiceEnvironmentsClient) ResumeComplete(ctx context.Context, r
 	}
 	var future AppServiceEnvironmentsResumeFuture
 	future, err = client.Resume(ctx, resourceGroupName, name)
-	result.Future = future.Future
+	result.FutureAPI = future.FutureAPI
 	return
 }
 
@@ -3637,7 +3763,7 @@ func (client AppServiceEnvironmentsClient) Suspend(ctx context.Context, resource
 
 	result, err = client.SuspendSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Suspend", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Suspend", nil, "Failure sending request")
 		return
 	}
 
@@ -3673,7 +3799,29 @@ func (client AppServiceEnvironmentsClient) SuspendSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client AppServiceEnvironmentsClient) (acp AppCollectionPage, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsSuspendFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsSuspendFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if acp.ac.Response.Response, err = future.GetResult(sender); err == nil && acp.ac.Response.Response.StatusCode != http.StatusNoContent {
+			acp, err = client.SuspendResponder(acp.ac.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsSuspendFuture", "Result", acp.ac.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -3726,7 +3874,7 @@ func (client AppServiceEnvironmentsClient) SuspendComplete(ctx context.Context, 
 	}
 	var future AppServiceEnvironmentsSuspendFuture
 	future, err = client.Suspend(ctx, resourceGroupName, name)
-	result.Future = future.Future
+	result.FutureAPI = future.FutureAPI
 	return
 }
 

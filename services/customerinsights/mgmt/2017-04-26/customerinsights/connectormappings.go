@@ -345,6 +345,7 @@ func (client ConnectorMappingsClient) ListByConnector(ctx context.Context, resou
 	}
 	if result.cmlr.hasNextLink() && result.cmlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -407,7 +408,6 @@ func (client ConnectorMappingsClient) listByConnectorNextResults(ctx context.Con
 	result, err = client.ListByConnectorResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "listByConnectorNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

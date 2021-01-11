@@ -355,6 +355,7 @@ func (client DscCompilationJobClient) ListByAutomationAccount(ctx context.Contex
 	}
 	if result.dcjlr.hasNextLink() && result.dcjlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -419,7 +420,6 @@ func (client DscCompilationJobClient) listByAutomationAccountNextResults(ctx con
 	result, err = client.ListByAutomationAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobClient", "listByAutomationAccountNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

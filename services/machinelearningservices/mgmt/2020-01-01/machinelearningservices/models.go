@@ -1930,82 +1930,28 @@ func NewListWorkspaceQuotasPage(cur ListWorkspaceQuotas, getNextPage func(contex
 // MachineLearningComputeCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type MachineLearningComputeCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MachineLearningComputeCreateOrUpdateFuture) Result(client MachineLearningComputeClient) (cr ComputeResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("machinelearningservices.MachineLearningComputeCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if cr.Response.Response, err = future.GetResult(sender); err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
-		cr, err = client.CreateOrUpdateResponder(cr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeCreateOrUpdateFuture", "Result", cr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MachineLearningComputeClient) (ComputeResource, error)
 }
 
 // MachineLearningComputeDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type MachineLearningComputeDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MachineLearningComputeDeleteFuture) Result(client MachineLearningComputeClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("machinelearningservices.MachineLearningComputeDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MachineLearningComputeClient) (autorest.Response, error)
 }
 
 // MachineLearningComputeUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type MachineLearningComputeUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MachineLearningComputeUpdateFuture) Result(client MachineLearningComputeClient) (cr ComputeResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("machinelearningservices.MachineLearningComputeUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if cr.Response.Response, err = future.GetResult(sender); err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
-		cr, err = client.UpdateResponder(cr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeUpdateFuture", "Result", cr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MachineLearningComputeClient) (ComputeResource, error)
 }
 
 // NodeStateCounts counts of various compute node states on the amlCompute.
@@ -3501,53 +3447,19 @@ type WorkspacePropertiesUpdateParameters struct {
 // WorkspacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type WorkspacesCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *WorkspacesCreateOrUpdateFuture) Result(client WorkspacesClient) (w Workspace, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "machinelearningservices.WorkspacesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("machinelearningservices.WorkspacesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if w.Response.Response, err = future.GetResult(sender); err == nil && w.Response.Response.StatusCode != http.StatusNoContent {
-		w, err = client.CreateOrUpdateResponder(w.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "machinelearningservices.WorkspacesCreateOrUpdateFuture", "Result", w.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(WorkspacesClient) (Workspace, error)
 }
 
 // WorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type WorkspacesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *WorkspacesDeleteFuture) Result(client WorkspacesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "machinelearningservices.WorkspacesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("machinelearningservices.WorkspacesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(WorkspacesClient) (autorest.Response, error)
 }
 
 // WorkspaceSku describes Workspace Sku details and features

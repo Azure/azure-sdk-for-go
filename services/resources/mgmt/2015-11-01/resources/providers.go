@@ -150,6 +150,7 @@ func (client ProvidersClient) List(ctx context.Context, top *int32) (result Prov
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -212,7 +213,6 @@ func (client ProvidersClient) listNextResults(ctx context.Context, lastResults P
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.ProvidersClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

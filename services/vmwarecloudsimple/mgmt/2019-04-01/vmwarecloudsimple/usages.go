@@ -78,6 +78,7 @@ func (client UsagesClient) List(ctx context.Context, regionID string, filter str
 	}
 	if result.ulr.hasNextLink() && result.ulr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -141,7 +142,6 @@ func (client UsagesClient) listNextResults(ctx context.Context, lastResults Usag
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.UsagesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -303,6 +303,7 @@ func (client PostgresInstancesClient) List(ctx context.Context) (result Postgres
 	}
 	if result.pilr.hasNextLink() && result.pilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -362,7 +363,6 @@ func (client PostgresInstancesClient) listNextResults(ctx context.Context, lastR
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.PostgresInstancesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -418,6 +418,7 @@ func (client PostgresInstancesClient) ListByResourceGroup(ctx context.Context, r
 	}
 	if result.pilr.hasNextLink() && result.pilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -478,7 +479,6 @@ func (client PostgresInstancesClient) listByResourceGroupNextResults(ctx context
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.PostgresInstancesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

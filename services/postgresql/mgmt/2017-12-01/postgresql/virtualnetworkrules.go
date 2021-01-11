@@ -83,7 +83,7 @@ func (client VirtualNetworkRulesClient) CreateOrUpdate(ctx context.Context, reso
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "postgresql.VirtualNetworkRulesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "postgresql.VirtualNetworkRulesClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -122,7 +122,29 @@ func (client VirtualNetworkRulesClient) CreateOrUpdateSender(req *http.Request) 
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualNetworkRulesClient) (vnr VirtualNetworkRule, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "postgresql.VirtualNetworkRulesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("postgresql.VirtualNetworkRulesCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if vnr.Response.Response, err = future.GetResult(sender); err == nil && vnr.Response.Response.StatusCode != http.StatusNoContent {
+			vnr, err = client.CreateOrUpdateResponder(vnr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "postgresql.VirtualNetworkRulesCreateOrUpdateFuture", "Result", vnr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -172,7 +194,7 @@ func (client VirtualNetworkRulesClient) Delete(ctx context.Context, resourceGrou
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "postgresql.VirtualNetworkRulesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "postgresql.VirtualNetworkRulesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -209,7 +231,23 @@ func (client VirtualNetworkRulesClient) DeleteSender(req *http.Request) (future 
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualNetworkRulesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "postgresql.VirtualNetworkRulesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("postgresql.VirtualNetworkRulesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -358,6 +396,7 @@ func (client VirtualNetworkRulesClient) ListByServer(ctx context.Context, resour
 	}
 	if result.vnrlr.hasNextLink() && result.vnrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -419,7 +458,6 @@ func (client VirtualNetworkRulesClient) listByServerNextResults(ctx context.Cont
 	result, err = client.ListByServerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "postgresql.VirtualNetworkRulesClient", "listByServerNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

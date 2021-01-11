@@ -66,7 +66,7 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 
 	result, err = client.CreateOrUpdateManagedHostingEnvironmentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "CreateOrUpdateManagedHostingEnvironment", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "CreateOrUpdateManagedHostingEnvironment", nil, "Failure sending request")
 		return
 	}
 
@@ -104,7 +104,29 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ManagedHostingEnvironmentsClient) (he HostingEnvironment, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if he.Response.Response, err = future.GetResult(sender); err == nil && he.Response.Response.StatusCode != http.StatusNoContent {
+			he, err = client.CreateOrUpdateManagedHostingEnvironmentResponder(he.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture", "Result", he.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -144,7 +166,7 @@ func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironment(c
 
 	result, err = client.DeleteManagedHostingEnvironmentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "DeleteManagedHostingEnvironment", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "DeleteManagedHostingEnvironment", nil, "Failure sending request")
 		return
 	}
 
@@ -183,7 +205,29 @@ func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentSe
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ManagedHostingEnvironmentsClient) (so SetObject, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("web.ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+			so, err = client.DeleteManagedHostingEnvironmentResponder(so.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture", "Result", so.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -388,6 +432,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironments(ctx
 	}
 	if result.hec.hasNextLink() && result.hec.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -448,7 +493,6 @@ func (client ManagedHostingEnvironmentsClient) getManagedHostingEnvironmentsNext
 	result, err = client.GetManagedHostingEnvironmentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "getManagedHostingEnvironmentsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -505,6 +549,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServe
 	}
 	if result.sfc.hasNextLink() && result.sfc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -566,7 +611,6 @@ func (client ManagedHostingEnvironmentsClient) getManagedHostingEnvironmentServe
 	result, err = client.GetManagedHostingEnvironmentServerFarmsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "getManagedHostingEnvironmentServerFarmsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -624,6 +668,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSites
 	}
 	if result.sc.hasNextLink() && result.sc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -688,7 +733,6 @@ func (client ManagedHostingEnvironmentsClient) getManagedHostingEnvironmentSites
 	result, err = client.GetManagedHostingEnvironmentSitesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "getManagedHostingEnvironmentSitesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -821,6 +865,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentWebHo
 	}
 	if result.sfc.hasNextLink() && result.sfc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -882,7 +927,6 @@ func (client ManagedHostingEnvironmentsClient) getManagedHostingEnvironmentWebHo
 	result, err = client.GetManagedHostingEnvironmentWebHostingPlansResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "getManagedHostingEnvironmentWebHostingPlansNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

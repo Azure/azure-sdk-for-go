@@ -299,6 +299,7 @@ func (client PeerAsnsClient) ListBySubscription(ctx context.Context) (result Pee
 	}
 	if result.palr.hasNextLink() && result.palr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -358,7 +359,6 @@ func (client PeerAsnsClient) listBySubscriptionNextResults(ctx context.Context, 
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeerAsnsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -66,7 +66,7 @@ func (client SingleSignOnConfigurationsClient) CreateOrUpdate(ctx context.Contex
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datadog.SingleSignOnConfigurationsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "datadog.SingleSignOnConfigurationsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -111,7 +111,29 @@ func (client SingleSignOnConfigurationsClient) CreateOrUpdateSender(req *http.Re
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SingleSignOnConfigurationsClient) (ssor SingleSignOnResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "datadog.SingleSignOnConfigurationsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("datadog.SingleSignOnConfigurationsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ssor.Response.Response, err = future.GetResult(sender); err == nil && ssor.Response.Response.StatusCode != http.StatusNoContent {
+			ssor, err = client.CreateOrUpdateResponder(ssor.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "datadog.SingleSignOnConfigurationsCreateOrUpdateFuture", "Result", ssor.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -241,6 +263,7 @@ func (client SingleSignOnConfigurationsClient) List(ctx context.Context, resourc
 	}
 	if result.ssorlr.hasNextLink() && result.ssorlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -302,7 +325,6 @@ func (client SingleSignOnConfigurationsClient) listNextResults(ctx context.Conte
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datadog.SingleSignOnConfigurationsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

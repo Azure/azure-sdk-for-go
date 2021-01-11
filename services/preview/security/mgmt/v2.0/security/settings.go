@@ -161,6 +161,7 @@ func (client SettingsClient) List(ctx context.Context) (result SettingsListPage,
 	}
 	if result.sl.hasNextLink() && result.sl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -220,7 +221,6 @@ func (client SettingsClient) listNextResults(ctx context.Context, lastResults Se
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.SettingsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

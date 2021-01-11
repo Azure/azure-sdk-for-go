@@ -197,53 +197,19 @@ func (cs *ContainerService) UnmarshalJSON(body []byte) error {
 // ContainerServicesCreateOrUpdateFutureType an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ContainerServicesCreateOrUpdateFutureType struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ContainerServicesCreateOrUpdateFutureType) Result(client ContainerServicesClient) (cs ContainerService, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesCreateOrUpdateFutureType", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("containerservice.ContainerServicesCreateOrUpdateFutureType")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if cs.Response.Response, err = future.GetResult(sender); err == nil && cs.Response.Response.StatusCode != http.StatusNoContent {
-		cs, err = client.CreateOrUpdateResponder(cs.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesCreateOrUpdateFutureType", "Result", cs.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ContainerServicesClient) (ContainerService, error)
 }
 
 // ContainerServicesDeleteFutureType an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ContainerServicesDeleteFutureType struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ContainerServicesDeleteFutureType) Result(client ContainerServicesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesDeleteFutureType", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("containerservice.ContainerServicesDeleteFutureType")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ContainerServicesClient) (autorest.Response, error)
 }
 
 // CustomProfile properties to configure a custom container service cluster.
@@ -868,53 +834,19 @@ func (mcp ManagedClusterProperties) MarshalJSON() ([]byte, error) {
 // ManagedClustersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ManagedClustersCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ManagedClustersCreateOrUpdateFuture) Result(client ManagedClustersClient) (mc ManagedCluster, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if mc.Response.Response, err = future.GetResult(sender); err == nil && mc.Response.Response.StatusCode != http.StatusNoContent {
-		mc, err = client.CreateOrUpdateResponder(mc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersCreateOrUpdateFuture", "Result", mc.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ManagedClustersClient) (ManagedCluster, error)
 }
 
 // ManagedClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ManagedClustersDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ManagedClustersDeleteFuture) Result(client ManagedClustersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ManagedClustersClient) (autorest.Response, error)
 }
 
 // ManagedClusterUpgradeProfile the list of available upgrades for compute pools.

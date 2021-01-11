@@ -76,6 +76,7 @@ func (client OperationsClient) List(ctx context.Context, skiptoken string) (resu
 	}
 	if result.olr.hasNextLink() && result.olr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -134,7 +135,6 @@ func (client OperationsClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.OperationsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

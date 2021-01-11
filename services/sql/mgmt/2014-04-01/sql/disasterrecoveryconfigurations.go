@@ -69,7 +69,7 @@ func (client DisasterRecoveryConfigurationsClient) CreateOrUpdate(ctx context.Co
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -106,7 +106,29 @@ func (client DisasterRecoveryConfigurationsClient) CreateOrUpdateSender(req *htt
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DisasterRecoveryConfigurationsClient) (drc DisasterRecoveryConfiguration, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("sql.DisasterRecoveryConfigurationsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if drc.Response.Response, err = future.GetResult(sender); err == nil && drc.Response.Response.StatusCode != http.StatusNoContent {
+			drc, err = client.CreateOrUpdateResponder(drc.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsCreateOrUpdateFuture", "Result", drc.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -147,7 +169,7 @@ func (client DisasterRecoveryConfigurationsClient) Delete(ctx context.Context, r
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -184,7 +206,23 @@ func (client DisasterRecoveryConfigurationsClient) DeleteSender(req *http.Reques
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DisasterRecoveryConfigurationsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("sql.DisasterRecoveryConfigurationsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -224,7 +262,7 @@ func (client DisasterRecoveryConfigurationsClient) Failover(ctx context.Context,
 
 	result, err = client.FailoverSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsClient", "Failover", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsClient", "Failover", nil, "Failure sending request")
 		return
 	}
 
@@ -261,7 +299,23 @@ func (client DisasterRecoveryConfigurationsClient) FailoverSender(req *http.Requ
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DisasterRecoveryConfigurationsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsFailoverFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("sql.DisasterRecoveryConfigurationsFailoverFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -302,7 +356,7 @@ func (client DisasterRecoveryConfigurationsClient) FailoverAllowDataLoss(ctx con
 
 	result, err = client.FailoverAllowDataLossSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsClient", "FailoverAllowDataLoss", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsClient", "FailoverAllowDataLoss", nil, "Failure sending request")
 		return
 	}
 
@@ -339,7 +393,23 @@ func (client DisasterRecoveryConfigurationsClient) FailoverAllowDataLossSender(r
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DisasterRecoveryConfigurationsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsFailoverAllowDataLossFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("sql.DisasterRecoveryConfigurationsFailoverAllowDataLossFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

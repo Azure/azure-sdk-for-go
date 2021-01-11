@@ -317,6 +317,7 @@ func (client WorkflowAccessKeysClient) List(ctx context.Context, resourceGroupNa
 	}
 	if result.waklr.hasNextLink() && result.waklr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -381,7 +382,6 @@ func (client WorkflowAccessKeysClient) listNextResults(ctx context.Context, last
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowAccessKeysClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -319,6 +319,7 @@ func (client JobsClient) List(ctx context.Context, resourceGroupName string, job
 	}
 	if result.jlr.hasNextLink() && result.jlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -389,7 +390,6 @@ func (client JobsClient) listNextResults(ctx context.Context, lastResults JobLis
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -450,6 +450,7 @@ func (client JobsClient) ListJobHistory(ctx context.Context, resourceGroupName s
 	}
 	if result.jhlr.hasNextLink() && result.jhlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -521,7 +522,6 @@ func (client JobsClient) listJobHistoryNextResults(ctx context.Context, lastResu
 	result, err = client.ListJobHistoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "listJobHistoryNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -211,6 +211,7 @@ func (client ConfigurationClient) ListAddsConfigurations(ctx context.Context, se
 	}
 	if result.ac.hasNextLink() && result.ac.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -270,7 +271,6 @@ func (client ConfigurationClient) listAddsConfigurationsNextResults(ctx context.
 	result, err = client.ListAddsConfigurationsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "listAddsConfigurationsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

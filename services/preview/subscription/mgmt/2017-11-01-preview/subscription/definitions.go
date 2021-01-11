@@ -66,7 +66,7 @@ func (client DefinitionsClient) Create(ctx context.Context, subscriptionDefiniti
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.DefinitionsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "subscription.DefinitionsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -105,7 +105,29 @@ func (client DefinitionsClient) CreateSender(req *http.Request) (future Definiti
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DefinitionsClient) (d Definition, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "subscription.DefinitionsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("subscription.DefinitionsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
+			d, err = client.CreateResponder(d.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "subscription.DefinitionsCreateFuture", "Result", d.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -302,6 +324,7 @@ func (client DefinitionsClient) List(ctx context.Context) (result DefinitionList
 	}
 	if result.dl.hasNextLink() && result.dl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -357,7 +380,6 @@ func (client DefinitionsClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.DefinitionsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -19,7 +19,7 @@ import (
 )
 
 func testRetryOptions() *RetryOptions {
-	def := DefaultRetryOptions()
+	def := RetryOptions{}
 	def.RetryDelay = 20 * time.Millisecond
 	def.TryTimeout = 1 * time.Second
 	return &def

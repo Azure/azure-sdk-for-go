@@ -97,7 +97,7 @@ type CommitBlockListOptions struct {
 	TransactionalContentMd5   *[]byte
 	BlobHTTPHeaders           *BlobHttpHeaders
 	CpkInfo                   *CpkInfo
-	CpkScope                  *CpkScopeInfo
+	CpkScopeInfo              *CpkScopeInfo
 	BlobAccessConditions
 }
 
@@ -116,7 +116,7 @@ func (o *CommitBlockListOptions) pointers() (*BlockBlobCommitBlockListOptions, *
 		TransactionalContentMd5:   o.TransactionalContentMd5,
 	}
 
-	return options, o.BlobHTTPHeaders, o.CpkInfo, o.CpkScope, o.ModifiedAccessConditions, o.LeaseAccessConditions
+	return options, o.BlobHTTPHeaders, o.CpkInfo, o.CpkScopeInfo, o.ModifiedAccessConditions, o.LeaseAccessConditions
 }
 
 type GetBlockListOptions struct {

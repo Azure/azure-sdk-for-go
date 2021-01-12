@@ -33,53 +33,19 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/delegatednetwor
 // ControllerCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ControllerCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ControllerCreateFuture) Result(client ControllerClient) (dc DelegatedController, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "delegatednetwork.ControllerCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("delegatednetwork.ControllerCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if dc.Response.Response, err = future.GetResult(sender); err == nil && dc.Response.Response.StatusCode != http.StatusNoContent {
-		dc, err = client.CreateResponder(dc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "delegatednetwork.ControllerCreateFuture", "Result", dc.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ControllerClient) (DelegatedController, error)
 }
 
 // ControllerDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ControllerDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ControllerDeleteFuture) Result(client ControllerClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "delegatednetwork.ControllerDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("delegatednetwork.ControllerDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ControllerClient) (autorest.Response, error)
 }
 
 // ControllerDetails controller details
@@ -584,82 +550,28 @@ func (ds DelegatedSubnets) MarshalJSON() ([]byte, error) {
 // DelegatedSubnetServiceDeleteDetailsFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type DelegatedSubnetServiceDeleteDetailsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DelegatedSubnetServiceDeleteDetailsFuture) Result(client DelegatedSubnetServiceClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceDeleteDetailsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("delegatednetwork.DelegatedSubnetServiceDeleteDetailsFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DelegatedSubnetServiceClient) (autorest.Response, error)
 }
 
 // DelegatedSubnetServicePatchDetailsFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type DelegatedSubnetServicePatchDetailsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DelegatedSubnetServicePatchDetailsFuture) Result(client DelegatedSubnetServiceClient) (ds DelegatedSubnet, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServicePatchDetailsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("delegatednetwork.DelegatedSubnetServicePatchDetailsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ds.Response.Response, err = future.GetResult(sender); err == nil && ds.Response.Response.StatusCode != http.StatusNoContent {
-		ds, err = client.PatchDetailsResponder(ds.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServicePatchDetailsFuture", "Result", ds.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DelegatedSubnetServiceClient) (DelegatedSubnet, error)
 }
 
 // DelegatedSubnetServicePutDetailsFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type DelegatedSubnetServicePutDetailsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DelegatedSubnetServicePutDetailsFuture) Result(client DelegatedSubnetServiceClient) (ds DelegatedSubnet, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServicePutDetailsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("delegatednetwork.DelegatedSubnetServicePutDetailsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ds.Response.Response, err = future.GetResult(sender); err == nil && ds.Response.Response.StatusCode != http.StatusNoContent {
-		ds, err = client.PutDetailsResponder(ds.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServicePutDetailsFuture", "Result", ds.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DelegatedSubnetServiceClient) (DelegatedSubnet, error)
 }
 
 // DelegatedSubnetsIterator provides access to a complete listing of DelegatedSubnet values.
@@ -1192,53 +1104,19 @@ func (oi OrchestratorIdentity) MarshalJSON() ([]byte, error) {
 // OrchestratorInstanceServiceCreateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type OrchestratorInstanceServiceCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *OrchestratorInstanceServiceCreateFuture) Result(client OrchestratorInstanceServiceClient) (o Orchestrator, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("delegatednetwork.OrchestratorInstanceServiceCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if o.Response.Response, err = future.GetResult(sender); err == nil && o.Response.Response.StatusCode != http.StatusNoContent {
-		o, err = client.CreateResponder(o.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceCreateFuture", "Result", o.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(OrchestratorInstanceServiceClient) (Orchestrator, error)
 }
 
 // OrchestratorInstanceServiceDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type OrchestratorInstanceServiceDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *OrchestratorInstanceServiceDeleteFuture) Result(client OrchestratorInstanceServiceClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("delegatednetwork.OrchestratorInstanceServiceDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(OrchestratorInstanceServiceClient) (autorest.Response, error)
 }
 
 // OrchestratorResource represents an instance of a resource.

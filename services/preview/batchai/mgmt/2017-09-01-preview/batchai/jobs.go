@@ -109,7 +109,7 @@ func (client JobsClient) Create(ctx context.Context, resourceGroupName string, j
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -147,7 +147,29 @@ func (client JobsClient) CreateSender(req *http.Request) (future JobsCreateFutur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client JobsClient) (j Job, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batchai.JobsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("batchai.JobsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if j.Response.Response, err = future.GetResult(sender); err == nil && j.Response.Response.StatusCode != http.StatusNoContent {
+			j, err = client.CreateResponder(j.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "batchai.JobsCreateFuture", "Result", j.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -198,7 +220,7 @@ func (client JobsClient) Delete(ctx context.Context, resourceGroupName string, j
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -234,7 +256,23 @@ func (client JobsClient) DeleteSender(req *http.Request) (future JobsDeleteFutur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client JobsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batchai.JobsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("batchai.JobsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -383,6 +421,7 @@ func (client JobsClient) List(ctx context.Context, filter string, selectParamete
 	}
 	if result.jlr.hasNextLink() && result.jlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -453,7 +492,6 @@ func (client JobsClient) listNextResults(ctx context.Context, lastResults JobLis
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -523,6 +561,7 @@ func (client JobsClient) ListByResourceGroup(ctx context.Context, resourceGroupN
 	}
 	if result.jlr.hasNextLink() && result.jlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -594,7 +633,6 @@ func (client JobsClient) listByResourceGroupNextResults(ctx context.Context, las
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -678,6 +716,7 @@ func (client JobsClient) ListOutputFiles(ctx context.Context, resourceGroupName 
 	}
 	if result.flr.hasNextLink() && result.flr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -750,7 +789,6 @@ func (client JobsClient) listOutputFilesNextResults(ctx context.Context, lastRes
 	result, err = client.ListOutputFilesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "listOutputFilesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -820,6 +858,7 @@ func (client JobsClient) ListRemoteLoginInformation(ctx context.Context, resourc
 	}
 	if result.rlilr.hasNextLink() && result.rlilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -881,7 +920,6 @@ func (client JobsClient) listRemoteLoginInformationNextResults(ctx context.Conte
 	result, err = client.ListRemoteLoginInformationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "listRemoteLoginInformationNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -937,7 +975,7 @@ func (client JobsClient) Terminate(ctx context.Context, resourceGroupName string
 
 	result, err = client.TerminateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "Terminate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "Terminate", nil, "Failure sending request")
 		return
 	}
 
@@ -973,7 +1011,23 @@ func (client JobsClient) TerminateSender(req *http.Request) (future JobsTerminat
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client JobsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batchai.JobsTerminateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("batchai.JobsTerminateFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

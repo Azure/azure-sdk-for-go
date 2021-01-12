@@ -75,7 +75,7 @@ func (client EventSubscriptionsClient) CreateOrUpdate(ctx context.Context, scope
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -112,7 +112,29 @@ func (client EventSubscriptionsClient) CreateOrUpdateSender(req *http.Request) (
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client EventSubscriptionsClient) (es EventSubscription, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("eventgrid.EventSubscriptionsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if es.Response.Response, err = future.GetResult(sender); err == nil && es.Response.Response.StatusCode != http.StatusNoContent {
+			es, err = client.CreateOrUpdateResponder(es.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsCreateOrUpdateFuture", "Result", es.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -158,7 +180,7 @@ func (client EventSubscriptionsClient) Delete(ctx context.Context, scope string,
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -193,7 +215,23 @@ func (client EventSubscriptionsClient) DeleteSender(req *http.Request) (future E
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client EventSubscriptionsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("eventgrid.EventSubscriptionsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -417,6 +455,7 @@ func (client EventSubscriptionsClient) ListByDomainTopic(ctx context.Context, re
 	}
 	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -485,7 +524,6 @@ func (client EventSubscriptionsClient) listByDomainTopicNextResults(ctx context.
 	result, err = client.ListByDomainTopicResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "listByDomainTopicNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -552,6 +590,7 @@ func (client EventSubscriptionsClient) ListByResource(ctx context.Context, resou
 	}
 	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -621,7 +660,6 @@ func (client EventSubscriptionsClient) listByResourceNextResults(ctx context.Con
 	result, err = client.ListByResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "listByResourceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -685,6 +723,7 @@ func (client EventSubscriptionsClient) ListGlobalByResourceGroup(ctx context.Con
 	}
 	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -751,7 +790,6 @@ func (client EventSubscriptionsClient) listGlobalByResourceGroupNextResults(ctx 
 	result, err = client.ListGlobalByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "listGlobalByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -817,6 +855,7 @@ func (client EventSubscriptionsClient) ListGlobalByResourceGroupForTopicType(ctx
 	}
 	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -884,7 +923,6 @@ func (client EventSubscriptionsClient) listGlobalByResourceGroupForTopicTypeNext
 	result, err = client.ListGlobalByResourceGroupForTopicTypeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "listGlobalByResourceGroupForTopicTypeNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -947,6 +985,7 @@ func (client EventSubscriptionsClient) ListGlobalBySubscription(ctx context.Cont
 	}
 	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1012,7 +1051,6 @@ func (client EventSubscriptionsClient) listGlobalBySubscriptionNextResults(ctx c
 	result, err = client.ListGlobalBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "listGlobalBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1077,6 +1115,7 @@ func (client EventSubscriptionsClient) ListGlobalBySubscriptionForTopicType(ctx 
 	}
 	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1143,7 +1182,6 @@ func (client EventSubscriptionsClient) listGlobalBySubscriptionForTopicTypeNextR
 	result, err = client.ListGlobalBySubscriptionForTopicTypeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "listGlobalBySubscriptionForTopicTypeNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1209,6 +1247,7 @@ func (client EventSubscriptionsClient) ListRegionalByResourceGroup(ctx context.C
 	}
 	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1276,7 +1315,6 @@ func (client EventSubscriptionsClient) listRegionalByResourceGroupNextResults(ct
 	result, err = client.ListRegionalByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "listRegionalByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1343,6 +1381,7 @@ func (client EventSubscriptionsClient) ListRegionalByResourceGroupForTopicType(c
 	}
 	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1411,7 +1450,6 @@ func (client EventSubscriptionsClient) listRegionalByResourceGroupForTopicTypeNe
 	result, err = client.ListRegionalByResourceGroupForTopicTypeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "listRegionalByResourceGroupForTopicTypeNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1475,6 +1513,7 @@ func (client EventSubscriptionsClient) ListRegionalBySubscription(ctx context.Co
 	}
 	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1541,7 +1580,6 @@ func (client EventSubscriptionsClient) listRegionalBySubscriptionNextResults(ctx
 	result, err = client.ListRegionalBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "listRegionalBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1607,6 +1645,7 @@ func (client EventSubscriptionsClient) ListRegionalBySubscriptionForTopicType(ct
 	}
 	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1674,7 +1713,6 @@ func (client EventSubscriptionsClient) listRegionalBySubscriptionForTopicTypeNex
 	result, err = client.ListRegionalBySubscriptionForTopicTypeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "listRegionalBySubscriptionForTopicTypeNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1726,7 +1764,7 @@ func (client EventSubscriptionsClient) Update(ctx context.Context, scope string,
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -1763,7 +1801,29 @@ func (client EventSubscriptionsClient) UpdateSender(req *http.Request) (future E
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client EventSubscriptionsClient) (es EventSubscription, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("eventgrid.EventSubscriptionsUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if es.Response.Response, err = future.GetResult(sender); err == nil && es.Response.Response.StatusCode != http.StatusNoContent {
+			es, err = client.UpdateResponder(es.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsUpdateFuture", "Result", es.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

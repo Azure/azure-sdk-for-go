@@ -178,7 +178,7 @@ func (client DataFlowDebugSessionClient) Create(ctx context.Context, resourceGro
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -216,7 +216,29 @@ func (client DataFlowDebugSessionClient) CreateSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DataFlowDebugSessionClient) (cdfdsr CreateDataFlowDebugSessionResponse, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("datafactory.DataFlowDebugSessionCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if cdfdsr.Response.Response, err = future.GetResult(sender); err == nil && cdfdsr.Response.Response.StatusCode != http.StatusNoContent {
+			cdfdsr, err = client.CreateResponder(cdfdsr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionCreateFuture", "Result", cdfdsr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -361,7 +383,7 @@ func (client DataFlowDebugSessionClient) ExecuteCommand(ctx context.Context, res
 
 	result, err = client.ExecuteCommandSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionClient", "ExecuteCommand", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionClient", "ExecuteCommand", nil, "Failure sending request")
 		return
 	}
 
@@ -399,7 +421,29 @@ func (client DataFlowDebugSessionClient) ExecuteCommandSender(req *http.Request)
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DataFlowDebugSessionClient) (dfdcr DataFlowDebugCommandResponse, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionExecuteCommandFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("datafactory.DataFlowDebugSessionExecuteCommandFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if dfdcr.Response.Response, err = future.GetResult(sender); err == nil && dfdcr.Response.Response.StatusCode != http.StatusNoContent {
+			dfdcr, err = client.ExecuteCommandResponder(dfdcr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionExecuteCommandFuture", "Result", dfdcr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

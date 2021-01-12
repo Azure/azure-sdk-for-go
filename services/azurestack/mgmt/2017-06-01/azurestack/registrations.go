@@ -391,6 +391,7 @@ func (client RegistrationsClient) List(ctx context.Context, resourceGroup string
 	}
 	if result.rl.hasNextLink() && result.rl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -451,7 +452,6 @@ func (client RegistrationsClient) listNextResults(ctx context.Context, lastResul
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.RegistrationsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

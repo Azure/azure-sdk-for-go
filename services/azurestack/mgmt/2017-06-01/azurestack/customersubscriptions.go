@@ -314,6 +314,7 @@ func (client CustomerSubscriptionsClient) List(ctx context.Context, resourceGrou
 	}
 	if result.csl.hasNextLink() && result.csl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -375,7 +376,6 @@ func (client CustomerSubscriptionsClient) listNextResults(ctx context.Context, l
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.CustomerSubscriptionsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -86,6 +86,7 @@ func (client LocationBasedCapabilitiesClient) Execute(ctx context.Context, locat
 	}
 	if result.clr.hasNextLink() && result.clr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -146,7 +147,6 @@ func (client LocationBasedCapabilitiesClient) executeNextResults(ctx context.Con
 	result, err = client.ExecuteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "postgresqlflexibleservers.LocationBasedCapabilitiesClient", "executeNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -1,13 +1,30 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/domainservices/resource-manager/readme.md tag: `package-2017-01`
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator @microsoft.azure/autorest.go@2.1.168
 
 ## Breaking Changes
 
-- Function `NewDomainServiceListResultPage` parameter(s) have been changed from `(func(context.Context, DomainServiceListResult) (DomainServiceListResult, error))` to `(DomainServiceListResult, func(context.Context, DomainServiceListResult) (DomainServiceListResult, error))`
-- Function `NewOperationEntityListResultPage` parameter(s) have been changed from `(func(context.Context, OperationEntityListResult) (OperationEntityListResult, error))` to `(OperationEntityListResult, func(context.Context, OperationEntityListResult) (OperationEntityListResult, error))`
-- Type of `DomainServiceProperties.HealthLastEvaluated` has been changed from `*date.Time` to `*date.TimeRFC1123`
+### Removed Funcs
 
-## New Content
+1. *DomainServicesCreateOrUpdateFuture.Result(DomainServicesClient) (DomainService, error)
+1. *DomainServicesDeleteFuture.Result(DomainServicesClient) (autorest.Response, error)
+1. *DomainServicesUpdateFuture.Result(DomainServicesClient) (DomainService, error)
 
-- New field `DeploymentID` in struct `DomainServiceProperties`
+## Struct Changes
+
+### Removed Struct Fields
+
+1. DomainServicesCreateOrUpdateFuture.azure.Future
+1. DomainServicesDeleteFuture.azure.Future
+1. DomainServicesUpdateFuture.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. DomainServicesCreateOrUpdateFuture.Result
+1. DomainServicesCreateOrUpdateFuture.azure.FutureAPI
+1. DomainServicesDeleteFuture.Result
+1. DomainServicesDeleteFuture.azure.FutureAPI
+1. DomainServicesUpdateFuture.Result
+1. DomainServicesUpdateFuture.azure.FutureAPI

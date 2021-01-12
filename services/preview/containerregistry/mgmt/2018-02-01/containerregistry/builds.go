@@ -74,7 +74,7 @@ func (client BuildsClient) Cancel(ctx context.Context, resourceGroupName string,
 
 	result, err = client.CancelSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BuildsClient", "Cancel", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BuildsClient", "Cancel", nil, "Failure sending request")
 		return
 	}
 
@@ -111,7 +111,23 @@ func (client BuildsClient) CancelSender(req *http.Request) (future BuildsCancelF
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client BuildsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.BuildsCancelFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("containerregistry.BuildsCancelFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -346,6 +362,7 @@ func (client BuildsClient) List(ctx context.Context, resourceGroupName string, r
 	}
 	if result.blr.hasNextLink() && result.blr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -416,7 +433,6 @@ func (client BuildsClient) listNextResults(ctx context.Context, lastResults Buil
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BuildsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -470,7 +486,7 @@ func (client BuildsClient) Update(ctx context.Context, resourceGroupName string,
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BuildsClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BuildsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -509,7 +525,29 @@ func (client BuildsClient) UpdateSender(req *http.Request) (future BuildsUpdateF
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client BuildsClient) (b Build, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.BuildsUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("containerregistry.BuildsUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if b.Response.Response, err = future.GetResult(sender); err == nil && b.Response.Response.StatusCode != http.StatusNoContent {
+			b, err = client.UpdateResponder(b.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "containerregistry.BuildsUpdateFuture", "Result", b.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

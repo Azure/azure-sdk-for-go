@@ -65,7 +65,7 @@ func (client VirtualNetworkClient) CreateOrUpdateResource(ctx context.Context, r
 
 	result, err = client.CreateOrUpdateResourceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.VirtualNetworkClient", "CreateOrUpdateResource", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.VirtualNetworkClient", "CreateOrUpdateResource", nil, "Failure sending request")
 		return
 	}
 
@@ -104,7 +104,29 @@ func (client VirtualNetworkClient) CreateOrUpdateResourceSender(req *http.Reques
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualNetworkClient) (vn VirtualNetwork, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "dtl.VirtualNetworkCreateOrUpdateResourceFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("dtl.VirtualNetworkCreateOrUpdateResourceFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if vn.Response.Response, err = future.GetResult(sender); err == nil && vn.Response.Response.StatusCode != http.StatusNoContent {
+			vn, err = client.CreateOrUpdateResourceResponder(vn.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "dtl.VirtualNetworkCreateOrUpdateResourceFuture", "Result", vn.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -144,7 +166,7 @@ func (client VirtualNetworkClient) DeleteResource(ctx context.Context, resourceG
 
 	result, err = client.DeleteResourceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.VirtualNetworkClient", "DeleteResource", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.VirtualNetworkClient", "DeleteResource", nil, "Failure sending request")
 		return
 	}
 
@@ -181,7 +203,23 @@ func (client VirtualNetworkClient) DeleteResourceSender(req *http.Request) (futu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VirtualNetworkClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "dtl.VirtualNetworkDeleteResourceFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("dtl.VirtualNetworkDeleteResourceFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -311,6 +349,7 @@ func (client VirtualNetworkClient) List(ctx context.Context, resourceGroupName s
 	}
 	if result.rwcvn.hasNextLink() && result.rwcvn.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -381,7 +420,6 @@ func (client VirtualNetworkClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualNetworkClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

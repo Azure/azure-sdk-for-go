@@ -384,6 +384,7 @@ func (client SubscriptionsClient) ListAll(ctx context.Context, resourceGroupName
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -446,7 +447,6 @@ func (client SubscriptionsClient) listAllNextResults(ctx context.Context, lastRe
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.SubscriptionsClient", "listAllNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

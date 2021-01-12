@@ -1,9 +1,30 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/reservations/resource-manager/readme.md tag: `package-2017-11`
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator @microsoft.azure/autorest.go@2.1.168
 
 ## Breaking Changes
 
-- Function `NewListPage` parameter(s) have been changed from `(func(context.Context, List) (List, error))` to `(List, func(context.Context, List) (List, error))`
-- Function `NewOrderListPage` parameter(s) have been changed from `(func(context.Context, OrderList) (OrderList, error))` to `(OrderList, func(context.Context, OrderList) (OrderList, error))`
-- Function `NewOperationListPage` parameter(s) have been changed from `(func(context.Context, OperationList) (OperationList, error))` to `(OperationList, func(context.Context, OperationList) (OperationList, error))`
+### Removed Funcs
+
+1. *ReservationMergeFuture.Result(Client) (ListResponse, error)
+1. *ReservationUpdateFuture.Result(Client) (Response, error)
+1. *SplitFuture.Result(Client) (ListResponse, error)
+
+## Struct Changes
+
+### Removed Struct Fields
+
+1. ReservationMergeFuture.azure.Future
+1. ReservationUpdateFuture.azure.Future
+1. SplitFuture.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. ReservationMergeFuture.Result
+1. ReservationMergeFuture.azure.FutureAPI
+1. ReservationUpdateFuture.Result
+1. ReservationUpdateFuture.azure.FutureAPI
+1. SplitFuture.Result
+1. SplitFuture.azure.FutureAPI

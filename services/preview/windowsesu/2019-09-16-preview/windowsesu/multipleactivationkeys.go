@@ -85,7 +85,7 @@ func (client MultipleActivationKeysClient) Create(ctx context.Context, resourceG
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -123,7 +123,29 @@ func (client MultipleActivationKeysClient) CreateSender(req *http.Request) (futu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client MultipleActivationKeysClient) (mak MultipleActivationKey, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("windowsesu.MultipleActivationKeysCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if mak.Response.Response, err = future.GetResult(sender); err == nil && mak.Response.Response.StatusCode != http.StatusNoContent {
+			mak, err = client.CreateResponder(mak.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysCreateFuture", "Result", mak.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -349,6 +371,7 @@ func (client MultipleActivationKeysClient) List(ctx context.Context) (result Mul
 	}
 	if result.makl.hasNextLink() && result.makl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -408,7 +431,6 @@ func (client MultipleActivationKeysClient) listNextResults(ctx context.Context, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -474,6 +496,7 @@ func (client MultipleActivationKeysClient) ListByResourceGroup(ctx context.Conte
 	}
 	if result.makl.hasNextLink() && result.makl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -534,7 +557,6 @@ func (client MultipleActivationKeysClient) listByResourceGroupNextResults(ctx co
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

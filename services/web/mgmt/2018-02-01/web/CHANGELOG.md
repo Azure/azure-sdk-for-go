@@ -1,61 +1,194 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/web/resource-manager/readme.md tag: `package-2018-02`
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator @microsoft.azure/autorest.go@2.1.168
 
 ## Breaking Changes
 
-- Function `NewProcessInfoCollectionPage` parameter(s) have been changed from `(func(context.Context, ProcessInfoCollection) (ProcessInfoCollection, error))` to `(ProcessInfoCollection, func(context.Context, ProcessInfoCollection) (ProcessInfoCollection, error))`
-- Function `NewDiagnosticAnalysisCollectionPage` parameter(s) have been changed from `(func(context.Context, DiagnosticAnalysisCollection) (DiagnosticAnalysisCollection, error))` to `(DiagnosticAnalysisCollection, func(context.Context, DiagnosticAnalysisCollection) (DiagnosticAnalysisCollection, error))`
-- Function `NewSiteExtensionInfoCollectionPage` parameter(s) have been changed from `(func(context.Context, SiteExtensionInfoCollection) (SiteExtensionInfoCollection, error))` to `(SiteExtensionInfoCollection, func(context.Context, SiteExtensionInfoCollection) (SiteExtensionInfoCollection, error))`
-- Function `NewHostNameBindingCollectionPage` parameter(s) have been changed from `(func(context.Context, HostNameBindingCollection) (HostNameBindingCollection, error))` to `(HostNameBindingCollection, func(context.Context, HostNameBindingCollection) (HostNameBindingCollection, error))`
-- Function `NewSkuInfoCollectionPage` parameter(s) have been changed from `(func(context.Context, SkuInfoCollection) (SkuInfoCollection, error))` to `(SkuInfoCollection, func(context.Context, SkuInfoCollection) (SkuInfoCollection, error))`
-- Function `NewDeploymentCollectionPage` parameter(s) have been changed from `(func(context.Context, DeploymentCollection) (DeploymentCollection, error))` to `(DeploymentCollection, func(context.Context, DeploymentCollection) (DeploymentCollection, error))`
-- Function `NewIdentifierCollectionPage` parameter(s) have been changed from `(func(context.Context, IdentifierCollection) (IdentifierCollection, error))` to `(IdentifierCollection, func(context.Context, IdentifierCollection) (IdentifierCollection, error))`
-- Function `NewCsmUsageQuotaCollectionPage` parameter(s) have been changed from `(func(context.Context, CsmUsageQuotaCollection) (CsmUsageQuotaCollection, error))` to `(CsmUsageQuotaCollection, func(context.Context, CsmUsageQuotaCollection) (CsmUsageQuotaCollection, error))`
-- Function `NewProcessModuleInfoCollectionPage` parameter(s) have been changed from `(func(context.Context, ProcessModuleInfoCollection) (ProcessModuleInfoCollection, error))` to `(ProcessModuleInfoCollection, func(context.Context, ProcessModuleInfoCollection) (ProcessModuleInfoCollection, error))`
-- Function `NewDomainCollectionPage` parameter(s) have been changed from `(func(context.Context, DomainCollection) (DomainCollection, error))` to `(DomainCollection, func(context.Context, DomainCollection) (DomainCollection, error))`
-- Function `NewJobCollectionPage` parameter(s) have been changed from `(func(context.Context, JobCollection) (JobCollection, error))` to `(JobCollection, func(context.Context, JobCollection) (JobCollection, error))`
-- Function `NewResourceHealthMetadataCollectionPage` parameter(s) have been changed from `(func(context.Context, ResourceHealthMetadataCollection) (ResourceHealthMetadataCollection, error))` to `(ResourceHealthMetadataCollection, func(context.Context, ResourceHealthMetadataCollection) (ResourceHealthMetadataCollection, error))`
-- Function `NewAppCollectionPage` parameter(s) have been changed from `(func(context.Context, AppCollection) (AppCollection, error))` to `(AppCollection, func(context.Context, AppCollection) (AppCollection, error))`
-- Function `NewTldLegalAgreementCollectionPage` parameter(s) have been changed from `(func(context.Context, TldLegalAgreementCollection) (TldLegalAgreementCollection, error))` to `(TldLegalAgreementCollection, func(context.Context, TldLegalAgreementCollection) (TldLegalAgreementCollection, error))`
-- Function `NewAppServicePlanCollectionPage` parameter(s) have been changed from `(func(context.Context, AppServicePlanCollection) (AppServicePlanCollection, error))` to `(AppServicePlanCollection, func(context.Context, AppServicePlanCollection) (AppServicePlanCollection, error))`
-- Function `NewSlotDifferenceCollectionPage` parameter(s) have been changed from `(func(context.Context, SlotDifferenceCollection) (SlotDifferenceCollection, error))` to `(SlotDifferenceCollection, func(context.Context, SlotDifferenceCollection) (SlotDifferenceCollection, error))`
-- Function `NewSnapshotCollectionPage` parameter(s) have been changed from `(func(context.Context, SnapshotCollection) (SnapshotCollection, error))` to `(SnapshotCollection, func(context.Context, SnapshotCollection) (SnapshotCollection, error))`
-- Function `NewDomainOwnershipIdentifierCollectionPage` parameter(s) have been changed from `(func(context.Context, DomainOwnershipIdentifierCollection) (DomainOwnershipIdentifierCollection, error))` to `(DomainOwnershipIdentifierCollection, func(context.Context, DomainOwnershipIdentifierCollection) (DomainOwnershipIdentifierCollection, error))`
-- Function `NewOutboundEnvironmentEndpointCollectionPage` parameter(s) have been changed from `(func(context.Context, OutboundEnvironmentEndpointCollection) (OutboundEnvironmentEndpointCollection, error))` to `(OutboundEnvironmentEndpointCollection, func(context.Context, OutboundEnvironmentEndpointCollection) (OutboundEnvironmentEndpointCollection, error))`
-- Function `NewDiagnosticDetectorCollectionPage` parameter(s) have been changed from `(func(context.Context, DiagnosticDetectorCollection) (DiagnosticDetectorCollection, error))` to `(DiagnosticDetectorCollection, func(context.Context, DiagnosticDetectorCollection) (DiagnosticDetectorCollection, error))`
-- Function `NewCertificateCollectionPage` parameter(s) have been changed from `(func(context.Context, CertificateCollection) (CertificateCollection, error))` to `(CertificateCollection, func(context.Context, CertificateCollection) (CertificateCollection, error))`
-- Function `NewRecommendationCollectionPage` parameter(s) have been changed from `(func(context.Context, RecommendationCollection) (RecommendationCollection, error))` to `(RecommendationCollection, func(context.Context, RecommendationCollection) (RecommendationCollection, error))`
-- Function `NewAppServiceCertificateCollectionPage` parameter(s) have been changed from `(func(context.Context, AppServiceCertificateCollection) (AppServiceCertificateCollection, error))` to `(AppServiceCertificateCollection, func(context.Context, AppServiceCertificateCollection) (AppServiceCertificateCollection, error))`
-- Function `NewAppServiceCertificateOrderCollectionPage` parameter(s) have been changed from `(func(context.Context, AppServiceCertificateOrderCollection) (AppServiceCertificateOrderCollection, error))` to `(AppServiceCertificateOrderCollection, func(context.Context, AppServiceCertificateOrderCollection) (AppServiceCertificateOrderCollection, error))`
-- Function `NewPerfMonCounterCollectionPage` parameter(s) have been changed from `(func(context.Context, PerfMonCounterCollection) (PerfMonCounterCollection, error))` to `(PerfMonCounterCollection, func(context.Context, PerfMonCounterCollection) (PerfMonCounterCollection, error))`
-- Function `NewResourceMetricCollectionPage` parameter(s) have been changed from `(func(context.Context, ResourceMetricCollection) (ResourceMetricCollection, error))` to `(ResourceMetricCollection, func(context.Context, ResourceMetricCollection) (ResourceMetricCollection, error))`
-- Function `NewPremierAddOnOfferCollectionPage` parameter(s) have been changed from `(func(context.Context, PremierAddOnOfferCollection) (PremierAddOnOfferCollection, error))` to `(PremierAddOnOfferCollection, func(context.Context, PremierAddOnOfferCollection) (PremierAddOnOfferCollection, error))`
-- Function `NewApplicationStackCollectionPage` parameter(s) have been changed from `(func(context.Context, ApplicationStackCollection) (ApplicationStackCollection, error))` to `(ApplicationStackCollection, func(context.Context, ApplicationStackCollection) (ApplicationStackCollection, error))`
-- Function `NewBillingMeterCollectionPage` parameter(s) have been changed from `(func(context.Context, BillingMeterCollection) (BillingMeterCollection, error))` to `(BillingMeterCollection, func(context.Context, BillingMeterCollection) (BillingMeterCollection, error))`
-- Function `NewPublicCertificateCollectionPage` parameter(s) have been changed from `(func(context.Context, PublicCertificateCollection) (PublicCertificateCollection, error))` to `(PublicCertificateCollection, func(context.Context, PublicCertificateCollection) (PublicCertificateCollection, error))`
-- Function `NewTopLevelDomainCollectionPage` parameter(s) have been changed from `(func(context.Context, TopLevelDomainCollection) (TopLevelDomainCollection, error))` to `(TopLevelDomainCollection, func(context.Context, TopLevelDomainCollection) (TopLevelDomainCollection, error))`
-- Function `NewDiagnosticCategoryCollectionPage` parameter(s) have been changed from `(func(context.Context, DiagnosticCategoryCollection) (DiagnosticCategoryCollection, error))` to `(DiagnosticCategoryCollection, func(context.Context, DiagnosticCategoryCollection) (DiagnosticCategoryCollection, error))`
-- Function `NewAppServiceEnvironmentCollectionPage` parameter(s) have been changed from `(func(context.Context, AppServiceEnvironmentCollection) (AppServiceEnvironmentCollection, error))` to `(AppServiceEnvironmentCollection, func(context.Context, AppServiceEnvironmentCollection) (AppServiceEnvironmentCollection, error))`
-- Function `NewDetectorResponseCollectionPage` parameter(s) have been changed from `(func(context.Context, DetectorResponseCollection) (DetectorResponseCollection, error))` to `(DetectorResponseCollection, func(context.Context, DetectorResponseCollection) (DetectorResponseCollection, error))`
-- Function `NewWorkerPoolCollectionPage` parameter(s) have been changed from `(func(context.Context, WorkerPoolCollection) (WorkerPoolCollection, error))` to `(WorkerPoolCollection, func(context.Context, WorkerPoolCollection) (WorkerPoolCollection, error))`
-- Function `NewProcessThreadInfoCollectionPage` parameter(s) have been changed from `(func(context.Context, ProcessThreadInfoCollection) (ProcessThreadInfoCollection, error))` to `(ProcessThreadInfoCollection, func(context.Context, ProcessThreadInfoCollection) (ProcessThreadInfoCollection, error))`
-- Function `NewInboundEnvironmentEndpointCollectionPage` parameter(s) have been changed from `(func(context.Context, InboundEnvironmentEndpointCollection) (InboundEnvironmentEndpointCollection, error))` to `(InboundEnvironmentEndpointCollection, func(context.Context, InboundEnvironmentEndpointCollection) (InboundEnvironmentEndpointCollection, error))`
-- Function `NewFunctionEnvelopeCollectionPage` parameter(s) have been changed from `(func(context.Context, FunctionEnvelopeCollection) (FunctionEnvelopeCollection, error))` to `(FunctionEnvelopeCollection, func(context.Context, FunctionEnvelopeCollection) (FunctionEnvelopeCollection, error))`
-- Function `NewCsmOperationCollectionPage` parameter(s) have been changed from `(func(context.Context, CsmOperationCollection) (CsmOperationCollection, error))` to `(CsmOperationCollection, func(context.Context, CsmOperationCollection) (CsmOperationCollection, error))`
-- Function `NewResourceCollectionPage` parameter(s) have been changed from `(func(context.Context, ResourceCollection) (ResourceCollection, error))` to `(ResourceCollection, func(context.Context, ResourceCollection) (ResourceCollection, error))`
-- Function `NewSiteConfigurationSnapshotInfoCollectionPage` parameter(s) have been changed from `(func(context.Context, SiteConfigurationSnapshotInfoCollection) (SiteConfigurationSnapshotInfoCollection, error))` to `(SiteConfigurationSnapshotInfoCollection, func(context.Context, SiteConfigurationSnapshotInfoCollection) (SiteConfigurationSnapshotInfoCollection, error))`
-- Function `NewHybridConnectionCollectionPage` parameter(s) have been changed from `(func(context.Context, HybridConnectionCollection) (HybridConnectionCollection, error))` to `(HybridConnectionCollection, func(context.Context, HybridConnectionCollection) (HybridConnectionCollection, error))`
-- Function `NewUsageCollectionPage` parameter(s) have been changed from `(func(context.Context, UsageCollection) (UsageCollection, error))` to `(UsageCollection, func(context.Context, UsageCollection) (UsageCollection, error))`
-- Function `NewSourceControlCollectionPage` parameter(s) have been changed from `(func(context.Context, SourceControlCollection) (SourceControlCollection, error))` to `(SourceControlCollection, func(context.Context, SourceControlCollection) (SourceControlCollection, error))`
-- Function `NewDeletedWebAppCollectionPage` parameter(s) have been changed from `(func(context.Context, DeletedWebAppCollection) (DeletedWebAppCollection, error))` to `(DeletedWebAppCollection, func(context.Context, DeletedWebAppCollection) (DeletedWebAppCollection, error))`
-- Function `NewGeoRegionCollectionPage` parameter(s) have been changed from `(func(context.Context, GeoRegionCollection) (GeoRegionCollection, error))` to `(GeoRegionCollection, func(context.Context, GeoRegionCollection) (GeoRegionCollection, error))`
-- Function `NewTriggeredWebJobCollectionPage` parameter(s) have been changed from `(func(context.Context, TriggeredWebJobCollection) (TriggeredWebJobCollection, error))` to `(TriggeredWebJobCollection, func(context.Context, TriggeredWebJobCollection) (TriggeredWebJobCollection, error))`
-- Function `NewBackupItemCollectionPage` parameter(s) have been changed from `(func(context.Context, BackupItemCollection) (BackupItemCollection, error))` to `(BackupItemCollection, func(context.Context, BackupItemCollection) (BackupItemCollection, error))`
-- Function `NewContinuousWebJobCollectionPage` parameter(s) have been changed from `(func(context.Context, ContinuousWebJobCollection) (ContinuousWebJobCollection, error))` to `(ContinuousWebJobCollection, func(context.Context, ContinuousWebJobCollection) (ContinuousWebJobCollection, error))`
-- Function `NewStampCapacityCollectionPage` parameter(s) have been changed from `(func(context.Context, StampCapacityCollection) (StampCapacityCollection, error))` to `(StampCapacityCollection, func(context.Context, StampCapacityCollection) (StampCapacityCollection, error))`
-- Function `NewNameIdentifierCollectionPage` parameter(s) have been changed from `(func(context.Context, NameIdentifierCollection) (NameIdentifierCollection, error))` to `(NameIdentifierCollection, func(context.Context, NameIdentifierCollection) (NameIdentifierCollection, error))`
-- Function `NewTriggeredJobHistoryCollectionPage` parameter(s) have been changed from `(func(context.Context, TriggeredJobHistoryCollection) (TriggeredJobHistoryCollection, error))` to `(TriggeredJobHistoryCollection, func(context.Context, TriggeredJobHistoryCollection) (TriggeredJobHistoryCollection, error))`
-- Function `NewResourceMetricDefinitionCollectionPage` parameter(s) have been changed from `(func(context.Context, ResourceMetricDefinitionCollection) (ResourceMetricDefinitionCollection, error))` to `(ResourceMetricDefinitionCollection, func(context.Context, ResourceMetricDefinitionCollection) (ResourceMetricDefinitionCollection, error))`
-- Function `NewAppInstanceCollectionPage` parameter(s) have been changed from `(func(context.Context, AppInstanceCollection) (AppInstanceCollection, error))` to `(AppInstanceCollection, func(context.Context, AppInstanceCollection) (AppInstanceCollection, error))`
-- Function `NewSiteConfigResourceCollectionPage` parameter(s) have been changed from `(func(context.Context, SiteConfigResourceCollection) (SiteConfigResourceCollection, error))` to `(SiteConfigResourceCollection, func(context.Context, SiteConfigResourceCollection) (SiteConfigResourceCollection, error))`
+### Removed Funcs
+
+1. *AppServiceCertificateOrdersCreateOrUpdateCertificateFuture.Result(AppServiceCertificateOrdersClient) (AppServiceCertificateResource, error)
+1. *AppServiceCertificateOrdersCreateOrUpdateFuture.Result(AppServiceCertificateOrdersClient) (AppServiceCertificateOrder, error)
+1. *AppServiceEnvironmentsChangeVnetAllFuture.Result(AppServiceEnvironmentsClient) (AppCollectionPage, error)
+1. *AppServiceEnvironmentsChangeVnetFuture.Result(AppServiceEnvironmentsClient) (AppCollectionPage, error)
+1. *AppServiceEnvironmentsCreateOrUpdateFuture.Result(AppServiceEnvironmentsClient) (AppServiceEnvironmentResource, error)
+1. *AppServiceEnvironmentsCreateOrUpdateMultiRolePoolFuture.Result(AppServiceEnvironmentsClient) (WorkerPoolResource, error)
+1. *AppServiceEnvironmentsCreateOrUpdateWorkerPoolFuture.Result(AppServiceEnvironmentsClient) (WorkerPoolResource, error)
+1. *AppServiceEnvironmentsDeleteFuture.Result(AppServiceEnvironmentsClient) (autorest.Response, error)
+1. *AppServiceEnvironmentsResumeAllFuture.Result(AppServiceEnvironmentsClient) (AppCollectionPage, error)
+1. *AppServiceEnvironmentsResumeFuture.Result(AppServiceEnvironmentsClient) (AppCollectionPage, error)
+1. *AppServiceEnvironmentsSuspendAllFuture.Result(AppServiceEnvironmentsClient) (AppCollectionPage, error)
+1. *AppServiceEnvironmentsSuspendFuture.Result(AppServiceEnvironmentsClient) (AppCollectionPage, error)
+1. *AppServicePlansCreateOrUpdateFuture.Result(AppServicePlansClient) (AppServicePlan, error)
+1. *AppsCreateFunctionFuture.Result(AppsClient) (FunctionEnvelope, error)
+1. *AppsCreateInstanceFunctionSlotFuture.Result(AppsClient) (FunctionEnvelope, error)
+1. *AppsCreateInstanceMSDeployOperationFuture.Result(AppsClient) (MSDeployStatus, error)
+1. *AppsCreateInstanceMSDeployOperationSlotFuture.Result(AppsClient) (MSDeployStatus, error)
+1. *AppsCreateMSDeployOperationFuture.Result(AppsClient) (MSDeployStatus, error)
+1. *AppsCreateMSDeployOperationSlotFuture.Result(AppsClient) (MSDeployStatus, error)
+1. *AppsCreateOrUpdateFuture.Result(AppsClient) (Site, error)
+1. *AppsCreateOrUpdateSlotFuture.Result(AppsClient) (Site, error)
+1. *AppsCreateOrUpdateSourceControlFuture.Result(AppsClient) (SiteSourceControl, error)
+1. *AppsCreateOrUpdateSourceControlSlotFuture.Result(AppsClient) (SiteSourceControl, error)
+1. *AppsInstallSiteExtensionFuture.Result(AppsClient) (SiteExtensionInfo, error)
+1. *AppsInstallSiteExtensionSlotFuture.Result(AppsClient) (SiteExtensionInfo, error)
+1. *AppsListPublishingCredentialsFuture.Result(AppsClient) (User, error)
+1. *AppsListPublishingCredentialsSlotFuture.Result(AppsClient) (User, error)
+1. *AppsMigrateMySQLFuture.Result(AppsClient) (Operation, error)
+1. *AppsMigrateStorageFuture.Result(AppsClient) (StorageMigrationResponse, error)
+1. *AppsRestoreFromBackupBlobFuture.Result(AppsClient) (autorest.Response, error)
+1. *AppsRestoreFromBackupBlobSlotFuture.Result(AppsClient) (autorest.Response, error)
+1. *AppsRestoreFromDeletedAppFuture.Result(AppsClient) (autorest.Response, error)
+1. *AppsRestoreFromDeletedAppSlotFuture.Result(AppsClient) (autorest.Response, error)
+1. *AppsRestoreFuture.Result(AppsClient) (autorest.Response, error)
+1. *AppsRestoreSlotFuture.Result(AppsClient) (autorest.Response, error)
+1. *AppsRestoreSnapshotFuture.Result(AppsClient) (autorest.Response, error)
+1. *AppsRestoreSnapshotSlotFuture.Result(AppsClient) (autorest.Response, error)
+1. *AppsStartNetworkTraceFuture.Result(AppsClient) (ListNetworkTrace, error)
+1. *AppsStartNetworkTraceSlotFuture.Result(AppsClient) (ListNetworkTrace, error)
+1. *AppsStartWebSiteNetworkTraceOperationFuture.Result(AppsClient) (ListNetworkTrace, error)
+1. *AppsStartWebSiteNetworkTraceOperationSlotFuture.Result(AppsClient) (ListNetworkTrace, error)
+1. *AppsSwapSlotSlotFuture.Result(AppsClient) (autorest.Response, error)
+1. *AppsSwapSlotWithProductionFuture.Result(AppsClient) (autorest.Response, error)
+1. *DomainsCreateOrUpdateFuture.Result(DomainsClient) (Domain, error)
+
+## Struct Changes
+
+### Removed Struct Fields
+
+1. AppServiceCertificateOrdersCreateOrUpdateCertificateFuture.azure.Future
+1. AppServiceCertificateOrdersCreateOrUpdateFuture.azure.Future
+1. AppServiceEnvironmentsChangeVnetAllFuture.azure.Future
+1. AppServiceEnvironmentsChangeVnetFuture.azure.Future
+1. AppServiceEnvironmentsCreateOrUpdateFuture.azure.Future
+1. AppServiceEnvironmentsCreateOrUpdateMultiRolePoolFuture.azure.Future
+1. AppServiceEnvironmentsCreateOrUpdateWorkerPoolFuture.azure.Future
+1. AppServiceEnvironmentsDeleteFuture.azure.Future
+1. AppServiceEnvironmentsResumeAllFuture.azure.Future
+1. AppServiceEnvironmentsResumeFuture.azure.Future
+1. AppServiceEnvironmentsSuspendAllFuture.azure.Future
+1. AppServiceEnvironmentsSuspendFuture.azure.Future
+1. AppServicePlansCreateOrUpdateFuture.azure.Future
+1. AppsCreateFunctionFuture.azure.Future
+1. AppsCreateInstanceFunctionSlotFuture.azure.Future
+1. AppsCreateInstanceMSDeployOperationFuture.azure.Future
+1. AppsCreateInstanceMSDeployOperationSlotFuture.azure.Future
+1. AppsCreateMSDeployOperationFuture.azure.Future
+1. AppsCreateMSDeployOperationSlotFuture.azure.Future
+1. AppsCreateOrUpdateFuture.azure.Future
+1. AppsCreateOrUpdateSlotFuture.azure.Future
+1. AppsCreateOrUpdateSourceControlFuture.azure.Future
+1. AppsCreateOrUpdateSourceControlSlotFuture.azure.Future
+1. AppsInstallSiteExtensionFuture.azure.Future
+1. AppsInstallSiteExtensionSlotFuture.azure.Future
+1. AppsListPublishingCredentialsFuture.azure.Future
+1. AppsListPublishingCredentialsSlotFuture.azure.Future
+1. AppsMigrateMySQLFuture.azure.Future
+1. AppsMigrateStorageFuture.azure.Future
+1. AppsRestoreFromBackupBlobFuture.azure.Future
+1. AppsRestoreFromBackupBlobSlotFuture.azure.Future
+1. AppsRestoreFromDeletedAppFuture.azure.Future
+1. AppsRestoreFromDeletedAppSlotFuture.azure.Future
+1. AppsRestoreFuture.azure.Future
+1. AppsRestoreSlotFuture.azure.Future
+1. AppsRestoreSnapshotFuture.azure.Future
+1. AppsRestoreSnapshotSlotFuture.azure.Future
+1. AppsStartNetworkTraceFuture.azure.Future
+1. AppsStartNetworkTraceSlotFuture.azure.Future
+1. AppsStartWebSiteNetworkTraceOperationFuture.azure.Future
+1. AppsStartWebSiteNetworkTraceOperationSlotFuture.azure.Future
+1. AppsSwapSlotSlotFuture.azure.Future
+1. AppsSwapSlotWithProductionFuture.azure.Future
+1. DomainsCreateOrUpdateFuture.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. AppServiceCertificateOrdersCreateOrUpdateCertificateFuture.Result
+1. AppServiceCertificateOrdersCreateOrUpdateCertificateFuture.azure.FutureAPI
+1. AppServiceCertificateOrdersCreateOrUpdateFuture.Result
+1. AppServiceCertificateOrdersCreateOrUpdateFuture.azure.FutureAPI
+1. AppServiceEnvironmentsChangeVnetAllFuture.Result
+1. AppServiceEnvironmentsChangeVnetAllFuture.azure.FutureAPI
+1. AppServiceEnvironmentsChangeVnetFuture.Result
+1. AppServiceEnvironmentsChangeVnetFuture.azure.FutureAPI
+1. AppServiceEnvironmentsCreateOrUpdateFuture.Result
+1. AppServiceEnvironmentsCreateOrUpdateFuture.azure.FutureAPI
+1. AppServiceEnvironmentsCreateOrUpdateMultiRolePoolFuture.Result
+1. AppServiceEnvironmentsCreateOrUpdateMultiRolePoolFuture.azure.FutureAPI
+1. AppServiceEnvironmentsCreateOrUpdateWorkerPoolFuture.Result
+1. AppServiceEnvironmentsCreateOrUpdateWorkerPoolFuture.azure.FutureAPI
+1. AppServiceEnvironmentsDeleteFuture.Result
+1. AppServiceEnvironmentsDeleteFuture.azure.FutureAPI
+1. AppServiceEnvironmentsResumeAllFuture.Result
+1. AppServiceEnvironmentsResumeAllFuture.azure.FutureAPI
+1. AppServiceEnvironmentsResumeFuture.Result
+1. AppServiceEnvironmentsResumeFuture.azure.FutureAPI
+1. AppServiceEnvironmentsSuspendAllFuture.Result
+1. AppServiceEnvironmentsSuspendAllFuture.azure.FutureAPI
+1. AppServiceEnvironmentsSuspendFuture.Result
+1. AppServiceEnvironmentsSuspendFuture.azure.FutureAPI
+1. AppServicePlansCreateOrUpdateFuture.Result
+1. AppServicePlansCreateOrUpdateFuture.azure.FutureAPI
+1. AppsCreateFunctionFuture.Result
+1. AppsCreateFunctionFuture.azure.FutureAPI
+1. AppsCreateInstanceFunctionSlotFuture.Result
+1. AppsCreateInstanceFunctionSlotFuture.azure.FutureAPI
+1. AppsCreateInstanceMSDeployOperationFuture.Result
+1. AppsCreateInstanceMSDeployOperationFuture.azure.FutureAPI
+1. AppsCreateInstanceMSDeployOperationSlotFuture.Result
+1. AppsCreateInstanceMSDeployOperationSlotFuture.azure.FutureAPI
+1. AppsCreateMSDeployOperationFuture.Result
+1. AppsCreateMSDeployOperationFuture.azure.FutureAPI
+1. AppsCreateMSDeployOperationSlotFuture.Result
+1. AppsCreateMSDeployOperationSlotFuture.azure.FutureAPI
+1. AppsCreateOrUpdateFuture.Result
+1. AppsCreateOrUpdateFuture.azure.FutureAPI
+1. AppsCreateOrUpdateSlotFuture.Result
+1. AppsCreateOrUpdateSlotFuture.azure.FutureAPI
+1. AppsCreateOrUpdateSourceControlFuture.Result
+1. AppsCreateOrUpdateSourceControlFuture.azure.FutureAPI
+1. AppsCreateOrUpdateSourceControlSlotFuture.Result
+1. AppsCreateOrUpdateSourceControlSlotFuture.azure.FutureAPI
+1. AppsInstallSiteExtensionFuture.Result
+1. AppsInstallSiteExtensionFuture.azure.FutureAPI
+1. AppsInstallSiteExtensionSlotFuture.Result
+1. AppsInstallSiteExtensionSlotFuture.azure.FutureAPI
+1. AppsListPublishingCredentialsFuture.Result
+1. AppsListPublishingCredentialsFuture.azure.FutureAPI
+1. AppsListPublishingCredentialsSlotFuture.Result
+1. AppsListPublishingCredentialsSlotFuture.azure.FutureAPI
+1. AppsMigrateMySQLFuture.Result
+1. AppsMigrateMySQLFuture.azure.FutureAPI
+1. AppsMigrateStorageFuture.Result
+1. AppsMigrateStorageFuture.azure.FutureAPI
+1. AppsRestoreFromBackupBlobFuture.Result
+1. AppsRestoreFromBackupBlobFuture.azure.FutureAPI
+1. AppsRestoreFromBackupBlobSlotFuture.Result
+1. AppsRestoreFromBackupBlobSlotFuture.azure.FutureAPI
+1. AppsRestoreFromDeletedAppFuture.Result
+1. AppsRestoreFromDeletedAppFuture.azure.FutureAPI
+1. AppsRestoreFromDeletedAppSlotFuture.Result
+1. AppsRestoreFromDeletedAppSlotFuture.azure.FutureAPI
+1. AppsRestoreFuture.Result
+1. AppsRestoreFuture.azure.FutureAPI
+1. AppsRestoreSlotFuture.Result
+1. AppsRestoreSlotFuture.azure.FutureAPI
+1. AppsRestoreSnapshotFuture.Result
+1. AppsRestoreSnapshotFuture.azure.FutureAPI
+1. AppsRestoreSnapshotSlotFuture.Result
+1. AppsRestoreSnapshotSlotFuture.azure.FutureAPI
+1. AppsStartNetworkTraceFuture.Result
+1. AppsStartNetworkTraceFuture.azure.FutureAPI
+1. AppsStartNetworkTraceSlotFuture.Result
+1. AppsStartNetworkTraceSlotFuture.azure.FutureAPI
+1. AppsStartWebSiteNetworkTraceOperationFuture.Result
+1. AppsStartWebSiteNetworkTraceOperationFuture.azure.FutureAPI
+1. AppsStartWebSiteNetworkTraceOperationSlotFuture.Result
+1. AppsStartWebSiteNetworkTraceOperationSlotFuture.azure.FutureAPI
+1. AppsSwapSlotSlotFuture.Result
+1. AppsSwapSlotSlotFuture.azure.FutureAPI
+1. AppsSwapSlotWithProductionFuture.Result
+1. AppsSwapSlotWithProductionFuture.azure.FutureAPI
+1. DomainsCreateOrUpdateFuture.Result
+1. DomainsCreateOrUpdateFuture.azure.FutureAPI

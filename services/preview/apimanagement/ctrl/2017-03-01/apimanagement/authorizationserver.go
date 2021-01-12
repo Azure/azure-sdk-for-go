@@ -351,6 +351,7 @@ func (client AuthorizationServerClient) List(ctx context.Context, apimBaseURL st
 	}
 	if result.asc.hasNextLink() && result.asc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -419,7 +420,6 @@ func (client AuthorizationServerClient) listNextResults(ctx context.Context, las
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServerClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

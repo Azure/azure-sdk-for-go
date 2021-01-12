@@ -79,7 +79,7 @@ func (client LiveEventsClient) Create(ctx context.Context, resourceGroupName str
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "media.LiveEventsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "media.LiveEventsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -121,7 +121,29 @@ func (client LiveEventsClient) CreateSender(req *http.Request) (future LiveEvent
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client LiveEventsClient) (le LiveEvent, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "media.LiveEventsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("media.LiveEventsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if le.Response.Response, err = future.GetResult(sender); err == nil && le.Response.Response.StatusCode != http.StatusNoContent {
+			le, err = client.CreateResponder(le.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "media.LiveEventsCreateFuture", "Result", le.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -169,7 +191,7 @@ func (client LiveEventsClient) Delete(ctx context.Context, resourceGroupName str
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "media.LiveEventsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "media.LiveEventsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -206,7 +228,23 @@ func (client LiveEventsClient) DeleteSender(req *http.Request) (future LiveEvent
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client LiveEventsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "media.LiveEventsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("media.LiveEventsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -343,6 +381,7 @@ func (client LiveEventsClient) List(ctx context.Context, resourceGroupName strin
 	}
 	if result.lelr.hasNextLink() && result.lelr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -404,7 +443,6 @@ func (client LiveEventsClient) listNextResults(ctx context.Context, lastResults 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.LiveEventsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -457,7 +495,7 @@ func (client LiveEventsClient) Reset(ctx context.Context, resourceGroupName stri
 
 	result, err = client.ResetSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "media.LiveEventsClient", "Reset", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "media.LiveEventsClient", "Reset", nil, "Failure sending request")
 		return
 	}
 
@@ -494,7 +532,23 @@ func (client LiveEventsClient) ResetSender(req *http.Request) (future LiveEvents
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client LiveEventsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "media.LiveEventsResetFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("media.LiveEventsResetFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -541,7 +595,7 @@ func (client LiveEventsClient) Start(ctx context.Context, resourceGroupName stri
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "media.LiveEventsClient", "Start", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "media.LiveEventsClient", "Start", nil, "Failure sending request")
 		return
 	}
 
@@ -578,7 +632,23 @@ func (client LiveEventsClient) StartSender(req *http.Request) (future LiveEvents
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client LiveEventsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "media.LiveEventsStartFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("media.LiveEventsStartFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -626,7 +696,7 @@ func (client LiveEventsClient) Stop(ctx context.Context, resourceGroupName strin
 
 	result, err = client.StopSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "media.LiveEventsClient", "Stop", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "media.LiveEventsClient", "Stop", nil, "Failure sending request")
 		return
 	}
 
@@ -665,7 +735,23 @@ func (client LiveEventsClient) StopSender(req *http.Request) (future LiveEventsS
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client LiveEventsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "media.LiveEventsStopFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("media.LiveEventsStopFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -713,7 +799,7 @@ func (client LiveEventsClient) Update(ctx context.Context, resourceGroupName str
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "media.LiveEventsClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "media.LiveEventsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -752,7 +838,29 @@ func (client LiveEventsClient) UpdateSender(req *http.Request) (future LiveEvent
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client LiveEventsClient) (le LiveEvent, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "media.LiveEventsUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("media.LiveEventsUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if le.Response.Response, err = future.GetResult(sender); err == nil && le.Response.Response.StatusCode != http.StatusNoContent {
+			le, err = client.UpdateResponder(le.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "media.LiveEventsUpdateFuture", "Result", le.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

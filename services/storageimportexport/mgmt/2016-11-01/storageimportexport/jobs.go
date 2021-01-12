@@ -370,6 +370,7 @@ func (client JobsClient) ListByResourceGroup(ctx context.Context, resourceGroupN
 	}
 	if result.ljr.hasNextLink() && result.ljr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -440,7 +441,6 @@ func (client JobsClient) listByResourceGroupNextResults(ctx context.Context, las
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -497,6 +497,7 @@ func (client JobsClient) ListBySubscription(ctx context.Context, top *int32, fil
 	}
 	if result.ljr.hasNextLink() && result.ljr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -566,7 +567,6 @@ func (client JobsClient) listBySubscriptionNextResults(ctx context.Context, last
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

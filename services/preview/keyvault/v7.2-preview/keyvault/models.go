@@ -2032,30 +2032,10 @@ type ErrorType struct {
 
 // FullBackupFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type FullBackupFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *FullBackupFuture) Result(client BaseClient) (fbo FullBackupOperation, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.FullBackupFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("keyvault.FullBackupFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if fbo.Response.Response, err = future.GetResult(sender); err == nil && fbo.Response.Response.StatusCode != http.StatusNoContent {
-		fbo, err = client.FullBackupResponder(fbo.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "keyvault.FullBackupFuture", "Result", fbo.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BaseClient) (FullBackupOperation, error)
 }
 
 // FullBackupOperation full backup operation
@@ -2080,59 +2060,19 @@ type FullBackupOperation struct {
 // FullRestoreOperationFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type FullRestoreOperationFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *FullRestoreOperationFuture) Result(client BaseClient) (ro RestoreOperation, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.FullRestoreOperationFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("keyvault.FullRestoreOperationFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ro.Response.Response, err = future.GetResult(sender); err == nil && ro.Response.Response.StatusCode != http.StatusNoContent {
-		ro, err = client.FullRestoreOperationResponder(ro.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "keyvault.FullRestoreOperationFuture", "Result", ro.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BaseClient) (RestoreOperation, error)
 }
 
 // HSMSecurityDomainUploadFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type HSMSecurityDomainUploadFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *HSMSecurityDomainUploadFuture) Result(client HSMSecurityDomainClient) (sdos SecurityDomainOperationStatus, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainUploadFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("keyvault.HSMSecurityDomainUploadFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sdos.Response.Response, err = future.GetResult(sender); err == nil && sdos.Response.Response.StatusCode != http.StatusNoContent {
-		sdos, err = client.UploadResponder(sdos.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainUploadFuture", "Result", sdos.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(HSMSecurityDomainClient) (SecurityDomainOperationStatus, error)
 }
 
 // IssuerAttributes the attributes of an issuer managed by the Key Vault service.
@@ -3959,30 +3899,10 @@ type SelectiveKeyRestoreOperation struct {
 // SelectiveKeyRestoreOperationMethodFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type SelectiveKeyRestoreOperationMethodFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SelectiveKeyRestoreOperationMethodFuture) Result(client BaseClient) (skro SelectiveKeyRestoreOperation, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.SelectiveKeyRestoreOperationMethodFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("keyvault.SelectiveKeyRestoreOperationMethodFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if skro.Response.Response, err = future.GetResult(sender); err == nil && skro.Response.Response.StatusCode != http.StatusNoContent {
-		skro, err = client.SelectiveKeyRestoreOperationMethodResponder(skro.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "keyvault.SelectiveKeyRestoreOperationMethodFuture", "Result", skro.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BaseClient) (SelectiveKeyRestoreOperation, error)
 }
 
 // SelectiveKeyRestoreOperationParameters ...

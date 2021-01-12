@@ -75,6 +75,7 @@ func (client OuContainerOperationsClient) List(ctx context.Context) (result Oper
 	}
 	if result.oelr.hasNextLink() && result.oelr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -130,7 +131,6 @@ func (client OuContainerOperationsClient) listNextResults(ctx context.Context, l
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.OuContainerOperationsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

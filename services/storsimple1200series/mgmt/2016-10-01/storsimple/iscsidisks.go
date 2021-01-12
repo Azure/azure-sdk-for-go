@@ -81,7 +81,7 @@ func (client IscsiDisksClient) CreateOrUpdate(ctx context.Context, deviceName st
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.IscsiDisksClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.IscsiDisksClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -122,7 +122,29 @@ func (client IscsiDisksClient) CreateOrUpdateSender(req *http.Request) (future I
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client IscsiDisksClient) (ID ISCSIDisk, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.IscsiDisksCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.IscsiDisksCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ID.Response.Response, err = future.GetResult(sender); err == nil && ID.Response.Response.StatusCode != http.StatusNoContent {
+			ID, err = client.CreateOrUpdateResponder(ID.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "storsimple.IscsiDisksCreateOrUpdateFuture", "Result", ID.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -171,7 +193,7 @@ func (client IscsiDisksClient) Delete(ctx context.Context, deviceName string, is
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.IscsiDisksClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.IscsiDisksClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -210,7 +232,23 @@ func (client IscsiDisksClient) DeleteSender(req *http.Request) (future IscsiDisk
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client IscsiDisksClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.IscsiDisksDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.IscsiDisksDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

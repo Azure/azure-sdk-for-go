@@ -1,33 +1,66 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/hdinsight/resource-manager/readme.md tag: `package-2015-03-preview`
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator @microsoft.azure/autorest.go@2.1.168
 
 ## Breaking Changes
 
-- Function `NewApplicationListResultPage` parameter(s) have been changed from `(func(context.Context, ApplicationListResult) (ApplicationListResult, error))` to `(ApplicationListResult, func(context.Context, ApplicationListResult) (ApplicationListResult, error))`
-- Function `NewScriptActionsListPage` parameter(s) have been changed from `(func(context.Context, ScriptActionsList) (ScriptActionsList, error))` to `(ScriptActionsList, func(context.Context, ScriptActionsList) (ScriptActionsList, error))`
-- Function `NewScriptActionExecutionHistoryListPage` parameter(s) have been changed from `(func(context.Context, ScriptActionExecutionHistoryList) (ScriptActionExecutionHistoryList, error))` to `(ScriptActionExecutionHistoryList, func(context.Context, ScriptActionExecutionHistoryList) (ScriptActionExecutionHistoryList, error))`
-- Function `NewClusterListResultPage` parameter(s) have been changed from `(func(context.Context, ClusterListResult) (ClusterListResult, error))` to `(ClusterListResult, func(context.Context, ClusterListResult) (ClusterListResult, error))`
-- Function `NewOperationListResultPage` parameter(s) have been changed from `(func(context.Context, OperationListResult) (OperationListResult, error))` to `(OperationListResult, func(context.Context, OperationListResult) (OperationListResult, error))`
-- Const `PublicLoadBalancer` has been removed
-- Const `UDR` has been removed
-- Const `InboundAndOutbound` has been removed
-- Const `OutboundOnly` has been removed
-- Function `PossiblePublicNetworkAccessValues` has been removed
-- Function `PossibleOutboundOnlyPublicNetworkAccessTypeValues` has been removed
-- Struct `NetworkSettings` has been removed
-- Field `NetworkSettings` of struct `ClusterGetProperties` has been removed
-- Field `NetworkSettings` of struct `ClusterCreateProperties` has been removed
+### Removed Funcs
 
-## New Content
+1. *ApplicationsCreateFuture.Result(ApplicationsClient) (Application, error)
+1. *ApplicationsDeleteFuture.Result(ApplicationsClient) (autorest.Response, error)
+1. *ClustersCreateFuture.Result(ClustersClient) (Cluster, error)
+1. *ClustersDeleteFuture.Result(ClustersClient) (autorest.Response, error)
+1. *ClustersExecuteScriptActionsFuture.Result(ClustersClient) (autorest.Response, error)
+1. *ClustersResizeFuture.Result(ClustersClient) (autorest.Response, error)
+1. *ClustersRotateDiskEncryptionKeyFuture.Result(ClustersClient) (autorest.Response, error)
+1. *ClustersUpdateAutoScaleConfigurationFuture.Result(ClustersClient) (autorest.Response, error)
+1. *ClustersUpdateGatewaySettingsFuture.Result(ClustersClient) (autorest.Response, error)
+1. *ConfigurationsUpdateFuture.Result(ConfigurationsClient) (autorest.Response, error)
+1. *ExtensionDisableMonitoringFuture.Result(ExtensionClient) (autorest.Response, error)
+1. *ExtensionEnableMonitoringFuture.Result(ExtensionClient) (autorest.Response, error)
 
-- New const `Outbound`
-- New const `Inbound`
-- New const `Enabled`
-- New const `Disabled`
-- New function `PossibleResourceProviderConnectionValues() []ResourceProviderConnection`
-- New function `PossiblePrivateLinkValues() []PrivateLink`
-- New struct `NetworkProperties`
-- New field `NetworkProperties` in struct `ClusterCreateProperties`
-- New field `ClusterID` in struct `ClusterGetProperties`
-- New field `NetworkProperties` in struct `ClusterGetProperties`
+## Struct Changes
+
+### Removed Struct Fields
+
+1. ApplicationsCreateFuture.azure.Future
+1. ApplicationsDeleteFuture.azure.Future
+1. ClustersCreateFuture.azure.Future
+1. ClustersDeleteFuture.azure.Future
+1. ClustersExecuteScriptActionsFuture.azure.Future
+1. ClustersResizeFuture.azure.Future
+1. ClustersRotateDiskEncryptionKeyFuture.azure.Future
+1. ClustersUpdateAutoScaleConfigurationFuture.azure.Future
+1. ClustersUpdateGatewaySettingsFuture.azure.Future
+1. ConfigurationsUpdateFuture.azure.Future
+1. ExtensionDisableMonitoringFuture.azure.Future
+1. ExtensionEnableMonitoringFuture.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. ApplicationsCreateFuture.Result
+1. ApplicationsCreateFuture.azure.FutureAPI
+1. ApplicationsDeleteFuture.Result
+1. ApplicationsDeleteFuture.azure.FutureAPI
+1. ClustersCreateFuture.Result
+1. ClustersCreateFuture.azure.FutureAPI
+1. ClustersDeleteFuture.Result
+1. ClustersDeleteFuture.azure.FutureAPI
+1. ClustersExecuteScriptActionsFuture.Result
+1. ClustersExecuteScriptActionsFuture.azure.FutureAPI
+1. ClustersResizeFuture.Result
+1. ClustersResizeFuture.azure.FutureAPI
+1. ClustersRotateDiskEncryptionKeyFuture.Result
+1. ClustersRotateDiskEncryptionKeyFuture.azure.FutureAPI
+1. ClustersUpdateAutoScaleConfigurationFuture.Result
+1. ClustersUpdateAutoScaleConfigurationFuture.azure.FutureAPI
+1. ClustersUpdateGatewaySettingsFuture.Result
+1. ClustersUpdateGatewaySettingsFuture.azure.FutureAPI
+1. ConfigurationsUpdateFuture.Result
+1. ConfigurationsUpdateFuture.azure.FutureAPI
+1. ExtensionDisableMonitoringFuture.Result
+1. ExtensionDisableMonitoringFuture.azure.FutureAPI
+1. ExtensionEnableMonitoringFuture.Result
+1. ExtensionEnableMonitoringFuture.azure.FutureAPI

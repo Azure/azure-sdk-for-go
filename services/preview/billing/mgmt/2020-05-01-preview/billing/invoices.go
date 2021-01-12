@@ -65,7 +65,7 @@ func (client InvoicesClient) DownloadBillingSubscriptionInvoice(ctx context.Cont
 
 	result, err = client.DownloadBillingSubscriptionInvoiceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "DownloadBillingSubscriptionInvoice", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "DownloadBillingSubscriptionInvoice", nil, "Failure sending request")
 		return
 	}
 
@@ -101,7 +101,29 @@ func (client InvoicesClient) DownloadBillingSubscriptionInvoiceSender(req *http.
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client InvoicesClient) (du DownloadURL, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadBillingSubscriptionInvoiceFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("billing.InvoicesDownloadBillingSubscriptionInvoiceFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if du.Response.Response, err = future.GetResult(sender); err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
+			du, err = client.DownloadBillingSubscriptionInvoiceResponder(du.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadBillingSubscriptionInvoiceFuture", "Result", du.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -142,7 +164,7 @@ func (client InvoicesClient) DownloadInvoice(ctx context.Context, billingAccount
 
 	result, err = client.DownloadInvoiceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "DownloadInvoice", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "DownloadInvoice", nil, "Failure sending request")
 		return
 	}
 
@@ -178,7 +200,29 @@ func (client InvoicesClient) DownloadInvoiceSender(req *http.Request) (future In
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client InvoicesClient) (du DownloadURL, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadInvoiceFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("billing.InvoicesDownloadInvoiceFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if du.Response.Response, err = future.GetResult(sender); err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
+			du, err = client.DownloadInvoiceResponder(du.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadInvoiceFuture", "Result", du.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -225,7 +269,7 @@ func (client InvoicesClient) DownloadMultipleBillingProfileInvoices(ctx context.
 
 	result, err = client.DownloadMultipleBillingProfileInvoicesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "DownloadMultipleBillingProfileInvoices", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "DownloadMultipleBillingProfileInvoices", nil, "Failure sending request")
 		return
 	}
 
@@ -261,7 +305,29 @@ func (client InvoicesClient) DownloadMultipleBillingProfileInvoicesSender(req *h
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client InvoicesClient) (du DownloadURL, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadMultipleBillingProfileInvoicesFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("billing.InvoicesDownloadMultipleBillingProfileInvoicesFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if du.Response.Response, err = future.GetResult(sender); err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
+			du, err = client.DownloadMultipleBillingProfileInvoicesResponder(du.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadMultipleBillingProfileInvoicesFuture", "Result", du.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -306,7 +372,7 @@ func (client InvoicesClient) DownloadMultipleBillingSubscriptionInvoices(ctx con
 
 	result, err = client.DownloadMultipleBillingSubscriptionInvoicesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "DownloadMultipleBillingSubscriptionInvoices", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "DownloadMultipleBillingSubscriptionInvoices", nil, "Failure sending request")
 		return
 	}
 
@@ -342,7 +408,29 @@ func (client InvoicesClient) DownloadMultipleBillingSubscriptionInvoicesSender(r
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client InvoicesClient) (du DownloadURL, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("billing.InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if du.Response.Response, err = future.GetResult(sender); err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
+			du, err = client.DownloadMultipleBillingSubscriptionInvoicesResponder(du.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture", "Result", du.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -620,6 +708,7 @@ func (client InvoicesClient) ListByBillingAccount(ctx context.Context, billingAc
 	}
 	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -681,7 +770,6 @@ func (client InvoicesClient) listByBillingAccountNextResults(ctx context.Context
 	result, err = client.ListByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "listByBillingAccountNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -741,6 +829,7 @@ func (client InvoicesClient) ListByBillingProfile(ctx context.Context, billingAc
 	}
 	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -803,7 +892,6 @@ func (client InvoicesClient) listByBillingProfileNextResults(ctx context.Context
 	result, err = client.ListByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "listByBillingProfileNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -860,6 +948,7 @@ func (client InvoicesClient) ListByBillingSubscription(ctx context.Context, peri
 	}
 	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -921,7 +1010,6 @@ func (client InvoicesClient) listByBillingSubscriptionNextResults(ctx context.Co
 	result, err = client.ListByBillingSubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "listByBillingSubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

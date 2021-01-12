@@ -1,11 +1,30 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/datalake-analytics/resource-manager/readme.md tag: `package-2015-10-preview`
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator @microsoft.azure/autorest.go@2.1.168
 
 ## Breaking Changes
 
-- Function `NewDataLakeAnalyticsAccountListStorageAccountsResultPage` parameter(s) have been changed from `(func(context.Context, DataLakeAnalyticsAccountListStorageAccountsResult) (DataLakeAnalyticsAccountListStorageAccountsResult, error))` to `(DataLakeAnalyticsAccountListStorageAccountsResult, func(context.Context, DataLakeAnalyticsAccountListStorageAccountsResult) (DataLakeAnalyticsAccountListStorageAccountsResult, error))`
-- Function `NewListBlobContainersResultPage` parameter(s) have been changed from `(func(context.Context, ListBlobContainersResult) (ListBlobContainersResult, error))` to `(ListBlobContainersResult, func(context.Context, ListBlobContainersResult) (ListBlobContainersResult, error))`
-- Function `NewListSasTokensResultPage` parameter(s) have been changed from `(func(context.Context, ListSasTokensResult) (ListSasTokensResult, error))` to `(ListSasTokensResult, func(context.Context, ListSasTokensResult) (ListSasTokensResult, error))`
-- Function `NewDataLakeAnalyticsAccountListDataLakeStoreResultPage` parameter(s) have been changed from `(func(context.Context, DataLakeAnalyticsAccountListDataLakeStoreResult) (DataLakeAnalyticsAccountListDataLakeStoreResult, error))` to `(DataLakeAnalyticsAccountListDataLakeStoreResult, func(context.Context, DataLakeAnalyticsAccountListDataLakeStoreResult) (DataLakeAnalyticsAccountListDataLakeStoreResult, error))`
-- Function `NewDataLakeAnalyticsAccountListResultPage` parameter(s) have been changed from `(func(context.Context, DataLakeAnalyticsAccountListResult) (DataLakeAnalyticsAccountListResult, error))` to `(DataLakeAnalyticsAccountListResult, func(context.Context, DataLakeAnalyticsAccountListResult) (DataLakeAnalyticsAccountListResult, error))`
+### Removed Funcs
+
+1. *CreateFuture.Result(Client) (DataLakeAnalyticsAccount, error)
+1. *DeleteFuture.Result(Client) (autorest.Response, error)
+1. *UpdateFuture.Result(Client) (DataLakeAnalyticsAccount, error)
+
+## Struct Changes
+
+### Removed Struct Fields
+
+1. CreateFuture.azure.Future
+1. DeleteFuture.azure.Future
+1. UpdateFuture.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. CreateFuture.Result
+1. CreateFuture.azure.FutureAPI
+1. DeleteFuture.Result
+1. DeleteFuture.azure.FutureAPI
+1. UpdateFuture.Result
+1. UpdateFuture.azure.FutureAPI

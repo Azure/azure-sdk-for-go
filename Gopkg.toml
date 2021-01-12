@@ -24,8 +24,8 @@
   go-tests = true
 
 [[constraint]]
+  branch = "master"
   name = "github.com/Azure/go-autorest"
-  version = "14.0.0"
 
 [[constraint]]
   branch = "master"

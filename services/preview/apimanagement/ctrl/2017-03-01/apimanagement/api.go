@@ -363,6 +363,7 @@ func (client APIClient) List(ctx context.Context, apimBaseURL string, filter str
 	}
 	if result.ac.hasNextLink() && result.ac.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -431,7 +432,6 @@ func (client APIClient) listNextResults(ctx context.Context, lastResults APIColl
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

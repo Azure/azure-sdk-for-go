@@ -78,7 +78,7 @@ func (client WorkloadNetworksClient) CreateDhcp(ctx context.Context, resourceGro
 
 	result, err = client.CreateDhcpSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreateDhcp", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreateDhcp", nil, "Failure sending request")
 		return
 	}
 
@@ -117,7 +117,29 @@ func (client WorkloadNetworksClient) CreateDhcpSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client WorkloadNetworksClient) (wnd WorkloadNetworkDhcp, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreateDhcpFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksCreateDhcpFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if wnd.Response.Response, err = future.GetResult(sender); err == nil && wnd.Response.Response.StatusCode != http.StatusNoContent {
+			wnd, err = client.CreateDhcpResponder(wnd.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreateDhcpFuture", "Result", wnd.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -168,7 +190,7 @@ func (client WorkloadNetworksClient) CreatePortMirroring(ctx context.Context, re
 
 	result, err = client.CreatePortMirroringSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreatePortMirroring", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreatePortMirroring", nil, "Failure sending request")
 		return
 	}
 
@@ -207,7 +229,29 @@ func (client WorkloadNetworksClient) CreatePortMirroringSender(req *http.Request
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client WorkloadNetworksClient) (wnpm WorkloadNetworkPortMirroring, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreatePortMirroringFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksCreatePortMirroringFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if wnpm.Response.Response, err = future.GetResult(sender); err == nil && wnpm.Response.Response.StatusCode != http.StatusNoContent {
+			wnpm, err = client.CreatePortMirroringResponder(wnpm.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreatePortMirroringFuture", "Result", wnpm.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -258,7 +302,7 @@ func (client WorkloadNetworksClient) CreateSegments(ctx context.Context, resourc
 
 	result, err = client.CreateSegmentsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreateSegments", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreateSegments", nil, "Failure sending request")
 		return
 	}
 
@@ -297,7 +341,29 @@ func (client WorkloadNetworksClient) CreateSegmentsSender(req *http.Request) (fu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client WorkloadNetworksClient) (wns WorkloadNetworkSegment, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreateSegmentsFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksCreateSegmentsFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if wns.Response.Response, err = future.GetResult(sender); err == nil && wns.Response.Response.StatusCode != http.StatusNoContent {
+			wns, err = client.CreateSegmentsResponder(wns.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreateSegmentsFuture", "Result", wns.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -348,7 +414,7 @@ func (client WorkloadNetworksClient) CreateVMGroup(ctx context.Context, resource
 
 	result, err = client.CreateVMGroupSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreateVMGroup", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreateVMGroup", nil, "Failure sending request")
 		return
 	}
 
@@ -387,7 +453,29 @@ func (client WorkloadNetworksClient) CreateVMGroupSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client WorkloadNetworksClient) (wnvg WorkloadNetworkVMGroup, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreateVMGroupFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksCreateVMGroupFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if wnvg.Response.Response, err = future.GetResult(sender); err == nil && wnvg.Response.Response.StatusCode != http.StatusNoContent {
+			wnvg, err = client.CreateVMGroupResponder(wnvg.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreateVMGroupFuture", "Result", wnvg.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -437,7 +525,7 @@ func (client WorkloadNetworksClient) DeleteDhcp(ctx context.Context, resourceGro
 
 	result, err = client.DeleteDhcpSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeleteDhcp", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeleteDhcp", nil, "Failure sending request")
 		return
 	}
 
@@ -474,7 +562,23 @@ func (client WorkloadNetworksClient) DeleteDhcpSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client WorkloadNetworksClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksDeleteDhcpFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksDeleteDhcpFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -523,7 +627,7 @@ func (client WorkloadNetworksClient) DeletePortMirroring(ctx context.Context, re
 
 	result, err = client.DeletePortMirroringSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeletePortMirroring", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeletePortMirroring", nil, "Failure sending request")
 		return
 	}
 
@@ -560,7 +664,23 @@ func (client WorkloadNetworksClient) DeletePortMirroringSender(req *http.Request
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client WorkloadNetworksClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksDeletePortMirroringFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksDeletePortMirroringFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -609,7 +729,7 @@ func (client WorkloadNetworksClient) DeleteSegment(ctx context.Context, resource
 
 	result, err = client.DeleteSegmentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeleteSegment", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeleteSegment", nil, "Failure sending request")
 		return
 	}
 
@@ -646,7 +766,23 @@ func (client WorkloadNetworksClient) DeleteSegmentSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client WorkloadNetworksClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksDeleteSegmentFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksDeleteSegmentFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -695,7 +831,7 @@ func (client WorkloadNetworksClient) DeleteVMGroup(ctx context.Context, resource
 
 	result, err = client.DeleteVMGroupSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeleteVMGroup", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeleteVMGroup", nil, "Failure sending request")
 		return
 	}
 
@@ -732,7 +868,23 @@ func (client WorkloadNetworksClient) DeleteVMGroupSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client WorkloadNetworksClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksDeleteVMGroupFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksDeleteVMGroupFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -1321,6 +1473,7 @@ func (client WorkloadNetworksClient) ListDhcp(ctx context.Context, resourceGroup
 	}
 	if result.wndl.hasNextLink() && result.wndl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1382,7 +1535,6 @@ func (client WorkloadNetworksClient) listDhcpNextResults(ctx context.Context, la
 	result, err = client.ListDhcpResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listDhcpNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1449,6 +1601,7 @@ func (client WorkloadNetworksClient) ListGateways(ctx context.Context, resourceG
 	}
 	if result.wngl.hasNextLink() && result.wngl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1510,7 +1663,6 @@ func (client WorkloadNetworksClient) listGatewaysNextResults(ctx context.Context
 	result, err = client.ListGatewaysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listGatewaysNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1577,6 +1729,7 @@ func (client WorkloadNetworksClient) ListPortMirroring(ctx context.Context, reso
 	}
 	if result.wnpml.hasNextLink() && result.wnpml.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1638,7 +1791,6 @@ func (client WorkloadNetworksClient) listPortMirroringNextResults(ctx context.Co
 	result, err = client.ListPortMirroringResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listPortMirroringNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1705,6 +1857,7 @@ func (client WorkloadNetworksClient) ListSegments(ctx context.Context, resourceG
 	}
 	if result.wnsl.hasNextLink() && result.wnsl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1766,7 +1919,6 @@ func (client WorkloadNetworksClient) listSegmentsNextResults(ctx context.Context
 	result, err = client.ListSegmentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listSegmentsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1833,6 +1985,7 @@ func (client WorkloadNetworksClient) ListVirtualMachines(ctx context.Context, re
 	}
 	if result.wnvml.hasNextLink() && result.wnvml.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1894,7 +2047,6 @@ func (client WorkloadNetworksClient) listVirtualMachinesNextResults(ctx context.
 	result, err = client.ListVirtualMachinesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listVirtualMachinesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1961,6 +2113,7 @@ func (client WorkloadNetworksClient) ListVMGroups(ctx context.Context, resourceG
 	}
 	if result.wnvgl.hasNextLink() && result.wnvgl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2022,7 +2175,6 @@ func (client WorkloadNetworksClient) listVMGroupsNextResults(ctx context.Context
 	result, err = client.ListVMGroupsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listVMGroupsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2078,7 +2230,7 @@ func (client WorkloadNetworksClient) UpdateDhcp(ctx context.Context, resourceGro
 
 	result, err = client.UpdateDhcpSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "UpdateDhcp", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "UpdateDhcp", nil, "Failure sending request")
 		return
 	}
 
@@ -2117,7 +2269,29 @@ func (client WorkloadNetworksClient) UpdateDhcpSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client WorkloadNetworksClient) (wnd WorkloadNetworkDhcp, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdateDhcpFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksUpdateDhcpFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if wnd.Response.Response, err = future.GetResult(sender); err == nil && wnd.Response.Response.StatusCode != http.StatusNoContent {
+			wnd, err = client.UpdateDhcpResponder(wnd.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdateDhcpFuture", "Result", wnd.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -2168,7 +2342,7 @@ func (client WorkloadNetworksClient) UpdatePortMirroring(ctx context.Context, re
 
 	result, err = client.UpdatePortMirroringSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "UpdatePortMirroring", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "UpdatePortMirroring", nil, "Failure sending request")
 		return
 	}
 
@@ -2207,7 +2381,29 @@ func (client WorkloadNetworksClient) UpdatePortMirroringSender(req *http.Request
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client WorkloadNetworksClient) (wnpm WorkloadNetworkPortMirroring, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdatePortMirroringFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksUpdatePortMirroringFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if wnpm.Response.Response, err = future.GetResult(sender); err == nil && wnpm.Response.Response.StatusCode != http.StatusNoContent {
+			wnpm, err = client.UpdatePortMirroringResponder(wnpm.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdatePortMirroringFuture", "Result", wnpm.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -2258,7 +2454,7 @@ func (client WorkloadNetworksClient) UpdateSegments(ctx context.Context, resourc
 
 	result, err = client.UpdateSegmentsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "UpdateSegments", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "UpdateSegments", nil, "Failure sending request")
 		return
 	}
 
@@ -2297,7 +2493,29 @@ func (client WorkloadNetworksClient) UpdateSegmentsSender(req *http.Request) (fu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client WorkloadNetworksClient) (wns WorkloadNetworkSegment, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdateSegmentsFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksUpdateSegmentsFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if wns.Response.Response, err = future.GetResult(sender); err == nil && wns.Response.Response.StatusCode != http.StatusNoContent {
+			wns, err = client.UpdateSegmentsResponder(wns.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdateSegmentsFuture", "Result", wns.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -2348,7 +2566,7 @@ func (client WorkloadNetworksClient) UpdateVMGroup(ctx context.Context, resource
 
 	result, err = client.UpdateVMGroupSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "UpdateVMGroup", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "UpdateVMGroup", nil, "Failure sending request")
 		return
 	}
 
@@ -2387,7 +2605,29 @@ func (client WorkloadNetworksClient) UpdateVMGroupSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client WorkloadNetworksClient) (wnvg WorkloadNetworkVMGroup, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdateVMGroupFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksUpdateVMGroupFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if wnvg.Response.Response, err = future.GetResult(sender); err == nil && wnvg.Response.Response.StatusCode != http.StatusNoContent {
+			wnvg, err = client.UpdateVMGroupResponder(wnvg.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdateVMGroupFuture", "Result", wnvg.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

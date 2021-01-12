@@ -79,7 +79,7 @@ func (client DelegatedSubnetServiceClient) DeleteDetails(ctx context.Context, re
 
 	result, err = client.DeleteDetailsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceClient", "DeleteDetails", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceClient", "DeleteDetails", nil, "Failure sending request")
 		return
 	}
 
@@ -115,7 +115,23 @@ func (client DelegatedSubnetServiceClient) DeleteDetailsSender(req *http.Request
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DelegatedSubnetServiceClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceDeleteDetailsFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("delegatednetwork.DelegatedSubnetServiceDeleteDetailsFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -263,6 +279,7 @@ func (client DelegatedSubnetServiceClient) ListByResourceGroup(ctx context.Conte
 	}
 	if result.ds.hasNextLink() && result.ds.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -323,7 +340,6 @@ func (client DelegatedSubnetServiceClient) listByResourceGroupNextResults(ctx co
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -377,6 +393,7 @@ func (client DelegatedSubnetServiceClient) ListBySubscription(ctx context.Contex
 	}
 	if result.ds.hasNextLink() && result.ds.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -436,7 +453,6 @@ func (client DelegatedSubnetServiceClient) listBySubscriptionNextResults(ctx con
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -494,7 +510,7 @@ func (client DelegatedSubnetServiceClient) PatchDetails(ctx context.Context, res
 
 	result, err = client.PatchDetailsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceClient", "PatchDetails", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceClient", "PatchDetails", nil, "Failure sending request")
 		return
 	}
 
@@ -532,7 +548,29 @@ func (client DelegatedSubnetServiceClient) PatchDetailsSender(req *http.Request)
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DelegatedSubnetServiceClient) (ds DelegatedSubnet, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServicePatchDetailsFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("delegatednetwork.DelegatedSubnetServicePatchDetailsFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ds.Response.Response, err = future.GetResult(sender); err == nil && ds.Response.Response.StatusCode != http.StatusNoContent {
+			ds, err = client.PatchDetailsResponder(ds.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServicePatchDetailsFuture", "Result", ds.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -585,7 +623,7 @@ func (client DelegatedSubnetServiceClient) PutDetails(ctx context.Context, resou
 
 	result, err = client.PutDetailsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceClient", "PutDetails", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceClient", "PutDetails", nil, "Failure sending request")
 		return
 	}
 
@@ -624,7 +662,29 @@ func (client DelegatedSubnetServiceClient) PutDetailsSender(req *http.Request) (
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DelegatedSubnetServiceClient) (ds DelegatedSubnet, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServicePutDetailsFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("delegatednetwork.DelegatedSubnetServicePutDetailsFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ds.Response.Response, err = future.GetResult(sender); err == nil && ds.Response.Response.StatusCode != http.StatusNoContent {
+			ds, err = client.PutDetailsResponder(ds.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServicePutDetailsFuture", "Result", ds.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

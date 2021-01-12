@@ -151,6 +151,7 @@ func (client Client) List(ctx context.Context, reservationOrderID string) (resul
 	}
 	if result.l.hasNextLink() && result.l.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -210,7 +211,6 @@ func (client Client) listNextResults(ctx context.Context, lastResults List) (res
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.Client", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -267,6 +267,7 @@ func (client Client) ListRevisions(ctx context.Context, reservationID string, re
 	}
 	if result.l.hasNextLink() && result.l.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -327,7 +328,6 @@ func (client Client) listRevisionsNextResults(ctx context.Context, lastResults L
 	result, err = client.ListRevisionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.Client", "listRevisionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -372,7 +372,7 @@ func (client Client) Merge(ctx context.Context, reservationOrderID string, body 
 
 	result, err = client.MergeSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.Client", "Merge", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "reservations.Client", "Merge", nil, "Failure sending request")
 		return
 	}
 
@@ -408,7 +408,29 @@ func (client Client) MergeSender(req *http.Request) (future ReservationMergeFutu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client Client) (lr ListResponse, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "reservations.ReservationMergeFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("reservations.ReservationMergeFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if lr.Response.Response, err = future.GetResult(sender); err == nil && lr.Response.Response.StatusCode != http.StatusNoContent {
+			lr, err = client.MergeResponder(lr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "reservations.ReservationMergeFuture", "Result", lr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -447,7 +469,7 @@ func (client Client) Split(ctx context.Context, reservationOrderID string, body 
 
 	result, err = client.SplitSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.Client", "Split", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "reservations.Client", "Split", nil, "Failure sending request")
 		return
 	}
 
@@ -483,7 +505,29 @@ func (client Client) SplitSender(req *http.Request) (future SplitFuture, err err
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client Client) (lr ListResponse, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "reservations.SplitFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("reservations.SplitFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if lr.Response.Response, err = future.GetResult(sender); err == nil && lr.Response.Response.StatusCode != http.StatusNoContent {
+			lr, err = client.SplitResponder(lr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "reservations.SplitFuture", "Result", lr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -523,7 +567,7 @@ func (client Client) Update(ctx context.Context, reservationOrderID string, rese
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.Client", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "reservations.Client", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -560,7 +604,29 @@ func (client Client) UpdateSender(req *http.Request) (future ReservationUpdateFu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client Client) (r Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "reservations.ReservationUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("reservations.ReservationUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if r.Response.Response, err = future.GetResult(sender); err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
+			r, err = client.UpdateResponder(r.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "reservations.ReservationUpdateFuture", "Result", r.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

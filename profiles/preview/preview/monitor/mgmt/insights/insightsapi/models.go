@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2020 Microsoft Corporation
+// Copyright 2021 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,5 +21,30 @@ package insightsapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights/insightsapi"
 
-type DataCollectionRuleAssociationsClientAPI = original.DataCollectionRuleAssociationsClientAPI
-type DataCollectionRulesClientAPI = original.DataCollectionRulesClientAPI
+type ActionGroupsClientAPI = original.ActionGroupsClientAPI
+type ActivityLogAlertsClientAPI = original.ActivityLogAlertsClientAPI
+type ActivityLogsClientAPI = original.ActivityLogsClientAPI
+type AlertRuleIncidentsClientAPI = original.AlertRuleIncidentsClientAPI
+type AlertRulesClientAPI = original.AlertRulesClientAPI
+type AutoscaleSettingsClientAPI = original.AutoscaleSettingsClientAPI
+type BaselinesClientAPI = original.BaselinesClientAPI
+type DiagnosticSettingsCategoryClientAPI = original.DiagnosticSettingsCategoryClientAPI
+type DiagnosticSettingsClientAPI = original.DiagnosticSettingsClientAPI
+type EventCategoriesClientAPI = original.EventCategoriesClientAPI
+type LogProfilesClientAPI = original.LogProfilesClientAPI
+type MetricAlertsClientAPI = original.MetricAlertsClientAPI
+type MetricAlertsStatusClientAPI = original.MetricAlertsStatusClientAPI
+type MetricBaselineClientAPI = original.MetricBaselineClientAPI
+type MetricDefinitionsClientAPI = original.MetricDefinitionsClientAPI
+type MetricNamespacesClientAPI = original.MetricNamespacesClientAPI
+type MetricsClientAPI = original.MetricsClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
+type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
+type PrivateLinkScopeOperationStatusClientAPI = original.PrivateLinkScopeOperationStatusClientAPI
+type PrivateLinkScopedResourcesClientAPI = original.PrivateLinkScopedResourcesClientAPI
+type PrivateLinkScopesClientAPI = original.PrivateLinkScopesClientAPI
+type ScheduledQueryRulesClientAPI = original.ScheduledQueryRulesClientAPI
+type SubscriptionDiagnosticSettingsClientAPI = original.SubscriptionDiagnosticSettingsClientAPI
+type TenantActivityLogsClientAPI = original.TenantActivityLogsClientAPI
+type VMInsightsClientAPI = original.VMInsightsClientAPI

@@ -379,6 +379,7 @@ func (client IncidentsClient) List(ctx context.Context, resourceGroupName string
 	}
 	if result.il.hasNextLink() && result.il.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -452,7 +453,6 @@ func (client IncidentsClient) listNextResults(ctx context.Context, lastResults I
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.IncidentsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

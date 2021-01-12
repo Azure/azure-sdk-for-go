@@ -372,6 +372,7 @@ func (client LoggersClient) ListByService(ctx context.Context, resourceGroupName
 	}
 	if result.lc.hasNextLink() && result.lc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -442,7 +443,6 @@ func (client LoggersClient) listByServiceNextResults(ctx context.Context, lastRe
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "listByServiceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

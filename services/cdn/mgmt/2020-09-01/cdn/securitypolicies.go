@@ -76,7 +76,7 @@ func (client SecurityPoliciesClient) Create(ctx context.Context, resourceGroupNa
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.SecurityPoliciesClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.SecurityPoliciesClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -115,7 +115,29 @@ func (client SecurityPoliciesClient) CreateSender(req *http.Request) (future Sec
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SecurityPoliciesClient) (sp SecurityPolicy, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.SecurityPoliciesCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.SecurityPoliciesCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if sp.Response.Response, err = future.GetResult(sender); err == nil && sp.Response.Response.StatusCode != http.StatusNoContent {
+			sp, err = client.CreateResponder(sp.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "cdn.SecurityPoliciesCreateFuture", "Result", sp.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -163,7 +185,7 @@ func (client SecurityPoliciesClient) Delete(ctx context.Context, resourceGroupNa
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.SecurityPoliciesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.SecurityPoliciesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -200,7 +222,23 @@ func (client SecurityPoliciesClient) DeleteSender(req *http.Request) (future Sec
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SecurityPoliciesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.SecurityPoliciesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.SecurityPoliciesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -460,7 +498,7 @@ func (client SecurityPoliciesClient) Patch(ctx context.Context, resourceGroupNam
 
 	result, err = client.PatchSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.SecurityPoliciesClient", "Patch", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.SecurityPoliciesClient", "Patch", nil, "Failure sending request")
 		return
 	}
 
@@ -499,7 +537,29 @@ func (client SecurityPoliciesClient) PatchSender(req *http.Request) (future Secu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client SecurityPoliciesClient) (sp SecurityPolicy, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.SecurityPoliciesPatchFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("cdn.SecurityPoliciesPatchFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if sp.Response.Response, err = future.GetResult(sender); err == nil && sp.Response.Response.StatusCode != http.StatusNoContent {
+			sp, err = client.PatchResponder(sp.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "cdn.SecurityPoliciesPatchFuture", "Result", sp.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

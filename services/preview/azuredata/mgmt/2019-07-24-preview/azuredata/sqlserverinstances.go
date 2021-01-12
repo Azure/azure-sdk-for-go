@@ -319,6 +319,7 @@ func (client SQLServerInstancesClient) List(ctx context.Context) (result SQLServ
 	}
 	if result.ssilr.hasNextLink() && result.ssilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -378,7 +379,6 @@ func (client SQLServerInstancesClient) listNextResults(ctx context.Context, last
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.SQLServerInstancesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -434,6 +434,7 @@ func (client SQLServerInstancesClient) ListByResourceGroup(ctx context.Context, 
 	}
 	if result.ssilr.hasNextLink() && result.ssilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -494,7 +495,6 @@ func (client SQLServerInstancesClient) listByResourceGroupNextResults(ctx contex
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.SQLServerInstancesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

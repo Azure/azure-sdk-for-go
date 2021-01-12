@@ -670,6 +670,7 @@ func (client HybridConnectionsClient) ListAuthorizationRules(ctx context.Context
 	}
 	if result.arlr.hasNextLink() && result.arlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -732,7 +733,6 @@ func (client HybridConnectionsClient) listAuthorizationRulesNextResults(ctx cont
 	result, err = client.ListAuthorizationRulesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "relay.HybridConnectionsClient", "listAuthorizationRulesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -799,6 +799,7 @@ func (client HybridConnectionsClient) ListByNamespace(ctx context.Context, resou
 	}
 	if result.hclr.hasNextLink() && result.hclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -860,7 +861,6 @@ func (client HybridConnectionsClient) listByNamespaceNextResults(ctx context.Con
 	result, err = client.ListByNamespaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "relay.HybridConnectionsClient", "listByNamespaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1027,6 +1027,7 @@ func (client HybridConnectionsClient) ListPostAuthorizationRules(ctx context.Con
 	}
 	if result.arlr.hasNextLink() && result.arlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1089,7 +1090,6 @@ func (client HybridConnectionsClient) listPostAuthorizationRulesNextResults(ctx 
 	result, err = client.ListPostAuthorizationRulesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "relay.HybridConnectionsClient", "listPostAuthorizationRulesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -321,6 +321,7 @@ func (client EventRoutesClient) List(ctx context.Context, maxItemCount *int32) (
 	}
 	if result.erc.hasNextLink() && result.erc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -383,7 +384,6 @@ func (client EventRoutesClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.EventRoutesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -1,39 +1,58 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/apimanagement/resource-manager/readme.md tag: `package-2019-01`
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator @microsoft.azure/autorest.go@2.1.168
 
 ## Breaking Changes
 
-- Function `NewAuthorizationServerCollectionPage` parameter(s) have been changed from `(func(context.Context, AuthorizationServerCollection) (AuthorizationServerCollection, error))` to `(AuthorizationServerCollection, func(context.Context, AuthorizationServerCollection) (AuthorizationServerCollection, error))`
-- Function `NewLoggerCollectionPage` parameter(s) have been changed from `(func(context.Context, LoggerCollection) (LoggerCollection, error))` to `(LoggerCollection, func(context.Context, LoggerCollection) (LoggerCollection, error))`
-- Function `NewAPIRevisionCollectionPage` parameter(s) have been changed from `(func(context.Context, APIRevisionCollection) (APIRevisionCollection, error))` to `(APIRevisionCollection, func(context.Context, APIRevisionCollection) (APIRevisionCollection, error))`
-- Function `NewPropertyCollectionPage` parameter(s) have been changed from `(func(context.Context, PropertyCollection) (PropertyCollection, error))` to `(PropertyCollection, func(context.Context, PropertyCollection) (PropertyCollection, error))`
-- Function `NewSubscriptionCollectionPage` parameter(s) have been changed from `(func(context.Context, SubscriptionCollection) (SubscriptionCollection, error))` to `(SubscriptionCollection, func(context.Context, SubscriptionCollection) (SubscriptionCollection, error))`
-- Function `NewServiceListResultPage` parameter(s) have been changed from `(func(context.Context, ServiceListResult) (ServiceListResult, error))` to `(ServiceListResult, func(context.Context, ServiceListResult) (ServiceListResult, error))`
-- Function `NewAPICollectionPage` parameter(s) have been changed from `(func(context.Context, APICollection) (APICollection, error))` to `(APICollection, func(context.Context, APICollection) (APICollection, error))`
-- Function `NewAPIReleaseCollectionPage` parameter(s) have been changed from `(func(context.Context, APIReleaseCollection) (APIReleaseCollection, error))` to `(APIReleaseCollection, func(context.Context, APIReleaseCollection) (APIReleaseCollection, error))`
-- Function `NewOperationListResultPage` parameter(s) have been changed from `(func(context.Context, OperationListResult) (OperationListResult, error))` to `(OperationListResult, func(context.Context, OperationListResult) (OperationListResult, error))`
-- Function `NewNotificationCollectionPage` parameter(s) have been changed from `(func(context.Context, NotificationCollection) (NotificationCollection, error))` to `(NotificationCollection, func(context.Context, NotificationCollection) (NotificationCollection, error))`
-- Function `NewBackendCollectionPage` parameter(s) have been changed from `(func(context.Context, BackendCollection) (BackendCollection, error))` to `(BackendCollection, func(context.Context, BackendCollection) (BackendCollection, error))`
-- Function `NewOperationCollectionPage` parameter(s) have been changed from `(func(context.Context, OperationCollection) (OperationCollection, error))` to `(OperationCollection, func(context.Context, OperationCollection) (OperationCollection, error))`
-- Function `NewIdentityProviderListPage` parameter(s) have been changed from `(func(context.Context, IdentityProviderList) (IdentityProviderList, error))` to `(IdentityProviderList, func(context.Context, IdentityProviderList) (IdentityProviderList, error))`
-- Function `NewEmailTemplateCollectionPage` parameter(s) have been changed from `(func(context.Context, EmailTemplateCollection) (EmailTemplateCollection, error))` to `(EmailTemplateCollection, func(context.Context, EmailTemplateCollection) (EmailTemplateCollection, error))`
-- Function `NewGroupCollectionPage` parameter(s) have been changed from `(func(context.Context, GroupCollection) (GroupCollection, error))` to `(GroupCollection, func(context.Context, GroupCollection) (GroupCollection, error))`
-- Function `NewTagDescriptionCollectionPage` parameter(s) have been changed from `(func(context.Context, TagDescriptionCollection) (TagDescriptionCollection, error))` to `(TagDescriptionCollection, func(context.Context, TagDescriptionCollection) (TagDescriptionCollection, error))`
-- Function `NewRegionListResultPage` parameter(s) have been changed from `(func(context.Context, RegionListResult) (RegionListResult, error))` to `(RegionListResult, func(context.Context, RegionListResult) (RegionListResult, error))`
-- Function `NewCertificateCollectionPage` parameter(s) have been changed from `(func(context.Context, CertificateCollection) (CertificateCollection, error))` to `(CertificateCollection, func(context.Context, CertificateCollection) (CertificateCollection, error))`
-- Function `NewDiagnosticCollectionPage` parameter(s) have been changed from `(func(context.Context, DiagnosticCollection) (DiagnosticCollection, error))` to `(DiagnosticCollection, func(context.Context, DiagnosticCollection) (DiagnosticCollection, error))`
-- Function `NewIssueAttachmentCollectionPage` parameter(s) have been changed from `(func(context.Context, IssueAttachmentCollection) (IssueAttachmentCollection, error))` to `(IssueAttachmentCollection, func(context.Context, IssueAttachmentCollection) (IssueAttachmentCollection, error))`
-- Function `NewSchemaCollectionPage` parameter(s) have been changed from `(func(context.Context, SchemaCollection) (SchemaCollection, error))` to `(SchemaCollection, func(context.Context, SchemaCollection) (SchemaCollection, error))`
-- Function `NewIssueCollectionPage` parameter(s) have been changed from `(func(context.Context, IssueCollection) (IssueCollection, error))` to `(IssueCollection, func(context.Context, IssueCollection) (IssueCollection, error))`
-- Function `NewProductCollectionPage` parameter(s) have been changed from `(func(context.Context, ProductCollection) (ProductCollection, error))` to `(ProductCollection, func(context.Context, ProductCollection) (ProductCollection, error))`
-- Function `NewResourceSkuResultsPage` parameter(s) have been changed from `(func(context.Context, ResourceSkuResults) (ResourceSkuResults, error))` to `(ResourceSkuResults, func(context.Context, ResourceSkuResults) (ResourceSkuResults, error))`
-- Function `NewAPIVersionSetCollectionPage` parameter(s) have been changed from `(func(context.Context, APIVersionSetCollection) (APIVersionSetCollection, error))` to `(APIVersionSetCollection, func(context.Context, APIVersionSetCollection) (APIVersionSetCollection, error))`
-- Function `NewTagResourceCollectionPage` parameter(s) have been changed from `(func(context.Context, TagResourceCollection) (TagResourceCollection, error))` to `(TagResourceCollection, func(context.Context, TagResourceCollection) (TagResourceCollection, error))`
-- Function `NewCacheCollectionPage` parameter(s) have been changed from `(func(context.Context, CacheCollection) (CacheCollection, error))` to `(CacheCollection, func(context.Context, CacheCollection) (CacheCollection, error))`
-- Function `NewOpenIDConnectProviderCollectionPage` parameter(s) have been changed from `(func(context.Context, OpenIDConnectProviderCollection) (OpenIDConnectProviderCollection, error))` to `(OpenIDConnectProviderCollection, func(context.Context, OpenIDConnectProviderCollection) (OpenIDConnectProviderCollection, error))`
-- Function `NewUserIdentityCollectionPage` parameter(s) have been changed from `(func(context.Context, UserIdentityCollection) (UserIdentityCollection, error))` to `(UserIdentityCollection, func(context.Context, UserIdentityCollection) (UserIdentityCollection, error))`
-- Function `NewIssueCommentCollectionPage` parameter(s) have been changed from `(func(context.Context, IssueCommentCollection) (IssueCommentCollection, error))` to `(IssueCommentCollection, func(context.Context, IssueCommentCollection) (IssueCommentCollection, error))`
-- Function `NewTagCollectionPage` parameter(s) have been changed from `(func(context.Context, TagCollection) (TagCollection, error))` to `(TagCollection, func(context.Context, TagCollection) (TagCollection, error))`
-- Function `NewReportCollectionPage` parameter(s) have been changed from `(func(context.Context, ReportCollection) (ReportCollection, error))` to `(ReportCollection, func(context.Context, ReportCollection) (ReportCollection, error))`
-- Function `NewUserCollectionPage` parameter(s) have been changed from `(func(context.Context, UserCollection) (UserCollection, error))` to `(UserCollection, func(context.Context, UserCollection) (UserCollection, error))`
+### Removed Funcs
+
+1. *APICreateOrUpdateFuture.Result(APIClient) (APIContract, error)
+1. *ServiceApplyNetworkConfigurationUpdatesFuture.Result(ServiceClient) (ServiceResource, error)
+1. *ServiceBackupFuture.Result(ServiceClient) (ServiceResource, error)
+1. *ServiceCreateOrUpdateFuture.Result(ServiceClient) (ServiceResource, error)
+1. *ServiceDeleteFuture.Result(ServiceClient) (ServiceResource, error)
+1. *ServiceRestoreFuture.Result(ServiceClient) (ServiceResource, error)
+1. *ServiceUpdateFuture.Result(ServiceClient) (ServiceResource, error)
+1. *TenantConfigurationDeployFuture.Result(TenantConfigurationClient) (OperationResultContract, error)
+1. *TenantConfigurationSaveFuture.Result(TenantConfigurationClient) (OperationResultContract, error)
+1. *TenantConfigurationValidateFuture.Result(TenantConfigurationClient) (OperationResultContract, error)
+
+## Struct Changes
+
+### Removed Struct Fields
+
+1. APICreateOrUpdateFuture.azure.Future
+1. ServiceApplyNetworkConfigurationUpdatesFuture.azure.Future
+1. ServiceBackupFuture.azure.Future
+1. ServiceCreateOrUpdateFuture.azure.Future
+1. ServiceDeleteFuture.azure.Future
+1. ServiceRestoreFuture.azure.Future
+1. ServiceUpdateFuture.azure.Future
+1. TenantConfigurationDeployFuture.azure.Future
+1. TenantConfigurationSaveFuture.azure.Future
+1. TenantConfigurationValidateFuture.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. APICreateOrUpdateFuture.Result
+1. APICreateOrUpdateFuture.azure.FutureAPI
+1. ServiceApplyNetworkConfigurationUpdatesFuture.Result
+1. ServiceApplyNetworkConfigurationUpdatesFuture.azure.FutureAPI
+1. ServiceBackupFuture.Result
+1. ServiceBackupFuture.azure.FutureAPI
+1. ServiceCreateOrUpdateFuture.Result
+1. ServiceCreateOrUpdateFuture.azure.FutureAPI
+1. ServiceDeleteFuture.Result
+1. ServiceDeleteFuture.azure.FutureAPI
+1. ServiceRestoreFuture.Result
+1. ServiceRestoreFuture.azure.FutureAPI
+1. ServiceUpdateFuture.Result
+1. ServiceUpdateFuture.azure.FutureAPI
+1. TenantConfigurationDeployFuture.Result
+1. TenantConfigurationDeployFuture.azure.FutureAPI
+1. TenantConfigurationSaveFuture.Result
+1. TenantConfigurationSaveFuture.azure.FutureAPI
+1. TenantConfigurationValidateFuture.Result
+1. TenantConfigurationValidateFuture.azure.FutureAPI

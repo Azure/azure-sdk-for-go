@@ -590,22 +590,8 @@ func (scc SourceControlConfigurationProperties) MarshalJSON() ([]byte, error) {
 // SourceControlConfigurationsDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type SourceControlConfigurationsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SourceControlConfigurationsDeleteFuture) Result(client SourceControlConfigurationsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "kubernetesconfiguration.SourceControlConfigurationsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("kubernetesconfiguration.SourceControlConfigurationsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SourceControlConfigurationsClient) (autorest.Response, error)
 }

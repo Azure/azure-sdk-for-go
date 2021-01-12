@@ -360,6 +360,7 @@ func (client RosettaNetProcessConfigurationsClient) ListByIntegrationAccounts(ct
 	}
 	if result.iarnpclr.hasNextLink() && result.iarnpclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -427,7 +428,6 @@ func (client RosettaNetProcessConfigurationsClient) listByIntegrationAccountsNex
 	result, err = client.ListByIntegrationAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.RosettaNetProcessConfigurationsClient", "listByIntegrationAccountsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

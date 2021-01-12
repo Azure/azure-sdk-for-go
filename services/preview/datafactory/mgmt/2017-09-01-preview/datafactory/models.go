@@ -53462,53 +53462,19 @@ func (irsp *IntegrationRuntimeSsisProperties) UnmarshalJSON(body []byte) error {
 // IntegrationRuntimesStartFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type IntegrationRuntimesStartFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *IntegrationRuntimesStartFuture) Result(client IntegrationRuntimesClient) (irsr IntegrationRuntimeStatusResponse, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesStartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("datafactory.IntegrationRuntimesStartFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if irsr.Response.Response, err = future.GetResult(sender); err == nil && irsr.Response.Response.StatusCode != http.StatusNoContent {
-		irsr, err = client.StartResponder(irsr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesStartFuture", "Result", irsr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(IntegrationRuntimesClient) (IntegrationRuntimeStatusResponse, error)
 }
 
 // IntegrationRuntimesStopFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type IntegrationRuntimesStopFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *IntegrationRuntimesStopFuture) Result(client IntegrationRuntimesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesStopFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("datafactory.IntegrationRuntimesStopFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(IntegrationRuntimesClient) (autorest.Response, error)
 }
 
 // BasicIntegrationRuntimeStatus integration runtime status.
@@ -96145,46 +96111,18 @@ func NewTriggerRunListResponsePage(cur TriggerRunListResponse, getNextPage func(
 // TriggersStartFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type TriggersStartFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *TriggersStartFuture) Result(client TriggersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.TriggersStartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("datafactory.TriggersStartFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(TriggersClient) (autorest.Response, error)
 }
 
 // TriggersStopFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type TriggersStopFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *TriggersStopFuture) Result(client TriggersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.TriggersStopFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("datafactory.TriggersStopFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(TriggersClient) (autorest.Response, error)
 }
 
 // TumblingWindowTrigger trigger that schedules pipeline runs for all fixed time interval windows from a

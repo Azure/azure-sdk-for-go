@@ -331,6 +331,7 @@ func (client ViewsClient) ListByHub(ctx context.Context, resourceGroupName strin
 	}
 	if result.vlr.hasNextLink() && result.vlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -393,7 +394,6 @@ func (client ViewsClient) listByHubNextResults(ctx context.Context, lastResults 
 	result, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "listByHubNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

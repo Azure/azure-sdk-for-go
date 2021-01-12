@@ -74,7 +74,7 @@ func (client PipelineClient) CreateOrUpdatePipeline(ctx context.Context, pipelin
 
 	result, err = client.CreateOrUpdatePipelineSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "CreateOrUpdatePipeline", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "CreateOrUpdatePipeline", nil, "Failure sending request")
 		return
 	}
 
@@ -118,7 +118,29 @@ func (client PipelineClient) CreateOrUpdatePipelineSender(req *http.Request) (fu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client PipelineClient) (pr PipelineResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.PipelineCreateOrUpdatePipelineFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.PipelineCreateOrUpdatePipelineFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if pr.Response.Response, err = future.GetResult(sender); err == nil && pr.Response.Response.StatusCode != http.StatusNoContent {
+			pr, err = client.CreateOrUpdatePipelineResponder(pr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "artifacts.PipelineCreateOrUpdatePipelineFuture", "Result", pr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -271,7 +293,7 @@ func (client PipelineClient) DeletePipeline(ctx context.Context, pipelineName st
 
 	result, err = client.DeletePipelineSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "DeletePipeline", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "DeletePipeline", nil, "Failure sending request")
 		return
 	}
 
@@ -309,7 +331,23 @@ func (client PipelineClient) DeletePipelineSender(req *http.Request) (future Pip
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client PipelineClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.PipelineDeletePipelineFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.PipelineDeletePipelineFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -448,6 +486,7 @@ func (client PipelineClient) GetPipelinesByWorkspace(ctx context.Context) (resul
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -507,7 +546,6 @@ func (client PipelineClient) getPipelinesByWorkspaceNextResults(ctx context.Cont
 	result, err = client.GetPipelinesByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "getPipelinesByWorkspaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -565,7 +603,7 @@ func (client PipelineClient) RenamePipeline(ctx context.Context, pipelineName st
 
 	result, err = client.RenamePipelineSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "RenamePipeline", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "RenamePipeline", nil, "Failure sending request")
 		return
 	}
 
@@ -605,7 +643,23 @@ func (client PipelineClient) RenamePipelineSender(req *http.Request) (future Pip
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client PipelineClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.PipelineRenamePipelineFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.PipelineRenamePipelineFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

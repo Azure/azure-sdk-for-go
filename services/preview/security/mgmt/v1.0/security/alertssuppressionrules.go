@@ -243,6 +243,7 @@ func (client AlertsSuppressionRulesClient) List(ctx context.Context, alertType s
 	}
 	if result.asrl.hasNextLink() && result.asrl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -305,7 +306,6 @@ func (client AlertsSuppressionRulesClient) listNextResults(ctx context.Context, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AlertsSuppressionRulesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

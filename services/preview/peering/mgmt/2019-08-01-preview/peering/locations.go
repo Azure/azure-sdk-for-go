@@ -77,6 +77,7 @@ func (client LocationsClient) List(ctx context.Context, kind string, directPeeri
 	}
 	if result.llr.hasNextLink() && result.llr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -140,7 +141,6 @@ func (client LocationsClient) listNextResults(ctx context.Context, lastResults L
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.LocationsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

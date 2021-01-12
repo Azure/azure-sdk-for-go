@@ -324,6 +324,7 @@ func (client RegistrationDefinitionsClient) List(ctx context.Context, scope stri
 	}
 	if result.rdl.hasNextLink() && result.rdl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -382,7 +383,6 @@ func (client RegistrationDefinitionsClient) listNextResults(ctx context.Context,
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedservices.RegistrationDefinitionsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

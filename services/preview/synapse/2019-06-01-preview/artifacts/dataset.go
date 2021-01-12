@@ -57,14 +57,7 @@ func (client DatasetClient) CreateOrUpdateDataset(ctx context.Context, datasetNa
 		{TargetValue: datasetName,
 			Constraints: []validation.Constraint{{Target: "datasetName", Name: validation.MaxLength, Rule: 260, Chain: nil},
 				{Target: "datasetName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "datasetName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}},
-		{TargetValue: dataset,
-			Constraints: []validation.Constraint{{Target: "dataset.Properties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "dataset.Properties.LinkedServiceName", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "dataset.Properties.LinkedServiceName.Type", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "dataset.Properties.LinkedServiceName.ReferenceName", Name: validation.Null, Rule: true, Chain: nil},
-					}},
-				}}}}}); err != nil {
+				{Target: "datasetName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("artifacts.DatasetClient", "CreateOrUpdateDataset", err.Error())
 	}
 
@@ -76,7 +69,7 @@ func (client DatasetClient) CreateOrUpdateDataset(ctx context.Context, datasetNa
 
 	result, err = client.CreateOrUpdateDatasetSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.DatasetClient", "CreateOrUpdateDataset", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.DatasetClient", "CreateOrUpdateDataset", nil, "Failure sending request")
 		return
 	}
 
@@ -120,7 +113,29 @@ func (client DatasetClient) CreateOrUpdateDatasetSender(req *http.Request) (futu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DatasetClient) (dr DatasetResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.DatasetCreateOrUpdateDatasetFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.DatasetCreateOrUpdateDatasetFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if dr.Response.Response, err = future.GetResult(sender); err == nil && dr.Response.Response.StatusCode != http.StatusNoContent {
+			dr, err = client.CreateOrUpdateDatasetResponder(dr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "artifacts.DatasetCreateOrUpdateDatasetFuture", "Result", dr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -166,7 +181,7 @@ func (client DatasetClient) DeleteDataset(ctx context.Context, datasetName strin
 
 	result, err = client.DeleteDatasetSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.DatasetClient", "DeleteDataset", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.DatasetClient", "DeleteDataset", nil, "Failure sending request")
 		return
 	}
 
@@ -204,7 +219,23 @@ func (client DatasetClient) DeleteDatasetSender(req *http.Request) (future Datas
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DatasetClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.DatasetDeleteDatasetFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.DatasetDeleteDatasetFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -343,6 +374,7 @@ func (client DatasetClient) GetDatasetsByWorkspace(ctx context.Context) (result 
 	}
 	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -402,7 +434,6 @@ func (client DatasetClient) getDatasetsByWorkspaceNextResults(ctx context.Contex
 	result, err = client.GetDatasetsByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.DatasetClient", "getDatasetsByWorkspaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -460,7 +491,7 @@ func (client DatasetClient) RenameDataset(ctx context.Context, datasetName strin
 
 	result, err = client.RenameDatasetSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.DatasetClient", "RenameDataset", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.DatasetClient", "RenameDataset", nil, "Failure sending request")
 		return
 	}
 
@@ -500,7 +531,23 @@ func (client DatasetClient) RenameDatasetSender(req *http.Request) (future Datas
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DatasetClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.DatasetRenameDatasetFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.DatasetRenameDatasetFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

@@ -1401,6 +1401,7 @@ func (client Client) ListAssemblies(ctx context.Context, accountName string, dat
 	}
 	if result.ual.hasNextLink() && result.ual.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1486,7 +1487,6 @@ func (client Client) listAssembliesNextResults(ctx context.Context, lastResults 
 	result, err = client.ListAssembliesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "catalog.Client", "listAssembliesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1555,6 +1555,7 @@ func (client Client) ListCredentials(ctx context.Context, accountName string, da
 	}
 	if result.ucl.hasNextLink() && result.ucl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1640,7 +1641,6 @@ func (client Client) listCredentialsNextResults(ctx context.Context, lastResults
 	result, err = client.ListCredentialsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "catalog.Client", "listCredentialsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1708,6 +1708,7 @@ func (client Client) ListDatabases(ctx context.Context, accountName string, filt
 	}
 	if result.udl.hasNextLink() && result.udl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1789,7 +1790,6 @@ func (client Client) listDatabasesNextResults(ctx context.Context, lastResults U
 	result, err = client.ListDatabasesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "catalog.Client", "listDatabasesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1858,6 +1858,7 @@ func (client Client) ListExternalDataSources(ctx context.Context, accountName st
 	}
 	if result.uedsl.hasNextLink() && result.uedsl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1943,7 +1944,6 @@ func (client Client) listExternalDataSourcesNextResults(ctx context.Context, las
 	result, err = client.ListExternalDataSourcesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "catalog.Client", "listExternalDataSourcesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2013,6 +2013,7 @@ func (client Client) ListProcedures(ctx context.Context, accountName string, dat
 	}
 	if result.upl.hasNextLink() && result.upl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2099,7 +2100,6 @@ func (client Client) listProceduresNextResults(ctx context.Context, lastResults 
 	result, err = client.ListProceduresResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "catalog.Client", "listProceduresNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2168,6 +2168,7 @@ func (client Client) ListSchemas(ctx context.Context, accountName string, databa
 	}
 	if result.usl.hasNextLink() && result.usl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2253,7 +2254,6 @@ func (client Client) listSchemasNextResults(ctx context.Context, lastResults USQ
 	result, err = client.ListSchemasResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "catalog.Client", "listSchemasNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2324,6 +2324,7 @@ func (client Client) ListTablePartitions(ctx context.Context, accountName string
 	}
 	if result.utpl.hasNextLink() && result.utpl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2411,7 +2412,6 @@ func (client Client) listTablePartitionsNextResults(ctx context.Context, lastRes
 	result, err = client.ListTablePartitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "catalog.Client", "listTablePartitionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2481,6 +2481,7 @@ func (client Client) ListTables(ctx context.Context, accountName string, databas
 	}
 	if result.utl.hasNextLink() && result.utl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2567,7 +2568,6 @@ func (client Client) listTablesNextResults(ctx context.Context, lastResults USQL
 	result, err = client.ListTablesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "catalog.Client", "listTablesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2638,6 +2638,7 @@ func (client Client) ListTableStatistics(ctx context.Context, accountName string
 	}
 	if result.utsl.hasNextLink() && result.utsl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2725,7 +2726,6 @@ func (client Client) listTableStatisticsNextResults(ctx context.Context, lastRes
 	result, err = client.ListTableStatisticsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "catalog.Client", "listTableStatisticsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2795,6 +2795,7 @@ func (client Client) ListTableTypes(ctx context.Context, accountName string, dat
 	}
 	if result.uttl.hasNextLink() && result.uttl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -2881,7 +2882,6 @@ func (client Client) listTableTypesNextResults(ctx context.Context, lastResults 
 	result, err = client.ListTableTypesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "catalog.Client", "listTableTypesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -2951,6 +2951,7 @@ func (client Client) ListTableValuedFunctions(ctx context.Context, accountName s
 	}
 	if result.utvfl.hasNextLink() && result.utvfl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -3037,7 +3038,6 @@ func (client Client) listTableValuedFunctionsNextResults(ctx context.Context, la
 	result, err = client.ListTableValuedFunctionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "catalog.Client", "listTableValuedFunctionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -3107,6 +3107,7 @@ func (client Client) ListTypes(ctx context.Context, accountName string, database
 	}
 	if result.utl.hasNextLink() && result.utl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -3193,7 +3194,6 @@ func (client Client) listTypesNextResults(ctx context.Context, lastResults USQLT
 	result, err = client.ListTypesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "catalog.Client", "listTypesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -3263,6 +3263,7 @@ func (client Client) ListViews(ctx context.Context, accountName string, database
 	}
 	if result.uvl.hasNextLink() && result.uvl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -3349,7 +3350,6 @@ func (client Client) listViewsNextResults(ctx context.Context, lastResults USQLV
 	result, err = client.ListViewsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "catalog.Client", "listViewsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

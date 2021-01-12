@@ -198,6 +198,7 @@ func (client ComponentsClient) ListByResource(ctx context.Context, resourceGroup
 	}
 	if result.cc.hasNextLink() && result.cc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -282,7 +283,6 @@ func (client ComponentsClient) listByResourceNextResults(ctx context.Context, la
 	result, err = client.ListByResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.ComponentsClient", "listByResourceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

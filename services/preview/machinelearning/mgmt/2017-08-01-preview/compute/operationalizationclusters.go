@@ -202,7 +202,7 @@ func (client OperationalizationClustersClient) CreateOrUpdate(ctx context.Contex
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -240,7 +240,29 @@ func (client OperationalizationClustersClient) CreateOrUpdateSender(req *http.Re
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client OperationalizationClustersClient) (oc OperationalizationCluster, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("compute.OperationalizationClustersCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if oc.Response.Response, err = future.GetResult(sender); err == nil && oc.Response.Response.StatusCode != http.StatusNoContent {
+			oc, err = client.CreateOrUpdateResponder(oc.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersCreateOrUpdateFuture", "Result", oc.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -292,7 +314,7 @@ func (client OperationalizationClustersClient) Delete(ctx context.Context, resou
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -331,7 +353,23 @@ func (client OperationalizationClustersClient) DeleteSender(req *http.Request) (
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client OperationalizationClustersClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("compute.OperationalizationClustersDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -479,6 +517,7 @@ func (client OperationalizationClustersClient) ListByResourceGroup(ctx context.C
 	}
 	if result.pocl.hasNextLink() && result.pocl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -542,7 +581,6 @@ func (client OperationalizationClustersClient) listByResourceGroupNextResults(ct
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -598,6 +636,7 @@ func (client OperationalizationClustersClient) ListBySubscriptionID(ctx context.
 	}
 	if result.pocl.hasNextLink() && result.pocl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -660,7 +699,6 @@ func (client OperationalizationClustersClient) listBySubscriptionIDNextResults(c
 	result, err = client.ListBySubscriptionIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "listBySubscriptionIDNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -897,7 +935,7 @@ func (client OperationalizationClustersClient) UpdateSystemServices(ctx context.
 
 	result, err = client.UpdateSystemServicesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "UpdateSystemServices", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "UpdateSystemServices", nil, "Failure sending request")
 		return
 	}
 
@@ -933,7 +971,29 @@ func (client OperationalizationClustersClient) UpdateSystemServicesSender(req *h
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client OperationalizationClustersClient) (ussr UpdateSystemServicesResponse, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersUpdateSystemServicesFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("compute.OperationalizationClustersUpdateSystemServicesFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ussr.Response.Response, err = future.GetResult(sender); err == nil && ussr.Response.Response.StatusCode != http.StatusNoContent {
+			ussr, err = client.UpdateSystemServicesResponder(ussr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersUpdateSystemServicesFuture", "Result", ussr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

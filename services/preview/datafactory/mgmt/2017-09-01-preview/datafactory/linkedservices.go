@@ -74,14 +74,7 @@ func (client LinkedServicesClient) CreateOrUpdate(ctx context.Context, resourceG
 		{TargetValue: linkedServiceName,
 			Constraints: []validation.Constraint{{Target: "linkedServiceName", Name: validation.MaxLength, Rule: 260, Chain: nil},
 				{Target: "linkedServiceName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "linkedServiceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}},
-		{TargetValue: linkedService,
-			Constraints: []validation.Constraint{{Target: "linkedService.Properties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "linkedService.Properties.ConnectVia", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "linkedService.Properties.ConnectVia.Type", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "linkedService.Properties.ConnectVia.ReferenceName", Name: validation.Null, Rule: true, Chain: nil},
-					}},
-				}}}}}); err != nil {
+				{Target: "linkedServiceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("datafactory.LinkedServicesClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -388,6 +381,7 @@ func (client LinkedServicesClient) ListByFactory(ctx context.Context, resourceGr
 	}
 	if result.lslr.hasNextLink() && result.lslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -449,7 +443,6 @@ func (client LinkedServicesClient) listByFactoryNextResults(ctx context.Context,
 	result, err = client.ListByFactoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.LinkedServicesClient", "listByFactoryNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

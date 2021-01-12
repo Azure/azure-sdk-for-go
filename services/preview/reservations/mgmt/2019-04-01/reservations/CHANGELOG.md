@@ -1,36 +1,38 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/reservations/resource-manager/readme.md tag: `package-preview-2019-04`
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator @microsoft.azure/autorest.go@2.1.168
 
 ## Breaking Changes
 
-- Function `NewListPage` parameter(s) have been changed from `(func(context.Context, List) (List, error))` to `(List, func(context.Context, List) (List, error))`
-- Function `NewOrderListPage` parameter(s) have been changed from `(func(context.Context, OrderList) (OrderList, error))` to `(OrderList, func(context.Context, OrderList) (OrderList, error))`
-- Function `NewOperationListPage` parameter(s) have been changed from `(func(context.Context, OperationList) (OperationList, error))` to `(OperationList, func(context.Context, OperationList) (OperationList, error))`
-- Function `Client.AvailableScopesPreparer` parameter(s) have been changed from `(context.Context, string, string, []string)` to `(context.Context, string, string, AvailableScopeRequest)`
-- Function `Client.AvailableScopes` parameter(s) have been changed from `(context.Context, string, string, []string)` to `(context.Context, string, string, AvailableScopeRequest)`
+### Removed Funcs
 
-## New Content
+1. *OrderPurchaseFuture.Result(OrderClient) (OrderResponse, error)
+1. *ReservationAvailableScopesFuture.Result(Client) (Properties, error)
+1. *ReservationMergeFuture.Result(Client) (ListResponse, error)
+1. *ReservationUpdateFuture.Result(Client) (Response, error)
+1. *SplitFuture.Result(Client) (ListResponse, error)
 
-- New const `ManagedDisk`
-- New const `Databricks`
-- New const `SQLAzureHybridBenefit`
-- New const `AzureDataExplorer`
-- New const `BlockBlob`
-- New const `SapHana`
-- New const `PostgreSQL`
-- New const `MySQL`
-- New const `DedicatedHost`
-- New const `RedisCache`
-- New const `AppService`
-- New const `MariaDb`
-- New function `Client.ArchiveSender(*http.Request) (*http.Response, error)`
-- New function `Client.UnarchivePreparer(context.Context, string, string) (*http.Request, error)`
-- New function `Client.UnarchiveSender(*http.Request) (*http.Response, error)`
-- New function `Client.ArchivePreparer(context.Context, string, string) (*http.Request, error)`
-- New function `Client.ArchiveResponder(*http.Response) (autorest.Response, error)`
-- New function `Client.Unarchive(context.Context, string, string) (autorest.Response, error)`
-- New function `Client.Archive(context.Context, string, string) (autorest.Response, error)`
-- New function `Client.UnarchiveResponder(*http.Response) (autorest.Response, error)`
-- New struct `AvailableScopeRequest`
-- New struct `AvailableScopeRequestProperties`
+## Struct Changes
+
+### Removed Struct Fields
+
+1. OrderPurchaseFuture.azure.Future
+1. ReservationAvailableScopesFuture.azure.Future
+1. ReservationMergeFuture.azure.Future
+1. ReservationUpdateFuture.azure.Future
+1. SplitFuture.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. OrderPurchaseFuture.Result
+1. OrderPurchaseFuture.azure.FutureAPI
+1. ReservationAvailableScopesFuture.Result
+1. ReservationAvailableScopesFuture.azure.FutureAPI
+1. ReservationMergeFuture.Result
+1. ReservationMergeFuture.azure.FutureAPI
+1. ReservationUpdateFuture.Result
+1. ReservationUpdateFuture.azure.FutureAPI
+1. SplitFuture.Result
+1. SplitFuture.azure.FutureAPI

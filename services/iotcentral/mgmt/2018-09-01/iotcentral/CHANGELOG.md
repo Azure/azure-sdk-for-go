@@ -1,9 +1,32 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/4c93f28f89435f6d244f4db61bbf810b5d20f09f/specification/iotcentral/resource-manager/readme.md tag: `package-2018-09-01`
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator @microsoft.azure/autorest.go@2.1.168
 
 ## Breaking Changes
 
-- Function `NewOperationListResultPage` parameter(s) have been changed from `(func(context.Context, OperationListResult) (OperationListResult, error))` to `(OperationListResult, func(context.Context, OperationListResult) (OperationListResult, error))`
-- Function `NewAppListResultPage` parameter(s) have been changed from `(func(context.Context, AppListResult) (AppListResult, error))` to `(AppListResult, func(context.Context, AppListResult) (AppListResult, error))`
-- Function `NewAppTemplatesResultPage` parameter(s) have been changed from `(func(context.Context, AppTemplatesResult) (AppTemplatesResult, error))` to `(AppTemplatesResult, func(context.Context, AppTemplatesResult) (AppTemplatesResult, error))`
+### Removed Funcs
+
+1. *AppsCreateOrUpdateFuture.Result(AppsClient) (App, error)
+1. *AppsDeleteFuture.Result(AppsClient) (autorest.Response, error)
+1. *AppsUpdateFuture.Result(AppsClient) (App, error)
+
+## Struct Changes
+
+### Removed Struct Fields
+
+1. AppTemplate.AppTemplateName
+1. AppsCreateOrUpdateFuture.azure.Future
+1. AppsDeleteFuture.azure.Future
+1. AppsUpdateFuture.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. AppTemplate.Name
+1. AppsCreateOrUpdateFuture.Result
+1. AppsCreateOrUpdateFuture.azure.FutureAPI
+1. AppsDeleteFuture.Result
+1. AppsDeleteFuture.azure.FutureAPI
+1. AppsUpdateFuture.Result
+1. AppsUpdateFuture.azure.FutureAPI

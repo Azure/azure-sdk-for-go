@@ -109,6 +109,7 @@ func (client APIIssueCommentsClient) ListByService(ctx context.Context, resource
 	}
 	if result.icc.hasNextLink() && result.icc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -181,7 +182,6 @@ func (client APIIssueCommentsClient) listByServiceNextResults(ctx context.Contex
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueCommentsClient", "listByServiceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

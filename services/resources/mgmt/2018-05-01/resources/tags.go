@@ -373,6 +373,7 @@ func (client TagsClient) List(ctx context.Context) (result TagsListResultPage, e
 	}
 	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -432,7 +433,6 @@ func (client TagsClient) listNextResults(ctx context.Context, lastResults TagsLi
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.TagsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

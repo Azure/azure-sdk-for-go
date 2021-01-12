@@ -18,12 +18,10 @@ package deploymentmanager
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
-	"net/http"
 )
 
 // The package's fully qualified name.
@@ -759,30 +757,10 @@ type RolloutRequestProperties struct {
 // RolloutsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type RolloutsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *RolloutsCreateOrUpdateFuture) Result(client RolloutsClient) (rr RolloutRequest, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("deploymentmanager.RolloutsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if rr.Response.Response, err = future.GetResult(sender); err == nil && rr.Response.Response.StatusCode != http.StatusNoContent {
-		rr, err = client.CreateOrUpdateResponder(rr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsCreateOrUpdateFuture", "Result", rr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(RolloutsClient) (RolloutRequest, error)
 }
 
 // RolloutStep defines a specific step on a target service unit.
@@ -1280,30 +1258,10 @@ type ServiceUnitResourceProperties struct {
 // ServiceUnitsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ServiceUnitsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServiceUnitsCreateOrUpdateFuture) Result(client ServiceUnitsClient) (sur ServiceUnitResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceUnitsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("deploymentmanager.ServiceUnitsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sur.Response.Response, err = future.GetResult(sender); err == nil && sur.Response.Response.StatusCode != http.StatusNoContent {
-		sur, err = client.CreateOrUpdateResponder(sur.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceUnitsCreateOrUpdateFuture", "Result", sur.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ServiceUnitsClient) (ServiceUnitResource, error)
 }
 
 // Step the properties that define an Azure Deployment Manager step.

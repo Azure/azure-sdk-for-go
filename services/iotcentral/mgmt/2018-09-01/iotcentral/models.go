@@ -413,52 +413,18 @@ func (ap AppProperties) MarshalJSON() ([]byte, error) {
 // AppsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type AppsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *AppsCreateOrUpdateFuture) Result(client AppsClient) (a App, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "iotcentral.AppsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("iotcentral.AppsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
-		a, err = client.CreateOrUpdateResponder(a.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "iotcentral.AppsCreateOrUpdateFuture", "Result", a.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AppsClient) (App, error)
 }
 
 // AppsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AppsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *AppsDeleteFuture) Result(client AppsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "iotcentral.AppsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("iotcentral.AppsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AppsClient) (autorest.Response, error)
 }
 
 // AppSkuInfo information about the SKU of the IoT Central application.
@@ -469,30 +435,10 @@ type AppSkuInfo struct {
 
 // AppsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AppsUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *AppsUpdateFuture) Result(client AppsClient) (a App, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "iotcentral.AppsUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("iotcentral.AppsUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
-		a, err = client.UpdateResponder(a.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "iotcentral.AppsUpdateFuture", "Result", a.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AppsClient) (App, error)
 }
 
 // AppTemplate ioT Central Application Template.
@@ -501,8 +447,8 @@ type AppTemplate struct {
 	ManifestID *string `json:"manifestId,omitempty"`
 	// ManifestVersion - READ-ONLY; The version of the template.
 	ManifestVersion *string `json:"manifestVersion,omitempty"`
-	// AppTemplateName - READ-ONLY; The name of the template.
-	AppTemplateName *string `json:"appTemplateName,omitempty"`
+	// Name - READ-ONLY; The name of the template.
+	Name *string `json:"name,omitempty"`
 	// Title - READ-ONLY; The title of the template.
 	Title *string `json:"title,omitempty"`
 	// Order - READ-ONLY; The order of the template in the templates list.

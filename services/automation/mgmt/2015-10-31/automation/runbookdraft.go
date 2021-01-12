@@ -246,7 +246,7 @@ func (client RunbookDraftClient) Publish(ctx context.Context, resourceGroupName 
 
 	result, err = client.PublishSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.RunbookDraftClient", "Publish", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftClient", "Publish", nil, "Failure sending request")
 		return
 	}
 
@@ -283,7 +283,23 @@ func (client RunbookDraftClient) PublishSender(req *http.Request) (future Runboo
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client RunbookDraftClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "automation.RunbookDraftPublishFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("automation.RunbookDraftPublishFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -331,7 +347,7 @@ func (client RunbookDraftClient) ReplaceContent(ctx context.Context, resourceGro
 
 	result, err = client.ReplaceContentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.RunbookDraftClient", "ReplaceContent", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftClient", "ReplaceContent", nil, "Failure sending request")
 		return
 	}
 
@@ -370,7 +386,29 @@ func (client RunbookDraftClient) ReplaceContentSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client RunbookDraftClient) (rc ReadCloser, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "automation.RunbookDraftReplaceContentFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("automation.RunbookDraftReplaceContentFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if rc.Response.Response, err = future.GetResult(sender); err == nil && rc.Response.Response.StatusCode != http.StatusNoContent {
+			rc, err = client.ReplaceContentResponder(rc.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "automation.RunbookDraftReplaceContentFuture", "Result", rc.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

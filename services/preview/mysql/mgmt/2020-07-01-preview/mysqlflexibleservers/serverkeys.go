@@ -82,7 +82,7 @@ func (client ServerKeysClient) CreateOrUpdate(ctx context.Context, resourceGroup
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mysqlflexibleservers.ServerKeysClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mysqlflexibleservers.ServerKeysClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -122,7 +122,29 @@ func (client ServerKeysClient) CreateOrUpdateSender(req *http.Request) (future S
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ServerKeysClient) (sk ServerKey, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "mysqlflexibleservers.ServerKeysCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("mysqlflexibleservers.ServerKeysCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if sk.Response.Response, err = future.GetResult(sender); err == nil && sk.Response.Response.StatusCode != http.StatusNoContent {
+			sk, err = client.CreateOrUpdateResponder(sk.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "mysqlflexibleservers.ServerKeysCreateOrUpdateFuture", "Result", sk.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -172,7 +194,7 @@ func (client ServerKeysClient) Delete(ctx context.Context, resourceGroupName str
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mysqlflexibleservers.ServerKeysClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mysqlflexibleservers.ServerKeysClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -209,7 +231,23 @@ func (client ServerKeysClient) DeleteSender(req *http.Request) (future ServerKey
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ServerKeysClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "mysqlflexibleservers.ServerKeysDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("mysqlflexibleservers.ServerKeysDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -358,6 +396,7 @@ func (client ServerKeysClient) ListByServer(ctx context.Context, resourceGroupNa
 	}
 	if result.sklr.hasNextLink() && result.sklr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -419,7 +458,6 @@ func (client ServerKeysClient) listByServerNextResults(ctx context.Context, last
 	result, err = client.ListByServerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mysqlflexibleservers.ServerKeysClient", "listByServerNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

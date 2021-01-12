@@ -384,6 +384,7 @@ func (client RecordSetsClient) ListByDNSZone(ctx context.Context, resourceGroupN
 	}
 	if result.rslr.hasNextLink() && result.rslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -451,7 +452,6 @@ func (client RecordSetsClient) listByDNSZoneNextResults(ctx context.Context, las
 	result, err = client.ListByDNSZoneResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "listByDNSZoneNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -523,6 +523,7 @@ func (client RecordSetsClient) ListByType(ctx context.Context, resourceGroupName
 	}
 	if result.rslr.hasNextLink() && result.rslr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -591,7 +592,6 @@ func (client RecordSetsClient) listByTypeNextResults(ctx context.Context, lastRe
 	result, err = client.ListByTypeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "listByTypeNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

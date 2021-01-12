@@ -1,28 +1,50 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/vmware/resource-manager/readme.md tag: `package-2020-03-20`
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator @microsoft.azure/autorest.go@2.1.168
 
 ## Breaking Changes
 
-- Function `NewExpressRouteAuthorizationListPage` parameter(s) have been changed from `(func(context.Context, ExpressRouteAuthorizationList) (ExpressRouteAuthorizationList, error))` to `(ExpressRouteAuthorizationList, func(context.Context, ExpressRouteAuthorizationList) (ExpressRouteAuthorizationList, error))`
-- Function `AuthorizationsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, interface{})` to `(context.Context, string, string, string, ExpressRouteAuthorization)`
-- Function `NewOperationListPage` parameter(s) have been changed from `(func(context.Context, OperationList) (OperationList, error))` to `(OperationList, func(context.Context, OperationList) (OperationList, error))`
-- Function `NewClusterListPage` parameter(s) have been changed from `(func(context.Context, ClusterList) (ClusterList, error))` to `(ClusterList, func(context.Context, ClusterList) (ClusterList, error))`
-- Function `HcxEnterpriseSitesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, interface{})` to `(context.Context, string, string, string, HcxEnterpriseSite)`
-- Function `HcxEnterpriseSitesClient.CreateOrUpdatePreparer` parameter(s) have been changed from `(context.Context, string, string, string, interface{})` to `(context.Context, string, string, string, HcxEnterpriseSite)`
-- Function `AuthorizationsClient.CreateOrUpdatePreparer` parameter(s) have been changed from `(context.Context, string, string, string, interface{})` to `(context.Context, string, string, string, ExpressRouteAuthorization)`
-- Function `NewPrivateCloudListPage` parameter(s) have been changed from `(func(context.Context, PrivateCloudList) (PrivateCloudList, error))` to `(PrivateCloudList, func(context.Context, PrivateCloudList) (PrivateCloudList, error))`
-- Function `NewHcxEnterpriseSiteListPage` parameter(s) have been changed from `(func(context.Context, HcxEnterpriseSiteList) (HcxEnterpriseSiteList, error))` to `(HcxEnterpriseSiteList, func(context.Context, HcxEnterpriseSiteList) (HcxEnterpriseSiteList, error))`
+### Removed Funcs
 
-## New Content
+1. *AuthorizationsCreateOrUpdateFuture.Result(AuthorizationsClient) (ExpressRouteAuthorization, error)
+1. *AuthorizationsDeleteFuture.Result(AuthorizationsClient) (autorest.Response, error)
+1. *ClustersCreateOrUpdateFuture.Result(ClustersClient) (Cluster, error)
+1. *ClustersDeleteFuture.Result(ClustersClient) (autorest.Response, error)
+1. *ClustersUpdateFuture.Result(ClustersClient) (Cluster, error)
+1. *PrivateCloudsCreateOrUpdateFuture.Result(PrivateCloudsClient) (PrivateCloud, error)
+1. *PrivateCloudsDeleteFuture.Result(PrivateCloudsClient) (autorest.Response, error)
+1. *PrivateCloudsUpdateFuture.Result(PrivateCloudsClient) (PrivateCloud, error)
 
-- New function `Operation.MarshalJSON() ([]byte, error)`
-- New struct `LogSpecification`
-- New struct `MetricDimension`
-- New struct `MetricSpecification`
-- New struct `OperationProperties`
-- New struct `ServiceSpecification`
-- New field `Origin` in struct `Operation`
-- New field `Properties` in struct `Operation`
-- New field `IsDataAction` in struct `Operation`
-- New field `ProvisioningState` in struct `ManagementCluster`
+## Struct Changes
+
+### Removed Struct Fields
+
+1. AuthorizationsCreateOrUpdateFuture.azure.Future
+1. AuthorizationsDeleteFuture.azure.Future
+1. ClustersCreateOrUpdateFuture.azure.Future
+1. ClustersDeleteFuture.azure.Future
+1. ClustersUpdateFuture.azure.Future
+1. PrivateCloudsCreateOrUpdateFuture.azure.Future
+1. PrivateCloudsDeleteFuture.azure.Future
+1. PrivateCloudsUpdateFuture.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. AuthorizationsCreateOrUpdateFuture.Result
+1. AuthorizationsCreateOrUpdateFuture.azure.FutureAPI
+1. AuthorizationsDeleteFuture.Result
+1. AuthorizationsDeleteFuture.azure.FutureAPI
+1. ClustersCreateOrUpdateFuture.Result
+1. ClustersCreateOrUpdateFuture.azure.FutureAPI
+1. ClustersDeleteFuture.Result
+1. ClustersDeleteFuture.azure.FutureAPI
+1. ClustersUpdateFuture.Result
+1. ClustersUpdateFuture.azure.FutureAPI
+1. PrivateCloudsCreateOrUpdateFuture.Result
+1. PrivateCloudsCreateOrUpdateFuture.azure.FutureAPI
+1. PrivateCloudsDeleteFuture.Result
+1. PrivateCloudsDeleteFuture.azure.FutureAPI
+1. PrivateCloudsUpdateFuture.Result
+1. PrivateCloudsUpdateFuture.azure.FutureAPI

@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2020 Microsoft Corporation
+// Copyright 2021 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ package resources
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-06-01/resources"
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources"
 )
 
 const (
@@ -253,11 +253,14 @@ type OperationsClient = original.OperationsClient
 type ParametersLink = original.ParametersLink
 type Plan = original.Plan
 type Provider = original.Provider
+type ProviderExtendedLocation = original.ProviderExtendedLocation
 type ProviderListResult = original.ProviderListResult
 type ProviderListResultIterator = original.ProviderListResultIterator
 type ProviderListResultPage = original.ProviderListResultPage
 type ProviderOperationDisplayProperties = original.ProviderOperationDisplayProperties
 type ProviderResourceType = original.ProviderResourceType
+type ProviderResourceTypeListResult = original.ProviderResourceTypeListResult
+type ProviderResourceTypesClient = original.ProviderResourceTypesClient
 type ProvidersClient = original.ProvidersClient
 type Reference = original.Reference
 type Resource = original.Resource
@@ -355,6 +358,12 @@ func NewProviderListResultIterator(page ProviderListResultPage) ProviderListResu
 }
 func NewProviderListResultPage(cur ProviderListResult, getNextPage func(context.Context, ProviderListResult) (ProviderListResult, error)) ProviderListResultPage {
 	return original.NewProviderListResultPage(cur, getNextPage)
+}
+func NewProviderResourceTypesClient(subscriptionID string) ProviderResourceTypesClient {
+	return original.NewProviderResourceTypesClient(subscriptionID)
+}
+func NewProviderResourceTypesClientWithBaseURI(baseURI string, subscriptionID string) ProviderResourceTypesClient {
+	return original.NewProviderResourceTypesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewProvidersClient(subscriptionID string) ProvidersClient {
 	return original.NewProvidersClient(subscriptionID)

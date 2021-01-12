@@ -794,6 +794,7 @@ func (client FileClient) ListFromComputeNode(ctx context.Context, poolID string,
 	}
 	if result.nflr.hasNextLink() && result.nflr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -885,7 +886,6 @@ func (client FileClient) listFromComputeNodeNextResults(ctx context.Context, las
 	result, err = client.ListFromComputeNodeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.FileClient", "listFromComputeNodeNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -963,6 +963,7 @@ func (client FileClient) ListFromTask(ctx context.Context, jobID string, taskID 
 	}
 	if result.nflr.hasNextLink() && result.nflr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1054,7 +1055,6 @@ func (client FileClient) listFromTaskNextResults(ctx context.Context, lastResult
 	result, err = client.ListFromTaskResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.FileClient", "listFromTaskNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

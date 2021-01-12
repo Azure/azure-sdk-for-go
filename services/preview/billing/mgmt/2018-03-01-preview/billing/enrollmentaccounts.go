@@ -148,6 +148,7 @@ func (client EnrollmentAccountsClient) List(ctx context.Context) (result Enrollm
 	}
 	if result.ealr.hasNextLink() && result.ealr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -203,7 +204,6 @@ func (client EnrollmentAccountsClient) listNextResults(ctx context.Context, last
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

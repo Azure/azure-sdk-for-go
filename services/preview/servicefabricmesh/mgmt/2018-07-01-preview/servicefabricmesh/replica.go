@@ -160,6 +160,7 @@ func (client ReplicaClient) ListByServiceName(ctx context.Context, resourceGroup
 	}
 	if result.srl.hasNextLink() && result.srl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -222,7 +223,6 @@ func (client ReplicaClient) listByServiceNameNextResults(ctx context.Context, la
 	result, err = client.ListByServiceNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.ReplicaClient", "listByServiceNameNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

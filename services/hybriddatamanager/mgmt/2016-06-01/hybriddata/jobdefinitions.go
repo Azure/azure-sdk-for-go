@@ -82,7 +82,7 @@ func (client JobDefinitionsClient) CreateOrUpdate(ctx context.Context, dataServi
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -122,7 +122,29 @@ func (client JobDefinitionsClient) CreateOrUpdateSender(req *http.Request) (futu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client JobDefinitionsClient) (jd JobDefinition, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hybriddata.JobDefinitionsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if jd.Response.Response, err = future.GetResult(sender); err == nil && jd.Response.Response.StatusCode != http.StatusNoContent {
+			jd, err = client.CreateOrUpdateResponder(jd.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsCreateOrUpdateFuture", "Result", jd.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -172,7 +194,7 @@ func (client JobDefinitionsClient) Delete(ctx context.Context, dataServiceName s
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -210,7 +232,23 @@ func (client JobDefinitionsClient) DeleteSender(req *http.Request) (future JobDe
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client JobDefinitionsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hybriddata.JobDefinitionsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -360,6 +398,7 @@ func (client JobDefinitionsClient) ListByDataManager(ctx context.Context, resour
 	}
 	if result.jdl.hasNextLink() && result.jdl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -424,7 +463,6 @@ func (client JobDefinitionsClient) listByDataManagerNextResults(ctx context.Cont
 	result, err = client.ListByDataManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsClient", "listByDataManagerNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -492,6 +530,7 @@ func (client JobDefinitionsClient) ListByDataService(ctx context.Context, dataSe
 	}
 	if result.jdl.hasNextLink() && result.jdl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -557,7 +596,6 @@ func (client JobDefinitionsClient) listByDataServiceNextResults(ctx context.Cont
 	result, err = client.ListByDataServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsClient", "listByDataServiceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -613,7 +651,7 @@ func (client JobDefinitionsClient) Run(ctx context.Context, dataServiceName stri
 
 	result, err = client.RunSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsClient", "Run", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsClient", "Run", nil, "Failure sending request")
 		return
 	}
 
@@ -653,7 +691,23 @@ func (client JobDefinitionsClient) RunSender(req *http.Request) (future JobDefin
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client JobDefinitionsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsRunFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hybriddata.JobDefinitionsRunFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

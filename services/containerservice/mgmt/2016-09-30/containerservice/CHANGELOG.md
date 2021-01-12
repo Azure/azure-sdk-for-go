@@ -1,7 +1,26 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/compute/resource-manager/readme.md tag: `package-container-service-2016-09`
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator @microsoft.azure/autorest.go@2.1.168
 
 ## Breaking Changes
 
-- Function `NewListResultPage` parameter(s) have been changed from `(func(context.Context, ListResult) (ListResult, error))` to `(ListResult, func(context.Context, ListResult) (ListResult, error))`
+### Removed Funcs
+
+1. *ContainerServicesCreateOrUpdateFutureType.Result(ContainerServicesClient) (ContainerService, error)
+1. *ContainerServicesDeleteFutureType.Result(ContainerServicesClient) (autorest.Response, error)
+
+## Struct Changes
+
+### Removed Struct Fields
+
+1. ContainerServicesCreateOrUpdateFutureType.azure.Future
+1. ContainerServicesDeleteFutureType.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. ContainerServicesCreateOrUpdateFutureType.Result
+1. ContainerServicesCreateOrUpdateFutureType.azure.FutureAPI
+1. ContainerServicesDeleteFutureType.Result
+1. ContainerServicesDeleteFutureType.azure.FutureAPI

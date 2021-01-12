@@ -1,264 +1,450 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/sql/resource-manager/readme.md tag: `package-composite-v3`
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator @microsoft.azure/autorest.go@2.1.168
 
 ## Breaking Changes
 
-- Const `Standard` type has been changed from `DatabaseEdition` to `ElasticPoolEdition`
-- Const `System` type has been changed from `DatabaseEdition` to `OperationOrigin`
-- Const `GeneralPurpose` type has been changed from `DatabaseEdition` to `ElasticPoolEdition`
-- Const `Premium` type has been changed from `DatabaseEdition` to `ElasticPoolEdition`
-- Const `Basic` type has been changed from `DatabaseEdition` to `ElasticPoolEdition`
-- Const `BusinessCritical` type has been changed from `DatabaseEdition` to `ElasticPoolEdition`
-- Function `NewManagedInstanceKeyListResultPage` parameter(s) have been changed from `(func(context.Context, ManagedInstanceKeyListResult) (ManagedInstanceKeyListResult, error))` to `(ManagedInstanceKeyListResult, func(context.Context, ManagedInstanceKeyListResult) (ManagedInstanceKeyListResult, error))`
-- Function `NewJobAgentListResultPage` parameter(s) have been changed from `(func(context.Context, JobAgentListResult) (JobAgentListResult, error))` to `(JobAgentListResult, func(context.Context, JobAgentListResult) (JobAgentListResult, error))`
-- Function `DatabasesClient.ExportPreparer` parameter(s) have been changed from `(context.Context, string, string, string, ExportRequest)` to `(context.Context, string, string, string, ExportDatabaseDefinition)`
-- Function `NewServerListResultPage` parameter(s) have been changed from `(func(context.Context, ServerListResult) (ServerListResult, error))` to `(ServerListResult, func(context.Context, ServerListResult) (ServerListResult, error))`
-- Function `NewSensitivityLabelListResultPage` parameter(s) have been changed from `(func(context.Context, SensitivityLabelListResult) (SensitivityLabelListResult, error))` to `(SensitivityLabelListResult, func(context.Context, SensitivityLabelListResult) (SensitivityLabelListResult, error))`
-- Function `NewManagedInstanceEncryptionProtectorListResultPage` parameter(s) have been changed from `(func(context.Context, ManagedInstanceEncryptionProtectorListResult) (ManagedInstanceEncryptionProtectorListResult, error))` to `(ManagedInstanceEncryptionProtectorListResult, func(context.Context, ManagedInstanceEncryptionProtectorListResult) (ManagedInstanceEncryptionProtectorListResult, error))`
-- Function `NewSyncFullSchemaPropertiesListResultPage` parameter(s) have been changed from `(func(context.Context, SyncFullSchemaPropertiesListResult) (SyncFullSchemaPropertiesListResult, error))` to `(SyncFullSchemaPropertiesListResult, func(context.Context, SyncFullSchemaPropertiesListResult) (SyncFullSchemaPropertiesListResult, error))`
-- Function `NewServerDNSAliasListResultPage` parameter(s) have been changed from `(func(context.Context, ServerDNSAliasListResult) (ServerDNSAliasListResult, error))` to `(ServerDNSAliasListResult, func(context.Context, ServerDNSAliasListResult) (ServerDNSAliasListResult, error))`
-- Function `NewInstancePoolListResultPage` parameter(s) have been changed from `(func(context.Context, InstancePoolListResult) (InstancePoolListResult, error))` to `(InstancePoolListResult, func(context.Context, InstancePoolListResult) (InstancePoolListResult, error))`
-- Function `NewSyncGroupListResultPage` parameter(s) have been changed from `(func(context.Context, SyncGroupListResult) (SyncGroupListResult, error))` to `(SyncGroupListResult, func(context.Context, SyncGroupListResult) (SyncGroupListResult, error))`
-- Function `NewWorkloadClassifierListResultPage` parameter(s) have been changed from `(func(context.Context, WorkloadClassifierListResult) (WorkloadClassifierListResult, error))` to `(WorkloadClassifierListResult, func(context.Context, WorkloadClassifierListResult) (WorkloadClassifierListResult, error))`
-- Function `NewFailoverGroupListResultPage` parameter(s) have been changed from `(func(context.Context, FailoverGroupListResult) (FailoverGroupListResult, error))` to `(FailoverGroupListResult, func(context.Context, FailoverGroupListResult) (FailoverGroupListResult, error))`
-- Function `NewJobCredentialListResultPage` parameter(s) have been changed from `(func(context.Context, JobCredentialListResult) (JobCredentialListResult, error))` to `(JobCredentialListResult, func(context.Context, JobCredentialListResult) (JobCredentialListResult, error))`
-- Function `NewSyncMemberListResultPage` parameter(s) have been changed from `(func(context.Context, SyncMemberListResult) (SyncMemberListResult, error))` to `(SyncMemberListResult, func(context.Context, SyncMemberListResult) (SyncMemberListResult, error))`
-- Function `NewDatabaseBlobAuditingPolicyListResultPage` parameter(s) have been changed from `(func(context.Context, DatabaseBlobAuditingPolicyListResult) (DatabaseBlobAuditingPolicyListResult, error))` to `(DatabaseBlobAuditingPolicyListResult, func(context.Context, DatabaseBlobAuditingPolicyListResult) (DatabaseBlobAuditingPolicyListResult, error))`
-- Function `NewLongTermRetentionBackupListResultPage` parameter(s) have been changed from `(func(context.Context, LongTermRetentionBackupListResult) (LongTermRetentionBackupListResult, error))` to `(LongTermRetentionBackupListResult, func(context.Context, LongTermRetentionBackupListResult) (LongTermRetentionBackupListResult, error))`
-- Function `NewVirtualNetworkRuleListResultPage` parameter(s) have been changed from `(func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error))` to `(VirtualNetworkRuleListResult, func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error))`
-- Function `NewManagedInstanceAdministratorListResultPage` parameter(s) have been changed from `(func(context.Context, ManagedInstanceAdministratorListResult) (ManagedInstanceAdministratorListResult, error))` to `(ManagedInstanceAdministratorListResult, func(context.Context, ManagedInstanceAdministratorListResult) (ManagedInstanceAdministratorListResult, error))`
-- Function `NewBackupShortTermRetentionPolicyListResultPage` parameter(s) have been changed from `(func(context.Context, BackupShortTermRetentionPolicyListResult) (BackupShortTermRetentionPolicyListResult, error))` to `(BackupShortTermRetentionPolicyListResult, func(context.Context, BackupShortTermRetentionPolicyListResult) (BackupShortTermRetentionPolicyListResult, error))`
-- Function `NewJobListResultPage` parameter(s) have been changed from `(func(context.Context, JobListResult) (JobListResult, error))` to `(JobListResult, func(context.Context, JobListResult) (JobListResult, error))`
-- Function `NewManagedInstanceLongTermRetentionBackupListResultPage` parameter(s) have been changed from `(func(context.Context, ManagedInstanceLongTermRetentionBackupListResult) (ManagedInstanceLongTermRetentionBackupListResult, error))` to `(ManagedInstanceLongTermRetentionBackupListResult, func(context.Context, ManagedInstanceLongTermRetentionBackupListResult) (ManagedInstanceLongTermRetentionBackupListResult, error))`
-- Function `NewManagedServerSecurityAlertPolicyListResultPage` parameter(s) have been changed from `(func(context.Context, ManagedServerSecurityAlertPolicyListResult) (ManagedServerSecurityAlertPolicyListResult, error))` to `(ManagedServerSecurityAlertPolicyListResult, func(context.Context, ManagedServerSecurityAlertPolicyListResult) (ManagedServerSecurityAlertPolicyListResult, error))`
-- Function `NewSubscriptionUsageListResultPage` parameter(s) have been changed from `(func(context.Context, SubscriptionUsageListResult) (SubscriptionUsageListResult, error))` to `(SubscriptionUsageListResult, func(context.Context, SubscriptionUsageListResult) (SubscriptionUsageListResult, error))`
-- Function `NewSyncAgentLinkedDatabaseListResultPage` parameter(s) have been changed from `(func(context.Context, SyncAgentLinkedDatabaseListResult) (SyncAgentLinkedDatabaseListResult, error))` to `(SyncAgentLinkedDatabaseListResult, func(context.Context, SyncAgentLinkedDatabaseListResult) (SyncAgentLinkedDatabaseListResult, error))`
-- Function `NewManagedInstanceVulnerabilityAssessmentListResultPage` parameter(s) have been changed from `(func(context.Context, ManagedInstanceVulnerabilityAssessmentListResult) (ManagedInstanceVulnerabilityAssessmentListResult, error))` to `(ManagedInstanceVulnerabilityAssessmentListResult, func(context.Context, ManagedInstanceVulnerabilityAssessmentListResult) (ManagedInstanceVulnerabilityAssessmentListResult, error))`
-- Function `NewSyncDatabaseIDListResultPage` parameter(s) have been changed from `(func(context.Context, SyncDatabaseIDListResult) (SyncDatabaseIDListResult, error))` to `(SyncDatabaseIDListResult, func(context.Context, SyncDatabaseIDListResult) (SyncDatabaseIDListResult, error))`
-- Function `NewAdministratorListResultPage` parameter(s) have been changed from `(func(context.Context, AdministratorListResult) (AdministratorListResult, error))` to `(AdministratorListResult, func(context.Context, AdministratorListResult) (AdministratorListResult, error))`
-- Function `NewJobVersionListResultPage` parameter(s) have been changed from `(func(context.Context, JobVersionListResult) (JobVersionListResult, error))` to `(JobVersionListResult, func(context.Context, JobVersionListResult) (JobVersionListResult, error))`
-- Function `NewExtendedServerBlobAuditingPolicyListResultPage` parameter(s) have been changed from `(func(context.Context, ExtendedServerBlobAuditingPolicyListResult) (ExtendedServerBlobAuditingPolicyListResult, error))` to `(ExtendedServerBlobAuditingPolicyListResult, func(context.Context, ExtendedServerBlobAuditingPolicyListResult) (ExtendedServerBlobAuditingPolicyListResult, error))`
-- Function `NewJobTargetGroupListResultPage` parameter(s) have been changed from `(func(context.Context, JobTargetGroupListResult) (JobTargetGroupListResult, error))` to `(JobTargetGroupListResult, func(context.Context, JobTargetGroupListResult) (JobTargetGroupListResult, error))`
-- Function `NewManagedBackupShortTermRetentionPolicyListResultPage` parameter(s) have been changed from `(func(context.Context, ManagedBackupShortTermRetentionPolicyListResult) (ManagedBackupShortTermRetentionPolicyListResult, error))` to `(ManagedBackupShortTermRetentionPolicyListResult, func(context.Context, ManagedBackupShortTermRetentionPolicyListResult) (ManagedBackupShortTermRetentionPolicyListResult, error))`
-- Function `NewDatabaseVulnerabilityAssessmentListResultPage` parameter(s) have been changed from `(func(context.Context, DatabaseVulnerabilityAssessmentListResult) (DatabaseVulnerabilityAssessmentListResult, error))` to `(DatabaseVulnerabilityAssessmentListResult, func(context.Context, DatabaseVulnerabilityAssessmentListResult) (DatabaseVulnerabilityAssessmentListResult, error))`
-- Function `NewElasticPoolOperationListResultPage` parameter(s) have been changed from `(func(context.Context, ElasticPoolOperationListResult) (ElasticPoolOperationListResult, error))` to `(ElasticPoolOperationListResult, func(context.Context, ElasticPoolOperationListResult) (ElasticPoolOperationListResult, error))`
-- Function `NewAzureADOnlyAuthListResultPage` parameter(s) have been changed from `(func(context.Context, AzureADOnlyAuthListResult) (AzureADOnlyAuthListResult, error))` to `(AzureADOnlyAuthListResult, func(context.Context, AzureADOnlyAuthListResult) (AzureADOnlyAuthListResult, error))`
-- Function `NewManagedInstanceLongTermRetentionPolicyListResultPage` parameter(s) have been changed from `(func(context.Context, ManagedInstanceLongTermRetentionPolicyListResult) (ManagedInstanceLongTermRetentionPolicyListResult, error))` to `(ManagedInstanceLongTermRetentionPolicyListResult, func(context.Context, ManagedInstanceLongTermRetentionPolicyListResult) (ManagedInstanceLongTermRetentionPolicyListResult, error))`
-- Function `NewJobStepListResultPage` parameter(s) have been changed from `(func(context.Context, JobStepListResult) (JobStepListResult, error))` to `(JobStepListResult, func(context.Context, JobStepListResult) (JobStepListResult, error))`
-- Function `NewVulnerabilityAssessmentScanRecordListResultPage` parameter(s) have been changed from `(func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error))` to `(VulnerabilityAssessmentScanRecordListResult, func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error))`
-- Function `NewEncryptionProtectorListResultPage` parameter(s) have been changed from `(func(context.Context, EncryptionProtectorListResult) (EncryptionProtectorListResult, error))` to `(EncryptionProtectorListResult, func(context.Context, EncryptionProtectorListResult) (EncryptionProtectorListResult, error))`
-- Function `NewDatabaseOperationListResultPage` parameter(s) have been changed from `(func(context.Context, DatabaseOperationListResult) (DatabaseOperationListResult, error))` to `(DatabaseOperationListResult, func(context.Context, DatabaseOperationListResult) (DatabaseOperationListResult, error))`
-- Function `NewOperationListResultPage` parameter(s) have been changed from `(func(context.Context, OperationListResult) (OperationListResult, error))` to `(OperationListResult, func(context.Context, OperationListResult) (OperationListResult, error))`
-- Function `NewManagedInstanceOperationListResultPage` parameter(s) have been changed from `(func(context.Context, ManagedInstanceOperationListResult) (ManagedInstanceOperationListResult, error))` to `(ManagedInstanceOperationListResult, func(context.Context, ManagedInstanceOperationListResult) (ManagedInstanceOperationListResult, error))`
-- Function `NewWorkloadGroupListResultPage` parameter(s) have been changed from `(func(context.Context, WorkloadGroupListResult) (WorkloadGroupListResult, error))` to `(WorkloadGroupListResult, func(context.Context, WorkloadGroupListResult) (WorkloadGroupListResult, error))`
-- Function `NewRestorableDroppedManagedDatabaseListResultPage` parameter(s) have been changed from `(func(context.Context, RestorableDroppedManagedDatabaseListResult) (RestorableDroppedManagedDatabaseListResult, error))` to `(RestorableDroppedManagedDatabaseListResult, func(context.Context, RestorableDroppedManagedDatabaseListResult) (RestorableDroppedManagedDatabaseListResult, error))`
-- Function `NewInstanceFailoverGroupListResultPage` parameter(s) have been changed from `(func(context.Context, InstanceFailoverGroupListResult) (InstanceFailoverGroupListResult, error))` to `(InstanceFailoverGroupListResult, func(context.Context, InstanceFailoverGroupListResult) (InstanceFailoverGroupListResult, error))`
-- Function `NewSyncAgentListResultPage` parameter(s) have been changed from `(func(context.Context, SyncAgentListResult) (SyncAgentListResult, error))` to `(SyncAgentListResult, func(context.Context, SyncAgentListResult) (SyncAgentListResult, error))`
-- Function `NewManagedDatabaseListResultPage` parameter(s) have been changed from `(func(context.Context, ManagedDatabaseListResult) (ManagedDatabaseListResult, error))` to `(ManagedDatabaseListResult, func(context.Context, ManagedDatabaseListResult) (ManagedDatabaseListResult, error))`
-- Function `NewPrivateLinkResourceListResultPage` parameter(s) have been changed from `(func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error))` to `(PrivateLinkResourceListResult, func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error))`
-- Function `NewServerVulnerabilityAssessmentListResultPage` parameter(s) have been changed from `(func(context.Context, ServerVulnerabilityAssessmentListResult) (ServerVulnerabilityAssessmentListResult, error))` to `(ServerVulnerabilityAssessmentListResult, func(context.Context, ServerVulnerabilityAssessmentListResult) (ServerVulnerabilityAssessmentListResult, error))`
-- Function `NewUsageListResultPage` parameter(s) have been changed from `(func(context.Context, UsageListResult) (UsageListResult, error))` to `(UsageListResult, func(context.Context, UsageListResult) (UsageListResult, error))`
-- Function `NewRecoverableManagedDatabaseListResultPage` parameter(s) have been changed from `(func(context.Context, RecoverableManagedDatabaseListResult) (RecoverableManagedDatabaseListResult, error))` to `(RecoverableManagedDatabaseListResult, func(context.Context, RecoverableManagedDatabaseListResult) (RecoverableManagedDatabaseListResult, error))`
-- Function `NewManagedDatabaseSecurityAlertPolicyListResultPage` parameter(s) have been changed from `(func(context.Context, ManagedDatabaseSecurityAlertPolicyListResult) (ManagedDatabaseSecurityAlertPolicyListResult, error))` to `(ManagedDatabaseSecurityAlertPolicyListResult, func(context.Context, ManagedDatabaseSecurityAlertPolicyListResult) (ManagedDatabaseSecurityAlertPolicyListResult, error))`
-- Function `*DatabasesExportFuture.Result` return value(s) have been changed from `(ImportExportResponse, error)` to `(ImportExportOperationResult, error)`
-- Function `NewLogicalServerSecurityAlertPolicyListResultPage` parameter(s) have been changed from `(func(context.Context, LogicalServerSecurityAlertPolicyListResult) (LogicalServerSecurityAlertPolicyListResult, error))` to `(LogicalServerSecurityAlertPolicyListResult, func(context.Context, LogicalServerSecurityAlertPolicyListResult) (LogicalServerSecurityAlertPolicyListResult, error))`
-- Function `NewManagedInstanceListResultPage` parameter(s) have been changed from `(func(context.Context, ManagedInstanceListResult) (ManagedInstanceListResult, error))` to `(ManagedInstanceListResult, func(context.Context, ManagedInstanceListResult) (ManagedInstanceListResult, error))`
-- Function `NewSyncGroupLogListResultPage` parameter(s) have been changed from `(func(context.Context, SyncGroupLogListResult) (SyncGroupLogListResult, error))` to `(SyncGroupLogListResult, func(context.Context, SyncGroupLogListResult) (SyncGroupLogListResult, error))`
-- Function `NewVirtualClusterListResultPage` parameter(s) have been changed from `(func(context.Context, VirtualClusterListResult) (VirtualClusterListResult, error))` to `(VirtualClusterListResult, func(context.Context, VirtualClusterListResult) (VirtualClusterListResult, error))`
-- Function `NewExtendedDatabaseBlobAuditingPolicyListResultPage` parameter(s) have been changed from `(func(context.Context, ExtendedDatabaseBlobAuditingPolicyListResult) (ExtendedDatabaseBlobAuditingPolicyListResult, error))` to `(ExtendedDatabaseBlobAuditingPolicyListResult, func(context.Context, ExtendedDatabaseBlobAuditingPolicyListResult) (ExtendedDatabaseBlobAuditingPolicyListResult, error))`
-- Function `NewElasticPoolListResultPage` parameter(s) have been changed from `(func(context.Context, ElasticPoolListResult) (ElasticPoolListResult, error))` to `(ElasticPoolListResult, func(context.Context, ElasticPoolListResult) (ElasticPoolListResult, error))`
-- Function `NewPrivateEndpointConnectionListResultPage` parameter(s) have been changed from `(func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error))` to `(PrivateEndpointConnectionListResult, func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error))`
-- Function `NewServerBlobAuditingPolicyListResultPage` parameter(s) have been changed from `(func(context.Context, ServerBlobAuditingPolicyListResult) (ServerBlobAuditingPolicyListResult, error))` to `(ServerBlobAuditingPolicyListResult, func(context.Context, ServerBlobAuditingPolicyListResult) (ServerBlobAuditingPolicyListResult, error))`
-- Function `NewJobExecutionListResultPage` parameter(s) have been changed from `(func(context.Context, JobExecutionListResult) (JobExecutionListResult, error))` to `(JobExecutionListResult, func(context.Context, JobExecutionListResult) (JobExecutionListResult, error))`
-- Function `NewServerKeyListResultPage` parameter(s) have been changed from `(func(context.Context, ServerKeyListResult) (ServerKeyListResult, error))` to `(ServerKeyListResult, func(context.Context, ServerKeyListResult) (ServerKeyListResult, error))`
-- Function `NewDatabaseListResultPage` parameter(s) have been changed from `(func(context.Context, DatabaseListResult) (DatabaseListResult, error))` to `(DatabaseListResult, func(context.Context, DatabaseListResult) (DatabaseListResult, error))`
-- Function `DatabasesClient.ExportResponder` return value(s) have been changed from `(ImportExportResponse, error)` to `(ImportExportOperationResult, error)`
-- Function `DatabasesClient.Export` parameter(s) have been changed from `(context.Context, string, string, string, ExportRequest)` to `(context.Context, string, string, string, ExportDatabaseDefinition)`
-- Type of `StorageCapability.StorageAccountType` has been changed from `StorageAccountType` to `StorageAccountType1`
-- Const `Free` has been removed
-- Const `ElasticPoolEditionPremium` has been removed
-- Const `ElasticPoolEditionGeneralPurpose` has been removed
-- Const `Stretch` has been removed
-- Const `Hyperscale` has been removed
-- Const `SQL` has been removed
-- Const `ADPassword` has been removed
-- Const `OperationOriginUser` has been removed
-- Const `OperationOriginSystem` has been removed
-- Const `Web` has been removed
-- Const `DataWarehouse` has been removed
-- Const `ElasticPoolEditionBusinessCritical` has been removed
-- Const `ElasticPoolEditionBasic` has been removed
-- Const `PremiumRS` has been removed
-- Const `ElasticPoolEditionStandard` has been removed
-- Const `System2` has been removed
-- Const `Business` has been removed
-- Function `*ImportExtensionRequest.UnmarshalJSON` has been removed
-- Function `DatabasesClient.ImportPreparer` has been removed
-- Function `DatabasesClient.Import` has been removed
-- Function `ImportExportResponse.MarshalJSON` has been removed
-- Function `*DatabasesCreateImportOperationFuture.Result` has been removed
-- Function `*DatabasesImportFuture.Result` has been removed
-- Function `PossibleAuthenticationTypeValues` has been removed
-- Function `*ImportExportResponse.UnmarshalJSON` has been removed
-- Function `DatabasesClient.ImportSender` has been removed
-- Function `PossibleDatabaseEditionValues` has been removed
-- Function `DatabasesClient.CreateImportOperation` has been removed
-- Function `DatabasesClient.ImportResponder` has been removed
-- Function `DatabasesClient.CreateImportOperationSender` has been removed
-- Function `DatabasesClient.CreateImportOperationResponder` has been removed
-- Function `ImportExtensionRequest.MarshalJSON` has been removed
-- Function `DatabasesClient.CreateImportOperationPreparer` has been removed
-- Struct `DatabasesCreateImportOperationFuture` has been removed
-- Struct `DatabasesImportFuture` has been removed
-- Struct `ExportRequest` has been removed
-- Struct `ImportExportResponse` has been removed
-- Struct `ImportExportResponseProperties` has been removed
-- Struct `ImportExtensionProperties` has been removed
-- Struct `ImportExtensionRequest` has been removed
-- Struct `ImportRequest` has been removed
+### Removed Funcs
 
-## New Content
+1. *BackupLongTermRetentionPoliciesCreateOrUpdateFuture.Result(BackupLongTermRetentionPoliciesClient) (BackupLongTermRetentionPolicy, error)
+1. *BackupShortTermRetentionPoliciesCreateOrUpdateFuture.Result(BackupShortTermRetentionPoliciesClient) (BackupShortTermRetentionPolicy, error)
+1. *BackupShortTermRetentionPoliciesUpdateFuture.Result(BackupShortTermRetentionPoliciesClient) (BackupShortTermRetentionPolicy, error)
+1. *DatabaseVulnerabilityAssessmentScansInitiateScanFuture.Result(DatabaseVulnerabilityAssessmentScansClient) (autorest.Response, error)
+1. *DatabasesCreateOrUpdateFuture.Result(DatabasesClient) (Database, error)
+1. *DatabasesDeleteFuture.Result(DatabasesClient) (autorest.Response, error)
+1. *DatabasesExportFuture.Result(DatabasesClient) (ImportExportOperationResult, error)
+1. *DatabasesFailoverFuture.Result(DatabasesClient) (autorest.Response, error)
+1. *DatabasesPauseFuture.Result(DatabasesClient) (Database, error)
+1. *DatabasesResumeFuture.Result(DatabasesClient) (Database, error)
+1. *DatabasesUpdateFuture.Result(DatabasesClient) (Database, error)
+1. *DatabasesUpgradeDataWarehouseFuture.Result(DatabasesClient) (autorest.Response, error)
+1. *ElasticPoolsCreateOrUpdateFuture.Result(ElasticPoolsClient) (ElasticPool, error)
+1. *ElasticPoolsDeleteFuture.Result(ElasticPoolsClient) (autorest.Response, error)
+1. *ElasticPoolsFailoverFuture.Result(ElasticPoolsClient) (autorest.Response, error)
+1. *ElasticPoolsUpdateFuture.Result(ElasticPoolsClient) (ElasticPool, error)
+1. *EncryptionProtectorsCreateOrUpdateFuture.Result(EncryptionProtectorsClient) (EncryptionProtector, error)
+1. *EncryptionProtectorsRevalidateFuture.Result(EncryptionProtectorsClient) (autorest.Response, error)
+1. *ExtendedServerBlobAuditingPoliciesCreateOrUpdateFuture.Result(ExtendedServerBlobAuditingPoliciesClient) (ExtendedServerBlobAuditingPolicy, error)
+1. *FailoverGroupsCreateOrUpdateFuture.Result(FailoverGroupsClient) (FailoverGroup, error)
+1. *FailoverGroupsDeleteFuture.Result(FailoverGroupsClient) (autorest.Response, error)
+1. *FailoverGroupsFailoverFuture.Result(FailoverGroupsClient) (FailoverGroup, error)
+1. *FailoverGroupsForceFailoverAllowDataLossFuture.Result(FailoverGroupsClient) (FailoverGroup, error)
+1. *FailoverGroupsUpdateFuture.Result(FailoverGroupsClient) (FailoverGroup, error)
+1. *ImportExportImportFuture.Result(ImportExportClient) (ImportExportOperationResult, error)
+1. *InstanceFailoverGroupsCreateOrUpdateFuture.Result(InstanceFailoverGroupsClient) (InstanceFailoverGroup, error)
+1. *InstanceFailoverGroupsDeleteFuture.Result(InstanceFailoverGroupsClient) (autorest.Response, error)
+1. *InstanceFailoverGroupsFailoverFuture.Result(InstanceFailoverGroupsClient) (InstanceFailoverGroup, error)
+1. *InstanceFailoverGroupsForceFailoverAllowDataLossFuture.Result(InstanceFailoverGroupsClient) (InstanceFailoverGroup, error)
+1. *InstancePoolsCreateOrUpdateFuture.Result(InstancePoolsClient) (InstancePool, error)
+1. *InstancePoolsDeleteFuture.Result(InstancePoolsClient) (autorest.Response, error)
+1. *InstancePoolsUpdateFuture.Result(InstancePoolsClient) (InstancePool, error)
+1. *JobAgentsCreateOrUpdateFuture.Result(JobAgentsClient) (JobAgent, error)
+1. *JobAgentsDeleteFuture.Result(JobAgentsClient) (autorest.Response, error)
+1. *JobAgentsUpdateFuture.Result(JobAgentsClient) (JobAgent, error)
+1. *JobExecutionsCreateFuture.Result(JobExecutionsClient) (JobExecution, error)
+1. *JobExecutionsCreateOrUpdateFuture.Result(JobExecutionsClient) (JobExecution, error)
+1. *LongTermRetentionBackupsDeleteByResourceGroupFuture.Result(LongTermRetentionBackupsClient) (autorest.Response, error)
+1. *LongTermRetentionBackupsDeleteFuture.Result(LongTermRetentionBackupsClient) (autorest.Response, error)
+1. *LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupFuture.Result(LongTermRetentionManagedInstanceBackupsClient) (autorest.Response, error)
+1. *LongTermRetentionManagedInstanceBackupsDeleteFuture.Result(LongTermRetentionManagedInstanceBackupsClient) (autorest.Response, error)
+1. *ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture.Result(ManagedBackupShortTermRetentionPoliciesClient) (ManagedBackupShortTermRetentionPolicy, error)
+1. *ManagedBackupShortTermRetentionPoliciesUpdateFuture.Result(ManagedBackupShortTermRetentionPoliciesClient) (ManagedBackupShortTermRetentionPolicy, error)
+1. *ManagedDatabaseVulnerabilityAssessmentScansInitiateScanFuture.Result(ManagedDatabaseVulnerabilityAssessmentScansClient) (autorest.Response, error)
+1. *ManagedDatabasesCompleteRestoreFuture.Result(ManagedDatabasesClient) (autorest.Response, error)
+1. *ManagedDatabasesCreateOrUpdateFuture.Result(ManagedDatabasesClient) (ManagedDatabase, error)
+1. *ManagedDatabasesDeleteFuture.Result(ManagedDatabasesClient) (autorest.Response, error)
+1. *ManagedDatabasesUpdateFuture.Result(ManagedDatabasesClient) (ManagedDatabase, error)
+1. *ManagedInstanceAdministratorsCreateOrUpdateFuture.Result(ManagedInstanceAdministratorsClient) (ManagedInstanceAdministrator, error)
+1. *ManagedInstanceAdministratorsDeleteFuture.Result(ManagedInstanceAdministratorsClient) (autorest.Response, error)
+1. *ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateFuture.Result(ManagedInstanceAzureADOnlyAuthenticationsClient) (ManagedInstanceAzureADOnlyAuthentication, error)
+1. *ManagedInstanceAzureADOnlyAuthenticationsDeleteFuture.Result(ManagedInstanceAzureADOnlyAuthenticationsClient) (autorest.Response, error)
+1. *ManagedInstanceEncryptionProtectorsCreateOrUpdateFuture.Result(ManagedInstanceEncryptionProtectorsClient) (ManagedInstanceEncryptionProtector, error)
+1. *ManagedInstanceEncryptionProtectorsRevalidateFuture.Result(ManagedInstanceEncryptionProtectorsClient) (autorest.Response, error)
+1. *ManagedInstanceKeysCreateOrUpdateFuture.Result(ManagedInstanceKeysClient) (ManagedInstanceKey, error)
+1. *ManagedInstanceKeysDeleteFuture.Result(ManagedInstanceKeysClient) (autorest.Response, error)
+1. *ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateFuture.Result(ManagedInstanceLongTermRetentionPoliciesClient) (ManagedInstanceLongTermRetentionPolicy, error)
+1. *ManagedInstanceTdeCertificatesCreateFuture.Result(ManagedInstanceTdeCertificatesClient) (autorest.Response, error)
+1. *ManagedInstancesCreateOrUpdateFuture.Result(ManagedInstancesClient) (ManagedInstance, error)
+1. *ManagedInstancesDeleteFuture.Result(ManagedInstancesClient) (autorest.Response, error)
+1. *ManagedInstancesFailoverFuture.Result(ManagedInstancesClient) (autorest.Response, error)
+1. *ManagedInstancesUpdateFuture.Result(ManagedInstancesClient) (ManagedInstance, error)
+1. *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdateFuture.Result(ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) (ManagedBackupShortTermRetentionPolicy, error)
+1. *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesUpdateFuture.Result(ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) (ManagedBackupShortTermRetentionPolicy, error)
+1. *ManagedServerSecurityAlertPoliciesCreateOrUpdateFuture.Result(ManagedServerSecurityAlertPoliciesClient) (ManagedServerSecurityAlertPolicy, error)
+1. *PrivateEndpointConnectionsCreateOrUpdateFuture.Result(PrivateEndpointConnectionsClient) (PrivateEndpointConnection, error)
+1. *PrivateEndpointConnectionsDeleteFuture.Result(PrivateEndpointConnectionsClient) (autorest.Response, error)
+1. *ReplicationLinksFailoverAllowDataLossFuture.Result(ReplicationLinksClient) (autorest.Response, error)
+1. *ReplicationLinksFailoverFuture.Result(ReplicationLinksClient) (autorest.Response, error)
+1. *ReplicationLinksUnlinkFuture.Result(ReplicationLinksClient) (autorest.Response, error)
+1. *RestorePointsCreateFuture.Result(RestorePointsClient) (RestorePoint, error)
+1. *ServerAzureADAdministratorsCreateOrUpdateFuture.Result(ServerAzureADAdministratorsClient) (ServerAzureADAdministrator, error)
+1. *ServerAzureADAdministratorsDeleteFuture.Result(ServerAzureADAdministratorsClient) (autorest.Response, error)
+1. *ServerAzureADOnlyAuthenticationsCreateOrUpdateFuture.Result(ServerAzureADOnlyAuthenticationsClient) (ServerAzureADOnlyAuthentication, error)
+1. *ServerAzureADOnlyAuthenticationsDeleteFuture.Result(ServerAzureADOnlyAuthenticationsClient) (autorest.Response, error)
+1. *ServerBlobAuditingPoliciesCreateOrUpdateFuture.Result(ServerBlobAuditingPoliciesClient) (ServerBlobAuditingPolicy, error)
+1. *ServerCommunicationLinksCreateOrUpdateFuture.Result(ServerCommunicationLinksClient) (ServerCommunicationLink, error)
+1. *ServerDNSAliasesAcquireFuture.Result(ServerDNSAliasesClient) (autorest.Response, error)
+1. *ServerDNSAliasesCreateOrUpdateFuture.Result(ServerDNSAliasesClient) (ServerDNSAlias, error)
+1. *ServerDNSAliasesDeleteFuture.Result(ServerDNSAliasesClient) (autorest.Response, error)
+1. *ServerKeysCreateOrUpdateFuture.Result(ServerKeysClient) (ServerKey, error)
+1. *ServerKeysDeleteFuture.Result(ServerKeysClient) (autorest.Response, error)
+1. *ServerSecurityAlertPoliciesCreateOrUpdateFuture.Result(ServerSecurityAlertPoliciesClient) (ServerSecurityAlertPolicy, error)
+1. *ServerTrustGroupsCreateOrUpdateFuture.Result(ServerTrustGroupsClient) (ServerTrustGroup, error)
+1. *ServerTrustGroupsDeleteFuture.Result(ServerTrustGroupsClient) (autorest.Response, error)
+1. *ServersCreateOrUpdateFuture.Result(ServersClient) (Server, error)
+1. *ServersDeleteFuture.Result(ServersClient) (autorest.Response, error)
+1. *ServersImportDatabaseFuture.Result(ServersClient) (ImportExportOperationResult, error)
+1. *ServersUpdateFuture.Result(ServersClient) (Server, error)
+1. *SyncAgentsCreateOrUpdateFuture.Result(SyncAgentsClient) (SyncAgent, error)
+1. *SyncAgentsDeleteFuture.Result(SyncAgentsClient) (autorest.Response, error)
+1. *SyncGroupsCreateOrUpdateFuture.Result(SyncGroupsClient) (SyncGroup, error)
+1. *SyncGroupsDeleteFuture.Result(SyncGroupsClient) (autorest.Response, error)
+1. *SyncGroupsRefreshHubSchemaFuture.Result(SyncGroupsClient) (autorest.Response, error)
+1. *SyncGroupsUpdateFuture.Result(SyncGroupsClient) (SyncGroup, error)
+1. *SyncMembersCreateOrUpdateFuture.Result(SyncMembersClient) (SyncMember, error)
+1. *SyncMembersDeleteFuture.Result(SyncMembersClient) (autorest.Response, error)
+1. *SyncMembersRefreshMemberSchemaFuture.Result(SyncMembersClient) (autorest.Response, error)
+1. *SyncMembersUpdateFuture.Result(SyncMembersClient) (SyncMember, error)
+1. *TdeCertificatesCreateFuture.Result(TdeCertificatesClient) (autorest.Response, error)
+1. *VirtualClustersDeleteFuture.Result(VirtualClustersClient) (autorest.Response, error)
+1. *VirtualClustersUpdateFuture.Result(VirtualClustersClient) (VirtualCluster, error)
+1. *VirtualNetworkRulesCreateOrUpdateFuture.Result(VirtualNetworkRulesClient) (VirtualNetworkRule, error)
+1. *VirtualNetworkRulesDeleteFuture.Result(VirtualNetworkRulesClient) (autorest.Response, error)
+1. *WorkloadClassifiersCreateOrUpdateFuture.Result(WorkloadClassifiersClient) (WorkloadClassifier, error)
+1. *WorkloadClassifiersDeleteFuture.Result(WorkloadClassifiersClient) (autorest.Response, error)
+1. *WorkloadGroupsCreateOrUpdateFuture.Result(WorkloadGroupsClient) (WorkloadGroup, error)
+1. *WorkloadGroupsDeleteFuture.Result(WorkloadGroupsClient) (autorest.Response, error)
 
-- New const `StorageAccountType1LRS`
-- New const `ProvisioningState1Unknown`
-- New const `StorageAccountType1ZRS`
-- New const `ProvisioningState1Creating`
-- New const `ProvisioningState1Updating`
-- New const `ProvisioningState1Succeeded`
-- New const `ProvisioningState1Deleting`
-- New const `StorageAccountType1GRS`
-- New const `User`
-- New const `ProvisioningState1Failed`
-- New function `ManagedInstanceAzureADOnlyAuthentication.MarshalJSON() ([]byte, error)`
-- New function `*ManagedInstanceAzureADOnlyAuthListResultPage.Next() error`
-- New function `*ServerTrustGroupListResultPage.Next() error`
-- New function `*ManagedInstanceAzureADOnlyAuthenticationsDeleteFuture.Result(ManagedInstanceAzureADOnlyAuthenticationsClient) (autorest.Response, error)`
-- New function `ServerTrustGroupsClient.GetResponder(*http.Response) (ServerTrustGroup, error)`
-- New function `NewManagedInstanceAzureADOnlyAuthenticationsClient(string) ManagedInstanceAzureADOnlyAuthenticationsClient`
-- New function `NewImportExportClientWithBaseURI(string, string) ImportExportClient`
-- New function `ServerTrustGroupsClient.DeletePreparer(context.Context, string, string, string) (*http.Request, error)`
-- New function `ManagedInstanceAzureADOnlyAuthenticationsClient.ListByInstancePreparer(context.Context, string, string) (*http.Request, error)`
-- New function `DatabasesClient.ListInaccessibleByServerPreparer(context.Context, string, string) (*http.Request, error)`
-- New function `ServerTrustGroup.MarshalJSON() ([]byte, error)`
-- New function `ManagedInstanceAzureADOnlyAuthListResultIterator.NotDone() bool`
-- New function `ServerTrustGroupsClient.Get(context.Context, string, string, string) (ServerTrustGroup, error)`
-- New function `DatabasesClient.ListInaccessibleByServerSender(*http.Request) (*http.Response, error)`
-- New function `ManagedInstanceAzureADOnlyAuthListResult.IsEmpty() bool`
-- New function `ServerTrustGroupsClient.DeleteSender(*http.Request) (ServerTrustGroupsDeleteFuture, error)`
-- New function `*ManagedInstanceAzureADOnlyAuthListResultIterator.Next() error`
-- New function `ServerTrustGroupListResultIterator.NotDone() bool`
-- New function `ServerTrustGroupListResultIterator.Response() ServerTrustGroupListResult`
-- New function `ImportExportClient.Import(context.Context, string, string, string, ImportExistingDatabaseDefinition) (ImportExportImportFuture, error)`
-- New function `ManagedInstanceAzureADOnlyAuthenticationsClient.DeletePreparer(context.Context, string, string) (*http.Request, error)`
-- New function `ServerTrustGroupsClient.CreateOrUpdateSender(*http.Request) (ServerTrustGroupsCreateOrUpdateFuture, error)`
-- New function `ServerTrustGroupsClient.ListByInstanceResponder(*http.Response) (ServerTrustGroupListResult, error)`
-- New function `ServerTrustGroupListResult.IsEmpty() bool`
-- New function `ServerTrustGroupsClient.ListByInstanceComplete(context.Context, string, string) (ServerTrustGroupListResultIterator, error)`
-- New function `ManagedInstancePrivateLinkServiceConnectionStateProperty.MarshalJSON() ([]byte, error)`
-- New function `ManagedInstanceAzureADOnlyAuthListResultIterator.Response() ManagedInstanceAzureADOnlyAuthListResult`
-- New function `ServerTrustGroupsClient.ListByLocationPreparer(context.Context, string, string) (*http.Request, error)`
-- New function `ServersClient.ImportDatabaseSender(*http.Request) (ServersImportDatabaseFuture, error)`
-- New function `ImportExportOperationResult.MarshalJSON() ([]byte, error)`
-- New function `ImportExportClient.ImportResponder(*http.Response) (ImportExportOperationResult, error)`
-- New function `ServerTrustGroupsClient.CreateOrUpdatePreparer(context.Context, string, string, string, ServerTrustGroup) (*http.Request, error)`
-- New function `ServerTrustGroupsClient.ListByLocationSender(*http.Request) (*http.Response, error)`
-- New function `PossibleProvisioningState1Values() []ProvisioningState1`
-- New function `ServerTrustGroupsClient.Delete(context.Context, string, string, string) (ServerTrustGroupsDeleteFuture, error)`
-- New function `ManagedInstanceAzureADOnlyAuthenticationsClient.CreateOrUpdate(context.Context, string, string, ManagedInstanceAzureADOnlyAuthentication) (ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateFuture, error)`
-- New function `NewManagedInstanceAzureADOnlyAuthListResultIterator(ManagedInstanceAzureADOnlyAuthListResultPage) ManagedInstanceAzureADOnlyAuthListResultIterator`
-- New function `ServerTrustGroupsClient.ListByInstance(context.Context, string, string) (ServerTrustGroupListResultPage, error)`
-- New function `ServerTrustGroupsClient.GetSender(*http.Request) (*http.Response, error)`
-- New function `DatabasesClient.ListInaccessibleByServerResponder(*http.Response) (DatabaseListResult, error)`
-- New function `*ServerTrustGroupListResultIterator.Next() error`
-- New function `ManagedInstanceAzureADOnlyAuthenticationsClient.ListByInstanceComplete(context.Context, string, string) (ManagedInstanceAzureADOnlyAuthListResultIterator, error)`
-- New function `ManagedInstanceAzureADOnlyAuthenticationsClient.CreateOrUpdateSender(*http.Request) (ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateFuture, error)`
-- New function `ImportExportClient.ImportPreparer(context.Context, string, string, string, ImportExistingDatabaseDefinition) (*http.Request, error)`
-- New function `DatabasesClient.ListInaccessibleByServerComplete(context.Context, string, string) (DatabaseListResultIterator, error)`
-- New function `*ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateFuture.Result(ManagedInstanceAzureADOnlyAuthenticationsClient) (ManagedInstanceAzureADOnlyAuthentication, error)`
-- New function `ServerTrustGroupListResultIterator.Value() ServerTrustGroup`
-- New function `ManagedInstanceAzureADOnlyAuthenticationsClient.GetResponder(*http.Response) (ManagedInstanceAzureADOnlyAuthentication, error)`
-- New function `ImportExportClient.ImportSender(*http.Request) (ImportExportImportFuture, error)`
-- New function `ServerTrustGroupsClient.ListByLocationResponder(*http.Response) (ServerTrustGroupListResult, error)`
-- New function `ManagedInstanceAzureADOnlyAuthenticationsClient.Delete(context.Context, string, string) (ManagedInstanceAzureADOnlyAuthenticationsDeleteFuture, error)`
-- New function `ManagedInstanceAzureADOnlyAuthenticationsClient.GetPreparer(context.Context, string, string) (*http.Request, error)`
-- New function `NewServerTrustGroupListResultIterator(ServerTrustGroupListResultPage) ServerTrustGroupListResultIterator`
-- New function `ServersClient.ImportDatabase(context.Context, string, string, ImportNewDatabaseDefinition) (ServersImportDatabaseFuture, error)`
-- New function `*ServersImportDatabaseFuture.Result(ServersClient) (ImportExportOperationResult, error)`
-- New function `NewServerTrustGroupsClientWithBaseURI(string, string) ServerTrustGroupsClient`
-- New function `ManagedInstanceAzureADOnlyAuthenticationsClient.Get(context.Context, string, string) (ManagedInstanceAzureADOnlyAuthentication, error)`
-- New function `ManagedInstanceAzureADOnlyAuthenticationsClient.CreateOrUpdateResponder(*http.Response) (ManagedInstanceAzureADOnlyAuthentication, error)`
-- New function `ManagedInstanceAzureADOnlyAuthenticationsClient.ListByInstanceResponder(*http.Response) (ManagedInstanceAzureADOnlyAuthListResult, error)`
-- New function `ServerTrustGroupsClient.CreateOrUpdateResponder(*http.Response) (ServerTrustGroup, error)`
-- New function `*ManagedInstanceAzureADOnlyAuthListResultPage.NextWithContext(context.Context) error`
-- New function `NewManagedInstanceAzureADOnlyAuthenticationsClientWithBaseURI(string, string) ManagedInstanceAzureADOnlyAuthenticationsClient`
-- New function `*ServerTrustGroupsCreateOrUpdateFuture.Result(ServerTrustGroupsClient) (ServerTrustGroup, error)`
-- New function `NewManagedInstanceAzureADOnlyAuthListResultPage(ManagedInstanceAzureADOnlyAuthListResult, func(context.Context, ManagedInstanceAzureADOnlyAuthListResult) (ManagedInstanceAzureADOnlyAuthListResult, error)) ManagedInstanceAzureADOnlyAuthListResultPage`
-- New function `ManagedInstanceAzureADOnlyAuthenticationsClient.DeleteSender(*http.Request) (ManagedInstanceAzureADOnlyAuthenticationsDeleteFuture, error)`
-- New function `*ManagedInstanceAzureADOnlyAuthentication.UnmarshalJSON([]byte) error`
-- New function `NewImportExportClient(string) ImportExportClient`
-- New function `*ImportExportImportFuture.Result(ImportExportClient) (ImportExportOperationResult, error)`
-- New function `ManagedInstanceAzureADOnlyAuthenticationsClient.GetSender(*http.Request) (*http.Response, error)`
-- New function `DatabasesClient.ListInaccessibleByServer(context.Context, string, string) (DatabaseListResultPage, error)`
-- New function `ManagedInstanceAzureADOnlyAuthListResultPage.Values() []ManagedInstanceAzureADOnlyAuthentication`
-- New function `ManagedInstanceAzureADOnlyAuthenticationsClient.ListByInstance(context.Context, string, string) (ManagedInstanceAzureADOnlyAuthListResultPage, error)`
-- New function `*ManagedInstanceAzureADOnlyAuthListResultIterator.NextWithContext(context.Context) error`
-- New function `ManagedInstanceAzureADOnlyAuthenticationsClient.ListByInstanceSender(*http.Request) (*http.Response, error)`
-- New function `ManagedInstanceAzureADOnlyAuthenticationsClient.CreateOrUpdatePreparer(context.Context, string, string, ManagedInstanceAzureADOnlyAuthentication) (*http.Request, error)`
-- New function `ServerTrustGroupsClient.GetPreparer(context.Context, string, string, string) (*http.Request, error)`
-- New function `*ServerTrustGroupListResultPage.NextWithContext(context.Context) error`
-- New function `*ServerTrustGroup.UnmarshalJSON([]byte) error`
-- New function `ServerTrustGroupListResultPage.NotDone() bool`
-- New function `ManagedInstanceAzureADOnlyAuthListResultPage.NotDone() bool`
-- New function `ServerTrustGroupsClient.ListByInstanceSender(*http.Request) (*http.Response, error)`
-- New function `*ServerTrustGroupsDeleteFuture.Result(ServerTrustGroupsClient) (autorest.Response, error)`
-- New function `ServerTrustGroupsClient.ListByLocation(context.Context, string, string) (ServerTrustGroupListResultPage, error)`
-- New function `ManagedInstanceAzureADOnlyAuthenticationsClient.DeleteResponder(*http.Response) (autorest.Response, error)`
-- New function `*ImportExportOperationResult.UnmarshalJSON([]byte) error`
-- New function `ServerTrustGroupsClient.DeleteResponder(*http.Response) (autorest.Response, error)`
-- New function `ServerTrustGroupsClient.CreateOrUpdate(context.Context, string, string, string, ServerTrustGroup) (ServerTrustGroupsCreateOrUpdateFuture, error)`
-- New function `ManagedInstanceAzureADOnlyAuthListResultPage.Response() ManagedInstanceAzureADOnlyAuthListResult`
-- New function `ManagedInstanceAzureADOnlyAuthListResultIterator.Value() ManagedInstanceAzureADOnlyAuthentication`
-- New function `ServerTrustGroupsClient.ListByInstancePreparer(context.Context, string, string) (*http.Request, error)`
-- New function `NewServerTrustGroupListResultPage(ServerTrustGroupListResult, func(context.Context, ServerTrustGroupListResult) (ServerTrustGroupListResult, error)) ServerTrustGroupListResultPage`
-- New function `NewServerTrustGroupsClient(string) ServerTrustGroupsClient`
-- New function `*ServerTrustGroupListResultIterator.NextWithContext(context.Context) error`
-- New function `ServersClient.ImportDatabaseResponder(*http.Response) (ImportExportOperationResult, error)`
-- New function `ServerTrustGroupsClient.ListByLocationComplete(context.Context, string, string) (ServerTrustGroupListResultIterator, error)`
-- New function `ServerTrustGroupListResultPage.Response() ServerTrustGroupListResult`
-- New function `PossibleStorageAccountType1Values() []StorageAccountType1`
-- New function `ServerTrustGroupListResultPage.Values() []ServerTrustGroup`
-- New function `ServersClient.ImportDatabasePreparer(context.Context, string, string, ImportNewDatabaseDefinition) (*http.Request, error)`
-- New struct `ExportDatabaseDefinition`
-- New struct `ImportExistingDatabaseDefinition`
-- New struct `ImportExportClient`
-- New struct `ImportExportImportFuture`
-- New struct `ImportExportOperationResult`
-- New struct `ImportExportOperationResultProperties`
-- New struct `ImportNewDatabaseDefinition`
-- New struct `ManagedInstanceAzureADOnlyAuthListResult`
-- New struct `ManagedInstanceAzureADOnlyAuthListResultIterator`
-- New struct `ManagedInstanceAzureADOnlyAuthListResultPage`
-- New struct `ManagedInstanceAzureADOnlyAuthProperties`
-- New struct `ManagedInstanceAzureADOnlyAuthentication`
-- New struct `ManagedInstanceAzureADOnlyAuthenticationsClient`
-- New struct `ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateFuture`
-- New struct `ManagedInstanceAzureADOnlyAuthenticationsDeleteFuture`
-- New struct `ManagedInstancePrivateLinkServiceConnectionStateProperty`
-- New struct `NetworkIsolationSettings`
-- New struct `PrivateEndpointConnectionRequestStatus`
-- New struct `ServerInfo`
-- New struct `ServerTrustGroup`
-- New struct `ServerTrustGroupListResult`
-- New struct `ServerTrustGroupListResultIterator`
-- New struct `ServerTrustGroupListResultPage`
-- New struct `ServerTrustGroupProperties`
-- New struct `ServerTrustGroupsClient`
-- New struct `ServerTrustGroupsCreateOrUpdateFuture`
-- New struct `ServerTrustGroupsDeleteFuture`
-- New struct `ServersImportDatabaseFuture`
-- New field `PrivateEndpointName` in struct `SyncGroupProperties`
-- New field `StorageAccountType` in struct `ManagedInstanceProperties`
-- New field `ProvisioningState` in struct `ManagedInstanceProperties`
-- New field `PrivateEndpointName` in struct `SyncMemberProperties`
-- New field `StorageAccountType` in struct `DatabaseProperties`
+## Struct Changes
+
+### Removed Struct Fields
+
+1. BackupLongTermRetentionPoliciesCreateOrUpdateFuture.azure.Future
+1. BackupShortTermRetentionPoliciesCreateOrUpdateFuture.azure.Future
+1. BackupShortTermRetentionPoliciesUpdateFuture.azure.Future
+1. DatabaseVulnerabilityAssessmentScansInitiateScanFuture.azure.Future
+1. DatabasesCreateOrUpdateFuture.azure.Future
+1. DatabasesDeleteFuture.azure.Future
+1. DatabasesExportFuture.azure.Future
+1. DatabasesFailoverFuture.azure.Future
+1. DatabasesPauseFuture.azure.Future
+1. DatabasesResumeFuture.azure.Future
+1. DatabasesUpdateFuture.azure.Future
+1. DatabasesUpgradeDataWarehouseFuture.azure.Future
+1. ElasticPoolsCreateOrUpdateFuture.azure.Future
+1. ElasticPoolsDeleteFuture.azure.Future
+1. ElasticPoolsFailoverFuture.azure.Future
+1. ElasticPoolsUpdateFuture.azure.Future
+1. EncryptionProtectorsCreateOrUpdateFuture.azure.Future
+1. EncryptionProtectorsRevalidateFuture.azure.Future
+1. ExtendedServerBlobAuditingPoliciesCreateOrUpdateFuture.azure.Future
+1. FailoverGroupsCreateOrUpdateFuture.azure.Future
+1. FailoverGroupsDeleteFuture.azure.Future
+1. FailoverGroupsFailoverFuture.azure.Future
+1. FailoverGroupsForceFailoverAllowDataLossFuture.azure.Future
+1. FailoverGroupsUpdateFuture.azure.Future
+1. ImportExportImportFuture.azure.Future
+1. InstanceFailoverGroupsCreateOrUpdateFuture.azure.Future
+1. InstanceFailoverGroupsDeleteFuture.azure.Future
+1. InstanceFailoverGroupsFailoverFuture.azure.Future
+1. InstanceFailoverGroupsForceFailoverAllowDataLossFuture.azure.Future
+1. InstancePoolsCreateOrUpdateFuture.azure.Future
+1. InstancePoolsDeleteFuture.azure.Future
+1. InstancePoolsUpdateFuture.azure.Future
+1. JobAgentsCreateOrUpdateFuture.azure.Future
+1. JobAgentsDeleteFuture.azure.Future
+1. JobAgentsUpdateFuture.azure.Future
+1. JobExecutionsCreateFuture.azure.Future
+1. JobExecutionsCreateOrUpdateFuture.azure.Future
+1. LongTermRetentionBackupsDeleteByResourceGroupFuture.azure.Future
+1. LongTermRetentionBackupsDeleteFuture.azure.Future
+1. LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupFuture.azure.Future
+1. LongTermRetentionManagedInstanceBackupsDeleteFuture.azure.Future
+1. ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture.azure.Future
+1. ManagedBackupShortTermRetentionPoliciesUpdateFuture.azure.Future
+1. ManagedDatabaseVulnerabilityAssessmentScansInitiateScanFuture.azure.Future
+1. ManagedDatabasesCompleteRestoreFuture.azure.Future
+1. ManagedDatabasesCreateOrUpdateFuture.azure.Future
+1. ManagedDatabasesDeleteFuture.azure.Future
+1. ManagedDatabasesUpdateFuture.azure.Future
+1. ManagedInstanceAdministratorsCreateOrUpdateFuture.azure.Future
+1. ManagedInstanceAdministratorsDeleteFuture.azure.Future
+1. ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateFuture.azure.Future
+1. ManagedInstanceAzureADOnlyAuthenticationsDeleteFuture.azure.Future
+1. ManagedInstanceEncryptionProtectorsCreateOrUpdateFuture.azure.Future
+1. ManagedInstanceEncryptionProtectorsRevalidateFuture.azure.Future
+1. ManagedInstanceKeysCreateOrUpdateFuture.azure.Future
+1. ManagedInstanceKeysDeleteFuture.azure.Future
+1. ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateFuture.azure.Future
+1. ManagedInstanceTdeCertificatesCreateFuture.azure.Future
+1. ManagedInstancesCreateOrUpdateFuture.azure.Future
+1. ManagedInstancesDeleteFuture.azure.Future
+1. ManagedInstancesFailoverFuture.azure.Future
+1. ManagedInstancesUpdateFuture.azure.Future
+1. ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdateFuture.azure.Future
+1. ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesUpdateFuture.azure.Future
+1. ManagedServerSecurityAlertPoliciesCreateOrUpdateFuture.azure.Future
+1. PrivateEndpointConnectionsCreateOrUpdateFuture.azure.Future
+1. PrivateEndpointConnectionsDeleteFuture.azure.Future
+1. ReplicationLinksFailoverAllowDataLossFuture.azure.Future
+1. ReplicationLinksFailoverFuture.azure.Future
+1. ReplicationLinksUnlinkFuture.azure.Future
+1. RestorePointsCreateFuture.azure.Future
+1. ServerAzureADAdministratorsCreateOrUpdateFuture.azure.Future
+1. ServerAzureADAdministratorsDeleteFuture.azure.Future
+1. ServerAzureADOnlyAuthenticationsCreateOrUpdateFuture.azure.Future
+1. ServerAzureADOnlyAuthenticationsDeleteFuture.azure.Future
+1. ServerBlobAuditingPoliciesCreateOrUpdateFuture.azure.Future
+1. ServerCommunicationLinksCreateOrUpdateFuture.azure.Future
+1. ServerDNSAliasesAcquireFuture.azure.Future
+1. ServerDNSAliasesCreateOrUpdateFuture.azure.Future
+1. ServerDNSAliasesDeleteFuture.azure.Future
+1. ServerKeysCreateOrUpdateFuture.azure.Future
+1. ServerKeysDeleteFuture.azure.Future
+1. ServerSecurityAlertPoliciesCreateOrUpdateFuture.azure.Future
+1. ServerTrustGroupsCreateOrUpdateFuture.azure.Future
+1. ServerTrustGroupsDeleteFuture.azure.Future
+1. ServersCreateOrUpdateFuture.azure.Future
+1. ServersDeleteFuture.azure.Future
+1. ServersImportDatabaseFuture.azure.Future
+1. ServersUpdateFuture.azure.Future
+1. SyncAgentsCreateOrUpdateFuture.azure.Future
+1. SyncAgentsDeleteFuture.azure.Future
+1. SyncGroupsCreateOrUpdateFuture.azure.Future
+1. SyncGroupsDeleteFuture.azure.Future
+1. SyncGroupsRefreshHubSchemaFuture.azure.Future
+1. SyncGroupsUpdateFuture.azure.Future
+1. SyncMembersCreateOrUpdateFuture.azure.Future
+1. SyncMembersDeleteFuture.azure.Future
+1. SyncMembersRefreshMemberSchemaFuture.azure.Future
+1. SyncMembersUpdateFuture.azure.Future
+1. TdeCertificatesCreateFuture.azure.Future
+1. VirtualClustersDeleteFuture.azure.Future
+1. VirtualClustersUpdateFuture.azure.Future
+1. VirtualNetworkRulesCreateOrUpdateFuture.azure.Future
+1. VirtualNetworkRulesDeleteFuture.azure.Future
+1. WorkloadClassifiersCreateOrUpdateFuture.azure.Future
+1. WorkloadClassifiersDeleteFuture.azure.Future
+1. WorkloadGroupsCreateOrUpdateFuture.azure.Future
+1. WorkloadGroupsDeleteFuture.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. BackupLongTermRetentionPoliciesCreateOrUpdateFuture.Result
+1. BackupLongTermRetentionPoliciesCreateOrUpdateFuture.azure.FutureAPI
+1. BackupShortTermRetentionPoliciesCreateOrUpdateFuture.Result
+1. BackupShortTermRetentionPoliciesCreateOrUpdateFuture.azure.FutureAPI
+1. BackupShortTermRetentionPoliciesUpdateFuture.Result
+1. BackupShortTermRetentionPoliciesUpdateFuture.azure.FutureAPI
+1. DatabaseVulnerabilityAssessmentScansInitiateScanFuture.Result
+1. DatabaseVulnerabilityAssessmentScansInitiateScanFuture.azure.FutureAPI
+1. DatabasesCreateOrUpdateFuture.Result
+1. DatabasesCreateOrUpdateFuture.azure.FutureAPI
+1. DatabasesDeleteFuture.Result
+1. DatabasesDeleteFuture.azure.FutureAPI
+1. DatabasesExportFuture.Result
+1. DatabasesExportFuture.azure.FutureAPI
+1. DatabasesFailoverFuture.Result
+1. DatabasesFailoverFuture.azure.FutureAPI
+1. DatabasesPauseFuture.Result
+1. DatabasesPauseFuture.azure.FutureAPI
+1. DatabasesResumeFuture.Result
+1. DatabasesResumeFuture.azure.FutureAPI
+1. DatabasesUpdateFuture.Result
+1. DatabasesUpdateFuture.azure.FutureAPI
+1. DatabasesUpgradeDataWarehouseFuture.Result
+1. DatabasesUpgradeDataWarehouseFuture.azure.FutureAPI
+1. ElasticPoolsCreateOrUpdateFuture.Result
+1. ElasticPoolsCreateOrUpdateFuture.azure.FutureAPI
+1. ElasticPoolsDeleteFuture.Result
+1. ElasticPoolsDeleteFuture.azure.FutureAPI
+1. ElasticPoolsFailoverFuture.Result
+1. ElasticPoolsFailoverFuture.azure.FutureAPI
+1. ElasticPoolsUpdateFuture.Result
+1. ElasticPoolsUpdateFuture.azure.FutureAPI
+1. EncryptionProtectorsCreateOrUpdateFuture.Result
+1. EncryptionProtectorsCreateOrUpdateFuture.azure.FutureAPI
+1. EncryptionProtectorsRevalidateFuture.Result
+1. EncryptionProtectorsRevalidateFuture.azure.FutureAPI
+1. ExtendedServerBlobAuditingPoliciesCreateOrUpdateFuture.Result
+1. ExtendedServerBlobAuditingPoliciesCreateOrUpdateFuture.azure.FutureAPI
+1. FailoverGroupsCreateOrUpdateFuture.Result
+1. FailoverGroupsCreateOrUpdateFuture.azure.FutureAPI
+1. FailoverGroupsDeleteFuture.Result
+1. FailoverGroupsDeleteFuture.azure.FutureAPI
+1. FailoverGroupsFailoverFuture.Result
+1. FailoverGroupsFailoverFuture.azure.FutureAPI
+1. FailoverGroupsForceFailoverAllowDataLossFuture.Result
+1. FailoverGroupsForceFailoverAllowDataLossFuture.azure.FutureAPI
+1. FailoverGroupsUpdateFuture.Result
+1. FailoverGroupsUpdateFuture.azure.FutureAPI
+1. ImportExportImportFuture.Result
+1. ImportExportImportFuture.azure.FutureAPI
+1. InstanceFailoverGroupsCreateOrUpdateFuture.Result
+1. InstanceFailoverGroupsCreateOrUpdateFuture.azure.FutureAPI
+1. InstanceFailoverGroupsDeleteFuture.Result
+1. InstanceFailoverGroupsDeleteFuture.azure.FutureAPI
+1. InstanceFailoverGroupsFailoverFuture.Result
+1. InstanceFailoverGroupsFailoverFuture.azure.FutureAPI
+1. InstanceFailoverGroupsForceFailoverAllowDataLossFuture.Result
+1. InstanceFailoverGroupsForceFailoverAllowDataLossFuture.azure.FutureAPI
+1. InstancePoolsCreateOrUpdateFuture.Result
+1. InstancePoolsCreateOrUpdateFuture.azure.FutureAPI
+1. InstancePoolsDeleteFuture.Result
+1. InstancePoolsDeleteFuture.azure.FutureAPI
+1. InstancePoolsUpdateFuture.Result
+1. InstancePoolsUpdateFuture.azure.FutureAPI
+1. JobAgentsCreateOrUpdateFuture.Result
+1. JobAgentsCreateOrUpdateFuture.azure.FutureAPI
+1. JobAgentsDeleteFuture.Result
+1. JobAgentsDeleteFuture.azure.FutureAPI
+1. JobAgentsUpdateFuture.Result
+1. JobAgentsUpdateFuture.azure.FutureAPI
+1. JobExecutionsCreateFuture.Result
+1. JobExecutionsCreateFuture.azure.FutureAPI
+1. JobExecutionsCreateOrUpdateFuture.Result
+1. JobExecutionsCreateOrUpdateFuture.azure.FutureAPI
+1. LongTermRetentionBackupsDeleteByResourceGroupFuture.Result
+1. LongTermRetentionBackupsDeleteByResourceGroupFuture.azure.FutureAPI
+1. LongTermRetentionBackupsDeleteFuture.Result
+1. LongTermRetentionBackupsDeleteFuture.azure.FutureAPI
+1. LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupFuture.Result
+1. LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupFuture.azure.FutureAPI
+1. LongTermRetentionManagedInstanceBackupsDeleteFuture.Result
+1. LongTermRetentionManagedInstanceBackupsDeleteFuture.azure.FutureAPI
+1. ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture.Result
+1. ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture.azure.FutureAPI
+1. ManagedBackupShortTermRetentionPoliciesUpdateFuture.Result
+1. ManagedBackupShortTermRetentionPoliciesUpdateFuture.azure.FutureAPI
+1. ManagedDatabaseVulnerabilityAssessmentScansInitiateScanFuture.Result
+1. ManagedDatabaseVulnerabilityAssessmentScansInitiateScanFuture.azure.FutureAPI
+1. ManagedDatabasesCompleteRestoreFuture.Result
+1. ManagedDatabasesCompleteRestoreFuture.azure.FutureAPI
+1. ManagedDatabasesCreateOrUpdateFuture.Result
+1. ManagedDatabasesCreateOrUpdateFuture.azure.FutureAPI
+1. ManagedDatabasesDeleteFuture.Result
+1. ManagedDatabasesDeleteFuture.azure.FutureAPI
+1. ManagedDatabasesUpdateFuture.Result
+1. ManagedDatabasesUpdateFuture.azure.FutureAPI
+1. ManagedInstanceAdministratorsCreateOrUpdateFuture.Result
+1. ManagedInstanceAdministratorsCreateOrUpdateFuture.azure.FutureAPI
+1. ManagedInstanceAdministratorsDeleteFuture.Result
+1. ManagedInstanceAdministratorsDeleteFuture.azure.FutureAPI
+1. ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateFuture.Result
+1. ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateFuture.azure.FutureAPI
+1. ManagedInstanceAzureADOnlyAuthenticationsDeleteFuture.Result
+1. ManagedInstanceAzureADOnlyAuthenticationsDeleteFuture.azure.FutureAPI
+1. ManagedInstanceEncryptionProtectorsCreateOrUpdateFuture.Result
+1. ManagedInstanceEncryptionProtectorsCreateOrUpdateFuture.azure.FutureAPI
+1. ManagedInstanceEncryptionProtectorsRevalidateFuture.Result
+1. ManagedInstanceEncryptionProtectorsRevalidateFuture.azure.FutureAPI
+1. ManagedInstanceKeysCreateOrUpdateFuture.Result
+1. ManagedInstanceKeysCreateOrUpdateFuture.azure.FutureAPI
+1. ManagedInstanceKeysDeleteFuture.Result
+1. ManagedInstanceKeysDeleteFuture.azure.FutureAPI
+1. ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateFuture.Result
+1. ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateFuture.azure.FutureAPI
+1. ManagedInstanceTdeCertificatesCreateFuture.Result
+1. ManagedInstanceTdeCertificatesCreateFuture.azure.FutureAPI
+1. ManagedInstancesCreateOrUpdateFuture.Result
+1. ManagedInstancesCreateOrUpdateFuture.azure.FutureAPI
+1. ManagedInstancesDeleteFuture.Result
+1. ManagedInstancesDeleteFuture.azure.FutureAPI
+1. ManagedInstancesFailoverFuture.Result
+1. ManagedInstancesFailoverFuture.azure.FutureAPI
+1. ManagedInstancesUpdateFuture.Result
+1. ManagedInstancesUpdateFuture.azure.FutureAPI
+1. ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdateFuture.Result
+1. ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdateFuture.azure.FutureAPI
+1. ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesUpdateFuture.Result
+1. ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesUpdateFuture.azure.FutureAPI
+1. ManagedServerSecurityAlertPoliciesCreateOrUpdateFuture.Result
+1. ManagedServerSecurityAlertPoliciesCreateOrUpdateFuture.azure.FutureAPI
+1. PrivateEndpointConnectionsCreateOrUpdateFuture.Result
+1. PrivateEndpointConnectionsCreateOrUpdateFuture.azure.FutureAPI
+1. PrivateEndpointConnectionsDeleteFuture.Result
+1. PrivateEndpointConnectionsDeleteFuture.azure.FutureAPI
+1. ReplicationLinksFailoverAllowDataLossFuture.Result
+1. ReplicationLinksFailoverAllowDataLossFuture.azure.FutureAPI
+1. ReplicationLinksFailoverFuture.Result
+1. ReplicationLinksFailoverFuture.azure.FutureAPI
+1. ReplicationLinksUnlinkFuture.Result
+1. ReplicationLinksUnlinkFuture.azure.FutureAPI
+1. RestorePointsCreateFuture.Result
+1. RestorePointsCreateFuture.azure.FutureAPI
+1. ServerAzureADAdministratorsCreateOrUpdateFuture.Result
+1. ServerAzureADAdministratorsCreateOrUpdateFuture.azure.FutureAPI
+1. ServerAzureADAdministratorsDeleteFuture.Result
+1. ServerAzureADAdministratorsDeleteFuture.azure.FutureAPI
+1. ServerAzureADOnlyAuthenticationsCreateOrUpdateFuture.Result
+1. ServerAzureADOnlyAuthenticationsCreateOrUpdateFuture.azure.FutureAPI
+1. ServerAzureADOnlyAuthenticationsDeleteFuture.Result
+1. ServerAzureADOnlyAuthenticationsDeleteFuture.azure.FutureAPI
+1. ServerBlobAuditingPoliciesCreateOrUpdateFuture.Result
+1. ServerBlobAuditingPoliciesCreateOrUpdateFuture.azure.FutureAPI
+1. ServerCommunicationLinksCreateOrUpdateFuture.Result
+1. ServerCommunicationLinksCreateOrUpdateFuture.azure.FutureAPI
+1. ServerDNSAliasesAcquireFuture.Result
+1. ServerDNSAliasesAcquireFuture.azure.FutureAPI
+1. ServerDNSAliasesCreateOrUpdateFuture.Result
+1. ServerDNSAliasesCreateOrUpdateFuture.azure.FutureAPI
+1. ServerDNSAliasesDeleteFuture.Result
+1. ServerDNSAliasesDeleteFuture.azure.FutureAPI
+1. ServerKeysCreateOrUpdateFuture.Result
+1. ServerKeysCreateOrUpdateFuture.azure.FutureAPI
+1. ServerKeysDeleteFuture.Result
+1. ServerKeysDeleteFuture.azure.FutureAPI
+1. ServerSecurityAlertPoliciesCreateOrUpdateFuture.Result
+1. ServerSecurityAlertPoliciesCreateOrUpdateFuture.azure.FutureAPI
+1. ServerTrustGroupsCreateOrUpdateFuture.Result
+1. ServerTrustGroupsCreateOrUpdateFuture.azure.FutureAPI
+1. ServerTrustGroupsDeleteFuture.Result
+1. ServerTrustGroupsDeleteFuture.azure.FutureAPI
+1. ServersCreateOrUpdateFuture.Result
+1. ServersCreateOrUpdateFuture.azure.FutureAPI
+1. ServersDeleteFuture.Result
+1. ServersDeleteFuture.azure.FutureAPI
+1. ServersImportDatabaseFuture.Result
+1. ServersImportDatabaseFuture.azure.FutureAPI
+1. ServersUpdateFuture.Result
+1. ServersUpdateFuture.azure.FutureAPI
+1. SyncAgentsCreateOrUpdateFuture.Result
+1. SyncAgentsCreateOrUpdateFuture.azure.FutureAPI
+1. SyncAgentsDeleteFuture.Result
+1. SyncAgentsDeleteFuture.azure.FutureAPI
+1. SyncGroupsCreateOrUpdateFuture.Result
+1. SyncGroupsCreateOrUpdateFuture.azure.FutureAPI
+1. SyncGroupsDeleteFuture.Result
+1. SyncGroupsDeleteFuture.azure.FutureAPI
+1. SyncGroupsRefreshHubSchemaFuture.Result
+1. SyncGroupsRefreshHubSchemaFuture.azure.FutureAPI
+1. SyncGroupsUpdateFuture.Result
+1. SyncGroupsUpdateFuture.azure.FutureAPI
+1. SyncMembersCreateOrUpdateFuture.Result
+1. SyncMembersCreateOrUpdateFuture.azure.FutureAPI
+1. SyncMembersDeleteFuture.Result
+1. SyncMembersDeleteFuture.azure.FutureAPI
+1. SyncMembersRefreshMemberSchemaFuture.Result
+1. SyncMembersRefreshMemberSchemaFuture.azure.FutureAPI
+1. SyncMembersUpdateFuture.Result
+1. SyncMembersUpdateFuture.azure.FutureAPI
+1. TdeCertificatesCreateFuture.Result
+1. TdeCertificatesCreateFuture.azure.FutureAPI
+1. VirtualClustersDeleteFuture.Result
+1. VirtualClustersDeleteFuture.azure.FutureAPI
+1. VirtualClustersUpdateFuture.Result
+1. VirtualClustersUpdateFuture.azure.FutureAPI
+1. VirtualNetworkRulesCreateOrUpdateFuture.Result
+1. VirtualNetworkRulesCreateOrUpdateFuture.azure.FutureAPI
+1. VirtualNetworkRulesDeleteFuture.Result
+1. VirtualNetworkRulesDeleteFuture.azure.FutureAPI
+1. WorkloadClassifiersCreateOrUpdateFuture.Result
+1. WorkloadClassifiersCreateOrUpdateFuture.azure.FutureAPI
+1. WorkloadClassifiersDeleteFuture.Result
+1. WorkloadClassifiersDeleteFuture.azure.FutureAPI
+1. WorkloadGroupsCreateOrUpdateFuture.Result
+1. WorkloadGroupsCreateOrUpdateFuture.azure.FutureAPI
+1. WorkloadGroupsDeleteFuture.Result
+1. WorkloadGroupsDeleteFuture.azure.FutureAPI

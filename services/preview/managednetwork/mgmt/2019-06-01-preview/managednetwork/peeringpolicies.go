@@ -69,7 +69,7 @@ func (client PeeringPoliciesClient) CreateOrUpdate(ctx context.Context, managedN
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "managednetwork.PeeringPoliciesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managednetwork.PeeringPoliciesClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -108,7 +108,29 @@ func (client PeeringPoliciesClient) CreateOrUpdateSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client PeeringPoliciesClient) (pp PeeringPolicy, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "managednetwork.PeeringPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("managednetwork.PeeringPoliciesCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if pp.Response.Response, err = future.GetResult(sender); err == nil && pp.Response.Response.StatusCode != http.StatusNoContent {
+			pp, err = client.CreateOrUpdateResponder(pp.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "managednetwork.PeeringPoliciesCreateOrUpdateFuture", "Result", pp.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -149,7 +171,7 @@ func (client PeeringPoliciesClient) Delete(ctx context.Context, resourceGroupNam
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "managednetwork.PeeringPoliciesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managednetwork.PeeringPoliciesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -186,7 +208,23 @@ func (client PeeringPoliciesClient) DeleteSender(req *http.Request) (future Peer
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client PeeringPoliciesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "managednetwork.PeeringPoliciesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("managednetwork.PeeringPoliciesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -330,6 +368,7 @@ func (client PeeringPoliciesClient) ListByManagedNetwork(ctx context.Context, re
 	}
 	if result.pplr.hasNextLink() && result.pplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -397,7 +436,6 @@ func (client PeeringPoliciesClient) listByManagedNetworkNextResults(ctx context.
 	result, err = client.ListByManagedNetworkResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.PeeringPoliciesClient", "listByManagedNetworkNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

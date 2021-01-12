@@ -156,6 +156,7 @@ func (client ManagedApisClient) List(ctx context.Context, location string) (resu
 	}
 	if result.ac.hasNextLink() && result.ac.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -216,7 +217,6 @@ func (client ManagedApisClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ManagedApisClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

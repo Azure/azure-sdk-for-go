@@ -262,7 +262,7 @@ func (client IotHubResourceClient) CreateOrUpdate(ctx context.Context, resourceG
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -304,7 +304,29 @@ func (client IotHubResourceClient) CreateOrUpdateSender(req *http.Request) (futu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client IotHubResourceClient) (ihd IotHubDescription, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "devices.IotHubResourceCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("devices.IotHubResourceCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ihd.Response.Response, err = future.GetResult(sender); err == nil && ihd.Response.Response.StatusCode != http.StatusNoContent {
+			ihd, err = client.CreateOrUpdateResponder(ihd.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "devices.IotHubResourceCreateOrUpdateFuture", "Result", ihd.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -343,7 +365,7 @@ func (client IotHubResourceClient) Delete(ctx context.Context, resourceGroupName
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -379,7 +401,29 @@ func (client IotHubResourceClient) DeleteSender(req *http.Request) (future IotHu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client IotHubResourceClient) (so SetObject, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "devices.IotHubResourceDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("devices.IotHubResourceDeleteFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+			so, err = client.DeleteResponder(so.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "devices.IotHubResourceDeleteFuture", "Result", so.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -912,6 +956,7 @@ func (client IotHubResourceClient) GetQuotaMetrics(ctx context.Context, resource
 	}
 	if result.ihqmilr.hasNextLink() && result.ihqmilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -973,7 +1018,6 @@ func (client IotHubResourceClient) getQuotaMetricsNextResults(ctx context.Contex
 	result, err = client.GetQuotaMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "getQuotaMetricsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1106,6 +1150,7 @@ func (client IotHubResourceClient) GetValidSkus(ctx context.Context, resourceGro
 	}
 	if result.ihsdlr.hasNextLink() && result.ihsdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1167,7 +1212,6 @@ func (client IotHubResourceClient) getValidSkusNextResults(ctx context.Context, 
 	result, err = client.GetValidSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "getValidSkusNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1311,6 +1355,7 @@ func (client IotHubResourceClient) ListByResourceGroup(ctx context.Context, reso
 	}
 	if result.ihdlr.hasNextLink() && result.ihdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1371,7 +1416,6 @@ func (client IotHubResourceClient) listByResourceGroupNextResults(ctx context.Co
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1425,6 +1469,7 @@ func (client IotHubResourceClient) ListBySubscription(ctx context.Context) (resu
 	}
 	if result.ihdlr.hasNextLink() && result.ihdlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1484,7 +1529,6 @@ func (client IotHubResourceClient) listBySubscriptionNextResults(ctx context.Con
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1543,6 +1587,7 @@ func (client IotHubResourceClient) ListEventHubConsumerGroups(ctx context.Contex
 	}
 	if result.ehcglr.hasNextLink() && result.ehcglr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1605,7 +1650,6 @@ func (client IotHubResourceClient) listEventHubConsumerGroupsNextResults(ctx con
 	result, err = client.ListEventHubConsumerGroupsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "listEventHubConsumerGroupsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1663,6 +1707,7 @@ func (client IotHubResourceClient) ListJobs(ctx context.Context, resourceGroupNa
 	}
 	if result.jrlr.hasNextLink() && result.jrlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1724,7 +1769,6 @@ func (client IotHubResourceClient) listJobsNextResults(ctx context.Context, last
 	result, err = client.ListJobsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "listJobsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1782,6 +1826,7 @@ func (client IotHubResourceClient) ListKeys(ctx context.Context, resourceGroupNa
 	}
 	if result.sasarlr.hasNextLink() && result.sasarlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1843,7 +1888,6 @@ func (client IotHubResourceClient) listKeysNextResults(ctx context.Context, last
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "listKeysNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1888,7 +1932,7 @@ func (client IotHubResourceClient) Update(ctx context.Context, resourceGroupName
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -1926,7 +1970,29 @@ func (client IotHubResourceClient) UpdateSender(req *http.Request) (future IotHu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client IotHubResourceClient) (ihd IotHubDescription, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "devices.IotHubResourceUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("devices.IotHubResourceUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if ihd.Response.Response, err = future.GetResult(sender); err == nil && ihd.Response.Response.StatusCode != http.StatusNoContent {
+			ihd, err = client.UpdateResponder(ihd.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "devices.IotHubResourceUpdateFuture", "Result", ihd.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

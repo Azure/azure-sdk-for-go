@@ -408,24 +408,10 @@ type CustomRules struct {
 // EndpointsPurgeContentFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type EndpointsPurgeContentFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *EndpointsPurgeContentFuture) Result(client EndpointsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "frontdoor.EndpointsPurgeContentFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("frontdoor.EndpointsPurgeContentFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(EndpointsClient) (autorest.Response, error)
 }
 
 // Error ...
@@ -558,53 +544,19 @@ func (fd *FrontDoor) UnmarshalJSON(body []byte) error {
 // FrontDoorsCreateOrUpdateFutureType an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type FrontDoorsCreateOrUpdateFutureType struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *FrontDoorsCreateOrUpdateFutureType) Result(client FrontDoorsClient) (fd FrontDoor, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "frontdoor.FrontDoorsCreateOrUpdateFutureType", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("frontdoor.FrontDoorsCreateOrUpdateFutureType")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if fd.Response.Response, err = future.GetResult(sender); err == nil && fd.Response.Response.StatusCode != http.StatusNoContent {
-		fd, err = client.CreateOrUpdateResponder(fd.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "frontdoor.FrontDoorsCreateOrUpdateFutureType", "Result", fd.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(FrontDoorsClient) (FrontDoor, error)
 }
 
 // FrontDoorsDeleteFutureType an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type FrontDoorsDeleteFutureType struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *FrontDoorsDeleteFutureType) Result(client FrontDoorsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "frontdoor.FrontDoorsDeleteFutureType", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("frontdoor.FrontDoorsDeleteFutureType")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(FrontDoorsClient) (autorest.Response, error)
 }
 
 // FrontendEndpoint a frontend endpoint used for routing.
@@ -731,47 +683,19 @@ func (fep FrontendEndpointProperties) MarshalJSON() ([]byte, error) {
 // FrontendEndpointsDisableHTTPSFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type FrontendEndpointsDisableHTTPSFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *FrontendEndpointsDisableHTTPSFuture) Result(client FrontendEndpointsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsDisableHTTPSFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("frontdoor.FrontendEndpointsDisableHTTPSFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(FrontendEndpointsClient) (autorest.Response, error)
 }
 
 // FrontendEndpointsEnableHTTPSFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type FrontendEndpointsEnableHTTPSFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *FrontendEndpointsEnableHTTPSFuture) Result(client FrontendEndpointsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsEnableHTTPSFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("frontdoor.FrontendEndpointsEnableHTTPSFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(FrontendEndpointsClient) (autorest.Response, error)
 }
 
 // FrontendEndpointsListResult result of the request to list frontend endpoints. It contains a list of
@@ -1515,24 +1439,10 @@ type MatchCondition1 struct {
 // PoliciesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type PoliciesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *PoliciesDeleteFuture) Result(client PoliciesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "frontdoor.PoliciesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("frontdoor.PoliciesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(PoliciesClient) (autorest.Response, error)
 }
 
 // PolicySettings defines contents of a web application firewall global configuration

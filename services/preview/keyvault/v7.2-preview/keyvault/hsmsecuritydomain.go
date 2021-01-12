@@ -240,7 +240,7 @@ func (client HSMSecurityDomainClient) Upload(ctx context.Context, vaultBaseURL s
 
 	result, err = client.UploadSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainClient", "Upload", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainClient", "Upload", nil, "Failure sending request")
 		return
 	}
 
@@ -270,7 +270,29 @@ func (client HSMSecurityDomainClient) UploadSender(req *http.Request) (future HS
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client HSMSecurityDomainClient) (sdos SecurityDomainOperationStatus, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainUploadFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("keyvault.HSMSecurityDomainUploadFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if sdos.Response.Response, err = future.GetResult(sender); err == nil && sdos.Response.Response.StatusCode != http.StatusNoContent {
+			sdos, err = client.UploadResponder(sdos.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainUploadFuture", "Result", sdos.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

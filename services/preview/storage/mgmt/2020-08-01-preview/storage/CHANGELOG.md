@@ -1,26 +1,30 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/storage/resource-manager/readme.md tag: `package-2020-08-preview`
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator @microsoft.azure/autorest.go@2.1.168
 
 ## Breaking Changes
 
-- Function `FileSharesClient.CreatePreparer` parameter(s) have been changed from `(context.Context, string, string, string, FileShare)` to `(context.Context, string, string, string, FileShare, PutSharesExpand)`
-- Function `FileSharesClient.GetPreparer` parameter(s) have been changed from `(context.Context, string, string, string, GetShareExpand)` to `(context.Context, string, string, string, GetShareExpand, string)`
-- Function `NewEncryptionScopeListResultPage` parameter(s) have been changed from `(func(context.Context, EncryptionScopeListResult) (EncryptionScopeListResult, error))` to `(EncryptionScopeListResult, func(context.Context, EncryptionScopeListResult) (EncryptionScopeListResult, error))`
-- Function `NewDeletedAccountListResultPage` parameter(s) have been changed from `(func(context.Context, DeletedAccountListResult) (DeletedAccountListResult, error))` to `(DeletedAccountListResult, func(context.Context, DeletedAccountListResult) (DeletedAccountListResult, error))`
-- Function `NewListContainerItemsPage` parameter(s) have been changed from `(func(context.Context, ListContainerItems) (ListContainerItems, error))` to `(ListContainerItems, func(context.Context, ListContainerItems) (ListContainerItems, error))`
-- Function `FileSharesClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, FileShare)` to `(context.Context, string, string, string, FileShare, PutSharesExpand)`
-- Function `NewListTableResourcePage` parameter(s) have been changed from `(func(context.Context, ListTableResource) (ListTableResource, error))` to `(ListTableResource, func(context.Context, ListTableResource) (ListTableResource, error))`
-- Function `FileSharesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, GetShareExpand)` to `(context.Context, string, string, string, GetShareExpand, string)`
-- Function `FileSharesClient.DeletePreparer` parameter(s) have been changed from `(context.Context, string, string, string)` to `(context.Context, string, string, string, string)`
-- Function `NewAccountListResultPage` parameter(s) have been changed from `(func(context.Context, AccountListResult) (AccountListResult, error))` to `(AccountListResult, func(context.Context, AccountListResult) (AccountListResult, error))`
-- Function `NewFileShareItemsPage` parameter(s) have been changed from `(func(context.Context, FileShareItems) (FileShareItems, error))` to `(FileShareItems, func(context.Context, FileShareItems) (FileShareItems, error))`
-- Function `NewListQueueResourcePage` parameter(s) have been changed from `(func(context.Context, ListQueueResource) (ListQueueResource, error))` to `(ListQueueResource, func(context.Context, ListQueueResource) (ListQueueResource, error))`
-- Function `FileSharesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string)` to `(context.Context, string, string, string, string)`
+### Removed Funcs
 
-## New Content
+1. *AccountsCreateFuture.Result(AccountsClient) (Account, error)
+1. *AccountsFailoverFuture.Result(AccountsClient) (autorest.Response, error)
+1. *AccountsRestoreBlobRangesFuture.Result(AccountsClient) (BlobRestoreStatus, error)
 
-- New const `ListSharesExpandSnapshots`
-- New const `Snapshots`
-- New function `PossiblePutSharesExpandValues() []PutSharesExpand`
-- New field `SnapshotTime` in struct `FileShareProperties`
+## Struct Changes
+
+### Removed Struct Fields
+
+1. AccountsCreateFuture.azure.Future
+1. AccountsFailoverFuture.azure.Future
+1. AccountsRestoreBlobRangesFuture.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. AccountsCreateFuture.Result
+1. AccountsCreateFuture.azure.FutureAPI
+1. AccountsFailoverFuture.Result
+1. AccountsFailoverFuture.azure.FutureAPI
+1. AccountsRestoreBlobRangesFuture.Result
+1. AccountsRestoreBlobRangesFuture.azure.FutureAPI

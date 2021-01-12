@@ -852,24 +852,10 @@ type IotHubLocationDescription struct {
 // IotHubManualFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type IotHubManualFailoverFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *IotHubManualFailoverFuture) Result(client IotHubClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "devices.IotHubManualFailoverFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("devices.IotHubManualFailoverFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(IotHubClient) (autorest.Response, error)
 }
 
 // IotHubNameAvailabilityInfo the properties indicating whether a given IoT hub name is available.
@@ -1152,88 +1138,28 @@ func NewIotHubQuotaMetricInfoListResultPage(cur IotHubQuotaMetricInfoListResult,
 // IotHubResourceCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type IotHubResourceCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *IotHubResourceCreateOrUpdateFuture) Result(client IotHubResourceClient) (ihd IotHubDescription, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "devices.IotHubResourceCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("devices.IotHubResourceCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ihd.Response.Response, err = future.GetResult(sender); err == nil && ihd.Response.Response.StatusCode != http.StatusNoContent {
-		ihd, err = client.CreateOrUpdateResponder(ihd.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "devices.IotHubResourceCreateOrUpdateFuture", "Result", ihd.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(IotHubResourceClient) (IotHubDescription, error)
 }
 
 // IotHubResourceDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type IotHubResourceDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *IotHubResourceDeleteFuture) Result(client IotHubResourceClient) (so SetObject, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "devices.IotHubResourceDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("devices.IotHubResourceDeleteFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
-		so, err = client.DeleteResponder(so.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "devices.IotHubResourceDeleteFuture", "Result", so.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(IotHubResourceClient) (SetObject, error)
 }
 
 // IotHubResourceUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type IotHubResourceUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *IotHubResourceUpdateFuture) Result(client IotHubResourceClient) (ihd IotHubDescription, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "devices.IotHubResourceUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("devices.IotHubResourceUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ihd.Response.Response, err = future.GetResult(sender); err == nil && ihd.Response.Response.StatusCode != http.StatusNoContent {
-		ihd, err = client.UpdateResponder(ihd.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "devices.IotHubResourceUpdateFuture", "Result", ihd.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(IotHubResourceClient) (IotHubDescription, error)
 }
 
 // IotHubSkuDescription SKU properties.

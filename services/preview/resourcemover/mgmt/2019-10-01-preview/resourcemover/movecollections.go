@@ -65,7 +65,7 @@ func (client MoveCollectionsClient) BulkRemove(ctx context.Context, resourceGrou
 
 	result, err = client.BulkRemoveSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "BulkRemove", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "BulkRemove", nil, "Failure sending request")
 		return
 	}
 
@@ -106,7 +106,29 @@ func (client MoveCollectionsClient) BulkRemoveSender(req *http.Request) (future 
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client MoveCollectionsClient) (osVar OperationStatus, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsBulkRemoveFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsBulkRemoveFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
+			osVar, err = client.BulkRemoveResponder(osVar.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsBulkRemoveFuture", "Result", osVar.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -155,7 +177,7 @@ func (client MoveCollectionsClient) Commit(ctx context.Context, resourceGroupNam
 
 	result, err = client.CommitSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Commit", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Commit", nil, "Failure sending request")
 		return
 	}
 
@@ -196,7 +218,29 @@ func (client MoveCollectionsClient) CommitSender(req *http.Request) (future Move
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client MoveCollectionsClient) (osVar OperationStatus, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsCommitFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsCommitFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
+			osVar, err = client.CommitResponder(osVar.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsCommitFuture", "Result", osVar.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -330,7 +374,7 @@ func (client MoveCollectionsClient) Delete(ctx context.Context, resourceGroupNam
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -366,7 +410,29 @@ func (client MoveCollectionsClient) DeleteSender(req *http.Request) (future Move
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client MoveCollectionsClient) (osVar OperationStatus, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsDeleteFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
+			osVar, err = client.DeleteResponder(osVar.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsDeleteFuture", "Result", osVar.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -415,7 +481,7 @@ func (client MoveCollectionsClient) Discard(ctx context.Context, resourceGroupNa
 
 	result, err = client.DiscardSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Discard", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Discard", nil, "Failure sending request")
 		return
 	}
 
@@ -456,7 +522,29 @@ func (client MoveCollectionsClient) DiscardSender(req *http.Request) (future Mov
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client MoveCollectionsClient) (osVar OperationStatus, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsDiscardFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsDiscardFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
+			osVar, err = client.DiscardResponder(osVar.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsDiscardFuture", "Result", osVar.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -581,7 +669,7 @@ func (client MoveCollectionsClient) InitiateMove(ctx context.Context, resourceGr
 
 	result, err = client.InitiateMoveSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "InitiateMove", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "InitiateMove", nil, "Failure sending request")
 		return
 	}
 
@@ -622,7 +710,29 @@ func (client MoveCollectionsClient) InitiateMoveSender(req *http.Request) (futur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client MoveCollectionsClient) (osVar OperationStatus, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsInitiateMoveFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsInitiateMoveFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
+			osVar, err = client.InitiateMoveResponder(osVar.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsInitiateMoveFuture", "Result", osVar.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -673,6 +783,7 @@ func (client MoveCollectionsClient) ListMoveCollectionsByResourceGroup(ctx conte
 	}
 	if result.mcrl.hasNextLink() && result.mcrl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -733,7 +844,6 @@ func (client MoveCollectionsClient) listMoveCollectionsByResourceGroupNextResult
 	result, err = client.ListMoveCollectionsByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "listMoveCollectionsByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -787,6 +897,7 @@ func (client MoveCollectionsClient) ListMoveCollectionsBySubscription(ctx contex
 	}
 	if result.mcrl.hasNextLink() && result.mcrl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -846,7 +957,6 @@ func (client MoveCollectionsClient) listMoveCollectionsBySubscriptionNextResults
 	result, err = client.ListMoveCollectionsBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "listMoveCollectionsBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -900,7 +1010,7 @@ func (client MoveCollectionsClient) Prepare(ctx context.Context, resourceGroupNa
 
 	result, err = client.PrepareSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Prepare", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Prepare", nil, "Failure sending request")
 		return
 	}
 
@@ -941,7 +1051,29 @@ func (client MoveCollectionsClient) PrepareSender(req *http.Request) (future Mov
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client MoveCollectionsClient) (osVar OperationStatus, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsPrepareFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsPrepareFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
+			osVar, err = client.PrepareResponder(osVar.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsPrepareFuture", "Result", osVar.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -980,7 +1112,7 @@ func (client MoveCollectionsClient) ResolveDependencies(ctx context.Context, res
 
 	result, err = client.ResolveDependenciesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "ResolveDependencies", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "ResolveDependencies", nil, "Failure sending request")
 		return
 	}
 
@@ -1016,7 +1148,29 @@ func (client MoveCollectionsClient) ResolveDependenciesSender(req *http.Request)
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client MoveCollectionsClient) (osVar OperationStatus, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsResolveDependenciesFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsResolveDependenciesFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
+			osVar, err = client.ResolveDependenciesResponder(osVar.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsResolveDependenciesFuture", "Result", osVar.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

@@ -483,6 +483,7 @@ func (client SubscriptionClient) List(ctx context.Context, resourceGroupName str
 	}
 	if result.sc.hasNextLink() && result.sc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -553,7 +554,6 @@ func (client SubscriptionClient) listNextResults(ctx context.Context, lastResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

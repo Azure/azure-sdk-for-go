@@ -74,7 +74,7 @@ func (client IscsiServersClient) BackupNow(ctx context.Context, deviceName strin
 
 	result, err = client.BackupNowSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.IscsiServersClient", "BackupNow", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.IscsiServersClient", "BackupNow", nil, "Failure sending request")
 		return
 	}
 
@@ -112,7 +112,23 @@ func (client IscsiServersClient) BackupNowSender(req *http.Request) (future Iscs
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client IscsiServersClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.IscsiServersBackupNowFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.IscsiServersBackupNowFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -165,7 +181,7 @@ func (client IscsiServersClient) CreateOrUpdate(ctx context.Context, deviceName 
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.IscsiServersClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.IscsiServersClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -205,7 +221,29 @@ func (client IscsiServersClient) CreateOrUpdateSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client IscsiServersClient) (is ISCSIServer, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.IscsiServersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.IscsiServersCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if is.Response.Response, err = future.GetResult(sender); err == nil && is.Response.Response.StatusCode != http.StatusNoContent {
+			is, err = client.CreateOrUpdateResponder(is.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "storsimple.IscsiServersCreateOrUpdateFuture", "Result", is.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -253,7 +291,7 @@ func (client IscsiServersClient) Delete(ctx context.Context, deviceName string, 
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.IscsiServersClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.IscsiServersClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -291,7 +329,23 @@ func (client IscsiServersClient) DeleteSender(req *http.Request) (future IscsiSe
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client IscsiServersClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.IscsiServersDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.IscsiServersDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

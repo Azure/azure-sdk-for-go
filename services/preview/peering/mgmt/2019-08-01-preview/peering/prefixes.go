@@ -77,6 +77,7 @@ func (client PrefixesClient) ListByPeeringService(ctx context.Context, resourceG
 	}
 	if result.splr.hasNextLink() && result.splr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -138,7 +139,6 @@ func (client PrefixesClient) listByPeeringServiceNextResults(ctx context.Context
 	result, err = client.ListByPeeringServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "listByPeeringServiceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

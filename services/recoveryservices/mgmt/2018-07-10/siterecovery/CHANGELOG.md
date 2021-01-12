@@ -1,567 +1,282 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/recoveryservicessiterecovery/resource-manager/readme.md tag: `package-2018-07`
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator @microsoft.azure/autorest.go@2.1.168
 
 ## Breaking Changes
 
-- Const `Unknown` type has been changed from `PresenceStatus` to `AgentUpgradeBlockedReason`
-- Function `NewLogicalNetworkCollectionPage` parameter(s) have been changed from `(func(context.Context, LogicalNetworkCollection) (LogicalNetworkCollection, error))` to `(LogicalNetworkCollection, func(context.Context, LogicalNetworkCollection) (LogicalNetworkCollection, error))`
-- Function `NewMigrationRecoveryPointCollectionPage` parameter(s) have been changed from `(func(context.Context, MigrationRecoveryPointCollection) (MigrationRecoveryPointCollection, error))` to `(MigrationRecoveryPointCollection, func(context.Context, MigrationRecoveryPointCollection) (MigrationRecoveryPointCollection, error))`
-- Function `NewFabricCollectionPage` parameter(s) have been changed from `(func(context.Context, FabricCollection) (FabricCollection, error))` to `(FabricCollection, func(context.Context, FabricCollection) (FabricCollection, error))`
-- Function `NewNetworkMappingCollectionPage` parameter(s) have been changed from `(func(context.Context, NetworkMappingCollection) (NetworkMappingCollection, error))` to `(NetworkMappingCollection, func(context.Context, NetworkMappingCollection) (NetworkMappingCollection, error))`
-- Function `NewNetworkCollectionPage` parameter(s) have been changed from `(func(context.Context, NetworkCollection) (NetworkCollection, error))` to `(NetworkCollection, func(context.Context, NetworkCollection) (NetworkCollection, error))`
-- Function `NewProtectionContainerCollectionPage` parameter(s) have been changed from `(func(context.Context, ProtectionContainerCollection) (ProtectionContainerCollection, error))` to `(ProtectionContainerCollection, func(context.Context, ProtectionContainerCollection) (ProtectionContainerCollection, error))`
-- Function `NewRecoveryServicesProviderCollectionPage` parameter(s) have been changed from `(func(context.Context, RecoveryServicesProviderCollection) (RecoveryServicesProviderCollection, error))` to `(RecoveryServicesProviderCollection, func(context.Context, RecoveryServicesProviderCollection) (RecoveryServicesProviderCollection, error))`
-- Function `NewVaultSettingCollectionPage` parameter(s) have been changed from `(func(context.Context, VaultSettingCollection) (VaultSettingCollection, error))` to `(VaultSettingCollection, func(context.Context, VaultSettingCollection) (VaultSettingCollection, error))`
-- Function `NewJobCollectionPage` parameter(s) have been changed from `(func(context.Context, JobCollection) (JobCollection, error))` to `(JobCollection, func(context.Context, JobCollection) (JobCollection, error))`
-- Function `NewAlertCollectionPage` parameter(s) have been changed from `(func(context.Context, AlertCollection) (AlertCollection, error))` to `(AlertCollection, func(context.Context, AlertCollection) (AlertCollection, error))`
-- Function `NewVCenterCollectionPage` parameter(s) have been changed from `(func(context.Context, VCenterCollection) (VCenterCollection, error))` to `(VCenterCollection, func(context.Context, VCenterCollection) (VCenterCollection, error))`
-- Function `NewReplicationProtectedItemCollectionPage` parameter(s) have been changed from `(func(context.Context, ReplicationProtectedItemCollection) (ReplicationProtectedItemCollection, error))` to `(ReplicationProtectedItemCollection, func(context.Context, ReplicationProtectedItemCollection) (ReplicationProtectedItemCollection, error))`
-- Function `NewStorageClassificationCollectionPage` parameter(s) have been changed from `(func(context.Context, StorageClassificationCollection) (StorageClassificationCollection, error))` to `(StorageClassificationCollection, func(context.Context, StorageClassificationCollection) (StorageClassificationCollection, error))`
-- Function `NewPolicyCollectionPage` parameter(s) have been changed from `(func(context.Context, PolicyCollection) (PolicyCollection, error))` to `(PolicyCollection, func(context.Context, PolicyCollection) (PolicyCollection, error))`
-- Function `NewOperationsDiscoveryCollectionPage` parameter(s) have been changed from `(func(context.Context, OperationsDiscoveryCollection) (OperationsDiscoveryCollection, error))` to `(OperationsDiscoveryCollection, func(context.Context, OperationsDiscoveryCollection) (OperationsDiscoveryCollection, error))`
-- Function `NewProtectionContainerMappingCollectionPage` parameter(s) have been changed from `(func(context.Context, ProtectionContainerMappingCollection) (ProtectionContainerMappingCollection, error))` to `(ProtectionContainerMappingCollection, func(context.Context, ProtectionContainerMappingCollection) (ProtectionContainerMappingCollection, error))`
-- Function `NewStorageClassificationMappingCollectionPage` parameter(s) have been changed from `(func(context.Context, StorageClassificationMappingCollection) (StorageClassificationMappingCollection, error))` to `(StorageClassificationMappingCollection, func(context.Context, StorageClassificationMappingCollection) (StorageClassificationMappingCollection, error))`
-- Function `NewEventCollectionPage` parameter(s) have been changed from `(func(context.Context, EventCollection) (EventCollection, error))` to `(EventCollection, func(context.Context, EventCollection) (EventCollection, error))`
-- Function `NewRecoveryPlanCollectionPage` parameter(s) have been changed from `(func(context.Context, RecoveryPlanCollection) (RecoveryPlanCollection, error))` to `(RecoveryPlanCollection, func(context.Context, RecoveryPlanCollection) (RecoveryPlanCollection, error))`
-- Function `NewTargetComputeSizeCollectionPage` parameter(s) have been changed from `(func(context.Context, TargetComputeSizeCollection) (TargetComputeSizeCollection, error))` to `(TargetComputeSizeCollection, func(context.Context, TargetComputeSizeCollection) (TargetComputeSizeCollection, error))`
-- Function `NewRecoveryPointCollectionPage` parameter(s) have been changed from `(func(context.Context, RecoveryPointCollection) (RecoveryPointCollection, error))` to `(RecoveryPointCollection, func(context.Context, RecoveryPointCollection) (RecoveryPointCollection, error))`
-- Function `NewMigrationItemCollectionPage` parameter(s) have been changed from `(func(context.Context, MigrationItemCollection) (MigrationItemCollection, error))` to `(MigrationItemCollection, func(context.Context, MigrationItemCollection) (MigrationItemCollection, error))`
-- Function `NewProtectableItemCollectionPage` parameter(s) have been changed from `(func(context.Context, ProtectableItemCollection) (ProtectableItemCollection, error))` to `(ProtectableItemCollection, func(context.Context, ProtectableItemCollection) (ProtectableItemCollection, error))`
-- Type of `TestFailoverInputProperties.ProviderSpecificDetails` has been changed from `BasicProviderSpecificFailoverInput` to `BasicTestFailoverProviderSpecificInput`
-- Type of `UnplannedFailoverInputProperties.ProviderSpecificDetails` has been changed from `BasicProviderSpecificFailoverInput` to `BasicUnplannedFailoverProviderSpecificInput`
-- Const `NotPresent` has been removed
-- Const `Present` has been removed
+### Removed Funcs
 
-## New Content
+1. *ReplicationFabricsCheckConsistencyFuture.Result(ReplicationFabricsClient) (Fabric, error)
+1. *ReplicationFabricsCreateFuture.Result(ReplicationFabricsClient) (Fabric, error)
+1. *ReplicationFabricsDeleteFuture.Result(ReplicationFabricsClient) (autorest.Response, error)
+1. *ReplicationFabricsMigrateToAadFuture.Result(ReplicationFabricsClient) (autorest.Response, error)
+1. *ReplicationFabricsPurgeFuture.Result(ReplicationFabricsClient) (autorest.Response, error)
+1. *ReplicationFabricsReassociateGatewayFuture.Result(ReplicationFabricsClient) (Fabric, error)
+1. *ReplicationFabricsRenewCertificateFuture.Result(ReplicationFabricsClient) (Fabric, error)
+1. *ReplicationJobsCancelFuture.Result(ReplicationJobsClient) (Job, error)
+1. *ReplicationJobsExportFuture.Result(ReplicationJobsClient) (Job, error)
+1. *ReplicationJobsRestartFuture.Result(ReplicationJobsClient) (Job, error)
+1. *ReplicationJobsResumeFuture.Result(ReplicationJobsClient) (Job, error)
+1. *ReplicationMigrationItemsCreateFuture.Result(ReplicationMigrationItemsClient) (MigrationItem, error)
+1. *ReplicationMigrationItemsDeleteFuture.Result(ReplicationMigrationItemsClient) (autorest.Response, error)
+1. *ReplicationMigrationItemsMigrateFuture.Result(ReplicationMigrationItemsClient) (MigrationItem, error)
+1. *ReplicationMigrationItemsTestMigrateCleanupFuture.Result(ReplicationMigrationItemsClient) (MigrationItem, error)
+1. *ReplicationMigrationItemsTestMigrateFuture.Result(ReplicationMigrationItemsClient) (MigrationItem, error)
+1. *ReplicationMigrationItemsUpdateFuture.Result(ReplicationMigrationItemsClient) (MigrationItem, error)
+1. *ReplicationNetworkMappingsCreateFuture.Result(ReplicationNetworkMappingsClient) (NetworkMapping, error)
+1. *ReplicationNetworkMappingsDeleteFuture.Result(ReplicationNetworkMappingsClient) (autorest.Response, error)
+1. *ReplicationNetworkMappingsUpdateFuture.Result(ReplicationNetworkMappingsClient) (NetworkMapping, error)
+1. *ReplicationPoliciesCreateFuture.Result(ReplicationPoliciesClient) (Policy, error)
+1. *ReplicationPoliciesDeleteFuture.Result(ReplicationPoliciesClient) (autorest.Response, error)
+1. *ReplicationPoliciesUpdateFuture.Result(ReplicationPoliciesClient) (Policy, error)
+1. *ReplicationProtectedItemsAddDisksFuture.Result(ReplicationProtectedItemsClient) (ReplicationProtectedItem, error)
+1. *ReplicationProtectedItemsApplyRecoveryPointFuture.Result(ReplicationProtectedItemsClient) (ReplicationProtectedItem, error)
+1. *ReplicationProtectedItemsCreateFuture.Result(ReplicationProtectedItemsClient) (ReplicationProtectedItem, error)
+1. *ReplicationProtectedItemsDeleteFuture.Result(ReplicationProtectedItemsClient) (autorest.Response, error)
+1. *ReplicationProtectedItemsFailoverCommitFuture.Result(ReplicationProtectedItemsClient) (ReplicationProtectedItem, error)
+1. *ReplicationProtectedItemsPlannedFailoverFuture.Result(ReplicationProtectedItemsClient) (ReplicationProtectedItem, error)
+1. *ReplicationProtectedItemsPurgeFuture.Result(ReplicationProtectedItemsClient) (autorest.Response, error)
+1. *ReplicationProtectedItemsRemoveDisksFuture.Result(ReplicationProtectedItemsClient) (ReplicationProtectedItem, error)
+1. *ReplicationProtectedItemsRepairReplicationFuture.Result(ReplicationProtectedItemsClient) (ReplicationProtectedItem, error)
+1. *ReplicationProtectedItemsReprotectFuture.Result(ReplicationProtectedItemsClient) (ReplicationProtectedItem, error)
+1. *ReplicationProtectedItemsResolveHealthErrorsFuture.Result(ReplicationProtectedItemsClient) (ReplicationProtectedItem, error)
+1. *ReplicationProtectedItemsTestFailoverCleanupFuture.Result(ReplicationProtectedItemsClient) (ReplicationProtectedItem, error)
+1. *ReplicationProtectedItemsTestFailoverFuture.Result(ReplicationProtectedItemsClient) (ReplicationProtectedItem, error)
+1. *ReplicationProtectedItemsUnplannedFailoverFuture.Result(ReplicationProtectedItemsClient) (ReplicationProtectedItem, error)
+1. *ReplicationProtectedItemsUpdateFuture.Result(ReplicationProtectedItemsClient) (ReplicationProtectedItem, error)
+1. *ReplicationProtectedItemsUpdateMobilityServiceFuture.Result(ReplicationProtectedItemsClient) (ReplicationProtectedItem, error)
+1. *ReplicationProtectionContainerMappingsCreateFuture.Result(ReplicationProtectionContainerMappingsClient) (ProtectionContainerMapping, error)
+1. *ReplicationProtectionContainerMappingsDeleteFuture.Result(ReplicationProtectionContainerMappingsClient) (autorest.Response, error)
+1. *ReplicationProtectionContainerMappingsPurgeFuture.Result(ReplicationProtectionContainerMappingsClient) (autorest.Response, error)
+1. *ReplicationProtectionContainerMappingsUpdateFuture.Result(ReplicationProtectionContainerMappingsClient) (ProtectionContainerMapping, error)
+1. *ReplicationProtectionContainersCreateFuture.Result(ReplicationProtectionContainersClient) (ProtectionContainer, error)
+1. *ReplicationProtectionContainersDeleteFuture.Result(ReplicationProtectionContainersClient) (autorest.Response, error)
+1. *ReplicationProtectionContainersDiscoverProtectableItemFuture.Result(ReplicationProtectionContainersClient) (ProtectionContainer, error)
+1. *ReplicationProtectionContainersSwitchProtectionFuture.Result(ReplicationProtectionContainersClient) (ProtectionContainer, error)
+1. *ReplicationRecoveryPlansCreateFuture.Result(ReplicationRecoveryPlansClient) (RecoveryPlan, error)
+1. *ReplicationRecoveryPlansDeleteFuture.Result(ReplicationRecoveryPlansClient) (autorest.Response, error)
+1. *ReplicationRecoveryPlansFailoverCommitFuture.Result(ReplicationRecoveryPlansClient) (RecoveryPlan, error)
+1. *ReplicationRecoveryPlansPlannedFailoverFuture.Result(ReplicationRecoveryPlansClient) (RecoveryPlan, error)
+1. *ReplicationRecoveryPlansReprotectFuture.Result(ReplicationRecoveryPlansClient) (RecoveryPlan, error)
+1. *ReplicationRecoveryPlansTestFailoverCleanupFuture.Result(ReplicationRecoveryPlansClient) (RecoveryPlan, error)
+1. *ReplicationRecoveryPlansTestFailoverFuture.Result(ReplicationRecoveryPlansClient) (RecoveryPlan, error)
+1. *ReplicationRecoveryPlansUnplannedFailoverFuture.Result(ReplicationRecoveryPlansClient) (RecoveryPlan, error)
+1. *ReplicationRecoveryPlansUpdateFuture.Result(ReplicationRecoveryPlansClient) (RecoveryPlan, error)
+1. *ReplicationRecoveryServicesProvidersCreateFuture.Result(ReplicationRecoveryServicesProvidersClient) (RecoveryServicesProvider, error)
+1. *ReplicationRecoveryServicesProvidersDeleteFuture.Result(ReplicationRecoveryServicesProvidersClient) (autorest.Response, error)
+1. *ReplicationRecoveryServicesProvidersPurgeFuture.Result(ReplicationRecoveryServicesProvidersClient) (autorest.Response, error)
+1. *ReplicationRecoveryServicesProvidersRefreshProviderFuture.Result(ReplicationRecoveryServicesProvidersClient) (RecoveryServicesProvider, error)
+1. *ReplicationStorageClassificationMappingsCreateFuture.Result(ReplicationStorageClassificationMappingsClient) (StorageClassificationMapping, error)
+1. *ReplicationStorageClassificationMappingsDeleteFuture.Result(ReplicationStorageClassificationMappingsClient) (autorest.Response, error)
+1. *ReplicationVaultHealthRefreshFuture.Result(ReplicationVaultHealthClient) (VaultHealthDetails, error)
+1. *ReplicationvCentersCreateFuture.Result(ReplicationvCentersClient) (VCenter, error)
+1. *ReplicationvCentersDeleteFuture.Result(ReplicationvCentersClient) (autorest.Response, error)
+1. *ReplicationvCentersUpdateFuture.Result(ReplicationvCentersClient) (VCenter, error)
 
-- New const `MobilityAgentUpgradeStateCommit`
-- New const `AutoProtectionOfDataDiskDisabled`
-- New const `AvailabilitySet`
-- New const `RebootRequired`
-- New const `InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageRcm`
-- New const `ResourceTypeBasicRecoveryProximityPlacementGroupCustomDetailsResourceTypeRecoveryProximityPlacementGroupCustomDetails`
-- New const `NotProtected`
-- New const `ResourceTypeBasicRecoveryResourceGroupCustomDetailsResourceTypeRecoveryResourceGroupCustomDetails`
-- New const `IncompatibleApplianceVersion`
-- New const `DistroIsNotReported`
-- New const `PresenceStatusNotPresent`
-- New const `InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMageAzureV2`
-- New const `ResourceTypeBasicStorageAccountCustomDetailsResourceTypeExisting`
-- New const `InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageRcm`
-- New const `RecoveryPlanPointTypeLatestApplicationConsistent`
-- New const `InstanceTypeBasicFabricSpecificDetailsInstanceTypeInMageRcm`
-- New const `InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMage`
-- New const `MissingUpgradePath`
-- New const `AutoProtectionOfDataDiskEnabled`
-- New const `RecoveryPlanPointTypeLatestProcessed`
-- New const `RecoveryPlanPointTypeLatest`
-- New const `ResourceTypeBasicStorageAccountCustomDetailsResourceTypeStorageAccountCustomDetails`
-- New const `PresenceStatusPresent`
-- New const `InstanceTypeBasicCreateProtectionIntentProviderSpecificDetailsInstanceTypeA2A`
-- New const `MobilityAgentUpgradeStateStarted`
-- New const `InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeHyperVReplicaAzure`
-- New const `InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMageAzureV2`
-- New const `InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageRcm`
-- New const `ResourceTypeBasicRecoveryAvailabilitySetCustomDetailsResourceTypeExisting`
-- New const `ResourceTypeProtectionProfileCustomDetails`
-- New const `InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeInMageRcm`
-- New const `MobilityAgentUpgradeStateNone`
-- New const `InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeUnplannedFailoverProviderSpecificInput`
-- New const `InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageRcm`
-- New const `UnsupportedProtectionScenario`
-- New const `ResourceTypeBasicRecoveryResourceGroupCustomDetailsResourceTypeExisting`
-- New const `ResyncStateNone`
-- New const `ResourceTypeNew`
-- New const `InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeTestFailoverProviderSpecificInput`
-- New const `ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeRecoveryVirtualNetworkCustomDetails`
-- New const `InstanceTypeBasicReplicationProtectionIntentProviderSpecificSettingsInstanceTypeA2A`
-- New const `ResourceTypeBasicRecoveryAvailabilitySetCustomDetailsResourceTypeRecoveryAvailabilitySetCustomDetails`
-- New const `MobilityAgentUpgradeStateCompleted`
-- New const `ResourceTypeBasicRecoveryProximityPlacementGroupCustomDetailsResourceTypeExisting`
-- New const `InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMageRcm`
-- New const `InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeHyperVReplicaAzure`
-- New const `AgentNoHeartbeat`
-- New const `AlreadyOnLatestVersion`
-- New const `ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeExisting`
-- New const `DistroNotSupportedForUpgrade`
-- New const `InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageRcm`
-- New const `InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeInMageRcm`
-- New const `InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMage`
-- New const `RcmProxyNoHeartbeat`
-- New const `ResourceTypeExisting`
-- New const `InstanceTypeInMageRcm`
-- New const `RecoveryPlanPointTypeLatestCrashConsistent`
-- New const `InvalidDriverVersion`
-- New const `InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageRcm`
-- New const `InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeA2A`
-- New const `AutoProtectionOfDataDiskStatusEnabled`
-- New const `InvalidAgentVersion`
-- New const `InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMageRcm`
-- New const `AvailabilityZone`
-- New const `ResyncStateStartedResynchronization`
-- New const `ResyncStatePreparedForResynchronization`
-- New const `ProcessServerNoHeartbeat`
-- New const `InstanceTypeBasicReplicationProtectionIntentProviderSpecificSettingsInstanceTypeReplicationProtectionIntentProviderSpecificSettings`
-- New const `InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageRcm`
-- New const `Single`
-- New const `AutoProtectionOfDataDiskStatusDisabled`
-- New const `InstanceTypeBasicCreateProtectionIntentProviderSpecificDetailsInstanceTypeCreateProtectionIntentProviderSpecificDetails`
-- New const `PresenceStatusUnknown`
-- New const `InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeA2A`
-- New function `InMageAzureV2UnplannedFailoverInput.AsBasicUnplannedFailoverProviderSpecificInput() (BasicUnplannedFailoverProviderSpecificInput, bool)`
-- New function `InMageUnplannedFailoverInput.MarshalJSON() ([]byte, error)`
-- New function `A2AUnplannedFailoverInput.AsBasicUnplannedFailoverProviderSpecificInput() (BasicUnplannedFailoverProviderSpecificInput, bool)`
-- New function `TestFailoverProviderSpecificInput.AsHyperVReplicaAzureTestFailoverInput() (*HyperVReplicaAzureTestFailoverInput, bool)`
-- New function `InMageRcmPolicyDetails.AsA2APolicyDetails() (*A2APolicyDetails, bool)`
-- New function `RcmAzureMigrationPolicyDetails.AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool)`
-- New function `RecoveryVirtualNetworkCustomDetails.AsRecoveryVirtualNetworkCustomDetails() (*RecoveryVirtualNetworkCustomDetails, bool)`
-- New function `InMageRcmApplyRecoveryPointInput.AsInMageAzureV2ApplyRecoveryPointInput() (*InMageAzureV2ApplyRecoveryPointInput, bool)`
-- New function `*ReplicationProtectionIntentCollectionPage.Next() error`
-- New function `NewReplicationProtectionIntentsClient(string, string, string) ReplicationProtectionIntentsClient`
-- New function `UnplannedFailoverProviderSpecificInput.AsInMageUnplannedFailoverInput() (*InMageUnplannedFailoverInput, bool)`
-- New function `InMageAzureV2EventDetails.AsInMageRcmEventDetails() (*InMageRcmEventDetails, bool)`
-- New function `InMageRcmPolicyDetails.AsHyperVReplicaPolicyDetails() (*HyperVReplicaPolicyDetails, bool)`
-- New function `InMageRcmReplicationDetails.AsInMageAzureV2ReplicationDetails() (*InMageAzureV2ReplicationDetails, bool)`
-- New function `InMageRcmEnableProtectionInput.AsInMageRcmEnableProtectionInput() (*InMageRcmEnableProtectionInput, bool)`
-- New function `HyperVReplicaAzureTestFailoverInput.AsInMageAzureV2TestFailoverInput() (*InMageAzureV2TestFailoverInput, bool)`
-- New function `InMageRcmPolicyDetails.AsHyperVReplicaAzurePolicyDetails() (*HyperVReplicaAzurePolicyDetails, bool)`
-- New function `InMageRcmReplicationDetails.AsHyperVReplicaReplicationDetails() (*HyperVReplicaReplicationDetails, bool)`
-- New function `InMageRcmFabricSpecificDetails.AsHyperVSiteDetails() (*HyperVSiteDetails, bool)`
-- New function `NewReplicationProtectionIntentsClientWithBaseURI(string, string, string, string) ReplicationProtectionIntentsClient`
-- New function `ExistingStorageAccount.AsStorageAccountCustomDetails() (*StorageAccountCustomDetails, bool)`
-- New function `A2ACreateProtectionIntentInput.AsCreateProtectionIntentProviderSpecificDetails() (*CreateProtectionIntentProviderSpecificDetails, bool)`
-- New function `HyperVReplicaAzureTestFailoverInput.AsHyperVReplicaAzureTestFailoverInput() (*HyperVReplicaAzureTestFailoverInput, bool)`
-- New function `PossibleResourceTypeBasicStorageAccountCustomDetailsValues() []ResourceTypeBasicStorageAccountCustomDetails`
-- New function `ExistingRecoveryAvailabilitySet.AsExistingRecoveryAvailabilitySet() (*ExistingRecoveryAvailabilitySet, bool)`
-- New function `InMageRcmTestFailoverInput.AsHyperVReplicaAzureTestFailoverInput() (*HyperVReplicaAzureTestFailoverInput, bool)`
-- New function `AzureFabricSpecificDetails.AsInMageRcmFabricSpecificDetails() (*InMageRcmFabricSpecificDetails, bool)`
-- New function `CreateProtectionIntentProviderSpecificDetails.AsBasicCreateProtectionIntentProviderSpecificDetails() (BasicCreateProtectionIntentProviderSpecificDetails, bool)`
-- New function `InMageRcmTestFailoverInput.MarshalJSON() ([]byte, error)`
-- New function `InMageRcmRecoveryPointDetails.AsBasicProviderSpecificRecoveryPointDetails() (BasicProviderSpecificRecoveryPointDetails, bool)`
-- New function `ProtectionProfileCustomDetails.AsProtectionProfileCustomDetails() (*ProtectionProfileCustomDetails, bool)`
-- New function `InMageRcmUpdateReplicationProtectedItemInput.AsInMageAzureV2UpdateReplicationProtectedItemInput() (*InMageAzureV2UpdateReplicationProtectedItemInput, bool)`
-- New function `RecoveryVirtualNetworkCustomDetails.AsExistingRecoveryVirtualNetwork() (*ExistingRecoveryVirtualNetwork, bool)`
-- New function `InMageTestFailoverInput.MarshalJSON() ([]byte, error)`
-- New function `ExistingRecoveryProximityPlacementGroup.AsBasicRecoveryProximityPlacementGroupCustomDetails() (BasicRecoveryProximityPlacementGroupCustomDetails, bool)`
-- New function `HyperVReplicaAzureTestFailoverInput.AsInMageTestFailoverInput() (*InMageTestFailoverInput, bool)`
-- New function `InMageRcmReplicationDetails.AsBasicReplicationProviderSpecificSettings() (BasicReplicationProviderSpecificSettings, bool)`
-- New function `HyperVReplicaBlueReplicationDetails.AsInMageRcmReplicationDetails() (*InMageRcmReplicationDetails, bool)`
-- New function `RecoveryPlanInMageRcmFailoverInput.MarshalJSON() ([]byte, error)`
-- New function `InMageTestFailoverInput.AsHyperVReplicaAzureTestFailoverInput() (*HyperVReplicaAzureTestFailoverInput, bool)`
-- New function `InMageRcmTestFailoverInput.AsA2ATestFailoverInput() (*A2ATestFailoverInput, bool)`
-- New function `HyperVReplicaAzureUnplannedFailoverInput.AsBasicUnplannedFailoverProviderSpecificInput() (BasicUnplannedFailoverProviderSpecificInput, bool)`
-- New function `ReplicationProtectionIntentsClient.CreatePreparer(context.Context, string, CreateProtectionIntentInput) (*http.Request, error)`
-- New function `CreateProtectionIntentProviderSpecificDetails.AsCreateProtectionIntentProviderSpecificDetails() (*CreateProtectionIntentProviderSpecificDetails, bool)`
-- New function `ReplicationProtectionIntentProviderSpecificSettings.AsBasicReplicationProtectionIntentProviderSpecificSettings() (BasicReplicationProtectionIntentProviderSpecificSettings, bool)`
-- New function `InMageTestFailoverInput.AsInMageRcmTestFailoverInput() (*InMageRcmTestFailoverInput, bool)`
-- New function `VMwareCbtPolicyCreationInput.AsInMageRcmPolicyCreationInput() (*InMageRcmPolicyCreationInput, bool)`
-- New function `InMageRcmPolicyCreationInput.AsInMagePolicyInput() (*InMagePolicyInput, bool)`
-- New function `InMageRcmReplicationDetails.AsHyperVReplicaBaseReplicationDetails() (*HyperVReplicaBaseReplicationDetails, bool)`
-- New function `ExistingRecoveryProximityPlacementGroup.MarshalJSON() ([]byte, error)`
-- New function `InMageRcmEnableProtectionInput.MarshalJSON() ([]byte, error)`
-- New function `A2ATestFailoverInput.AsBasicTestFailoverProviderSpecificInput() (BasicTestFailoverProviderSpecificInput, bool)`
-- New function `InMageRcmLastAgentUpgradeErrorDetails.MarshalJSON() ([]byte, error)`
-- New function `InMageRcmEventDetails.AsHyperVReplica2012EventDetails() (*HyperVReplica2012EventDetails, bool)`
-- New function `InMageRcmUnplannedFailoverInput.AsInMageAzureV2UnplannedFailoverInput() (*InMageAzureV2UnplannedFailoverInput, bool)`
-- New function `A2ATestFailoverInput.AsInMageAzureV2TestFailoverInput() (*InMageAzureV2TestFailoverInput, bool)`
-- New function `InMageRcmReplicationDetails.AsInMageRcmReplicationDetails() (*InMageRcmReplicationDetails, bool)`
-- New function `ReplicationProtectionIntentCollectionPage.Response() ReplicationProtectionIntentCollection`
-- New function `StorageAccountCustomDetails.AsExistingStorageAccount() (*ExistingStorageAccount, bool)`
-- New function `ReplicationProtectionIntentProviderSpecificSettings.MarshalJSON() ([]byte, error)`
-- New function `PossibleMobilityAgentUpgradeStateValues() []MobilityAgentUpgradeState`
-- New function `A2AUnplannedFailoverInput.AsA2AUnplannedFailoverInput() (*A2AUnplannedFailoverInput, bool)`
-- New function `InMageAzureV2TestFailoverInput.MarshalJSON() ([]byte, error)`
-- New function `InMageRcmFabricSpecificDetails.AsVMwareV2FabricSpecificDetails() (*VMwareV2FabricSpecificDetails, bool)`
-- New function `RecoveryAvailabilitySetCustomDetails.AsBasicRecoveryAvailabilitySetCustomDetails() (BasicRecoveryAvailabilitySetCustomDetails, bool)`
-- New function `ReplicationProtectionIntentCollection.IsEmpty() bool`
-- New function `A2AReplicationIntentDetails.AsBasicReplicationProtectionIntentProviderSpecificSettings() (BasicReplicationProtectionIntentProviderSpecificSettings, bool)`
-- New function `RecoveryPlanInMageRcmFailoverInput.AsRecoveryPlanInMageFailoverInput() (*RecoveryPlanInMageFailoverInput, bool)`
-- New function `RecoveryProximityPlacementGroupCustomDetails.AsBasicRecoveryProximityPlacementGroupCustomDetails() (BasicRecoveryProximityPlacementGroupCustomDetails, bool)`
-- New function `InMageRcmTestFailoverInput.AsInMageTestFailoverInput() (*InMageTestFailoverInput, bool)`
-- New function `ProtectionProfileCustomDetails.AsBasicProtectionProfileCustomDetails() (BasicProtectionProfileCustomDetails, bool)`
-- New function `InMageAzureV2PolicyInput.AsInMageRcmPolicyCreationInput() (*InMageRcmPolicyCreationInput, bool)`
-- New function `ReplicationProtectionIntentsClient.Get(context.Context, string) (ReplicationProtectionIntent, error)`
-- New function `InMageRcmUpdateReplicationProtectedItemInput.AsA2AUpdateReplicationProtectedItemInput() (*A2AUpdateReplicationProtectedItemInput, bool)`
-- New function `ExistingRecoveryRecoveryResourceGroup.AsRecoveryResourceGroupCustomDetails() (*RecoveryResourceGroupCustomDetails, bool)`
-- New function `InMageRcmFabricSpecificDetails.AsInMageRcmFabricSpecificDetails() (*InMageRcmFabricSpecificDetails, bool)`
-- New function `A2ARecoveryPointDetails.AsInMageRcmRecoveryPointDetails() (*InMageRcmRecoveryPointDetails, bool)`
-- New function `RecoveryPlanInMageRcmFailoverInput.AsRecoveryPlanInMageRcmFailoverInput() (*RecoveryPlanInMageRcmFailoverInput, bool)`
-- New function `ReplicationProtectionIntentProviderSpecificSettings.AsReplicationProtectionIntentProviderSpecificSettings() (*ReplicationProtectionIntentProviderSpecificSettings, bool)`
-- New function `HyperVReplicaBluePolicyDetails.AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool)`
-- New function `TestFailoverProviderSpecificInput.MarshalJSON() ([]byte, error)`
-- New function `RecoveryResourceGroupCustomDetails.MarshalJSON() ([]byte, error)`
-- New function `InMageRcmEventDetails.AsInMageAzureV2EventDetails() (*InMageAzureV2EventDetails, bool)`
-- New function `InMageRcmUnplannedFailoverInput.AsBasicUnplannedFailoverProviderSpecificInput() (BasicUnplannedFailoverProviderSpecificInput, bool)`
-- New function `RecoveryPlanInMageFailoverInput.AsRecoveryPlanInMageRcmFailoverInput() (*RecoveryPlanInMageRcmFailoverInput, bool)`
-- New function `A2AUnplannedFailoverInput.AsInMageUnplannedFailoverInput() (*InMageUnplannedFailoverInput, bool)`
-- New function `RecoveryAvailabilitySetCustomDetails.MarshalJSON() ([]byte, error)`
-- New function `HyperVSiteDetails.AsInMageRcmFabricSpecificDetails() (*InMageRcmFabricSpecificDetails, bool)`
-- New function `RecoveryPlanInMageRcmFailoverInput.AsRecoveryPlanA2AFailoverInput() (*RecoveryPlanA2AFailoverInput, bool)`
-- New function `InMageRcmPolicyDetails.AsHyperVReplicaBasePolicyDetails() (*HyperVReplicaBasePolicyDetails, bool)`
-- New function `HyperVReplicaAzureUpdateReplicationProtectedItemInput.AsInMageRcmUpdateReplicationProtectedItemInput() (*InMageRcmUpdateReplicationProtectedItemInput, bool)`
-- New function `InMageRcmReplicationDetails.AsInMageReplicationDetails() (*InMageReplicationDetails, bool)`
-- New function `ExistingProtectionProfile.AsNewProtectionProfile() (*NewProtectionProfile, bool)`
-- New function `HyperVReplicaBasePolicyDetails.AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool)`
-- New function `ExistingRecoveryAvailabilitySet.AsBasicRecoveryAvailabilitySetCustomDetails() (BasicRecoveryAvailabilitySetCustomDetails, bool)`
-- New function `A2AEnableProtectionInput.AsInMageRcmEnableProtectionInput() (*InMageRcmEnableProtectionInput, bool)`
-- New function `PolicyProviderSpecificDetails.AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool)`
-- New function `HyperVReplicaAzurePolicyDetails.AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool)`
-- New function `A2AReplicationIntentDetails.MarshalJSON() ([]byte, error)`
-- New function `InMagePolicyDetails.AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool)`
-- New function `PossibleResourceTypeBasicRecoveryProximityPlacementGroupCustomDetailsValues() []ResourceTypeBasicRecoveryProximityPlacementGroupCustomDetails`
-- New function `InMageEnableProtectionInput.AsInMageRcmEnableProtectionInput() (*InMageRcmEnableProtectionInput, bool)`
-- New function `CreateProtectionIntentProviderSpecificDetails.MarshalJSON() ([]byte, error)`
-- New function `InMageRcmTestFailoverInput.AsBasicTestFailoverProviderSpecificInput() (BasicTestFailoverProviderSpecificInput, bool)`
-- New function `InMageRcmEventDetails.AsBasicEventProviderSpecificDetails() (BasicEventProviderSpecificDetails, bool)`
-- New function `InMageRcmEnableProtectionInput.AsBasicEnableProtectionProviderSpecificInput() (BasicEnableProtectionProviderSpecificInput, bool)`
-- New function `InMageRcmPolicyCreationInput.AsPolicyProviderSpecificInput() (*PolicyProviderSpecificInput, bool)`
-- New function `*ReplicationProtectionIntentCollectionIterator.NextWithContext(context.Context) error`
-- New function `VMwareV2FabricCreationInput.AsInMageRcmFabricCreationInput() (*InMageRcmFabricCreationInput, bool)`
-- New function `ReplicationProtectionIntentCollectionIterator.Response() ReplicationProtectionIntentCollection`
-- New function `PossibleAgentUpgradeBlockedReasonValues() []AgentUpgradeBlockedReason`
-- New function `InMageRcmApplyRecoveryPointInput.AsBasicApplyRecoveryPointProviderSpecificInput() (BasicApplyRecoveryPointProviderSpecificInput, bool)`
-- New function `RecoveryPlanHyperVReplicaAzureFailbackInput.AsRecoveryPlanInMageRcmFailoverInput() (*RecoveryPlanInMageRcmFailoverInput, bool)`
-- New function `SanEnableProtectionInput.AsInMageRcmEnableProtectionInput() (*InMageRcmEnableProtectionInput, bool)`
-- New function `*ReplicationProtectionIntentProperties.UnmarshalJSON([]byte) error`
-- New function `A2AUnplannedFailoverInput.AsInMageAzureV2UnplannedFailoverInput() (*InMageAzureV2UnplannedFailoverInput, bool)`
-- New function `InMageRcmEventDetails.AsHyperVReplicaAzureEventDetails() (*HyperVReplicaAzureEventDetails, bool)`
-- New function `ReplicationProtectionIntentsClient.GetResponder(*http.Response) (ReplicationProtectionIntent, error)`
-- New function `PossibleInstanceTypeBasicTestFailoverProviderSpecificInputValues() []InstanceTypeBasicTestFailoverProviderSpecificInput`
-- New function `RecoveryPlanInMageAzureV2FailoverInput.AsRecoveryPlanInMageRcmFailoverInput() (*RecoveryPlanInMageRcmFailoverInput, bool)`
-- New function `InMageBasePolicyDetails.AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool)`
-- New function `PossibleResourceTypeBasicRecoveryResourceGroupCustomDetailsValues() []ResourceTypeBasicRecoveryResourceGroupCustomDetails`
-- New function `InMageAzureV2TestFailoverInput.AsInMageAzureV2TestFailoverInput() (*InMageAzureV2TestFailoverInput, bool)`
-- New function `HyperVReplicaAzureTestFailoverInput.MarshalJSON() ([]byte, error)`
-- New function `InMageTestFailoverInput.AsA2ATestFailoverInput() (*A2ATestFailoverInput, bool)`
-- New function `PossibleRecoveryPlanPointTypeValues() []RecoveryPlanPointType`
-- New function `InMageRcmEventDetails.AsEventProviderSpecificDetails() (*EventProviderSpecificDetails, bool)`
-- New function `InMageRcmRecoveryPointDetails.AsA2ARecoveryPointDetails() (*A2ARecoveryPointDetails, bool)`
-- New function `TestFailoverProviderSpecificInput.AsTestFailoverProviderSpecificInput() (*TestFailoverProviderSpecificInput, bool)`
-- New function `InMageRcmEnableProtectionInput.AsEnableProtectionProviderSpecificInput() (*EnableProtectionProviderSpecificInput, bool)`
-- New function `HyperVReplicaPolicyDetails.AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool)`
-- New function `InMageUnplannedFailoverInput.AsHyperVReplicaAzureUnplannedFailoverInput() (*HyperVReplicaAzureUnplannedFailoverInput, bool)`
-- New function `ExistingRecoveryVirtualNetwork.AsBasicRecoveryVirtualNetworkCustomDetails() (BasicRecoveryVirtualNetworkCustomDetails, bool)`
-- New function `InMageRcmPolicyCreationInput.AsA2APolicyCreationInput() (*A2APolicyCreationInput, bool)`
-- New function `InMageUnplannedFailoverInput.AsInMageAzureV2UnplannedFailoverInput() (*InMageAzureV2UnplannedFailoverInput, bool)`
-- New function `InMageRcmUpdateReplicationProtectedItemInput.AsInMageRcmUpdateReplicationProtectedItemInput() (*InMageRcmUpdateReplicationProtectedItemInput, bool)`
-- New function `UnplannedFailoverProviderSpecificInput.AsUnplannedFailoverProviderSpecificInput() (*UnplannedFailoverProviderSpecificInput, bool)`
-- New function `InMageRcmPolicyCreationInput.MarshalJSON() ([]byte, error)`
-- New function `A2ACreateProtectionIntentInput.AsA2ACreateProtectionIntentInput() (*A2ACreateProtectionIntentInput, bool)`
-- New function `InMageRcmFabricCreationInput.AsAzureFabricCreationInput() (*AzureFabricCreationInput, bool)`
-- New function `InMageRcmUpdateReplicationProtectedItemInput.AsBasicUpdateReplicationProtectedItemProviderInput() (BasicUpdateReplicationProtectedItemProviderInput, bool)`
-- New function `RecoveryPlanA2AFailoverInput.AsRecoveryPlanInMageRcmFailoverInput() (*RecoveryPlanInMageRcmFailoverInput, bool)`
-- New function `A2AEventDetails.AsInMageRcmEventDetails() (*InMageRcmEventDetails, bool)`
-- New function `ExistingStorageAccount.AsBasicStorageAccountCustomDetails() (BasicStorageAccountCustomDetails, bool)`
-- New function `A2APolicyDetails.AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool)`
-- New function `InMageRcmEnableProtectionInput.AsInMageAzureV2EnableProtectionInput() (*InMageAzureV2EnableProtectionInput, bool)`
-- New function `PossibleResourceTypeBasicRecoveryAvailabilitySetCustomDetailsValues() []ResourceTypeBasicRecoveryAvailabilitySetCustomDetails`
-- New function `RecoveryProximityPlacementGroupCustomDetails.MarshalJSON() ([]byte, error)`
-- New function `RecoveryPlanInMageRcmFailoverInput.AsRecoveryPlanHyperVReplicaAzureFailbackInput() (*RecoveryPlanHyperVReplicaAzureFailbackInput, bool)`
-- New function `A2AUpdateReplicationProtectedItemInput.AsInMageRcmUpdateReplicationProtectedItemInput() (*InMageRcmUpdateReplicationProtectedItemInput, bool)`
-- New function `RecoveryResourceGroupCustomDetails.AsRecoveryResourceGroupCustomDetails() (*RecoveryResourceGroupCustomDetails, bool)`
-- New function `HyperVReplicaPolicyInput.AsInMageRcmPolicyCreationInput() (*InMageRcmPolicyCreationInput, bool)`
-- New function `InMageAzureV2RecoveryPointDetails.AsInMageRcmRecoveryPointDetails() (*InMageRcmRecoveryPointDetails, bool)`
-- New function `InMageRcmPolicyCreationInput.AsInMageAzureV2PolicyInput() (*InMageAzureV2PolicyInput, bool)`
-- New function `ReplicationProtectionIntentsClient.CreateSender(*http.Request) (*http.Response, error)`
-- New function `ExistingProtectionProfile.AsExistingProtectionProfile() (*ExistingProtectionProfile, bool)`
-- New function `A2AReplicationIntentDetails.AsReplicationProtectionIntentProviderSpecificSettings() (*ReplicationProtectionIntentProviderSpecificSettings, bool)`
-- New function `A2ATestFailoverInput.AsInMageRcmTestFailoverInput() (*InMageRcmTestFailoverInput, bool)`
-- New function `AzureFabricCreationInput.AsInMageRcmFabricCreationInput() (*InMageRcmFabricCreationInput, bool)`
-- New function `InMageAzureV2TestFailoverInput.AsInMageRcmTestFailoverInput() (*InMageRcmTestFailoverInput, bool)`
-- New function `VmwareCbtPolicyDetails.AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool)`
-- New function `ReplicationProtectionIntentsClient.ListPreparer(context.Context) (*http.Request, error)`
-- New function `ReplicationProtectionIntentsClient.ListResponder(*http.Response) (ReplicationProtectionIntentCollection, error)`
-- New function `NewProtectionProfile.AsExistingProtectionProfile() (*ExistingProtectionProfile, bool)`
-- New function `A2ATestFailoverInput.AsA2ATestFailoverInput() (*A2ATestFailoverInput, bool)`
-- New function `UpdateReplicationProtectedItemProviderInput.AsInMageRcmUpdateReplicationProtectedItemInput() (*InMageRcmUpdateReplicationProtectedItemInput, bool)`
-- New function `InMageRcmTestFailoverInput.AsTestFailoverProviderSpecificInput() (*TestFailoverProviderSpecificInput, bool)`
-- New function `FabricSpecificCreationInput.AsInMageRcmFabricCreationInput() (*InMageRcmFabricCreationInput, bool)`
-- New function `A2AUnplannedFailoverInput.MarshalJSON() ([]byte, error)`
-- New function `UnplannedFailoverProviderSpecificInput.MarshalJSON() ([]byte, error)`
-- New function `ReplicationProtectionIntentsClient.CreateResponder(*http.Response) (ReplicationProtectionIntent, error)`
-- New function `ExistingRecoveryVirtualNetwork.AsExistingRecoveryVirtualNetwork() (*ExistingRecoveryVirtualNetwork, bool)`
-- New function `InMageRcmFabricCreationInput.AsFabricSpecificCreationInput() (*FabricSpecificCreationInput, bool)`
-- New function `ReplicationProtectionIntentCollectionPage.Values() []ReplicationProtectionIntent`
-- New function `ReplicationProtectionIntentCollectionIterator.Value() ReplicationProtectionIntent`
-- New function `ExistingRecoveryRecoveryResourceGroup.AsExistingRecoveryRecoveryResourceGroup() (*ExistingRecoveryRecoveryResourceGroup, bool)`
-- New function `InMageRcmFabricSpecificDetails.AsVMwareDetails() (*VMwareDetails, bool)`
-- New function `HyperVReplicaAzureEnableProtectionInput.AsInMageRcmEnableProtectionInput() (*InMageRcmEnableProtectionInput, bool)`
-- New function `ExistingProtectionProfile.AsBasicProtectionProfileCustomDetails() (BasicProtectionProfileCustomDetails, bool)`
-- New function `InMageRcmReplicationDetails.AsHyperVReplicaAzureReplicationDetails() (*HyperVReplicaAzureReplicationDetails, bool)`
-- New function `ExistingStorageAccount.AsExistingStorageAccount() (*ExistingStorageAccount, bool)`
-- New function `InMageRcmPolicyCreationInput.AsVMwareCbtPolicyCreationInput() (*VMwareCbtPolicyCreationInput, bool)`
-- New function `InMageRcmPolicyDetails.AsHyperVReplicaBluePolicyDetails() (*HyperVReplicaBluePolicyDetails, bool)`
-- New function `TestFailoverProviderSpecificInput.AsInMageAzureV2TestFailoverInput() (*InMageAzureV2TestFailoverInput, bool)`
-- New function `EventProviderSpecificDetails.AsInMageRcmEventDetails() (*InMageRcmEventDetails, bool)`
-- New function `NewProtectionProfile.AsBasicProtectionProfileCustomDetails() (BasicProtectionProfileCustomDetails, bool)`
-- New function `RecoveryProximityPlacementGroupCustomDetails.AsExistingRecoveryProximityPlacementGroup() (*ExistingRecoveryProximityPlacementGroup, bool)`
-- New function `*A2ACreateProtectionIntentInput.UnmarshalJSON([]byte) error`
-- New function `RecoveryPlanInMageRcmFailoverInput.AsBasicRecoveryPlanProviderSpecificFailoverInput() (BasicRecoveryPlanProviderSpecificFailoverInput, bool)`
-- New function `A2AApplyRecoveryPointInput.AsInMageRcmApplyRecoveryPointInput() (*InMageRcmApplyRecoveryPointInput, bool)`
-- New function `PolicyProviderSpecificInput.AsInMageRcmPolicyCreationInput() (*InMageRcmPolicyCreationInput, bool)`
-- New function `InMageRcmAgentUpgradeBlockingErrorDetails.MarshalJSON() ([]byte, error)`
-- New function `VmmDetails.AsInMageRcmFabricSpecificDetails() (*InMageRcmFabricSpecificDetails, bool)`
-- New function `HyperVReplicaReplicationDetails.AsInMageRcmReplicationDetails() (*InMageRcmReplicationDetails, bool)`
-- New function `RecoveryPlanHyperVReplicaAzureFailoverInput.AsRecoveryPlanInMageRcmFailoverInput() (*RecoveryPlanInMageRcmFailoverInput, bool)`
-- New function `HyperVReplicaAzureTestFailoverInput.AsA2ATestFailoverInput() (*A2ATestFailoverInput, bool)`
-- New function `InMageRcmPolicyDetails.AsVmwareCbtPolicyDetails() (*VmwareCbtPolicyDetails, bool)`
-- New function `InMageRcmPolicyDetails.AsInMagePolicyDetails() (*InMagePolicyDetails, bool)`
-- New function `A2ATestFailoverInput.AsTestFailoverProviderSpecificInput() (*TestFailoverProviderSpecificInput, bool)`
-- New function `HyperVReplicaAzureApplyRecoveryPointInput.AsInMageRcmApplyRecoveryPointInput() (*InMageRcmApplyRecoveryPointInput, bool)`
-- New function `A2APolicyCreationInput.AsInMageRcmPolicyCreationInput() (*InMageRcmPolicyCreationInput, bool)`
-- New function `PossibleAutoProtectionOfDataDiskValues() []AutoProtectionOfDataDisk`
-- New function `A2AUnplannedFailoverInput.AsUnplannedFailoverProviderSpecificInput() (*UnplannedFailoverProviderSpecificInput, bool)`
-- New function `HyperVReplicaAzureTestFailoverInput.AsInMageRcmTestFailoverInput() (*InMageRcmTestFailoverInput, bool)`
-- New function `HyperVReplica2012R2EventDetails.AsInMageRcmEventDetails() (*InMageRcmEventDetails, bool)`
-- New function `InMageAzureV2TestFailoverInput.AsInMageTestFailoverInput() (*InMageTestFailoverInput, bool)`
-- New function `CreateProtectionIntentProviderSpecificDetails.AsA2ACreateProtectionIntentInput() (*A2ACreateProtectionIntentInput, bool)`
-- New function `VMwareV2FabricSpecificDetails.AsInMageRcmFabricSpecificDetails() (*InMageRcmFabricSpecificDetails, bool)`
-- New function `InMageAzureV2TestFailoverInput.AsBasicTestFailoverProviderSpecificInput() (BasicTestFailoverProviderSpecificInput, bool)`
-- New function `ReplicationProtectionIntentsClient.GetSender(*http.Request) (*http.Response, error)`
-- New function `NewProtectionProfile.MarshalJSON() ([]byte, error)`
-- New function `UnplannedFailoverProviderSpecificInput.AsHyperVReplicaAzureUnplannedFailoverInput() (*HyperVReplicaAzureUnplannedFailoverInput, bool)`
-- New function `ExistingRecoveryRecoveryResourceGroup.AsBasicRecoveryResourceGroupCustomDetails() (BasicRecoveryResourceGroupCustomDetails, bool)`
-- New function `NewReplicationProtectionIntentCollectionIterator(ReplicationProtectionIntentCollectionPage) ReplicationProtectionIntentCollectionIterator`
-- New function `NewProtectionProfile.AsProtectionProfileCustomDetails() (*ProtectionProfileCustomDetails, bool)`
-- New function `PossibleAutoProtectionOfDataDiskStatusValues() []AutoProtectionOfDataDiskStatus`
-- New function `ExistingRecoveryProximityPlacementGroup.AsRecoveryProximityPlacementGroupCustomDetails() (*RecoveryProximityPlacementGroupCustomDetails, bool)`
-- New function `InMageRcmEnableProtectionInput.AsInMageEnableProtectionInput() (*InMageEnableProtectionInput, bool)`
-- New function `InMageRcmUnplannedFailoverInput.AsUnplannedFailoverProviderSpecificInput() (*UnplannedFailoverProviderSpecificInput, bool)`
-- New function `ReplicationProviderSpecificSettings.AsInMageRcmReplicationDetails() (*InMageRcmReplicationDetails, bool)`
-- New function `ReplicationProtectionIntentProviderSpecificSettings.AsA2AReplicationIntentDetails() (*A2AReplicationIntentDetails, bool)`
-- New function `HyperVReplicaAzureUnplannedFailoverInput.MarshalJSON() ([]byte, error)`
-- New function `InMageAzureV2EnableProtectionInput.AsInMageRcmEnableProtectionInput() (*InMageRcmEnableProtectionInput, bool)`
-- New function `InMageRcmUpdateReplicationProtectedItemInput.AsUpdateReplicationProtectedItemProviderInput() (*UpdateReplicationProtectedItemProviderInput, bool)`
-- New function `InMageRcmEnableProtectionInput.AsHyperVReplicaAzureEnableProtectionInput() (*HyperVReplicaAzureEnableProtectionInput, bool)`
-- New function `InMageRcmUnplannedFailoverInput.AsHyperVReplicaAzureUnplannedFailoverInput() (*HyperVReplicaAzureUnplannedFailoverInput, bool)`
-- New function `InMageRcmPolicyDetails.AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool)`
-- New function `ProtectionProfileCustomDetails.AsExistingProtectionProfile() (*ExistingProtectionProfile, bool)`
-- New function `TestFailoverProviderSpecificInput.AsA2ATestFailoverInput() (*A2ATestFailoverInput, bool)`
-- New function `InMageRcmUnplannedFailoverInput.MarshalJSON() ([]byte, error)`
-- New function `ProviderSpecificRecoveryPointDetails.AsInMageRcmRecoveryPointDetails() (*InMageRcmRecoveryPointDetails, bool)`
-- New function `ExistingRecoveryAvailabilitySet.MarshalJSON() ([]byte, error)`
-- New function `InMageUnplannedFailoverInput.AsBasicUnplannedFailoverProviderSpecificInput() (BasicUnplannedFailoverProviderSpecificInput, bool)`
-- New function `A2ATestFailoverInput.MarshalJSON() ([]byte, error)`
-- New function `ReplicationProtectionIntentsClient.ListSender(*http.Request) (*http.Response, error)`
-- New function `ExistingStorageAccount.MarshalJSON() ([]byte, error)`
-- New function `InMageRcmFabricSpecificDetails.AsBasicFabricSpecificDetails() (BasicFabricSpecificDetails, bool)`
-- New function `StorageAccountCustomDetails.MarshalJSON() ([]byte, error)`
-- New function `InMageReplicationDetails.AsInMageRcmReplicationDetails() (*InMageRcmReplicationDetails, bool)`
-- New function `StorageAccountCustomDetails.AsBasicStorageAccountCustomDetails() (BasicStorageAccountCustomDetails, bool)`
-- New function `ReplicationProtectionIntentsClient.GetPreparer(context.Context, string) (*http.Request, error)`
-- New function `InMageRcmPolicyCreationInput.AsHyperVReplicaBluePolicyInput() (*HyperVReplicaBluePolicyInput, bool)`
-- New function `InMageRcmUpdateReplicationProtectedItemInput.AsHyperVReplicaAzureUpdateReplicationProtectedItemInput() (*HyperVReplicaAzureUpdateReplicationProtectedItemInput, bool)`
-- New function `NewReplicationProtectionIntentCollectionPage(ReplicationProtectionIntentCollection, func(context.Context, ReplicationProtectionIntentCollection) (ReplicationProtectionIntentCollection, error)) ReplicationProtectionIntentCollectionPage`
-- New function `InMageRcmEventDetails.MarshalJSON() ([]byte, error)`
-- New function `PossibleInstanceTypeBasicUnplannedFailoverProviderSpecificInputValues() []InstanceTypeBasicUnplannedFailoverProviderSpecificInput`
-- New function `RecoveryResourceGroupCustomDetails.AsExistingRecoveryRecoveryResourceGroup() (*ExistingRecoveryRecoveryResourceGroup, bool)`
-- New function `A2ATestFailoverInput.AsHyperVReplicaAzureTestFailoverInput() (*HyperVReplicaAzureTestFailoverInput, bool)`
-- New function `InMageRcmFabricCreationInput.MarshalJSON() ([]byte, error)`
-- New function `HyperVReplicaBaseEventDetails.AsInMageRcmEventDetails() (*InMageRcmEventDetails, bool)`
-- New function `A2ATestFailoverInput.AsInMageTestFailoverInput() (*InMageTestFailoverInput, bool)`
-- New function `InMageRcmReplicationDetails.AsReplicationProviderSpecificSettings() (*ReplicationProviderSpecificSettings, bool)`
-- New function `InMageRcmUnplannedFailoverInput.AsA2AUnplannedFailoverInput() (*A2AUnplannedFailoverInput, bool)`
-- New function `PossibleResourceTypeValues() []ResourceType`
-- New function `ApplyRecoveryPointProviderSpecificInput.AsInMageRcmApplyRecoveryPointInput() (*InMageRcmApplyRecoveryPointInput, bool)`
-- New function `InMageRcmPolicyCreationInput.AsHyperVReplicaPolicyInput() (*HyperVReplicaPolicyInput, bool)`
-- New function `InMageRcmPolicyCreationInput.AsHyperVReplicaAzurePolicyInput() (*HyperVReplicaAzurePolicyInput, bool)`
-- New function `HyperVReplicaAzureEventDetails.AsInMageRcmEventDetails() (*InMageRcmEventDetails, bool)`
-- New function `ReplicationProtectionIntentCollectionPage.NotDone() bool`
-- New function `ExistingRecoveryRecoveryResourceGroup.MarshalJSON() ([]byte, error)`
-- New function `HyperVReplicaAzureReplicationDetails.AsInMageRcmReplicationDetails() (*InMageRcmReplicationDetails, bool)`
-- New function `InMageTestFailoverInput.AsTestFailoverProviderSpecificInput() (*TestFailoverProviderSpecificInput, bool)`
-- New function `PossibleInstanceTypeBasicReplicationProtectionIntentProviderSpecificSettingsValues() []InstanceTypeBasicReplicationProtectionIntentProviderSpecificSettings`
-- New function `PossibleA2ARecoveryAvailabilityTypeValues() []A2ARecoveryAvailabilityType`
-- New function `HyperVReplicaAzureUnplannedFailoverInput.AsInMageAzureV2UnplannedFailoverInput() (*InMageAzureV2UnplannedFailoverInput, bool)`
-- New function `HyperVReplicaAzureUnplannedFailoverInput.AsA2AUnplannedFailoverInput() (*A2AUnplannedFailoverInput, bool)`
-- New function `A2ACreateProtectionIntentInput.AsBasicCreateProtectionIntentProviderSpecificDetails() (BasicCreateProtectionIntentProviderSpecificDetails, bool)`
-- New function `InMageRcmFabricCreationInput.AsVMwareV2FabricCreationInput() (*VMwareV2FabricCreationInput, bool)`
-- New function `RecoveryPlanProviderSpecificFailoverInput.AsRecoveryPlanInMageRcmFailoverInput() (*RecoveryPlanInMageRcmFailoverInput, bool)`
-- New function `ReplicationProtectionIntentsClient.Create(context.Context, string, CreateProtectionIntentInput) (ReplicationProtectionIntent, error)`
-- New function `RecoveryPlanInMageRcmFailoverInput.AsRecoveryPlanHyperVReplicaAzureFailoverInput() (*RecoveryPlanHyperVReplicaAzureFailoverInput, bool)`
-- New function `*A2AProtectionIntentDiskInputDetails.UnmarshalJSON([]byte) error`
-- New function `ReplicationProtectionIntent.MarshalJSON() ([]byte, error)`
-- New function `InMageRcmFabricCreationInput.AsInMageRcmFabricCreationInput() (*InMageRcmFabricCreationInput, bool)`
-- New function `InMageUnplannedFailoverInput.AsInMageUnplannedFailoverInput() (*InMageUnplannedFailoverInput, bool)`
-- New function `ReplicationProtectionIntentsClient.List(context.Context) (ReplicationProtectionIntentCollectionPage, error)`
-- New function `InMagePolicyInput.AsInMageRcmPolicyCreationInput() (*InMageRcmPolicyCreationInput, bool)`
-- New function `InMageTestFailoverInput.AsBasicTestFailoverProviderSpecificInput() (BasicTestFailoverProviderSpecificInput, bool)`
-- New function `HyperVReplicaBluePolicyInput.AsInMageRcmPolicyCreationInput() (*InMageRcmPolicyCreationInput, bool)`
-- New function `*A2AProtectionIntentManagedDiskInputDetails.UnmarshalJSON([]byte) error`
-- New function `RecoveryVirtualNetworkCustomDetails.MarshalJSON() ([]byte, error)`
-- New function `UnplannedFailoverProviderSpecificInput.AsBasicUnplannedFailoverProviderSpecificInput() (BasicUnplannedFailoverProviderSpecificInput, bool)`
-- New function `HyperVReplicaAzureUnplannedFailoverInput.AsUnplannedFailoverProviderSpecificInput() (*UnplannedFailoverProviderSpecificInput, bool)`
-- New function `InMageRcmPolicyDetails.AsBasicPolicyProviderSpecificDetails() (BasicPolicyProviderSpecificDetails, bool)`
-- New function `RecoveryPlanInMageRcmFailoverInput.AsRecoveryPlanInMageAzureV2FailoverInput() (*RecoveryPlanInMageAzureV2FailoverInput, bool)`
-- New function `RecoveryResourceGroupCustomDetails.AsBasicRecoveryResourceGroupCustomDetails() (BasicRecoveryResourceGroupCustomDetails, bool)`
-- New function `ExistingProtectionProfile.MarshalJSON() ([]byte, error)`
-- New function `InMageRcmFabricSpecificDetails.AsFabricSpecificDetails() (*FabricSpecificDetails, bool)`
-- New function `InMageRcmPolicyDetails.AsRcmAzureMigrationPolicyDetails() (*RcmAzureMigrationPolicyDetails, bool)`
-- New function `ExistingRecoveryVirtualNetwork.AsRecoveryVirtualNetworkCustomDetails() (*RecoveryVirtualNetworkCustomDetails, bool)`
-- New function `HyperVReplica2012EventDetails.AsInMageRcmEventDetails() (*InMageRcmEventDetails, bool)`
-- New function `StorageAccountCustomDetails.AsStorageAccountCustomDetails() (*StorageAccountCustomDetails, bool)`
-- New function `*ReplicationProtectionIntentCollectionPage.NextWithContext(context.Context) error`
-- New function `PossibleInstanceTypeBasicCreateProtectionIntentProviderSpecificDetailsValues() []InstanceTypeBasicCreateProtectionIntentProviderSpecificDetails`
-- New function `InMageRcmFabricSpecificDetails.AsAzureFabricSpecificDetails() (*AzureFabricSpecificDetails, bool)`
-- New function `RecoveryProximityPlacementGroupCustomDetails.AsRecoveryProximityPlacementGroupCustomDetails() (*RecoveryProximityPlacementGroupCustomDetails, bool)`
-- New function `InMageUnplannedFailoverInput.AsA2AUnplannedFailoverInput() (*A2AUnplannedFailoverInput, bool)`
-- New function `ReplicationProtectionIntentsClient.ListComplete(context.Context) (ReplicationProtectionIntentCollectionIterator, error)`
-- New function `InMageRcmTestFailoverInput.AsInMageAzureV2TestFailoverInput() (*InMageAzureV2TestFailoverInput, bool)`
-- New function `InMageRcmReplicationDetails.MarshalJSON() ([]byte, error)`
-- New function `PossibleResourceTypeBasicRecoveryVirtualNetworkCustomDetailsValues() []ResourceTypeBasicRecoveryVirtualNetworkCustomDetails`
-- New function `InMageAzureV2TestFailoverInput.AsA2ATestFailoverInput() (*A2ATestFailoverInput, bool)`
-- New function `InMageRcmFabricSpecificDetails.AsVmmDetails() (*VmmDetails, bool)`
-- New function `HyperVReplicaAzureTestFailoverInput.AsBasicTestFailoverProviderSpecificInput() (BasicTestFailoverProviderSpecificInput, bool)`
-- New function `InMageAzureV2UnplannedFailoverInput.AsInMageRcmUnplannedFailoverInput() (*InMageRcmUnplannedFailoverInput, bool)`
-- New function `InMageRcmApplyRecoveryPointInput.AsInMageRcmApplyRecoveryPointInput() (*InMageRcmApplyRecoveryPointInput, bool)`
-- New function `UnplannedFailoverProviderSpecificInput.AsInMageRcmUnplannedFailoverInput() (*InMageRcmUnplannedFailoverInput, bool)`
-- New function `TestFailoverProviderSpecificInput.AsBasicTestFailoverProviderSpecificInput() (BasicTestFailoverProviderSpecificInput, bool)`
-- New function `InMageAzureV2TestFailoverInput.AsHyperVReplicaAzureTestFailoverInput() (*HyperVReplicaAzureTestFailoverInput, bool)`
-- New function `HyperVReplicaBaseReplicationDetails.AsInMageRcmReplicationDetails() (*InMageRcmReplicationDetails, bool)`
-- New function `HyperVReplicaAzurePolicyInput.AsInMageRcmPolicyCreationInput() (*InMageRcmPolicyCreationInput, bool)`
-- New function `InMageRcmEventDetails.AsHyperVReplica2012R2EventDetails() (*HyperVReplica2012R2EventDetails, bool)`
-- New function `InMageAzureV2UnplannedFailoverInput.AsHyperVReplicaAzureUnplannedFailoverInput() (*HyperVReplicaAzureUnplannedFailoverInput, bool)`
-- New function `InMageAzureV2PolicyDetails.AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool)`
-- New function `InMageTestFailoverInput.AsInMageTestFailoverInput() (*InMageTestFailoverInput, bool)`
-- New function `InMageRcmFabricSpecificDetails.MarshalJSON() ([]byte, error)`
-- New function `InMageRcmApplyRecoveryPointInput.AsA2AApplyRecoveryPointInput() (*A2AApplyRecoveryPointInput, bool)`
-- New function `RecoveryVirtualNetworkCustomDetails.AsBasicRecoveryVirtualNetworkCustomDetails() (BasicRecoveryVirtualNetworkCustomDetails, bool)`
-- New function `InMageRcmUpdateReplicationProtectedItemInput.MarshalJSON() ([]byte, error)`
-- New function `TestFailoverProviderSpecificInput.AsInMageTestFailoverInput() (*InMageTestFailoverInput, bool)`
-- New function `*ReplicationProtectionIntentCollectionIterator.Next() error`
-- New function `InMageAzureV2UnplannedFailoverInput.AsInMageUnplannedFailoverInput() (*InMageUnplannedFailoverInput, bool)`
-- New function `FabricSpecificDetails.AsInMageRcmFabricSpecificDetails() (*InMageRcmFabricSpecificDetails, bool)`
-- New function `ExistingRecoveryAvailabilitySet.AsRecoveryAvailabilitySetCustomDetails() (*RecoveryAvailabilitySetCustomDetails, bool)`
-- New function `ExistingRecoveryProximityPlacementGroup.AsExistingRecoveryProximityPlacementGroup() (*ExistingRecoveryProximityPlacementGroup, bool)`
-- New function `InMageRcmReplicationDetails.AsHyperVReplicaBlueReplicationDetails() (*HyperVReplicaBlueReplicationDetails, bool)`
-- New function `HyperVReplicaAzureTestFailoverInput.AsTestFailoverProviderSpecificInput() (*TestFailoverProviderSpecificInput, bool)`
-- New function `ProtectionProfileCustomDetails.MarshalJSON() ([]byte, error)`
-- New function `InMageRcmPolicyDetails.AsPolicyProviderSpecificDetails() (*PolicyProviderSpecificDetails, bool)`
-- New function `InMageRcmApplyRecoveryPointInput.AsHyperVReplicaAzureApplyRecoveryPointInput() (*HyperVReplicaAzureApplyRecoveryPointInput, bool)`
-- New function `InMageUnplannedFailoverInput.AsInMageRcmUnplannedFailoverInput() (*InMageRcmUnplannedFailoverInput, bool)`
-- New function `InMageRcmRecoveryPointDetails.AsInMageAzureV2RecoveryPointDetails() (*InMageAzureV2RecoveryPointDetails, bool)`
-- New function `ReplicationProtectionIntentCollectionIterator.NotDone() bool`
-- New function `A2AReplicationDetails.AsInMageRcmReplicationDetails() (*InMageRcmReplicationDetails, bool)`
-- New function `InMageRcmPolicyDetails.AsInMageBasePolicyDetails() (*InMageBasePolicyDetails, bool)`
-- New function `A2AUnplannedFailoverInput.AsHyperVReplicaAzureUnplannedFailoverInput() (*HyperVReplicaAzureUnplannedFailoverInput, bool)`
-- New function `A2AReplicationIntentDetails.AsA2AReplicationIntentDetails() (*A2AReplicationIntentDetails, bool)`
-- New function `InMageAzureV2UnplannedFailoverInput.AsA2AUnplannedFailoverInput() (*A2AUnplannedFailoverInput, bool)`
-- New function `InMageRcmEnableProtectionInput.AsSanEnableProtectionInput() (*SanEnableProtectionInput, bool)`
-- New function `InMageRcmEventDetails.AsA2AEventDetails() (*A2AEventDetails, bool)`
-- New function `InMageRcmRecoveryPointDetails.MarshalJSON() ([]byte, error)`
-- New function `InMageAzureV2UnplannedFailoverInput.MarshalJSON() ([]byte, error)`
-- New function `InMageAzureV2ReplicationDetails.AsInMageRcmReplicationDetails() (*InMageRcmReplicationDetails, bool)`
-- New function `A2AUnplannedFailoverInput.AsInMageRcmUnplannedFailoverInput() (*InMageRcmUnplannedFailoverInput, bool)`
-- New function `ExistingRecoveryVirtualNetwork.MarshalJSON() ([]byte, error)`
-- New function `TestFailoverProviderSpecificInput.AsInMageRcmTestFailoverInput() (*InMageRcmTestFailoverInput, bool)`
-- New function `InMageRcmEventDetails.AsHyperVReplicaBaseEventDetails() (*HyperVReplicaBaseEventDetails, bool)`
-- New function `InMageRcmFabricCreationInput.AsBasicFabricSpecificCreationInput() (BasicFabricSpecificCreationInput, bool)`
-- New function `InMageRcmApplyRecoveryPointInput.MarshalJSON() ([]byte, error)`
-- New function `HyperVReplicaAzureUnplannedFailoverInput.AsHyperVReplicaAzureUnplannedFailoverInput() (*HyperVReplicaAzureUnplannedFailoverInput, bool)`
-- New function `InMageRcmReplicationDetails.AsA2AReplicationDetails() (*A2AReplicationDetails, bool)`
-- New function `InMageAzureV2ApplyRecoveryPointInput.AsInMageRcmApplyRecoveryPointInput() (*InMageRcmApplyRecoveryPointInput, bool)`
-- New function `InMageRcmRecoveryPointDetails.AsProviderSpecificRecoveryPointDetails() (*ProviderSpecificRecoveryPointDetails, bool)`
-- New function `UnplannedFailoverProviderSpecificInput.AsA2AUnplannedFailoverInput() (*A2AUnplannedFailoverInput, bool)`
-- New function `InMageRcmPolicyDetails.MarshalJSON() ([]byte, error)`
-- New function `InMageAzureV2UpdateReplicationProtectedItemInput.AsInMageRcmUpdateReplicationProtectedItemInput() (*InMageRcmUpdateReplicationProtectedItemInput, bool)`
-- New function `InMageRcmRecoveryPointDetails.AsInMageRcmRecoveryPointDetails() (*InMageRcmRecoveryPointDetails, bool)`
-- New function `InMageAzureV2TestFailoverInput.AsTestFailoverProviderSpecificInput() (*TestFailoverProviderSpecificInput, bool)`
-- New function `InMageRcmPolicyCreationInput.AsBasicPolicyProviderSpecificInput() (BasicPolicyProviderSpecificInput, bool)`
-- New function `InMageAzureV2UnplannedFailoverInput.AsUnplannedFailoverProviderSpecificInput() (*UnplannedFailoverProviderSpecificInput, bool)`
-- New function `ExistingProtectionProfile.AsProtectionProfileCustomDetails() (*ProtectionProfileCustomDetails, bool)`
-- New function `HyperVReplicaAzureUnplannedFailoverInput.AsInMageRcmUnplannedFailoverInput() (*InMageRcmUnplannedFailoverInput, bool)`
-- New function `PossibleResyncStateValues() []ResyncState`
-- New function `InMageTestFailoverInput.AsInMageAzureV2TestFailoverInput() (*InMageAzureV2TestFailoverInput, bool)`
-- New function `InMageRcmPolicyDetails.AsInMageAzureV2PolicyDetails() (*InMageAzureV2PolicyDetails, bool)`
-- New function `HyperVReplicaAzureUnplannedFailoverInput.AsInMageUnplannedFailoverInput() (*InMageUnplannedFailoverInput, bool)`
-- New function `InMageRcmUnplannedFailoverInput.AsInMageRcmUnplannedFailoverInput() (*InMageRcmUnplannedFailoverInput, bool)`
-- New function `InMageRcmUnplannedFailoverInput.AsInMageUnplannedFailoverInput() (*InMageUnplannedFailoverInput, bool)`
-- New function `ProtectionProfileCustomDetails.AsNewProtectionProfile() (*NewProtectionProfile, bool)`
-- New function `EnableProtectionProviderSpecificInput.AsInMageRcmEnableProtectionInput() (*InMageRcmEnableProtectionInput, bool)`
-- New function `NewProtectionProfile.AsNewProtectionProfile() (*NewProtectionProfile, bool)`
-- New function `ReplicationProtectionIntentProperties.MarshalJSON() ([]byte, error)`
-- New function `InMageRcmEventDetails.AsInMageRcmEventDetails() (*InMageRcmEventDetails, bool)`
-- New function `InMageRcmEnableProtectionInput.AsA2AEnableProtectionInput() (*A2AEnableProtectionInput, bool)`
-- New function `InMageUnplannedFailoverInput.AsUnplannedFailoverProviderSpecificInput() (*UnplannedFailoverProviderSpecificInput, bool)`
-- New function `RecoveryAvailabilitySetCustomDetails.AsExistingRecoveryAvailabilitySet() (*ExistingRecoveryAvailabilitySet, bool)`
-- New function `InMageRcmTestFailoverInput.AsInMageRcmTestFailoverInput() (*InMageRcmTestFailoverInput, bool)`
-- New function `*CreateProtectionIntentProperties.UnmarshalJSON([]byte) error`
-- New function `InMageRcmPolicyCreationInput.AsInMageRcmPolicyCreationInput() (*InMageRcmPolicyCreationInput, bool)`
-- New function `VMwareDetails.AsInMageRcmFabricSpecificDetails() (*InMageRcmFabricSpecificDetails, bool)`
-- New function `InMageAzureV2UnplannedFailoverInput.AsInMageAzureV2UnplannedFailoverInput() (*InMageAzureV2UnplannedFailoverInput, bool)`
-- New function `UnplannedFailoverProviderSpecificInput.AsInMageAzureV2UnplannedFailoverInput() (*InMageAzureV2UnplannedFailoverInput, bool)`
-- New function `InMageRcmApplyRecoveryPointInput.AsApplyRecoveryPointProviderSpecificInput() (*ApplyRecoveryPointProviderSpecificInput, bool)`
-- New function `RecoveryPlanInMageRcmFailoverInput.AsRecoveryPlanProviderSpecificFailoverInput() (*RecoveryPlanProviderSpecificFailoverInput, bool)`
-- New function `A2ACreateProtectionIntentInput.MarshalJSON() ([]byte, error)`
-- New function `RecoveryAvailabilitySetCustomDetails.AsRecoveryAvailabilitySetCustomDetails() (*RecoveryAvailabilitySetCustomDetails, bool)`
-- New struct `A2ACreateProtectionIntentInput`
-- New struct `A2AProtectionIntentDiskInputDetails`
-- New struct `A2AProtectionIntentManagedDiskInputDetails`
-- New struct `A2AReplicationIntentDetails`
-- New struct `A2ATestFailoverInput`
-- New struct `A2AUnplannedFailoverInput`
-- New struct `A2AVMDiskDetails`
-- New struct `A2AVMManagedDiskDetails`
-- New struct `AgentDetails`
-- New struct `AgentDiskDetails`
-- New struct `CreateProtectionIntentInput`
-- New struct `CreateProtectionIntentProperties`
-- New struct `CreateProtectionIntentProviderSpecificDetails`
-- New struct `DraDetails`
-- New struct `ExistingProtectionProfile`
-- New struct `ExistingRecoveryAvailabilitySet`
-- New struct `ExistingRecoveryProximityPlacementGroup`
-- New struct `ExistingRecoveryRecoveryResourceGroup`
-- New struct `ExistingRecoveryVirtualNetwork`
-- New struct `ExistingStorageAccount`
-- New struct `HyperVReplicaAzureTestFailoverInput`
-- New struct `HyperVReplicaAzureUnplannedFailoverInput`
-- New struct `InMageAzureV2TestFailoverInput`
-- New struct `InMageAzureV2UnplannedFailoverInput`
-- New struct `InMageRcmAgentUpgradeBlockingErrorDetails`
-- New struct `InMageRcmApplyRecoveryPointInput`
-- New struct `InMageRcmDiskInput`
-- New struct `InMageRcmDisksDefaultInput`
-- New struct `InMageRcmEnableProtectionInput`
-- New struct `InMageRcmEventDetails`
-- New struct `InMageRcmFabricCreationInput`
-- New struct `InMageRcmFabricSpecificDetails`
-- New struct `InMageRcmLastAgentUpgradeErrorDetails`
-- New struct `InMageRcmMobilityAgentDetails`
-- New struct `InMageRcmNicDetails`
-- New struct `InMageRcmNicInput`
-- New struct `InMageRcmPolicyCreationInput`
-- New struct `InMageRcmPolicyDetails`
-- New struct `InMageRcmProtectedDiskDetails`
-- New struct `InMageRcmRecoveryPointDetails`
-- New struct `InMageRcmReplicationDetails`
-- New struct `InMageRcmTestFailoverInput`
-- New struct `InMageRcmUnplannedFailoverInput`
-- New struct `InMageRcmUpdateReplicationProtectedItemInput`
-- New struct `InMageTestFailoverInput`
-- New struct `InMageUnplannedFailoverInput`
-- New struct `NewProtectionProfile`
-- New struct `ProcessServerDetails`
-- New struct `ProtectionProfileCustomDetails`
-- New struct `PushInstallerDetails`
-- New struct `RcmProxyDetails`
-- New struct `RecoveryAvailabilitySetCustomDetails`
-- New struct `RecoveryPlanInMageRcmFailoverInput`
-- New struct `RecoveryProximityPlacementGroupCustomDetails`
-- New struct `RecoveryResourceGroupCustomDetails`
-- New struct `RecoveryVirtualNetworkCustomDetails`
-- New struct `ReplicationAgentDetails`
-- New struct `ReplicationProtectionIntent`
-- New struct `ReplicationProtectionIntentCollection`
-- New struct `ReplicationProtectionIntentCollectionIterator`
-- New struct `ReplicationProtectionIntentCollectionPage`
-- New struct `ReplicationProtectionIntentProperties`
-- New struct `ReplicationProtectionIntentProviderSpecificSettings`
-- New struct `ReplicationProtectionIntentsClient`
-- New struct `ReprotectAgentDetails`
-- New struct `StorageAccountCustomDetails`
-- New struct `TestFailoverProviderSpecificInput`
-- New struct `UnplannedFailoverProviderSpecificInput`
-- New field `MachineID` in struct `AddRecoveryServicesProviderInputProperties`
-- New field `DataPlaneAuthenticationIdentityInput` in struct `AddRecoveryServicesProviderInputProperties`
+## Struct Changes
+
+### Removed Struct Fields
+
+1. ReplicationFabricsCheckConsistencyFuture.azure.Future
+1. ReplicationFabricsCreateFuture.azure.Future
+1. ReplicationFabricsDeleteFuture.azure.Future
+1. ReplicationFabricsMigrateToAadFuture.azure.Future
+1. ReplicationFabricsPurgeFuture.azure.Future
+1. ReplicationFabricsReassociateGatewayFuture.azure.Future
+1. ReplicationFabricsRenewCertificateFuture.azure.Future
+1. ReplicationJobsCancelFuture.azure.Future
+1. ReplicationJobsExportFuture.azure.Future
+1. ReplicationJobsRestartFuture.azure.Future
+1. ReplicationJobsResumeFuture.azure.Future
+1. ReplicationMigrationItemsCreateFuture.azure.Future
+1. ReplicationMigrationItemsDeleteFuture.azure.Future
+1. ReplicationMigrationItemsMigrateFuture.azure.Future
+1. ReplicationMigrationItemsTestMigrateCleanupFuture.azure.Future
+1. ReplicationMigrationItemsTestMigrateFuture.azure.Future
+1. ReplicationMigrationItemsUpdateFuture.azure.Future
+1. ReplicationNetworkMappingsCreateFuture.azure.Future
+1. ReplicationNetworkMappingsDeleteFuture.azure.Future
+1. ReplicationNetworkMappingsUpdateFuture.azure.Future
+1. ReplicationPoliciesCreateFuture.azure.Future
+1. ReplicationPoliciesDeleteFuture.azure.Future
+1. ReplicationPoliciesUpdateFuture.azure.Future
+1. ReplicationProtectedItemsAddDisksFuture.azure.Future
+1. ReplicationProtectedItemsApplyRecoveryPointFuture.azure.Future
+1. ReplicationProtectedItemsCreateFuture.azure.Future
+1. ReplicationProtectedItemsDeleteFuture.azure.Future
+1. ReplicationProtectedItemsFailoverCommitFuture.azure.Future
+1. ReplicationProtectedItemsPlannedFailoverFuture.azure.Future
+1. ReplicationProtectedItemsPurgeFuture.azure.Future
+1. ReplicationProtectedItemsRemoveDisksFuture.azure.Future
+1. ReplicationProtectedItemsRepairReplicationFuture.azure.Future
+1. ReplicationProtectedItemsReprotectFuture.azure.Future
+1. ReplicationProtectedItemsResolveHealthErrorsFuture.azure.Future
+1. ReplicationProtectedItemsTestFailoverCleanupFuture.azure.Future
+1. ReplicationProtectedItemsTestFailoverFuture.azure.Future
+1. ReplicationProtectedItemsUnplannedFailoverFuture.azure.Future
+1. ReplicationProtectedItemsUpdateFuture.azure.Future
+1. ReplicationProtectedItemsUpdateMobilityServiceFuture.azure.Future
+1. ReplicationProtectionContainerMappingsCreateFuture.azure.Future
+1. ReplicationProtectionContainerMappingsDeleteFuture.azure.Future
+1. ReplicationProtectionContainerMappingsPurgeFuture.azure.Future
+1. ReplicationProtectionContainerMappingsUpdateFuture.azure.Future
+1. ReplicationProtectionContainersCreateFuture.azure.Future
+1. ReplicationProtectionContainersDeleteFuture.azure.Future
+1. ReplicationProtectionContainersDiscoverProtectableItemFuture.azure.Future
+1. ReplicationProtectionContainersSwitchProtectionFuture.azure.Future
+1. ReplicationRecoveryPlansCreateFuture.azure.Future
+1. ReplicationRecoveryPlansDeleteFuture.azure.Future
+1. ReplicationRecoveryPlansFailoverCommitFuture.azure.Future
+1. ReplicationRecoveryPlansPlannedFailoverFuture.azure.Future
+1. ReplicationRecoveryPlansReprotectFuture.azure.Future
+1. ReplicationRecoveryPlansTestFailoverCleanupFuture.azure.Future
+1. ReplicationRecoveryPlansTestFailoverFuture.azure.Future
+1. ReplicationRecoveryPlansUnplannedFailoverFuture.azure.Future
+1. ReplicationRecoveryPlansUpdateFuture.azure.Future
+1. ReplicationRecoveryServicesProvidersCreateFuture.azure.Future
+1. ReplicationRecoveryServicesProvidersDeleteFuture.azure.Future
+1. ReplicationRecoveryServicesProvidersPurgeFuture.azure.Future
+1. ReplicationRecoveryServicesProvidersRefreshProviderFuture.azure.Future
+1. ReplicationStorageClassificationMappingsCreateFuture.azure.Future
+1. ReplicationStorageClassificationMappingsDeleteFuture.azure.Future
+1. ReplicationVaultHealthRefreshFuture.azure.Future
+1. ReplicationvCentersCreateFuture.azure.Future
+1. ReplicationvCentersDeleteFuture.azure.Future
+1. ReplicationvCentersUpdateFuture.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. ReplicationFabricsCheckConsistencyFuture.Result
+1. ReplicationFabricsCheckConsistencyFuture.azure.FutureAPI
+1. ReplicationFabricsCreateFuture.Result
+1. ReplicationFabricsCreateFuture.azure.FutureAPI
+1. ReplicationFabricsDeleteFuture.Result
+1. ReplicationFabricsDeleteFuture.azure.FutureAPI
+1. ReplicationFabricsMigrateToAadFuture.Result
+1. ReplicationFabricsMigrateToAadFuture.azure.FutureAPI
+1. ReplicationFabricsPurgeFuture.Result
+1. ReplicationFabricsPurgeFuture.azure.FutureAPI
+1. ReplicationFabricsReassociateGatewayFuture.Result
+1. ReplicationFabricsReassociateGatewayFuture.azure.FutureAPI
+1. ReplicationFabricsRenewCertificateFuture.Result
+1. ReplicationFabricsRenewCertificateFuture.azure.FutureAPI
+1. ReplicationJobsCancelFuture.Result
+1. ReplicationJobsCancelFuture.azure.FutureAPI
+1. ReplicationJobsExportFuture.Result
+1. ReplicationJobsExportFuture.azure.FutureAPI
+1. ReplicationJobsRestartFuture.Result
+1. ReplicationJobsRestartFuture.azure.FutureAPI
+1. ReplicationJobsResumeFuture.Result
+1. ReplicationJobsResumeFuture.azure.FutureAPI
+1. ReplicationMigrationItemsCreateFuture.Result
+1. ReplicationMigrationItemsCreateFuture.azure.FutureAPI
+1. ReplicationMigrationItemsDeleteFuture.Result
+1. ReplicationMigrationItemsDeleteFuture.azure.FutureAPI
+1. ReplicationMigrationItemsMigrateFuture.Result
+1. ReplicationMigrationItemsMigrateFuture.azure.FutureAPI
+1. ReplicationMigrationItemsTestMigrateCleanupFuture.Result
+1. ReplicationMigrationItemsTestMigrateCleanupFuture.azure.FutureAPI
+1. ReplicationMigrationItemsTestMigrateFuture.Result
+1. ReplicationMigrationItemsTestMigrateFuture.azure.FutureAPI
+1. ReplicationMigrationItemsUpdateFuture.Result
+1. ReplicationMigrationItemsUpdateFuture.azure.FutureAPI
+1. ReplicationNetworkMappingsCreateFuture.Result
+1. ReplicationNetworkMappingsCreateFuture.azure.FutureAPI
+1. ReplicationNetworkMappingsDeleteFuture.Result
+1. ReplicationNetworkMappingsDeleteFuture.azure.FutureAPI
+1. ReplicationNetworkMappingsUpdateFuture.Result
+1. ReplicationNetworkMappingsUpdateFuture.azure.FutureAPI
+1. ReplicationPoliciesCreateFuture.Result
+1. ReplicationPoliciesCreateFuture.azure.FutureAPI
+1. ReplicationPoliciesDeleteFuture.Result
+1. ReplicationPoliciesDeleteFuture.azure.FutureAPI
+1. ReplicationPoliciesUpdateFuture.Result
+1. ReplicationPoliciesUpdateFuture.azure.FutureAPI
+1. ReplicationProtectedItemsAddDisksFuture.Result
+1. ReplicationProtectedItemsAddDisksFuture.azure.FutureAPI
+1. ReplicationProtectedItemsApplyRecoveryPointFuture.Result
+1. ReplicationProtectedItemsApplyRecoveryPointFuture.azure.FutureAPI
+1. ReplicationProtectedItemsCreateFuture.Result
+1. ReplicationProtectedItemsCreateFuture.azure.FutureAPI
+1. ReplicationProtectedItemsDeleteFuture.Result
+1. ReplicationProtectedItemsDeleteFuture.azure.FutureAPI
+1. ReplicationProtectedItemsFailoverCommitFuture.Result
+1. ReplicationProtectedItemsFailoverCommitFuture.azure.FutureAPI
+1. ReplicationProtectedItemsPlannedFailoverFuture.Result
+1. ReplicationProtectedItemsPlannedFailoverFuture.azure.FutureAPI
+1. ReplicationProtectedItemsPurgeFuture.Result
+1. ReplicationProtectedItemsPurgeFuture.azure.FutureAPI
+1. ReplicationProtectedItemsRemoveDisksFuture.Result
+1. ReplicationProtectedItemsRemoveDisksFuture.azure.FutureAPI
+1. ReplicationProtectedItemsRepairReplicationFuture.Result
+1. ReplicationProtectedItemsRepairReplicationFuture.azure.FutureAPI
+1. ReplicationProtectedItemsReprotectFuture.Result
+1. ReplicationProtectedItemsReprotectFuture.azure.FutureAPI
+1. ReplicationProtectedItemsResolveHealthErrorsFuture.Result
+1. ReplicationProtectedItemsResolveHealthErrorsFuture.azure.FutureAPI
+1. ReplicationProtectedItemsTestFailoverCleanupFuture.Result
+1. ReplicationProtectedItemsTestFailoverCleanupFuture.azure.FutureAPI
+1. ReplicationProtectedItemsTestFailoverFuture.Result
+1. ReplicationProtectedItemsTestFailoverFuture.azure.FutureAPI
+1. ReplicationProtectedItemsUnplannedFailoverFuture.Result
+1. ReplicationProtectedItemsUnplannedFailoverFuture.azure.FutureAPI
+1. ReplicationProtectedItemsUpdateFuture.Result
+1. ReplicationProtectedItemsUpdateFuture.azure.FutureAPI
+1. ReplicationProtectedItemsUpdateMobilityServiceFuture.Result
+1. ReplicationProtectedItemsUpdateMobilityServiceFuture.azure.FutureAPI
+1. ReplicationProtectionContainerMappingsCreateFuture.Result
+1. ReplicationProtectionContainerMappingsCreateFuture.azure.FutureAPI
+1. ReplicationProtectionContainerMappingsDeleteFuture.Result
+1. ReplicationProtectionContainerMappingsDeleteFuture.azure.FutureAPI
+1. ReplicationProtectionContainerMappingsPurgeFuture.Result
+1. ReplicationProtectionContainerMappingsPurgeFuture.azure.FutureAPI
+1. ReplicationProtectionContainerMappingsUpdateFuture.Result
+1. ReplicationProtectionContainerMappingsUpdateFuture.azure.FutureAPI
+1. ReplicationProtectionContainersCreateFuture.Result
+1. ReplicationProtectionContainersCreateFuture.azure.FutureAPI
+1. ReplicationProtectionContainersDeleteFuture.Result
+1. ReplicationProtectionContainersDeleteFuture.azure.FutureAPI
+1. ReplicationProtectionContainersDiscoverProtectableItemFuture.Result
+1. ReplicationProtectionContainersDiscoverProtectableItemFuture.azure.FutureAPI
+1. ReplicationProtectionContainersSwitchProtectionFuture.Result
+1. ReplicationProtectionContainersSwitchProtectionFuture.azure.FutureAPI
+1. ReplicationRecoveryPlansCreateFuture.Result
+1. ReplicationRecoveryPlansCreateFuture.azure.FutureAPI
+1. ReplicationRecoveryPlansDeleteFuture.Result
+1. ReplicationRecoveryPlansDeleteFuture.azure.FutureAPI
+1. ReplicationRecoveryPlansFailoverCommitFuture.Result
+1. ReplicationRecoveryPlansFailoverCommitFuture.azure.FutureAPI
+1. ReplicationRecoveryPlansPlannedFailoverFuture.Result
+1. ReplicationRecoveryPlansPlannedFailoverFuture.azure.FutureAPI
+1. ReplicationRecoveryPlansReprotectFuture.Result
+1. ReplicationRecoveryPlansReprotectFuture.azure.FutureAPI
+1. ReplicationRecoveryPlansTestFailoverCleanupFuture.Result
+1. ReplicationRecoveryPlansTestFailoverCleanupFuture.azure.FutureAPI
+1. ReplicationRecoveryPlansTestFailoverFuture.Result
+1. ReplicationRecoveryPlansTestFailoverFuture.azure.FutureAPI
+1. ReplicationRecoveryPlansUnplannedFailoverFuture.Result
+1. ReplicationRecoveryPlansUnplannedFailoverFuture.azure.FutureAPI
+1. ReplicationRecoveryPlansUpdateFuture.Result
+1. ReplicationRecoveryPlansUpdateFuture.azure.FutureAPI
+1. ReplicationRecoveryServicesProvidersCreateFuture.Result
+1. ReplicationRecoveryServicesProvidersCreateFuture.azure.FutureAPI
+1. ReplicationRecoveryServicesProvidersDeleteFuture.Result
+1. ReplicationRecoveryServicesProvidersDeleteFuture.azure.FutureAPI
+1. ReplicationRecoveryServicesProvidersPurgeFuture.Result
+1. ReplicationRecoveryServicesProvidersPurgeFuture.azure.FutureAPI
+1. ReplicationRecoveryServicesProvidersRefreshProviderFuture.Result
+1. ReplicationRecoveryServicesProvidersRefreshProviderFuture.azure.FutureAPI
+1. ReplicationStorageClassificationMappingsCreateFuture.Result
+1. ReplicationStorageClassificationMappingsCreateFuture.azure.FutureAPI
+1. ReplicationStorageClassificationMappingsDeleteFuture.Result
+1. ReplicationStorageClassificationMappingsDeleteFuture.azure.FutureAPI
+1. ReplicationVaultHealthRefreshFuture.Result
+1. ReplicationVaultHealthRefreshFuture.azure.FutureAPI
+1. ReplicationvCentersCreateFuture.Result
+1. ReplicationvCentersCreateFuture.azure.FutureAPI
+1. ReplicationvCentersDeleteFuture.Result
+1. ReplicationvCentersDeleteFuture.azure.FutureAPI
+1. ReplicationvCentersUpdateFuture.Result
+1. ReplicationvCentersUpdateFuture.azure.FutureAPI

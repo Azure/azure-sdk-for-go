@@ -322,6 +322,7 @@ func (client FilesClient) List(ctx context.Context, groupName string, serviceNam
 	}
 	if result.fl.hasNextLink() && result.fl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -384,7 +385,6 @@ func (client FilesClient) listNextResults(ctx context.Context, lastResults FileL
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.FilesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

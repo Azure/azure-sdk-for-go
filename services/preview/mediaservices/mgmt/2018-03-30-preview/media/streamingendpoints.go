@@ -77,7 +77,7 @@ func (client StreamingEndpointsClient) Create(ctx context.Context, resourceGroup
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -119,7 +119,29 @@ func (client StreamingEndpointsClient) CreateSender(req *http.Request) (future S
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client StreamingEndpointsClient) (se StreamingEndpoint, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "media.StreamingEndpointsCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("media.StreamingEndpointsCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if se.Response.Response, err = future.GetResult(sender); err == nil && se.Response.Response.StatusCode != http.StatusNoContent {
+			se, err = client.CreateResponder(se.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "media.StreamingEndpointsCreateFuture", "Result", se.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -167,7 +189,7 @@ func (client StreamingEndpointsClient) Delete(ctx context.Context, resourceGroup
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -204,7 +226,23 @@ func (client StreamingEndpointsClient) DeleteSender(req *http.Request) (future S
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client StreamingEndpointsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "media.StreamingEndpointsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("media.StreamingEndpointsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -341,6 +379,7 @@ func (client StreamingEndpointsClient) List(ctx context.Context, resourceGroupNa
 	}
 	if result.selr.hasNextLink() && result.selr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -402,7 +441,6 @@ func (client StreamingEndpointsClient) listNextResults(ctx context.Context, last
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -456,7 +494,7 @@ func (client StreamingEndpointsClient) Scale(ctx context.Context, resourceGroupN
 
 	result, err = client.ScaleSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Scale", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Scale", nil, "Failure sending request")
 		return
 	}
 
@@ -495,7 +533,23 @@ func (client StreamingEndpointsClient) ScaleSender(req *http.Request) (future St
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client StreamingEndpointsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "media.StreamingEndpointsScaleFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("media.StreamingEndpointsScaleFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -542,7 +596,7 @@ func (client StreamingEndpointsClient) Start(ctx context.Context, resourceGroupN
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Start", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Start", nil, "Failure sending request")
 		return
 	}
 
@@ -579,7 +633,23 @@ func (client StreamingEndpointsClient) StartSender(req *http.Request) (future St
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client StreamingEndpointsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "media.StreamingEndpointsStartFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("media.StreamingEndpointsStartFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -626,7 +696,7 @@ func (client StreamingEndpointsClient) Stop(ctx context.Context, resourceGroupNa
 
 	result, err = client.StopSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Stop", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Stop", nil, "Failure sending request")
 		return
 	}
 
@@ -663,7 +733,23 @@ func (client StreamingEndpointsClient) StopSender(req *http.Request) (future Str
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client StreamingEndpointsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "media.StreamingEndpointsStopFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("media.StreamingEndpointsStopFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -711,7 +797,7 @@ func (client StreamingEndpointsClient) Update(ctx context.Context, resourceGroup
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -750,7 +836,29 @@ func (client StreamingEndpointsClient) UpdateSender(req *http.Request) (future S
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client StreamingEndpointsClient) (se StreamingEndpoint, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "media.StreamingEndpointsUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("media.StreamingEndpointsUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if se.Response.Response, err = future.GetResult(sender); err == nil && se.Response.Response.StatusCode != http.StatusNoContent {
+			se, err = client.UpdateResponder(se.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "media.StreamingEndpointsUpdateFuture", "Result", se.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

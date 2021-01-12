@@ -74,7 +74,7 @@ func (client JobsClient) Cancel(ctx context.Context, deviceName string, jobName 
 
 	result, err = client.CancelSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.JobsClient", "Cancel", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.JobsClient", "Cancel", nil, "Failure sending request")
 		return
 	}
 
@@ -112,7 +112,23 @@ func (client JobsClient) CancelSender(req *http.Request) (future JobsCancelFutur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client JobsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.JobsCancelFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.JobsCancelFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -260,6 +276,7 @@ func (client JobsClient) ListByDevice(ctx context.Context, deviceName string, re
 	}
 	if result.jl.hasNextLink() && result.jl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -325,7 +342,6 @@ func (client JobsClient) listByDeviceNextResults(ctx context.Context, lastResult
 	result, err = client.ListByDeviceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.JobsClient", "listByDeviceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -391,6 +407,7 @@ func (client JobsClient) ListByManager(ctx context.Context, resourceGroupName st
 	}
 	if result.jl.hasNextLink() && result.jl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -455,7 +472,6 @@ func (client JobsClient) listByManagerNextResults(ctx context.Context, lastResul
 	result, err = client.ListByManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.JobsClient", "listByManagerNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -233,7 +233,7 @@ func (client LabsClient) Delete(ctx context.Context, resourceGroupName string, l
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.LabsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.LabsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -270,7 +270,23 @@ func (client LabsClient) DeleteSender(req *http.Request) (future LabsDeleteFutur
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client LabsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "labservices.LabsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("labservices.LabsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -407,6 +423,7 @@ func (client LabsClient) List(ctx context.Context, resourceGroupName string, lab
 	}
 	if result.rwcl.hasNextLink() && result.rwcl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -480,7 +497,6 @@ func (client LabsClient) listNextResults(ctx context.Context, lastResults Respon
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

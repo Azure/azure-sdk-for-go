@@ -165,6 +165,7 @@ func (client PipelineClient) List(ctx context.Context, accountName string, start
 	}
 	if result.pilr.hasNextLink() && result.pilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -231,7 +232,6 @@ func (client PipelineClient) listNextResults(ctx context.Context, lastResults Pi
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.PipelineClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

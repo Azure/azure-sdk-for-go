@@ -608,53 +608,19 @@ type MemberPropertiesUpdate struct {
 // MembersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type MembersCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MembersCreateFuture) Result(client MembersClient) (mVar Member, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "blockchain.MembersCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("blockchain.MembersCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if mVar.Response.Response, err = future.GetResult(sender); err == nil && mVar.Response.Response.StatusCode != http.StatusNoContent {
-		mVar, err = client.CreateResponder(mVar.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "blockchain.MembersCreateFuture", "Result", mVar.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MembersClient) (Member, error)
 }
 
 // MembersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type MembersDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MembersDeleteFuture) Result(client MembersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "blockchain.MembersDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("blockchain.MembersDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MembersClient) (autorest.Response, error)
 }
 
 // MemberUpdate update the payload of the blockchain member which is exposed in the request/response of the
@@ -1289,53 +1255,19 @@ type TransactionNodePropertiesUpdate struct {
 // TransactionNodesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type TransactionNodesCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *TransactionNodesCreateFuture) Result(client TransactionNodesClient) (tn TransactionNode, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("blockchain.TransactionNodesCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if tn.Response.Response, err = future.GetResult(sender); err == nil && tn.Response.Response.StatusCode != http.StatusNoContent {
-		tn, err = client.CreateResponder(tn.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesCreateFuture", "Result", tn.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(TransactionNodesClient) (TransactionNode, error)
 }
 
 // TransactionNodesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type TransactionNodesDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *TransactionNodesDeleteFuture) Result(client TransactionNodesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("blockchain.TransactionNodesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(TransactionNodesClient) (autorest.Response, error)
 }
 
 // TransactionNodeUpdate update the transaction node payload which is exposed in the request/response of

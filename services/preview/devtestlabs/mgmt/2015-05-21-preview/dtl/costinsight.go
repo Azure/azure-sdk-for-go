@@ -156,6 +156,7 @@ func (client CostInsightClient) List(ctx context.Context, resourceGroupName stri
 	}
 	if result.rwcci.hasNextLink() && result.rwcci.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -226,7 +227,6 @@ func (client CostInsightClient) listNextResults(ctx context.Context, lastResults
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.CostInsightClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -271,7 +271,7 @@ func (client CostInsightClient) RefreshData(ctx context.Context, resourceGroupNa
 
 	result, err = client.RefreshDataSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.CostInsightClient", "RefreshData", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.CostInsightClient", "RefreshData", nil, "Failure sending request")
 		return
 	}
 
@@ -308,7 +308,23 @@ func (client CostInsightClient) RefreshDataSender(req *http.Request) (future Cos
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client CostInsightClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "dtl.CostInsightRefreshDataFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("dtl.CostInsightRefreshDataFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

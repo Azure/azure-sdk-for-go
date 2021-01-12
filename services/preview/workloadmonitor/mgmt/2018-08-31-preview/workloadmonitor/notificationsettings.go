@@ -183,6 +183,7 @@ func (client NotificationSettingsClient) ListByResource(ctx context.Context, res
 	}
 	if result.nsc.hasNextLink() && result.nsc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -249,7 +250,6 @@ func (client NotificationSettingsClient) listByResourceNextResults(ctx context.C
 	result, err = client.ListByResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.NotificationSettingsClient", "listByResourceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -389,6 +389,7 @@ func (client DomainsClient) GetDomains(ctx context.Context, resourceGroupName st
 	}
 	if result.dc.hasNextLink() && result.dc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -449,7 +450,6 @@ func (client DomainsClient) getDomainsNextResults(ctx context.Context, lastResul
 	result, err = client.GetDomainsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.DomainsClient", "getDomainsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

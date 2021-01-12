@@ -83,7 +83,7 @@ func (client OrchestratorInstanceServiceClient) Create(ctx context.Context, reso
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -121,7 +121,29 @@ func (client OrchestratorInstanceServiceClient) CreateSender(req *http.Request) 
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client OrchestratorInstanceServiceClient) (o Orchestrator, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceCreateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("delegatednetwork.OrchestratorInstanceServiceCreateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if o.Response.Response, err = future.GetResult(sender); err == nil && o.Response.Response.StatusCode != http.StatusNoContent {
+			o, err = client.CreateResponder(o.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceCreateFuture", "Result", o.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -173,7 +195,7 @@ func (client OrchestratorInstanceServiceClient) Delete(ctx context.Context, reso
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -209,7 +231,23 @@ func (client OrchestratorInstanceServiceClient) DeleteSender(req *http.Request) 
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client OrchestratorInstanceServiceClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("delegatednetwork.OrchestratorInstanceServiceDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -357,6 +395,7 @@ func (client OrchestratorInstanceServiceClient) ListByResourceGroup(ctx context.
 	}
 	if result.o.hasNextLink() && result.o.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -417,7 +456,6 @@ func (client OrchestratorInstanceServiceClient) listByResourceGroupNextResults(c
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -471,6 +509,7 @@ func (client OrchestratorInstanceServiceClient) ListBySubscription(ctx context.C
 	}
 	if result.o.hasNextLink() && result.o.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -530,7 +569,6 @@ func (client OrchestratorInstanceServiceClient) listBySubscriptionNextResults(ct
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -91,7 +91,7 @@ func (client NotebookClient) CreateOrUpdateNotebook(ctx context.Context, noteboo
 
 	result, err = client.CreateOrUpdateNotebookSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "CreateOrUpdateNotebook", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "CreateOrUpdateNotebook", nil, "Failure sending request")
 		return
 	}
 
@@ -138,7 +138,29 @@ func (client NotebookClient) CreateOrUpdateNotebookSender(req *http.Request) (fu
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client NotebookClient) (nr NotebookResource, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.NotebookCreateOrUpdateNotebookFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.NotebookCreateOrUpdateNotebookFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if nr.Response.Response, err = future.GetResult(sender); err == nil && nr.Response.Response.StatusCode != http.StatusNoContent {
+			nr, err = client.CreateOrUpdateNotebookResponder(nr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "artifacts.NotebookCreateOrUpdateNotebookFuture", "Result", nr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -176,7 +198,7 @@ func (client NotebookClient) DeleteNotebook(ctx context.Context, notebookName st
 
 	result, err = client.DeleteNotebookSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "DeleteNotebook", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "DeleteNotebook", nil, "Failure sending request")
 		return
 	}
 
@@ -214,7 +236,23 @@ func (client NotebookClient) DeleteNotebookSender(req *http.Request) (future Not
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client NotebookClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.NotebookDeleteNotebookFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.NotebookDeleteNotebookFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -345,6 +383,7 @@ func (client NotebookClient) GetNotebooksByWorkspace(ctx context.Context) (resul
 	}
 	if result.nlr.hasNextLink() && result.nlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -404,7 +443,6 @@ func (client NotebookClient) getNotebooksByWorkspaceNextResults(ctx context.Cont
 	result, err = client.GetNotebooksByWorkspaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "getNotebooksByWorkspaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -458,6 +496,7 @@ func (client NotebookClient) GetNotebookSummaryByWorkSpace(ctx context.Context) 
 	}
 	if result.nlr.hasNextLink() && result.nlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -517,7 +556,6 @@ func (client NotebookClient) getNotebookSummaryByWorkSpaceNextResults(ctx contex
 	result, err = client.GetNotebookSummaryByWorkSpaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "getNotebookSummaryByWorkSpaceNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -571,7 +609,7 @@ func (client NotebookClient) RenameNotebook(ctx context.Context, notebookName st
 
 	result, err = client.RenameNotebookSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "RenameNotebook", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "RenameNotebook", nil, "Failure sending request")
 		return
 	}
 
@@ -611,7 +649,23 @@ func (client NotebookClient) RenameNotebookSender(req *http.Request) (future Not
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client NotebookClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "artifacts.NotebookRenameNotebookFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("artifacts.NotebookRenameNotebookFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

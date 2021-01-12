@@ -1,35 +1,102 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/web/resource-manager/readme.md tag: `package-2015-08-preview`
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator @microsoft.azure/autorest.go@2.1.168
 
 ## Breaking Changes
 
-- Function `NewWorkerPoolCollectionPage` parameter(s) have been changed from `(func(context.Context, WorkerPoolCollection) (WorkerPoolCollection, error))` to `(WorkerPoolCollection, func(context.Context, WorkerPoolCollection) (WorkerPoolCollection, error))`
-- Function `NewCertificateOrderCollectionPage` parameter(s) have been changed from `(func(context.Context, CertificateOrderCollection) (CertificateOrderCollection, error))` to `(CertificateOrderCollection, func(context.Context, CertificateOrderCollection) (CertificateOrderCollection, error))`
-- Function `NewSlotDifferenceCollectionPage` parameter(s) have been changed from `(func(context.Context, SlotDifferenceCollection) (SlotDifferenceCollection, error))` to `(SlotDifferenceCollection, func(context.Context, SlotDifferenceCollection) (SlotDifferenceCollection, error))`
-- Function `NewManagedHostingEnvironmentCollectionPage` parameter(s) have been changed from `(func(context.Context, ManagedHostingEnvironmentCollection) (ManagedHostingEnvironmentCollection, error))` to `(ManagedHostingEnvironmentCollection, func(context.Context, ManagedHostingEnvironmentCollection) (ManagedHostingEnvironmentCollection, error))`
-- Function `NewTldLegalAgreementCollectionPage` parameter(s) have been changed from `(func(context.Context, TldLegalAgreementCollection) (TldLegalAgreementCollection, error))` to `(TldLegalAgreementCollection, func(context.Context, TldLegalAgreementCollection) (TldLegalAgreementCollection, error))`
-- Function `NewMetricDefinitionCollectionPage` parameter(s) have been changed from `(func(context.Context, MetricDefinitionCollection) (MetricDefinitionCollection, error))` to `(MetricDefinitionCollection, func(context.Context, MetricDefinitionCollection) (MetricDefinitionCollection, error))`
-- Function `NewCsmUsageQuotaCollectionPage` parameter(s) have been changed from `(func(context.Context, CsmUsageQuotaCollection) (CsmUsageQuotaCollection, error))` to `(CsmUsageQuotaCollection, func(context.Context, CsmUsageQuotaCollection) (CsmUsageQuotaCollection, error))`
-- Function `NewConnectionCollectionPage` parameter(s) have been changed from `(func(context.Context, ConnectionCollection) (ConnectionCollection, error))` to `(ConnectionCollection, func(context.Context, ConnectionCollection) (ConnectionCollection, error))`
-- Function `NewCertificateOrderCertificateCollectionPage` parameter(s) have been changed from `(func(context.Context, CertificateOrderCertificateCollection) (CertificateOrderCertificateCollection, error))` to `(CertificateOrderCertificateCollection, func(context.Context, CertificateOrderCertificateCollection) (CertificateOrderCertificateCollection, error))`
-- Function `NewSkuInfoCollectionPage` parameter(s) have been changed from `(func(context.Context, SkuInfoCollection) (SkuInfoCollection, error))` to `(SkuInfoCollection, func(context.Context, SkuInfoCollection) (SkuInfoCollection, error))`
-- Function `NewClassicMobileServiceCollectionPage` parameter(s) have been changed from `(func(context.Context, ClassicMobileServiceCollection) (ClassicMobileServiceCollection, error))` to `(ClassicMobileServiceCollection, func(context.Context, ClassicMobileServiceCollection) (ClassicMobileServiceCollection, error))`
-- Function `NewDomainCollectionPage` parameter(s) have been changed from `(func(context.Context, DomainCollection) (DomainCollection, error))` to `(DomainCollection, func(context.Context, DomainCollection) (DomainCollection, error))`
-- Function `NewHostNameBindingCollectionPage` parameter(s) have been changed from `(func(context.Context, HostNameBindingCollection) (HostNameBindingCollection, error))` to `(HostNameBindingCollection, func(context.Context, HostNameBindingCollection) (HostNameBindingCollection, error))`
-- Function `NewCertificateCollectionPage` parameter(s) have been changed from `(func(context.Context, CertificateCollection) (CertificateCollection, error))` to `(CertificateCollection, func(context.Context, CertificateCollection) (CertificateCollection, error))`
-- Function `NewSiteInstanceCollectionPage` parameter(s) have been changed from `(func(context.Context, SiteInstanceCollection) (SiteInstanceCollection, error))` to `(SiteInstanceCollection, func(context.Context, SiteInstanceCollection) (SiteInstanceCollection, error))`
-- Function `NewDeletedSiteCollectionPage` parameter(s) have been changed from `(func(context.Context, DeletedSiteCollection) (DeletedSiteCollection, error))` to `(DeletedSiteCollection, func(context.Context, DeletedSiteCollection) (DeletedSiteCollection, error))`
-- Function `NewGeoRegionCollectionPage` parameter(s) have been changed from `(func(context.Context, GeoRegionCollection) (GeoRegionCollection, error))` to `(GeoRegionCollection, func(context.Context, GeoRegionCollection) (GeoRegionCollection, error))`
-- Function `NewNameIdentifierCollectionPage` parameter(s) have been changed from `(func(context.Context, NameIdentifierCollection) (NameIdentifierCollection, error))` to `(NameIdentifierCollection, func(context.Context, NameIdentifierCollection) (NameIdentifierCollection, error))`
-- Function `NewTopLevelDomainCollectionPage` parameter(s) have been changed from `(func(context.Context, TopLevelDomainCollection) (TopLevelDomainCollection, error))` to `(TopLevelDomainCollection, func(context.Context, TopLevelDomainCollection) (TopLevelDomainCollection, error))`
-- Function `NewBackupItemCollectionPage` parameter(s) have been changed from `(func(context.Context, BackupItemCollection) (BackupItemCollection, error))` to `(BackupItemCollection, func(context.Context, BackupItemCollection) (BackupItemCollection, error))`
-- Function `NewResourceMetricCollectionPage` parameter(s) have been changed from `(func(context.Context, ResourceMetricCollection) (ResourceMetricCollection, error))` to `(ResourceMetricCollection, func(context.Context, ResourceMetricCollection) (ResourceMetricCollection, error))`
-- Function `NewUsageCollectionPage` parameter(s) have been changed from `(func(context.Context, UsageCollection) (UsageCollection, error))` to `(UsageCollection, func(context.Context, UsageCollection) (UsageCollection, error))`
-- Function `NewHostingEnvironmentCollectionPage` parameter(s) have been changed from `(func(context.Context, HostingEnvironmentCollection) (HostingEnvironmentCollection, error))` to `(HostingEnvironmentCollection, func(context.Context, HostingEnvironmentCollection) (HostingEnvironmentCollection, error))`
-- Function `NewServerFarmCollectionPage` parameter(s) have been changed from `(func(context.Context, ServerFarmCollection) (ServerFarmCollection, error))` to `(ServerFarmCollection, func(context.Context, ServerFarmCollection) (ServerFarmCollection, error))`
-- Function `NewSourceControlCollectionPage` parameter(s) have been changed from `(func(context.Context, SourceControlCollection) (SourceControlCollection, error))` to `(SourceControlCollection, func(context.Context, SourceControlCollection) (SourceControlCollection, error))`
-- Function `NewApisCollectionPage` parameter(s) have been changed from `(func(context.Context, ApisCollection) (ApisCollection, error))` to `(ApisCollection, func(context.Context, ApisCollection) (ApisCollection, error))`
-- Function `NewDeploymentCollectionPage` parameter(s) have been changed from `(func(context.Context, DeploymentCollection) (DeploymentCollection, error))` to `(DeploymentCollection, func(context.Context, DeploymentCollection) (DeploymentCollection, error))`
-- Function `NewStampCapacityCollectionPage` parameter(s) have been changed from `(func(context.Context, StampCapacityCollection) (StampCapacityCollection, error))` to `(StampCapacityCollection, func(context.Context, StampCapacityCollection) (StampCapacityCollection, error))`
-- Function `NewSiteCollectionPage` parameter(s) have been changed from `(func(context.Context, SiteCollection) (SiteCollection, error))` to `(SiteCollection, func(context.Context, SiteCollection) (SiteCollection, error))`
+### Removed Funcs
+
+1. *HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture.Result(HostingEnvironmentsClient) (HostingEnvironment, error)
+1. *HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture.Result(HostingEnvironmentsClient) (WorkerPool, error)
+1. *HostingEnvironmentsCreateOrUpdateWorkerPoolFuture.Result(HostingEnvironmentsClient) (WorkerPool, error)
+1. *HostingEnvironmentsDeleteHostingEnvironmentFuture.Result(HostingEnvironmentsClient) (SetObject, error)
+1. *HostingEnvironmentsResumeHostingEnvironmentAllFuture.Result(HostingEnvironmentsClient) (SiteCollectionPage, error)
+1. *HostingEnvironmentsResumeHostingEnvironmentFuture.Result(HostingEnvironmentsClient) (SiteCollectionPage, error)
+1. *HostingEnvironmentsSuspendHostingEnvironmentAllFuture.Result(HostingEnvironmentsClient) (SiteCollectionPage, error)
+1. *HostingEnvironmentsSuspendHostingEnvironmentFuture.Result(HostingEnvironmentsClient) (SiteCollectionPage, error)
+1. *ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture.Result(ManagedHostingEnvironmentsClient) (HostingEnvironment, error)
+1. *ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture.Result(ManagedHostingEnvironmentsClient) (SetObject, error)
+1. *ServerFarmsCreateOrUpdateServerFarmFuture.Result(ServerFarmsClient) (ServerFarmWithRichSku, error)
+1. *SitesCreateOrUpdateSiteFuture.Result(SitesClient) (Site, error)
+1. *SitesCreateOrUpdateSiteSlotFuture.Result(SitesClient) (Site, error)
+1. *SitesListSitePublishingCredentialsFuture.Result(SitesClient) (User, error)
+1. *SitesListSitePublishingCredentialsSlotFuture.Result(SitesClient) (User, error)
+1. *SitesRecoverSiteFuture.Result(SitesClient) (Site, error)
+1. *SitesRecoverSiteSlotFuture.Result(SitesClient) (Site, error)
+1. *SitesRestoreSiteFuture.Result(SitesClient) (RestoreResponse, error)
+1. *SitesRestoreSiteSlotFuture.Result(SitesClient) (RestoreResponse, error)
+1. *SitesSwapSlotWithProductionFuture.Result(SitesClient) (SetObject, error)
+1. *SitesSwapSlotsSlotFuture.Result(SitesClient) (SetObject, error)
+
+## Struct Changes
+
+### Removed Struct Fields
+
+1. HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture.azure.Future
+1. HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture.azure.Future
+1. HostingEnvironmentsCreateOrUpdateWorkerPoolFuture.azure.Future
+1. HostingEnvironmentsDeleteHostingEnvironmentFuture.azure.Future
+1. HostingEnvironmentsResumeHostingEnvironmentAllFuture.azure.Future
+1. HostingEnvironmentsResumeHostingEnvironmentFuture.azure.Future
+1. HostingEnvironmentsSuspendHostingEnvironmentAllFuture.azure.Future
+1. HostingEnvironmentsSuspendHostingEnvironmentFuture.azure.Future
+1. ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture.azure.Future
+1. ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture.azure.Future
+1. ServerFarmsCreateOrUpdateServerFarmFuture.azure.Future
+1. SitesCreateOrUpdateSiteFuture.azure.Future
+1. SitesCreateOrUpdateSiteSlotFuture.azure.Future
+1. SitesListSitePublishingCredentialsFuture.azure.Future
+1. SitesListSitePublishingCredentialsSlotFuture.azure.Future
+1. SitesRecoverSiteFuture.azure.Future
+1. SitesRecoverSiteSlotFuture.azure.Future
+1. SitesRestoreSiteFuture.azure.Future
+1. SitesRestoreSiteSlotFuture.azure.Future
+1. SitesSwapSlotWithProductionFuture.azure.Future
+1. SitesSwapSlotsSlotFuture.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture.Result
+1. HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture.azure.FutureAPI
+1. HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture.Result
+1. HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture.azure.FutureAPI
+1. HostingEnvironmentsCreateOrUpdateWorkerPoolFuture.Result
+1. HostingEnvironmentsCreateOrUpdateWorkerPoolFuture.azure.FutureAPI
+1. HostingEnvironmentsDeleteHostingEnvironmentFuture.Result
+1. HostingEnvironmentsDeleteHostingEnvironmentFuture.azure.FutureAPI
+1. HostingEnvironmentsResumeHostingEnvironmentAllFuture.Result
+1. HostingEnvironmentsResumeHostingEnvironmentAllFuture.azure.FutureAPI
+1. HostingEnvironmentsResumeHostingEnvironmentFuture.Result
+1. HostingEnvironmentsResumeHostingEnvironmentFuture.azure.FutureAPI
+1. HostingEnvironmentsSuspendHostingEnvironmentAllFuture.Result
+1. HostingEnvironmentsSuspendHostingEnvironmentAllFuture.azure.FutureAPI
+1. HostingEnvironmentsSuspendHostingEnvironmentFuture.Result
+1. HostingEnvironmentsSuspendHostingEnvironmentFuture.azure.FutureAPI
+1. ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture.Result
+1. ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture.azure.FutureAPI
+1. ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture.Result
+1. ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture.azure.FutureAPI
+1. ServerFarmsCreateOrUpdateServerFarmFuture.Result
+1. ServerFarmsCreateOrUpdateServerFarmFuture.azure.FutureAPI
+1. SitesCreateOrUpdateSiteFuture.Result
+1. SitesCreateOrUpdateSiteFuture.azure.FutureAPI
+1. SitesCreateOrUpdateSiteSlotFuture.Result
+1. SitesCreateOrUpdateSiteSlotFuture.azure.FutureAPI
+1. SitesListSitePublishingCredentialsFuture.Result
+1. SitesListSitePublishingCredentialsFuture.azure.FutureAPI
+1. SitesListSitePublishingCredentialsSlotFuture.Result
+1. SitesListSitePublishingCredentialsSlotFuture.azure.FutureAPI
+1. SitesRecoverSiteFuture.Result
+1. SitesRecoverSiteFuture.azure.FutureAPI
+1. SitesRecoverSiteSlotFuture.Result
+1. SitesRecoverSiteSlotFuture.azure.FutureAPI
+1. SitesRestoreSiteFuture.Result
+1. SitesRestoreSiteFuture.azure.FutureAPI
+1. SitesRestoreSiteSlotFuture.Result
+1. SitesRestoreSiteSlotFuture.azure.FutureAPI
+1. SitesSwapSlotWithProductionFuture.Result
+1. SitesSwapSlotWithProductionFuture.azure.FutureAPI
+1. SitesSwapSlotsSlotFuture.Result
+1. SitesSwapSlotsSlotFuture.azure.FutureAPI

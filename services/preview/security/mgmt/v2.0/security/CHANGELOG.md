@@ -1,180 +1,22 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/security/resource-manager/readme.md tag: `package-composite-v2`
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator @microsoft.azure/autorest.go@2.1.168
 
 ## Breaking Changes
 
-- Const `RuleTypeAmqpC2DMessagesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeMqttD2CMessagesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeMqttC2DRejectedMessagesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeAllowlistCustomAlertRule` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeTimeWindowCustomAlertRule` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeListCustomAlertRule` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeUnauthorizedOperationsNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeFileUploadsNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeConnectionToIPNotAllowed` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeLocalUserNotAllowed` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeThresholdCustomAlertRule` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeHTTPD2CMessagesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeQueuePurgesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeDirectMethodInvokesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeHTTPC2DMessagesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeFailedLocalLoginsNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeTwinUpdatesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeDenylistCustomAlertRule` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeMqttC2DMessagesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeActiveConnectionsNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeAmqpD2CMessagesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeProcessNotAllowed` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Const `RuleTypeCustomAlertRule` type has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Function `NewJitNetworkAccessPoliciesListPage` parameter(s) have been changed from `(func(context.Context, JitNetworkAccessPoliciesList) (JitNetworkAccessPoliciesList, error))` to `(JitNetworkAccessPoliciesList, func(context.Context, JitNetworkAccessPoliciesList) (JitNetworkAccessPoliciesList, error))`
-- Function `NewSubAssessmentListPage` parameter(s) have been changed from `(func(context.Context, SubAssessmentList) (SubAssessmentList, error))` to `(SubAssessmentList, func(context.Context, SubAssessmentList) (SubAssessmentList, error))`
-- Function `NewComplianceListPage` parameter(s) have been changed from `(func(context.Context, ComplianceList) (ComplianceList, error))` to `(ComplianceList, func(context.Context, ComplianceList) (ComplianceList, error))`
-- Function `NewAutomationListPage` parameter(s) have been changed from `(func(context.Context, AutomationList) (AutomationList, error))` to `(AutomationList, func(context.Context, AutomationList) (AutomationList, error))`
-- Function `NewTaskListPage` parameter(s) have been changed from `(func(context.Context, TaskList) (TaskList, error))` to `(TaskList, func(context.Context, TaskList) (TaskList, error))`
-- Function `NewAlertsSuppressionRulesListPage` parameter(s) have been changed from `(func(context.Context, AlertsSuppressionRulesList) (AlertsSuppressionRulesList, error))` to `(AlertsSuppressionRulesList, func(context.Context, AlertsSuppressionRulesList) (AlertsSuppressionRulesList, error))`
-- Function `NewDeviceSecurityGroupListPage` parameter(s) have been changed from `(func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error))` to `(DeviceSecurityGroupList, func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error))`
-- Function `NewRegulatoryComplianceAssessmentListPage` parameter(s) have been changed from `(func(context.Context, RegulatoryComplianceAssessmentList) (RegulatoryComplianceAssessmentList, error))` to `(RegulatoryComplianceAssessmentList, func(context.Context, RegulatoryComplianceAssessmentList) (RegulatoryComplianceAssessmentList, error))`
-- Function `NewAlertListPage` parameter(s) have been changed from `(func(context.Context, AlertList) (AlertList, error))` to `(AlertList, func(context.Context, AlertList) (AlertList, error))`
-- Function `NewAllowedConnectionsListPage` parameter(s) have been changed from `(func(context.Context, AllowedConnectionsList) (AllowedConnectionsList, error))` to `(AllowedConnectionsList, func(context.Context, AllowedConnectionsList) (AllowedConnectionsList, error))`
-- Function `NewOperationListPage` parameter(s) have been changed from `(func(context.Context, OperationList) (OperationList, error))` to `(OperationList, func(context.Context, OperationList) (OperationList, error))`
-- Function `NewAdaptiveNetworkHardeningsListPage` parameter(s) have been changed from `(func(context.Context, AdaptiveNetworkHardeningsList) (AdaptiveNetworkHardeningsList, error))` to `(AdaptiveNetworkHardeningsList, func(context.Context, AdaptiveNetworkHardeningsList) (AdaptiveNetworkHardeningsList, error))`
-- Function `NewAutoProvisioningSettingListPage` parameter(s) have been changed from `(func(context.Context, AutoProvisioningSettingList) (AutoProvisioningSettingList, error))` to `(AutoProvisioningSettingList, func(context.Context, AutoProvisioningSettingList) (AutoProvisioningSettingList, error))`
-- Function `NewContactListPage` parameter(s) have been changed from `(func(context.Context, ContactList) (ContactList, error))` to `(ContactList, func(context.Context, ContactList) (ContactList, error))`
-- Function `NewSecureScoreControlListPage` parameter(s) have been changed from `(func(context.Context, SecureScoreControlList) (SecureScoreControlList, error))` to `(SecureScoreControlList, func(context.Context, SecureScoreControlList) (SecureScoreControlList, error))`
-- Function `NewRegulatoryComplianceControlListPage` parameter(s) have been changed from `(func(context.Context, RegulatoryComplianceControlList) (RegulatoryComplianceControlList, error))` to `(RegulatoryComplianceControlList, func(context.Context, RegulatoryComplianceControlList) (RegulatoryComplianceControlList, error))`
-- Function `NewIoTSecurityAggregatedAlertListPage` parameter(s) have been changed from `(func(context.Context, IoTSecurityAggregatedAlertList) (IoTSecurityAggregatedAlertList, error))` to `(IoTSecurityAggregatedAlertList, func(context.Context, IoTSecurityAggregatedAlertList) (IoTSecurityAggregatedAlertList, error))`
-- Function `NewIoTSecuritySolutionsListPage` parameter(s) have been changed from `(func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error))` to `(IoTSecuritySolutionsList, func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error))`
-- Function `NewAscLocationListPage` parameter(s) have been changed from `(func(context.Context, AscLocationList) (AscLocationList, error))` to `(AscLocationList, func(context.Context, AscLocationList) (AscLocationList, error))`
-- Function `NewWorkspaceSettingListPage` parameter(s) have been changed from `(func(context.Context, WorkspaceSettingList) (WorkspaceSettingList, error))` to `(WorkspaceSettingList, func(context.Context, WorkspaceSettingList) (WorkspaceSettingList, error))`
-- Function `NewDiscoveredSecuritySolutionListPage` parameter(s) have been changed from `(func(context.Context, DiscoveredSecuritySolutionList) (DiscoveredSecuritySolutionList, error))` to `(DiscoveredSecuritySolutionList, func(context.Context, DiscoveredSecuritySolutionList) (DiscoveredSecuritySolutionList, error))`
-- Function `NewSecureScoresListPage` parameter(s) have been changed from `(func(context.Context, SecureScoresList) (SecureScoresList, error))` to `(SecureScoresList, func(context.Context, SecureScoresList) (SecureScoresList, error))`
-- Function `NewRegulatoryComplianceStandardListPage` parameter(s) have been changed from `(func(context.Context, RegulatoryComplianceStandardList) (RegulatoryComplianceStandardList, error))` to `(RegulatoryComplianceStandardList, func(context.Context, RegulatoryComplianceStandardList) (RegulatoryComplianceStandardList, error))`
-- Function `NewIoTSecurityAggregatedRecommendationListPage` parameter(s) have been changed from `(func(context.Context, IoTSecurityAggregatedRecommendationList) (IoTSecurityAggregatedRecommendationList, error))` to `(IoTSecurityAggregatedRecommendationList, func(context.Context, IoTSecurityAggregatedRecommendationList) (IoTSecurityAggregatedRecommendationList, error))`
-- Function `NewSettingsListPage` parameter(s) have been changed from `(func(context.Context, SettingsList) (SettingsList, error))` to `(SettingsList, func(context.Context, SettingsList) (SettingsList, error))`
-- Function `NewExternalSecuritySolutionListPage` parameter(s) have been changed from `(func(context.Context, ExternalSecuritySolutionList) (ExternalSecuritySolutionList, error))` to `(ExternalSecuritySolutionList, func(context.Context, ExternalSecuritySolutionList) (ExternalSecuritySolutionList, error))`
-- Function `NewInformationProtectionPolicyListPage` parameter(s) have been changed from `(func(context.Context, InformationProtectionPolicyList) (InformationProtectionPolicyList, error))` to `(InformationProtectionPolicyList, func(context.Context, InformationProtectionPolicyList) (InformationProtectionPolicyList, error))`
-- Function `NewConnectorSettingListPage` parameter(s) have been changed from `(func(context.Context, ConnectorSettingList) (ConnectorSettingList, error))` to `(ConnectorSettingList, func(context.Context, ConnectorSettingList) (ConnectorSettingList, error))`
-- Function `NewSecureScoreControlDefinitionListPage` parameter(s) have been changed from `(func(context.Context, SecureScoreControlDefinitionList) (SecureScoreControlDefinitionList, error))` to `(SecureScoreControlDefinitionList, func(context.Context, SecureScoreControlDefinitionList) (SecureScoreControlDefinitionList, error))`
-- Function `NewTopologyListPage` parameter(s) have been changed from `(func(context.Context, TopologyList) (TopologyList, error))` to `(TopologyList, func(context.Context, TopologyList) (TopologyList, error))`
-- Type of `HTTPC2DMessagesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `MqttC2DRejectedMessagesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `ProcessNotAllowed.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `AmqpC2DRejectedMessagesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `HTTPD2CMessagesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `UnauthorizedOperationsNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `DenylistCustomAlertRule.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `ListCustomAlertRule.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `LocalUserNotAllowed.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `TwinUpdatesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `ActiveConnectionsNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `ConnectionToIPNotAllowed.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `MqttD2CMessagesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `ThresholdCustomAlertRule.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `TimeWindowCustomAlertRule.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `FileUploadsNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `AmqpD2CMessagesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `DirectMethodInvokesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `AmqpC2DMessagesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `FailedLocalLoginsNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `HTTPC2DRejectedMessagesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `MqttC2DMessagesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `AllowlistCustomAlertRule.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `CustomAlertRule.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
-- Type of `QueuePurgesNotInAllowedRange.RuleType` has been changed from `RuleType` to `RuleTypeBasicCustomAlertRule`
+### Removed Funcs
 
-## New Content
+1. *AdaptiveNetworkHardeningsEnforceFuture.Result(AdaptiveNetworkHardeningsClient) (autorest.Response, error)
 
-- New const `RuleSeverityHigh`
-- New const `ScanStateFailed`
-- New const `ScanStateInProgress`
-- New const `Recurring`
-- New const `PositiveList`
-- New const `SecureScoreControls`
-- New const `NonFinding`
-- New const `SecureScores`
-- New const `NegativeList`
-- New const `ScanStateFailedToRun`
-- New const `Binary`
-- New const `OnDemand`
-- New const `RuleSeverityMedium`
-- New const `RuleSeverityLow`
-- New const `BaselineExpected`
-- New const `RuleSeverityObsolete`
-- New const `InternalError`
-- New const `ScanStatePassed`
-- New const `RuleSeverityInformational`
-- New const `Finding`
-- New function `NewSQLVulnerabilityAssessmentScansClient(string, string) SQLVulnerabilityAssessmentScansClient`
-- New function `SQLVulnerabilityAssessmentScansClient.ListPreparer(context.Context, string, string, string) (*http.Request, error)`
-- New function `SQLVulnerabilityAssessmentBaselineRulesClient.ListSender(*http.Request) (*http.Response, error)`
-- New function `NewSQLVulnerabilityAssessmentScanResultsClient(string, string) SQLVulnerabilityAssessmentScanResultsClient`
-- New function `ScanResult.MarshalJSON() ([]byte, error)`
-- New function `PossibleScanTriggerTypeValues() []ScanTriggerType`
-- New function `SQLVulnerabilityAssessmentScanResultsClient.List(context.Context, string, string, string, string) (ScanResults, error)`
-- New function `SQLVulnerabilityAssessmentBaselineRulesClient.GetResponder(*http.Response) (RuleResults, error)`
-- New function `SQLVulnerabilityAssessmentScansClient.GetPreparer(context.Context, string, string, string, string) (*http.Request, error)`
-- New function `PossibleRuleStatusValues() []RuleStatus`
-- New function `SQLVulnerabilityAssessmentBaselineRulesClient.AddSender(*http.Request) (*http.Response, error)`
-- New function `SQLVulnerabilityAssessmentScansClient.GetResponder(*http.Response) (Scan, error)`
-- New function `SQLVulnerabilityAssessmentScansClient.GetSender(*http.Request) (*http.Response, error)`
-- New function `SQLVulnerabilityAssessmentBaselineRulesClient.Add(context.Context, string, string, string, *RulesResultsInput) (RulesResults, error)`
-- New function `SQLVulnerabilityAssessmentScanResultsClient.ListSender(*http.Request) (*http.Response, error)`
-- New function `PossibleScanStateValues() []ScanState`
-- New function `SQLVulnerabilityAssessmentBaselineRulesClient.CreateOrUpdatePreparer(context.Context, string, string, string, string, *RuleResultsInput) (*http.Request, error)`
-- New function `SQLVulnerabilityAssessmentBaselineRulesClient.GetPreparer(context.Context, string, string, string, string) (*http.Request, error)`
-- New function `SQLVulnerabilityAssessmentBaselineRulesClient.Delete(context.Context, string, string, string, string) (autorest.Response, error)`
-- New function `SQLVulnerabilityAssessmentBaselineRulesClient.AddPreparer(context.Context, string, string, string, *RulesResultsInput) (*http.Request, error)`
-- New function `NewSQLVulnerabilityAssessmentBaselineRulesClientWithBaseURI(string, string, string) SQLVulnerabilityAssessmentBaselineRulesClient`
-- New function `SQLVulnerabilityAssessmentScansClient.ListResponder(*http.Response) (Scans, error)`
-- New function `SQLVulnerabilityAssessmentScanResultsClient.GetPreparer(context.Context, string, string, string, string, string) (*http.Request, error)`
-- New function `SQLVulnerabilityAssessmentBaselineRulesClient.DeleteSender(*http.Request) (*http.Response, error)`
-- New function `SQLVulnerabilityAssessmentScanResultsClient.GetResponder(*http.Response) (ScanResult, error)`
-- New function `NewSQLVulnerabilityAssessmentScanResultsClientWithBaseURI(string, string, string) SQLVulnerabilityAssessmentScanResultsClient`
-- New function `Scan.MarshalJSON() ([]byte, error)`
-- New function `SQLVulnerabilityAssessmentScanResultsClient.ListResponder(*http.Response) (ScanResults, error)`
-- New function `SQLVulnerabilityAssessmentScansClient.Get(context.Context, string, string, string, string) (Scan, error)`
-- New function `SQLVulnerabilityAssessmentBaselineRulesClient.Get(context.Context, string, string, string, string) (RuleResults, error)`
-- New function `SQLVulnerabilityAssessmentBaselineRulesClient.DeletePreparer(context.Context, string, string, string, string) (*http.Request, error)`
-- New function `SQLVulnerabilityAssessmentBaselineRulesClient.GetSender(*http.Request) (*http.Response, error)`
-- New function `SQLVulnerabilityAssessmentBaselineRulesClient.ListPreparer(context.Context, string, string, string) (*http.Request, error)`
-- New function `SQLVulnerabilityAssessmentScanResultsClient.GetSender(*http.Request) (*http.Response, error)`
-- New function `RulesResultsInput.MarshalJSON() ([]byte, error)`
-- New function `SQLVulnerabilityAssessmentScansClient.List(context.Context, string, string, string) (Scans, error)`
-- New function `PossibleRuleTypeBasicCustomAlertRuleValues() []RuleTypeBasicCustomAlertRule`
-- New function `SQLVulnerabilityAssessmentBaselineRulesClient.CreateOrUpdateSender(*http.Request) (*http.Response, error)`
-- New function `SQLVulnerabilityAssessmentScanResultsClient.ListPreparer(context.Context, string, string, string, string) (*http.Request, error)`
-- New function `SQLVulnerabilityAssessmentBaselineRulesClient.CreateOrUpdate(context.Context, string, string, string, string, *RuleResultsInput) (RuleResults, error)`
-- New function `RuleResults.MarshalJSON() ([]byte, error)`
-- New function `NewSQLVulnerabilityAssessmentBaselineRulesClient(string, string) SQLVulnerabilityAssessmentBaselineRulesClient`
-- New function `SQLVulnerabilityAssessmentBaselineRulesClient.ListResponder(*http.Response) (RulesResults, error)`
-- New function `SQLVulnerabilityAssessmentBaselineRulesClient.List(context.Context, string, string, string) (RulesResults, error)`
-- New function `SQLVulnerabilityAssessmentScanResultsClient.Get(context.Context, string, string, string, string, string) (ScanResult, error)`
-- New function `PossibleRuleSeverityValues() []RuleSeverity`
-- New function `NewSQLVulnerabilityAssessmentScansClientWithBaseURI(string, string, string) SQLVulnerabilityAssessmentScansClient`
-- New function `SQLVulnerabilityAssessmentBaselineRulesClient.DeleteResponder(*http.Response) (autorest.Response, error)`
-- New function `SQLVulnerabilityAssessmentBaselineRulesClient.CreateOrUpdateResponder(*http.Response) (RuleResults, error)`
-- New function `SQLVulnerabilityAssessmentBaselineRulesClient.AddResponder(*http.Response) (RulesResults, error)`
-- New function `SQLVulnerabilityAssessmentScansClient.ListSender(*http.Request) (*http.Response, error)`
-- New struct `Baseline`
-- New struct `BaselineAdjustedResult`
-- New struct `BenchmarkReference`
-- New struct `QueryCheck`
-- New struct `Remediation`
-- New struct `RuleResults`
-- New struct `RuleResultsInput`
-- New struct `RuleResultsProperties`
-- New struct `RulesResults`
-- New struct `RulesResultsInput`
-- New struct `SQLVulnerabilityAssessmentBaselineRulesClient`
-- New struct `SQLVulnerabilityAssessmentScanResultsClient`
-- New struct `SQLVulnerabilityAssessmentScansClient`
-- New struct `Scan`
-- New struct `ScanProperties`
-- New struct `ScanResult`
-- New struct `ScanResultProperties`
-- New struct `ScanResults`
-- New struct `Scans`
-- New struct `VaRule`
+## Struct Changes
+
+### Removed Struct Fields
+
+1. AdaptiveNetworkHardeningsEnforceFuture.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. AdaptiveNetworkHardeningsEnforceFuture.Result
+1. AdaptiveNetworkHardeningsEnforceFuture.azure.FutureAPI

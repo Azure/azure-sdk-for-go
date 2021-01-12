@@ -87,7 +87,7 @@ func (client DiskPoolsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -126,7 +126,29 @@ func (client DiskPoolsClient) CreateOrUpdateSender(req *http.Request) (future Di
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DiskPoolsClient) (dp DiskPool, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storagepool.DiskPoolsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if dp.Response.Response, err = future.GetResult(sender); err == nil && dp.Response.Response.StatusCode != http.StatusNoContent {
+			dp, err = client.CreateOrUpdateResponder(dp.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsCreateOrUpdateFuture", "Result", dp.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -179,7 +201,7 @@ func (client DiskPoolsClient) Delete(ctx context.Context, resourceGroupName stri
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -215,7 +237,23 @@ func (client DiskPoolsClient) DeleteSender(req *http.Request) (future DiskPoolsD
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DiskPoolsClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storagepool.DiskPoolsDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -365,6 +403,7 @@ func (client DiskPoolsClient) ListByResourceGroup(ctx context.Context, resourceG
 	}
 	if result.dplr.hasNextLink() && result.dplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -425,7 +464,6 @@ func (client DiskPoolsClient) listByResourceGroupNextResults(ctx context.Context
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -485,6 +523,7 @@ func (client DiskPoolsClient) ListBySubscription(ctx context.Context) (result Di
 	}
 	if result.dplr.hasNextLink() && result.dplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -544,7 +583,6 @@ func (client DiskPoolsClient) listBySubscriptionNextResults(ctx context.Context,
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

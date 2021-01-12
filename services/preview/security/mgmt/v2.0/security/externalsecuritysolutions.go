@@ -170,6 +170,7 @@ func (client ExternalSecuritySolutionsClient) List(ctx context.Context) (result 
 	}
 	if result.essl.hasNextLink() && result.essl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -229,7 +230,6 @@ func (client ExternalSecuritySolutionsClient) listNextResults(ctx context.Contex
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ExternalSecuritySolutionsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -289,6 +289,7 @@ func (client ExternalSecuritySolutionsClient) ListByHomeRegion(ctx context.Conte
 	}
 	if result.essl.hasNextLink() && result.essl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -349,7 +350,6 @@ func (client ExternalSecuritySolutionsClient) listByHomeRegionNextResults(ctx co
 	result, err = client.ListByHomeRegionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ExternalSecuritySolutionsClient", "listByHomeRegionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

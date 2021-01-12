@@ -241,7 +241,7 @@ func (client ServiceFabricSchedulesClient) Execute(ctx context.Context, resource
 
 	result, err = client.ExecuteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.ServiceFabricSchedulesClient", "Execute", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.ServiceFabricSchedulesClient", "Execute", nil, "Failure sending request")
 		return
 	}
 
@@ -280,7 +280,23 @@ func (client ServiceFabricSchedulesClient) ExecuteSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client ServiceFabricSchedulesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "dtl.ServiceFabricSchedulesExecuteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("dtl.ServiceFabricSchedulesExecuteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -423,6 +439,7 @@ func (client ServiceFabricSchedulesClient) List(ctx context.Context, resourceGro
 	}
 	if result.sl.hasNextLink() && result.sl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -498,7 +515,6 @@ func (client ServiceFabricSchedulesClient) listNextResults(ctx context.Context, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ServiceFabricSchedulesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

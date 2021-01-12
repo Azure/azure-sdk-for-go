@@ -326,6 +326,7 @@ func (client CertificatesClient) ListByIntegrationAccounts(ctx context.Context, 
 	}
 	if result.iaclr.hasNextLink() && result.iaclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -390,7 +391,6 @@ func (client CertificatesClient) listByIntegrationAccountsNextResults(ctx contex
 	result, err = client.ListByIntegrationAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.CertificatesClient", "listByIntegrationAccountsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

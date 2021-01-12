@@ -157,30 +157,10 @@ func (cdp CommunicationDetailsProperties) MarshalJSON() ([]byte, error) {
 // CommunicationsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type CommunicationsCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *CommunicationsCreateFuture) Result(client CommunicationsClient) (cd CommunicationDetails, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "support.CommunicationsCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("support.CommunicationsCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if cd.Response.Response, err = future.GetResult(sender); err == nil && cd.Response.Response.StatusCode != http.StatusNoContent {
-		cd, err = client.CreateResponder(cd.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "support.CommunicationsCreateFuture", "Result", cd.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(CommunicationsClient) (CommunicationDetails, error)
 }
 
 // CommunicationsListResult collection of Communication resources.
@@ -833,30 +813,10 @@ func (tdp TicketDetailsProperties) MarshalJSON() ([]byte, error) {
 // TicketsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type TicketsCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *TicketsCreateFuture) Result(client TicketsClient) (td TicketDetails, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "support.TicketsCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("support.TicketsCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if td.Response.Response, err = future.GetResult(sender); err == nil && td.Response.Response.StatusCode != http.StatusNoContent {
-		td, err = client.CreateResponder(td.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "support.TicketsCreateFuture", "Result", td.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(TicketsClient) (TicketDetails, error)
 }
 
 // TicketsListResult object that represents a collection of SupportTicket resources.

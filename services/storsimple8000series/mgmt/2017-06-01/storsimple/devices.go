@@ -163,7 +163,7 @@ func (client DevicesClient) Configure(ctx context.Context, parameters ConfigureD
 
 	result, err = client.ConfigureSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "Configure", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "Configure", nil, "Failure sending request")
 		return
 	}
 
@@ -201,7 +201,23 @@ func (client DevicesClient) ConfigureSender(req *http.Request) (future DevicesCo
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DevicesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.DevicesConfigureFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.DevicesConfigureFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -247,7 +263,7 @@ func (client DevicesClient) Deactivate(ctx context.Context, deviceName string, r
 
 	result, err = client.DeactivateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "Deactivate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "Deactivate", nil, "Failure sending request")
 		return
 	}
 
@@ -284,7 +300,23 @@ func (client DevicesClient) DeactivateSender(req *http.Request) (future DevicesD
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DevicesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.DevicesDeactivateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.DevicesDeactivateFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -330,7 +362,7 @@ func (client DevicesClient) Delete(ctx context.Context, deviceName string, resou
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -367,7 +399,23 @@ func (client DevicesClient) DeleteSender(req *http.Request) (future DevicesDelet
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DevicesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.DevicesDeleteFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.DevicesDeleteFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -415,7 +463,7 @@ func (client DevicesClient) Failover(ctx context.Context, sourceDeviceName strin
 
 	result, err = client.FailoverSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "Failover", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "Failover", nil, "Failure sending request")
 		return
 	}
 
@@ -454,7 +502,23 @@ func (client DevicesClient) FailoverSender(req *http.Request) (future DevicesFai
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DevicesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.DevicesFailoverFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.DevicesFailoverFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -676,7 +740,7 @@ func (client DevicesClient) InstallUpdates(ctx context.Context, deviceName strin
 
 	result, err = client.InstallUpdatesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "InstallUpdates", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "InstallUpdates", nil, "Failure sending request")
 		return
 	}
 
@@ -713,7 +777,23 @@ func (client DevicesClient) InstallUpdatesSender(req *http.Request) (future Devi
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DevicesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.DevicesInstallUpdatesFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.DevicesInstallUpdatesFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -1196,7 +1276,7 @@ func (client DevicesClient) ScanForUpdates(ctx context.Context, deviceName strin
 
 	result, err = client.ScanForUpdatesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "ScanForUpdates", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "ScanForUpdates", nil, "Failure sending request")
 		return
 	}
 
@@ -1233,7 +1313,23 @@ func (client DevicesClient) ScanForUpdatesSender(req *http.Request) (future Devi
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client DevicesClient) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storsimple.DevicesScanForUpdatesFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("storsimple.DevicesScanForUpdatesFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

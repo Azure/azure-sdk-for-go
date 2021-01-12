@@ -619,6 +619,7 @@ func (client TaskClient) List(ctx context.Context, jobID string, filter string, 
 	}
 	if result.ctlr.hasNextLink() && result.ctlr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -716,7 +717,6 @@ func (client TaskClient) listNextResults(ctx context.Context, lastResults CloudT
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.TaskClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

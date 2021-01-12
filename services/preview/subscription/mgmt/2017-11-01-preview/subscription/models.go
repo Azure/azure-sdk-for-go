@@ -292,30 +292,10 @@ func (dp DefinitionProperties) MarshalJSON() ([]byte, error) {
 // DefinitionsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DefinitionsCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DefinitionsCreateFuture) Result(client DefinitionsClient) (d Definition, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.DefinitionsCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("subscription.DefinitionsCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
-		d, err = client.CreateResponder(d.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "subscription.DefinitionsCreateFuture", "Result", d.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DefinitionsClient) (Definition, error)
 }
 
 // ErrorResponse describes the format of Error response.

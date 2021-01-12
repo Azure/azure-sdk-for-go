@@ -320,6 +320,7 @@ func (client PortsClient) ListAcceptingProcesses(ctx context.Context, resourceGr
 	}
 	if result.pc.hasNextLink() && result.pc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -389,7 +390,6 @@ func (client PortsClient) listAcceptingProcessesNextResults(ctx context.Context,
 	result, err = client.ListAcceptingProcessesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.PortsClient", "listAcceptingProcessesNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -470,6 +470,7 @@ func (client PortsClient) ListConnections(ctx context.Context, resourceGroupName
 	}
 	if result.cc.hasNextLink() && result.cc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -539,7 +540,6 @@ func (client PortsClient) listConnectionsNextResults(ctx context.Context, lastRe
 	result, err = client.ListConnectionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.PortsClient", "listConnectionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

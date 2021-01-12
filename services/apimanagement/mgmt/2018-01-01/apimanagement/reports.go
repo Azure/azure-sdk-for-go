@@ -95,6 +95,7 @@ func (client ReportsClient) ListByAPI(ctx context.Context, resourceGroupName str
 	}
 	if result.rc.hasNextLink() && result.rc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -163,7 +164,6 @@ func (client ReportsClient) listByAPINextResults(ctx context.Context, lastResult
 	result, err = client.ListByAPIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ReportsClient", "listByAPINextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -237,6 +237,7 @@ func (client ReportsClient) ListByGeo(ctx context.Context, resourceGroupName str
 	}
 	if result.rc.hasNextLink() && result.rc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -307,7 +308,6 @@ func (client ReportsClient) listByGeoNextResults(ctx context.Context, lastResult
 	result, err = client.ListByGeoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ReportsClient", "listByGeoNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -381,6 +381,7 @@ func (client ReportsClient) ListByOperation(ctx context.Context, resourceGroupNa
 	}
 	if result.rc.hasNextLink() && result.rc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -449,7 +450,6 @@ func (client ReportsClient) listByOperationNextResults(ctx context.Context, last
 	result, err = client.ListByOperationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ReportsClient", "listByOperationNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -523,6 +523,7 @@ func (client ReportsClient) ListByProduct(ctx context.Context, resourceGroupName
 	}
 	if result.rc.hasNextLink() && result.rc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -591,7 +592,6 @@ func (client ReportsClient) listByProductNextResults(ctx context.Context, lastRe
 	result, err = client.ListByProductResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ReportsClient", "listByProductNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -765,6 +765,7 @@ func (client ReportsClient) ListBySubscription(ctx context.Context, resourceGrou
 	}
 	if result.rc.hasNextLink() && result.rc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -835,7 +836,6 @@ func (client ReportsClient) listBySubscriptionNextResults(ctx context.Context, l
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ReportsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -912,6 +912,7 @@ func (client ReportsClient) ListByTime(ctx context.Context, resourceGroupName st
 	}
 	if result.rc.hasNextLink() && result.rc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -983,7 +984,6 @@ func (client ReportsClient) listByTimeNextResults(ctx context.Context, lastResul
 	result, err = client.ListByTimeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ReportsClient", "listByTimeNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -1057,6 +1057,7 @@ func (client ReportsClient) ListByUser(ctx context.Context, resourceGroupName st
 	}
 	if result.rc.hasNextLink() && result.rc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1125,7 +1126,6 @@ func (client ReportsClient) listByUserNextResults(ctx context.Context, lastResul
 	result, err = client.ListByUserResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ReportsClient", "listByUserNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

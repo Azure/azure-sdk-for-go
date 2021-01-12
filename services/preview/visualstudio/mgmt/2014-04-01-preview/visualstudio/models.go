@@ -18,11 +18,9 @@ package visualstudio
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
 )
 
 // The package's fully qualified name.
@@ -292,30 +290,10 @@ type ProjectResourceListResult struct {
 // ProjectsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ProjectsCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ProjectsCreateFuture) Result(client ProjectsClient) (pr ProjectResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "visualstudio.ProjectsCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("visualstudio.ProjectsCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if pr.Response.Response, err = future.GetResult(sender); err == nil && pr.Response.Response.StatusCode != http.StatusNoContent {
-		pr, err = client.CreateResponder(pr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "visualstudio.ProjectsCreateFuture", "Result", pr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ProjectsClient) (ProjectResource, error)
 }
 
 // Resource a generic Azure Resource Manager resource.

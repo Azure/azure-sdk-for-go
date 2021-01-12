@@ -74,7 +74,7 @@ func (client VendorNetworkFunctionsClient) CreateOrUpdate(ctx context.Context, l
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorNetworkFunctionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorNetworkFunctionsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -113,7 +113,29 @@ func (client VendorNetworkFunctionsClient) CreateOrUpdateSender(req *http.Reques
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client VendorNetworkFunctionsClient) (vnf VendorNetworkFunction, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybridnetwork.VendorNetworkFunctionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("hybridnetwork.VendorNetworkFunctionsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if vnf.Response.Response, err = future.GetResult(sender); err == nil && vnf.Response.Response.StatusCode != http.StatusNoContent {
+			vnf, err = client.CreateOrUpdateResponder(vnf.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "hybridnetwork.VendorNetworkFunctionsCreateOrUpdateFuture", "Result", vnf.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -258,6 +280,7 @@ func (client VendorNetworkFunctionsClient) List(ctx context.Context, locationNam
 	}
 	if result.vnflr.hasNextLink() && result.vnflr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -322,7 +345,6 @@ func (client VendorNetworkFunctionsClient) listNextResults(ctx context.Context, 
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorNetworkFunctionsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

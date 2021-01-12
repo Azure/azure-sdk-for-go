@@ -1,744 +1,126 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/synapse/data-plane/readme.md tag: `package-artifacts-2019-06-01-preview`
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator @microsoft.azure/autorest.go@2.1.168
 
 ## Breaking Changes
 
-- Const `ArrayOfObjects` type has been changed from `JSONWriteFilePattern` to `JSONFormatFilePattern`
-- Const `SetOfObjects` type has been changed from `JSONWriteFilePattern` to `JSONFormatFilePattern`
-- Function `NotebookClient.DeleteNotebook` return value(s) have been changed from `(autorest.Response, error)` to `(NotebookDeleteNotebookFuture, error)`
-- Function `TriggerClient.DeleteTriggerSender` return value(s) have been changed from `(*http.Response, error)` to `(TriggerDeleteTriggerFuture, error)`
-- Function `NotebookClient.DeleteNotebookSender` return value(s) have been changed from `(*http.Response, error)` to `(NotebookDeleteNotebookFuture, error)`
-- Function `NewQueryDataFlowDebugSessionsResponsePage` parameter(s) have been changed from `(func(context.Context, QueryDataFlowDebugSessionsResponse) (QueryDataFlowDebugSessionsResponse, error))` to `(QueryDataFlowDebugSessionsResponse, func(context.Context, QueryDataFlowDebugSessionsResponse) (QueryDataFlowDebugSessionsResponse, error))`
-- Function `PipelineClient.CreateOrUpdatePipelineSender` return value(s) have been changed from `(*http.Response, error)` to `(PipelineCreateOrUpdatePipelineFuture, error)`
-- Function `NewNotebookListResponsePage` parameter(s) have been changed from `(func(context.Context, NotebookListResponse) (NotebookListResponse, error))` to `(NotebookListResponse, func(context.Context, NotebookListResponse) (NotebookListResponse, error))`
-- Function `TriggerClient.CreateOrUpdateTrigger` return value(s) have been changed from `(TriggerResource, error)` to `(TriggerCreateOrUpdateTriggerFuture, error)`
-- Function `NewLinkedServiceListResponsePage` parameter(s) have been changed from `(func(context.Context, LinkedServiceListResponse) (LinkedServiceListResponse, error))` to `(LinkedServiceListResponse, func(context.Context, LinkedServiceListResponse) (LinkedServiceListResponse, error))`
-- Function `DatasetClient.CreateOrUpdateDatasetSender` return value(s) have been changed from `(*http.Response, error)` to `(DatasetCreateOrUpdateDatasetFuture, error)`
-- Function `TriggerClient.CreateOrUpdateTriggerSender` return value(s) have been changed from `(*http.Response, error)` to `(TriggerCreateOrUpdateTriggerFuture, error)`
-- Function `DatasetClient.CreateOrUpdateDataset` return value(s) have been changed from `(DatasetResource, error)` to `(DatasetCreateOrUpdateDatasetFuture, error)`
-- Function `NewTriggerListResponsePage` parameter(s) have been changed from `(func(context.Context, TriggerListResponse) (TriggerListResponse, error))` to `(TriggerListResponse, func(context.Context, TriggerListResponse) (TriggerListResponse, error))`
-- Function `DataFlowClient.CreateOrUpdateDataFlowSender` return value(s) have been changed from `(*http.Response, error)` to `(DataFlowCreateOrUpdateDataFlowFuture, error)`
-- Function `NewDatasetListResponsePage` parameter(s) have been changed from `(func(context.Context, DatasetListResponse) (DatasetListResponse, error))` to `(DatasetListResponse, func(context.Context, DatasetListResponse) (DatasetListResponse, error))`
-- Function `NewSQLScriptsListResponsePage` parameter(s) have been changed from `(func(context.Context, SQLScriptsListResponse) (SQLScriptsListResponse, error))` to `(SQLScriptsListResponse, func(context.Context, SQLScriptsListResponse) (SQLScriptsListResponse, error))`
-- Function `NewDataFlowListResponsePage` parameter(s) have been changed from `(func(context.Context, DataFlowListResponse) (DataFlowListResponse, error))` to `(DataFlowListResponse, func(context.Context, DataFlowListResponse) (DataFlowListResponse, error))`
-- Function `DatasetClient.DeleteDatasetSender` return value(s) have been changed from `(*http.Response, error)` to `(DatasetDeleteDatasetFuture, error)`
-- Function `LinkedServiceClient.CreateOrUpdateLinkedService` return value(s) have been changed from `(LinkedServiceResource, error)` to `(LinkedServiceCreateOrUpdateLinkedServiceFuture, error)`
-- Function `NotebookClient.CreateOrUpdateNotebookSender` return value(s) have been changed from `(*http.Response, error)` to `(NotebookCreateOrUpdateNotebookFuture, error)`
-- Function `DataFlowClient.DeleteDataFlowSender` return value(s) have been changed from `(*http.Response, error)` to `(DataFlowDeleteDataFlowFuture, error)`
-- Function `LinkedServiceClient.CreateOrUpdateLinkedServiceSender` return value(s) have been changed from `(*http.Response, error)` to `(LinkedServiceCreateOrUpdateLinkedServiceFuture, error)`
-- Function `PipelineClient.DeletePipelineSender` return value(s) have been changed from `(*http.Response, error)` to `(PipelineDeletePipelineFuture, error)`
-- Function `LinkedServiceClient.DeleteLinkedServiceSender` return value(s) have been changed from `(*http.Response, error)` to `(LinkedServiceDeleteLinkedServiceFuture, error)`
-- Function `LinkedServiceClient.DeleteLinkedService` return value(s) have been changed from `(autorest.Response, error)` to `(LinkedServiceDeleteLinkedServiceFuture, error)`
-- Function `NewPipelineListResponsePage` parameter(s) have been changed from `(func(context.Context, PipelineListResponse) (PipelineListResponse, error))` to `(PipelineListResponse, func(context.Context, PipelineListResponse) (PipelineListResponse, error))`
-- Function `PipelineClient.CreateOrUpdatePipeline` return value(s) have been changed from `(PipelineResource, error)` to `(PipelineCreateOrUpdatePipelineFuture, error)`
-- Function `TriggerClient.DeleteTrigger` return value(s) have been changed from `(autorest.Response, error)` to `(TriggerDeleteTriggerFuture, error)`
-- Function `NotebookClient.CreateOrUpdateNotebook` return value(s) have been changed from `(NotebookResource, error)` to `(NotebookCreateOrUpdateNotebookFuture, error)`
-- Function `DatasetClient.DeleteDataset` return value(s) have been changed from `(autorest.Response, error)` to `(DatasetDeleteDatasetFuture, error)`
-- Function `DataFlowClient.CreateOrUpdateDataFlow` return value(s) have been changed from `(DataFlowResource, error)` to `(DataFlowCreateOrUpdateDataFlowFuture, error)`
-- Function `DataFlowClient.DeleteDataFlow` return value(s) have been changed from `(autorest.Response, error)` to `(DataFlowDeleteDataFlowFuture, error)`
-- Function `NewSparkJobDefinitionsListResponsePage` parameter(s) have been changed from `(func(context.Context, SparkJobDefinitionsListResponse) (SparkJobDefinitionsListResponse, error))` to `(SparkJobDefinitionsListResponse, func(context.Context, SparkJobDefinitionsListResponse) (SparkJobDefinitionsListResponse, error))`
-- Function `PipelineClient.DeletePipeline` return value(s) have been changed from `(autorest.Response, error)` to `(PipelineDeletePipelineFuture, error)`
-- Type of `Workspace.Identity` has been changed from `*WorkspaceIdentity` to `*ManagedIdentity`
-- Type of `RecurrenceSchedule.WeekDays` has been changed from `*[]DaysOfWeek` to `*[]DayOfWeek`
-- Const `DaysOfWeekTuesday` has been removed
-- Const `DaysOfWeekFriday` has been removed
-- Const `DaysOfWeekSaturday` has been removed
-- Const `DaysOfWeekWednesday` has been removed
-- Const `SQLOnDemand` has been removed
-- Const `SQLPool` has been removed
-- Const `DaysOfWeekThursday` has been removed
-- Const `DaysOfWeekSunday` has been removed
-- Const `DaysOfWeekMonday` has been removed
-- Function `Resource.MarshalJSON` has been removed
-- Function `PossibleDaysOfWeekValues` has been removed
-- Field `ETag` of struct `Workspace` has been removed
-- Field `AdditionalProperties` of struct `Workspace` has been removed
-- Field `CreateTime` of struct `WorkspaceProperties` has been removed
-- Field `Version` of struct `WorkspaceProperties` has been removed
-- Field `DefaultStorage` of struct `WorkspaceProperties` has been removed
-- Field `DefaultSQLServer` of struct `WorkspaceProperties` has been removed
-- Field `Location` of struct `Resource` has been removed
-- Field `Tags` of struct `Resource` has been removed
-- Field `ETag` of struct `Resource` has been removed
+### Removed Funcs
 
-## New Content
+1. *DataFlowCreateOrUpdateDataFlowFuture.Result(DataFlowClient) (DataFlowResource, error)
+1. *DataFlowDebugSessionCreateDataFlowDebugSessionFuture.Result(DataFlowDebugSessionClient) (CreateDataFlowDebugSessionResponse, error)
+1. *DataFlowDebugSessionExecuteCommandFuture.Result(DataFlowDebugSessionClient) (DataFlowDebugCommandResponse, error)
+1. *DataFlowDeleteDataFlowFuture.Result(DataFlowClient) (autorest.Response, error)
+1. *DataFlowRenameDataFlowFuture.Result(DataFlowClient) (autorest.Response, error)
+1. *DatasetCreateOrUpdateDatasetFuture.Result(DatasetClient) (DatasetResource, error)
+1. *DatasetDeleteDatasetFuture.Result(DatasetClient) (autorest.Response, error)
+1. *DatasetRenameDatasetFuture.Result(DatasetClient) (autorest.Response, error)
+1. *LinkedServiceCreateOrUpdateLinkedServiceFuture.Result(LinkedServiceClient) (LinkedServiceResource, error)
+1. *LinkedServiceDeleteLinkedServiceFuture.Result(LinkedServiceClient) (autorest.Response, error)
+1. *LinkedServiceRenameLinkedServiceFuture.Result(LinkedServiceClient) (autorest.Response, error)
+1. *NotebookCreateOrUpdateNotebookFuture.Result(NotebookClient) (NotebookResource, error)
+1. *NotebookDeleteNotebookFuture.Result(NotebookClient) (autorest.Response, error)
+1. *NotebookRenameNotebookFuture.Result(NotebookClient) (autorest.Response, error)
+1. *PipelineCreateOrUpdatePipelineFuture.Result(PipelineClient) (PipelineResource, error)
+1. *PipelineDeletePipelineFuture.Result(PipelineClient) (autorest.Response, error)
+1. *PipelineRenamePipelineFuture.Result(PipelineClient) (autorest.Response, error)
+1. *SQLScriptRenameSQLScriptFuture.Result(SQLScriptClient) (autorest.Response, error)
+1. *SparkJobDefinitionDebugSparkJobDefinitionFuture.Result(SparkJobDefinitionClient) (SparkBatchJob, error)
+1. *SparkJobDefinitionExecuteSparkJobDefinitionFuture.Result(SparkJobDefinitionClient) (SparkBatchJob, error)
+1. *SparkJobDefinitionRenameSparkJobDefinitionFuture.Result(SparkJobDefinitionClient) (autorest.Response, error)
+1. *TriggerCreateOrUpdateTriggerFuture.Result(TriggerClient) (TriggerResource, error)
+1. *TriggerDeleteTriggerFuture.Result(TriggerClient) (autorest.Response, error)
+1. *TriggerStartTriggerFuture.Result(TriggerClient) (autorest.Response, error)
+1. *TriggerStopTriggerFuture.Result(TriggerClient) (autorest.Response, error)
+1. *TriggerSubscribeTriggerToEventsFuture.Result(TriggerClient) (TriggerSubscriptionOperationStatus, error)
+1. *TriggerUnsubscribeTriggerFromEventsFuture.Result(TriggerClient) (TriggerSubscriptionOperationStatus, error)
 
-- New const `TypeSQLPoolStoredProcedure`
-- New const `IntegrationRuntimeSsisCatalogPricingTierPremiumRS`
-- New const `JSONWriteFilePatternSetOfObjects`
-- New const `LicenseIncluded`
-- New const `TypeSynapseNotebook`
-- New const `ResourceIdentityTypeSystemAssigned`
-- New const `TypeCopyTranslator`
-- New const `MergeFiles`
-- New const `TypeSparkJob`
-- New const `IntegrationRuntimeStateNeedRegistration`
-- New const `TypeTabularTranslator`
-- New const `NodeSizeFamilyNone`
-- New const `TypeComponentSetup`
-- New const `TypeSelfHosted`
-- New const `AuthorizationTypeKey`
-- New const `TypeDatasetStorageFormat`
-- New const `IntegrationRuntimeStateStarting`
-- New const `NodeSizeSmall`
-- New const `TypeParquetFormat`
-- New const `IntegrationRuntimeSsisCatalogPricingTierPremium`
-- New const `TypeOrcFormat`
-- New const `IntegrationRuntimeStateLimited`
-- New const `SQLConnectionTypeSQLOnDemand`
-- New const `NodeSizeNone`
-- New const `TypeCustomSetupBase`
-- New const `IntegrationRuntimeEntityReferenceTypeIntegrationRuntimeReference`
-- New const `TypeEnvironmentVariableSetup`
-- New const `Managed`
-- New const `TypeAvroFormat`
-- New const `IntegrationRuntimeStateStopping`
-- New const `IntegrationRuntimeStateOnline`
-- New const `IntegrationRuntimeStateStarted`
-- New const `TypeTextFormat`
-- New const `AuthorizationTypeRBAC`
-- New const `Enterprise`
-- New const `IntegrationRuntimeStateStopped`
-- New const `TypeManaged`
-- New const `NodeSizeXLarge`
-- New const `TypeJSONFormat`
-- New const `NodeSizeLarge`
-- New const `NodeSizeMedium`
-- New const `AuthorizationTypeLinkedIntegrationRuntimeType`
-- New const `SelfHosted`
-- New const `JSONWriteFilePatternArrayOfObjects`
-- New const `TypeCmdkeySetup`
-- New const `PreserveHierarchy`
-- New const `IntegrationRuntimeStateInitial`
-- New const `IntegrationRuntimeEntityReferenceTypeLinkedServiceReference`
-- New const `NodeSizeXXLarge`
-- New const `IntegrationRuntimeStateAccessDenied`
-- New const `ResourceIdentityTypeNone`
-- New const `IntegrationRuntimeStateOffline`
-- New const `NodeSizeXXXLarge`
-- New const `BasePrice`
-- New const `NodeSizeFamilyMemoryOptimized`
-- New const `Standard`
-- New const `IntegrationRuntimeSsisCatalogPricingTierStandard`
-- New const `IntegrationRuntimeSsisCatalogPricingTierBasic`
-- New const `FlattenHierarchy`
-- New const `SQLConnectionTypeSQLPool`
-- New const `TypeIntegrationRuntime`
-- New function `PossibleIntegrationRuntimeTypeValues() []IntegrationRuntimeType`
-- New function `*IntegrationRuntimeDataFlowProperties.UnmarshalJSON([]byte) error`
-- New function `*IntegrationRuntime.UnmarshalJSON([]byte) error`
-- New function `*IntegrationRuntimeSsisProperties.UnmarshalJSON([]byte) error`
-- New function `AzureMLBatchExecutionActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `ExecutionActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `SynapseNotebookActivity.AsDataLakeAnalyticsUSQLActivity() (*DataLakeAnalyticsUSQLActivity, bool)`
-- New function `SynapseNotebookActivity.AsWebActivity() (*WebActivity, bool)`
-- New function `SynapseNotebookActivity.AsAzureFunctionActivity() (*AzureFunctionActivity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsBasicExecutionActivity() (BasicExecutionActivity, bool)`
-- New function `ParquetFormat.AsParquetFormat() (*ParquetFormat, bool)`
-- New function `*IntegrationRuntimeComputeProperties.UnmarshalJSON([]byte) error`
-- New function `JSONFormat.AsTextFormat() (*TextFormat, bool)`
-- New function `SQLPoolsClient.Get(context.Context, string) (SQLPool, error)`
-- New function `PipelineClient.RenamePipelinePreparer(context.Context, string, RenameRequest) (*http.Request, error)`
-- New function `DatabricksSparkJarActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `SynapseNotebookActivity.AsSwitchActivity() (*SwitchActivity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsAppendVariableActivity() (*AppendVariableActivity, bool)`
-- New function `SwitchActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `AzureMLExecutePipelineActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `SynapseNotebookActivity.AsHDInsightSparkActivity() (*HDInsightSparkActivity, bool)`
-- New function `PossibleIntegrationRuntimeLicenseTypeValues() []IntegrationRuntimeLicenseType`
-- New function `PossibleJSONFormatFilePatternValues() []JSONFormatFilePattern`
-- New function `PrivateEndpointConnectionProperties.MarshalJSON() ([]byte, error)`
-- New function `SynapseNotebookActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `OrcFormat.AsDatasetStorageFormat() (*DatasetStorageFormat, bool)`
-- New function `SQLServerStoredProcedureActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `LinkedIntegrationRuntimeType.AsBasicLinkedIntegrationRuntimeType() (BasicLinkedIntegrationRuntimeType, bool)`
-- New function `HDInsightMapReduceActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `DeleteActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool)`
-- New function `DatabricksSparkPythonActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `DatabricksSparkPythonActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `DatabricksNotebookActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `IntegrationRuntimesClient.GetResponder(*http.Response) (IntegrationRuntimeResource, error)`
-- New function `BigDataPoolsClient.ListSender(*http.Request) (*http.Response, error)`
-- New function `CopyTranslator.MarshalJSON() ([]byte, error)`
-- New function `SynapseNotebookActivity.AsDatabricksNotebookActivity() (*DatabricksNotebookActivity, bool)`
-- New function `*IntegrationRuntimeResource.UnmarshalJSON([]byte) error`
-- New function `SynapseSparkJobDefinitionActivity.MarshalJSON() ([]byte, error)`
-- New function `SynapseNotebookActivity.AsCustomActivity() (*CustomActivity, bool)`
-- New function `LinkedIntegrationRuntimeType.AsLinkedIntegrationRuntimeKeyAuthorization() (*LinkedIntegrationRuntimeKeyAuthorization, bool)`
-- New function `EnvironmentVariableSetup.AsComponentSetup() (*ComponentSetup, bool)`
-- New function `*TextFormat.UnmarshalJSON([]byte) error`
-- New function `ParquetFormat.AsJSONFormat() (*JSONFormat, bool)`
-- New function `ValidationActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `ExecutePipelineActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsWebHookActivity() (*WebHookActivity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsHDInsightHiveActivity() (*HDInsightHiveActivity, bool)`
-- New function `OrcFormat.AsJSONFormat() (*JSONFormat, bool)`
-- New function `LookupActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `ControlActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `*SQLScriptRenameSQLScriptFuture.Result(SQLScriptClient) (autorest.Response, error)`
-- New function `BigDataPoolResourceInfo.MarshalJSON() ([]byte, error)`
-- New function `LinkedIntegrationRuntimeKeyAuthorization.AsBasicLinkedIntegrationRuntimeType() (BasicLinkedIntegrationRuntimeType, bool)`
-- New function `IntegrationRuntimeResource.MarshalJSON() ([]byte, error)`
-- New function `SynapseNotebookActivity.AsSQLServerStoredProcedureActivity() (*SQLServerStoredProcedureActivity, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsForEachActivity() (*ForEachActivity, bool)`
-- New function `CustomSetupBase.MarshalJSON() ([]byte, error)`
-- New function `IntegrationRuntime.AsManagedIntegrationRuntime() (*ManagedIntegrationRuntime, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsWaitActivity() (*WaitActivity, bool)`
-- New function `SynapseNotebookActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `SwitchActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `AzureMLExecutePipelineActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `CopyTranslator.AsBasicCopyTranslator() (BasicCopyTranslator, bool)`
-- New function `DatasetStorageFormat.AsOrcFormat() (*OrcFormat, bool)`
-- New function `JSONFormat.AsAvroFormat() (*AvroFormat, bool)`
-- New function `SQLPoolStoredProcedureActivity.MarshalJSON() ([]byte, error)`
-- New function `SQLPoolsClient.GetPreparer(context.Context, string) (*http.Request, error)`
-- New function `Activity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `DataFlowClient.RenameDataFlow(context.Context, string, RenameRequest) (DataFlowRenameDataFlowFuture, error)`
-- New function `BigDataPoolsClient.ListResponder(*http.Response) (BigDataPoolResourceInfoListResult, error)`
-- New function `SynapseNotebookActivity.AsAppendVariableActivity() (*AppendVariableActivity, bool)`
-- New function `DatasetClient.RenameDatasetResponder(*http.Response) (autorest.Response, error)`
-- New function `SQLScriptClient.RenameSQLScript(context.Context, string, RenameRequest) (SQLScriptRenameSQLScriptFuture, error)`
-- New function `DataFlowClient.RenameDataFlowSender(*http.Request) (DataFlowRenameDataFlowFuture, error)`
-- New function `SynapseNotebookActivity.AsIfConditionActivity() (*IfConditionActivity, bool)`
-- New function `SparkJobDefinitionClient.RenameSparkJobDefinitionSender(*http.Request) (SparkJobDefinitionRenameSparkJobDefinitionFuture, error)`
-- New function `AzureFunctionActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `DataLakeAnalyticsUSQLActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `HDInsightStreamingActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsUntilActivity() (*UntilActivity, bool)`
-- New function `WorkspaceClient.GetSender(*http.Request) (*http.Response, error)`
-- New function `CopyActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `SynapseNotebookActivity.AsValidationActivity() (*ValidationActivity, bool)`
-- New function `CustomSetupBase.AsComponentSetup() (*ComponentSetup, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsDataLakeAnalyticsUSQLActivity() (*DataLakeAnalyticsUSQLActivity, bool)`
-- New function `ValidationActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `ComponentSetup.MarshalJSON() ([]byte, error)`
-- New function `ParquetFormat.AsBasicDatasetStorageFormat() (BasicDatasetStorageFormat, bool)`
-- New function `ExecuteDataFlowActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `LinkedIntegrationRuntimeRbacAuthorization.AsLinkedIntegrationRuntimeRbacAuthorization() (*LinkedIntegrationRuntimeRbacAuthorization, bool)`
-- New function `CmdkeySetup.AsCmdkeySetup() (*CmdkeySetup, bool)`
-- New function `*CmdkeySetup.UnmarshalJSON([]byte) error`
-- New function `LookupActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsValidationActivity() (*ValidationActivity, bool)`
-- New function `*BigDataPoolResourceInfo.UnmarshalJSON([]byte) error`
-- New function `*SelfHostedIntegrationRuntime.UnmarshalJSON([]byte) error`
-- New function `LinkedServiceClient.RenameLinkedServiceResponder(*http.Response) (autorest.Response, error)`
-- New function `AppendVariableActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsAzureDataExplorerCommandActivity() (*AzureDataExplorerCommandActivity, bool)`
-- New function `SynapseNotebookActivity.AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool)`
-- New function `SQLServerStoredProcedureActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `SynapseNotebookActivity.AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool)`
-- New function `HDInsightStreamingActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `PossibleAuthorizationTypeValues() []AuthorizationType`
-- New function `*ComponentSetup.UnmarshalJSON([]byte) error`
-- New function `IntegrationRuntimeSsisCatalogInfo.MarshalJSON() ([]byte, error)`
-- New function `*PipelineCreateOrUpdatePipelineFuture.Result(PipelineClient) (PipelineResource, error)`
-- New function `NotebookClient.RenameNotebookPreparer(context.Context, string, RenameRequest) (*http.Request, error)`
-- New function `NewWorkspaceClient(string) WorkspaceClient`
-- New function `CustomSetupBase.AsBasicCustomSetupBase() (BasicCustomSetupBase, bool)`
-- New function `TrackedResource.MarshalJSON() ([]byte, error)`
-- New function `SQLScriptClient.RenameSQLScriptSender(*http.Request) (SQLScriptRenameSQLScriptFuture, error)`
-- New function `SQLPoolStoredProcedureActivity.AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool)`
-- New function `ParquetFormat.MarshalJSON() ([]byte, error)`
-- New function `AzureMLUpdateResourceActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `HDInsightHiveActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `IntegrationRuntimesClient.ListSender(*http.Request) (*http.Response, error)`
-- New function `JSONFormat.AsBasicDatasetStorageFormat() (BasicDatasetStorageFormat, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsAzureMLExecutePipelineActivity() (*AzureMLExecutePipelineActivity, bool)`
-- New function `*ManagedIntegrationRuntime.UnmarshalJSON([]byte) error`
-- New function `*DataFlowCreateOrUpdateDataFlowFuture.Result(DataFlowClient) (DataFlowResource, error)`
-- New function `DatasetStorageFormat.MarshalJSON() ([]byte, error)`
-- New function `DeleteActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `ManagedIntegrationRuntime.AsManagedIntegrationRuntime() (*ManagedIntegrationRuntime, bool)`
-- New function `BigDataPoolsClient.ListPreparer(context.Context) (*http.Request, error)`
-- New function `CmdkeySetup.AsComponentSetup() (*ComponentSetup, bool)`
-- New function `*OrcFormat.UnmarshalJSON([]byte) error`
-- New function `NewSQLPoolsClient(string) SQLPoolsClient`
-- New function `SynapseNotebookActivityTypeProperties.MarshalJSON() ([]byte, error)`
-- New function `IntegrationRuntimeSsisProperties.MarshalJSON() ([]byte, error)`
-- New function `IntegrationRuntimesClient.GetPreparer(context.Context, string) (*http.Request, error)`
-- New function `FilterActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `*DatasetRenameDatasetFuture.Result(DatasetClient) (autorest.Response, error)`
-- New function `SQLScriptClient.RenameSQLScriptPreparer(context.Context, string, RenameRequest) (*http.Request, error)`
-- New function `LinkedIntegrationRuntimeRbacAuthorization.AsLinkedIntegrationRuntimeKeyAuthorization() (*LinkedIntegrationRuntimeKeyAuthorization, bool)`
-- New function `LinkedIntegrationRuntimeRbacAuthorization.MarshalJSON() ([]byte, error)`
-- New function `AzureDataExplorerCommandActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsAzureMLExecutePipelineActivity() (*AzureMLExecutePipelineActivity, bool)`
-- New function `TabularTranslator.AsCopyTranslator() (*CopyTranslator, bool)`
-- New function `*CopyTranslator.UnmarshalJSON([]byte) error`
-- New function `SynapseNotebookActivity.AsAzureDataExplorerCommandActivity() (*AzureDataExplorerCommandActivity, bool)`
-- New function `ExecuteSSISPackageActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `*LicensedComponentSetupTypeProperties.UnmarshalJSON([]byte) error`
-- New function `SynapseNotebookActivity.AsExecuteSSISPackageActivity() (*ExecuteSSISPackageActivity, bool)`
-- New function `DatasetStorageFormat.AsAvroFormat() (*AvroFormat, bool)`
-- New function `SQLPoolsClient.ListSender(*http.Request) (*http.Response, error)`
-- New function `WorkspaceGitRepoManagementClient.GetGitHubAccessTokenResponder(*http.Response) (GitHubAccessTokenResponse, error)`
-- New function `AzureMLBatchExecutionActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `CmdkeySetup.AsCustomSetupBase() (*CustomSetupBase, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsIfConditionActivity() (*IfConditionActivity, bool)`
-- New function `SQLScriptClient.RenameSQLScriptResponder(*http.Response) (autorest.Response, error)`
-- New function `SQLPoolsClient.ListResponder(*http.Response) (SQLPoolInfoListResult, error)`
-- New function `*PrivateEndpointConnection.UnmarshalJSON([]byte) error`
-- New function `LinkedIntegrationRuntimeKeyAuthorization.AsLinkedIntegrationRuntimeRbacAuthorization() (*LinkedIntegrationRuntimeRbacAuthorization, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsDeleteActivity() (*DeleteActivity, bool)`
-- New function `EnvironmentVariableSetup.AsCustomSetupBase() (*CustomSetupBase, bool)`
-- New function `SynapseNotebookActivity.AsCopyActivity() (*CopyActivity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsGetMetadataActivity() (*GetMetadataActivity, bool)`
-- New function `SQLPoolsClient.ListPreparer(context.Context) (*http.Request, error)`
-- New function `LinkedIntegrationRuntimeKeyAuthorization.MarshalJSON() ([]byte, error)`
-- New function `ForEachActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsCustomActivity() (*CustomActivity, bool)`
-- New function `IntegrationRuntimesClient.Get(context.Context, string) (IntegrationRuntimeResource, error)`
-- New function `SynapseSparkJobDefinitionActivity.AsCopyActivity() (*CopyActivity, bool)`
-- New function `SynapseNotebookActivity.AsAzureMLUpdateResourceActivity() (*AzureMLUpdateResourceActivity, bool)`
-- New function `*AvroFormat.UnmarshalJSON([]byte) error`
-- New function `PossibleIntegrationRuntimeSsisCatalogPricingTierValues() []IntegrationRuntimeSsisCatalogPricingTier`
-- New function `ControlActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `SynapseNotebookActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `SQLPoolsClient.GetResponder(*http.Response) (SQLPool, error)`
-- New function `SynapseSparkJobDefinitionActivity.AsLookupActivity() (*LookupActivity, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsHDInsightSparkActivity() (*HDInsightSparkActivity, bool)`
-- New function `AzureMLUpdateResourceActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `WebHookActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `AvroFormat.AsBasicDatasetStorageFormat() (BasicDatasetStorageFormat, bool)`
-- New function `CustomerManagedKeyDetails.MarshalJSON() ([]byte, error)`
-- New function `SynapseNotebookActivity.AsExecuteDataFlowActivity() (*ExecuteDataFlowActivity, bool)`
-- New function `SynapseNotebookActivity.AsBasicActivity() (BasicActivity, bool)`
-- New function `IfConditionActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsUntilActivity() (*UntilActivity, bool)`
-- New function `ExecuteDataFlowActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `*SynapseSparkJobDefinitionActivity.UnmarshalJSON([]byte) error`
-- New function `PossibleIntegrationRuntimeEditionValues() []IntegrationRuntimeEdition`
-- New function `DatasetStorageFormat.AsParquetFormat() (*ParquetFormat, bool)`
-- New function `ControlActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `DataLakeAnalyticsUSQLActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsCustomActivity() (*CustomActivity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsBasicActivity() (BasicActivity, bool)`
-- New function `GetMetadataActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `AzureDataExplorerCommandActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `HDInsightStreamingActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `SynapseNotebookActivity.AsWaitActivity() (*WaitActivity, bool)`
-- New function `SynapseNotebookActivity.AsHDInsightMapReduceActivity() (*HDInsightMapReduceActivity, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsBasicActivity() (BasicActivity, bool)`
-- New function `SynapseNotebookActivity.AsExecutionActivity() (*ExecutionActivity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsWaitActivity() (*WaitActivity, bool)`
-- New function `BigDataPoolsClient.GetPreparer(context.Context, string) (*http.Request, error)`
-- New function `SQLPoolStoredProcedureActivity.AsForEachActivity() (*ForEachActivity, bool)`
-- New function `ParquetFormat.AsDatasetStorageFormat() (*DatasetStorageFormat, bool)`
-- New function `AvroFormat.AsDatasetStorageFormat() (*DatasetStorageFormat, bool)`
-- New function `HDInsightMapReduceActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool)`
-- New function `LookupActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `*DatasetSchemaDataElement.UnmarshalJSON([]byte) error`
-- New function `OrcFormat.MarshalJSON() ([]byte, error)`
-- New function `*NotebookCreateOrUpdateNotebookFuture.Result(NotebookClient) (NotebookResource, error)`
-- New function `SQLPoolStoredProcedureActivity.AsAzureFunctionActivity() (*AzureFunctionActivity, bool)`
-- New function `SynapseNotebookActivity.AsSetVariableActivity() (*SetVariableActivity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsAzureMLBatchExecutionActivity() (*AzureMLBatchExecutionActivity, bool)`
-- New function `DataFlowClient.RenameDataFlowPreparer(context.Context, string, RenameRequest) (*http.Request, error)`
-- New function `WorkspaceGitRepoManagementClient.GetGitHubAccessToken(context.Context, string, GitHubAccessTokenRequest, string) (GitHubAccessTokenResponse, error)`
-- New function `SQLPoolStoredProcedureActivity.AsHDInsightPigActivity() (*HDInsightPigActivity, bool)`
-- New function `DatabricksNotebookActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `WorkspaceGitRepoManagementClient.GetGitHubAccessTokenSender(*http.Request) (*http.Response, error)`
-- New function `IntegrationRuntimeDataFlowProperties.MarshalJSON() ([]byte, error)`
-- New function `SynapseSparkJobDefinitionActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsExecuteDataFlowActivity() (*ExecuteDataFlowActivity, bool)`
-- New function `SynapseNotebookActivity.AsHDInsightPigActivity() (*HDInsightPigActivity, bool)`
-- New function `NewWorkspaceGitRepoManagementClient(string) WorkspaceGitRepoManagementClient`
-- New function `ForEachActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `*EnvironmentVariableSetup.UnmarshalJSON([]byte) error`
-- New function `SynapseSparkJobDefinitionActivity.AsHDInsightHiveActivity() (*HDInsightHiveActivity, bool)`
-- New function `DatasetStorageFormat.AsJSONFormat() (*JSONFormat, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsBasicControlActivity() (BasicControlActivity, bool)`
-- New function `PossibleCopyBehaviorTypeValues() []CopyBehaviorType`
-- New function `ManagedIntegrationRuntime.AsSelfHostedIntegrationRuntime() (*SelfHostedIntegrationRuntime, bool)`
-- New function `ManagedIntegrationRuntime.MarshalJSON() ([]byte, error)`
-- New function `HDInsightPigActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `WebActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `ExecutePipelineActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `PossibleIntegrationRuntimeStateValues() []IntegrationRuntimeState`
-- New function `BigDataPoolsClient.List(context.Context) (BigDataPoolResourceInfoListResult, error)`
-- New function `SparkJobDefinitionClient.RenameSparkJobDefinitionResponder(*http.Response) (autorest.Response, error)`
-- New function `SynapseSparkJobDefinitionActivity.AsDatabricksNotebookActivity() (*DatabricksNotebookActivity, bool)`
-- New function `OrcFormat.AsAvroFormat() (*AvroFormat, bool)`
-- New function `SQLPool.MarshalJSON() ([]byte, error)`
-- New function `PrivateEndpointConnection.MarshalJSON() ([]byte, error)`
-- New function `SynapseSparkJobDefinitionActivity.AsWebActivity() (*WebActivity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsAzureDataExplorerCommandActivity() (*AzureDataExplorerCommandActivity, bool)`
-- New function `ParquetFormat.AsAvroFormat() (*AvroFormat, bool)`
-- New function `EncryptionDetails.MarshalJSON() ([]byte, error)`
-- New function `SynapseSparkJobDefinitionActivity.AsSQLServerStoredProcedureActivity() (*SQLServerStoredProcedureActivity, bool)`
-- New function `UntilActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `LinkedIntegrationRuntimeType.AsLinkedIntegrationRuntimeRbacAuthorization() (*LinkedIntegrationRuntimeRbacAuthorization, bool)`
-- New function `NewIntegrationRuntimesClient(string) IntegrationRuntimesClient`
-- New function `BigDataPoolsClient.GetResponder(*http.Response) (BigDataPoolResourceInfo, error)`
-- New function `SQLPoolStoredProcedureActivity.AsDatabricksNotebookActivity() (*DatabricksNotebookActivity, bool)`
-- New function `SynapseNotebookActivity.AsLookupActivity() (*LookupActivity, bool)`
-- New function `LinkedIntegrationRuntimeKeyAuthorization.AsLinkedIntegrationRuntimeType() (*LinkedIntegrationRuntimeType, bool)`
-- New function `DataLakeAnalyticsUSQLActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `CustomActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `SetVariableActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `SparkJobDefinitionClient.RenameSparkJobDefinition(context.Context, string, RenameRequest) (SparkJobDefinitionRenameSparkJobDefinitionFuture, error)`
-- New function `SQLPoolStoredProcedureActivity.AsExecuteDataFlowActivity() (*ExecuteDataFlowActivity, bool)`
-- New function `AvroFormat.AsParquetFormat() (*ParquetFormat, bool)`
-- New function `*NotebookDeleteNotebookFuture.Result(NotebookClient) (autorest.Response, error)`
-- New function `ExecuteSSISPackageActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `LinkedServiceClient.RenameLinkedServiceSender(*http.Request) (LinkedServiceRenameLinkedServiceFuture, error)`
-- New function `ValidationActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `CopyActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `DataFlowClient.RenameDataFlowResponder(*http.Response) (autorest.Response, error)`
-- New function `SQLPoolStoredProcedureActivity.AsExecutionActivity() (*ExecutionActivity, bool)`
-- New function `*PipelineDeletePipelineFuture.Result(PipelineClient) (autorest.Response, error)`
-- New function `WebHookActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsGetMetadataActivity() (*GetMetadataActivity, bool)`
-- New function `CopyTranslator.AsCopyTranslator() (*CopyTranslator, bool)`
-- New function `ExecutePipelineActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `SynapseNotebookActivity.AsHDInsightHiveActivity() (*HDInsightHiveActivity, bool)`
-- New function `WebHookActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `*DatasetDeleteDatasetFuture.Result(DatasetClient) (autorest.Response, error)`
-- New function `*SQLPoolStoredProcedureActivity.UnmarshalJSON([]byte) error`
-- New function `*CmdkeySetupTypeProperties.UnmarshalJSON([]byte) error`
-- New function `ParquetFormat.AsOrcFormat() (*OrcFormat, bool)`
-- New function `*IntegrationRuntimeSsisCatalogInfo.UnmarshalJSON([]byte) error`
-- New function `*TabularTranslator.UnmarshalJSON([]byte) error`
-- New function `TextFormat.AsBasicDatasetStorageFormat() (BasicDatasetStorageFormat, bool)`
-- New function `*NotebookRenameNotebookFuture.Result(NotebookClient) (autorest.Response, error)`
-- New function `SynapseNotebookActivity.AsForEachActivity() (*ForEachActivity, bool)`
-- New function `IntegrationRuntimeVNetProperties.MarshalJSON() ([]byte, error)`
-- New function `SQLPoolStoredProcedureActivity.AsCopyActivity() (*CopyActivity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsHDInsightMapReduceActivity() (*HDInsightMapReduceActivity, bool)`
-- New function `SynapseNotebookActivity.AsAzureMLBatchExecutionActivity() (*AzureMLBatchExecutionActivity, bool)`
-- New function `ManagedIntegrationRuntime.AsBasicIntegrationRuntime() (BasicIntegrationRuntime, bool)`
-- New function `*LinkedServiceRenameLinkedServiceFuture.Result(LinkedServiceClient) (autorest.Response, error)`
-- New function `WaitActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `WorkspaceClient.Get(context.Context) (Workspace, error)`
-- New function `SynapseNotebookActivity.AsWebHookActivity() (*WebHookActivity, bool)`
-- New function `LibraryRequirements.MarshalJSON() ([]byte, error)`
-- New function `SynapseSparkJobDefinitionActivity.AsBasicExecutionActivity() (BasicExecutionActivity, bool)`
-- New function `SelfHostedIntegrationRuntime.AsManagedIntegrationRuntime() (*ManagedIntegrationRuntime, bool)`
-- New function `ComponentSetup.AsEnvironmentVariableSetup() (*EnvironmentVariableSetup, bool)`
-- New function `IntegrationRuntime.AsSelfHostedIntegrationRuntime() (*SelfHostedIntegrationRuntime, bool)`
-- New function `AvroFormat.AsTextFormat() (*TextFormat, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsBasicControlActivity() (BasicControlActivity, bool)`
-- New function `NotebookClient.RenameNotebook(context.Context, string, RenameRequest) (NotebookRenameNotebookFuture, error)`
-- New function `*SynapseNotebookActivity.UnmarshalJSON([]byte) error`
-- New function `SQLPoolStoredProcedureActivity.AsFilterActivity() (*FilterActivity, bool)`
-- New function `TabularTranslator.AsBasicCopyTranslator() (BasicCopyTranslator, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsControlActivity() (*ControlActivity, bool)`
-- New function `*SelfHostedIntegrationRuntimeTypeProperties.UnmarshalJSON([]byte) error`
-- New function `IntegrationRuntime.AsIntegrationRuntime() (*IntegrationRuntime, bool)`
-- New function `NotebookClient.RenameNotebookSender(*http.Request) (NotebookRenameNotebookFuture, error)`
-- New function `*PipelineRenamePipelineFuture.Result(PipelineClient) (autorest.Response, error)`
-- New function `JSONFormat.MarshalJSON() ([]byte, error)`
-- New function `SynapseSparkJobDefinitionActivity.AsHDInsightPigActivity() (*HDInsightPigActivity, bool)`
-- New function `AppendVariableActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `WorkspaceClient.GetResponder(*http.Response) (Workspace, error)`
-- New function `SwitchActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `TextFormat.AsAvroFormat() (*AvroFormat, bool)`
-- New function `DatasetStorageFormat.AsBasicDatasetStorageFormat() (BasicDatasetStorageFormat, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsAzureMLBatchExecutionActivity() (*AzureMLBatchExecutionActivity, bool)`
-- New function `SynapseNotebookActivity.AsBasicExecutionActivity() (BasicExecutionActivity, bool)`
-- New function `IntegrationRuntimesClient.ListPreparer(context.Context) (*http.Request, error)`
-- New function `SynapseSparkJobDefinitionActivity.AsAzureFunctionActivity() (*AzureFunctionActivity, bool)`
-- New function `PossibleTypeBasicCustomSetupBaseValues() []TypeBasicCustomSetupBase`
-- New function `PossibleTypeBasicDatasetStorageFormatValues() []TypeBasicDatasetStorageFormat`
-- New function `SQLPoolStoredProcedureActivity.AsHDInsightStreamingActivity() (*HDInsightStreamingActivity, bool)`
-- New function `AvroFormat.AsOrcFormat() (*OrcFormat, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsValidationActivity() (*ValidationActivity, bool)`
-- New function `DatasetStorageFormat.AsTextFormat() (*TextFormat, bool)`
-- New function `HDInsightMapReduceActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `PipelineClient.RenamePipelineResponder(*http.Response) (autorest.Response, error)`
-- New function `SynapseNotebookActivity.AsGetMetadataActivity() (*GetMetadataActivity, bool)`
-- New function `*SQLPool.UnmarshalJSON([]byte) error`
-- New function `WaitActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `AppendVariableActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `OrcFormat.AsBasicDatasetStorageFormat() (BasicDatasetStorageFormat, bool)`
-- New function `*JSONFormat.UnmarshalJSON([]byte) error`
-- New function `GetMetadataActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `PossibleTypeBasicIntegrationRuntimeValues() []TypeBasicIntegrationRuntime`
-- New function `WorkspaceClient.GetPreparer(context.Context) (*http.Request, error)`
-- New function `SynapseNotebookActivity.AsHDInsightStreamingActivity() (*HDInsightStreamingActivity, bool)`
-- New function `SynapseNotebookActivity.AsDeleteActivity() (*DeleteActivity, bool)`
-- New function `TabularTranslator.AsTabularTranslator() (*TabularTranslator, bool)`
-- New function `WaitActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `CustomSetupBase.AsCustomSetupBase() (*CustomSetupBase, bool)`
-- New function `HDInsightSparkActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `*LinkedServiceDeleteLinkedServiceFuture.Result(LinkedServiceClient) (autorest.Response, error)`
-- New function `IfConditionActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsHDInsightStreamingActivity() (*HDInsightStreamingActivity, bool)`
-- New function `DatabricksSparkJarActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsWebActivity() (*WebActivity, bool)`
-- New function `OrcFormat.AsTextFormat() (*TextFormat, bool)`
-- New function `DatasetStorageFormat.AsDatasetStorageFormat() (*DatasetStorageFormat, bool)`
-- New function `LinkedIntegrationRuntimeKeyAuthorization.AsLinkedIntegrationRuntimeKeyAuthorization() (*LinkedIntegrationRuntimeKeyAuthorization, bool)`
-- New function `*ParquetFormat.UnmarshalJSON([]byte) error`
-- New function `PossibleIntegrationRuntimeEntityReferenceTypeValues() []IntegrationRuntimeEntityReferenceType`
-- New function `SQLPoolStoredProcedureActivityTypeProperties.MarshalJSON() ([]byte, error)`
-- New function `IfConditionActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `PipelineClient.RenamePipeline(context.Context, string, RenameRequest) (PipelineRenamePipelineFuture, error)`
-- New function `DatabricksNotebookActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `SparkJobDefinitionClient.RenameSparkJobDefinitionPreparer(context.Context, string, RenameRequest) (*http.Request, error)`
-- New function `SynapseSparkJobDefinitionActivity.AsActivity() (*Activity, bool)`
-- New function `PossibleTypeBasicCopyTranslatorValues() []TypeBasicCopyTranslator`
-- New function `SQLPoolStoredProcedureActivity.AsWebHookActivity() (*WebHookActivity, bool)`
-- New function `*TriggerDeleteTriggerFuture.Result(TriggerClient) (autorest.Response, error)`
-- New function `SynapseSparkJobDefinitionActivity.AsFilterActivity() (*FilterActivity, bool)`
-- New function `DatasetClient.RenameDataset(context.Context, string, RenameRequest) (DatasetRenameDatasetFuture, error)`
-- New function `SynapseNotebookActivity.AsBasicControlActivity() (BasicControlActivity, bool)`
-- New function `CopyActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `OrcFormat.AsParquetFormat() (*ParquetFormat, bool)`
-- New function `*DatasetCreateOrUpdateDatasetFuture.Result(DatasetClient) (DatasetResource, error)`
-- New function `CmdkeySetup.AsEnvironmentVariableSetup() (*EnvironmentVariableSetup, bool)`
-- New function `AzureDataExplorerCommandActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `AzureMLExecutePipelineActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `JSONFormat.AsJSONFormat() (*JSONFormat, bool)`
-- New function `HDInsightSparkActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `HDInsightHiveActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsControlActivity() (*ControlActivity, bool)`
-- New function `SelfHostedIntegrationRuntime.AsBasicIntegrationRuntime() (BasicIntegrationRuntime, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsLookupActivity() (*LookupActivity, bool)`
-- New function `PossibleNodeSizeValues() []NodeSize`
-- New function `ParquetFormat.AsTextFormat() (*TextFormat, bool)`
-- New function `BigDataPoolsClient.GetSender(*http.Request) (*http.Response, error)`
-- New function `WorkspaceGitRepoManagementClient.GetGitHubAccessTokenPreparer(context.Context, string, GitHubAccessTokenRequest, string) (*http.Request, error)`
-- New function `SynapseSparkJobDefinitionActivity.AsSetVariableActivity() (*SetVariableActivity, bool)`
-- New function `HDInsightPigActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `*SparkJobDefinitionRenameSparkJobDefinitionFuture.Result(SparkJobDefinitionClient) (autorest.Response, error)`
-- New function `SynapseSparkJobDefinitionActivity.AsExecuteSSISPackageActivity() (*ExecuteSSISPackageActivity, bool)`
-- New function `*DataFlowRenameDataFlowFuture.Result(DataFlowClient) (autorest.Response, error)`
-- New function `JSONFormat.AsParquetFormat() (*ParquetFormat, bool)`
-- New function `EnvironmentVariableSetup.AsEnvironmentVariableSetup() (*EnvironmentVariableSetup, bool)`
-- New function `PossibleNodeSizeFamilyValues() []NodeSizeFamily`
-- New function `GetMetadataActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `SynapseNotebookActivity.AsActivity() (*Activity, bool)`
-- New function `JSONFormat.AsDatasetStorageFormat() (*DatasetStorageFormat, bool)`
-- New function `SynapseNotebookActivity.AsAzureMLExecutePipelineActivity() (*AzureMLExecutePipelineActivity, bool)`
-- New function `ExecuteSSISPackageActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `AzureMLBatchExecutionActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `PossibleResourceIdentityTypeValues() []ResourceIdentityType`
-- New function `AzureMLUpdateResourceActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsAzureMLUpdateResourceActivity() (*AzureMLUpdateResourceActivity, bool)`
-- New function `NotebookClient.RenameNotebookResponder(*http.Response) (autorest.Response, error)`
-- New function `SetVariableActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `BigDataPoolsClient.Get(context.Context, string) (BigDataPoolResourceInfo, error)`
-- New function `SQLPoolStoredProcedureActivity.AsSetVariableActivity() (*SetVariableActivity, bool)`
-- New function `SelfHostedIntegrationRuntime.AsIntegrationRuntime() (*IntegrationRuntime, bool)`
-- New function `UntilActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `SetVariableActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `*DatasetStorageFormat.UnmarshalJSON([]byte) error`
-- New function `UntilActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `PrivateLinkServiceConnectionState.MarshalJSON() ([]byte, error)`
-- New function `DatabricksSparkJarActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsSQLServerStoredProcedureActivity() (*SQLServerStoredProcedureActivity, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsExecutePipelineActivity() (*ExecutePipelineActivity, bool)`
-- New function `SelfHostedIntegrationRuntime.AsSelfHostedIntegrationRuntime() (*SelfHostedIntegrationRuntime, bool)`
-- New function `*TriggerCreateOrUpdateTriggerFuture.Result(TriggerClient) (TriggerResource, error)`
-- New function `IntegrationRuntimesClient.ListResponder(*http.Response) (IntegrationRuntimeListResponse, error)`
-- New function `AvroFormat.AsAvroFormat() (*AvroFormat, bool)`
-- New function `TextFormat.MarshalJSON() ([]byte, error)`
-- New function `CustomActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `IntegrationRuntimesClient.List(context.Context) (IntegrationRuntimeListResponse, error)`
-- New function `PipelineClient.RenamePipelineSender(*http.Request) (PipelineRenamePipelineFuture, error)`
-- New function `TextFormat.AsTextFormat() (*TextFormat, bool)`
-- New function `ExecutionActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `JSONFormat.AsOrcFormat() (*OrcFormat, bool)`
-- New function `TextFormat.AsDatasetStorageFormat() (*DatasetStorageFormat, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsHDInsightSparkActivity() (*HDInsightSparkActivity, bool)`
-- New function `Activity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `CustomSetupBase.AsCmdkeySetup() (*CmdkeySetup, bool)`
-- New function `SynapseNotebookActivity.AsFilterActivity() (*FilterActivity, bool)`
-- New function `OrcFormat.AsOrcFormat() (*OrcFormat, bool)`
-- New function `HDInsightSparkActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `IntegrationRuntime.AsBasicIntegrationRuntime() (BasicIntegrationRuntime, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool)`
-- New function `LinkedIntegrationRuntimeRbacAuthorization.AsBasicLinkedIntegrationRuntimeType() (BasicLinkedIntegrationRuntimeType, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsActivity() (*Activity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `ExecuteDataFlowActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `IntegrationRuntimesClient.GetSender(*http.Request) (*http.Response, error)`
-- New function `SynapseNotebookActivity.MarshalJSON() ([]byte, error)`
-- New function `CustomSetupBase.AsEnvironmentVariableSetup() (*EnvironmentVariableSetup, bool)`
-- New function `ComponentSetup.AsCmdkeySetup() (*CmdkeySetup, bool)`
-- New function `AzureFunctionActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `CmdkeySetup.AsBasicCustomSetupBase() (BasicCustomSetupBase, bool)`
-- New function `ExecutionActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `SQLPoolsClient.List(context.Context) (SQLPoolInfoListResult, error)`
-- New function `DatasetClient.RenameDatasetSender(*http.Request) (DatasetRenameDatasetFuture, error)`
-- New function `SynapseNotebookActivity.AsControlActivity() (*ControlActivity, bool)`
-- New function `LinkedIntegrationRuntimeType.MarshalJSON() ([]byte, error)`
-- New function `SQLServerStoredProcedureActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `ComponentSetup.AsCustomSetupBase() (*CustomSetupBase, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsSwitchActivity() (*SwitchActivity, bool)`
-- New function `TextFormat.AsOrcFormat() (*OrcFormat, bool)`
-- New function `*LinkedServiceCreateOrUpdateLinkedServiceFuture.Result(LinkedServiceClient) (LinkedServiceResource, error)`
-- New function `SynapseNotebookActivity.AsUntilActivity() (*UntilActivity, bool)`
-- New function `NewBigDataPoolsClient(string) BigDataPoolsClient`
-- New function `ComponentSetup.AsComponentSetup() (*ComponentSetup, bool)`
-- New function `TabularTranslator.MarshalJSON() ([]byte, error)`
-- New function `TextFormat.AsParquetFormat() (*ParquetFormat, bool)`
-- New function `EnvironmentVariableSetup.AsCmdkeySetup() (*CmdkeySetup, bool)`
-- New function `LinkedIntegrationRuntimeRbacAuthorization.AsLinkedIntegrationRuntimeType() (*LinkedIntegrationRuntimeType, bool)`
-- New function `HDInsightHiveActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `ComponentSetup.AsBasicCustomSetupBase() (BasicCustomSetupBase, bool)`
-- New function `*DataFlowDeleteDataFlowFuture.Result(DataFlowClient) (autorest.Response, error)`
-- New function `SynapseSparkJobDefinitionActivity.AsIfConditionActivity() (*IfConditionActivity, bool)`
-- New function `ManagedIdentity.MarshalJSON() ([]byte, error)`
-- New function `SynapseSparkJobDefinitionActivity.AsExecutionActivity() (*ExecutionActivity, bool)`
-- New function `SynapseSparkJobDefinitionActivity.AsAppendVariableActivity() (*AppendVariableActivity, bool)`
-- New function `Activity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `IntegrationRuntime.MarshalJSON() ([]byte, error)`
-- New function `ForEachActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `WebActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `FilterActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsDeleteActivity() (*DeleteActivity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsExecuteSSISPackageActivity() (*ExecuteSSISPackageActivity, bool)`
-- New function `CopyTranslator.AsTabularTranslator() (*TabularTranslator, bool)`
-- New function `AzureFunctionActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `LinkedIntegrationRuntimeType.AsLinkedIntegrationRuntimeType() (*LinkedIntegrationRuntimeType, bool)`
-- New function `LinkedServiceClient.RenameLinkedServicePreparer(context.Context, string, RenameRequest) (*http.Request, error)`
-- New function `SQLPoolStoredProcedureActivity.AsDataLakeAnalyticsUSQLActivity() (*DataLakeAnalyticsUSQLActivity, bool)`
-- New function `AvroFormat.MarshalJSON() ([]byte, error)`
-- New function `IntegrationRuntimeComputeProperties.MarshalJSON() ([]byte, error)`
-- New function `CmdkeySetup.MarshalJSON() ([]byte, error)`
-- New function `SynapseNotebookActivity.AsExecutePipelineActivity() (*ExecutePipelineActivity, bool)`
-- New function `FilterActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `DatabricksSparkPythonActivity.AsSQLPoolStoredProcedureActivity() (*SQLPoolStoredProcedureActivity, bool)`
-- New function `LinkedServiceClient.RenameLinkedService(context.Context, string, RenameRequest) (LinkedServiceRenameLinkedServiceFuture, error)`
-- New function `SynapseSparkJobDefinitionActivity.AsHDInsightMapReduceActivity() (*HDInsightMapReduceActivity, bool)`
-- New function `DatasetSchemaDataElement.MarshalJSON() ([]byte, error)`
-- New function `CustomActivity.AsSynapseNotebookActivity() (*SynapseNotebookActivity, bool)`
-- New function `SQLPoolsClient.GetSender(*http.Request) (*http.Response, error)`
-- New function `HDInsightPigActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `SQLPoolStoredProcedureActivity.AsSwitchActivity() (*SwitchActivity, bool)`
-- New function `EnvironmentVariableSetup.AsBasicCustomSetupBase() (BasicCustomSetupBase, bool)`
-- New function `*IntegrationRuntimeVNetProperties.UnmarshalJSON([]byte) error`
-- New function `ManagedIntegrationRuntime.AsIntegrationRuntime() (*IntegrationRuntime, bool)`
-- New function `EnvironmentVariableSetup.MarshalJSON() ([]byte, error)`
-- New function `AvroFormat.AsJSONFormat() (*JSONFormat, bool)`
-- New function `DeleteActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New function `DatasetClient.RenameDatasetPreparer(context.Context, string, RenameRequest) (*http.Request, error)`
-- New function `SQLPoolStoredProcedureActivity.AsExecutePipelineActivity() (*ExecutePipelineActivity, bool)`
-- New function `TextFormat.AsJSONFormat() (*JSONFormat, bool)`
-- New function `SelfHostedIntegrationRuntime.MarshalJSON() ([]byte, error)`
-- New function `SynapseSparkJobDefinitionActivity.AsAzureMLUpdateResourceActivity() (*AzureMLUpdateResourceActivity, bool)`
-- New function `WebActivity.AsSynapseSparkJobDefinitionActivity() (*SynapseSparkJobDefinitionActivity, bool)`
-- New struct `AutoPauseProperties`
-- New struct `AutoScaleProperties`
-- New struct `AvroFormat`
-- New struct `AzureEntityResource`
-- New struct `BigDataPoolResourceInfo`
-- New struct `BigDataPoolResourceInfoListResult`
-- New struct `BigDataPoolResourceProperties`
-- New struct `BigDataPoolsClient`
-- New struct `CmdkeySetup`
-- New struct `CmdkeySetupTypeProperties`
-- New struct `ComponentSetup`
-- New struct `CopyTranslator`
-- New struct `CustomSetupBase`
-- New struct `CustomerManagedKeyDetails`
-- New struct `DataFlowCreateOrUpdateDataFlowFuture`
-- New struct `DataFlowDeleteDataFlowFuture`
-- New struct `DataFlowRenameDataFlowFuture`
-- New struct `DataLakeStorageAccountDetails`
-- New struct `DatasetCreateOrUpdateDatasetFuture`
-- New struct `DatasetDataElement`
-- New struct `DatasetDeleteDatasetFuture`
-- New struct `DatasetRenameDatasetFuture`
-- New struct `DatasetSchemaDataElement`
-- New struct `DatasetStorageFormat`
-- New struct `EncryptionDetails`
-- New struct `EntityReference`
-- New struct `EnvironmentVariableSetup`
-- New struct `EnvironmentVariableSetupTypeProperties`
-- New struct `ErrorAdditionalInfo`
-- New struct `ErrorContract`
-- New struct `ErrorResponse`
-- New struct `GitHubAccessTokenRequest`
-- New struct `GitHubAccessTokenResponse`
-- New struct `IntegrationRuntime`
-- New struct `IntegrationRuntimeComputeProperties`
-- New struct `IntegrationRuntimeCustomSetupScriptProperties`
-- New struct `IntegrationRuntimeDataFlowProperties`
-- New struct `IntegrationRuntimeDataProxyProperties`
-- New struct `IntegrationRuntimeListResponse`
-- New struct `IntegrationRuntimeResource`
-- New struct `IntegrationRuntimeSsisCatalogInfo`
-- New struct `IntegrationRuntimeSsisProperties`
-- New struct `IntegrationRuntimeVNetProperties`
-- New struct `IntegrationRuntimesClient`
-- New struct `JSONFormat`
-- New struct `LibraryRequirements`
-- New struct `LicensedComponentSetupTypeProperties`
-- New struct `LinkedIntegrationRuntimeKeyAuthorization`
-- New struct `LinkedIntegrationRuntimeRbacAuthorization`
-- New struct `LinkedIntegrationRuntimeType`
-- New struct `LinkedServiceCreateOrUpdateLinkedServiceFuture`
-- New struct `LinkedServiceDeleteLinkedServiceFuture`
-- New struct `LinkedServiceRenameLinkedServiceFuture`
-- New struct `ManagedIdentity`
-- New struct `ManagedIntegrationRuntime`
-- New struct `ManagedIntegrationRuntimeTypeProperties`
-- New struct `ManagedVirtualNetworkSettings`
-- New struct `NotebookCreateOrUpdateNotebookFuture`
-- New struct `NotebookDeleteNotebookFuture`
-- New struct `NotebookRenameNotebookFuture`
-- New struct `OrcFormat`
-- New struct `ParquetFormat`
-- New struct `PipelineCreateOrUpdatePipelineFuture`
-- New struct `PipelineDeletePipelineFuture`
-- New struct `PipelineRenamePipelineFuture`
-- New struct `PrivateEndpoint`
-- New struct `PrivateEndpointConnection`
-- New struct `PrivateEndpointConnectionProperties`
-- New struct `PrivateLinkServiceConnectionState`
-- New struct `ProxyResource`
-- New struct `PurviewConfiguration`
-- New struct `RenameRequest`
-- New struct `SQLPool`
-- New struct `SQLPoolInfoListResult`
-- New struct `SQLPoolReference`
-- New struct `SQLPoolResourceProperties`
-- New struct `SQLPoolStoredProcedureActivity`
-- New struct `SQLPoolStoredProcedureActivityTypeProperties`
-- New struct `SQLPoolsClient`
-- New struct `SQLScriptRenameSQLScriptFuture`
-- New struct `SelfHostedIntegrationRuntime`
-- New struct `SelfHostedIntegrationRuntimeTypeProperties`
-- New struct `Sku`
-- New struct `SparkJobDefinitionRenameSparkJobDefinitionFuture`
-- New struct `SynapseNotebookActivity`
-- New struct `SynapseNotebookActivityTypeProperties`
-- New struct `SynapseNotebookReference`
-- New struct `SynapseSparkJobActivityTypeProperties`
-- New struct `SynapseSparkJobDefinitionActivity`
-- New struct `SynapseSparkJobReference`
-- New struct `TabularTranslator`
-- New struct `TextFormat`
-- New struct `TrackedResource`
-- New struct `TriggerCreateOrUpdateTriggerFuture`
-- New struct `TriggerDeleteTriggerFuture`
-- New struct `VirtualNetworkProfile`
-- New struct `WorkspaceClient`
-- New struct `WorkspaceGitRepoManagementClient`
-- New struct `WorkspaceKeyDetails`
-- New struct `WorkspaceRepositoryConfiguration`
-- New field `Encryption` in struct `WorkspaceProperties`
-- New field `ManagedResourceGroupName` in struct `WorkspaceProperties`
-- New field `WorkspaceRepositoryConfiguration` in struct `WorkspaceProperties`
-- New field `VirtualNetworkProfile` in struct `WorkspaceProperties`
-- New field `ManagedVirtualNetwork` in struct `WorkspaceProperties`
-- New field `ManagedVirtualNetworkSettings` in struct `WorkspaceProperties`
-- New field `PrivateEndpointConnections` in struct `WorkspaceProperties`
-- New field `DefaultDataLakeStorage` in struct `WorkspaceProperties`
-- New field `SQLAdministratorLogin` in struct `WorkspaceProperties`
-- New field `SQLAdministratorLoginPassword` in struct `WorkspaceProperties`
-- New field `ExtraProperties` in struct `WorkspaceProperties`
-- New field `WorkspaceUID` in struct `WorkspaceProperties`
-- New field `ConnectivityEndpoints` in struct `WorkspaceProperties`
-- New field `PurviewConfiguration` in struct `WorkspaceProperties`
-- New anonymous field `autorest.Response` in struct `Workspace`
+## Struct Changes
+
+### Removed Struct Fields
+
+1. DataFlowCreateOrUpdateDataFlowFuture.azure.Future
+1. DataFlowDebugSessionCreateDataFlowDebugSessionFuture.azure.Future
+1. DataFlowDebugSessionExecuteCommandFuture.azure.Future
+1. DataFlowDeleteDataFlowFuture.azure.Future
+1. DataFlowRenameDataFlowFuture.azure.Future
+1. DatasetCreateOrUpdateDatasetFuture.azure.Future
+1. DatasetDeleteDatasetFuture.azure.Future
+1. DatasetRenameDatasetFuture.azure.Future
+1. LinkedServiceCreateOrUpdateLinkedServiceFuture.azure.Future
+1. LinkedServiceDeleteLinkedServiceFuture.azure.Future
+1. LinkedServiceRenameLinkedServiceFuture.azure.Future
+1. NotebookCreateOrUpdateNotebookFuture.azure.Future
+1. NotebookDeleteNotebookFuture.azure.Future
+1. NotebookRenameNotebookFuture.azure.Future
+1. PipelineCreateOrUpdatePipelineFuture.azure.Future
+1. PipelineDeletePipelineFuture.azure.Future
+1. PipelineRenamePipelineFuture.azure.Future
+1. SQLScriptRenameSQLScriptFuture.azure.Future
+1. SparkJobDefinitionDebugSparkJobDefinitionFuture.azure.Future
+1. SparkJobDefinitionExecuteSparkJobDefinitionFuture.azure.Future
+1. SparkJobDefinitionRenameSparkJobDefinitionFuture.azure.Future
+1. TriggerCreateOrUpdateTriggerFuture.azure.Future
+1. TriggerDeleteTriggerFuture.azure.Future
+1. TriggerStartTriggerFuture.azure.Future
+1. TriggerStopTriggerFuture.azure.Future
+1. TriggerSubscribeTriggerToEventsFuture.azure.Future
+1. TriggerUnsubscribeTriggerFromEventsFuture.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. DataFlowCreateOrUpdateDataFlowFuture.Result
+1. DataFlowCreateOrUpdateDataFlowFuture.azure.FutureAPI
+1. DataFlowDebugSessionCreateDataFlowDebugSessionFuture.Result
+1. DataFlowDebugSessionCreateDataFlowDebugSessionFuture.azure.FutureAPI
+1. DataFlowDebugSessionExecuteCommandFuture.Result
+1. DataFlowDebugSessionExecuteCommandFuture.azure.FutureAPI
+1. DataFlowDeleteDataFlowFuture.Result
+1. DataFlowDeleteDataFlowFuture.azure.FutureAPI
+1. DataFlowRenameDataFlowFuture.Result
+1. DataFlowRenameDataFlowFuture.azure.FutureAPI
+1. DatasetCreateOrUpdateDatasetFuture.Result
+1. DatasetCreateOrUpdateDatasetFuture.azure.FutureAPI
+1. DatasetDeleteDatasetFuture.Result
+1. DatasetDeleteDatasetFuture.azure.FutureAPI
+1. DatasetRenameDatasetFuture.Result
+1. DatasetRenameDatasetFuture.azure.FutureAPI
+1. LinkedServiceCreateOrUpdateLinkedServiceFuture.Result
+1. LinkedServiceCreateOrUpdateLinkedServiceFuture.azure.FutureAPI
+1. LinkedServiceDeleteLinkedServiceFuture.Result
+1. LinkedServiceDeleteLinkedServiceFuture.azure.FutureAPI
+1. LinkedServiceRenameLinkedServiceFuture.Result
+1. LinkedServiceRenameLinkedServiceFuture.azure.FutureAPI
+1. NotebookCreateOrUpdateNotebookFuture.Result
+1. NotebookCreateOrUpdateNotebookFuture.azure.FutureAPI
+1. NotebookDeleteNotebookFuture.Result
+1. NotebookDeleteNotebookFuture.azure.FutureAPI
+1. NotebookRenameNotebookFuture.Result
+1. NotebookRenameNotebookFuture.azure.FutureAPI
+1. PipelineCreateOrUpdatePipelineFuture.Result
+1. PipelineCreateOrUpdatePipelineFuture.azure.FutureAPI
+1. PipelineDeletePipelineFuture.Result
+1. PipelineDeletePipelineFuture.azure.FutureAPI
+1. PipelineRenamePipelineFuture.Result
+1. PipelineRenamePipelineFuture.azure.FutureAPI
+1. SQLScriptRenameSQLScriptFuture.Result
+1. SQLScriptRenameSQLScriptFuture.azure.FutureAPI
+1. SparkJobDefinitionDebugSparkJobDefinitionFuture.Result
+1. SparkJobDefinitionDebugSparkJobDefinitionFuture.azure.FutureAPI
+1. SparkJobDefinitionExecuteSparkJobDefinitionFuture.Result
+1. SparkJobDefinitionExecuteSparkJobDefinitionFuture.azure.FutureAPI
+1. SparkJobDefinitionRenameSparkJobDefinitionFuture.Result
+1. SparkJobDefinitionRenameSparkJobDefinitionFuture.azure.FutureAPI
+1. TriggerCreateOrUpdateTriggerFuture.Result
+1. TriggerCreateOrUpdateTriggerFuture.azure.FutureAPI
+1. TriggerDeleteTriggerFuture.Result
+1. TriggerDeleteTriggerFuture.azure.FutureAPI
+1. TriggerStartTriggerFuture.Result
+1. TriggerStartTriggerFuture.azure.FutureAPI
+1. TriggerStopTriggerFuture.Result
+1. TriggerStopTriggerFuture.azure.FutureAPI
+1. TriggerSubscribeTriggerToEventsFuture.Result
+1. TriggerSubscribeTriggerToEventsFuture.azure.FutureAPI
+1. TriggerUnsubscribeTriggerFromEventsFuture.Result
+1. TriggerUnsubscribeTriggerFromEventsFuture.azure.FutureAPI

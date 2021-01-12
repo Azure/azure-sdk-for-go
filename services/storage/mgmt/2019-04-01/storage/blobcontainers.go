@@ -1057,6 +1057,7 @@ func (client BlobContainersClient) List(ctx context.Context, resourceGroupName s
 	}
 	if result.lci.hasNextLink() && result.lci.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -1127,7 +1128,6 @@ func (client BlobContainersClient) listNextResults(ctx context.Context, lastResu
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storage.BlobContainersClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

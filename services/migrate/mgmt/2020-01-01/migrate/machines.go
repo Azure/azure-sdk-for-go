@@ -81,6 +81,7 @@ func (client MachinesClient) GetAllMachinesInSite(ctx context.Context, subscript
 	}
 	if result.vmmc.hasNextLink() && result.vmmc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -153,7 +154,6 @@ func (client MachinesClient) getAllMachinesInSiteNextResults(ctx context.Context
 	result, err = client.GetAllMachinesInSiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.MachinesClient", "getAllMachinesInSiteNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

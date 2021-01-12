@@ -106,6 +106,7 @@ func (client EntitiesClient) List(ctx context.Context, skiptoken string, skip *i
 	}
 	if result.elr.hasNextLink() && result.elr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -192,7 +193,6 @@ func (client EntitiesClient) listNextResults(ctx context.Context, lastResults En
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.EntitiesClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

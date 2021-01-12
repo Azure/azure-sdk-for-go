@@ -113,30 +113,10 @@ type CommitmentPlan struct {
 // CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type CreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *CreateOrUpdateFuture) Result(client Client) (ws WebService, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.CreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("webservices.CreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ws.Response.Response, err = future.GetResult(sender); err == nil && ws.Response.Response.StatusCode != http.StatusNoContent {
-		ws, err = client.CreateOrUpdateResponder(ws.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "webservices.CreateOrUpdateFuture", "Result", ws.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(Client) (WebService, error)
 }
 
 // DiagnosticsConfiguration diagnostics settings for an Azure ML web service.
@@ -475,30 +455,10 @@ func NewPaginatedWebServicesListPage(cur PaginatedWebServicesList, getNextPage f
 
 // PatchFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type PatchFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *PatchFuture) Result(client Client) (ws WebService, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.PatchFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("webservices.PatchFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ws.Response.Response, err = future.GetResult(sender); err == nil && ws.Response.Response.StatusCode != http.StatusNoContent {
-		ws, err = client.PatchResponder(ws.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "webservices.PatchFuture", "Result", ws.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(Client) (WebService, error)
 }
 
 // BasicProperties the set of properties specific to the Azure ML web service resource.
@@ -785,24 +745,10 @@ type RealtimeConfiguration struct {
 
 // RemoveFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type RemoveFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *RemoveFuture) Result(client Client) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.RemoveFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("webservices.RemoveFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(Client) (autorest.Response, error)
 }
 
 // Resource ...

@@ -172,7 +172,7 @@ func (client RolloutsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -213,7 +213,29 @@ func (client RolloutsClient) CreateOrUpdateSender(req *http.Request) (future Rol
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client RolloutsClient) (rr RolloutRequest, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("deploymentmanager.RolloutsCreateOrUpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if rr.Response.Response, err = future.GetResult(sender); err == nil && rr.Response.Response.StatusCode != http.StatusNoContent {
+			rr, err = client.CreateOrUpdateResponder(rr.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsCreateOrUpdateFuture", "Result", rr.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 

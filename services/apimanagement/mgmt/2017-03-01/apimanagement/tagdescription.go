@@ -503,6 +503,7 @@ func (client TagDescriptionClient) ListByAPI(ctx context.Context, resourceGroupN
 	}
 	if result.tdc.hasNextLink() && result.tdc.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -574,7 +575,6 @@ func (client TagDescriptionClient) listByAPINextResults(ctx context.Context, las
 	result, err = client.ListByAPIResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagDescriptionClient", "listByAPINextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

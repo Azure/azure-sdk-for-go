@@ -321,6 +321,7 @@ func (client ProjectsClient) List(ctx context.Context, groupName string, service
 	}
 	if result.pl.hasNextLink() && result.pl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -382,7 +383,6 @@ func (client ProjectsClient) listNextResults(ctx context.Context, lastResults Pr
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ProjectsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -176,6 +176,7 @@ func (client QuotaRequestStatusClient) List(ctx context.Context, subscriptionID 
 	}
 	if result.qrdl.hasNextLink() && result.qrdl.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -246,7 +247,6 @@ func (client QuotaRequestStatusClient) listNextResults(ctx context.Context, last
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestStatusClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

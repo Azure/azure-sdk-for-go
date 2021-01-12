@@ -171,6 +171,7 @@ func (client RegulatoryComplianceAssessmentsClient) List(ctx context.Context, re
 	}
 	if result.rcal.hasNextLink() && result.rcal.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -235,7 +236,6 @@ func (client RegulatoryComplianceAssessmentsClient) listNextResults(ctx context.
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.RegulatoryComplianceAssessmentsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

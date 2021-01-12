@@ -1,284 +1,90 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/mariadb/resource-manager/readme.md tag: `package-2020-01-01`
 
-Code generator @microsoft.azure/autorest.go@~2.1.161
+Code generator @microsoft.azure/autorest.go@2.1.168
 
 ## Breaking Changes
 
-- Function `NewVirtualNetworkRuleListResultPage` parameter(s) have been changed from `(func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error))` to `(VirtualNetworkRuleListResult, func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error))`
+### Removed Funcs
 
-## New Content
+1. *ConfigurationsCreateOrUpdateFuture.Result(ConfigurationsClient) (Configuration, error)
+1. *CreateRecommendedActionSessionFuture.Result(BaseClient) (autorest.Response, error)
+1. *DatabasesCreateOrUpdateFuture.Result(DatabasesClient) (Database, error)
+1. *DatabasesDeleteFuture.Result(DatabasesClient) (autorest.Response, error)
+1. *FirewallRulesCreateOrUpdateFuture.Result(FirewallRulesClient) (FirewallRule, error)
+1. *FirewallRulesDeleteFuture.Result(FirewallRulesClient) (autorest.Response, error)
+1. *PrivateEndpointConnectionsCreateOrUpdateFuture.Result(PrivateEndpointConnectionsClient) (PrivateEndpointConnection, error)
+1. *PrivateEndpointConnectionsDeleteFuture.Result(PrivateEndpointConnectionsClient) (autorest.Response, error)
+1. *PrivateEndpointConnectionsUpdateTagsFuture.Result(PrivateEndpointConnectionsClient) (PrivateEndpointConnection, error)
+1. *ServerSecurityAlertPoliciesCreateOrUpdateFuture.Result(ServerSecurityAlertPoliciesClient) (ServerSecurityAlertPolicy, error)
+1. *ServersCreateFuture.Result(ServersClient) (Server, error)
+1. *ServersDeleteFuture.Result(ServersClient) (autorest.Response, error)
+1. *ServersRestartFuture.Result(ServersClient) (autorest.Response, error)
+1. *ServersStartFuture.Result(ServersClient) (autorest.Response, error)
+1. *ServersStopFuture.Result(ServersClient) (autorest.Response, error)
+1. *ServersUpdateFuture.Result(ServersClient) (Server, error)
+1. *VirtualNetworkRulesCreateOrUpdateFuture.Result(VirtualNetworkRulesClient) (VirtualNetworkRule, error)
+1. *VirtualNetworkRulesDeleteFuture.Result(VirtualNetworkRulesClient) (autorest.Response, error)
 
-- New function `PrivateEndpointConnectionsClient.CreateOrUpdatePreparer(context.Context, string, string, string, PrivateEndpointConnection) (*http.Request, error)`
-- New function `PrivateEndpointConnectionsClient.GetResponder(*http.Response) (PrivateEndpointConnection, error)`
-- New function `AdvisorsClient.GetResponder(*http.Response) (Advisor, error)`
-- New function `*PrivateEndpointConnectionsDeleteFuture.Result(PrivateEndpointConnectionsClient) (autorest.Response, error)`
-- New function `TopQueryStatisticsClient.Get(context.Context, string, string, string) (QueryStatistic, error)`
-- New function `QueryTextsClient.ListByServerComplete(context.Context, string, string, []string) (QueryTextsResultListIterator, error)`
-- New function `NewPrivateLinkResourcesClient(string) PrivateLinkResourcesClient`
-- New function `RecommendationActionsResultListIterator.Response() RecommendationActionsResultList`
-- New function `WaitStatisticsResultListPage.Response() WaitStatisticsResultList`
-- New function `BaseClient.CreateRecommendedActionSessionSender(*http.Request) (CreateRecommendedActionSessionFuture, error)`
-- New function `QueryTextsResultListPage.Values() []QueryText`
-- New function `QueryTextsClient.GetSender(*http.Request) (*http.Response, error)`
-- New function `*RecommendationActionsResultListIterator.NextWithContext(context.Context) error`
-- New function `*TopQueryStatisticsResultListIterator.NextWithContext(context.Context) error`
-- New function `RecommendedActionsClient.ListByServerResponder(*http.Response) (RecommendationActionsResultList, error)`
-- New function `QueryTextsResultListIterator.Response() QueryTextsResultList`
-- New function `QueryTextsResultListPage.NotDone() bool`
-- New function `PrivateEndpointConnectionListResultPage.Response() PrivateEndpointConnectionListResult`
-- New function `WaitStatisticsResultList.IsEmpty() bool`
-- New function `PrivateLinkServiceConnectionStateProperty.MarshalJSON() ([]byte, error)`
-- New function `PrivateEndpointConnectionsClient.DeletePreparer(context.Context, string, string, string) (*http.Request, error)`
-- New function `BaseClient.CreateRecommendedActionSessionResponder(*http.Response) (autorest.Response, error)`
-- New function `*PrivateLinkResourceListResultPage.Next() error`
-- New function `PrivateLinkResourceListResultIterator.NotDone() bool`
-- New function `NewPrivateLinkResourceListResultPage(PrivateLinkResourceListResult, func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage`
-- New function `PrivateLinkResourcesClient.Get(context.Context, string, string, string) (PrivateLinkResource, error)`
-- New function `PrivateEndpointConnectionsClient.UpdateTagsPreparer(context.Context, string, string, string, TagsObject) (*http.Request, error)`
-- New function `PrivateEndpointConnectionListResult.IsEmpty() bool`
-- New function `WaitStatisticsClient.ListByServerResponder(*http.Response) (WaitStatisticsResultList, error)`
-- New function `LocationBasedRecommendedActionSessionsOperationStatusClient.GetResponder(*http.Response) (RecommendedActionSessionsOperationStatus, error)`
-- New function `TopQueryStatisticsResultListPage.Values() []QueryStatistic`
-- New function `TopQueryStatisticsClient.ListByServer(context.Context, string, string, TopQueryStatisticsInput) (TopQueryStatisticsResultListPage, error)`
-- New function `WaitStatisticsClient.Get(context.Context, string, string, string) (WaitStatistic, error)`
-- New function `*CreateRecommendedActionSessionFuture.Result(BaseClient) (autorest.Response, error)`
-- New function `NewLocationBasedRecommendedActionSessionsResultClientWithBaseURI(string, string) LocationBasedRecommendedActionSessionsResultClient`
-- New function `*QueryTextsResultListPage.NextWithContext(context.Context) error`
-- New function `PrivateEndpointConnectionsClient.UpdateTagsSender(*http.Request) (PrivateEndpointConnectionsUpdateTagsFuture, error)`
-- New function `*TopQueryStatisticsResultListPage.NextWithContext(context.Context) error`
-- New function `NewAdvisorsClient(string) AdvisorsClient`
-- New function `RecommendedActionsClient.GetSender(*http.Request) (*http.Response, error)`
-- New function `AdvisorsClient.Get(context.Context, string, string, string) (Advisor, error)`
-- New function `NewQueryTextsResultListIterator(QueryTextsResultListPage) QueryTextsResultListIterator`
-- New function `NewRecommendedActionsClientWithBaseURI(string, string) RecommendedActionsClient`
-- New function `RecommendationActionsResultListPage.Response() RecommendationActionsResultList`
-- New function `WaitStatisticsClient.ListByServerPreparer(context.Context, string, string, WaitStatisticsInput) (*http.Request, error)`
-- New function `*TopQueryStatisticsResultListIterator.Next() error`
-- New function `PrivateLinkResourcesClient.GetResponder(*http.Response) (PrivateLinkResource, error)`
-- New function `AdvisorsResultListPage.Values() []Advisor`
-- New function `*PrivateLinkResourceListResultIterator.Next() error`
-- New function `WaitStatisticsClient.GetResponder(*http.Response) (WaitStatistic, error)`
-- New function `TopQueryStatisticsResultListIterator.NotDone() bool`
-- New function `PrivateEndpointConnectionsClient.ListByServerResponder(*http.Response) (PrivateEndpointConnectionListResult, error)`
-- New function `PrivateEndpointConnectionsClient.UpdateTags(context.Context, string, string, string, TagsObject) (PrivateEndpointConnectionsUpdateTagsFuture, error)`
-- New function `TopQueryStatisticsClient.GetResponder(*http.Response) (QueryStatistic, error)`
-- New function `TopQueryStatisticsClient.ListByServerResponder(*http.Response) (TopQueryStatisticsResultList, error)`
-- New function `*WaitStatisticsResultListIterator.NextWithContext(context.Context) error`
-- New function `TopQueryStatisticsClient.ListByServerPreparer(context.Context, string, string, TopQueryStatisticsInput) (*http.Request, error)`
-- New function `*WaitStatisticsInput.UnmarshalJSON([]byte) error`
-- New function `TopQueryStatisticsClient.ListByServerComplete(context.Context, string, string, TopQueryStatisticsInput) (TopQueryStatisticsResultListIterator, error)`
-- New function `NewPrivateEndpointConnectionsClient(string) PrivateEndpointConnectionsClient`
-- New function `*PrivateEndpointConnectionsCreateOrUpdateFuture.Result(PrivateEndpointConnectionsClient) (PrivateEndpointConnection, error)`
-- New function `*PrivateLinkResourceListResultPage.NextWithContext(context.Context) error`
-- New function `PrivateLinkResourceListResultIterator.Value() PrivateLinkResource`
-- New function `PrivateEndpointConnectionsClient.DeleteResponder(*http.Response) (autorest.Response, error)`
-- New function `*WaitStatisticsResultListIterator.Next() error`
-- New function `LocationBasedRecommendedActionSessionsOperationStatusClient.GetPreparer(context.Context, string, string) (*http.Request, error)`
-- New function `*RecommendationActionsResultListPage.NextWithContext(context.Context) error`
-- New function `PrivateEndpointConnectionProperties.MarshalJSON() ([]byte, error)`
-- New function `LocationBasedRecommendedActionSessionsOperationStatusClient.Get(context.Context, string, string) (RecommendedActionSessionsOperationStatus, error)`
-- New function `WaitStatisticsClient.ListByServer(context.Context, string, string, WaitStatisticsInput) (WaitStatisticsResultListPage, error)`
-- New function `PrivateEndpointConnectionsClient.ListByServerPreparer(context.Context, string, string) (*http.Request, error)`
-- New function `PrivateLinkResourcesClient.ListByServerResponder(*http.Response) (PrivateLinkResourceListResult, error)`
-- New function `*PrivateEndpointConnectionListResultPage.NextWithContext(context.Context) error`
-- New function `WaitStatisticsInput.MarshalJSON() ([]byte, error)`
-- New function `BaseClient.CreateRecommendedActionSessionPreparer(context.Context, string, string, string, string) (*http.Request, error)`
-- New function `RecommendationActionProperties.MarshalJSON() ([]byte, error)`
-- New function `TagsObject.MarshalJSON() ([]byte, error)`
-- New function `*WaitStatistic.UnmarshalJSON([]byte) error`
-- New function `QueryStatistic.MarshalJSON() ([]byte, error)`
-- New function `AdvisorsClient.GetPreparer(context.Context, string, string, string) (*http.Request, error)`
-- New function `NewRecommendedActionsClient(string) RecommendedActionsClient`
-- New function `AdvisorsClient.GetSender(*http.Request) (*http.Response, error)`
-- New function `QueryTextsClient.GetPreparer(context.Context, string, string, string) (*http.Request, error)`
-- New function `*AdvisorsResultListIterator.NextWithContext(context.Context) error`
-- New function `NewWaitStatisticsResultListPage(WaitStatisticsResultList, func(context.Context, WaitStatisticsResultList) (WaitStatisticsResultList, error)) WaitStatisticsResultListPage`
-- New function `AdvisorsResultListPage.Response() AdvisorsResultList`
-- New function `LocationBasedRecommendedActionSessionsResultClient.ListComplete(context.Context, string, string) (RecommendationActionsResultListIterator, error)`
-- New function `*QueryTextsResultListIterator.NextWithContext(context.Context) error`
-- New function `*PrivateEndpointConnection.UnmarshalJSON([]byte) error`
-- New function `TopQueryStatisticsClient.GetSender(*http.Request) (*http.Response, error)`
-- New function `*PrivateEndpointConnectionsUpdateTagsFuture.Result(PrivateEndpointConnectionsClient) (PrivateEndpointConnection, error)`
-- New function `WaitStatisticsResultListIterator.Response() WaitStatisticsResultList`
-- New function `WaitStatisticsResultListPage.Values() []WaitStatistic`
-- New function `NewRecommendationActionsResultListPage(RecommendationActionsResultList, func(context.Context, RecommendationActionsResultList) (RecommendationActionsResultList, error)) RecommendationActionsResultListPage`
-- New function `QueryTextsClient.ListByServerPreparer(context.Context, string, string, []string) (*http.Request, error)`
-- New function `PrivateEndpointConnectionsClient.ListByServer(context.Context, string, string) (PrivateEndpointConnectionListResultPage, error)`
-- New function `WaitStatisticsResultListIterator.Value() WaitStatistic`
-- New function `PrivateLinkResourcesClient.GetSender(*http.Request) (*http.Response, error)`
-- New function `QueryTextsClient.ListByServerResponder(*http.Response) (QueryTextsResultList, error)`
-- New function `PrivateEndpointConnectionsClient.DeleteSender(*http.Request) (PrivateEndpointConnectionsDeleteFuture, error)`
-- New function `PrivateEndpointConnectionListResultPage.Values() []PrivateEndpointConnection`
-- New function `QueryTextsClient.ListByServer(context.Context, string, string, []string) (QueryTextsResultListPage, error)`
-- New function `*QueryTextsResultListIterator.Next() error`
-- New function `WaitStatisticsResultListIterator.NotDone() bool`
-- New function `PrivateLinkResourceListResultIterator.Response() PrivateLinkResourceListResult`
-- New function `*WaitStatisticsResultListPage.NextWithContext(context.Context) error`
-- New function `RecommendedActionsClient.ListByServerSender(*http.Request) (*http.Response, error)`
-- New function `NewRecommendationActionsResultListIterator(RecommendationActionsResultListPage) RecommendationActionsResultListIterator`
-- New function `AdvisorsResultList.IsEmpty() bool`
-- New function `AdvisorsClient.ListByServerComplete(context.Context, string, string) (AdvisorsResultListIterator, error)`
-- New function `Advisor.MarshalJSON() ([]byte, error)`
-- New function `NewLocationBasedRecommendedActionSessionsResultClient(string) LocationBasedRecommendedActionSessionsResultClient`
-- New function `PrivateEndpointConnectionsClient.GetSender(*http.Request) (*http.Response, error)`
-- New function `NewQueryTextsResultListPage(QueryTextsResultList, func(context.Context, QueryTextsResultList) (QueryTextsResultList, error)) QueryTextsResultListPage`
-- New function `TopQueryStatisticsClient.ListByServerSender(*http.Request) (*http.Response, error)`
-- New function `PrivateLinkResourceListResultPage.Values() []PrivateLinkResource`
-- New function `TopQueryStatisticsInput.MarshalJSON() ([]byte, error)`
-- New function `RecommendationActionsResultList.IsEmpty() bool`
-- New function `QueryTextsClient.GetResponder(*http.Response) (QueryText, error)`
-- New function `NewQueryTextsClient(string) QueryTextsClient`
-- New function `PrivateEndpointConnectionsClient.UpdateTagsResponder(*http.Response) (PrivateEndpointConnection, error)`
-- New function `TopQueryStatisticsResultListPage.Response() TopQueryStatisticsResultList`
-- New function `NewLocationBasedRecommendedActionSessionsOperationStatusClientWithBaseURI(string, string) LocationBasedRecommendedActionSessionsOperationStatusClient`
-- New function `NewWaitStatisticsResultListIterator(WaitStatisticsResultListPage) WaitStatisticsResultListIterator`
-- New function `PrivateEndpointConnectionsClient.ListByServerComplete(context.Context, string, string) (PrivateEndpointConnectionListResultIterator, error)`
-- New function `LocationBasedRecommendedActionSessionsResultClient.List(context.Context, string, string) (RecommendationActionsResultListPage, error)`
-- New function `AdvisorsClient.ListByServerSender(*http.Request) (*http.Response, error)`
-- New function `PrivateLinkResourcesClient.ListByServerPreparer(context.Context, string, string) (*http.Request, error)`
-- New function `PrivateLinkResourceListResultPage.Response() PrivateLinkResourceListResult`
-- New function `TopQueryStatisticsResultListIterator.Response() TopQueryStatisticsResultList`
-- New function `PrivateEndpointConnectionListResultIterator.NotDone() bool`
-- New function `RecommendedActionsClient.ListByServer(context.Context, string, string, string, string) (RecommendationActionsResultListPage, error)`
-- New function `WaitStatisticsClient.GetSender(*http.Request) (*http.Response, error)`
-- New function `PrivateEndpointConnectionsClient.GetPreparer(context.Context, string, string, string) (*http.Request, error)`
-- New function `*QueryStatistic.UnmarshalJSON([]byte) error`
-- New function `RecommendationActionsResultListIterator.Value() RecommendationAction`
-- New function `NewPrivateLinkResourceListResultIterator(PrivateLinkResourceListResultPage) PrivateLinkResourceListResultIterator`
-- New function `TopQueryStatisticsResultListIterator.Value() QueryStatistic`
-- New function `WaitStatisticsClient.ListByServerSender(*http.Request) (*http.Response, error)`
-- New function `WaitStatisticsClient.ListByServerComplete(context.Context, string, string, WaitStatisticsInput) (WaitStatisticsResultListIterator, error)`
-- New function `LocationBasedRecommendedActionSessionsResultClient.ListPreparer(context.Context, string, string) (*http.Request, error)`
-- New function `LocationBasedRecommendedActionSessionsOperationStatusClient.GetSender(*http.Request) (*http.Response, error)`
-- New function `RecommendationAction.MarshalJSON() ([]byte, error)`
-- New function `NewTopQueryStatisticsClientWithBaseURI(string, string) TopQueryStatisticsClient`
-- New function `NewLocationBasedRecommendedActionSessionsOperationStatusClient(string) LocationBasedRecommendedActionSessionsOperationStatusClient`
-- New function `PrivateLinkResourcesClient.GetPreparer(context.Context, string, string, string) (*http.Request, error)`
-- New function `AdvisorsResultListPage.NotDone() bool`
-- New function `*PrivateEndpointConnectionListResultPage.Next() error`
-- New function `PrivateEndpointConnectionsClient.CreateOrUpdateSender(*http.Request) (PrivateEndpointConnectionsCreateOrUpdateFuture, error)`
-- New function `PrivateEndpointConnectionsClient.CreateOrUpdateResponder(*http.Response) (PrivateEndpointConnection, error)`
-- New function `*RecommendationActionsResultListIterator.Next() error`
-- New function `PrivateEndpointConnectionListResultIterator.Response() PrivateEndpointConnectionListResult`
-- New function `PrivateEndpointConnection.MarshalJSON() ([]byte, error)`
-- New function `TopQueryStatisticsClient.GetPreparer(context.Context, string, string, string) (*http.Request, error)`
-- New function `NewTopQueryStatisticsResultListIterator(TopQueryStatisticsResultListPage) TopQueryStatisticsResultListIterator`
-- New function `PrivateEndpointConnectionsClient.Get(context.Context, string, string, string) (PrivateEndpointConnection, error)`
-- New function `TopQueryStatisticsResultList.IsEmpty() bool`
-- New function `TopQueryStatisticsResultListPage.NotDone() bool`
-- New function `NewAdvisorsClientWithBaseURI(string, string) AdvisorsClient`
-- New function `PrivateEndpointConnectionListResultIterator.Value() PrivateEndpointConnection`
-- New function `PrivateLinkResourceListResult.IsEmpty() bool`
-- New function `QueryTextsClient.Get(context.Context, string, string, string) (QueryText, error)`
-- New function `NewQueryTextsClientWithBaseURI(string, string) QueryTextsClient`
-- New function `*PrivateEndpointConnectionListResultIterator.Next() error`
-- New function `NewPrivateEndpointConnectionListResultIterator(PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator`
-- New function `*WaitStatisticsResultListPage.Next() error`
-- New function `RecommendationActionsResultListPage.Values() []RecommendationAction`
-- New function `RecommendedActionsClient.Get(context.Context, string, string, string, string) (RecommendationAction, error)`
-- New function `WaitStatistic.MarshalJSON() ([]byte, error)`
-- New function `NewPrivateEndpointConnectionsClientWithBaseURI(string, string) PrivateEndpointConnectionsClient`
-- New function `NewAdvisorsResultListIterator(AdvisorsResultListPage) AdvisorsResultListIterator`
-- New function `AdvisorsResultListIterator.NotDone() bool`
-- New function `AdvisorsClient.ListByServer(context.Context, string, string) (AdvisorsResultListPage, error)`
-- New function `BaseClient.CreateRecommendedActionSession(context.Context, string, string, string, string) (CreateRecommendedActionSessionFuture, error)`
-- New function `PrivateEndpointConnectionListResultPage.NotDone() bool`
-- New function `*AdvisorsResultListIterator.Next() error`
-- New function `*AdvisorsResultListPage.NextWithContext(context.Context) error`
-- New function `*TopQueryStatisticsInput.UnmarshalJSON([]byte) error`
-- New function `PrivateLinkResourcesClient.ListByServerComplete(context.Context, string, string) (PrivateLinkResourceListResultIterator, error)`
-- New function `*PrivateLinkResourceListResultIterator.NextWithContext(context.Context) error`
-- New function `WaitStatisticsResultListPage.NotDone() bool`
-- New function `*RecommendationAction.UnmarshalJSON([]byte) error`
-- New function `NewTopQueryStatisticsClient(string) TopQueryStatisticsClient`
-- New function `PrivateLinkResourceListResultPage.NotDone() bool`
-- New function `*PrivateEndpointConnectionListResultIterator.NextWithContext(context.Context) error`
-- New function `AdvisorsResultListIterator.Value() Advisor`
-- New function `NewAdvisorsResultListPage(AdvisorsResultList, func(context.Context, AdvisorsResultList) (AdvisorsResultList, error)) AdvisorsResultListPage`
-- New function `RecommendedActionsClient.GetResponder(*http.Response) (RecommendationAction, error)`
-- New function `LocationBasedRecommendedActionSessionsResultClient.ListResponder(*http.Response) (RecommendationActionsResultList, error)`
-- New function `NewPrivateLinkResourcesClientWithBaseURI(string, string) PrivateLinkResourcesClient`
-- New function `WaitStatisticsClient.GetPreparer(context.Context, string, string, string) (*http.Request, error)`
-- New function `QueryTextsResultList.IsEmpty() bool`
-- New function `QueryTextsResultListPage.Response() QueryTextsResultList`
-- New function `AdvisorsResultListIterator.Response() AdvisorsResultList`
-- New function `RecommendationActionsResultListPage.NotDone() bool`
-- New function `*RecommendationActionsResultListPage.Next() error`
-- New function `*QueryTextsResultListPage.Next() error`
-- New function `NewTopQueryStatisticsResultListPage(TopQueryStatisticsResultList, func(context.Context, TopQueryStatisticsResultList) (TopQueryStatisticsResultList, error)) TopQueryStatisticsResultListPage`
-- New function `QueryText.MarshalJSON() ([]byte, error)`
-- New function `PrivateLinkResourcesClient.ListByServerSender(*http.Request) (*http.Response, error)`
-- New function `PrivateEndpointConnectionsClient.CreateOrUpdate(context.Context, string, string, string, PrivateEndpointConnection) (PrivateEndpointConnectionsCreateOrUpdateFuture, error)`
-- New function `RecommendationActionsResultListIterator.NotDone() bool`
-- New function `QueryTextsResultListIterator.Value() QueryText`
-- New function `RecommendedActionsClient.ListByServerComplete(context.Context, string, string, string, string) (RecommendationActionsResultListIterator, error)`
-- New function `*TopQueryStatisticsResultListPage.Next() error`
-- New function `RecommendedActionsClient.ListByServerPreparer(context.Context, string, string, string, string) (*http.Request, error)`
-- New function `*AdvisorsResultListPage.Next() error`
-- New function `AdvisorsClient.ListByServerResponder(*http.Response) (AdvisorsResultList, error)`
-- New function `NewWaitStatisticsClientWithBaseURI(string, string) WaitStatisticsClient`
-- New function `LocationBasedRecommendedActionSessionsResultClient.ListSender(*http.Request) (*http.Response, error)`
-- New function `*QueryText.UnmarshalJSON([]byte) error`
-- New function `PrivateEndpointConnectionsClient.Delete(context.Context, string, string, string) (PrivateEndpointConnectionsDeleteFuture, error)`
-- New function `NewWaitStatisticsClient(string) WaitStatisticsClient`
-- New function `NewPrivateEndpointConnectionListResultPage(PrivateEndpointConnectionListResult, func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage`
-- New function `PrivateLinkResourcesClient.ListByServer(context.Context, string, string) (PrivateLinkResourceListResultPage, error)`
-- New function `QueryTextsResultListIterator.NotDone() bool`
-- New function `RecommendedActionsClient.GetPreparer(context.Context, string, string, string, string) (*http.Request, error)`
-- New function `AdvisorsClient.ListByServerPreparer(context.Context, string, string) (*http.Request, error)`
-- New function `PrivateEndpointConnectionsClient.ListByServerSender(*http.Request) (*http.Response, error)`
-- New function `QueryTextsClient.ListByServerSender(*http.Request) (*http.Response, error)`
-- New struct `Advisor`
-- New struct `AdvisorsClient`
-- New struct `AdvisorsResultList`
-- New struct `AdvisorsResultListIterator`
-- New struct `AdvisorsResultListPage`
-- New struct `CreateRecommendedActionSessionFuture`
-- New struct `LocationBasedRecommendedActionSessionsOperationStatusClient`
-- New struct `LocationBasedRecommendedActionSessionsResultClient`
-- New struct `PrivateEndpointConnection`
-- New struct `PrivateEndpointConnectionListResult`
-- New struct `PrivateEndpointConnectionListResultIterator`
-- New struct `PrivateEndpointConnectionListResultPage`
-- New struct `PrivateEndpointConnectionProperties`
-- New struct `PrivateEndpointConnectionsClient`
-- New struct `PrivateEndpointConnectionsCreateOrUpdateFuture`
-- New struct `PrivateEndpointConnectionsDeleteFuture`
-- New struct `PrivateEndpointConnectionsUpdateTagsFuture`
-- New struct `PrivateLinkResource`
-- New struct `PrivateLinkResourceListResult`
-- New struct `PrivateLinkResourceListResultIterator`
-- New struct `PrivateLinkResourceListResultPage`
-- New struct `PrivateLinkResourceProperties`
-- New struct `PrivateLinkResourcesClient`
-- New struct `PrivateLinkServiceConnectionStateProperty`
-- New struct `QueryStatistic`
-- New struct `QueryStatisticProperties`
-- New struct `QueryText`
-- New struct `QueryTextProperties`
-- New struct `QueryTextsClient`
-- New struct `QueryTextsResultList`
-- New struct `QueryTextsResultListIterator`
-- New struct `QueryTextsResultListPage`
-- New struct `RecommendationAction`
-- New struct `RecommendationActionProperties`
-- New struct `RecommendationActionsResultList`
-- New struct `RecommendationActionsResultListIterator`
-- New struct `RecommendationActionsResultListPage`
-- New struct `RecommendedActionSessionsOperationStatus`
-- New struct `RecommendedActionsClient`
-- New struct `TagsObject`
-- New struct `TopQueryStatisticsClient`
-- New struct `TopQueryStatisticsInput`
-- New struct `TopQueryStatisticsInputProperties`
-- New struct `TopQueryStatisticsResultList`
-- New struct `TopQueryStatisticsResultListIterator`
-- New struct `TopQueryStatisticsResultListPage`
-- New struct `WaitStatistic`
-- New struct `WaitStatisticProperties`
-- New struct `WaitStatisticsClient`
-- New struct `WaitStatisticsInput`
-- New struct `WaitStatisticsInputProperties`
-- New struct `WaitStatisticsResultList`
-- New struct `WaitStatisticsResultListIterator`
-- New struct `WaitStatisticsResultListPage`
+## Struct Changes
+
+### Removed Struct Fields
+
+1. ConfigurationsCreateOrUpdateFuture.azure.Future
+1. CreateRecommendedActionSessionFuture.azure.Future
+1. DatabasesCreateOrUpdateFuture.azure.Future
+1. DatabasesDeleteFuture.azure.Future
+1. FirewallRulesCreateOrUpdateFuture.azure.Future
+1. FirewallRulesDeleteFuture.azure.Future
+1. PrivateEndpointConnectionsCreateOrUpdateFuture.azure.Future
+1. PrivateEndpointConnectionsDeleteFuture.azure.Future
+1. PrivateEndpointConnectionsUpdateTagsFuture.azure.Future
+1. ServerSecurityAlertPoliciesCreateOrUpdateFuture.azure.Future
+1. ServersCreateFuture.azure.Future
+1. ServersDeleteFuture.azure.Future
+1. ServersRestartFuture.azure.Future
+1. ServersStartFuture.azure.Future
+1. ServersStopFuture.azure.Future
+1. ServersUpdateFuture.azure.Future
+1. VirtualNetworkRulesCreateOrUpdateFuture.azure.Future
+1. VirtualNetworkRulesDeleteFuture.azure.Future
+
+## Struct Changes
+
+### New Struct Fields
+
+1. ConfigurationsCreateOrUpdateFuture.Result
+1. ConfigurationsCreateOrUpdateFuture.azure.FutureAPI
+1. CreateRecommendedActionSessionFuture.Result
+1. CreateRecommendedActionSessionFuture.azure.FutureAPI
+1. DatabasesCreateOrUpdateFuture.Result
+1. DatabasesCreateOrUpdateFuture.azure.FutureAPI
+1. DatabasesDeleteFuture.Result
+1. DatabasesDeleteFuture.azure.FutureAPI
+1. FirewallRulesCreateOrUpdateFuture.Result
+1. FirewallRulesCreateOrUpdateFuture.azure.FutureAPI
+1. FirewallRulesDeleteFuture.Result
+1. FirewallRulesDeleteFuture.azure.FutureAPI
+1. PrivateEndpointConnectionsCreateOrUpdateFuture.Result
+1. PrivateEndpointConnectionsCreateOrUpdateFuture.azure.FutureAPI
+1. PrivateEndpointConnectionsDeleteFuture.Result
+1. PrivateEndpointConnectionsDeleteFuture.azure.FutureAPI
+1. PrivateEndpointConnectionsUpdateTagsFuture.Result
+1. PrivateEndpointConnectionsUpdateTagsFuture.azure.FutureAPI
+1. ServerSecurityAlertPoliciesCreateOrUpdateFuture.Result
+1. ServerSecurityAlertPoliciesCreateOrUpdateFuture.azure.FutureAPI
+1. ServersCreateFuture.Result
+1. ServersCreateFuture.azure.FutureAPI
+1. ServersDeleteFuture.Result
+1. ServersDeleteFuture.azure.FutureAPI
+1. ServersRestartFuture.Result
+1. ServersRestartFuture.azure.FutureAPI
+1. ServersStartFuture.Result
+1. ServersStartFuture.azure.FutureAPI
+1. ServersStopFuture.Result
+1. ServersStopFuture.azure.FutureAPI
+1. ServersUpdateFuture.Result
+1. ServersUpdateFuture.azure.FutureAPI
+1. VirtualNetworkRulesCreateOrUpdateFuture.Result
+1. VirtualNetworkRulesCreateOrUpdateFuture.azure.FutureAPI
+1. VirtualNetworkRulesDeleteFuture.Result
+1. VirtualNetworkRulesDeleteFuture.azure.FutureAPI

@@ -138,7 +138,7 @@ func (client Client) Cancel(ctx context.Context, accountName string, jobIdentity
 
 	result, err = client.CancelSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "job.Client", "Cancel", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "job.Client", "Cancel", nil, "Failure sending request")
 		return
 	}
 
@@ -177,7 +177,23 @@ func (client Client) CancelSender(req *http.Request) (future CancelFuture, err e
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client Client) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "job.CancelFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("job.CancelFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 
@@ -580,6 +596,7 @@ func (client Client) List(ctx context.Context, accountName string, filter string
 	}
 	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -658,7 +675,6 @@ func (client Client) listNextResults(ctx context.Context, lastResults InfoListRe
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.Client", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -703,7 +719,7 @@ func (client Client) Update(ctx context.Context, accountName string, jobIdentity
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "job.Client", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "job.Client", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -747,7 +763,29 @@ func (client Client) UpdateSender(req *http.Request) (future UpdateFuture, err e
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client Client) (i Information, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "job.UpdateFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("job.UpdateFuture")
+			return
+		}
+		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		if i.Response.Response, err = future.GetResult(sender); err == nil && i.Response.Response.StatusCode != http.StatusNoContent {
+			i, err = client.UpdateResponder(i.Response.Response)
+			if err != nil {
+				err = autorest.NewErrorWithError(err, "job.UpdateFuture", "Result", i.Response.Response, "Failure responding to request")
+			}
+		}
+		return
+	}
 	return
 }
 
@@ -787,7 +825,7 @@ func (client Client) Yield(ctx context.Context, accountName string, jobIdentity 
 
 	result, err = client.YieldSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "job.Client", "Yield", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "job.Client", "Yield", nil, "Failure sending request")
 		return
 	}
 
@@ -826,7 +864,23 @@ func (client Client) YieldSender(req *http.Request) (future YieldFuture, err err
 	if err != nil {
 		return
 	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = func(client Client) (ar autorest.Response, err error) {
+		var done bool
+		done, err = future.DoneWithContext(context.Background(), client)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "job.YieldFuture", "Result", future.Response(), "Polling failure")
+			return
+		}
+		if !done {
+			err = azure.NewAsyncOpIncompleteError("job.YieldFuture")
+			return
+		}
+		ar.Response = future.Response()
+		return
+	}
 	return
 }
 

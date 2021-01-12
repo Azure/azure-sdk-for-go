@@ -78,6 +78,7 @@ func (client GalleryImageClient) List(ctx context.Context, resourceGroupName str
 	}
 	if result.rwcgi.hasNextLink() && result.rwcgi.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -148,7 +149,6 @@ func (client GalleryImageClient) listNextResults(ctx context.Context, lastResult
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.GalleryImageClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

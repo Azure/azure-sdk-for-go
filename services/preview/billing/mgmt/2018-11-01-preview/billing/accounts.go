@@ -153,6 +153,7 @@ func (client AccountsClient) List(ctx context.Context, expand string) (result Ac
 	}
 	if result.alr.hasNextLink() && result.alr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -211,7 +212,6 @@ func (client AccountsClient) listNextResults(ctx context.Context, lastResults Ac
 	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.AccountsClient", "listNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

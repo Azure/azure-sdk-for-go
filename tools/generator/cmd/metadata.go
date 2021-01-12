@@ -30,6 +30,7 @@ func (ctx metadataContext) processMetadata(metadataOutput string) ([]string, err
 		SDKRoot: ctx.sdkRoot,
 		Validators: []validate.MetadataValidateFunc{
 			validate.PreviewCheck,
+			// TODO -- we do have some exceptions (see file tools/pkgchk/exceptions.txt) that might need to be considered here
 			validate.MgmtCheck,
 		},
 	}

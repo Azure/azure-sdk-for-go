@@ -118,7 +118,7 @@ func writeNewContent(c *delta.Content, md *markdown.Writer) {
 		modified := c.GetModifiedStructs()
 		for s, f := range modified {
 			for _, af := range f.AnonymousFields {
-				line := fmt.Sprintf("- New anonymous field `%s` in struct `%s`", af, s)
+				line := fmt.Sprintf("- New anonymous field `%s` in struct `%s`", af.FullIdentifier, s)
 				md.WriteLine(line)
 			}
 			for f := range f.Fields {
@@ -205,7 +205,7 @@ func writeRemovedContent(removed *delta.Content, md *markdown.Writer) {
 	if len(modified) > 0 {
 		for s, f := range modified {
 			for _, af := range f.AnonymousFields {
-				line := fmt.Sprintf("- Field `%s` of struct `%s` has been removed", af, s)
+				line := fmt.Sprintf("- Field `%s` of struct `%s` has been removed", af.FullIdentifier, s)
 				md.WriteLine(line)
 			}
 			for f := range f.Fields {

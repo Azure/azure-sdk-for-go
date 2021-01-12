@@ -269,7 +269,7 @@ func writeStructs(content *delta.Content, sheader1, sheader2 string, md *markdow
 		items := make([]string, 0, len(content.Structs)-len(content.CompleteStructs))
 		for s, f := range modified {
 			for _, af := range f.AnonymousFields {
-				items = append(items, fmt.Sprintf("1. %s.%s", s, af))
+				items = append(items, fmt.Sprintf("1. %s.%s", s, af.Identifier))
 			}
 			for f := range f.Fields {
 				items = append(items, fmt.Sprintf("1. %s.%s", s, f))

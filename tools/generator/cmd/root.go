@@ -11,7 +11,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/changelog"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/list"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/pipeline"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/ioext"
@@ -23,7 +22,7 @@ const (
 )
 
 // Command returns the command for the generator. Note that this command is designed to run in the root directory of
-// azure-sdk-for-go. It might not work if you are running this tool in somewhere else
+// azure-sdk-for-go. It does not work if you are running this tool in somewhere else
 func Command() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:  "generator <generate input filepath> <generate output filepath>",
@@ -47,10 +46,6 @@ func Command() *cobra.Command {
 	flags := rootCmd.Flags()
 	flags.String("options", defaultOptionPath, "Specify a file with the autorest options")
 
-	rootCmd.AddCommand(
-		list.Command(),
-	)
-
 	return rootCmd
 }
 
@@ -61,7 +56,7 @@ type Flags struct {
 
 func execute(inputPath, outputPath string, flags Flags) error {
 	log.Printf("Reading generate input file from '%s'...", inputPath)
-	input, err := readInputFrom(inputPath)
+	input, err := pipeline.ReadInput(inputPath)
 	if err != nil {
 		return fmt.Errorf("cannot read generate input: %+v", err)
 	}
@@ -77,6 +72,18 @@ func execute(inputPath, outputPath string, flags Flags) error {
 	}
 	defer eraseBackup(backupRoot)
 	log.Printf("Finished backuping to '%s'", backupRoot)
+
+	// now we summary all the metadata in sdk
+	log.Printf("Cleaning up all the packages related with the following readme files: [%s]", strings.Join(input.RelatedReadmeMdFiles, ", "))
+	cleanUpCtx := cleanUpContext{
+		root:        "./services",
+		readmeFiles: input.RelatedReadmeMdFiles,
+	}
+	if err := cleanUpCtx.clean(); err != nil {
+		return err
+	}
+	log.Printf("All related packages have been cleaned up")
+
 	ctx := generateContext{
 		sdkRoot:    utils.NormalizePath(cwd),
 		backupRoot: backupRoot,
@@ -88,7 +95,7 @@ func execute(inputPath, outputPath string, flags Flags) error {
 	}
 	log.Printf("Output generated: \n%s", output.String())
 	log.Printf("Writing output to file '%s'...", outputPath)
-	if err := writeOutputTo(outputPath, output); err != nil {
+	if err := pipeline.WriteOutput(outputPath, output); err != nil {
 		return fmt.Errorf("cannot write generate output: %+v", err)
 	}
 	return nil

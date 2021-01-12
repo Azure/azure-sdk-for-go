@@ -82,6 +82,7 @@ type Struct struct {
 	Fields map[string]string `json:"fields,omitempty"`
 }
 
+// AnonymousField describes an anonymous field of a struct type
 type AnonymousField struct {
 	FullIdentifier string `json:"full,omitempty"`
 	Identifier     string `json:"identifier,omitempty"`
@@ -199,7 +200,7 @@ func (c *Content) addStruct(pkg Package, name string, s *ast.StructType) {
 		if n == nil {
 			sd.AnonymousFields = append(sd.AnonymousFields, AnonymousField{
 				FullIdentifier: t,
-				Identifier: getIdentifier(f.Type),
+				Identifier:     getIdentifier(f.Type),
 			})
 		} else {
 			if sd.Fields == nil {

@@ -28,7 +28,7 @@ type RetryOptions struct {
 	MaxRetries int32
 
 	// TryTimeout indicates the maximum time allowed for any single try of an HTTP request.
-	// The default value is one minute.
+	// This is disabled by default.  Specify a value greater than zero to enable.
 	// NOTE: Setting this to a small value might cause premature HTTP request time-outs.
 	TryTimeout time.Duration
 
@@ -80,9 +80,6 @@ func (o *RetryOptions) init() {
 	}
 	if o.StatusCodes == nil {
 		o.StatusCodes = StatusCodesForRetry
-	}
-	if o.TryTimeout == 0 {
-		o.TryTimeout = 1 * time.Minute
 	}
 }
 
@@ -162,11 +159,15 @@ func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 			return
 		}
 
-		// Set the per-try time for this particular retry operation and then Do the operation.
-		tryCtx, tryCancel := context.WithTimeout(req.Context(), options.TryTimeout)
-		clone := req.clone(tryCtx)
-		resp, err = clone.Next() // Make the request
-		tryCancel()
+		if options.TryTimeout == 0 {
+			resp, err = req.Next()
+		} else {
+			// Set the per-try time for this particular retry operation and then Do the operation.
+			tryCtx, tryCancel := context.WithTimeout(req.Context(), options.TryTimeout)
+			clone := req.clone(tryCtx)
+			resp, err = clone.Next() // Make the request
+			tryCancel()
+		}
 		if err == nil {
 			Log().Writef(LogRetryPolicy, "response %d", resp.StatusCode)
 		} else {

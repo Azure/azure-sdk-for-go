@@ -153,6 +153,7 @@ func (client SubscriptionsClient) ListByBillingAccount(ctx context.Context, bill
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -212,7 +213,6 @@ func (client SubscriptionsClient) listByBillingAccountNextResults(ctx context.Co
 	result, err = client.ListByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "listByBillingAccountNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -270,6 +270,7 @@ func (client SubscriptionsClient) ListByBillingProfile(ctx context.Context, bill
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -330,7 +331,6 @@ func (client SubscriptionsClient) listByBillingProfileNextResults(ctx context.Co
 	result, err = client.ListByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "listByBillingProfileNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -388,6 +388,7 @@ func (client SubscriptionsClient) ListByCustomer(ctx context.Context, billingAcc
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -448,7 +449,6 @@ func (client SubscriptionsClient) listByCustomerNextResults(ctx context.Context,
 	result, err = client.ListByCustomerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "listByCustomerNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -507,6 +507,7 @@ func (client SubscriptionsClient) ListByInvoiceSection(ctx context.Context, bill
 	}
 	if result.slr.hasNextLink() && result.slr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -568,7 +569,6 @@ func (client SubscriptionsClient) listByInvoiceSectionNextResults(ctx context.Co
 	result, err = client.ListByInvoiceSectionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "listByInvoiceSectionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

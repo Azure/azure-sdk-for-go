@@ -240,19 +240,16 @@ func createNewPageBlobWithSize(c *chk.C, container ContainerClient, sizeInBytes 
 	return
 }
 
-//
-//func createBlockBlobWithPrefix(c *chk.C, container ContainerClient, prefix string) (blob BlockBlobClient, name string) {
-//	name = prefix + generateName(blobPrefix)
-//	blob = container.NewBlockBlobClient(name)
-//
-//	cResp, err := blob.Upload(ctx, strings.NewReader(blockBlobDefaultData), BlobHTTPHeaders{},
-//		nil, BlobAccessConditions{})
-//
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(cResp.StatusCode(), chk.Equals, 201)
-//	return
-//}
-//
+func createNewBlockBlobWithPrefix(c *chk.C, container ContainerClient, prefix string) (blob BlockBlobClient, name string) {
+	name = prefix + generateName(blobPrefix)
+	blob = container.NewBlockBlobClient(name)
+
+	cResp, err := blob.Upload(ctx, strings.NewReader(blockBlobDefaultData), nil)
+
+	c.Assert(err, chk.IsNil)
+	c.Assert(cResp.RawResponse.StatusCode, chk.Equals, 201)
+	return
+}
 
 func getGenericCredential(accountType string) (*SharedKeyCredential, error) {
 	accountNameEnvVar := accountType + "AZURE_STORAGE_ACCOUNT_NAME"

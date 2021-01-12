@@ -83,8 +83,6 @@ func (o *RetryOptions) init() {
 	}
 	if o.TryTimeout == 0 {
 		o.TryTimeout = 1 * time.Minute
-	} else if o.TryTimeout < 0 {
-		o.TryTimeout = 0 // this doesn't seem very useful
 	}
 }
 

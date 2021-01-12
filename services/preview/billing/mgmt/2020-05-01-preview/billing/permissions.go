@@ -76,6 +76,7 @@ func (client PermissionsClient) ListByBillingAccount(ctx context.Context, billin
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -135,7 +136,6 @@ func (client PermissionsClient) listByBillingAccountNextResults(ctx context.Cont
 	result, err = client.ListByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PermissionsClient", "listByBillingAccountNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -192,6 +192,7 @@ func (client PermissionsClient) ListByBillingProfile(ctx context.Context, billin
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -252,7 +253,6 @@ func (client PermissionsClient) listByBillingProfileNextResults(ctx context.Cont
 	result, err = client.ListByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PermissionsClient", "listByBillingProfileNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -309,6 +309,7 @@ func (client PermissionsClient) ListByCustomer(ctx context.Context, billingAccou
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -369,7 +370,6 @@ func (client PermissionsClient) listByCustomerNextResults(ctx context.Context, l
 	result, err = client.ListByCustomerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PermissionsClient", "listByCustomerNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -427,6 +427,7 @@ func (client PermissionsClient) ListByInvoiceSections(ctx context.Context, billi
 	}
 	if result.plr.hasNextLink() && result.plr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -488,7 +489,6 @@ func (client PermissionsClient) listByInvoiceSectionsNextResults(ctx context.Con
 	result, err = client.ListByInvoiceSectionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PermissionsClient", "listByInvoiceSectionsNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

@@ -545,6 +545,7 @@ func (client RoleAssignmentsClient) ListByBillingAccount(ctx context.Context, bi
 	}
 	if result.ralr.hasNextLink() && result.ralr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -604,7 +605,6 @@ func (client RoleAssignmentsClient) listByBillingAccountNextResults(ctx context.
 	result, err = client.ListByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleAssignmentsClient", "listByBillingAccountNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -662,6 +662,7 @@ func (client RoleAssignmentsClient) ListByBillingProfile(ctx context.Context, bi
 	}
 	if result.ralr.hasNextLink() && result.ralr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -722,7 +723,6 @@ func (client RoleAssignmentsClient) listByBillingProfileNextResults(ctx context.
 	result, err = client.ListByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleAssignmentsClient", "listByBillingProfileNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }
@@ -781,6 +781,7 @@ func (client RoleAssignmentsClient) ListByInvoiceSection(ctx context.Context, bi
 	}
 	if result.ralr.hasNextLink() && result.ralr.IsEmpty() {
 		err = result.NextWithContext(ctx)
+		return
 	}
 
 	return
@@ -842,7 +843,6 @@ func (client RoleAssignmentsClient) listByInvoiceSectionNextResults(ctx context.
 	result, err = client.ListByInvoiceSectionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleAssignmentsClient", "listByInvoiceSectionNextResults", resp, "Failure responding to next results request")
-		return
 	}
 	return
 }

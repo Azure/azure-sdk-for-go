@@ -17,6 +17,7 @@ package exports
 import (
 	"fmt"
 	"go/ast"
+	"reflect"
 	"strings"
 )
 
@@ -75,10 +76,15 @@ type Interface struct {
 // Struct contains field info about a struct.
 type Struct struct {
 	// a list of anonymous fields
-	AnonymousFields []string `json:"anon,omitempty"`
+	AnonymousFields []AnonymousField `json:"anon,omitempty"`
 
 	// key/value pairs of the field names and types respectively.
 	Fields map[string]string `json:"fields,omitempty"`
+}
+
+type AnonymousField struct {
+	FullIdentifier string `json:"full,omitempty"`
+	Identifier     string `json:"identifier,omitempty"`
 }
 
 // NewContent returns an initialized Content object.
@@ -172,13 +178,29 @@ func (c *Content) addInterface(pkg Package, name string, i *ast.InterfaceType) {
 	c.Interfaces[name] = in
 }
 
+func getIdentifier(expr ast.Expr) string {
+	switch e := expr.(type) {
+	case *ast.Ident:
+		return e.Name
+	case *ast.SelectorExpr:
+		return getIdentifier(e.Sel)
+	case *ast.StarExpr:
+		return fmt.Sprintf("*%s", getIdentifier(e.X))
+	default:
+		panic(fmt.Sprintf("unhandled type %s", reflect.TypeOf(e)))
+	}
+}
+
 // adds the specified struct type to the exports list.
 func (c *Content) addStruct(pkg Package, name string, s *ast.StructType) {
 	sd := Struct{}
 	// assumes all struct types have fields
 	pkg.translateFieldList(s.Fields.List, func(n *string, t string, f *ast.Field) {
 		if n == nil {
-			sd.AnonymousFields = append(sd.AnonymousFields, t)
+			sd.AnonymousFields = append(sd.AnonymousFields, AnonymousField{
+				FullIdentifier: t,
+				Identifier: getIdentifier(f.Type),
+			})
 		} else {
 			if sd.Fields == nil {
 				sd.Fields = map[string]string{}

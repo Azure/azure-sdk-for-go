@@ -140,7 +140,7 @@ func Test_Interfaces(t *testing.T) {
 }
 
 func Test_Structs(t *testing.T) {
-	if l := len(exp.Structs); l != 8 {
+	if l := len(exp.Structs); l != 11 {
 		t.Logf("wrong number of structs, got %v", l)
 		t.Fail()
 	}
@@ -150,22 +150,61 @@ func Test_Structs(t *testing.T) {
 		exports.Struct
 	}{
 		{"BaseClient", exports.Struct{
-			AnonymousFields: []string{"autorest.Client"},
+			AnonymousFields: []exports.AnonymousField{
+				{
+					FullIdentifier: "autorest.Client",
+					Identifier:     "Client",
+				},
+			},
 			Fields: map[string]string{
 				"BaseURI":        "string",
 				"SubscriptionID": "string",
-			}}},
+			},
+		}},
 		{"DeleteFuture", exports.Struct{
-			AnonymousFields: []string{"azure.Future"},
+			AnonymousFields: []exports.AnonymousField{
+				{
+					FullIdentifier: "azure.Future",
+					Identifier:     "Future",
+				},
+			},
+		}},
+		{"NewDeleteFuture", exports.Struct{
+			AnonymousFields: []exports.AnonymousField{
+				{
+					FullIdentifier: "azure.FutureAPI",
+					Identifier:     "FutureAPI",
+				},
+			},
+			Fields: map[string]string{
+				"Result": "func(Client) (autorest.Response, error)",
+			},
+		}},
+		{"StructWithStarAnonymousField", exports.Struct{
+			AnonymousFields: []exports.AnonymousField{
+				{
+					FullIdentifier: "*azure.Future",
+					Identifier:     "*Future",
+				},
+			},
+			Fields: map[string]string{
+				"Test": "string",
+			},
 		}},
 		{"ListResultPage", exports.Struct{}},
 		{"CreateParameters", exports.Struct{
-			AnonymousFields: []string{"*CreateProperties"},
+			AnonymousFields: []exports.AnonymousField{
+				{
+					FullIdentifier: "*CreateProperties",
+					Identifier:     "*CreateProperties",
+				},
+			},
 			Fields: map[string]string{
 				"Zones":    "*[]string",
 				"Location": "*string",
 				"Tags":     "map[string]*string",
-			}}},
+			},
+		}},
 		{"CreateProperties", exports.Struct{
 			Fields: map[string]string{
 				"SubnetID":           "*string",
@@ -174,7 +213,19 @@ func Test_Structs(t *testing.T) {
 				"EnableNonSslPort":   "*bool",
 				"TenantSettings":     "map[string]*string",
 				"ShardCount":         "*int32",
-			}}},
+			},
+		}},
+		{"StructWithAnonymousInterface", exports.Struct{
+			AnonymousFields: []exports.AnonymousField{
+				{
+					FullIdentifier: "SomeInterface",
+					Identifier:     "SomeInterface",
+				},
+			},
+			Fields: map[string]string{
+				"Test": "string",
+			},
+		}},
 	}
 
 	for _, test := range tests {

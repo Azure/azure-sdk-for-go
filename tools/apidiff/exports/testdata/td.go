@@ -116,6 +116,16 @@ func (future DeleteFuture) Result(client Client) (ar autorest.Response, err erro
 	return
 }
 
+type NewDeleteFuture struct {
+	azure.FutureAPI
+	Result func(Client) (autorest.Response, error)
+}
+
+type StructWithStarAnonymousField struct {
+	*azure.Future
+	Test string
+}
+
 type ListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]ResourceType `json:"value,omitempty"`
@@ -201,4 +211,9 @@ type SomeInterface interface {
 	Three() string
 	Four(int) error
 	Five(int, bool) (int, error)
+}
+
+type StructWithAnonymousInterface struct {
+	SomeInterface
+	Test string
 }

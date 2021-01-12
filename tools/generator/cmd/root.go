@@ -11,6 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/changelog"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/list"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/pipeline"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/ioext"
@@ -45,6 +46,10 @@ func Command() *cobra.Command {
 
 	flags := rootCmd.Flags()
 	flags.String("options", defaultOptionPath, "Specify a file with the autorest options")
+
+	rootCmd.AddCommand(
+		list.Command(),
+	)
 
 	return rootCmd
 }

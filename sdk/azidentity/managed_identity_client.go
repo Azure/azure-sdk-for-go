@@ -287,7 +287,7 @@ func (c *managedIdentityClient) getMSIType() (msiType, error) {
 				c.msiType = msiTypeAppServiceV20190801
 			} else if arcIMDS := os.Getenv(arcIMDSEndpoint); arcIMDS != "" {
 				c.msiType = msiTypeAzureArc
-			} else { // if ONLY the env var IDENTITY_ENDPOINT is set the msiType is Azure Functions
+			} else {
 				c.msiType = msiTypeUnavailable
 				return c.msiType, &CredentialUnavailableError{credentialType: "Managed Identity Credential", message: "This Managed Identity Environment is not supported yet"}
 			}

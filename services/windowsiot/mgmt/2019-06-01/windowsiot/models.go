@@ -375,6 +375,12 @@ func (dsp DeviceServiceProperties) MarshalJSON() ([]byte, error) {
 
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
+	// Error - The error object.
+	Error *ErrorDetailsError `json:"error,omitempty"`
+}
+
+// ErrorDetailsError the error object.
+type ErrorDetailsError struct {
 	// Code - One of a server-defined set of error codes.
 	Code *string `json:"code,omitempty"`
 	// Message - A human-readable representation of the error.
@@ -403,6 +409,8 @@ type OperationEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Display - The operation supported by Azure Data Catalog Service.
 	Display *OperationDisplayInfo `json:"display,omitempty"`
+	// IsDataAction - Indicates whether the operation is a data action
+	IsDataAction *bool `json:"isDataAction,omitempty"`
 }
 
 // OperationListResult result of the request to list Windows IoT Device Service operations. It contains a

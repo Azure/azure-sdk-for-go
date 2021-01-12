@@ -130,8 +130,13 @@ func Test_GetAddedExports(t *testing.T) {
 
 	sAdded := map[string]exports.Struct{
 		"ExportDataFuture": {
-			AnonymousFields: []string{"azure.Future"},
-			Fields:          map[string]string{"NewField": "string"},
+			AnonymousFields: []exports.AnonymousField{
+				{
+					FullIdentifier: "azure.Future",
+					Identifier:     "Future",
+				},
+			},
+			Fields: map[string]string{"NewField": "string"},
 		},
 		"ExportRDBParameters": {
 			Fields: map[string]string{

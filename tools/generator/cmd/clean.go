@@ -60,6 +60,7 @@ func removePackages(readme string, m ReadmePackageOutputMap) error {
 // ReadmePackageOutputMap is a map with key of readme relative path (starts with `specification`) and values of the corresponding package path info
 type ReadmePackageOutputMap map[string][]PackageOutput
 
+// PackageOutput contains the output folder and corresponding tag
 type PackageOutput struct {
 	Tag          string
 	OutputFolder string

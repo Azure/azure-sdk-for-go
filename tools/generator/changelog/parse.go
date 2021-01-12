@@ -8,13 +8,15 @@ import (
 	"strings"
 )
 
+// GenerationMetadata contains all the metadata that has been used when generating a track 1 package
 type GenerationMetadata struct {
-	CommitHash string
-	Readme string
-	Tag string
+	CommitHash     string
+	Readme         string
+	Tag            string
 	CodeGenVersion string
 }
 
+// Parse parses the metadata info stored in a changelog with certain format into the GenerationMetadata struct
 func Parse(reader io.Reader) (*GenerationMetadata, error) {
 	b, err := ioutil.ReadAll(reader)
 	if err != nil {

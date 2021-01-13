@@ -27,7 +27,10 @@ const (
 	defaultSuffix = "/.default"
 )
 
-const tenantIDValidationErr = "Invalid tenantID provided. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names."
+const (
+	tenantIDValidationErr = "Invalid tenantID provided. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names."
+	defaultMaxRetries     = 3
+)
 
 var (
 	successStatusCodes = [2]int{

@@ -44,14 +44,13 @@ type InteractiveBrowserCredentialOptions struct {
 	Logging azcore.LogOptions
 }
 
-// DefaultInteractiveBrowserCredentialOptions returns an instance of InteractiveBrowserCredentialOptions initialized with default values.
-func DefaultInteractiveBrowserCredentialOptions() InteractiveBrowserCredentialOptions {
-	return InteractiveBrowserCredentialOptions{
-		TenantID:  organizationsTenantID,
-		ClientID:  developerSignOnClientID,
-		Retry:     azcore.DefaultRetryOptions(),
-		Telemetry: azcore.DefaultTelemetryOptions(),
-		Logging:   azcore.DefaultLogOptions(),
+// init returns an instance of InteractiveBrowserCredentialOptions initialized with default values.
+func (o *InteractiveBrowserCredentialOptions) init() {
+	if o.TenantID == "" {
+		o.TenantID = organizationsTenantID
+	}
+	if o.ClientID == "" {
+		o.ClientID = developerSignOnClientID
 	}
 }
 
@@ -66,9 +65,9 @@ type InteractiveBrowserCredential struct {
 // options: allow to configure the management of the requests sent to Azure Active Directory, pass in nil for default behavior.
 func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOptions) (*InteractiveBrowserCredential, error) {
 	if options == nil {
-		temp := DefaultInteractiveBrowserCredentialOptions()
-		options = &temp
+		options = &InteractiveBrowserCredentialOptions{}
 	}
+	options.init()
 	if !validTenantID(options.TenantID) {
 		return nil, &CredentialUnavailableError{credentialType: "Interactive Browser Credential", message: tenantIDValidationErr}
 	}

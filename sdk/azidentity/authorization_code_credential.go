@@ -28,15 +28,6 @@ type AuthorizationCodeCredentialOptions struct {
 	Logging azcore.LogOptions
 }
 
-// DefaultAuthorizationCodeCredentialOptions returns an instance of AuthorizationCodeCredentialOptions initialized with default values.
-func DefaultAuthorizationCodeCredentialOptions() AuthorizationCodeCredentialOptions {
-	return AuthorizationCodeCredentialOptions{
-		Retry:     azcore.DefaultRetryOptions(),
-		Telemetry: azcore.DefaultTelemetryOptions(),
-		Logging:   azcore.DefaultLogOptions(),
-	}
-}
-
 // AuthorizationCodeCredential enables authentication to Azure Active Directory using an authorization code
 // that was obtained through the authorization code flow, described in more detail in the Azure Active Directory
 // documentation: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow.
@@ -60,8 +51,7 @@ func NewAuthorizationCodeCredential(tenantID string, clientID string, authCode s
 		return nil, &CredentialUnavailableError{credentialType: "Authorization Code Credential", message: tenantIDValidationErr}
 	}
 	if options == nil {
-		temp := DefaultAuthorizationCodeCredentialOptions()
-		options = &temp
+		options = &AuthorizationCodeCredentialOptions{}
 	}
 	authorityHost, err := setAuthorityHost(options.AuthorityHost)
 	if err != nil {

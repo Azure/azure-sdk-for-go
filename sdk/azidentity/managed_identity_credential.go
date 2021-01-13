@@ -25,14 +25,6 @@ type ManagedIdentityCredentialOptions struct {
 	Logging azcore.LogOptions
 }
 
-// DefaultManagedIdentityCredentialOptions returns an instance of ManagedIdentityCredentialOptions initialized with default values.
-func DefaultManagedIdentityCredentialOptions() ManagedIdentityCredentialOptions {
-	return ManagedIdentityCredentialOptions{
-		Telemetry: azcore.DefaultTelemetryOptions(),
-		Logging:   azcore.DefaultLogOptions(),
-	}
-}
-
 // ManagedIdentityCredential attempts authentication using a managed identity that has been assigned to the deployment environment. This authentication type works in several
 // managed identity environments such as Azure VMs, App Service, Azure Functions, Azure CloudShell, among others. More information about configuring managed identities can be found here:
 // https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview
@@ -49,8 +41,7 @@ type ManagedIdentityCredential struct {
 func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
 	// Create a new Managed Identity Client with default options
 	if options == nil {
-		def := DefaultManagedIdentityCredentialOptions()
-		options = &def
+		options = &ManagedIdentityCredentialOptions{}
 	}
 	client := newManagedIdentityClient(options)
 	msiType, err := client.getMSIType()

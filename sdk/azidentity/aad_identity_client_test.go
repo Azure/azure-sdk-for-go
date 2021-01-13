@@ -47,8 +47,6 @@ func TestTelemetryDefaultUserAgent(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := pipelineOptions{
 		HTTPClient: srv,
-		Telemetry:  azcore.DefaultTelemetryOptions(),
-		Retry:      azcore.DefaultRetryOptions(),
 	}
 	client, err := newAADIdentityClient(srv.URL(), options)
 	if err != nil {
@@ -77,8 +75,6 @@ func TestTelemetryCustom(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := pipelineOptions{
 		HTTPClient: srv,
-		Telemetry:  azcore.DefaultTelemetryOptions(),
-		Retry:      azcore.DefaultRetryOptions(),
 	}
 	options.Telemetry.Value = customTelemetry
 	client, err := newAADIdentityClient(srv.URL(), options)

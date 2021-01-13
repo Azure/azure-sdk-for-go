@@ -27,15 +27,6 @@ type UsernamePasswordCredentialOptions struct {
 	Logging azcore.LogOptions
 }
 
-// DefaultUsernamePasswordCredentialOptions returns an instance of UsernamePasswordCredentialOptions initialized with default values.
-func DefaultUsernamePasswordCredentialOptions() UsernamePasswordCredentialOptions {
-	return UsernamePasswordCredentialOptions{
-		Retry:     azcore.DefaultRetryOptions(),
-		Telemetry: azcore.DefaultTelemetryOptions(),
-		Logging:   azcore.DefaultLogOptions(),
-	}
-}
-
 // UsernamePasswordCredential enables authentication to Azure Active Directory using a user's  username and password. If the user has MFA enabled this
 // credential will fail to get a token returning an AuthenticationFailureError. Also, this credential requires a high degree of trust and is not
 // recommended outside of prototyping when more secure credentials can be used.
@@ -59,8 +50,7 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 		return nil, &CredentialUnavailableError{credentialType: "Username Password Credential", message: tenantIDValidationErr}
 	}
 	if options == nil {
-		temp := DefaultUsernamePasswordCredentialOptions()
-		options = &temp
+		options = &UsernamePasswordCredentialOptions{}
 	}
 	authorityHost, err := setAuthorityHost(options.AuthorityHost)
 	if err != nil {

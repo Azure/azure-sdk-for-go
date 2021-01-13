@@ -39,21 +39,22 @@ type DeviceCodeCredentialOptions struct {
 	Logging azcore.LogOptions
 }
 
-// DefaultDeviceCodeCredentialOptions provides the default settings for DeviceCodeCredential.
+// init provides the default settings for DeviceCodeCredential.
 // It will set the following default values:
 // TenantID set to "organizations".
 // ClientID set to the default developer sign on client ID "04b07795-8ddb-461a-bbee-02f9e1bf7b46".
 // UserPrompt set to output login information for the user to stdout.
-func DefaultDeviceCodeCredentialOptions() DeviceCodeCredentialOptions {
-	return DeviceCodeCredentialOptions{
-		TenantID: organizationsTenantID,
-		ClientID: developerSignOnClientID,
-		UserPrompt: func(dc DeviceCodeMessage) {
+func (o *DeviceCodeCredentialOptions) init() {
+	if o.TenantID == "" {
+		o.TenantID = organizationsTenantID
+	}
+	if o.ClientID == "" {
+		o.ClientID = developerSignOnClientID
+	}
+	if o.UserPrompt == nil {
+		o.UserPrompt = func(dc DeviceCodeMessage) {
 			fmt.Println(dc.Message)
-		},
-		Retry:     azcore.DefaultRetryOptions(),
-		Telemetry: azcore.DefaultTelemetryOptions(),
-		Logging:   azcore.DefaultLogOptions(),
+		}
 	}
 }
 
@@ -82,9 +83,9 @@ type DeviceCodeCredential struct {
 // options: Options used to configure the management of the requests sent to Azure Active Directory, please see DeviceCodeCredentialOptions for a description of each field.
 func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeCredential, error) {
 	if options == nil {
-		temp := DefaultDeviceCodeCredentialOptions()
-		options = &temp
+		options = &DeviceCodeCredentialOptions{}
 	}
+	options.init()
 	if !validTenantID(options.TenantID) {
 		return nil, &CredentialUnavailableError{credentialType: "Device Code Credential", message: tenantIDValidationErr}
 	}

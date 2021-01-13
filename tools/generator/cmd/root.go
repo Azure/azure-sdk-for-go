@@ -73,17 +73,6 @@ func execute(inputPath, outputPath string, flags Flags) error {
 	defer eraseBackup(backupRoot)
 	log.Printf("Finished backuping to '%s'", backupRoot)
 
-	// now we summary all the metadata in sdk
-	log.Printf("Cleaning up all the packages related with the following readme files: [%s]", strings.Join(input.RelatedReadmeMdFiles, ", "))
-	cleanUpCtx := cleanUpContext{
-		root:        "./services",
-		readmeFiles: input.RelatedReadmeMdFiles,
-	}
-	if err := cleanUpCtx.clean(); err != nil {
-		return err
-	}
-	log.Printf("All related packages have been cleaned up")
-
 	ctx := generateContext{
 		sdkRoot:    utils.NormalizePath(cwd),
 		backupRoot: backupRoot,
@@ -132,6 +121,18 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 		return nil, fmt.Errorf("dry run not supported yet")
 	}
 	log.Printf("Reading options from file '%s'...", ctx.optionPath)
+
+	// now we summary all the metadata in sdk
+	log.Printf("Cleaning up all the packages related with the following readme files: [%s]", strings.Join(input.RelatedReadmeMdFiles, ", "))
+	cleanUpCtx := cleanUpContext{
+		root:        filepath.Join(ctx.sdkRoot, "services"),
+		readmeFiles: input.RelatedReadmeMdFiles,
+	}
+	removedPackages, err := cleanUpCtx.clean()
+	if err != nil {
+		return nil, err
+	}
+	log.Printf("The following packages have been cleaned up: [%s]", strings.Join(removedPackages, ", "))
 
 	optionFile, err := os.Open(ctx.optionPath)
 	if err != nil {

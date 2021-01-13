@@ -15,20 +15,24 @@ type cleanUpContext struct {
 	readmeFiles []string
 }
 
-func (ctx *cleanUpContext) clean() error {
+func (ctx *cleanUpContext) clean() ([]string, error) {
 	log.Printf("Summarying all the generation metadata in '%s'...", ctx.root)
 	m, err := summaryReadmePackageOutputMap(ctx.root)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
+	var removedPackages []string
 	for _, readme := range ctx.readmeFiles {
 		log.Printf("Cleaning up the packages generated from readme '%s'...", readme)
-		if err := removePackages(readme, m); err != nil {
-			return err
+		for _, p := range m[readme] {
+			if err := os.RemoveAll(p.OutputFolder); err != nil {
+				return nil, fmt.Errorf("cannot remove package '%s': %+v", p.OutputFolder, err)
+			}
+			removedPackages = append(removedPackages, p.OutputFolder)
 		}
 	}
-	return nil
+	return removedPackages, nil
 }
 
 func summaryReadmePackageOutputMap(root string) (ReadmePackageOutputMap, error) {
@@ -45,16 +49,6 @@ func summaryReadmePackageOutputMap(root string) (ReadmePackageOutputMap, error) 
 		})
 	}
 	return result, nil
-}
-
-func removePackages(readme string, m ReadmePackageOutputMap) error {
-	pkgs := m[readme]
-	for _, p := range pkgs {
-		if err := os.RemoveAll(p.OutputFolder); err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ReadmePackageOutputMap is a map with key of readme relative path (starts with `specification`) and values of the corresponding package path info

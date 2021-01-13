@@ -1,11 +1,15 @@
-package changelog
+package autorest
 
 import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
 )
 
 // GeneratedFrom gives the information of the generation metadata, including the commit hash that this package is generated from,
@@ -52,6 +56,36 @@ func Parse(reader io.Reader) (*GenerationMetadata, error) {
 	return m, nil
 }
 
+// CollectGenerationMetadata iterates every track 1 go sdk package under root, and collect all the GenerationMetadata into a map
+// using relative path of the package as keys
+func CollectGenerationMetadata(root string) (map[string]GenerationMetadata, error) {
+	pkgs, err := utils.ListTrack1SDKPackages(root)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get track 1 package list under root '%s': %+v", root, err)
+	}
+	result := make(map[string]GenerationMetadata)
+	for _, pkg := range pkgs {
+		m, err := GetGenerationMetadata(pkg)
+		if err != nil {
+			return nil, err
+		}
+		key := strings.TrimPrefix(utils.NormalizePath(pkg), utils.NormalizePath(root))
+		result[key] = *m
+	}
+	return result, nil
+}
+
+// GetGenerationMetadata gets the GenerationMetadata in one specific package
+func GetGenerationMetadata(pkg string) (*GenerationMetadata, error) {
+	changelogPath := filepath.Join(pkg, ChangelogFilename)
+	file, err := os.Open(changelogPath)
+	if err != nil {
+		return nil, fmt.Errorf("cannot open file %s: %+v", changelogPath, err)
+	}
+	defer file.Close()
+	return Parse(file)
+}
+
 func parseFirstLine(line string) (*GenerationMetadata, error) {
 	matches := firstLineRegex.FindStringSubmatch(line)
 	if len(matches) < 4 {
@@ -75,4 +109,9 @@ func parseThirdLine(line string) (string, error) {
 var (
 	firstLineRegex = regexp.MustCompile("^Generated from https://github\\.com/Azure/azure-rest-api-specs/tree/([0-9a-f]+)/(.+) tag: `(.+)`$")
 	thirdLineRegex = regexp.MustCompile(`^Code generator (\S+)$`)
+)
+
+const (
+	// ChangelogFilename ...
+	ChangelogFilename = "CHANGELOG.md"
 )

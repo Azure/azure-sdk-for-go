@@ -9,7 +9,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/changelog"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
 )
 
@@ -57,7 +56,7 @@ func (p *changelogProcessor) WithReadme(readme string) *changelogProcessor {
 type ChangelogResult struct {
 	PackageName        string
 	PackagePath        string
-	GenerationMetadata changelog.GenerationMetadata
+	GenerationMetadata GenerationMetadata
 	Changelog          model.Changelog
 }
 
@@ -134,7 +133,7 @@ func (p *changelogProcessor) GenerateChangelog(packagePath, tag string) (*Change
 	return &ChangelogResult{
 		PackageName: packageName,
 		PackagePath: packagePath,
-		GenerationMetadata: changelog.GenerationMetadata{
+		GenerationMetadata: GenerationMetadata{
 			CommitHash:     p.ctx.SpecCommitHash(),
 			Readme:         p.readme,
 			Tag:            tag,

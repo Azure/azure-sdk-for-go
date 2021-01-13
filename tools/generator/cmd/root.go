@@ -137,7 +137,7 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 	}
 	removedPackagePaths := make([]string, len(removedPackages))
 	for _, p := range removedPackages {
-		removedPackagePaths = append(removedPackagePaths, p.OutputFolder)
+		removedPackagePaths = append(removedPackagePaths, p.outputFolder)
 	}
 	log.Printf("The following packages have been cleaned up: [%s]", strings.Join(removedPackagePaths, ", "))
 

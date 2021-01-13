@@ -18,7 +18,7 @@ type changelogContext struct {
 	commitHash      string
 	codeGenVer      string
 	readme          string
-	removedPackages []PackageOutput
+	removedPackages []packageOutput
 }
 
 func (ctx changelogContext) SDKRoot() string {
@@ -67,11 +67,11 @@ func (ctx changelogContext) process(metadataLocation string) ([]autorest.Changel
 	// iterate over the removed packages, generate changelogs for them as well
 	var removedResults []autorest.ChangelogResult
 	for _, rp := range ctx.removedPackages {
-		if contains(changelogResults, rp.OutputFolder) {
+		if contains(changelogResults, rp.outputFolder) {
 			// this package has been regenerated
 			continue
 		}
-		result, err := p.GenerateChangelog(rp.OutputFolder, rp.Tag)
+		result, err := p.GenerateChangelog(rp.outputFolder, rp.tag)
 		if err != nil {
 			return nil, err
 		}
@@ -94,7 +94,7 @@ func writeChangelogFile(result autorest.ChangelogResult) error {
 	fileContent := fmt.Sprintf(`%s
 
 %s`, result.GenerationMetadata.String(), result.Changelog.ToMarkdown())
-	changelogFile, err := os.Create(filepath.Join(result.PackagePath, changelogFilename))
+	changelogFile, err := os.Create(filepath.Join(result.PackagePath, autorest.ChangelogFilename))
 	if err != nil {
 		return err
 	}

@@ -12,12 +12,13 @@ import (
 )
 
 type changelogContext struct {
-	sdkRoot    string
-	clnRoot    string
-	specRoot   string
-	commitHash string
-	codeGenVer string
-	readme     string
+	sdkRoot         string
+	clnRoot         string
+	specRoot        string
+	commitHash      string
+	codeGenVer      string
+	readme          string
+	removedPackages []string
 }
 
 func (ctx changelogContext) SDKRoot() string {
@@ -65,6 +66,8 @@ func (ctx changelogContext) process(metadataLocation string) ([]string, error) {
 		}
 		packages = append(packages, result.PackageName)
 	}
+	// iterate over the removed packages, generate changelogs for them as well
+	// TODO -- back to here
 	return packages, nil
 }
 

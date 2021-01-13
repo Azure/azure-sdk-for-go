@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/changelog"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/pipeline"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/ioext"
@@ -75,7 +74,9 @@ func execute(inputPath, outputPath string, flags Flags) error {
 
 	ctx := generateContext{
 		sdkRoot:    utils.NormalizePath(cwd),
-		backupRoot: backupRoot,
+		clnRoot:    backupRoot,
+		specRoot:   input.SpecFolder,
+		commitHash: input.HeadSha,
 		optionPath: flags.OptionPath,
 	}
 	output, err := ctx.generate(input)
@@ -111,7 +112,9 @@ func tempDir() string {
 
 type generateContext struct {
 	sdkRoot    string
-	backupRoot string
+	clnRoot    string
+	specRoot   string
+	commitHash string
 	optionPath string
 }
 
@@ -161,39 +164,46 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 			return nil, err
 		}
 		m := changelogContext{
-			sdkRoot: ctx.sdkRoot,
-			readme:  readme,
+			sdkRoot:         ctx.sdkRoot,
+			clnRoot:         ctx.clnRoot,
+			specRoot:        ctx.specRoot,
+			commitHash:      ctx.commitHash,
+			codeGenVer:      options.CodeGeneratorVersion(),
+			readme:          readme,
+			removedPackages: removedPackages,
 		}
 		packages, err := m.process(g.metadataOutput)
 		if err != nil {
 			return nil, err
 		}
-		log.Printf("Packages changed: %+v", packages)
-		// iterate over the changed packages
-		for _, p := range packages {
-			p = utils.NormalizePath(p)
-			log.Printf("Getting package result for package '%s'", p)
-			exporter := changelog.Exporter{
-				SDKRoot:    ctx.sdkRoot,
-				BackupRoot: ctx.backupRoot,
-			}
-			c, err := exporter.ExportForPackage(p)
-			if err != nil {
-				return nil, err
-			}
-			content := c.ToCompactMarkdown()
-			breaking := c.HasBreakingChanges()
-			results = append(results, pipeline.PackageResult{
-				PackageName: getPackageIdentifier(p),
-				Path:        []string{p},
-				ReadmeMd:    []string{readme},
-				Changelog: &pipeline.Changelog{
-					Content:           &content,
-					HasBreakingChange: &breaking,
-				},
-			})
-		}
+		log.Printf("Generated the following packages: [%s]", strings.Join(packages, ", "))
+		//// iterate over the changed packages
+		//for _, p := range packages {
+		//	p = utils.NormalizePath(p)
+		//	log.Printf("Getting package result for package '%s'", p)
+		//	exporter := changelog.Exporter{
+		//		SDKRoot:    ctx.sdkRoot,
+		//		BackupRoot: ctx.clnRoot,
+		//	}
+		//	c, err := exporter.ExportForPackage(p)
+		//	if err != nil {
+		//		return nil, err
+		//	}
+		//	content := c.ToCompactMarkdown()
+		//	breaking := c.HasBreakingChanges()
+		//	results = append(results, pipeline.PackageResult{
+		//		PackageName: getPackageIdentifier(p),
+		//		Path:        []string{p},
+		//		ReadmeMd:    []string{readme},
+		//		Changelog: &pipeline.Changelog{
+		//			Content:           &content,
+		//			HasBreakingChange: &breaking,
+		//		},
+		//	})
+		//}
 	}
+
+	// get the changelogs
 
 	// sort results
 	sort.SliceStable(results, func(i, j int) bool {

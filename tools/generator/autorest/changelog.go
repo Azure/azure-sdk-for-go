@@ -53,7 +53,7 @@ type ChangelogResult struct {
 	PackageName        string
 	PackagePath        string
 	GenerationMetadata changelog.GenerationMetadata
-	Changelog          changelog.Changelog
+	Changelog          model.Changelog
 }
 
 type ChangelogProcessError struct {
@@ -121,7 +121,7 @@ func (p *changelogProcessor) GenerateChangelog(packageName, tag string) (*Change
 	if err != nil {
 		return nil, fmt.Errorf("failed to get exports from package '%s' in the sdk '%s': %+v", packageName, p.ctx.SDKRoot(), err)
 	}
-	r, err := getChangelogForPackage(packageName, lhs, rhs)
+	r, err := getChangelogForPackage(lhs, rhs)
 	if err != nil {
 		return nil, err
 	}
@@ -150,28 +150,25 @@ func getExportsForPackage(dir string) (*exports.Content, error) {
 	return &exp, nil
 }
 
-func getChangelogForPackage(pkgDir string, lhs, rhs *exports.Content) (*changelog.Changelog, error) {
+func getChangelogForPackage(lhs, rhs *exports.Content) (*model.Changelog, error) {
 	if lhs == nil && rhs == nil {
 		return nil, fmt.Errorf("this package does not exist even after the generation, this should never happen")
 	}
 	if lhs == nil {
 		// the package does not exist before the generation: this is a new package
-		return &changelog.Changelog{
-			PackageName: pkgDir,
-			NewPackage:  true,
+		return &model.Changelog{
+			NewPackage: true,
 		}, nil
 	}
 	if rhs == nil {
 		// the package no longer exists after the generation: this package was removed
-		return &changelog.Changelog{
-			PackageName:    pkgDir,
+		return &model.Changelog{
 			RemovedPackage: true,
 		}, nil
 	}
 	// lhs and rhs are both non-nil
 	p := report.Generate(*lhs, *rhs, nil)
-	return &changelog.Changelog{
-		PackageName: pkgDir,
-		Modified:    &p,
+	return &model.Changelog{
+		Modified: &p,
 	}, nil
 }

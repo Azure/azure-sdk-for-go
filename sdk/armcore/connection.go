@@ -23,7 +23,7 @@ const (
 )
 
 // ConnectionOptions contains configuration settings for the connection's pipeline.
-// Call DefaultConnectionOptions() to create an instance populated with default values.
+// All zero-value fields will be initialized with their default values.
 type ConnectionOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
 	HTTPClient azcore.Transport
@@ -37,16 +37,6 @@ type ConnectionOptions struct {
 	RegisterRPOptions RegistrationOptions
 }
 
-// DefaultConnectionOptions creates a ConnectionOptions type initialized with default values.
-func DefaultConnectionOptions() ConnectionOptions {
-	return ConnectionOptions{
-		Retry:             azcore.DefaultRetryOptions(),
-		RegisterRPOptions: DefaultRegistrationOptions(),
-		Telemetry:         azcore.DefaultTelemetryOptions(),
-		Logging:           azcore.DefaultLogOptions(),
-	}
-}
-
 // Connection is a connection to an Azure Resource Manager endpoint.
 // It contains the base ARM endpoint and a pipeline for making requests.
 type Connection struct {
@@ -55,16 +45,17 @@ type Connection struct {
 }
 
 // NewDefaultConnection creates an instance of the Connection type using the AzurePublicCloud.
+// Pass nil to accept the default options; this is the same as passing a zero-value options.
 func NewDefaultConnection(cred azcore.TokenCredential, options *ConnectionOptions) *Connection {
 	return NewConnection(AzurePublicCloud, cred, options)
 }
 
 // NewConnection creates an instance of the Connection type with the specified endpoint.
 // Use this when connecting to clouds other than the Azure public cloud (stack/sovereign clouds).
+// Pass nil to accept the default options; this is the same as passing a zero-value options.
 func NewConnection(endpoint string, cred azcore.TokenCredential, options *ConnectionOptions) *Connection {
 	if options == nil {
-		o := DefaultConnectionOptions()
-		options = &o
+		options = &ConnectionOptions{}
 	}
 	if options.Telemetry.Value == "" {
 		options.Telemetry.Value = UserAgent

@@ -32,7 +32,7 @@ func (mockTokenCred) GetToken(context.Context, azcore.TokenRequestOptions) (*azc
 }
 
 func TestNewDefaultConnection(t *testing.T) {
-	opt := DefaultConnectionOptions()
+	opt := ConnectionOptions{}
 	con := NewDefaultConnection(mockTokenCred{}, &opt)
 	if ep := con.Endpoint(); ep != AzurePublicCloud {
 		t.Fatalf("unexpected endpoint %s", ep)
@@ -51,7 +51,7 @@ func TestNewConnectionWithOptions(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse()
-	opt := DefaultConnectionOptions()
+	opt := ConnectionOptions{}
 	opt.HTTPClient = srv
 	con := NewConnection(srv.URL(), mockTokenCred{}, &opt)
 	if ep := con.Endpoint(); ep != srv.URL() {
@@ -78,7 +78,7 @@ func TestNewConnectionWithCustomTelemetry(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse()
-	opt := DefaultConnectionOptions()
+	opt := ConnectionOptions{}
 	opt.HTTPClient = srv
 	opt.Telemetry.Value = myTelemetry
 	con := NewConnection(srv.URL(), mockTokenCred{}, &opt)

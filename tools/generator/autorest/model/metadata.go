@@ -12,6 +12,8 @@ type Metadata interface {
 	SwaggerFiles() []string
 	// PackagePath returns the output package path of this tag
 	PackagePath() string
+	// Namespace returns the namespace of this tag
+	Namespace() string
 }
 
 // NewMetadataFrom reads a new Metadata from a io.Reader
@@ -32,6 +34,8 @@ type localMetadata struct {
 	InputFiles []string `json:"inputFiles"`
 	// OutputFolder ...
 	OutputFolder string `json:"outputFolder"`
+	// LocalNamespace ...
+	LocalNamespace string `json:"namespace"`
 }
 
 // SwaggerFiles ...
@@ -42,6 +46,11 @@ func (m localMetadata) SwaggerFiles() []string {
 // PackagePath ...
 func (m localMetadata) PackagePath() string {
 	return m.OutputFolder
+}
+
+// Namespace ...
+func (m localMetadata) Namespace() string {
+	return m.LocalNamespace
 }
 
 // String ...

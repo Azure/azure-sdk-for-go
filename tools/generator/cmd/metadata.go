@@ -116,11 +116,11 @@ func (ctx changelogContext) validateMetadata(metadataMap map[string]model.Metada
 			validate.PreviewCheck,
 			// TODO -- we do have some exceptions (see file tools/pkgchk/exceptions.txt) that might need to be considered here
 			validate.MgmtCheck,
+			validate.NamespaceCheck,
 		},
 	}
 	for tag, metadata := range metadataMap {
 		// validate the output-folder, etc
-		// TODO -- add namespace validation
 		if errors := validateContext.Validate(tag, metadata); len(errors) != 0 {
 			builder.addMultiple(errors)
 			continue

@@ -29,6 +29,16 @@ func (c Changelog) String() string {
 // ToMarkdown returns the markdown string of this changelog
 func (c Changelog) ToMarkdown() string {
 	if c.NewPackage {
+		return ""
+	}
+	if c.RemovedPackage {
+		return "This package was removed" // this should never be executed
+	}
+	return c.Modified.ToMarkdown()
+}
+
+func (c Changelog) ToCompactMarkdown() string {
+	if c.NewPackage {
 		return "This is a new package"
 	}
 	if c.RemovedPackage {

@@ -160,11 +160,11 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 		if err := g.generate(); err != nil {
 			return nil, err
 		}
-		m := metadataContext{
+		m := changelogContext{
 			sdkRoot: ctx.sdkRoot,
 			readme:  readme,
 		}
-		packages, err := m.processMetadata(g.metadataOutput)
+		packages, err := m.process(g.metadataOutput)
 		if err != nil {
 			return nil, err
 		}
@@ -181,7 +181,7 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 			if err != nil {
 				return nil, err
 			}
-			content := c.ToMarkdown()
+			content := c.ToCompactMarkdown()
 			breaking := c.HasBreakingChanges()
 			results = append(results, pipeline.PackageResult{
 				PackageName: getPackageIdentifier(p),

@@ -14,7 +14,7 @@ func TestParse(t *testing.T) {
 	}{
 		{
 			changelog: "Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/compute/resource-manager/readme.md tag: `package-2020-06-30`\n\nCode generator @microsoft.azure/autorest.go@2.1.168\n",
-			expected:  changelog.GenerationMetadata{
+			expected: changelog.GenerationMetadata{
 				CommitHash:     "3c764635e7d442b3e74caf593029fcd440b3ef82",
 				Readme:         "specification/compute/resource-manager/readme.md",
 				Tag:            "package-2020-06-30",

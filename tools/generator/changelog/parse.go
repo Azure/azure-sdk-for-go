@@ -8,12 +8,23 @@ import (
 	"strings"
 )
 
+func GeneratedFrom(commitHash, readme, tag string) string {
+	return fmt.Sprintf("Generated from https://github.com/Azure/azure-rest-api-specs/tree/%s/%s tag: `%s`", commitHash, readme, tag)
+}
+
 // GenerationMetadata contains all the metadata that has been used when generating a track 1 package
 type GenerationMetadata struct {
 	CommitHash     string
 	Readme         string
 	Tag            string
 	CodeGenVersion string
+}
+
+func (m GenerationMetadata) String() string {
+	return fmt.Sprintf(`%s
+
+Code generator %s
+`, GeneratedFrom(m.CommitHash, m.Readme, m.Tag), m.CodeGenVersion)
 }
 
 // Parse parses the metadata info stored in a changelog with certain format into the GenerationMetadata struct

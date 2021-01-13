@@ -11,7 +11,7 @@ import (
 )
 
 type cleanUpContext struct {
-	root string
+	root        string
 	readmeFiles []string
 }
 

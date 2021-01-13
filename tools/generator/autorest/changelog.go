@@ -103,6 +103,7 @@ func (p *changelogProcessor) Process(metadataMap map[string]model.Metadata) ([]C
 	return results, builder.build()
 }
 
+// GenerateChangelog generates a changelog for one package
 func (p *changelogProcessor) GenerateChangelog(packagePath, tag string) (*ChangelogResult, error) {
 	// use the relative path to the sdk root as package name
 	packageName, err := filepath.Rel(p.ctx.SDKRoot(), packagePath)

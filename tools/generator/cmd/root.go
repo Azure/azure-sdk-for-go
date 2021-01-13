@@ -197,8 +197,6 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 		}
 	}
 
-	// get the changelogs
-
 	// sort results
 	sort.SliceStable(results, func(i, j int) bool {
 		apiI := getPackageAPIVersionSegment(results[i].PackageName)

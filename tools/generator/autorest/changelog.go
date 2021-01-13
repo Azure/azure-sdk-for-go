@@ -112,11 +112,11 @@ func (p *changelogProcessor) GenerateChangelog(packagePath, tag string) (*Change
 	}
 	// normalize the package name
 	packageName = utils.NormalizePath(packageName)
-	lhs, err := getExportsForPackage(packagePath)
+	lhs, err := getExportsForPackage(filepath.Join(p.ctx.SDKCloneRoot(), packageName))
 	if err != nil {
 		return nil, fmt.Errorf("failed to get exports from package '%s' in the clone '%s': %+v", packageName, p.ctx.SDKCloneRoot(), err)
 	}
-	rhs, err := getExportsForPackage(filepath.Join(p.ctx.SDKRoot(), packageName))
+	rhs, err := getExportsForPackage(packagePath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get exports from package '%s' in the sdk '%s': %+v", packageName, p.ctx.SDKRoot(), err)
 	}

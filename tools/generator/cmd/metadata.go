@@ -18,7 +18,7 @@ type changelogContext struct {
 	commitHash      string
 	codeGenVer      string
 	readme          string
-	removedPackages []string
+	removedPackages []PackageOutput
 }
 
 func (ctx changelogContext) SDKRoot() string {
@@ -41,7 +41,7 @@ func (ctx changelogContext) CodeGenVersion() string {
 	return ctx.codeGenVer
 }
 
-func (ctx changelogContext) process(metadataLocation string) ([]string, error) {
+func (ctx changelogContext) process(metadataLocation string) ([]autorest.ChangelogResult, error) {
 	// get the metadata
 	m := autorest.NewMetadataProcessorFromLocation(metadataLocation)
 	metadataMap, err := m.Process()
@@ -58,17 +58,36 @@ func (ctx changelogContext) process(metadataLocation string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	var packages []string
 	for _, result := range changelogResults {
 		// we need to write the changelog file to the corresponding package here
 		if err := writeChangelogFile(result); err != nil {
 			return nil, err
 		}
-		packages = append(packages, result.PackageName)
 	}
 	// iterate over the removed packages, generate changelogs for them as well
-	// TODO -- back to here
-	return packages, nil
+	var removedResults []autorest.ChangelogResult
+	for _, rp := range ctx.removedPackages {
+		if contains(changelogResults, rp.OutputFolder) {
+			// this package has been regenerated
+			continue
+		}
+		result, err := p.GenerateChangelog(rp.OutputFolder, rp.Tag)
+		if err != nil {
+			return nil, err
+		}
+		removedResults = append(removedResults, *result)
+	}
+	changelogResults = append(changelogResults, removedResults...)
+	return changelogResults, nil
+}
+
+func contains(array []autorest.ChangelogResult, item string) bool {
+	for _, r := range array {
+		if r.PackagePath == item {
+			return true
+		}
+	}
+	return false
 }
 
 func writeChangelogFile(result autorest.ChangelogResult) error {

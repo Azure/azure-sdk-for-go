@@ -15,21 +15,21 @@ type cleanUpContext struct {
 	readmeFiles []string
 }
 
-func (ctx *cleanUpContext) clean() ([]string, error) {
+func (ctx *cleanUpContext) clean() ([]PackageOutput, error) {
 	log.Printf("Summarying all the generation metadata in '%s'...", ctx.root)
 	m, err := summaryReadmePackageOutputMap(ctx.root)
 	if err != nil {
 		return nil, err
 	}
 
-	var removedPackages []string
+	var removedPackages []PackageOutput
 	for _, readme := range ctx.readmeFiles {
 		log.Printf("Cleaning up the packages generated from readme '%s'...", readme)
 		for _, p := range m[readme] {
 			if err := os.RemoveAll(p.OutputFolder); err != nil {
 				return nil, fmt.Errorf("cannot remove package '%s': %+v", p.OutputFolder, err)
 			}
-			removedPackages = append(removedPackages, p.OutputFolder)
+			removedPackages = append(removedPackages, p)
 		}
 	}
 	return removedPackages, nil

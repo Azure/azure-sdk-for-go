@@ -15,6 +15,15 @@ type Changelog struct {
 	Modified       *report.Package
 }
 
+// HasBreakingChanges returns if this report of changelog contains breaking changes
+func (c Changelog) HasBreakingChanges() bool {
+	return c.RemovedPackage || (c.Modified != nil && c.Modified.HasBreakingChanges())
+}
+
+func (c Changelog) String() string {
+	return c.ToMarkdown()
+}
+
 // ToMarkdown returns the markdown string of this changelog
 func (c Changelog) ToMarkdown() string {
 	if c.NewPackage {

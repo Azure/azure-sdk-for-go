@@ -93,27 +93,25 @@ func (p *changelogProcessor) Process(metadataMap map[string]model.Metadata) ([]C
 			builder.add(err)
 			continue
 		}
-		// use the relative path to the sdk root as package name
-		packageName, err := filepath.Rel(p.ctx.SDKRoot(), outputFolder)
+		result, err := p.GenerateChangelog(outputFolder, tag)
 		if err != nil {
 			builder.add(err)
 			continue
 		}
-		// normalize the package name
-		packageName = utils.NormalizePath(packageName)
-		result, err := p.GenerateChangelog(packageName, tag)
-		if err != nil {
-			builder.add(err)
-			continue
-		}
-		result.PackagePath = outputFolder
 		results = append(results, *result)
 	}
 	return results, builder.build()
 }
 
-func (p *changelogProcessor) GenerateChangelog(packageName, tag string) (*ChangelogResult, error) {
-	lhs, err := getExportsForPackage(filepath.Join(p.ctx.SDKCloneRoot(), packageName))
+func (p *changelogProcessor) GenerateChangelog(packagePath, tag string) (*ChangelogResult, error) {
+	// use the relative path to the sdk root as package name
+	packageName, err := filepath.Rel(p.ctx.SDKRoot(), packagePath)
+	if err != nil {
+		return nil, err
+	}
+	// normalize the package name
+	packageName = utils.NormalizePath(packageName)
+	lhs, err := getExportsForPackage(packagePath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get exports from package '%s' in the clone '%s': %+v", packageName, p.ctx.SDKCloneRoot(), err)
 	}
@@ -127,6 +125,7 @@ func (p *changelogProcessor) GenerateChangelog(packageName, tag string) (*Change
 	}
 	return &ChangelogResult{
 		PackageName: packageName,
+		PackagePath: packagePath,
 		GenerationMetadata: changelog.GenerationMetadata{
 			CommitHash:     p.ctx.SpecCommitHash(),
 			Readme:         p.readme,

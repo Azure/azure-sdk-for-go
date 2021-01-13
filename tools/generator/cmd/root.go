@@ -135,7 +135,11 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 	if err != nil {
 		return nil, err
 	}
-	log.Printf("The following packages have been cleaned up: [%s]", strings.Join(removedPackages, ", "))
+	removedPackagePaths := make([]string, len(removedPackages))
+	for _, p := range removedPackages {
+		removedPackagePaths = append(removedPackagePaths, p.OutputFolder)
+	}
+	log.Printf("The following packages have been cleaned up: [%s]", strings.Join(removedPackagePaths, ", "))
 
 	optionFile, err := os.Open(ctx.optionPath)
 	if err != nil {
@@ -151,7 +155,6 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 	// iterate over all the readme
 	results := make([]pipeline.PackageResult, 0)
 	for _, readme := range input.RelatedReadmeMdFiles {
-		// TODO -- maintain a map from readme files to corresponding output folders, so that we could detect the situation that a package was deleted
 		log.Printf("Processing readme '%s'...", readme)
 		absReadme := filepath.Join(input.SpecFolder, readme)
 		// generate code
@@ -176,31 +179,22 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 		if err != nil {
 			return nil, err
 		}
-		log.Printf("Generated the following packages: [%s]", strings.Join(packages, ", "))
-		//// iterate over the changed packages
-		//for _, p := range packages {
-		//	p = utils.NormalizePath(p)
-		//	log.Printf("Getting package result for package '%s'", p)
-		//	exporter := changelog.Exporter{
-		//		SDKRoot:    ctx.sdkRoot,
-		//		BackupRoot: ctx.clnRoot,
-		//	}
-		//	c, err := exporter.ExportForPackage(p)
-		//	if err != nil {
-		//		return nil, err
-		//	}
-		//	content := c.ToCompactMarkdown()
-		//	breaking := c.HasBreakingChanges()
-		//	results = append(results, pipeline.PackageResult{
-		//		PackageName: getPackageIdentifier(p),
-		//		Path:        []string{p},
-		//		ReadmeMd:    []string{readme},
-		//		Changelog: &pipeline.Changelog{
-		//			Content:           &content,
-		//			HasBreakingChange: &breaking,
-		//		},
-		//	})
-		//}
+
+		// iterate over the changed packages
+		for _, p := range packages {
+			log.Printf("Getting package result for package '%s'", p.PackageName)
+			content := p.Changelog.ToCompactMarkdown()
+			breaking := p.Changelog.HasBreakingChanges()
+			results = append(results, pipeline.PackageResult{
+				PackageName: getPackageIdentifier(p.PackageName),
+				Path:        []string{p.PackageName},
+				ReadmeMd:    []string{readme},
+				Changelog: &pipeline.Changelog{
+					Content:           &content,
+					HasBreakingChange: &breaking,
+				},
+			})
+		}
 	}
 
 	// get the changelogs
@@ -218,7 +212,7 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 }
 
 func getPackageIdentifier(pkg string) string {
-	return strings.TrimPrefix(pkg, "services/")
+	return strings.TrimPrefix(utils.NormalizePath(pkg), "services/")
 }
 
 func getPackageAPIVersionSegment(pkg string) string {

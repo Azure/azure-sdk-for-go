@@ -19,7 +19,7 @@ import (
 )
 
 func testRetryOptions() *RetryOptions {
-	def := DefaultRetryOptions()
+	def := RetryOptions{}
 	def.RetryDelay = 20 * time.Millisecond
 	def.TryTimeout = 1 * time.Second
 	return &def
@@ -154,6 +154,53 @@ func TestRetryPolicySuccessWithRetry(t *testing.T) {
 	}
 	if !body.closed {
 		t.Fatal("request body wasn't closed")
+	}
+}
+func TestRetryPolicyNoRetries(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+	srv.AppendResponse()
+	pl := NewPipeline(srv, NewRetryPolicy(&RetryOptions{MaxRetries: -1}))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusRequestTimeout {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if r := srv.Requests(); r != 1 {
+		t.Fatalf("wrong try count, got %d expected %d", r, 1)
+	}
+}
+
+func TestRetryPolicyUnlimitedRetryDelay(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+	srv.AppendResponse()
+	opt := testRetryOptions()
+	opt.MaxRetryDelay = -1
+	pl := NewPipeline(srv, NewRetryPolicy(opt))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if r := srv.Requests(); r != 3 {
+		t.Fatalf("wrong try count, got %d expected %d", r, 3)
 	}
 }
 

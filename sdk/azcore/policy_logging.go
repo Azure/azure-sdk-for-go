@@ -22,22 +22,15 @@ type LogOptions struct {
 	IncludeBody bool
 }
 
-// DefaultLogOptions returns an instance of LogOptions initialized with default values.
-func DefaultLogOptions() LogOptions {
-	return LogOptions{}
-}
-
 type logPolicy struct {
 	options LogOptions
 }
 
 // NewLogPolicy creates a RequestLogPolicy object configured using the specified options.
-// Pass nil to accept the default values; this is the same as passing the result
-// from a call to DefaultLogOptions().
+// Pass nil to accept the default values; this is the same as passing a zero-value options.
 func NewLogPolicy(o *LogOptions) Policy {
 	if o == nil {
-		def := DefaultLogOptions()
-		o = &def
+		o = &LogOptions{}
 	}
 	return &logPolicy{options: *o}
 }

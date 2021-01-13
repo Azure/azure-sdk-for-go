@@ -9,6 +9,7 @@ import (
 	"context"
 	"errors"
 	"io"
+	"math"
 	"math/rand"
 	"net/http"
 	"time"
@@ -19,27 +20,31 @@ const (
 )
 
 // RetryOptions configures the retry policy's behavior.
+// All zero-value fields will be initialized with their default values.
 type RetryOptions struct {
 	// MaxRetries specifies the maximum number of attempts a failed operation will be retried
-	// before producing an error.  A value of zero means one try and no retries.
+	// before producing an error.
+	// The default value is three.  A value less than zero means one try and no retries.
 	MaxRetries int32
 
 	// TryTimeout indicates the maximum time allowed for any single try of an HTTP request.
+	// This is disabled by default.  Specify a value greater than zero to enable.
+	// NOTE: Setting this to a small value might cause premature HTTP request time-outs.
 	TryTimeout time.Duration
 
-	// RetryDelay specifies the amount of delay to use before retrying an operation.
-	// The delay increases exponentially with each retry up to a maximum specified by MaxRetryDelay.
-	// If you specify 0, then you must also specify 0 for MaxRetryDelay.
-	// If you specify RetryDelay, then you must also specify MaxRetryDelay, and MaxRetryDelay should be
-	// equal to or greater than RetryDelay.
+	// RetryDelay specifies the initial amount of delay to use before retrying an operation.
+	// The delay increases exponentially with each retry up to the maximum specified by MaxRetryDelay.
+	// The default value is four seconds.  A value less than zero means no delay between retries.
 	RetryDelay time.Duration
 
 	// MaxRetryDelay specifies the maximum delay allowed before retrying an operation.
-	// If you specify 0, then you must also specify 0 for RetryDelay.
+	// Typically the value is greater than or equal to the value specified in RetryDelay.
+	// The default Value is 120 seconds.  A value less than zero means there is no cap.
 	MaxRetryDelay time.Duration
 
 	// StatusCodes specifies the HTTP status codes that indicate the operation should be retried.
-	// If unspecified it will default to the status codes in StatusCodesForRetry.
+	// The default value is the status codes in StatusCodesForRetry.
+	// Specifying an empty slice will cause retries to happen only for transport errors.
 	StatusCodes []int
 }
 
@@ -55,14 +60,26 @@ var (
 	}
 )
 
-// DefaultRetryOptions returns an instance of RetryOptions initialized with default values.
-func DefaultRetryOptions() RetryOptions {
-	return RetryOptions{
-		StatusCodes:   StatusCodesForRetry,
-		MaxRetries:    defaultMaxRetries,
-		TryTimeout:    1 * time.Minute,
-		RetryDelay:    4 * time.Second,
-		MaxRetryDelay: 120 * time.Second,
+// init sets any default values
+func (o *RetryOptions) init() {
+	if o.MaxRetries == 0 {
+		o.MaxRetries = defaultMaxRetries
+	} else if o.MaxRetries < 0 {
+		o.MaxRetries = 0
+	}
+	if o.MaxRetryDelay == 0 {
+		o.MaxRetryDelay = 120 * time.Second
+	} else if o.MaxRetryDelay < 0 {
+		// not really an unlimited cap, but sufficiently large enough to be considered as such
+		o.MaxRetryDelay = math.MaxInt64
+	}
+	if o.RetryDelay == 0 {
+		o.RetryDelay = 4 * time.Second
+	} else if o.RetryDelay < 0 {
+		o.RetryDelay = 0
+	}
+	if o.StatusCodes == nil {
+		o.StatusCodes = StatusCodesForRetry
 	}
 }
 
@@ -72,6 +89,7 @@ type ctxWithRetryOptionsKey struct{}
 // WithRetryOptions adds the specified RetryOptions to the parent context.
 // Use this to specify custom RetryOptions at the API-call level.
 func WithRetryOptions(parent context.Context, options RetryOptions) context.Context {
+	options.init()
 	return context.WithValue(parent, ctxWithRetryOptionsKey{}, options)
 }
 
@@ -95,14 +113,15 @@ func (o RetryOptions) calcDelay(try int32) time.Duration { // try is >=1; never 
 }
 
 // NewRetryPolicy creates a policy object configured using the specified options.
-// Pass nil to accept the default values; this is the same as passing the result
-// from a call to DefaultRetryOptions().
+// Pass nil to accept the default values; this is the same as passing a zero-value options.
 func NewRetryPolicy(o *RetryOptions) Policy {
 	if o == nil {
-		def := DefaultRetryOptions()
-		o = &def
+		o = &RetryOptions{}
 	}
-	return &retryPolicy{options: *o}
+	p := &retryPolicy{options: *o}
+	// fix up values in the copy
+	p.options.init()
+	return p
 }
 
 type retryPolicy struct {
@@ -140,11 +159,15 @@ func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 			return
 		}
 
-		// Set the per-try time for this particular retry operation and then Do the operation.
-		tryCtx, tryCancel := context.WithTimeout(req.Context(), options.TryTimeout)
-		clone := req.clone(tryCtx)
-		resp, err = clone.Next() // Make the request
-		tryCancel()
+		if options.TryTimeout == 0 {
+			resp, err = req.Next()
+		} else {
+			// Set the per-try time for this particular retry operation and then Do the operation.
+			tryCtx, tryCancel := context.WithTimeout(req.Context(), options.TryTimeout)
+			clone := req.clone(tryCtx)
+			resp, err = clone.Next() // Make the request
+			tryCancel()
+		}
 		if err == nil {
 			Log().Writef(LogRetryPolicy, "response %d", resp.StatusCode)
 		} else {

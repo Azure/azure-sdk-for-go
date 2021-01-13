@@ -94,7 +94,7 @@ func writeChangelogFile(result autorest.ChangelogResult) error {
 	fileContent := fmt.Sprintf(`%s
 
 %s`, result.GenerationMetadata.String(), result.Changelog.ToMarkdown())
-	changelogFile, err := os.Create(filepath.Join(result.PackagePath, ChangelogFileName))
+	changelogFile, err := os.Create(filepath.Join(result.PackagePath, changelogFilename))
 	if err != nil {
 		return err
 	}

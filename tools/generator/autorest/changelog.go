@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
 )
 
+// ChangelogContext describes all necessary data that would be needed in the processing of changelogs
 type ChangelogContext interface {
 	SDKRoot() string
 	SDKCloneRoot() string
@@ -27,17 +28,20 @@ type changelogProcessor struct {
 	readme           string
 }
 
+// NewChangelogProcessorFromContext returns a new changelogProcessor
 func NewChangelogProcessorFromContext(ctx ChangelogContext) *changelogProcessor {
 	return &changelogProcessor{
 		ctx: ctx,
 	}
 }
 
+// WithLocation adds the information of the metadata-output-folder
 func (p *changelogProcessor) WithLocation(metadataLocation string) *changelogProcessor {
 	p.metadataLocation = metadataLocation
 	return p
 }
 
+// WithReadme adds the information of the path of readme.md file. This path could be relative or absolute.
 func (p *changelogProcessor) WithReadme(readme string) *changelogProcessor {
 	// make sure the readme here is a relative path to the root of spec
 	readme = utils.NormalizePath(readme)
@@ -49,6 +53,7 @@ func (p *changelogProcessor) WithReadme(readme string) *changelogProcessor {
 	return p
 }
 
+// ChangelogResult describes the result of the generated changelog for one package
 type ChangelogResult struct {
 	PackageName        string
 	PackagePath        string
@@ -56,10 +61,12 @@ type ChangelogResult struct {
 	Changelog          model.Changelog
 }
 
+// ChangelogProcessError describes the errors during the processing
 type ChangelogProcessError struct {
 	Errors []error
 }
 
+// Error ...
 func (e *ChangelogProcessError) Error() string {
 	return fmt.Sprintf("total %d error(s) during processing changelog: %+v", len(e.Errors), e.Errors)
 }

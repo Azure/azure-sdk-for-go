@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+// GeneratedFrom gives the information of the generation metadata, including the commit hash that this package is generated from,
+// the readme path, and the tag
 func GeneratedFrom(commitHash, readme, tag string) string {
 	return fmt.Sprintf("Generated from https://github.com/Azure/azure-rest-api-specs/tree/%s/%s tag: `%s`", commitHash, readme, tag)
 }
@@ -20,6 +22,7 @@ type GenerationMetadata struct {
 	CodeGenVersion string
 }
 
+// String ...
 func (m GenerationMetadata) String() string {
 	return fmt.Sprintf(`%s
 

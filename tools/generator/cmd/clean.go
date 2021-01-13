@@ -85,7 +85,7 @@ func listGenerationMetadata(root string) (map[string]changelog.GenerationMetadat
 }
 
 func getGenerationMetadata(pkg string) (*changelog.GenerationMetadata, error) {
-	changelogPath := filepath.Join(pkg, ChangelogFileName)
+	changelogPath := filepath.Join(pkg, changelogFilename)
 	file, err := os.Open(changelogPath)
 	if err != nil {
 		return nil, fmt.Errorf("cannot open file %s: %+v", changelogPath, err)
@@ -95,5 +95,5 @@ func getGenerationMetadata(pkg string) (*changelog.GenerationMetadata, error) {
 }
 
 const (
-	ChangelogFileName = "CHANGELOG.md"
+	changelogFilename = "CHANGELOG.md"
 )

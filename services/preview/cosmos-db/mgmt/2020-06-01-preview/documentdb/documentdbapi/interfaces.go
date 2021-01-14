@@ -263,6 +263,48 @@ type NotebookWorkspacesClientAPI interface {
 
 var _ NotebookWorkspacesClientAPI = (*documentdb.NotebookWorkspacesClient)(nil)
 
+// RestorableSQLDatabasesClientAPI contains the set of methods on the RestorableSQLDatabasesClient type.
+type RestorableSQLDatabasesClientAPI interface {
+	List(ctx context.Context, location string, instanceID string) (result documentdb.RestorableSQLDatabasesListResult, err error)
+}
+
+var _ RestorableSQLDatabasesClientAPI = (*documentdb.RestorableSQLDatabasesClient)(nil)
+
+// RestorableSQLContainersClientAPI contains the set of methods on the RestorableSQLContainersClient type.
+type RestorableSQLContainersClientAPI interface {
+	List(ctx context.Context, location string, instanceID string, restorableSQLDatabaseRid string) (result documentdb.RestorableSQLContainersListResult, err error)
+}
+
+var _ RestorableSQLContainersClientAPI = (*documentdb.RestorableSQLContainersClient)(nil)
+
+// RestorableSQLResourcesClientAPI contains the set of methods on the RestorableSQLResourcesClient type.
+type RestorableSQLResourcesClientAPI interface {
+	List(ctx context.Context, location string, instanceID string, restoreLocation string, restoreTimestampInUtc string) (result documentdb.RestorableSQLResourcesListResult, err error)
+}
+
+var _ RestorableSQLResourcesClientAPI = (*documentdb.RestorableSQLResourcesClient)(nil)
+
+// RestorableMongodbDatabasesClientAPI contains the set of methods on the RestorableMongodbDatabasesClient type.
+type RestorableMongodbDatabasesClientAPI interface {
+	List(ctx context.Context, location string, instanceID string) (result documentdb.RestorableMongodbDatabasesListResult, err error)
+}
+
+var _ RestorableMongodbDatabasesClientAPI = (*documentdb.RestorableMongodbDatabasesClient)(nil)
+
+// RestorableMongodbCollectionsClientAPI contains the set of methods on the RestorableMongodbCollectionsClient type.
+type RestorableMongodbCollectionsClientAPI interface {
+	List(ctx context.Context, location string, instanceID string, restorableMongodbDatabaseRid string) (result documentdb.RestorableMongodbCollectionsListResult, err error)
+}
+
+var _ RestorableMongodbCollectionsClientAPI = (*documentdb.RestorableMongodbCollectionsClient)(nil)
+
+// RestorableMongodbResourcesClientAPI contains the set of methods on the RestorableMongodbResourcesClient type.
+type RestorableMongodbResourcesClientAPI interface {
+	List(ctx context.Context, location string, instanceID string, restoreLocation string, restoreTimestampInUtc string) (result documentdb.RestorableMongodbResourcesListResult, err error)
+}
+
+var _ RestorableMongodbResourcesClientAPI = (*documentdb.RestorableMongodbResourcesClient)(nil)
+
 // PrivateLinkResourcesClientAPI contains the set of methods on the PrivateLinkResourcesClient type.
 type PrivateLinkResourcesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, accountName string, groupName string) (result documentdb.PrivateLinkResource, err error)

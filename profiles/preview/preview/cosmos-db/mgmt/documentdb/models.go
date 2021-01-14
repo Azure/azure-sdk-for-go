@@ -29,6 +29,17 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type APIType = original.APIType
+
+const (
+	Cassandra APIType = original.Cassandra
+	Gremlin   APIType = original.Gremlin
+	GremlinV2 APIType = original.GremlinV2
+	MongoDB   APIType = original.MongoDB
+	SQL       APIType = original.SQL
+	Table     APIType = original.Table
+)
+
 type CompositePathSortOrder = original.CompositePathSortOrder
 
 const (
@@ -87,9 +98,9 @@ const (
 type DatabaseAccountKind = original.DatabaseAccountKind
 
 const (
-	GlobalDocumentDB DatabaseAccountKind = original.GlobalDocumentDB
-	MongoDB          DatabaseAccountKind = original.MongoDB
-	Parse            DatabaseAccountKind = original.Parse
+	DatabaseAccountKindGlobalDocumentDB DatabaseAccountKind = original.DatabaseAccountKindGlobalDocumentDB
+	DatabaseAccountKindMongoDB          DatabaseAccountKind = original.DatabaseAccountKindMongoDB
+	DatabaseAccountKindParse            DatabaseAccountKind = original.DatabaseAccountKindParse
 )
 
 type DatabaseAccountOfferType = original.DatabaseAccountOfferType
@@ -131,6 +142,15 @@ const (
 	PrimaryReadonly   KeyKind = original.PrimaryReadonly
 	Secondary         KeyKind = original.Secondary
 	SecondaryReadonly KeyKind = original.SecondaryReadonly
+)
+
+type OperationType = original.OperationType
+
+const (
+	Create          OperationType = original.Create
+	Delete          OperationType = original.Delete
+	Replace         OperationType = original.Replace
+	SystemOperation OperationType = original.SystemOperation
 )
 
 type PartitionKind = original.PartitionKind
@@ -199,11 +219,11 @@ const (
 type TriggerOperation = original.TriggerOperation
 
 const (
-	All     TriggerOperation = original.All
-	Create  TriggerOperation = original.Create
-	Delete  TriggerOperation = original.Delete
-	Replace TriggerOperation = original.Replace
-	Update  TriggerOperation = original.Update
+	TriggerOperationAll     TriggerOperation = original.TriggerOperationAll
+	TriggerOperationCreate  TriggerOperation = original.TriggerOperationCreate
+	TriggerOperationDelete  TriggerOperation = original.TriggerOperationDelete
+	TriggerOperationReplace TriggerOperation = original.TriggerOperationReplace
+	TriggerOperationUpdate  TriggerOperation = original.TriggerOperationUpdate
 )
 
 type TriggerType = original.TriggerType
@@ -427,6 +447,33 @@ type RestorableDatabaseAccountGetResult = original.RestorableDatabaseAccountGetR
 type RestorableDatabaseAccountProperties = original.RestorableDatabaseAccountProperties
 type RestorableDatabaseAccountsClient = original.RestorableDatabaseAccountsClient
 type RestorableDatabaseAccountsListResult = original.RestorableDatabaseAccountsListResult
+type RestorableLocationResource = original.RestorableLocationResource
+type RestorableMongodbCollectionGetResult = original.RestorableMongodbCollectionGetResult
+type RestorableMongodbCollectionProperties = original.RestorableMongodbCollectionProperties
+type RestorableMongodbCollectionPropertiesResource = original.RestorableMongodbCollectionPropertiesResource
+type RestorableMongodbCollectionsClient = original.RestorableMongodbCollectionsClient
+type RestorableMongodbCollectionsListResult = original.RestorableMongodbCollectionsListResult
+type RestorableMongodbDatabaseGetResult = original.RestorableMongodbDatabaseGetResult
+type RestorableMongodbDatabaseProperties = original.RestorableMongodbDatabaseProperties
+type RestorableMongodbDatabasePropertiesResource = original.RestorableMongodbDatabasePropertiesResource
+type RestorableMongodbDatabasesClient = original.RestorableMongodbDatabasesClient
+type RestorableMongodbDatabasesListResult = original.RestorableMongodbDatabasesListResult
+type RestorableMongodbResourcesClient = original.RestorableMongodbResourcesClient
+type RestorableMongodbResourcesListResult = original.RestorableMongodbResourcesListResult
+type RestorableSQLContainerGetResult = original.RestorableSQLContainerGetResult
+type RestorableSQLContainerProperties = original.RestorableSQLContainerProperties
+type RestorableSQLContainerPropertiesResource = original.RestorableSQLContainerPropertiesResource
+type RestorableSQLContainerPropertiesResourceContainer = original.RestorableSQLContainerPropertiesResourceContainer
+type RestorableSQLContainersClient = original.RestorableSQLContainersClient
+type RestorableSQLContainersListResult = original.RestorableSQLContainersListResult
+type RestorableSQLDatabaseGetResult = original.RestorableSQLDatabaseGetResult
+type RestorableSQLDatabaseProperties = original.RestorableSQLDatabaseProperties
+type RestorableSQLDatabasePropertiesResource = original.RestorableSQLDatabasePropertiesResource
+type RestorableSQLDatabasePropertiesResourceDatabase = original.RestorableSQLDatabasePropertiesResourceDatabase
+type RestorableSQLDatabasesClient = original.RestorableSQLDatabasesClient
+type RestorableSQLDatabasesListResult = original.RestorableSQLDatabasesListResult
+type RestorableSQLResourcesClient = original.RestorableSQLResourcesClient
+type RestorableSQLResourcesListResult = original.RestorableSQLResourcesListResult
 type RestoreParameters = original.RestoreParameters
 type RestoreReqeustDatabaseAccountCreateUpdateProperties = original.RestoreReqeustDatabaseAccountCreateUpdateProperties
 type SQLContainerCreateUpdateParameters = original.SQLContainerCreateUpdateParameters
@@ -648,6 +695,42 @@ func NewRestorableDatabaseAccountsClient(subscriptionID string) RestorableDataba
 func NewRestorableDatabaseAccountsClientWithBaseURI(baseURI string, subscriptionID string) RestorableDatabaseAccountsClient {
 	return original.NewRestorableDatabaseAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewRestorableMongodbCollectionsClient(subscriptionID string) RestorableMongodbCollectionsClient {
+	return original.NewRestorableMongodbCollectionsClient(subscriptionID)
+}
+func NewRestorableMongodbCollectionsClientWithBaseURI(baseURI string, subscriptionID string) RestorableMongodbCollectionsClient {
+	return original.NewRestorableMongodbCollectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRestorableMongodbDatabasesClient(subscriptionID string) RestorableMongodbDatabasesClient {
+	return original.NewRestorableMongodbDatabasesClient(subscriptionID)
+}
+func NewRestorableMongodbDatabasesClientWithBaseURI(baseURI string, subscriptionID string) RestorableMongodbDatabasesClient {
+	return original.NewRestorableMongodbDatabasesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRestorableMongodbResourcesClient(subscriptionID string) RestorableMongodbResourcesClient {
+	return original.NewRestorableMongodbResourcesClient(subscriptionID)
+}
+func NewRestorableMongodbResourcesClientWithBaseURI(baseURI string, subscriptionID string) RestorableMongodbResourcesClient {
+	return original.NewRestorableMongodbResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRestorableSQLContainersClient(subscriptionID string) RestorableSQLContainersClient {
+	return original.NewRestorableSQLContainersClient(subscriptionID)
+}
+func NewRestorableSQLContainersClientWithBaseURI(baseURI string, subscriptionID string) RestorableSQLContainersClient {
+	return original.NewRestorableSQLContainersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRestorableSQLDatabasesClient(subscriptionID string) RestorableSQLDatabasesClient {
+	return original.NewRestorableSQLDatabasesClient(subscriptionID)
+}
+func NewRestorableSQLDatabasesClientWithBaseURI(baseURI string, subscriptionID string) RestorableSQLDatabasesClient {
+	return original.NewRestorableSQLDatabasesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRestorableSQLResourcesClient(subscriptionID string) RestorableSQLResourcesClient {
+	return original.NewRestorableSQLResourcesClient(subscriptionID)
+}
+func NewRestorableSQLResourcesClientWithBaseURI(baseURI string, subscriptionID string) RestorableSQLResourcesClient {
+	return original.NewRestorableSQLResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewSQLResourcesClient(subscriptionID string) SQLResourcesClient {
 	return original.NewSQLResourcesClient(subscriptionID)
 }
@@ -662,6 +745,9 @@ func NewTableResourcesClientWithBaseURI(baseURI string, subscriptionID string) T
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAPITypeValues() []APIType {
+	return original.PossibleAPITypeValues()
 }
 func PossibleCompositePathSortOrderValues() []CompositePathSortOrder {
 	return original.PossibleCompositePathSortOrderValues()
@@ -701,6 +787,9 @@ func PossibleIndexingModeValues() []IndexingMode {
 }
 func PossibleKeyKindValues() []KeyKind {
 	return original.PossibleKeyKindValues()
+}
+func PossibleOperationTypeValues() []OperationType {
+	return original.PossibleOperationTypeValues()
 }
 func PossiblePartitionKindValues() []PartitionKind {
 	return original.PossiblePartitionKindValues()

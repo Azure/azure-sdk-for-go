@@ -166,7 +166,6 @@ func TestRetryPolicy_HTTPRequest(t *testing.T) {
 }
 
 func TestBearerPolicy_GetTokenFailsNoDeadlock(t *testing.T) {
-	t.Skip()
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))

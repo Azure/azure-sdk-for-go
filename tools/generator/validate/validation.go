@@ -77,7 +77,7 @@ func MgmtCheck(ctx *MetadataValidateContext, tag string, metadata model.Metadata
 			return err
 		}
 		if !mgmtOutputRegex.MatchString(rel) {
-			return fmt.Errorf("the output-folder of a management plane package '%s' must be in this pattern: '^services(/preview)?/[^/]+/mgmt/[^/]+/[^/]+$'", tag)
+			return fmt.Errorf("the output-folder of a management plane package '%s' is expected to have this pattern: 'services/(preview)?/{RPname}/mgmt/{packageVersion}/{namespace}'", tag)
 		}
 	}
 	return nil
@@ -104,5 +104,5 @@ var (
 	previewSwaggerRegex = regexp.MustCompile(`^preview|.+[/\\]preview[/\\]`)
 	previewOutputRegex  = regexp.MustCompile(`^services/preview/`)
 	mgmtReadmeRegex     = regexp.MustCompile(`[/\\]resource-manager[/\\]`)
-	mgmtOutputRegex     = regexp.MustCompile(`^services(/preview)?/[^/]+/mgmt/[^/]+/[^/]+$`)
+	mgmtOutputRegex     = regexp.MustCompile(`^services(/preview)?/[^/]+/mgmt/[^/]+/[^/]+$|^profiles/[^/]+/[^/]+/mgmt/[^/]+$`)
 )

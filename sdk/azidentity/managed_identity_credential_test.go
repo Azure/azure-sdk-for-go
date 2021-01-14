@@ -197,6 +197,37 @@ func TestManagedIdentityCredential_GetTokenInAppServiceV20190801Mock_linux(t *te
 	}
 }
 
+// Azure Functions on linux environments currently doesn't properly support the identity header,
+// therefore, preference must be given to the legacy MSI_ENDPOINT variable.
+func TestManagedIdentityCredential_GetTokenInAzureFunctions_linux(t *testing.T) {
+	resetEnvironmentVarsForTest()
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(appServiceWindowsSuccessResp)))
+	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
+	_ = os.Setenv("MSI_SECRET", "secret")
+	defer clearEnvVars("MSI_ENDPOINT", "MSI_SECRET")
+	_ = os.Setenv("IDENTITY_ENDPOINT", srv.URL())
+	_ = os.Setenv("IDENTITY_HEADER", "header")
+	defer clearEnvVars("IDENTITY_ENDPOINT", "IDENTITY_HEADER")
+	options := DefaultManagedIdentityCredentialOptions()
+	options.HTTPClient = srv
+	msiCred, err := NewManagedIdentityCredential(clientID, &options)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	tk, err := msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	if err != nil {
+		t.Fatalf("Received an error when attempting to retrieve a token")
+	}
+	if tk.Token != "new_token" {
+		t.Fatalf("Did not receive the correct token. Expected \"new_token\", Received: %s", tk.Token)
+	}
+	if msiCred.client.msiType != msiTypeAppServiceV20170901 {
+		t.Fatalf("Failed to detect the correct MSI Environment. Expected: %d, Received: %d", msiTypeAppServiceV20170901, msiCred.client.msiType)
+	}
+}
+
 func TestManagedIdentityCredential_CreateAppServiceAuthRequestV20190801(t *testing.T) {
 	// setting a dummy value for MSI_ENDPOINT in order to be able to get a ManagedIdentityCredential type in order
 	// to test App Service authentication request creation.

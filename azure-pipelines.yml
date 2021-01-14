@@ -13,14 +13,14 @@ jobs:
     strategy:
       matrix:
         Linux_Go113:
-          vm.image: 'ubuntu-18.04'
+          pool.name: azsdk-pool-mms-ubuntu-1804-general
           go.version: '1.14'
         Linux_Go114:
-          vm.image: 'ubuntu-18.04'
+          pool.name: azsdk-pool-mms-ubuntu-1804-general
           go.version: '1.15'
 
     pool:
-      vmImage: $(vm.image)
+      name: $(pool.name)
 
     variables:
       GOPATH: '$(system.defaultWorkingDirectory)/work'

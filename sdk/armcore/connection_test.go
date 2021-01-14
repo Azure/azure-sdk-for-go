@@ -145,7 +145,6 @@ func TestDisableAutoRPRegistration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	resp, err := con.Pipeline().Do(req)
 	// log only RP registration
 	azcore.Log().SetClassifications(LogRPRegistration)
 	defer func() {
@@ -156,7 +155,7 @@ func TestDisableAutoRPRegistration(t *testing.T) {
 	azcore.Log().SetListener(func(cls azcore.LogClassification, msg string) {
 		logEntries++
 	})
-	resp, err = con.Pipeline().Do(req)
+	resp, err := con.Pipeline().Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}

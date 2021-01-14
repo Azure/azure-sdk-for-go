@@ -71,8 +71,6 @@ func (r *RegistrationOptions) init() {
 	}
 	if r.PollingDuration == 0 {
 		r.PollingDuration = 5 * time.Minute
-	} else if r.PollingDuration < 0 {
-
 	}
 }
 

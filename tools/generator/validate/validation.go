@@ -104,5 +104,5 @@ var (
 	previewSwaggerRegex = regexp.MustCompile(`^preview|.+[/\\]preview[/\\]`)
 	previewOutputRegex  = regexp.MustCompile(`^services/preview/`)
 	mgmtReadmeRegex     = regexp.MustCompile(`[/\\]resource-manager[/\\]`)
-	mgmtOutputRegex     = regexp.MustCompile(`^services(/preview)?/[^/]+/mgmt/[^/]+/[^/]+$`)
+	mgmtOutputRegex     = regexp.MustCompile(`^services(/preview)?/[^/]+/mgmt/[^/]+/[^/]+$|^profiles/[^/]+/[^/]+/mgmt/[^/]+$`)
 )

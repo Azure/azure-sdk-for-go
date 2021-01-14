@@ -77,7 +77,7 @@ func MgmtCheck(ctx *MetadataValidateContext, tag string, metadata model.Metadata
 			return err
 		}
 		if !mgmtOutputRegex.MatchString(rel) {
-			return fmt.Errorf("the output-folder of a management plane package '%s' must be in this pattern: '^services(/preview)?/[^/]+/mgmt/[^/]+/[^/]+$'", tag)
+			return fmt.Errorf("the output-folder of a management plane package '%s' is expected to have this pattern: 'services/(preview)?/{RPname}/mgmt/{packageVersion}/{namespace}'", tag)
 		}
 	}
 	return nil

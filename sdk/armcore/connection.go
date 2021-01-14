@@ -23,28 +23,23 @@ const (
 )
 
 // ConnectionOptions contains configuration settings for the connection's pipeline.
-// Call DefaultConnectionOptions() to create an instance populated with default values.
+// All zero-value fields will be initialized with their default values.
 type ConnectionOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
 	HTTPClient azcore.Transport
+
 	// Retry configures the built-in retry policy behavior.
 	Retry azcore.RetryOptions
+
 	// Telemetry configures the built-in telemetry policy behavior.
 	Telemetry azcore.TelemetryOptions
+
 	// Logging configures the built-in logging policy behavior.
 	Logging azcore.LogOptions
-	// RegisterRPOptions configures the built-in RP registration policy behavior.
-	RegisterRPOptions RegistrationOptions
-}
 
-// DefaultConnectionOptions creates a ConnectionOptions type initialized with default values.
-func DefaultConnectionOptions() ConnectionOptions {
-	return ConnectionOptions{
-		Retry:             azcore.DefaultRetryOptions(),
-		RegisterRPOptions: DefaultRegistrationOptions(),
-		Telemetry:         azcore.DefaultTelemetryOptions(),
-		Logging:           azcore.DefaultLogOptions(),
-	}
+	// DisableRPRegistration disables the auto-RP registration policy.
+	// The default value is false.
+	DisableRPRegistration bool
 }
 
 // Connection is a connection to an Azure Resource Manager endpoint.
@@ -55,28 +50,43 @@ type Connection struct {
 }
 
 // NewDefaultConnection creates an instance of the Connection type using the AzurePublicCloud.
+// Pass nil to accept the default options; this is the same as passing a zero-value options.
 func NewDefaultConnection(cred azcore.TokenCredential, options *ConnectionOptions) *Connection {
 	return NewConnection(AzurePublicCloud, cred, options)
 }
 
 // NewConnection creates an instance of the Connection type with the specified endpoint.
 // Use this when connecting to clouds other than the Azure public cloud (stack/sovereign clouds).
+// Pass nil to accept the default options; this is the same as passing a zero-value options.
 func NewConnection(endpoint string, cred azcore.TokenCredential, options *ConnectionOptions) *Connection {
 	if options == nil {
-		o := DefaultConnectionOptions()
-		options = &o
+		options = &ConnectionOptions{}
+	} else {
+		// create a copy so we don't modify the original
+		cp := *options
+		options = &cp
 	}
 	if options.Telemetry.Value == "" {
 		options.Telemetry.Value = UserAgent
 	} else {
 		options.Telemetry.Value += " " + UserAgent
 	}
-	p := azcore.NewPipeline(options.HTTPClient,
+	policies := []azcore.Policy{
 		azcore.NewTelemetryPolicy(&options.Telemetry),
-		NewRPRegistrationPolicy(endpoint, cred, &options.RegisterRPOptions),
-		azcore.NewRetryPolicy(&options.Retry),
+	}
+	if options.DisableRPRegistration == false {
+		regRPOpts := RegistrationOptions{
+			HTTPClient: options.HTTPClient,
+			Logging:    options.Logging,
+			Retry:      options.Retry,
+			Telemetry:  options.Telemetry,
+		}
+		policies = append(policies, NewRPRegistrationPolicy(endpoint, cred, &regRPOpts))
+	}
+	policies = append(policies, azcore.NewRetryPolicy(&options.Retry),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{endpointToScope(endpoint)}}}),
 		azcore.NewLogPolicy(&options.Logging))
+	p := azcore.NewPipeline(options.HTTPClient, policies...)
 	return NewConnectionWithPipeline(endpoint, p)
 }
 

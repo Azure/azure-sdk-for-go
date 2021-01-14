@@ -26,62 +26,74 @@ const (
 )
 
 // RegistrationOptions configures the registration policy's behavior.
-// Call DefaultRegistrationOptions() to create an instance populated with default values.
+// All zero-value fields will be initialized with their default values.
 type RegistrationOptions struct {
 	// MaxAttempts is the total number of times to attempt automatic registration
 	// in the event that an attempt fails.
 	// The default value is 3.
-	// Set to zero to disable the policy.
+	// Set to a value less than zero to disable the policy.
 	MaxAttempts int
 
 	// PollingDelay is the amount of time to sleep between polling intervals.
 	// The default value is 15 seconds.
+	// A value less than zero means no delay between polling intervals (not recommended).
 	PollingDelay time.Duration
 
 	// PollingDuration is the amount of time to wait before abandoning polling.
 	// The default valule is 5 minutes.
+	// NOTE: Setting this to a small value might cause the policy to prematurely fail.
 	PollingDuration time.Duration
 
 	// HTTPClient sets the transport for making HTTP requests.
-	// Defaults to azcore.DefaultHTTPClientTransport()
 	HTTPClient azcore.Transport
 
 	// Retry configures the built-in retry policy behavior.
-	// Defaults to azcore.DefaultRetryOptions()
 	Retry azcore.RetryOptions
 
 	// Telemetry configures the built-in telemetry policy behavior.
-	// Defaults to azcore.DefaultTelemetryOptions()
 	Telemetry azcore.TelemetryOptions
+
+	// Logging configures the built-in logging policy behavior.
+	Logging azcore.LogOptions
 }
 
-// DefaultRegistrationOptions returns an instance of RegistrationOptions initialized with default values.
-func DefaultRegistrationOptions() RegistrationOptions {
-	return RegistrationOptions{
-		MaxAttempts:     3,
-		PollingDelay:    15 * time.Second,
-		PollingDuration: 5 * time.Minute,
-		Retry:           azcore.DefaultRetryOptions(),
-		Telemetry:       azcore.DefaultTelemetryOptions(),
+// init sets any default values
+func (r *RegistrationOptions) init() {
+	if r.MaxAttempts == 0 {
+		r.MaxAttempts = 3
+	} else if r.MaxAttempts < 0 {
+		r.MaxAttempts = 0
+	}
+	if r.PollingDelay == 0 {
+		r.PollingDelay = 15 * time.Second
+	} else if r.PollingDelay < 0 {
+		r.PollingDelay = 0
+	}
+	if r.PollingDuration == 0 {
+		r.PollingDuration = 5 * time.Minute
 	}
 }
 
 // NewRPRegistrationPolicy creates a policy object configured using the specified endpoint,
 // credentials and options.  The policy controls if an unregistered resource provider should
 // automatically be registered. See https://aka.ms/rps-not-found for more information.
-// Pass nil to accept the default options; this is the same as passing the result
-// from a call to DefaultRegistrationOptions().
+// Pass nil to accept the default options; this is the same as passing a zero-value options.
 func NewRPRegistrationPolicy(endpoint string, cred azcore.Credential, o *RegistrationOptions) azcore.Policy {
 	if o == nil {
-		def := DefaultRegistrationOptions()
-		o = &def
+		o = &RegistrationOptions{}
 	}
-	p := azcore.NewPipeline(o.HTTPClient,
-		azcore.NewTelemetryPolicy(&o.Telemetry),
-		azcore.NewRetryPolicy(&o.Retry),
-		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{endpointToScope(endpoint)}}}),
-		azcore.NewLogPolicy(nil))
-	return &rpRegistrationPolicy{endpoint: endpoint, pipeline: p, options: *o}
+	p := &rpRegistrationPolicy{
+		endpoint: endpoint,
+		pipeline: azcore.NewPipeline(o.HTTPClient,
+			azcore.NewTelemetryPolicy(&o.Telemetry),
+			azcore.NewRetryPolicy(&o.Retry),
+			cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{endpointToScope(endpoint)}}}),
+			azcore.NewLogPolicy(&o.Logging)),
+		options: *o,
+	}
+	// init the copy
+	p.options.init()
+	return p
 }
 
 type rpRegistrationPolicy struct {

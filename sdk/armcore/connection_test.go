@@ -32,7 +32,7 @@ func (mockTokenCred) GetToken(context.Context, azcore.TokenRequestOptions) (*azc
 }
 
 func TestNewDefaultConnection(t *testing.T) {
-	opt := DefaultConnectionOptions()
+	opt := ConnectionOptions{}
 	con := NewDefaultConnection(mockTokenCred{}, &opt)
 	if ep := con.Endpoint(); ep != AzurePublicCloud {
 		t.Fatalf("unexpected endpoint %s", ep)
@@ -51,7 +51,7 @@ func TestNewConnectionWithOptions(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse()
-	opt := DefaultConnectionOptions()
+	opt := ConnectionOptions{}
 	opt.HTTPClient = srv
 	con := NewConnection(srv.URL(), mockTokenCred{}, &opt)
 	if ep := con.Endpoint(); ep != srv.URL() {
@@ -78,12 +78,15 @@ func TestNewConnectionWithCustomTelemetry(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse()
-	opt := DefaultConnectionOptions()
+	opt := ConnectionOptions{}
 	opt.HTTPClient = srv
 	opt.Telemetry.Value = myTelemetry
 	con := NewConnection(srv.URL(), mockTokenCred{}, &opt)
 	if ep := con.Endpoint(); ep != srv.URL() {
 		t.Fatalf("unexpected endpoint %s", ep)
+	}
+	if opt.Telemetry.Value != myTelemetry {
+		t.Fatalf("telemetry was modified: %s", opt.Telemetry.Value)
 	}
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
@@ -126,5 +129,41 @@ func TestScope(t *testing.T) {
 	}
 	if s := endpointToScope("https://management.usgovcloudapi.net"); s != "https://management.usgovcloudapi.net//.default" {
 		t.Fatalf("unexpected scope %s", s)
+	}
+}
+
+func TestDisableAutoRPRegistration(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	// initial response that RP is unregistered
+	srv.SetResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
+	con := NewConnection(srv.URL(), mockTokenCred{}, &ConnectionOptions{DisableRPRegistration: true})
+	if ep := con.Endpoint(); ep != srv.URL() {
+		t.Fatalf("unexpected endpoint %s", ep)
+	}
+	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	// log only RP registration
+	azcore.Log().SetClassifications(LogRPRegistration)
+	defer func() {
+		// reset logging
+		azcore.Log().SetClassifications()
+	}()
+	logEntries := 0
+	azcore.Log().SetListener(func(cls azcore.LogClassification, msg string) {
+		logEntries++
+	})
+	resp, err := con.Pipeline().Do(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if resp.StatusCode != http.StatusConflict {
+		t.Fatalf("unexpected status code %d:", resp.StatusCode)
+	}
+	// shouldn't be any log entries
+	if logEntries != 0 {
+		t.Fatalf("expected 0 log entries, got %d", logEntries)
 	}
 }

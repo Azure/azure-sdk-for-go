@@ -27,14 +27,19 @@ const (
 type ConnectionOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
 	HTTPClient azcore.Transport
+
 	// Retry configures the built-in retry policy behavior.
 	Retry azcore.RetryOptions
+
 	// Telemetry configures the built-in telemetry policy behavior.
 	Telemetry azcore.TelemetryOptions
+
 	// Logging configures the built-in logging policy behavior.
 	Logging azcore.LogOptions
-	// RegisterRPOptions configures the built-in RP registration policy behavior.
-	RegisterRPOptions RegistrationOptions
+
+	// DisableRPRegistration disables the auto-RP registration policy.
+	// The default value is false.
+	DisableRPRegistration bool
 }
 
 // Connection is a connection to an Azure Resource Manager endpoint.
@@ -56,15 +61,28 @@ func NewDefaultConnection(cred azcore.TokenCredential, options *ConnectionOption
 func NewConnection(endpoint string, cred azcore.TokenCredential, options *ConnectionOptions) *Connection {
 	if options == nil {
 		options = &ConnectionOptions{}
+	} else {
+		// create a copy so we don't modify the original
+		cp := *options
+		options = &cp
 	}
 	if options.Telemetry.Value == "" {
 		options.Telemetry.Value = UserAgent
 	} else {
 		options.Telemetry.Value += " " + UserAgent
 	}
+	regRPOpts := RegistrationOptions{
+		HTTPClient: options.HTTPClient,
+		Logging:    options.Logging,
+		Retry:      options.Retry,
+		Telemetry:  options.Telemetry,
+	}
+	if options.DisableRPRegistration == true {
+		regRPOpts.MaxAttempts = -1
+	}
 	p := azcore.NewPipeline(options.HTTPClient,
 		azcore.NewTelemetryPolicy(&options.Telemetry),
-		NewRPRegistrationPolicy(endpoint, cred, &options.RegisterRPOptions),
+		NewRPRegistrationPolicy(endpoint, cred, &regRPOpts),
 		azcore.NewRetryPolicy(&options.Retry),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{endpointToScope(endpoint)}}}),
 		azcore.NewLogPolicy(&options.Logging))

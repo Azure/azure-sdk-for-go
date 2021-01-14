@@ -17,19 +17,22 @@ import "testing"
 
 func TestMarkdownWriter_String(t *testing.T) {
 	md := Writer{}
+	md.WriteTitle("Title")
 	md.WriteHeader("Header1")
 	md.WriteSubheader("Sub-header1")
 	md.WriteLine("Foo")
 	md.WriteSubheader("Sub-header2")
 	md.WriteLine(getTable().String())
 	result := md.String()
-	expected := `## Header1
+	expected := `# Title
 
-### Sub-header1
+### Header1
+
+#### Sub-header1
 
 Foo
 
-### Sub-header2
+#### Sub-header2
 
 | packages | api-versions |
 | :--- | :--- |

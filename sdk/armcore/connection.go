@@ -71,21 +71,22 @@ func NewConnection(endpoint string, cred azcore.TokenCredential, options *Connec
 	} else {
 		options.Telemetry.Value += " " + UserAgent
 	}
-	regRPOpts := RegistrationOptions{
-		HTTPClient: options.HTTPClient,
-		Logging:    options.Logging,
-		Retry:      options.Retry,
-		Telemetry:  options.Telemetry,
-	}
-	if options.DisableRPRegistration == true {
-		regRPOpts.MaxAttempts = -1
-	}
-	p := azcore.NewPipeline(options.HTTPClient,
+	policies := []azcore.Policy{
 		azcore.NewTelemetryPolicy(&options.Telemetry),
-		NewRPRegistrationPolicy(endpoint, cred, &regRPOpts),
-		azcore.NewRetryPolicy(&options.Retry),
+	}
+	if options.DisableRPRegistration == false {
+		regRPOpts := RegistrationOptions{
+			HTTPClient: options.HTTPClient,
+			Logging:    options.Logging,
+			Retry:      options.Retry,
+			Telemetry:  options.Telemetry,
+		}
+		policies = append(policies, NewRPRegistrationPolicy(endpoint, cred, &regRPOpts))
+	}
+	policies = append(policies, azcore.NewRetryPolicy(&options.Retry),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{endpointToScope(endpoint)}}}),
 		azcore.NewLogPolicy(&options.Logging))
+	p := azcore.NewPipeline(options.HTTPClient, policies...)
 	return NewConnectionWithPipeline(endpoint, p)
 }
 

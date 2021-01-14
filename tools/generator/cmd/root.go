@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/changelog"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/pipeline"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/ioext"
@@ -22,7 +21,7 @@ const (
 )
 
 // Command returns the command for the generator. Note that this command is designed to run in the root directory of
-// azure-sdk-for-go. It might not work if you are running this tool in somewhere else
+// azure-sdk-for-go. It does not work if you are running this tool in somewhere else
 func Command() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:  "generator <generate input filepath> <generate output filepath>",
@@ -56,7 +55,7 @@ type Flags struct {
 
 func execute(inputPath, outputPath string, flags Flags) error {
 	log.Printf("Reading generate input file from '%s'...", inputPath)
-	input, err := readInputFrom(inputPath)
+	input, err := pipeline.ReadInput(inputPath)
 	if err != nil {
 		return fmt.Errorf("cannot read generate input: %+v", err)
 	}
@@ -72,9 +71,12 @@ func execute(inputPath, outputPath string, flags Flags) error {
 	}
 	defer eraseBackup(backupRoot)
 	log.Printf("Finished backuping to '%s'", backupRoot)
+
 	ctx := generateContext{
 		sdkRoot:    utils.NormalizePath(cwd),
-		backupRoot: backupRoot,
+		clnRoot:    backupRoot,
+		specRoot:   input.SpecFolder,
+		commitHash: input.HeadSha,
 		optionPath: flags.OptionPath,
 	}
 	output, err := ctx.generate(input)
@@ -83,7 +85,7 @@ func execute(inputPath, outputPath string, flags Flags) error {
 	}
 	log.Printf("Output generated: \n%s", output.String())
 	log.Printf("Writing output to file '%s'...", outputPath)
-	if err := writeOutputTo(outputPath, output); err != nil {
+	if err := pipeline.WriteOutput(outputPath, output); err != nil {
 		return fmt.Errorf("cannot write generate output: %+v", err)
 	}
 	return nil
@@ -110,7 +112,9 @@ func tempDir() string {
 
 type generateContext struct {
 	sdkRoot    string
-	backupRoot string
+	clnRoot    string
+	specRoot   string
+	commitHash string
 	optionPath string
 }
 
@@ -120,6 +124,22 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 		return nil, fmt.Errorf("dry run not supported yet")
 	}
 	log.Printf("Reading options from file '%s'...", ctx.optionPath)
+
+	// now we summary all the metadata in sdk
+	log.Printf("Cleaning up all the packages related with the following readme files: [%s]", strings.Join(input.RelatedReadmeMdFiles, ", "))
+	cleanUpCtx := cleanUpContext{
+		root:        filepath.Join(ctx.sdkRoot, "services"),
+		readmeFiles: input.RelatedReadmeMdFiles,
+	}
+	removedPackages, err := cleanUpCtx.clean()
+	if err != nil {
+		return nil, err
+	}
+	removedPackagePaths := make([]string, len(removedPackages))
+	for _, p := range removedPackages {
+		removedPackagePaths = append(removedPackagePaths, p.outputFolder)
+	}
+	log.Printf("The following packages have been cleaned up: [%s]", strings.Join(removedPackagePaths, ", "))
 
 	optionFile, err := os.Open(ctx.optionPath)
 	if err != nil {
@@ -135,7 +155,6 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 	// iterate over all the readme
 	results := make([]pipeline.PackageResult, 0)
 	for _, readme := range input.RelatedReadmeMdFiles {
-		// TODO -- maintain a map from readme files to corresponding output folders, so that we could detect the situation that a package was deleted
 		log.Printf("Processing readme '%s'...", readme)
 		absReadme := filepath.Join(input.SpecFolder, readme)
 		// generate code
@@ -147,32 +166,28 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 		if err := g.generate(); err != nil {
 			return nil, err
 		}
-		m := metadataContext{
-			sdkRoot: ctx.sdkRoot,
-			readme:  readme,
+		m := changelogContext{
+			sdkRoot:         ctx.sdkRoot,
+			clnRoot:         ctx.clnRoot,
+			specRoot:        ctx.specRoot,
+			commitHash:      ctx.commitHash,
+			codeGenVer:      options.CodeGeneratorVersion(),
+			readme:          readme,
+			removedPackages: removedPackages,
 		}
-		packages, err := m.processMetadata(g.metadataOutput)
+		packages, err := m.process(g.metadataOutput)
 		if err != nil {
 			return nil, err
 		}
-		log.Printf("Packages changed: %+v", packages)
+
 		// iterate over the changed packages
 		for _, p := range packages {
-			p = utils.NormalizePath(p)
-			log.Printf("Getting package result for package '%s'", p)
-			exporter := changelog.Exporter{
-				SDKRoot:    ctx.sdkRoot,
-				BackupRoot: ctx.backupRoot,
-			}
-			c, err := exporter.ExportForPackage(p)
-			if err != nil {
-				return nil, err
-			}
-			content := c.ToMarkdown()
-			breaking := c.HasBreakingChanges()
+			log.Printf("Getting package result for package '%s'", p.PackageName)
+			content := p.Changelog.ToCompactMarkdown()
+			breaking := p.Changelog.HasBreakingChanges()
 			results = append(results, pipeline.PackageResult{
-				PackageName: getPackageIdentifier(p),
-				Path:        []string{p},
+				PackageName: getPackageIdentifier(p.PackageName),
+				Path:        []string{p.PackageName},
 				ReadmeMd:    []string{readme},
 				Changelog: &pipeline.Changelog{
 					Content:           &content,
@@ -195,7 +210,7 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 }
 
 func getPackageIdentifier(pkg string) string {
-	return strings.TrimPrefix(pkg, "services/")
+	return strings.TrimPrefix(utils.NormalizePath(pkg), "services/")
 }
 
 func getPackageAPIVersionSegment(pkg string) string {

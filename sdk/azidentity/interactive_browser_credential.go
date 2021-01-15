@@ -64,22 +64,23 @@ type InteractiveBrowserCredential struct {
 // NewInteractiveBrowserCredential constructs a new InteractiveBrowserCredential with the details needed to authenticate against Azure Active Directory through an interactive browser window.
 // options: allow to configure the management of the requests sent to Azure Active Directory, pass in nil for default behavior.
 func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOptions) (*InteractiveBrowserCredential, error) {
-	if options == nil {
-		options = &InteractiveBrowserCredentialOptions{}
+	cp := InteractiveBrowserCredentialOptions{}
+	if options != nil {
+		cp = *options
 	}
-	options.init()
-	if !validTenantID(options.TenantID) {
+	cp.init()
+	if !validTenantID(cp.TenantID) {
 		return nil, &CredentialUnavailableError{credentialType: "Interactive Browser Credential", message: tenantIDValidationErr}
 	}
-	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
 	if err != nil {
 		return nil, err
 	}
-	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry, Logging: options.Logging})
+	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: cp.HTTPClient, Retry: cp.Retry, Telemetry: cp.Telemetry, Logging: cp.Logging})
 	if err != nil {
 		return nil, err
 	}
-	return &InteractiveBrowserCredential{options: *options, client: c}, nil
+	return &InteractiveBrowserCredential{options: cp, client: c}, nil
 }
 
 // GetToken obtains a token from Azure Active Directory using an interactive browser to authenticate.

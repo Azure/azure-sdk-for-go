@@ -42,12 +42,13 @@ type AzureCLICredential struct {
 // NewAzureCLICredential constructs a new AzureCLICredential with the details needed to authenticate against Azure Active Directory
 // options: configure the management of the requests sent to Azure Active Directory.
 func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredential, error) {
-	if options == nil {
-		options = &AzureCLICredentialOptions{}
+	cp := AzureCLICredentialOptions{}
+	if options != nil {
+		cp = *options
 	}
-	options.init()
+	cp.init()
 	return &AzureCLICredential{
-		tokenProvider: options.TokenProvider,
+		tokenProvider: cp.TokenProvider,
 	}, nil
 }
 

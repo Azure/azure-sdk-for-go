@@ -23,7 +23,9 @@ const (
 
 func defaultTestPipeline(srv azcore.Transport, cred azcore.Credential, scope string) azcore.Pipeline {
 	retryOpts := azcore.RetryOptions{
-		TryTimeout: 1 * time.Minute,
+		MaxRetryDelay: 500 * time.Millisecond,
+		RetryDelay:    50 * time.Millisecond,
+		TryTimeout:    1 * time.Minute,
 	}
 	return azcore.NewPipeline(
 		srv,
@@ -176,7 +178,7 @@ func TestBearerPolicy_GetTokenFailsNoDeadlock(t *testing.T) {
 		Retry: azcore.RetryOptions{
 			// leaving TryTimeout at as a very small value will trigger a deadline exceeded error causing GetToken() to fail
 			TryTimeout: 1 * time.Nanosecond,
-			MaxRetries: 0,
+			MaxRetries: -1,
 		}})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -184,12 +186,12 @@ func TestBearerPolicy_GetTokenFailsNoDeadlock(t *testing.T) {
 	pipeline := azcore.NewPipeline(
 		srv,
 		azcore.NewRetryPolicy(&azcore.RetryOptions{
-			TryTimeout: 1 * time.Minute,
-			MaxRetries: 0,
+			MaxRetryDelay: 500 * time.Millisecond,
+			RetryDelay:    50 * time.Millisecond,
+			MaxRetries:    -1,
 		}),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewLogPolicy(nil))
-	// pipeline := defaultTestPipeline(srv, cred, scope)
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)

@@ -82,22 +82,23 @@ type DeviceCodeCredential struct {
 // NewDeviceCodeCredential constructs a new DeviceCodeCredential used to authenticate against Azure Active Directory with a device code.
 // options: Options used to configure the management of the requests sent to Azure Active Directory, please see DeviceCodeCredentialOptions for a description of each field.
 func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeCredential, error) {
-	if options == nil {
-		options = &DeviceCodeCredentialOptions{}
+	cp := DeviceCodeCredentialOptions{}
+	if options != nil {
+		cp = *options
 	}
-	options.init()
-	if !validTenantID(options.TenantID) {
+	cp.init()
+	if !validTenantID(cp.TenantID) {
 		return nil, &CredentialUnavailableError{credentialType: "Device Code Credential", message: tenantIDValidationErr}
 	}
-	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
 	if err != nil {
 		return nil, err
 	}
-	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry, Logging: options.Logging})
+	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: cp.HTTPClient, Retry: cp.Retry, Telemetry: cp.Telemetry, Logging: cp.Logging})
 	if err != nil {
 		return nil, err
 	}
-	return &DeviceCodeCredential{tenantID: options.TenantID, clientID: options.ClientID, userPrompt: options.UserPrompt, client: c}, nil
+	return &DeviceCodeCredential{tenantID: cp.TenantID, clientID: cp.ClientID, userPrompt: cp.UserPrompt, client: c}, nil
 }
 
 // GetToken obtains a token from Azure Active Directory, following the device code authentication

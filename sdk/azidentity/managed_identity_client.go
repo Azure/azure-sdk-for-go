@@ -274,22 +274,22 @@ func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context,
 
 func (c *managedIdentityClient) getMSIType() (msiType, error) {
 	if c.msiType == msiTypeUnknown { // if we haven't already determined the msiType
-		if endpointEnvVar := os.Getenv(identityEndpoint); endpointEnvVar != "" { // check for IDENTITY_ENDPOINT
-			c.endpoint = endpointEnvVar
-			if header := os.Getenv(identityHeader); header != "" { // if BOTH the env vars IDENTITY_ENDPOINT and IDENTITY_HEADER are set the msiType is AppService
-				c.msiType = msiTypeAppServiceV20190801
-			} else if arcIMDS := os.Getenv(arcIMDSEndpoint); arcIMDS != "" {
-				c.msiType = msiTypeAzureArc
-			} else { // if ONLY the env var IDENTITY_ENDPOINT is set the msiType is Azure Functions
-				c.msiType = msiTypeUnavailable
-				return c.msiType, &CredentialUnavailableError{credentialType: "Managed Identity Credential", message: "This Managed Identity Environment is not supported yet"}
-			}
-		} else if endpointEnvVar := os.Getenv(msiEndpoint); endpointEnvVar != "" { // if the env var MSI_ENDPOINT is set
+		if endpointEnvVar := os.Getenv(msiEndpoint); endpointEnvVar != "" { // if the env var MSI_ENDPOINT is set
 			c.endpoint = endpointEnvVar
 			if secretEnvVar := os.Getenv(msiSecret); secretEnvVar != "" { // if BOTH the env vars MSI_ENDPOINT and MSI_SECRET are set the msiType is AppService
 				c.msiType = msiTypeAppServiceV20170901
 			} else { // if ONLY the env var MSI_ENDPOINT is set the msiType is CloudShell
 				c.msiType = msiTypeCloudShell
+			}
+		} else if endpointEnvVar := os.Getenv(identityEndpoint); endpointEnvVar != "" { // check for IDENTITY_ENDPOINT
+			c.endpoint = endpointEnvVar
+			if header := os.Getenv(identityHeader); header != "" { // if BOTH the env vars IDENTITY_ENDPOINT and IDENTITY_HEADER are set the msiType is AppService
+				c.msiType = msiTypeAppServiceV20190801
+			} else if arcIMDS := os.Getenv(arcIMDSEndpoint); arcIMDS != "" {
+				c.msiType = msiTypeAzureArc
+			} else {
+				c.msiType = msiTypeUnavailable
+				return c.msiType, &CredentialUnavailableError{credentialType: "Managed Identity Credential", message: "This Managed Identity Environment is not supported yet"}
 			}
 		} else if c.imdsAvailable() { // if MSI_ENDPOINT is NOT set AND the IMDS endpoint is available the msiType is IMDS. This will timeout after 500 milliseconds
 			c.endpoint = imdsEndpoint

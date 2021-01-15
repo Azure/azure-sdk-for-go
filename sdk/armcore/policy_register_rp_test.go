@@ -50,7 +50,7 @@ const rpRegisteredResp = `{
 const requestEndpoint = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fakeResourceGroupo/providers/Microsoft.Storage/storageAccounts/fakeAccountName"
 
 func testRPRegistrationOptions(t azcore.Transport) *RegistrationOptions {
-	def := DefaultRegistrationOptions()
+	def := RegistrationOptions{}
 	def.HTTPClient = t
 	def.PollingDelay = 100 * time.Millisecond
 	def.PollingDuration = 1 * time.Second
@@ -68,10 +68,7 @@ func TestRPRegistrationPolicySuccess(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteredResp)))
 	// response for original request (different status code than any of the other responses)
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
-	opt := DefaultConnectionOptions()
-	opt.HTTPClient = srv
-	opt.RegisterRPOptions = *testRPRegistrationOptions(srv)
-	con := NewConnection(srv.URL(), mockTokenCred{}, &opt)
+	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), mockTokenCred{}, testRPRegistrationOptions(srv)))
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, azcore.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {
 		t.Fatal(err)
@@ -86,7 +83,7 @@ func TestRPRegistrationPolicySuccess(t *testing.T) {
 	azcore.Log().SetListener(func(cls azcore.LogClassification, msg string) {
 		logEntries++
 	})
-	resp, err := con.Pipeline().Do(req)
+	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -103,9 +100,6 @@ func TestRPRegistrationPolicySuccess(t *testing.T) {
 	// 4th is for end
 	if logEntries != 4 {
 		t.Fatalf("expected 4 log entries, got %d", logEntries)
-	}
-	if ua := resp.Request.Header.Get(azcore.HeaderUserAgent); !strings.HasPrefix(ua, UserAgent) {
-		t.Fatalf("unexpected User-Agent %s", ua)
 	}
 }
 
@@ -274,7 +268,7 @@ func TestRPRegistrationPolicyCanCancel(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
 	// polling responses to Register() and Get(), in progress but slow so we have time to cancel
 	srv.RepeatResponse(10, mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteringResp)), mock.WithSlowResponse(300*time.Millisecond))
-	opts := DefaultRegistrationOptions()
+	opts := RegistrationOptions{}
 	opts.HTTPClient = srv
 	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), azcore.AnonymousCredential(), &opts))
 	// log only RP registration
@@ -328,7 +322,7 @@ func TestRPRegistrationPolicyDisabled(t *testing.T) {
 	// initial response that RP is unregistered
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
 	ops := testRPRegistrationOptions(srv)
-	ops.MaxAttempts = 0
+	ops.MaxAttempts = -1
 	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), azcore.AnonymousCredential(), ops))
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, azcore.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {

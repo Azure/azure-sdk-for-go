@@ -21,27 +21,28 @@ type ChangelogContext interface {
 	CodeGenVersion() string
 }
 
-type changelogProcessor struct {
+// ChangelogProcessor processes the metadata and output changelog with the desired format
+type ChangelogProcessor struct {
 	ctx              ChangelogContext
 	metadataLocation string
 	readme           string
 }
 
-// NewChangelogProcessorFromContext returns a new changelogProcessor
-func NewChangelogProcessorFromContext(ctx ChangelogContext) *changelogProcessor {
-	return &changelogProcessor{
+// NewChangelogProcessorFromContext returns a new ChangelogProcessor
+func NewChangelogProcessorFromContext(ctx ChangelogContext) *ChangelogProcessor {
+	return &ChangelogProcessor{
 		ctx: ctx,
 	}
 }
 
 // WithLocation adds the information of the metadata-output-folder
-func (p *changelogProcessor) WithLocation(metadataLocation string) *changelogProcessor {
+func (p *ChangelogProcessor) WithLocation(metadataLocation string) *ChangelogProcessor {
 	p.metadataLocation = metadataLocation
 	return p
 }
 
 // WithReadme adds the information of the path of readme.md file. This path could be relative or absolute.
-func (p *changelogProcessor) WithReadme(readme string) *changelogProcessor {
+func (p *ChangelogProcessor) WithReadme(readme string) *ChangelogProcessor {
 	// make sure the readme here is a relative path to the root of spec
 	readme = utils.NormalizePath(readme)
 	root := utils.NormalizePath(p.ctx.SpecRoot())
@@ -89,7 +90,7 @@ func (b *changelogErrorBuilder) build() error {
 
 // Process generates the changelogs using the input metadata map.
 // Please ensure the input metadata map does not contain any package that is not under the sdk root, otherwise this might give weird results.
-func (p *changelogProcessor) Process(metadataMap map[string]model.Metadata) ([]ChangelogResult, error) {
+func (p *ChangelogProcessor) Process(metadataMap map[string]model.Metadata) ([]ChangelogResult, error) {
 	builder := changelogErrorBuilder{}
 	var results []ChangelogResult
 	for tag, metadata := range metadataMap {
@@ -110,7 +111,7 @@ func (p *changelogProcessor) Process(metadataMap map[string]model.Metadata) ([]C
 }
 
 // GenerateChangelog generates a changelog for one package
-func (p *changelogProcessor) GenerateChangelog(packagePath, tag string) (*ChangelogResult, error) {
+func (p *ChangelogProcessor) GenerateChangelog(packagePath, tag string) (*ChangelogResult, error) {
 	// use the relative path to the sdk root as package name
 	packageName, err := filepath.Rel(p.ctx.SDKRoot(), packagePath)
 	if err != nil {
@@ -128,7 +129,7 @@ func (p *changelogProcessor) GenerateChangelog(packagePath, tag string) (*Change
 	}
 	r, err := getChangelogForPackage(lhs, rhs)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to generate changelog for package '%s': %+v", packagePath, err)
 	}
 	return &ChangelogResult{
 		PackageName: packageName,

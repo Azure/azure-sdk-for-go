@@ -129,7 +129,7 @@ func (p *ChangelogProcessor) GenerateChangelog(packagePath, tag string) (*Change
 	}
 	r, err := getChangelogForPackage(lhs, rhs)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to generate changelog for package '%s': %+v", packagePath, err)
 	}
 	return &ChangelogResult{
 		PackageName: packageName,

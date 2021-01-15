@@ -135,11 +135,11 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 	if err != nil {
 		return nil, err
 	}
-	removedPackagePaths := make([]string, len(removedPackages))
+	var removedPackagePaths []string
 	for _, p := range removedPackages {
 		removedPackagePaths = append(removedPackagePaths, p.outputFolder)
 	}
-	log.Printf("The following packages have been cleaned up: [%s]", strings.Join(removedPackagePaths, ", "))
+	log.Printf("The following %d package(s) have been cleaned up: [%s]", len(removedPackagePaths), strings.Join(removedPackagePaths, ", "))
 
 	optionFile, err := os.Open(ctx.optionPath)
 	if err != nil {
@@ -175,6 +175,7 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 			readme:          readme,
 			removedPackages: removedPackages,
 		}
+		log.Printf("Processing metadata generated in readme '%s'...", readme)
 		packages, err := m.process(g.metadataOutput)
 		if err != nil {
 			return nil, err

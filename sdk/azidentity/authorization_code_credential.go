@@ -69,7 +69,7 @@ func NewAuthorizationCodeCredential(tenantID string, clientID string, authCode s
 // opts: TokenRequestOptions contains the list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *AuthorizationCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	tk, err := c.client.authenticateAuthCode(ctx, c.tenantID, c.clientID, c.authCode, c.clientSecret, c.redirectURI, opts.Scopes)
+	tk, err := c.client.authenticateAuthCode(ctx, c.tenantID, c.clientID, c.authCode, c.clientSecret, "", c.redirectURI, opts.Scopes)
 	if err != nil {
 		addGetTokenFailureLogs("Authorization Code Credential", err, true)
 		return nil, err

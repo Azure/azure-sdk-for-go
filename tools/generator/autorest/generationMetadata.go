@@ -69,8 +69,7 @@ func CollectGenerationMetadata(root string) (map[string]GenerationMetadata, erro
 		if err != nil {
 			return nil, err
 		}
-		key := strings.TrimPrefix(utils.NormalizePath(pkg), utils.NormalizePath(root))
-		result[key] = *m
+		result[pkg] = *m
 	}
 	return result, nil
 }

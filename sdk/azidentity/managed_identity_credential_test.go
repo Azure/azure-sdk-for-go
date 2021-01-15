@@ -210,9 +210,9 @@ func TestManagedIdentityCredential_GetTokenInAzureFunctions_linux(t *testing.T) 
 	_ = os.Setenv("IDENTITY_ENDPOINT", srv.URL())
 	_ = os.Setenv("IDENTITY_HEADER", "header")
 	defer clearEnvVars("IDENTITY_ENDPOINT", "IDENTITY_HEADER")
-	options := DefaultManagedIdentityCredentialOptions()
-	options.HTTPClient = srv
-	msiCred, err := NewManagedIdentityCredential(clientID, &options)
+	msiCred, err := NewManagedIdentityCredential(clientID, &ManagedIdentityCredentialOptions{
+		HTTPClient: srv,
+	})
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

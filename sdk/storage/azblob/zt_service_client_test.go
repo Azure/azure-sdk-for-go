@@ -37,37 +37,29 @@ func (s *aztestsSuite) TestGetAccountInfo(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestListContainersBasic(c *chk.C) {
-	sa := getBSU()
-	prefix := containerPrefix
-	listOptions := ListContainersSegmentOptions{Prefix: &prefix}
-	pager, err := sa.ListContainersSegment(context.Background(), 100, time.Hour, &listOptions)
-	c.Check(err, chk.IsNil)
-
-	count := 0
-	for container := range pager {
-		count += 1
-		c.Assert(container.Name, chk.NotNil)
-	}
-	c.Assert(count >= 0, chk.Equals, true)
-
-	container, name := getContainerClient(c, sa)
-	defer deleteContainer(c, container)
+	sa, err := getGenericBSU("")
+	c.Assert(err, chk.IsNil)
 
 	md := map[string]string{
 		"foo": "foovalue",
 		"bar": "barvalue",
 	}
 
-	options := CreateContainerOptions{Metadata: &md}
-	_, err = container.Create(ctx, &options)
+	container, name := getContainerClient(c, sa)
+	_, err = container.Create(ctx, &CreateContainerOptions{Metadata: &md})
 	c.Assert(err, chk.IsNil)
 
-	listOptions = ListContainersSegmentOptions{Include: ListContainersDetail{Metadata: true}, Prefix: &name}
-	count = 0
+	prefix := containerPrefix
+	listOptions := ListContainersSegmentOptions{Prefix: &prefix, Include: ListContainersDetail{Metadata: true}}
+	pager, errs := sa.ListContainersSegment(context.Background(), 100, 0, &listOptions)
+
+	count := 0
 	for container := range pager {
-		// check the first container
-		if count == 0 {
-			c.Assert(container.Name, chk.NotNil)
+		count++
+
+		c.Assert(container.Name, chk.NotNil)
+
+		if *container.Name == name {
 			c.Assert(container.Properties, chk.NotNil)
 			c.Assert(container.Properties.LastModified, chk.NotNil)
 			c.Assert(container.Properties.Etag, chk.NotNil)
@@ -75,11 +67,13 @@ func (s *aztestsSuite) TestListContainersBasic(c *chk.C) {
 			c.Assert(*container.Properties.LeaseState, chk.Equals, LeaseStateTypeAvailable)
 			c.Assert(container.Properties.LeaseDuration, chk.IsNil)
 			c.Assert(container.Properties.PublicAccess, chk.IsNil)
-			c.Assert(container.Metadata, chk.DeepEquals, md)
+			c.Assert(container.Metadata, chk.DeepEquals, &md)
 		}
-		count += 1
 	}
-	c.Assert(count, chk.Equals, 0)
+	err = <- errs
+
+	c.Assert(err, chk.IsNil)
+	c.Assert(count >= 0, chk.Equals, true)
 }
 
 func (s *aztestsSuite) TestListContainersPaged(c *chk.C) {
@@ -109,14 +103,15 @@ func (s *aztestsSuite) TestListContainersPaged(c *chk.C) {
 	count := 0
 	results := make([]ContainerItem, 0)
 
-	pager, err := sa.ListContainersSegment(context.Background(), 100, time.Hour, &listOptions)
-	c.Check(err, chk.IsNil)
+	pager, errs := sa.ListContainersSegment(context.Background(), 100, time.Hour, &listOptions)
 	for container := range pager {
 		// record the results
 		results = append(results, container)
 		count += 1
 		c.Assert(container.Name, chk.NotNil)
 	}
+	err := <-errs
+	c.Assert(err, chk.IsNil)
 	c.Assert(count, chk.Equals, numContainers)
 	c.Assert(len(results), chk.Equals, numContainers)
 

@@ -121,7 +121,7 @@ func NewKeyInfo(Start, Expiry time.Time) KeyInfo {
 // The returned channel contains individual container items.
 // AutoPagerTimeout specifies the amount of time with no read operations before the channel times out and closes. Specify no time and it will be ignored.
 // AutoPagerBufferSize specifies the channel's buffer size.
-// Both the blob item channel and error channel should be watched. Only one error will be released via this channel.
+// Both the blob item channel and error channel should be watched. Only one error will be released via this channel (or a nil error, to register a clean exit.)
 func (s ServiceClient) ListContainersSegment(ctx context.Context, AutoPagerBufferSize uint, AutoPagerTimeout time.Duration, o *ListContainersSegmentOptions) (chan ContainerItem, chan error) {
 	output := make(chan ContainerItem, AutoPagerBufferSize)
 	errChan := make(chan error, 1)
@@ -161,7 +161,7 @@ func (s ServiceClient) ListContainersSegment(ctx context.Context, AutoPagerBuffe
 		nil,
 	}.Go()
 
-	return output, nil
+	return output, errChan
 }
 
 func (s ServiceClient) GetProperties(ctx context.Context) (StorageServicePropertiesResponse, error) {

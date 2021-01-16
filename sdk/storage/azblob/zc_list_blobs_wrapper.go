@@ -35,11 +35,17 @@ func (p listBlobsFlatSegmentAutoPager) Go() {
 
 		if resp.RawResponse != nil {
 			for _, v := range *resp.EnumerationResults.Segment.BlobItems {
-				p.timer.Reset(p.timeout)
+				if p.timeout != 0 {
+					p.timer.Reset(p.timeout)
+				} else {
+					p.timer.C = nil
+				}
 
 				select {
 				case p.channel <- v:
 				case <-p.timer.C:
+					p.errChan <- nil
+
 					close(p.errChan)
 					close(p.channel)
 					return // break the queue
@@ -51,6 +57,8 @@ func (p listBlobsFlatSegmentAutoPager) Go() {
 			err := p.pager.Err()
 			if err != nil {
 				p.errChan <- err
+			} else {
+				p.errChan <- nil
 			}
 
 			close(p.errChan)
@@ -76,11 +84,15 @@ func (p listBlobsHierarchySegmentAutoPager) Go() {
 			for _, v := range *resp.EnumerationResults.Segment.BlobItems {
 				if p.timeout != 0 {
 					p.timer.Reset(p.timeout)
+				} else {
+					p.timer.C = nil
 				}
 
 				select {
 				case p.channel <- v:
 				case <-p.timer.C:
+					p.errChan <- nil
+
 					close(p.errChan)
 					close(p.channel)
 					return // break the queue
@@ -92,8 +104,11 @@ func (p listBlobsHierarchySegmentAutoPager) Go() {
 			err := p.pager.Err()
 			if err != nil {
 				p.errChan <- err
+			} else {
+				p.errChan <- nil
 			}
 
+			// register an exit to listing
 			close(p.errChan)
 			close(p.channel)
 			return

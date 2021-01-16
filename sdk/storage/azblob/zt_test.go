@@ -175,13 +175,30 @@ func createNewContainerWithSuffix(c *chk.C, bsu ServiceClient, suffix string) (c
 	return container, name
 }
 
+func createNewBlobs(c *chk.C, container ContainerClient, blobNames []string) {
+	for _, name := range blobNames {
+		createNewBlockBlobWithName(c, container, name)
+	}
+}
+
+func createNewBlockBlobWithName(c *chk.C, container ContainerClient, name string) (blob BlockBlobClient) {
+	 blob = container.NewBlockBlobClient(name)
+
+	 cResp, err := blob.Upload(ctx, azcore.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+
+	 c.Assert(err, chk.IsNil)
+	 c.Assert(cResp.RawResponse.Status, chk.Equals, "201 Created")
+
+	 return
+}
+
 func createNewBlockBlob(c *chk.C, container ContainerClient) (blob BlockBlobClient, name string) {
 	blob, name = getBlockBlobClient(c, container)
 
 	cResp, err := blob.Upload(ctx, azcore.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 
 	c.Assert(err, chk.IsNil)
-	c.Assert(cResp.RawResponse.StatusCode, chk.Equals, 201)
+	c.Assert(cResp.RawResponse.StatusCode, chk.Equals, "201 Created")
 
 	return
 }

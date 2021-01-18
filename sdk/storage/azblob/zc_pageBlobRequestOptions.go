@@ -1,16 +1,24 @@
 package azblob
 
 import (
+	"fmt"
 	"strconv"
 )
 
 func rangeToString(offset, count int64) string {
-	return strconv.FormatInt(offset, 10) + "-" + strconv.FormatInt(offset+count, 10)
+	return "bytes=" + strconv.FormatInt(offset, 10) + "-" + strconv.FormatInt(offset+count-1, 10)
 }
 
 func rangeToStringPtr(offset, count int64) *string {
-	out := strconv.FormatInt(offset, 10) + "-" + strconv.FormatInt(offset+count, 10)
+	out := rangeToString(offset, count)
 	return &out
+}
+
+func (pr PageRange) pointers() *string {
+	startOffset := strconv.FormatInt(*pr.Start, 10)
+	endOffset := strconv.FormatInt(*pr.End, 10)
+	asString := fmt.Sprintf("bytes=%v-%s", startOffset, endOffset)
+	return &asString
 }
 
 type CreatePageBlobOptions struct {
@@ -18,7 +26,7 @@ type CreatePageBlobOptions struct {
 	// the sequence number must be between 0 and 2^63 - 1.
 	BlobSequenceNumber *int64
 	// Optional. Used to set blob tags in various blob operations.
-	BlobTagsString *string
+	BlobTagsMap *map[string]string
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
 	// operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
@@ -29,8 +37,8 @@ type CreatePageBlobOptions struct {
 	Tier *PremiumPageBlobAccessTier
 
 	BlobHttpHeaders *BlobHttpHeaders
-	CpkInfo *CpkInfo
-	CpkScopeInfo *CpkScopeInfo
+	CpkInfo         *CpkInfo
+	CpkScopeInfo    *CpkScopeInfo
 	BlobAccessConditions
 }
 
@@ -41,24 +49,24 @@ func (o *CreatePageBlobOptions) pointers() (*PageBlobCreateOptions, *BlobHttpHea
 
 	options := &PageBlobCreateOptions{
 		BlobSequenceNumber: o.BlobSequenceNumber,
-		BlobTagsString: o.BlobTagsString,
-		Metadata: o.Metadata,
-		Tier: o.Tier,
+		BlobTagsString:     SerializeBlobTagsToStrPtr(o.BlobTagsMap),
+		Metadata:           o.Metadata,
+		Tier:               o.Tier,
 	}
 
 	return options, o.BlobHttpHeaders, o.CpkInfo, o.CpkScopeInfo, o.LeaseAccessConditions, o.ModifiedAccessConditions
 }
 
 type UploadPagesOptions struct {
-	// Return only the bytes of the blob in the specified range.
-	RangeParameter *string
 	// Specify the transactional crc64 for the body, to be validated by the service.
+	Offset                    *int64
+	Count                     *int64
 	TransactionalContentCrc64 *[]byte
 	// Specify the transactional md5 for the body, to be validated by the service.
 	TransactionalContentMd5 *[]byte
 
-	CpkInfo *CpkInfo
-	CpkScopeInfo *CpkScopeInfo
+	CpkInfo                        *CpkInfo
+	CpkScopeInfo                   *CpkScopeInfo
 	SequenceNumberAccessConditions *SequenceNumberAccessConditions
 	BlobAccessConditions
 }
@@ -69,9 +77,9 @@ func (o *UploadPagesOptions) pointers() (*PageBlobUploadPagesOptions, *CpkInfo, 
 	}
 
 	options := &PageBlobUploadPagesOptions{
-		RangeParameter: o.RangeParameter,
+		RangeParameter:            getSourceRange(o.Offset, o.Count),
 		TransactionalContentCrc64: o.TransactionalContentCrc64,
-		TransactionalContentMd5: o.TransactionalContentMd5,
+		TransactionalContentMd5:   o.TransactionalContentMd5,
 	}
 
 	return options, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, o.LeaseAccessConditions, o.ModifiedAccessConditions
@@ -83,8 +91,8 @@ type UploadPagesFromURLOptions struct {
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
 	SourceContentcrc64 *[]byte
 
-	CpkInfo *CpkInfo
-	CpkScopeInfo *CpkScopeInfo
+	CpkInfo                        *CpkInfo
+	CpkScopeInfo                   *CpkScopeInfo
 	SequenceNumberAccessConditions *SequenceNumberAccessConditions
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
 	BlobAccessConditions
@@ -96,7 +104,7 @@ func (o *UploadPagesFromURLOptions) pointers() (*PageBlobUploadPagesFromURLOptio
 	}
 
 	options := &PageBlobUploadPagesFromURLOptions{
-		SourceContentMd5: o.SourceContentMd5,
+		SourceContentMd5:   o.SourceContentMd5,
 		SourceContentcrc64: o.SourceContentcrc64,
 	}
 
@@ -104,8 +112,8 @@ func (o *UploadPagesFromURLOptions) pointers() (*PageBlobUploadPagesFromURLOptio
 }
 
 type ClearPagesOptions struct {
-	CpkInfo *CpkInfo
-	CpkScopeInfo *CpkScopeInfo
+	CpkInfo                        *CpkInfo
+	CpkScopeInfo                   *CpkScopeInfo
 	SequenceNumberAccessConditions *SequenceNumberAccessConditions
 	BlobAccessConditions
 }
@@ -133,7 +141,7 @@ func (o *GetPageRangesOptions) pointers() (*string, *LeaseAccessConditions, *Mod
 }
 
 type ResizePageBlobOptions struct {
-	CpkInfo *CpkInfo
+	CpkInfo      *CpkInfo
 	CpkScopeInfo *CpkScopeInfo
 	BlobAccessConditions
 }
@@ -147,19 +155,45 @@ func (o *ResizePageBlobOptions) pointers() (*CpkInfo, *CpkScopeInfo, *LeaseAcces
 }
 
 type UpdateSequenceNumberPageBlob struct {
+	ActionType         *SequenceNumberActionType
 	BlobSequenceNumber *int64
 
 	BlobAccessConditions
 }
 
-func (o *UpdateSequenceNumberPageBlob) pointers() (*PageBlobUpdateSequenceNumberOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
+func (o *UpdateSequenceNumberPageBlob) pointers() (*PageBlobUpdateSequenceNumberOptions, *SequenceNumberActionType, *LeaseAccessConditions, *ModifiedAccessConditions) {
 	if o == nil {
-		return nil, nil, nil
+		return nil, nil, nil, nil
 	}
 
 	options := &PageBlobUpdateSequenceNumberOptions{
 		BlobSequenceNumber: o.BlobSequenceNumber,
 	}
 
-	return options, o.LeaseAccessConditions, o.ModifiedAccessConditions
+	if *o.ActionType == SequenceNumberActionTypeIncrement {
+		options.BlobSequenceNumber = nil
+	}
+
+	return options, o.ActionType, o.LeaseAccessConditions, o.ModifiedAccessConditions
+}
+
+type CopyIncrementalPageBlobOptions struct {
+	ModifiedAccessConditions *ModifiedAccessConditions
+
+	RequestId *string
+
+	Timeout *int32
+}
+
+func (o *CopyIncrementalPageBlobOptions) pointers() (*PageBlobCopyIncrementalOptions, *ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	options := PageBlobCopyIncrementalOptions{
+		RequestId: o.RequestId,
+		Timeout:   o.Timeout,
+	}
+
+	return &options, o.ModifiedAccessConditions
 }

@@ -109,7 +109,7 @@ func (s *aztestsSuite) TestUserDelegationSASBlob(c *chk.C) {
 		Protocol:      SASProtocolHTTPS,
 		StartTime:     currentTime,
 		ExpiryTime:    currentTime.Add(24 * time.Hour),
-		Permissions:   "rd",
+		Permissions:   "racwd",
 		ContainerName: containerName,
 		BlobName:      blobName,
 	}.NewSASQueryParameters(cudk)

@@ -49,9 +49,9 @@ func (s ServiceClient) String() string {
 // WithPipeline creates a new ServiceClient object identical to the source but with the specified request policy pipeline.
 func (s ServiceClient) WithPipeline(pipeline azcore.Pipeline) ServiceClient {
 	connection := newConnectionWithPipeline(s.u.String(), pipeline)
-	return ServiceClient{client: &serviceClient{
-		con: connection,
-	}}
+	return ServiceClient{client: &serviceClient{con: connection},
+		u: s.u,
+	}
 }
 
 // NewContainerClient creates a new ContainerClient object by concatenating containerName to the end of

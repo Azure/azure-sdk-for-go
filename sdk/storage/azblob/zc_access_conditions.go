@@ -11,7 +11,7 @@ const (
 // ContainerAccessConditions identifies container-specific access conditions which you optionally set.
 type ContainerAccessConditions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
- 	LeaseAccessConditions *LeaseAccessConditions
+	LeaseAccessConditions    *LeaseAccessConditions
 }
 
 func (ac *ContainerAccessConditions) pointers() (*ModifiedAccessConditions, *LeaseAccessConditions) {
@@ -25,7 +25,7 @@ func (ac *ContainerAccessConditions) pointers() (*ModifiedAccessConditions, *Lea
 // BlobAccessConditions identifies blob-specific access conditions which you optionally set.
 type BlobAccessConditions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
-	LeaseAccessConditions *LeaseAccessConditions
+	LeaseAccessConditions    *LeaseAccessConditions
 }
 
 func (ac *BlobAccessConditions) pointers() (*ModifiedAccessConditions, *LeaseAccessConditions) {

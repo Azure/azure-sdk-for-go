@@ -33,13 +33,22 @@ func NewBlockBlobClient(blobURL string, cred azcore.Credential, options *connect
 		return BlockBlobClient{}, err
 	}
 	con := newConnection(blobURL, cred, options)
-	return BlockBlobClient{client: &blockBlobClient{con: con}, u: *u}, nil
+	return BlockBlobClient{
+		client:     &blockBlobClient{con: con},
+		u:          *u,
+		BlobClient: BlobClient{client: &blobClient{con: con}},
+	}, nil
+	//return bbc, nil
 }
 
 // WithPipeline creates a new BlockBlobClient object identical to the source but with the specific request policy pipeline.
 func (bb BlockBlobClient) WithPipeline(pipeline azcore.Pipeline) BlockBlobClient {
 	con := newConnectionWithPipeline(bb.u.String(), pipeline)
-	return BlockBlobClient{client: &blockBlobClient{con}, u: bb.u}
+	return BlockBlobClient{
+		client:     &blockBlobClient{con},
+		u:          bb.u,
+		BlobClient: BlobClient{client: &blobClient{con: con}},
+	}
 }
 
 // URL returns the URL endpoint used by the BlobClient object.
@@ -53,18 +62,28 @@ func (bb BlockBlobClient) WithSnapshot(snapshot string) BlockBlobClient {
 	p := NewBlobURLParts(bb.URL())
 	p.Snapshot = snapshot
 	snapshotURL := p.URL()
+	con := newConnectionWithPipeline(snapshotURL.String(), bb.client.con.p)
 	return BlockBlobClient{
 		client: &blockBlobClient{
-			newConnectionWithPipeline(snapshotURL.String(), bb.client.con.p),
+			con: con,
 		},
-		u: bb.u,
+		u:          snapshotURL,
+		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }
 
-func (bb BlockBlobClient) GetAccountInfo(ctx context.Context) (BlobGetAccountInfoResponse, error) {
-	blobClient := BlobClient{client: &blobClient{bb.client.con, nil}}
-
-	return blobClient.GetAccountInfo(ctx)
+// WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
+// Pass "" to remove the versionID returning a URL to the base blob.
+func (ab BlockBlobClient) WithVersionID(versionID string) BlockBlobClient {
+	p := NewBlobURLParts(ab.URL())
+	p.VersionID = versionID
+	versionIDURL := p.URL()
+	con := newConnectionWithPipeline(versionIDURL.String(), ab.client.con.p)
+	return BlockBlobClient{
+		client:     &blockBlobClient{con: con},
+		u:          versionIDURL,
+		BlobClient: BlobClient{client: &blobClient{con: con}},
+	}
 }
 
 // Upload creates a new block blob or overwrites an existing block blob.
@@ -74,7 +93,7 @@ func (bb BlockBlobClient) GetAccountInfo(ctx context.Context) (BlobGetAccountInf
 // This method panics if the stream is not at position 0.
 // Note that the http client closes the body stream after the request is sent to the service.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-blob.
-func (bb BlockBlobClient) Upload(ctx context.Context, body azcore.ReadSeekCloser, options *UploadBlockBlobOptions) (BlockBlobUploadResponse, error) {
+func (bb BlockBlobClient) Upload(ctx context.Context, body io.ReadSeeker, options *UploadBlockBlobOptions) (BlockBlobUploadResponse, error) {
 	count, err := validateSeekableStreamAt0AndGetCount(body)
 	if err != nil {
 		return BlockBlobUploadResponse{}, err
@@ -82,7 +101,7 @@ func (bb BlockBlobClient) Upload(ctx context.Context, body azcore.ReadSeekCloser
 
 	basics, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions := options.pointers()
 
-	return bb.client.Upload(ctx, count, body, basics, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions)
+	return bb.client.Upload(ctx, count, azcore.NopCloser(body), basics, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions)
 }
 
 // StageBlock uploads the specified block to the block blob's "staging area" to be later committed by a call to CommitBlockList.
@@ -94,8 +113,8 @@ func (bb BlockBlobClient) StageBlock(ctx context.Context, base64BlockID string, 
 		return BlockBlobStageBlockResponse{}, err
 	}
 
-	ac, stageBlockOptions := options.pointers()
-	return bb.client.StageBlock(ctx, base64BlockID, count, azcore.NopCloser(body), stageBlockOptions, ac, nil, nil)
+	ac, stageBlockOptions, cpkInfo, cpkScopeInfo := options.pointers()
+	return bb.client.StageBlock(ctx, base64BlockID, count, azcore.NopCloser(body), stageBlockOptions, ac, cpkInfo, cpkScopeInfo)
 }
 
 // StageBlockFromURL copies the specified block from a source URL to the block blob's "staging area" to be later committed by a call to CommitBlockList.
@@ -117,7 +136,7 @@ func (bb BlockBlobClient) CommitBlockList(ctx context.Context, base64BlockIDs []
 	commitOptions, headers, cpkInfo, cpkScope, modifiedAccess, leaseAccess := options.pointers()
 
 	return bb.client.CommitBlockList(ctx, BlockLookupList{
-		Committed: &base64BlockIDs,
+		Latest: &base64BlockIDs,
 	}, commitOptions, headers, leaseAccess, cpkInfo, cpkScope, modifiedAccess)
 }
 

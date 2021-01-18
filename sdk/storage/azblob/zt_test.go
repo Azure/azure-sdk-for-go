@@ -3,6 +3,8 @@ package azblob
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
+	"encoding/binary"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -51,16 +53,39 @@ const (
 
 var ctx = context.Background()
 
-//var basicHeaders = BlobHTTPHeaders{
-//	ContentType:        "my_type",
-//	ContentDisposition: "my_disposition",
-//	CacheControl:       "control",
-//	ContentMD5:         nil,
-//	ContentLanguage:    "my_language",
-//	ContentEncoding:    "my_encoding",
-//}
-//
-//var basicMetadata = Metadata{"foo": "bar"}
+var (
+	blobContentType        string = "my_type"
+	blobContentDisposition string = "my_disposition"
+	blobCacheControl       string = "control"
+	blobContentLanguage    string = "my_language"
+	blobContentEncoding    string = "my_encoding"
+)
+
+var basicHeaders = BlobHttpHeaders{
+	BlobContentType:        &blobContentType,
+	BlobContentDisposition: &blobContentDisposition,
+	BlobCacheControl:       &blobCacheControl,
+	BlobContentMd5:         nil,
+	BlobContentLanguage:    &blobContentLanguage,
+	BlobContentEncoding:    &blobContentEncoding,
+}
+
+var basicMetadata = map[string]string{"foo": "bar"}
+
+var basicBlobTagsMap = map[string]string{
+	"azure": "blob",
+	"blob":  "sdk",
+	"sdk":   "go",
+}
+
+var specialCharBlobTagsMap = map[string]string{
+	"+-./:=_ ":        "firsttag",
+	"tag2":            "+-./:=_",
+	"+-./:=_1":        "+-./:=_",
+	"Microsoft Azure": "Azure Storage",
+	"Storage+SDK":     "SDK/GO",
+	"GO ":             ".Net",
+}
 
 const testPipelineMessage string = "test factory invoked"
 
@@ -122,19 +147,19 @@ func getBlockBlobClient(c *chk.C, container ContainerClient) (blob BlockBlobClie
 	return blob, name
 }
 
-//func getAppendBlobURL(c *chk.C, container ContainerClient) (blob AppendBlobURL, name string) {
-//	name = generateBlobName()
-//	blob = container.NewAppendBlobURL(name)
-//
-//	return blob, name
-//}
-//
-//func getPageBlobURL(c *chk.C, container ContainerClient) (blob PageBlobURL, name string) {
-//	name = generateBlobName()
-//	blob = container.NewPageBlobURL(name)
-//
-//	return
-//}
+func getAppendBlobClient(c *chk.C, container ContainerClient) (blob AppendBlobClient, name string) {
+	name = generateBlobName()
+	blob = container.NewAppendBlobURL(name)
+
+	return blob, name
+}
+
+func getPageBlobClient(c *chk.C, container ContainerClient) (blob PageBlobClient, name string) {
+	name = generateBlobName()
+	blob = container.NewPageBlobClient(name)
+
+	return
+}
 
 func getReaderToRandomBytes(n int) *bytes.Reader {
 	r, _ := getRandomDataAndReader(n)
@@ -186,52 +211,45 @@ func createNewBlockBlob(c *chk.C, container ContainerClient) (blob BlockBlobClie
 	return
 }
 
-//func createNewAppendBlob(c *chk.C, container ContainerClient) (blob AppendBlobURL, name string) {
-//	blob, name = getAppendBlobURL(c, container)
-//
-//	resp, err := blob.Create(ctx, BlobHTTPHeaders{}, nil, BlobAccessConditions{})
-//
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.StatusCode(), chk.Equals, 201)
-//	return
-//}
-//
-//func createNewPageBlob(c *chk.C, container ContainerClient) (blob PageBlobURL, name string) {
-//	blob, name = getPageBlobURL(c, container)
-//
-//	resp, err := blob.Create(ctx, PageBlobPageBytes*10, 0, BlobHTTPHeaders{}, nil, BlobAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.StatusCode(), chk.Equals, 201)
-//	return
-//}
-//
-//func createNewPageBlobWithSize(c *chk.C, container ContainerClient, sizeInBytes int64) (blob PageBlobURL, name string) {
-//	blob, name = getPageBlobURL(c, container)
-//
-//	resp, err := blob.Create(ctx, sizeInBytes, 0, BlobHTTPHeaders{}, nil, BlobAccessConditions{})
-//
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.StatusCode(), chk.Equals, 201)
-//	return
-//}
-//
-//func createBlockBlobWithPrefix(c *chk.C, container ContainerClient, prefix string) (blob BlockBlobClient, name string) {
-//	name = prefix + generateName(blobPrefix)
-//	blob = container.NewBlockBlobClient(name)
-//
-//	cResp, err := blob.Upload(ctx, strings.NewReader(blockBlobDefaultData), BlobHTTPHeaders{},
-//		nil, BlobAccessConditions{})
-//
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(cResp.StatusCode(), chk.Equals, 201)
-//	return
-//}
-//
-//func deleteContainer(c *chk.C, container ContainerClient) {
-//	resp, err := container.Delete(ctx, ContainerAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.StatusCode(), chk.Equals, 202)
-//}
+func createNewAppendBlob(c *chk.C, container ContainerClient) (blob AppendBlobClient, name string) {
+	blob, name = getAppendBlobClient(c, container)
+
+	resp, err := blob.Create(ctx, nil)
+
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
+	return
+}
+
+func createNewPageBlob(c *chk.C, container ContainerClient) (blob PageBlobClient, name string) {
+	blob, name = getPageBlobClient(c, container)
+
+	resp, err := blob.Create(ctx, PageBlobPageBytes*10, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
+	return
+}
+
+func createNewPageBlobWithSize(c *chk.C, container ContainerClient, sizeInBytes int64) (blob PageBlobClient, name string) {
+	blob, name = getPageBlobClient(c, container)
+
+	resp, err := blob.Create(ctx, sizeInBytes, nil)
+
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
+	return
+}
+
+func createNewBlockBlobWithPrefix(c *chk.C, container ContainerClient, prefix string) (blob BlockBlobClient, name string) {
+	name = prefix + generateName(blobPrefix)
+	blob = container.NewBlockBlobClient(name)
+
+	cResp, err := blob.Upload(ctx, strings.NewReader(blockBlobDefaultData), nil)
+
+	c.Assert(err, chk.IsNil)
+	c.Assert(cResp.RawResponse.StatusCode, chk.Equals, 201)
+	return
+}
 
 func getGenericCredential(accountType string) (*SharedKeyCredential, error) {
 	accountNameEnvVar := accountType + "AZURE_STORAGE_ACCOUNT_NAME"
@@ -287,11 +305,6 @@ func getBlobStorageBSU() (ServiceClient, error) {
 	return getGenericBSU("BLOB_STORAGE_")
 }
 
-//func validateStorageError(c *chk.C, err error, code ServiceCodeType) {
-//	serr, _ := err.(StorageError)
-//	c.Assert(serr.ServiceCode(), chk.Equals, code)
-//}
-
 func getRelativeTimeGMT(amount time.Duration) time.Time {
 	currentTime := time.Now().In(time.FixedZone("GMT", 0))
 	currentTime = currentTime.Add(amount * time.Second)
@@ -335,9 +348,23 @@ func disableSoftDelete(c *chk.C, bsu ServiceClient) {
 	c.Assert(err, chk.IsNil)
 }
 
-func validateUpload(c *chk.C, blobURL BlockBlobClient) {
-	resp, err := blobURL.Download(ctx, nil)
+//func validateUpload(c *chk.C, blobClient AppendBlobClient) {
+//	resp, err := blobClient.Download(ctx, nil)
+//	c.Assert(err, chk.IsNil)
+//	data, _ := ioutil.ReadAll(resp.Response().Body)
+//	c.Assert(data, chk.HasLen, 0)
+//}
+
+func validateUpload(c *chk.C, blobClient BlobClient) {
+	resp, err := blobClient.Download(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	data, _ := ioutil.ReadAll(resp.Response().Body)
 	c.Assert(data, chk.HasLen, 0)
+}
+
+// blockIDIntToBase64 functions convert an int block ID to a base-64 string and vice versa
+func blockIDIntToBase64(blockID int) string {
+	binaryBlockID := (&[4]byte{})[:]
+	binary.LittleEndian.PutUint32(binaryBlockID, uint32(blockID))
+	return base64.StdEncoding.EncodeToString(binaryBlockID)
 }

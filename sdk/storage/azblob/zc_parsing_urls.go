@@ -23,6 +23,7 @@ type BlobURLParts struct {
 	Snapshot            string // "" if not a snapshot
 	SAS                 SASQueryParameters
 	UnparsedParams      string
+	VersionID           string // "" if not versioning enabled
 }
 
 // IPEndpointStyleInfo is used for IP endpoint style URL when working with Azure storage emulator.

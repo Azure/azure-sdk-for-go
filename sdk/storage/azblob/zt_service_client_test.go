@@ -277,7 +277,8 @@ func (s *aztestsSuite) TestAccountDeleteRetentionPolicyNil(c *chk.C) {
 
 	// Disable for other tests
 	enabled = false
-	bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled}})
+	_, err = bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled}})
+	c.Assert(err, chk.IsNil)
 }
 
 func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysTooSmall(c *chk.C) {

@@ -54,7 +54,7 @@ func (ab AppendBlobClient) WithSnapshot(snapshot string) AppendBlobClient {
 	con := newConnectionWithPipeline(snapshotURL.String(), ab.client.con.p)
 	return AppendBlobClient{
 		client:     &appendBlobClient{con: con},
-		u:          ab.u,
+		u:          snapshotURL,
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }
@@ -68,7 +68,7 @@ func (ab AppendBlobClient) WithVersionID(versionID string) AppendBlobClient {
 	con := newConnectionWithPipeline(versionIDURL.String(), ab.client.con.p)
 	return AppendBlobClient{
 		client:     &appendBlobClient{con: con},
-		u:          ab.u,
+		u:          versionIDURL,
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }

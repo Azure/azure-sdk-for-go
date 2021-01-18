@@ -57,7 +57,7 @@ func (pb PageBlobClient) WithSnapshot(snapshot string) PageBlobClient {
 	con := newConnectionWithPipeline(snapshotURL.String(), pb.client.con.p)
 	return PageBlobClient{
 		client:     &pageBlobClient{con: con},
-		u:          pb.u,
+		u:          snapshotURL,
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }
@@ -71,7 +71,7 @@ func (pb PageBlobClient) WithVersionID(versionID string) PageBlobClient {
 	con := newConnectionWithPipeline(versionIDURL.String(), pb.client.con.p)
 	return PageBlobClient{
 		client:     &pageBlobClient{con: con},
-		u:          pb.u,
+		u:          versionIDURL,
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }

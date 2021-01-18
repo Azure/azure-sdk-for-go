@@ -67,16 +67,30 @@ func (bb BlockBlobClient) WithSnapshot(snapshot string) BlockBlobClient {
 		client: &blockBlobClient{
 			con: con,
 		},
-		u:          bb.u,
+		u:          snapshotURL,
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }
 
-func (bb BlockBlobClient) GetAccountInfo(ctx context.Context) (BlobGetAccountInfoResponse, error) {
-	blobClient := BlobClient{client: &blobClient{bb.client.con, nil}}
-
-	return blobClient.GetAccountInfo(ctx)
+// WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
+// Pass "" to remove the versionID returning a URL to the base blob.
+func (ab BlockBlobClient) WithVersionID(versionID string) BlockBlobClient {
+	p := NewBlobURLParts(ab.URL())
+	p.VersionID = versionID
+	versionIDURL := p.URL()
+	con := newConnectionWithPipeline(versionIDURL.String(), ab.client.con.p)
+	return BlockBlobClient{
+		client:     &blockBlobClient{con: con},
+		u:          versionIDURL,
+		BlobClient: BlobClient{client: &blobClient{con: con}},
+	}
 }
+
+//func (bb BlockBlobClient) GetAccountInfo(ctx context.Context) (BlobGetAccountInfoResponse, error) {
+//	blobClient := BlobClient{client: &blobClient{bb.client.con, nil}}
+//
+//	return blobClient.GetAccountInfo(ctx)
+//}
 
 // Upload creates a new block blob or overwrites an existing block blob.
 // Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not

@@ -76,12 +76,6 @@ func (pb PageBlobClient) WithVersionID(versionID string) PageBlobClient {
 	}
 }
 
-func (pb PageBlobClient) GetAccountInfo(ctx context.Context) (BlobGetAccountInfoResponse, error) {
-	blobClient := BlobClient{client: &blobClient{pb.client.con, nil}}
-
-	return blobClient.GetAccountInfo(ctx)
-}
-
 // Create creates a page blob of the specified length. Call PutPage to upload data to a page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-blob.
 func (pb PageBlobClient) Create(ctx context.Context, size int64, options *CreatePageBlobOptions) (PageBlobCreateResponse, error) {

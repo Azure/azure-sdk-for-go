@@ -73,12 +73,6 @@ func (ab AppendBlobClient) WithVersionID(versionID string) AppendBlobClient {
 	}
 }
 
-func (ab AppendBlobClient) GetAccountInfo(ctx context.Context) (BlobGetAccountInfoResponse, error) {
-	blobClient := BlobClient{client: &blobClient{ab.client.con, nil}}
-
-	return blobClient.GetAccountInfo(ctx)
-}
-
 // Create creates a 0-size append blob. Call AppendBlock to append data to an append blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-blob.
 func (ab AppendBlobClient) Create(ctx context.Context, options *CreateAppendBlobOptions) (AppendBlobCreateResponse, error) {

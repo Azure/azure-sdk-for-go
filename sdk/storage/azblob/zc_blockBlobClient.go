@@ -86,12 +86,6 @@ func (ab BlockBlobClient) WithVersionID(versionID string) BlockBlobClient {
 	}
 }
 
-//func (bb BlockBlobClient) GetAccountInfo(ctx context.Context) (BlobGetAccountInfoResponse, error) {
-//	blobClient := BlobClient{client: &blobClient{bb.client.con, nil}}
-//
-//	return blobClient.GetAccountInfo(ctx)
-//}
-
 // Upload creates a new block blob or overwrites an existing block blob.
 // Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not
 // supported with Upload; the content of the existing blob is overwritten with the new content. To

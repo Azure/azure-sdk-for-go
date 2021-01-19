@@ -13,21 +13,22 @@ type cleanUpContext struct {
 	readmeFiles []string
 }
 
-func (ctx *cleanUpContext) clean() ([]packageOutput, error) {
+// clean cleans all the packages related with the readme files. Return a map using readme filepath as keys, corresponds to the cleaned packages
+func (ctx *cleanUpContext) clean() (readmePackageOutputMap, error) {
 	log.Printf("Summarying all the generation metadata in '%s'...", ctx.root)
 	m, err := summaryReadmePackageOutputMap(ctx.root)
 	if err != nil {
 		return nil, err
 	}
 
-	var removedPackages []packageOutput
+	removedPackages := readmePackageOutputMap{}
 	for _, readme := range ctx.readmeFiles {
 		log.Printf("Cleaning up the packages generated from readme '%s'...", readme)
 		for _, p := range m[readme] {
 			if err := os.RemoveAll(p.outputFolder); err != nil {
 				return nil, fmt.Errorf("cannot remove package '%s': %+v", p.outputFolder, err)
 			}
-			removedPackages = append(removedPackages, p)
+			removedPackages.add(readme, p)
 		}
 	}
 	return removedPackages, nil
@@ -62,4 +63,12 @@ func (m *readmePackageOutputMap) add(readme string, output packageOutput) {
 	} else {
 		(*m)[readme] = []packageOutput{output}
 	}
+}
+
+func (m *readmePackageOutputMap) packages() []packageOutput {
+	var results []packageOutput
+	for _, l := range *m {
+		results = append(results, l...)
+	}
+	return results
 }

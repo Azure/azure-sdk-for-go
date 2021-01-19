@@ -22,7 +22,7 @@ package authorization
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/authorization/mgmt/2018-09-01-preview/authorization"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/authorization/mgmt/2020-04-01-preview/authorization"
 )
 
 const (
@@ -59,6 +59,9 @@ type DenyAssignmentListResultPage = original.DenyAssignmentListResultPage
 type DenyAssignmentPermission = original.DenyAssignmentPermission
 type DenyAssignmentProperties = original.DenyAssignmentProperties
 type DenyAssignmentsClient = original.DenyAssignmentsClient
+type ErrorAdditionalInfo = original.ErrorAdditionalInfo
+type ErrorDetail = original.ErrorDetail
+type ErrorResponse = original.ErrorResponse
 type GlobalAdministratorClient = original.GlobalAdministratorClient
 type Permission = original.Permission
 type PermissionGetResult = original.PermissionGetResult

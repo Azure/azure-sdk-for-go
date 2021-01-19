@@ -22,7 +22,7 @@ package network
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-07-01/network"
+	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-08-01/network"
 )
 
 const (
@@ -1213,6 +1213,28 @@ const (
 	VpnGatewayTunnelingProtocolOpenVPN VpnGatewayTunnelingProtocol = original.VpnGatewayTunnelingProtocolOpenVPN
 )
 
+type VpnLinkConnectionMode = original.VpnLinkConnectionMode
+
+const (
+	VpnLinkConnectionModeDefault       VpnLinkConnectionMode = original.VpnLinkConnectionModeDefault
+	VpnLinkConnectionModeInitiatorOnly VpnLinkConnectionMode = original.VpnLinkConnectionModeInitiatorOnly
+	VpnLinkConnectionModeResponderOnly VpnLinkConnectionMode = original.VpnLinkConnectionModeResponderOnly
+)
+
+type VpnNatRuleMode = original.VpnNatRuleMode
+
+const (
+	EgressSnat  VpnNatRuleMode = original.EgressSnat
+	IngressSnat VpnNatRuleMode = original.IngressSnat
+)
+
+type VpnNatRuleType = original.VpnNatRuleType
+
+const (
+	VpnNatRuleTypeDynamic VpnNatRuleType = original.VpnNatRuleTypeDynamic
+	VpnNatRuleTypeStatic  VpnNatRuleType = original.VpnNatRuleTypeStatic
+)
+
 type VpnType = original.VpnType
 
 const (
@@ -1706,6 +1728,7 @@ type ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds = original.Expres
 type ExpressRouteGatewaysClient = original.ExpressRouteGatewaysClient
 type ExpressRouteGatewaysCreateOrUpdateFuture = original.ExpressRouteGatewaysCreateOrUpdateFuture
 type ExpressRouteGatewaysDeleteFuture = original.ExpressRouteGatewaysDeleteFuture
+type ExpressRouteGatewaysUpdateTagsFuture = original.ExpressRouteGatewaysUpdateTagsFuture
 type ExpressRouteLink = original.ExpressRouteLink
 type ExpressRouteLinkListResult = original.ExpressRouteLinkListResult
 type ExpressRouteLinkListResultIterator = original.ExpressRouteLinkListResultIterator
@@ -1910,6 +1933,9 @@ type ListVirtualWANsResultPage = original.ListVirtualWANsResultPage
 type ListVpnConnectionsResult = original.ListVpnConnectionsResult
 type ListVpnConnectionsResultIterator = original.ListVpnConnectionsResultIterator
 type ListVpnConnectionsResultPage = original.ListVpnConnectionsResultPage
+type ListVpnGatewayNatRulesResult = original.ListVpnGatewayNatRulesResult
+type ListVpnGatewayNatRulesResultIterator = original.ListVpnGatewayNatRulesResultIterator
+type ListVpnGatewayNatRulesResultPage = original.ListVpnGatewayNatRulesResultPage
 type ListVpnGatewaysResult = original.ListVpnGatewaysResult
 type ListVpnGatewaysResultIterator = original.ListVpnGatewaysResultIterator
 type ListVpnGatewaysResultPage = original.ListVpnGatewaysResultPage
@@ -1990,6 +2016,9 @@ type NatGatewaysClient = original.NatGatewaysClient
 type NatGatewaysCreateOrUpdateFuture = original.NatGatewaysCreateOrUpdateFuture
 type NatGatewaysDeleteFuture = original.NatGatewaysDeleteFuture
 type NatRule = original.NatRule
+type NatRulesClient = original.NatRulesClient
+type NatRulesCreateOrUpdateFuture = original.NatRulesCreateOrUpdateFuture
+type NatRulesDeleteFuture = original.NatRulesDeleteFuture
 type NextHopParameters = original.NextHopParameters
 type NextHopResult = original.NextHopResult
 type O365BreakOutCategoryPolicies = original.O365BreakOutCategoryPolicies
@@ -2330,6 +2359,7 @@ type VirtualNetworkGatewayConnectionPropertiesFormat = original.VirtualNetworkGa
 type VirtualNetworkGatewayConnectionsClient = original.VirtualNetworkGatewayConnectionsClient
 type VirtualNetworkGatewayConnectionsCreateOrUpdateFuture = original.VirtualNetworkGatewayConnectionsCreateOrUpdateFuture
 type VirtualNetworkGatewayConnectionsDeleteFuture = original.VirtualNetworkGatewayConnectionsDeleteFuture
+type VirtualNetworkGatewayConnectionsGetIkeSasFuture = original.VirtualNetworkGatewayConnectionsGetIkeSasFuture
 type VirtualNetworkGatewayConnectionsResetSharedKeyFuture = original.VirtualNetworkGatewayConnectionsResetSharedKeyFuture
 type VirtualNetworkGatewayConnectionsSetSharedKeyFuture = original.VirtualNetworkGatewayConnectionsSetSharedKeyFuture
 type VirtualNetworkGatewayConnectionsStartPacketCaptureFuture = original.VirtualNetworkGatewayConnectionsStartPacketCaptureFuture
@@ -2438,6 +2468,8 @@ type VpnConnectionsStopPacketCaptureFuture = original.VpnConnectionsStopPacketCa
 type VpnDeviceScriptParameters = original.VpnDeviceScriptParameters
 type VpnGateway = original.VpnGateway
 type VpnGatewayIPConfiguration = original.VpnGatewayIPConfiguration
+type VpnGatewayNatRule = original.VpnGatewayNatRule
+type VpnGatewayNatRuleProperties = original.VpnGatewayNatRuleProperties
 type VpnGatewayPacketCaptureStartParameters = original.VpnGatewayPacketCaptureStartParameters
 type VpnGatewayPacketCaptureStopParameters = original.VpnGatewayPacketCaptureStopParameters
 type VpnGatewayProperties = original.VpnGatewayProperties
@@ -2451,6 +2483,7 @@ type VpnGatewaysUpdateTagsFuture = original.VpnGatewaysUpdateTagsFuture
 type VpnLinkBgpSettings = original.VpnLinkBgpSettings
 type VpnLinkConnectionsClient = original.VpnLinkConnectionsClient
 type VpnLinkProviderProperties = original.VpnLinkProviderProperties
+type VpnNatRuleMapping = original.VpnNatRuleMapping
 type VpnPacketCaptureStartParameters = original.VpnPacketCaptureStartParameters
 type VpnPacketCaptureStopParameters = original.VpnPacketCaptureStopParameters
 type VpnProfileResponse = original.VpnProfileResponse
@@ -3073,6 +3106,12 @@ func NewListVpnConnectionsResultIterator(page ListVpnConnectionsResultPage) List
 func NewListVpnConnectionsResultPage(cur ListVpnConnectionsResult, getNextPage func(context.Context, ListVpnConnectionsResult) (ListVpnConnectionsResult, error)) ListVpnConnectionsResultPage {
 	return original.NewListVpnConnectionsResultPage(cur, getNextPage)
 }
+func NewListVpnGatewayNatRulesResultIterator(page ListVpnGatewayNatRulesResultPage) ListVpnGatewayNatRulesResultIterator {
+	return original.NewListVpnGatewayNatRulesResultIterator(page)
+}
+func NewListVpnGatewayNatRulesResultPage(cur ListVpnGatewayNatRulesResult, getNextPage func(context.Context, ListVpnGatewayNatRulesResult) (ListVpnGatewayNatRulesResult, error)) ListVpnGatewayNatRulesResultPage {
+	return original.NewListVpnGatewayNatRulesResultPage(cur, getNextPage)
+}
 func NewListVpnGatewaysResultIterator(page ListVpnGatewaysResultPage) ListVpnGatewaysResultIterator {
 	return original.NewListVpnGatewaysResultIterator(page)
 }
@@ -3204,6 +3243,12 @@ func NewNatGatewaysClient(subscriptionID string) NatGatewaysClient {
 }
 func NewNatGatewaysClientWithBaseURI(baseURI string, subscriptionID string) NatGatewaysClient {
 	return original.NewNatGatewaysClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewNatRulesClient(subscriptionID string) NatRulesClient {
+	return original.NewNatRulesClient(subscriptionID)
+}
+func NewNatRulesClientWithBaseURI(baseURI string, subscriptionID string) NatRulesClient {
+	return original.NewNatRulesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -4131,6 +4176,15 @@ func PossibleVpnGatewayGenerationValues() []VpnGatewayGeneration {
 }
 func PossibleVpnGatewayTunnelingProtocolValues() []VpnGatewayTunnelingProtocol {
 	return original.PossibleVpnGatewayTunnelingProtocolValues()
+}
+func PossibleVpnLinkConnectionModeValues() []VpnLinkConnectionMode {
+	return original.PossibleVpnLinkConnectionModeValues()
+}
+func PossibleVpnNatRuleModeValues() []VpnNatRuleMode {
+	return original.PossibleVpnNatRuleModeValues()
+}
+func PossibleVpnNatRuleTypeValues() []VpnNatRuleType {
+	return original.PossibleVpnNatRuleTypeValues()
 }
 func PossibleVpnTypeValues() []VpnType {
 	return original.PossibleVpnTypeValues()

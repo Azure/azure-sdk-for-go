@@ -136,7 +136,7 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 		return nil, err
 	}
 	var removedPackagePaths []string
-	for _, p := range removedPackages {
+	for _, p := range removedPackages.packages() {
 		removedPackagePaths = append(removedPackagePaths, p.outputFolder)
 	}
 	log.Printf("The following %d package(s) have been cleaned up: [%s]", len(removedPackagePaths), strings.Join(removedPackagePaths, ", "))
@@ -173,7 +173,7 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 			commitHash:      ctx.commitHash,
 			codeGenVer:      options.CodeGeneratorVersion(),
 			readme:          readme,
-			removedPackages: removedPackages,
+			removedPackages: removedPackages[readme],
 		}
 		log.Printf("Processing metadata generated in readme '%s'...", readme)
 		packages, err := m.process(g.metadataOutput)
@@ -182,11 +182,12 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 		}
 
 		// iterate over the changed packages
+		set := packageResultSet{}
 		for _, p := range packages {
 			log.Printf("Getting package result for package '%s'", p.PackageName)
 			content := p.Changelog.ToCompactMarkdown()
 			breaking := p.Changelog.HasBreakingChanges()
-			results = append(results, pipeline.PackageResult{
+			set.add(pipeline.PackageResult{
 				PackageName: getPackageIdentifier(p.PackageName),
 				Path:        []string{p.PackageName},
 				ReadmeMd:    []string{readme},
@@ -196,25 +197,43 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 				},
 			})
 		}
+		results = append(results, set.toSlice()...)
 	}
-
-	// sort results
-	sort.SliceStable(results, func(i, j int) bool {
-		apiI := getPackageAPIVersionSegment(results[i].PackageName)
-		apiJ := getPackageAPIVersionSegment(results[j].PackageName)
-		return apiI > apiJ
-	})
 
 	return &pipeline.GenerateOutput{
 		Packages: results,
 	}, nil
 }
 
-func getPackageIdentifier(pkg string) string {
-	return strings.TrimPrefix(utils.NormalizePath(pkg), "services/")
+type packageResultSet map[string]pipeline.PackageResult
+
+func (s *packageResultSet) contains(r pipeline.PackageResult) bool {
+	_, ok := (*s)[r.PackageName]
+	return ok
 }
 
-func getPackageAPIVersionSegment(pkg string) string {
-	segments := strings.Split(pkg, "/")
-	return segments[len(segments)-2]
+func (s *packageResultSet) add(r pipeline.PackageResult) {
+	if s.contains(r) {
+		log.Printf("[WARNING] The result set already contains key %s with value %+v, but we are still trying to insert a new value %+v on the same key", r.PackageName, (*s)[r.PackageName], r)
+	}
+	(*s)[r.PackageName] = r
+}
+
+func (s *packageResultSet) toSlice() []pipeline.PackageResult {
+	results := make([]pipeline.PackageResult, 0)
+	for _, r := range *s {
+		results = append(results, r)
+	}
+	// sort the results
+	sort.SliceStable(results, func(i, j int) bool {
+		// we first clip the preview segment and then sort by string literal
+		pI := strings.Replace(results[i].PackageName, "preview/", "/", 1)
+		pJ := strings.Replace(results[j].PackageName, "preview/", "/", 1)
+		return pI > pJ
+	})
+	return results
+}
+
+func getPackageIdentifier(pkg string) string {
+	return strings.TrimPrefix(utils.NormalizePath(pkg), "services/")
 }

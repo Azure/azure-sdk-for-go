@@ -1,218 +1,113 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/cosmos-db/resource-manager/readme.md tag: `package-2020-06-preview`
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/d4bad535d456ee82c7fd17d1ec2b8802a0b83205/specification/cosmos-db/resource-manager/readme.md tag: `package-2020-06-preview`
 
 Code generator @microsoft.azure/autorest.go@2.1.168
 
 ## Breaking Changes
 
-### Removed Funcs
+- Const `Delete` type has been changed from `TriggerOperation` to `OperationType`
+- Const `Create` type has been changed from `TriggerOperation` to `OperationType`
+- Const `MongoDB` type has been changed from `DatabaseAccountKind` to `APIType`
+- Const `Replace` type has been changed from `TriggerOperation` to `OperationType`
+- Const `Parse` has been removed
+- Const `GlobalDocumentDB` has been removed
+- Const `All` has been removed
+- Const `Update` has been removed
 
-1. *CassandraResourcesCreateUpdateCassandraKeyspaceFuture.Result(CassandraResourcesClient) (CassandraKeyspaceGetResults, error)
-1. *CassandraResourcesCreateUpdateCassandraTableFuture.Result(CassandraResourcesClient) (CassandraTableGetResults, error)
-1. *CassandraResourcesDeleteCassandraKeyspaceFuture.Result(CassandraResourcesClient) (autorest.Response, error)
-1. *CassandraResourcesDeleteCassandraTableFuture.Result(CassandraResourcesClient) (autorest.Response, error)
-1. *CassandraResourcesUpdateCassandraKeyspaceThroughputFuture.Result(CassandraResourcesClient) (ThroughputSettingsGetResults, error)
-1. *CassandraResourcesUpdateCassandraTableThroughputFuture.Result(CassandraResourcesClient) (ThroughputSettingsGetResults, error)
-1. *DatabaseAccountsCreateOrUpdateFuture.Result(DatabaseAccountsClient) (DatabaseAccountGetResults, error)
-1. *DatabaseAccountsDeleteFuture.Result(DatabaseAccountsClient) (autorest.Response, error)
-1. *DatabaseAccountsFailoverPriorityChangeFuture.Result(DatabaseAccountsClient) (autorest.Response, error)
-1. *DatabaseAccountsOfflineRegionFuture.Result(DatabaseAccountsClient) (autorest.Response, error)
-1. *DatabaseAccountsOnlineRegionFuture.Result(DatabaseAccountsClient) (autorest.Response, error)
-1. *DatabaseAccountsRegenerateKeyFuture.Result(DatabaseAccountsClient) (autorest.Response, error)
-1. *DatabaseAccountsUpdateFuture.Result(DatabaseAccountsClient) (DatabaseAccountGetResults, error)
-1. *GremlinResourcesCreateUpdateGremlinDatabaseFuture.Result(GremlinResourcesClient) (GremlinDatabaseGetResults, error)
-1. *GremlinResourcesCreateUpdateGremlinGraphFuture.Result(GremlinResourcesClient) (GremlinGraphGetResults, error)
-1. *GremlinResourcesDeleteGremlinDatabaseFuture.Result(GremlinResourcesClient) (autorest.Response, error)
-1. *GremlinResourcesDeleteGremlinGraphFuture.Result(GremlinResourcesClient) (autorest.Response, error)
-1. *GremlinResourcesUpdateGremlinDatabaseThroughputFuture.Result(GremlinResourcesClient) (ThroughputSettingsGetResults, error)
-1. *GremlinResourcesUpdateGremlinGraphThroughputFuture.Result(GremlinResourcesClient) (ThroughputSettingsGetResults, error)
-1. *MongoDBResourcesCreateUpdateMongoDBCollectionFuture.Result(MongoDBResourcesClient) (MongoDBCollectionGetResults, error)
-1. *MongoDBResourcesCreateUpdateMongoDBDatabaseFuture.Result(MongoDBResourcesClient) (MongoDBDatabaseGetResults, error)
-1. *MongoDBResourcesDeleteMongoDBCollectionFuture.Result(MongoDBResourcesClient) (autorest.Response, error)
-1. *MongoDBResourcesDeleteMongoDBDatabaseFuture.Result(MongoDBResourcesClient) (autorest.Response, error)
-1. *MongoDBResourcesUpdateMongoDBCollectionThroughputFuture.Result(MongoDBResourcesClient) (ThroughputSettingsGetResults, error)
-1. *MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture.Result(MongoDBResourcesClient) (ThroughputSettingsGetResults, error)
-1. *NotebookWorkspacesCreateOrUpdateFuture.Result(NotebookWorkspacesClient) (NotebookWorkspace, error)
-1. *NotebookWorkspacesDeleteFuture.Result(NotebookWorkspacesClient) (autorest.Response, error)
-1. *NotebookWorkspacesRegenerateAuthTokenFuture.Result(NotebookWorkspacesClient) (autorest.Response, error)
-1. *NotebookWorkspacesStartFuture.Result(NotebookWorkspacesClient) (autorest.Response, error)
-1. *PrivateEndpointConnectionsCreateOrUpdateFuture.Result(PrivateEndpointConnectionsClient) (PrivateEndpointConnection, error)
-1. *PrivateEndpointConnectionsDeleteFuture.Result(PrivateEndpointConnectionsClient) (autorest.Response, error)
-1. *SQLResourcesCreateUpdateSQLContainerFuture.Result(SQLResourcesClient) (SQLContainerGetResults, error)
-1. *SQLResourcesCreateUpdateSQLDatabaseFuture.Result(SQLResourcesClient) (SQLDatabaseGetResults, error)
-1. *SQLResourcesCreateUpdateSQLRoleAssignmentFuture.Result(SQLResourcesClient) (SQLRoleAssignmentGetResults, error)
-1. *SQLResourcesCreateUpdateSQLRoleDefinitionFuture.Result(SQLResourcesClient) (SQLRoleDefinitionGetResults, error)
-1. *SQLResourcesCreateUpdateSQLStoredProcedureFuture.Result(SQLResourcesClient) (SQLStoredProcedureGetResults, error)
-1. *SQLResourcesCreateUpdateSQLTriggerFuture.Result(SQLResourcesClient) (SQLTriggerGetResults, error)
-1. *SQLResourcesCreateUpdateSQLUserDefinedFunctionFuture.Result(SQLResourcesClient) (SQLUserDefinedFunctionGetResults, error)
-1. *SQLResourcesDeleteSQLContainerFuture.Result(SQLResourcesClient) (autorest.Response, error)
-1. *SQLResourcesDeleteSQLDatabaseFuture.Result(SQLResourcesClient) (autorest.Response, error)
-1. *SQLResourcesDeleteSQLRoleAssignmentFuture.Result(SQLResourcesClient) (autorest.Response, error)
-1. *SQLResourcesDeleteSQLRoleDefinitionFuture.Result(SQLResourcesClient) (autorest.Response, error)
-1. *SQLResourcesDeleteSQLStoredProcedureFuture.Result(SQLResourcesClient) (autorest.Response, error)
-1. *SQLResourcesDeleteSQLTriggerFuture.Result(SQLResourcesClient) (autorest.Response, error)
-1. *SQLResourcesDeleteSQLUserDefinedFunctionFuture.Result(SQLResourcesClient) (autorest.Response, error)
-1. *SQLResourcesUpdateSQLContainerThroughputFuture.Result(SQLResourcesClient) (ThroughputSettingsGetResults, error)
-1. *SQLResourcesUpdateSQLDatabaseThroughputFuture.Result(SQLResourcesClient) (ThroughputSettingsGetResults, error)
-1. *TableResourcesCreateUpdateTableFuture.Result(TableResourcesClient) (TableGetResults, error)
-1. *TableResourcesDeleteTableFuture.Result(TableResourcesClient) (autorest.Response, error)
-1. *TableResourcesUpdateTableThroughputFuture.Result(TableResourcesClient) (ThroughputSettingsGetResults, error)
+## New Content
 
-## Struct Changes
+- New const `TriggerOperationUpdate`
+- New const `Table`
+- New const `TriggerOperationDelete`
+- New const `TriggerOperationReplace`
+- New const `DatabaseAccountKindParse`
+- New const `Cassandra`
+- New const `DatabaseAccountKindGlobalDocumentDB`
+- New const `DatabaseAccountKindMongoDB`
+- New const `TriggerOperationCreate`
+- New const `GremlinV2`
+- New const `Gremlin`
+- New const `SystemOperation`
+- New const `TriggerOperationAll`
+- New const `SQL`
+- New function `RestorableMongodbResourcesClient.ListPreparer(context.Context, string, string, string, string) (*http.Request, error)`
+- New function `NewRestorableSQLDatabasesClientWithBaseURI(string, string) RestorableSQLDatabasesClient`
+- New function `NewRestorableSQLContainersClient(string) RestorableSQLContainersClient`
+- New function `RestorableMongodbDatabasesClient.List(context.Context, string, string) (RestorableMongodbDatabasesListResult, error)`
+- New function `RestorableSQLContainersClient.ListResponder(*http.Response) (RestorableSQLContainersListResult, error)`
+- New function `RestorableMongodbCollectionsClient.List(context.Context, string, string, string) (RestorableMongodbCollectionsListResult, error)`
+- New function `RestorableSQLDatabaseGetResult.MarshalJSON() ([]byte, error)`
+- New function `RestorableMongodbResourcesClient.ListResponder(*http.Response) (RestorableMongodbResourcesListResult, error)`
+- New function `RestorableMongodbResourcesClient.ListSender(*http.Request) (*http.Response, error)`
+- New function `RestorableSQLResourcesClient.ListPreparer(context.Context, string, string, string, string) (*http.Request, error)`
+- New function `RestorableDatabaseAccountProperties.MarshalJSON() ([]byte, error)`
+- New function `NewRestorableMongodbCollectionsClient(string) RestorableMongodbCollectionsClient`
+- New function `RestorableSQLResourcesClient.ListSender(*http.Request) (*http.Response, error)`
+- New function `RestorableMongodbCollectionsClient.ListResponder(*http.Response) (RestorableMongodbCollectionsListResult, error)`
+- New function `RestorableMongodbDatabaseGetResult.MarshalJSON() ([]byte, error)`
+- New function `NewRestorableMongodbCollectionsClientWithBaseURI(string, string) RestorableMongodbCollectionsClient`
+- New function `RestorableSQLResourcesClient.ListResponder(*http.Response) (RestorableSQLResourcesListResult, error)`
+- New function `NewRestorableMongodbResourcesClientWithBaseURI(string, string) RestorableMongodbResourcesClient`
+- New function `RestorableMongodbCollectionsClient.ListPreparer(context.Context, string, string, string) (*http.Request, error)`
+- New function `NewRestorableSQLResourcesClientWithBaseURI(string, string) RestorableSQLResourcesClient`
+- New function `RestorableMongodbDatabasesClient.ListSender(*http.Request) (*http.Response, error)`
+- New function `NewRestorableSQLResourcesClient(string) RestorableSQLResourcesClient`
+- New function `RestorableSQLDatabasesClient.ListResponder(*http.Response) (RestorableSQLDatabasesListResult, error)`
+- New function `RestorableMongodbDatabasesClient.ListPreparer(context.Context, string, string) (*http.Request, error)`
+- New function `NewRestorableMongodbDatabasesClient(string) RestorableMongodbDatabasesClient`
+- New function `NewRestorableSQLContainersClientWithBaseURI(string, string) RestorableSQLContainersClient`
+- New function `RestorableSQLResourcesClient.List(context.Context, string, string, string, string) (RestorableSQLResourcesListResult, error)`
+- New function `NewRestorableMongodbDatabasesClientWithBaseURI(string, string) RestorableMongodbDatabasesClient`
+- New function `RestorableSQLDatabasePropertiesResource.MarshalJSON() ([]byte, error)`
+- New function `RestorableSQLDatabasePropertiesResourceDatabase.MarshalJSON() ([]byte, error)`
+- New function `*RestorableMongodbDatabaseGetResult.UnmarshalJSON([]byte) error`
+- New function `RestorableSQLContainerPropertiesResource.MarshalJSON() ([]byte, error)`
+- New function `RestorableMongodbCollectionGetResult.MarshalJSON() ([]byte, error)`
+- New function `RestorableSQLContainerPropertiesResourceContainer.MarshalJSON() ([]byte, error)`
+- New function `RestorableMongodbCollectionsClient.ListSender(*http.Request) (*http.Response, error)`
+- New function `RestorableMongodbResourcesClient.List(context.Context, string, string, string, string) (RestorableMongodbResourcesListResult, error)`
+- New function `RestorableSQLDatabasesClient.List(context.Context, string, string) (RestorableSQLDatabasesListResult, error)`
+- New function `PossibleAPITypeValues() []APIType`
+- New function `*RestorableSQLDatabaseGetResult.UnmarshalJSON([]byte) error`
+- New function `RestorableSQLContainersClient.ListSender(*http.Request) (*http.Response, error)`
+- New function `RestorableSQLContainersClient.List(context.Context, string, string, string) (RestorableSQLContainersListResult, error)`
+- New function `NewRestorableSQLDatabasesClient(string) RestorableSQLDatabasesClient`
+- New function `RestorableMongodbDatabasesClient.ListResponder(*http.Response) (RestorableMongodbDatabasesListResult, error)`
+- New function `RestorableSQLContainerGetResult.MarshalJSON() ([]byte, error)`
+- New function `NewRestorableMongodbResourcesClient(string) RestorableMongodbResourcesClient`
+- New function `PossibleOperationTypeValues() []OperationType`
+- New function `RestorableSQLDatabasesClient.ListSender(*http.Request) (*http.Response, error)`
+- New function `RestorableSQLContainersClient.ListPreparer(context.Context, string, string, string) (*http.Request, error)`
+- New function `*RestorableSQLContainerGetResult.UnmarshalJSON([]byte) error`
+- New function `*RestorableMongodbCollectionGetResult.UnmarshalJSON([]byte) error`
+- New function `RestorableSQLDatabasesClient.ListPreparer(context.Context, string, string) (*http.Request, error)`
+- New struct `RestorableLocationResource`
+- New struct `RestorableMongodbCollectionGetResult`
+- New struct `RestorableMongodbCollectionProperties`
+- New struct `RestorableMongodbCollectionPropertiesResource`
+- New struct `RestorableMongodbCollectionsClient`
+- New struct `RestorableMongodbCollectionsListResult`
+- New struct `RestorableMongodbDatabaseGetResult`
+- New struct `RestorableMongodbDatabaseProperties`
+- New struct `RestorableMongodbDatabasePropertiesResource`
+- New struct `RestorableMongodbDatabasesClient`
+- New struct `RestorableMongodbDatabasesListResult`
+- New struct `RestorableMongodbResourcesClient`
+- New struct `RestorableMongodbResourcesListResult`
+- New struct `RestorableSQLContainerGetResult`
+- New struct `RestorableSQLContainerProperties`
+- New struct `RestorableSQLContainerPropertiesResource`
+- New struct `RestorableSQLContainerPropertiesResourceContainer`
+- New struct `RestorableSQLContainersClient`
+- New struct `RestorableSQLContainersListResult`
+- New struct `RestorableSQLDatabaseGetResult`
+- New struct `RestorableSQLDatabaseProperties`
+- New struct `RestorableSQLDatabasePropertiesResource`
+- New struct `RestorableSQLDatabasePropertiesResourceDatabase`
+- New struct `RestorableSQLDatabasesClient`
+- New struct `RestorableSQLDatabasesListResult`
+- New struct `RestorableSQLResourcesClient`
+- New struct `RestorableSQLResourcesListResult`
+- New field `RestorableLocations` in struct `RestorableDatabaseAccountProperties`
+- New field `APIType` in struct `RestorableDatabaseAccountProperties`
 
-### Removed Struct Fields
-
-1. CassandraResourcesCreateUpdateCassandraKeyspaceFuture.azure.Future
-1. CassandraResourcesCreateUpdateCassandraTableFuture.azure.Future
-1. CassandraResourcesDeleteCassandraKeyspaceFuture.azure.Future
-1. CassandraResourcesDeleteCassandraTableFuture.azure.Future
-1. CassandraResourcesUpdateCassandraKeyspaceThroughputFuture.azure.Future
-1. CassandraResourcesUpdateCassandraTableThroughputFuture.azure.Future
-1. DatabaseAccountsCreateOrUpdateFuture.azure.Future
-1. DatabaseAccountsDeleteFuture.azure.Future
-1. DatabaseAccountsFailoverPriorityChangeFuture.azure.Future
-1. DatabaseAccountsOfflineRegionFuture.azure.Future
-1. DatabaseAccountsOnlineRegionFuture.azure.Future
-1. DatabaseAccountsRegenerateKeyFuture.azure.Future
-1. DatabaseAccountsUpdateFuture.azure.Future
-1. GremlinResourcesCreateUpdateGremlinDatabaseFuture.azure.Future
-1. GremlinResourcesCreateUpdateGremlinGraphFuture.azure.Future
-1. GremlinResourcesDeleteGremlinDatabaseFuture.azure.Future
-1. GremlinResourcesDeleteGremlinGraphFuture.azure.Future
-1. GremlinResourcesUpdateGremlinDatabaseThroughputFuture.azure.Future
-1. GremlinResourcesUpdateGremlinGraphThroughputFuture.azure.Future
-1. MongoDBResourcesCreateUpdateMongoDBCollectionFuture.azure.Future
-1. MongoDBResourcesCreateUpdateMongoDBDatabaseFuture.azure.Future
-1. MongoDBResourcesDeleteMongoDBCollectionFuture.azure.Future
-1. MongoDBResourcesDeleteMongoDBDatabaseFuture.azure.Future
-1. MongoDBResourcesUpdateMongoDBCollectionThroughputFuture.azure.Future
-1. MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture.azure.Future
-1. NotebookWorkspacesCreateOrUpdateFuture.azure.Future
-1. NotebookWorkspacesDeleteFuture.azure.Future
-1. NotebookWorkspacesRegenerateAuthTokenFuture.azure.Future
-1. NotebookWorkspacesStartFuture.azure.Future
-1. PrivateEndpointConnectionsCreateOrUpdateFuture.azure.Future
-1. PrivateEndpointConnectionsDeleteFuture.azure.Future
-1. SQLResourcesCreateUpdateSQLContainerFuture.azure.Future
-1. SQLResourcesCreateUpdateSQLDatabaseFuture.azure.Future
-1. SQLResourcesCreateUpdateSQLRoleAssignmentFuture.azure.Future
-1. SQLResourcesCreateUpdateSQLRoleDefinitionFuture.azure.Future
-1. SQLResourcesCreateUpdateSQLStoredProcedureFuture.azure.Future
-1. SQLResourcesCreateUpdateSQLTriggerFuture.azure.Future
-1. SQLResourcesCreateUpdateSQLUserDefinedFunctionFuture.azure.Future
-1. SQLResourcesDeleteSQLContainerFuture.azure.Future
-1. SQLResourcesDeleteSQLDatabaseFuture.azure.Future
-1. SQLResourcesDeleteSQLRoleAssignmentFuture.azure.Future
-1. SQLResourcesDeleteSQLRoleDefinitionFuture.azure.Future
-1. SQLResourcesDeleteSQLStoredProcedureFuture.azure.Future
-1. SQLResourcesDeleteSQLTriggerFuture.azure.Future
-1. SQLResourcesDeleteSQLUserDefinedFunctionFuture.azure.Future
-1. SQLResourcesUpdateSQLContainerThroughputFuture.azure.Future
-1. SQLResourcesUpdateSQLDatabaseThroughputFuture.azure.Future
-1. TableResourcesCreateUpdateTableFuture.azure.Future
-1. TableResourcesDeleteTableFuture.azure.Future
-1. TableResourcesUpdateTableThroughputFuture.azure.Future
-
-## Struct Changes
-
-### New Struct Fields
-
-1. CassandraResourcesCreateUpdateCassandraKeyspaceFuture.Result
-1. CassandraResourcesCreateUpdateCassandraKeyspaceFuture.azure.FutureAPI
-1. CassandraResourcesCreateUpdateCassandraTableFuture.Result
-1. CassandraResourcesCreateUpdateCassandraTableFuture.azure.FutureAPI
-1. CassandraResourcesDeleteCassandraKeyspaceFuture.Result
-1. CassandraResourcesDeleteCassandraKeyspaceFuture.azure.FutureAPI
-1. CassandraResourcesDeleteCassandraTableFuture.Result
-1. CassandraResourcesDeleteCassandraTableFuture.azure.FutureAPI
-1. CassandraResourcesUpdateCassandraKeyspaceThroughputFuture.Result
-1. CassandraResourcesUpdateCassandraKeyspaceThroughputFuture.azure.FutureAPI
-1. CassandraResourcesUpdateCassandraTableThroughputFuture.Result
-1. CassandraResourcesUpdateCassandraTableThroughputFuture.azure.FutureAPI
-1. DatabaseAccountsCreateOrUpdateFuture.Result
-1. DatabaseAccountsCreateOrUpdateFuture.azure.FutureAPI
-1. DatabaseAccountsDeleteFuture.Result
-1. DatabaseAccountsDeleteFuture.azure.FutureAPI
-1. DatabaseAccountsFailoverPriorityChangeFuture.Result
-1. DatabaseAccountsFailoverPriorityChangeFuture.azure.FutureAPI
-1. DatabaseAccountsOfflineRegionFuture.Result
-1. DatabaseAccountsOfflineRegionFuture.azure.FutureAPI
-1. DatabaseAccountsOnlineRegionFuture.Result
-1. DatabaseAccountsOnlineRegionFuture.azure.FutureAPI
-1. DatabaseAccountsRegenerateKeyFuture.Result
-1. DatabaseAccountsRegenerateKeyFuture.azure.FutureAPI
-1. DatabaseAccountsUpdateFuture.Result
-1. DatabaseAccountsUpdateFuture.azure.FutureAPI
-1. GremlinResourcesCreateUpdateGremlinDatabaseFuture.Result
-1. GremlinResourcesCreateUpdateGremlinDatabaseFuture.azure.FutureAPI
-1. GremlinResourcesCreateUpdateGremlinGraphFuture.Result
-1. GremlinResourcesCreateUpdateGremlinGraphFuture.azure.FutureAPI
-1. GremlinResourcesDeleteGremlinDatabaseFuture.Result
-1. GremlinResourcesDeleteGremlinDatabaseFuture.azure.FutureAPI
-1. GremlinResourcesDeleteGremlinGraphFuture.Result
-1. GremlinResourcesDeleteGremlinGraphFuture.azure.FutureAPI
-1. GremlinResourcesUpdateGremlinDatabaseThroughputFuture.Result
-1. GremlinResourcesUpdateGremlinDatabaseThroughputFuture.azure.FutureAPI
-1. GremlinResourcesUpdateGremlinGraphThroughputFuture.Result
-1. GremlinResourcesUpdateGremlinGraphThroughputFuture.azure.FutureAPI
-1. MongoDBResourcesCreateUpdateMongoDBCollectionFuture.Result
-1. MongoDBResourcesCreateUpdateMongoDBCollectionFuture.azure.FutureAPI
-1. MongoDBResourcesCreateUpdateMongoDBDatabaseFuture.Result
-1. MongoDBResourcesCreateUpdateMongoDBDatabaseFuture.azure.FutureAPI
-1. MongoDBResourcesDeleteMongoDBCollectionFuture.Result
-1. MongoDBResourcesDeleteMongoDBCollectionFuture.azure.FutureAPI
-1. MongoDBResourcesDeleteMongoDBDatabaseFuture.Result
-1. MongoDBResourcesDeleteMongoDBDatabaseFuture.azure.FutureAPI
-1. MongoDBResourcesUpdateMongoDBCollectionThroughputFuture.Result
-1. MongoDBResourcesUpdateMongoDBCollectionThroughputFuture.azure.FutureAPI
-1. MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture.Result
-1. MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture.azure.FutureAPI
-1. NotebookWorkspacesCreateOrUpdateFuture.Result
-1. NotebookWorkspacesCreateOrUpdateFuture.azure.FutureAPI
-1. NotebookWorkspacesDeleteFuture.Result
-1. NotebookWorkspacesDeleteFuture.azure.FutureAPI
-1. NotebookWorkspacesRegenerateAuthTokenFuture.Result
-1. NotebookWorkspacesRegenerateAuthTokenFuture.azure.FutureAPI
-1. NotebookWorkspacesStartFuture.Result
-1. NotebookWorkspacesStartFuture.azure.FutureAPI
-1. PrivateEndpointConnectionsCreateOrUpdateFuture.Result
-1. PrivateEndpointConnectionsCreateOrUpdateFuture.azure.FutureAPI
-1. PrivateEndpointConnectionsDeleteFuture.Result
-1. PrivateEndpointConnectionsDeleteFuture.azure.FutureAPI
-1. SQLResourcesCreateUpdateSQLContainerFuture.Result
-1. SQLResourcesCreateUpdateSQLContainerFuture.azure.FutureAPI
-1. SQLResourcesCreateUpdateSQLDatabaseFuture.Result
-1. SQLResourcesCreateUpdateSQLDatabaseFuture.azure.FutureAPI
-1. SQLResourcesCreateUpdateSQLRoleAssignmentFuture.Result
-1. SQLResourcesCreateUpdateSQLRoleAssignmentFuture.azure.FutureAPI
-1. SQLResourcesCreateUpdateSQLRoleDefinitionFuture.Result
-1. SQLResourcesCreateUpdateSQLRoleDefinitionFuture.azure.FutureAPI
-1. SQLResourcesCreateUpdateSQLStoredProcedureFuture.Result
-1. SQLResourcesCreateUpdateSQLStoredProcedureFuture.azure.FutureAPI
-1. SQLResourcesCreateUpdateSQLTriggerFuture.Result
-1. SQLResourcesCreateUpdateSQLTriggerFuture.azure.FutureAPI
-1. SQLResourcesCreateUpdateSQLUserDefinedFunctionFuture.Result
-1. SQLResourcesCreateUpdateSQLUserDefinedFunctionFuture.azure.FutureAPI
-1. SQLResourcesDeleteSQLContainerFuture.Result
-1. SQLResourcesDeleteSQLContainerFuture.azure.FutureAPI
-1. SQLResourcesDeleteSQLDatabaseFuture.Result
-1. SQLResourcesDeleteSQLDatabaseFuture.azure.FutureAPI
-1. SQLResourcesDeleteSQLRoleAssignmentFuture.Result
-1. SQLResourcesDeleteSQLRoleAssignmentFuture.azure.FutureAPI
-1. SQLResourcesDeleteSQLRoleDefinitionFuture.Result
-1. SQLResourcesDeleteSQLRoleDefinitionFuture.azure.FutureAPI
-1. SQLResourcesDeleteSQLStoredProcedureFuture.Result
-1. SQLResourcesDeleteSQLStoredProcedureFuture.azure.FutureAPI
-1. SQLResourcesDeleteSQLTriggerFuture.Result
-1. SQLResourcesDeleteSQLTriggerFuture.azure.FutureAPI
-1. SQLResourcesDeleteSQLUserDefinedFunctionFuture.Result
-1. SQLResourcesDeleteSQLUserDefinedFunctionFuture.azure.FutureAPI
-1. SQLResourcesUpdateSQLContainerThroughputFuture.Result
-1. SQLResourcesUpdateSQLContainerThroughputFuture.azure.FutureAPI
-1. SQLResourcesUpdateSQLDatabaseThroughputFuture.Result
-1. SQLResourcesUpdateSQLDatabaseThroughputFuture.azure.FutureAPI
-1. TableResourcesCreateUpdateTableFuture.Result
-1. TableResourcesCreateUpdateTableFuture.azure.FutureAPI
-1. TableResourcesDeleteTableFuture.Result
-1. TableResourcesDeleteTableFuture.azure.FutureAPI
-1. TableResourcesUpdateTableThroughputFuture.Result
-1. TableResourcesUpdateTableThroughputFuture.azure.FutureAPI
+Total 8 breaking change(s), 120 additive change(s).

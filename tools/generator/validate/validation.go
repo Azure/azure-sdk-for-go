@@ -83,12 +83,13 @@ func MgmtCheck(ctx *MetadataValidateContext, tag string, metadata model.Metadata
 	return nil
 }
 
+// NamespaceCheck ensures that the namespace only contains lower case letters, numbers and underscores
 func NamespaceCheck(ctx *MetadataValidateContext, tag string, metadata model.Metadata) error {
 	if len(metadata.Namespace()) == 0 {
 		return fmt.Errorf("the namespace in readme.go.md cannot be empty")
 	}
 	if !namespaceRegex.MatchString(metadata.Namespace()) {
-		return fmt.Errorf("the namespace can only contain lower case letters, numbers and underscore")
+		return fmt.Errorf("the namespace can only contain lower case letters, numbers and underscores")
 	}
 	return nil
 }

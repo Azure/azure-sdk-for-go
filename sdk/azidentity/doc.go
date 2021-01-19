@@ -49,9 +49,7 @@ options type. These options can also be used to modify the default pipeline for 
 credential.
 
 Example pattern for modifying credential options:
-	opts := DefaultClientCertificateCredentialOptions()
-	opts.Password = "<certificate password>"
-	cred, err := azidentity.NewClientCertificateCredential("<tenant ID>", "<client ID>", "<certificate path>", &opts)
+	cred, err := azidentity.NewClientCertificateCredential("<tenant ID>", "<client ID>", "<certificate path>", &ClientCertificateCredentialOptions{Password: "<certificate password>"})
 	if err != nil {
 		// process error
 	}
@@ -65,9 +63,7 @@ NOTE: An alternate value for authority host explicitly set through the code will
 AZURE_AUTHORITY_HOST environment variable.
 
 Example of setting an alternate Azure authority host through code:
-	opts := DefaultClientSecretCredentialOptions()
-	opts.AuthorityHost = azidentity.AzureChina
-	cred, err := azidentity.NewClientSecretCredential("<tenant ID>", "<client ID>", "<client secret>", &opts)
+	cred, err := azidentity.NewClientSecretCredential("<tenant ID>", "<client ID>", "<client secret>", &ClientSecretCredentialOptions{AuthorityHost: azidentity.AzureChina})
 	if err != nil {
 		// process error
 	}

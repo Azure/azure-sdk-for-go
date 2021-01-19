@@ -11,7 +11,7 @@ import (
 )
 
 // EnvironmentCredentialOptions configures the EnvironmentCredential with optional parameters.
-// Call DefaultEnvironmentCredentialOptions() to create an instance populated with default values.
+// All zero-value fields will be initialized with their default values.
 type EnvironmentCredentialOptions struct {
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
@@ -99,8 +99,7 @@ func (c *EnvironmentCredential) GetToken(ctx context.Context, opts azcore.TokenR
 	return c.cred.GetToken(ctx, opts)
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on EnvironmentCredential and calls the Bearer Token policy
-// to get the bearer token.
+// AuthenticationPolicy implements the azcore.Credential interface on EnvironmentCredential.
 func (c *EnvironmentCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
 	return newBearerTokenPolicy(c.cred, options)
 }

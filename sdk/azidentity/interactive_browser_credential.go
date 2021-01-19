@@ -17,21 +17,25 @@ import (
 )
 
 // InteractiveBrowserCredentialOptions can be used when providing additional credential information, such as a client secret.
-// Also use these options to modify the default pipeline behavior through the TokenCredentialOptions.
-// Call DefaultInteractiveBrowserCredentialOptions() to create an instance populated with default values.
+// Use these options to modify the default pipeline behavior if necessary.
+// All zero-value fields will be initialized with their default values. Please note, that both the TenantID or ClientID fields should
+// changed together if default values are not desired.
 type InteractiveBrowserCredentialOptions struct {
 	// The Azure Active Directory tenant (directory) ID of the service principal.
+	// The default value is "organizations". If this value is changed, then also change ClientID to the corresponding value.
 	TenantID string
 	// The client (application) ID of the service principal.
+	// The default value is the developer sign on ID for the corresponding "organizations" TenantID.
 	ClientID string
 	// The client secret that was generated for the App Registration used to authenticate the client. Only applies for web apps.
 	ClientSecret string
 	// The redirect URL used to request the authorization code. Must be the same URL that is configured for the App Registration.
 	RedirectURL string
-	// The localhost port for the local server that will be used to redirect back. If left with a zero value, a random port
-	// will be selected.
+	// The localhost port for the local server that will be used to redirect back.
+	// By default, a random port number will be selected.
 	Port int
-	// Disables use of PKCE during authorization.  The default is false.
+	// Disables use of PKCE during authorization.
+	// The default is false.
 	DisablePKCE bool
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
@@ -65,7 +69,7 @@ type InteractiveBrowserCredential struct {
 }
 
 // NewInteractiveBrowserCredential constructs a new InteractiveBrowserCredential with the details needed to authenticate against Azure Active Directory through an interactive browser window.
-// options: allow to configure the management of the requests sent to Azure Active Directory, pass in nil for default behavior.
+// options: configure the management of the requests sent to Azure Active Directory, pass in nil or a zero-value options instance for default behavior.
 func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOptions) (*InteractiveBrowserCredential, error) {
 	cp := InteractiveBrowserCredentialOptions{}
 	if options != nil {
@@ -100,8 +104,7 @@ func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts azcore
 	return tk, nil
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on InteractiveBrowserCredential and calls the Bearer Token policy
-// to get the bearer token.
+// AuthenticationPolicy implements the azcore.Credential interface on InteractiveBrowserCredential.
 func (c *InteractiveBrowserCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }

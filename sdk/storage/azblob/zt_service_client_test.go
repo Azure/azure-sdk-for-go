@@ -47,6 +47,7 @@ func (s *aztestsSuite) TestListContainersBasic(c *chk.C) {
 
 	container, name := getContainerClient(c, sa)
 	_, err = container.Create(ctx, &CreateContainerOptions{Metadata: &md})
+	defer container.Delete(ctx, nil)
 	c.Assert(err, chk.IsNil)
 
 	prefix := containerPrefix
@@ -70,7 +71,7 @@ func (s *aztestsSuite) TestListContainersBasic(c *chk.C) {
 			c.Assert(container.Metadata, chk.DeepEquals, &md)
 		}
 	}
-	err = <- errs
+	err = <-errs
 
 	c.Assert(err, chk.IsNil)
 	c.Assert(count >= 0, chk.Equals, true)
@@ -138,7 +139,7 @@ func (s *aztestsSuite) TestAccountListContainersEmptyPrefix(c *chk.C) {
 
 	count := 0
 	pager, err := bsu.ListContainersSegment(context.Background(), 100, time.Hour, nil)
-	c.Check(err, chk.IsNil)
+	c.Assert(err, chk.IsNil)
 
 	for container := range pager {
 		// record the results

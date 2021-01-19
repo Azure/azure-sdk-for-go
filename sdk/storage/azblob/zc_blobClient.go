@@ -2,9 +2,8 @@ package azblob
 
 import (
 	"context"
-	"net/url"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"net/url"
 )
 
 // A BlobClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
@@ -59,8 +58,9 @@ func (b BlobClient) WithSnapshot(snapshot string) BlobClient {
 func (b BlobClient) ToAppendBlobURL() AppendBlobClient {
 	con := newConnectionWithPipeline(b.String(), b.client.con.p)
 	return AppendBlobClient{
-		client: &appendBlobClient{con},
-		u:      b.u,
+		client:     &appendBlobClient{con},
+		u:          b.u,
+		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }
 
@@ -68,8 +68,9 @@ func (b BlobClient) ToAppendBlobURL() AppendBlobClient {
 func (b BlobClient) ToBlockBlobClient() BlockBlobClient {
 	con := newConnectionWithPipeline(b.String(), b.client.con.p)
 	return BlockBlobClient{
-		client: &blockBlobClient{con},
-		u:      b.u,
+		client:     &blockBlobClient{con},
+		u:          b.u,
+		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }
 
@@ -77,8 +78,9 @@ func (b BlobClient) ToBlockBlobClient() BlockBlobClient {
 func (b BlobClient) ToPageBlobURL() PageBlobClient {
 	con := newConnectionWithPipeline(b.String(), b.client.con.p)
 	return PageBlobClient{
-		client: &pageBlobClient{con},
-		u:      b.u,
+		client:     &pageBlobClient{con},
+		u:          b.u,
+		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }
 
@@ -96,7 +98,7 @@ func (b BlobClient) Download(ctx context.Context, options *DownloadBlobOptions) 
 	}
 
 	offset := int64(0)
-	count := int64(0)
+	count := int64(CountToEnd)
 
 	if options != nil && options.Offset != nil {
 		offset = *options.Offset
@@ -213,7 +215,6 @@ func (b BlobClient) ChangeLease(ctx context.Context, leaseID string, proposedID 
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/copy-blob.
 func (b BlobClient) StartCopyFromURL(ctx context.Context, copySource url.URL, options *StartCopyBlobOptions) (BlobStartCopyFromURLResponse, error) {
 	basics, srcAccess, destAccess, lease := options.pointers()
-
 	return b.client.StartCopyFromURL(ctx, copySource, basics, srcAccess, destAccess, lease)
 }
 
@@ -222,4 +223,20 @@ func (b BlobClient) StartCopyFromURL(ctx context.Context, copySource url.URL, op
 func (b BlobClient) AbortCopyFromURL(ctx context.Context, copyID string, options *AbortCopyBlobOptions) (BlobAbortCopyFromURLResponse, error) {
 	basics, lease := options.pointers()
 	return b.client.AbortCopyFromURL(ctx, copyID, basics, lease)
+}
+
+// SetTags operation enables users to set tags on a blob or specific blob version, but not snapshot.
+// Each call to this operation replaces all existing tags attached to the blob.
+// To remove all tags from the blob, call this operation with no tags set.
+// https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags
+func (b BlobClient) SetTags(ctx context.Context, options *SetTagsBlobOptions) (BlobSetTagsResponse, error) {
+	blobSetTagsOptions, modifiedAccessConditions := options.pointers()
+	return b.client.SetTags(ctx, blobSetTagsOptions, modifiedAccessConditions)
+}
+
+// GetTags operation enables users to get tags on a blob or specific blob version, or snapshot.
+// https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-tags
+func (b BlobClient) GetTags(ctx context.Context, options *GetTagsBlobOptions) (BlobTagsResponse, error) {
+	blobGetTagsOptions, modifiedAccessConditions := options.pointers()
+	return b.client.GetTags(ctx, blobGetTagsOptions, modifiedAccessConditions)
 }

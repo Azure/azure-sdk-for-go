@@ -39,7 +39,7 @@ func TestAuthorizationCodeCredential_CreateAuthRequestSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	req, err := cred.client.createAuthorizationCodeAuthRequest(context.Background(), cred.tenantID, cred.clientID, cred.authCode, cred.clientSecret, cred.redirectURI, []string{scope})
+	req, err := cred.client.createAuthorizationCodeAuthRequest(context.Background(), cred.tenantID, cred.clientID, cred.authCode, cred.clientSecret, "", cred.redirectURI, []string{scope})
 	if err != nil {
 		t.Fatalf("Unexpectedly received an error: %v", err)
 	}

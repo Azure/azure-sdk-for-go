@@ -27,7 +27,7 @@ var (
 )
 
 func TestAzureCLICredential_GetTokenSuccess(t *testing.T) {
-	options := DefaultAzureCLICredentialOptions()
+	options := AzureCLICredentialOptions{}
 	options.TokenProvider = mockCLITokenProviderSuccess
 	cred, err := NewAzureCLICredential(&options)
 	if err != nil {
@@ -46,7 +46,7 @@ func TestAzureCLICredential_GetTokenSuccess(t *testing.T) {
 }
 
 func TestAzureCLICredential_GetTokenInvalidToken(t *testing.T) {
-	options := DefaultAzureCLICredentialOptions()
+	options := AzureCLICredentialOptions{}
 	options.TokenProvider = mockCLITokenProviderFailure
 	cred, err := NewAzureCLICredential(&options)
 	if err != nil {
@@ -62,7 +62,7 @@ func TestBearerPolicy_AzureCLICredential(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	options := DefaultAzureCLICredentialOptions()
+	options := AzureCLICredentialOptions{}
 	options.TokenProvider = mockCLITokenProviderSuccess
 	cred, err := NewAzureCLICredential(&options)
 	if err != nil {

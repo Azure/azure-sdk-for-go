@@ -26,15 +26,6 @@ type ClientSecretCredentialOptions struct {
 	Logging azcore.LogOptions
 }
 
-// DefaultClientSecretCredentialOptions returns an instance of ClientSecretCredentialOptions initialized with default values.
-func DefaultClientSecretCredentialOptions() ClientSecretCredentialOptions {
-	return ClientSecretCredentialOptions{
-		Retry:     azcore.DefaultRetryOptions(),
-		Telemetry: azcore.DefaultTelemetryOptions(),
-		Logging:   azcore.DefaultLogOptions(),
-	}
-}
-
 // ClientSecretCredential enables authentication to Azure Active Directory using a client secret that was generated for an App Registration.  More information on how
 // to configure a client secret can be found here:
 // https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-configure-app-access-web-apis#add-credentials-to-your-web-application
@@ -55,8 +46,7 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 		return nil, &CredentialUnavailableError{credentialType: "Client Secret Credential", message: tenantIDValidationErr}
 	}
 	if options == nil {
-		temp := DefaultClientSecretCredentialOptions()
-		options = &temp
+		options = &ClientSecretCredentialOptions{}
 	}
 	authorityHost, err := setAuthorityHost(options.AuthorityHost)
 	if err != nil {

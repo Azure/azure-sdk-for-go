@@ -27,15 +27,6 @@ type EnvironmentCredentialOptions struct {
 	Logging azcore.LogOptions
 }
 
-// DefaultEnvironmentCredentialOptions returns an instance of EnvironmentCredentialOptions initialized with default values.
-func DefaultEnvironmentCredentialOptions() EnvironmentCredentialOptions {
-	return EnvironmentCredentialOptions{
-		Retry:     azcore.DefaultRetryOptions(),
-		Telemetry: azcore.DefaultTelemetryOptions(),
-		Logging:   azcore.DefaultLogOptions(),
-	}
-}
-
 // EnvironmentCredential enables authentication to Azure Active Directory using either ClientSecretCredential, ClientCertificateCredential or UsernamePasswordCredential.
 // This credential type will check for the following environment variables in the same order as listed:
 // - AZURE_TENANT_ID
@@ -55,8 +46,7 @@ type EnvironmentCredential struct {
 // options: The options used to configure the management of the requests sent to Azure Active Directory.
 func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*EnvironmentCredential, error) {
 	if options == nil {
-		temp := DefaultEnvironmentCredentialOptions()
-		options = &temp
+		options = &EnvironmentCredentialOptions{}
 	}
 	tenantID := os.Getenv("AZURE_TENANT_ID")
 	if tenantID == "" {

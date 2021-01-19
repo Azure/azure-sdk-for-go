@@ -27,9 +27,11 @@ type AzureCLICredentialOptions struct {
 	TokenProvider AzureCLITokenProvider
 }
 
-// DefaultAzureCLICredentialOptions returns an instance of AzureCLICredentialOptions initialized with default values.
-func DefaultAzureCLICredentialOptions() AzureCLICredentialOptions {
-	return AzureCLICredentialOptions{TokenProvider: defaultTokenProvider()}
+// init returns an instance of AzureCLICredentialOptions initialized with default values.
+func (o *AzureCLICredentialOptions) init() {
+	if o.TokenProvider == nil {
+		o.TokenProvider = defaultTokenProvider()
+	}
 }
 
 // AzureCLICredential enables authentication to Azure Active Directory using the Azure CLI command "az account get-access-token".
@@ -40,12 +42,13 @@ type AzureCLICredential struct {
 // NewAzureCLICredential constructs a new AzureCLICredential with the details needed to authenticate against Azure Active Directory
 // options: configure the management of the requests sent to Azure Active Directory.
 func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredential, error) {
-	if options == nil {
-		def := DefaultAzureCLICredentialOptions()
-		options = &def
+	cp := AzureCLICredentialOptions{}
+	if options != nil {
+		cp = *options
 	}
+	cp.init()
 	return &AzureCLICredential{
-		tokenProvider: options.TokenProvider,
+		tokenProvider: cp.TokenProvider,
 	}, nil
 }
 

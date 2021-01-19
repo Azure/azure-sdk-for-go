@@ -62,7 +62,7 @@ func TestManagedIdentityCredential_GetTokenInCloudShellMock(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	defer clearEnvVars("MSI_ENDPOINT")
-	options := DefaultManagedIdentityCredentialOptions()
+	options := ManagedIdentityCredentialOptions{}
 	options.HTTPClient = srv
 	msiCred, err := NewManagedIdentityCredential(clientID, &options)
 	if err != nil {
@@ -81,7 +81,7 @@ func TestManagedIdentityCredential_GetTokenInCloudShellMockFail(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	defer clearEnvVars("MSI_ENDPOINT")
-	options := DefaultManagedIdentityCredentialOptions()
+	options := ManagedIdentityCredentialOptions{}
 	options.HTTPClient = srv
 	msiCred, err := NewManagedIdentityCredential("", &options)
 	if err != nil {
@@ -101,7 +101,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceV20170901Mock_windows(t *
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	_ = os.Setenv("MSI_SECRET", "secret")
 	defer clearEnvVars("MSI_ENDPOINT", "MSI_SECRET")
-	options := DefaultManagedIdentityCredentialOptions()
+	options := ManagedIdentityCredentialOptions{}
 	options.HTTPClient = srv
 	msiCred, err := NewManagedIdentityCredential(clientID, &options)
 	if err != nil {
@@ -127,7 +127,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceV20170901Mock_linux(t *te
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	_ = os.Setenv("MSI_SECRET", "secret")
 	defer clearEnvVars("MSI_ENDPOINT", "MSI_SECRET")
-	options := DefaultManagedIdentityCredentialOptions()
+	options := ManagedIdentityCredentialOptions{}
 	options.HTTPClient = srv
 	msiCred, err := NewManagedIdentityCredential(clientID, &options)
 	if err != nil {
@@ -153,7 +153,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceV20190801Mock_windows(t *
 	_ = os.Setenv("IDENTITY_ENDPOINT", srv.URL())
 	_ = os.Setenv("IDENTITY_HEADER", "header")
 	defer clearEnvVars("IDENTITY_ENDPOINT", "IDENTITY_HEADER")
-	options := DefaultManagedIdentityCredentialOptions()
+	options := ManagedIdentityCredentialOptions{}
 	options.HTTPClient = srv
 	msiCred, err := NewManagedIdentityCredential("", &options)
 	if err != nil {
@@ -179,7 +179,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceV20190801Mock_linux(t *te
 	_ = os.Setenv("IDENTITY_ENDPOINT", srv.URL())
 	_ = os.Setenv("IDENTITY_HEADER", "header")
 	defer clearEnvVars("IDENTITY_ENDPOINT", "IDENTITY_HEADER")
-	options := DefaultManagedIdentityCredentialOptions()
+	options := ManagedIdentityCredentialOptions{}
 	options.HTTPClient = srv
 	msiCred, err := NewManagedIdentityCredential("", &options)
 	if err != nil {
@@ -210,9 +210,9 @@ func TestManagedIdentityCredential_GetTokenInAzureFunctions_linux(t *testing.T) 
 	_ = os.Setenv("IDENTITY_ENDPOINT", srv.URL())
 	_ = os.Setenv("IDENTITY_HEADER", "header")
 	defer clearEnvVars("IDENTITY_ENDPOINT", "IDENTITY_HEADER")
-	options := DefaultManagedIdentityCredentialOptions()
-	options.HTTPClient = srv
-	msiCred, err := NewManagedIdentityCredential(clientID, &options)
+	msiCred, err := NewManagedIdentityCredential(clientID, &ManagedIdentityCredentialOptions{
+		HTTPClient: srv,
+	})
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -302,7 +302,7 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnInt(t *testing.T) {
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	_ = os.Setenv("MSI_SECRET", "secret")
 	defer clearEnvVars("MSI_ENDPOINT", "MSI_SECRET")
-	options := DefaultManagedIdentityCredentialOptions()
+	options := ManagedIdentityCredentialOptions{}
 	options.HTTPClient = srv
 	msiCred, err := NewManagedIdentityCredential(clientID, &options)
 	if err != nil {
@@ -322,7 +322,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceMockFail(t *testing.T) {
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	_ = os.Setenv("MSI_SECRET", "secret")
 	defer clearEnvVars("MSI_ENDPOINT", "MSI_SECRET")
-	options := DefaultManagedIdentityCredentialOptions()
+	options := ManagedIdentityCredentialOptions{}
 	options.HTTPClient = srv
 	msiCred, err := NewManagedIdentityCredential("", &options)
 	if err != nil {
@@ -370,7 +370,7 @@ func TestManagedIdentityCredential_NewManagedIdentityCredentialFail(t *testing.T
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	_ = os.Setenv("MSI_ENDPOINT", "https://t .com")
 	defer clearEnvVars("MSI_ENDPOINT")
-	options := DefaultManagedIdentityCredentialOptions()
+	options := ManagedIdentityCredentialOptions{}
 	options.HTTPClient = srv
 	cred, err := NewManagedIdentityCredential("", &options)
 	if err != nil {
@@ -389,7 +389,7 @@ func TestBearerPolicy_ManagedIdentityCredential(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	defer clearEnvVars("MSI_ENDPOINT")
-	options := DefaultManagedIdentityCredentialOptions()
+	options := ManagedIdentityCredentialOptions{}
 	options.HTTPClient = srv
 	cred, err := NewManagedIdentityCredential(clientID, &options)
 	if err != nil {
@@ -413,7 +413,7 @@ func TestManagedIdentityCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespMalformed)))
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	defer clearEnvVars("MSI_ENDPOINT")
-	options := DefaultManagedIdentityCredentialOptions()
+	options := ManagedIdentityCredentialOptions{}
 	options.HTTPClient = srv
 	msiCred, err := NewManagedIdentityCredential(clientID, &options)
 	if err != nil {
@@ -471,7 +471,7 @@ func TestManagedIdentityCredential_GetTokenEnvVar(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	defer clearEnvVars("MSI_ENDPOINT")
-	options := DefaultManagedIdentityCredentialOptions()
+	options := ManagedIdentityCredentialOptions{}
 	options.HTTPClient = srv
 	msiCred, err := NewManagedIdentityCredential("", &options)
 	if err != nil {

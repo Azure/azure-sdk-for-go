@@ -40,15 +40,6 @@ type ClientCertificateCredentialOptions struct {
 	Logging azcore.LogOptions
 }
 
-// DefaultClientCertificateCredentialOptions returns an instance of ClientCertificateCredentialOptions initialized with default values.
-func DefaultClientCertificateCredentialOptions() ClientCertificateCredentialOptions {
-	return ClientCertificateCredentialOptions{
-		Retry:     azcore.DefaultRetryOptions(),
-		Telemetry: azcore.DefaultTelemetryOptions(),
-		Logging:   azcore.DefaultLogOptions(),
-	}
-}
-
 // ClientCertificateCredential enables authentication of a service principal to Azure Active Directory using a certificate that is assigned to its App Registration. More information
 // on how to configure certificate authentication can be found here:
 // https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-certificate-credentials#register-your-certificate-with-azure-ad
@@ -82,8 +73,7 @@ func NewClientCertificateCredential(tenantID string, clientID string, certificat
 		return nil, credErr
 	}
 	if options == nil {
-		temp := DefaultClientCertificateCredentialOptions()
-		options = &temp
+		options = &ClientCertificateCredentialOptions{}
 	}
 	var cert *certContents
 	certificatePath = strings.ToUpper(certificatePath)

@@ -15,7 +15,7 @@ import (
 )
 
 func TestInteractiveBrowserCredential_InvalidTenantID(t *testing.T) {
-	options := DefaultInteractiveBrowserCredentialOptions()
+	options := InteractiveBrowserCredentialOptions{}
 	options.TenantID = badTenantID
 	cred, err := NewInteractiveBrowserCredential(&options)
 	if err == nil {
@@ -56,7 +56,7 @@ func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 	tr.TLSClientConfig.InsecureSkipVerify = true
 	client := &http.Client{Transport: tr}
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := DefaultInteractiveBrowserCredentialOptions()
+	options := InteractiveBrowserCredentialOptions{}
 	options.AuthorityHost = srv.URL()
 	options.HTTPClient = client
 	cred, err := NewInteractiveBrowserCredential(&options)
@@ -88,7 +88,7 @@ func TestInteractiveBrowserCredential_SetPort(t *testing.T) {
 	tr.TLSClientConfig.InsecureSkipVerify = true
 	client := &http.Client{Transport: tr}
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := DefaultInteractiveBrowserCredentialOptions()
+	options := InteractiveBrowserCredentialOptions{}
 	options.AuthorityHost = srv.URL()
 	options.HTTPClient = client
 	options.Port = 8080
@@ -124,7 +124,7 @@ func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
 	tr.TLSClientConfig.InsecureSkipVerify = true
 	client := &http.Client{Transport: tr}
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
-	options := DefaultInteractiveBrowserCredentialOptions()
+	options := InteractiveBrowserCredentialOptions{}
 	options.ClientSecret = wrongSecret
 	options.AuthorityHost = srv.URL()
 	options.HTTPClient = client

@@ -82,7 +82,7 @@ func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := DefaultClientSecretCredentialOptions()
+	options := ClientSecretCredentialOptions{}
 	options.AuthorityHost = srv.URL()
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
@@ -99,7 +99,7 @@ func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
-	options := DefaultClientSecretCredentialOptions()
+	options := ClientSecretCredentialOptions{}
 	options.AuthorityHost = srv.URL()
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &options)
@@ -147,7 +147,7 @@ func TestClientSecretCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespMalformed)))
-	options := DefaultClientSecretCredentialOptions()
+	options := ClientSecretCredentialOptions{}
 	options.AuthorityHost = srv.URL()
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)

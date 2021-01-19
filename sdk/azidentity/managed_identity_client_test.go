@@ -27,7 +27,6 @@ func TestMSITelemetryDefaultUserAgent(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ManagedIdentityCredentialOptions{
 		HTTPClient: srv,
-		Telemetry:  azcore.DefaultTelemetryOptions(),
 	}
 	pipeline := newDefaultMSIPipeline(options)
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
@@ -53,7 +52,6 @@ func TestMSITelemetryCustom(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ManagedIdentityCredentialOptions{
 		HTTPClient: srv,
-		Telemetry:  azcore.DefaultTelemetryOptions(),
 	}
 	options.Telemetry.Value = customTelemetry
 	pipeline := newDefaultMSIPipeline(options)

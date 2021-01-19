@@ -39,21 +39,22 @@ type DeviceCodeCredentialOptions struct {
 	Logging azcore.LogOptions
 }
 
-// DefaultDeviceCodeCredentialOptions provides the default settings for DeviceCodeCredential.
+// init provides the default settings for DeviceCodeCredential.
 // It will set the following default values:
 // TenantID set to "organizations".
 // ClientID set to the default developer sign on client ID "04b07795-8ddb-461a-bbee-02f9e1bf7b46".
 // UserPrompt set to output login information for the user to stdout.
-func DefaultDeviceCodeCredentialOptions() DeviceCodeCredentialOptions {
-	return DeviceCodeCredentialOptions{
-		TenantID: organizationsTenantID,
-		ClientID: developerSignOnClientID,
-		UserPrompt: func(dc DeviceCodeMessage) {
+func (o *DeviceCodeCredentialOptions) init() {
+	if o.TenantID == "" {
+		o.TenantID = organizationsTenantID
+	}
+	if o.ClientID == "" {
+		o.ClientID = developerSignOnClientID
+	}
+	if o.UserPrompt == nil {
+		o.UserPrompt = func(dc DeviceCodeMessage) {
 			fmt.Println(dc.Message)
-		},
-		Retry:     azcore.DefaultRetryOptions(),
-		Telemetry: azcore.DefaultTelemetryOptions(),
-		Logging:   azcore.DefaultLogOptions(),
+		}
 	}
 }
 
@@ -81,22 +82,23 @@ type DeviceCodeCredential struct {
 // NewDeviceCodeCredential constructs a new DeviceCodeCredential used to authenticate against Azure Active Directory with a device code.
 // options: Options used to configure the management of the requests sent to Azure Active Directory, please see DeviceCodeCredentialOptions for a description of each field.
 func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeCredential, error) {
-	if options == nil {
-		temp := DefaultDeviceCodeCredentialOptions()
-		options = &temp
+	cp := DeviceCodeCredentialOptions{}
+	if options != nil {
+		cp = *options
 	}
-	if !validTenantID(options.TenantID) {
+	cp.init()
+	if !validTenantID(cp.TenantID) {
 		return nil, &CredentialUnavailableError{credentialType: "Device Code Credential", message: tenantIDValidationErr}
 	}
-	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
 	if err != nil {
 		return nil, err
 	}
-	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry, Logging: options.Logging})
+	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: cp.HTTPClient, Retry: cp.Retry, Telemetry: cp.Telemetry, Logging: cp.Logging})
 	if err != nil {
 		return nil, err
 	}
-	return &DeviceCodeCredential{tenantID: options.TenantID, clientID: options.ClientID, userPrompt: options.UserPrompt, client: c}, nil
+	return &DeviceCodeCredential{tenantID: cp.TenantID, clientID: cp.ClientID, userPrompt: cp.UserPrompt, client: c}, nil
 }
 
 // GetToken obtains a token from Azure Active Directory, following the device code authentication

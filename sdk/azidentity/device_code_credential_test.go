@@ -24,7 +24,7 @@ const (
 )
 
 func TestDeviceCodeCredential_InvalidTenantID(t *testing.T) {
-	options := DefaultDeviceCodeCredentialOptions()
+	options := DeviceCodeCredentialOptions{}
 	options.TenantID = badTenantID
 	cred, err := NewDeviceCodeCredential(&options)
 	if err == nil {
@@ -81,7 +81,7 @@ func TestDeviceCodeCredential_CreateAuthRequestSuccess(t *testing.T) {
 }
 
 func TestDeviceCodeCredential_CreateAuthRequestCustomClientID(t *testing.T) {
-	options := DefaultDeviceCodeCredentialOptions()
+	options := DeviceCodeCredentialOptions{}
 	options.ClientID = clientID
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
@@ -127,7 +127,7 @@ func TestDeviceCodeCredential_CreateAuthRequestCustomClientID(t *testing.T) {
 }
 
 func TestDeviceCodeCredential_RequestNewDeviceCodeCustomTenantIDClientID(t *testing.T) {
-	options := DefaultDeviceCodeCredentialOptions()
+	options := DeviceCodeCredentialOptions{}
 	options.ClientID = clientID
 	options.TenantID = tenantID
 	cred, err := NewDeviceCodeCredential(&options)
@@ -173,7 +173,7 @@ func TestDeviceCodeCredential_GetTokenSuccess(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(deviceCodeResponse)))
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	options := DefaultDeviceCodeCredentialOptions()
+	options := DeviceCodeCredentialOptions{}
 	options.AuthorityHost = srv.URL()
 	options.HTTPClient = srv
 	cred, err := NewDeviceCodeCredential(&options)
@@ -193,7 +193,7 @@ func TestDeviceCodeCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
-	options := DefaultDeviceCodeCredentialOptions()
+	options := DeviceCodeCredentialOptions{}
 	options.ClientID = clientID
 	options.TenantID = tenantID
 	options.HTTPClient = srv
@@ -215,7 +215,7 @@ func TestDeviceCodeCredential_GetTokenAuthorizationPending(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(authorizationPendingResponse)), mock.WithStatusCode(http.StatusUnauthorized))
 	srv.AppendResponse(mock.WithBody([]byte(authorizationPendingResponse)), mock.WithStatusCode(http.StatusUnauthorized))
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := DefaultDeviceCodeCredentialOptions()
+	options := DeviceCodeCredentialOptions{}
 	options.ClientID = clientID
 	options.TenantID = tenantID
 	options.HTTPClient = srv
@@ -237,7 +237,7 @@ func TestDeviceCodeCredential_GetTokenExpiredToken(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(deviceCodeResponse)))
 	srv.AppendResponse(mock.WithBody([]byte(authorizationPendingResponse)), mock.WithStatusCode(http.StatusUnauthorized))
 	srv.AppendResponse(mock.WithBody([]byte(expiredTokenResponse)), mock.WithStatusCode(http.StatusUnauthorized))
-	options := DefaultDeviceCodeCredentialOptions()
+	options := DeviceCodeCredentialOptions{}
 	options.ClientID = clientID
 	options.TenantID = tenantID
 	options.HTTPClient = srv
@@ -257,7 +257,7 @@ func TestDeviceCodeCredential_GetTokenWithRefreshTokenFailure(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
-	options := DefaultDeviceCodeCredentialOptions()
+	options := DeviceCodeCredentialOptions{}
 	options.ClientID = clientID
 	options.TenantID = tenantID
 	options.HTTPClient = srv
@@ -281,7 +281,7 @@ func TestDeviceCodeCredential_GetTokenWithRefreshTokenSuccess(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := DefaultDeviceCodeCredentialOptions()
+	options := DeviceCodeCredentialOptions{}
 	options.ClientID = clientID
 	options.TenantID = tenantID
 	options.HTTPClient = srv
@@ -307,7 +307,7 @@ func TestBearerPolicy_DeviceCodeCredential(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(deviceCodeResponse)))
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	options := DefaultDeviceCodeCredentialOptions()
+	options := DeviceCodeCredentialOptions{}
 	options.ClientID = clientID
 	options.TenantID = tenantID
 	options.HTTPClient = srv

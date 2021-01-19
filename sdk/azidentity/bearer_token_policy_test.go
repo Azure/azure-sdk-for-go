@@ -22,9 +22,10 @@ const (
 )
 
 func defaultTestPipeline(srv azcore.Transport, cred azcore.Credential, scope string) azcore.Pipeline {
-	retryOpts := azcore.DefaultRetryOptions()
-	retryOpts.MaxRetryDelay = 500 * time.Millisecond
-	retryOpts.RetryDelay = 50 * time.Millisecond
+	retryOpts := azcore.RetryOptions{
+		MaxRetryDelay: 500 * time.Millisecond,
+		RetryDelay:    50 * time.Millisecond,
+	}
 	return azcore.NewPipeline(
 		srv,
 		azcore.NewRetryPolicy(&retryOpts),
@@ -37,7 +38,7 @@ func TestBearerPolicy_SuccessGetToken(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	options := DefaultClientSecretCredentialOptions()
+	options := ClientSecretCredentialOptions{}
 	options.AuthorityHost = srv.URL()
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
@@ -64,7 +65,7 @@ func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	options := DefaultClientSecretCredentialOptions()
+	options := ClientSecretCredentialOptions{}
 	options.AuthorityHost = srv.URL()
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &options)
@@ -95,7 +96,7 @@ func TestBearerTokenPolicy_TokenExpired(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespShortLived)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	options := DefaultClientSecretCredentialOptions()
+	options := ClientSecretCredentialOptions{}
 	options.AuthorityHost = srv.URL()
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
@@ -123,7 +124,7 @@ func TestRetryPolicy_NonRetriable(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	options := DefaultClientSecretCredentialOptions()
+	options := ClientSecretCredentialOptions{}
 	options.AuthorityHost = srv.URL()
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &options)
@@ -146,7 +147,7 @@ func TestRetryPolicy_HTTPRequest(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
-	options := DefaultClientSecretCredentialOptions()
+	options := ClientSecretCredentialOptions{}
 	options.AuthorityHost = srv.URL()
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &options)
@@ -174,9 +175,10 @@ func TestBearerPolicy_GetTokenFailsNoDeadlock(t *testing.T) {
 		HTTPClient:    srv,
 		AuthorityHost: srv.URL(),
 		Retry: azcore.RetryOptions{
-			// leaving TryTimeout at zero will trigger a deadline exceeded error causing GetToken() to fail
-			RetryDelay:    50 * time.Millisecond,
+			// use a negative try timeout to trigger a deadline exceeded error causing GetToken() to fail
+			TryTimeout:    -1 * time.Nanosecond,
 			MaxRetryDelay: 500 * time.Millisecond,
+			RetryDelay:    50 * time.Millisecond,
 			MaxRetries:    3,
 		}})
 	if err != nil {

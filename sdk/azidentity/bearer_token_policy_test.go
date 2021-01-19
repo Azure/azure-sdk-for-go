@@ -25,7 +25,6 @@ func defaultTestPipeline(srv azcore.Transport, cred azcore.Credential, scope str
 	retryOpts := azcore.RetryOptions{
 		MaxRetryDelay: 500 * time.Millisecond,
 		RetryDelay:    50 * time.Millisecond,
-		TryTimeout:    1 * time.Minute,
 	}
 	return azcore.NewPipeline(
 		srv,

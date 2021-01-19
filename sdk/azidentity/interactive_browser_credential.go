@@ -150,7 +150,7 @@ func interactiveBrowserLogin(authorityHost string, opts *InteractiveBrowserCrede
 		values.Add("code_challenge", base64.RawURLEncoding.EncodeToString(cvh[:]))
 		values.Add("code_challenge_method", "S256")
 	}
-	u.Path = azcore.JoinPaths(u.Path, opts.TenantID, "oauth2/v2.0/authorize")
+	u.Path = azcore.JoinPaths(u.Path, opts.TenantID, authEndpoint)
 	u.RawQuery = values.Encode()
 	// open browser window so user can select credentials
 	err = browser.OpenURL(u.String())

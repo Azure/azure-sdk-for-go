@@ -18,6 +18,7 @@ import (
 const (
 	clientAssertionType = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
 	tokenEndpoint       = "/oauth2/v2.0/token"
+	authEndpoint        = "/oauth2/v2.0/authorize"
 )
 
 const (

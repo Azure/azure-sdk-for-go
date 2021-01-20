@@ -32,7 +32,7 @@ steps:
 
   - script: |
       echo scanning copyright headers in $(pwd)
-      grep -L -r --include \*.go -P "Copyright (\d{4}|\(c\)) Microsoft" ./sdk | tee >&2
+      grep -L -r --include \*.go -P "Copyright (\d{4}|\(c\)) Microsoft" . | tee >&2
     displayName: 'Copyright Header Check'
     condition: succeededOrFailed()
     failOnStderr: true
@@ -40,7 +40,7 @@ steps:
 
   - script: |
       echo check source file formatting in $(pwd)
-      gofmt -s -l -w $(find ./sdk -name '*.go' -print) >&2
+      gofmt -s -l -w $(find . -name '*.go' -print) >&2
     displayName: 'Format Check'
     condition: succeededOrFailed()
     failOnStderr: true

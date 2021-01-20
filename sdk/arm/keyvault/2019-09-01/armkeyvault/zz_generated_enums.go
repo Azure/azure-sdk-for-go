@@ -15,6 +15,7 @@ const (
 	AccessPolicyUpdateKindRemove  AccessPolicyUpdateKind = "remove"
 )
 
+// PossibleAccessPolicyUpdateKindValues returns the possible values for the AccessPolicyUpdateKind const type.
 func PossibleAccessPolicyUpdateKindValues() []AccessPolicyUpdateKind {
 	return []AccessPolicyUpdateKind{
 		AccessPolicyUpdateKindAdd,
@@ -49,6 +50,7 @@ const (
 	CertificatePermissionsUpdate         CertificatePermissions = "update"
 )
 
+// PossibleCertificatePermissionsValues returns the possible values for the CertificatePermissions const type.
 func PossibleCertificatePermissionsValues() []CertificatePermissions {
 	return []CertificatePermissions{
 		CertificatePermissionsAll,
@@ -83,6 +85,7 @@ const (
 	CreateModeDefault CreateMode = "default"
 )
 
+// PossibleCreateModeValues returns the possible values for the CreateMode const type.
 func PossibleCreateModeValues() []CreateMode {
 	return []CreateMode{
 		CreateModeRecover,
@@ -106,6 +109,7 @@ const (
 	DeletionRecoveryLevelRecoverablePurgeable             DeletionRecoveryLevel = "Recoverable+Purgeable"
 )
 
+// PossibleDeletionRecoveryLevelValues returns the possible values for the DeletionRecoveryLevel const type.
 func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
 	return []DeletionRecoveryLevel{
 		DeletionRecoveryLevelPurgeable,
@@ -129,6 +133,7 @@ const (
 	JSONWebKeyCurveNameP521  JSONWebKeyCurveName = "P-521"
 )
 
+// PossibleJSONWebKeyCurveNameValues returns the possible values for the JSONWebKeyCurveName const type.
 func PossibleJSONWebKeyCurveNameValues() []JSONWebKeyCurveName {
 	return []JSONWebKeyCurveName{
 		JSONWebKeyCurveNameP256,
@@ -155,6 +160,7 @@ const (
 	JSONWebKeyOperationWrapKey   JSONWebKeyOperation = "wrapKey"
 )
 
+// PossibleJSONWebKeyOperationValues returns the possible values for the JSONWebKeyOperation const type.
 func PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation {
 	return []JSONWebKeyOperation{
 		JSONWebKeyOperationDecrypt,
@@ -181,6 +187,7 @@ const (
 	JSONWebKeyTypeRsahsm JSONWebKeyType = "RSA-HSM"
 )
 
+// PossibleJSONWebKeyTypeValues returns the possible values for the JSONWebKeyType const type.
 func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
 	return []JSONWebKeyType{
 		JSONWebKeyTypeEc,
@@ -216,6 +223,7 @@ const (
 	KeyPermissionsWrapKey   KeyPermissions = "wrapKey"
 )
 
+// PossibleKeyPermissionsValues returns the possible values for the KeyPermissions const type.
 func PossibleKeyPermissionsValues() []KeyPermissions {
 	return []KeyPermissions{
 		KeyPermissionsAll,
@@ -251,6 +259,7 @@ const (
 	NetworkRuleActionDeny  NetworkRuleAction = "Deny"
 )
 
+// PossibleNetworkRuleActionValues returns the possible values for the NetworkRuleAction const type.
 func PossibleNetworkRuleActionValues() []NetworkRuleAction {
 	return []NetworkRuleAction{
 		NetworkRuleActionAllow,
@@ -270,6 +279,7 @@ const (
 	NetworkRuleBypassOptionsNone          NetworkRuleBypassOptions = "None"
 )
 
+// PossibleNetworkRuleBypassOptionsValues returns the possible values for the NetworkRuleBypassOptions const type.
 func PossibleNetworkRuleBypassOptionsValues() []NetworkRuleBypassOptions {
 	return []NetworkRuleBypassOptions{
 		NetworkRuleBypassOptionsAzureServices,
@@ -293,6 +303,7 @@ const (
 	PrivateEndpointConnectionProvisioningStateUpdating     PrivateEndpointConnectionProvisioningState = "Updating"
 )
 
+// PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
 func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
 	return []PrivateEndpointConnectionProvisioningState{
 		PrivateEndpointConnectionProvisioningStateCreating,
@@ -318,6 +329,7 @@ const (
 	PrivateEndpointServiceConnectionStatusRejected     PrivateEndpointServiceConnectionStatus = "Rejected"
 )
 
+// PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
 func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
 	return []PrivateEndpointServiceConnectionStatus{
 		PrivateEndpointServiceConnectionStatusApproved,
@@ -339,6 +351,7 @@ const (
 	ReasonAlreadyExists      Reason = "AlreadyExists"
 )
 
+// PossibleReasonValues returns the possible values for the Reason const type.
 func PossibleReasonValues() []Reason {
 	return []Reason{
 		ReasonAccountNameInvalid,
@@ -357,6 +370,7 @@ const (
 	SKUFamilyA SKUFamily = "A"
 )
 
+// PossibleSKUFamilyValues returns the possible values for the SKUFamily const type.
 func PossibleSKUFamilyValues() []SKUFamily {
 	return []SKUFamily{
 		SKUFamilyA,
@@ -375,6 +389,7 @@ const (
 	SKUNamePremium  SKUName = "premium"
 )
 
+// PossibleSKUNameValues returns the possible values for the SKUName const type.
 func PossibleSKUNameValues() []SKUName {
 	return []SKUName{
 		SKUNameStandard,
@@ -400,6 +415,7 @@ const (
 	SecretPermissionsSet     SecretPermissions = "set"
 )
 
+// PossibleSecretPermissionsValues returns the possible values for the SecretPermissions const type.
 func PossibleSecretPermissionsValues() []SecretPermissions {
 	return []SecretPermissions{
 		SecretPermissionsAll,
@@ -438,6 +454,7 @@ const (
 	StoragePermissionsUpdate        StoragePermissions = "update"
 )
 
+// PossibleStoragePermissionsValues returns the possible values for the StoragePermissions const type.
 func PossibleStoragePermissionsValues() []StoragePermissions {
 	return []StoragePermissions{
 		StoragePermissionsAll,
@@ -459,5 +476,25 @@ func PossibleStoragePermissionsValues() []StoragePermissions {
 }
 
 func (c StoragePermissions) ToPtr() *StoragePermissions {
+	return &c
+}
+
+// VaultProvisioningState - Provisioning state of the vault.
+type VaultProvisioningState string
+
+const (
+	VaultProvisioningStateRegisteringDNS VaultProvisioningState = "RegisteringDns"
+	VaultProvisioningStateSucceeded      VaultProvisioningState = "Succeeded"
+)
+
+// PossibleVaultProvisioningStateValues returns the possible values for the VaultProvisioningState const type.
+func PossibleVaultProvisioningStateValues() []VaultProvisioningState {
+	return []VaultProvisioningState{
+		VaultProvisioningStateRegisteringDNS,
+		VaultProvisioningStateSucceeded,
+	}
+}
+
+func (c VaultProvisioningState) ToPtr() *VaultProvisioningState {
 	return &c
 }

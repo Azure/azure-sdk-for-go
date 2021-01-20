@@ -1,3 +1,3 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/c72af9b8dca625d3f1429a0bd913bad7b3879645
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/8afb86737a4e792aa5d90280461e3cca4a2a9f52
 
-Code generator @autorest/go@4.0.0-preview.9
+Code generator @autorest/go@4.0.0-preview.11

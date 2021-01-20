@@ -15,6 +15,7 @@ const (
 	AccessLevelWrite AccessLevel = "Write"
 )
 
+// PossibleAccessLevelValues returns the possible values for the AccessLevel const type.
 func PossibleAccessLevelValues() []AccessLevel {
 	return []AccessLevel{
 		AccessLevelNone,
@@ -37,6 +38,7 @@ const (
 	AggregatedReplicationStateUnknown    AggregatedReplicationState = "Unknown"
 )
 
+// PossibleAggregatedReplicationStateValues returns the possible values for the AggregatedReplicationState const type.
 func PossibleAggregatedReplicationStateValues() []AggregatedReplicationState {
 	return []AggregatedReplicationState{
 		AggregatedReplicationStateCompleted,
@@ -59,6 +61,7 @@ const (
 	AvailabilitySetSKUTypesClassic AvailabilitySetSKUTypes = "Classic"
 )
 
+// PossibleAvailabilitySetSKUTypesValues returns the possible values for the AvailabilitySetSKUTypes const type.
 func PossibleAvailabilitySetSKUTypesValues() []AvailabilitySetSKUTypes {
 	return []AvailabilitySetSKUTypes{
 		AvailabilitySetSKUTypesAligned,
@@ -84,6 +87,7 @@ const (
 	CachingTypesReadWrite CachingTypes = "ReadWrite"
 )
 
+// PossibleCachingTypesValues returns the possible values for the CachingTypes const type.
 func PossibleCachingTypesValues() []CachingTypes {
 	return []CachingTypes{
 		CachingTypesNone,
@@ -106,6 +110,7 @@ const (
 	ContainerServiceOrchestratorTypesKubernetes ContainerServiceOrchestratorTypes = "Kubernetes"
 )
 
+// PossibleContainerServiceOrchestratorTypesValues returns the possible values for the ContainerServiceOrchestratorTypes const type.
 func PossibleContainerServiceOrchestratorTypesValues() []ContainerServiceOrchestratorTypes {
 	return []ContainerServiceOrchestratorTypes{
 		ContainerServiceOrchestratorTypesSwarm,
@@ -172,6 +177,7 @@ const (
 	ContainerServiceVMSizeTypesStandardGs5   ContainerServiceVMSizeTypes = "Standard_GS5"
 )
 
+// PossibleContainerServiceVMSizeTypesValues returns the possible values for the ContainerServiceVMSizeTypes const type.
 func PossibleContainerServiceVMSizeTypesValues() []ContainerServiceVMSizeTypes {
 	return []ContainerServiceVMSizeTypes{
 		ContainerServiceVMSizeTypesStandardA0,
@@ -242,6 +248,7 @@ const (
 	DedicatedHostLicenseTypesWindowsServerPerpetual DedicatedHostLicenseTypes = "Windows_Server_Perpetual"
 )
 
+// PossibleDedicatedHostLicenseTypesValues returns the possible values for the DedicatedHostLicenseTypes const type.
 func PossibleDedicatedHostLicenseTypesValues() []DedicatedHostLicenseTypes {
 	return []DedicatedHostLicenseTypes{
 		DedicatedHostLicenseTypesNone,
@@ -261,6 +268,7 @@ const (
 	DiffDiskOptionsLocal DiffDiskOptions = "Local"
 )
 
+// PossibleDiffDiskOptionsValues returns the possible values for the DiffDiskOptions const type.
 func PossibleDiffDiskOptionsValues() []DiffDiskOptions {
 	return []DiffDiskOptions{
 		DiffDiskOptionsLocal,
@@ -283,6 +291,7 @@ const (
 	DiffDiskPlacementResourceDisk DiffDiskPlacement = "ResourceDisk"
 )
 
+// PossibleDiffDiskPlacementValues returns the possible values for the DiffDiskPlacement const type.
 func PossibleDiffDiskPlacementValues() []DiffDiskPlacement {
 	return []DiffDiskPlacement{
 		DiffDiskPlacementCacheDisk,
@@ -314,6 +323,7 @@ const (
 	DiskCreateOptionUpload DiskCreateOption = "Upload"
 )
 
+// PossibleDiskCreateOptionValues returns the possible values for the DiskCreateOption const type.
 func PossibleDiskCreateOptionValues() []DiskCreateOption {
 	return []DiskCreateOption{
 		DiskCreateOptionAttach,
@@ -344,6 +354,7 @@ const (
 	DiskCreateOptionTypesFromImage DiskCreateOptionTypes = "FromImage"
 )
 
+// PossibleDiskCreateOptionTypesValues returns the possible values for the DiskCreateOptionTypes const type.
 func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 	return []DiskCreateOptionTypes{
 		DiskCreateOptionTypesAttach,
@@ -356,15 +367,20 @@ func (c DiskCreateOptionTypes) ToPtr() *DiskCreateOptionTypes {
 	return &c
 }
 
-// DiskEncryptionSetIDentityType - The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is supported.
+// DiskEncryptionSetIDentityType - The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is supported for new creations. Disk
+// Encryption Sets can be updated with Identity type None during migration of
+// subscription to a new Azure Active Directory tenant; it will cause the encrypted resources to lose access to the keys.
 type DiskEncryptionSetIDentityType string
 
 const (
+	DiskEncryptionSetIDentityTypeNone           DiskEncryptionSetIDentityType = "None"
 	DiskEncryptionSetIDentityTypeSystemAssigned DiskEncryptionSetIDentityType = "SystemAssigned"
 )
 
+// PossibleDiskEncryptionSetIDentityTypeValues returns the possible values for the DiskEncryptionSetIDentityType const type.
 func PossibleDiskEncryptionSetIDentityTypeValues() []DiskEncryptionSetIDentityType {
 	return []DiskEncryptionSetIDentityType{
+		DiskEncryptionSetIDentityTypeNone,
 		DiskEncryptionSetIDentityTypeSystemAssigned,
 	}
 }
@@ -385,6 +401,7 @@ const (
 	DiskEncryptionSetTypeEncryptionAtRestWithPlatformAndCustomerKeys DiskEncryptionSetType = "EncryptionAtRestWithPlatformAndCustomerKeys"
 )
 
+// PossibleDiskEncryptionSetTypeValues returns the possible values for the DiskEncryptionSetType const type.
 func PossibleDiskEncryptionSetTypeValues() []DiskEncryptionSetType {
 	return []DiskEncryptionSetType{
 		DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey,
@@ -414,6 +431,7 @@ const (
 	DiskStateUnattached DiskState = "Unattached"
 )
 
+// PossibleDiskStateValues returns the possible values for the DiskState const type.
 func PossibleDiskStateValues() []DiskState {
 	return []DiskState{
 		DiskStateActiveSas,
@@ -444,6 +462,7 @@ const (
 	DiskStorageAccountTypesUltraSsdlrs DiskStorageAccountTypes = "UltraSSD_LRS"
 )
 
+// PossibleDiskStorageAccountTypesValues returns the possible values for the DiskStorageAccountTypes const type.
 func PossibleDiskStorageAccountTypesValues() []DiskStorageAccountTypes {
 	return []DiskStorageAccountTypes{
 		DiskStorageAccountTypesPremiumLrs,
@@ -471,6 +490,7 @@ const (
 	EncryptionTypeEncryptionAtRestWithPlatformKey EncryptionType = "EncryptionAtRestWithPlatformKey"
 )
 
+// PossibleEncryptionTypeValues returns the possible values for the EncryptionType const type.
 func PossibleEncryptionTypeValues() []EncryptionType {
 	return []EncryptionType{
 		EncryptionTypeEncryptionAtRestWithCustomerKey,
@@ -483,24 +503,25 @@ func (c EncryptionType) ToPtr() *EncryptionType {
 	return &c
 }
 
-// Enum47 - Number of masters (VMs) in the container service cluster. Allowed values are 1, 3, and 5. The default value is 1.
-type Enum47 int32
+// Enum48 - Number of masters (VMs) in the container service cluster. Allowed values are 1, 3, and 5. The default value is 1.
+type Enum48 int32
 
 const (
-	Enum47Five  Enum47 = 5
-	Enum47One   Enum47 = 1
-	Enum47Three Enum47 = 3
+	Enum48Five  Enum48 = 5
+	Enum48One   Enum48 = 1
+	Enum48Three Enum48 = 3
 )
 
-func PossibleEnum47Values() []Enum47 {
-	return []Enum47{
-		Enum47Five,
-		Enum47One,
-		Enum47Three,
+// PossibleEnum48Values returns the possible values for the Enum48 const type.
+func PossibleEnum48Values() []Enum48 {
+	return []Enum48{
+		Enum48Five,
+		Enum48One,
+		Enum48Three,
 	}
 }
 
-func (c Enum47) ToPtr() *Enum47 {
+func (c Enum48) ToPtr() *Enum48 {
 	return &c
 }
 
@@ -517,6 +538,7 @@ const (
 	ExecutionStateUnknown   ExecutionState = "Unknown"
 )
 
+// PossibleExecutionStateValues returns the possible values for the ExecutionState const type.
 func PossibleExecutionStateValues() []ExecutionState {
 	return []ExecutionState{
 		ExecutionStateCanceled,
@@ -533,6 +555,24 @@ func (c ExecutionState) ToPtr() *ExecutionState {
 	return &c
 }
 
+// ExtendedLocationTypes - The type of extendedLocation.
+type ExtendedLocationTypes string
+
+const (
+	ExtendedLocationTypesEdgeZone ExtendedLocationTypes = "EdgeZone"
+)
+
+// PossibleExtendedLocationTypesValues returns the possible values for the ExtendedLocationTypes const type.
+func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
+	return []ExtendedLocationTypes{
+		ExtendedLocationTypesEdgeZone,
+	}
+}
+
+func (c ExtendedLocationTypes) ToPtr() *ExtendedLocationTypes {
+	return &c
+}
+
 // GalleryApplicationVersionPropertiesProvisioningState - The provisioning state, which only appears in the response.
 type GalleryApplicationVersionPropertiesProvisioningState string
 
@@ -545,6 +585,7 @@ const (
 	GalleryApplicationVersionPropertiesProvisioningStateUpdating  GalleryApplicationVersionPropertiesProvisioningState = "Updating"
 )
 
+// PossibleGalleryApplicationVersionPropertiesProvisioningStateValues returns the possible values for the GalleryApplicationVersionPropertiesProvisioningState const type.
 func PossibleGalleryApplicationVersionPropertiesProvisioningStateValues() []GalleryApplicationVersionPropertiesProvisioningState {
 	return []GalleryApplicationVersionPropertiesProvisioningState{
 		GalleryApplicationVersionPropertiesProvisioningStateCreating,
@@ -572,6 +613,7 @@ const (
 	GalleryImagePropertiesProvisioningStateUpdating  GalleryImagePropertiesProvisioningState = "Updating"
 )
 
+// PossibleGalleryImagePropertiesProvisioningStateValues returns the possible values for the GalleryImagePropertiesProvisioningState const type.
 func PossibleGalleryImagePropertiesProvisioningStateValues() []GalleryImagePropertiesProvisioningState {
 	return []GalleryImagePropertiesProvisioningState{
 		GalleryImagePropertiesProvisioningStateCreating,
@@ -599,6 +641,7 @@ const (
 	GalleryImageVersionPropertiesProvisioningStateUpdating  GalleryImageVersionPropertiesProvisioningState = "Updating"
 )
 
+// PossibleGalleryImageVersionPropertiesProvisioningStateValues returns the possible values for the GalleryImageVersionPropertiesProvisioningState const type.
 func PossibleGalleryImageVersionPropertiesProvisioningStateValues() []GalleryImageVersionPropertiesProvisioningState {
 	return []GalleryImageVersionPropertiesProvisioningState{
 		GalleryImageVersionPropertiesProvisioningStateCreating,
@@ -626,6 +669,7 @@ const (
 	GalleryPropertiesProvisioningStateUpdating  GalleryPropertiesProvisioningState = "Updating"
 )
 
+// PossibleGalleryPropertiesProvisioningStateValues returns the possible values for the GalleryPropertiesProvisioningState const type.
 func PossibleGalleryPropertiesProvisioningStateValues() []GalleryPropertiesProvisioningState {
 	return []GalleryPropertiesProvisioningState{
 		GalleryPropertiesProvisioningStateCreating,
@@ -652,6 +696,7 @@ const (
 	GallerySharingPermissionTypesPrivate GallerySharingPermissionTypes = "Private"
 )
 
+// PossibleGallerySharingPermissionTypesValues returns the possible values for the GallerySharingPermissionTypes const type.
 func PossibleGallerySharingPermissionTypesValues() []GallerySharingPermissionTypes {
 	return []GallerySharingPermissionTypes{
 		GallerySharingPermissionTypesGroups,
@@ -672,6 +717,7 @@ const (
 	HostCachingReadWrite HostCaching = "ReadWrite"
 )
 
+// PossibleHostCachingValues returns the possible values for the HostCaching const type.
 func PossibleHostCachingValues() []HostCaching {
 	return []HostCaching{
 		HostCachingNone,
@@ -692,6 +738,7 @@ const (
 	HyperVGenerationV2 HyperVGeneration = "V2"
 )
 
+// PossibleHyperVGenerationValues returns the possible values for the HyperVGeneration const type.
 func PossibleHyperVGenerationValues() []HyperVGeneration {
 	return []HyperVGeneration{
 		HyperVGenerationV1,
@@ -711,6 +758,7 @@ const (
 	HyperVGenerationTypeV2 HyperVGenerationType = "V2"
 )
 
+// PossibleHyperVGenerationTypeValues returns the possible values for the HyperVGenerationType const type.
 func PossibleHyperVGenerationTypeValues() []HyperVGenerationType {
 	return []HyperVGenerationType{
 		HyperVGenerationTypeV1,
@@ -730,6 +778,7 @@ const (
 	HyperVGenerationTypesV2 HyperVGenerationTypes = "V2"
 )
 
+// PossibleHyperVGenerationTypesValues returns the possible values for the HyperVGenerationTypes const type.
 func PossibleHyperVGenerationTypesValues() []HyperVGenerationTypes {
 	return []HyperVGenerationTypes{
 		HyperVGenerationTypesV1,
@@ -750,6 +799,7 @@ const (
 	IPVersionIPv6 IPVersion = "IPv6"
 )
 
+// PossibleIPVersionValues returns the possible values for the IPVersion const type.
 func PossibleIPVersionValues() []IPVersion {
 	return []IPVersion{
 		IPVersionIPv4,
@@ -777,6 +827,7 @@ const (
 	InGuestPatchModeManual              InGuestPatchMode = "Manual"
 )
 
+// PossibleInGuestPatchModeValues returns the possible values for the InGuestPatchMode const type.
 func PossibleInGuestPatchModeValues() []InGuestPatchMode {
 	return []InGuestPatchMode{
 		InGuestPatchModeAutomaticByOS,
@@ -799,6 +850,7 @@ const (
 	IntervalInMinsSixtyMins  IntervalInMins = "SixtyMins"
 )
 
+// PossibleIntervalInMinsValues returns the possible values for the IntervalInMins const type.
 func PossibleIntervalInMinsValues() []IntervalInMins {
 	return []IntervalInMins{
 		IntervalInMinsThreeMins,
@@ -822,6 +874,7 @@ const (
 	MaintenanceOperationResultCodeTypesMaintenanceCompleted MaintenanceOperationResultCodeTypes = "MaintenanceCompleted"
 )
 
+// PossibleMaintenanceOperationResultCodeTypesValues returns the possible values for the MaintenanceOperationResultCodeTypes const type.
 func PossibleMaintenanceOperationResultCodeTypesValues() []MaintenanceOperationResultCodeTypes {
 	return []MaintenanceOperationResultCodeTypes{
 		MaintenanceOperationResultCodeTypesNone,
@@ -847,6 +900,7 @@ const (
 	NetworkAccessPolicyDenyAll NetworkAccessPolicy = "DenyAll"
 )
 
+// PossibleNetworkAccessPolicyValues returns the possible values for the NetworkAccessPolicy const type.
 func PossibleNetworkAccessPolicyValues() []NetworkAccessPolicy {
 	return []NetworkAccessPolicy{
 		NetworkAccessPolicyAllowAll,
@@ -869,6 +923,7 @@ const (
 	OperatingSystemStateTypesSpecialized OperatingSystemStateTypes = "Specialized"
 )
 
+// PossibleOperatingSystemStateTypesValues returns the possible values for the OperatingSystemStateTypes const type.
 func PossibleOperatingSystemStateTypesValues() []OperatingSystemStateTypes {
 	return []OperatingSystemStateTypes{
 		OperatingSystemStateTypesGeneralized,
@@ -888,6 +943,7 @@ const (
 	OperatingSystemTypesLinux   OperatingSystemTypes = "Linux"
 )
 
+// PossibleOperatingSystemTypesValues returns the possible values for the OperatingSystemTypes const type.
 func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
 	return []OperatingSystemTypes{
 		OperatingSystemTypesWindows,
@@ -903,12 +959,15 @@ func (c OperatingSystemTypes) ToPtr() *OperatingSystemTypes {
 type OrchestrationServiceNames string
 
 const (
-	OrchestrationServiceNamesAutomaticRepairs OrchestrationServiceNames = "AutomaticRepairs"
+	OrchestrationServiceNamesAutomaticRepairs              OrchestrationServiceNames = "AutomaticRepairs"
+	OrchestrationServiceNamesDummyOrchestrationServiceName OrchestrationServiceNames = "DummyOrchestrationServiceName"
 )
 
+// PossibleOrchestrationServiceNamesValues returns the possible values for the OrchestrationServiceNames const type.
 func PossibleOrchestrationServiceNamesValues() []OrchestrationServiceNames {
 	return []OrchestrationServiceNames{
 		OrchestrationServiceNamesAutomaticRepairs,
+		OrchestrationServiceNamesDummyOrchestrationServiceName,
 	}
 }
 
@@ -925,6 +984,7 @@ const (
 	OrchestrationServiceStateSuspended  OrchestrationServiceState = "Suspended"
 )
 
+// PossibleOrchestrationServiceStateValues returns the possible values for the OrchestrationServiceState const type.
 func PossibleOrchestrationServiceStateValues() []OrchestrationServiceState {
 	return []OrchestrationServiceState{
 		OrchestrationServiceStateNotRunning,
@@ -945,6 +1005,7 @@ const (
 	OrchestrationServiceStateActionSuspend OrchestrationServiceStateAction = "Suspend"
 )
 
+// PossibleOrchestrationServiceStateActionValues returns the possible values for the OrchestrationServiceStateAction const type.
 func PossibleOrchestrationServiceStateActionValues() []OrchestrationServiceStateAction {
 	return []OrchestrationServiceStateAction{
 		OrchestrationServiceStateActionResume,
@@ -968,6 +1029,7 @@ const (
 	PatchAssessmentStatePending     PatchAssessmentState = "Pending"
 )
 
+// PossiblePatchAssessmentStateValues returns the possible values for the PatchAssessmentState const type.
 func PossiblePatchAssessmentStateValues() []PatchAssessmentState {
 	return []PatchAssessmentState{
 		PatchAssessmentStateAvailable,
@@ -994,6 +1056,7 @@ const (
 	PatchOperationStatusSucceeded             PatchOperationStatus = "Succeeded"
 )
 
+// PossiblePatchOperationStatusValues returns the possible values for the PatchOperationStatus const type.
 func PossiblePatchOperationStatusValues() []PatchOperationStatus {
 	return []PatchOperationStatus{
 		PatchOperationStatusCompletedWithWarnings,
@@ -1017,6 +1080,7 @@ const (
 	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
 )
 
+// PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
 func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
 	return []PrivateEndpointConnectionProvisioningState{
 		PrivateEndpointConnectionProvisioningStateCreating,
@@ -1039,6 +1103,7 @@ const (
 	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
 )
 
+// PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
 func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
 	return []PrivateEndpointServiceConnectionStatus{
 		PrivateEndpointServiceConnectionStatusApproved,
@@ -1062,6 +1127,7 @@ const (
 	ProtocolTypesHTTPs ProtocolTypes = "Https"
 )
 
+// PossibleProtocolTypesValues returns the possible values for the ProtocolTypes const type.
 func PossibleProtocolTypesValues() []ProtocolTypes {
 	return []ProtocolTypes{
 		ProtocolTypesHTTP,
@@ -1084,6 +1150,7 @@ const (
 	ProximityPlacementGroupTypeUltra    ProximityPlacementGroupType = "Ultra"
 )
 
+// PossibleProximityPlacementGroupTypeValues returns the possible values for the ProximityPlacementGroupType const type.
 func PossibleProximityPlacementGroupTypeValues() []ProximityPlacementGroupType {
 	return []ProximityPlacementGroupType{
 		ProximityPlacementGroupTypeStandard,
@@ -1110,6 +1177,7 @@ const (
 	RebootStatusStarted   RebootStatus = "Started"
 )
 
+// PossibleRebootStatusValues returns the possible values for the RebootStatus const type.
 func PossibleRebootStatusValues() []RebootStatus {
 	return []RebootStatus{
 		RebootStatusCompleted,
@@ -1134,6 +1202,7 @@ const (
 	ReplicationStateUnknown     ReplicationState = "Unknown"
 )
 
+// PossibleReplicationStateValues returns the possible values for the ReplicationState const type.
 func PossibleReplicationStateValues() []ReplicationState {
 	return []ReplicationState{
 		ReplicationStateCompleted,
@@ -1153,6 +1222,7 @@ const (
 	ReplicationStatusTypesReplicationStatus ReplicationStatusTypes = "ReplicationStatus"
 )
 
+// PossibleReplicationStatusTypesValues returns the possible values for the ReplicationStatusTypes const type.
 func PossibleReplicationStatusTypesValues() []ReplicationStatusTypes {
 	return []ReplicationStatusTypes{
 		ReplicationStatusTypesReplicationStatus,
@@ -1175,6 +1245,7 @@ const (
 	ResourceIDentityTypeNone                       ResourceIDentityType = "None"
 )
 
+// PossibleResourceIDentityTypeValues returns the possible values for the ResourceIDentityType const type.
 func PossibleResourceIDentityTypeValues() []ResourceIDentityType {
 	return []ResourceIDentityType{
 		ResourceIDentityTypeSystemAssigned,
@@ -1197,6 +1268,7 @@ const (
 	ResourceSKUCapacityScaleTypeNone      ResourceSKUCapacityScaleType = "None"
 )
 
+// PossibleResourceSKUCapacityScaleTypeValues returns the possible values for the ResourceSKUCapacityScaleType const type.
 func PossibleResourceSKUCapacityScaleTypeValues() []ResourceSKUCapacityScaleType {
 	return []ResourceSKUCapacityScaleType{
 		ResourceSKUCapacityScaleTypeAutomatic,
@@ -1217,6 +1289,7 @@ const (
 	ResourceSKURestrictionsReasonCodeNotAvailableForSubscription ResourceSKURestrictionsReasonCode = "NotAvailableForSubscription"
 )
 
+// PossibleResourceSKURestrictionsReasonCodeValues returns the possible values for the ResourceSKURestrictionsReasonCode const type.
 func PossibleResourceSKURestrictionsReasonCodeValues() []ResourceSKURestrictionsReasonCode {
 	return []ResourceSKURestrictionsReasonCode{
 		ResourceSKURestrictionsReasonCodeQuotaID,
@@ -1236,6 +1309,7 @@ const (
 	ResourceSKURestrictionsTypeZone     ResourceSKURestrictionsType = "Zone"
 )
 
+// PossibleResourceSKURestrictionsTypeValues returns the possible values for the ResourceSKURestrictionsType const type.
 func PossibleResourceSKURestrictionsTypeValues() []ResourceSKURestrictionsType {
 	return []ResourceSKURestrictionsType{
 		ResourceSKURestrictionsTypeLocation,
@@ -1255,6 +1329,7 @@ const (
 	RollingUpgradeActionTypeCancel RollingUpgradeActionType = "Cancel"
 )
 
+// PossibleRollingUpgradeActionTypeValues returns the possible values for the RollingUpgradeActionType const type.
 func PossibleRollingUpgradeActionTypeValues() []RollingUpgradeActionType {
 	return []RollingUpgradeActionType{
 		RollingUpgradeActionTypeStart,
@@ -1276,6 +1351,7 @@ const (
 	RollingUpgradeStatusCodeFaulted        RollingUpgradeStatusCode = "Faulted"
 )
 
+// PossibleRollingUpgradeStatusCodeValues returns the possible values for the RollingUpgradeStatusCode const type.
 func PossibleRollingUpgradeStatusCodeValues() []RollingUpgradeStatusCode {
 	return []RollingUpgradeStatusCode{
 		RollingUpgradeStatusCodeRollingForward,
@@ -1295,6 +1371,7 @@ const (
 	SelectPermissionsPermissions SelectPermissions = "Permissions"
 )
 
+// PossibleSelectPermissionsValues returns the possible values for the SelectPermissions const type.
 func PossibleSelectPermissionsValues() []SelectPermissions {
 	return []SelectPermissions{
 		SelectPermissionsPermissions,
@@ -1313,6 +1390,7 @@ const (
 	SettingNamesFirstLogonCommands SettingNames = "FirstLogonCommands"
 )
 
+// PossibleSettingNamesValues returns the possible values for the SettingNames const type.
 func PossibleSettingNamesValues() []SettingNames {
 	return []SettingNames{
 		SettingNamesAutoLogon,
@@ -1330,6 +1408,7 @@ const (
 	SharedToValuesTenant SharedToValues = "tenant"
 )
 
+// PossibleSharedToValuesValues returns the possible values for the SharedToValues const type.
 func PossibleSharedToValuesValues() []SharedToValues {
 	return []SharedToValues{
 		SharedToValuesTenant,
@@ -1351,6 +1430,7 @@ const (
 	SharingProfileGroupTypesSubscriptions SharingProfileGroupTypes = "Subscriptions"
 )
 
+// PossibleSharingProfileGroupTypesValues returns the possible values for the SharingProfileGroupTypes const type.
 func PossibleSharingProfileGroupTypesValues() []SharingProfileGroupTypes {
 	return []SharingProfileGroupTypes{
 		SharingProfileGroupTypesAadTenants,
@@ -1375,6 +1455,7 @@ const (
 	SharingUpdateOperationTypesReset  SharingUpdateOperationTypes = "Reset"
 )
 
+// PossibleSharingUpdateOperationTypesValues returns the possible values for the SharingUpdateOperationTypes const type.
 func PossibleSharingUpdateOperationTypesValues() []SharingUpdateOperationTypes {
 	return []SharingUpdateOperationTypes{
 		SharingUpdateOperationTypesAdd,
@@ -1399,6 +1480,7 @@ const (
 	SnapshotStorageAccountTypesStandardZrs SnapshotStorageAccountTypes = "Standard_ZRS"
 )
 
+// PossibleSnapshotStorageAccountTypesValues returns the possible values for the SnapshotStorageAccountTypes const type.
 func PossibleSnapshotStorageAccountTypesValues() []SnapshotStorageAccountTypes {
 	return []SnapshotStorageAccountTypes{
 		SnapshotStorageAccountTypesPremiumLrs,
@@ -1420,6 +1502,7 @@ const (
 	SoftwareUpdateRebootBehaviorNeverReboots         SoftwareUpdateRebootBehavior = "NeverReboots"
 )
 
+// PossibleSoftwareUpdateRebootBehaviorValues returns the possible values for the SoftwareUpdateRebootBehavior const type.
 func PossibleSoftwareUpdateRebootBehaviorValues() []SoftwareUpdateRebootBehavior {
 	return []SoftwareUpdateRebootBehavior{
 		SoftwareUpdateRebootBehaviorAlwaysRequiresReboot,
@@ -1441,6 +1524,7 @@ const (
 	StatusLevelTypesError   StatusLevelTypes = "Error"
 )
 
+// PossibleStatusLevelTypesValues returns the possible values for the StatusLevelTypes const type.
 func PossibleStatusLevelTypesValues() []StatusLevelTypes {
 	return []StatusLevelTypes{
 		StatusLevelTypesInfo,
@@ -1462,6 +1546,7 @@ const (
 	StorageAccountTypeStandardZrs StorageAccountType = "Standard_ZRS"
 )
 
+// PossibleStorageAccountTypeValues returns the possible values for the StorageAccountType const type.
 func PossibleStorageAccountTypeValues() []StorageAccountType {
 	return []StorageAccountType{
 		StorageAccountTypePremiumLrs,
@@ -1490,6 +1575,7 @@ const (
 	StorageAccountTypesUltraSsdlrs    StorageAccountTypes = "UltraSSD_LRS"
 )
 
+// PossibleStorageAccountTypesValues returns the possible values for the StorageAccountTypes const type.
 func PossibleStorageAccountTypesValues() []StorageAccountTypes {
 	return []StorageAccountTypes{
 		StorageAccountTypesPremiumLrs,
@@ -1515,6 +1601,7 @@ const (
 	UpgradeModeRolling   UpgradeMode = "Rolling"
 )
 
+// PossibleUpgradeModeValues returns the possible values for the UpgradeMode const type.
 func PossibleUpgradeModeValues() []UpgradeMode {
 	return []UpgradeMode{
 		UpgradeModeAutomatic,
@@ -1536,6 +1623,7 @@ const (
 	UpgradeOperationInvokerPlatform UpgradeOperationInvoker = "Platform"
 )
 
+// PossibleUpgradeOperationInvokerValues returns the possible values for the UpgradeOperationInvoker const type.
 func PossibleUpgradeOperationInvokerValues() []UpgradeOperationInvoker {
 	return []UpgradeOperationInvoker{
 		UpgradeOperationInvokerUnknown,
@@ -1558,6 +1646,7 @@ const (
 	UpgradeStateFaulted        UpgradeState = "Faulted"
 )
 
+// PossibleUpgradeStateValues returns the possible values for the UpgradeState const type.
 func PossibleUpgradeStateValues() []UpgradeState {
 	return []UpgradeState{
 		UpgradeStateRollingForward,
@@ -1579,6 +1668,7 @@ const (
 	VMDiskTypesUnmanaged VMDiskTypes = "Unmanaged"
 )
 
+// PossibleVMDiskTypesValues returns the possible values for the VMDiskTypes const type.
 func PossibleVMDiskTypesValues() []VMDiskTypes {
 	return []VMDiskTypes{
 		VMDiskTypesNone,
@@ -1598,6 +1688,7 @@ const (
 	VirtualMachineEvictionPolicyTypesDelete     VirtualMachineEvictionPolicyTypes = "Delete"
 )
 
+// PossibleVirtualMachineEvictionPolicyTypesValues returns the possible values for the VirtualMachineEvictionPolicyTypes const type.
 func PossibleVirtualMachineEvictionPolicyTypesValues() []VirtualMachineEvictionPolicyTypes {
 	return []VirtualMachineEvictionPolicyTypes{
 		VirtualMachineEvictionPolicyTypesDeallocate,
@@ -1619,6 +1710,7 @@ const (
 	VirtualMachinePriorityTypesSpot    VirtualMachinePriorityTypes = "Spot"
 )
 
+// PossibleVirtualMachinePriorityTypesValues returns the possible values for the VirtualMachinePriorityTypes const type.
 func PossibleVirtualMachinePriorityTypesValues() []VirtualMachinePriorityTypes {
 	return []VirtualMachinePriorityTypes{
 		VirtualMachinePriorityTypesLow,
@@ -1639,6 +1731,7 @@ const (
 	VirtualMachineScaleSetSKUScaleTypeNone      VirtualMachineScaleSetSKUScaleType = "None"
 )
 
+// PossibleVirtualMachineScaleSetSKUScaleTypeValues returns the possible values for the VirtualMachineScaleSetSKUScaleType const type.
 func PossibleVirtualMachineScaleSetSKUScaleTypeValues() []VirtualMachineScaleSetSKUScaleType {
 	return []VirtualMachineScaleSetSKUScaleType{
 		VirtualMachineScaleSetSKUScaleTypeAutomatic,
@@ -1658,6 +1751,7 @@ const (
 	VirtualMachineScaleSetScaleInRulesOldestVM VirtualMachineScaleSetScaleInRules = "OldestVM"
 )
 
+// PossibleVirtualMachineScaleSetScaleInRulesValues returns the possible values for the VirtualMachineScaleSetScaleInRules const type.
 func PossibleVirtualMachineScaleSetScaleInRulesValues() []VirtualMachineScaleSetScaleInRules {
 	return []VirtualMachineScaleSetScaleInRules{
 		VirtualMachineScaleSetScaleInRulesDefault,
@@ -1850,6 +1944,7 @@ const (
 	VirtualMachineSizeTypesStandardNv6      VirtualMachineSizeTypes = "Standard_NV6"
 )
 
+// PossibleVirtualMachineSizeTypesValues returns the possible values for the VirtualMachineSizeTypes const type.
 func PossibleVirtualMachineSizeTypesValues() []VirtualMachineSizeTypes {
 	return []VirtualMachineSizeTypes{
 		VirtualMachineSizeTypesBasicA0,

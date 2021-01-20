@@ -580,6 +580,87 @@ func (p *diskListPager) PageResponse() DiskListResponse {
 	return p.current
 }
 
+// DiskRestorePointListPager provides iteration over DiskRestorePointList pages.
+type DiskRestorePointListPager interface {
+	// NextPage returns true if the pager advanced to the next page.
+	// Returns false if there are no more pages or an error occurred.
+	NextPage(context.Context) bool
+
+	// Page returns the current DiskRestorePointListResponse.
+	PageResponse() DiskRestorePointListResponse
+
+	// Err returns the last error encountered while paging.
+	Err() error
+}
+
+type diskRestorePointListCreateRequest func(context.Context) (*azcore.Request, error)
+
+type diskRestorePointListHandleError func(*azcore.Response) error
+
+type diskRestorePointListHandleResponse func(*azcore.Response) (DiskRestorePointListResponse, error)
+
+type diskRestorePointListAdvancePage func(context.Context, DiskRestorePointListResponse) (*azcore.Request, error)
+
+type diskRestorePointListPager struct {
+	// the pipeline for making the request
+	pipeline azcore.Pipeline
+	// creates the initial request (non-LRO case)
+	requester diskRestorePointListCreateRequest
+	// callback for handling response errors
+	errorer diskRestorePointListHandleError
+	// callback for handling the HTTP response
+	responder diskRestorePointListHandleResponse
+	// callback for advancing to the next page
+	advancer diskRestorePointListAdvancePage
+	// contains the current response
+	current DiskRestorePointListResponse
+	// status codes for successful retrieval
+	statusCodes []int
+	// any error encountered
+	err error
+}
+
+func (p *diskRestorePointListPager) Err() error {
+	return p.err
+}
+
+func (p *diskRestorePointListPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DiskRestorePointList.NextLink == nil || len(*p.current.DiskRestorePointList.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.pipeline.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(p.statusCodes...) {
+		p.err = p.errorer(resp)
+		return false
+	}
+	result, err := p.responder(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *diskRestorePointListPager) PageResponse() DiskRestorePointListResponse {
+	return p.current
+}
+
 // GalleryApplicationListPager provides iteration over GalleryApplicationList pages.
 type GalleryApplicationListPager interface {
 	// NextPage returns true if the pager advanced to the next page.
@@ -1144,6 +1225,87 @@ func (p *listUsagesResultPager) NextPage(ctx context.Context) bool {
 }
 
 func (p *listUsagesResultPager) PageResponse() ListUsagesResultResponse {
+	return p.current
+}
+
+// PrivateEndpointConnectionListResultPager provides iteration over PrivateEndpointConnectionListResult pages.
+type PrivateEndpointConnectionListResultPager interface {
+	// NextPage returns true if the pager advanced to the next page.
+	// Returns false if there are no more pages or an error occurred.
+	NextPage(context.Context) bool
+
+	// Page returns the current PrivateEndpointConnectionListResultResponse.
+	PageResponse() PrivateEndpointConnectionListResultResponse
+
+	// Err returns the last error encountered while paging.
+	Err() error
+}
+
+type privateEndpointConnectionListResultCreateRequest func(context.Context) (*azcore.Request, error)
+
+type privateEndpointConnectionListResultHandleError func(*azcore.Response) error
+
+type privateEndpointConnectionListResultHandleResponse func(*azcore.Response) (PrivateEndpointConnectionListResultResponse, error)
+
+type privateEndpointConnectionListResultAdvancePage func(context.Context, PrivateEndpointConnectionListResultResponse) (*azcore.Request, error)
+
+type privateEndpointConnectionListResultPager struct {
+	// the pipeline for making the request
+	pipeline azcore.Pipeline
+	// creates the initial request (non-LRO case)
+	requester privateEndpointConnectionListResultCreateRequest
+	// callback for handling response errors
+	errorer privateEndpointConnectionListResultHandleError
+	// callback for handling the HTTP response
+	responder privateEndpointConnectionListResultHandleResponse
+	// callback for advancing to the next page
+	advancer privateEndpointConnectionListResultAdvancePage
+	// contains the current response
+	current PrivateEndpointConnectionListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
+	// any error encountered
+	err error
+}
+
+func (p *privateEndpointConnectionListResultPager) Err() error {
+	return p.err
+}
+
+func (p *privateEndpointConnectionListResultPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.PrivateEndpointConnectionListResult.NextLink == nil || len(*p.current.PrivateEndpointConnectionListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.pipeline.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(p.statusCodes...) {
+		p.err = p.errorer(resp)
+		return false
+	}
+	result, err := p.responder(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *privateEndpointConnectionListResultPager) PageResponse() PrivateEndpointConnectionListResultResponse {
 	return p.current
 }
 

@@ -1,3 +1,17 @@
+// Copyright 2018 Microsoft Corporation
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package report
 
 import (
@@ -158,16 +172,27 @@ func (r PkgsReport) IsEmpty() bool {
 	return len(r.AddedPackages) == 0 && len(r.ModifiedPackages) == 0 && len(r.RemovedPackages) == 0
 }
 
-// ToMarkdown writes the report to string in the markdown form
-func (r *PkgsReport) ToMarkdown() string {
+// ToMarkdown writes the report to string in the markdown form.
+// The version parameter if set will output the release history title
+// and the release version header one level beneath it with the value specified.
+// Leave the version parameter empty to output the diff without the release headers.
+func (r *PkgsReport) ToMarkdown(version string) string {
+	md := markdown.Writer{}
+	if len(version) > 0 {
+		r.writeHeader(&md, version)
+	}
 	if r.IsEmpty() {
 		return ""
 	}
-	md := markdown.Writer{}
 	r.writeAddedPackages(&md)
 	r.writeRemovedPackages(&md)
 	r.writeModifiedPackages(&md)
 	return md.String()
+}
+
+func (r *PkgsReport) writeHeader(md *markdown.Writer, version string) {
+	md.WriteTitle("Release History")
+	md.WriteTopLevelHeader(fmt.Sprintf("%s (Released)", version))
 }
 
 func (r *PkgsReport) writeAddedPackages(md *markdown.Writer) {

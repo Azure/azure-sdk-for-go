@@ -23,12 +23,12 @@ import (
 )
 
 var diffCmd = &cobra.Command{
-	Use:   "diff <base export filepath> <target export filepath>",
-	Short: "Generate a diff report between the two export report files",
-	Long:  `The diff command consumes two JSON files with the export reports, and generates a diff report between them.`,
-	Args:  cobra.ExactArgs(2),
+	Use:   "diff <base export filepath> <target export filepath> <release tag version>",
+	Short: "Generate a diff report between the two export report files, also note the version of the tag that will be released.",
+	Long:  `The diff command consumes two JSON files with the export reports, along with the version of the tag that the module will be released under. The command generates a diff report between them.`,
+	Args:  cobra.ExactArgs(3),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return diffCommand(args[0], args[1])
+		return diffCommand(args[0], args[1], args[2])
 	},
 }
 
@@ -37,7 +37,7 @@ func init() {
 	diffCmd.PersistentFlags().BoolVarP(&asMarkdown, "markdown", "m", false, "emits the report in markdown format")
 }
 
-func diffCommand(basePath, targetPath string) error {
+func diffCommand(basePath, targetPath, version string) error {
 	base, err := ioutil.ReadFile(basePath)
 	if err != nil {
 		return fmt.Errorf("failed to read base export file %s: %+v", basePath, err)
@@ -57,7 +57,7 @@ func diffCommand(basePath, targetPath string) error {
 	r := getPkgsReport(baseExport, targetExport)
 
 	if asMarkdown {
-		fmt.Println(r.ToMarkdown())
+		fmt.Println(r.ToMarkdown(version))
 	} else {
 		b, _ := json.Marshal(r)
 		fmt.Println(string(b))

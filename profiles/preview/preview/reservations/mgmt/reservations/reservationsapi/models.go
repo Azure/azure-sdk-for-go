@@ -19,11 +19,12 @@
 
 package reservationsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2019-07-19-preview/reservations/reservationsapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2020-10-25/reservations/reservationsapi"
 
-type AutoQuotaIncreaseClientAPI = original.AutoQuotaIncreaseClientAPI
 type BaseClientAPI = original.BaseClientAPI
+type CalculateExchangeClientAPI = original.CalculateExchangeClientAPI
 type ClientAPI = original.ClientAPI
+type ExchangeClientAPI = original.ExchangeClientAPI
 type OperationClientAPI = original.OperationClientAPI
 type OrderClientAPI = original.OrderClientAPI
 type QuotaClientAPI = original.QuotaClientAPI

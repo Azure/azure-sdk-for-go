@@ -10,7 +10,7 @@ import (
 )
 
 // ClientSecretCredentialOptions configures the ClientSecretCredential with optional parameters.
-// Call DefaultClientSecretCredentialOptions() to create an instance populated with default values.
+// All zero-value fields will be initialized with their default values.
 type ClientSecretCredentialOptions struct {
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.

@@ -12,7 +12,7 @@ import (
 )
 
 // ManagedIdentityCredentialOptions contains parameters that can be used to configure the pipeline used with Managed Identity Credential.
-// Call DefaultManagedIdentityCredentialOptions() to create an instance populated with default values.
+// All zero-value fields will be initialized with their default values.
 type ManagedIdentityCredentialOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
 	// Leave this as nil to use the default HTTP transport.
@@ -75,7 +75,7 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.To
 }
 
 // AuthenticationPolicy implements the azcore.Credential interface on ManagedIdentityCredential.
-// Please note: the TokenRequestOptions included in AuthenticationPolicyOptions must be a slice of resources in this case and not scopes
+// NOTE: The TokenRequestOptions included in AuthenticationPolicyOptions must be a slice of resources in this case and not scopes.
 func (c *ManagedIdentityCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
 	// The following code will remove the /.default suffix from any scopes passed into the method since ManagedIdentityCredentials expect a resource string instead of a scope string
 	for i := range options.Options.Scopes {

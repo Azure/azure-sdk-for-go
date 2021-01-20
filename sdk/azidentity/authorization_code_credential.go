@@ -10,7 +10,7 @@ import (
 )
 
 // AuthorizationCodeCredentialOptions contain optional parameters that can be used to configure the AuthorizationCodeCredential.
-// Call DefaultAuthorizationCodeCredentialOptions() to create an instance populated with default values.
+// All zero-value fields will be initialized with their default values.
 type AuthorizationCodeCredentialOptions struct {
 	// Gets the client secret that was generated for the App Registration used to authenticate the client.
 	ClientSecret string
@@ -78,8 +78,7 @@ func (c *AuthorizationCodeCredential) GetToken(ctx context.Context, opts azcore.
 	return tk, nil
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on AuthorizationCodeCredential and calls the Bearer Token policy
-// to get the bearer token.
+// AuthenticationPolicy implements the azcore.Credential interface on AuthorizationCodeCredential.
 func (c *AuthorizationCodeCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }

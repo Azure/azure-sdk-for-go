@@ -11,7 +11,7 @@ import (
 
 // UsernamePasswordCredentialOptions can be used to provide additional information to configure the UsernamePasswordCredential.
 // Use these options to modify the default pipeline behavior through the TokenCredentialOptions.
-// Call DefaultUsernamePasswordCredentialOptions() to create an instance populated with default values.
+// All zero-value fields will be initialized with their default values.
 type UsernamePasswordCredentialOptions struct {
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.

@@ -17,13 +17,17 @@ const (
 )
 
 // DeviceCodeCredentialOptions provide options that can configure DeviceCodeCredential instead of using the default values.
-// Call DefaultDeviceCodeCredentialOptions() to create an instance populated with default values.
+// All zero-value fields will be initialized with their default values. Please note, that both the TenantID or ClientID fields should
+// changed together if default values are not desired.
 type DeviceCodeCredentialOptions struct {
 	// Gets the Azure Active Directory tenant (directory) ID of the service principal
+	// The default value is "organizations". If this value is changed, then also change ClientID to the corresponding value.
 	TenantID string
 	// Gets the client (application) ID of the service principal
+	// The default value is the developer sign on ID for the corresponding "organizations" TenantID.
 	ClientID string
 	// The callback function used to send the login message back to the user
+	// The default will print device code log in information to stdout.
 	UserPrompt func(DeviceCodeMessage)
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
@@ -163,7 +167,7 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRe
 	}
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential.
+// AuthenticationPolicy implements the azcore.Credential interface on DeviceCodeCredential.
 func (c *DeviceCodeCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }

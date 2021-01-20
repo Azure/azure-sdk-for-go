@@ -22,7 +22,7 @@ import (
 type AzureCLITokenProvider func(ctx context.Context, resource string) ([]byte, error)
 
 // AzureCLICredentialOptions contains options used to configure the AzureCLICredential
-// Call DefaultAzureCLICredentialOptions() to create an instance populated with default values.
+// All zero-value fields will be initialized with their default values.
 type AzureCLICredentialOptions struct {
 	TokenProvider AzureCLITokenProvider
 }
@@ -68,8 +68,7 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts azcore.TokenRequ
 	return at, nil
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on AzureCLICredential and calls the Bearer Token policy
-// to get the bearer token.
+// AuthenticationPolicy implements the azcore.Credential interface on AzureCLICredential.
 func (c *AzureCLICredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }

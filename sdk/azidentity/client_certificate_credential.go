@@ -19,7 +19,7 @@ import (
 )
 
 // ClientCertificateCredentialOptions contain optional parameters that can be used when configuring a ClientCertificateCredential.
-// Call DefaultClientCertificateCredentialOptions() to create an instance populated with default values.
+// All zero-value fields will be initialized with their default values.
 type ClientCertificateCredentialOptions struct {
 	// The password required to decrypt the private key.  Leave empty if there is no password.
 	Password string
@@ -216,7 +216,7 @@ func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts azcore.
 	return tk, nil
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential.
+// AuthenticationPolicy implements the azcore.Credential interface on ClientCertificateCredential.
 func (c *ClientCertificateCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }

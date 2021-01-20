@@ -17,6 +17,7 @@ const (
 	AliasPathAttributesNone AliasPathAttributes = "None"
 )
 
+// PossibleAliasPathAttributesValues returns the possible values for the AliasPathAttributes const type.
 func PossibleAliasPathAttributesValues() []AliasPathAttributes {
 	return []AliasPathAttributes{
 		AliasPathAttributesModifiable,
@@ -50,6 +51,7 @@ const (
 	AliasPathTokenTypeString AliasPathTokenType = "String"
 )
 
+// PossibleAliasPathTokenTypeValues returns the possible values for the AliasPathTokenType const type.
 func PossibleAliasPathTokenTypeValues() []AliasPathTokenType {
 	return []AliasPathTokenType{
 		AliasPathTokenTypeAny,
@@ -77,6 +79,7 @@ const (
 	AliasPatternTypeExtract AliasPatternType = "Extract"
 )
 
+// PossibleAliasPatternTypeValues returns the possible values for the AliasPatternType const type.
 func PossibleAliasPatternTypeValues() []AliasPatternType {
 	return []AliasPatternType{
 		AliasPatternTypeNotSpecified,
@@ -100,6 +103,7 @@ const (
 	AliasTypeMask AliasType = "Mask"
 )
 
+// PossibleAliasTypeValues returns the possible values for the AliasType const type.
 func PossibleAliasTypeValues() []AliasType {
 	return []AliasType{
 		AliasTypeNotSpecified,
@@ -136,6 +140,7 @@ const (
 	ChangeTypeModify ChangeType = "Modify"
 )
 
+// PossibleChangeTypeValues returns the possible values for the ChangeType const type.
 func PossibleChangeTypeValues() []ChangeType {
 	return []ChangeType{
 		ChangeTypeCreate,
@@ -163,6 +168,7 @@ const (
 	DeploymentModeComplete    DeploymentMode = "Complete"
 )
 
+// PossibleDeploymentModeValues returns the possible values for the DeploymentMode const type.
 func PossibleDeploymentModeValues() []DeploymentMode {
 	return []DeploymentMode{
 		DeploymentModeIncremental,
@@ -183,6 +189,7 @@ const (
 	ExpressionEvaluationOptionsScopeTypeOuter        ExpressionEvaluationOptionsScopeType = "Outer"
 )
 
+// PossibleExpressionEvaluationOptionsScopeTypeValues returns the possible values for the ExpressionEvaluationOptionsScopeType const type.
 func PossibleExpressionEvaluationOptionsScopeTypeValues() []ExpressionEvaluationOptionsScopeType {
 	return []ExpressionEvaluationOptionsScopeType{
 		ExpressionEvaluationOptionsScopeTypeInner,
@@ -203,6 +210,7 @@ const (
 	OnErrorDeploymentTypeSpecificDeployment OnErrorDeploymentType = "SpecificDeployment"
 )
 
+// PossibleOnErrorDeploymentTypeValues returns the possible values for the OnErrorDeploymentType const type.
 func PossibleOnErrorDeploymentTypeValues() []OnErrorDeploymentType {
 	return []OnErrorDeploymentType{
 		OnErrorDeploymentTypeLastSuccessful,
@@ -231,6 +239,7 @@ const (
 	PropertyChangeTypeArray PropertyChangeType = "Array"
 )
 
+// PossiblePropertyChangeTypeValues returns the possible values for the PropertyChangeType const type.
 func PossiblePropertyChangeTypeValues() []PropertyChangeType {
 	return []PropertyChangeType{
 		PropertyChangeTypeCreate,
@@ -270,6 +279,7 @@ const (
 	ProvisioningOperationDeploymentCleanup ProvisioningOperation = "DeploymentCleanup"
 )
 
+// PossibleProvisioningOperationValues returns the possible values for the ProvisioningOperation const type.
 func PossibleProvisioningOperationValues() []ProvisioningOperation {
 	return []ProvisioningOperation{
 		ProvisioningOperationNotSpecified,
@@ -307,6 +317,7 @@ const (
 	ProvisioningStateUpdating     ProvisioningState = "Updating"
 )
 
+// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{
 		ProvisioningStateAccepted,
@@ -338,6 +349,7 @@ const (
 	ResourceIDentityTypeNone                       ResourceIDentityType = "None"
 )
 
+// PossibleResourceIDentityTypeValues returns the possible values for the ResourceIDentityType const type.
 func PossibleResourceIDentityTypeValues() []ResourceIDentityType {
 	return []ResourceIDentityType{
 		ResourceIDentityTypeSystemAssigned,
@@ -363,6 +375,7 @@ const (
 	TagsPatchOperationReplace TagsPatchOperation = "Replace"
 )
 
+// PossibleTagsPatchOperationValues returns the possible values for the TagsPatchOperation const type.
 func PossibleTagsPatchOperationValues() []TagsPatchOperation {
 	return []TagsPatchOperation{
 		TagsPatchOperationDelete,
@@ -383,6 +396,7 @@ const (
 	WhatIfResultFormatFullResourcePayloads WhatIfResultFormat = "FullResourcePayloads"
 )
 
+// PossibleWhatIfResultFormatValues returns the possible values for the WhatIfResultFormat const type.
 func PossibleWhatIfResultFormatValues() []WhatIfResultFormat {
 	return []WhatIfResultFormat{
 		WhatIfResultFormatResourceIDOnly,

@@ -25,37 +25,28 @@ type DeploymentOperationsClient struct {
 }
 
 // NewDeploymentOperationsClient creates a new instance of DeploymentOperationsClient with the specified values.
-func NewDeploymentOperationsClient(con *armcore.Connection, subscriptionID string) DeploymentOperationsClient {
-	return DeploymentOperationsClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client DeploymentOperationsClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewDeploymentOperationsClient(con *armcore.Connection, subscriptionID string) *DeploymentOperationsClient {
+	return &DeploymentOperationsClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Get - Gets a deployments operation.
-func (client DeploymentOperationsClient) Get(ctx context.Context, resourceGroupName string, deploymentName string, operationId string, options *DeploymentOperationsGetOptions) (DeploymentOperationResponse, error) {
+func (client *DeploymentOperationsClient) Get(ctx context.Context, resourceGroupName string, deploymentName string, operationId string, options *DeploymentOperationsGetOptions) (DeploymentOperationResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, deploymentName, operationId, options)
 	if err != nil {
 		return DeploymentOperationResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return DeploymentOperationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return DeploymentOperationResponse{}, client.getHandleError(resp)
 	}
-	result, err := client.getHandleResponse(resp)
-	if err != nil {
-		return DeploymentOperationResponse{}, err
-	}
-	return result, nil
+	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client DeploymentOperationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, operationId string, options *DeploymentOperationsGetOptions) (*azcore.Request, error) {
+func (client *DeploymentOperationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, operationId string, options *DeploymentOperationsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations/{operationId}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -74,14 +65,16 @@ func (client DeploymentOperationsClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client DeploymentOperationsClient) getHandleResponse(resp *azcore.Response) (DeploymentOperationResponse, error) {
-	result := DeploymentOperationResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.DeploymentOperation)
-	return result, err
+func (client *DeploymentOperationsClient) getHandleResponse(resp *azcore.Response) (DeploymentOperationResponse, error) {
+	var val *DeploymentOperation
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return DeploymentOperationResponse{}, err
+	}
+	return DeploymentOperationResponse{RawResponse: resp.Response, DeploymentOperation: val}, nil
 }
 
 // getHandleError handles the Get error response.
-func (client DeploymentOperationsClient) getHandleError(resp *azcore.Response) error {
+func (client *DeploymentOperationsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -90,27 +83,23 @@ func (client DeploymentOperationsClient) getHandleError(resp *azcore.Response) e
 }
 
 // GetAtManagementGroupScope - Gets a deployments operation.
-func (client DeploymentOperationsClient) GetAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, operationId string, options *DeploymentOperationsGetAtManagementGroupScopeOptions) (DeploymentOperationResponse, error) {
+func (client *DeploymentOperationsClient) GetAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, operationId string, options *DeploymentOperationsGetAtManagementGroupScopeOptions) (DeploymentOperationResponse, error) {
 	req, err := client.getAtManagementGroupScopeCreateRequest(ctx, groupId, deploymentName, operationId, options)
 	if err != nil {
 		return DeploymentOperationResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return DeploymentOperationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return DeploymentOperationResponse{}, client.getAtManagementGroupScopeHandleError(resp)
 	}
-	result, err := client.getAtManagementGroupScopeHandleResponse(resp)
-	if err != nil {
-		return DeploymentOperationResponse{}, err
-	}
-	return result, nil
+	return client.getAtManagementGroupScopeHandleResponse(resp)
 }
 
 // getAtManagementGroupScopeCreateRequest creates the GetAtManagementGroupScope request.
-func (client DeploymentOperationsClient) getAtManagementGroupScopeCreateRequest(ctx context.Context, groupId string, deploymentName string, operationId string, options *DeploymentOperationsGetAtManagementGroupScopeOptions) (*azcore.Request, error) {
+func (client *DeploymentOperationsClient) getAtManagementGroupScopeCreateRequest(ctx context.Context, groupId string, deploymentName string, operationId string, options *DeploymentOperationsGetAtManagementGroupScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}"
 	urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupId))
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -128,14 +117,16 @@ func (client DeploymentOperationsClient) getAtManagementGroupScopeCreateRequest(
 }
 
 // getAtManagementGroupScopeHandleResponse handles the GetAtManagementGroupScope response.
-func (client DeploymentOperationsClient) getAtManagementGroupScopeHandleResponse(resp *azcore.Response) (DeploymentOperationResponse, error) {
-	result := DeploymentOperationResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.DeploymentOperation)
-	return result, err
+func (client *DeploymentOperationsClient) getAtManagementGroupScopeHandleResponse(resp *azcore.Response) (DeploymentOperationResponse, error) {
+	var val *DeploymentOperation
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return DeploymentOperationResponse{}, err
+	}
+	return DeploymentOperationResponse{RawResponse: resp.Response, DeploymentOperation: val}, nil
 }
 
 // getAtManagementGroupScopeHandleError handles the GetAtManagementGroupScope error response.
-func (client DeploymentOperationsClient) getAtManagementGroupScopeHandleError(resp *azcore.Response) error {
+func (client *DeploymentOperationsClient) getAtManagementGroupScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -144,27 +135,23 @@ func (client DeploymentOperationsClient) getAtManagementGroupScopeHandleError(re
 }
 
 // GetAtScope - Gets a deployments operation.
-func (client DeploymentOperationsClient) GetAtScope(ctx context.Context, scope string, deploymentName string, operationId string, options *DeploymentOperationsGetAtScopeOptions) (DeploymentOperationResponse, error) {
+func (client *DeploymentOperationsClient) GetAtScope(ctx context.Context, scope string, deploymentName string, operationId string, options *DeploymentOperationsGetAtScopeOptions) (DeploymentOperationResponse, error) {
 	req, err := client.getAtScopeCreateRequest(ctx, scope, deploymentName, operationId, options)
 	if err != nil {
 		return DeploymentOperationResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return DeploymentOperationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return DeploymentOperationResponse{}, client.getAtScopeHandleError(resp)
 	}
-	result, err := client.getAtScopeHandleResponse(resp)
-	if err != nil {
-		return DeploymentOperationResponse{}, err
-	}
-	return result, nil
+	return client.getAtScopeHandleResponse(resp)
 }
 
 // getAtScopeCreateRequest creates the GetAtScope request.
-func (client DeploymentOperationsClient) getAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, operationId string, options *DeploymentOperationsGetAtScopeOptions) (*azcore.Request, error) {
+func (client *DeploymentOperationsClient) getAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, operationId string, options *DeploymentOperationsGetAtScopeOptions) (*azcore.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -182,14 +169,16 @@ func (client DeploymentOperationsClient) getAtScopeCreateRequest(ctx context.Con
 }
 
 // getAtScopeHandleResponse handles the GetAtScope response.
-func (client DeploymentOperationsClient) getAtScopeHandleResponse(resp *azcore.Response) (DeploymentOperationResponse, error) {
-	result := DeploymentOperationResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.DeploymentOperation)
-	return result, err
+func (client *DeploymentOperationsClient) getAtScopeHandleResponse(resp *azcore.Response) (DeploymentOperationResponse, error) {
+	var val *DeploymentOperation
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return DeploymentOperationResponse{}, err
+	}
+	return DeploymentOperationResponse{RawResponse: resp.Response, DeploymentOperation: val}, nil
 }
 
 // getAtScopeHandleError handles the GetAtScope error response.
-func (client DeploymentOperationsClient) getAtScopeHandleError(resp *azcore.Response) error {
+func (client *DeploymentOperationsClient) getAtScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -198,27 +187,23 @@ func (client DeploymentOperationsClient) getAtScopeHandleError(resp *azcore.Resp
 }
 
 // GetAtSubscriptionScope - Gets a deployments operation.
-func (client DeploymentOperationsClient) GetAtSubscriptionScope(ctx context.Context, deploymentName string, operationId string, options *DeploymentOperationsGetAtSubscriptionScopeOptions) (DeploymentOperationResponse, error) {
+func (client *DeploymentOperationsClient) GetAtSubscriptionScope(ctx context.Context, deploymentName string, operationId string, options *DeploymentOperationsGetAtSubscriptionScopeOptions) (DeploymentOperationResponse, error) {
 	req, err := client.getAtSubscriptionScopeCreateRequest(ctx, deploymentName, operationId, options)
 	if err != nil {
 		return DeploymentOperationResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return DeploymentOperationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return DeploymentOperationResponse{}, client.getAtSubscriptionScopeHandleError(resp)
 	}
-	result, err := client.getAtSubscriptionScopeHandleResponse(resp)
-	if err != nil {
-		return DeploymentOperationResponse{}, err
-	}
-	return result, nil
+	return client.getAtSubscriptionScopeHandleResponse(resp)
 }
 
 // getAtSubscriptionScopeCreateRequest creates the GetAtSubscriptionScope request.
-func (client DeploymentOperationsClient) getAtSubscriptionScopeCreateRequest(ctx context.Context, deploymentName string, operationId string, options *DeploymentOperationsGetAtSubscriptionScopeOptions) (*azcore.Request, error) {
+func (client *DeploymentOperationsClient) getAtSubscriptionScopeCreateRequest(ctx context.Context, deploymentName string, operationId string, options *DeploymentOperationsGetAtSubscriptionScopeOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}"
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationId))
@@ -236,14 +221,16 @@ func (client DeploymentOperationsClient) getAtSubscriptionScopeCreateRequest(ctx
 }
 
 // getAtSubscriptionScopeHandleResponse handles the GetAtSubscriptionScope response.
-func (client DeploymentOperationsClient) getAtSubscriptionScopeHandleResponse(resp *azcore.Response) (DeploymentOperationResponse, error) {
-	result := DeploymentOperationResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.DeploymentOperation)
-	return result, err
+func (client *DeploymentOperationsClient) getAtSubscriptionScopeHandleResponse(resp *azcore.Response) (DeploymentOperationResponse, error) {
+	var val *DeploymentOperation
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return DeploymentOperationResponse{}, err
+	}
+	return DeploymentOperationResponse{RawResponse: resp.Response, DeploymentOperation: val}, nil
 }
 
 // getAtSubscriptionScopeHandleError handles the GetAtSubscriptionScope error response.
-func (client DeploymentOperationsClient) getAtSubscriptionScopeHandleError(resp *azcore.Response) error {
+func (client *DeploymentOperationsClient) getAtSubscriptionScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -252,27 +239,23 @@ func (client DeploymentOperationsClient) getAtSubscriptionScopeHandleError(resp 
 }
 
 // GetAtTenantScope - Gets a deployments operation.
-func (client DeploymentOperationsClient) GetAtTenantScope(ctx context.Context, deploymentName string, operationId string, options *DeploymentOperationsGetAtTenantScopeOptions) (DeploymentOperationResponse, error) {
+func (client *DeploymentOperationsClient) GetAtTenantScope(ctx context.Context, deploymentName string, operationId string, options *DeploymentOperationsGetAtTenantScopeOptions) (DeploymentOperationResponse, error) {
 	req, err := client.getAtTenantScopeCreateRequest(ctx, deploymentName, operationId, options)
 	if err != nil {
 		return DeploymentOperationResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return DeploymentOperationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return DeploymentOperationResponse{}, client.getAtTenantScopeHandleError(resp)
 	}
-	result, err := client.getAtTenantScopeHandleResponse(resp)
-	if err != nil {
-		return DeploymentOperationResponse{}, err
-	}
-	return result, nil
+	return client.getAtTenantScopeHandleResponse(resp)
 }
 
 // getAtTenantScopeCreateRequest creates the GetAtTenantScope request.
-func (client DeploymentOperationsClient) getAtTenantScopeCreateRequest(ctx context.Context, deploymentName string, operationId string, options *DeploymentOperationsGetAtTenantScopeOptions) (*azcore.Request, error) {
+func (client *DeploymentOperationsClient) getAtTenantScopeCreateRequest(ctx context.Context, deploymentName string, operationId string, options *DeploymentOperationsGetAtTenantScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}"
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationId))
@@ -289,14 +272,16 @@ func (client DeploymentOperationsClient) getAtTenantScopeCreateRequest(ctx conte
 }
 
 // getAtTenantScopeHandleResponse handles the GetAtTenantScope response.
-func (client DeploymentOperationsClient) getAtTenantScopeHandleResponse(resp *azcore.Response) (DeploymentOperationResponse, error) {
-	result := DeploymentOperationResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.DeploymentOperation)
-	return result, err
+func (client *DeploymentOperationsClient) getAtTenantScopeHandleResponse(resp *azcore.Response) (DeploymentOperationResponse, error) {
+	var val *DeploymentOperation
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return DeploymentOperationResponse{}, err
+	}
+	return DeploymentOperationResponse{RawResponse: resp.Response, DeploymentOperation: val}, nil
 }
 
 // getAtTenantScopeHandleError handles the GetAtTenantScope error response.
-func (client DeploymentOperationsClient) getAtTenantScopeHandleError(resp *azcore.Response) error {
+func (client *DeploymentOperationsClient) getAtTenantScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -305,7 +290,7 @@ func (client DeploymentOperationsClient) getAtTenantScopeHandleError(resp *azcor
 }
 
 // List - Gets all deployments operations for a deployment.
-func (client DeploymentOperationsClient) List(resourceGroupName string, deploymentName string, options *DeploymentOperationsListOptions) DeploymentOperationsListResultPager {
+func (client *DeploymentOperationsClient) List(resourceGroupName string, deploymentName string, options *DeploymentOperationsListOptions) DeploymentOperationsListResultPager {
 	return &deploymentOperationsListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -321,7 +306,7 @@ func (client DeploymentOperationsClient) List(resourceGroupName string, deployme
 }
 
 // listCreateRequest creates the List request.
-func (client DeploymentOperationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentOperationsListOptions) (*azcore.Request, error) {
+func (client *DeploymentOperationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentOperationsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -342,14 +327,16 @@ func (client DeploymentOperationsClient) listCreateRequest(ctx context.Context, 
 }
 
 // listHandleResponse handles the List response.
-func (client DeploymentOperationsClient) listHandleResponse(resp *azcore.Response) (DeploymentOperationsListResultResponse, error) {
-	result := DeploymentOperationsListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.DeploymentOperationsListResult)
-	return result, err
+func (client *DeploymentOperationsClient) listHandleResponse(resp *azcore.Response) (DeploymentOperationsListResultResponse, error) {
+	var val *DeploymentOperationsListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return DeploymentOperationsListResultResponse{}, err
+	}
+	return DeploymentOperationsListResultResponse{RawResponse: resp.Response, DeploymentOperationsListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client DeploymentOperationsClient) listHandleError(resp *azcore.Response) error {
+func (client *DeploymentOperationsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -358,7 +345,7 @@ func (client DeploymentOperationsClient) listHandleError(resp *azcore.Response) 
 }
 
 // ListAtManagementGroupScope - Gets all deployments operations for a deployment.
-func (client DeploymentOperationsClient) ListAtManagementGroupScope(groupId string, deploymentName string, options *DeploymentOperationsListAtManagementGroupScopeOptions) DeploymentOperationsListResultPager {
+func (client *DeploymentOperationsClient) ListAtManagementGroupScope(groupId string, deploymentName string, options *DeploymentOperationsListAtManagementGroupScopeOptions) DeploymentOperationsListResultPager {
 	return &deploymentOperationsListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -374,7 +361,7 @@ func (client DeploymentOperationsClient) ListAtManagementGroupScope(groupId stri
 }
 
 // listAtManagementGroupScopeCreateRequest creates the ListAtManagementGroupScope request.
-func (client DeploymentOperationsClient) listAtManagementGroupScopeCreateRequest(ctx context.Context, groupId string, deploymentName string, options *DeploymentOperationsListAtManagementGroupScopeOptions) (*azcore.Request, error) {
+func (client *DeploymentOperationsClient) listAtManagementGroupScopeCreateRequest(ctx context.Context, groupId string, deploymentName string, options *DeploymentOperationsListAtManagementGroupScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
 	urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupId))
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -394,14 +381,16 @@ func (client DeploymentOperationsClient) listAtManagementGroupScopeCreateRequest
 }
 
 // listAtManagementGroupScopeHandleResponse handles the ListAtManagementGroupScope response.
-func (client DeploymentOperationsClient) listAtManagementGroupScopeHandleResponse(resp *azcore.Response) (DeploymentOperationsListResultResponse, error) {
-	result := DeploymentOperationsListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.DeploymentOperationsListResult)
-	return result, err
+func (client *DeploymentOperationsClient) listAtManagementGroupScopeHandleResponse(resp *azcore.Response) (DeploymentOperationsListResultResponse, error) {
+	var val *DeploymentOperationsListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return DeploymentOperationsListResultResponse{}, err
+	}
+	return DeploymentOperationsListResultResponse{RawResponse: resp.Response, DeploymentOperationsListResult: val}, nil
 }
 
 // listAtManagementGroupScopeHandleError handles the ListAtManagementGroupScope error response.
-func (client DeploymentOperationsClient) listAtManagementGroupScopeHandleError(resp *azcore.Response) error {
+func (client *DeploymentOperationsClient) listAtManagementGroupScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -410,7 +399,7 @@ func (client DeploymentOperationsClient) listAtManagementGroupScopeHandleError(r
 }
 
 // ListAtScope - Gets all deployments operations for a deployment.
-func (client DeploymentOperationsClient) ListAtScope(scope string, deploymentName string, options *DeploymentOperationsListAtScopeOptions) DeploymentOperationsListResultPager {
+func (client *DeploymentOperationsClient) ListAtScope(scope string, deploymentName string, options *DeploymentOperationsListAtScopeOptions) DeploymentOperationsListResultPager {
 	return &deploymentOperationsListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -426,7 +415,7 @@ func (client DeploymentOperationsClient) ListAtScope(scope string, deploymentNam
 }
 
 // listAtScopeCreateRequest creates the ListAtScope request.
-func (client DeploymentOperationsClient) listAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, options *DeploymentOperationsListAtScopeOptions) (*azcore.Request, error) {
+func (client *DeploymentOperationsClient) listAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, options *DeploymentOperationsListAtScopeOptions) (*azcore.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -446,14 +435,16 @@ func (client DeploymentOperationsClient) listAtScopeCreateRequest(ctx context.Co
 }
 
 // listAtScopeHandleResponse handles the ListAtScope response.
-func (client DeploymentOperationsClient) listAtScopeHandleResponse(resp *azcore.Response) (DeploymentOperationsListResultResponse, error) {
-	result := DeploymentOperationsListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.DeploymentOperationsListResult)
-	return result, err
+func (client *DeploymentOperationsClient) listAtScopeHandleResponse(resp *azcore.Response) (DeploymentOperationsListResultResponse, error) {
+	var val *DeploymentOperationsListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return DeploymentOperationsListResultResponse{}, err
+	}
+	return DeploymentOperationsListResultResponse{RawResponse: resp.Response, DeploymentOperationsListResult: val}, nil
 }
 
 // listAtScopeHandleError handles the ListAtScope error response.
-func (client DeploymentOperationsClient) listAtScopeHandleError(resp *azcore.Response) error {
+func (client *DeploymentOperationsClient) listAtScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -462,7 +453,7 @@ func (client DeploymentOperationsClient) listAtScopeHandleError(resp *azcore.Res
 }
 
 // ListAtSubscriptionScope - Gets all deployments operations for a deployment.
-func (client DeploymentOperationsClient) ListAtSubscriptionScope(deploymentName string, options *DeploymentOperationsListAtSubscriptionScopeOptions) DeploymentOperationsListResultPager {
+func (client *DeploymentOperationsClient) ListAtSubscriptionScope(deploymentName string, options *DeploymentOperationsListAtSubscriptionScopeOptions) DeploymentOperationsListResultPager {
 	return &deploymentOperationsListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -478,7 +469,7 @@ func (client DeploymentOperationsClient) ListAtSubscriptionScope(deploymentName 
 }
 
 // listAtSubscriptionScopeCreateRequest creates the ListAtSubscriptionScope request.
-func (client DeploymentOperationsClient) listAtSubscriptionScopeCreateRequest(ctx context.Context, deploymentName string, options *DeploymentOperationsListAtSubscriptionScopeOptions) (*azcore.Request, error) {
+func (client *DeploymentOperationsClient) listAtSubscriptionScopeCreateRequest(ctx context.Context, deploymentName string, options *DeploymentOperationsListAtSubscriptionScopeOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -498,14 +489,16 @@ func (client DeploymentOperationsClient) listAtSubscriptionScopeCreateRequest(ct
 }
 
 // listAtSubscriptionScopeHandleResponse handles the ListAtSubscriptionScope response.
-func (client DeploymentOperationsClient) listAtSubscriptionScopeHandleResponse(resp *azcore.Response) (DeploymentOperationsListResultResponse, error) {
-	result := DeploymentOperationsListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.DeploymentOperationsListResult)
-	return result, err
+func (client *DeploymentOperationsClient) listAtSubscriptionScopeHandleResponse(resp *azcore.Response) (DeploymentOperationsListResultResponse, error) {
+	var val *DeploymentOperationsListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return DeploymentOperationsListResultResponse{}, err
+	}
+	return DeploymentOperationsListResultResponse{RawResponse: resp.Response, DeploymentOperationsListResult: val}, nil
 }
 
 // listAtSubscriptionScopeHandleError handles the ListAtSubscriptionScope error response.
-func (client DeploymentOperationsClient) listAtSubscriptionScopeHandleError(resp *azcore.Response) error {
+func (client *DeploymentOperationsClient) listAtSubscriptionScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -514,7 +507,7 @@ func (client DeploymentOperationsClient) listAtSubscriptionScopeHandleError(resp
 }
 
 // ListAtTenantScope - Gets all deployments operations for a deployment.
-func (client DeploymentOperationsClient) ListAtTenantScope(deploymentName string, options *DeploymentOperationsListAtTenantScopeOptions) DeploymentOperationsListResultPager {
+func (client *DeploymentOperationsClient) ListAtTenantScope(deploymentName string, options *DeploymentOperationsListAtTenantScopeOptions) DeploymentOperationsListResultPager {
 	return &deploymentOperationsListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -530,7 +523,7 @@ func (client DeploymentOperationsClient) ListAtTenantScope(deploymentName string
 }
 
 // listAtTenantScopeCreateRequest creates the ListAtTenantScope request.
-func (client DeploymentOperationsClient) listAtTenantScopeCreateRequest(ctx context.Context, deploymentName string, options *DeploymentOperationsListAtTenantScopeOptions) (*azcore.Request, error) {
+func (client *DeploymentOperationsClient) listAtTenantScopeCreateRequest(ctx context.Context, deploymentName string, options *DeploymentOperationsListAtTenantScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -549,14 +542,16 @@ func (client DeploymentOperationsClient) listAtTenantScopeCreateRequest(ctx cont
 }
 
 // listAtTenantScopeHandleResponse handles the ListAtTenantScope response.
-func (client DeploymentOperationsClient) listAtTenantScopeHandleResponse(resp *azcore.Response) (DeploymentOperationsListResultResponse, error) {
-	result := DeploymentOperationsListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.DeploymentOperationsListResult)
-	return result, err
+func (client *DeploymentOperationsClient) listAtTenantScopeHandleResponse(resp *azcore.Response) (DeploymentOperationsListResultResponse, error) {
+	var val *DeploymentOperationsListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return DeploymentOperationsListResultResponse{}, err
+	}
+	return DeploymentOperationsListResultResponse{RawResponse: resp.Response, DeploymentOperationsListResult: val}, nil
 }
 
 // listAtTenantScopeHandleError handles the ListAtTenantScope error response.
-func (client DeploymentOperationsClient) listAtTenantScopeHandleError(resp *azcore.Response) error {
+func (client *DeploymentOperationsClient) listAtTenantScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

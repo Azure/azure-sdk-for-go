@@ -173,10 +173,10 @@ func (r PkgsReport) IsEmpty() bool {
 }
 
 // ToMarkdown writes the report to string in the markdown form
-func (r *PkgsReport) ToMarkdown(withHeader bool, version, marker string) string {
+func (r *PkgsReport) ToMarkdown(withHeader bool, version string) string {
 	md := markdown.Writer{}
 	if withHeader {
-		r.writeHeader(&md, version, marker)
+		r.writeHeader(&md, version)
 	}
 	if r.IsEmpty() {
 		return ""
@@ -187,9 +187,9 @@ func (r *PkgsReport) ToMarkdown(withHeader bool, version, marker string) string 
 	return md.String()
 }
 
-func (r *PkgsReport) writeHeader(md *markdown.Writer, version, marker string) {
+func (r *PkgsReport) writeHeader(md *markdown.Writer, version string) {
 	md.WriteTitle("Release History")
-	md.WriteTopLevelHeader(fmt.Sprintf("%s (%s)", version, marker))
+	md.WriteTopLevelHeader(fmt.Sprintf("%s (Released)", version))
 }
 
 func (r *PkgsReport) writeAddedPackages(md *markdown.Writer) {

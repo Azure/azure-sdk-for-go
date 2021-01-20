@@ -18,6 +18,7 @@ import "testing"
 func TestMarkdownWriter_String(t *testing.T) {
 	md := Writer{}
 	md.WriteTitle("Title")
+	md.WriteTopLevelHeader("Top-level header")
 	md.WriteHeader("Header1")
 	md.WriteSubheader("Sub-header1")
 	md.WriteLine("Foo")
@@ -25,6 +26,8 @@ func TestMarkdownWriter_String(t *testing.T) {
 	md.WriteLine(getTable().String())
 	result := md.String()
 	expected := `# Title
+
+## Top-level header
 
 ### Header1
 

@@ -15,6 +15,7 @@ const (
 	AccessTierCool AccessTier = "Cool"
 )
 
+// PossibleAccessTierValues returns the possible values for the AccessTier const type.
 func PossibleAccessTierValues() []AccessTier {
 	return []AccessTier{
 		AccessTierHot,
@@ -34,6 +35,7 @@ const (
 	AccountStatusUnavailable AccountStatus = "unavailable"
 )
 
+// PossibleAccountStatusValues returns the possible values for the AccountStatus const type.
 func PossibleAccountStatusValues() []AccountStatus {
 	return []AccountStatus{
 		AccountStatusAvailable,
@@ -56,6 +58,7 @@ const (
 	BlobRestoreProgressStatusInProgress BlobRestoreProgressStatus = "InProgress"
 )
 
+// PossibleBlobRestoreProgressStatusValues returns the possible values for the BlobRestoreProgressStatus const type.
 func PossibleBlobRestoreProgressStatusValues() []BlobRestoreProgressStatus {
 	return []BlobRestoreProgressStatus{
 		BlobRestoreProgressStatusComplete,
@@ -80,6 +83,7 @@ const (
 	BypassNone          Bypass = "None"
 )
 
+// PossibleBypassValues returns the possible values for the Bypass const type.
 func PossibleBypassValues() []Bypass {
 	return []Bypass{
 		BypassAzureServices,
@@ -105,6 +109,7 @@ const (
 	CorsRuleAllowedMethodsItemPut     CorsRuleAllowedMethodsItem = "PUT"
 )
 
+// PossibleCorsRuleAllowedMethodsItemValues returns the possible values for the CorsRuleAllowedMethodsItem const type.
 func PossibleCorsRuleAllowedMethodsItemValues() []CorsRuleAllowedMethodsItem {
 	return []CorsRuleAllowedMethodsItem{
 		CorsRuleAllowedMethodsItemDelete,
@@ -129,6 +134,7 @@ const (
 	DefaultActionDeny  DefaultAction = "Deny"
 )
 
+// PossibleDefaultActionValues returns the possible values for the DefaultAction const type.
 func PossibleDefaultActionValues() []DefaultAction {
 	return []DefaultAction{
 		DefaultActionAllow,
@@ -149,6 +155,7 @@ const (
 	DirectoryServiceOptionsNone  DirectoryServiceOptions = "None"
 )
 
+// PossibleDirectoryServiceOptionsValues returns the possible values for the DirectoryServiceOptions const type.
 func PossibleDirectoryServiceOptionsValues() []DirectoryServiceOptions {
 	return []DirectoryServiceOptions{
 		DirectoryServiceOptionsAadds,
@@ -169,6 +176,7 @@ const (
 	EnabledProtocolsSmb EnabledProtocols = "SMB"
 )
 
+// PossibleEnabledProtocolsValues returns the possible values for the EnabledProtocols const type.
 func PossibleEnabledProtocolsValues() []EnabledProtocols {
 	return []EnabledProtocols{
 		EnabledProtocolsNfs,
@@ -188,6 +196,7 @@ const (
 	EncryptionScopeSourceMicrosoftStorage  EncryptionScopeSource = "Microsoft.Storage"
 )
 
+// PossibleEncryptionScopeSourceValues returns the possible values for the EncryptionScopeSource const type.
 func PossibleEncryptionScopeSourceValues() []EncryptionScopeSource {
 	return []EncryptionScopeSource{
 		EncryptionScopeSourceMicrosoftKeyVault,
@@ -207,6 +216,7 @@ const (
 	EncryptionScopeStateEnabled  EncryptionScopeState = "Enabled"
 )
 
+// PossibleEncryptionScopeStateValues returns the possible values for the EncryptionScopeState const type.
 func PossibleEncryptionScopeStateValues() []EncryptionScopeState {
 	return []EncryptionScopeState{
 		EncryptionScopeStateDisabled,
@@ -230,6 +240,7 @@ const (
 	GeoReplicationStatusUnavailable GeoReplicationStatus = "Unavailable"
 )
 
+// PossibleGeoReplicationStatusValues returns the possible values for the GeoReplicationStatus const type.
 func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
 	return []GeoReplicationStatus{
 		GeoReplicationStatusBootstrap,
@@ -250,6 +261,7 @@ const (
 	HTTPProtocolHTTPs     HTTPProtocol = "https"
 )
 
+// PossibleHTTPProtocolValues returns the possible values for the HTTPProtocol const type.
 func PossibleHTTPProtocolValues() []HTTPProtocol {
 	return []HTTPProtocol{
 		HTTPProtocolHTTPsHttp,
@@ -269,6 +281,7 @@ const (
 	ImmutabilityPolicyStateUnlocked ImmutabilityPolicyState = "Unlocked"
 )
 
+// PossibleImmutabilityPolicyStateValues returns the possible values for the ImmutabilityPolicyState const type.
 func PossibleImmutabilityPolicyStateValues() []ImmutabilityPolicyState {
 	return []ImmutabilityPolicyState{
 		ImmutabilityPolicyStateLocked,
@@ -289,6 +302,7 @@ const (
 	ImmutabilityPolicyUpdateTypePut    ImmutabilityPolicyUpdateType = "put"
 )
 
+// PossibleImmutabilityPolicyUpdateTypeValues returns the possible values for the ImmutabilityPolicyUpdateType const type.
 func PossibleImmutabilityPolicyUpdateTypeValues() []ImmutabilityPolicyUpdateType {
 	return []ImmutabilityPolicyUpdateType{
 		ImmutabilityPolicyUpdateTypeExtend,
@@ -309,6 +323,7 @@ const (
 	KeyPermissionFull KeyPermission = "Full"
 )
 
+// PossibleKeyPermissionValues returns the possible values for the KeyPermission const type.
 func PossibleKeyPermissionValues() []KeyPermission {
 	return []KeyPermission{
 		KeyPermissionRead,
@@ -328,6 +343,7 @@ const (
 	KeySourceMicrosoftStorage  KeySource = "Microsoft.Storage"
 )
 
+// PossibleKeySourceValues returns the possible values for the KeySource const type.
 func PossibleKeySourceValues() []KeySource {
 	return []KeySource{
 		KeySourceMicrosoftKeyvault,
@@ -348,6 +364,7 @@ const (
 	KeyTypeService KeyType = "Service"
 )
 
+// PossibleKeyTypeValues returns the possible values for the KeyType const type.
 func PossibleKeyTypeValues() []KeyType {
 	return []KeyType{
 		KeyTypeAccount,
@@ -370,6 +387,7 @@ const (
 	KindStorageV2        Kind = "StorageV2"
 )
 
+// PossibleKindValues returns the possible values for the Kind const type.
 func PossibleKindValues() []Kind {
 	return []Kind{
 		KindBlobStorage,
@@ -392,6 +410,7 @@ const (
 	LargeFileSharesStateEnabled  LargeFileSharesState = "Enabled"
 )
 
+// PossibleLargeFileSharesStateValues returns the possible values for the LargeFileSharesState const type.
 func PossibleLargeFileSharesStateValues() []LargeFileSharesState {
 	return []LargeFileSharesState{
 		LargeFileSharesStateDisabled,
@@ -414,6 +433,7 @@ const (
 	LeaseContainerRequestActionRenew   LeaseContainerRequestAction = "Renew"
 )
 
+// PossibleLeaseContainerRequestActionValues returns the possible values for the LeaseContainerRequestAction const type.
 func PossibleLeaseContainerRequestActionValues() []LeaseContainerRequestAction {
 	return []LeaseContainerRequestAction{
 		LeaseContainerRequestActionAcquire,
@@ -436,6 +456,7 @@ const (
 	LeaseDurationInfinite LeaseDuration = "Infinite"
 )
 
+// PossibleLeaseDurationValues returns the possible values for the LeaseDuration const type.
 func PossibleLeaseDurationValues() []LeaseDuration {
 	return []LeaseDuration{
 		LeaseDurationFixed,
@@ -458,6 +479,7 @@ const (
 	LeaseStateLeased    LeaseState = "Leased"
 )
 
+// PossibleLeaseStateValues returns the possible values for the LeaseState const type.
 func PossibleLeaseStateValues() []LeaseState {
 	return []LeaseState{
 		LeaseStateAvailable,
@@ -480,6 +502,7 @@ const (
 	LeaseStatusUnlocked LeaseStatus = "Unlocked"
 )
 
+// PossibleLeaseStatusValues returns the possible values for the LeaseStatus const type.
 func PossibleLeaseStatusValues() []LeaseStatus {
 	return []LeaseStatus{
 		LeaseStatusLocked,
@@ -497,6 +520,7 @@ const (
 	ListContainersIncludeDeleted ListContainersInclude = "deleted"
 )
 
+// PossibleListContainersIncludeValues returns the possible values for the ListContainersInclude const type.
 func PossibleListContainersIncludeValues() []ListContainersInclude {
 	return []ListContainersInclude{
 		ListContainersIncludeDeleted,
@@ -513,6 +537,7 @@ const (
 	ManagementPolicyNameDefault ManagementPolicyName = "default"
 )
 
+// PossibleManagementPolicyNameValues returns the possible values for the ManagementPolicyName const type.
 func PossibleManagementPolicyNameValues() []ManagementPolicyName {
 	return []ManagementPolicyName{
 		ManagementPolicyNameDefault,
@@ -532,6 +557,7 @@ const (
 	MinimumTLSVersionTLS12 MinimumTLSVersion = "TLS1_2"
 )
 
+// PossibleMinimumTLSVersionValues returns the possible values for the MinimumTLSVersion const type.
 func PossibleMinimumTLSVersionValues() []MinimumTLSVersion {
 	return []MinimumTLSVersion{
 		MinimumTLSVersionTLS10,
@@ -559,6 +585,7 @@ const (
 	PermissionsW Permissions = "w"
 )
 
+// PossiblePermissionsValues returns the possible values for the Permissions const type.
 func PossiblePermissionsValues() []Permissions {
 	return []Permissions{
 		PermissionsA,
@@ -586,6 +613,7 @@ const (
 	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
 )
 
+// PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
 func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
 	return []PrivateEndpointConnectionProvisioningState{
 		PrivateEndpointConnectionProvisioningStateCreating,
@@ -608,6 +636,7 @@ const (
 	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
 )
 
+// PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
 func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
 	return []PrivateEndpointServiceConnectionStatus{
 		PrivateEndpointServiceConnectionStatusApproved,
@@ -629,6 +658,7 @@ const (
 	ProvisioningStateSucceeded    ProvisioningState = "Succeeded"
 )
 
+// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{
 		ProvisioningStateCreating,
@@ -650,6 +680,7 @@ const (
 	PublicAccessNone      PublicAccess = "None"
 )
 
+// PossiblePublicAccessValues returns the possible values for the PublicAccess const type.
 func PossiblePublicAccessValues() []PublicAccess {
 	return []PublicAccess{
 		PublicAccessContainer,
@@ -670,6 +701,7 @@ const (
 	ReasonAlreadyExists      Reason = "AlreadyExists"
 )
 
+// PossibleReasonValues returns the possible values for the Reason const type.
 func PossibleReasonValues() []Reason {
 	return []Reason{
 		ReasonAccountNameInvalid,
@@ -691,6 +723,7 @@ const (
 	ReasonCodeQuotaID                     ReasonCode = "QuotaId"
 )
 
+// PossibleReasonCodeValues returns the possible values for the ReasonCode const type.
 func PossibleReasonCodeValues() []ReasonCode {
 	return []ReasonCode{
 		ReasonCodeNotAvailableForSubscription,
@@ -711,6 +744,7 @@ const (
 	RootSquashTypeRootSquash   RootSquashType = "RootSquash"
 )
 
+// PossibleRootSquashTypeValues returns the possible values for the RootSquashType const type.
 func PossibleRootSquashTypeValues() []RootSquashType {
 	return []RootSquashType{
 		RootSquashTypeAllSquash,
@@ -731,6 +765,7 @@ const (
 	RoutingChoiceMicrosoftRouting RoutingChoice = "MicrosoftRouting"
 )
 
+// PossibleRoutingChoiceValues returns the possible values for the RoutingChoice const type.
 func PossibleRoutingChoiceValues() []RoutingChoice {
 	return []RoutingChoice{
 		RoutingChoiceInternetRouting,
@@ -749,6 +784,7 @@ const (
 	RuleTypeLifecycle RuleType = "Lifecycle"
 )
 
+// PossibleRuleTypeValues returns the possible values for the RuleType const type.
 func PossibleRuleTypeValues() []RuleType {
 	return []RuleType{
 		RuleTypeLifecycle,
@@ -773,6 +809,7 @@ const (
 	SKUNameStandardZrs    SKUName = "Standard_ZRS"
 )
 
+// PossibleSKUNameValues returns the possible values for the SKUName const type.
 func PossibleSKUNameValues() []SKUName {
 	return []SKUName{
 		SKUNamePremiumLrs,
@@ -798,6 +835,7 @@ const (
 	SKUTierPremium  SKUTier = "Premium"
 )
 
+// PossibleSKUTierValues returns the possible values for the SKUTier const type.
 func PossibleSKUTierValues() []SKUTier {
 	return []SKUTier{
 		SKUTierStandard,
@@ -819,6 +857,7 @@ const (
 	ServicesT Services = "t"
 )
 
+// PossibleServicesValues returns the possible values for the Services const type.
 func PossibleServicesValues() []Services {
 	return []Services{
 		ServicesB,
@@ -843,6 +882,7 @@ const (
 	ShareAccessTierTransactionOptimized ShareAccessTier = "TransactionOptimized"
 )
 
+// PossibleShareAccessTierValues returns the possible values for the ShareAccessTier const type.
 func PossibleShareAccessTierValues() []ShareAccessTier {
 	return []ShareAccessTier{
 		ShareAccessTierCool,
@@ -866,6 +906,7 @@ const (
 	SignedResourceS SignedResource = "s"
 )
 
+// PossibleSignedResourceValues returns the possible values for the SignedResource const type.
 func PossibleSignedResourceValues() []SignedResource {
 	return []SignedResource{
 		SignedResourceB,
@@ -890,6 +931,7 @@ const (
 	SignedResourceTypesS SignedResourceTypes = "s"
 )
 
+// PossibleSignedResourceTypesValues returns the possible values for the SignedResourceTypes const type.
 func PossibleSignedResourceTypesValues() []SignedResourceTypes {
 	return []SignedResourceTypes{
 		SignedResourceTypesC,
@@ -913,6 +955,7 @@ const (
 	StateNetworkSourceDeleted State = "networkSourceDeleted"
 )
 
+// PossibleStateValues returns the possible values for the State const type.
 func PossibleStateValues() []State {
 	return []State{
 		StateProvisioning,
@@ -934,6 +977,7 @@ const (
 	StorageAccountExpandBlobRestoreStatus   StorageAccountExpand = "blobRestoreStatus"
 )
 
+// PossibleStorageAccountExpandValues returns the possible values for the StorageAccountExpand const type.
 func PossibleStorageAccountExpandValues() []StorageAccountExpand {
 	return []StorageAccountExpand{
 		StorageAccountExpandGeoReplicationStats,
@@ -957,6 +1001,7 @@ const (
 	UsageUnitBytesPerSecond  UsageUnit = "BytesPerSecond"
 )
 
+// PossibleUsageUnitValues returns the possible values for the UsageUnit const type.
 func PossibleUsageUnitValues() []UsageUnit {
 	return []UsageUnit{
 		UsageUnitCount,

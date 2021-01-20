@@ -27,37 +27,28 @@ type ProximityPlacementGroupsClient struct {
 }
 
 // NewProximityPlacementGroupsClient creates a new instance of ProximityPlacementGroupsClient with the specified values.
-func NewProximityPlacementGroupsClient(con *armcore.Connection, subscriptionID string) ProximityPlacementGroupsClient {
-	return ProximityPlacementGroupsClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client ProximityPlacementGroupsClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewProximityPlacementGroupsClient(con *armcore.Connection, subscriptionID string) *ProximityPlacementGroupsClient {
+	return &ProximityPlacementGroupsClient{con: con, subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Create or update a proximity placement group.
-func (client ProximityPlacementGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters ProximityPlacementGroup, options *ProximityPlacementGroupsCreateOrUpdateOptions) (ProximityPlacementGroupResponse, error) {
+func (client *ProximityPlacementGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters ProximityPlacementGroup, options *ProximityPlacementGroupsCreateOrUpdateOptions) (ProximityPlacementGroupResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, proximityPlacementGroupName, parameters, options)
 	if err != nil {
 		return ProximityPlacementGroupResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return ProximityPlacementGroupResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return ProximityPlacementGroupResponse{}, client.createOrUpdateHandleError(resp)
 	}
-	result, err := client.createOrUpdateHandleResponse(resp)
-	if err != nil {
-		return ProximityPlacementGroupResponse{}, err
-	}
-	return result, nil
+	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client ProximityPlacementGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters ProximityPlacementGroup, options *ProximityPlacementGroupsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *ProximityPlacementGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters ProximityPlacementGroup, options *ProximityPlacementGroupsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups/{proximityPlacementGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{proximityPlacementGroupName}", url.PathEscape(proximityPlacementGroupName))
@@ -75,14 +66,16 @@ func (client ProximityPlacementGroupsClient) createOrUpdateCreateRequest(ctx con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client ProximityPlacementGroupsClient) createOrUpdateHandleResponse(resp *azcore.Response) (ProximityPlacementGroupResponse, error) {
-	result := ProximityPlacementGroupResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ProximityPlacementGroup)
-	return result, err
+func (client *ProximityPlacementGroupsClient) createOrUpdateHandleResponse(resp *azcore.Response) (ProximityPlacementGroupResponse, error) {
+	var val *ProximityPlacementGroup
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ProximityPlacementGroupResponse{}, err
+	}
+	return ProximityPlacementGroupResponse{RawResponse: resp.Response, ProximityPlacementGroup: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client ProximityPlacementGroupsClient) createOrUpdateHandleError(resp *azcore.Response) error {
+func (client *ProximityPlacementGroupsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -94,12 +87,12 @@ func (client ProximityPlacementGroupsClient) createOrUpdateHandleError(resp *azc
 }
 
 // Delete - Delete a proximity placement group.
-func (client ProximityPlacementGroupsClient) Delete(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, options *ProximityPlacementGroupsDeleteOptions) (*http.Response, error) {
+func (client *ProximityPlacementGroupsClient) Delete(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, options *ProximityPlacementGroupsDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, proximityPlacementGroupName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +103,7 @@ func (client ProximityPlacementGroupsClient) Delete(ctx context.Context, resourc
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client ProximityPlacementGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, options *ProximityPlacementGroupsDeleteOptions) (*azcore.Request, error) {
+func (client *ProximityPlacementGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, options *ProximityPlacementGroupsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups/{proximityPlacementGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{proximityPlacementGroupName}", url.PathEscape(proximityPlacementGroupName))
@@ -127,7 +120,7 @@ func (client ProximityPlacementGroupsClient) deleteCreateRequest(ctx context.Con
 }
 
 // deleteHandleError handles the Delete error response.
-func (client ProximityPlacementGroupsClient) deleteHandleError(resp *azcore.Response) error {
+func (client *ProximityPlacementGroupsClient) deleteHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -139,27 +132,23 @@ func (client ProximityPlacementGroupsClient) deleteHandleError(resp *azcore.Resp
 }
 
 // Get - Retrieves information about a proximity placement group .
-func (client ProximityPlacementGroupsClient) Get(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, options *ProximityPlacementGroupsGetOptions) (ProximityPlacementGroupResponse, error) {
+func (client *ProximityPlacementGroupsClient) Get(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, options *ProximityPlacementGroupsGetOptions) (ProximityPlacementGroupResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, proximityPlacementGroupName, options)
 	if err != nil {
 		return ProximityPlacementGroupResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return ProximityPlacementGroupResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return ProximityPlacementGroupResponse{}, client.getHandleError(resp)
 	}
-	result, err := client.getHandleResponse(resp)
-	if err != nil {
-		return ProximityPlacementGroupResponse{}, err
-	}
-	return result, nil
+	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client ProximityPlacementGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, options *ProximityPlacementGroupsGetOptions) (*azcore.Request, error) {
+func (client *ProximityPlacementGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, options *ProximityPlacementGroupsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups/{proximityPlacementGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{proximityPlacementGroupName}", url.PathEscape(proximityPlacementGroupName))
@@ -180,14 +169,16 @@ func (client ProximityPlacementGroupsClient) getCreateRequest(ctx context.Contex
 }
 
 // getHandleResponse handles the Get response.
-func (client ProximityPlacementGroupsClient) getHandleResponse(resp *azcore.Response) (ProximityPlacementGroupResponse, error) {
-	result := ProximityPlacementGroupResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ProximityPlacementGroup)
-	return result, err
+func (client *ProximityPlacementGroupsClient) getHandleResponse(resp *azcore.Response) (ProximityPlacementGroupResponse, error) {
+	var val *ProximityPlacementGroup
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ProximityPlacementGroupResponse{}, err
+	}
+	return ProximityPlacementGroupResponse{RawResponse: resp.Response, ProximityPlacementGroup: val}, nil
 }
 
 // getHandleError handles the Get error response.
-func (client ProximityPlacementGroupsClient) getHandleError(resp *azcore.Response) error {
+func (client *ProximityPlacementGroupsClient) getHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -199,7 +190,7 @@ func (client ProximityPlacementGroupsClient) getHandleError(resp *azcore.Respons
 }
 
 // ListByResourceGroup - Lists all proximity placement groups in a resource group.
-func (client ProximityPlacementGroupsClient) ListByResourceGroup(resourceGroupName string, options *ProximityPlacementGroupsListByResourceGroupOptions) ProximityPlacementGroupListResultPager {
+func (client *ProximityPlacementGroupsClient) ListByResourceGroup(resourceGroupName string, options *ProximityPlacementGroupsListByResourceGroupOptions) ProximityPlacementGroupListResultPager {
 	return &proximityPlacementGroupListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -215,7 +206,7 @@ func (client ProximityPlacementGroupsClient) ListByResourceGroup(resourceGroupNa
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client ProximityPlacementGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ProximityPlacementGroupsListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *ProximityPlacementGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ProximityPlacementGroupsListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -232,14 +223,16 @@ func (client ProximityPlacementGroupsClient) listByResourceGroupCreateRequest(ct
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client ProximityPlacementGroupsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (ProximityPlacementGroupListResultResponse, error) {
-	result := ProximityPlacementGroupListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ProximityPlacementGroupListResult)
-	return result, err
+func (client *ProximityPlacementGroupsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (ProximityPlacementGroupListResultResponse, error) {
+	var val *ProximityPlacementGroupListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ProximityPlacementGroupListResultResponse{}, err
+	}
+	return ProximityPlacementGroupListResultResponse{RawResponse: resp.Response, ProximityPlacementGroupListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client ProximityPlacementGroupsClient) listByResourceGroupHandleError(resp *azcore.Response) error {
+func (client *ProximityPlacementGroupsClient) listByResourceGroupHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -251,7 +244,7 @@ func (client ProximityPlacementGroupsClient) listByResourceGroupHandleError(resp
 }
 
 // ListBySubscription - Lists all proximity placement groups in a subscription.
-func (client ProximityPlacementGroupsClient) ListBySubscription(options *ProximityPlacementGroupsListBySubscriptionOptions) ProximityPlacementGroupListResultPager {
+func (client *ProximityPlacementGroupsClient) ListBySubscription(options *ProximityPlacementGroupsListBySubscriptionOptions) ProximityPlacementGroupListResultPager {
 	return &proximityPlacementGroupListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -267,7 +260,7 @@ func (client ProximityPlacementGroupsClient) ListBySubscription(options *Proximi
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client ProximityPlacementGroupsClient) listBySubscriptionCreateRequest(ctx context.Context, options *ProximityPlacementGroupsListBySubscriptionOptions) (*azcore.Request, error) {
+func (client *ProximityPlacementGroupsClient) listBySubscriptionCreateRequest(ctx context.Context, options *ProximityPlacementGroupsListBySubscriptionOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/proximityPlacementGroups"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -283,14 +276,16 @@ func (client ProximityPlacementGroupsClient) listBySubscriptionCreateRequest(ctx
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client ProximityPlacementGroupsClient) listBySubscriptionHandleResponse(resp *azcore.Response) (ProximityPlacementGroupListResultResponse, error) {
-	result := ProximityPlacementGroupListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ProximityPlacementGroupListResult)
-	return result, err
+func (client *ProximityPlacementGroupsClient) listBySubscriptionHandleResponse(resp *azcore.Response) (ProximityPlacementGroupListResultResponse, error) {
+	var val *ProximityPlacementGroupListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ProximityPlacementGroupListResultResponse{}, err
+	}
+	return ProximityPlacementGroupListResultResponse{RawResponse: resp.Response, ProximityPlacementGroupListResult: val}, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client ProximityPlacementGroupsClient) listBySubscriptionHandleError(resp *azcore.Response) error {
+func (client *ProximityPlacementGroupsClient) listBySubscriptionHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -302,27 +297,23 @@ func (client ProximityPlacementGroupsClient) listBySubscriptionHandleError(resp 
 }
 
 // Update - Update a proximity placement group.
-func (client ProximityPlacementGroupsClient) Update(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters UpdateResource, options *ProximityPlacementGroupsUpdateOptions) (ProximityPlacementGroupResponse, error) {
+func (client *ProximityPlacementGroupsClient) Update(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters UpdateResource, options *ProximityPlacementGroupsUpdateOptions) (ProximityPlacementGroupResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, proximityPlacementGroupName, parameters, options)
 	if err != nil {
 		return ProximityPlacementGroupResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return ProximityPlacementGroupResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return ProximityPlacementGroupResponse{}, client.updateHandleError(resp)
 	}
-	result, err := client.updateHandleResponse(resp)
-	if err != nil {
-		return ProximityPlacementGroupResponse{}, err
-	}
-	return result, nil
+	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client ProximityPlacementGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters UpdateResource, options *ProximityPlacementGroupsUpdateOptions) (*azcore.Request, error) {
+func (client *ProximityPlacementGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters UpdateResource, options *ProximityPlacementGroupsUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups/{proximityPlacementGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{proximityPlacementGroupName}", url.PathEscape(proximityPlacementGroupName))
@@ -340,14 +331,16 @@ func (client ProximityPlacementGroupsClient) updateCreateRequest(ctx context.Con
 }
 
 // updateHandleResponse handles the Update response.
-func (client ProximityPlacementGroupsClient) updateHandleResponse(resp *azcore.Response) (ProximityPlacementGroupResponse, error) {
-	result := ProximityPlacementGroupResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ProximityPlacementGroup)
-	return result, err
+func (client *ProximityPlacementGroupsClient) updateHandleResponse(resp *azcore.Response) (ProximityPlacementGroupResponse, error) {
+	var val *ProximityPlacementGroup
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ProximityPlacementGroupResponse{}, err
+	}
+	return ProximityPlacementGroupResponse{RawResponse: resp.Response, ProximityPlacementGroup: val}, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client ProximityPlacementGroupsClient) updateHandleError(resp *azcore.Response) error {
+func (client *ProximityPlacementGroupsClient) updateHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)

@@ -27,37 +27,28 @@ type VirtualMachineSizesClient struct {
 }
 
 // NewVirtualMachineSizesClient creates a new instance of VirtualMachineSizesClient with the specified values.
-func NewVirtualMachineSizesClient(con *armcore.Connection, subscriptionID string) VirtualMachineSizesClient {
-	return VirtualMachineSizesClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client VirtualMachineSizesClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewVirtualMachineSizesClient(con *armcore.Connection, subscriptionID string) *VirtualMachineSizesClient {
+	return &VirtualMachineSizesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // List - This API is deprecated. Use Resources Skus [https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list]
-func (client VirtualMachineSizesClient) List(ctx context.Context, location string, options *VirtualMachineSizesListOptions) (VirtualMachineSizeListResultResponse, error) {
+func (client *VirtualMachineSizesClient) List(ctx context.Context, location string, options *VirtualMachineSizesListOptions) (VirtualMachineSizeListResultResponse, error) {
 	req, err := client.listCreateRequest(ctx, location, options)
 	if err != nil {
 		return VirtualMachineSizeListResultResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return VirtualMachineSizeListResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return VirtualMachineSizeListResultResponse{}, client.listHandleError(resp)
 	}
-	result, err := client.listHandleResponse(resp)
-	if err != nil {
-		return VirtualMachineSizeListResultResponse{}, err
-	}
-	return result, nil
+	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client VirtualMachineSizesClient) listCreateRequest(ctx context.Context, location string, options *VirtualMachineSizesListOptions) (*azcore.Request, error) {
+func (client *VirtualMachineSizesClient) listCreateRequest(ctx context.Context, location string, options *VirtualMachineSizesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/vmSizes"
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -74,14 +65,16 @@ func (client VirtualMachineSizesClient) listCreateRequest(ctx context.Context, l
 }
 
 // listHandleResponse handles the List response.
-func (client VirtualMachineSizesClient) listHandleResponse(resp *azcore.Response) (VirtualMachineSizeListResultResponse, error) {
-	result := VirtualMachineSizeListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.VirtualMachineSizeListResult)
-	return result, err
+func (client *VirtualMachineSizesClient) listHandleResponse(resp *azcore.Response) (VirtualMachineSizeListResultResponse, error) {
+	var val *VirtualMachineSizeListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return VirtualMachineSizeListResultResponse{}, err
+	}
+	return VirtualMachineSizeListResultResponse{RawResponse: resp.Response, VirtualMachineSizeListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client VirtualMachineSizesClient) listHandleError(resp *azcore.Response) error {
+func (client *VirtualMachineSizesClient) listHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)

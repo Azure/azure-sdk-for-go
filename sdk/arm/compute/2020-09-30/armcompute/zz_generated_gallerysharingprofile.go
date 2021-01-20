@@ -25,17 +25,12 @@ type GallerySharingProfileClient struct {
 }
 
 // NewGallerySharingProfileClient creates a new instance of GallerySharingProfileClient with the specified values.
-func NewGallerySharingProfileClient(con *armcore.Connection, subscriptionID string) GallerySharingProfileClient {
-	return GallerySharingProfileClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client GallerySharingProfileClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewGallerySharingProfileClient(con *armcore.Connection, subscriptionID string) *GallerySharingProfileClient {
+	return &GallerySharingProfileClient{con: con, subscriptionID: subscriptionID}
 }
 
 // BeginUpdate - Update sharing profile of a gallery.
-func (client GallerySharingProfileClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileBeginUpdateOptions) (SharingUpdatePollerResponse, error) {
+func (client *GallerySharingProfileClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileBeginUpdateOptions) (SharingUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, galleryName, sharingUpdate, options)
 	if err != nil {
 		return SharingUpdatePollerResponse{}, err
@@ -60,7 +55,7 @@ func (client GallerySharingProfileClient) BeginUpdate(ctx context.Context, resou
 
 // ResumeUpdate creates a new SharingUpdatePoller from the specified resume token.
 // token - The value must come from a previous call to SharingUpdatePoller.ResumeToken().
-func (client GallerySharingProfileClient) ResumeUpdate(token string) (SharingUpdatePoller, error) {
+func (client *GallerySharingProfileClient) ResumeUpdate(token string) (SharingUpdatePoller, error) {
 	pt, err := armcore.NewPollerFromResumeToken("GallerySharingProfileClient.Update", token, client.updateHandleError)
 	if err != nil {
 		return nil, err
@@ -72,12 +67,12 @@ func (client GallerySharingProfileClient) ResumeUpdate(token string) (SharingUpd
 }
 
 // Update - Update sharing profile of a gallery.
-func (client GallerySharingProfileClient) update(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileBeginUpdateOptions) (*azcore.Response, error) {
+func (client *GallerySharingProfileClient) update(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileBeginUpdateOptions) (*azcore.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, galleryName, sharingUpdate, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +83,7 @@ func (client GallerySharingProfileClient) update(ctx context.Context, resourceGr
 }
 
 // updateCreateRequest creates the Update request.
-func (client GallerySharingProfileClient) updateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileBeginUpdateOptions) (*azcore.Request, error) {
+func (client *GallerySharingProfileClient) updateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileBeginUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/share"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -106,14 +101,16 @@ func (client GallerySharingProfileClient) updateCreateRequest(ctx context.Contex
 }
 
 // updateHandleResponse handles the Update response.
-func (client GallerySharingProfileClient) updateHandleResponse(resp *azcore.Response) (SharingUpdateResponse, error) {
-	result := SharingUpdateResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.SharingUpdate)
-	return result, err
+func (client *GallerySharingProfileClient) updateHandleResponse(resp *azcore.Response) (SharingUpdateResponse, error) {
+	var val *SharingUpdate
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return SharingUpdateResponse{}, err
+	}
+	return SharingUpdateResponse{RawResponse: resp.Response, SharingUpdate: val}, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client GallerySharingProfileClient) updateHandleError(resp *azcore.Response) error {
+func (client *GallerySharingProfileClient) updateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

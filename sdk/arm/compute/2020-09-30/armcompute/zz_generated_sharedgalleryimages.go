@@ -24,37 +24,28 @@ type SharedGalleryImagesClient struct {
 }
 
 // NewSharedGalleryImagesClient creates a new instance of SharedGalleryImagesClient with the specified values.
-func NewSharedGalleryImagesClient(con *armcore.Connection, subscriptionID string) SharedGalleryImagesClient {
-	return SharedGalleryImagesClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client SharedGalleryImagesClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewSharedGalleryImagesClient(con *armcore.Connection, subscriptionID string) *SharedGalleryImagesClient {
+	return &SharedGalleryImagesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Get - Get a shared gallery image by subscription id or tenant id.
-func (client SharedGalleryImagesClient) Get(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, options *SharedGalleryImagesGetOptions) (SharedGalleryImageResponse, error) {
+func (client *SharedGalleryImagesClient) Get(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, options *SharedGalleryImagesGetOptions) (SharedGalleryImageResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, galleryUniqueName, galleryImageName, options)
 	if err != nil {
 		return SharedGalleryImageResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return SharedGalleryImageResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return SharedGalleryImageResponse{}, client.getHandleError(resp)
 	}
-	result, err := client.getHandleResponse(resp)
-	if err != nil {
-		return SharedGalleryImageResponse{}, err
-	}
-	return result, nil
+	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client SharedGalleryImagesClient) getCreateRequest(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, options *SharedGalleryImagesGetOptions) (*azcore.Request, error) {
+func (client *SharedGalleryImagesClient) getCreateRequest(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, options *SharedGalleryImagesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries/{galleryUniqueName}/images/{galleryImageName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
@@ -73,14 +64,16 @@ func (client SharedGalleryImagesClient) getCreateRequest(ctx context.Context, lo
 }
 
 // getHandleResponse handles the Get response.
-func (client SharedGalleryImagesClient) getHandleResponse(resp *azcore.Response) (SharedGalleryImageResponse, error) {
-	result := SharedGalleryImageResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.SharedGalleryImage)
-	return result, err
+func (client *SharedGalleryImagesClient) getHandleResponse(resp *azcore.Response) (SharedGalleryImageResponse, error) {
+	var val *SharedGalleryImage
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return SharedGalleryImageResponse{}, err
+	}
+	return SharedGalleryImageResponse{RawResponse: resp.Response, SharedGalleryImage: val}, nil
 }
 
 // getHandleError handles the Get error response.
-func (client SharedGalleryImagesClient) getHandleError(resp *azcore.Response) error {
+func (client *SharedGalleryImagesClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -89,7 +82,7 @@ func (client SharedGalleryImagesClient) getHandleError(resp *azcore.Response) er
 }
 
 // List - List shared gallery images by subscription id or tenant id.
-func (client SharedGalleryImagesClient) List(location string, galleryUniqueName string, options *SharedGalleryImagesListOptions) SharedGalleryImageListPager {
+func (client *SharedGalleryImagesClient) List(location string, galleryUniqueName string, options *SharedGalleryImagesListOptions) SharedGalleryImageListPager {
 	return &sharedGalleryImageListPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -105,7 +98,7 @@ func (client SharedGalleryImagesClient) List(location string, galleryUniqueName 
 }
 
 // listCreateRequest creates the List request.
-func (client SharedGalleryImagesClient) listCreateRequest(ctx context.Context, location string, galleryUniqueName string, options *SharedGalleryImagesListOptions) (*azcore.Request, error) {
+func (client *SharedGalleryImagesClient) listCreateRequest(ctx context.Context, location string, galleryUniqueName string, options *SharedGalleryImagesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries/{galleryUniqueName}/images"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
@@ -126,14 +119,16 @@ func (client SharedGalleryImagesClient) listCreateRequest(ctx context.Context, l
 }
 
 // listHandleResponse handles the List response.
-func (client SharedGalleryImagesClient) listHandleResponse(resp *azcore.Response) (SharedGalleryImageListResponse, error) {
-	result := SharedGalleryImageListResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.SharedGalleryImageList)
-	return result, err
+func (client *SharedGalleryImagesClient) listHandleResponse(resp *azcore.Response) (SharedGalleryImageListResponse, error) {
+	var val *SharedGalleryImageList
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return SharedGalleryImageListResponse{}, err
+	}
+	return SharedGalleryImageListResponse{RawResponse: resp.Response, SharedGalleryImageList: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client SharedGalleryImagesClient) listHandleError(resp *azcore.Response) error {
+func (client *SharedGalleryImagesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

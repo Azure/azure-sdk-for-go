@@ -425,7 +425,22 @@ type CloudError struct {
 func (e CloudError) Error() string {
 	msg := ""
 	if e.InnerError != nil {
-		msg += fmt.Sprintf("InnerError: %v\n", *e.InnerError)
+		msg += "InnerError: \n"
+		if e.InnerError.Details != nil {
+			msg += fmt.Sprintf("\tDetails: %v\n", *e.InnerError.Details)
+		}
+		if e.InnerError.Innererror != nil {
+			msg += fmt.Sprintf("\tInnererror: %v\n", *e.InnerError.Innererror)
+		}
+		if e.InnerError.Code != nil {
+			msg += fmt.Sprintf("\tCode: %v\n", *e.InnerError.Code)
+		}
+		if e.InnerError.Target != nil {
+			msg += fmt.Sprintf("\tTarget: %v\n", *e.InnerError.Target)
+		}
+		if e.InnerError.Message != nil {
+			msg += fmt.Sprintf("\tMessage: %v\n", *e.InnerError.Message)
+		}
 	}
 	if msg == "" {
 		msg = "missing error info"
@@ -541,7 +556,7 @@ type ContainerServiceListResultResponse struct {
 // Profile for the container service master.
 type ContainerServiceMasterProfile struct {
 	// Number of masters (VMs) in the container service cluster. Allowed values are 1, 3, and 5. The default value is 1.
-	Count *Enum47 `json:"count,omitempty"`
+	Count *Enum48 `json:"count,omitempty"`
 
 	// DNS prefix to be used to create the FQDN for master.
 	DNSPrefix *string `json:"dnsPrefix,omitempty"`
@@ -1165,6 +1180,9 @@ type DisallowedConfiguration struct {
 // Disk resource.
 type Disk struct {
 	Resource
+	// The extended location where the disk will be created. Extended location cannot be changed.
+	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+
 	// READ-ONLY; A relative URI containing the ID of the VM that has the disk attached.
 	ManagedBy *string `json:"managedBy,omitempty" azure:"ro"`
 
@@ -1298,13 +1316,30 @@ type DiskAccessesBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DiskAccessesBeginDeleteAPrivateEndpointConnectionOptions contains the optional parameters for the DiskAccesses.BeginDeleteAPrivateEndpointConnection
+// method.
+type DiskAccessesBeginDeleteAPrivateEndpointConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DiskAccessesBeginDeleteOptions contains the optional parameters for the DiskAccesses.BeginDelete method.
 type DiskAccessesBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DiskAccessesBeginUpdateAPrivateEndpointConnectionOptions contains the optional parameters for the DiskAccesses.BeginUpdateAPrivateEndpointConnection
+// method.
+type DiskAccessesBeginUpdateAPrivateEndpointConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DiskAccessesBeginUpdateOptions contains the optional parameters for the DiskAccesses.BeginUpdate method.
 type DiskAccessesBeginUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiskAccessesGetAPrivateEndpointConnectionOptions contains the optional parameters for the DiskAccesses.GetAPrivateEndpointConnection method.
+type DiskAccessesGetAPrivateEndpointConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1325,6 +1360,11 @@ type DiskAccessesListByResourceGroupOptions struct {
 
 // DiskAccessesListOptions contains the optional parameters for the DiskAccesses.List method.
 type DiskAccessesListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiskAccessesListPrivateEndpointConnectionsOptions contains the optional parameters for the DiskAccesses.ListPrivateEndpointConnections method.
+type DiskAccessesListPrivateEndpointConnectionsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1392,8 +1432,8 @@ type DiskEncryptionSetUpdate struct {
 
 // disk encryption set resource update properties.
 type DiskEncryptionSetUpdateProperties struct {
-	// Key Vault Key Url and vault id of KeK, KeK is optional and when provided is used to unwrap the encryptionKey
-	ActiveKey *KeyVaultAndKeyReference `json:"activeKey,omitempty"`
+	// Key Vault Key Url to be used for server side encryption of Managed Disks and Snapshots
+	ActiveKey *KeyForDiskEncryptionSet `json:"activeKey,omitempty"`
 
 	// The type of key used to encrypt the data of the disk.
 	EncryptionType *DiskEncryptionSetType `json:"encryptionType,omitempty"`
@@ -1497,6 +1537,9 @@ type DiskPollerResponse struct {
 
 // Disk resource properties.
 type DiskProperties struct {
+	// Set to true to enable bursting beyond the provisioned performance target of the disk. Bursting is disabled by default. Does not apply to Ultra disks.
+	BurstingEnabled *bool `json:"burstingEnabled,omitempty"`
+
 	// Disk source information. CreationData information cannot be changed after the disk has been created.
 	CreationData *CreationData `json:"creationData,omitempty"`
 
@@ -1550,6 +1593,10 @@ type DiskProperties struct {
 	// READ-ONLY; The disk provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 
+	// Purchase plan information for the the image from which the OS disk was created. E.g. - {name: 2019-Datacenter, publisher: MicrosoftWindowsServer, product:
+	// WindowsServer}
+	PurchasePlan *PurchasePlanAutoGenerated `json:"purchasePlan,omitempty"`
+
 	// READ-ONLY; Details of the list of all VMs that have the disk attached. maxShares should be set to a value greater than one for disks to allow attaching
 	// them to multiple VMs.
 	ShareInfo *[]ShareInfoElement `json:"shareInfo,omitempty" azure:"ro"`
@@ -1568,6 +1615,9 @@ type DiskProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type DiskProperties.
 func (d DiskProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if d.BurstingEnabled != nil {
+		objectMap["burstingEnabled"] = d.BurstingEnabled
+	}
 	if d.CreationData != nil {
 		objectMap["creationData"] = d.CreationData
 	}
@@ -1616,6 +1666,9 @@ func (d DiskProperties) MarshalJSON() ([]byte, error) {
 	if d.ProvisioningState != nil {
 		objectMap["provisioningState"] = d.ProvisioningState
 	}
+	if d.PurchasePlan != nil {
+		objectMap["purchasePlan"] = d.PurchasePlan
+	}
 	if d.ShareInfo != nil {
 		objectMap["shareInfo"] = d.ShareInfo
 	}
@@ -1640,6 +1693,11 @@ func (d *DiskProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "burstingEnabled":
+			if val != nil {
+				err = json.Unmarshal(*val, &d.BurstingEnabled)
+			}
+			delete(rawMsg, key)
 		case "creationData":
 			if val != nil {
 				err = json.Unmarshal(*val, &d.CreationData)
@@ -1720,6 +1778,11 @@ func (d *DiskProperties) UnmarshalJSON(data []byte) error {
 				err = json.Unmarshal(*val, &d.ProvisioningState)
 			}
 			delete(rawMsg, key)
+		case "purchasePlan":
+			if val != nil {
+				err = json.Unmarshal(*val, &d.PurchasePlan)
+			}
+			delete(rawMsg, key)
 		case "shareInfo":
 			if val != nil {
 				err = json.Unmarshal(*val, &d.ShareInfo)
@@ -1759,6 +1822,166 @@ type DiskResponse struct {
 	RawResponse *http.Response
 }
 
+// Properties of disk restore point
+type DiskRestorePoint struct {
+	ProxyOnlyResource
+	// Properties of an incremental disk restore point
+	Properties *DiskRestorePointProperties `json:"properties,omitempty"`
+}
+
+// DiskRestorePointGetOptions contains the optional parameters for the DiskRestorePoint.Get method.
+type DiskRestorePointGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// The List Disk Restore Points operation response.
+type DiskRestorePointList struct {
+	// The uri to fetch the next page of disk restore points. Call ListNext() with this to fetch the next page of disk restore points.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// A list of disk restore points.
+	Value *[]DiskRestorePoint `json:"value,omitempty"`
+}
+
+// DiskRestorePointListByRestorePointOptions contains the optional parameters for the DiskRestorePoint.ListByRestorePoint method.
+type DiskRestorePointListByRestorePointOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiskRestorePointListResponse is the response envelope for operations that return a DiskRestorePointList type.
+type DiskRestorePointListResponse struct {
+	// The List Disk Restore Points operation response.
+	DiskRestorePointList *DiskRestorePointList
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// Properties of an incremental disk restore point
+type DiskRestorePointProperties struct {
+	// READ-ONLY; Encryption property can be used to encrypt data at rest with customer managed keys or platform managed keys.
+	Encryption *Encryption `json:"encryption,omitempty" azure:"ro"`
+
+	// READ-ONLY; id of the backing snapshot's MIS family
+	FamilyID *string `json:"familyId,omitempty" azure:"ro"`
+
+	// The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
+	HyperVGeneration *HyperVGeneration `json:"hyperVGeneration,omitempty"`
+
+	// READ-ONLY; The Operating System type.
+	OSType *OperatingSystemTypes `json:"osType,omitempty" azure:"ro"`
+
+	// Purchase plan information for the the image from which the OS disk was created.
+	PurchasePlan *PurchasePlanAutoGenerated `json:"purchasePlan,omitempty"`
+
+	// READ-ONLY; arm id of source disk
+	SourceResourceID *string `json:"sourceResourceId,omitempty" azure:"ro"`
+
+	// READ-ONLY; unique incarnation id of the source disk
+	SourceUniqueID *string `json:"sourceUniqueId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The timestamp of restorePoint creation
+	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DiskRestorePointProperties.
+func (d DiskRestorePointProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if d.Encryption != nil {
+		objectMap["encryption"] = d.Encryption
+	}
+	if d.FamilyID != nil {
+		objectMap["familyId"] = d.FamilyID
+	}
+	if d.HyperVGeneration != nil {
+		objectMap["hyperVGeneration"] = d.HyperVGeneration
+	}
+	if d.OSType != nil {
+		objectMap["osType"] = d.OSType
+	}
+	if d.PurchasePlan != nil {
+		objectMap["purchasePlan"] = d.PurchasePlan
+	}
+	if d.SourceResourceID != nil {
+		objectMap["sourceResourceId"] = d.SourceResourceID
+	}
+	if d.SourceUniqueID != nil {
+		objectMap["sourceUniqueId"] = d.SourceUniqueID
+	}
+	if d.TimeCreated != nil {
+		objectMap["timeCreated"] = (*timeRFC3339)(d.TimeCreated)
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DiskRestorePointProperties.
+func (d *DiskRestorePointProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]*json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "encryption":
+			if val != nil {
+				err = json.Unmarshal(*val, &d.Encryption)
+			}
+			delete(rawMsg, key)
+		case "familyId":
+			if val != nil {
+				err = json.Unmarshal(*val, &d.FamilyID)
+			}
+			delete(rawMsg, key)
+		case "hyperVGeneration":
+			if val != nil {
+				err = json.Unmarshal(*val, &d.HyperVGeneration)
+			}
+			delete(rawMsg, key)
+		case "osType":
+			if val != nil {
+				err = json.Unmarshal(*val, &d.OSType)
+			}
+			delete(rawMsg, key)
+		case "purchasePlan":
+			if val != nil {
+				err = json.Unmarshal(*val, &d.PurchasePlan)
+			}
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			if val != nil {
+				err = json.Unmarshal(*val, &d.SourceResourceID)
+			}
+			delete(rawMsg, key)
+		case "sourceUniqueId":
+			if val != nil {
+				err = json.Unmarshal(*val, &d.SourceUniqueID)
+			}
+			delete(rawMsg, key)
+		case "timeCreated":
+			if val != nil {
+				var aux timeRFC3339
+				err = json.Unmarshal(*val, &aux)
+				d.TimeCreated = (*time.Time)(&aux)
+			}
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// DiskRestorePointResponse is the response envelope for operations that return a DiskRestorePoint type.
+type DiskRestorePointResponse struct {
+	// Properties of disk restore point
+	DiskRestorePoint *DiskRestorePoint
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
 // The disks sku name. Can be StandardLRS, PremiumLRS, StandardSSDLRS, or UltraSSDLRS.
 type DiskSKU struct {
 	// The sku name.
@@ -1782,6 +2005,9 @@ type DiskUpdate struct {
 
 // Disk resource update properties.
 type DiskUpdateProperties struct {
+	// Set to true to enable bursting beyond the provisioned performance target of the disk. Bursting is disabled by default. Does not apply to Ultra disks.
+	BurstingEnabled *bool `json:"burstingEnabled,omitempty"`
+
 	// ARM id of the DiskAccess resource for using private endpoints on disks.
 	DiskAccessID *string `json:"diskAccessId,omitempty"`
 
@@ -1819,6 +2045,9 @@ type DiskUpdateProperties struct {
 
 	// the Operating System type.
 	OSType *OperatingSystemTypes `json:"osType,omitempty"`
+
+	// Purchase plan information to be added on the OS disk
+	PurchasePlan *PurchasePlanAutoGenerated `json:"purchasePlan,omitempty"`
 
 	// Performance tier of the disk (e.g, P4, S10) as described here: https://azure.microsoft.com/en-us/pricing/details/managed-disks/. Does not apply to Ultra
 	// disks.
@@ -1894,20 +2123,22 @@ type EncryptionSetIDentity struct {
 	// if the resource has a systemAssigned(implicit) identity
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 
-	// The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is supported.
+	// The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is supported for new creations. Disk Encryption Sets can be updated with
+	// Identity type None during migration of
+	// subscription to a new Azure Active Directory tenant; it will cause the encrypted resources to lose access to the keys.
 	Type *DiskEncryptionSetIDentityType `json:"type,omitempty"`
 }
 
 type EncryptionSetProperties struct {
 	// The key vault key which is currently used by this disk encryption set.
-	ActiveKey *KeyVaultAndKeyReference `json:"activeKey,omitempty"`
+	ActiveKey *KeyForDiskEncryptionSet `json:"activeKey,omitempty"`
 
 	// The type of key used to encrypt the data of the disk.
 	EncryptionType *DiskEncryptionSetType `json:"encryptionType,omitempty"`
 
 	// READ-ONLY; A readonly collection of key vault keys previously used by this disk encryption set while a key rotation is in progress. It will be empty
 	// if there is no ongoing key rotation.
-	PreviousKeys *[]KeyVaultAndKeyReference `json:"previousKeys,omitempty" azure:"ro"`
+	PreviousKeys *[]KeyForDiskEncryptionSet `json:"previousKeys,omitempty" azure:"ro"`
 
 	// READ-ONLY; The disk encryption set provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
@@ -1936,6 +2167,15 @@ type EncryptionSettingsElement struct {
 
 	// Key Vault Key Url and vault id of the key encryption key. KeyEncryptionKey is optional and when provided is used to unwrap the disk encryption key.
 	KeyEncryptionKey *KeyVaultAndKeyReference `json:"keyEncryptionKey,omitempty"`
+}
+
+// The complex type of the extended location.
+type ExtendedLocation struct {
+	// The name of the extended location.
+	Name *string `json:"name,omitempty"`
+
+	// The type of the extended location.
+	Type *ExtendedLocationTypes `json:"type,omitempty"`
 }
 
 // GalleriesBeginCreateOrUpdateOptions contains the optional parameters for the Galleries.BeginCreateOrUpdate method.
@@ -3261,6 +3501,16 @@ func (i *InstanceViewStatus) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// Key Vault Key Url to be used for server side encryption of Managed Disks and Snapshots
+type KeyForDiskEncryptionSet struct {
+	// Fully versioned Key Url pointing to a key in KeyVault
+	KeyURL *string `json:"keyUrl,omitempty"`
+
+	// Resource id of the KeyVault containing the key or secret. This property is optional and cannot be used if the KeyVault subscription is not the same as
+	// the Disk Encryption Set subscription.
+	SourceVault *SourceVault `json:"sourceVault,omitempty"`
+}
+
 // Key Vault Key Url and vault id of KeK, KeK is optional and when provided is used to unwrap the encryptionKey
 type KeyVaultAndKeyReference struct {
 	// Url pointing to a key or secret in KeyVault
@@ -3529,6 +3779,9 @@ type LogAnalyticsInputBase struct {
 	// From time of the query
 	FromTime *time.Time `json:"fromTime,omitempty"`
 
+	// Group query result by Client Application ID.
+	GroupByClientApplicationID *bool `json:"groupByClientApplicationId,omitempty"`
+
 	// Group query result by Operation Name.
 	GroupByOperationName *bool `json:"groupByOperationName,omitempty"`
 
@@ -3537,6 +3790,9 @@ type LogAnalyticsInputBase struct {
 
 	// Group query result by Throttle Policy applied.
 	GroupByThrottlePolicy *bool `json:"groupByThrottlePolicy,omitempty"`
+
+	// Group query result by User Agent.
+	GroupByUserAgent *bool `json:"groupByUserAgent,omitempty"`
 
 	// To time of the query
 	ToTime *time.Time `json:"toTime,omitempty"`
@@ -3565,6 +3821,9 @@ func (l LogAnalyticsInputBase) marshalInternal() map[string]interface{} {
 	if l.FromTime != nil {
 		objectMap["fromTime"] = (*timeRFC3339)(l.FromTime)
 	}
+	if l.GroupByClientApplicationID != nil {
+		objectMap["groupByClientApplicationId"] = l.GroupByClientApplicationID
+	}
 	if l.GroupByOperationName != nil {
 		objectMap["groupByOperationName"] = l.GroupByOperationName
 	}
@@ -3573,6 +3832,9 @@ func (l LogAnalyticsInputBase) marshalInternal() map[string]interface{} {
 	}
 	if l.GroupByThrottlePolicy != nil {
 		objectMap["groupByThrottlePolicy"] = l.GroupByThrottlePolicy
+	}
+	if l.GroupByUserAgent != nil {
+		objectMap["groupByUserAgent"] = l.GroupByUserAgent
 	}
 	if l.ToTime != nil {
 		objectMap["toTime"] = (*timeRFC3339)(l.ToTime)
@@ -3596,6 +3858,11 @@ func (l *LogAnalyticsInputBase) unmarshalInternal(rawMsg map[string]*json.RawMes
 				l.FromTime = (*time.Time)(&aux)
 			}
 			delete(rawMsg, key)
+		case "groupByClientApplicationId":
+			if val != nil {
+				err = json.Unmarshal(*val, &l.GroupByClientApplicationID)
+			}
+			delete(rawMsg, key)
 		case "groupByOperationName":
 			if val != nil {
 				err = json.Unmarshal(*val, &l.GroupByOperationName)
@@ -3609,6 +3876,11 @@ func (l *LogAnalyticsInputBase) unmarshalInternal(rawMsg map[string]*json.RawMes
 		case "groupByThrottlePolicy":
 			if val != nil {
 				err = json.Unmarshal(*val, &l.GroupByThrottlePolicy)
+			}
+			delete(rawMsg, key)
+		case "groupByUserAgent":
+			if val != nil {
+				err = json.Unmarshal(*val, &l.GroupByUserAgent)
 			}
 			delete(rawMsg, key)
 		case "toTime":
@@ -4033,17 +4305,39 @@ type PrivateEndpoint struct {
 
 // The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
-	// READ-ONLY; private endpoint connection Id
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; private endpoint connection name
-	Name *string `json:"name,omitempty" azure:"ro"`
-
+	ProxyOnlyResource
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+}
 
-	// READ-ONLY; private endpoint connection type
-	Type *string `json:"type,omitempty" azure:"ro"`
+// A list of private link resources
+type PrivateEndpointConnectionListResult struct {
+	// The uri to fetch the next page of snapshots. Call ListNext() with this to fetch the next page of snapshots.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Array of private endpoint connections
+	Value *[]PrivateEndpointConnection `json:"value,omitempty"`
+}
+
+// PrivateEndpointConnectionListResultResponse is the response envelope for operations that return a PrivateEndpointConnectionListResult type.
+type PrivateEndpointConnectionListResultResponse struct {
+	// A list of private link resources
+	PrivateEndpointConnectionListResult *PrivateEndpointConnectionListResult
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateEndpointConnectionPollerResponse is the response envelope for operations that asynchronously return a PrivateEndpointConnection type.
+type PrivateEndpointConnectionPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller PrivateEndpointConnectionPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
 }
 
 // Properties of the PrivateEndpointConnectProperties.
@@ -4056,6 +4350,15 @@ type PrivateEndpointConnectionProperties struct {
 
 	// READ-ONLY; The provisioning state of the private endpoint connection resource.
 	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// PrivateEndpointConnectionResponse is the response envelope for operations that return a PrivateEndpointConnection type.
+type PrivateEndpointConnectionResponse struct {
+	// The Private Endpoint Connection resource.
+	PrivateEndpointConnection *PrivateEndpointConnection
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
 }
 
 // A private link resource
@@ -4203,6 +4506,18 @@ type ProximityPlacementGroupsUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// The ProxyOnly Resource model definition.
+type ProxyOnlyResource struct {
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
 // Used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
 type PurchasePlan struct {
 	// The plan ID.
@@ -4210,6 +4525,21 @@ type PurchasePlan struct {
 
 	// Specifies the product of the image from the marketplace. This is the same value as Offer under the imageReference element.
 	Product *string `json:"product,omitempty"`
+
+	// The publisher ID.
+	Publisher *string `json:"publisher,omitempty"`
+}
+
+// Used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
+type PurchasePlanAutoGenerated struct {
+	// The plan ID.
+	Name *string `json:"name,omitempty"`
+
+	// Specifies the product of the image from the marketplace. This is the same value as Offer under the imageReference element.
+	Product *string `json:"product,omitempty"`
+
+	// The Offer Promotion Code.
+	PromotionCode *string `json:"promotionCode,omitempty"`
 
 	// The publisher ID.
 	Publisher *string `json:"publisher,omitempty"`
@@ -5336,13 +5666,18 @@ type SharingUpdateResponse struct {
 // Snapshot resource.
 type Snapshot struct {
 	Resource
+	// The extended location where the snapshot will be created. Extended location cannot be changed.
+	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+
 	// READ-ONLY; Unused. Always Null.
 	ManagedBy *string `json:"managedBy,omitempty" azure:"ro"`
 
 	// Snapshot resource properties.
 	Properties *SnapshotProperties `json:"properties,omitempty"`
 
-	// The snapshots sku name. Can be StandardLRS, PremiumLRS, or Standard_ZRS.
+	// The snapshots sku name. Can be StandardLRS, PremiumLRS, or Standard_ZRS. This is an optional parameter for incremental snapshot and the default behavior
+	// is the SKU will be set to the same sku as the
+	// previous snapshot
 	SKU *SnapshotSKU `json:"sku,omitempty"`
 }
 
@@ -5416,6 +5751,9 @@ type SnapshotProperties struct {
 	// READ-ONLY; The disk provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 
+	// Purchase plan information for the image from which the source disk for the snapshot was originally created.
+	PurchasePlan *PurchasePlanAutoGenerated `json:"purchasePlan,omitempty"`
+
 	// READ-ONLY; The time when the snapshot was created.
 	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
 
@@ -5461,6 +5799,9 @@ func (s SnapshotProperties) MarshalJSON() ([]byte, error) {
 	}
 	if s.ProvisioningState != nil {
 		objectMap["provisioningState"] = s.ProvisioningState
+	}
+	if s.PurchasePlan != nil {
+		objectMap["purchasePlan"] = s.PurchasePlan
 	}
 	if s.TimeCreated != nil {
 		objectMap["timeCreated"] = (*timeRFC3339)(s.TimeCreated)
@@ -5540,6 +5881,11 @@ func (s *SnapshotProperties) UnmarshalJSON(data []byte) error {
 				err = json.Unmarshal(*val, &s.ProvisioningState)
 			}
 			delete(rawMsg, key)
+		case "purchasePlan":
+			if val != nil {
+				err = json.Unmarshal(*val, &s.PurchasePlan)
+			}
+			delete(rawMsg, key)
 		case "timeCreated":
 			if val != nil {
 				var aux timeRFC3339
@@ -5569,7 +5915,9 @@ type SnapshotResponse struct {
 	Snapshot *Snapshot
 }
 
-// The snapshots sku name. Can be StandardLRS, PremiumLRS, or Standard_ZRS.
+// The snapshots sku name. Can be StandardLRS, PremiumLRS, or Standard_ZRS. This is an optional parameter for incremental snapshot and the default behavior
+// is the SKU will be set to the same sku as the
+// previous snapshot
 type SnapshotSKU struct {
 	// The sku name.
 	Name *SnapshotStorageAccountTypes `json:"name,omitempty"`
@@ -5583,7 +5931,9 @@ type SnapshotUpdate struct {
 	// Snapshot resource update properties.
 	Properties *SnapshotUpdateProperties `json:"properties,omitempty"`
 
-	// The snapshots sku name. Can be StandardLRS, PremiumLRS, or Standard_ZRS.
+	// The snapshots sku name. Can be StandardLRS, PremiumLRS, or Standard_ZRS. This is an optional parameter for incremental snapshot and the default behavior
+	// is the SKU will be set to the same sku as the
+	// previous snapshot
 	SKU *SnapshotSKU `json:"sku,omitempty"`
 
 	// Resource tags
@@ -7417,6 +7767,9 @@ type VirtualMachineScaleSetNetworkConfigurationProperties struct {
 	// Specifies whether the network interface is accelerated networking-enabled.
 	EnableAcceleratedNetworking *bool `json:"enableAcceleratedNetworking,omitempty"`
 
+	// Specifies whether the network interface is FPGA networking-enabled.
+	EnableFpga *bool `json:"enableFpga,omitempty"`
+
 	// Whether IP forwarding enabled on this NIC.
 	EnableIPForwarding *bool `json:"enableIPForwarding,omitempty"`
 
@@ -7799,6 +8152,9 @@ type VirtualMachineScaleSetUpdateNetworkConfigurationProperties struct {
 
 	// Specifies whether the network interface is accelerated networking-enabled.
 	EnableAcceleratedNetworking *bool `json:"enableAcceleratedNetworking,omitempty"`
+
+	// Specifies whether the network interface is FPGA networking-enabled.
+	EnableFpga *bool `json:"enableFpga,omitempty"`
 
 	// Whether IP forwarding enabled on this NIC.
 	EnableIPForwarding *bool `json:"enableIPForwarding,omitempty"`
@@ -8815,7 +9171,7 @@ type VirtualMachinesBeginDeallocateOptions struct {
 
 // VirtualMachinesBeginDeleteOptions contains the optional parameters for the VirtualMachines.BeginDelete method.
 type VirtualMachinesBeginDeleteOptions struct {
-	// Optional parameter to force delete virtual machines.
+	// Optional parameter to force delete virtual machines.(Feature in Preview)
 	ForceDeletion *bool
 }
 

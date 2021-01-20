@@ -703,6 +703,56 @@ func (p *logAnalyticsOperationResultPoller) pollUntilDone(ctx context.Context, f
 	return respType, nil
 }
 
+// PrivateEndpointConnectionPoller provides polling facilities until the operation completes
+type PrivateEndpointConnectionPoller interface {
+	Done() bool
+	Poll(ctx context.Context) (*http.Response, error)
+	FinalResponse(ctx context.Context) (PrivateEndpointConnectionResponse, error)
+	ResumeToken() (string, error)
+}
+
+type privateEndpointConnectionPoller struct {
+	// the client for making the request
+	pipeline azcore.Pipeline
+	pt       armcore.Poller
+}
+
+// Done returns true if there was an error or polling has reached a terminal state
+func (p *privateEndpointConnectionPoller) Done() bool {
+	return p.pt.Done()
+}
+
+// Poll will send poll the service endpoint and return an http.Response or error received from the service
+func (p *privateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx, p.pipeline)
+}
+
+func (p *privateEndpointConnectionPoller) FinalResponse(ctx context.Context) (PrivateEndpointConnectionResponse, error) {
+	respType := PrivateEndpointConnectionResponse{PrivateEndpointConnection: &PrivateEndpointConnection{}}
+	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.PrivateEndpointConnection)
+	if err != nil {
+		return PrivateEndpointConnectionResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// ResumeToken generates the string token that can be used with the ResumePrivateEndpointConnectionPoller method
+// on the client to create a new poller from the data held in the current poller type
+func (p *privateEndpointConnectionPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *privateEndpointConnectionPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionResponse, error) {
+	respType := PrivateEndpointConnectionResponse{PrivateEndpointConnection: &PrivateEndpointConnection{}}
+	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.PrivateEndpointConnection)
+	if err != nil {
+		return PrivateEndpointConnectionResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
 // RunCommandResultPoller provides polling facilities until the operation completes
 type RunCommandResultPoller interface {
 	Done() bool

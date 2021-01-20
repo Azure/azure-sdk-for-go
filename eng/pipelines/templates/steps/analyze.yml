@@ -18,15 +18,22 @@ steps:
     displayName: 'Install GoLintCLI and dependencies.'
     workingDirectory: '${{parameters.GoWorkspace}}'
 
-  - script: |
-      cd ./sdk
-      golangci-lint run -c ../eng/.golangci.yml
+  - pwsh: |
+      $wd = Get-Location | select -ExpandProperty Path
+      Write-Host "##[command]Linting content in $wd"
+      $modDirs = (./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE))
+      foreach ($md in $modDirs) {
+        pushd $md
+        Write-Host "##[command]Executing golangci-lint run -c ${{parameters.GoWorkspace}}/eng/.golangci.yml in $md"
+        golangci-lint run -c ${{parameters.GoWorkspace}}/eng/.golangci.yml
+      }
       exit 0
     displayName: 'Lint'
     failOnStderr: false
-    workingDirectory: '${{parameters.Directory}}'
+    workingDirectory: '${{parameters.GoWorkspace}}'
 
   - script: |
+      echo scanning copyright headers in $(pwd)
       grep -L -r --include \*.go -P "Copyright (\d{4}|\(c\)) Microsoft" ./sdk | tee >&2
     displayName: 'Copyright Header Check'
     condition: succeededOrFailed()
@@ -34,6 +41,7 @@ steps:
     workingDirectory: '${{parameters.Directory}}'
 
   - script: |
+      echo check source file formatting in $(pwd)
       gofmt -s -l -w $(find ./sdk -name '*.go' -print) >&2
     displayName: 'Format Check'
     condition: succeededOrFailed()

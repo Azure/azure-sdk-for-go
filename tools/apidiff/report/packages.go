@@ -172,7 +172,11 @@ func (r PkgsReport) IsEmpty() bool {
 	return len(r.AddedPackages) == 0 && len(r.ModifiedPackages) == 0 && len(r.RemovedPackages) == 0
 }
 
-// ToMarkdown writes the report to string in the markdown form
+// ToMarkdown writes the report to string in the markdown form.
+// The withHeader parameter if set to true will output the release history title
+// and the release version header one level beneath it.
+// The version parameter that is passed in will be used to specify the release version
+// in the top-level header for the markdown output. 
 func (r *PkgsReport) ToMarkdown(withHeader bool, version string) string {
 	md := markdown.Writer{}
 	if withHeader {

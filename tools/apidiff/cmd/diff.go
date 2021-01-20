@@ -57,7 +57,7 @@ func diffCommand(basePath, targetPath, version string) error {
 	r := getPkgsReport(baseExport, targetExport)
 
 	if asMarkdown {
-		fmt.Println(r.ToMarkdown(true, version))
+		fmt.Println(r.ToMarkdown(version))
 	} else {
 		b, _ := json.Marshal(r)
 		fmt.Println(string(b))

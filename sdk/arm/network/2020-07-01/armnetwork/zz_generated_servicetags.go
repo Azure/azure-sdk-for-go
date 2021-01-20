@@ -24,37 +24,28 @@ type ServiceTagsClient struct {
 }
 
 // NewServiceTagsClient creates a new instance of ServiceTagsClient with the specified values.
-func NewServiceTagsClient(con *armcore.Connection, subscriptionID string) ServiceTagsClient {
-	return ServiceTagsClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client ServiceTagsClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewServiceTagsClient(con *armcore.Connection, subscriptionID string) *ServiceTagsClient {
+	return &ServiceTagsClient{con: con, subscriptionID: subscriptionID}
 }
 
 // List - Gets a list of service tag information resources.
-func (client ServiceTagsClient) List(ctx context.Context, location string, options *ServiceTagsListOptions) (ServiceTagsListResultResponse, error) {
+func (client *ServiceTagsClient) List(ctx context.Context, location string, options *ServiceTagsListOptions) (ServiceTagsListResultResponse, error) {
 	req, err := client.listCreateRequest(ctx, location, options)
 	if err != nil {
 		return ServiceTagsListResultResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return ServiceTagsListResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return ServiceTagsListResultResponse{}, client.listHandleError(resp)
 	}
-	result, err := client.listHandleResponse(resp)
-	if err != nil {
-		return ServiceTagsListResultResponse{}, err
-	}
-	return result, nil
+	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client ServiceTagsClient) listCreateRequest(ctx context.Context, location string, options *ServiceTagsListOptions) (*azcore.Request, error) {
+func (client *ServiceTagsClient) listCreateRequest(ctx context.Context, location string, options *ServiceTagsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/serviceTags"
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -71,14 +62,16 @@ func (client ServiceTagsClient) listCreateRequest(ctx context.Context, location 
 }
 
 // listHandleResponse handles the List response.
-func (client ServiceTagsClient) listHandleResponse(resp *azcore.Response) (ServiceTagsListResultResponse, error) {
-	result := ServiceTagsListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ServiceTagsListResult)
-	return result, err
+func (client *ServiceTagsClient) listHandleResponse(resp *azcore.Response) (ServiceTagsListResultResponse, error) {
+	var val *ServiceTagsListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ServiceTagsListResultResponse{}, err
+	}
+	return ServiceTagsListResultResponse{RawResponse: resp.Response, ServiceTagsListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client ServiceTagsClient) listHandleError(resp *azcore.Response) error {
+func (client *ServiceTagsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

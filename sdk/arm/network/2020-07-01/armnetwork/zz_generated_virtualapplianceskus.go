@@ -24,37 +24,28 @@ type VirtualApplianceSKUsClient struct {
 }
 
 // NewVirtualApplianceSKUsClient creates a new instance of VirtualApplianceSKUsClient with the specified values.
-func NewVirtualApplianceSKUsClient(con *armcore.Connection, subscriptionID string) VirtualApplianceSKUsClient {
-	return VirtualApplianceSKUsClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client VirtualApplianceSKUsClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewVirtualApplianceSKUsClient(con *armcore.Connection, subscriptionID string) *VirtualApplianceSKUsClient {
+	return &VirtualApplianceSKUsClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Get - Retrieves a single available sku for network virtual appliance.
-func (client VirtualApplianceSKUsClient) Get(ctx context.Context, skuName string, options *VirtualApplianceSKUsGetOptions) (NetworkVirtualApplianceSKUResponse, error) {
+func (client *VirtualApplianceSKUsClient) Get(ctx context.Context, skuName string, options *VirtualApplianceSKUsGetOptions) (NetworkVirtualApplianceSKUResponse, error) {
 	req, err := client.getCreateRequest(ctx, skuName, options)
 	if err != nil {
 		return NetworkVirtualApplianceSKUResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return NetworkVirtualApplianceSKUResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return NetworkVirtualApplianceSKUResponse{}, client.getHandleError(resp)
 	}
-	result, err := client.getHandleResponse(resp)
-	if err != nil {
-		return NetworkVirtualApplianceSKUResponse{}, err
-	}
-	return result, nil
+	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client VirtualApplianceSKUsClient) getCreateRequest(ctx context.Context, skuName string, options *VirtualApplianceSKUsGetOptions) (*azcore.Request, error) {
+func (client *VirtualApplianceSKUsClient) getCreateRequest(ctx context.Context, skuName string, options *VirtualApplianceSKUsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkVirtualApplianceSkus/{skuName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{skuName}", url.PathEscape(skuName))
@@ -71,14 +62,16 @@ func (client VirtualApplianceSKUsClient) getCreateRequest(ctx context.Context, s
 }
 
 // getHandleResponse handles the Get response.
-func (client VirtualApplianceSKUsClient) getHandleResponse(resp *azcore.Response) (NetworkVirtualApplianceSKUResponse, error) {
-	result := NetworkVirtualApplianceSKUResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.NetworkVirtualApplianceSKU)
-	return result, err
+func (client *VirtualApplianceSKUsClient) getHandleResponse(resp *azcore.Response) (NetworkVirtualApplianceSKUResponse, error) {
+	var val *NetworkVirtualApplianceSKU
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return NetworkVirtualApplianceSKUResponse{}, err
+	}
+	return NetworkVirtualApplianceSKUResponse{RawResponse: resp.Response, NetworkVirtualApplianceSKU: val}, nil
 }
 
 // getHandleError handles the Get error response.
-func (client VirtualApplianceSKUsClient) getHandleError(resp *azcore.Response) error {
+func (client *VirtualApplianceSKUsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -87,7 +80,7 @@ func (client VirtualApplianceSKUsClient) getHandleError(resp *azcore.Response) e
 }
 
 // List - List all SKUs available for a virtual appliance.
-func (client VirtualApplianceSKUsClient) List(options *VirtualApplianceSKUsListOptions) NetworkVirtualApplianceSKUListResultPager {
+func (client *VirtualApplianceSKUsClient) List(options *VirtualApplianceSKUsListOptions) NetworkVirtualApplianceSKUListResultPager {
 	return &networkVirtualApplianceSkuListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -103,7 +96,7 @@ func (client VirtualApplianceSKUsClient) List(options *VirtualApplianceSKUsListO
 }
 
 // listCreateRequest creates the List request.
-func (client VirtualApplianceSKUsClient) listCreateRequest(ctx context.Context, options *VirtualApplianceSKUsListOptions) (*azcore.Request, error) {
+func (client *VirtualApplianceSKUsClient) listCreateRequest(ctx context.Context, options *VirtualApplianceSKUsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkVirtualApplianceSkus"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -119,14 +112,16 @@ func (client VirtualApplianceSKUsClient) listCreateRequest(ctx context.Context, 
 }
 
 // listHandleResponse handles the List response.
-func (client VirtualApplianceSKUsClient) listHandleResponse(resp *azcore.Response) (NetworkVirtualApplianceSKUListResultResponse, error) {
-	result := NetworkVirtualApplianceSKUListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.NetworkVirtualApplianceSKUListResult)
-	return result, err
+func (client *VirtualApplianceSKUsClient) listHandleResponse(resp *azcore.Response) (NetworkVirtualApplianceSKUListResultResponse, error) {
+	var val *NetworkVirtualApplianceSKUListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return NetworkVirtualApplianceSKUListResultResponse{}, err
+	}
+	return NetworkVirtualApplianceSKUListResultResponse{RawResponse: resp.Response, NetworkVirtualApplianceSKUListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client VirtualApplianceSKUsClient) listHandleError(resp *azcore.Response) error {
+func (client *VirtualApplianceSKUsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

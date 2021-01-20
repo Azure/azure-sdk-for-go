@@ -7,4 +7,4 @@
 
 package armnetwork
 
-const telemetryInfo = "azsdk-go-armnetwork/v0.1.0"
+const telemetryInfo = "azsdk-go-armnetwork/v0.2.0"

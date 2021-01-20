@@ -24,17 +24,12 @@ type UsagesClient struct {
 }
 
 // NewUsagesClient creates a new instance of UsagesClient with the specified values.
-func NewUsagesClient(con *armcore.Connection, subscriptionID string) UsagesClient {
-	return UsagesClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client UsagesClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewUsagesClient(con *armcore.Connection, subscriptionID string) *UsagesClient {
+	return &UsagesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // List - List network usages for a subscription.
-func (client UsagesClient) List(location string, options *UsagesListOptions) UsagesListResultPager {
+func (client *UsagesClient) List(location string, options *UsagesListOptions) UsagesListResultPager {
 	return &usagesListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -50,7 +45,7 @@ func (client UsagesClient) List(location string, options *UsagesListOptions) Usa
 }
 
 // listCreateRequest creates the List request.
-func (client UsagesClient) listCreateRequest(ctx context.Context, location string, options *UsagesListOptions) (*azcore.Request, error) {
+func (client *UsagesClient) listCreateRequest(ctx context.Context, location string, options *UsagesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/usages"
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -67,14 +62,16 @@ func (client UsagesClient) listCreateRequest(ctx context.Context, location strin
 }
 
 // listHandleResponse handles the List response.
-func (client UsagesClient) listHandleResponse(resp *azcore.Response) (UsagesListResultResponse, error) {
-	result := UsagesListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.UsagesListResult)
-	return result, err
+func (client *UsagesClient) listHandleResponse(resp *azcore.Response) (UsagesListResultResponse, error) {
+	var val *UsagesListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return UsagesListResultResponse{}, err
+	}
+	return UsagesListResultResponse{RawResponse: resp.Response, UsagesListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client UsagesClient) listHandleError(resp *azcore.Response) error {
+func (client *UsagesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

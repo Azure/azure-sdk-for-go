@@ -25,17 +25,12 @@ type PacketCapturesClient struct {
 }
 
 // NewPacketCapturesClient creates a new instance of PacketCapturesClient with the specified values.
-func NewPacketCapturesClient(con *armcore.Connection, subscriptionID string) PacketCapturesClient {
-	return PacketCapturesClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client PacketCapturesClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewPacketCapturesClient(con *armcore.Connection, subscriptionID string) *PacketCapturesClient {
+	return &PacketCapturesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // BeginCreate - Create and start a packet capture on the specified VM.
-func (client PacketCapturesClient) BeginCreate(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, parameters PacketCapture, options *PacketCapturesBeginCreateOptions) (PacketCaptureResultPollerResponse, error) {
+func (client *PacketCapturesClient) BeginCreate(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, parameters PacketCapture, options *PacketCapturesBeginCreateOptions) (PacketCaptureResultPollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, networkWatcherName, packetCaptureName, parameters, options)
 	if err != nil {
 		return PacketCaptureResultPollerResponse{}, err
@@ -60,7 +55,7 @@ func (client PacketCapturesClient) BeginCreate(ctx context.Context, resourceGrou
 
 // ResumeCreate creates a new PacketCaptureResultPoller from the specified resume token.
 // token - The value must come from a previous call to PacketCaptureResultPoller.ResumeToken().
-func (client PacketCapturesClient) ResumeCreate(token string) (PacketCaptureResultPoller, error) {
+func (client *PacketCapturesClient) ResumeCreate(token string) (PacketCaptureResultPoller, error) {
 	pt, err := armcore.NewPollerFromResumeToken("PacketCapturesClient.Create", token, client.createHandleError)
 	if err != nil {
 		return nil, err
@@ -72,12 +67,12 @@ func (client PacketCapturesClient) ResumeCreate(token string) (PacketCaptureResu
 }
 
 // Create - Create and start a packet capture on the specified VM.
-func (client PacketCapturesClient) create(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, parameters PacketCapture, options *PacketCapturesBeginCreateOptions) (*azcore.Response, error) {
+func (client *PacketCapturesClient) create(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, parameters PacketCapture, options *PacketCapturesBeginCreateOptions) (*azcore.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, networkWatcherName, packetCaptureName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +83,7 @@ func (client PacketCapturesClient) create(ctx context.Context, resourceGroupName
 }
 
 // createCreateRequest creates the Create request.
-func (client PacketCapturesClient) createCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, parameters PacketCapture, options *PacketCapturesBeginCreateOptions) (*azcore.Request, error) {
+func (client *PacketCapturesClient) createCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, parameters PacketCapture, options *PacketCapturesBeginCreateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/packetCaptures/{packetCaptureName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
@@ -107,14 +102,16 @@ func (client PacketCapturesClient) createCreateRequest(ctx context.Context, reso
 }
 
 // createHandleResponse handles the Create response.
-func (client PacketCapturesClient) createHandleResponse(resp *azcore.Response) (PacketCaptureResultResponse, error) {
-	result := PacketCaptureResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.PacketCaptureResult)
-	return result, err
+func (client *PacketCapturesClient) createHandleResponse(resp *azcore.Response) (PacketCaptureResultResponse, error) {
+	var val *PacketCaptureResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return PacketCaptureResultResponse{}, err
+	}
+	return PacketCaptureResultResponse{RawResponse: resp.Response, PacketCaptureResult: val}, nil
 }
 
 // createHandleError handles the Create error response.
-func (client PacketCapturesClient) createHandleError(resp *azcore.Response) error {
+func (client *PacketCapturesClient) createHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -123,7 +120,7 @@ func (client PacketCapturesClient) createHandleError(resp *azcore.Response) erro
 }
 
 // BeginDelete - Deletes the specified packet capture session.
-func (client PacketCapturesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *PacketCapturesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesBeginDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.delete(ctx, resourceGroupName, networkWatcherName, packetCaptureName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
@@ -148,7 +145,7 @@ func (client PacketCapturesClient) BeginDelete(ctx context.Context, resourceGrou
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client PacketCapturesClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *PacketCapturesClient) ResumeDelete(token string) (HTTPPoller, error) {
 	pt, err := armcore.NewPollerFromResumeToken("PacketCapturesClient.Delete", token, client.deleteHandleError)
 	if err != nil {
 		return nil, err
@@ -160,12 +157,12 @@ func (client PacketCapturesClient) ResumeDelete(token string) (HTTPPoller, error
 }
 
 // Delete - Deletes the specified packet capture session.
-func (client PacketCapturesClient) delete(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesBeginDeleteOptions) (*azcore.Response, error) {
+func (client *PacketCapturesClient) delete(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkWatcherName, packetCaptureName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -176,7 +173,7 @@ func (client PacketCapturesClient) delete(ctx context.Context, resourceGroupName
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client PacketCapturesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesBeginDeleteOptions) (*azcore.Request, error) {
+func (client *PacketCapturesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/packetCaptures/{packetCaptureName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
@@ -195,7 +192,7 @@ func (client PacketCapturesClient) deleteCreateRequest(ctx context.Context, reso
 }
 
 // deleteHandleError handles the Delete error response.
-func (client PacketCapturesClient) deleteHandleError(resp *azcore.Response) error {
+func (client *PacketCapturesClient) deleteHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -204,27 +201,23 @@ func (client PacketCapturesClient) deleteHandleError(resp *azcore.Response) erro
 }
 
 // Get - Gets a packet capture session by name.
-func (client PacketCapturesClient) Get(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesGetOptions) (PacketCaptureResultResponse, error) {
+func (client *PacketCapturesClient) Get(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesGetOptions) (PacketCaptureResultResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkWatcherName, packetCaptureName, options)
 	if err != nil {
 		return PacketCaptureResultResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return PacketCaptureResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return PacketCaptureResultResponse{}, client.getHandleError(resp)
 	}
-	result, err := client.getHandleResponse(resp)
-	if err != nil {
-		return PacketCaptureResultResponse{}, err
-	}
-	return result, nil
+	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client PacketCapturesClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesGetOptions) (*azcore.Request, error) {
+func (client *PacketCapturesClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/packetCaptures/{packetCaptureName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
@@ -243,14 +236,16 @@ func (client PacketCapturesClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client PacketCapturesClient) getHandleResponse(resp *azcore.Response) (PacketCaptureResultResponse, error) {
-	result := PacketCaptureResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.PacketCaptureResult)
-	return result, err
+func (client *PacketCapturesClient) getHandleResponse(resp *azcore.Response) (PacketCaptureResultResponse, error) {
+	var val *PacketCaptureResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return PacketCaptureResultResponse{}, err
+	}
+	return PacketCaptureResultResponse{RawResponse: resp.Response, PacketCaptureResult: val}, nil
 }
 
 // getHandleError handles the Get error response.
-func (client PacketCapturesClient) getHandleError(resp *azcore.Response) error {
+func (client *PacketCapturesClient) getHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -259,7 +254,7 @@ func (client PacketCapturesClient) getHandleError(resp *azcore.Response) error {
 }
 
 // BeginGetStatus - Query the status of a running packet capture session.
-func (client PacketCapturesClient) BeginGetStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesBeginGetStatusOptions) (PacketCaptureQueryStatusResultPollerResponse, error) {
+func (client *PacketCapturesClient) BeginGetStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesBeginGetStatusOptions) (PacketCaptureQueryStatusResultPollerResponse, error) {
 	resp, err := client.getStatus(ctx, resourceGroupName, networkWatcherName, packetCaptureName, options)
 	if err != nil {
 		return PacketCaptureQueryStatusResultPollerResponse{}, err
@@ -284,7 +279,7 @@ func (client PacketCapturesClient) BeginGetStatus(ctx context.Context, resourceG
 
 // ResumeGetStatus creates a new PacketCaptureQueryStatusResultPoller from the specified resume token.
 // token - The value must come from a previous call to PacketCaptureQueryStatusResultPoller.ResumeToken().
-func (client PacketCapturesClient) ResumeGetStatus(token string) (PacketCaptureQueryStatusResultPoller, error) {
+func (client *PacketCapturesClient) ResumeGetStatus(token string) (PacketCaptureQueryStatusResultPoller, error) {
 	pt, err := armcore.NewPollerFromResumeToken("PacketCapturesClient.GetStatus", token, client.getStatusHandleError)
 	if err != nil {
 		return nil, err
@@ -296,12 +291,12 @@ func (client PacketCapturesClient) ResumeGetStatus(token string) (PacketCaptureQ
 }
 
 // GetStatus - Query the status of a running packet capture session.
-func (client PacketCapturesClient) getStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesBeginGetStatusOptions) (*azcore.Response, error) {
+func (client *PacketCapturesClient) getStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesBeginGetStatusOptions) (*azcore.Response, error) {
 	req, err := client.getStatusCreateRequest(ctx, resourceGroupName, networkWatcherName, packetCaptureName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -312,7 +307,7 @@ func (client PacketCapturesClient) getStatus(ctx context.Context, resourceGroupN
 }
 
 // getStatusCreateRequest creates the GetStatus request.
-func (client PacketCapturesClient) getStatusCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesBeginGetStatusOptions) (*azcore.Request, error) {
+func (client *PacketCapturesClient) getStatusCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesBeginGetStatusOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/packetCaptures/{packetCaptureName}/queryStatus"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
@@ -331,14 +326,16 @@ func (client PacketCapturesClient) getStatusCreateRequest(ctx context.Context, r
 }
 
 // getStatusHandleResponse handles the GetStatus response.
-func (client PacketCapturesClient) getStatusHandleResponse(resp *azcore.Response) (PacketCaptureQueryStatusResultResponse, error) {
-	result := PacketCaptureQueryStatusResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.PacketCaptureQueryStatusResult)
-	return result, err
+func (client *PacketCapturesClient) getStatusHandleResponse(resp *azcore.Response) (PacketCaptureQueryStatusResultResponse, error) {
+	var val *PacketCaptureQueryStatusResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return PacketCaptureQueryStatusResultResponse{}, err
+	}
+	return PacketCaptureQueryStatusResultResponse{RawResponse: resp.Response, PacketCaptureQueryStatusResult: val}, nil
 }
 
 // getStatusHandleError handles the GetStatus error response.
-func (client PacketCapturesClient) getStatusHandleError(resp *azcore.Response) error {
+func (client *PacketCapturesClient) getStatusHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -347,27 +344,23 @@ func (client PacketCapturesClient) getStatusHandleError(resp *azcore.Response) e
 }
 
 // List - Lists all packet capture sessions within the specified resource group.
-func (client PacketCapturesClient) List(ctx context.Context, resourceGroupName string, networkWatcherName string, options *PacketCapturesListOptions) (PacketCaptureListResultResponse, error) {
+func (client *PacketCapturesClient) List(ctx context.Context, resourceGroupName string, networkWatcherName string, options *PacketCapturesListOptions) (PacketCaptureListResultResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, networkWatcherName, options)
 	if err != nil {
 		return PacketCaptureListResultResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return PacketCaptureListResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return PacketCaptureListResultResponse{}, client.listHandleError(resp)
 	}
-	result, err := client.listHandleResponse(resp)
-	if err != nil {
-		return PacketCaptureListResultResponse{}, err
-	}
-	return result, nil
+	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client PacketCapturesClient) listCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, options *PacketCapturesListOptions) (*azcore.Request, error) {
+func (client *PacketCapturesClient) listCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, options *PacketCapturesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/packetCaptures"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
@@ -385,14 +378,16 @@ func (client PacketCapturesClient) listCreateRequest(ctx context.Context, resour
 }
 
 // listHandleResponse handles the List response.
-func (client PacketCapturesClient) listHandleResponse(resp *azcore.Response) (PacketCaptureListResultResponse, error) {
-	result := PacketCaptureListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.PacketCaptureListResult)
-	return result, err
+func (client *PacketCapturesClient) listHandleResponse(resp *azcore.Response) (PacketCaptureListResultResponse, error) {
+	var val *PacketCaptureListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return PacketCaptureListResultResponse{}, err
+	}
+	return PacketCaptureListResultResponse{RawResponse: resp.Response, PacketCaptureListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client PacketCapturesClient) listHandleError(resp *azcore.Response) error {
+func (client *PacketCapturesClient) listHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -401,7 +396,7 @@ func (client PacketCapturesClient) listHandleError(resp *azcore.Response) error 
 }
 
 // BeginStop - Stops a specified packet capture session.
-func (client PacketCapturesClient) BeginStop(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesBeginStopOptions) (HTTPPollerResponse, error) {
+func (client *PacketCapturesClient) BeginStop(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesBeginStopOptions) (HTTPPollerResponse, error) {
 	resp, err := client.stop(ctx, resourceGroupName, networkWatcherName, packetCaptureName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
@@ -426,7 +421,7 @@ func (client PacketCapturesClient) BeginStop(ctx context.Context, resourceGroupN
 
 // ResumeStop creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client PacketCapturesClient) ResumeStop(token string) (HTTPPoller, error) {
+func (client *PacketCapturesClient) ResumeStop(token string) (HTTPPoller, error) {
 	pt, err := armcore.NewPollerFromResumeToken("PacketCapturesClient.Stop", token, client.stopHandleError)
 	if err != nil {
 		return nil, err
@@ -438,12 +433,12 @@ func (client PacketCapturesClient) ResumeStop(token string) (HTTPPoller, error) 
 }
 
 // Stop - Stops a specified packet capture session.
-func (client PacketCapturesClient) stop(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesBeginStopOptions) (*azcore.Response, error) {
+func (client *PacketCapturesClient) stop(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesBeginStopOptions) (*azcore.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, networkWatcherName, packetCaptureName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -454,7 +449,7 @@ func (client PacketCapturesClient) stop(ctx context.Context, resourceGroupName s
 }
 
 // stopCreateRequest creates the Stop request.
-func (client PacketCapturesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesBeginStopOptions) (*azcore.Request, error) {
+func (client *PacketCapturesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesBeginStopOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/packetCaptures/{packetCaptureName}/stop"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
@@ -473,7 +468,7 @@ func (client PacketCapturesClient) stopCreateRequest(ctx context.Context, resour
 }
 
 // stopHandleError handles the Stop error response.
-func (client PacketCapturesClient) stopHandleError(resp *azcore.Response) error {
+func (client *PacketCapturesClient) stopHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

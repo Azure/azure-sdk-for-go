@@ -25,17 +25,12 @@ type ExpressRoutePortsClient struct {
 }
 
 // NewExpressRoutePortsClient creates a new instance of ExpressRoutePortsClient with the specified values.
-func NewExpressRoutePortsClient(con *armcore.Connection, subscriptionID string) ExpressRoutePortsClient {
-	return ExpressRoutePortsClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client ExpressRoutePortsClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewExpressRoutePortsClient(con *armcore.Connection, subscriptionID string) *ExpressRoutePortsClient {
+	return &ExpressRoutePortsClient{con: con, subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Creates or updates the specified ExpressRoutePort resource.
-func (client ExpressRoutePortsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, expressRoutePortName string, parameters ExpressRoutePort, options *ExpressRoutePortsBeginCreateOrUpdateOptions) (ExpressRoutePortPollerResponse, error) {
+func (client *ExpressRoutePortsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, expressRoutePortName string, parameters ExpressRoutePort, options *ExpressRoutePortsBeginCreateOrUpdateOptions) (ExpressRoutePortPollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, expressRoutePortName, parameters, options)
 	if err != nil {
 		return ExpressRoutePortPollerResponse{}, err
@@ -60,7 +55,7 @@ func (client ExpressRoutePortsClient) BeginCreateOrUpdate(ctx context.Context, r
 
 // ResumeCreateOrUpdate creates a new ExpressRoutePortPoller from the specified resume token.
 // token - The value must come from a previous call to ExpressRoutePortPoller.ResumeToken().
-func (client ExpressRoutePortsClient) ResumeCreateOrUpdate(token string) (ExpressRoutePortPoller, error) {
+func (client *ExpressRoutePortsClient) ResumeCreateOrUpdate(token string) (ExpressRoutePortPoller, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ExpressRoutePortsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
@@ -72,12 +67,12 @@ func (client ExpressRoutePortsClient) ResumeCreateOrUpdate(token string) (Expres
 }
 
 // CreateOrUpdate - Creates or updates the specified ExpressRoutePort resource.
-func (client ExpressRoutePortsClient) createOrUpdate(ctx context.Context, resourceGroupName string, expressRoutePortName string, parameters ExpressRoutePort, options *ExpressRoutePortsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *ExpressRoutePortsClient) createOrUpdate(ctx context.Context, resourceGroupName string, expressRoutePortName string, parameters ExpressRoutePort, options *ExpressRoutePortsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, expressRoutePortName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +83,7 @@ func (client ExpressRoutePortsClient) createOrUpdate(ctx context.Context, resour
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client ExpressRoutePortsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, expressRoutePortName string, parameters ExpressRoutePort, options *ExpressRoutePortsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *ExpressRoutePortsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, expressRoutePortName string, parameters ExpressRoutePort, options *ExpressRoutePortsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ExpressRoutePorts/{expressRoutePortName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -106,14 +101,16 @@ func (client ExpressRoutePortsClient) createOrUpdateCreateRequest(ctx context.Co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client ExpressRoutePortsClient) createOrUpdateHandleResponse(resp *azcore.Response) (ExpressRoutePortResponse, error) {
-	result := ExpressRoutePortResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ExpressRoutePort)
-	return result, err
+func (client *ExpressRoutePortsClient) createOrUpdateHandleResponse(resp *azcore.Response) (ExpressRoutePortResponse, error) {
+	var val *ExpressRoutePort
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ExpressRoutePortResponse{}, err
+	}
+	return ExpressRoutePortResponse{RawResponse: resp.Response, ExpressRoutePort: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client ExpressRoutePortsClient) createOrUpdateHandleError(resp *azcore.Response) error {
+func (client *ExpressRoutePortsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -122,7 +119,7 @@ func (client ExpressRoutePortsClient) createOrUpdateHandleError(resp *azcore.Res
 }
 
 // BeginDelete - Deletes the specified ExpressRoutePort resource.
-func (client ExpressRoutePortsClient) BeginDelete(ctx context.Context, resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortsBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *ExpressRoutePortsClient) BeginDelete(ctx context.Context, resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortsBeginDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.delete(ctx, resourceGroupName, expressRoutePortName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
@@ -147,7 +144,7 @@ func (client ExpressRoutePortsClient) BeginDelete(ctx context.Context, resourceG
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client ExpressRoutePortsClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *ExpressRoutePortsClient) ResumeDelete(token string) (HTTPPoller, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ExpressRoutePortsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
 		return nil, err
@@ -159,12 +156,12 @@ func (client ExpressRoutePortsClient) ResumeDelete(token string) (HTTPPoller, er
 }
 
 // Delete - Deletes the specified ExpressRoutePort resource.
-func (client ExpressRoutePortsClient) delete(ctx context.Context, resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortsBeginDeleteOptions) (*azcore.Response, error) {
+func (client *ExpressRoutePortsClient) delete(ctx context.Context, resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortsBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, expressRoutePortName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -175,7 +172,7 @@ func (client ExpressRoutePortsClient) delete(ctx context.Context, resourceGroupN
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client ExpressRoutePortsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortsBeginDeleteOptions) (*azcore.Request, error) {
+func (client *ExpressRoutePortsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortsBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ExpressRoutePorts/{expressRoutePortName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -193,7 +190,7 @@ func (client ExpressRoutePortsClient) deleteCreateRequest(ctx context.Context, r
 }
 
 // deleteHandleError handles the Delete error response.
-func (client ExpressRoutePortsClient) deleteHandleError(resp *azcore.Response) error {
+func (client *ExpressRoutePortsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -202,27 +199,23 @@ func (client ExpressRoutePortsClient) deleteHandleError(resp *azcore.Response) e
 }
 
 // GenerateLoa - Generate a letter of authorization for the requested ExpressRoutePort resource.
-func (client ExpressRoutePortsClient) GenerateLoa(ctx context.Context, resourceGroupName string, expressRoutePortName string, request GenerateExpressRoutePortsLoaRequest, options *ExpressRoutePortsGenerateLoaOptions) (GenerateExpressRoutePortsLoaResultResponse, error) {
+func (client *ExpressRoutePortsClient) GenerateLoa(ctx context.Context, resourceGroupName string, expressRoutePortName string, request GenerateExpressRoutePortsLoaRequest, options *ExpressRoutePortsGenerateLoaOptions) (GenerateExpressRoutePortsLoaResultResponse, error) {
 	req, err := client.generateLoaCreateRequest(ctx, resourceGroupName, expressRoutePortName, request, options)
 	if err != nil {
 		return GenerateExpressRoutePortsLoaResultResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return GenerateExpressRoutePortsLoaResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return GenerateExpressRoutePortsLoaResultResponse{}, client.generateLoaHandleError(resp)
 	}
-	result, err := client.generateLoaHandleResponse(resp)
-	if err != nil {
-		return GenerateExpressRoutePortsLoaResultResponse{}, err
-	}
-	return result, nil
+	return client.generateLoaHandleResponse(resp)
 }
 
 // generateLoaCreateRequest creates the GenerateLoa request.
-func (client ExpressRoutePortsClient) generateLoaCreateRequest(ctx context.Context, resourceGroupName string, expressRoutePortName string, request GenerateExpressRoutePortsLoaRequest, options *ExpressRoutePortsGenerateLoaOptions) (*azcore.Request, error) {
+func (client *ExpressRoutePortsClient) generateLoaCreateRequest(ctx context.Context, resourceGroupName string, expressRoutePortName string, request GenerateExpressRoutePortsLoaRequest, options *ExpressRoutePortsGenerateLoaOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRoutePorts/{expressRoutePortName}/generateLoa"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -240,14 +233,16 @@ func (client ExpressRoutePortsClient) generateLoaCreateRequest(ctx context.Conte
 }
 
 // generateLoaHandleResponse handles the GenerateLoa response.
-func (client ExpressRoutePortsClient) generateLoaHandleResponse(resp *azcore.Response) (GenerateExpressRoutePortsLoaResultResponse, error) {
-	result := GenerateExpressRoutePortsLoaResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.GenerateExpressRoutePortsLoaResult)
-	return result, err
+func (client *ExpressRoutePortsClient) generateLoaHandleResponse(resp *azcore.Response) (GenerateExpressRoutePortsLoaResultResponse, error) {
+	var val *GenerateExpressRoutePortsLoaResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return GenerateExpressRoutePortsLoaResultResponse{}, err
+	}
+	return GenerateExpressRoutePortsLoaResultResponse{RawResponse: resp.Response, GenerateExpressRoutePortsLoaResult: val}, nil
 }
 
 // generateLoaHandleError handles the GenerateLoa error response.
-func (client ExpressRoutePortsClient) generateLoaHandleError(resp *azcore.Response) error {
+func (client *ExpressRoutePortsClient) generateLoaHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -256,27 +251,23 @@ func (client ExpressRoutePortsClient) generateLoaHandleError(resp *azcore.Respon
 }
 
 // Get - Retrieves the requested ExpressRoutePort resource.
-func (client ExpressRoutePortsClient) Get(ctx context.Context, resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortsGetOptions) (ExpressRoutePortResponse, error) {
+func (client *ExpressRoutePortsClient) Get(ctx context.Context, resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortsGetOptions) (ExpressRoutePortResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, expressRoutePortName, options)
 	if err != nil {
 		return ExpressRoutePortResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return ExpressRoutePortResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return ExpressRoutePortResponse{}, client.getHandleError(resp)
 	}
-	result, err := client.getHandleResponse(resp)
-	if err != nil {
-		return ExpressRoutePortResponse{}, err
-	}
-	return result, nil
+	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client ExpressRoutePortsClient) getCreateRequest(ctx context.Context, resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortsGetOptions) (*azcore.Request, error) {
+func (client *ExpressRoutePortsClient) getCreateRequest(ctx context.Context, resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ExpressRoutePorts/{expressRoutePortName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -294,14 +285,16 @@ func (client ExpressRoutePortsClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client ExpressRoutePortsClient) getHandleResponse(resp *azcore.Response) (ExpressRoutePortResponse, error) {
-	result := ExpressRoutePortResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ExpressRoutePort)
-	return result, err
+func (client *ExpressRoutePortsClient) getHandleResponse(resp *azcore.Response) (ExpressRoutePortResponse, error) {
+	var val *ExpressRoutePort
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ExpressRoutePortResponse{}, err
+	}
+	return ExpressRoutePortResponse{RawResponse: resp.Response, ExpressRoutePort: val}, nil
 }
 
 // getHandleError handles the Get error response.
-func (client ExpressRoutePortsClient) getHandleError(resp *azcore.Response) error {
+func (client *ExpressRoutePortsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -310,7 +303,7 @@ func (client ExpressRoutePortsClient) getHandleError(resp *azcore.Response) erro
 }
 
 // List - List all the ExpressRoutePort resources in the specified subscription.
-func (client ExpressRoutePortsClient) List(options *ExpressRoutePortsListOptions) ExpressRoutePortListResultPager {
+func (client *ExpressRoutePortsClient) List(options *ExpressRoutePortsListOptions) ExpressRoutePortListResultPager {
 	return &expressRoutePortListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -326,7 +319,7 @@ func (client ExpressRoutePortsClient) List(options *ExpressRoutePortsListOptions
 }
 
 // listCreateRequest creates the List request.
-func (client ExpressRoutePortsClient) listCreateRequest(ctx context.Context, options *ExpressRoutePortsListOptions) (*azcore.Request, error) {
+func (client *ExpressRoutePortsClient) listCreateRequest(ctx context.Context, options *ExpressRoutePortsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ExpressRoutePorts"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -342,14 +335,16 @@ func (client ExpressRoutePortsClient) listCreateRequest(ctx context.Context, opt
 }
 
 // listHandleResponse handles the List response.
-func (client ExpressRoutePortsClient) listHandleResponse(resp *azcore.Response) (ExpressRoutePortListResultResponse, error) {
-	result := ExpressRoutePortListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ExpressRoutePortListResult)
-	return result, err
+func (client *ExpressRoutePortsClient) listHandleResponse(resp *azcore.Response) (ExpressRoutePortListResultResponse, error) {
+	var val *ExpressRoutePortListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ExpressRoutePortListResultResponse{}, err
+	}
+	return ExpressRoutePortListResultResponse{RawResponse: resp.Response, ExpressRoutePortListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client ExpressRoutePortsClient) listHandleError(resp *azcore.Response) error {
+func (client *ExpressRoutePortsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -358,7 +353,7 @@ func (client ExpressRoutePortsClient) listHandleError(resp *azcore.Response) err
 }
 
 // ListByResourceGroup - List all the ExpressRoutePort resources in the specified resource group.
-func (client ExpressRoutePortsClient) ListByResourceGroup(resourceGroupName string, options *ExpressRoutePortsListByResourceGroupOptions) ExpressRoutePortListResultPager {
+func (client *ExpressRoutePortsClient) ListByResourceGroup(resourceGroupName string, options *ExpressRoutePortsListByResourceGroupOptions) ExpressRoutePortListResultPager {
 	return &expressRoutePortListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -374,7 +369,7 @@ func (client ExpressRoutePortsClient) ListByResourceGroup(resourceGroupName stri
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client ExpressRoutePortsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ExpressRoutePortsListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *ExpressRoutePortsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ExpressRoutePortsListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ExpressRoutePorts"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -391,14 +386,16 @@ func (client ExpressRoutePortsClient) listByResourceGroupCreateRequest(ctx conte
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client ExpressRoutePortsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (ExpressRoutePortListResultResponse, error) {
-	result := ExpressRoutePortListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ExpressRoutePortListResult)
-	return result, err
+func (client *ExpressRoutePortsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (ExpressRoutePortListResultResponse, error) {
+	var val *ExpressRoutePortListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ExpressRoutePortListResultResponse{}, err
+	}
+	return ExpressRoutePortListResultResponse{RawResponse: resp.Response, ExpressRoutePortListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client ExpressRoutePortsClient) listByResourceGroupHandleError(resp *azcore.Response) error {
+func (client *ExpressRoutePortsClient) listByResourceGroupHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -407,27 +404,23 @@ func (client ExpressRoutePortsClient) listByResourceGroupHandleError(resp *azcor
 }
 
 // UpdateTags - Update ExpressRoutePort tags.
-func (client ExpressRoutePortsClient) UpdateTags(ctx context.Context, resourceGroupName string, expressRoutePortName string, parameters TagsObject, options *ExpressRoutePortsUpdateTagsOptions) (ExpressRoutePortResponse, error) {
+func (client *ExpressRoutePortsClient) UpdateTags(ctx context.Context, resourceGroupName string, expressRoutePortName string, parameters TagsObject, options *ExpressRoutePortsUpdateTagsOptions) (ExpressRoutePortResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, expressRoutePortName, parameters, options)
 	if err != nil {
 		return ExpressRoutePortResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return ExpressRoutePortResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return ExpressRoutePortResponse{}, client.updateTagsHandleError(resp)
 	}
-	result, err := client.updateTagsHandleResponse(resp)
-	if err != nil {
-		return ExpressRoutePortResponse{}, err
-	}
-	return result, nil
+	return client.updateTagsHandleResponse(resp)
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
-func (client ExpressRoutePortsClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, expressRoutePortName string, parameters TagsObject, options *ExpressRoutePortsUpdateTagsOptions) (*azcore.Request, error) {
+func (client *ExpressRoutePortsClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, expressRoutePortName string, parameters TagsObject, options *ExpressRoutePortsUpdateTagsOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ExpressRoutePorts/{expressRoutePortName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -445,14 +438,16 @@ func (client ExpressRoutePortsClient) updateTagsCreateRequest(ctx context.Contex
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client ExpressRoutePortsClient) updateTagsHandleResponse(resp *azcore.Response) (ExpressRoutePortResponse, error) {
-	result := ExpressRoutePortResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ExpressRoutePort)
-	return result, err
+func (client *ExpressRoutePortsClient) updateTagsHandleResponse(resp *azcore.Response) (ExpressRoutePortResponse, error) {
+	var val *ExpressRoutePort
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ExpressRoutePortResponse{}, err
+	}
+	return ExpressRoutePortResponse{RawResponse: resp.Response, ExpressRoutePort: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
-func (client ExpressRoutePortsClient) updateTagsHandleError(resp *azcore.Response) error {
+func (client *ExpressRoutePortsClient) updateTagsHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

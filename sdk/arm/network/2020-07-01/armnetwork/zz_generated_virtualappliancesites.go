@@ -25,17 +25,12 @@ type VirtualApplianceSitesClient struct {
 }
 
 // NewVirtualApplianceSitesClient creates a new instance of VirtualApplianceSitesClient with the specified values.
-func NewVirtualApplianceSitesClient(con *armcore.Connection, subscriptionID string) VirtualApplianceSitesClient {
-	return VirtualApplianceSitesClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client VirtualApplianceSitesClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewVirtualApplianceSitesClient(con *armcore.Connection, subscriptionID string) *VirtualApplianceSitesClient {
+	return &VirtualApplianceSitesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Creates or updates the specified Network Virtual Appliance Site.
-func (client VirtualApplianceSitesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, parameters VirtualApplianceSite, options *VirtualApplianceSitesBeginCreateOrUpdateOptions) (VirtualApplianceSitePollerResponse, error) {
+func (client *VirtualApplianceSitesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, parameters VirtualApplianceSite, options *VirtualApplianceSitesBeginCreateOrUpdateOptions) (VirtualApplianceSitePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, networkVirtualApplianceName, siteName, parameters, options)
 	if err != nil {
 		return VirtualApplianceSitePollerResponse{}, err
@@ -60,7 +55,7 @@ func (client VirtualApplianceSitesClient) BeginCreateOrUpdate(ctx context.Contex
 
 // ResumeCreateOrUpdate creates a new VirtualApplianceSitePoller from the specified resume token.
 // token - The value must come from a previous call to VirtualApplianceSitePoller.ResumeToken().
-func (client VirtualApplianceSitesClient) ResumeCreateOrUpdate(token string) (VirtualApplianceSitePoller, error) {
+func (client *VirtualApplianceSitesClient) ResumeCreateOrUpdate(token string) (VirtualApplianceSitePoller, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualApplianceSitesClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
@@ -72,12 +67,12 @@ func (client VirtualApplianceSitesClient) ResumeCreateOrUpdate(token string) (Vi
 }
 
 // CreateOrUpdate - Creates or updates the specified Network Virtual Appliance Site.
-func (client VirtualApplianceSitesClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, parameters VirtualApplianceSite, options *VirtualApplianceSitesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *VirtualApplianceSitesClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, parameters VirtualApplianceSite, options *VirtualApplianceSitesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, siteName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +83,7 @@ func (client VirtualApplianceSitesClient) createOrUpdate(ctx context.Context, re
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client VirtualApplianceSitesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, parameters VirtualApplianceSite, options *VirtualApplianceSitesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *VirtualApplianceSitesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, parameters VirtualApplianceSite, options *VirtualApplianceSitesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/virtualApplianceSites/{siteName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkVirtualApplianceName}", url.PathEscape(networkVirtualApplianceName))
@@ -107,14 +102,16 @@ func (client VirtualApplianceSitesClient) createOrUpdateCreateRequest(ctx contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client VirtualApplianceSitesClient) createOrUpdateHandleResponse(resp *azcore.Response) (VirtualApplianceSiteResponse, error) {
-	result := VirtualApplianceSiteResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.VirtualApplianceSite)
-	return result, err
+func (client *VirtualApplianceSitesClient) createOrUpdateHandleResponse(resp *azcore.Response) (VirtualApplianceSiteResponse, error) {
+	var val *VirtualApplianceSite
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return VirtualApplianceSiteResponse{}, err
+	}
+	return VirtualApplianceSiteResponse{RawResponse: resp.Response, VirtualApplianceSite: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client VirtualApplianceSitesClient) createOrUpdateHandleError(resp *azcore.Response) error {
+func (client *VirtualApplianceSitesClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -123,7 +120,7 @@ func (client VirtualApplianceSitesClient) createOrUpdateHandleError(resp *azcore
 }
 
 // BeginDelete - Deletes the specified site from a Virtual Appliance.
-func (client VirtualApplianceSitesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, options *VirtualApplianceSitesBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *VirtualApplianceSitesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, options *VirtualApplianceSitesBeginDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.delete(ctx, resourceGroupName, networkVirtualApplianceName, siteName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
@@ -148,7 +145,7 @@ func (client VirtualApplianceSitesClient) BeginDelete(ctx context.Context, resou
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client VirtualApplianceSitesClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *VirtualApplianceSitesClient) ResumeDelete(token string) (HTTPPoller, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualApplianceSitesClient.Delete", token, client.deleteHandleError)
 	if err != nil {
 		return nil, err
@@ -160,12 +157,12 @@ func (client VirtualApplianceSitesClient) ResumeDelete(token string) (HTTPPoller
 }
 
 // Delete - Deletes the specified site from a Virtual Appliance.
-func (client VirtualApplianceSitesClient) delete(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, options *VirtualApplianceSitesBeginDeleteOptions) (*azcore.Response, error) {
+func (client *VirtualApplianceSitesClient) delete(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, options *VirtualApplianceSitesBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, siteName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -176,7 +173,7 @@ func (client VirtualApplianceSitesClient) delete(ctx context.Context, resourceGr
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client VirtualApplianceSitesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, options *VirtualApplianceSitesBeginDeleteOptions) (*azcore.Request, error) {
+func (client *VirtualApplianceSitesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, options *VirtualApplianceSitesBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/virtualApplianceSites/{siteName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkVirtualApplianceName}", url.PathEscape(networkVirtualApplianceName))
@@ -195,7 +192,7 @@ func (client VirtualApplianceSitesClient) deleteCreateRequest(ctx context.Contex
 }
 
 // deleteHandleError handles the Delete error response.
-func (client VirtualApplianceSitesClient) deleteHandleError(resp *azcore.Response) error {
+func (client *VirtualApplianceSitesClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -204,27 +201,23 @@ func (client VirtualApplianceSitesClient) deleteHandleError(resp *azcore.Respons
 }
 
 // Get - Gets the specified Virtual Appliance Site.
-func (client VirtualApplianceSitesClient) Get(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, options *VirtualApplianceSitesGetOptions) (VirtualApplianceSiteResponse, error) {
+func (client *VirtualApplianceSitesClient) Get(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, options *VirtualApplianceSitesGetOptions) (VirtualApplianceSiteResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, siteName, options)
 	if err != nil {
 		return VirtualApplianceSiteResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return VirtualApplianceSiteResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return VirtualApplianceSiteResponse{}, client.getHandleError(resp)
 	}
-	result, err := client.getHandleResponse(resp)
-	if err != nil {
-		return VirtualApplianceSiteResponse{}, err
-	}
-	return result, nil
+	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client VirtualApplianceSitesClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, options *VirtualApplianceSitesGetOptions) (*azcore.Request, error) {
+func (client *VirtualApplianceSitesClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, options *VirtualApplianceSitesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/virtualApplianceSites/{siteName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkVirtualApplianceName}", url.PathEscape(networkVirtualApplianceName))
@@ -243,14 +236,16 @@ func (client VirtualApplianceSitesClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client VirtualApplianceSitesClient) getHandleResponse(resp *azcore.Response) (VirtualApplianceSiteResponse, error) {
-	result := VirtualApplianceSiteResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.VirtualApplianceSite)
-	return result, err
+func (client *VirtualApplianceSitesClient) getHandleResponse(resp *azcore.Response) (VirtualApplianceSiteResponse, error) {
+	var val *VirtualApplianceSite
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return VirtualApplianceSiteResponse{}, err
+	}
+	return VirtualApplianceSiteResponse{RawResponse: resp.Response, VirtualApplianceSite: val}, nil
 }
 
 // getHandleError handles the Get error response.
-func (client VirtualApplianceSitesClient) getHandleError(resp *azcore.Response) error {
+func (client *VirtualApplianceSitesClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -259,7 +254,7 @@ func (client VirtualApplianceSitesClient) getHandleError(resp *azcore.Response) 
 }
 
 // List - Lists all Network Virtual Appliance Sites in a Network Virtual Appliance resource.
-func (client VirtualApplianceSitesClient) List(resourceGroupName string, networkVirtualApplianceName string, options *VirtualApplianceSitesListOptions) NetworkVirtualApplianceSiteListResultPager {
+func (client *VirtualApplianceSitesClient) List(resourceGroupName string, networkVirtualApplianceName string, options *VirtualApplianceSitesListOptions) NetworkVirtualApplianceSiteListResultPager {
 	return &networkVirtualApplianceSiteListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -275,7 +270,7 @@ func (client VirtualApplianceSitesClient) List(resourceGroupName string, network
 }
 
 // listCreateRequest creates the List request.
-func (client VirtualApplianceSitesClient) listCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualApplianceSitesListOptions) (*azcore.Request, error) {
+func (client *VirtualApplianceSitesClient) listCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualApplianceSitesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/virtualApplianceSites"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkVirtualApplianceName}", url.PathEscape(networkVirtualApplianceName))
@@ -293,14 +288,16 @@ func (client VirtualApplianceSitesClient) listCreateRequest(ctx context.Context,
 }
 
 // listHandleResponse handles the List response.
-func (client VirtualApplianceSitesClient) listHandleResponse(resp *azcore.Response) (NetworkVirtualApplianceSiteListResultResponse, error) {
-	result := NetworkVirtualApplianceSiteListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.NetworkVirtualApplianceSiteListResult)
-	return result, err
+func (client *VirtualApplianceSitesClient) listHandleResponse(resp *azcore.Response) (NetworkVirtualApplianceSiteListResultResponse, error) {
+	var val *NetworkVirtualApplianceSiteListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return NetworkVirtualApplianceSiteListResultResponse{}, err
+	}
+	return NetworkVirtualApplianceSiteListResultResponse{RawResponse: resp.Response, NetworkVirtualApplianceSiteListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client VirtualApplianceSitesClient) listHandleError(resp *azcore.Response) error {
+func (client *VirtualApplianceSitesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

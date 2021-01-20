@@ -24,17 +24,12 @@ type AvailableEndpointServicesClient struct {
 }
 
 // NewAvailableEndpointServicesClient creates a new instance of AvailableEndpointServicesClient with the specified values.
-func NewAvailableEndpointServicesClient(con *armcore.Connection, subscriptionID string) AvailableEndpointServicesClient {
-	return AvailableEndpointServicesClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client AvailableEndpointServicesClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewAvailableEndpointServicesClient(con *armcore.Connection, subscriptionID string) *AvailableEndpointServicesClient {
+	return &AvailableEndpointServicesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // List - List what values of endpoint services are available for use.
-func (client AvailableEndpointServicesClient) List(location string, options *AvailableEndpointServicesListOptions) EndpointServicesListResultPager {
+func (client *AvailableEndpointServicesClient) List(location string, options *AvailableEndpointServicesListOptions) EndpointServicesListResultPager {
 	return &endpointServicesListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -50,7 +45,7 @@ func (client AvailableEndpointServicesClient) List(location string, options *Ava
 }
 
 // listCreateRequest creates the List request.
-func (client AvailableEndpointServicesClient) listCreateRequest(ctx context.Context, location string, options *AvailableEndpointServicesListOptions) (*azcore.Request, error) {
+func (client *AvailableEndpointServicesClient) listCreateRequest(ctx context.Context, location string, options *AvailableEndpointServicesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/virtualNetworkAvailableEndpointServices"
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -67,14 +62,16 @@ func (client AvailableEndpointServicesClient) listCreateRequest(ctx context.Cont
 }
 
 // listHandleResponse handles the List response.
-func (client AvailableEndpointServicesClient) listHandleResponse(resp *azcore.Response) (EndpointServicesListResultResponse, error) {
-	result := EndpointServicesListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.EndpointServicesListResult)
-	return result, err
+func (client *AvailableEndpointServicesClient) listHandleResponse(resp *azcore.Response) (EndpointServicesListResultResponse, error) {
+	var val *EndpointServicesListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return EndpointServicesListResultResponse{}, err
+	}
+	return EndpointServicesListResultResponse{RawResponse: resp.Response, EndpointServicesListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client AvailableEndpointServicesClient) listHandleError(resp *azcore.Response) error {
+func (client *AvailableEndpointServicesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

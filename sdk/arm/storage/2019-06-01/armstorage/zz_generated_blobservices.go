@@ -27,38 +27,29 @@ type BlobServicesClient struct {
 }
 
 // NewBlobServicesClient creates a new instance of BlobServicesClient with the specified values.
-func NewBlobServicesClient(con *armcore.Connection, subscriptionID string) BlobServicesClient {
-	return BlobServicesClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client BlobServicesClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewBlobServicesClient(con *armcore.Connection, subscriptionID string) *BlobServicesClient {
+	return &BlobServicesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // GetServiceProperties - Gets the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS (Cross-Origin Resource
 // Sharing) rules.
-func (client BlobServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesGetServicePropertiesOptions) (BlobServicePropertiesResponse, error) {
+func (client *BlobServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesGetServicePropertiesOptions) (BlobServicePropertiesResponse, error) {
 	req, err := client.getServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return BlobServicePropertiesResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return BlobServicePropertiesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return BlobServicePropertiesResponse{}, client.getServicePropertiesHandleError(resp)
 	}
-	result, err := client.getServicePropertiesHandleResponse(resp)
-	if err != nil {
-		return BlobServicePropertiesResponse{}, err
-	}
-	return result, nil
+	return client.getServicePropertiesHandleResponse(resp)
 }
 
 // getServicePropertiesCreateRequest creates the GetServiceProperties request.
-func (client BlobServicesClient) getServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesGetServicePropertiesOptions) (*azcore.Request, error) {
+func (client *BlobServicesClient) getServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesGetServicePropertiesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/{BlobServicesName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -77,14 +68,16 @@ func (client BlobServicesClient) getServicePropertiesCreateRequest(ctx context.C
 }
 
 // getServicePropertiesHandleResponse handles the GetServiceProperties response.
-func (client BlobServicesClient) getServicePropertiesHandleResponse(resp *azcore.Response) (BlobServicePropertiesResponse, error) {
-	result := BlobServicePropertiesResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.BlobServiceProperties)
-	return result, err
+func (client *BlobServicesClient) getServicePropertiesHandleResponse(resp *azcore.Response) (BlobServicePropertiesResponse, error) {
+	var val *BlobServiceProperties
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return BlobServicePropertiesResponse{}, err
+	}
+	return BlobServicePropertiesResponse{RawResponse: resp.Response, BlobServiceProperties: val}, nil
 }
 
 // getServicePropertiesHandleError handles the GetServiceProperties error response.
-func (client BlobServicesClient) getServicePropertiesHandleError(resp *azcore.Response) error {
+func (client *BlobServicesClient) getServicePropertiesHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -96,27 +89,23 @@ func (client BlobServicesClient) getServicePropertiesHandleError(resp *azcore.Re
 }
 
 // List - List blob services of storage account. It returns a collection of one object named default.
-func (client BlobServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesListOptions) (BlobServiceItemsResponse, error) {
+func (client *BlobServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesListOptions) (BlobServiceItemsResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return BlobServiceItemsResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return BlobServiceItemsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return BlobServiceItemsResponse{}, client.listHandleError(resp)
 	}
-	result, err := client.listHandleResponse(resp)
-	if err != nil {
-		return BlobServiceItemsResponse{}, err
-	}
-	return result, nil
+	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client BlobServicesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesListOptions) (*azcore.Request, error) {
+func (client *BlobServicesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -134,14 +123,16 @@ func (client BlobServicesClient) listCreateRequest(ctx context.Context, resource
 }
 
 // listHandleResponse handles the List response.
-func (client BlobServicesClient) listHandleResponse(resp *azcore.Response) (BlobServiceItemsResponse, error) {
-	result := BlobServiceItemsResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.BlobServiceItems)
-	return result, err
+func (client *BlobServicesClient) listHandleResponse(resp *azcore.Response) (BlobServiceItemsResponse, error) {
+	var val *BlobServiceItems
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return BlobServiceItemsResponse{}, err
+	}
+	return BlobServiceItemsResponse{RawResponse: resp.Response, BlobServiceItems: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client BlobServicesClient) listHandleError(resp *azcore.Response) error {
+func (client *BlobServicesClient) listHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -154,27 +145,23 @@ func (client BlobServicesClient) listHandleError(resp *azcore.Response) error {
 
 // SetServiceProperties - Sets the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS (Cross-Origin Resource
 // Sharing) rules.
-func (client BlobServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties, options *BlobServicesSetServicePropertiesOptions) (BlobServicePropertiesResponse, error) {
+func (client *BlobServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties, options *BlobServicesSetServicePropertiesOptions) (BlobServicePropertiesResponse, error) {
 	req, err := client.setServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return BlobServicePropertiesResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return BlobServicePropertiesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return BlobServicePropertiesResponse{}, client.setServicePropertiesHandleError(resp)
 	}
-	result, err := client.setServicePropertiesHandleResponse(resp)
-	if err != nil {
-		return BlobServicePropertiesResponse{}, err
-	}
-	return result, nil
+	return client.setServicePropertiesHandleResponse(resp)
 }
 
 // setServicePropertiesCreateRequest creates the SetServiceProperties request.
-func (client BlobServicesClient) setServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties, options *BlobServicesSetServicePropertiesOptions) (*azcore.Request, error) {
+func (client *BlobServicesClient) setServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties, options *BlobServicesSetServicePropertiesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/{BlobServicesName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -193,14 +180,16 @@ func (client BlobServicesClient) setServicePropertiesCreateRequest(ctx context.C
 }
 
 // setServicePropertiesHandleResponse handles the SetServiceProperties response.
-func (client BlobServicesClient) setServicePropertiesHandleResponse(resp *azcore.Response) (BlobServicePropertiesResponse, error) {
-	result := BlobServicePropertiesResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.BlobServiceProperties)
-	return result, err
+func (client *BlobServicesClient) setServicePropertiesHandleResponse(resp *azcore.Response) (BlobServicePropertiesResponse, error) {
+	var val *BlobServiceProperties
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return BlobServicePropertiesResponse{}, err
+	}
+	return BlobServicePropertiesResponse{RawResponse: resp.Response, BlobServiceProperties: val}, nil
 }
 
 // setServicePropertiesHandleError handles the SetServiceProperties error response.
-func (client BlobServicesClient) setServicePropertiesHandleError(resp *azcore.Response) error {
+func (client *BlobServicesClient) setServicePropertiesHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)

@@ -27,37 +27,28 @@ type PrivateLinkResourcesClient struct {
 }
 
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient with the specified values.
-func NewPrivateLinkResourcesClient(con *armcore.Connection, subscriptionID string) PrivateLinkResourcesClient {
-	return PrivateLinkResourcesClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client PrivateLinkResourcesClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewPrivateLinkResourcesClient(con *armcore.Connection, subscriptionID string) *PrivateLinkResourcesClient {
+	return &PrivateLinkResourcesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // ListByStorageAccount - Gets the private link resources that need to be created for a storage account.
-func (client PrivateLinkResourcesClient) ListByStorageAccount(ctx context.Context, resourceGroupName string, accountName string, options *PrivateLinkResourcesListByStorageAccountOptions) (PrivateLinkResourceListResultResponse, error) {
+func (client *PrivateLinkResourcesClient) ListByStorageAccount(ctx context.Context, resourceGroupName string, accountName string, options *PrivateLinkResourcesListByStorageAccountOptions) (PrivateLinkResourceListResultResponse, error) {
 	req, err := client.listByStorageAccountCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return PrivateLinkResourceListResultResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return PrivateLinkResourceListResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return PrivateLinkResourceListResultResponse{}, client.listByStorageAccountHandleError(resp)
 	}
-	result, err := client.listByStorageAccountHandleResponse(resp)
-	if err != nil {
-		return PrivateLinkResourceListResultResponse{}, err
-	}
-	return result, nil
+	return client.listByStorageAccountHandleResponse(resp)
 }
 
 // listByStorageAccountCreateRequest creates the ListByStorageAccount request.
-func (client PrivateLinkResourcesClient) listByStorageAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *PrivateLinkResourcesListByStorageAccountOptions) (*azcore.Request, error) {
+func (client *PrivateLinkResourcesClient) listByStorageAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *PrivateLinkResourcesListByStorageAccountOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/privateLinkResources"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -75,14 +66,16 @@ func (client PrivateLinkResourcesClient) listByStorageAccountCreateRequest(ctx c
 }
 
 // listByStorageAccountHandleResponse handles the ListByStorageAccount response.
-func (client PrivateLinkResourcesClient) listByStorageAccountHandleResponse(resp *azcore.Response) (PrivateLinkResourceListResultResponse, error) {
-	result := PrivateLinkResourceListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.PrivateLinkResourceListResult)
-	return result, err
+func (client *PrivateLinkResourcesClient) listByStorageAccountHandleResponse(resp *azcore.Response) (PrivateLinkResourceListResultResponse, error) {
+	var val *PrivateLinkResourceListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return PrivateLinkResourceListResultResponse{}, err
+	}
+	return PrivateLinkResourceListResultResponse{RawResponse: resp.Response, PrivateLinkResourceListResult: val}, nil
 }
 
 // listByStorageAccountHandleError handles the ListByStorageAccount error response.
-func (client PrivateLinkResourcesClient) listByStorageAccountHandleError(resp *azcore.Response) error {
+func (client *PrivateLinkResourcesClient) listByStorageAccountHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)

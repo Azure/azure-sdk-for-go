@@ -24,37 +24,28 @@ type ObjectReplicationPoliciesClient struct {
 }
 
 // NewObjectReplicationPoliciesClient creates a new instance of ObjectReplicationPoliciesClient with the specified values.
-func NewObjectReplicationPoliciesClient(con *armcore.Connection, subscriptionID string) ObjectReplicationPoliciesClient {
-	return ObjectReplicationPoliciesClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client ObjectReplicationPoliciesClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewObjectReplicationPoliciesClient(con *armcore.Connection, subscriptionID string) *ObjectReplicationPoliciesClient {
+	return &ObjectReplicationPoliciesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Create or update the object replication policy of the storage account.
-func (client ObjectReplicationPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, properties ObjectReplicationPolicy, options *ObjectReplicationPoliciesCreateOrUpdateOptions) (ObjectReplicationPolicyResponse, error) {
+func (client *ObjectReplicationPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, properties ObjectReplicationPolicy, options *ObjectReplicationPoliciesCreateOrUpdateOptions) (ObjectReplicationPolicyResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, objectReplicationPolicyId, properties, options)
 	if err != nil {
 		return ObjectReplicationPolicyResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return ObjectReplicationPolicyResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return ObjectReplicationPolicyResponse{}, client.createOrUpdateHandleError(resp)
 	}
-	result, err := client.createOrUpdateHandleResponse(resp)
-	if err != nil {
-		return ObjectReplicationPolicyResponse{}, err
-	}
-	return result, nil
+	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client ObjectReplicationPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, properties ObjectReplicationPolicy, options *ObjectReplicationPoliciesCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *ObjectReplicationPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, properties ObjectReplicationPolicy, options *ObjectReplicationPoliciesCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -73,14 +64,16 @@ func (client ObjectReplicationPoliciesClient) createOrUpdateCreateRequest(ctx co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client ObjectReplicationPoliciesClient) createOrUpdateHandleResponse(resp *azcore.Response) (ObjectReplicationPolicyResponse, error) {
-	result := ObjectReplicationPolicyResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ObjectReplicationPolicy)
-	return result, err
+func (client *ObjectReplicationPoliciesClient) createOrUpdateHandleResponse(resp *azcore.Response) (ObjectReplicationPolicyResponse, error) {
+	var val *ObjectReplicationPolicy
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ObjectReplicationPolicyResponse{}, err
+	}
+	return ObjectReplicationPolicyResponse{RawResponse: resp.Response, ObjectReplicationPolicy: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client ObjectReplicationPoliciesClient) createOrUpdateHandleError(resp *azcore.Response) error {
+func (client *ObjectReplicationPoliciesClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -89,12 +82,12 @@ func (client ObjectReplicationPoliciesClient) createOrUpdateHandleError(resp *az
 }
 
 // Delete - Deletes the object replication policy associated with the specified storage account.
-func (client ObjectReplicationPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, options *ObjectReplicationPoliciesDeleteOptions) (*http.Response, error) {
+func (client *ObjectReplicationPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, options *ObjectReplicationPoliciesDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, objectReplicationPolicyId, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +98,7 @@ func (client ObjectReplicationPoliciesClient) Delete(ctx context.Context, resour
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client ObjectReplicationPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, options *ObjectReplicationPoliciesDeleteOptions) (*azcore.Request, error) {
+func (client *ObjectReplicationPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, options *ObjectReplicationPoliciesDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -124,7 +117,7 @@ func (client ObjectReplicationPoliciesClient) deleteCreateRequest(ctx context.Co
 }
 
 // deleteHandleError handles the Delete error response.
-func (client ObjectReplicationPoliciesClient) deleteHandleError(resp *azcore.Response) error {
+func (client *ObjectReplicationPoliciesClient) deleteHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -133,27 +126,23 @@ func (client ObjectReplicationPoliciesClient) deleteHandleError(resp *azcore.Res
 }
 
 // Get - Get the object replication policy of the storage account by policy ID.
-func (client ObjectReplicationPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, options *ObjectReplicationPoliciesGetOptions) (ObjectReplicationPolicyResponse, error) {
+func (client *ObjectReplicationPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, options *ObjectReplicationPoliciesGetOptions) (ObjectReplicationPolicyResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, objectReplicationPolicyId, options)
 	if err != nil {
 		return ObjectReplicationPolicyResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return ObjectReplicationPolicyResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return ObjectReplicationPolicyResponse{}, client.getHandleError(resp)
 	}
-	result, err := client.getHandleResponse(resp)
-	if err != nil {
-		return ObjectReplicationPolicyResponse{}, err
-	}
-	return result, nil
+	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client ObjectReplicationPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, options *ObjectReplicationPoliciesGetOptions) (*azcore.Request, error) {
+func (client *ObjectReplicationPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, options *ObjectReplicationPoliciesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -172,14 +161,16 @@ func (client ObjectReplicationPoliciesClient) getCreateRequest(ctx context.Conte
 }
 
 // getHandleResponse handles the Get response.
-func (client ObjectReplicationPoliciesClient) getHandleResponse(resp *azcore.Response) (ObjectReplicationPolicyResponse, error) {
-	result := ObjectReplicationPolicyResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ObjectReplicationPolicy)
-	return result, err
+func (client *ObjectReplicationPoliciesClient) getHandleResponse(resp *azcore.Response) (ObjectReplicationPolicyResponse, error) {
+	var val *ObjectReplicationPolicy
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ObjectReplicationPolicyResponse{}, err
+	}
+	return ObjectReplicationPolicyResponse{RawResponse: resp.Response, ObjectReplicationPolicy: val}, nil
 }
 
 // getHandleError handles the Get error response.
-func (client ObjectReplicationPoliciesClient) getHandleError(resp *azcore.Response) error {
+func (client *ObjectReplicationPoliciesClient) getHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -188,27 +179,23 @@ func (client ObjectReplicationPoliciesClient) getHandleError(resp *azcore.Respon
 }
 
 // List - List the object replication policies associated with the storage account.
-func (client ObjectReplicationPoliciesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *ObjectReplicationPoliciesListOptions) (ObjectReplicationPoliciesResponse, error) {
+func (client *ObjectReplicationPoliciesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *ObjectReplicationPoliciesListOptions) (ObjectReplicationPoliciesResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return ObjectReplicationPoliciesResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return ObjectReplicationPoliciesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return ObjectReplicationPoliciesResponse{}, client.listHandleError(resp)
 	}
-	result, err := client.listHandleResponse(resp)
-	if err != nil {
-		return ObjectReplicationPoliciesResponse{}, err
-	}
-	return result, nil
+	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client ObjectReplicationPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *ObjectReplicationPoliciesListOptions) (*azcore.Request, error) {
+func (client *ObjectReplicationPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *ObjectReplicationPoliciesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/objectReplicationPolicies"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -226,14 +213,16 @@ func (client ObjectReplicationPoliciesClient) listCreateRequest(ctx context.Cont
 }
 
 // listHandleResponse handles the List response.
-func (client ObjectReplicationPoliciesClient) listHandleResponse(resp *azcore.Response) (ObjectReplicationPoliciesResponse, error) {
-	result := ObjectReplicationPoliciesResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ObjectReplicationPolicies)
-	return result, err
+func (client *ObjectReplicationPoliciesClient) listHandleResponse(resp *azcore.Response) (ObjectReplicationPoliciesResponse, error) {
+	var val *ObjectReplicationPolicies
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ObjectReplicationPoliciesResponse{}, err
+	}
+	return ObjectReplicationPoliciesResponse{RawResponse: resp.Response, ObjectReplicationPolicies: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client ObjectReplicationPoliciesClient) listHandleError(resp *azcore.Response) error {
+func (client *ObjectReplicationPoliciesClient) listHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

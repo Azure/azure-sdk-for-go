@@ -27,37 +27,28 @@ type UsagesClient struct {
 }
 
 // NewUsagesClient creates a new instance of UsagesClient with the specified values.
-func NewUsagesClient(con *armcore.Connection, subscriptionID string) UsagesClient {
-	return UsagesClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client UsagesClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewUsagesClient(con *armcore.Connection, subscriptionID string) *UsagesClient {
+	return &UsagesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // ListByLocation - Gets the current usage count and the limit for the resources of the location under the subscription.
-func (client UsagesClient) ListByLocation(ctx context.Context, location string, options *UsagesListByLocationOptions) (UsageListResultResponse, error) {
+func (client *UsagesClient) ListByLocation(ctx context.Context, location string, options *UsagesListByLocationOptions) (UsageListResultResponse, error) {
 	req, err := client.listByLocationCreateRequest(ctx, location, options)
 	if err != nil {
 		return UsageListResultResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return UsageListResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return UsageListResultResponse{}, client.listByLocationHandleError(resp)
 	}
-	result, err := client.listByLocationHandleResponse(resp)
-	if err != nil {
-		return UsageListResultResponse{}, err
-	}
-	return result, nil
+	return client.listByLocationHandleResponse(resp)
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client UsagesClient) listByLocationCreateRequest(ctx context.Context, location string, options *UsagesListByLocationOptions) (*azcore.Request, error) {
+func (client *UsagesClient) listByLocationCreateRequest(ctx context.Context, location string, options *UsagesListByLocationOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/locations/{location}/usages"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
@@ -74,14 +65,16 @@ func (client UsagesClient) listByLocationCreateRequest(ctx context.Context, loca
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client UsagesClient) listByLocationHandleResponse(resp *azcore.Response) (UsageListResultResponse, error) {
-	result := UsageListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.UsageListResult)
-	return result, err
+func (client *UsagesClient) listByLocationHandleResponse(resp *azcore.Response) (UsageListResultResponse, error) {
+	var val *UsageListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return UsageListResultResponse{}, err
+	}
+	return UsageListResultResponse{RawResponse: resp.Response, UsageListResult: val}, nil
 }
 
 // listByLocationHandleError handles the ListByLocation error response.
-func (client UsagesClient) listByLocationHandleError(resp *azcore.Response) error {
+func (client *UsagesClient) listByLocationHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)

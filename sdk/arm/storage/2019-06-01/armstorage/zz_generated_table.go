@@ -24,37 +24,28 @@ type TableClient struct {
 }
 
 // NewTableClient creates a new instance of TableClient with the specified values.
-func NewTableClient(con *armcore.Connection, subscriptionID string) TableClient {
-	return TableClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client TableClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewTableClient(con *armcore.Connection, subscriptionID string) *TableClient {
+	return &TableClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Create - Creates a new table with the specified table name, under the specified account.
-func (client TableClient) Create(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableCreateOptions) (TableResponse, error) {
+func (client *TableClient) Create(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableCreateOptions) (TableResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
 		return TableResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return TableResponse{}, client.createHandleError(resp)
 	}
-	result, err := client.createHandleResponse(resp)
-	if err != nil {
-		return TableResponse{}, err
-	}
-	return result, nil
+	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client TableClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableCreateOptions) (*azcore.Request, error) {
+func (client *TableClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableCreateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/default/tables/{tableName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -73,14 +64,16 @@ func (client TableClient) createCreateRequest(ctx context.Context, resourceGroup
 }
 
 // createHandleResponse handles the Create response.
-func (client TableClient) createHandleResponse(resp *azcore.Response) (TableResponse, error) {
-	result := TableResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.Table)
-	return result, err
+func (client *TableClient) createHandleResponse(resp *azcore.Response) (TableResponse, error) {
+	var val *Table
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return TableResponse{}, err
+	}
+	return TableResponse{RawResponse: resp.Response, Table: val}, nil
 }
 
 // createHandleError handles the Create error response.
-func (client TableClient) createHandleError(resp *azcore.Response) error {
+func (client *TableClient) createHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -89,12 +82,12 @@ func (client TableClient) createHandleError(resp *azcore.Response) error {
 }
 
 // Delete - Deletes the table with the specified table name, under the specified account if it exists.
-func (client TableClient) Delete(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableDeleteOptions) (*http.Response, error) {
+func (client *TableClient) Delete(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +98,7 @@ func (client TableClient) Delete(ctx context.Context, resourceGroupName string, 
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client TableClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableDeleteOptions) (*azcore.Request, error) {
+func (client *TableClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/default/tables/{tableName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -124,7 +117,7 @@ func (client TableClient) deleteCreateRequest(ctx context.Context, resourceGroup
 }
 
 // deleteHandleError handles the Delete error response.
-func (client TableClient) deleteHandleError(resp *azcore.Response) error {
+func (client *TableClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -133,27 +126,23 @@ func (client TableClient) deleteHandleError(resp *azcore.Response) error {
 }
 
 // Get - Gets the table with the specified table name, under the specified account if it exists.
-func (client TableClient) Get(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableGetOptions) (TableResponse, error) {
+func (client *TableClient) Get(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableGetOptions) (TableResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
 		return TableResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return TableResponse{}, client.getHandleError(resp)
 	}
-	result, err := client.getHandleResponse(resp)
-	if err != nil {
-		return TableResponse{}, err
-	}
-	return result, nil
+	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client TableClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableGetOptions) (*azcore.Request, error) {
+func (client *TableClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/default/tables/{tableName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -172,14 +161,16 @@ func (client TableClient) getCreateRequest(ctx context.Context, resourceGroupNam
 }
 
 // getHandleResponse handles the Get response.
-func (client TableClient) getHandleResponse(resp *azcore.Response) (TableResponse, error) {
-	result := TableResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.Table)
-	return result, err
+func (client *TableClient) getHandleResponse(resp *azcore.Response) (TableResponse, error) {
+	var val *Table
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return TableResponse{}, err
+	}
+	return TableResponse{RawResponse: resp.Response, Table: val}, nil
 }
 
 // getHandleError handles the Get error response.
-func (client TableClient) getHandleError(resp *azcore.Response) error {
+func (client *TableClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -188,7 +179,7 @@ func (client TableClient) getHandleError(resp *azcore.Response) error {
 }
 
 // List - Gets a list of all the tables under the specified storage account
-func (client TableClient) List(resourceGroupName string, accountName string, options *TableListOptions) ListTableResourcePager {
+func (client *TableClient) List(resourceGroupName string, accountName string, options *TableListOptions) ListTableResourcePager {
 	return &listTableResourcePager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -204,7 +195,7 @@ func (client TableClient) List(resourceGroupName string, accountName string, opt
 }
 
 // listCreateRequest creates the List request.
-func (client TableClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *TableListOptions) (*azcore.Request, error) {
+func (client *TableClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *TableListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/default/tables"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -222,14 +213,16 @@ func (client TableClient) listCreateRequest(ctx context.Context, resourceGroupNa
 }
 
 // listHandleResponse handles the List response.
-func (client TableClient) listHandleResponse(resp *azcore.Response) (ListTableResourceResponse, error) {
-	result := ListTableResourceResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ListTableResource)
-	return result, err
+func (client *TableClient) listHandleResponse(resp *azcore.Response) (ListTableResourceResponse, error) {
+	var val *ListTableResource
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ListTableResourceResponse{}, err
+	}
+	return ListTableResourceResponse{RawResponse: resp.Response, ListTableResource: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client TableClient) listHandleError(resp *azcore.Response) error {
+func (client *TableClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -238,27 +231,23 @@ func (client TableClient) listHandleError(resp *azcore.Response) error {
 }
 
 // Update - Creates a new table with the specified table name, under the specified account.
-func (client TableClient) Update(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableUpdateOptions) (TableResponse, error) {
+func (client *TableClient) Update(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableUpdateOptions) (TableResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
 		return TableResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return TableResponse{}, client.updateHandleError(resp)
 	}
-	result, err := client.updateHandleResponse(resp)
-	if err != nil {
-		return TableResponse{}, err
-	}
-	return result, nil
+	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client TableClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableUpdateOptions) (*azcore.Request, error) {
+func (client *TableClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/default/tables/{tableName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -277,14 +266,16 @@ func (client TableClient) updateCreateRequest(ctx context.Context, resourceGroup
 }
 
 // updateHandleResponse handles the Update response.
-func (client TableClient) updateHandleResponse(resp *azcore.Response) (TableResponse, error) {
-	result := TableResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.Table)
-	return result, err
+func (client *TableClient) updateHandleResponse(resp *azcore.Response) (TableResponse, error) {
+	var val *Table
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return TableResponse{}, err
+	}
+	return TableResponse{RawResponse: resp.Response, Table: val}, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client TableClient) updateHandleError(resp *azcore.Response) error {
+func (client *TableClient) updateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

@@ -29,37 +29,28 @@ type VaultsClient struct {
 }
 
 // NewVaultsClient creates a new instance of VaultsClient with the specified values.
-func NewVaultsClient(con *armcore.Connection, subscriptionID string) VaultsClient {
-	return VaultsClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client VaultsClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewVaultsClient(con *armcore.Connection, subscriptionID string) *VaultsClient {
+	return &VaultsClient{con: con, subscriptionID: subscriptionID}
 }
 
 // CheckNameAvailability - Checks that the vault name is valid and is not already in use.
-func (client VaultsClient) CheckNameAvailability(ctx context.Context, vaultName VaultCheckNameAvailabilityParameters, options *VaultsCheckNameAvailabilityOptions) (CheckNameAvailabilityResultResponse, error) {
+func (client *VaultsClient) CheckNameAvailability(ctx context.Context, vaultName VaultCheckNameAvailabilityParameters, options *VaultsCheckNameAvailabilityOptions) (CheckNameAvailabilityResultResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, vaultName, options)
 	if err != nil {
 		return CheckNameAvailabilityResultResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return CheckNameAvailabilityResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return CheckNameAvailabilityResultResponse{}, client.checkNameAvailabilityHandleError(resp)
 	}
-	result, err := client.checkNameAvailabilityHandleResponse(resp)
-	if err != nil {
-		return CheckNameAvailabilityResultResponse{}, err
-	}
-	return result, nil
+	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client VaultsClient) checkNameAvailabilityCreateRequest(ctx context.Context, vaultName VaultCheckNameAvailabilityParameters, options *VaultsCheckNameAvailabilityOptions) (*azcore.Request, error) {
+func (client *VaultsClient) checkNameAvailabilityCreateRequest(ctx context.Context, vaultName VaultCheckNameAvailabilityParameters, options *VaultsCheckNameAvailabilityOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/checkNameAvailability"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -75,14 +66,16 @@ func (client VaultsClient) checkNameAvailabilityCreateRequest(ctx context.Contex
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client VaultsClient) checkNameAvailabilityHandleResponse(resp *azcore.Response) (CheckNameAvailabilityResultResponse, error) {
-	result := CheckNameAvailabilityResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.CheckNameAvailabilityResult)
-	return result, err
+func (client *VaultsClient) checkNameAvailabilityHandleResponse(resp *azcore.Response) (CheckNameAvailabilityResultResponse, error) {
+	var val *CheckNameAvailabilityResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return CheckNameAvailabilityResultResponse{}, err
+	}
+	return CheckNameAvailabilityResultResponse{RawResponse: resp.Response, CheckNameAvailabilityResult: val}, nil
 }
 
 // checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client VaultsClient) checkNameAvailabilityHandleError(resp *azcore.Response) error {
+func (client *VaultsClient) checkNameAvailabilityHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -94,7 +87,7 @@ func (client VaultsClient) checkNameAvailabilityHandleError(resp *azcore.Respons
 }
 
 // BeginCreateOrUpdate - Create or update a key vault in the specified subscription.
-func (client VaultsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultCreateOrUpdateParameters, options *VaultsBeginCreateOrUpdateOptions) (VaultPollerResponse, error) {
+func (client *VaultsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultCreateOrUpdateParameters, options *VaultsBeginCreateOrUpdateOptions) (VaultPollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, vaultName, parameters, options)
 	if err != nil {
 		return VaultPollerResponse{}, err
@@ -119,7 +112,7 @@ func (client VaultsClient) BeginCreateOrUpdate(ctx context.Context, resourceGrou
 
 // ResumeCreateOrUpdate creates a new VaultPoller from the specified resume token.
 // token - The value must come from a previous call to VaultPoller.ResumeToken().
-func (client VaultsClient) ResumeCreateOrUpdate(token string) (VaultPoller, error) {
+func (client *VaultsClient) ResumeCreateOrUpdate(token string) (VaultPoller, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VaultsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
@@ -131,12 +124,12 @@ func (client VaultsClient) ResumeCreateOrUpdate(token string) (VaultPoller, erro
 }
 
 // CreateOrUpdate - Create or update a key vault in the specified subscription.
-func (client VaultsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultCreateOrUpdateParameters, options *VaultsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *VaultsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultCreateOrUpdateParameters, options *VaultsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vaultName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -147,7 +140,7 @@ func (client VaultsClient) createOrUpdate(ctx context.Context, resourceGroupName
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client VaultsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultCreateOrUpdateParameters, options *VaultsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *VaultsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultCreateOrUpdateParameters, options *VaultsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
@@ -165,31 +158,45 @@ func (client VaultsClient) createOrUpdateCreateRequest(ctx context.Context, reso
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client VaultsClient) createOrUpdateHandleResponse(resp *azcore.Response) (VaultResponse, error) {
-	result := VaultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.Vault)
-	return result, err
+func (client *VaultsClient) createOrUpdateHandleResponse(resp *azcore.Response) (VaultResponse, error) {
+	var val *Vault
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return VaultResponse{}, err
+	}
+	return VaultResponse{RawResponse: resp.Response, Vault: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client VaultsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+func (client *VaultsClient) createOrUpdateHandleError(resp *azcore.Response) error {
+	switch resp.StatusCode {
+	case http.StatusBadRequest:
+		var err CloudError
+		if err := resp.UnmarshalAsJSON(&err); err != nil {
+			return err
+		}
+		return azcore.NewResponseError(&err, resp.Response)
+	case http.StatusConflict:
+		var err CloudError
+		if err := resp.UnmarshalAsJSON(&err); err != nil {
+			return err
+		}
+		return azcore.NewResponseError(&err, resp.Response)
+	default:
+		var err CloudError
+		if err := resp.UnmarshalAsJSON(&err); err != nil {
+			return err
+		}
+		return azcore.NewResponseError(&err, resp.Response)
 	}
-	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Delete - Deletes the specified Azure key vault.
-func (client VaultsClient) Delete(ctx context.Context, resourceGroupName string, vaultName string, options *VaultsDeleteOptions) (*http.Response, error) {
+func (client *VaultsClient) Delete(ctx context.Context, resourceGroupName string, vaultName string, options *VaultsDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vaultName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -200,7 +207,7 @@ func (client VaultsClient) Delete(ctx context.Context, resourceGroupName string,
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client VaultsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *VaultsDeleteOptions) (*azcore.Request, error) {
+func (client *VaultsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *VaultsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
@@ -213,43 +220,46 @@ func (client VaultsClient) deleteCreateRequest(ctx context.Context, resourceGrou
 	query := req.URL.Query()
 	query.Set("api-version", "2019-09-01")
 	req.URL.RawQuery = query.Encode()
+	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client VaultsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+func (client *VaultsClient) deleteHandleError(resp *azcore.Response) error {
+	switch resp.StatusCode {
+	case http.StatusBadRequest:
+		var err CloudError
+		if err := resp.UnmarshalAsJSON(&err); err != nil {
+			return err
+		}
+		return azcore.NewResponseError(&err, resp.Response)
+	default:
+		var err CloudError
+		if err := resp.UnmarshalAsJSON(&err); err != nil {
+			return err
+		}
+		return azcore.NewResponseError(&err, resp.Response)
 	}
-	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Get - Gets the specified Azure key vault.
-func (client VaultsClient) Get(ctx context.Context, resourceGroupName string, vaultName string, options *VaultsGetOptions) (VaultResponse, error) {
+func (client *VaultsClient) Get(ctx context.Context, resourceGroupName string, vaultName string, options *VaultsGetOptions) (VaultResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, options)
 	if err != nil {
 		return VaultResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return VaultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return VaultResponse{}, client.getHandleError(resp)
 	}
-	result, err := client.getHandleResponse(resp)
-	if err != nil {
-		return VaultResponse{}, err
-	}
-	return result, nil
+	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client VaultsClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *VaultsGetOptions) (*azcore.Request, error) {
+func (client *VaultsClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *VaultsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
@@ -267,46 +277,41 @@ func (client VaultsClient) getCreateRequest(ctx context.Context, resourceGroupNa
 }
 
 // getHandleResponse handles the Get response.
-func (client VaultsClient) getHandleResponse(resp *azcore.Response) (VaultResponse, error) {
-	result := VaultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.Vault)
-	return result, err
+func (client *VaultsClient) getHandleResponse(resp *azcore.Response) (VaultResponse, error) {
+	var val *Vault
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return VaultResponse{}, err
+	}
+	return VaultResponse{RawResponse: resp.Response, Vault: val}, nil
 }
 
 // getHandleError handles the Get error response.
-func (client VaultsClient) getHandleError(resp *azcore.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+func (client *VaultsClient) getHandleError(resp *azcore.Response) error {
+	var err CloudError
+	if err := resp.UnmarshalAsJSON(&err); err != nil {
+		return err
 	}
-	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // GetDeleted - Gets the deleted Azure key vault.
-func (client VaultsClient) GetDeleted(ctx context.Context, vaultName string, location string, options *VaultsGetDeletedOptions) (DeletedVaultResponse, error) {
+func (client *VaultsClient) GetDeleted(ctx context.Context, vaultName string, location string, options *VaultsGetDeletedOptions) (DeletedVaultResponse, error) {
 	req, err := client.getDeletedCreateRequest(ctx, vaultName, location, options)
 	if err != nil {
 		return DeletedVaultResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return DeletedVaultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return DeletedVaultResponse{}, client.getDeletedHandleError(resp)
 	}
-	result, err := client.getDeletedHandleResponse(resp)
-	if err != nil {
-		return DeletedVaultResponse{}, err
-	}
-	return result, nil
+	return client.getDeletedHandleResponse(resp)
 }
 
 // getDeletedCreateRequest creates the GetDeleted request.
-func (client VaultsClient) getDeletedCreateRequest(ctx context.Context, vaultName string, location string, options *VaultsGetDeletedOptions) (*azcore.Request, error) {
+func (client *VaultsClient) getDeletedCreateRequest(ctx context.Context, vaultName string, location string, options *VaultsGetDeletedOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{location}/deletedVaults/{vaultName}"
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
@@ -324,26 +329,25 @@ func (client VaultsClient) getDeletedCreateRequest(ctx context.Context, vaultNam
 }
 
 // getDeletedHandleResponse handles the GetDeleted response.
-func (client VaultsClient) getDeletedHandleResponse(resp *azcore.Response) (DeletedVaultResponse, error) {
-	result := DeletedVaultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.DeletedVault)
-	return result, err
+func (client *VaultsClient) getDeletedHandleResponse(resp *azcore.Response) (DeletedVaultResponse, error) {
+	var val *DeletedVault
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return DeletedVaultResponse{}, err
+	}
+	return DeletedVaultResponse{RawResponse: resp.Response, DeletedVault: val}, nil
 }
 
 // getDeletedHandleError handles the GetDeleted error response.
-func (client VaultsClient) getDeletedHandleError(resp *azcore.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+func (client *VaultsClient) getDeletedHandleError(resp *azcore.Response) error {
+	var err CloudError
+	if err := resp.UnmarshalAsJSON(&err); err != nil {
+		return err
 	}
-	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - The List operation gets information about the vaults associated with the subscription.
-func (client VaultsClient) List(options *VaultsListOptions) ResourceListResultPager {
+func (client *VaultsClient) List(options *VaultsListOptions) ResourceListResultPager {
 	return &resourceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -359,7 +363,7 @@ func (client VaultsClient) List(options *VaultsListOptions) ResourceListResultPa
 }
 
 // listCreateRequest creates the List request.
-func (client VaultsClient) listCreateRequest(ctx context.Context, options *VaultsListOptions) (*azcore.Request, error) {
+func (client *VaultsClient) listCreateRequest(ctx context.Context, options *VaultsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resources"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -379,14 +383,16 @@ func (client VaultsClient) listCreateRequest(ctx context.Context, options *Vault
 }
 
 // listHandleResponse handles the List response.
-func (client VaultsClient) listHandleResponse(resp *azcore.Response) (ResourceListResultResponse, error) {
-	result := ResourceListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ResourceListResult)
-	return result, err
+func (client *VaultsClient) listHandleResponse(resp *azcore.Response) (ResourceListResultResponse, error) {
+	var val *ResourceListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ResourceListResultResponse{}, err
+	}
+	return ResourceListResultResponse{RawResponse: resp.Response, ResourceListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client VaultsClient) listHandleError(resp *azcore.Response) error {
+func (client *VaultsClient) listHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -398,7 +404,7 @@ func (client VaultsClient) listHandleError(resp *azcore.Response) error {
 }
 
 // ListByResourceGroup - The List operation gets information about the vaults associated with the subscription and within the specified resource group.
-func (client VaultsClient) ListByResourceGroup(resourceGroupName string, options *VaultsListByResourceGroupOptions) VaultListResultPager {
+func (client *VaultsClient) ListByResourceGroup(resourceGroupName string, options *VaultsListByResourceGroupOptions) VaultListResultPager {
 	return &vaultListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -414,7 +420,7 @@ func (client VaultsClient) ListByResourceGroup(resourceGroupName string, options
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client VaultsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *VaultsListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *VaultsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *VaultsListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -434,14 +440,16 @@ func (client VaultsClient) listByResourceGroupCreateRequest(ctx context.Context,
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client VaultsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (VaultListResultResponse, error) {
-	result := VaultListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.VaultListResult)
-	return result, err
+func (client *VaultsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (VaultListResultResponse, error) {
+	var val *VaultListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return VaultListResultResponse{}, err
+	}
+	return VaultListResultResponse{RawResponse: resp.Response, VaultListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client VaultsClient) listByResourceGroupHandleError(resp *azcore.Response) error {
+func (client *VaultsClient) listByResourceGroupHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -453,7 +461,7 @@ func (client VaultsClient) listByResourceGroupHandleError(resp *azcore.Response)
 }
 
 // ListBySubscription - The List operation gets information about the vaults associated with the subscription.
-func (client VaultsClient) ListBySubscription(options *VaultsListBySubscriptionOptions) VaultListResultPager {
+func (client *VaultsClient) ListBySubscription(options *VaultsListBySubscriptionOptions) VaultListResultPager {
 	return &vaultListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -469,7 +477,7 @@ func (client VaultsClient) ListBySubscription(options *VaultsListBySubscriptionO
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client VaultsClient) listBySubscriptionCreateRequest(ctx context.Context, options *VaultsListBySubscriptionOptions) (*azcore.Request, error) {
+func (client *VaultsClient) listBySubscriptionCreateRequest(ctx context.Context, options *VaultsListBySubscriptionOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/vaults"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -488,14 +496,16 @@ func (client VaultsClient) listBySubscriptionCreateRequest(ctx context.Context, 
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client VaultsClient) listBySubscriptionHandleResponse(resp *azcore.Response) (VaultListResultResponse, error) {
-	result := VaultListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.VaultListResult)
-	return result, err
+func (client *VaultsClient) listBySubscriptionHandleResponse(resp *azcore.Response) (VaultListResultResponse, error) {
+	var val *VaultListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return VaultListResultResponse{}, err
+	}
+	return VaultListResultResponse{RawResponse: resp.Response, VaultListResult: val}, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client VaultsClient) listBySubscriptionHandleError(resp *azcore.Response) error {
+func (client *VaultsClient) listBySubscriptionHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -507,7 +517,7 @@ func (client VaultsClient) listBySubscriptionHandleError(resp *azcore.Response) 
 }
 
 // ListDeleted - Gets information about the deleted vaults in a subscription.
-func (client VaultsClient) ListDeleted(options *VaultsListDeletedOptions) DeletedVaultListResultPager {
+func (client *VaultsClient) ListDeleted(options *VaultsListDeletedOptions) DeletedVaultListResultPager {
 	return &deletedVaultListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -523,7 +533,7 @@ func (client VaultsClient) ListDeleted(options *VaultsListDeletedOptions) Delete
 }
 
 // listDeletedCreateRequest creates the ListDeleted request.
-func (client VaultsClient) listDeletedCreateRequest(ctx context.Context, options *VaultsListDeletedOptions) (*azcore.Request, error) {
+func (client *VaultsClient) listDeletedCreateRequest(ctx context.Context, options *VaultsListDeletedOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/deletedVaults"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -539,14 +549,16 @@ func (client VaultsClient) listDeletedCreateRequest(ctx context.Context, options
 }
 
 // listDeletedHandleResponse handles the ListDeleted response.
-func (client VaultsClient) listDeletedHandleResponse(resp *azcore.Response) (DeletedVaultListResultResponse, error) {
-	result := DeletedVaultListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.DeletedVaultListResult)
-	return result, err
+func (client *VaultsClient) listDeletedHandleResponse(resp *azcore.Response) (DeletedVaultListResultResponse, error) {
+	var val *DeletedVaultListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return DeletedVaultListResultResponse{}, err
+	}
+	return DeletedVaultListResultResponse{RawResponse: resp.Response, DeletedVaultListResult: val}, nil
 }
 
 // listDeletedHandleError handles the ListDeleted error response.
-func (client VaultsClient) listDeletedHandleError(resp *azcore.Response) error {
+func (client *VaultsClient) listDeletedHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -558,7 +570,7 @@ func (client VaultsClient) listDeletedHandleError(resp *azcore.Response) error {
 }
 
 // BeginPurgeDeleted - Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-func (client VaultsClient) BeginPurgeDeleted(ctx context.Context, vaultName string, location string, options *VaultsBeginPurgeDeletedOptions) (HTTPPollerResponse, error) {
+func (client *VaultsClient) BeginPurgeDeleted(ctx context.Context, vaultName string, location string, options *VaultsBeginPurgeDeletedOptions) (HTTPPollerResponse, error) {
 	resp, err := client.purgeDeleted(ctx, vaultName, location, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
@@ -583,7 +595,7 @@ func (client VaultsClient) BeginPurgeDeleted(ctx context.Context, vaultName stri
 
 // ResumePurgeDeleted creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client VaultsClient) ResumePurgeDeleted(token string) (HTTPPoller, error) {
+func (client *VaultsClient) ResumePurgeDeleted(token string) (HTTPPoller, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VaultsClient.PurgeDeleted", token, client.purgeDeletedHandleError)
 	if err != nil {
 		return nil, err
@@ -595,12 +607,12 @@ func (client VaultsClient) ResumePurgeDeleted(token string) (HTTPPoller, error) 
 }
 
 // PurgeDeleted - Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-func (client VaultsClient) purgeDeleted(ctx context.Context, vaultName string, location string, options *VaultsBeginPurgeDeletedOptions) (*azcore.Response, error) {
+func (client *VaultsClient) purgeDeleted(ctx context.Context, vaultName string, location string, options *VaultsBeginPurgeDeletedOptions) (*azcore.Response, error) {
 	req, err := client.purgeDeletedCreateRequest(ctx, vaultName, location, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -611,7 +623,7 @@ func (client VaultsClient) purgeDeleted(ctx context.Context, vaultName string, l
 }
 
 // purgeDeletedCreateRequest creates the PurgeDeleted request.
-func (client VaultsClient) purgeDeletedCreateRequest(ctx context.Context, vaultName string, location string, options *VaultsBeginPurgeDeletedOptions) (*azcore.Request, error) {
+func (client *VaultsClient) purgeDeletedCreateRequest(ctx context.Context, vaultName string, location string, options *VaultsBeginPurgeDeletedOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{location}/deletedVaults/{vaultName}/purge"
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
@@ -624,43 +636,52 @@ func (client VaultsClient) purgeDeletedCreateRequest(ctx context.Context, vaultN
 	query := req.URL.Query()
 	query.Set("api-version", "2019-09-01")
 	req.URL.RawQuery = query.Encode()
+	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // purgeDeletedHandleError handles the PurgeDeleted error response.
-func (client VaultsClient) purgeDeletedHandleError(resp *azcore.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+func (client *VaultsClient) purgeDeletedHandleError(resp *azcore.Response) error {
+	switch resp.StatusCode {
+	case http.StatusBadRequest:
+		var err CloudError
+		if err := resp.UnmarshalAsJSON(&err); err != nil {
+			return err
+		}
+		return azcore.NewResponseError(&err, resp.Response)
+	case http.StatusNotFound:
+		var err CloudError
+		if err := resp.UnmarshalAsJSON(&err); err != nil {
+			return err
+		}
+		return azcore.NewResponseError(&err, resp.Response)
+	default:
+		var err CloudError
+		if err := resp.UnmarshalAsJSON(&err); err != nil {
+			return err
+		}
+		return azcore.NewResponseError(&err, resp.Response)
 	}
-	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Update - Update a key vault in the specified subscription.
-func (client VaultsClient) Update(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultPatchParameters, options *VaultsUpdateOptions) (VaultResponse, error) {
+func (client *VaultsClient) Update(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultPatchParameters, options *VaultsUpdateOptions) (VaultResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, vaultName, parameters, options)
 	if err != nil {
 		return VaultResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return VaultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return VaultResponse{}, client.updateHandleError(resp)
 	}
-	result, err := client.updateHandleResponse(resp)
-	if err != nil {
-		return VaultResponse{}, err
-	}
-	return result, nil
+	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client VaultsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultPatchParameters, options *VaultsUpdateOptions) (*azcore.Request, error) {
+func (client *VaultsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultPatchParameters, options *VaultsUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
@@ -678,46 +699,56 @@ func (client VaultsClient) updateCreateRequest(ctx context.Context, resourceGrou
 }
 
 // updateHandleResponse handles the Update response.
-func (client VaultsClient) updateHandleResponse(resp *azcore.Response) (VaultResponse, error) {
-	result := VaultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.Vault)
-	return result, err
+func (client *VaultsClient) updateHandleResponse(resp *azcore.Response) (VaultResponse, error) {
+	var val *Vault
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return VaultResponse{}, err
+	}
+	return VaultResponse{RawResponse: resp.Response, Vault: val}, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client VaultsClient) updateHandleError(resp *azcore.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+func (client *VaultsClient) updateHandleError(resp *azcore.Response) error {
+	switch resp.StatusCode {
+	case http.StatusBadRequest:
+		var err CloudError
+		if err := resp.UnmarshalAsJSON(&err); err != nil {
+			return err
+		}
+		return azcore.NewResponseError(&err, resp.Response)
+	case http.StatusConflict:
+		var err CloudError
+		if err := resp.UnmarshalAsJSON(&err); err != nil {
+			return err
+		}
+		return azcore.NewResponseError(&err, resp.Response)
+	default:
+		var err CloudError
+		if err := resp.UnmarshalAsJSON(&err); err != nil {
+			return err
+		}
+		return azcore.NewResponseError(&err, resp.Response)
 	}
-	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // UpdateAccessPolicy - Update access policies in a key vault in the specified subscription.
-func (client VaultsClient) UpdateAccessPolicy(ctx context.Context, resourceGroupName string, vaultName string, operationKind AccessPolicyUpdateKind, parameters VaultAccessPolicyParameters, options *VaultsUpdateAccessPolicyOptions) (VaultAccessPolicyParametersResponse, error) {
+func (client *VaultsClient) UpdateAccessPolicy(ctx context.Context, resourceGroupName string, vaultName string, operationKind AccessPolicyUpdateKind, parameters VaultAccessPolicyParameters, options *VaultsUpdateAccessPolicyOptions) (VaultAccessPolicyParametersResponse, error) {
 	req, err := client.updateAccessPolicyCreateRequest(ctx, resourceGroupName, vaultName, operationKind, parameters, options)
 	if err != nil {
 		return VaultAccessPolicyParametersResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return VaultAccessPolicyParametersResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return VaultAccessPolicyParametersResponse{}, client.updateAccessPolicyHandleError(resp)
 	}
-	result, err := client.updateAccessPolicyHandleResponse(resp)
-	if err != nil {
-		return VaultAccessPolicyParametersResponse{}, err
-	}
-	return result, nil
+	return client.updateAccessPolicyHandleResponse(resp)
 }
 
 // updateAccessPolicyCreateRequest creates the UpdateAccessPolicy request.
-func (client VaultsClient) updateAccessPolicyCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, operationKind AccessPolicyUpdateKind, parameters VaultAccessPolicyParameters, options *VaultsUpdateAccessPolicyOptions) (*azcore.Request, error) {
+func (client *VaultsClient) updateAccessPolicyCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, operationKind AccessPolicyUpdateKind, parameters VaultAccessPolicyParameters, options *VaultsUpdateAccessPolicyOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/accessPolicies/{operationKind}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
@@ -736,20 +767,40 @@ func (client VaultsClient) updateAccessPolicyCreateRequest(ctx context.Context, 
 }
 
 // updateAccessPolicyHandleResponse handles the UpdateAccessPolicy response.
-func (client VaultsClient) updateAccessPolicyHandleResponse(resp *azcore.Response) (VaultAccessPolicyParametersResponse, error) {
-	result := VaultAccessPolicyParametersResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.VaultAccessPolicyParameters)
-	return result, err
+func (client *VaultsClient) updateAccessPolicyHandleResponse(resp *azcore.Response) (VaultAccessPolicyParametersResponse, error) {
+	var val *VaultAccessPolicyParameters
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return VaultAccessPolicyParametersResponse{}, err
+	}
+	return VaultAccessPolicyParametersResponse{RawResponse: resp.Response, VaultAccessPolicyParameters: val}, nil
 }
 
 // updateAccessPolicyHandleError handles the UpdateAccessPolicy error response.
-func (client VaultsClient) updateAccessPolicyHandleError(resp *azcore.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+func (client *VaultsClient) updateAccessPolicyHandleError(resp *azcore.Response) error {
+	switch resp.StatusCode {
+	case http.StatusBadRequest:
+		var err CloudError
+		if err := resp.UnmarshalAsJSON(&err); err != nil {
+			return err
+		}
+		return azcore.NewResponseError(&err, resp.Response)
+	case http.StatusNotFound:
+		var err CloudError
+		if err := resp.UnmarshalAsJSON(&err); err != nil {
+			return err
+		}
+		return azcore.NewResponseError(&err, resp.Response)
+	case http.StatusConflict:
+		var err CloudError
+		if err := resp.UnmarshalAsJSON(&err); err != nil {
+			return err
+		}
+		return azcore.NewResponseError(&err, resp.Response)
+	default:
+		var err CloudError
+		if err := resp.UnmarshalAsJSON(&err); err != nil {
+			return err
+		}
+		return azcore.NewResponseError(&err, resp.Response)
 	}
-	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }

@@ -24,37 +24,28 @@ type PrivateLinkResourcesClient struct {
 }
 
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient with the specified values.
-func NewPrivateLinkResourcesClient(con *armcore.Connection, subscriptionID string) PrivateLinkResourcesClient {
-	return PrivateLinkResourcesClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client PrivateLinkResourcesClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewPrivateLinkResourcesClient(con *armcore.Connection, subscriptionID string) *PrivateLinkResourcesClient {
+	return &PrivateLinkResourcesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // ListByVault - Gets the private link resources supported for the key vault.
-func (client PrivateLinkResourcesClient) ListByVault(ctx context.Context, resourceGroupName string, vaultName string, options *PrivateLinkResourcesListByVaultOptions) (PrivateLinkResourceListResultResponse, error) {
+func (client *PrivateLinkResourcesClient) ListByVault(ctx context.Context, resourceGroupName string, vaultName string, options *PrivateLinkResourcesListByVaultOptions) (PrivateLinkResourceListResultResponse, error) {
 	req, err := client.listByVaultCreateRequest(ctx, resourceGroupName, vaultName, options)
 	if err != nil {
 		return PrivateLinkResourceListResultResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return PrivateLinkResourceListResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return PrivateLinkResourceListResultResponse{}, client.listByVaultHandleError(resp)
 	}
-	result, err := client.listByVaultHandleResponse(resp)
-	if err != nil {
-		return PrivateLinkResourceListResultResponse{}, err
-	}
-	return result, nil
+	return client.listByVaultHandleResponse(resp)
 }
 
 // listByVaultCreateRequest creates the ListByVault request.
-func (client PrivateLinkResourcesClient) listByVaultCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *PrivateLinkResourcesListByVaultOptions) (*azcore.Request, error) {
+func (client *PrivateLinkResourcesClient) listByVaultCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *PrivateLinkResourcesListByVaultOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/privateLinkResources"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -72,14 +63,16 @@ func (client PrivateLinkResourcesClient) listByVaultCreateRequest(ctx context.Co
 }
 
 // listByVaultHandleResponse handles the ListByVault response.
-func (client PrivateLinkResourcesClient) listByVaultHandleResponse(resp *azcore.Response) (PrivateLinkResourceListResultResponse, error) {
-	result := PrivateLinkResourceListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.PrivateLinkResourceListResult)
-	return result, err
+func (client *PrivateLinkResourcesClient) listByVaultHandleResponse(resp *azcore.Response) (PrivateLinkResourceListResultResponse, error) {
+	var val *PrivateLinkResourceListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return PrivateLinkResourceListResultResponse{}, err
+	}
+	return PrivateLinkResourceListResultResponse{RawResponse: resp.Response, PrivateLinkResourceListResult: val}, nil
 }
 
 // listByVaultHandleError handles the ListByVault error response.
-func (client PrivateLinkResourcesClient) listByVaultHandleError(resp *azcore.Response) error {
+func (client *PrivateLinkResourcesClient) listByVaultHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

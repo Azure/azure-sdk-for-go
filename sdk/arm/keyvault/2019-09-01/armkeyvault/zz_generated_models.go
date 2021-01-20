@@ -86,7 +86,13 @@ type CloudError struct {
 func (e CloudError) Error() string {
 	msg := ""
 	if e.InnerError != nil {
-		msg += fmt.Sprintf("InnerError: %v\n", *e.InnerError)
+		msg += "InnerError: \n"
+		if e.InnerError.Code != nil {
+			msg += fmt.Sprintf("\tCode: %v\n", *e.InnerError.Code)
+		}
+		if e.InnerError.Message != nil {
+			msg += fmt.Sprintf("\tMessage: %v\n", *e.InnerError.Message)
+		}
 	}
 	if msg == "" {
 		msg = "missing error info"
@@ -144,6 +150,9 @@ type DeletedVaultProperties struct {
 	// READ-ONLY; The location of the original vault.
 	Location *string `json:"location,omitempty" azure:"ro"`
 
+	// READ-ONLY; Purge protection status of the original vault.
+	PurgeProtectionEnabled *bool `json:"purgeProtectionEnabled,omitempty" azure:"ro"`
+
 	// READ-ONLY; The scheduled purged date.
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 
@@ -162,6 +171,9 @@ func (d DeletedVaultProperties) MarshalJSON() ([]byte, error) {
 	}
 	if d.Location != nil {
 		objectMap["location"] = d.Location
+	}
+	if d.PurgeProtectionEnabled != nil {
+		objectMap["purgeProtectionEnabled"] = d.PurgeProtectionEnabled
 	}
 	if d.ScheduledPurgeDate != nil {
 		objectMap["scheduledPurgeDate"] = (*timeRFC3339)(d.ScheduledPurgeDate)
@@ -194,6 +206,11 @@ func (d *DeletedVaultProperties) UnmarshalJSON(data []byte) error {
 		case "location":
 			if val != nil {
 				err = json.Unmarshal(*val, &d.Location)
+			}
+			delete(rawMsg, key)
+		case "purgeProtectionEnabled":
+			if val != nil {
+				err = json.Unmarshal(*val, &d.PurgeProtectionEnabled)
 			}
 			delete(rawMsg, key)
 		case "scheduledPurgeDate":
@@ -375,6 +392,9 @@ type Operation struct {
 	// Display metadata associated with the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
 
+	// Property to specify whether the action is a data action.
+	IsDataAction *bool `json:"isDataAction,omitempty"`
+
 	// Operation name: {provider}/{resource}/{operation}
 	Name *string `json:"name,omitempty"`
 
@@ -453,6 +473,9 @@ type PrivateEndpoint struct {
 // Private endpoint connection resource.
 type PrivateEndpointConnection struct {
 	Resource
+	// Modified whenever there is a change in the state of private endpoint connection.
+	Etag *string `json:"etag,omitempty"`
+
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 }
@@ -559,7 +582,7 @@ type PrivateLinkResourcesListByVaultOptions struct {
 // An object that represents the approval state of the private link connection.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
-	ActionRequired *string `json:"actionRequired,omitempty"`
+	ActionsRequired *string `json:"actionsRequired,omitempty"`
 
 	// The reason for approval or rejection.
 	Description *string `json:"description,omitempty"`
@@ -825,6 +848,9 @@ type VaultProperties struct {
 	// READ-ONLY; List of private endpoint connections associated with the key vault.
 	PrivateEndpointConnections *[]PrivateEndpointConnectionItem `json:"privateEndpointConnections,omitempty" azure:"ro"`
 
+	// Provisioning state of the vault.
+	ProvisioningState *VaultProvisioningState `json:"provisioningState,omitempty"`
+
 	// SKU details
 	SKU *SKU `json:"sku,omitempty"`
 
@@ -834,7 +860,7 @@ type VaultProperties struct {
 	// The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
 	TenantID *string `json:"tenantId,omitempty"`
 
-	// The URI of the vault for performing operations on keys and secrets.
+	// The URI of the vault for performing operations on keys and secrets. This property is readonly
 	VaultURI *string `json:"vaultUri,omitempty"`
 }
 

@@ -24,37 +24,28 @@ type LoadBalancerProbesClient struct {
 }
 
 // NewLoadBalancerProbesClient creates a new instance of LoadBalancerProbesClient with the specified values.
-func NewLoadBalancerProbesClient(con *armcore.Connection, subscriptionID string) LoadBalancerProbesClient {
-	return LoadBalancerProbesClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client LoadBalancerProbesClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewLoadBalancerProbesClient(con *armcore.Connection, subscriptionID string) *LoadBalancerProbesClient {
+	return &LoadBalancerProbesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Get - Gets load balancer probe.
-func (client LoadBalancerProbesClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, probeName string, options *LoadBalancerProbesGetOptions) (ProbeResponse, error) {
+func (client *LoadBalancerProbesClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, probeName string, options *LoadBalancerProbesGetOptions) (ProbeResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, loadBalancerName, probeName, options)
 	if err != nil {
 		return ProbeResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return ProbeResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return ProbeResponse{}, client.getHandleError(resp)
 	}
-	result, err := client.getHandleResponse(resp)
-	if err != nil {
-		return ProbeResponse{}, err
-	}
-	return result, nil
+	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client LoadBalancerProbesClient) getCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, probeName string, options *LoadBalancerProbesGetOptions) (*azcore.Request, error) {
+func (client *LoadBalancerProbesClient) getCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, probeName string, options *LoadBalancerProbesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -73,14 +64,16 @@ func (client LoadBalancerProbesClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client LoadBalancerProbesClient) getHandleResponse(resp *azcore.Response) (ProbeResponse, error) {
-	result := ProbeResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.Probe)
-	return result, err
+func (client *LoadBalancerProbesClient) getHandleResponse(resp *azcore.Response) (ProbeResponse, error) {
+	var val *Probe
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ProbeResponse{}, err
+	}
+	return ProbeResponse{RawResponse: resp.Response, Probe: val}, nil
 }
 
 // getHandleError handles the Get error response.
-func (client LoadBalancerProbesClient) getHandleError(resp *azcore.Response) error {
+func (client *LoadBalancerProbesClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -89,7 +82,7 @@ func (client LoadBalancerProbesClient) getHandleError(resp *azcore.Response) err
 }
 
 // List - Gets all the load balancer probes.
-func (client LoadBalancerProbesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerProbesListOptions) LoadBalancerProbeListResultPager {
+func (client *LoadBalancerProbesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerProbesListOptions) LoadBalancerProbeListResultPager {
 	return &loadBalancerProbeListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -105,7 +98,7 @@ func (client LoadBalancerProbesClient) List(resourceGroupName string, loadBalanc
 }
 
 // listCreateRequest creates the List request.
-func (client LoadBalancerProbesClient) listCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancerProbesListOptions) (*azcore.Request, error) {
+func (client *LoadBalancerProbesClient) listCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancerProbesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -123,14 +116,16 @@ func (client LoadBalancerProbesClient) listCreateRequest(ctx context.Context, re
 }
 
 // listHandleResponse handles the List response.
-func (client LoadBalancerProbesClient) listHandleResponse(resp *azcore.Response) (LoadBalancerProbeListResultResponse, error) {
-	result := LoadBalancerProbeListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.LoadBalancerProbeListResult)
-	return result, err
+func (client *LoadBalancerProbesClient) listHandleResponse(resp *azcore.Response) (LoadBalancerProbeListResultResponse, error) {
+	var val *LoadBalancerProbeListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return LoadBalancerProbeListResultResponse{}, err
+	}
+	return LoadBalancerProbeListResultResponse{RawResponse: resp.Response, LoadBalancerProbeListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client LoadBalancerProbesClient) listHandleError(resp *azcore.Response) error {
+func (client *LoadBalancerProbesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

@@ -24,37 +24,28 @@ type LoadBalancerFrontendIPConfigurationsClient struct {
 }
 
 // NewLoadBalancerFrontendIPConfigurationsClient creates a new instance of LoadBalancerFrontendIPConfigurationsClient with the specified values.
-func NewLoadBalancerFrontendIPConfigurationsClient(con *armcore.Connection, subscriptionID string) LoadBalancerFrontendIPConfigurationsClient {
-	return LoadBalancerFrontendIPConfigurationsClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client LoadBalancerFrontendIPConfigurationsClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewLoadBalancerFrontendIPConfigurationsClient(con *armcore.Connection, subscriptionID string) *LoadBalancerFrontendIPConfigurationsClient {
+	return &LoadBalancerFrontendIPConfigurationsClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Get - Gets load balancer frontend IP configuration.
-func (client LoadBalancerFrontendIPConfigurationsClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, frontendIPConfigurationName string, options *LoadBalancerFrontendIPConfigurationsGetOptions) (FrontendIPConfigurationResponse, error) {
+func (client *LoadBalancerFrontendIPConfigurationsClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, frontendIPConfigurationName string, options *LoadBalancerFrontendIPConfigurationsGetOptions) (FrontendIPConfigurationResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, loadBalancerName, frontendIPConfigurationName, options)
 	if err != nil {
 		return FrontendIPConfigurationResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return FrontendIPConfigurationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return FrontendIPConfigurationResponse{}, client.getHandleError(resp)
 	}
-	result, err := client.getHandleResponse(resp)
-	if err != nil {
-		return FrontendIPConfigurationResponse{}, err
-	}
-	return result, nil
+	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client LoadBalancerFrontendIPConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, frontendIPConfigurationName string, options *LoadBalancerFrontendIPConfigurationsGetOptions) (*azcore.Request, error) {
+func (client *LoadBalancerFrontendIPConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, frontendIPConfigurationName string, options *LoadBalancerFrontendIPConfigurationsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/frontendIPConfigurations/{frontendIPConfigurationName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -73,14 +64,16 @@ func (client LoadBalancerFrontendIPConfigurationsClient) getCreateRequest(ctx co
 }
 
 // getHandleResponse handles the Get response.
-func (client LoadBalancerFrontendIPConfigurationsClient) getHandleResponse(resp *azcore.Response) (FrontendIPConfigurationResponse, error) {
-	result := FrontendIPConfigurationResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.FrontendIPConfiguration)
-	return result, err
+func (client *LoadBalancerFrontendIPConfigurationsClient) getHandleResponse(resp *azcore.Response) (FrontendIPConfigurationResponse, error) {
+	var val *FrontendIPConfiguration
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return FrontendIPConfigurationResponse{}, err
+	}
+	return FrontendIPConfigurationResponse{RawResponse: resp.Response, FrontendIPConfiguration: val}, nil
 }
 
 // getHandleError handles the Get error response.
-func (client LoadBalancerFrontendIPConfigurationsClient) getHandleError(resp *azcore.Response) error {
+func (client *LoadBalancerFrontendIPConfigurationsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -89,7 +82,7 @@ func (client LoadBalancerFrontendIPConfigurationsClient) getHandleError(resp *az
 }
 
 // List - Gets all the load balancer frontend IP configurations.
-func (client LoadBalancerFrontendIPConfigurationsClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerFrontendIPConfigurationsListOptions) LoadBalancerFrontendIPConfigurationListResultPager {
+func (client *LoadBalancerFrontendIPConfigurationsClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerFrontendIPConfigurationsListOptions) LoadBalancerFrontendIPConfigurationListResultPager {
 	return &loadBalancerFrontendIPConfigurationListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -105,7 +98,7 @@ func (client LoadBalancerFrontendIPConfigurationsClient) List(resourceGroupName 
 }
 
 // listCreateRequest creates the List request.
-func (client LoadBalancerFrontendIPConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancerFrontendIPConfigurationsListOptions) (*azcore.Request, error) {
+func (client *LoadBalancerFrontendIPConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancerFrontendIPConfigurationsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/frontendIPConfigurations"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -123,14 +116,16 @@ func (client LoadBalancerFrontendIPConfigurationsClient) listCreateRequest(ctx c
 }
 
 // listHandleResponse handles the List response.
-func (client LoadBalancerFrontendIPConfigurationsClient) listHandleResponse(resp *azcore.Response) (LoadBalancerFrontendIPConfigurationListResultResponse, error) {
-	result := LoadBalancerFrontendIPConfigurationListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.LoadBalancerFrontendIPConfigurationListResult)
-	return result, err
+func (client *LoadBalancerFrontendIPConfigurationsClient) listHandleResponse(resp *azcore.Response) (LoadBalancerFrontendIPConfigurationListResultResponse, error) {
+	var val *LoadBalancerFrontendIPConfigurationListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return LoadBalancerFrontendIPConfigurationListResultResponse{}, err
+	}
+	return LoadBalancerFrontendIPConfigurationListResultResponse{RawResponse: resp.Response, LoadBalancerFrontendIPConfigurationListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client LoadBalancerFrontendIPConfigurationsClient) listHandleError(resp *azcore.Response) error {
+func (client *LoadBalancerFrontendIPConfigurationsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

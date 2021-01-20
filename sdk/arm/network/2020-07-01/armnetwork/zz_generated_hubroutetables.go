@@ -25,17 +25,12 @@ type HubRouteTablesClient struct {
 }
 
 // NewHubRouteTablesClient creates a new instance of HubRouteTablesClient with the specified values.
-func NewHubRouteTablesClient(con *armcore.Connection, subscriptionID string) HubRouteTablesClient {
-	return HubRouteTablesClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client HubRouteTablesClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewHubRouteTablesClient(con *armcore.Connection, subscriptionID string) *HubRouteTablesClient {
+	return &HubRouteTablesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
-func (client HubRouteTablesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, routeTableParameters HubRouteTable, options *HubRouteTablesBeginCreateOrUpdateOptions) (HubRouteTablePollerResponse, error) {
+func (client *HubRouteTablesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, routeTableParameters HubRouteTable, options *HubRouteTablesBeginCreateOrUpdateOptions) (HubRouteTablePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualHubName, routeTableName, routeTableParameters, options)
 	if err != nil {
 		return HubRouteTablePollerResponse{}, err
@@ -60,7 +55,7 @@ func (client HubRouteTablesClient) BeginCreateOrUpdate(ctx context.Context, reso
 
 // ResumeCreateOrUpdate creates a new HubRouteTablePoller from the specified resume token.
 // token - The value must come from a previous call to HubRouteTablePoller.ResumeToken().
-func (client HubRouteTablesClient) ResumeCreateOrUpdate(token string) (HubRouteTablePoller, error) {
+func (client *HubRouteTablesClient) ResumeCreateOrUpdate(token string) (HubRouteTablePoller, error) {
 	pt, err := armcore.NewPollerFromResumeToken("HubRouteTablesClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
@@ -72,12 +67,12 @@ func (client HubRouteTablesClient) ResumeCreateOrUpdate(token string) (HubRouteT
 }
 
 // CreateOrUpdate - Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
-func (client HubRouteTablesClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, routeTableParameters HubRouteTable, options *HubRouteTablesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *HubRouteTablesClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, routeTableParameters HubRouteTable, options *HubRouteTablesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, routeTableName, routeTableParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +83,7 @@ func (client HubRouteTablesClient) createOrUpdate(ctx context.Context, resourceG
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client HubRouteTablesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, routeTableParameters HubRouteTable, options *HubRouteTablesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *HubRouteTablesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, routeTableParameters HubRouteTable, options *HubRouteTablesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubRouteTables/{routeTableName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -107,14 +102,16 @@ func (client HubRouteTablesClient) createOrUpdateCreateRequest(ctx context.Conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client HubRouteTablesClient) createOrUpdateHandleResponse(resp *azcore.Response) (HubRouteTableResponse, error) {
-	result := HubRouteTableResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.HubRouteTable)
-	return result, err
+func (client *HubRouteTablesClient) createOrUpdateHandleResponse(resp *azcore.Response) (HubRouteTableResponse, error) {
+	var val *HubRouteTable
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return HubRouteTableResponse{}, err
+	}
+	return HubRouteTableResponse{RawResponse: resp.Response, HubRouteTable: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client HubRouteTablesClient) createOrUpdateHandleError(resp *azcore.Response) error {
+func (client *HubRouteTablesClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -123,7 +120,7 @@ func (client HubRouteTablesClient) createOrUpdateHandleError(resp *azcore.Respon
 }
 
 // BeginDelete - Deletes a RouteTable.
-func (client HubRouteTablesClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *HubRouteTablesClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesBeginDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.delete(ctx, resourceGroupName, virtualHubName, routeTableName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
@@ -148,7 +145,7 @@ func (client HubRouteTablesClient) BeginDelete(ctx context.Context, resourceGrou
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client HubRouteTablesClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *HubRouteTablesClient) ResumeDelete(token string) (HTTPPoller, error) {
 	pt, err := armcore.NewPollerFromResumeToken("HubRouteTablesClient.Delete", token, client.deleteHandleError)
 	if err != nil {
 		return nil, err
@@ -160,12 +157,12 @@ func (client HubRouteTablesClient) ResumeDelete(token string) (HTTPPoller, error
 }
 
 // Delete - Deletes a RouteTable.
-func (client HubRouteTablesClient) delete(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesBeginDeleteOptions) (*azcore.Response, error) {
+func (client *HubRouteTablesClient) delete(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualHubName, routeTableName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -176,7 +173,7 @@ func (client HubRouteTablesClient) delete(ctx context.Context, resourceGroupName
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client HubRouteTablesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesBeginDeleteOptions) (*azcore.Request, error) {
+func (client *HubRouteTablesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubRouteTables/{routeTableName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -195,7 +192,7 @@ func (client HubRouteTablesClient) deleteCreateRequest(ctx context.Context, reso
 }
 
 // deleteHandleError handles the Delete error response.
-func (client HubRouteTablesClient) deleteHandleError(resp *azcore.Response) error {
+func (client *HubRouteTablesClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -204,27 +201,23 @@ func (client HubRouteTablesClient) deleteHandleError(resp *azcore.Response) erro
 }
 
 // Get - Retrieves the details of a RouteTable.
-func (client HubRouteTablesClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesGetOptions) (HubRouteTableResponse, error) {
+func (client *HubRouteTablesClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesGetOptions) (HubRouteTableResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualHubName, routeTableName, options)
 	if err != nil {
 		return HubRouteTableResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return HubRouteTableResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return HubRouteTableResponse{}, client.getHandleError(resp)
 	}
-	result, err := client.getHandleResponse(resp)
-	if err != nil {
-		return HubRouteTableResponse{}, err
-	}
-	return result, nil
+	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client HubRouteTablesClient) getCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesGetOptions) (*azcore.Request, error) {
+func (client *HubRouteTablesClient) getCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubRouteTables/{routeTableName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -243,14 +236,16 @@ func (client HubRouteTablesClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client HubRouteTablesClient) getHandleResponse(resp *azcore.Response) (HubRouteTableResponse, error) {
-	result := HubRouteTableResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.HubRouteTable)
-	return result, err
+func (client *HubRouteTablesClient) getHandleResponse(resp *azcore.Response) (HubRouteTableResponse, error) {
+	var val *HubRouteTable
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return HubRouteTableResponse{}, err
+	}
+	return HubRouteTableResponse{RawResponse: resp.Response, HubRouteTable: val}, nil
 }
 
 // getHandleError handles the Get error response.
-func (client HubRouteTablesClient) getHandleError(resp *azcore.Response) error {
+func (client *HubRouteTablesClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -259,7 +254,7 @@ func (client HubRouteTablesClient) getHandleError(resp *azcore.Response) error {
 }
 
 // List - Retrieves the details of all RouteTables.
-func (client HubRouteTablesClient) List(resourceGroupName string, virtualHubName string, options *HubRouteTablesListOptions) ListHubRouteTablesResultPager {
+func (client *HubRouteTablesClient) List(resourceGroupName string, virtualHubName string, options *HubRouteTablesListOptions) ListHubRouteTablesResultPager {
 	return &listHubRouteTablesResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -275,7 +270,7 @@ func (client HubRouteTablesClient) List(resourceGroupName string, virtualHubName
 }
 
 // listCreateRequest creates the List request.
-func (client HubRouteTablesClient) listCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, options *HubRouteTablesListOptions) (*azcore.Request, error) {
+func (client *HubRouteTablesClient) listCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, options *HubRouteTablesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubRouteTables"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -293,14 +288,16 @@ func (client HubRouteTablesClient) listCreateRequest(ctx context.Context, resour
 }
 
 // listHandleResponse handles the List response.
-func (client HubRouteTablesClient) listHandleResponse(resp *azcore.Response) (ListHubRouteTablesResultResponse, error) {
-	result := ListHubRouteTablesResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ListHubRouteTablesResult)
-	return result, err
+func (client *HubRouteTablesClient) listHandleResponse(resp *azcore.Response) (ListHubRouteTablesResultResponse, error) {
+	var val *ListHubRouteTablesResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ListHubRouteTablesResultResponse{}, err
+	}
+	return ListHubRouteTablesResultResponse{RawResponse: resp.Response, ListHubRouteTablesResult: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client HubRouteTablesClient) listHandleError(resp *azcore.Response) error {
+func (client *HubRouteTablesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

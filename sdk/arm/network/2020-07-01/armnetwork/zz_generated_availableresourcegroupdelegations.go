@@ -24,17 +24,12 @@ type AvailableResourceGroupDelegationsClient struct {
 }
 
 // NewAvailableResourceGroupDelegationsClient creates a new instance of AvailableResourceGroupDelegationsClient with the specified values.
-func NewAvailableResourceGroupDelegationsClient(con *armcore.Connection, subscriptionID string) AvailableResourceGroupDelegationsClient {
-	return AvailableResourceGroupDelegationsClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client AvailableResourceGroupDelegationsClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewAvailableResourceGroupDelegationsClient(con *armcore.Connection, subscriptionID string) *AvailableResourceGroupDelegationsClient {
+	return &AvailableResourceGroupDelegationsClient{con: con, subscriptionID: subscriptionID}
 }
 
 // List - Gets all of the available subnet delegations for this resource group in this region.
-func (client AvailableResourceGroupDelegationsClient) List(location string, resourceGroupName string, options *AvailableResourceGroupDelegationsListOptions) AvailableDelegationsResultPager {
+func (client *AvailableResourceGroupDelegationsClient) List(location string, resourceGroupName string, options *AvailableResourceGroupDelegationsListOptions) AvailableDelegationsResultPager {
 	return &availableDelegationsResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -50,7 +45,7 @@ func (client AvailableResourceGroupDelegationsClient) List(location string, reso
 }
 
 // listCreateRequest creates the List request.
-func (client AvailableResourceGroupDelegationsClient) listCreateRequest(ctx context.Context, location string, resourceGroupName string, options *AvailableResourceGroupDelegationsListOptions) (*azcore.Request, error) {
+func (client *AvailableResourceGroupDelegationsClient) listCreateRequest(ctx context.Context, location string, resourceGroupName string, options *AvailableResourceGroupDelegationsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/locations/{location}/availableDelegations"
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -68,14 +63,16 @@ func (client AvailableResourceGroupDelegationsClient) listCreateRequest(ctx cont
 }
 
 // listHandleResponse handles the List response.
-func (client AvailableResourceGroupDelegationsClient) listHandleResponse(resp *azcore.Response) (AvailableDelegationsResultResponse, error) {
-	result := AvailableDelegationsResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.AvailableDelegationsResult)
-	return result, err
+func (client *AvailableResourceGroupDelegationsClient) listHandleResponse(resp *azcore.Response) (AvailableDelegationsResultResponse, error) {
+	var val *AvailableDelegationsResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return AvailableDelegationsResultResponse{}, err
+	}
+	return AvailableDelegationsResultResponse{RawResponse: resp.Response, AvailableDelegationsResult: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client AvailableResourceGroupDelegationsClient) listHandleError(resp *azcore.Response) error {
+func (client *AvailableResourceGroupDelegationsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

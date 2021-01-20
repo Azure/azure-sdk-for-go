@@ -25,17 +25,12 @@ type ApplicationGatewayPrivateEndpointConnectionsClient struct {
 }
 
 // NewApplicationGatewayPrivateEndpointConnectionsClient creates a new instance of ApplicationGatewayPrivateEndpointConnectionsClient with the specified values.
-func NewApplicationGatewayPrivateEndpointConnectionsClient(con *armcore.Connection, subscriptionID string) ApplicationGatewayPrivateEndpointConnectionsClient {
-	return ApplicationGatewayPrivateEndpointConnectionsClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewApplicationGatewayPrivateEndpointConnectionsClient(con *armcore.Connection, subscriptionID string) *ApplicationGatewayPrivateEndpointConnectionsClient {
+	return &ApplicationGatewayPrivateEndpointConnectionsClient{con: con, subscriptionID: subscriptionID}
 }
 
 // BeginDelete - Deletes the specified private endpoint connection on application gateway.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsBeginDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.delete(ctx, resourceGroupName, applicationGatewayName, connectionName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
@@ -60,7 +55,7 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) BeginDelete(ctx
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) ResumeDelete(token string) (HTTPPoller, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ApplicationGatewayPrivateEndpointConnectionsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
 		return nil, err
@@ -72,12 +67,12 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) ResumeDelete(to
 }
 
 // Delete - Deletes the specified private endpoint connection on application gateway.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) delete(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsBeginDeleteOptions) (*azcore.Response, error) {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) delete(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, applicationGatewayName, connectionName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +83,7 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) delete(ctx cont
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsBeginDeleteOptions) (*azcore.Request, error) {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/privateEndpointConnections/{connectionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{applicationGatewayName}", url.PathEscape(applicationGatewayName))
@@ -107,7 +102,7 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) deleteCreateReq
 }
 
 // deleteHandleError handles the Delete error response.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) deleteHandleError(resp *azcore.Response) error {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -116,27 +111,23 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) deleteHandleErr
 }
 
 // Get - Gets the specified private endpoint connection on application gateway.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsGetOptions) (ApplicationGatewayPrivateEndpointConnectionResponse, error) {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsGetOptions) (ApplicationGatewayPrivateEndpointConnectionResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, applicationGatewayName, connectionName, options)
 	if err != nil {
 		return ApplicationGatewayPrivateEndpointConnectionResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return ApplicationGatewayPrivateEndpointConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return ApplicationGatewayPrivateEndpointConnectionResponse{}, client.getHandleError(resp)
 	}
-	result, err := client.getHandleResponse(resp)
-	if err != nil {
-		return ApplicationGatewayPrivateEndpointConnectionResponse{}, err
-	}
-	return result, nil
+	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsGetOptions) (*azcore.Request, error) {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/privateEndpointConnections/{connectionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{applicationGatewayName}", url.PathEscape(applicationGatewayName))
@@ -155,14 +146,16 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) getCreateReques
 }
 
 // getHandleResponse handles the Get response.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) getHandleResponse(resp *azcore.Response) (ApplicationGatewayPrivateEndpointConnectionResponse, error) {
-	result := ApplicationGatewayPrivateEndpointConnectionResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ApplicationGatewayPrivateEndpointConnection)
-	return result, err
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) getHandleResponse(resp *azcore.Response) (ApplicationGatewayPrivateEndpointConnectionResponse, error) {
+	var val *ApplicationGatewayPrivateEndpointConnection
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ApplicationGatewayPrivateEndpointConnectionResponse{}, err
+	}
+	return ApplicationGatewayPrivateEndpointConnectionResponse{RawResponse: resp.Response, ApplicationGatewayPrivateEndpointConnection: val}, nil
 }
 
 // getHandleError handles the Get error response.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) getHandleError(resp *azcore.Response) error {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -171,7 +164,7 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) getHandleError(
 }
 
 // List - Lists all private endpoint connections on an application gateway.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) List(resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateEndpointConnectionsListOptions) ApplicationGatewayPrivateEndpointConnectionListResultPager {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) List(resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateEndpointConnectionsListOptions) ApplicationGatewayPrivateEndpointConnectionListResultPager {
 	return &applicationGatewayPrivateEndpointConnectionListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -187,7 +180,7 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) List(resourceGr
 }
 
 // listCreateRequest creates the List request.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateEndpointConnectionsListOptions) (*azcore.Request, error) {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateEndpointConnectionsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/privateEndpointConnections"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{applicationGatewayName}", url.PathEscape(applicationGatewayName))
@@ -205,14 +198,16 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) listCreateReque
 }
 
 // listHandleResponse handles the List response.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) listHandleResponse(resp *azcore.Response) (ApplicationGatewayPrivateEndpointConnectionListResultResponse, error) {
-	result := ApplicationGatewayPrivateEndpointConnectionListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ApplicationGatewayPrivateEndpointConnectionListResult)
-	return result, err
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) listHandleResponse(resp *azcore.Response) (ApplicationGatewayPrivateEndpointConnectionListResultResponse, error) {
+	var val *ApplicationGatewayPrivateEndpointConnectionListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ApplicationGatewayPrivateEndpointConnectionListResultResponse{}, err
+	}
+	return ApplicationGatewayPrivateEndpointConnectionListResultResponse{RawResponse: resp.Response, ApplicationGatewayPrivateEndpointConnectionListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) listHandleError(resp *azcore.Response) error {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -221,7 +216,7 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) listHandleError
 }
 
 // BeginUpdate - Updates the specified private endpoint connection on application gateway.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, parameters ApplicationGatewayPrivateEndpointConnection, options *ApplicationGatewayPrivateEndpointConnectionsBeginUpdateOptions) (ApplicationGatewayPrivateEndpointConnectionPollerResponse, error) {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, parameters ApplicationGatewayPrivateEndpointConnection, options *ApplicationGatewayPrivateEndpointConnectionsBeginUpdateOptions) (ApplicationGatewayPrivateEndpointConnectionPollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, applicationGatewayName, connectionName, parameters, options)
 	if err != nil {
 		return ApplicationGatewayPrivateEndpointConnectionPollerResponse{}, err
@@ -246,7 +241,7 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) BeginUpdate(ctx
 
 // ResumeUpdate creates a new ApplicationGatewayPrivateEndpointConnectionPoller from the specified resume token.
 // token - The value must come from a previous call to ApplicationGatewayPrivateEndpointConnectionPoller.ResumeToken().
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) ResumeUpdate(token string) (ApplicationGatewayPrivateEndpointConnectionPoller, error) {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) ResumeUpdate(token string) (ApplicationGatewayPrivateEndpointConnectionPoller, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ApplicationGatewayPrivateEndpointConnectionsClient.Update", token, client.updateHandleError)
 	if err != nil {
 		return nil, err
@@ -258,12 +253,12 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) ResumeUpdate(to
 }
 
 // Update - Updates the specified private endpoint connection on application gateway.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) update(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, parameters ApplicationGatewayPrivateEndpointConnection, options *ApplicationGatewayPrivateEndpointConnectionsBeginUpdateOptions) (*azcore.Response, error) {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) update(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, parameters ApplicationGatewayPrivateEndpointConnection, options *ApplicationGatewayPrivateEndpointConnectionsBeginUpdateOptions) (*azcore.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, applicationGatewayName, connectionName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -274,7 +269,7 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) update(ctx cont
 }
 
 // updateCreateRequest creates the Update request.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, parameters ApplicationGatewayPrivateEndpointConnection, options *ApplicationGatewayPrivateEndpointConnectionsBeginUpdateOptions) (*azcore.Request, error) {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, parameters ApplicationGatewayPrivateEndpointConnection, options *ApplicationGatewayPrivateEndpointConnectionsBeginUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/privateEndpointConnections/{connectionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{applicationGatewayName}", url.PathEscape(applicationGatewayName))
@@ -293,14 +288,16 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) updateCreateReq
 }
 
 // updateHandleResponse handles the Update response.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) updateHandleResponse(resp *azcore.Response) (ApplicationGatewayPrivateEndpointConnectionResponse, error) {
-	result := ApplicationGatewayPrivateEndpointConnectionResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ApplicationGatewayPrivateEndpointConnection)
-	return result, err
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) updateHandleResponse(resp *azcore.Response) (ApplicationGatewayPrivateEndpointConnectionResponse, error) {
+	var val *ApplicationGatewayPrivateEndpointConnection
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ApplicationGatewayPrivateEndpointConnectionResponse{}, err
+	}
+	return ApplicationGatewayPrivateEndpointConnectionResponse{RawResponse: resp.Response, ApplicationGatewayPrivateEndpointConnection: val}, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client ApplicationGatewayPrivateEndpointConnectionsClient) updateHandleError(resp *azcore.Response) error {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) updateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

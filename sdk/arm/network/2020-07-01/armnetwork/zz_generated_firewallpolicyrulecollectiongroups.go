@@ -25,17 +25,12 @@ type FirewallPolicyRuleCollectionGroupsClient struct {
 }
 
 // NewFirewallPolicyRuleCollectionGroupsClient creates a new instance of FirewallPolicyRuleCollectionGroupsClient with the specified values.
-func NewFirewallPolicyRuleCollectionGroupsClient(con *armcore.Connection, subscriptionID string) FirewallPolicyRuleCollectionGroupsClient {
-	return FirewallPolicyRuleCollectionGroupsClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client FirewallPolicyRuleCollectionGroupsClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewFirewallPolicyRuleCollectionGroupsClient(con *armcore.Connection, subscriptionID string) *FirewallPolicyRuleCollectionGroupsClient {
+	return &FirewallPolicyRuleCollectionGroupsClient{con: con, subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Creates or updates the specified FirewallPolicyRuleCollectionGroup.
-func (client FirewallPolicyRuleCollectionGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, parameters FirewallPolicyRuleCollectionGroup, options *FirewallPolicyRuleCollectionGroupsBeginCreateOrUpdateOptions) (FirewallPolicyRuleCollectionGroupPollerResponse, error) {
+func (client *FirewallPolicyRuleCollectionGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, parameters FirewallPolicyRuleCollectionGroup, options *FirewallPolicyRuleCollectionGroupsBeginCreateOrUpdateOptions) (FirewallPolicyRuleCollectionGroupPollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, firewallPolicyName, ruleCollectionGroupName, parameters, options)
 	if err != nil {
 		return FirewallPolicyRuleCollectionGroupPollerResponse{}, err
@@ -60,7 +55,7 @@ func (client FirewallPolicyRuleCollectionGroupsClient) BeginCreateOrUpdate(ctx c
 
 // ResumeCreateOrUpdate creates a new FirewallPolicyRuleCollectionGroupPoller from the specified resume token.
 // token - The value must come from a previous call to FirewallPolicyRuleCollectionGroupPoller.ResumeToken().
-func (client FirewallPolicyRuleCollectionGroupsClient) ResumeCreateOrUpdate(token string) (FirewallPolicyRuleCollectionGroupPoller, error) {
+func (client *FirewallPolicyRuleCollectionGroupsClient) ResumeCreateOrUpdate(token string) (FirewallPolicyRuleCollectionGroupPoller, error) {
 	pt, err := armcore.NewPollerFromResumeToken("FirewallPolicyRuleCollectionGroupsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
@@ -72,12 +67,12 @@ func (client FirewallPolicyRuleCollectionGroupsClient) ResumeCreateOrUpdate(toke
 }
 
 // CreateOrUpdate - Creates or updates the specified FirewallPolicyRuleCollectionGroup.
-func (client FirewallPolicyRuleCollectionGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, parameters FirewallPolicyRuleCollectionGroup, options *FirewallPolicyRuleCollectionGroupsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *FirewallPolicyRuleCollectionGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, parameters FirewallPolicyRuleCollectionGroup, options *FirewallPolicyRuleCollectionGroupsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, firewallPolicyName, ruleCollectionGroupName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +83,7 @@ func (client FirewallPolicyRuleCollectionGroupsClient) createOrUpdate(ctx contex
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client FirewallPolicyRuleCollectionGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, parameters FirewallPolicyRuleCollectionGroup, options *FirewallPolicyRuleCollectionGroupsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *FirewallPolicyRuleCollectionGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, parameters FirewallPolicyRuleCollectionGroup, options *FirewallPolicyRuleCollectionGroupsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/ruleCollectionGroups/{ruleCollectionGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{firewallPolicyName}", url.PathEscape(firewallPolicyName))
@@ -107,14 +102,16 @@ func (client FirewallPolicyRuleCollectionGroupsClient) createOrUpdateCreateReque
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client FirewallPolicyRuleCollectionGroupsClient) createOrUpdateHandleResponse(resp *azcore.Response) (FirewallPolicyRuleCollectionGroupResponse, error) {
-	result := FirewallPolicyRuleCollectionGroupResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.FirewallPolicyRuleCollectionGroup)
-	return result, err
+func (client *FirewallPolicyRuleCollectionGroupsClient) createOrUpdateHandleResponse(resp *azcore.Response) (FirewallPolicyRuleCollectionGroupResponse, error) {
+	var val *FirewallPolicyRuleCollectionGroup
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return FirewallPolicyRuleCollectionGroupResponse{}, err
+	}
+	return FirewallPolicyRuleCollectionGroupResponse{RawResponse: resp.Response, FirewallPolicyRuleCollectionGroup: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client FirewallPolicyRuleCollectionGroupsClient) createOrUpdateHandleError(resp *azcore.Response) error {
+func (client *FirewallPolicyRuleCollectionGroupsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -123,7 +120,7 @@ func (client FirewallPolicyRuleCollectionGroupsClient) createOrUpdateHandleError
 }
 
 // BeginDelete - Deletes the specified FirewallPolicyRuleCollectionGroup.
-func (client FirewallPolicyRuleCollectionGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, options *FirewallPolicyRuleCollectionGroupsBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *FirewallPolicyRuleCollectionGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, options *FirewallPolicyRuleCollectionGroupsBeginDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.delete(ctx, resourceGroupName, firewallPolicyName, ruleCollectionGroupName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
@@ -148,7 +145,7 @@ func (client FirewallPolicyRuleCollectionGroupsClient) BeginDelete(ctx context.C
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client FirewallPolicyRuleCollectionGroupsClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *FirewallPolicyRuleCollectionGroupsClient) ResumeDelete(token string) (HTTPPoller, error) {
 	pt, err := armcore.NewPollerFromResumeToken("FirewallPolicyRuleCollectionGroupsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
 		return nil, err
@@ -160,12 +157,12 @@ func (client FirewallPolicyRuleCollectionGroupsClient) ResumeDelete(token string
 }
 
 // Delete - Deletes the specified FirewallPolicyRuleCollectionGroup.
-func (client FirewallPolicyRuleCollectionGroupsClient) delete(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, options *FirewallPolicyRuleCollectionGroupsBeginDeleteOptions) (*azcore.Response, error) {
+func (client *FirewallPolicyRuleCollectionGroupsClient) delete(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, options *FirewallPolicyRuleCollectionGroupsBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, firewallPolicyName, ruleCollectionGroupName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -176,7 +173,7 @@ func (client FirewallPolicyRuleCollectionGroupsClient) delete(ctx context.Contex
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client FirewallPolicyRuleCollectionGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, options *FirewallPolicyRuleCollectionGroupsBeginDeleteOptions) (*azcore.Request, error) {
+func (client *FirewallPolicyRuleCollectionGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, options *FirewallPolicyRuleCollectionGroupsBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/ruleCollectionGroups/{ruleCollectionGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{firewallPolicyName}", url.PathEscape(firewallPolicyName))
@@ -195,7 +192,7 @@ func (client FirewallPolicyRuleCollectionGroupsClient) deleteCreateRequest(ctx c
 }
 
 // deleteHandleError handles the Delete error response.
-func (client FirewallPolicyRuleCollectionGroupsClient) deleteHandleError(resp *azcore.Response) error {
+func (client *FirewallPolicyRuleCollectionGroupsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -204,27 +201,23 @@ func (client FirewallPolicyRuleCollectionGroupsClient) deleteHandleError(resp *a
 }
 
 // Get - Gets the specified FirewallPolicyRuleCollectionGroup.
-func (client FirewallPolicyRuleCollectionGroupsClient) Get(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, options *FirewallPolicyRuleCollectionGroupsGetOptions) (FirewallPolicyRuleCollectionGroupResponse, error) {
+func (client *FirewallPolicyRuleCollectionGroupsClient) Get(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, options *FirewallPolicyRuleCollectionGroupsGetOptions) (FirewallPolicyRuleCollectionGroupResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, firewallPolicyName, ruleCollectionGroupName, options)
 	if err != nil {
 		return FirewallPolicyRuleCollectionGroupResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return FirewallPolicyRuleCollectionGroupResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return FirewallPolicyRuleCollectionGroupResponse{}, client.getHandleError(resp)
 	}
-	result, err := client.getHandleResponse(resp)
-	if err != nil {
-		return FirewallPolicyRuleCollectionGroupResponse{}, err
-	}
-	return result, nil
+	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client FirewallPolicyRuleCollectionGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, options *FirewallPolicyRuleCollectionGroupsGetOptions) (*azcore.Request, error) {
+func (client *FirewallPolicyRuleCollectionGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, options *FirewallPolicyRuleCollectionGroupsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/ruleCollectionGroups/{ruleCollectionGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{firewallPolicyName}", url.PathEscape(firewallPolicyName))
@@ -243,14 +236,16 @@ func (client FirewallPolicyRuleCollectionGroupsClient) getCreateRequest(ctx cont
 }
 
 // getHandleResponse handles the Get response.
-func (client FirewallPolicyRuleCollectionGroupsClient) getHandleResponse(resp *azcore.Response) (FirewallPolicyRuleCollectionGroupResponse, error) {
-	result := FirewallPolicyRuleCollectionGroupResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.FirewallPolicyRuleCollectionGroup)
-	return result, err
+func (client *FirewallPolicyRuleCollectionGroupsClient) getHandleResponse(resp *azcore.Response) (FirewallPolicyRuleCollectionGroupResponse, error) {
+	var val *FirewallPolicyRuleCollectionGroup
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return FirewallPolicyRuleCollectionGroupResponse{}, err
+	}
+	return FirewallPolicyRuleCollectionGroupResponse{RawResponse: resp.Response, FirewallPolicyRuleCollectionGroup: val}, nil
 }
 
 // getHandleError handles the Get error response.
-func (client FirewallPolicyRuleCollectionGroupsClient) getHandleError(resp *azcore.Response) error {
+func (client *FirewallPolicyRuleCollectionGroupsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -259,7 +254,7 @@ func (client FirewallPolicyRuleCollectionGroupsClient) getHandleError(resp *azco
 }
 
 // List - Lists all FirewallPolicyRuleCollectionGroups in a FirewallPolicy resource.
-func (client FirewallPolicyRuleCollectionGroupsClient) List(resourceGroupName string, firewallPolicyName string, options *FirewallPolicyRuleCollectionGroupsListOptions) FirewallPolicyRuleCollectionGroupListResultPager {
+func (client *FirewallPolicyRuleCollectionGroupsClient) List(resourceGroupName string, firewallPolicyName string, options *FirewallPolicyRuleCollectionGroupsListOptions) FirewallPolicyRuleCollectionGroupListResultPager {
 	return &firewallPolicyRuleCollectionGroupListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -275,7 +270,7 @@ func (client FirewallPolicyRuleCollectionGroupsClient) List(resourceGroupName st
 }
 
 // listCreateRequest creates the List request.
-func (client FirewallPolicyRuleCollectionGroupsClient) listCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPolicyRuleCollectionGroupsListOptions) (*azcore.Request, error) {
+func (client *FirewallPolicyRuleCollectionGroupsClient) listCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPolicyRuleCollectionGroupsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/ruleCollectionGroups"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{firewallPolicyName}", url.PathEscape(firewallPolicyName))
@@ -293,14 +288,16 @@ func (client FirewallPolicyRuleCollectionGroupsClient) listCreateRequest(ctx con
 }
 
 // listHandleResponse handles the List response.
-func (client FirewallPolicyRuleCollectionGroupsClient) listHandleResponse(resp *azcore.Response) (FirewallPolicyRuleCollectionGroupListResultResponse, error) {
-	result := FirewallPolicyRuleCollectionGroupListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.FirewallPolicyRuleCollectionGroupListResult)
-	return result, err
+func (client *FirewallPolicyRuleCollectionGroupsClient) listHandleResponse(resp *azcore.Response) (FirewallPolicyRuleCollectionGroupListResultResponse, error) {
+	var val *FirewallPolicyRuleCollectionGroupListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return FirewallPolicyRuleCollectionGroupListResultResponse{}, err
+	}
+	return FirewallPolicyRuleCollectionGroupListResultResponse{RawResponse: resp.Response, FirewallPolicyRuleCollectionGroupListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client FirewallPolicyRuleCollectionGroupsClient) listHandleError(resp *azcore.Response) error {
+func (client *FirewallPolicyRuleCollectionGroupsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

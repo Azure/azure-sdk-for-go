@@ -24,37 +24,28 @@ type ServiceAssociationLinksClient struct {
 }
 
 // NewServiceAssociationLinksClient creates a new instance of ServiceAssociationLinksClient with the specified values.
-func NewServiceAssociationLinksClient(con *armcore.Connection, subscriptionID string) ServiceAssociationLinksClient {
-	return ServiceAssociationLinksClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client ServiceAssociationLinksClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewServiceAssociationLinksClient(con *armcore.Connection, subscriptionID string) *ServiceAssociationLinksClient {
+	return &ServiceAssociationLinksClient{con: con, subscriptionID: subscriptionID}
 }
 
 // List - Gets a list of service association links for a subnet.
-func (client ServiceAssociationLinksClient) List(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *ServiceAssociationLinksListOptions) (ServiceAssociationLinksListResultResponse, error) {
+func (client *ServiceAssociationLinksClient) List(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *ServiceAssociationLinksListOptions) (ServiceAssociationLinksListResultResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, virtualNetworkName, subnetName, options)
 	if err != nil {
 		return ServiceAssociationLinksListResultResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return ServiceAssociationLinksListResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return ServiceAssociationLinksListResultResponse{}, client.listHandleError(resp)
 	}
-	result, err := client.listHandleResponse(resp)
-	if err != nil {
-		return ServiceAssociationLinksListResultResponse{}, err
-	}
-	return result, nil
+	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client ServiceAssociationLinksClient) listCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *ServiceAssociationLinksListOptions) (*azcore.Request, error) {
+func (client *ServiceAssociationLinksClient) listCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *ServiceAssociationLinksListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/ServiceAssociationLinks"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkName}", url.PathEscape(virtualNetworkName))
@@ -73,14 +64,16 @@ func (client ServiceAssociationLinksClient) listCreateRequest(ctx context.Contex
 }
 
 // listHandleResponse handles the List response.
-func (client ServiceAssociationLinksClient) listHandleResponse(resp *azcore.Response) (ServiceAssociationLinksListResultResponse, error) {
-	result := ServiceAssociationLinksListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.ServiceAssociationLinksListResult)
-	return result, err
+func (client *ServiceAssociationLinksClient) listHandleResponse(resp *azcore.Response) (ServiceAssociationLinksListResultResponse, error) {
+	var val *ServiceAssociationLinksListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ServiceAssociationLinksListResultResponse{}, err
+	}
+	return ServiceAssociationLinksListResultResponse{RawResponse: resp.Response, ServiceAssociationLinksListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client ServiceAssociationLinksClient) listHandleError(resp *azcore.Response) error {
+func (client *ServiceAssociationLinksClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

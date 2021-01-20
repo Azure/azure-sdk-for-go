@@ -25,17 +25,12 @@ type DscpConfigurationClient struct {
 }
 
 // NewDscpConfigurationClient creates a new instance of DscpConfigurationClient with the specified values.
-func NewDscpConfigurationClient(con *armcore.Connection, subscriptionID string) DscpConfigurationClient {
-	return DscpConfigurationClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client DscpConfigurationClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewDscpConfigurationClient(con *armcore.Connection, subscriptionID string) *DscpConfigurationClient {
+	return &DscpConfigurationClient{con: con, subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Creates or updates a DSCP Configuration.
-func (client DscpConfigurationClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationBeginCreateOrUpdateOptions) (DscpConfigurationPollerResponse, error) {
+func (client *DscpConfigurationClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationBeginCreateOrUpdateOptions) (DscpConfigurationPollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, dscpConfigurationName, parameters, options)
 	if err != nil {
 		return DscpConfigurationPollerResponse{}, err
@@ -60,7 +55,7 @@ func (client DscpConfigurationClient) BeginCreateOrUpdate(ctx context.Context, r
 
 // ResumeCreateOrUpdate creates a new DscpConfigurationPoller from the specified resume token.
 // token - The value must come from a previous call to DscpConfigurationPoller.ResumeToken().
-func (client DscpConfigurationClient) ResumeCreateOrUpdate(token string) (DscpConfigurationPoller, error) {
+func (client *DscpConfigurationClient) ResumeCreateOrUpdate(token string) (DscpConfigurationPoller, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DscpConfigurationClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
@@ -72,12 +67,12 @@ func (client DscpConfigurationClient) ResumeCreateOrUpdate(token string) (DscpCo
 }
 
 // CreateOrUpdate - Creates or updates a DSCP Configuration.
-func (client DscpConfigurationClient) createOrUpdate(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *DscpConfigurationClient) createOrUpdate(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, dscpConfigurationName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +83,7 @@ func (client DscpConfigurationClient) createOrUpdate(ctx context.Context, resour
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client DscpConfigurationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *DscpConfigurationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dscpConfigurations/{dscpConfigurationName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{dscpConfigurationName}", url.PathEscape(dscpConfigurationName))
@@ -106,14 +101,16 @@ func (client DscpConfigurationClient) createOrUpdateCreateRequest(ctx context.Co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client DscpConfigurationClient) createOrUpdateHandleResponse(resp *azcore.Response) (DscpConfigurationResponse, error) {
-	result := DscpConfigurationResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.DscpConfiguration)
-	return result, err
+func (client *DscpConfigurationClient) createOrUpdateHandleResponse(resp *azcore.Response) (DscpConfigurationResponse, error) {
+	var val *DscpConfiguration
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return DscpConfigurationResponse{}, err
+	}
+	return DscpConfigurationResponse{RawResponse: resp.Response, DscpConfiguration: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client DscpConfigurationClient) createOrUpdateHandleError(resp *azcore.Response) error {
+func (client *DscpConfigurationClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -122,7 +119,7 @@ func (client DscpConfigurationClient) createOrUpdateHandleError(resp *azcore.Res
 }
 
 // BeginDelete - Deletes a DSCP Configuration.
-func (client DscpConfigurationClient) BeginDelete(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *DscpConfigurationClient) BeginDelete(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationBeginDeleteOptions) (HTTPPollerResponse, error) {
 	resp, err := client.delete(ctx, resourceGroupName, dscpConfigurationName, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
@@ -147,7 +144,7 @@ func (client DscpConfigurationClient) BeginDelete(ctx context.Context, resourceG
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client DscpConfigurationClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *DscpConfigurationClient) ResumeDelete(token string) (HTTPPoller, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DscpConfigurationClient.Delete", token, client.deleteHandleError)
 	if err != nil {
 		return nil, err
@@ -159,12 +156,12 @@ func (client DscpConfigurationClient) ResumeDelete(token string) (HTTPPoller, er
 }
 
 // Delete - Deletes a DSCP Configuration.
-func (client DscpConfigurationClient) delete(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationBeginDeleteOptions) (*azcore.Response, error) {
+func (client *DscpConfigurationClient) delete(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, dscpConfigurationName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -175,7 +172,7 @@ func (client DscpConfigurationClient) delete(ctx context.Context, resourceGroupN
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client DscpConfigurationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationBeginDeleteOptions) (*azcore.Request, error) {
+func (client *DscpConfigurationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dscpConfigurations/{dscpConfigurationName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{dscpConfigurationName}", url.PathEscape(dscpConfigurationName))
@@ -193,7 +190,7 @@ func (client DscpConfigurationClient) deleteCreateRequest(ctx context.Context, r
 }
 
 // deleteHandleError handles the Delete error response.
-func (client DscpConfigurationClient) deleteHandleError(resp *azcore.Response) error {
+func (client *DscpConfigurationClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -202,27 +199,23 @@ func (client DscpConfigurationClient) deleteHandleError(resp *azcore.Response) e
 }
 
 // Get - Gets a DSCP Configuration.
-func (client DscpConfigurationClient) Get(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationGetOptions) (DscpConfigurationResponse, error) {
+func (client *DscpConfigurationClient) Get(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationGetOptions) (DscpConfigurationResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, dscpConfigurationName, options)
 	if err != nil {
 		return DscpConfigurationResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return DscpConfigurationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return DscpConfigurationResponse{}, client.getHandleError(resp)
 	}
-	result, err := client.getHandleResponse(resp)
-	if err != nil {
-		return DscpConfigurationResponse{}, err
-	}
-	return result, nil
+	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client DscpConfigurationClient) getCreateRequest(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationGetOptions) (*azcore.Request, error) {
+func (client *DscpConfigurationClient) getCreateRequest(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dscpConfigurations/{dscpConfigurationName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{dscpConfigurationName}", url.PathEscape(dscpConfigurationName))
@@ -240,14 +233,16 @@ func (client DscpConfigurationClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client DscpConfigurationClient) getHandleResponse(resp *azcore.Response) (DscpConfigurationResponse, error) {
-	result := DscpConfigurationResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.DscpConfiguration)
-	return result, err
+func (client *DscpConfigurationClient) getHandleResponse(resp *azcore.Response) (DscpConfigurationResponse, error) {
+	var val *DscpConfiguration
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return DscpConfigurationResponse{}, err
+	}
+	return DscpConfigurationResponse{RawResponse: resp.Response, DscpConfiguration: val}, nil
 }
 
 // getHandleError handles the Get error response.
-func (client DscpConfigurationClient) getHandleError(resp *azcore.Response) error {
+func (client *DscpConfigurationClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -256,7 +251,7 @@ func (client DscpConfigurationClient) getHandleError(resp *azcore.Response) erro
 }
 
 // List - Gets a DSCP Configuration.
-func (client DscpConfigurationClient) List(resourceGroupName string, options *DscpConfigurationListOptions) DscpConfigurationListResultPager {
+func (client *DscpConfigurationClient) List(resourceGroupName string, options *DscpConfigurationListOptions) DscpConfigurationListResultPager {
 	return &dscpConfigurationListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -272,7 +267,7 @@ func (client DscpConfigurationClient) List(resourceGroupName string, options *Ds
 }
 
 // listCreateRequest creates the List request.
-func (client DscpConfigurationClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *DscpConfigurationListOptions) (*azcore.Request, error) {
+func (client *DscpConfigurationClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *DscpConfigurationListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dscpConfigurations"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -289,14 +284,16 @@ func (client DscpConfigurationClient) listCreateRequest(ctx context.Context, res
 }
 
 // listHandleResponse handles the List response.
-func (client DscpConfigurationClient) listHandleResponse(resp *azcore.Response) (DscpConfigurationListResultResponse, error) {
-	result := DscpConfigurationListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.DscpConfigurationListResult)
-	return result, err
+func (client *DscpConfigurationClient) listHandleResponse(resp *azcore.Response) (DscpConfigurationListResultResponse, error) {
+	var val *DscpConfigurationListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return DscpConfigurationListResultResponse{}, err
+	}
+	return DscpConfigurationListResultResponse{RawResponse: resp.Response, DscpConfigurationListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client DscpConfigurationClient) listHandleError(resp *azcore.Response) error {
+func (client *DscpConfigurationClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -305,7 +302,7 @@ func (client DscpConfigurationClient) listHandleError(resp *azcore.Response) err
 }
 
 // ListAll - Gets all dscp configurations in a subscription.
-func (client DscpConfigurationClient) ListAll(options *DscpConfigurationListAllOptions) DscpConfigurationListResultPager {
+func (client *DscpConfigurationClient) ListAll(options *DscpConfigurationListAllOptions) DscpConfigurationListResultPager {
 	return &dscpConfigurationListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -321,7 +318,7 @@ func (client DscpConfigurationClient) ListAll(options *DscpConfigurationListAllO
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client DscpConfigurationClient) listAllCreateRequest(ctx context.Context, options *DscpConfigurationListAllOptions) (*azcore.Request, error) {
+func (client *DscpConfigurationClient) listAllCreateRequest(ctx context.Context, options *DscpConfigurationListAllOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dscpConfigurations"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -337,14 +334,16 @@ func (client DscpConfigurationClient) listAllCreateRequest(ctx context.Context, 
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client DscpConfigurationClient) listAllHandleResponse(resp *azcore.Response) (DscpConfigurationListResultResponse, error) {
-	result := DscpConfigurationListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.DscpConfigurationListResult)
-	return result, err
+func (client *DscpConfigurationClient) listAllHandleResponse(resp *azcore.Response) (DscpConfigurationListResultResponse, error) {
+	var val *DscpConfigurationListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return DscpConfigurationListResultResponse{}, err
+	}
+	return DscpConfigurationListResultResponse{RawResponse: resp.Response, DscpConfigurationListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
-func (client DscpConfigurationClient) listAllHandleError(resp *azcore.Response) error {
+func (client *DscpConfigurationClient) listAllHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

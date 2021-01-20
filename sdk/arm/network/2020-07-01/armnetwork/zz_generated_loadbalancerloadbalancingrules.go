@@ -24,37 +24,28 @@ type LoadBalancerLoadBalancingRulesClient struct {
 }
 
 // NewLoadBalancerLoadBalancingRulesClient creates a new instance of LoadBalancerLoadBalancingRulesClient with the specified values.
-func NewLoadBalancerLoadBalancingRulesClient(con *armcore.Connection, subscriptionID string) LoadBalancerLoadBalancingRulesClient {
-	return LoadBalancerLoadBalancingRulesClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client LoadBalancerLoadBalancingRulesClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewLoadBalancerLoadBalancingRulesClient(con *armcore.Connection, subscriptionID string) *LoadBalancerLoadBalancingRulesClient {
+	return &LoadBalancerLoadBalancingRulesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Get - Gets the specified load balancer load balancing rule.
-func (client LoadBalancerLoadBalancingRulesClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, loadBalancingRuleName string, options *LoadBalancerLoadBalancingRulesGetOptions) (LoadBalancingRuleResponse, error) {
+func (client *LoadBalancerLoadBalancingRulesClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, loadBalancingRuleName string, options *LoadBalancerLoadBalancingRulesGetOptions) (LoadBalancingRuleResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, loadBalancerName, loadBalancingRuleName, options)
 	if err != nil {
 		return LoadBalancingRuleResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return LoadBalancingRuleResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return LoadBalancingRuleResponse{}, client.getHandleError(resp)
 	}
-	result, err := client.getHandleResponse(resp)
-	if err != nil {
-		return LoadBalancingRuleResponse{}, err
-	}
-	return result, nil
+	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client LoadBalancerLoadBalancingRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, loadBalancingRuleName string, options *LoadBalancerLoadBalancingRulesGetOptions) (*azcore.Request, error) {
+func (client *LoadBalancerLoadBalancingRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, loadBalancingRuleName string, options *LoadBalancerLoadBalancingRulesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/loadBalancingRules/{loadBalancingRuleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -73,14 +64,16 @@ func (client LoadBalancerLoadBalancingRulesClient) getCreateRequest(ctx context.
 }
 
 // getHandleResponse handles the Get response.
-func (client LoadBalancerLoadBalancingRulesClient) getHandleResponse(resp *azcore.Response) (LoadBalancingRuleResponse, error) {
-	result := LoadBalancingRuleResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.LoadBalancingRule)
-	return result, err
+func (client *LoadBalancerLoadBalancingRulesClient) getHandleResponse(resp *azcore.Response) (LoadBalancingRuleResponse, error) {
+	var val *LoadBalancingRule
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return LoadBalancingRuleResponse{}, err
+	}
+	return LoadBalancingRuleResponse{RawResponse: resp.Response, LoadBalancingRule: val}, nil
 }
 
 // getHandleError handles the Get error response.
-func (client LoadBalancerLoadBalancingRulesClient) getHandleError(resp *azcore.Response) error {
+func (client *LoadBalancerLoadBalancingRulesClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -89,7 +82,7 @@ func (client LoadBalancerLoadBalancingRulesClient) getHandleError(resp *azcore.R
 }
 
 // List - Gets all the load balancing rules in a load balancer.
-func (client LoadBalancerLoadBalancingRulesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerLoadBalancingRulesListOptions) LoadBalancerLoadBalancingRuleListResultPager {
+func (client *LoadBalancerLoadBalancingRulesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerLoadBalancingRulesListOptions) LoadBalancerLoadBalancingRuleListResultPager {
 	return &loadBalancerLoadBalancingRuleListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -105,7 +98,7 @@ func (client LoadBalancerLoadBalancingRulesClient) List(resourceGroupName string
 }
 
 // listCreateRequest creates the List request.
-func (client LoadBalancerLoadBalancingRulesClient) listCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancerLoadBalancingRulesListOptions) (*azcore.Request, error) {
+func (client *LoadBalancerLoadBalancingRulesClient) listCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancerLoadBalancingRulesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/loadBalancingRules"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -123,14 +116,16 @@ func (client LoadBalancerLoadBalancingRulesClient) listCreateRequest(ctx context
 }
 
 // listHandleResponse handles the List response.
-func (client LoadBalancerLoadBalancingRulesClient) listHandleResponse(resp *azcore.Response) (LoadBalancerLoadBalancingRuleListResultResponse, error) {
-	result := LoadBalancerLoadBalancingRuleListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.LoadBalancerLoadBalancingRuleListResult)
-	return result, err
+func (client *LoadBalancerLoadBalancingRulesClient) listHandleResponse(resp *azcore.Response) (LoadBalancerLoadBalancingRuleListResultResponse, error) {
+	var val *LoadBalancerLoadBalancingRuleListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return LoadBalancerLoadBalancingRuleListResultResponse{}, err
+	}
+	return LoadBalancerLoadBalancingRuleListResultResponse{RawResponse: resp.Response, LoadBalancerLoadBalancingRuleListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
-func (client LoadBalancerLoadBalancingRulesClient) listHandleError(resp *azcore.Response) error {
+func (client *LoadBalancerLoadBalancingRulesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

@@ -24,37 +24,28 @@ type WebCategoriesClient struct {
 }
 
 // NewWebCategoriesClient creates a new instance of WebCategoriesClient with the specified values.
-func NewWebCategoriesClient(con *armcore.Connection, subscriptionID string) WebCategoriesClient {
-	return WebCategoriesClient{con: con, subscriptionID: subscriptionID}
-}
-
-// Pipeline returns the pipeline associated with this client.
-func (client WebCategoriesClient) Pipeline() azcore.Pipeline {
-	return client.con.Pipeline()
+func NewWebCategoriesClient(con *armcore.Connection, subscriptionID string) *WebCategoriesClient {
+	return &WebCategoriesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Get - Gets the specified Azure Web Category.
-func (client WebCategoriesClient) Get(ctx context.Context, name string, options *WebCategoriesGetOptions) (AzureWebCategoryResponse, error) {
+func (client *WebCategoriesClient) Get(ctx context.Context, name string, options *WebCategoriesGetOptions) (AzureWebCategoryResponse, error) {
 	req, err := client.getCreateRequest(ctx, name, options)
 	if err != nil {
 		return AzureWebCategoryResponse{}, err
 	}
-	resp, err := client.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return AzureWebCategoryResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
 		return AzureWebCategoryResponse{}, client.getHandleError(resp)
 	}
-	result, err := client.getHandleResponse(resp)
-	if err != nil {
-		return AzureWebCategoryResponse{}, err
-	}
-	return result, nil
+	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client WebCategoriesClient) getCreateRequest(ctx context.Context, name string, options *WebCategoriesGetOptions) (*azcore.Request, error) {
+func (client *WebCategoriesClient) getCreateRequest(ctx context.Context, name string, options *WebCategoriesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/azureWebCategories/{name}"
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -74,14 +65,16 @@ func (client WebCategoriesClient) getCreateRequest(ctx context.Context, name str
 }
 
 // getHandleResponse handles the Get response.
-func (client WebCategoriesClient) getHandleResponse(resp *azcore.Response) (AzureWebCategoryResponse, error) {
-	result := AzureWebCategoryResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.AzureWebCategory)
-	return result, err
+func (client *WebCategoriesClient) getHandleResponse(resp *azcore.Response) (AzureWebCategoryResponse, error) {
+	var val *AzureWebCategory
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return AzureWebCategoryResponse{}, err
+	}
+	return AzureWebCategoryResponse{RawResponse: resp.Response, AzureWebCategory: val}, nil
 }
 
 // getHandleError handles the Get error response.
-func (client WebCategoriesClient) getHandleError(resp *azcore.Response) error {
+func (client *WebCategoriesClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -90,7 +83,7 @@ func (client WebCategoriesClient) getHandleError(resp *azcore.Response) error {
 }
 
 // ListBySubscription - Gets all the Azure Web Categories in a subscription.
-func (client WebCategoriesClient) ListBySubscription(options *WebCategoriesListBySubscriptionOptions) AzureWebCategoryListResultPager {
+func (client *WebCategoriesClient) ListBySubscription(options *WebCategoriesListBySubscriptionOptions) AzureWebCategoryListResultPager {
 	return &azureWebCategoryListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -106,7 +99,7 @@ func (client WebCategoriesClient) ListBySubscription(options *WebCategoriesListB
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client WebCategoriesClient) listBySubscriptionCreateRequest(ctx context.Context, options *WebCategoriesListBySubscriptionOptions) (*azcore.Request, error) {
+func (client *WebCategoriesClient) listBySubscriptionCreateRequest(ctx context.Context, options *WebCategoriesListBySubscriptionOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/azureWebCategories"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -122,14 +115,16 @@ func (client WebCategoriesClient) listBySubscriptionCreateRequest(ctx context.Co
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client WebCategoriesClient) listBySubscriptionHandleResponse(resp *azcore.Response) (AzureWebCategoryListResultResponse, error) {
-	result := AzureWebCategoryListResultResponse{RawResponse: resp.Response}
-	err := resp.UnmarshalAsJSON(&result.AzureWebCategoryListResult)
-	return result, err
+func (client *WebCategoriesClient) listBySubscriptionHandleResponse(resp *azcore.Response) (AzureWebCategoryListResultResponse, error) {
+	var val *AzureWebCategoryListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return AzureWebCategoryListResultResponse{}, err
+	}
+	return AzureWebCategoryListResultResponse{RawResponse: resp.Response, AzureWebCategoryListResult: val}, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client WebCategoriesClient) listBySubscriptionHandleError(resp *azcore.Response) error {
+func (client *WebCategoriesClient) listBySubscriptionHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

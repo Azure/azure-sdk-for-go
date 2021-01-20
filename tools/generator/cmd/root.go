@@ -154,6 +154,7 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 
 	// iterate over all the readme
 	results := make([]pipeline.PackageResult, 0)
+	errorBuilder := generateErrorBuilder{}
 	for _, readme := range input.RelatedReadmeMdFiles {
 		log.Printf("Processing readme '%s'...", readme)
 		absReadme := filepath.Join(input.SpecFolder, readme)
@@ -164,7 +165,8 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 			options:        options,
 		}
 		if err := g.generate(); err != nil {
-			return nil, err
+			errorBuilder.add(fmt.Errorf("cannot generate readme '%s': %+v", readme, err))
+			continue
 		}
 		m := changelogContext{
 			sdkRoot:         ctx.sdkRoot,
@@ -178,7 +180,8 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 		log.Printf("Processing metadata generated in readme '%s'...", readme)
 		packages, err := m.process(g.metadataOutput)
 		if err != nil {
-			return nil, err
+			errorBuilder.add(fmt.Errorf("cannot process metadata for readme '%s': %+v", readme, err))
+			continue
 		}
 
 		// iterate over the changed packages
@@ -202,7 +205,26 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 
 	return &pipeline.GenerateOutput{
 		Packages: results,
-	}, nil
+	}, errorBuilder.build()
+}
+
+type generateErrorBuilder struct {
+	errors []error
+}
+
+func (b *generateErrorBuilder) add(err error) {
+	b.errors = append(b.errors, err)
+}
+
+func (b *generateErrorBuilder) build() error {
+	if len(b.errors) == 0 {
+		return nil
+	}
+	var messages []string
+	for _, err := range b.errors {
+		messages = append(messages, err.Error())
+	}
+	return fmt.Errorf("total %d error(s): \n%s", len(b.errors), strings.Join(messages, "\n"))
 }
 
 type packageResultSet map[string]pipeline.PackageResult

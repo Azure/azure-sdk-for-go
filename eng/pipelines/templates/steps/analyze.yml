@@ -38,7 +38,7 @@ steps:
     displayName: 'Copyright Header Check'
     condition: succeededOrFailed()
     failOnStderr: true
-    workingDirectory: '${{parameters.Directory}}'
+    workingDirectory: '${{parameters.ServiceDirectory}}'
 
   - script: |
       echo check source file formatting in $(pwd)
@@ -46,4 +46,4 @@ steps:
     displayName: 'Format Check'
     condition: succeededOrFailed()
     failOnStderr: true
-    workingDirectory: '${{parameters.Directory}}'
+    workingDirectory: '${{parameters.ServiceDirectory}}'

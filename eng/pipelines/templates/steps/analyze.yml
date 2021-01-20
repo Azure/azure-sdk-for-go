@@ -19,13 +19,11 @@ steps:
     workingDirectory: '${{parameters.GoWorkspace}}'
 
   - pwsh: |
-      $wd = Get-Location | select -ExpandProperty Path
-      Write-Host "##[command]Linting content in $wd"
       $modDirs = (./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE))
       foreach ($md in $modDirs) {
         pushd $md
-        Write-Host "##[command]Executing golangci-lint run -c ${{parameters.GoWorkspace}}/eng/.golangci.yml in $md"
-        golangci-lint run -c ${{parameters.GoWorkspace}}/eng/.golangci.yml
+        Write-Host "##[command]Executing golangci-lint run -c ${{parameters.GoWorkspace}}eng/.golangci.yml in $md"
+        golangci-lint run -c ${{parameters.GoWorkspace}}eng/.golangci.yml
       }
       exit 0
     displayName: 'Lint'
@@ -38,7 +36,7 @@ steps:
     displayName: 'Copyright Header Check'
     condition: succeededOrFailed()
     failOnStderr: true
-    workingDirectory: '${{parameters.ServiceDirectory}}'
+    workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
   - script: |
       echo check source file formatting in $(pwd)
@@ -46,4 +44,4 @@ steps:
     displayName: 'Format Check'
     condition: succeededOrFailed()
     failOnStderr: true
-    workingDirectory: '${{parameters.ServiceDirectory}}'
+    workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'

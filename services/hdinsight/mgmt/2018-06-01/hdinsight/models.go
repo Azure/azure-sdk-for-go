@@ -403,10 +403,32 @@ type BillingResponseListResult struct {
 	autorest.Response `json:"-"`
 	// VMSizes - The virtual machine sizes to include or exclude.
 	VMSizes *[]string `json:"vmSizes,omitempty"`
+	// VMSizesWithEncryptionAtHost - The vm sizes which enable encryption at host.
+	VMSizesWithEncryptionAtHost *[]string `json:"vmSizesWithEncryptionAtHost,omitempty"`
 	// VMSizeFilters - The virtual machine filtering mode. Effectively this can enabling or disabling the virtual machine sizes in a particular set.
 	VMSizeFilters *[]VMSizeCompatibilityFilterV2 `json:"vmSizeFilters,omitempty"`
+	// VMSizeProperties - READ-ONLY; The vm size properties.
+	VMSizeProperties *[]VMSizeProperty `json:"vmSizeProperties,omitempty"`
 	// BillingResources - The billing and managed disk billing resources for a region.
 	BillingResources *[]BillingResources `json:"billingResources,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BillingResponseListResult.
+func (brlr BillingResponseListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if brlr.VMSizes != nil {
+		objectMap["vmSizes"] = brlr.VMSizes
+	}
+	if brlr.VMSizesWithEncryptionAtHost != nil {
+		objectMap["vmSizesWithEncryptionAtHost"] = brlr.VMSizesWithEncryptionAtHost
+	}
+	if brlr.VMSizeFilters != nil {
+		objectMap["vmSizeFilters"] = brlr.VMSizeFilters
+	}
+	if brlr.BillingResources != nil {
+		objectMap["billingResources"] = brlr.BillingResources
+	}
+	return json.Marshal(objectMap)
 }
 
 // CapabilitiesResult the Get Capabilities operation response.
@@ -620,6 +642,8 @@ type ClusterDiskEncryptionParameters struct {
 type ClusterGetProperties struct {
 	// ClusterVersion - The version of the cluster.
 	ClusterVersion *string `json:"clusterVersion,omitempty"`
+	// ClusterHdpVersion - The hdp version of the cluster.
+	ClusterHdpVersion *string `json:"clusterHdpVersion,omitempty"`
 	// OsType - The type of operating system. Possible values include: 'Windows', 'Linux'
 	OsType OSType `json:"osType,omitempty"`
 	// Tier - The cluster tier. Possible values include: 'Standard', 'Premium'
@@ -650,8 +674,12 @@ type ClusterGetProperties struct {
 	DiskEncryptionProperties *DiskEncryptionProperties `json:"diskEncryptionProperties,omitempty"`
 	// EncryptionInTransitProperties - The encryption-in-transit properties.
 	EncryptionInTransitProperties *EncryptionInTransitProperties `json:"encryptionInTransitProperties,omitempty"`
+	// StorageProfile - The storage profile.
+	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
 	// MinSupportedTLSVersion - The minimal supported tls version.
 	MinSupportedTLSVersion *string `json:"minSupportedTlsVersion,omitempty"`
+	// ExcludedServicesConfig - The excluded services config.
+	ExcludedServicesConfig *ExcludedServicesConfig `json:"excludedServicesConfig,omitempty"`
 	// NetworkProperties - The network properties.
 	NetworkProperties *NetworkProperties `json:"networkProperties,omitempty"`
 	// ComputeIsolationProperties - The compute isolation properties.
@@ -688,6 +716,17 @@ type ClusterIdentityUserAssignedIdentitiesValue struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// ClientID - READ-ONLY; The client id of user assigned identity.
 	ClientID *string `json:"clientId,omitempty"`
+	// TenantID - The tenant id of user assigned identity.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ClusterIdentityUserAssignedIdentitiesValue.
+func (ciAiv ClusterIdentityUserAssignedIdentitiesValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ciAiv.TenantID != nil {
+		objectMap["tenantId"] = ciAiv.TenantID
+	}
+	return json.Marshal(objectMap)
 }
 
 // ClusterListPersistedScriptActionsResult the ListPersistedScriptActions operation response.
@@ -1086,6 +1125,14 @@ type Errors struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// ExcludedServicesConfig the configuration that services will be excluded when creating cluster.
+type ExcludedServicesConfig struct {
+	// ExcludedServicesConfigID - The config id of excluded services.
+	ExcludedServicesConfigID *string `json:"excludedServicesConfigId,omitempty"`
+	// ExcludedServicesList - The list of excluded services.
+	ExcludedServicesList *string `json:"excludedServicesList,omitempty"`
+}
+
 // ExecuteScriptActionParameters the parameters for the script actions to execute on a running cluster.
 type ExecuteScriptActionParameters struct {
 	// ScriptActions - The list of run time script actions.
@@ -1469,6 +1516,8 @@ type Role struct {
 	DataDisksGroups *[]DataDisksGroups `json:"dataDisksGroups,omitempty"`
 	// ScriptActions - The list of script actions on the role.
 	ScriptActions *[]ScriptAction `json:"scriptActions,omitempty"`
+	// EncryptDataDisks - Indicates whether encrypt the data disks.
+	EncryptDataDisks *bool `json:"encryptDataDisks,omitempty"`
 }
 
 // RuntimeScriptAction describes a script action on a running cluster.
@@ -2113,7 +2162,7 @@ type VMSizeCompatibilityFilter struct {
 // sizes in affect of exclusion/inclusion) and the ordering of the Filters. Later filters override previous
 // settings if conflicted.
 type VMSizeCompatibilityFilterV2 struct {
-	// FilterMode - The filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set. Possible values include: 'Exclude', 'Include'
+	// FilterMode - The filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set. Possible values include: 'Exclude', 'Include', 'Recommend', 'Default'
 	FilterMode FilterMode `json:"filterMode,omitempty"`
 	// Regions - The list of regions under the effect of the filter.
 	Regions *[]string `json:"regions,omitempty"`
@@ -2127,6 +2176,30 @@ type VMSizeCompatibilityFilterV2 struct {
 	OsType *[]OSType `json:"osType,omitempty"`
 	// VMSizes - The list of virtual machine sizes to include or exclude.
 	VMSizes *[]string `json:"vmSizes,omitempty"`
+}
+
+// VMSizeProperty the vm size property
+type VMSizeProperty struct {
+	// Name - The vm size name.
+	Name *string `json:"name,omitempty"`
+	// Cores - The number of cores that the vm size has.
+	Cores *int32 `json:"cores,omitempty"`
+	// DataDiskStorageTier - The data disk storage tier of the vm size.
+	DataDiskStorageTier *string `json:"dataDiskStorageTier,omitempty"`
+	// Label - The label of the vm size.
+	Label *string `json:"label,omitempty"`
+	// MaxDataDiskCount - The max data disk count of the vm size.
+	MaxDataDiskCount *int64 `json:"maxDataDiskCount,omitempty"`
+	// MemoryInMb - The memory whose unit is MB of the vm size.
+	MemoryInMb *int64 `json:"memoryInMb,omitempty"`
+	// SupportedByVirtualMachines - This indicates this vm size is supported by virtual machines or not
+	SupportedByVirtualMachines *bool `json:"supportedByVirtualMachines,omitempty"`
+	// SupportedByWebWorkerRoles - The indicates this vm size is supported by web worker roles or not
+	SupportedByWebWorkerRoles *bool `json:"supportedByWebWorkerRoles,omitempty"`
+	// VirtualMachineResourceDiskSizeInMb - The virtual machine resource disk size whose unit is MB of the vm size.
+	VirtualMachineResourceDiskSizeInMb *int64 `json:"virtualMachineResourceDiskSizeInMb,omitempty"`
+	// WebWorkerResourceDiskSizeInMb - The web worker resource disk size whose unit is MB of the vm size.
+	WebWorkerResourceDiskSizeInMb *int64 `json:"webWorkerResourceDiskSizeInMb,omitempty"`
 }
 
 // VMSizesCapability the virtual machine sizes capability.

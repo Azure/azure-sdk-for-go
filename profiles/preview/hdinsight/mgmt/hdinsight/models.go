@@ -68,8 +68,10 @@ const (
 type FilterMode = original.FilterMode
 
 const (
-	Exclude FilterMode = original.Exclude
-	Include FilterMode = original.Include
+	Default   FilterMode = original.Default
+	Exclude   FilterMode = original.Exclude
+	Include   FilterMode = original.Include
+	Recommend FilterMode = original.Recommend
 )
 
 type JSONWebKeyEncryptionAlgorithm = original.JSONWebKeyEncryptionAlgorithm
@@ -176,6 +178,7 @@ type DiskEncryptionProperties = original.DiskEncryptionProperties
 type EncryptionInTransitProperties = original.EncryptionInTransitProperties
 type ErrorResponse = original.ErrorResponse
 type Errors = original.Errors
+type ExcludedServicesConfig = original.ExcludedServicesConfig
 type ExecuteScriptActionParameters = original.ExecuteScriptActionParameters
 type Extension = original.Extension
 type ExtensionsClient = original.ExtensionsClient
@@ -232,6 +235,7 @@ type Usage = original.Usage
 type UsagesListResult = original.UsagesListResult
 type VMSizeCompatibilityFilter = original.VMSizeCompatibilityFilter
 type VMSizeCompatibilityFilterV2 = original.VMSizeCompatibilityFilterV2
+type VMSizeProperty = original.VMSizeProperty
 type VMSizesCapability = original.VMSizesCapability
 type VersionSpec = original.VersionSpec
 type VersionsCapability = original.VersionsCapability

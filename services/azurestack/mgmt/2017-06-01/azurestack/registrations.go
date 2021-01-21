@@ -204,6 +204,75 @@ func (client RegistrationsClient) DeleteResponder(resp *http.Response) (result a
 	return
 }
 
+// EnableRemoteManagement enables remote management for device under the Azure Stack registration.
+// Parameters:
+// resourceGroup - name of the resource group.
+// registrationName - name of the Azure Stack registration.
+func (client RegistrationsClient) EnableRemoteManagement(ctx context.Context, resourceGroup string, registrationName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationsClient.EnableRemoteManagement")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.EnableRemoteManagementPreparer(ctx, resourceGroup, registrationName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "azurestack.RegistrationsClient", "EnableRemoteManagement", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.EnableRemoteManagementSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "azurestack.RegistrationsClient", "EnableRemoteManagement", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.EnableRemoteManagementResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "azurestack.RegistrationsClient", "EnableRemoteManagement", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// EnableRemoteManagementPreparer prepares the EnableRemoteManagement request.
+func (client RegistrationsClient) EnableRemoteManagementPreparer(ctx context.Context, resourceGroup string, registrationName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"registrationName": autorest.Encode("path", registrationName),
+		"resourceGroup":    autorest.Encode("path", resourceGroup),
+		"subscriptionId":   autorest.Encode("path", client.SubscriptionID),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack/registrations/{registrationName}/enableRemoteManagement", pathParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// EnableRemoteManagementSender sends the EnableRemoteManagement request. The method will close the
+// http.Response Body if it receives an error.
+func (client RegistrationsClient) EnableRemoteManagementSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// EnableRemoteManagementResponder handles the response to the EnableRemoteManagement request. The method always
+// closes the http.Response Body.
+func (client RegistrationsClient) EnableRemoteManagementResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Get returns the properties of an Azure Stack registration.
 // Parameters:
 // resourceGroup - name of the resource group.

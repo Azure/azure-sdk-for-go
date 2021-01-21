@@ -178,7 +178,7 @@ func (client ProductsClient) GetProductPreparer(ctx context.Context, resourceGro
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack/registrations/{registrationName}/products/{productName}/GetProduct", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack/registrations/{registrationName}/products/{productName}/getProduct", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if deviceConfiguration != nil {
 		preparer = autorest.DecoratePreparer(preparer,
@@ -209,8 +209,9 @@ func (client ProductsClient) GetProductResponder(resp *http.Response) (result Pr
 // Parameters:
 // resourceGroup - name of the resource group.
 // registrationName - name of the Azure Stack registration.
+// productName - name of the product.
 // deviceConfiguration - device configuration.
-func (client ProductsClient) GetProducts(ctx context.Context, resourceGroup string, registrationName string, deviceConfiguration *DeviceConfiguration) (result ProductList, err error) {
+func (client ProductsClient) GetProducts(ctx context.Context, resourceGroup string, registrationName string, productName string, deviceConfiguration *DeviceConfiguration) (result ProductList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProductsClient.GetProducts")
 		defer func() {
@@ -221,7 +222,7 @@ func (client ProductsClient) GetProducts(ctx context.Context, resourceGroup stri
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetProductsPreparer(ctx, resourceGroup, registrationName, deviceConfiguration)
+	req, err := client.GetProductsPreparer(ctx, resourceGroup, registrationName, productName, deviceConfiguration)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.ProductsClient", "GetProducts", nil, "Failure preparing request")
 		return
@@ -244,8 +245,9 @@ func (client ProductsClient) GetProducts(ctx context.Context, resourceGroup stri
 }
 
 // GetProductsPreparer prepares the GetProducts request.
-func (client ProductsClient) GetProductsPreparer(ctx context.Context, resourceGroup string, registrationName string, deviceConfiguration *DeviceConfiguration) (*http.Request, error) {
+func (client ProductsClient) GetProductsPreparer(ctx context.Context, resourceGroup string, registrationName string, productName string, deviceConfiguration *DeviceConfiguration) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
+		"productName":      autorest.Encode("path", productName),
 		"registrationName": autorest.Encode("path", registrationName),
 		"resourceGroup":    autorest.Encode("path", resourceGroup),
 		"subscriptionId":   autorest.Encode("path", client.SubscriptionID),
@@ -262,7 +264,7 @@ func (client ProductsClient) GetProductsPreparer(ctx context.Context, resourceGr
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack/registrations/{registrationName}/products/_all/GetProducts", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack/registrations/{registrationName}/products/{productName}/getProducts", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if deviceConfiguration != nil {
 		preparer = autorest.DecoratePreparer(preparer,

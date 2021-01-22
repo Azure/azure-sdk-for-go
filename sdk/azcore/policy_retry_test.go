@@ -155,6 +155,44 @@ func TestRetryPolicySuccessWithRetry(t *testing.T) {
 		t.Fatal("request body wasn't closed")
 	}
 }
+
+func TestRetryPolicySuccessRetryWithNilResponse(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+	srv.AppendResponse()
+	nilInjector := &nilRespInjector{
+		t: srv,
+		r: []int{2}, // send a nil on the second request
+	}
+	pl := NewPipeline(nilInjector, NewRetryPolicy(testRetryOptions()))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	body := newRewindTrackingBody("stuff")
+	if err := req.SetBody(body, "text/plain"); err != nil {
+		t.Fatal(err)
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if r := srv.Requests(); r != 3 {
+		t.Fatalf("wrong retry count, got %d expected %d", r, 3)
+	}
+	if body.rcount != 3 {
+		t.Fatalf("unexpected rewind count: %d", body.rcount)
+	}
+	if !body.closed {
+		t.Fatal("request body wasn't closed")
+	}
+}
+
 func TestRetryPolicyNoRetries(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
@@ -521,43 +559,6 @@ func TestRetryPolicySuccessWithPerTryTimeout(t *testing.T) {
 	}
 	if body.rcount != 1 {
 		// should have been rewound once due to per-try timeout
-		t.Fatalf("unexpected rewind count: %d", body.rcount)
-	}
-	if !body.closed {
-		t.Fatal("request body wasn't closed")
-	}
-}
-
-func TestRetryPolicySuccessWithNilResponse(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
-	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
-	srv.AppendResponse()
-	nilInjector := &nilRespInjector{
-		t: srv,
-		r: []int{2}, // send a nil on the second request
-	}
-	pl := NewPipeline(nilInjector, NewRetryPolicy(testRetryOptions()))
-	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	body := newRewindTrackingBody("stuff")
-	if err := req.SetBody(body, "text/plain"); err != nil {
-		t.Fatal(err)
-	}
-	resp, err := pl.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code: %d", resp.StatusCode)
-	}
-	if r := srv.Requests(); r != 3 {
-		t.Fatalf("wrong retry count, got %d expected %d", r, 3)
-	}
-	if body.rcount != 3 {
 		t.Fatalf("unexpected rewind count: %d", body.rcount)
 	}
 	if !body.closed {

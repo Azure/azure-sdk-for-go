@@ -21,7 +21,6 @@ import (
 func testRetryOptions() *RetryOptions {
 	def := RetryOptions{}
 	def.RetryDelay = 20 * time.Millisecond
-	def.TryTimeout = 1 * time.Second
 	return &def
 }
 
@@ -156,6 +155,44 @@ func TestRetryPolicySuccessWithRetry(t *testing.T) {
 		t.Fatal("request body wasn't closed")
 	}
 }
+
+func TestRetryPolicySuccessRetryWithNilResponse(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+	srv.AppendResponse()
+	nilInjector := &nilRespInjector{
+		t: srv,
+		r: []int{2}, // send a nil on the second request
+	}
+	pl := NewPipeline(nilInjector, NewRetryPolicy(testRetryOptions()))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	body := newRewindTrackingBody("stuff")
+	if err := req.SetBody(body, "text/plain"); err != nil {
+		t.Fatal(err)
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if r := srv.Requests(); r != 3 {
+		t.Fatalf("wrong retry count, got %d expected %d", r, 3)
+	}
+	if body.rcount != 3 {
+		t.Fatalf("unexpected rewind count: %d", body.rcount)
+	}
+	if !body.closed {
+		t.Fatal("request body wasn't closed")
+	}
+}
+
 func TestRetryPolicyNoRetries(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
@@ -502,7 +539,9 @@ func TestRetryPolicySuccessWithPerTryTimeout(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithSlowResponse(5 * time.Second))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
+	opt := testRetryOptions()
+	opt.TryTimeout = 1 * time.Second
+	pl := NewPipeline(srv, NewRetryPolicy(opt))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -518,7 +557,8 @@ func TestRetryPolicySuccessWithPerTryTimeout(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if body.rcount > 1 {
+	if body.rcount != 1 {
+		// should have been rewound once due to per-try timeout
 		t.Fatalf("unexpected rewind count: %d", body.rcount)
 	}
 	if !body.closed {
@@ -558,4 +598,22 @@ func (r *rewindTrackingBody) Seek(offset int64, whence int) (int64, error) {
 		r.rcount++
 	}
 	return r.body.Seek(offset, whence)
+}
+
+// used to inject a nil response
+type nilRespInjector struct {
+	t Transport
+	c int   // the current request number
+	r []int // the list of request numbers to return a nil response (one-based)
+}
+
+func (n *nilRespInjector) Do(req *http.Request) (*http.Response, error) {
+	n.c++
+	// check if current request number n.c is in n.r
+	for _, v := range n.r {
+		if v == n.c {
+			return nil, nil
+		}
+	}
+	return n.t.Do(req)
 }

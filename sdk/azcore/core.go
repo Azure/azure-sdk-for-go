@@ -6,6 +6,7 @@
 package azcore
 
 import (
+	"errors"
 	"io"
 	"net/http"
 )
@@ -52,6 +53,10 @@ func (tp transportPolicy) Do(req *Request) (*Response, error) {
 	resp, err := tp.trans.Do(req.Request)
 	if err != nil {
 		return nil, err
+	} else if resp == nil {
+		// there was no response and no error (rare but can happen)
+		// this ensures the retry policy will retry the request
+		return nil, errors.New("received nil response")
 	}
 	return &Response{Response: resp}, nil
 }

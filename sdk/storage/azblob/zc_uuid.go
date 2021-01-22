@@ -6,6 +6,7 @@ import (
 	"strconv"
 )
 
+// TODO: Mohit: Remove this file and use google uuid function instead.
 // The UUID reserved variants.
 const (
 	reservedNCS       byte = 0x80

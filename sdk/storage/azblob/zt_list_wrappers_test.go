@@ -29,7 +29,7 @@ func (s *aztestsSuite) TestBlobListWrapper(c *chk.C) {
 	for blobItem := range blobs {
 		found = append(found, *blobItem.Name)
 	}
-	c.Assert(<- errs, chk.IsNil)
+	c.Assert(<-errs, chk.IsNil)
 
 	sort.Strings(files)
 	sort.Strings(found)
@@ -60,7 +60,7 @@ func (s *aztestsSuite) TestBlobListWrapperFullBuffer(c *chk.C) {
 	for blobItem := range blobs {
 		found = append(found, *blobItem.Name)
 	}
-	c.Assert(<- errs, chk.IsNil)
+	c.Assert(<-errs, chk.IsNil)
 
 	sort.Strings(files)
 	sort.Strings(found)
@@ -81,5 +81,5 @@ func (s *aztestsSuite) TestBlobListWrapperListingError(c *chk.C) {
 		// there should be NO blob listings coming back. Just an error.
 		c.FailNow()
 	}
-	c.Assert(<- errs, chk.NotNil)
+	c.Assert(<-errs, chk.NotNil)
 }

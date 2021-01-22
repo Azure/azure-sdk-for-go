@@ -138,8 +138,8 @@ func (s *aztestsSuite) TestAccountListContainersEmptyPrefix(c *chk.C) {
 	defer deleteContainer(c, containerURL2)
 
 	count := 0
-	pager, err := bsu.ListContainersSegment(context.Background(), 100, time.Hour, nil)
-	c.Assert(err, chk.IsNil)
+	pager, errChan := bsu.ListContainersSegment(context.Background(), 100, time.Hour, nil)
+	c.Assert(<-errChan, chk.IsNil)
 
 	for container := range pager {
 		// record the results

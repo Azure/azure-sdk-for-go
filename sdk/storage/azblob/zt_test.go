@@ -223,7 +223,7 @@ func createNewBlockBlobWithName(c *chk.C, container ContainerClient, name string
 	cResp, err := blob.Upload(ctx, strings.NewReader(blockBlobDefaultData), nil)
 
 	c.Assert(err, chk.IsNil)
-	c.Assert(cResp.RawResponse.Status, chk.Equals, 201)
+	c.Assert(cResp.RawResponse.StatusCode, chk.Equals, 201)
 	return
 }
 

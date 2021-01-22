@@ -260,3 +260,30 @@ func (r DownloadResponse) RequestID() *string {
 func (r DownloadResponse) Version() *string {
 	return r.r.Version
 }
+
+// Response returns the raw HTTP response object.
+func (b BlockBlobUploadResponse) Response() *http.Response {
+	return b.RawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (b BlockBlobUploadResponse) StatusCode() int {
+	return b.RawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (b BlockBlobUploadResponse) Status() string {
+	return b.RawResponse.Status
+}
+
+func (b BlockBlobCommitBlockListResponse) Response() *http.Response {
+	return b.RawResponse
+}
+
+func (b BlockBlobCommitBlockListResponse) StatusCode() int {
+	return b.RawResponse.StatusCode
+}
+
+func (b BlockBlobCommitBlockListResponse) Status() string {
+	return b.RawResponse.Status
+}

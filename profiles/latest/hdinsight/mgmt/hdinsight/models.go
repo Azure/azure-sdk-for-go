@@ -68,8 +68,10 @@ const (
 type FilterMode = original.FilterMode
 
 const (
-	Exclude FilterMode = original.Exclude
-	Include FilterMode = original.Include
+	Default   FilterMode = original.Default
+	Exclude   FilterMode = original.Exclude
+	Include   FilterMode = original.Include
+	Recommend FilterMode = original.Recommend
 )
 
 type JSONWebKeyEncryptionAlgorithm = original.JSONWebKeyEncryptionAlgorithm
@@ -171,11 +173,13 @@ type ConfigurationsClient = original.ConfigurationsClient
 type ConfigurationsUpdateFuture = original.ConfigurationsUpdateFuture
 type ConnectivityEndpoint = original.ConnectivityEndpoint
 type DataDisksGroups = original.DataDisksGroups
+type Dimension = original.Dimension
 type DiskBillingMeters = original.DiskBillingMeters
 type DiskEncryptionProperties = original.DiskEncryptionProperties
 type EncryptionInTransitProperties = original.EncryptionInTransitProperties
 type ErrorResponse = original.ErrorResponse
 type Errors = original.Errors
+type ExcludedServicesConfig = original.ExcludedServicesConfig
 type ExecuteScriptActionParameters = original.ExecuteScriptActionParameters
 type Extension = original.Extension
 type ExtensionsClient = original.ExtensionsClient
@@ -191,12 +195,14 @@ type LinuxOperatingSystemProfile = original.LinuxOperatingSystemProfile
 type ListHostInfo = original.ListHostInfo
 type LocalizedName = original.LocalizedName
 type LocationsClient = original.LocationsClient
+type MetricSpecifications = original.MetricSpecifications
 type NetworkProperties = original.NetworkProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type OperationProperties = original.OperationProperties
 type OperationResource = original.OperationResource
 type OperationsClient = original.OperationsClient
 type OsProfile = original.OsProfile
@@ -223,6 +229,7 @@ type ScriptActionsListIterator = original.ScriptActionsListIterator
 type ScriptActionsListPage = original.ScriptActionsListPage
 type ScriptExecutionHistoryClient = original.ScriptExecutionHistoryClient
 type SecurityProfile = original.SecurityProfile
+type ServiceSpecification = original.ServiceSpecification
 type SetString = original.SetString
 type StorageAccount = original.StorageAccount
 type StorageProfile = original.StorageProfile
@@ -232,6 +239,7 @@ type Usage = original.Usage
 type UsagesListResult = original.UsagesListResult
 type VMSizeCompatibilityFilter = original.VMSizeCompatibilityFilter
 type VMSizeCompatibilityFilterV2 = original.VMSizeCompatibilityFilterV2
+type VMSizeProperty = original.VMSizeProperty
 type VMSizesCapability = original.VMSizesCapability
 type VersionSpec = original.VersionSpec
 type VersionsCapability = original.VersionsCapability

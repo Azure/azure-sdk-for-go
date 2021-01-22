@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## `v50.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2020-10-25/reservations`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/hdinsight/mgmt/2018-06-01/hdinsight` | [details](services/hdinsight/mgmt/2018-06-01/hdinsight/CHANGELOG.md) |
+
 ## `v50.1.0`
 
 ### New Packages
@@ -12,7 +24,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-06-01-preview/documentdb` | [details](services/preview/cosmos-db/mgmt/2020-06-01-preview/documentdb/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-06-01-preview/documentdb` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v50.1.0/services/preview/cosmos-db/mgmt/2020-06-01-preview/documentdb/CHANGELOG.md) |
 
 ## `v50.0.0`
 
@@ -524,7 +536,7 @@ NOTE: Due to the changes requested in [this issue](https://github.com/Azure/azur
 
 ## `v49.0.0`
 
-**NOTE**: Due to the changes requested in [this issue](https://github.com/Azure/azure-sdk-for-go/issues/12834), we changed the constructor of all the pager structs, which leads to a very long list of breaking changes. Please check the details of the breaking changes by the link in the table. 
+**NOTE**: Due to the changes requested in [this issue](https://github.com/Azure/azure-sdk-for-go/issues/12834), we changed the constructor of all the pager structs, which leads to a very long list of breaking changes. Please check the details of the breaking changes by the link in the table.
 
 ### New Packages
 
@@ -1180,7 +1192,7 @@ Generated from https://github.com/Azure/azure-rest-api-specs/tree/4c1dfe438cfb73
 
 ### Package Renames
 
-- package `github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/v1.0/securityinsight` has been renamed to `github.com/Azure/azure-sdk-for-go/services/securityinsight/mgmt/v1.0/securityinsight` 
+- package `github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/v1.0/securityinsight` has been renamed to `github.com/Azure/azure-sdk-for-go/services/securityinsight/mgmt/v1.0/securityinsight`
 
 Generated from https://github.com/Azure/azure-rest-api-specs/tree/c174d654d4cd9f45e929a31480e19ada7baa6924
 
@@ -2542,11 +2554,11 @@ Generated from https://github.com/Azure/azure-rest-api-specs/tree/1b04f5fce19cd3
 | -----------: | :---------: |
 | compute | 2019-03-01<br/>2019-07-01 |
 
-Revert deletion of packages in `classic\management` and `keyvault\auth` 
+Revert deletion of packages in `classic\management` and `keyvault\auth`
 
 ## `v34.0.0`
 
-### New Packages                                                                                                                              
+### New Packages
 | Package Name | API Version |
 | -----------: | :---------: |
 | databox | 2019-09-01 |

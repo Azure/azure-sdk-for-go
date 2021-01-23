@@ -22,7 +22,7 @@ package reservations
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2019-07-19-preview/reservations"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2020-10-25/reservations"
 )
 
 const (
@@ -34,6 +34,15 @@ type AppliedScopeType = original.AppliedScopeType
 const (
 	Shared AppliedScopeType = original.Shared
 	Single AppliedScopeType = original.Single
+)
+
+type CalculateExchangeOperationResultStatus = original.CalculateExchangeOperationResultStatus
+
+const (
+	Cancelled CalculateExchangeOperationResultStatus = original.Cancelled
+	Failed    CalculateExchangeOperationResultStatus = original.Failed
+	Pending   CalculateExchangeOperationResultStatus = original.Pending
+	Succeeded CalculateExchangeOperationResultStatus = original.Succeeded
 )
 
 type ErrorResponseCode = original.ErrorResponseCode
@@ -96,6 +105,16 @@ const (
 	UnsupportedReservationTerm                    ErrorResponseCode = original.UnsupportedReservationTerm
 )
 
+type ExchangeOperationResultStatus = original.ExchangeOperationResultStatus
+
+const (
+	ExchangeOperationResultStatusCancelled        ExchangeOperationResultStatus = original.ExchangeOperationResultStatusCancelled
+	ExchangeOperationResultStatusFailed           ExchangeOperationResultStatus = original.ExchangeOperationResultStatusFailed
+	ExchangeOperationResultStatusPendingPurchases ExchangeOperationResultStatus = original.ExchangeOperationResultStatusPendingPurchases
+	ExchangeOperationResultStatusPendingRefunds   ExchangeOperationResultStatus = original.ExchangeOperationResultStatusPendingRefunds
+	ExchangeOperationResultStatusSucceeded        ExchangeOperationResultStatus = original.ExchangeOperationResultStatusSucceeded
+)
+
 type InstanceFlexibility = original.InstanceFlexibility
 
 const (
@@ -103,13 +122,22 @@ const (
 	On  InstanceFlexibility = original.On
 )
 
+type OperationStatus = original.OperationStatus
+
+const (
+	OperationStatusCancelled OperationStatus = original.OperationStatusCancelled
+	OperationStatusFailed    OperationStatus = original.OperationStatusFailed
+	OperationStatusPending   OperationStatus = original.OperationStatusPending
+	OperationStatusSucceeded OperationStatus = original.OperationStatusSucceeded
+)
+
 type PaymentStatus = original.PaymentStatus
 
 const (
-	Cancelled PaymentStatus = original.Cancelled
-	Failed    PaymentStatus = original.Failed
-	Scheduled PaymentStatus = original.Scheduled
-	Succeeded PaymentStatus = original.Succeeded
+	PaymentStatusCancelled PaymentStatus = original.PaymentStatusCancelled
+	PaymentStatusFailed    PaymentStatus = original.PaymentStatusFailed
+	PaymentStatusScheduled PaymentStatus = original.PaymentStatusScheduled
+	PaymentStatusSucceeded PaymentStatus = original.PaymentStatusSucceeded
 )
 
 type ReservationBillingPlan = original.ReservationBillingPlan
@@ -165,17 +193,20 @@ const (
 	StatusCodeSucceeded              StatusCode = original.StatusCodeSucceeded
 )
 
-type Actions = original.Actions
 type AppliedReservationList = original.AppliedReservationList
 type AppliedReservations = original.AppliedReservations
 type AppliedReservationsProperties = original.AppliedReservationsProperties
-type AqiSettings = original.AqiSettings
-type AutoQuotaIncreaseClient = original.AutoQuotaIncreaseClient
-type AutoQuotaIncreaseDetail = original.AutoQuotaIncreaseDetail
-type AutoQuotaIncreaseSettings = original.AutoQuotaIncreaseSettings
+type AvailableScopeProperties = original.AvailableScopeProperties
 type AvailableScopeRequest = original.AvailableScopeRequest
 type AvailableScopeRequestProperties = original.AvailableScopeRequestProperties
 type BaseClient = original.BaseClient
+type BillingInformation = original.BillingInformation
+type CalculateExchangeClient = original.CalculateExchangeClient
+type CalculateExchangeOperationResultResponse = original.CalculateExchangeOperationResultResponse
+type CalculateExchangePostFuture = original.CalculateExchangePostFuture
+type CalculateExchangeRequest = original.CalculateExchangeRequest
+type CalculateExchangeRequestProperties = original.CalculateExchangeRequestProperties
+type CalculateExchangeResponseProperties = original.CalculateExchangeResponseProperties
 type CalculatePriceResponse = original.CalculatePriceResponse
 type CalculatePriceResponseProperties = original.CalculatePriceResponseProperties
 type CalculatePriceResponsePropertiesBillingCurrencyTotal = original.CalculatePriceResponsePropertiesBillingCurrencyTotal
@@ -185,10 +216,16 @@ type Client = original.Client
 type CreateGenericQuotaRequestParameters = original.CreateGenericQuotaRequestParameters
 type CurrentQuotaLimit = original.CurrentQuotaLimit
 type CurrentQuotaLimitBase = original.CurrentQuotaLimitBase
-type EmailAction = original.EmailAction
-type EmailActions = original.EmailActions
 type Error = original.Error
 type ExceptionResponse = original.ExceptionResponse
+type ExchangeClient = original.ExchangeClient
+type ExchangeOperationResultResponse = original.ExchangeOperationResultResponse
+type ExchangePolicyError = original.ExchangePolicyError
+type ExchangePolicyErrors = original.ExchangePolicyErrors
+type ExchangePostFuture = original.ExchangePostFuture
+type ExchangeRequest = original.ExchangeRequest
+type ExchangeRequestProperties = original.ExchangeRequestProperties
+type ExchangeResponseProperties = original.ExchangeResponseProperties
 type ExtendedErrorInfo = original.ExtendedErrorInfo
 type ExtendedStatusInfo = original.ExtendedStatusInfo
 type List = original.List
@@ -205,6 +242,7 @@ type OperationList = original.OperationList
 type OperationListIterator = original.OperationListIterator
 type OperationListPage = original.OperationListPage
 type OperationResponse = original.OperationResponse
+type OperationResultError = original.OperationResultError
 type OrderBillingPlanInformation = original.OrderBillingPlanInformation
 type OrderClient = original.OrderClient
 type OrderList = original.OrderList
@@ -217,10 +255,8 @@ type Patch = original.Patch
 type PatchProperties = original.PatchProperties
 type PatchPropertiesRenewProperties = original.PatchPropertiesRenewProperties
 type PaymentDetail = original.PaymentDetail
-type PhoneAction = original.PhoneAction
 type Price = original.Price
 type Properties = original.Properties
-type PropertiesType = original.PropertiesType
 type PurchaseRequest = original.PurchaseRequest
 type PurchaseRequestProperties = original.PurchaseRequestProperties
 type PurchaseRequestPropertiesReservedResourceProperties = original.PurchaseRequestPropertiesReservedResourceProperties
@@ -264,22 +300,32 @@ type SplitPropertiesType = original.SplitPropertiesType
 type SplitRequest = original.SplitRequest
 type SubRequest = original.SubRequest
 type SubscriptionScopeProperties = original.SubscriptionScopeProperties
-type SupportRequestAction = original.SupportRequestAction
+type ToExchange = original.ToExchange
+type ToPurchaseCalculateExchange = original.ToPurchaseCalculateExchange
+type ToPurchaseExchange = original.ToPurchaseExchange
+type ToReturn = original.ToReturn
+type ToReturnForExchange = original.ToReturnForExchange
 
 func New() BaseClient {
 	return original.New()
 }
-func NewAutoQuotaIncreaseClient() AutoQuotaIncreaseClient {
-	return original.NewAutoQuotaIncreaseClient()
+func NewCalculateExchangeClient() CalculateExchangeClient {
+	return original.NewCalculateExchangeClient()
 }
-func NewAutoQuotaIncreaseClientWithBaseURI(baseURI string) AutoQuotaIncreaseClient {
-	return original.NewAutoQuotaIncreaseClientWithBaseURI(baseURI)
+func NewCalculateExchangeClientWithBaseURI(baseURI string) CalculateExchangeClient {
+	return original.NewCalculateExchangeClientWithBaseURI(baseURI)
 }
 func NewClient() Client {
 	return original.NewClient()
 }
 func NewClientWithBaseURI(baseURI string) Client {
 	return original.NewClientWithBaseURI(baseURI)
+}
+func NewExchangeClient() ExchangeClient {
+	return original.NewExchangeClient()
+}
+func NewExchangeClientWithBaseURI(baseURI string) ExchangeClient {
+	return original.NewExchangeClientWithBaseURI(baseURI)
 }
 func NewListIterator(page ListPage) ListIterator {
 	return original.NewListIterator(page)
@@ -341,11 +387,20 @@ func NewWithBaseURI(baseURI string) BaseClient {
 func PossibleAppliedScopeTypeValues() []AppliedScopeType {
 	return original.PossibleAppliedScopeTypeValues()
 }
+func PossibleCalculateExchangeOperationResultStatusValues() []CalculateExchangeOperationResultStatus {
+	return original.PossibleCalculateExchangeOperationResultStatusValues()
+}
 func PossibleErrorResponseCodeValues() []ErrorResponseCode {
 	return original.PossibleErrorResponseCodeValues()
 }
+func PossibleExchangeOperationResultStatusValues() []ExchangeOperationResultStatus {
+	return original.PossibleExchangeOperationResultStatusValues()
+}
 func PossibleInstanceFlexibilityValues() []InstanceFlexibility {
 	return original.PossibleInstanceFlexibilityValues()
+}
+func PossibleOperationStatusValues() []OperationStatus {
+	return original.PossibleOperationStatusValues()
 }
 func PossiblePaymentStatusValues() []PaymentStatus {
 	return original.PossiblePaymentStatusValues()

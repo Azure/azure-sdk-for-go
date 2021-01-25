@@ -174,7 +174,7 @@ func (c ContainerClient) GetAccessPolicy(ctx context.Context, options *GetAccess
 // SetAccessPolicy sets the container's permissions. The access policy indicates whether blobs in a container may be accessed publicly.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-container-acl.
 func (c ContainerClient) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOptions) (ContainerSetAccessPolicyResponse, error) {
-	//accessPolicy := options.ContainerSetAccessPolicyOptions
+	//accessPolicy := options.ContainerAcquireLeaseOptions
 	// TODO: Ask Ze/Adele: Why we introduced this check. Service returned "200 OK" without this. And we should let service do this kind of validations.
 	//if accessPolicy.Access == nil || accessPolicy.ContainerAcl == nil {
 	//	return ContainerSetAccessPolicyResponse{}, errors.New("ContainerSetAccess must be specified with AT LEAST Access and ContainerAcl")
@@ -194,11 +194,11 @@ func (c ContainerClient) SetAccessPolicy(ctx context.Context, options *SetAccess
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
 func (c ContainerClient) AcquireLease(ctx context.Context, leaseOptions *AcquireLeaseOptionsContainer) (ContainerAcquireLeaseResponse, error) {
 
-	if leaseOptions == nil || leaseOptions.ContainerSetAccessPolicyOptions == nil || leaseOptions.ContainerSetAccessPolicyOptions.Duration == nil || leaseOptions.ContainerSetAccessPolicyOptions.ProposedLeaseId == nil {
+	if leaseOptions == nil || leaseOptions.ContainerAcquireLeaseOptions == nil || leaseOptions.ContainerAcquireLeaseOptions.Duration == nil || leaseOptions.ContainerAcquireLeaseOptions.ProposedLeaseId == nil {
 		return ContainerAcquireLeaseResponse{}, errors.New("leaseOptions must be specified, with at least ProposedLeaseID and Duration specified under ContainerAcquireLeaseOptions")
 	}
 
-	return c.client.AcquireLease(ctx, leaseOptions.ContainerSetAccessPolicyOptions, leaseOptions.ModifiedAccessConditions)
+	return c.client.AcquireLease(ctx, leaseOptions.ContainerAcquireLeaseOptions, leaseOptions.ModifiedAccessConditions)
 }
 
 // RenewLease renews the container's previously-acquired lease.

@@ -26,13 +26,13 @@ import (
 )
 
 var changelogCmd = &cobra.Command{
-	Use:   "changelog <package search dir> <base commit> <target commit>",
+	Use:   "changelog <package search dir> <base commit> <target commit> <release tag version>",
 	Short: "Generates a CHANGELOG report in markdown format for the packages under the specified directory.",
 	Long: `The changelog command generates a CHANGELOG for all of the packages under the directory specified in <package dir>.
 A table for added, removed, updated, and breaking changes will be created as required.`,
 	Args: func(cmd *cobra.Command, args []string) error {
-		// there should be exactly three args, a directory and two commit hashes
-		if err := cobra.ExactArgs(3)(cmd, args); err != nil {
+		// there should be exactly four args, a directory, two commit hashes and the release tag version
+		if err := cobra.ExactArgs(4)(cmd, args); err != nil {
 			return err
 		}
 		if strings.Index(args[2], ",") > -1 {
@@ -51,7 +51,7 @@ func init() {
 
 func theChangelogCmd(args []string) error {
 	// TODO: refactor so that we don't depend on the packages command
-	rpt, err := thePackagesCmd(args)
+	rpt, err := thePackagesCmd(args[:3])
 	if err != nil {
 		return err
 	}
@@ -64,7 +64,7 @@ func theChangelogCmd(args []string) error {
 		panic("expected only one report")
 	}
 	for _, cr := range rpt.CommitsReports {
-		changelog, err := writePackageChangelog(cr)
+		changelog, err := writePackageChangelog(cr, args[3])
 		if err != nil {
 			return err
 		}
@@ -73,8 +73,11 @@ func theChangelogCmd(args []string) error {
 	return nil
 }
 
-func writePackageChangelog(pr report.PkgsReport) (string, error) {
+func writePackageChangelog(pr report.PkgsReport, version string) (string, error) {
 	md := &markdown.Writer{}
+	// write out the changelog's title and the release tag header before populating with other changes.
+	md.WriteTitle("Release History")
+	md.WriteTopLevelHeader(fmt.Sprintf("%s (Released)", version))
 	if err := reportAddedPkgs(pr, md); err != nil {
 		return "", fmt.Errorf("failed to write table for added packages: %+v", err)
 	}

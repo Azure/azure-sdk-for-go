@@ -34,10 +34,6 @@ type InteractiveBrowserCredentialOptions struct {
 	// The localhost port for the local server that will be used to redirect back.
 	// By default, a random port number will be selected.
 	Port int
-	// Deprecated: Disables use of PKCE during authorization.
-	// The default is false.
-	// TODO: remove
-	DisablePKCE bool
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost string

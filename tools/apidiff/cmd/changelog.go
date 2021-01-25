@@ -26,13 +26,17 @@ import (
 )
 
 var changelogCmd = &cobra.Command{
-	Use:   "changelog <package search dir> <base commit> <target commit> <release tag version>",
+	Use:   "changelog <package search dir> <base commit> <target commit> <release tag version> [<specs repo commit hash> <Go generator version>]",
 	Short: "Generates a CHANGELOG report in markdown format for the packages under the specified directory.",
 	Long: `The changelog command generates a CHANGELOG for all of the packages under the directory specified in <package dir>.
-A table for added, removed, updated, and breaking changes will be created as required.`,
+A table for added, removed, updated, and breaking changes will be created as required.
+Optional arguments for generated code include the azure-rest-api-specs commit hash that 
+the code was generated from and the Go generator version that was used to generate the 
+code that is to be released. 
+NOTE: Both optional values must be specified to be included in the markdown output.`,
 	Args: func(cmd *cobra.Command, args []string) error {
 		// there should be exactly four args, a directory, two commit hashes and the release tag version
-		if err := cobra.ExactArgs(4)(cmd, args); err != nil {
+		if err := cobra.MinimumNArgs(4)(cmd, args); err != nil {
 			return err
 		}
 		if strings.Index(args[2], ",") > -1 {
@@ -64,7 +68,7 @@ func theChangelogCmd(args []string) error {
 		panic("expected only one report")
 	}
 	for _, cr := range rpt.CommitsReports {
-		changelog, err := writePackageChangelog(cr, args[3])
+		changelog, err := writePackageChangelog(cr, args[3:])
 		if err != nil {
 			return err
 		}
@@ -73,11 +77,15 @@ func theChangelogCmd(args []string) error {
 	return nil
 }
 
-func writePackageChangelog(pr report.PkgsReport, version string) (string, error) {
+func writePackageChangelog(pr report.PkgsReport, args []string) (string, error) {
 	md := &markdown.Writer{}
 	// write out the changelog's title and the release tag header before populating with other changes.
 	md.WriteTitle("Release History")
-	md.WriteTopLevelHeader(fmt.Sprintf("%s (Released)", version))
+	md.WriteTopLevelHeader(fmt.Sprintf("%s (Released)", args[0]))
+	if len(args) == 3 {
+		md.WriteLine(fmt.Sprintf("Generated from https://github.com/Azure/azure-rest-api-specs/tree/%s", args[1]))
+		md.WriteLine(fmt.Sprintf("Code generator @autorest/go@%s", args[2]))
+	}
 	if err := reportAddedPkgs(pr, md); err != nil {
 		return "", fmt.Errorf("failed to write table for added packages: %+v", err)
 	}

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/xml"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -512,6 +513,10 @@ func SubscriptionWithLockDuration(window *time.Duration) SubscriptionManagementO
 			duration := time.Duration(1 * time.Minute)
 			window = &duration
 		}
+		if *window > time.Duration(5*time.Minute) {
+			return fmt.Errorf("Lock duration must be shorter than 5 minutes got: %v", *window)
+		}
+
 		s.LockDuration = ptrString(durationTo8601Seconds(*window))
 		return nil
 	}

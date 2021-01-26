@@ -26,6 +26,9 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
+	"runtime"
+	"strings"
+
 	"github.com/Azure/azure-amqp-common-go/v3/aad"
 	"github.com/Azure/azure-amqp-common-go/v3/auth"
 	"github.com/Azure/azure-amqp-common-go/v3/cbs"
@@ -34,8 +37,6 @@ import (
 	"github.com/Azure/go-amqp"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"nhooyr.io/websocket"
-	"runtime"
-	"strings"
 )
 
 const (
@@ -48,7 +49,7 @@ const (
 	//`
 
 	// Version is the semantic version number
-	Version = "0.10.7"
+	Version = "0.10.9"
 
 	rootUserAgent = "/golang-service-bus"
 

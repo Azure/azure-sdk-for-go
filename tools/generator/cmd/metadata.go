@@ -34,7 +34,7 @@ func (ctx changelogContext) SpecRoot() string {
 }
 
 func (ctx changelogContext) SpecCommitHash() string {
-	return ctx.specRoot
+	return ctx.commitHash
 }
 
 func (ctx changelogContext) CodeGenVersion() string {

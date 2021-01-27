@@ -47,3 +47,18 @@ const (
 func PossibleRecordTypeValues() []RecordType {
 	return []RecordType{A, AAAA, CAA, CNAME, MX, NS, PTR, SOA, SRV, TXT}
 }
+
+// ZoneType enumerates the values for zone type.
+type ZoneType string
+
+const (
+	// Private ...
+	Private ZoneType = "Private"
+	// Public ...
+	Public ZoneType = "Public"
+)
+
+// PossibleZoneTypeValues returns an array of possible values for the ZoneType const type.
+func PossibleZoneTypeValues() []ZoneType {
+	return []ZoneType{Private, Public}
+}

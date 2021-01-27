@@ -53,6 +53,24 @@ type AzureEntityResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// CloudError an error response from the service.
+type CloudError struct {
+	// Error - Cloud error body.
+	Error *CloudErrorBody `json:"error,omitempty"`
+}
+
+// CloudErrorBody an error response from the service.
+type CloudErrorBody struct {
+	// Code - An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
+	Code *string `json:"code,omitempty"`
+	// Message - A message describing the error, intended to be suitable for display in a user interface.
+	Message *string `json:"message,omitempty"`
+	// Target - The target of the particular error. For example, the name of the property in error.
+	Target *string `json:"target,omitempty"`
+	// Details - A list of additional details about the error.
+	Details *[]CloudErrorBody `json:"details,omitempty"`
+}
+
 // CnameRecord a CNAME record.
 type CnameRecord struct {
 	// Cname - Gets or sets the canonical name for this record without a terminating dot.
@@ -90,23 +108,19 @@ type PtrRecord struct {
 	Ptrdname *string `json:"ptrdname,omitempty"`
 }
 
-// RecordSet describes a DNS RecordSet (a set of DNS records with the same name and type).
+// RecordSet describes a DNS record set (a collection of DNS records with the same name and type).
 type RecordSet struct {
 	autorest.Response `json:"-"`
-	// Etag - Gets or sets the ETag of the RecordSet.
-	Etag *string `json:"etag,omitempty"`
-	// Properties - Gets or sets the properties of the RecordSet.
-	Properties *RecordSetProperties `json:"properties,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-	// Location - The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; The ID of the record set.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The name of the resource
+	// Name - READ-ONLY; The name of the record set.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// Type - READ-ONLY; The type of the record set.
 	Type *string `json:"type,omitempty"`
+	// Etag - The etag of the record set.
+	Etag *string `json:"etag,omitempty"`
+	// RecordSetProperties - The properties of the record set.
+	*RecordSetProperties `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RecordSet.
@@ -115,16 +129,70 @@ func (rs RecordSet) MarshalJSON() ([]byte, error) {
 	if rs.Etag != nil {
 		objectMap["etag"] = rs.Etag
 	}
-	if rs.Properties != nil {
-		objectMap["properties"] = rs.Properties
-	}
-	if rs.Tags != nil {
-		objectMap["tags"] = rs.Tags
-	}
-	if rs.Location != nil {
-		objectMap["location"] = rs.Location
+	if rs.RecordSetProperties != nil {
+		objectMap["properties"] = rs.RecordSetProperties
 	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for RecordSet struct.
+func (rs *RecordSet) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				rs.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				rs.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rs.Type = &typeVar
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				rs.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var recordSetProperties RecordSetProperties
+				err = json.Unmarshal(*v, &recordSetProperties)
+				if err != nil {
+					return err
+				}
+				rs.RecordSetProperties = &recordSetProperties
+			}
+		}
+	}
+
+	return nil
 }
 
 // RecordSetListResult the response to a RecordSet List operation.
@@ -290,6 +358,8 @@ func NewRecordSetListResultPage(cur RecordSetListResult, getNextPage func(contex
 type RecordSetProperties struct {
 	// TTL - Gets or sets the TTL of the records in the RecordSet.
 	TTL *int64 `json:"TTL,omitempty"`
+	// Fqdn - READ-ONLY; Fully qualified domain name of the record set.
+	Fqdn *string `json:"fqdn,omitempty"`
 	// ARecords - Gets or sets the list of A records in the RecordSet.
 	ARecords *[]ARecord `json:"ARecords,omitempty"`
 	// AAAARecords - Gets or sets the list of AAAA records in the RecordSet.
@@ -308,6 +378,42 @@ type RecordSetProperties struct {
 	CNAMERecord *CnameRecord `json:"CNAMERecord,omitempty"`
 	// SOARecord - Gets or sets the SOA record in the RecordSet.
 	SOARecord *SoaRecord `json:"SOARecord,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RecordSetProperties.
+func (rsp RecordSetProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rsp.TTL != nil {
+		objectMap["TTL"] = rsp.TTL
+	}
+	if rsp.ARecords != nil {
+		objectMap["ARecords"] = rsp.ARecords
+	}
+	if rsp.AAAARecords != nil {
+		objectMap["AAAARecords"] = rsp.AAAARecords
+	}
+	if rsp.MXRecords != nil {
+		objectMap["MXRecords"] = rsp.MXRecords
+	}
+	if rsp.NSRecords != nil {
+		objectMap["NSRecords"] = rsp.NSRecords
+	}
+	if rsp.PTRRecords != nil {
+		objectMap["PTRRecords"] = rsp.PTRRecords
+	}
+	if rsp.SRVRecords != nil {
+		objectMap["SRVRecords"] = rsp.SRVRecords
+	}
+	if rsp.TXTRecords != nil {
+		objectMap["TXTRecords"] = rsp.TXTRecords
+	}
+	if rsp.CNAMERecord != nil {
+		objectMap["CNAMERecord"] = rsp.CNAMERecord
+	}
+	if rsp.SOARecord != nil {
+		objectMap["SOARecord"] = rsp.SOARecord
+	}
+	return json.Marshal(objectMap)
 }
 
 // Resource common fields that are returned in the response for all Azure Resource Manager resources
@@ -589,6 +695,20 @@ func NewZoneListResultPage(cur ZoneListResult, getNextPage func(context.Context,
 type ZoneProperties struct {
 	// MaxNumberOfRecordSets - Gets or sets the maximum number of record sets that can be created in this zone.
 	MaxNumberOfRecordSets *int64 `json:"maxNumberOfRecordSets,omitempty"`
+	// MaxNumberOfRecordsPerRecordSet - READ-ONLY; The maximum number of records per record set that can be created in this DNS zone.  This is a read-only property and any attempt to set this value will be ignored.
+	MaxNumberOfRecordsPerRecordSet *int64 `json:"maxNumberOfRecordsPerRecordSet,omitempty"`
 	// NumberOfRecordSets - Gets or sets the current number of record sets in this zone.
 	NumberOfRecordSets *int64 `json:"numberOfRecordSets,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ZoneProperties.
+func (zp ZoneProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if zp.MaxNumberOfRecordSets != nil {
+		objectMap["maxNumberOfRecordSets"] = zp.MaxNumberOfRecordSets
+	}
+	if zp.NumberOfRecordSets != nil {
+		objectMap["numberOfRecordSets"] = zp.NumberOfRecordSets
+	}
+	return json.Marshal(objectMap)
 }

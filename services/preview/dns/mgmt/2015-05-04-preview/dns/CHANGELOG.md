@@ -1,5 +1,33 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/dns/resource-manager/readme.md tag: `package-2015-05-preview`
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/../../../../../azure-rest-api-specs/specification/dns/resource-manager/readme.md tag: `package-2015-05-preview`
 
-Code generator @microsoft.azure/autorest.go@2.1.168
+Code generator 
 
-No exported changes
+
+### Breaking Changes
+
+### Struct Changes
+
+#### Removed Struct Fields
+
+1. RecordSet.Location
+1. RecordSet.Properties
+1. RecordSet.Tags
+
+#### New Funcs
+
+1. *RecordSet.UnmarshalJSON([]byte) error
+1. RecordSetProperties.MarshalJSON() ([]byte, error)
+1. ZoneProperties.MarshalJSON() ([]byte, error)
+
+### Struct Changes
+
+#### New Structs
+
+1. CloudError
+1. CloudErrorBody
+
+#### New Struct Fields
+
+1. RecordSet.*RecordSetProperties
+1. RecordSetProperties.Fqdn
+1. ZoneProperties.MaxNumberOfRecordsPerRecordSet

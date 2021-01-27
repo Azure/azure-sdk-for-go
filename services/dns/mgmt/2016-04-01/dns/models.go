@@ -812,6 +812,8 @@ type ZoneProperties struct {
 	NumberOfRecordSets *int64 `json:"numberOfRecordSets,omitempty"`
 	// NameServers - READ-ONLY; The name servers for this DNS zone. This is a read-only property and any attempt to set this value will be ignored.
 	NameServers *[]string `json:"nameServers,omitempty"`
+	// ZoneType - The type of this DNS zone (Public or Private). Possible values include: 'Public', 'Private'
+	ZoneType ZoneType `json:"zoneType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ZoneProperties.
@@ -822,6 +824,9 @@ func (zp ZoneProperties) MarshalJSON() ([]byte, error) {
 	}
 	if zp.NumberOfRecordSets != nil {
 		objectMap["numberOfRecordSets"] = zp.NumberOfRecordSets
+	}
+	if zp.ZoneType != "" {
+		objectMap["zoneType"] = zp.ZoneType
 	}
 	return json.Marshal(objectMap)
 }

@@ -1,22 +1,19 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/dns/resource-manager/readme.md tag: `package-2016-04`
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/../../../../../azure-rest-api-specs/specification/dns/resource-manager/readme.md tag: `package-2016-04`
 
-Code generator @microsoft.azure/autorest.go@2.1.168
+Code generator 
 
-## Breaking Changes
 
-### Removed Funcs
+#### New Constants
 
-1. *ZonesDeleteFuture.Result(ZonesClient) (ZoneDeleteResult, error)
+1. ZoneType.Private
+1. ZoneType.Public
 
-## Struct Changes
+#### New Funcs
 
-### Removed Struct Fields
+1. PossibleZoneTypeValues() []ZoneType
 
-1. ZonesDeleteFuture.azure.Future
+### Struct Changes
 
-## Struct Changes
+#### New Struct Fields
 
-### New Struct Fields
-
-1. ZonesDeleteFuture.Result
-1. ZonesDeleteFuture.azure.FutureAPI
+1. ZoneProperties.ZoneType

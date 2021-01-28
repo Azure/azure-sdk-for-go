@@ -94,7 +94,7 @@ func (b BlobClient) Download(ctx context.Context, options *DownloadBlobOptions) 
 	o, lease, cpk, accessConditions := options.pointers()
 	dr, err := b.client.Download(ctx, o, lease, cpk, accessConditions)
 	if err != nil {
-		return nil, err
+		return nil, handleError(err)
 	}
 
 	offset := int64(0)
@@ -120,13 +120,17 @@ func (b BlobClient) Download(ctx context.Context, options *DownloadBlobOptions) 
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob.
 func (b BlobClient) Delete(ctx context.Context, options *DeleteBlobOptions) (BlobDeleteResponse, error) {
 	basics, leaseInfo, accessConditions := options.pointers()
-	return b.client.Delete(ctx, basics, leaseInfo, accessConditions)
+	resp, err := b.client.Delete(ctx, basics, leaseInfo, accessConditions)
+
+	return resp, handleError(err)
 }
 
 // Undelete restores the contents and metadata of a soft-deleted blob and any associated soft-deleted snapshots.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/undelete-blob.
 func (b BlobClient) Undelete(ctx context.Context) (BlobUndeleteResponse, error) {
-	return b.client.Undelete(ctx, nil)
+	resp, err := b.client.Undelete(ctx, nil)
+
+	return resp, handleError(err)
 }
 
 // SetTier operation sets the tier on a blob. The operation is allowed on a page
@@ -137,21 +141,27 @@ func (b BlobClient) Undelete(ctx context.Context) (BlobUndeleteResponse, error) 
 // For detailed information about block blob level tiering see https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.
 func (b BlobClient) SetTier(ctx context.Context, tier AccessTier, options *SetTierOptions) (BlobSetTierResponse, error) {
 	basics, lease, accessConditions := options.pointers()
-	return b.client.SetTier(ctx, tier, basics, lease, accessConditions)
+	resp, err := b.client.SetTier(ctx, tier, basics, lease, accessConditions)
+
+	return resp, handleError(err)
 }
 
 // GetBlobProperties returns the blob's properties.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-properties.
 func (b BlobClient) GetProperties(ctx context.Context, options *GetBlobPropertiesOptions) (BlobGetPropertiesResponse, error) {
 	basics, lease, cpk, access := options.pointers()
-	return b.client.GetProperties(ctx, basics, lease, cpk, access)
+	resp, err := b.client.GetProperties(ctx, basics, lease, cpk, access)
+
+	return resp, handleError(err)
 }
 
 // SetBlobHTTPHeaders changes a blob's HTTP headers.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-blob-properties.
 func (b BlobClient) SetHTTPHeaders(ctx context.Context, blobHttpHeaders BlobHttpHeaders, options *SetBlobHTTPHeadersOptions) (BlobSetHTTPHeadersResponse, error) {
 	basics, lease, access := options.pointers()
-	return b.client.SetHTTPHeaders(ctx, basics, &blobHttpHeaders, lease, access)
+	resp, err := b.client.SetHTTPHeaders(ctx, basics, &blobHttpHeaders, lease, access)
+
+	return resp, handleError(err)
 }
 
 // SetBlobMetadata changes a blob's metadata.
@@ -161,7 +171,9 @@ func (b BlobClient) SetMetadata(ctx context.Context, metadata map[string]string,
 	basics := BlobSetMetadataOptions{
 		Metadata: &metadata,
 	}
-	return b.client.SetMetadata(ctx, &basics, lease, cpk, cpkScope, access)
+	resp, err := b.client.SetMetadata(ctx, &basics, lease, cpk, cpkScope, access)
+
+	return resp, handleError(err)
 }
 
 // CreateSnapshot creates a read-only snapshot of a blob.
@@ -171,7 +183,9 @@ func (b BlobClient) CreateSnapshot(ctx context.Context, options *CreateBlobSnaps
 	// because checking this would be a performance hit for a VERY unusual path and we don't think the common case should suffer this
 	// performance hit.
 	basics, cpk, cpkScope, access, lease := options.pointers()
-	return b.client.CreateSnapshot(ctx, basics, cpk, cpkScope, access, lease)
+	resp, err := b.client.CreateSnapshot(ctx, basics, cpk, cpkScope, access, lease)
+
+	return resp, handleError(err)
 }
 
 // AcquireLease acquires a lease on the blob for write and delete operations. The lease duration must be between
@@ -179,7 +193,9 @@ func (b BlobClient) CreateSnapshot(ctx context.Context, options *CreateBlobSnaps
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (b BlobClient) AcquireLease(ctx context.Context, options *AcquireBlobLeaseOptions) (BlobAcquireLeaseResponse, error) {
 	basics, access := options.pointers()
-	return b.client.AcquireLease(ctx, basics, access)
+	resp, err := b.client.AcquireLease(ctx, basics, access)
+
+	return resp, handleError(err)
 }
 
 // RenewLease renews the blob's previously-acquired lease.
@@ -193,7 +209,9 @@ func (b BlobClient) RenewLease(ctx context.Context, leaseID string, options *Ren
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (b BlobClient) ReleaseLease(ctx context.Context, leaseID string, options *ReleaseBlobLeaseOptions) (BlobReleaseLeaseResponse, error) {
 	basics, access := options.pointers()
-	return b.client.ReleaseLease(ctx, leaseID, basics, access)
+	resp, err := b.client.ReleaseLease(ctx, leaseID, basics, access)
+
+	return resp, handleError(err)
 }
 
 // BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1)
@@ -201,28 +219,36 @@ func (b BlobClient) ReleaseLease(ctx context.Context, leaseID string, options *R
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (b BlobClient) BreakLease(ctx context.Context, options *BreakBlobLeaseOptions) (BlobBreakLeaseResponse, error) {
 	basics, access := options.pointers()
-	return b.client.BreakLease(ctx, basics, access)
+	resp, err := b.client.BreakLease(ctx, basics, access)
+
+	return resp, handleError(err)
 }
 
 // ChangeLease changes the blob's lease ID.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (b BlobClient) ChangeLease(ctx context.Context, leaseID string, proposedID string, options *ChangeBlobLeaseOptions) (BlobChangeLeaseResponse, error) {
 	basics, access := options.pointers()
-	return b.client.ChangeLease(ctx, leaseID, proposedID, basics, access)
+	resp, err := b.client.ChangeLease(ctx, leaseID, proposedID, basics, access)
+
+	return resp, handleError(err)
 }
 
 // StartCopyFromURL copies the data at the source URL to a blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/copy-blob.
 func (b BlobClient) StartCopyFromURL(ctx context.Context, copySource url.URL, options *StartCopyBlobOptions) (BlobStartCopyFromURLResponse, error) {
 	basics, srcAccess, destAccess, lease := options.pointers()
-	return b.client.StartCopyFromURL(ctx, copySource, basics, srcAccess, destAccess, lease)
+	resp, err := b.client.StartCopyFromURL(ctx, copySource, basics, srcAccess, destAccess, lease)
+
+	return resp, handleError(err)
 }
 
 // AbortCopyFromURL stops a pending copy that was previously started and leaves a destination blob with 0 length and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/abort-copy-blob.
 func (b BlobClient) AbortCopyFromURL(ctx context.Context, copyID string, options *AbortCopyBlobOptions) (BlobAbortCopyFromURLResponse, error) {
 	basics, lease := options.pointers()
-	return b.client.AbortCopyFromURL(ctx, copyID, basics, lease)
+	resp, err := b.client.AbortCopyFromURL(ctx, copyID, basics, lease)
+
+	return resp, handleError(err)
 }
 
 // SetTags operation enables users to set tags on a blob or specific blob version, but not snapshot.
@@ -231,12 +257,16 @@ func (b BlobClient) AbortCopyFromURL(ctx context.Context, copyID string, options
 // https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags
 func (b BlobClient) SetTags(ctx context.Context, options *SetTagsBlobOptions) (BlobSetTagsResponse, error) {
 	blobSetTagsOptions, modifiedAccessConditions := options.pointers()
-	return b.client.SetTags(ctx, blobSetTagsOptions, modifiedAccessConditions)
+	resp, err := b.client.SetTags(ctx, blobSetTagsOptions, modifiedAccessConditions)
+
+	return resp, handleError(err)
 }
 
 // GetTags operation enables users to get tags on a blob or specific blob version, or snapshot.
 // https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-tags
 func (b BlobClient) GetTags(ctx context.Context, options *GetTagsBlobOptions) (BlobTagsResponse, error) {
 	blobGetTagsOptions, modifiedAccessConditions := options.pointers()
-	return b.client.GetTags(ctx, blobGetTagsOptions, modifiedAccessConditions)
+	resp, err := b.client.GetTags(ctx, blobGetTagsOptions, modifiedAccessConditions)
+
+	return resp, handleError(err)
 }

@@ -56,7 +56,7 @@ func (p listBlobsFlatSegmentAutoPager) Go() {
 		if !p.pager.NextPage(p.ctx) {
 			err := p.pager.Err()
 			if err != nil {
-				p.errChan <- err
+				p.errChan <- handleError(err)
 			} else {
 				p.errChan <- nil
 			}
@@ -103,7 +103,7 @@ func (p listBlobsHierarchySegmentAutoPager) Go() {
 		if !p.pager.NextPage(p.ctx) {
 			err := p.pager.Err()
 			if err != nil {
-				p.errChan <- err
+				p.errChan <- handleError(err)
 			} else {
 				p.errChan <- nil
 			}

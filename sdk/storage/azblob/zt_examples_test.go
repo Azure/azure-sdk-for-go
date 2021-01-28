@@ -110,7 +110,7 @@ func Example() {
 	}
 }
 
-// Awaiting Mohit's test PR, storageError is barren for now.
+// Awaiting Mohit's test PR, StorageError is barren for now.
 // func ExampleStorageError() {
 // 	/* This example demonstrates how to handle errors returned from the various Client methods. All these methods return an
 // 	   object implementing the azcore.Response interface and an object implementing Go's error interface.
@@ -338,7 +338,7 @@ func ExampleBlobAccessConditions() {
 	// This helper function displays the results of an operation; it is called frequently below.
 	showResult := func(response *DownloadResponse, err error) {
 		if err != nil {
-			if stgErr, ok := err.(StorageError); !ok {
+			if stgErr, ok := err.(*StorageError); !ok {
 				log.Fatal(err) // Network failure
 			} else {
 				// TODO: Port storage error
@@ -352,7 +352,7 @@ func ExampleBlobAccessConditions() {
 
 	showResultUpload := func(upload BlockBlobUploadResponse, err error) {
 		if err != nil {
-			if stgErr, ok := err.(StorageError); !ok {
+			if stgErr, ok := err.(*StorageError); !ok {
 				log.Fatal(err) // Network failure
 			} else {
 				// TODO: Port storage error

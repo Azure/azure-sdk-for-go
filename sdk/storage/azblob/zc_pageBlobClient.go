@@ -81,7 +81,9 @@ func (pb PageBlobClient) WithVersionID(versionID string) PageBlobClient {
 func (pb PageBlobClient) Create(ctx context.Context, size int64, options *CreatePageBlobOptions) (PageBlobCreateResponse, error) {
 	creationOptions, httpHeaders, cpkInfo, cpkScope, lac, mac := options.pointers()
 
-	return pb.client.Create(ctx, 0, size, creationOptions, httpHeaders, lac, cpkInfo, cpkScope, mac)
+	resp, err := pb.client.Create(ctx, 0, size, creationOptions, httpHeaders, lac, cpkInfo, cpkScope, mac)
+
+	return resp, handleError(err)
 }
 
 // UploadPages writes 1 or more pages to the page blob. The start offset and the stream size must be a multiple of 512 bytes.
@@ -97,7 +99,9 @@ func (pb PageBlobClient) UploadPages(ctx context.Context, body io.ReadSeeker, op
 
 	uploadOptions, cpkInfo, cpkScope, snac, lac, mac := options.pointers()
 
-	return pb.client.UploadPages(ctx, count, azcore.NopCloser(body), uploadOptions, lac, cpkInfo, cpkScope, snac, mac)
+	resp, err := pb.client.UploadPages(ctx, count, azcore.NopCloser(body), uploadOptions, lac, cpkInfo, cpkScope, snac, mac)
+
+	return resp, handleError(err)
 }
 
 // UploadPagesFromURL copies 1 or more pages from a source URL to the page blob.
@@ -108,7 +112,9 @@ func (pb PageBlobClient) UploadPages(ctx context.Context, body io.ReadSeeker, op
 func (pb PageBlobClient) UploadPagesFromURL(ctx context.Context, source url.URL, sourceOffset, destOffset, count int64, options *UploadPagesFromURLOptions) (PageBlobUploadPagesFromURLResponse, error) {
 	uploadOptions, cpkInfo, cpkScope, snac, smac, lac, mac := options.pointers()
 
-	return pb.client.UploadPagesFromURL(ctx, source, rangeToString(sourceOffset, count), 0, rangeToString(destOffset, count), uploadOptions, cpkInfo, cpkScope, lac, snac, mac, smac)
+	resp, err := pb.client.UploadPagesFromURL(ctx, source, rangeToString(sourceOffset, count), 0, rangeToString(destOffset, count), uploadOptions, cpkInfo, cpkScope, lac, snac, mac, smac)
+
+	return resp, handleError(err)
 }
 
 // ClearPages frees the specified pages from the page blob.
@@ -120,7 +126,9 @@ func (pb PageBlobClient) ClearPages(ctx context.Context, offset, count int64, op
 
 	cpkInfo, cpkScope, snac, lac, mac := options.pointers()
 
-	return pb.client.ClearPages(ctx, 0, clearOptions, lac, cpkInfo, cpkScope, snac, mac)
+	resp, err := pb.client.ClearPages(ctx, 0, clearOptions, lac, cpkInfo, cpkScope, snac, mac)
+
+	return resp, handleError(err)
 }
 
 // GetPageRanges returns the list of valid page ranges for a page blob or snapshot of a page blob.
@@ -133,7 +141,9 @@ func (pb PageBlobClient) GetPageRanges(ctx context.Context, offset, count int64,
 		Snapshot:       snapshot,
 	}
 
-	return pb.client.GetPageRanges(ctx, getRangesOptions, lac, mac)
+	resp, err := pb.client.GetPageRanges(ctx, getRangesOptions, lac, mac)
+
+	return resp, handleError(err)
 }
 
 // GetManagedDiskPageRangesDiff gets the collection of page ranges that differ between a specified snapshot and this page blob representing managed disk.
@@ -161,7 +171,9 @@ func (pb PageBlobClient) GetPageRangesDiff(ctx context.Context, offset, count in
 		Snapshot:       snapshot,
 	}
 
-	return pb.client.GetPageRangesDiff(ctx, diffOptions, lac, mac)
+	resp, err := pb.client.GetPageRangesDiff(ctx, diffOptions, lac, mac)
+
+	return resp, handleError(err)
 }
 
 // Resize resizes the page blob to the specified size (which must be a multiple of 512).
@@ -169,13 +181,17 @@ func (pb PageBlobClient) GetPageRangesDiff(ctx context.Context, offset, count in
 func (pb PageBlobClient) Resize(ctx context.Context, size int64, options *ResizePageBlobOptions) (PageBlobResizeResponse, error) {
 	cpkInfo, cpkScope, lac, mac := options.pointers()
 
-	return pb.client.Resize(ctx, size, nil, lac, cpkInfo, cpkScope, mac)
+	resp, err := pb.client.Resize(ctx, size, nil, lac, cpkInfo, cpkScope, mac)
+
+	return resp, handleError(err)
 }
 
 // UpdateSequenceNumber sets the page blob's sequence number.
 func (pb PageBlobClient) UpdateSequenceNumber(ctx context.Context, options *UpdateSequenceNumberPageBlob) (PageBlobUpdateSequenceNumberResponse, error) {
 	updateOptions, actionType, lac, mac := options.pointers()
-	return pb.client.UpdateSequenceNumber(ctx, *actionType, updateOptions, lac, mac)
+	resp, err := pb.client.UpdateSequenceNumber(ctx, *actionType, updateOptions, lac, mac)
+
+	return resp, handleError(err)
 }
 
 // StartCopyIncremental begins an operation to start an incremental copy from one page blob's snapshot to this page blob.
@@ -189,5 +205,7 @@ func (pb PageBlobClient) StartCopyIncremental(ctx context.Context, source url.UR
 	source.RawQuery = queryParams.Encode()
 
 	pageBlobCopyIncrementalOptions, modifiedAccessConditions := options.pointers()
-	return pb.client.CopyIncremental(ctx, source, pageBlobCopyIncrementalOptions, modifiedAccessConditions)
+	resp, err := pb.client.CopyIncremental(ctx, source, pageBlobCopyIncrementalOptions, modifiedAccessConditions)
+
+	return resp, handleError(err)
 }

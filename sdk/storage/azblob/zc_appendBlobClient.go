@@ -77,7 +77,9 @@ func (ab AppendBlobClient) WithVersionID(versionID string) AppendBlobClient {
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-blob.
 func (ab AppendBlobClient) Create(ctx context.Context, options *CreateAppendBlobOptions) (AppendBlobCreateResponse, error) {
 	appendBlobAppendBlockOptions, blobHttpHeaders, leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions := options.pointers()
-	return ab.client.Create(ctx, 0, appendBlobAppendBlockOptions, blobHttpHeaders, leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions)
+	resp, err := ab.client.Create(ctx, 0, appendBlobAppendBlockOptions, blobHttpHeaders, leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions)
+
+	return resp, handleError(err)
 }
 
 // AppendBlock writes a stream to a new block of data to the end of the existing append blob.
@@ -92,7 +94,9 @@ func (ab AppendBlobClient) AppendBlock(ctx context.Context, body io.ReadSeeker, 
 
 	appendOptions, aac, cpkinfo, cpkscope, mac, lac := options.pointers()
 
-	return ab.client.AppendBlock(ctx, count, azcore.NopCloser(body), appendOptions, lac, aac, cpkinfo, cpkscope, mac)
+	resp, err := ab.client.AppendBlock(ctx, count, azcore.NopCloser(body), appendOptions, lac, aac, cpkinfo, cpkscope, mac)
+
+	return resp, handleError(err)
 }
 
 // AppendBlockFromURL copies a new block of data from source URL to the end of the existing append blob.
@@ -100,5 +104,7 @@ func (ab AppendBlobClient) AppendBlock(ctx context.Context, body io.ReadSeeker, 
 func (ab AppendBlobClient) AppendBlockFromURL(ctx context.Context, source url.URL, contentLength int64, options *AppendBlockURLOptions) (AppendBlobAppendBlockFromURLResponse, error) {
 	appendOptions, aac, cpkinfo, cpkscope, mac, lac, smac := options.pointers()
 
-	return ab.client.AppendBlockFromURL(ctx, source, contentLength, appendOptions, cpkinfo, cpkscope, lac, aac, mac, smac)
+	resp, err := ab.client.AppendBlockFromURL(ctx, source, contentLength, appendOptions, cpkinfo, cpkscope, lac, aac, mac, smac)
+
+	return resp, handleError(err)
 }

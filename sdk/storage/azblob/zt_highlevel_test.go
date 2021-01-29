@@ -112,9 +112,9 @@ func performUploadAndDownloadFileTest(c *chk.C, fileSize, blockSize, parallelism
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
-			//Progress: func(bytesTransferred int64) {
-			//	c.Assert(bytesTransferred > 0 && bytesTransferred <= int64(fileSize), chk.Equals, true)
-			//},
+			Progress: func(bytesTransferred int64) {
+				c.Assert(bytesTransferred > 0 && bytesTransferred <= int64(fileSize), chk.Equals, true)
+			},
 		})
 	c.Assert(err, chk.Equals, nil)
 	c.Assert(response.Response().StatusCode, chk.Equals, 201)
@@ -133,9 +133,9 @@ func performUploadAndDownloadFileTest(c *chk.C, fileSize, blockSize, parallelism
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
-			//Progress: func(bytesTransferred int64) {
-			//	c.Assert(bytesTransferred > 0 && bytesTransferred <= int64(fileSize), chk.Equals, true)
-			//},
+			Progress: func(bytesTransferred int64) {
+				c.Assert(bytesTransferred > 0 && bytesTransferred <= int64(fileSize), chk.Equals, true)
+			},
 		})
 
 	// Assert download was successful
@@ -238,9 +238,9 @@ func performUploadAndDownloadBufferTest(c *chk.C, blobSize, blockSize, paralleli
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
-			//Progress: func(bytesTransferred int64) {
-			//	c.Assert(bytesTransferred > 0 && bytesTransferred <= int64(blobSize), chk.Equals, true)
-			//},
+			Progress: func(bytesTransferred int64) {
+				c.Assert(bytesTransferred > 0 && bytesTransferred <= int64(blobSize), chk.Equals, true)
+			},
 		})
 	c.Assert(err, chk.Equals, nil)
 	c.Assert(response.Response().StatusCode, chk.Equals, 201)

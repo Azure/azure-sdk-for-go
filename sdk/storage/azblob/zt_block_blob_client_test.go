@@ -602,15 +602,14 @@ func (s *aztestsSuite) TestBlobPutBlobIfMatchFalse(c *chk.C) {
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
-	rsc := azcore.NopCloser(body)
 
-	ifNoneMatch := "garbage"
+	ifMatch := "garbage"
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
-			IfNoneMatch: &ifNoneMatch,
+			IfMatch: &ifMatch,
 		},
 	}
-	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
+	_, err = bbClient.Upload(ctx, body, &uploadBlockBlobOptions)
 	c.Assert(err, chk.NotNil)
 	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }

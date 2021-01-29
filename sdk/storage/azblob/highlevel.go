@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"io"
 	"net/http"
 	"sync"
@@ -42,7 +43,7 @@ type HighLevelUploadToBlockBlobOption struct {
 
 	// Progress is a function that is invoked periodically as bytes are sent to the BlockBlobClient.
 	// Note that the progress reporting is not always increasing; it can go down when retrying a request.
-	//Progress pipeline.ProgressReceiver
+	Progress azcore.ProgressReceiver
 
 	// BlobHTTPHeaders indicates the HTTP headers to be associated with the blob.
 	BlobHTTPHeaders *BlobHttpHeaders
@@ -66,6 +67,10 @@ type HighLevelUploadToBlockBlobOption struct {
 
 	// Parallelism indicates the maximum number of blocks to upload in parallel (0=default)
 	Parallelism uint16
+
+	TransactionalContentCrc64 *[]byte
+	// Specify the transactional md5 for the body, to be validated by the service.
+	TransactionalContentMd5 *[]byte
 }
 
 func (o HighLevelUploadToBlockBlobOption) getStageBlockOptions() *StageBlockOptions {
@@ -130,9 +135,9 @@ func uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSi
 	if readerSize <= BlockBlobMaxUploadBlobBytes {
 		// If the size can fit in 1 Upload call, do it this way
 		var body io.ReadSeeker = io.NewSectionReader(reader, 0, readerSize)
-		//if o.Progress != nil {
-		//	body = pipeline.NewRequestBodyProgress(body, o.Progress)
-		//}
+		if o.Progress != nil {
+			body = azcore.NewRequestBodyProgress(azcore.NopCloser(body), o.Progress)
+		}
 
 		uploadBlockBlobOptions := o.getUploadBlockBlobOptions()
 		return blockBlobClient.Upload(ctx, body, uploadBlockBlobOptions)
@@ -141,8 +146,8 @@ func uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSi
 	var numBlocks = uint16(((readerSize - 1) / o.BlockSize) + 1)
 
 	blockIDList := make([]string, numBlocks) // Base-64 encoded block IDs
-	//progress := int64(0)
-	//progressLock := &sync.Mutex{}
+	progress := int64(0)
+	progressLock := &sync.Mutex{}
 
 	err := DoBatchTransfer(ctx, BatchTransferOptions{
 		OperationName: "uploadReaderAtToBlockBlob",
@@ -155,18 +160,18 @@ func uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSi
 			// Prepare to read the proper block/section of the buffer
 			var body io.ReadSeeker = io.NewSectionReader(reader, offset, count)
 			blockNum := offset / o.BlockSize
-			//if o.Progress != nil {
-			//	blockProgress := int64(0)
-			//	body = pipeline.NewRequestBodyProgress(body,
-			//		func(bytesTransferred int64) {
-			//			diff := bytesTransferred - blockProgress
-			//			blockProgress = bytesTransferred
-			//			progressLock.Lock() // 1 goroutine at a time gets a progress report
-			//			progress += diff
-			//			o.Progress(progress)
-			//			progressLock.Unlock()
-			//		})
-			//}
+			if o.Progress != nil {
+				blockProgress := int64(0)
+				body = azcore.NewRequestBodyProgress(azcore.NopCloser(body),
+					func(bytesTransferred int64) {
+						diff := bytesTransferred - blockProgress
+						blockProgress = bytesTransferred
+						progressLock.Lock() // 1 goroutine at a time gets a progress report
+						progress += diff
+						o.Progress(progress)
+						progressLock.Unlock()
+					})
+			}
 
 			// Block IDs are unique values to avoid issue if 2+ clients are uploading blocks
 			// at the same time causing PutBlockList to get a mix of blocks from all the clients.
@@ -211,7 +216,7 @@ type HighLevelDownloadFromBlobOptions struct {
 	BlockSize int64
 
 	// Progress is a function that is invoked periodically as bytes are received.
-	//Progress pipeline.ProgressReceiver
+	Progress azcore.ProgressReceiver
 
 	// AccessConditions indicates the access conditions used when making HTTP GET requests against the blob.
 	ModifiedAccessConditions *ModifiedAccessConditions
@@ -275,8 +280,8 @@ func downloadBlobToWriterAt(ctx context.Context, blobClient BlobClient, offset i
 	}
 
 	// Prepare and do parallel download.
-	//progress := int64(0)
-	//progressLock := &sync.Mutex{}
+	progress := int64(0)
+	progressLock := &sync.Mutex{}
 
 	err := DoBatchTransfer(ctx, BatchTransferOptions{
 		OperationName: "downloadBlobToWriterAt",
@@ -291,19 +296,19 @@ func downloadBlobToWriterAt(ctx context.Context, blobClient BlobClient, offset i
 				return err
 			}
 			body := dr.Body(o.RetryReaderOptionsPerBlock)
-			//if o.Progress != nil {
-			//	rangeProgress := int64(0)
-			//	body = pipeline.NewResponseBodyProgress(
-			//		body,
-			//		func(bytesTransferred int64) {
-			//			diff := bytesTransferred - rangeProgress
-			//			rangeProgress = bytesTransferred
-			//			progressLock.Lock()
-			//			progress += diff
-			//			o.Progress(progress)
-			//			progressLock.Unlock()
-			//		})
-			//}
+			if o.Progress != nil {
+				rangeProgress := int64(0)
+				body = azcore.NewResponseBodyProgress(
+					body,
+					func(bytesTransferred int64) {
+						diff := bytesTransferred - rangeProgress
+						rangeProgress = bytesTransferred
+						progressLock.Lock()
+						progress += diff
+						o.Progress(progress)
+						progressLock.Unlock()
+					})
+			}
 			_, err = io.Copy(newSectionWriter(writer, chunkStart, count), body)
 			err = body.Close()
 			return err

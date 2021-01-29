@@ -21,8 +21,8 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-// PurviewService container service.
-type PurviewService struct {
+// Resource describes the Purview service.
+type Resource struct {
 	autorest.Response `json:"-"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`

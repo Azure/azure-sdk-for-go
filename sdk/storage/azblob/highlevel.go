@@ -67,8 +67,19 @@ type HighLevelUploadToBlockBlobOption struct {
 }
 
 func (o HighLevelUploadToBlockBlobOption) getStageBlockOptions() *StageBlockOptions {
-	return &StageBlockOptions{}
+	return &StageBlockOptions{
+		CpkInfo:               o.CpkInfo,
+		CpkScopeInfo:          o.CpkScopeInfo,
+		LeaseAccessConditions: o.LeaseAccessCondition,
+		//BlockBlobStageBlockOptions: &BlockBlobStageBlockOptions{
+		//	RequestId: nil,
+		//	Timeout: nil,
+		//	TransactionalContentMd5: nil,
+		//	TransactionalContentCrc64: nil,
+		//},
+	}
 }
+
 func (o HighLevelUploadToBlockBlobOption) getUploadBlockBlobOptions() *UploadBlockBlobOptions {
 	return &UploadBlockBlobOptions{
 		BlobTagsMap: o.BlobTagsMap,
@@ -212,7 +223,7 @@ type HighLevelDownloadFromBlobOptions struct {
 	Parallelism uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
-	RetryReaderOptionsPerBlock *RetryReaderOptions
+	RetryReaderOptionsPerBlock RetryReaderOptions
 }
 
 func (o *HighLevelDownloadFromBlobOptions) getBlobPropertiesOptions() *GetBlobPropertiesOptions {
@@ -223,7 +234,7 @@ func (o *HighLevelDownloadFromBlobOptions) getBlobPropertiesOptions() *GetBlobPr
 	}
 }
 
-func (o *HighLevelDownloadFromBlobOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMd5 bool) *DownloadBlobOptions {
+func (o *HighLevelDownloadFromBlobOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMd5 *bool) *DownloadBlobOptions {
 	return &DownloadBlobOptions{
 		LeaseAccessConditions:    o.LeaseAccessConditions,
 		ModifiedAccessConditions: o.ModifiedAccessConditions,
@@ -231,7 +242,7 @@ func (o *HighLevelDownloadFromBlobOptions) getDownloadBlobOptions(offSet, count 
 		CpkScopeInfo:             o.CpkScopeInfo,
 		Offset:                   &offSet,
 		Count:                    &count,
-		RangeGetContentMd5:       &rangeGetContentMd5,
+		RangeGetContentMd5:       rangeGetContentMd5,
 	}
 }
 
@@ -247,7 +258,7 @@ func downloadBlobToWriterAt(ctx context.Context, blobClient BlobClient, offset i
 			count = *(initialDownloadResponse.ContentLength()) - offset // if we have the length, use it
 		} else {
 			// If we don't have the length at all, get it
-			downloadBlobOptions := o.getDownloadBlobOptions(0, CountToEnd, false)
+			downloadBlobOptions := o.getDownloadBlobOptions(0, CountToEnd, nil)
 			dr, err := blobClient.Download(ctx, downloadBlobOptions)
 			if err != nil {
 				return err
@@ -272,12 +283,12 @@ func downloadBlobToWriterAt(ctx context.Context, blobClient BlobClient, offset i
 		Parallelism:   o.Parallelism,
 		Operation: func(chunkStart int64, count int64, ctx context.Context) error {
 
-			downloadBlobOptions := o.getDownloadBlobOptions(chunkStart+offset, count, false)
+			downloadBlobOptions := o.getDownloadBlobOptions(chunkStart+offset, count, nil)
 			dr, err := blobClient.Download(ctx, downloadBlobOptions)
 			if err != nil {
 				return err
 			}
-			body := dr.Body(*o.RetryReaderOptionsPerBlock)
+			body := dr.Body(o.RetryReaderOptionsPerBlock)
 			//if o.Progress != nil {
 			//	rangeProgress := int64(0)
 			//	body = pipeline.NewResponseBodyProgress(

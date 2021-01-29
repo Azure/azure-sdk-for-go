@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io"
 	"sync"
+	"sync/atomic"
 
 	guuid "github.com/google/uuid"
 )
@@ -29,7 +30,9 @@ type blockWriter interface {
 // choose a max value for the memory setting based on internal transfers within Azure (which will give us the maximum throughput model).
 // We can even provide a utility to dial this number in for customer networks to optimize their copies.
 func copyFromReader(ctx context.Context, from io.Reader, to blockWriter, o UploadStreamToBlockBlobOptions) (BlockBlobCommitBlockListResponse, error) {
-	o.defaults()
+	if err := o.defaults(); err != nil {
+		return BlockBlobCommitBlockListResponse{}, err
+	}
 
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
@@ -41,19 +44,7 @@ func copyFromReader(ctx context.Context, from io.Reader, to blockWriter, o Uploa
 		to:     to,
 		id:     newID(),
 		o:      o,
-		ch:     make(chan copierChunk, 1),
 		errCh:  make(chan error, 1),
-		buffers: sync.Pool{
-			New: func() interface{} {
-				return make([]byte, o.BufferSize)
-			},
-		},
-	}
-
-	// Starts the pools of concurrent writers.
-	cp.wg.Add(o.MaxBuffers)
-	for i := 0; i < o.MaxBuffers; i++ {
-		go cp.writer()
 	}
 
 	// Send all our chunks until we get an error.
@@ -89,8 +80,11 @@ type copier struct {
 	// to is the location we are writing our chunks to.
 	to blockWriter
 
+	// o contains our options for uploading.
+	o UploadStreamToBlockBlobOptions
+
+	// id provides the ids for each chunk.
 	id *id
-	o  UploadStreamToBlockBlobOptions
 
 	// num is the current chunk we are on.
 	num int32
@@ -100,8 +94,6 @@ type copier struct {
 	errCh chan error
 	// wg provides a count of how many writers we are waiting to finish.
 	wg sync.WaitGroup
-	// buffers provides a pool of chunks that can be reused.
-	buffers sync.Pool
 
 	// result holds the final result from blob storage after we have submitted all chunks.
 	result BlockBlobCommitBlockListResponse
@@ -130,26 +122,38 @@ func (c *copier) sendChunk() error {
 		return err
 	}
 
-	buffer := c.buffers.Get().([]byte)
+	buffer := c.o.TransferManager.Get()
+	if len(buffer) == 0 {
+		return fmt.Errorf("TransferManager returned a 0 size buffer, this is a bug in the manager")
+	}
+
 	n, err := io.ReadFull(c.reader, buffer)
 	switch {
 	case err == nil && n == 0:
 		return nil
 	case err == nil:
-		c.ch <- copierChunk{
-			buffer: buffer[0:n],
-			id:     c.id.next(),
-		}
+		id := c.id.next()
+		c.wg.Add(1)
+		c.o.TransferManager.Run(
+			func() {
+				defer c.wg.Done()
+				c.write(copierChunk{buffer: buffer[0:n], id: id})
+			},
+		)
 		return nil
 	case err != nil && (err == io.EOF || err == io.ErrUnexpectedEOF) && n == 0:
 		return io.EOF
 	}
 
 	if err == io.EOF || err == io.ErrUnexpectedEOF {
-		c.ch <- copierChunk{
-			buffer: buffer[0:n],
-			id:     c.id.next(),
-		}
+		id := c.id.next()
+		c.wg.Add(1)
+		c.o.TransferManager.Run(
+			func() {
+				defer c.wg.Done()
+				c.write(copierChunk{buffer: buffer[0:n], id: id})
+			},
+		)
 		return io.EOF
 	}
 	if err := c.getErr(); err != nil {
@@ -158,42 +162,24 @@ func (c *copier) sendChunk() error {
 	return err
 }
 
-// writer writes chunks sent on a channel.
-func (c *copier) writer() {
-	defer c.wg.Done()
-
-	for chunk := range c.ch {
-		if err := c.write(chunk); err != nil {
-			if !errors.Is(err, context.Canceled) {
-				select {
-				case c.errCh <- err:
-					c.cancel()
-				default:
-				}
-				return
-			}
-		}
-	}
-}
-
 // write uploads a chunk to blob storage.
-func (c *copier) write(chunk copierChunk) error {
-	defer c.buffers.Put(chunk.buffer)
+func (c *copier) write(chunk copierChunk) {
+	defer c.o.TransferManager.Put(chunk.buffer)
 
 	if err := c.ctx.Err(); err != nil {
-		return err
+		return
 	}
 	stageBlockOptions := c.o.getStageBlockOptions()
 	_, err := c.to.StageBlock(c.ctx, chunk.id, bytes.NewReader(chunk.buffer), stageBlockOptions)
 	if err != nil {
-		return fmt.Errorf("write error: %w", err)
+		c.errCh <- fmt.Errorf("write error: %w", err)
+		return
 	}
-	return nil
+	return
 }
 
 // close commits our blocks to blob storage and closes our writer.
 func (c *copier) close() error {
-	close(c.ch)
 	c.wg.Wait()
 
 	if err := c.getErr(); err != nil {
@@ -221,11 +207,11 @@ func newID() *id {
 	return &id{u: u}
 }
 
-// next returns the next ID.  This is not thread-safe.
+// next returns the next ID.
 func (id *id) next() string {
-	defer func() { id.num++ }()
+	defer atomic.AddUint32(&id.num, 1)
 
-	binary.BigEndian.PutUint32(id.u[len(guuid.UUID{}):], id.num)
+	binary.BigEndian.PutUint32((id.u[len(guuid.UUID{}):]), atomic.LoadUint32(&id.num))
 	str := base64.StdEncoding.EncodeToString(id.u[:])
 	id.all = append(id.all, str)
 

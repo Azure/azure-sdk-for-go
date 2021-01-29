@@ -79,8 +79,8 @@ func (o *SetAccessPolicyOptions) pointers() (ContainerSetAccessPolicyOptions, *L
 
 type AcquireLeaseOptionsContainer struct {
 	// At least Access and ContainerAcl must be specified
-	ContainerSetAccessPolicyOptions *ContainerAcquireLeaseOptions
-	ModifiedAccessConditions        *ModifiedAccessConditions
+	ContainerAcquireLeaseOptions *ContainerAcquireLeaseOptions
+	ModifiedAccessConditions     *ModifiedAccessConditions
 }
 
 type RenewLeaseOptionsContainer struct {

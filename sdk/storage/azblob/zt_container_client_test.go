@@ -867,7 +867,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessContainer(c *chk.C
 //	}}
 //
 //	setAccessPolicyOptions := SetAccessPolicyOptions{
-//		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
+//		ContainerAcquireLeaseOptions: ContainerAcquireLeaseOptions{
 //			ContainerAcl: &permissions,
 //		},
 //	}

@@ -81,5 +81,8 @@ func (s *aztestsSuite) TestBlobListWrapperListingError(c *chk.C) {
 		// there should be NO blob listings coming back. Just an error.
 		c.FailNow()
 	}
-	c.Assert(<-errs, chk.NotNil)
+
+	err = <-errs
+	c.Log(err.Error())
+	c.Assert(err, chk.NotNil)
 }

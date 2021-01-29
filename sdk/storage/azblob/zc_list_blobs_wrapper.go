@@ -9,7 +9,7 @@ type listBlobsFlatSegmentAutoPager struct {
 	pager   ListBlobsFlatSegmentResponsePager
 	channel chan BlobItemInternal
 	errChan chan error
-	ctx context.Context
+	ctx     context.Context
 
 	// Set to 0 for no time-out
 	timeout time.Duration
@@ -20,7 +20,7 @@ type listBlobsHierarchySegmentAutoPager struct {
 	pager   ListBlobsHierarchySegmentResponsePager
 	channel chan BlobItemInternal
 	errChan chan error
-	ctx context.Context
+	ctx     context.Context
 
 	// Set to 0 for no time-out
 	timeout time.Duration
@@ -56,7 +56,7 @@ func (p listBlobsFlatSegmentAutoPager) Go() {
 		if !p.pager.NextPage(p.ctx) {
 			err := p.pager.Err()
 			if err != nil {
-				p.errChan <- err
+				p.errChan <- handleError(err)
 			} else {
 				p.errChan <- nil
 			}
@@ -103,7 +103,7 @@ func (p listBlobsHierarchySegmentAutoPager) Go() {
 		if !p.pager.NextPage(p.ctx) {
 			err := p.pager.Err()
 			if err != nil {
-				p.errChan <- err
+				p.errChan <- handleError(err)
 			} else {
 				p.errChan <- nil
 			}

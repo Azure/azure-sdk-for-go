@@ -91,7 +91,9 @@ func appendToURLPath(u url.URL, name string) url.URL {
 }
 
 func (s ServiceClient) GetAccountInfo(ctx context.Context) (ServiceGetAccountInfoResponse, error) {
-	return s.client.GetAccountInfo(ctx, nil)
+	resp, err := s.client.GetAccountInfo(ctx, nil)
+
+	return resp, handleError(err)
 }
 
 //GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceClient object.
@@ -99,7 +101,7 @@ func (s ServiceClient) GetAccountInfo(ctx context.Context) (ServiceGetAccountInf
 func (s ServiceClient) GetUserDelegationCredential(ctx context.Context, info KeyInfo) (UserDelegationCredential, error) {
 	udk, err := s.client.GetUserDelegationKey(ctx, info, nil)
 	if err != nil {
-		return UserDelegationCredential{}, err
+		return UserDelegationCredential{}, handleError(err)
 	}
 	urlParts := NewBlobURLParts(s.URL())
 	return NewUserDelegationCredential(strings.Split(urlParts.Host, ".")[0], *udk.UserDelegationKey), nil
@@ -165,13 +167,19 @@ func (s ServiceClient) ListContainersSegment(ctx context.Context, AutoPagerBuffe
 }
 
 func (s ServiceClient) GetProperties(ctx context.Context) (StorageServicePropertiesResponse, error) {
-	return s.client.GetProperties(ctx, nil)
+	resp, err := s.client.GetProperties(ctx, nil)
+
+	return resp, handleError(err)
 }
 
 func (s ServiceClient) SetProperties(ctx context.Context, properties StorageServiceProperties) (ServiceSetPropertiesResponse, error) {
-	return s.client.SetProperties(ctx, properties, nil)
+	resp, err := s.client.SetProperties(ctx, properties, nil)
+
+	return resp, handleError(err)
 }
 
 func (s ServiceClient) GetStatistics(ctx context.Context) (StorageServiceStatsResponse, error) {
-	return s.client.GetStatistics(ctx, nil)
+	resp, err := s.client.GetStatistics(ctx, nil)
+
+	return resp, handleError(err)
 }

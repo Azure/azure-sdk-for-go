@@ -294,7 +294,7 @@ func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysTooLarge(c *chk.C) {
 	c.Assert(err, chk.NotNil)
 
 	// TODO the error should have more details, follow up with Joel
-	//validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
+	validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
 }
 
 func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(c *chk.C) {
@@ -306,5 +306,5 @@ func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(c *chk.C) {
 	c.Assert(err, chk.NotNil)
 
 	// TODO the error should have more details, follow up with Joel
-	//validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
+	validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
 }

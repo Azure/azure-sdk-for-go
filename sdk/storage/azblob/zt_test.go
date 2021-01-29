@@ -377,3 +377,8 @@ func blockIDIntToBase64(blockID int) string {
 	binary.LittleEndian.PutUint32(binaryBlockID, uint32(blockID))
 	return base64.StdEncoding.EncodeToString(binaryBlockID)
 }
+
+func validateStorageError(c *chk.C, err error, code ServiceCodeType) {
+	storageError, _ := err.(*StorageError)
+	c.Assert(storageError.ServiceCode(), chk.Equals, code)
+}

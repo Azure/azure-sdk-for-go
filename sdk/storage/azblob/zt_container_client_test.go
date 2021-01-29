@@ -55,9 +55,7 @@ func (s *aztestsSuite) TestContainerCreateInvalidName(c *chk.C) {
 	}
 	_, err := containerClient.Create(ctx, &createContainerOptions)
 	c.Assert(err, chk.NotNil)
-
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeInvalidResourceName)
+	validateStorageError(c, err, ServiceCodeInvalidResourceName)
 }
 
 func (s *aztestsSuite) TestContainerCreateEmptyName(c *chk.C) {
@@ -72,8 +70,7 @@ func (s *aztestsSuite) TestContainerCreateEmptyName(c *chk.C) {
 	_, err := containerClient.Create(ctx, &createContainerOptions)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeInvalidQueryParameterValue)
+	validateStorageError(c, err, ServiceCodeInvalidQueryParameterValue)
 }
 
 func (s *aztestsSuite) TestContainerCreateNameCollision(c *chk.C) {
@@ -91,8 +88,7 @@ func (s *aztestsSuite) TestContainerCreateNameCollision(c *chk.C) {
 	_, err := containerClient.Create(ctx, &createContainerOptions)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeContainerAlreadyExists)
+	validateStorageError(c, err, ServiceCodeContainerAlreadyExists)
 }
 
 func (s *aztestsSuite) TestContainerCreateInvalidMetadata(c *chk.C) {
@@ -212,7 +208,7 @@ func (s *aztestsSuite) TestContainerCreateAccessBlob(c *chk.C) {
 	_, errChan := containerClient2.ListBlobsFlatSegment(ctx, 3, 0, nil)
 	for err := range errChan {
 		c.Assert(err, chk.NotNil)
-		// TODO: Fix issue with storage error interface
+
 		// validateStorageError(c, err, ServiceCodeNoAuthenticationInformation) // Listing blobs is not publicly accessible
 	}
 
@@ -245,7 +241,7 @@ func (s *aztestsSuite) TestContainerCreateAccessNone(c *chk.C) {
 	_, errChan := containerClient2.ListBlobsFlatSegment(ctx, 3, 0, nil)
 	for err := range errChan {
 		c.Assert(err, chk.NotNil)
-		// TODO: Fix issue with storage error interface
+
 		// validateStorageError(c, err, ServiceCodeNoAuthenticationInformation) // Listing blobs is not publicly accessible
 	}
 
@@ -253,7 +249,7 @@ func (s *aztestsSuite) TestContainerCreateAccessNone(c *chk.C) {
 	blobURL2 := containerClient2.NewBlockBlobClient(blobPrefix)
 	_, err = blobURL2.GetProperties(ctx, nil)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
+
 	//serr := err.(StorageError)
 	//c.Assert(serr.Response().StatusCode, chk.Equals, 401) // HEAD request does not return a status code
 }
@@ -261,8 +257,8 @@ func (s *aztestsSuite) TestContainerCreateAccessNone(c *chk.C) {
 func validateContainerDeleted(c *chk.C, containerClient ContainerClient) {
 	_, err := containerClient.GetAccessPolicy(ctx, nil)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeContainerNotFound)
+
+	validateStorageError(c, err, ServiceCodeContainerNotFound)
 }
 
 func (s *aztestsSuite) TestContainerDelete(c *chk.C) {
@@ -281,8 +277,8 @@ func (s *aztestsSuite) TestContainerDeleteNonExistent(c *chk.C) {
 
 	_, err := containerClient.Delete(ctx, nil)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeContainerNotFound)
+
+	validateStorageError(c, err, ServiceCodeContainerNotFound)
 }
 
 func (s *aztestsSuite) TestContainerDeleteIfModifiedSinceTrue(c *chk.C) {
@@ -315,8 +311,8 @@ func (s *aztestsSuite) TestContainerDeleteIfModifiedSinceFalse(c *chk.C) {
 	}
 	_, err := containerClient.Delete(ctx, &deleteContainerOptions)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceTrue(c *chk.C) {
@@ -351,8 +347,8 @@ func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceFalse(c *chk.C) {
 	}
 	_, err := containerClient.Delete(ctx, &deleteContainerOptions)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 //func (s *aztestsSuite) TestContainerAccessConditionsUnsupportedConditions(c *chk.C) {
@@ -794,11 +790,12 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessNone(c *chk.C) {
 	_, err = blobURL2.Download(ctx, nil)
 
 	// Get permissions via the original container URL so the request succeeds
-	resp, _ := containerClient.GetAccessPolicy(ctx, nil)
+	resp, err := containerClient.GetAccessPolicy(ctx, nil)
 	c.Assert(resp.BlobPublicAccess, chk.IsNil)
+	c.Assert(err, chk.NotNil)
 	// If we cannot access a blob's data, we will also not be able to enumerate blobs
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeNoAuthenticationInformation)
+
+	validateStorageError(c, err, ServiceCodeNoAuthenticationInformation)
 
 }
 
@@ -929,8 +926,8 @@ func (s *aztestsSuite) TestContainerSetPermissionsACLMoreThanFive(c *chk.C) {
 	}
 	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
+
+	validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
 }
 
 func (s *aztestsSuite) TestContainerSetPermissionsDeleteAndModifyACL(c *chk.C) {
@@ -1115,8 +1112,8 @@ func (s *aztestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong(c *chk
 	}
 	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
+
+	validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
 }
 
 func (s *aztestsSuite) TestContainerSetPermissionsIfModifiedSinceTrue(c *chk.C) {
@@ -1154,8 +1151,8 @@ func (s *aztestsSuite) TestContainerSetPermissionsIfModifiedSinceFalse(c *chk.C)
 	}
 	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestContainerSetPermissionsIfUnModifiedSinceTrue(c *chk.C) {
@@ -1194,8 +1191,8 @@ func (s *aztestsSuite) TestContainerSetPermissionsIfUnModifiedSinceFalse(c *chk.
 	}
 	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestContainerGetPropertiesAndMetadataNoMetadata(c *chk.C) {
@@ -1215,8 +1212,8 @@ func (s *aztestsSuite) TestContainerGetPropsAndMetaNonExistentContainer(c *chk.C
 
 	_, err := containerClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeContainerNotFound)
+
+	validateStorageError(c, err, ServiceCodeContainerNotFound)
 }
 
 func (s *aztestsSuite) TestContainerSetMetadataEmpty(c *chk.C) {
@@ -1283,8 +1280,8 @@ func (*aztestsSuite) TestContainerSetMetadataNonExistent(c *chk.C) {
 
 	_, err := containerClient.SetMetadata(ctx, nil)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeContainerNotFound)
+
+	validateStorageError(c, err, ServiceCodeContainerNotFound)
 }
 
 func (s *aztestsSuite) TestContainerSetMetadataIfModifiedSinceTrue(c *chk.C) {
@@ -1326,8 +1323,8 @@ func (s *aztestsSuite) TestContainerSetMetadataIfModifiedSinceFalse(c *chk.C) {
 	}
 	_, err := containerClient.SetMetadata(ctx, &setMetadataContainerOptions)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestContainerNewBlobURL(c *chk.C) {

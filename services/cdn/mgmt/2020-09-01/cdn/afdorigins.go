@@ -32,14 +32,14 @@ type AFDOriginsClient struct {
 }
 
 // NewAFDOriginsClient creates an instance of the AFDOriginsClient client.
-func NewAFDOriginsClient(subscriptionID string, subscriptionID1 string) AFDOriginsClient {
-	return NewAFDOriginsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewAFDOriginsClient(subscriptionID string) AFDOriginsClient {
+	return NewAFDOriginsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewAFDOriginsClientWithBaseURI creates an instance of the AFDOriginsClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewAFDOriginsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) AFDOriginsClient {
-	return AFDOriginsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewAFDOriginsClientWithBaseURI(baseURI string, subscriptionID string) AFDOriginsClient {
+	return AFDOriginsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create creates a new origin within the specified origin group.
@@ -167,7 +167,7 @@ func (client AFDOriginsClient) CreateSender(req *http.Request) (future AFDOrigin
 func (client AFDOriginsClient) CreateResponder(resp *http.Response) (result AFDOrigin, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -270,7 +270,7 @@ func (client AFDOriginsClient) DeleteSender(req *http.Request) (future AFDOrigin
 func (client AFDOriginsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return

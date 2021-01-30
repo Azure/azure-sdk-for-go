@@ -32,15 +32,15 @@ type SecurityPoliciesClient struct {
 }
 
 // NewSecurityPoliciesClient creates an instance of the SecurityPoliciesClient client.
-func NewSecurityPoliciesClient(subscriptionID string, subscriptionID1 string) SecurityPoliciesClient {
-	return NewSecurityPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewSecurityPoliciesClient(subscriptionID string) SecurityPoliciesClient {
+	return NewSecurityPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewSecurityPoliciesClientWithBaseURI creates an instance of the SecurityPoliciesClient client using a custom
 // endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
 // stack).
-func NewSecurityPoliciesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) SecurityPoliciesClient {
-	return SecurityPoliciesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewSecurityPoliciesClientWithBaseURI(baseURI string, subscriptionID string) SecurityPoliciesClient {
+	return SecurityPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create creates a new security policy within the specified profile.
@@ -146,7 +146,7 @@ func (client SecurityPoliciesClient) CreateSender(req *http.Request) (future Sec
 func (client SecurityPoliciesClient) CreateResponder(resp *http.Response) (result SecurityPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -247,7 +247,7 @@ func (client SecurityPoliciesClient) DeleteSender(req *http.Request) (future Sec
 func (client SecurityPoliciesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -470,8 +470,8 @@ func (client SecurityPoliciesClient) ListByProfileComplete(ctx context.Context, 
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the CDN profile which is unique within the resource group.
 // securityPolicyName - name of the security policy under the profile.
-// securityPolicyParameters - security policy update properties
-func (client SecurityPoliciesClient) Patch(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicyParameters SecurityPolicyWebApplicationFirewallParameters) (result SecurityPoliciesPatchFuture, err error) {
+// securityPolicyProperties - security policy update properties
+func (client SecurityPoliciesClient) Patch(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicyProperties SecurityPolicyProperties) (result SecurityPoliciesPatchFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SecurityPoliciesClient.Patch")
 		defer func() {
@@ -490,7 +490,7 @@ func (client SecurityPoliciesClient) Patch(ctx context.Context, resourceGroupNam
 		return result, validation.NewError("cdn.SecurityPoliciesClient", "Patch", err.Error())
 	}
 
-	req, err := client.PatchPreparer(ctx, resourceGroupName, profileName, securityPolicyName, securityPolicyParameters)
+	req, err := client.PatchPreparer(ctx, resourceGroupName, profileName, securityPolicyName, securityPolicyProperties)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.SecurityPoliciesClient", "Patch", nil, "Failure preparing request")
 		return
@@ -506,7 +506,7 @@ func (client SecurityPoliciesClient) Patch(ctx context.Context, resourceGroupNam
 }
 
 // PatchPreparer prepares the Patch request.
-func (client SecurityPoliciesClient) PatchPreparer(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicyParameters SecurityPolicyWebApplicationFirewallParameters) (*http.Request, error) {
+func (client SecurityPoliciesClient) PatchPreparer(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicyProperties SecurityPolicyProperties) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":        autorest.Encode("path", profileName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
@@ -524,7 +524,7 @@ func (client SecurityPoliciesClient) PatchPreparer(ctx context.Context, resource
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/securityPolicies/{securityPolicyName}", pathParameters),
-		autorest.WithJSON(securityPolicyParameters),
+		autorest.WithJSON(securityPolicyProperties),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

@@ -32,14 +32,14 @@ type RuleSetsClient struct {
 }
 
 // NewRuleSetsClient creates an instance of the RuleSetsClient client.
-func NewRuleSetsClient(subscriptionID string, subscriptionID1 string) RuleSetsClient {
-	return NewRuleSetsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewRuleSetsClient(subscriptionID string) RuleSetsClient {
+	return NewRuleSetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewRuleSetsClientWithBaseURI creates an instance of the RuleSetsClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewRuleSetsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) RuleSetsClient {
-	return RuleSetsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewRuleSetsClientWithBaseURI(baseURI string, subscriptionID string) RuleSetsClient {
+	return RuleSetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create creates a new rule set within the specified profile.
@@ -145,7 +145,7 @@ func (client RuleSetsClient) CreateSender(req *http.Request) (future RuleSetsCre
 func (client RuleSetsClient) CreateResponder(resp *http.Response) (result RuleSet, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

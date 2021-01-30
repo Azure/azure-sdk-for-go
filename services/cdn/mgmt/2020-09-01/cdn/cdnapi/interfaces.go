@@ -239,7 +239,7 @@ type SecurityPoliciesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string) (result cdn.SecurityPolicy, err error)
 	ListByProfile(ctx context.Context, resourceGroupName string, profileName string) (result cdn.SecurityPolicyListResultPage, err error)
 	ListByProfileComplete(ctx context.Context, resourceGroupName string, profileName string) (result cdn.SecurityPolicyListResultIterator, err error)
-	Patch(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicyParameters cdn.SecurityPolicyWebApplicationFirewallParameters) (result cdn.SecurityPoliciesPatchFuture, err error)
+	Patch(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicyProperties cdn.SecurityPolicyProperties) (result cdn.SecurityPoliciesPatchFuture, err error)
 }
 
 var _ SecurityPoliciesClientAPI = (*cdn.SecurityPoliciesClient)(nil)
@@ -267,10 +267,10 @@ var _ ValidateClientAPI = (*cdn.ValidateClient)(nil)
 type LogAnalyticsClientAPI interface {
 	GetLogAnalyticsLocations(ctx context.Context, resourceGroupName string, profileName string) (result cdn.ContinentsResponse, err error)
 	GetLogAnalyticsMetrics(ctx context.Context, resourceGroupName string, profileName string, metrics []string, dateTimeBegin date.Time, dateTimeEnd date.Time, granularity string, groupBy []string, continents []string, countryOrRegions []string, customDomains []string, protocols []string) (result cdn.MetricsResponse, err error)
-	GetLogAnalyticsRankings(ctx context.Context, resourceGroupName string, profileName string, rankings []string, metrics []string, maxRanking float64, dateTimeBegin date.Time, dateTimeEnd date.Time, customDomains []string) (result cdn.RankingsResponse, err error)
+	GetLogAnalyticsRankings(ctx context.Context, resourceGroupName string, profileName string, rankings []string, metrics []string, maxRanking int32, dateTimeBegin date.Time, dateTimeEnd date.Time, customDomains []string) (result cdn.RankingsResponse, err error)
 	GetLogAnalyticsResources(ctx context.Context, resourceGroupName string, profileName string) (result cdn.ResourcesResponse, err error)
 	GetWafLogAnalyticsMetrics(ctx context.Context, resourceGroupName string, profileName string, metrics []string, dateTimeBegin date.Time, dateTimeEnd date.Time, granularity string, actions []string, groupBy []string, ruleTypes []string) (result cdn.WafMetricsResponse, err error)
-	GetWafLogAnalyticsRankings(ctx context.Context, resourceGroupName string, profileName string, metrics []string, dateTimeBegin date.Time, dateTimeEnd date.Time, maxRanking float64, rankings []string, actions []string, ruleTypes []string) (result cdn.WafRankingsResponse, err error)
+	GetWafLogAnalyticsRankings(ctx context.Context, resourceGroupName string, profileName string, metrics []string, dateTimeBegin date.Time, dateTimeEnd date.Time, maxRanking int32, rankings []string, actions []string, ruleTypes []string) (result cdn.WafRankingsResponse, err error)
 }
 
 var _ LogAnalyticsClientAPI = (*cdn.LogAnalyticsClient)(nil)

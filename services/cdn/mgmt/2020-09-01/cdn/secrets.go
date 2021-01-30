@@ -32,14 +32,14 @@ type SecretsClient struct {
 }
 
 // NewSecretsClient creates an instance of the SecretsClient client.
-func NewSecretsClient(subscriptionID string, subscriptionID1 string) SecretsClient {
-	return NewSecretsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewSecretsClient(subscriptionID string) SecretsClient {
+	return NewSecretsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewSecretsClientWithBaseURI creates an instance of the SecretsClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewSecretsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) SecretsClient {
-	return SecretsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewSecretsClientWithBaseURI(baseURI string, subscriptionID string) SecretsClient {
+	return SecretsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create creates a new Secret within the specified profile.
@@ -145,7 +145,7 @@ func (client SecretsClient) CreateSender(req *http.Request) (future SecretsCreat
 func (client SecretsClient) CreateResponder(resp *http.Response) (result Secret, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -246,7 +246,7 @@ func (client SecretsClient) DeleteSender(req *http.Request) (future SecretsDelet
 func (client SecretsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return

@@ -2175,14 +2175,6 @@ type CustomerCertificate struct {
 
 // CustomerCertificateParameters customer Certificate used for https
 type CustomerCertificateParameters struct {
-	// Type - The type of the Secret to create. Possible values include: 'SecretTypeURLSigningKey', 'SecretTypeCustomerCertificate', 'SecretTypeManagedCertificate'
-	Type SecretType `json:"type,omitempty"`
-	// Subject - Subject name in the certificate.
-	Subject *string `json:"subject,omitempty"`
-	// ExpirationDate - Certificate expiration date.
-	ExpirationDate *string `json:"expirationDate,omitempty"`
-	// Thumbprint - Certificate thumbprint.
-	Thumbprint *string `json:"thumbprint,omitempty"`
 	// SecretSource - Resource reference to the KV secret
 	SecretSource *ResourceReference `json:"secretSource,omitempty"`
 	// SecretVersion - Version of the secret to be used
@@ -2193,6 +2185,58 @@ type CustomerCertificateParameters struct {
 	UseLatestVersion *bool `json:"useLatestVersion,omitempty"`
 	// SubjectAlternativeNames - The list of SANs.
 	SubjectAlternativeNames *[]string `json:"subjectAlternativeNames,omitempty"`
+	// Type - Possible values include: 'TypeSecretParameters', 'TypeURLSigningKey', 'TypeManagedCertificate', 'TypeCustomerCertificate'
+	Type TypeBasicSecretParameters `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomerCertificateParameters.
+func (ccp CustomerCertificateParameters) MarshalJSON() ([]byte, error) {
+	ccp.Type = TypeCustomerCertificate
+	objectMap := make(map[string]interface{})
+	if ccp.SecretSource != nil {
+		objectMap["secretSource"] = ccp.SecretSource
+	}
+	if ccp.SecretVersion != nil {
+		objectMap["secretVersion"] = ccp.SecretVersion
+	}
+	if ccp.CertificateAuthority != nil {
+		objectMap["certificateAuthority"] = ccp.CertificateAuthority
+	}
+	if ccp.UseLatestVersion != nil {
+		objectMap["useLatestVersion"] = ccp.UseLatestVersion
+	}
+	if ccp.SubjectAlternativeNames != nil {
+		objectMap["subjectAlternativeNames"] = ccp.SubjectAlternativeNames
+	}
+	if ccp.Type != "" {
+		objectMap["type"] = ccp.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsURLSigningKeyParameters is the BasicSecretParameters implementation for CustomerCertificateParameters.
+func (ccp CustomerCertificateParameters) AsURLSigningKeyParameters() (*URLSigningKeyParameters, bool) {
+	return nil, false
+}
+
+// AsManagedCertificateParameters is the BasicSecretParameters implementation for CustomerCertificateParameters.
+func (ccp CustomerCertificateParameters) AsManagedCertificateParameters() (*ManagedCertificateParameters, bool) {
+	return nil, false
+}
+
+// AsCustomerCertificateParameters is the BasicSecretParameters implementation for CustomerCertificateParameters.
+func (ccp CustomerCertificateParameters) AsCustomerCertificateParameters() (*CustomerCertificateParameters, bool) {
+	return &ccp, true
+}
+
+// AsSecretParameters is the BasicSecretParameters implementation for CustomerCertificateParameters.
+func (ccp CustomerCertificateParameters) AsSecretParameters() (*SecretParameters, bool) {
+	return nil, false
+}
+
+// AsBasicSecretParameters is the BasicSecretParameters implementation for CustomerCertificateParameters.
+func (ccp CustomerCertificateParameters) AsBasicSecretParameters() (BasicSecretParameters, bool) {
+	return &ccp, true
 }
 
 // CustomRule defines the common attributes for a custom rule that can be included in a waf policy
@@ -5311,7 +5355,7 @@ type HeaderActionParameters struct {
 type HealthProbeParameters struct {
 	// ProbePath - The path relative to the origin that is used to determine the health of the origin.
 	ProbePath *string `json:"probePath,omitempty"`
-	// ProbeRequestType - The type of health probe request that is made. Possible values include: 'NotSet', 'GET', 'HEAD'
+	// ProbeRequestType - The type of health probe request that is made. Possible values include: 'HealthProbeRequestTypeNotSet', 'HealthProbeRequestTypeGET', 'HealthProbeRequestTypeHEAD'
 	ProbeRequestType HealthProbeRequestType `json:"probeRequestType,omitempty"`
 	// ProbeProtocol - Protocol to use for health probe. Possible values include: 'ProbeProtocolNotSet', 'ProbeProtocolHTTP', 'ProbeProtocolHTTPS'
 	ProbeProtocol ProbeProtocol `json:"probeProtocol,omitempty"`
@@ -5424,14 +5468,43 @@ type ManagedCertificate struct {
 
 // ManagedCertificateParameters managed Certificate used for https
 type ManagedCertificateParameters struct {
-	// Type - The type of the Secret to create. Possible values include: 'SecretTypeURLSigningKey', 'SecretTypeCustomerCertificate', 'SecretTypeManagedCertificate'
-	Type SecretType `json:"type,omitempty"`
-	// Subject - Subject name in the certificate.
-	Subject *string `json:"subject,omitempty"`
-	// ExpirationDate - Certificate expiration date.
-	ExpirationDate *string `json:"expirationDate,omitempty"`
-	// Thumbprint - Certificate thumbprint.
-	Thumbprint *string `json:"thumbprint,omitempty"`
+	// Type - Possible values include: 'TypeSecretParameters', 'TypeURLSigningKey', 'TypeManagedCertificate', 'TypeCustomerCertificate'
+	Type TypeBasicSecretParameters `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedCertificateParameters.
+func (mcp ManagedCertificateParameters) MarshalJSON() ([]byte, error) {
+	mcp.Type = TypeManagedCertificate
+	objectMap := make(map[string]interface{})
+	if mcp.Type != "" {
+		objectMap["type"] = mcp.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsURLSigningKeyParameters is the BasicSecretParameters implementation for ManagedCertificateParameters.
+func (mcp ManagedCertificateParameters) AsURLSigningKeyParameters() (*URLSigningKeyParameters, bool) {
+	return nil, false
+}
+
+// AsManagedCertificateParameters is the BasicSecretParameters implementation for ManagedCertificateParameters.
+func (mcp ManagedCertificateParameters) AsManagedCertificateParameters() (*ManagedCertificateParameters, bool) {
+	return &mcp, true
+}
+
+// AsCustomerCertificateParameters is the BasicSecretParameters implementation for ManagedCertificateParameters.
+func (mcp ManagedCertificateParameters) AsCustomerCertificateParameters() (*CustomerCertificateParameters, bool) {
+	return nil, false
+}
+
+// AsSecretParameters is the BasicSecretParameters implementation for ManagedCertificateParameters.
+func (mcp ManagedCertificateParameters) AsSecretParameters() (*SecretParameters, bool) {
+	return nil, false
+}
+
+// AsBasicSecretParameters is the BasicSecretParameters implementation for ManagedCertificateParameters.
+func (mcp ManagedCertificateParameters) AsBasicSecretParameters() (BasicSecretParameters, bool) {
+	return &mcp, true
 }
 
 // ManagedHTTPSParameters defines the certificate source parameters using CDN managed certificate for
@@ -7967,10 +8040,8 @@ type RouteProperties struct {
 	PatternsToMatch *[]string `json:"patternsToMatch,omitempty"`
 	// CompressionSettings - compression settings.
 	CompressionSettings interface{} `json:"compressionSettings,omitempty"`
-	// QueryStringCachingBehavior - Defines how AzureFrontDoor caches requests that include query strings. You can ignore any query strings when caching, bypass caching to prevent requests that contain query strings from being cached, or cache every request with a unique URL. Possible values include: 'QueryStringCachingBehaviorIgnoreQueryString', 'QueryStringCachingBehaviorBypassCaching', 'QueryStringCachingBehaviorUseQueryString', 'QueryStringCachingBehaviorNotSet'
-	QueryStringCachingBehavior QueryStringCachingBehavior `json:"queryStringCachingBehavior,omitempty"`
-	// OptimizationType - Specifies what scenario the customer wants this AzureFrontDoor endpoint to optimize for, e.g. Download, Media services. With this information, AzureFrontDoor can apply scenario driven optimization. Possible values include: 'GeneralWebDelivery', 'GeneralMediaStreaming', 'VideoOnDemandMediaStreaming', 'LargeFileDownload', 'DynamicSiteAcceleration'
-	OptimizationType OptimizationType `json:"optimizationType,omitempty"`
+	// QueryStringCachingBehavior - Defines how CDN caches requests that include query strings. You can ignore any query strings when caching, bypass caching to prevent requests that contain query strings from being cached, or cache every request with a unique URL. Possible values include: 'IgnoreQueryString', 'UseQueryString', 'NotSet'
+	QueryStringCachingBehavior AfdQueryStringCachingBehavior `json:"queryStringCachingBehavior,omitempty"`
 	// ForwardingProtocol - Protocol this rule will use when forwarding traffic to backends. Possible values include: 'HTTPOnly', 'HTTPSOnly', 'MatchRequest'
 	ForwardingProtocol ForwardingProtocol `json:"forwardingProtocol,omitempty"`
 	// LinkToDefaultDomain - whether this route will be linked to the default endpoint domain. Possible values include: 'LinkToDefaultDomainEnabled', 'LinkToDefaultDomainDisabled'
@@ -8011,9 +8082,6 @@ func (rp RouteProperties) MarshalJSON() ([]byte, error) {
 	}
 	if rp.QueryStringCachingBehavior != "" {
 		objectMap["queryStringCachingBehavior"] = rp.QueryStringCachingBehavior
-	}
-	if rp.OptimizationType != "" {
-		objectMap["optimizationType"] = rp.OptimizationType
 	}
 	if rp.ForwardingProtocol != "" {
 		objectMap["forwardingProtocol"] = rp.ForwardingProtocol
@@ -8108,10 +8176,8 @@ type RouteUpdatePropertiesParameters struct {
 	PatternsToMatch *[]string `json:"patternsToMatch,omitempty"`
 	// CompressionSettings - compression settings.
 	CompressionSettings interface{} `json:"compressionSettings,omitempty"`
-	// QueryStringCachingBehavior - Defines how AzureFrontDoor caches requests that include query strings. You can ignore any query strings when caching, bypass caching to prevent requests that contain query strings from being cached, or cache every request with a unique URL. Possible values include: 'QueryStringCachingBehaviorIgnoreQueryString', 'QueryStringCachingBehaviorBypassCaching', 'QueryStringCachingBehaviorUseQueryString', 'QueryStringCachingBehaviorNotSet'
-	QueryStringCachingBehavior QueryStringCachingBehavior `json:"queryStringCachingBehavior,omitempty"`
-	// OptimizationType - Specifies what scenario the customer wants this AzureFrontDoor endpoint to optimize for, e.g. Download, Media services. With this information, AzureFrontDoor can apply scenario driven optimization. Possible values include: 'GeneralWebDelivery', 'GeneralMediaStreaming', 'VideoOnDemandMediaStreaming', 'LargeFileDownload', 'DynamicSiteAcceleration'
-	OptimizationType OptimizationType `json:"optimizationType,omitempty"`
+	// QueryStringCachingBehavior - Defines how CDN caches requests that include query strings. You can ignore any query strings when caching, bypass caching to prevent requests that contain query strings from being cached, or cache every request with a unique URL. Possible values include: 'IgnoreQueryString', 'UseQueryString', 'NotSet'
+	QueryStringCachingBehavior AfdQueryStringCachingBehavior `json:"queryStringCachingBehavior,omitempty"`
 	// ForwardingProtocol - Protocol this rule will use when forwarding traffic to backends. Possible values include: 'HTTPOnly', 'HTTPSOnly', 'MatchRequest'
 	ForwardingProtocol ForwardingProtocol `json:"forwardingProtocol,omitempty"`
 	// LinkToDefaultDomain - whether this route will be linked to the default endpoint domain. Possible values include: 'LinkToDefaultDomainEnabled', 'LinkToDefaultDomainDisabled'
@@ -9131,12 +9197,14 @@ func NewSecretListResultPage(cur SecretListResult, getNextPage func(context.Cont
 // BasicSecretParameters the json object containing secret parameters
 type BasicSecretParameters interface {
 	AsURLSigningKeyParameters() (*URLSigningKeyParameters, bool)
+	AsManagedCertificateParameters() (*ManagedCertificateParameters, bool)
+	AsCustomerCertificateParameters() (*CustomerCertificateParameters, bool)
 	AsSecretParameters() (*SecretParameters, bool)
 }
 
 // SecretParameters the json object containing secret parameters
 type SecretParameters struct {
-	// Type - Possible values include: 'TypeSecretParameters', 'TypeURLSigningKey'
+	// Type - Possible values include: 'TypeSecretParameters', 'TypeURLSigningKey', 'TypeManagedCertificate', 'TypeCustomerCertificate'
 	Type TypeBasicSecretParameters `json:"type,omitempty"`
 }
 
@@ -9152,6 +9220,14 @@ func unmarshalBasicSecretParameters(body []byte) (BasicSecretParameters, error) 
 		var uskp URLSigningKeyParameters
 		err := json.Unmarshal(body, &uskp)
 		return uskp, err
+	case string(TypeManagedCertificate):
+		var mcp ManagedCertificateParameters
+		err := json.Unmarshal(body, &mcp)
+		return mcp, err
+	case string(TypeCustomerCertificate):
+		var ccp CustomerCertificateParameters
+		err := json.Unmarshal(body, &ccp)
+		return ccp, err
 	default:
 		var sp SecretParameters
 		err := json.Unmarshal(body, &sp)
@@ -9189,6 +9265,16 @@ func (sp SecretParameters) MarshalJSON() ([]byte, error) {
 
 // AsURLSigningKeyParameters is the BasicSecretParameters implementation for SecretParameters.
 func (sp SecretParameters) AsURLSigningKeyParameters() (*URLSigningKeyParameters, bool) {
+	return nil, false
+}
+
+// AsManagedCertificateParameters is the BasicSecretParameters implementation for SecretParameters.
+func (sp SecretParameters) AsManagedCertificateParameters() (*ManagedCertificateParameters, bool) {
+	return nil, false
+}
+
+// AsCustomerCertificateParameters is the BasicSecretParameters implementation for SecretParameters.
+func (sp SecretParameters) AsCustomerCertificateParameters() (*CustomerCertificateParameters, bool) {
 	return nil, false
 }
 
@@ -9643,7 +9729,7 @@ func (spp SecurityPolicyParameters) AsBasicSecurityPolicyParameters() (BasicSecu
 // SecurityPolicyProperties the json object that contains properties required to create a security policy
 type SecurityPolicyProperties struct {
 	// Parameters - object which contains security policy parameters
-	Parameters *SecurityPolicyWebApplicationFirewallParameters `json:"parameters,omitempty"`
+	Parameters BasicSecurityPolicyParameters `json:"parameters,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning status. Possible values include: 'Succeeded', 'Failed', 'Updating', 'Deleting', 'Creating'
 	ProvisioningState AfdProvisioningState `json:"provisioningState,omitempty"`
 	// DeploymentStatus - READ-ONLY; Possible values include: 'DeploymentStatusNotStarted', 'DeploymentStatusInProgress', 'DeploymentStatusSucceeded', 'DeploymentStatusFailed'
@@ -9653,10 +9739,49 @@ type SecurityPolicyProperties struct {
 // MarshalJSON is the custom marshaler for SecurityPolicyProperties.
 func (spp SecurityPolicyProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if spp.Parameters != nil {
-		objectMap["parameters"] = spp.Parameters
-	}
+	objectMap["parameters"] = spp.Parameters
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SecurityPolicyProperties struct.
+func (spp *SecurityPolicyProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "parameters":
+			if v != nil {
+				parameters, err := unmarshalBasicSecurityPolicyParameters(*v)
+				if err != nil {
+					return err
+				}
+				spp.Parameters = parameters
+			}
+		case "provisioningState":
+			if v != nil {
+				var provisioningState AfdProvisioningState
+				err = json.Unmarshal(*v, &provisioningState)
+				if err != nil {
+					return err
+				}
+				spp.ProvisioningState = provisioningState
+			}
+		case "deploymentStatus":
+			if v != nil {
+				var deploymentStatus DeploymentStatus
+				err = json.Unmarshal(*v, &deploymentStatus)
+				if err != nil {
+					return err
+				}
+				spp.DeploymentStatus = deploymentStatus
+			}
+		}
+	}
+
+	return nil
 }
 
 // SecurityPolicyWebApplicationFirewallAssociation settings for security policy patterns to match
@@ -10092,7 +10217,7 @@ type URLSigningKeyParameters struct {
 	SecretSource *ResourceReference `json:"secretSource,omitempty"`
 	// SecretVersion - Version of the secret to be used
 	SecretVersion *string `json:"secretVersion,omitempty"`
-	// Type - Possible values include: 'TypeSecretParameters', 'TypeURLSigningKey'
+	// Type - Possible values include: 'TypeSecretParameters', 'TypeURLSigningKey', 'TypeManagedCertificate', 'TypeCustomerCertificate'
 	Type TypeBasicSecretParameters `json:"type,omitempty"`
 }
 
@@ -10118,6 +10243,16 @@ func (uskp URLSigningKeyParameters) MarshalJSON() ([]byte, error) {
 // AsURLSigningKeyParameters is the BasicSecretParameters implementation for URLSigningKeyParameters.
 func (uskp URLSigningKeyParameters) AsURLSigningKeyParameters() (*URLSigningKeyParameters, bool) {
 	return &uskp, true
+}
+
+// AsManagedCertificateParameters is the BasicSecretParameters implementation for URLSigningKeyParameters.
+func (uskp URLSigningKeyParameters) AsManagedCertificateParameters() (*ManagedCertificateParameters, bool) {
+	return nil, false
+}
+
+// AsCustomerCertificateParameters is the BasicSecretParameters implementation for URLSigningKeyParameters.
+func (uskp URLSigningKeyParameters) AsCustomerCertificateParameters() (*CustomerCertificateParameters, bool) {
+	return nil, false
 }
 
 // AsSecretParameters is the BasicSecretParameters implementation for URLSigningKeyParameters.

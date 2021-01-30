@@ -31,14 +31,14 @@ type ManagedRuleSetsClient struct {
 }
 
 // NewManagedRuleSetsClient creates an instance of the ManagedRuleSetsClient client.
-func NewManagedRuleSetsClient(subscriptionID string, subscriptionID1 string) ManagedRuleSetsClient {
-	return NewManagedRuleSetsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewManagedRuleSetsClient(subscriptionID string) ManagedRuleSetsClient {
+	return NewManagedRuleSetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewManagedRuleSetsClientWithBaseURI creates an instance of the ManagedRuleSetsClient client using a custom endpoint.
 // Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewManagedRuleSetsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) ManagedRuleSetsClient {
-	return ManagedRuleSetsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewManagedRuleSetsClientWithBaseURI(baseURI string, subscriptionID string) ManagedRuleSetsClient {
+	return ManagedRuleSetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists all available managed rule sets.

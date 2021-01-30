@@ -1,210 +1,288 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3a3a9452f965a227ce43e6b545035b99dd175f23/specification/cdn/resource-manager/readme.md tag: `package-2020-09`
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/138759b8a5987252fd66658078907e1d93969c85/specification/cdn/resource-manager/readme.md tag: `package-2020-09`
 
-Code generator @microsoft.azure/autorest.go@2.1.168
+Code generator @microsoft.azure/autorest.go@2.1.169
+
 
 ## Breaking Changes
 
+### Removed Constants
+
+1. HealthProbeRequestType.GET
+1. HealthProbeRequestType.HEAD
+1. SecretType.SecretTypeCustomerCertificate
+1. SecretType.SecretTypeManagedCertificate
+1. SecretType.SecretTypeURLSigningKey
+
 ### Removed Funcs
 
-1. *AFDCustomDomainsCreateFuture.Result(AFDCustomDomainsClient) (AFDDomain, error)
-1. *AFDCustomDomainsDeleteFuture.Result(AFDCustomDomainsClient) (autorest.Response, error)
-1. *AFDCustomDomainsRefreshValidationTokenFuture.Result(AFDCustomDomainsClient) (ValidationToken, error)
-1. *AFDCustomDomainsUpdateFuture.Result(AFDCustomDomainsClient) (AFDDomain, error)
-1. *AFDEndpointsCreateFuture.Result(AFDEndpointsClient) (AFDEndpoint, error)
-1. *AFDEndpointsDeleteFuture.Result(AFDEndpointsClient) (autorest.Response, error)
-1. *AFDEndpointsPurgeContentFuture.Result(AFDEndpointsClient) (autorest.Response, error)
-1. *AFDEndpointsUpdateFuture.Result(AFDEndpointsClient) (AFDEndpoint, error)
-1. *AFDOriginGroupsCreateFuture.Result(AFDOriginGroupsClient) (AFDOriginGroup, error)
-1. *AFDOriginGroupsDeleteFuture.Result(AFDOriginGroupsClient) (autorest.Response, error)
-1. *AFDOriginGroupsUpdateFuture.Result(AFDOriginGroupsClient) (AFDOriginGroup, error)
-1. *AFDOriginsCreateFuture.Result(AFDOriginsClient) (AFDOrigin, error)
-1. *AFDOriginsDeleteFuture.Result(AFDOriginsClient) (autorest.Response, error)
-1. *AFDOriginsUpdateFuture.Result(AFDOriginsClient) (AFDOrigin, error)
-1. *CustomDomainsCreateFuture.Result(CustomDomainsClient) (CustomDomain, error)
-1. *CustomDomainsDeleteFuture.Result(CustomDomainsClient) (CustomDomain, error)
-1. *EndpointsCreateFuture.Result(EndpointsClient) (Endpoint, error)
-1. *EndpointsDeleteFuture.Result(EndpointsClient) (autorest.Response, error)
-1. *EndpointsLoadContentFuture.Result(EndpointsClient) (autorest.Response, error)
-1. *EndpointsPurgeContentFuture.Result(EndpointsClient) (autorest.Response, error)
-1. *EndpointsStartFuture.Result(EndpointsClient) (Endpoint, error)
-1. *EndpointsStopFuture.Result(EndpointsClient) (Endpoint, error)
-1. *EndpointsUpdateFuture.Result(EndpointsClient) (Endpoint, error)
-1. *OriginGroupsCreateFuture.Result(OriginGroupsClient) (OriginGroup, error)
-1. *OriginGroupsDeleteFuture.Result(OriginGroupsClient) (autorest.Response, error)
-1. *OriginGroupsUpdateFuture.Result(OriginGroupsClient) (OriginGroup, error)
-1. *OriginsCreateFuture.Result(OriginsClient) (Origin, error)
-1. *OriginsDeleteFuture.Result(OriginsClient) (autorest.Response, error)
-1. *OriginsUpdateFuture.Result(OriginsClient) (Origin, error)
-1. *PoliciesCreateOrUpdateFuture.Result(PoliciesClient) (WebApplicationFirewallPolicy, error)
-1. *PoliciesUpdateFuture.Result(PoliciesClient) (WebApplicationFirewallPolicy, error)
-1. *ProfilesCreateFuture.Result(ProfilesClient) (Profile, error)
-1. *ProfilesDeleteFuture.Result(ProfilesClient) (autorest.Response, error)
-1. *ProfilesUpdateFuture.Result(ProfilesClient) (Profile, error)
-1. *RoutesCreateFuture.Result(RoutesClient) (Route, error)
-1. *RoutesDeleteFuture.Result(RoutesClient) (autorest.Response, error)
-1. *RoutesUpdateFuture.Result(RoutesClient) (Route, error)
-1. *RuleSetsCreateFuture.Result(RuleSetsClient) (RuleSet, error)
-1. *RuleSetsDeleteFuture.Result(RuleSetsClient) (autorest.Response, error)
-1. *RulesCreateFuture.Result(RulesClient) (Rule, error)
-1. *RulesDeleteFuture.Result(RulesClient) (autorest.Response, error)
-1. *RulesUpdateFuture.Result(RulesClient) (Rule, error)
-1. *SecretsCreateFuture.Result(SecretsClient) (Secret, error)
-1. *SecretsDeleteFuture.Result(SecretsClient) (autorest.Response, error)
-1. *SecretsUpdateFuture.Result(SecretsClient) (Secret, error)
-1. *SecurityPoliciesCreateFuture.Result(SecurityPoliciesClient) (SecurityPolicy, error)
-1. *SecurityPoliciesDeleteFuture.Result(SecurityPoliciesClient) (autorest.Response, error)
-1. *SecurityPoliciesPatchFuture.Result(SecurityPoliciesClient) (SecurityPolicy, error)
+1. PossibleSecretTypeValues() []SecretType
 
 ## Struct Changes
 
 ### Removed Struct Fields
 
-1. AFDCustomDomainsCreateFuture.azure.Future
-1. AFDCustomDomainsDeleteFuture.azure.Future
-1. AFDCustomDomainsRefreshValidationTokenFuture.azure.Future
-1. AFDCustomDomainsUpdateFuture.azure.Future
-1. AFDEndpointsCreateFuture.azure.Future
-1. AFDEndpointsDeleteFuture.azure.Future
-1. AFDEndpointsPurgeContentFuture.azure.Future
-1. AFDEndpointsUpdateFuture.azure.Future
-1. AFDOriginGroupsCreateFuture.azure.Future
-1. AFDOriginGroupsDeleteFuture.azure.Future
-1. AFDOriginGroupsUpdateFuture.azure.Future
-1. AFDOriginsCreateFuture.azure.Future
-1. AFDOriginsDeleteFuture.azure.Future
-1. AFDOriginsUpdateFuture.azure.Future
-1. CustomDomainsCreateFuture.azure.Future
-1. CustomDomainsDeleteFuture.azure.Future
-1. EndpointsCreateFuture.azure.Future
-1. EndpointsDeleteFuture.azure.Future
-1. EndpointsLoadContentFuture.azure.Future
-1. EndpointsPurgeContentFuture.azure.Future
-1. EndpointsStartFuture.azure.Future
-1. EndpointsStopFuture.azure.Future
-1. EndpointsUpdateFuture.azure.Future
-1. OriginGroupsCreateFuture.azure.Future
-1. OriginGroupsDeleteFuture.azure.Future
-1. OriginGroupsUpdateFuture.azure.Future
-1. OriginsCreateFuture.azure.Future
-1. OriginsDeleteFuture.azure.Future
-1. OriginsUpdateFuture.azure.Future
-1. PoliciesCreateOrUpdateFuture.azure.Future
-1. PoliciesUpdateFuture.azure.Future
-1. ProfilesCreateFuture.azure.Future
-1. ProfilesDeleteFuture.azure.Future
-1. ProfilesUpdateFuture.azure.Future
-1. RoutesCreateFuture.azure.Future
-1. RoutesDeleteFuture.azure.Future
-1. RoutesUpdateFuture.azure.Future
-1. RuleSetsCreateFuture.azure.Future
-1. RuleSetsDeleteFuture.azure.Future
-1. RulesCreateFuture.azure.Future
-1. RulesDeleteFuture.azure.Future
-1. RulesUpdateFuture.azure.Future
-1. SecretsCreateFuture.azure.Future
-1. SecretsDeleteFuture.azure.Future
-1. SecretsUpdateFuture.azure.Future
-1. SecurityPoliciesCreateFuture.azure.Future
-1. SecurityPoliciesDeleteFuture.azure.Future
-1. SecurityPoliciesPatchFuture.azure.Future
+1. BaseClient.SubscriptionID1
+1. CustomerCertificateParameters.ExpirationDate
+1. CustomerCertificateParameters.Subject
+1. CustomerCertificateParameters.Thumbprint
+1. ManagedCertificateParameters.ExpirationDate
+1. ManagedCertificateParameters.Subject
+1. ManagedCertificateParameters.Thumbprint
+1. RouteProperties.OptimizationType
+1. RouteUpdatePropertiesParameters.OptimizationType
 
-## Struct Changes
+## Signature Changes
 
-### New Struct Fields
+### Const Types
 
-1. AFDCustomDomainsCreateFuture.Result
-1. AFDCustomDomainsCreateFuture.azure.FutureAPI
-1. AFDCustomDomainsDeleteFuture.Result
-1. AFDCustomDomainsDeleteFuture.azure.FutureAPI
-1. AFDCustomDomainsRefreshValidationTokenFuture.Result
-1. AFDCustomDomainsRefreshValidationTokenFuture.azure.FutureAPI
-1. AFDCustomDomainsUpdateFuture.Result
-1. AFDCustomDomainsUpdateFuture.azure.FutureAPI
-1. AFDEndpointsCreateFuture.Result
-1. AFDEndpointsCreateFuture.azure.FutureAPI
-1. AFDEndpointsDeleteFuture.Result
-1. AFDEndpointsDeleteFuture.azure.FutureAPI
-1. AFDEndpointsPurgeContentFuture.Result
-1. AFDEndpointsPurgeContentFuture.azure.FutureAPI
-1. AFDEndpointsUpdateFuture.Result
-1. AFDEndpointsUpdateFuture.azure.FutureAPI
-1. AFDOriginGroupsCreateFuture.Result
-1. AFDOriginGroupsCreateFuture.azure.FutureAPI
-1. AFDOriginGroupsDeleteFuture.Result
-1. AFDOriginGroupsDeleteFuture.azure.FutureAPI
-1. AFDOriginGroupsUpdateFuture.Result
-1. AFDOriginGroupsUpdateFuture.azure.FutureAPI
-1. AFDOriginsCreateFuture.Result
-1. AFDOriginsCreateFuture.azure.FutureAPI
-1. AFDOriginsDeleteFuture.Result
-1. AFDOriginsDeleteFuture.azure.FutureAPI
-1. AFDOriginsUpdateFuture.Result
-1. AFDOriginsUpdateFuture.azure.FutureAPI
-1. CustomDomainsCreateFuture.Result
-1. CustomDomainsCreateFuture.azure.FutureAPI
-1. CustomDomainsDeleteFuture.Result
-1. CustomDomainsDeleteFuture.azure.FutureAPI
-1. EndpointsCreateFuture.Result
-1. EndpointsCreateFuture.azure.FutureAPI
-1. EndpointsDeleteFuture.Result
-1. EndpointsDeleteFuture.azure.FutureAPI
-1. EndpointsLoadContentFuture.Result
-1. EndpointsLoadContentFuture.azure.FutureAPI
-1. EndpointsPurgeContentFuture.Result
-1. EndpointsPurgeContentFuture.azure.FutureAPI
-1. EndpointsStartFuture.Result
-1. EndpointsStartFuture.azure.FutureAPI
-1. EndpointsStopFuture.Result
-1. EndpointsStopFuture.azure.FutureAPI
-1. EndpointsUpdateFuture.Result
-1. EndpointsUpdateFuture.azure.FutureAPI
-1. OriginGroupsCreateFuture.Result
-1. OriginGroupsCreateFuture.azure.FutureAPI
-1. OriginGroupsDeleteFuture.Result
-1. OriginGroupsDeleteFuture.azure.FutureAPI
-1. OriginGroupsUpdateFuture.Result
-1. OriginGroupsUpdateFuture.azure.FutureAPI
-1. OriginsCreateFuture.Result
-1. OriginsCreateFuture.azure.FutureAPI
-1. OriginsDeleteFuture.Result
-1. OriginsDeleteFuture.azure.FutureAPI
-1. OriginsUpdateFuture.Result
-1. OriginsUpdateFuture.azure.FutureAPI
-1. PoliciesCreateOrUpdateFuture.Result
-1. PoliciesCreateOrUpdateFuture.azure.FutureAPI
-1. PoliciesUpdateFuture.Result
-1. PoliciesUpdateFuture.azure.FutureAPI
-1. ProfilesCreateFuture.Result
-1. ProfilesCreateFuture.azure.FutureAPI
-1. ProfilesDeleteFuture.Result
-1. ProfilesDeleteFuture.azure.FutureAPI
-1. ProfilesUpdateFuture.Result
-1. ProfilesUpdateFuture.azure.FutureAPI
-1. RoutesCreateFuture.Result
-1. RoutesCreateFuture.azure.FutureAPI
-1. RoutesDeleteFuture.Result
-1. RoutesDeleteFuture.azure.FutureAPI
-1. RoutesUpdateFuture.Result
-1. RoutesUpdateFuture.azure.FutureAPI
-1. RuleSetsCreateFuture.Result
-1. RuleSetsCreateFuture.azure.FutureAPI
-1. RuleSetsDeleteFuture.Result
-1. RuleSetsDeleteFuture.azure.FutureAPI
-1. RulesCreateFuture.Result
-1. RulesCreateFuture.azure.FutureAPI
-1. RulesDeleteFuture.Result
-1. RulesDeleteFuture.azure.FutureAPI
-1. RulesUpdateFuture.Result
-1. RulesUpdateFuture.azure.FutureAPI
-1. SecretsCreateFuture.Result
-1. SecretsCreateFuture.azure.FutureAPI
-1. SecretsDeleteFuture.Result
-1. SecretsDeleteFuture.azure.FutureAPI
-1. SecretsUpdateFuture.Result
-1. SecretsUpdateFuture.azure.FutureAPI
-1. SecurityPoliciesCreateFuture.Result
-1. SecurityPoliciesCreateFuture.azure.FutureAPI
-1. SecurityPoliciesDeleteFuture.Result
-1. SecurityPoliciesDeleteFuture.azure.FutureAPI
-1. SecurityPoliciesPatchFuture.Result
-1. SecurityPoliciesPatchFuture.azure.FutureAPI
+1. NotSet changed type from HealthProbeRequestType to AfdQueryStringCachingBehavior
+
+### Funcs
+
+1. LogAnalyticsClient.GetLogAnalyticsRankings
+	- Params
+		- From: context.Context, string, string, []string, []string, float64, date.Time, date.Time, []string
+		- To: context.Context, string, string, []string, []string, int32, date.Time, date.Time, []string
+1. LogAnalyticsClient.GetLogAnalyticsRankingsPreparer
+	- Params
+		- From: context.Context, string, string, []string, []string, float64, date.Time, date.Time, []string
+		- To: context.Context, string, string, []string, []string, int32, date.Time, date.Time, []string
+1. LogAnalyticsClient.GetWafLogAnalyticsRankings
+	- Params
+		- From: context.Context, string, string, []string, date.Time, date.Time, float64, []string, []string, []string
+		- To: context.Context, string, string, []string, date.Time, date.Time, int32, []string, []string, []string
+1. LogAnalyticsClient.GetWafLogAnalyticsRankingsPreparer
+	- Params
+		- From: context.Context, string, string, []string, date.Time, date.Time, float64, []string, []string, []string
+		- To: context.Context, string, string, []string, date.Time, date.Time, int32, []string, []string, []string
+1. New
+	- Params
+		- From: string, string
+		- To: string
+1. NewAFDCustomDomainsClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewAFDCustomDomainsClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewAFDEndpointsClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewAFDEndpointsClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewAFDOriginGroupsClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewAFDOriginGroupsClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewAFDOriginsClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewAFDOriginsClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewAFDProfilesClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewAFDProfilesClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewCustomDomainsClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewCustomDomainsClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewEdgeNodesClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewEdgeNodesClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewEndpointsClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewEndpointsClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewLogAnalyticsClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewLogAnalyticsClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewManagedRuleSetsClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewManagedRuleSetsClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewOperationsClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewOperationsClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewOriginGroupsClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewOriginGroupsClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewOriginsClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewOriginsClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewPoliciesClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewPoliciesClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewProfilesClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewProfilesClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewResourceUsageClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewResourceUsageClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewRoutesClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewRoutesClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewRuleSetsClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewRuleSetsClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewRulesClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewRulesClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewSecretsClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewSecretsClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewSecurityPoliciesClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewSecurityPoliciesClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewValidateClient
+	- Params
+		- From: string, string
+		- To: string
+1. NewValidateClientWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. NewWithBaseURI
+	- Params
+		- From: string, string, string
+		- To: string, string
+1. SecurityPoliciesClient.Patch
+	- Params
+		- From: context.Context, string, string, string, SecurityPolicyWebApplicationFirewallParameters
+		- To: context.Context, string, string, string, SecurityPolicyProperties
+1. SecurityPoliciesClient.PatchPreparer
+	- Params
+		- From: context.Context, string, string, string, SecurityPolicyWebApplicationFirewallParameters
+		- To: context.Context, string, string, string, SecurityPolicyProperties
+
+### Struct Fields
+
+1. CustomerCertificateParameters.Type changed type from SecretType to TypeBasicSecretParameters
+1. ManagedCertificateParameters.Type changed type from SecretType to TypeBasicSecretParameters
+1. RouteProperties.QueryStringCachingBehavior changed type from QueryStringCachingBehavior to AfdQueryStringCachingBehavior
+1. RouteUpdatePropertiesParameters.QueryStringCachingBehavior changed type from QueryStringCachingBehavior to AfdQueryStringCachingBehavior
+1. SecurityPolicyProperties.Parameters changed type from *SecurityPolicyWebApplicationFirewallParameters to BasicSecurityPolicyParameters
+
+### New Constants
+
+1. AfdQueryStringCachingBehavior.IgnoreQueryString
+1. AfdQueryStringCachingBehavior.UseQueryString
+1. HealthProbeRequestType.HealthProbeRequestTypeGET
+1. HealthProbeRequestType.HealthProbeRequestTypeHEAD
+1. HealthProbeRequestType.HealthProbeRequestTypeNotSet
+1. TypeBasicSecretParameters.TypeCustomerCertificate
+1. TypeBasicSecretParameters.TypeManagedCertificate
+
+### New Funcs
+
+1. *SecurityPolicyProperties.UnmarshalJSON([]byte) error
+1. CustomerCertificateParameters.AsBasicSecretParameters() (BasicSecretParameters, bool)
+1. CustomerCertificateParameters.AsCustomerCertificateParameters() (*CustomerCertificateParameters, bool)
+1. CustomerCertificateParameters.AsManagedCertificateParameters() (*ManagedCertificateParameters, bool)
+1. CustomerCertificateParameters.AsSecretParameters() (*SecretParameters, bool)
+1. CustomerCertificateParameters.AsURLSigningKeyParameters() (*URLSigningKeyParameters, bool)
+1. CustomerCertificateParameters.MarshalJSON() ([]byte, error)
+1. ManagedCertificateParameters.AsBasicSecretParameters() (BasicSecretParameters, bool)
+1. ManagedCertificateParameters.AsCustomerCertificateParameters() (*CustomerCertificateParameters, bool)
+1. ManagedCertificateParameters.AsManagedCertificateParameters() (*ManagedCertificateParameters, bool)
+1. ManagedCertificateParameters.AsSecretParameters() (*SecretParameters, bool)
+1. ManagedCertificateParameters.AsURLSigningKeyParameters() (*URLSigningKeyParameters, bool)
+1. ManagedCertificateParameters.MarshalJSON() ([]byte, error)
+1. PossibleAfdQueryStringCachingBehaviorValues() []AfdQueryStringCachingBehavior
+1. SecretParameters.AsCustomerCertificateParameters() (*CustomerCertificateParameters, bool)
+1. SecretParameters.AsManagedCertificateParameters() (*ManagedCertificateParameters, bool)
+1. URLSigningKeyParameters.AsCustomerCertificateParameters() (*CustomerCertificateParameters, bool)
+1. URLSigningKeyParameters.AsManagedCertificateParameters() (*ManagedCertificateParameters, bool)

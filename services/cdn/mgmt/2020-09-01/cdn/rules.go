@@ -32,14 +32,14 @@ type RulesClient struct {
 }
 
 // NewRulesClient creates an instance of the RulesClient client.
-func NewRulesClient(subscriptionID string, subscriptionID1 string) RulesClient {
-	return NewRulesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewRulesClient(subscriptionID string) RulesClient {
+	return NewRulesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewRulesClientWithBaseURI creates an instance of the RulesClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewRulesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) RulesClient {
-	return RulesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewRulesClientWithBaseURI(baseURI string, subscriptionID string) RulesClient {
+	return RulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create creates a new delivery rule within the specified rule set.
@@ -152,7 +152,7 @@ func (client RulesClient) CreateSender(req *http.Request) (future RulesCreateFut
 func (client RulesClient) CreateResponder(resp *http.Response) (result Rule, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -255,7 +255,7 @@ func (client RulesClient) DeleteSender(req *http.Request) (future RulesDeleteFut
 func (client RulesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return

@@ -32,14 +32,14 @@ type OriginGroupsClient struct {
 }
 
 // NewOriginGroupsClient creates an instance of the OriginGroupsClient client.
-func NewOriginGroupsClient(subscriptionID string, subscriptionID1 string) OriginGroupsClient {
-	return NewOriginGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewOriginGroupsClient(subscriptionID string) OriginGroupsClient {
+	return NewOriginGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewOriginGroupsClientWithBaseURI creates an instance of the OriginGroupsClient client using a custom endpoint.  Use
 // this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewOriginGroupsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) OriginGroupsClient {
-	return OriginGroupsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewOriginGroupsClientWithBaseURI(baseURI string, subscriptionID string) OriginGroupsClient {
+	return OriginGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create creates a new origin group within the specified endpoint.

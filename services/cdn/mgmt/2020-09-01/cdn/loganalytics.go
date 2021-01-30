@@ -33,14 +33,14 @@ type LogAnalyticsClient struct {
 }
 
 // NewLogAnalyticsClient creates an instance of the LogAnalyticsClient client.
-func NewLogAnalyticsClient(subscriptionID string, subscriptionID1 string) LogAnalyticsClient {
-	return NewLogAnalyticsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewLogAnalyticsClient(subscriptionID string) LogAnalyticsClient {
+	return NewLogAnalyticsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewLogAnalyticsClientWithBaseURI creates an instance of the LogAnalyticsClient client using a custom endpoint.  Use
 // this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewLogAnalyticsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) LogAnalyticsClient {
-	return LogAnalyticsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewLogAnalyticsClientWithBaseURI(baseURI string, subscriptionID string) LogAnalyticsClient {
+	return LogAnalyticsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // GetLogAnalyticsLocations get all available location names for AFD log analytics report.
@@ -237,7 +237,7 @@ func (client LogAnalyticsClient) GetLogAnalyticsMetricsResponder(resp *http.Resp
 // Parameters:
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the CDN profile which is unique within the resource group.
-func (client LogAnalyticsClient) GetLogAnalyticsRankings(ctx context.Context, resourceGroupName string, profileName string, rankings []string, metrics []string, maxRanking float64, dateTimeBegin date.Time, dateTimeEnd date.Time, customDomains []string) (result RankingsResponse, err error) {
+func (client LogAnalyticsClient) GetLogAnalyticsRankings(ctx context.Context, resourceGroupName string, profileName string, rankings []string, metrics []string, maxRanking int32, dateTimeBegin date.Time, dateTimeEnd date.Time, customDomains []string) (result RankingsResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LogAnalyticsClient.GetLogAnalyticsRankings")
 		defer func() {
@@ -283,7 +283,7 @@ func (client LogAnalyticsClient) GetLogAnalyticsRankings(ctx context.Context, re
 }
 
 // GetLogAnalyticsRankingsPreparer prepares the GetLogAnalyticsRankings request.
-func (client LogAnalyticsClient) GetLogAnalyticsRankingsPreparer(ctx context.Context, resourceGroupName string, profileName string, rankings []string, metrics []string, maxRanking float64, dateTimeBegin date.Time, dateTimeEnd date.Time, customDomains []string) (*http.Request, error) {
+func (client LogAnalyticsClient) GetLogAnalyticsRankingsPreparer(ctx context.Context, resourceGroupName string, profileName string, rankings []string, metrics []string, maxRanking int32, dateTimeBegin date.Time, dateTimeEnd date.Time, customDomains []string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       autorest.Encode("path", profileName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -517,7 +517,7 @@ func (client LogAnalyticsClient) GetWafLogAnalyticsMetricsResponder(resp *http.R
 // Parameters:
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the CDN profile which is unique within the resource group.
-func (client LogAnalyticsClient) GetWafLogAnalyticsRankings(ctx context.Context, resourceGroupName string, profileName string, metrics []string, dateTimeBegin date.Time, dateTimeEnd date.Time, maxRanking float64, rankings []string, actions []string, ruleTypes []string) (result WafRankingsResponse, err error) {
+func (client LogAnalyticsClient) GetWafLogAnalyticsRankings(ctx context.Context, resourceGroupName string, profileName string, metrics []string, dateTimeBegin date.Time, dateTimeEnd date.Time, maxRanking int32, rankings []string, actions []string, ruleTypes []string) (result WafRankingsResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LogAnalyticsClient.GetWafLogAnalyticsRankings")
 		defer func() {
@@ -563,7 +563,7 @@ func (client LogAnalyticsClient) GetWafLogAnalyticsRankings(ctx context.Context,
 }
 
 // GetWafLogAnalyticsRankingsPreparer prepares the GetWafLogAnalyticsRankings request.
-func (client LogAnalyticsClient) GetWafLogAnalyticsRankingsPreparer(ctx context.Context, resourceGroupName string, profileName string, metrics []string, dateTimeBegin date.Time, dateTimeEnd date.Time, maxRanking float64, rankings []string, actions []string, ruleTypes []string) (*http.Request, error) {
+func (client LogAnalyticsClient) GetWafLogAnalyticsRankingsPreparer(ctx context.Context, resourceGroupName string, profileName string, metrics []string, dateTimeBegin date.Time, dateTimeEnd date.Time, maxRanking int32, rankings []string, actions []string, ruleTypes []string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       autorest.Encode("path", profileName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),

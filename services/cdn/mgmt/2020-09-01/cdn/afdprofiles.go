@@ -32,14 +32,14 @@ type AFDProfilesClient struct {
 }
 
 // NewAFDProfilesClient creates an instance of the AFDProfilesClient client.
-func NewAFDProfilesClient(subscriptionID string, subscriptionID1 string) AFDProfilesClient {
-	return NewAFDProfilesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewAFDProfilesClient(subscriptionID string) AFDProfilesClient {
+	return NewAFDProfilesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewAFDProfilesClientWithBaseURI creates an instance of the AFDProfilesClient client using a custom endpoint.  Use
 // this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewAFDProfilesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) AFDProfilesClient {
-	return AFDProfilesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewAFDProfilesClientWithBaseURI(baseURI string, subscriptionID string) AFDProfilesClient {
+	return AFDProfilesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CheckHostNameAvailability validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.

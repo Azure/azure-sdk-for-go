@@ -32,15 +32,15 @@ type AFDCustomDomainsClient struct {
 }
 
 // NewAFDCustomDomainsClient creates an instance of the AFDCustomDomainsClient client.
-func NewAFDCustomDomainsClient(subscriptionID string, subscriptionID1 string) AFDCustomDomainsClient {
-	return NewAFDCustomDomainsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewAFDCustomDomainsClient(subscriptionID string) AFDCustomDomainsClient {
+	return NewAFDCustomDomainsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewAFDCustomDomainsClientWithBaseURI creates an instance of the AFDCustomDomainsClient client using a custom
 // endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
 // stack).
-func NewAFDCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) AFDCustomDomainsClient {
-	return AFDCustomDomainsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewAFDCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) AFDCustomDomainsClient {
+	return AFDCustomDomainsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create creates a new domain within the specified profile.
@@ -149,7 +149,7 @@ func (client AFDCustomDomainsClient) CreateSender(req *http.Request) (future AFD
 func (client AFDCustomDomainsClient) CreateResponder(resp *http.Response) (result AFDDomain, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -251,7 +251,7 @@ func (client AFDCustomDomainsClient) DeleteSender(req *http.Request) (future AFD
 func (client AFDCustomDomainsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return

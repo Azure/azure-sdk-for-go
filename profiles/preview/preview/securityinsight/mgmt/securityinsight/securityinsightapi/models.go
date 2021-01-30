@@ -48,4 +48,5 @@ type ProductSettingsClientAPI = original.ProductSettingsClientAPI
 type ThreatIntelligenceIndicatorClientAPI = original.ThreatIntelligenceIndicatorClientAPI
 type ThreatIntelligenceIndicatorMetricsClientAPI = original.ThreatIntelligenceIndicatorMetricsClientAPI
 type ThreatIntelligenceIndicatorsClientAPI = original.ThreatIntelligenceIndicatorsClientAPI
+type WatchlistItemClientAPI = original.WatchlistItemClientAPI
 type WatchlistsClientAPI = original.WatchlistsClientAPI

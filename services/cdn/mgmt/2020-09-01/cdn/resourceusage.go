@@ -31,14 +31,14 @@ type ResourceUsageClient struct {
 }
 
 // NewResourceUsageClient creates an instance of the ResourceUsageClient client.
-func NewResourceUsageClient(subscriptionID string, subscriptionID1 string) ResourceUsageClient {
-	return NewResourceUsageClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewResourceUsageClient(subscriptionID string) ResourceUsageClient {
+	return NewResourceUsageClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewResourceUsageClientWithBaseURI creates an instance of the ResourceUsageClient client using a custom endpoint.
 // Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewResourceUsageClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) ResourceUsageClient {
-	return ResourceUsageClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewResourceUsageClientWithBaseURI(baseURI string, subscriptionID string) ResourceUsageClient {
+	return ResourceUsageClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List check the quota and actual usage of the CDN profiles under the given subscription.

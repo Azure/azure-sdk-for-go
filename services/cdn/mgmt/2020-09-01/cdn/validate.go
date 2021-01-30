@@ -32,14 +32,14 @@ type ValidateClient struct {
 }
 
 // NewValidateClient creates an instance of the ValidateClient client.
-func NewValidateClient(subscriptionID string, subscriptionID1 string) ValidateClient {
-	return NewValidateClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewValidateClient(subscriptionID string) ValidateClient {
+	return NewValidateClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewValidateClientWithBaseURI creates an instance of the ValidateClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewValidateClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) ValidateClient {
-	return ValidateClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewValidateClientWithBaseURI(baseURI string, subscriptionID string) ValidateClient {
+	return ValidateClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // SecretMethod validate a Secret in the profile.

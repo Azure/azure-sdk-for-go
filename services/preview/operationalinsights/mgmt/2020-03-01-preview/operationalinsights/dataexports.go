@@ -76,8 +76,9 @@ func (client DataExportsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 				{Target: "dataExportName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.DataExportProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.DataExportProperties.Destination", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameters.DataExportProperties.Destination.ResourceID", Name: validation.Null, Rule: true, Chain: nil}}},
+				Chain: []validation.Constraint{{Target: "parameters.DataExportProperties.TableNames", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.DataExportProperties.Destination", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.DataExportProperties.Destination.ResourceID", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewError("operationalinsights.DataExportsClient", "CreateOrUpdate", err.Error())
 	}

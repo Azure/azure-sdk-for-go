@@ -102,6 +102,23 @@ func PossibleAfdProvisioningStateValues() []AfdProvisioningState {
 	return []AfdProvisioningState{Creating, Deleting, Failed, Succeeded, Updating}
 }
 
+// AfdQueryStringCachingBehavior enumerates the values for afd query string caching behavior.
+type AfdQueryStringCachingBehavior string
+
+const (
+	// IgnoreQueryString ...
+	IgnoreQueryString AfdQueryStringCachingBehavior = "IgnoreQueryString"
+	// NotSet ...
+	NotSet AfdQueryStringCachingBehavior = "NotSet"
+	// UseQueryString ...
+	UseQueryString AfdQueryStringCachingBehavior = "UseQueryString"
+)
+
+// PossibleAfdQueryStringCachingBehaviorValues returns an array of possible values for the AfdQueryStringCachingBehavior const type.
+func PossibleAfdQueryStringCachingBehaviorValues() []AfdQueryStringCachingBehavior {
+	return []AfdQueryStringCachingBehavior{IgnoreQueryString, NotSet, UseQueryString}
+}
+
 // Algorithm enumerates the values for algorithm.
 type Algorithm string
 
@@ -463,17 +480,17 @@ func PossibleHeaderActionValues() []HeaderAction {
 type HealthProbeRequestType string
 
 const (
-	// GET ...
-	GET HealthProbeRequestType = "GET"
-	// HEAD ...
-	HEAD HealthProbeRequestType = "HEAD"
-	// NotSet ...
-	NotSet HealthProbeRequestType = "NotSet"
+	// HealthProbeRequestTypeGET ...
+	HealthProbeRequestTypeGET HealthProbeRequestType = "GET"
+	// HealthProbeRequestTypeHEAD ...
+	HealthProbeRequestTypeHEAD HealthProbeRequestType = "HEAD"
+	// HealthProbeRequestTypeNotSet ...
+	HealthProbeRequestTypeNotSet HealthProbeRequestType = "NotSet"
 )
 
 // PossibleHealthProbeRequestTypeValues returns an array of possible values for the HealthProbeRequestType const type.
 func PossibleHealthProbeRequestTypeValues() []HealthProbeRequestType {
-	return []HealthProbeRequestType{GET, HEAD, NotSet}
+	return []HealthProbeRequestType{HealthProbeRequestTypeGET, HealthProbeRequestTypeHEAD, HealthProbeRequestTypeNotSet}
 }
 
 // HTTPSRedirect enumerates the values for https redirect.
@@ -1179,23 +1196,6 @@ func PossibleResponseBasedDetectedErrorTypesValues() []ResponseBasedDetectedErro
 	return []ResponseBasedDetectedErrorTypes{None, TCPAndHTTPErrors, TCPErrorsOnly}
 }
 
-// SecretType enumerates the values for secret type.
-type SecretType string
-
-const (
-	// SecretTypeCustomerCertificate ...
-	SecretTypeCustomerCertificate SecretType = "CustomerCertificate"
-	// SecretTypeManagedCertificate ...
-	SecretTypeManagedCertificate SecretType = "ManagedCertificate"
-	// SecretTypeURLSigningKey ...
-	SecretTypeURLSigningKey SecretType = "UrlSigningKey"
-)
-
-// PossibleSecretTypeValues returns an array of possible values for the SecretType const type.
-func PossibleSecretTypeValues() []SecretType {
-	return []SecretType{SecretTypeCustomerCertificate, SecretTypeManagedCertificate, SecretTypeURLSigningKey}
-}
-
 // SharedPrivateLinkResourceStatus enumerates the values for shared private link resource status.
 type SharedPrivateLinkResourceStatus string
 
@@ -1332,6 +1332,10 @@ func PossibleTypeValues() []Type {
 type TypeBasicSecretParameters string
 
 const (
+	// TypeCustomerCertificate ...
+	TypeCustomerCertificate TypeBasicSecretParameters = "CustomerCertificate"
+	// TypeManagedCertificate ...
+	TypeManagedCertificate TypeBasicSecretParameters = "ManagedCertificate"
 	// TypeSecretParameters ...
 	TypeSecretParameters TypeBasicSecretParameters = "SecretParameters"
 	// TypeURLSigningKey ...
@@ -1340,7 +1344,7 @@ const (
 
 // PossibleTypeBasicSecretParametersValues returns an array of possible values for the TypeBasicSecretParameters const type.
 func PossibleTypeBasicSecretParametersValues() []TypeBasicSecretParameters {
-	return []TypeBasicSecretParameters{TypeSecretParameters, TypeURLSigningKey}
+	return []TypeBasicSecretParameters{TypeCustomerCertificate, TypeManagedCertificate, TypeSecretParameters, TypeURLSigningKey}
 }
 
 // Unit enumerates the values for unit.

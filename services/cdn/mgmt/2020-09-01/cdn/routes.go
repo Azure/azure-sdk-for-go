@@ -32,14 +32,14 @@ type RoutesClient struct {
 }
 
 // NewRoutesClient creates an instance of the RoutesClient client.
-func NewRoutesClient(subscriptionID string, subscriptionID1 string) RoutesClient {
-	return NewRoutesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewRoutesClient(subscriptionID string) RoutesClient {
+	return NewRoutesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewRoutesClientWithBaseURI creates an instance of the RoutesClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewRoutesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) RoutesClient {
-	return RoutesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewRoutesClientWithBaseURI(baseURI string, subscriptionID string) RoutesClient {
+	return RoutesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create creates a new route with the specified route name under the specified subscription, resource group, profile,
@@ -151,7 +151,7 @@ func (client RoutesClient) CreateSender(req *http.Request) (future RoutesCreateF
 func (client RoutesClient) CreateResponder(resp *http.Response) (result Route, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -255,7 +255,7 @@ func (client RoutesClient) DeleteSender(req *http.Request) (future RoutesDeleteF
 func (client RoutesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return

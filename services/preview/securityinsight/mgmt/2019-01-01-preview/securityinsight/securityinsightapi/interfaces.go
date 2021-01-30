@@ -34,11 +34,8 @@ var _ OperationsClientAPI = (*securityinsight.OperationsClient)(nil)
 // AlertRulesClientAPI contains the set of methods on the AlertRulesClient type.
 type AlertRulesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertRule securityinsight.BasicAlertRule) (result securityinsight.AlertRuleModel, err error)
-	CreateOrUpdateAction(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, actionID string, action securityinsight.ActionRequest) (result securityinsight.ActionResponse, err error)
 	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result autorest.Response, err error)
-	DeleteAction(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, actionID string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result securityinsight.AlertRuleModel, err error)
-	GetAction(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, actionID string) (result securityinsight.ActionResponse, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.AlertRulesListPage, err error)
 	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.AlertRulesListIterator, err error)
 }
@@ -47,6 +44,9 @@ var _ AlertRulesClientAPI = (*securityinsight.AlertRulesClient)(nil)
 
 // ActionsClientAPI contains the set of methods on the ActionsClient type.
 type ActionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, actionID string, action securityinsight.ActionRequest) (result securityinsight.ActionResponse, err error)
+	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, actionID string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, actionID string) (result securityinsight.ActionResponse, err error)
 	ListByAlertRule(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result securityinsight.ActionsListPage, err error)
 	ListByAlertRuleComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result securityinsight.ActionsListIterator, err error)
 }
@@ -151,8 +151,10 @@ var _ DataConnectorsCheckRequirementsClientAPI = (*securityinsight.DataConnector
 type EntitiesClientAPI interface {
 	Expand(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string, parameters securityinsight.EntityExpandParameters) (result securityinsight.EntityExpandResponse, err error)
 	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string) (result securityinsight.EntityModel, err error)
+	GetInsights(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string, parameters securityinsight.EntityGetInsightsParameters) (result securityinsight.EntityGetInsightsResponse, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.EntityListPage, err error)
 	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.EntityListIterator, err error)
+	Queries(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string) (result securityinsight.GetQueriesResponse, err error)
 }
 
 var _ EntitiesClientAPI = (*securityinsight.EntitiesClient)(nil)
@@ -208,7 +210,7 @@ var _ CasesAggregationsClientAPI = (*securityinsight.CasesAggregationsClient)(ni
 
 // EntityQueriesClientAPI contains the set of methods on the EntityQueriesClient type.
 type EntityQueriesClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityQueryID string) (result securityinsight.EntityQuery, err error)
+	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityQueryID string) (result securityinsight.EntityQueryModel, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.EntityQueryListPage, err error)
 	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.EntityQueryListIterator, err error)
 }
@@ -261,6 +263,14 @@ type WatchlistsClientAPI interface {
 }
 
 var _ WatchlistsClientAPI = (*securityinsight.WatchlistsClient)(nil)
+
+// WatchlistItemClientAPI contains the set of methods on the WatchlistItemClient type.
+type WatchlistItemClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, watchlistAlias string, watchlistItemID string, watchlistItem securityinsight.WatchlistItem) (result securityinsight.WatchlistItem, err error)
+	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, watchlistAlias string, watchlistItemID string) (result autorest.Response, err error)
+}
+
+var _ WatchlistItemClientAPI = (*securityinsight.WatchlistItemClient)(nil)
 
 // ThreatIntelligenceIndicatorClientAPI contains the set of methods on the ThreatIntelligenceIndicatorClient type.
 type ThreatIntelligenceIndicatorClientAPI interface {

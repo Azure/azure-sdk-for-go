@@ -50,7 +50,7 @@ func NewEntityQueriesClientWithBaseURI(baseURI string, subscriptionID string) En
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
 // entityQueryID - entity query ID
-func (client EntityQueriesClient) Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityQueryID string) (result EntityQuery, err error) {
+func (client EntityQueriesClient) Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityQueryID string) (result EntityQueryModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EntityQueriesClient.Get")
 		defer func() {
@@ -127,7 +127,7 @@ func (client EntityQueriesClient) GetSender(req *http.Request) (*http.Response, 
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client EntityQueriesClient) GetResponder(resp *http.Response) (result EntityQuery, err error) {
+func (client EntityQueriesClient) GetResponder(resp *http.Response) (result EntityQueryModel, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

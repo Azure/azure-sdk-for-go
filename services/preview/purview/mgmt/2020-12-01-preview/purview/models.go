@@ -18,6 +18,8 @@ package purview
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
+
 	"github.com/Azure/go-autorest/autorest"
 )
 
@@ -44,10 +46,43 @@ type Resource struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+
+	if r.Location != nil {
+		objectMap["location"] = r.Location
+	}
+	if r.Identity != nil {
+		objectMap["identity"] = r.Identity
+	}
+	if r.Properties != nil {
+		objectMap["properties"] = r.Properties
+	}
+	if r.Sku != nil {
+		objectMap["sku"] = r.Sku
+	}
+	if r.Tags != nil {
+		objectMap["tags"] = r.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
 // Identity describes the Purview identity
 type Identity struct {
 	// Type - Identity type
 	Type IdentityType `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Identity.
+func (i Identity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+
+	if i.Type != "" {
+		objectMap["type"] = i.Type
+	}
+
+	return json.Marshal(objectMap)
 }
 
 // Properties describes the Purview properties
@@ -55,9 +90,31 @@ type Properties struct {
 	NetworkAcls *NetworkAcls `json:"networkAcls,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for properties.
+func (p Properties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+
+	if p.NetworkAcls != nil {
+		objectMap["networkAcls"] = p.NetworkAcls
+	}
+
+	return json.Marshal(objectMap)
+}
+
 // NetworkAcls describes the Purview network ACLs
 type NetworkAcls struct {
 	DefaultAction NetworkACLAction `json:"defaultAction,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for network ACLs.
+func (n NetworkAcls) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+
+	if n.DefaultAction != "" {
+		objectMap["defaultAction"] = n.DefaultAction
+	}
+
+	return json.Marshal(objectMap)
 }
 
 // Sku the SKU of the Purview service.
@@ -66,4 +123,19 @@ type Sku struct {
 	Name *string `json:"name,omitempty"`
 	// Capacity - The number of capacity units. Possible values include: 4, 16.
 	Capacity *int32 `json:"capacity,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SKU.
+func (s Sku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+
+	if s.Name != nil {
+		objectMap["name"] = s.Name
+	}
+
+	if s.Capacity != nil {
+		objectMap["capacity"] = s.Capacity
+	}
+
+	return json.Marshal(objectMap)
 }

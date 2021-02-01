@@ -159,4 +159,7 @@ const (
 
 	// ServiceCodeContainerNotFound means the specified container does not exist.
 	ServiceCodeContainerNotFound ServiceCodeType = "ContainerNotFound"
+
+	// ServiceCodeNoPendingCopyOperation means there is currently no pending copy operation.
+	ServiceCodeNoPendingCopyOperation ServiceCodeType = "NoPendingCopyOperation"
 )

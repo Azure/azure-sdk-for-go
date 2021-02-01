@@ -77,6 +77,11 @@ func (e *StorageError) ServiceCode() ServiceCodeType {
 	return e.serviceCode
 }
 
+// ServiceCode returns service-error information. The caller may examine these values but should not modify any of them.
+func (e *StorageError) StatusCode() int {
+	return e.response.StatusCode
+}
+
 // Error implements the error interface's Error method to return a string representation of the error.
 func (e *StorageError) Error() string {
 	b := &bytes.Buffer{}

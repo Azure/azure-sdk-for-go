@@ -399,7 +399,7 @@ func ExampleMetadata_containers() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	containerURL, err := NewContainerClient(u, credential, nil)
+	containerClient, err := NewContainerClient(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -410,13 +410,13 @@ func ExampleMetadata_containers() {
 	// NOTE: Metadata key names are always converted to lowercase before being sent to the Storage Service.
 	// Therefore, you should always use lowercase letters; especially when querying a map for a metadata key.
 	creatingApp, _ := os.Executable()
-	_, err = containerURL.Create(ctx, &CreateContainerOptions{Metadata: &map[string]string{"author": "Jeffrey", "app": creatingApp}})
+	_, err = containerClient.Create(ctx, &CreateContainerOptions{Metadata: &map[string]string{"author": "Jeffrey", "app": creatingApp}})
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Query the container's metadata
-	get, err := containerURL.GetProperties(ctx, nil)
+	get, err := containerClient.GetProperties(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -429,7 +429,7 @@ func ExampleMetadata_containers() {
 
 	// Update the metadata and write it back to the container
 	metadata["author"] = "Aidan" // NOTE: The keyname is in all lowercase letters
-	_, err = containerURL.SetMetadata(ctx, &SetMetadataContainerOptions{Metadata: &metadata})
+	_, err = containerClient.SetMetadata(ctx, &SetMetadataContainerOptions{Metadata: &metadata})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -449,7 +449,7 @@ func ExampleMetadata_blobs() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	blobURL, err := NewBlockBlobClient(u, credential, nil)
+	blobClient, err := NewBlockBlobClient(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -460,13 +460,13 @@ func ExampleMetadata_blobs() {
 	// NOTE: Metadata key names are always converted to lowercase before being sent to the Storage Service.
 	// Therefore, you should always use lowercase letters; especially when querying a map for a metadata key.
 	creatingApp, _ := os.Executable()
-	_, err = blobURL.Upload(ctx, strings.NewReader("Some text"), &UploadBlockBlobOptions{Metadata: &map[string]string{"author": "Jeffrey", "app": creatingApp}})
+	_, err = blobClient.Upload(ctx, strings.NewReader("Some text"), &UploadBlockBlobOptions{Metadata: &map[string]string{"author": "Jeffrey", "app": creatingApp}})
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Query the blob's properties and metadata
-	get, err := blobURL.GetProperties(ctx, nil)
+	get, err := blobClient.GetProperties(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -482,7 +482,7 @@ func ExampleMetadata_blobs() {
 
 	// Update the blob's metadata and write it back to the blob
 	metadata["editor"] = "Grant" // Add a new key/value; NOTE: The keyname is in all lowercase letters
-	_, err = blobURL.SetMetadata(ctx, metadata, nil)
+	_, err = blobClient.SetMetadata(ctx, metadata, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -502,14 +502,14 @@ func ExampleBlobHTTPHeaders() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	blobURL, err := NewBlockBlobClient(u, credential, nil)
+	blobClient, err := NewBlockBlobClient(u, credential, nil)
 
 	ctx := context.Background() // This example uses a never-expiring context
 
 	// Create a blob with HTTP headers
 	contentType := "text/html; charset=utf-8"
 	contentDisposition := "attachment"
-	_, err = blobURL.Upload(ctx, strings.NewReader("Some text"),
+	_, err = blobClient.Upload(ctx, strings.NewReader("Some text"),
 		&UploadBlockBlobOptions{BlobHttpHeaders: &BlobHttpHeaders{
 			BlobContentType:        &contentType,
 			BlobContentDisposition: &contentDisposition,
@@ -519,7 +519,7 @@ func ExampleBlobHTTPHeaders() {
 	}
 
 	// GetMetadata returns the blob's properties, HTTP headers, and metadata
-	get, err := blobURL.GetProperties(ctx, nil)
+	get, err := blobClient.GetProperties(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -534,7 +534,7 @@ func ExampleBlobHTTPHeaders() {
 	// Update the blob's HTTP Headers and write them back to the blob
 	contentType = "text/plain"
 	httpHeaders.BlobContentType = &contentType
-	_, err = blobURL.SetHTTPHeaders(ctx, httpHeaders, nil)
+	_, err = blobClient.SetHTTPHeaders(ctx, httpHeaders, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -555,7 +555,7 @@ func ExampleBlockBlobURL() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	blobURL, err := NewBlockBlobClient(u, credential, nil)
+	blobClient, err := NewBlockBlobClient(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -589,20 +589,20 @@ func ExampleBlockBlobURL() {
 		base64BlockIDs[index] = blockIDIntToBase64(index) // Some people use UUIDs for block IDs
 
 		// Upload a block to this blob specifying the Block ID and its content (up to 100MB); this block is uncommitted.
-		_, err := blobURL.StageBlock(ctx, base64BlockIDs[index], strings.NewReader(word), nil)
+		_, err := blobClient.StageBlock(ctx, base64BlockIDs[index], strings.NewReader(word), nil)
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
 
 	// After all the blocks are uploaded, atomically commit them to the blob.
-	_, err = blobURL.CommitBlockList(ctx, base64BlockIDs, nil)
+	_, err = blobClient.CommitBlockList(ctx, base64BlockIDs, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// For the blob, show each block (ID and size) that is a committed part of it.
-	getBlock, err := blobURL.GetBlockList(ctx, BlockListTypeAll, nil)
+	getBlock, err := blobClient.GetBlockList(ctx, BlockListTypeAll, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -612,7 +612,7 @@ func ExampleBlockBlobURL() {
 
 	// Download the blob in its entirety; download operations do not take blocks into account.
 	// NOTE: For really large blobs, downloading them like allocates a lot of memory.
-	get, err := blobURL.Download(ctx, nil)
+	get, err := blobClient.Download(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -679,13 +679,13 @@ func ExamplePageBlobURL() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	blobURL, err := NewPageBlobClient(u, credential, nil)
+	blobClient, err := NewPageBlobClient(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	ctx := context.Background() // This example uses a never-expiring context
-	_, err = blobURL.Create(ctx, PageBlobPageBytes*4, nil)
+	_, err = blobClient.Create(ctx, PageBlobPageBytes*4, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -693,32 +693,19 @@ func ExamplePageBlobURL() {
 	page := [PageBlobPageBytes]byte{}
 	copy(page[:], "Page 0")
 	var offset int64 = 0 * PageBlobPageBytes
-	_, err = blobURL.UploadPages(ctx, bytes.NewReader(page[:]), &UploadPagesOptions{Offset: &offset})
+	_, err = blobClient.UploadPages(ctx, bytes.NewReader(page[:]), &UploadPagesOptions{Offset: &offset})
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	copy(page[:], "Page 1")
 	offset = 2 * PageBlobPageBytes
-	_, err = blobURL.UploadPages(ctx, bytes.NewReader(page[:]), &UploadPagesOptions{Offset: &offset})
+	_, err = blobClient.UploadPages(ctx, bytes.NewReader(page[:]), &UploadPagesOptions{Offset: &offset})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	getPages, err := blobURL.GetPageRanges(ctx, 0*PageBlobPageBytes, 10*PageBlobPageBytes, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	for _, pr := range *getPages.PageList.PageRange {
-		fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
-	}
-
-	_, err = blobURL.ClearPages(ctx, 0*PageBlobPageBytes, 1*PageBlobPageBytes, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	getPages, err = blobURL.GetPageRanges(ctx, 0*PageBlobPageBytes, 10*PageBlobPageBytes, nil)
+	getPages, err := blobClient.GetPageRanges(ctx, 0*PageBlobPageBytes, 10*PageBlobPageBytes, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -726,7 +713,20 @@ func ExamplePageBlobURL() {
 		fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
 	}
 
-	get, err := blobURL.Download(ctx, nil)
+	_, err = blobClient.ClearPages(ctx, 0*PageBlobPageBytes, 1*PageBlobPageBytes, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	getPages, err = blobClient.GetPageRanges(ctx, 0*PageBlobPageBytes, 10*PageBlobPageBytes, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, pr := range *getPages.PageList.PageRange {
+		fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
+	}
+
+	get, err := blobClient.Download(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -749,13 +749,13 @@ func Example_blobSnapshots() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	containerURL, err := NewContainerClient(u, credential, nil)
+	containerClient, err := NewContainerClient(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Create a BlockBlobURL object to a blob in the container.
-	baseBlobURL := containerURL.NewBlockBlobClient("Original.txt")
+	baseBlobURL := containerClient.NewBlockBlobClient("Original.txt")
 
 	ctx := context.Background() // This example uses a never-expiring context
 
@@ -796,7 +796,7 @@ func Example_blobSnapshots() {
 
 	// Show all blobs in the container with their snapshots:
 	// List the blob(s) in our container; since a container may hold millions of blobs, this is done 1 segment at a time.
-	blobs, errs := containerURL.ListBlobsFlatSegment(ctx, 0, 0, nil)
+	blobs, errs := containerClient.ListBlobsFlatSegment(ctx, 0, 0, nil)
 	for blob := range blobs { // range over a channel doesn't block, so, if there's an immediate error, it's happy.
 		// Process the blobs returned
 		snapTime := "N/A"
@@ -838,18 +838,18 @@ func Example_progressUploadDownload() {
 	cURL := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
 
 	// Create an ServiceURL object that wraps the service URL and a request pipeline to making requests.
-	containerURL, err := NewContainerClient(cURL, credential, nil)
+	containerClient, err := NewContainerClient(cURL, credential, nil)
 
 	ctx := context.Background() // This example uses a never-expiring context
 	// Here's how to create a blob with HTTP headers and metadata (I'm using the same metadata that was put on the container):
-	blobURL := containerURL.NewBlockBlobClient("Data.bin")
+	blobClient := containerClient.NewBlockBlobClient("Data.bin")
 
 	// requestBody is the stream of data to write
 	requestBody := strings.NewReader("Some text to write")
 
 	// Wrap the request body in a RequestBodyProgress and pass a callback function for progress reporting.
 	contentType, contentDisposition := "text/html; charset=utf-8", "attachment"
-	_, err = blobURL.Upload(ctx, azcore.NewRequestBodyProgress(azcore.NopCloser(requestBody), func(bytesTransferred int64) {
+	_, err = blobClient.Upload(ctx, azcore.NewRequestBodyProgress(azcore.NopCloser(requestBody), func(bytesTransferred int64) {
 		fmt.Printf("Wrote %d of %d bytes.", bytesTransferred, requestBody.Size())
 	}), &UploadBlockBlobOptions{BlobHttpHeaders: &BlobHttpHeaders{
 		BlobContentType:        &contentType,
@@ -860,7 +860,7 @@ func Example_progressUploadDownload() {
 	}
 
 	// Here's how to read the blob's data with progress reporting:
-	get, err := blobURL.Download(ctx, nil)
+	get, err := blobClient.Download(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -889,7 +889,7 @@ func ExampleBlobURL_startCopy() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	blobURL, err := NewBlobClient(u, credential, nil, nil)
+	blobClient, err := NewBlobClient(u, credential, nil, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -897,7 +897,7 @@ func ExampleBlobURL_startCopy() {
 	ctx := context.Background() // This example uses a never-expiring context
 
 	src, _ := url.Parse("https://cdn2.auth0.com/docs/media/addons/azure_blob.svg")
-	startCopy, err := blobURL.StartCopyFromURL(ctx, *src, nil)
+	startCopy, err := blobClient.StartCopyFromURL(ctx, *src, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -906,13 +906,13 @@ func ExampleBlobURL_startCopy() {
 	copyStatus := *startCopy.CopyStatus
 	for copyStatus == CopyStatusTypePending {
 		time.Sleep(time.Second * 2)
-		getMetadata, err := blobURL.GetProperties(ctx, nil)
+		getMetadata, err := blobClient.GetProperties(ctx, nil)
 		if err != nil {
 			log.Fatal(err)
 		}
 		copyStatus = *getMetadata.CopyStatus
 	}
-	fmt.Printf("Copy from %s to %s: ID=%s, Status=%s\n", src.String(), blobURL, copyID, copyStatus)
+	fmt.Printf("Copy from %s to %s: ID=%s, Status=%s\n", src.String(), blobClient, copyID, copyStatus)
 }
 
 // // This example shows how to copy a large stream in blocks (chunks) to a block blob.
@@ -987,7 +987,7 @@ func ExampleBlobClient_Download() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	blobURL, err := NewBlobClient(u, credential, nil, nil)
+	blobClient, err := NewBlobClient(u, credential, nil, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -995,7 +995,7 @@ func ExampleBlobClient_Download() {
 	contentLength := int64(0) // Used for progress reporting to report the total number of bytes being downloaded.
 
 	// Download returns an intelligent retryable stream around a blob; it returns an io.ReadCloser.
-	dr, err := blobURL.Download(context.TODO(), nil)
+	dr, err := blobClient.Download(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1068,7 +1068,7 @@ func ExampleLeaseContainer() {
 
 	// Create an ContainerURL object that wraps the container's URL and a default pipeline.
 	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
-	containerURL, err := NewContainerClient(u, credential, nil)
+	containerClient, err := NewContainerClient(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1079,21 +1079,21 @@ func ExampleLeaseContainer() {
 	// Now acquire a lease on the container.
 	// You can choose to pass an empty string for proposed ID so that the service automatically assigns one for you.
 	duration := int32(60)
-	acquireLeaseResponse, err := containerURL.AcquireLease(ctx, &AcquireLeaseOptionsContainer{ContainerAcquireLeaseOptions: &ContainerAcquireLeaseOptions{Duration: &duration}})
+	acquireLeaseResponse, err := containerClient.AcquireLease(ctx, &AcquireLeaseOptionsContainer{ContainerAcquireLeaseOptions: &ContainerAcquireLeaseOptions{Duration: &duration}})
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("The container is leased for delete operations with lease ID", *acquireLeaseResponse.LeaseID)
 
 	// The container cannot be deleted without providing the lease ID.
-	_, err = containerURL.Delete(ctx, nil)
+	_, err = containerClient.Delete(ctx, nil)
 	if err == nil {
 		log.Fatal("delete should have failed")
 	}
 	fmt.Println("The container cannot be deleted while there is an active lease")
 
 	// We can release the lease now and the container can be deleted.
-	_, err = containerURL.ReleaseLease(ctx, *acquireLeaseResponse.LeaseID, nil)
+	_, err = containerClient.ReleaseLease(ctx, *acquireLeaseResponse.LeaseID, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1101,7 +1101,7 @@ func ExampleLeaseContainer() {
 
 	// Acquire a lease again to perform other operations.
 	// duration is still 60
-	acquireLeaseResponse, err = containerURL.AcquireLease(ctx, &AcquireLeaseOptionsContainer{ContainerAcquireLeaseOptions: &ContainerAcquireLeaseOptions{Duration: &duration}})
+	acquireLeaseResponse, err = containerClient.AcquireLease(ctx, &AcquireLeaseOptionsContainer{ContainerAcquireLeaseOptions: &ContainerAcquireLeaseOptions{Duration: &duration}})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1111,14 +1111,14 @@ func ExampleLeaseContainer() {
 	// A lease ID can be any valid GUID string format.
 	newLeaseID := newUUID()
 	newLeaseID[0] = 1
-	changeLeaseResponse, err := containerURL.ChangeLease(ctx, *acquireLeaseResponse.LeaseID, newLeaseID.String(), nil)
+	changeLeaseResponse, err := containerClient.ChangeLease(ctx, *acquireLeaseResponse.LeaseID, newLeaseID.String(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("The lease ID was changed to", *changeLeaseResponse.LeaseID)
 
 	// The lease can be renewed.
-	renewLeaseResponse, err := containerURL.RenewLease(ctx, *changeLeaseResponse.LeaseID, nil)
+	renewLeaseResponse, err := containerClient.RenewLease(ctx, *changeLeaseResponse.LeaseID, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1126,9 +1126,9 @@ func ExampleLeaseContainer() {
 
 	// Finally, the lease can be broken and we could prevent others from acquiring a lease for a period of time
 	duration = 60
-	_, err = containerURL.BreakLease(ctx, &BreakLeaseOptionsContainer{ContainerBreakLeaseOptions: &ContainerBreakLeaseOptions{BreakPeriod: &duration}})
+	_, err = containerClient.BreakLease(ctx, &BreakLeaseOptionsContainer{ContainerBreakLeaseOptions: &ContainerBreakLeaseOptions{BreakPeriod: &duration}})
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("The lease was borken, and nobody can acquire a lease for 60 seconds")
+	fmt.Println("The lease was broken, and nobody can acquire a lease for 60 seconds")
 }

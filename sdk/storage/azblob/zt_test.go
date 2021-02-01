@@ -211,6 +211,22 @@ func createNewBlockBlob(c *chk.C, container ContainerClient) (blob BlockBlobClie
 	return
 }
 
+func createNewBlobs(c *chk.C, container ContainerClient, blobNames []string) {
+	for _, name := range blobNames {
+		createNewBlockBlobWithName(c, container, name)
+	}
+}
+
+func createNewBlockBlobWithName(c *chk.C, container ContainerClient, name string) (blob BlockBlobClient) {
+	blob = container.NewBlockBlobClient(name)
+
+	cResp, err := blob.Upload(ctx, strings.NewReader(blockBlobDefaultData), nil)
+
+	c.Assert(err, chk.IsNil)
+	c.Assert(cResp.RawResponse.StatusCode, chk.Equals, 201)
+	return
+}
+
 func createNewAppendBlob(c *chk.C, container ContainerClient) (blob AppendBlobClient, name string) {
 	blob, name = getAppendBlobClient(c, container)
 
@@ -348,13 +364,6 @@ func disableSoftDelete(c *chk.C, bsu ServiceClient) {
 	c.Assert(err, chk.IsNil)
 }
 
-//func validateUpload(c *chk.C, blobClient AppendBlobClient) {
-//	resp, err := blobClient.Download(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	data, _ := ioutil.ReadAll(resp.Response().Body)
-//	c.Assert(data, chk.HasLen, 0)
-//}
-
 func validateUpload(c *chk.C, blobClient BlobClient) {
 	resp, err := blobClient.Download(ctx, nil)
 	c.Assert(err, chk.IsNil)
@@ -367,4 +376,9 @@ func blockIDIntToBase64(blockID int) string {
 	binaryBlockID := (&[4]byte{})[:]
 	binary.LittleEndian.PutUint32(binaryBlockID, uint32(blockID))
 	return base64.StdEncoding.EncodeToString(binaryBlockID)
+}
+
+func validateStorageError(c *chk.C, err error, code ServiceCodeType) {
+	storageError, _ := err.(*StorageError)
+	c.Assert(storageError.ServiceCode(), chk.Equals, code)
 }

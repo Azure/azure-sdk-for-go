@@ -3855,21 +3855,21 @@ type StaticWebsite struct {
 	IndexDocument *string `xml:"IndexDocument"`
 }
 
-type StorageError struct {
-	Message *string `xml:"Message"`
-}
+// type StorageError struct {
+// 	Message *string `xml:"Message"`
+// }
 
-// Error implements the error interface for type StorageError.
-func (e StorageError) Error() string {
-	msg := ""
-	if e.Message != nil {
-		msg += fmt.Sprintf("Message: %v\n", *e.Message)
-	}
-	if msg == "" {
-		msg = "missing error info"
-	}
-	return msg
-}
+// // Error implements the error interface for type StorageError.
+// func (e StorageError) Error() string {
+// 	msg := ""
+// 	if e.Message != nil {
+// 		msg += fmt.Sprintf("Message: %v\n", *e.Message)
+// 	}
+// 	if msg == "" {
+// 		msg = "missing error info"
+// 	}
+// 	return msg
+// }
 
 // Storage Service Properties.
 type StorageServiceProperties struct {

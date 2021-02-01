@@ -38,3 +38,5 @@ _testmain.go
 
 # ignore vendor/
 vendor/
+
+.idea/

@@ -8,6 +8,7 @@ import (
 type listBlobsFlatSegmentAutoPager struct {
 	pager   ListBlobsFlatSegmentResponsePager
 	channel chan BlobItemInternal
+	errChan chan error
 	ctx     context.Context
 
 	// Set to 0 for no time-out
@@ -18,6 +19,7 @@ type listBlobsFlatSegmentAutoPager struct {
 type listBlobsHierarchySegmentAutoPager struct {
 	pager   ListBlobsHierarchySegmentResponsePager
 	channel chan BlobItemInternal
+	errChan chan error
 	ctx     context.Context
 
 	// Set to 0 for no time-out
@@ -33,12 +35,18 @@ func (p listBlobsFlatSegmentAutoPager) Go() {
 
 		if resp.RawResponse != nil {
 			for _, v := range *resp.EnumerationResults.Segment.BlobItems {
-				p.timer.Reset(p.timeout)
+				if p.timeout != 0 {
+					p.timer.Reset(p.timeout)
+				} else {
+					p.timer.C = nil
+				}
 
 				select {
 				case p.channel <- v:
 				case <-p.timer.C:
+					p.errChan <- nil
 
+					close(p.errChan)
 					close(p.channel)
 					return // break the queue
 				}
@@ -46,6 +54,14 @@ func (p listBlobsFlatSegmentAutoPager) Go() {
 		}
 
 		if !p.pager.NextPage(p.ctx) {
+			err := p.pager.Err()
+			if err != nil {
+				p.errChan <- handleError(err)
+			} else {
+				p.errChan <- nil
+			}
+
+			close(p.errChan)
 			close(p.channel)
 			return
 		}
@@ -68,12 +84,16 @@ func (p listBlobsHierarchySegmentAutoPager) Go() {
 			for _, v := range *resp.EnumerationResults.Segment.BlobItems {
 				if p.timeout != 0 {
 					p.timer.Reset(p.timeout)
+				} else {
+					p.timer.C = nil
 				}
 
 				select {
 				case p.channel <- v:
 				case <-p.timer.C:
+					p.errChan <- nil
 
+					close(p.errChan)
 					close(p.channel)
 					return // break the queue
 				}
@@ -81,6 +101,15 @@ func (p listBlobsHierarchySegmentAutoPager) Go() {
 		}
 
 		if !p.pager.NextPage(p.ctx) {
+			err := p.pager.Err()
+			if err != nil {
+				p.errChan <- handleError(err)
+			} else {
+				p.errChan <- nil
+			}
+
+			// register an exit to listing
+			close(p.errChan)
 			close(p.channel)
 			return
 		}

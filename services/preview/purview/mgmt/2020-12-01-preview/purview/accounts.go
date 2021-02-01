@@ -49,17 +49,14 @@ func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) Account
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - the name of the Purview account.
 // account - the parameters to provide for the created account.
-func (client AccountsClient) Create(ctx context.Context, resourceGroupName string, accountName string, account Account) (result Account, err error) {
+func (client AccountsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, account Account) (result Account, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.Create")
-
 		defer func() {
 			sc := -1
-
 			if result.Response.Response != nil {
 				sc = result.Response.Response.StatusCode
 			}
-
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
@@ -127,34 +124,34 @@ func (client AccountsClient) Create(ctx context.Context, resourceGroupName strin
 			},
 		},
 	}); err != nil {
-		return result, validation.NewError("purview.AccountsClient", "Create", err.Error())
+		return result, validation.NewError("purview.AccountsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, accountName, account)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, accountName, account)
 
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "purview.AccountsClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "purview.AccountsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateSender(req)
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "purview.AccountsClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "purview.AccountsClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.CreateResponder(resp)
+	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "purview.AccountsClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "purview.AccountsClient", "CreateOrUpdate", resp, "Failure responding to request")
 		return
 	}
 
 	return
 }
 
-// CreatePreparer prepares the Create request.
-func (client AccountsClient) CreatePreparer(ctx context.Context, resourceGroupName string, accountName string, account Account) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the Create request.
+func (client AccountsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, accountName string, account Account) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -180,18 +177,18 @@ func (client AccountsClient) CreatePreparer(ctx context.Context, resourceGroupNa
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateSender sends the Create request. The method will close the
+// CreateOrUpdateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountsClient) CreateSender(req *http.Request) (*http.Response, error) {
+func (client AccountsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
-// CreateResponder handles the response to the Create request. The method always
+// CreateOrUpdateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) CreateResponder(resp *http.Response) (result Account, err error) {
+func (client AccountsClient) CreateOrUpdateResponder(resp *http.Response) (result Account, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 

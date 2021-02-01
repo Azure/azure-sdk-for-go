@@ -26,7 +26,7 @@ import (
 
 // AccountsClientAPI contains the set of methods on the AccountsClient type.
 type AccountsClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, accountName string, account purview.Account) (result purview.Account, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, account purview.Account) (result purview.Account, err error)
 	Delete(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error)
 	GetProperties(ctx context.Context, resourceGroupName string, accountName string) (result purview.Account, err error)
 	List(ctx context.Context) (result purview.AccountListResultPage, err error)

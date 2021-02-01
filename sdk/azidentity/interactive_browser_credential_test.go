@@ -63,7 +63,7 @@ func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	authCodeReceiver = func(authorityHost string, opts *InteractiveBrowserCredentialOptions, scopes []string) (*interactiveConfig, error) {
+	authCodeReceiver = func(ctx context.Context, authorityHost string, opts *InteractiveBrowserCredentialOptions, scopes []string) (*interactiveConfig, error) {
 		return &interactiveConfig{
 			authCode:    "12345",
 			redirectURI: srv.URL(),
@@ -96,7 +96,7 @@ func TestInteractiveBrowserCredential_SetPort(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	authCodeReceiver = func(authorityHost string, opts *InteractiveBrowserCredentialOptions, scopes []string) (*interactiveConfig, error) {
+	authCodeReceiver = func(ctx context.Context, authorityHost string, opts *InteractiveBrowserCredentialOptions, scopes []string) (*interactiveConfig, error) {
 		if opts.Port != 8080 {
 			t.Fatalf("Did not receive the correct port. Expected: %v, Received: %v", 8080, opts.Port)
 		}
@@ -132,7 +132,7 @@ func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	authCodeReceiver = func(authorityHost string, opts *InteractiveBrowserCredentialOptions, scopes []string) (*interactiveConfig, error) {
+	authCodeReceiver = func(ctx context.Context, authorityHost string, opts *InteractiveBrowserCredentialOptions, scopes []string) (*interactiveConfig, error) {
 		return &interactiveConfig{
 			authCode:    "12345",
 			redirectURI: srv.URL(),

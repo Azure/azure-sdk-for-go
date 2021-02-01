@@ -382,7 +382,7 @@ func (c *aadIdentityClient) createDeviceCodeNumberRequest(ctx context.Context, t
 // authenticateInteractiveBrowser opens an interactive browser window, gets the authorization code and requests an Access Token with the
 // authorization code and returns the token or an error in case of authentication failure.
 func (c *aadIdentityClient) authenticateInteractiveBrowser(ctx context.Context, opts *InteractiveBrowserCredentialOptions, scopes []string) (*azcore.AccessToken, error) {
-	cfg, err := authCodeReceiver(c.authorityHost, opts, scopes)
+	cfg, err := authCodeReceiver(ctx, c.authorityHost, opts, scopes)
 	if err != nil {
 		return nil, err
 	}

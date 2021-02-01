@@ -34,9 +34,6 @@ type InteractiveBrowserCredentialOptions struct {
 	// The localhost port for the local server that will be used to redirect back.
 	// By default, a random port number will be selected.
 	Port int
-	// Disables use of PKCE during authorization.
-	// The default is false.
-	DisablePKCE bool
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost string
@@ -112,13 +109,13 @@ func (c *InteractiveBrowserCredential) AuthenticationPolicy(options azcore.Authe
 var _ azcore.TokenCredential = (*InteractiveBrowserCredential)(nil)
 
 // authCodeReceiver is used to allow for testing without opening an interactive browser window. Allows mocking a response authorization code and redirect URI.
-var authCodeReceiver = func(authorityHost string, opts *InteractiveBrowserCredentialOptions, scopes []string) (*interactiveConfig, error) {
-	return interactiveBrowserLogin(authorityHost, opts, scopes)
+var authCodeReceiver = func(ctx context.Context, authorityHost string, opts *InteractiveBrowserCredentialOptions, scopes []string) (*interactiveConfig, error) {
+	return interactiveBrowserLogin(ctx, authorityHost, opts, scopes)
 }
 
 // interactiveBrowserLogin opens an interactive browser with the specified tenant and client IDs provided then returns the authorization code
 // received or an error.
-func interactiveBrowserLogin(authorityHost string, opts *InteractiveBrowserCredentialOptions, scopes []string) (*interactiveConfig, error) {
+func interactiveBrowserLogin(ctx context.Context, authorityHost string, opts *InteractiveBrowserCredentialOptions, scopes []string) (*interactiveConfig, error) {
 	// start local redirect server so login can call us back
 	rs := newServer()
 	state := uuid.New().String()
@@ -140,28 +137,27 @@ func interactiveBrowserLogin(authorityHost string, opts *InteractiveBrowserCrede
 	values.Add("scope", strings.Join(scopes, " "))
 	values.Add("prompt", "select_account")
 	cv := ""
-	if opts.DisablePKCE == false {
-		// the code verifier is a random 32-byte sequence that's been base-64 encoded without padding.
-		// it's used to prevent MitM attacks during auth code flow, see https://tools.ietf.org/html/rfc7636
-		b := make([]byte, 32, 32)
-		if _, err := rand.Read(b); err != nil {
-			return nil, err
-		}
-		cv = base64.RawURLEncoding.EncodeToString(b)
-		// for PKCE, create a hash of the code verifier
-		cvh := sha256.Sum256([]byte(cv))
-		values.Add("code_challenge", base64.RawURLEncoding.EncodeToString(cvh[:]))
-		values.Add("code_challenge_method", "S256")
+	// the code verifier is a random 32-byte sequence that's been base-64 encoded without padding.
+	// it's used to prevent MitM attacks during auth code flow, see https://tools.ietf.org/html/rfc7636
+	b := make([]byte, 32, 32)
+	if _, err := rand.Read(b); err != nil {
+		return nil, err
 	}
+	cv = base64.RawURLEncoding.EncodeToString(b)
+	// for PKCE, create a hash of the code verifier
+	cvh := sha256.Sum256([]byte(cv))
+	values.Add("code_challenge", base64.RawURLEncoding.EncodeToString(cvh[:]))
+	values.Add("code_challenge_method", "S256")
 	u.Path = azcore.JoinPaths(u.Path, opts.TenantID, authEndpoint)
 	u.RawQuery = values.Encode()
 	// open browser window so user can select credentials
-	err = browser.OpenURL(u.String())
-	if err != nil {
+	if err = browser.OpenURL(u.String()); err != nil {
 		return nil, err
 	}
 	// now wait until the logic calls us back
-	rs.WaitForCallback()
+	if err := rs.WaitForCallback(ctx); err != nil {
+		return nil, err
+	}
 
 	authCode, err := rs.AuthorizationCode()
 	if err != nil {

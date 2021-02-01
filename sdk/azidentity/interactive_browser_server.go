@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
-	"sync"
 )
 
 const okPage = `
@@ -41,7 +40,7 @@ const failPage = `
 `
 
 type server struct {
-	wg   *sync.WaitGroup
+	done chan struct{}
 	s    *http.Server
 	code string
 	err  error
@@ -50,8 +49,8 @@ type server struct {
 // NewServer creates an object that satisfies the Server interface.
 func newServer() *server {
 	rs := &server{
-		wg: &sync.WaitGroup{},
-		s:  &http.Server{},
+		done: make(chan struct{}),
+		s:    &http.Server{},
 	}
 	return rs
 }
@@ -64,7 +63,9 @@ func (s *server) Start(reqState string, port int) string {
 	}
 	s.s.Addr = fmt.Sprintf(":%d", port)
 	s.s.Handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		defer s.wg.Done()
+		defer func() {
+			s.done <- struct{}{}
+		}()
 		qp := r.URL.Query()
 		if respState, ok := qp["state"]; !ok {
 			s.err = errors.New("missing OAuth state")
@@ -85,19 +86,24 @@ func (s *server) Start(reqState string, port int) string {
 			s.err = errors.New("authorization code missing in query string")
 		}
 	})
-	s.wg.Add(1)
 	go s.s.ListenAndServe()
 	return fmt.Sprintf("http://localhost:%d", port)
 }
 
 // Stop will shut down the local HTTP server.
 func (s *server) Stop() {
+	close(s.done)
 	s.s.Shutdown(context.Background())
 }
 
 // WaitForCallback will wait until Azure interactive login has called us back with an authorization code or error.
-func (s *server) WaitForCallback() {
-	s.wg.Wait()
+func (s *server) WaitForCallback(ctx context.Context) error {
+	select {
+	case <-s.done:
+		return nil
+	case <-ctx.Done():
+		return ctx.Err()
+	}
 }
 
 // AuthorizationCode returns the authorization code or error result from the interactive login.

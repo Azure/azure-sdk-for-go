@@ -86,7 +86,7 @@ By default, this command ignores API versions that are in preview.`,
 		}
 		listDef, err := model.GetLatestPackages(rootDir, includePreview, outputLog)
 		// don't recursively build profiles as we already built the list of packages recursively
-		model.BuildProfile(listDef, profileName, outputRootDir, outputLog, errLog, false, modulesFlag)
+		model.BuildProfile(listDef, profileName, outputRootDir, outputLog, errLog, false, modulesFlag, semLimit)
 	},
 }
 

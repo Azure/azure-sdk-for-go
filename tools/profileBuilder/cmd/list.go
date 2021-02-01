@@ -127,7 +127,7 @@ $> ../model/testdata/smallProfile.txt > profileBuilder list --name small_profile
 			}
 		}
 		// use recursive build to include the *api packages
-		model.BuildProfile(listDef, profileName, outputRootDir, outputLog, errLog, true, modulesFlag)
+		model.BuildProfile(listDef, profileName, outputRootDir, outputLog, errLog, true, modulesFlag, semLimit)
 	},
 }
 

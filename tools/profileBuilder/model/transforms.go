@@ -33,7 +33,6 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"sync"
 	"time"
@@ -56,13 +55,7 @@ const (
 )
 
 // BuildProfile takes a list of packages and creates a profile
-func BuildProfile(packageList ListDefinition, name, outputLocation string, outputLog, errLog *log.Logger, recursive, modules bool) {
-	// limit the number of concurrent calls to parser.ParseDir()
-	semLimit := 32
-	if runtime.GOOS == "darwin" {
-		// set a lower limit for darwin as it runs out of file handles
-		semLimit = 16
-	}
+func BuildProfile(packageList ListDefinition, name, outputLocation string, outputLog, errLog *log.Logger, recursive, modules bool, semLimit int) {
 	sem := make(chan struct{}, semLimit)
 	wg := &sync.WaitGroup{}
 	wg.Add(len(packageList.Include))

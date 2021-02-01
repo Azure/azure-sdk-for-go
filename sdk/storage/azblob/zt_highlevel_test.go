@@ -24,17 +24,17 @@ func generateFile(fileName string, fileSize int) []byte {
 func performUploadStreamToBlockBlobTest(c *chk.C, blobSize, bufferSize, maxBuffers int) {
 	// Set up test container
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 
 	// Set up test blob
-	blobURL, _ := getBlockBlobClient(c, containerURL)
+	blobClient, _ := getBlockBlobClient(c, containerClient)
 
 	// Create some data to test the upload stream
 	blobContentReader, blobData := getRandomDataAndReader(blobSize)
 
 	// Perform UploadStreamToBlockBlob
-	uploadResp, err := UploadStreamToBlockBlob(ctx, blobContentReader, blobURL,
+	uploadResp, err := UploadStreamToBlockBlob(ctx, blobContentReader, blobClient,
 		UploadStreamToBlockBlobOptions{BufferSize: bufferSize, MaxBuffers: maxBuffers})
 
 	// Assert that upload was successful
@@ -42,7 +42,7 @@ func performUploadStreamToBlockBlobTest(c *chk.C, blobSize, bufferSize, maxBuffe
 	c.Assert(uploadResp.Response().StatusCode, chk.Equals, 201)
 
 	// Download the blob to verify
-	downloadResponse, err := blobURL.Download(ctx, nil)
+	downloadResponse, err := blobClient.Download(ctx, nil)
 	c.Assert(err, chk.IsNil)
 
 	// Assert that the content is correct
@@ -100,14 +100,14 @@ func performUploadAndDownloadFileTest(c *chk.C, fileSize, blockSize, parallelism
 
 	// Set up test container
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 
 	// Set up test blob
-	blockBlobURL, _ := getBlockBlobClient(c, containerURL)
+	blockblobClient, _ := getBlockBlobClient(c, containerClient)
 
 	// Upload the file to a block blob
-	response, err := UploadFileToBlockBlob(context.Background(), file, blockBlobURL,
+	response, err := UploadFileToBlockBlob(context.Background(), file, blockblobClient,
 		HighLevelUploadToBlockBlobOption{
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
@@ -127,7 +127,7 @@ func performUploadAndDownloadFileTest(c *chk.C, fileSize, blockSize, parallelism
 	defer os.Remove(destFileName)
 
 	// Perform download
-	err = DownloadBlobToFile(context.Background(), blockBlobURL.BlobClient, int64(downloadOffset), int64(downloadCount),
+	err = DownloadBlobToFile(context.Background(), blockblobClient.BlobClient, int64(downloadOffset), int64(downloadCount),
 		destFile,
 		HighLevelDownloadFromBlobOptions{
 			BlockSize:   int64(blockSize),
@@ -226,14 +226,14 @@ func performUploadAndDownloadBufferTest(c *chk.C, blobSize, blockSize, paralleli
 
 	// Set up test container
 	bsu := getBSU()
-	containerURL, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL)
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
 
 	// Set up test blob
-	blockBlobURL, _ := getBlockBlobClient(c, containerURL)
+	blockblobClient, _ := getBlockBlobClient(c, containerClient)
 
 	// Pass the Context, stream, stream size, block blob URL, and options to StreamToBlockBlob
-	response, err := UploadBufferToBlockBlob(context.Background(), bytesToUpload, blockBlobURL,
+	response, err := UploadBufferToBlockBlob(context.Background(), bytesToUpload, blockblobClient,
 		HighLevelUploadToBlockBlobOption{
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
@@ -254,7 +254,7 @@ func performUploadAndDownloadBufferTest(c *chk.C, blobSize, blockSize, paralleli
 	}
 
 	// Download the blob to a buffer
-	err = DownloadBlobToBuffer(context.Background(), blockBlobURL.BlobClient, int64(downloadOffset), int64(downloadCount),
+	err = DownloadBlobToBuffer(context.Background(), blockblobClient.BlobClient, int64(downloadOffset), int64(downloadCount),
 		destBuffer, HighLevelDownloadFromBlobOptions{
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),

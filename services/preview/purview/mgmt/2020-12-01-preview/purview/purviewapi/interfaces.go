@@ -20,8 +20,8 @@ package purview
 import (
 	"context"
 
+	"github.com/Azure/azure-sdk-for-go/services/preview/purview/mgmt/2020-12-01-preview/purview"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/fernandoBRS/azure-sdk-for-go/services/preview/purview/mgmt/2020-12-01-preview/purview"
 )
 
 // AccountsClientAPI contains the set of methods on the AccountsClient type.

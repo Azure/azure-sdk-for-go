@@ -63,7 +63,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVarP(&modulesFlag, "modules", "m", false, "Executes commands in modules-aware mode.")
 	rootCmd.PersistentFlags().StringVarP(&profileName, "name", "n", "", "The name that should be used to identify the profile.")
 	rootCmd.PersistentFlags().StringVarP(&outputRootDir, "output-location", "o", "", "The folder in which to output the generated profile.")
-	rootCmd.PersistentFlags().IntVar(&semLimit, "sem-limit", 8, "The maximum number of packages to concurrently build.")
+	rootCmd.PersistentFlags().IntVar(&semLimit, "sem-limit", 1, "The maximum number of packages to concurrently build. The concurrency is off by default to avoid causing issues on some operation systems.")
 	rootCmd.MarkPersistentFlagRequired("name")
 	rootCmd.MarkPersistentFlagRequired("output-location")
 }

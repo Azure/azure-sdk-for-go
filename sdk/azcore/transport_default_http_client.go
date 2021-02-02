@@ -13,20 +13,9 @@ import (
 var defaultHTTPClient *http.Client
 
 func init() {
-	defaultTransport := http.DefaultTransport.(*http.Transport)
-	transport := &http.Transport{
-		Proxy:                 defaultTransport.Proxy,
-		DialContext:           defaultTransport.DialContext,
-		MaxIdleConns:          defaultTransport.MaxIdleConns,
-		IdleConnTimeout:       defaultTransport.IdleConnTimeout,
-		TLSHandshakeTimeout:   defaultTransport.TLSHandshakeTimeout,
-		ExpectContinueTimeout: defaultTransport.ExpectContinueTimeout,
-		TLSClientConfig: &tls.Config{
-			MinVersion: tls.VersionTLS12,
-		},
-	}
-	// TODO: in track 1 we created a cookiejar, do we need one here?  make it an option?  user-specified HTTP client policy?
+	defaultTransport := http.DefaultTransport.(*http.Transport).Clone()
+	defaultTransport.TLSClientConfig.MinVersion = tls.VersionTLS12
 	defaultHTTPClient = &http.Client{
-		Transport: transport,
+		Transport: defaultTransport,
 	}
 }

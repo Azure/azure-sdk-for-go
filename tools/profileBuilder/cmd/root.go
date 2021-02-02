@@ -30,6 +30,7 @@ var (
 	modulesFlag     bool
 	profileName     string
 	outputRootDir   string
+	semLimit        int
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -62,6 +63,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVarP(&modulesFlag, "modules", "m", false, "Executes commands in modules-aware mode.")
 	rootCmd.PersistentFlags().StringVarP(&profileName, "name", "n", "", "The name that should be used to identify the profile.")
 	rootCmd.PersistentFlags().StringVarP(&outputRootDir, "output-location", "o", "", "The folder in which to output the generated profile.")
+	rootCmd.PersistentFlags().IntVar(&semLimit, "sem-limit", 8, "The maximum number of packages to concurrently build.")
 	rootCmd.MarkPersistentFlagRequired("name")
 	rootCmd.MarkPersistentFlagRequired("output-location")
 }

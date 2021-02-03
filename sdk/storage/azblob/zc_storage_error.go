@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/xml"
 	"fmt"
-	"net"
 	"net/http"
 	"sort"
 	"strings"
@@ -27,7 +26,6 @@ import (
 // TL;DR: This implements xml.Unmarshaler, and when the original StorageError is substituted, this unmarshaler kicks in.
 // This handles the description and details. defunkifyStorageError handles the response, cause, and service code.
 type StorageError struct {
-	cause error //
 	response *http.Response
 	description string
 
@@ -49,7 +47,8 @@ func defunkifyStorageError(responseError *runtime.ResponseError) error {
 		// errors.Unwrap(responseError.Unwrap())
 
 		err.response = responseError.RawResponse()
-		err.cause = nil
+
+		err.serviceCode = ServiceCodeType(responseError.RawResponse().Header.Get("x-ms-error-code"))
 
 		if code, ok := err.details["Code"]; ok {
 			err.serviceCode = ServiceCodeType(code)
@@ -69,7 +68,7 @@ func defunkifyStorageError(responseError *runtime.ResponseError) error {
 // 		response: response,
 // 		description: description,
 //
-// 		serviceCode: ServiceCodeType(response.Header.Get("x-ms-error-code")),
+// 		serviceCode: ServiceCodeType(),
 // 	}
 // }
 
@@ -98,13 +97,13 @@ func (e *StorageError) Error() string {
 		}
 	}
 	// req := azcore.Request{Request: e.response.Request}.Copy() // Make a copy of the response's request
-	WriteRequestWithResponse(b, &azcore.Request{Request: e.response.Request}, e.response, e.cause)
+	WriteRequestWithResponse(b, &azcore.Request{Request: e.response.Request}, e.response)
 	return b.String()
 	// azcore.WriteRequestWithResponse(b, prepareRequestForLogging(req), e.response, nil)
 	// return e.ErrorNode.Error(b.String())
 }
 
-func WriteRequestWithResponse(b *bytes.Buffer, request *azcore.Request, response *http.Response, err error) {
+func WriteRequestWithResponse(b *bytes.Buffer, request *azcore.Request, response *http.Response) {
 	// Write the request into the buffer.
 	fmt.Fprint(b, "   "+request.Method+" "+request.URL.String()+"\n")
 	writeHeader(b, request.Header)
@@ -112,10 +111,6 @@ func WriteRequestWithResponse(b *bytes.Buffer, request *azcore.Request, response
 		fmt.Fprintln(b, "   --------------------------------------------------------------------------------")
 		fmt.Fprint(b, "   RESPONSE Status: "+response.Status+"\n")
 		writeHeader(b, response.Header)
-	}
-	if err != nil {
-		fmt.Fprintln(b, "   --------------------------------------------------------------------------------")
-		fmt.Fprint(b, "   ERROR:\n"+err.Error()+"\n")
 	}
 }
 
@@ -148,10 +143,6 @@ func (e *StorageError) Temporary() bool {
 		if (e.response.StatusCode == http.StatusInternalServerError) || (e.response.StatusCode == http.StatusServiceUnavailable) || (e.response.StatusCode == http.StatusBadGateway) {
 			return true
 		}
-	}
-
-	if netError, ok := e.cause.(net.Error); ok {
-		return netError.Temporary()
 	}
 
 	return false

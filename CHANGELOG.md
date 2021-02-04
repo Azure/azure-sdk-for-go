@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## `v51.1.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/mixedreality/mgmt/2021-01-01/mixedreality`
+- `github.com/Azure/azure-sdk-for-go/services/preview/compute/mgmt/2020-10-01-preview/compute`
+- `github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2020-10-01/storagecache`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/storage/mgmt/2020-08-01-preview/storage` | [details](services/preview/storage/mgmt/2020-08-01-preview/storage/CHANGELOG.md) |
+
 ## `v51.0.0`
 
 ### New Packages
@@ -12,8 +26,8 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn` | [details](services/cdn/mgmt/2020-09-01/cdn/CHANGELOG.md) |
-| `github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2019-01-01-preview/securityinsight` | [details](services/preview/securityinsight/mgmt/2019-01-01-preview/securityinsight/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v51.0.0/services/cdn/mgmt/2020-09-01/cdn/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2019-01-01-preview/securityinsight` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v51.0.0/services/preview/securityinsight/mgmt/2019-01-01-preview/securityinsight/CHANGELOG.md) |
 
 ## `v50.2.0`
 

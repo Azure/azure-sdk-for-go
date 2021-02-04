@@ -85,6 +85,7 @@ const (
 
 var (
 	validStorageAccount     = regexp.MustCompile("^[0-9a-z]{3,24}$")
+	validCosmosAccount      = regexp.MustCompile("^[0-9a-z-]{3,44}$")
 	defaultValidStatusCodes = []int{
 		http.StatusRequestTimeout,      // 408
 		http.StatusInternalServerError, // 500
@@ -309,10 +310,36 @@ func NewClient(accountName, accountKey, serviceBaseURL, apiVersion string, useHT
 		return c, fmt.Errorf("azure: malformed storage account key: %v", err)
 	}
 
-	c = Client{
+	return newClient(accountName, key, serviceBaseURL, apiVersion, useHTTPS)
+}
+
+// NewCosmosClient constructs a Client for Azure CosmosDB. This should be used if the caller wants
+// to specify whether to use HTTPS, a specific REST API version or a custom
+// cosmos endpoint than Azure Public Cloud.
+func NewCosmosClient(accountName, accountKey, serviceBaseURL, apiVersion string, useHTTPS bool) (Client, error) {
+	var c Client
+	if !IsValidCosmosAccount(accountName) {
+		return c, fmt.Errorf("azure: account name is not valid: The name can contain only lowercase letters, numbers and the '-' character, and must be between 3 and 44 characters: %v", accountName)
+	} else if accountKey == "" {
+		return c, fmt.Errorf("azure: account key required")
+	} else if serviceBaseURL == "" {
+		return c, fmt.Errorf("azure: base storage service url required")
+	}
+
+	key, err := base64.StdEncoding.DecodeString(accountKey)
+	if err != nil {
+		return c, fmt.Errorf("azure: malformed cosmos account key: %v", err)
+	}
+
+	return newClient(accountName, key, serviceBaseURL, apiVersion, useHTTPS)
+}
+
+// newClient constructs a Client with given parameters.
+func newClient(accountName string, accountKey []byte, serviceBaseURL, apiVersion string, useHTTPS bool) (Client, error) {
+	c := Client{
 		HTTPClient:       http.DefaultClient,
 		accountName:      accountName,
-		accountKey:       key,
+		accountKey:       accountKey,
 		useHTTPS:         useHTTPS,
 		baseURL:          serviceBaseURL,
 		apiVersion:       apiVersion,
@@ -332,6 +359,12 @@ func NewClient(accountName, accountKey, serviceBaseURL, apiVersion string, useHT
 // See https://docs.microsoft.com/en-us/azure/storage/storage-create-storage-account
 func IsValidStorageAccount(account string) bool {
 	return validStorageAccount.MatchString(account)
+}
+
+// IsValidCosmosAccount checks if the Cosmos account name is valid.
+// See https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-manage-database-account
+func IsValidCosmosAccount(account string) bool {
+	return validCosmosAccount.MatchString(account)
 }
 
 // NewAccountSASClient contructs a client that uses accountSAS authorization

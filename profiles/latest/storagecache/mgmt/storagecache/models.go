@@ -22,7 +22,7 @@ package storagecache
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2020-03-01/storagecache"
+	original "github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2020-10-01/storagecache"
 )
 
 const (
@@ -43,6 +43,14 @@ const (
 	Key             CreatedByType = original.Key
 	ManagedIdentity CreatedByType = original.ManagedIdentity
 	User            CreatedByType = original.User
+)
+
+type DomainJoinedType = original.DomainJoinedType
+
+const (
+	Error DomainJoinedType = original.Error
+	No    DomainJoinedType = original.No
+	Yes   DomainJoinedType = original.Yes
 )
 
 type FirmwareStatusType = original.FirmwareStatusType
@@ -78,6 +86,22 @@ const (
 	MetricAggregationTypeTotal        MetricAggregationType = original.MetricAggregationTypeTotal
 )
 
+type NfsAccessRuleAccess = original.NfsAccessRuleAccess
+
+const (
+	NfsAccessRuleAccessNo NfsAccessRuleAccess = original.NfsAccessRuleAccessNo
+	NfsAccessRuleAccessRo NfsAccessRuleAccess = original.NfsAccessRuleAccessRo
+	NfsAccessRuleAccessRw NfsAccessRuleAccess = original.NfsAccessRuleAccessRw
+)
+
+type NfsAccessRuleScope = original.NfsAccessRuleScope
+
+const (
+	Default NfsAccessRuleScope = original.Default
+	Host    NfsAccessRuleScope = original.Host
+	Network NfsAccessRuleScope = original.Network
+)
+
 type ProvisioningStateType = original.ProvisioningStateType
 
 const (
@@ -105,6 +129,23 @@ const (
 	TargetTypeUnknown                 TargetType = original.TargetTypeUnknown
 )
 
+type UsernameDownloadedType = original.UsernameDownloadedType
+
+const (
+	UsernameDownloadedTypeError UsernameDownloadedType = original.UsernameDownloadedTypeError
+	UsernameDownloadedTypeNo    UsernameDownloadedType = original.UsernameDownloadedTypeNo
+	UsernameDownloadedTypeYes   UsernameDownloadedType = original.UsernameDownloadedTypeYes
+)
+
+type UsernameSource = original.UsernameSource
+
+const (
+	UsernameSourceAD   UsernameSource = original.UsernameSourceAD
+	UsernameSourceFile UsernameSource = original.UsernameSourceFile
+	UsernameSourceLDAP UsernameSource = original.UsernameSourceLDAP
+	UsernameSourceNone UsernameSource = original.UsernameSourceNone
+)
+
 type APIOperation = original.APIOperation
 type APIOperationDisplay = original.APIOperationDisplay
 type APIOperationListResult = original.APIOperationListResult
@@ -113,10 +154,14 @@ type APIOperationListResultPage = original.APIOperationListResultPage
 type APIOperationProperties = original.APIOperationProperties
 type APIOperationPropertiesServiceSpecification = original.APIOperationPropertiesServiceSpecification
 type AscOperation = original.AscOperation
+type AscOperationProperties = original.AscOperationProperties
 type AscOperationsClient = original.AscOperationsClient
 type BaseClient = original.BaseClient
 type BasicStorageTargetProperties = original.BasicStorageTargetProperties
 type Cache = original.Cache
+type CacheActiveDirectorySettings = original.CacheActiveDirectorySettings
+type CacheActiveDirectorySettingsCredentials = original.CacheActiveDirectorySettingsCredentials
+type CacheDirectorySettings = original.CacheDirectorySettings
 type CacheEncryptionSettings = original.CacheEncryptionSettings
 type CacheHealth = original.CacheHealth
 type CacheIdentity = original.CacheIdentity
@@ -125,8 +170,11 @@ type CacheProperties = original.CacheProperties
 type CacheSecuritySettings = original.CacheSecuritySettings
 type CacheSku = original.CacheSku
 type CacheUpgradeStatus = original.CacheUpgradeStatus
+type CacheUsernameDownloadSettings = original.CacheUsernameDownloadSettings
+type CacheUsernameDownloadSettingsCredentials = original.CacheUsernameDownloadSettingsCredentials
 type CachesClient = original.CachesClient
 type CachesCreateOrUpdateFuture = original.CachesCreateOrUpdateFuture
+type CachesDebugInfoFuture = original.CachesDebugInfoFuture
 type CachesDeleteFuture = original.CachesDeleteFuture
 type CachesFlushFuture = original.CachesFlushFuture
 type CachesListResult = original.CachesListResult
@@ -147,6 +195,8 @@ type MetricSpecification = original.MetricSpecification
 type NamespaceJunction = original.NamespaceJunction
 type Nfs3Target = original.Nfs3Target
 type Nfs3TargetProperties = original.Nfs3TargetProperties
+type NfsAccessPolicy = original.NfsAccessPolicy
+type NfsAccessRule = original.NfsAccessRule
 type OperationsClient = original.OperationsClient
 type ResourceSku = original.ResourceSku
 type ResourceSkuCapabilities = original.ResourceSkuCapabilities
@@ -155,7 +205,6 @@ type ResourceSkusResult = original.ResourceSkusResult
 type ResourceSkusResultIterator = original.ResourceSkusResultIterator
 type ResourceSkusResultPage = original.ResourceSkusResultPage
 type Restriction = original.Restriction
-type SetObject = original.SetObject
 type SkusClient = original.SkusClient
 type StorageTarget = original.StorageTarget
 type StorageTargetProperties = original.StorageTargetProperties
@@ -254,6 +303,9 @@ func PossibleCacheIdentityTypeValues() []CacheIdentityType {
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()
 }
+func PossibleDomainJoinedTypeValues() []DomainJoinedType {
+	return original.PossibleDomainJoinedTypeValues()
+}
 func PossibleFirmwareStatusTypeValues() []FirmwareStatusType {
 	return original.PossibleFirmwareStatusTypeValues()
 }
@@ -263,6 +315,12 @@ func PossibleHealthStateTypeValues() []HealthStateType {
 func PossibleMetricAggregationTypeValues() []MetricAggregationType {
 	return original.PossibleMetricAggregationTypeValues()
 }
+func PossibleNfsAccessRuleAccessValues() []NfsAccessRuleAccess {
+	return original.PossibleNfsAccessRuleAccessValues()
+}
+func PossibleNfsAccessRuleScopeValues() []NfsAccessRuleScope {
+	return original.PossibleNfsAccessRuleScopeValues()
+}
 func PossibleProvisioningStateTypeValues() []ProvisioningStateType {
 	return original.PossibleProvisioningStateTypeValues()
 }
@@ -271,6 +329,12 @@ func PossibleReasonCodeValues() []ReasonCode {
 }
 func PossibleTargetTypeValues() []TargetType {
 	return original.PossibleTargetTypeValues()
+}
+func PossibleUsernameDownloadedTypeValues() []UsernameDownloadedType {
+	return original.PossibleUsernameDownloadedTypeValues()
+}
+func PossibleUsernameSourceValues() []UsernameSource {
+	return original.PossibleUsernameSourceValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

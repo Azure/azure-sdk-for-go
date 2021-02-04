@@ -356,6 +356,26 @@ func (s *StorageClientSuite) TestIsValidStorageAccount(c *chk.C) {
 	}
 }
 
+func (s *StorageClientSuite) TestIsValidCosmosAccount(c *chk.C) {
+	type test struct {
+		account  string
+		expected bool
+	}
+	testCases := []test{
+		{"name1", true},
+		{"Name2", false},
+		{"really-long-valid-name-less-than-44-chars", true},
+		{"really-long-invalid-name-greater-than-44-chars", false},
+		{"", false},
+		{"concated&name", false},
+		{"formatted name", false},
+	}
+
+	for _, tc := range testCases {
+		c.Assert(IsValidCosmosAccount(tc.account), chk.Equals, tc.expected)
+	}
+}
+
 func (s *StorageClientSuite) TestMalformedKeyError(c *chk.C) {
 	_, err := NewBasicClient(dummyStorageAccount, "malformed")
 	c.Assert(err, chk.ErrorMatches, "azure: malformed storage account key: .*")

@@ -545,6 +545,7 @@ type ManagementPolicyProperties = original.ManagementPolicyProperties
 type ManagementPolicyRule = original.ManagementPolicyRule
 type ManagementPolicySchema = original.ManagementPolicySchema
 type ManagementPolicySnapShot = original.ManagementPolicySnapShot
+type ManagementPolicyVersion = original.ManagementPolicyVersion
 type MetricSpecification = original.MetricSpecification
 type Multichannel = original.Multichannel
 type NetworkRuleSet = original.NetworkRuleSet

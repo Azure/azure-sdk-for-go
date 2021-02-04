@@ -570,6 +570,8 @@ type AccountProperties struct {
 	AllowBlobPublicAccess *bool `json:"allowBlobPublicAccess,omitempty"`
 	// MinimumTLSVersion - Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property. Possible values include: 'TLS10', 'TLS11', 'TLS12'
 	MinimumTLSVersion MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
+	// AllowSharedKeyAccess - Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+	AllowSharedKeyAccess *bool `json:"allowSharedKeyAccess,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AccountProperties.
@@ -595,6 +597,9 @@ func (ap AccountProperties) MarshalJSON() ([]byte, error) {
 	}
 	if ap.MinimumTLSVersion != "" {
 		objectMap["minimumTlsVersion"] = ap.MinimumTLSVersion
+	}
+	if ap.AllowSharedKeyAccess != nil {
+		objectMap["allowSharedKeyAccess"] = ap.AllowSharedKeyAccess
 	}
 	return json.Marshal(objectMap)
 }
@@ -623,6 +628,8 @@ type AccountPropertiesCreateParameters struct {
 	AllowBlobPublicAccess *bool `json:"allowBlobPublicAccess,omitempty"`
 	// MinimumTLSVersion - Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property. Possible values include: 'TLS10', 'TLS11', 'TLS12'
 	MinimumTLSVersion MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
+	// AllowSharedKeyAccess - Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+	AllowSharedKeyAccess *bool `json:"allowSharedKeyAccess,omitempty"`
 }
 
 // AccountPropertiesUpdateParameters the parameters used when updating a storage account.
@@ -647,6 +654,8 @@ type AccountPropertiesUpdateParameters struct {
 	AllowBlobPublicAccess *bool `json:"allowBlobPublicAccess,omitempty"`
 	// MinimumTLSVersion - Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property. Possible values include: 'TLS10', 'TLS11', 'TLS12'
 	MinimumTLSVersion MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
+	// AllowSharedKeyAccess - Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+	AllowSharedKeyAccess *bool `json:"allowSharedKeyAccess,omitempty"`
 }
 
 // AccountRegenerateKeyParameters the parameters used to regenerate the storage account key.
@@ -1209,6 +1218,8 @@ type BlobServicePropertiesProperties struct {
 type ChangeFeed struct {
 	// Enabled - Indicates whether change feed event logging is enabled for the Blob service.
 	Enabled *bool `json:"enabled,omitempty"`
+	// RetentionInDays - Indicates the duration of changeFeed retention in days. Minimum value is 1 day and maximum value is 146000 days (400 years). A null value indicates an infinite retention of the change feed.
+	RetentionInDays *int32 `json:"retentionInDays,omitempty"`
 }
 
 // CheckNameAvailabilityResult the CheckNameAvailability operation response.
@@ -1327,7 +1338,9 @@ type DateAfterCreation struct {
 	DaysAfterCreationGreaterThan *float64 `json:"daysAfterCreationGreaterThan,omitempty"`
 }
 
-// DateAfterModification object to define the number of days after last modification.
+// DateAfterModification object to define the number of days after object last modification Or last access.
+// Properties daysAfterModificationGreaterThan and daysAfterLastAccessTimeGreaterThan are mutually
+// exclusive.
 type DateAfterModification struct {
 	// DaysAfterModificationGreaterThan - Value indicating the age in days after last modification
 	DaysAfterModificationGreaterThan *float64 `json:"daysAfterModificationGreaterThan,omitempty"`
@@ -3523,6 +3536,8 @@ type ManagementPolicyAction struct {
 	BaseBlob *ManagementPolicyBaseBlob `json:"baseBlob,omitempty"`
 	// Snapshot - The management policy action for snapshot
 	Snapshot *ManagementPolicySnapShot `json:"snapshot,omitempty"`
+	// Version - The management policy action for version
+	Version *ManagementPolicyVersion `json:"version,omitempty"`
 }
 
 // ManagementPolicyBaseBlob management policy action for base blob.
@@ -3551,7 +3566,7 @@ type ManagementPolicyDefinition struct {
 type ManagementPolicyFilter struct {
 	// PrefixMatch - An array of strings for prefixes to be match.
 	PrefixMatch *[]string `json:"prefixMatch,omitempty"`
-	// BlobTypes - An array of predefined enum values. Only blockBlob is supported.
+	// BlobTypes - An array of predefined enum values. Currently blockBlob supports all tiering and delete actions. Only delete actions are supported for appendBlob.
 	BlobTypes *[]string `json:"blobTypes,omitempty"`
 	// BlobIndexMatch - An array of blob index tag based filters, there can be at most 10 tag filters
 	BlobIndexMatch *[]TagFilter `json:"blobIndexMatch,omitempty"`
@@ -3595,7 +3610,21 @@ type ManagementPolicySchema struct {
 
 // ManagementPolicySnapShot management policy action for snapshot.
 type ManagementPolicySnapShot struct {
+	// TierToCool - The function to tier blob snapshot to cool storage. Support blob snapshot currently at Hot tier
+	TierToCool *DateAfterCreation `json:"tierToCool,omitempty"`
+	// TierToArchive - The function to tier blob snapshot to archive storage. Support blob snapshot currently at Hot or Cool tier
+	TierToArchive *DateAfterCreation `json:"tierToArchive,omitempty"`
 	// Delete - The function to delete the blob snapshot
+	Delete *DateAfterCreation `json:"delete,omitempty"`
+}
+
+// ManagementPolicyVersion management policy action for blob version.
+type ManagementPolicyVersion struct {
+	// TierToCool - The function to tier blob version to cool storage. Support blob version currently at Hot tier
+	TierToCool *DateAfterCreation `json:"tierToCool,omitempty"`
+	// TierToArchive - The function to tier blob version to archive storage. Support blob version currently at Hot or Cool tier
+	TierToArchive *DateAfterCreation `json:"tierToArchive,omitempty"`
+	// Delete - The function to delete the blob version
 	Delete *DateAfterCreation `json:"delete,omitempty"`
 }
 

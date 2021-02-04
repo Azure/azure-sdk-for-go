@@ -1,30 +1,35 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/storage/resource-manager/readme.md tag: `package-2020-08-preview`
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/0b17e6a5e811fd7b122d383b4942441d95e5e8cf/specification/storage/resource-manager/readme.md tag: `package-2020-08-preview`
 
-Code generator @microsoft.azure/autorest.go@2.1.168
+Code generator @microsoft.azure/autorest.go@2.1.169
+
 
 ## Breaking Changes
 
-### Removed Funcs
+## Signature Changes
 
-1. *AccountsCreateFuture.Result(AccountsClient) (Account, error)
-1. *AccountsFailoverFuture.Result(AccountsClient) (autorest.Response, error)
-1. *AccountsRestoreBlobRangesFuture.Result(AccountsClient) (BlobRestoreStatus, error)
+### Funcs
+
+1. AccountsClient.ListByResourceGroup
+	- Returns
+		- From: AccountListResult, error
+		- To: AccountListResultPage, error
+
+### New Funcs
+
+1. AccountsClient.ListByResourceGroupComplete(context.Context, string) (AccountListResultIterator, error)
 
 ## Struct Changes
 
-### Removed Struct Fields
+### New Structs
 
-1. AccountsCreateFuture.azure.Future
-1. AccountsFailoverFuture.azure.Future
-1. AccountsRestoreBlobRangesFuture.azure.Future
-
-## Struct Changes
+1. ManagementPolicyVersion
 
 ### New Struct Fields
 
-1. AccountsCreateFuture.Result
-1. AccountsCreateFuture.azure.FutureAPI
-1. AccountsFailoverFuture.Result
-1. AccountsFailoverFuture.azure.FutureAPI
-1. AccountsRestoreBlobRangesFuture.Result
-1. AccountsRestoreBlobRangesFuture.azure.FutureAPI
+1. AccountProperties.AllowSharedKeyAccess
+1. AccountPropertiesCreateParameters.AllowSharedKeyAccess
+1. AccountPropertiesUpdateParameters.AllowSharedKeyAccess
+1. ChangeFeed.RetentionInDays
+1. ManagementPolicyAction.Version
+1. ManagementPolicySnapShot.TierToArchive
+1. ManagementPolicySnapShot.TierToCool

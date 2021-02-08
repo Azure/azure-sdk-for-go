@@ -32,7 +32,6 @@ stages:
       steps:
       - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
         parameters:
-          AgentPool: $(pool.name)
           AgentImage: $(image.name)
 
       - task: GoTool@0

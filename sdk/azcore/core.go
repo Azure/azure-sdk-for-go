@@ -6,6 +6,7 @@
 package azcore
 
 import (
+	"context"
 	"errors"
 	"io"
 	"net/http"
@@ -108,4 +109,39 @@ func (n nopCloser) Close() error {
 // NopCloser returns a ReadSeekCloser with a no-op close method wrapping the provided io.ReadSeeker.
 func NopCloser(rs io.ReadSeeker) ReadSeekCloser {
 	return nopCloser{rs}
+}
+
+// Poller provides operations for checking the state of a long-running operation.
+// An LRO can be in either a non-terminal or terminal state.  A non-terminal state
+// indicates the LRO is still in progress.  A terminal state indicates the LRO has
+// completed successfully, failed, or was cancelled.
+type Poller interface {
+	// Done returns true if the LRO has reached a terminal state.
+	Done() bool
+
+	// Poll fetches the latest state of the LRO.  It returns an HTTP response or error.
+	// If the LRO has completed successfully, the poller's state is update and the HTTP
+	// response is returned.
+	// If the LRO has completed with failure or was cancelled, the poller's state is
+	// updated and the error is returned.
+	// If the LRO has not reached a terminal state, the poller's state is updated and
+	// the latest HTTP response is returned.
+	// If Poll fails, the poller's state is unmodified and the error is returned.
+	// Calling Poll on an LRO that has reached a terminal state will return the final
+	// HTTP response or error.
+	Poll(context.Context) (*http.Response, error)
+
+	// ResumeToken returns a value representing the poller that can be used to resume
+	// the LRO at a later time. ResumeTokens are unique per service operation.
+	ResumeToken() (string, error)
+}
+
+// Pager provides operations for iterating over paged responses.
+type Pager interface {
+	// NextPage returns true if the pager advanced to the next page.
+	// Returns false if there are no more pages or an error occurred.
+	NextPage(context.Context) bool
+
+	// Err returns the last error encountered while paging.
+	Err() error
 }

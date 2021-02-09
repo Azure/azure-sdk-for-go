@@ -5,7 +5,10 @@
 
 package to
 
-import "testing"
+import (
+	"testing"
+	"time"
+)
 
 func TestBoolPtr(t *testing.T) {
 	b := true
@@ -70,5 +73,16 @@ func TestStringPtr(t *testing.T) {
 	}
 	if *ps != s {
 		t.Fatalf("got %v, want %v", *ps, s)
+	}
+}
+
+func TestTimePtr(t *testing.T) {
+	tt := time.Now()
+	pt := TimePtr(tt)
+	if pt == nil {
+		t.Fatal("unexpected nil conversion")
+	}
+	if *pt != tt {
+		t.Fatalf("got %v, want %v", *pt, tt)
 	}
 }

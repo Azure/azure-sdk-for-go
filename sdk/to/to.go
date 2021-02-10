@@ -5,6 +5,8 @@
 
 package to
 
+import "time"
+
 // BoolPtr returns a pointer to the provided bool.
 func BoolPtr(b bool) *bool {
 	return &b
@@ -33,4 +35,9 @@ func Int64Ptr(i int64) *int64 {
 // StringPtr returns a pointer to the provided string.
 func StringPtr(s string) *string {
 	return &s
+}
+
+// TimePtr returns a pointer to the provided time.Time.
+func TimePtr(t time.Time) *time.Time {
+	return &t
 }

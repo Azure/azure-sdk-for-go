@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
 func accountInfo() (string, string) {
@@ -373,8 +374,7 @@ func ExampleBlobAccessConditions() {
 	showResult(blockBlob.Download(ctx, &DownloadBlobOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: upload.LastModified}}))
 
 	// Download blob content if the blob hasn't been modified in the last 24 hours (fails):
-	unmodifiedTime := time.Now().UTC().Add(time.Hour * -24)
-	showResult(blockBlob.Download(ctx, &DownloadBlobOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &unmodifiedTime}}))
+	showResult(blockBlob.Download(ctx, &DownloadBlobOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: to.TimePtr(time.Now().UTC().Add(time.Hour * -24))}}))
 
 	// Upload new content if the blob hasn't changed since the version identified by ETag (succeeds):
 	upload, err = blockBlob.Upload(ctx, strings.NewReader("Text-2"), &UploadBlockBlobOptions{ ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: upload.ETag}})
@@ -507,12 +507,10 @@ func ExampleBlobHTTPHeaders() {
 	ctx := context.Background() // This example uses a never-expiring context
 
 	// Create a blob with HTTP headers
-	contentType := "text/html; charset=utf-8"
-	contentDisposition := "attachment"
 	_, err = blobURL.Upload(ctx, strings.NewReader("Some text"),
 		&UploadBlockBlobOptions{BlobHttpHeaders: &BlobHttpHeaders{
-			BlobContentType: &contentType,
-			BlobContentDisposition: &contentDisposition,
+			BlobContentType: to.StringPtr("text/html; charset=utf-8"),
+			BlobContentDisposition: to.StringPtr("attachment"),
 		}})
 	if err != nil {
 		log.Fatal(err)
@@ -532,8 +530,7 @@ func ExampleBlobHTTPHeaders() {
 	fmt.Println(httpHeaders.BlobContentType, httpHeaders.BlobContentDisposition)
 
 	// Update the blob's HTTP Headers and write them back to the blob
-	contentType = "text/plain"
-	httpHeaders.BlobContentType = &contentType
+	httpHeaders.BlobContentType = to.StringPtr("text/plain")
 	_, err = blobURL.SetHTTPHeaders(ctx, httpHeaders, nil)
 	if err != nil {
 		log.Fatal(err)
@@ -692,15 +689,13 @@ func ExamplePageBlobURL() {
 
 	page := [PageBlobPageBytes]byte{}
 	copy(page[:], "Page 0")
-	var offset int64 = 0*PageBlobPageBytes
-	_, err = blobURL.UploadPages(ctx, bytes.NewReader(page[:]), &UploadPagesOptions{Offset: &offset})
+	_, err = blobURL.UploadPages(ctx, bytes.NewReader(page[:]), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	copy(page[:], "Page 1")
-	offset = 2*PageBlobPageBytes
-	_, err = blobURL.UploadPages(ctx, bytes.NewReader(page[:]), &UploadPagesOptions{Offset: &offset})
+	_, err = blobURL.UploadPages(ctx, bytes.NewReader(page[:]), &UploadPagesOptions{Offset: to.Int64Ptr(2*PageBlobPageBytes)})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -819,8 +814,7 @@ func Example_blobSnapshots() {
 	// DeleteSnapshotsOptionOnly deletes all the base blob's snapshots but not the base blob itself
 	// DeleteSnapshotsOptionInclude deletes the base blob & all its snapshots.
 	// DeleteSnapshotOptionNone produces an error if the base blob has any snapshots.
-	snapshotsOption := DeleteSnapshotsOptionTypeInclude
-	_, err = baseBlobURL.Delete(ctx, &DeleteBlobOptions{DeleteSnapshots: &snapshotsOption})
+	_, err = baseBlobURL.Delete(ctx, &DeleteBlobOptions{DeleteSnapshots: DeleteSnapshotsOptionTypeInclude.ToPtr()})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -848,12 +842,11 @@ func Example_progressUploadDownload() {
 	requestBody := strings.NewReader("Some text to write")
 
 	// Wrap the request body in a RequestBodyProgress and pass a callback function for progress reporting.
-	contentType, contentDisposition := "text/html; charset=utf-8", "attachment"
 	_, err = blobURL.Upload(ctx, azcore.NewRequestBodyProgress(azcore.NopCloser(requestBody), func(bytesTransferred int64) {
 		fmt.Printf("Wrote %d of %d bytes.", bytesTransferred, requestBody.Size())
 	}), &UploadBlockBlobOptions{ BlobHttpHeaders: &BlobHttpHeaders{
-		BlobContentType: &contentType,
-		BlobContentDisposition: &contentDisposition,
+		BlobContentType: to.StringPtr("text/html; charset=utf-8"),
+		BlobContentDisposition: to.StringPtr("attachment"),
 	}})
 	if err != nil {
 		log.Fatal(err)
@@ -1080,8 +1073,7 @@ func ExampleLeaseContainer() {
 
 	// Now acquire a lease on the container.
 	// You can choose to pass an empty string for proposed ID so that the service automatically assigns one for you.
-	duration := int32(60)
-	acquireLeaseResponse, err := containerURL.AcquireLease(ctx, &AcquireLeaseOptionsContainer{ ContainerAcquireLeaseOptions: &ContainerAcquireLeaseOptions{ Duration: &duration }})
+	acquireLeaseResponse, err := containerURL.AcquireLease(ctx, &AcquireLeaseOptionsContainer{ ContainerAcquireLeaseOptions: &ContainerAcquireLeaseOptions{ Duration: to.Int32Ptr(60) }})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1103,7 +1095,7 @@ func ExampleLeaseContainer() {
 
 	// Acquire a lease again to perform other operations.
 	// duration is still 60
-	acquireLeaseResponse, err = containerURL.AcquireLease(ctx, &AcquireLeaseOptionsContainer{ContainerAcquireLeaseOptions: &ContainerAcquireLeaseOptions{Duration: &duration}})
+	acquireLeaseResponse, err = containerURL.AcquireLease(ctx, &AcquireLeaseOptionsContainer{ContainerAcquireLeaseOptions: &ContainerAcquireLeaseOptions{Duration: to.Int32Ptr(60)}})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1127,8 +1119,7 @@ func ExampleLeaseContainer() {
 	fmt.Println("The lease was renewed with the same ID", *renewLeaseResponse.LeaseID)
 
 	// Finally, the lease can be broken and we could prevent others from acquiring a lease for a period of time
-	duration = 60
-	_, err = containerURL.BreakLease(ctx, &BreakLeaseOptionsContainer{ContainerBreakLeaseOptions: &ContainerBreakLeaseOptions{BreakPeriod: &duration}})
+	_, err = containerURL.BreakLease(ctx, &BreakLeaseOptionsContainer{ContainerBreakLeaseOptions: &ContainerBreakLeaseOptions{BreakPeriod: to.Int32Ptr(60)}})
 	if err != nil {
 		log.Fatal(err)
 	}

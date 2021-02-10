@@ -52,7 +52,7 @@ type (
 		prefetch           uint32
 		DefaultDisposition DispositionAction
 		Closed             bool
-		doneRefreshingAuth func()
+		cancelAuthRefresh  func() <-chan struct{}
 	}
 
 	// ReceiverOption provides a structure for configuring receivers
@@ -121,8 +121,6 @@ func (ns *Namespace) NewReceiver(ctx context.Context, entityPath string, opts ..
 		return nil, err
 	}
 
-	r.periodicallyRefreshAuth()
-
 	return r, nil
 }
 
@@ -143,8 +141,8 @@ func (r *Receiver) close(ctx context.Context) error {
 		r.doneListening()
 	}
 
-	if r.doneRefreshingAuth != nil {
-		r.doneRefreshingAuth()
+	if r.cancelAuthRefresh != nil {
+		<-r.cancelAuthRefresh()
 	}
 
 	r.Closed = true
@@ -395,7 +393,7 @@ func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 	}
 	r.client = client
 
-	err = r.namespace.negotiateClaim(ctx, client, r.entityPath)
+	r.cancelAuthRefresh, err = r.namespace.negotiateClaim(ctx, client, r.entityPath)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
@@ -455,37 +453,6 @@ func (r *Receiver) getSessionFilterLinkOption() (amqp.LinkOption, bool) {
 	}
 
 	return amqp.LinkSourceFilter(name, code, r.sessionID), true
-}
-
-func (r *Receiver) periodicallyRefreshAuth() {
-	ctx, done := context.WithCancel(context.Background())
-	r.doneRefreshingAuth = done
-
-	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.periodicallyRefreshAuth")
-	defer span.End()
-
-	doNegotiateClaimLocked := func(ctx context.Context, r *Receiver) {
-		r.clientMu.RLock()
-		defer r.clientMu.RUnlock()
-
-		if r.client != nil {
-			if err := r.namespace.negotiateClaim(ctx, r.client, r.entityPath); err != nil {
-				tab.For(ctx).Error(err)
-			}
-		}
-	}
-
-	go func() {
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			default:
-				time.Sleep(5 * time.Minute)
-				doNegotiateClaimLocked(ctx, r)
-			}
-		}
-	}()
 }
 
 func messageID(msg *amqp.Message) interface{} {

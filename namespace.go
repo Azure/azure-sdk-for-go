@@ -28,6 +28,8 @@ import (
 	"fmt"
 	"runtime"
 	"strings"
+	"sync"
+	"time"
 
 	"github.com/Azure/azure-amqp-common-go/v3/aad"
 	"github.com/Azure/azure-amqp-common-go/v3/auth"
@@ -36,6 +38,7 @@ import (
 	"github.com/Azure/azure-amqp-common-go/v3/sas"
 	"github.com/Azure/go-amqp"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/devigned/tab"
 	"nhooyr.io/websocket"
 )
 
@@ -68,6 +71,10 @@ type (
 		tlsConfig     *tls.Config
 		userAgent     string
 		useWebSocket  bool
+		// used to ensure only one goroutine is running for auth auto-refresh
+		initRefresh sync.Once
+		// populated with the result from auto-refresh, to be called elsewhere
+		cancelRefresh func() <-chan struct{}
 	}
 
 	// NamespaceOption provides structure for configuring a new Service Bus namespace
@@ -231,12 +238,48 @@ func (ns *Namespace) newClient(ctx context.Context) (*amqp.Client, error) {
 	return amqp.Dial(ns.getAMQPHostURI(), defaultConnOptions...)
 }
 
-func (ns *Namespace) negotiateClaim(ctx context.Context, client *amqp.Client, entityPath string) error {
+// negotiateClaim performs initial authentication and starts periodic refresh of credentials.
+// the returned func is to cancel() the refresh goroutine.
+func (ns *Namespace) negotiateClaim(ctx context.Context, client *amqp.Client, entityPath string) (func() <-chan struct{}, error) {
 	ctx, span := ns.startSpanFromContext(ctx, "sb.namespace.negotiateClaim")
 	defer span.End()
 
 	audience := ns.getEntityAudience(entityPath)
-	return cbs.NegotiateClaim(ctx, audience, client, ns.TokenProvider)
+	if err := cbs.NegotiateClaim(ctx, audience, client, ns.TokenProvider); err != nil {
+		return nil, err
+	}
+	ns.initRefresh.Do(func() {
+		// start the periodic refresh of credentials
+		refreshCtx, cancel := context.WithCancel(context.Background())
+		exitChan := make(chan struct{})
+		go func() {
+			defer func() {
+				// reset the guard when the refresh goroutine exits
+				ns.initRefresh = sync.Once{}
+				// signal that the refresh goroutine has exited
+				close(exitChan)
+			}()
+			for {
+				select {
+				case <-refreshCtx.Done():
+					return
+				case <-time.After(15 * time.Minute):
+					refreshCtx, span := ns.startSpanFromContext(refreshCtx, "sb.namespace.negotiateClaim.refresh")
+					defer span.End()
+					if err := cbs.NegotiateClaim(refreshCtx, audience, client, ns.TokenProvider); err != nil {
+						tab.For(refreshCtx).Error(err)
+						// if auth failed cancel auto-refresh
+						cancel()
+					}
+				}
+			}
+		}()
+		ns.cancelRefresh = func() <-chan struct{} {
+			cancel()
+			return exitChan
+		}
+	})
+	return ns.cancelRefresh, nil
 }
 
 func (ns *Namespace) getWSSHostURI() string {

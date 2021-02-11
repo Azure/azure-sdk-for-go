@@ -135,7 +135,11 @@ func (client BotsClient) CreateSender(req *http.Request) (future BotsCreateFutur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if hb.Response.Response, err = future.GetResult(sender); err == nil && hb.Response.Response.StatusCode != http.StatusNoContent {
+		hb.Response.Response, err = future.GetResult(sender)
+		if hb.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "healthbot.BotsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && hb.Response.Response.StatusCode != http.StatusNoContent {
 			hb, err = client.CreateResponder(hb.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "healthbot.BotsCreateFuture", "Result", hb.Response.Response, "Failure responding to request")

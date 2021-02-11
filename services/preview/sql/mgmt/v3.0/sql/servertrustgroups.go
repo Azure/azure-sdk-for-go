@@ -134,7 +134,11 @@ func (client ServerTrustGroupsClient) CreateOrUpdateSender(req *http.Request) (f
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if stg.Response.Response, err = future.GetResult(sender); err == nil && stg.Response.Response.StatusCode != http.StatusNoContent {
+		stg.Response.Response, err = future.GetResult(sender)
+		if stg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.ServerTrustGroupsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && stg.Response.Response.StatusCode != http.StatusNoContent {
 			stg, err = client.CreateOrUpdateResponder(stg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.ServerTrustGroupsCreateOrUpdateFuture", "Result", stg.Response.Response, "Failure responding to request")

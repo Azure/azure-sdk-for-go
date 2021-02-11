@@ -131,7 +131,11 @@ func (client OriginGroupsClient) CreateSender(req *http.Request) (future OriginG
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if og.Response.Response, err = future.GetResult(sender); err == nil && og.Response.Response.StatusCode != http.StatusNoContent {
+		og.Response.Response, err = future.GetResult(sender)
+		if og.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.OriginGroupsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && og.Response.Response.StatusCode != http.StatusNoContent {
 			og, err = client.CreateResponder(og.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.OriginGroupsCreateFuture", "Result", og.Response.Response, "Failure responding to request")
@@ -561,7 +565,11 @@ func (client OriginGroupsClient) UpdateSender(req *http.Request) (future OriginG
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if og.Response.Response, err = future.GetResult(sender); err == nil && og.Response.Response.StatusCode != http.StatusNoContent {
+		og.Response.Response, err = future.GetResult(sender)
+		if og.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.OriginGroupsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && og.Response.Response.StatusCode != http.StatusNoContent {
 			og, err = client.UpdateResponder(og.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.OriginGroupsUpdateFuture", "Result", og.Response.Response, "Failure responding to request")

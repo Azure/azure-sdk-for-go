@@ -205,7 +205,11 @@ func (client SyncGroupsClient) CreateOrUpdateSender(req *http.Request) (future S
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sg.Response.Response, err = future.GetResult(sender); err == nil && sg.Response.Response.StatusCode != http.StatusNoContent {
+		sg.Response.Response, err = future.GetResult(sender)
+		if sg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.SyncGroupsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sg.Response.Response.StatusCode != http.StatusNoContent {
 			sg, err = client.CreateOrUpdateResponder(sg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.SyncGroupsCreateOrUpdateFuture", "Result", sg.Response.Response, "Failure responding to request")
@@ -1154,7 +1158,11 @@ func (client SyncGroupsClient) UpdateSender(req *http.Request) (future SyncGroup
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sg.Response.Response, err = future.GetResult(sender); err == nil && sg.Response.Response.StatusCode != http.StatusNoContent {
+		sg.Response.Response, err = future.GetResult(sender)
+		if sg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.SyncGroupsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sg.Response.Response.StatusCode != http.StatusNoContent {
 			sg, err = client.UpdateResponder(sg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.SyncGroupsUpdateFuture", "Result", sg.Response.Response, "Failure responding to request")

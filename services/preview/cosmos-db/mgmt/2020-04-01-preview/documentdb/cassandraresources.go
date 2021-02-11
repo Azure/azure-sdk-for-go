@@ -142,7 +142,11 @@ func (client CassandraResourcesClient) CreateUpdateCassandraKeyspaceSender(req *
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ckgr.Response.Response, err = future.GetResult(sender); err == nil && ckgr.Response.Response.StatusCode != http.StatusNoContent {
+		ckgr.Response.Response, err = future.GetResult(sender)
+		if ckgr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesCreateUpdateCassandraKeyspaceFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ckgr.Response.Response.StatusCode != http.StatusNoContent {
 			ckgr, err = client.CreateUpdateCassandraKeyspaceResponder(ckgr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesCreateUpdateCassandraKeyspaceFuture", "Result", ckgr.Response.Response, "Failure responding to request")
@@ -266,7 +270,11 @@ func (client CassandraResourcesClient) CreateUpdateCassandraTableSender(req *htt
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ctgr.Response.Response, err = future.GetResult(sender); err == nil && ctgr.Response.Response.StatusCode != http.StatusNoContent {
+		ctgr.Response.Response, err = future.GetResult(sender)
+		if ctgr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesCreateUpdateCassandraTableFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ctgr.Response.Response.StatusCode != http.StatusNoContent {
 			ctgr, err = client.CreateUpdateCassandraTableResponder(ctgr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesCreateUpdateCassandraTableFuture", "Result", ctgr.Response.Response, "Failure responding to request")
@@ -1151,7 +1159,11 @@ func (client CassandraResourcesClient) MigrateCassandraKeyspaceToAutoscaleSender
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tsgr.Response.Response, err = future.GetResult(sender); err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
+		tsgr.Response.Response, err = future.GetResult(sender)
+		if tsgr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesMigrateCassandraKeyspaceToAutoscaleFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
 			tsgr, err = client.MigrateCassandraKeyspaceToAutoscaleResponder(tsgr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesMigrateCassandraKeyspaceToAutoscaleFuture", "Result", tsgr.Response.Response, "Failure responding to request")
@@ -1265,7 +1277,11 @@ func (client CassandraResourcesClient) MigrateCassandraKeyspaceToManualThroughpu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tsgr.Response.Response, err = future.GetResult(sender); err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
+		tsgr.Response.Response, err = future.GetResult(sender)
+		if tsgr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesMigrateCassandraKeyspaceToManualThroughputFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
 			tsgr, err = client.MigrateCassandraKeyspaceToManualThroughputResponder(tsgr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesMigrateCassandraKeyspaceToManualThroughputFuture", "Result", tsgr.Response.Response, "Failure responding to request")
@@ -1380,7 +1396,11 @@ func (client CassandraResourcesClient) MigrateCassandraTableToAutoscaleSender(re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tsgr.Response.Response, err = future.GetResult(sender); err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
+		tsgr.Response.Response, err = future.GetResult(sender)
+		if tsgr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesMigrateCassandraTableToAutoscaleFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
 			tsgr, err = client.MigrateCassandraTableToAutoscaleResponder(tsgr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesMigrateCassandraTableToAutoscaleFuture", "Result", tsgr.Response.Response, "Failure responding to request")
@@ -1496,7 +1516,11 @@ func (client CassandraResourcesClient) MigrateCassandraTableToManualThroughputSe
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tsgr.Response.Response, err = future.GetResult(sender); err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
+		tsgr.Response.Response, err = future.GetResult(sender)
+		if tsgr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesMigrateCassandraTableToManualThroughputFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
 			tsgr, err = client.MigrateCassandraTableToManualThroughputResponder(tsgr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesMigrateCassandraTableToManualThroughputFuture", "Result", tsgr.Response.Response, "Failure responding to request")
@@ -1620,7 +1644,11 @@ func (client CassandraResourcesClient) UpdateCassandraKeyspaceThroughputSender(r
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tsgr.Response.Response, err = future.GetResult(sender); err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
+		tsgr.Response.Response, err = future.GetResult(sender)
+		if tsgr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesUpdateCassandraKeyspaceThroughputFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
 			tsgr, err = client.UpdateCassandraKeyspaceThroughputResponder(tsgr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesUpdateCassandraKeyspaceThroughputFuture", "Result", tsgr.Response.Response, "Failure responding to request")
@@ -1746,7 +1774,11 @@ func (client CassandraResourcesClient) UpdateCassandraTableThroughputSender(req 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tsgr.Response.Response, err = future.GetResult(sender); err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
+		tsgr.Response.Response, err = future.GetResult(sender)
+		if tsgr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesUpdateCassandraTableThroughputFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
 			tsgr, err = client.UpdateCassandraTableThroughputResponder(tsgr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesUpdateCassandraTableThroughputFuture", "Result", tsgr.Response.Response, "Failure responding to request")

@@ -140,7 +140,11 @@ func (client SQLPoolWorkloadGroupClient) CreateOrUpdateSender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if wg.Response.Response, err = future.GetResult(sender); err == nil && wg.Response.Response.StatusCode != http.StatusNoContent {
+		wg.Response.Response, err = future.GetResult(sender)
+		if wg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.SQLPoolWorkloadGroupCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && wg.Response.Response.StatusCode != http.StatusNoContent {
 			wg, err = client.CreateOrUpdateResponder(wg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.SQLPoolWorkloadGroupCreateOrUpdateFuture", "Result", wg.Response.Response, "Failure responding to request")

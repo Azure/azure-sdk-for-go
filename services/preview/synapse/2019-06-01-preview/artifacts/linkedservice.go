@@ -128,7 +128,11 @@ func (client LinkedServiceClient) CreateOrUpdateLinkedServiceSender(req *http.Re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if lsr.Response.Response, err = future.GetResult(sender); err == nil && lsr.Response.Response.StatusCode != http.StatusNoContent {
+		lsr.Response.Response, err = future.GetResult(sender)
+		if lsr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceCreateOrUpdateLinkedServiceFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && lsr.Response.Response.StatusCode != http.StatusNoContent {
 			lsr, err = client.CreateOrUpdateLinkedServiceResponder(lsr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceCreateOrUpdateLinkedServiceFuture", "Result", lsr.Response.Response, "Failure responding to request")

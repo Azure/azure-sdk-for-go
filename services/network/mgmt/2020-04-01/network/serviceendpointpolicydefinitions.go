@@ -123,7 +123,11 @@ func (client ServiceEndpointPolicyDefinitionsClient) CreateOrUpdateSender(req *h
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sepd.Response.Response, err = future.GetResult(sender); err == nil && sepd.Response.Response.StatusCode != http.StatusNoContent {
+		sepd.Response.Response, err = future.GetResult(sender)
+		if sepd.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ServiceEndpointPolicyDefinitionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sepd.Response.Response.StatusCode != http.StatusNoContent {
 			sepd, err = client.CreateOrUpdateResponder(sepd.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ServiceEndpointPolicyDefinitionsCreateOrUpdateFuture", "Result", sepd.Response.Response, "Failure responding to request")

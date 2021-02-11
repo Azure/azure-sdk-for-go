@@ -117,7 +117,11 @@ func (client DomainTopicsClient) CreateOrUpdateSender(req *http.Request) (future
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dt.Response.Response, err = future.GetResult(sender); err == nil && dt.Response.Response.StatusCode != http.StatusNoContent {
+		dt.Response.Response, err = future.GetResult(sender)
+		if dt.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "eventgrid.DomainTopicsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dt.Response.Response.StatusCode != http.StatusNoContent {
 			dt, err = client.CreateOrUpdateResponder(dt.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "eventgrid.DomainTopicsCreateOrUpdateFuture", "Result", dt.Response.Response, "Failure responding to request")

@@ -119,7 +119,11 @@ func (client ScheduleClient) CreateOrUpdateResourceSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+		s.Response.Response, err = future.GetResult(sender)
+		if s.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "dtl.ScheduleCreateOrUpdateResourceFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
 			s, err = client.CreateOrUpdateResourceResponder(s.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "dtl.ScheduleCreateOrUpdateResourceFuture", "Result", s.Response.Response, "Failure responding to request")

@@ -209,7 +209,11 @@ func (client LabClient) CreateOrUpdateResourceSender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if l.Response.Response, err = future.GetResult(sender); err == nil && l.Response.Response.StatusCode != http.StatusNoContent {
+		l.Response.Response, err = future.GetResult(sender)
+		if l.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "dtl.LabCreateOrUpdateResourceFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && l.Response.Response.StatusCode != http.StatusNoContent {
 			l, err = client.CreateOrUpdateResourceResponder(l.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "dtl.LabCreateOrUpdateResourceFuture", "Result", l.Response.Response, "Failure responding to request")

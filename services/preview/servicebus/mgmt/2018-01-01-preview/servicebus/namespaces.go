@@ -208,7 +208,11 @@ func (client NamespacesClient) CreateOrUpdateSender(req *http.Request) (future N
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sn.Response.Response, err = future.GetResult(sender); err == nil && sn.Response.Response.StatusCode != http.StatusNoContent {
+		sn.Response.Response, err = future.GetResult(sender)
+		if sn.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "servicebus.NamespacesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sn.Response.Response.StatusCode != http.StatusNoContent {
 			sn, err = client.CreateOrUpdateResponder(sn.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "servicebus.NamespacesCreateOrUpdateFuture", "Result", sn.Response.Response, "Failure responding to request")

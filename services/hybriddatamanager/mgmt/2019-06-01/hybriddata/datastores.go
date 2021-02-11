@@ -133,7 +133,11 @@ func (client DataStoresClient) CreateOrUpdateSender(req *http.Request) (future D
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ds.Response.Response, err = future.GetResult(sender); err == nil && ds.Response.Response.StatusCode != http.StatusNoContent {
+		ds.Response.Response, err = future.GetResult(sender)
+		if ds.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "hybriddata.DataStoresCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ds.Response.Response.StatusCode != http.StatusNoContent {
 			ds, err = client.CreateOrUpdateResponder(ds.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "hybriddata.DataStoresCreateOrUpdateFuture", "Result", ds.Response.Response, "Failure responding to request")

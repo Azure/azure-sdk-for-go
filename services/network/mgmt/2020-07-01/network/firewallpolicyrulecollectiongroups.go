@@ -136,7 +136,11 @@ func (client FirewallPolicyRuleCollectionGroupsClient) CreateOrUpdateSender(req 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if fprcg.Response.Response, err = future.GetResult(sender); err == nil && fprcg.Response.Response.StatusCode != http.StatusNoContent {
+		fprcg.Response.Response, err = future.GetResult(sender)
+		if fprcg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.FirewallPolicyRuleCollectionGroupsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && fprcg.Response.Response.StatusCode != http.StatusNoContent {
 			fprcg, err = client.CreateOrUpdateResponder(fprcg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.FirewallPolicyRuleCollectionGroupsCreateOrUpdateFuture", "Result", fprcg.Response.Response, "Failure responding to request")

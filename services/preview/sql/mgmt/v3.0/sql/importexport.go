@@ -133,7 +133,11 @@ func (client ImportExportClient) ImportSender(req *http.Request) (future ImportE
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ieor.Response.Response, err = future.GetResult(sender); err == nil && ieor.Response.Response.StatusCode != http.StatusNoContent {
+		ieor.Response.Response, err = future.GetResult(sender)
+		if ieor.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.ImportExportImportFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ieor.Response.Response.StatusCode != http.StatusNoContent {
 			ieor, err = client.ImportResponder(ieor.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.ImportExportImportFuture", "Result", ieor.Response.Response, "Failure responding to request")

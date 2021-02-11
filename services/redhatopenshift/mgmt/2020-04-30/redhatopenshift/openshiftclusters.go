@@ -130,7 +130,11 @@ func (client OpenShiftClustersClient) CreateOrUpdateSender(req *http.Request) (f
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if osc.Response.Response, err = future.GetResult(sender); err == nil && osc.Response.Response.StatusCode != http.StatusNoContent {
+		osc.Response.Response, err = future.GetResult(sender)
+		if osc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && osc.Response.Response.StatusCode != http.StatusNoContent {
 			osc, err = client.CreateOrUpdateResponder(osc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersCreateOrUpdateFuture", "Result", osc.Response.Response, "Failure responding to request")
@@ -757,7 +761,11 @@ func (client OpenShiftClustersClient) UpdateSender(req *http.Request) (future Op
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if osc.Response.Response, err = future.GetResult(sender); err == nil && osc.Response.Response.StatusCode != http.StatusNoContent {
+		osc.Response.Response, err = future.GetResult(sender)
+		if osc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && osc.Response.Response.StatusCode != http.StatusNoContent {
 			osc, err = client.UpdateResponder(osc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "redhatopenshift.OpenShiftClustersUpdateFuture", "Result", osc.Response.Response, "Failure responding to request")

@@ -133,7 +133,11 @@ func (client AFDCustomDomainsClient) CreateSender(req *http.Request) (future AFD
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ad.Response.Response, err = future.GetResult(sender); err == nil && ad.Response.Response.StatusCode != http.StatusNoContent {
+		ad.Response.Response, err = future.GetResult(sender)
+		if ad.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ad.Response.Response.StatusCode != http.StatusNoContent {
 			ad, err = client.CreateResponder(ad.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsCreateFuture", "Result", ad.Response.Response, "Failure responding to request")
@@ -554,7 +558,11 @@ func (client AFDCustomDomainsClient) RefreshValidationTokenSender(req *http.Requ
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vt.Response.Response, err = future.GetResult(sender); err == nil && vt.Response.Response.StatusCode != http.StatusNoContent {
+		vt.Response.Response, err = future.GetResult(sender)
+		if vt.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsRefreshValidationTokenFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vt.Response.Response.StatusCode != http.StatusNoContent {
 			vt, err = client.RefreshValidationTokenResponder(vt.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsRefreshValidationTokenFuture", "Result", vt.Response.Response, "Failure responding to request")
@@ -664,7 +672,11 @@ func (client AFDCustomDomainsClient) UpdateSender(req *http.Request) (future AFD
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ad.Response.Response, err = future.GetResult(sender); err == nil && ad.Response.Response.StatusCode != http.StatusNoContent {
+		ad.Response.Response, err = future.GetResult(sender)
+		if ad.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ad.Response.Response.StatusCode != http.StatusNoContent {
 			ad, err = client.UpdateResponder(ad.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.AFDCustomDomainsUpdateFuture", "Result", ad.Response.Response, "Failure responding to request")

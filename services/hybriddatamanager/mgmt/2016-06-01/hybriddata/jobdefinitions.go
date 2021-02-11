@@ -137,7 +137,11 @@ func (client JobDefinitionsClient) CreateOrUpdateSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if jd.Response.Response, err = future.GetResult(sender); err == nil && jd.Response.Response.StatusCode != http.StatusNoContent {
+		jd.Response.Response, err = future.GetResult(sender)
+		if jd.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && jd.Response.Response.StatusCode != http.StatusNoContent {
 			jd, err = client.CreateOrUpdateResponder(jd.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsCreateOrUpdateFuture", "Result", jd.Response.Response, "Failure responding to request")

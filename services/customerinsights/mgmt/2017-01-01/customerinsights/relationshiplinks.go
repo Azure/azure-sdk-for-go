@@ -139,7 +139,11 @@ func (client RelationshipLinksClient) CreateOrUpdateSender(req *http.Request) (f
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rlrf.Response.Response, err = future.GetResult(sender); err == nil && rlrf.Response.Response.StatusCode != http.StatusNoContent {
+		rlrf.Response.Response, err = future.GetResult(sender)
+		if rlrf.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rlrf.Response.Response.StatusCode != http.StatusNoContent {
 			rlrf, err = client.CreateOrUpdateResponder(rlrf.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksCreateOrUpdateFuture", "Result", rlrf.Response.Response, "Failure responding to request")

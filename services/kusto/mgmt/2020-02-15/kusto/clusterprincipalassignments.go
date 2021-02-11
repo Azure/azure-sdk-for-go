@@ -217,7 +217,11 @@ func (client ClusterPrincipalAssignmentsClient) CreateOrUpdateSender(req *http.R
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cpa.Response.Response, err = future.GetResult(sender); err == nil && cpa.Response.Response.StatusCode != http.StatusNoContent {
+		cpa.Response.Response, err = future.GetResult(sender)
+		if cpa.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "kusto.ClusterPrincipalAssignmentsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cpa.Response.Response.StatusCode != http.StatusNoContent {
 			cpa, err = client.CreateOrUpdateResponder(cpa.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "kusto.ClusterPrincipalAssignmentsCreateOrUpdateFuture", "Result", cpa.Response.Response, "Failure responding to request")

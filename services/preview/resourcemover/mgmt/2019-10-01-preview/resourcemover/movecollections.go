@@ -121,7 +121,11 @@ func (client MoveCollectionsClient) BulkRemoveSender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
+		osVar.Response.Response, err = future.GetResult(sender)
+		if osVar.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsBulkRemoveFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
 			osVar, err = client.BulkRemoveResponder(osVar.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsBulkRemoveFuture", "Result", osVar.Response.Response, "Failure responding to request")
@@ -233,7 +237,11 @@ func (client MoveCollectionsClient) CommitSender(req *http.Request) (future Move
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
+		osVar.Response.Response, err = future.GetResult(sender)
+		if osVar.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsCommitFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
 			osVar, err = client.CommitResponder(osVar.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsCommitFuture", "Result", osVar.Response.Response, "Failure responding to request")
@@ -425,7 +433,11 @@ func (client MoveCollectionsClient) DeleteSender(req *http.Request) (future Move
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
+		osVar.Response.Response, err = future.GetResult(sender)
+		if osVar.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsDeleteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
 			osVar, err = client.DeleteResponder(osVar.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsDeleteFuture", "Result", osVar.Response.Response, "Failure responding to request")
@@ -537,7 +549,11 @@ func (client MoveCollectionsClient) DiscardSender(req *http.Request) (future Mov
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
+		osVar.Response.Response, err = future.GetResult(sender)
+		if osVar.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsDiscardFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
 			osVar, err = client.DiscardResponder(osVar.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsDiscardFuture", "Result", osVar.Response.Response, "Failure responding to request")
@@ -725,7 +741,11 @@ func (client MoveCollectionsClient) InitiateMoveSender(req *http.Request) (futur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
+		osVar.Response.Response, err = future.GetResult(sender)
+		if osVar.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsInitiateMoveFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
 			osVar, err = client.InitiateMoveResponder(osVar.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsInitiateMoveFuture", "Result", osVar.Response.Response, "Failure responding to request")
@@ -1066,7 +1086,11 @@ func (client MoveCollectionsClient) PrepareSender(req *http.Request) (future Mov
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
+		osVar.Response.Response, err = future.GetResult(sender)
+		if osVar.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsPrepareFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
 			osVar, err = client.PrepareResponder(osVar.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsPrepareFuture", "Result", osVar.Response.Response, "Failure responding to request")
@@ -1163,7 +1187,11 @@ func (client MoveCollectionsClient) ResolveDependenciesSender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
+		osVar.Response.Response, err = future.GetResult(sender)
+		if osVar.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsResolveDependenciesFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
 			osVar, err = client.ResolveDependenciesResponder(osVar.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsResolveDependenciesFuture", "Result", osVar.Response.Response, "Failure responding to request")

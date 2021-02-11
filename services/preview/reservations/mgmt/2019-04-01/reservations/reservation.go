@@ -191,7 +191,11 @@ func (client Client) AvailableScopesSender(req *http.Request) (future Reservatio
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if p.Response.Response, err = future.GetResult(sender); err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
+		p.Response.Response, err = future.GetResult(sender)
+		if p.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "reservations.ReservationAvailableScopesFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
 			p, err = client.AvailableScopesResponder(p.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "reservations.ReservationAvailableScopesFuture", "Result", p.Response.Response, "Failure responding to request")
@@ -600,7 +604,11 @@ func (client Client) MergeSender(req *http.Request) (future ReservationMergeFutu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if lr.Response.Response, err = future.GetResult(sender); err == nil && lr.Response.Response.StatusCode != http.StatusNoContent {
+		lr.Response.Response, err = future.GetResult(sender)
+		if lr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "reservations.ReservationMergeFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && lr.Response.Response.StatusCode != http.StatusNoContent {
 			lr, err = client.MergeResponder(lr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "reservations.ReservationMergeFuture", "Result", lr.Response.Response, "Failure responding to request")
@@ -697,7 +705,11 @@ func (client Client) SplitSender(req *http.Request) (future SplitFuture, err err
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if lr.Response.Response, err = future.GetResult(sender); err == nil && lr.Response.Response.StatusCode != http.StatusNoContent {
+		lr.Response.Response, err = future.GetResult(sender)
+		if lr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "reservations.SplitFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && lr.Response.Response.StatusCode != http.StatusNoContent {
 			lr, err = client.SplitResponder(lr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "reservations.SplitFuture", "Result", lr.Response.Response, "Failure responding to request")
@@ -870,7 +882,11 @@ func (client Client) UpdateSender(req *http.Request) (future ReservationUpdateFu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if r.Response.Response, err = future.GetResult(sender); err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
+		r.Response.Response, err = future.GetResult(sender)
+		if r.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "reservations.ReservationUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
 			r, err = client.UpdateResponder(r.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "reservations.ReservationUpdateFuture", "Result", r.Response.Response, "Failure responding to request")

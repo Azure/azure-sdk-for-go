@@ -519,7 +519,11 @@ func (client VirtualClustersClient) UpdateSender(req *http.Request) (future Virt
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vc.Response.Response, err = future.GetResult(sender); err == nil && vc.Response.Response.StatusCode != http.StatusNoContent {
+		vc.Response.Response, err = future.GetResult(sender)
+		if vc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.VirtualClustersUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vc.Response.Response.StatusCode != http.StatusNoContent {
 			vc, err = client.UpdateResponder(vc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.VirtualClustersUpdateFuture", "Result", vc.Response.Response, "Failure responding to request")

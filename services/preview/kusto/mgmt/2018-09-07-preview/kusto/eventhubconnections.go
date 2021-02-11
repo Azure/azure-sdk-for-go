@@ -135,7 +135,11 @@ func (client EventHubConnectionsClient) CreateOrUpdateSender(req *http.Request) 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ehc.Response.Response, err = future.GetResult(sender); err == nil && ehc.Response.Response.StatusCode != http.StatusNoContent {
+		ehc.Response.Response, err = future.GetResult(sender)
+		if ehc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ehc.Response.Response.StatusCode != http.StatusNoContent {
 			ehc, err = client.CreateOrUpdateResponder(ehc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsCreateOrUpdateFuture", "Result", ehc.Response.Response, "Failure responding to request")
@@ -581,7 +585,11 @@ func (client EventHubConnectionsClient) UpdateSender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ehc.Response.Response, err = future.GetResult(sender); err == nil && ehc.Response.Response.StatusCode != http.StatusNoContent {
+		ehc.Response.Response, err = future.GetResult(sender)
+		if ehc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ehc.Response.Response.StatusCode != http.StatusNoContent {
 			ehc, err = client.UpdateResponder(ehc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsUpdateFuture", "Result", ehc.Response.Response, "Failure responding to request")

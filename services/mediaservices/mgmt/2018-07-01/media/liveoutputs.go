@@ -140,7 +140,11 @@ func (client LiveOutputsClient) CreateSender(req *http.Request) (future LiveOutp
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if lo.Response.Response, err = future.GetResult(sender); err == nil && lo.Response.Response.StatusCode != http.StatusNoContent {
+		lo.Response.Response, err = future.GetResult(sender)
+		if lo.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "media.LiveOutputsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && lo.Response.Response.StatusCode != http.StatusNoContent {
 			lo, err = client.CreateResponder(lo.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "media.LiveOutputsCreateFuture", "Result", lo.Response.Response, "Failure responding to request")

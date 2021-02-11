@@ -431,7 +431,11 @@ func (client PrivateEndpointConnectionsClient) UpdateSender(req *http.Request) (
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pec.Response.Response, err = future.GetResult(sender); err == nil && pec.Response.Response.StatusCode != http.StatusNoContent {
+		pec.Response.Response, err = future.GetResult(sender)
+		if pec.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "eventgrid.PrivateEndpointConnectionsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pec.Response.Response.StatusCode != http.StatusNoContent {
 			pec, err = client.UpdateResponder(pec.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "eventgrid.PrivateEndpointConnectionsUpdateFuture", "Result", pec.Response.Response, "Failure responding to request")

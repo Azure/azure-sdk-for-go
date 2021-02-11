@@ -151,7 +151,11 @@ func (client VirtualNetworkTapsClient) CreateOrUpdateSender(req *http.Request) (
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vnt.Response.Response, err = future.GetResult(sender); err == nil && vnt.Response.Response.StatusCode != http.StatusNoContent {
+		vnt.Response.Response, err = future.GetResult(sender)
+		if vnt.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkTapsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vnt.Response.Response.StatusCode != http.StatusNoContent {
 			vnt, err = client.CreateOrUpdateResponder(vnt.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkTapsCreateOrUpdateFuture", "Result", vnt.Response.Response, "Failure responding to request")
@@ -646,7 +650,11 @@ func (client VirtualNetworkTapsClient) UpdateTagsSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vnt.Response.Response, err = future.GetResult(sender); err == nil && vnt.Response.Response.StatusCode != http.StatusNoContent {
+		vnt.Response.Response, err = future.GetResult(sender)
+		if vnt.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkTapsUpdateTagsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vnt.Response.Response.StatusCode != http.StatusNoContent {
 			vnt, err = client.UpdateTagsResponder(vnt.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkTapsUpdateTagsFuture", "Result", vnt.Response.Response, "Failure responding to request")

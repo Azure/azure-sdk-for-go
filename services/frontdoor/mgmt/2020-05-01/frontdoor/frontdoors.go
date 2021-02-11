@@ -131,7 +131,11 @@ func (client FrontDoorsClient) CreateOrUpdateSender(req *http.Request) (future F
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if fd.Response.Response, err = future.GetResult(sender); err == nil && fd.Response.Response.StatusCode != http.StatusNoContent {
+		fd.Response.Response, err = future.GetResult(sender)
+		if fd.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "frontdoor.FrontDoorsCreateOrUpdateFutureType", "Result", nil, "received nil response and error")
+		}
+		if err == nil && fd.Response.Response.StatusCode != http.StatusNoContent {
 			fd, err = client.CreateOrUpdateResponder(fd.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "frontdoor.FrontDoorsCreateOrUpdateFutureType", "Result", fd.Response.Response, "Failure responding to request")

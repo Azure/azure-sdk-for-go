@@ -134,7 +134,11 @@ func (client ServersClient) CreateSender(req *http.Request) (future ServersCreat
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+		s.Response.Response, err = future.GetResult(sender)
+		if s.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "postgresqlflexibleservers.ServersCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
 			s, err = client.CreateResponder(s.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "postgresqlflexibleservers.ServersCreateFuture", "Result", s.Response.Response, "Failure responding to request")
@@ -976,7 +980,11 @@ func (client ServersClient) UpdateSender(req *http.Request) (future ServersUpdat
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+		s.Response.Response, err = future.GetResult(sender)
+		if s.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "postgresqlflexibleservers.ServersUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
 			s, err = client.UpdateResponder(s.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "postgresqlflexibleservers.ServersUpdateFuture", "Result", s.Response.Response, "Failure responding to request")

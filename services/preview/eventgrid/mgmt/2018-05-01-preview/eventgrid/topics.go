@@ -119,7 +119,11 @@ func (client TopicsClient) CreateOrUpdateSender(req *http.Request) (future Topic
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t.Response.Response, err = future.GetResult(sender)
+		if t.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "eventgrid.TopicsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
 			t, err = client.CreateOrUpdateResponder(t.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "eventgrid.TopicsCreateOrUpdateFuture", "Result", t.Response.Response, "Failure responding to request")
@@ -771,7 +775,11 @@ func (client TopicsClient) UpdateSender(req *http.Request) (future TopicsUpdateF
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t.Response.Response, err = future.GetResult(sender)
+		if t.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "eventgrid.TopicsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
 			t, err = client.UpdateResponder(t.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "eventgrid.TopicsUpdateFuture", "Result", t.Response.Response, "Failure responding to request")

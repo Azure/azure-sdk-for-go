@@ -131,7 +131,11 @@ func (client DevicesClient) CreateOrUpdateAlertSettingsSender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if as.Response.Response, err = future.GetResult(sender); err == nil && as.Response.Response.StatusCode != http.StatusNoContent {
+		as.Response.Response, err = future.GetResult(sender)
+		if as.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storsimple.DevicesCreateOrUpdateAlertSettingsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && as.Response.Response.StatusCode != http.StatusNoContent {
 			as, err = client.CreateOrUpdateAlertSettingsResponder(as.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storsimple.DevicesCreateOrUpdateAlertSettingsFuture", "Result", as.Response.Response, "Failure responding to request")
@@ -1624,7 +1628,11 @@ func (client DevicesClient) PatchSender(req *http.Request) (future DevicesPatchF
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
+		d.Response.Response, err = future.GetResult(sender)
+		if d.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storsimple.DevicesPatchFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
 			d, err = client.PatchResponder(d.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storsimple.DevicesPatchFuture", "Result", d.Response.Response, "Failure responding to request")

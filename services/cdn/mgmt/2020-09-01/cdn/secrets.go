@@ -129,7 +129,11 @@ func (client SecretsClient) CreateSender(req *http.Request) (future SecretsCreat
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+		s.Response.Response, err = future.GetResult(sender)
+		if s.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.SecretsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
 			s, err = client.CreateResponder(s.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.SecretsCreateFuture", "Result", s.Response.Response, "Failure responding to request")
@@ -551,7 +555,11 @@ func (client SecretsClient) UpdateSender(req *http.Request) (future SecretsUpdat
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+		s.Response.Response, err = future.GetResult(sender)
+		if s.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.SecretsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
 			s, err = client.UpdateResponder(s.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.SecretsUpdateFuture", "Result", s.Response.Response, "Failure responding to request")

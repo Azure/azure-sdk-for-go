@@ -125,7 +125,11 @@ func (client ManagedInstanceEncryptionProtectorsClient) CreateOrUpdateSender(req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if miep.Response.Response, err = future.GetResult(sender); err == nil && miep.Response.Response.StatusCode != http.StatusNoContent {
+		miep.Response.Response, err = future.GetResult(sender)
+		if miep.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedInstanceEncryptionProtectorsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && miep.Response.Response.StatusCode != http.StatusNoContent {
 			miep, err = client.CreateOrUpdateResponder(miep.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.ManagedInstanceEncryptionProtectorsCreateOrUpdateFuture", "Result", miep.Response.Response, "Failure responding to request")

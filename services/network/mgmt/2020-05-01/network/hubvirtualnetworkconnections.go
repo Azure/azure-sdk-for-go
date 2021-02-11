@@ -123,7 +123,11 @@ func (client HubVirtualNetworkConnectionsClient) CreateOrUpdateSender(req *http.
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if hvnc.Response.Response, err = future.GetResult(sender); err == nil && hvnc.Response.Response.StatusCode != http.StatusNoContent {
+		hvnc.Response.Response, err = future.GetResult(sender)
+		if hvnc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.HubVirtualNetworkConnectionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && hvnc.Response.Response.StatusCode != http.StatusNoContent {
 			hvnc, err = client.CreateOrUpdateResponder(hvnc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.HubVirtualNetworkConnectionsCreateOrUpdateFuture", "Result", hvnc.Response.Response, "Failure responding to request")

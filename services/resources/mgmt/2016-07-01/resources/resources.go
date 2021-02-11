@@ -721,7 +721,11 @@ func (client Client) UpdateSender(req *http.Request) (future UpdateFuture, err e
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if gr.Response.Response, err = future.GetResult(sender); err == nil && gr.Response.Response.StatusCode != http.StatusNoContent {
+		gr.Response.Response, err = future.GetResult(sender)
+		if gr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "resources.UpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && gr.Response.Response.StatusCode != http.StatusNoContent {
 			gr, err = client.UpdateResponder(gr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "resources.UpdateFuture", "Result", gr.Response.Response, "Failure responding to request")

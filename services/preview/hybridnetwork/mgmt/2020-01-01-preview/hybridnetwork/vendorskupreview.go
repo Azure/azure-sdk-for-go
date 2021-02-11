@@ -131,7 +131,11 @@ func (client VendorSkuPreviewClient) CreateOrUpdateSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ps.Response.Response, err = future.GetResult(sender); err == nil && ps.Response.Response.StatusCode != http.StatusNoContent {
+		ps.Response.Response, err = future.GetResult(sender)
+		if ps.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkuPreviewCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ps.Response.Response.StatusCode != http.StatusNoContent {
 			ps, err = client.CreateOrUpdateResponder(ps.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkuPreviewCreateOrUpdateFuture", "Result", ps.Response.Response, "Failure responding to request")

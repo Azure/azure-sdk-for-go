@@ -733,7 +733,11 @@ func (client SubscriptionsClient) TransferSender(req *http.Request) (future Subs
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tbsr.Response.Response, err = future.GetResult(sender); err == nil && tbsr.Response.Response.StatusCode != http.StatusNoContent {
+		tbsr.Response.Response, err = future.GetResult(sender)
+		if tbsr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "billing.SubscriptionsTransferFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tbsr.Response.Response.StatusCode != http.StatusNoContent {
 			tbsr, err = client.TransferResponder(tbsr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "billing.SubscriptionsTransferFuture", "Result", tbsr.Response.Response, "Failure responding to request")

@@ -134,7 +134,11 @@ func (client ManagedInstanceAzureADOnlyAuthenticationsClient) CreateOrUpdateSend
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if miaaoa.Response.Response, err = future.GetResult(sender); err == nil && miaaoa.Response.Response.StatusCode != http.StatusNoContent {
+		miaaoa.Response.Response, err = future.GetResult(sender)
+		if miaaoa.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && miaaoa.Response.Response.StatusCode != http.StatusNoContent {
 			miaaoa, err = client.CreateOrUpdateResponder(miaaoa.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateFuture", "Result", miaaoa.Response.Response, "Failure responding to request")

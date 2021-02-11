@@ -943,7 +943,11 @@ func (client SitesClient) CreateOrUpdateSiteSender(req *http.Request) (future Si
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+		s.Response.Response, err = future.GetResult(sender)
+		if s.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.SitesCreateOrUpdateSiteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
 			s, err = client.CreateOrUpdateSiteResponder(s.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.SitesCreateOrUpdateSiteFuture", "Result", s.Response.Response, "Failure responding to request")
@@ -1551,7 +1555,11 @@ func (client SitesClient) CreateOrUpdateSiteSlotSender(req *http.Request) (futur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+		s.Response.Response, err = future.GetResult(sender)
+		if s.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.SitesCreateOrUpdateSiteSlotFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
 			s, err = client.CreateOrUpdateSiteSlotResponder(s.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.SitesCreateOrUpdateSiteSlotFuture", "Result", s.Response.Response, "Failure responding to request")
@@ -10277,7 +10285,11 @@ func (client SitesClient) ListSitePublishingCredentialsSender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if u.Response.Response, err = future.GetResult(sender); err == nil && u.Response.Response.StatusCode != http.StatusNoContent {
+		u.Response.Response, err = future.GetResult(sender)
+		if u.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.SitesListSitePublishingCredentialsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && u.Response.Response.StatusCode != http.StatusNoContent {
 			u, err = client.ListSitePublishingCredentialsResponder(u.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.SitesListSitePublishingCredentialsFuture", "Result", u.Response.Response, "Failure responding to request")
@@ -10376,7 +10388,11 @@ func (client SitesClient) ListSitePublishingCredentialsSlotSender(req *http.Requ
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if u.Response.Response, err = future.GetResult(sender); err == nil && u.Response.Response.StatusCode != http.StatusNoContent {
+		u.Response.Response, err = future.GetResult(sender)
+		if u.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.SitesListSitePublishingCredentialsSlotFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && u.Response.Response.StatusCode != http.StatusNoContent {
 			u, err = client.ListSitePublishingCredentialsSlotResponder(u.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.SitesListSitePublishingCredentialsSlotFuture", "Result", u.Response.Response, "Failure responding to request")
@@ -10791,7 +10807,11 @@ func (client SitesClient) RecoverSiteSender(req *http.Request) (future SitesReco
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+		s.Response.Response, err = future.GetResult(sender)
+		if s.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.SitesRecoverSiteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
 			s, err = client.RecoverSiteResponder(s.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.SitesRecoverSiteFuture", "Result", s.Response.Response, "Failure responding to request")
@@ -10894,7 +10914,11 @@ func (client SitesClient) RecoverSiteSlotSender(req *http.Request) (future Sites
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+		s.Response.Response, err = future.GetResult(sender)
+		if s.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.SitesRecoverSiteSlotFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
 			s, err = client.RecoverSiteSlotResponder(s.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.SitesRecoverSiteSlotFuture", "Result", s.Response.Response, "Failure responding to request")
@@ -11322,7 +11346,11 @@ func (client SitesClient) RestoreSiteSender(req *http.Request) (future SitesRest
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rr.Response.Response, err = future.GetResult(sender); err == nil && rr.Response.Response.StatusCode != http.StatusNoContent {
+		rr.Response.Response, err = future.GetResult(sender)
+		if rr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.SitesRestoreSiteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rr.Response.Response.StatusCode != http.StatusNoContent {
 			rr, err = client.RestoreSiteResponder(rr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.SitesRestoreSiteFuture", "Result", rr.Response.Response, "Failure responding to request")
@@ -11426,7 +11454,11 @@ func (client SitesClient) RestoreSiteSlotSender(req *http.Request) (future Sites
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rr.Response.Response, err = future.GetResult(sender); err == nil && rr.Response.Response.StatusCode != http.StatusNoContent {
+		rr.Response.Response, err = future.GetResult(sender)
+		if rr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.SitesRestoreSiteSlotFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rr.Response.Response.StatusCode != http.StatusNoContent {
 			rr, err = client.RestoreSiteSlotResponder(rr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.SitesRestoreSiteSlotFuture", "Result", rr.Response.Response, "Failure responding to request")
@@ -11836,7 +11868,11 @@ func (client SitesClient) SwapSlotsSlotSender(req *http.Request) (future SitesSw
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so.Response.Response, err = future.GetResult(sender)
+		if so.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.SitesSwapSlotsSlotFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 			so, err = client.SwapSlotsSlotResponder(so.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.SitesSwapSlotsSlotFuture", "Result", so.Response.Response, "Failure responding to request")
@@ -11936,7 +11972,11 @@ func (client SitesClient) SwapSlotWithProductionSender(req *http.Request) (futur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so.Response.Response, err = future.GetResult(sender)
+		if so.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.SitesSwapSlotWithProductionFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 			so, err = client.SwapSlotWithProductionResponder(so.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.SitesSwapSlotWithProductionFuture", "Result", so.Response.Response, "Failure responding to request")

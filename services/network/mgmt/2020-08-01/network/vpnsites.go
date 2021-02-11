@@ -133,7 +133,11 @@ func (client VpnSitesClient) CreateOrUpdateSender(req *http.Request) (future Vpn
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vs.Response.Response, err = future.GetResult(sender); err == nil && vs.Response.Response.StatusCode != http.StatusNoContent {
+		vs.Response.Response, err = future.GetResult(sender)
+		if vs.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VpnSitesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vs.Response.Response.StatusCode != http.StatusNoContent {
 			vs, err = client.CreateOrUpdateResponder(vs.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VpnSitesCreateOrUpdateFuture", "Result", vs.Response.Response, "Failure responding to request")

@@ -134,7 +134,11 @@ func (client PrivateCloudsClient) CreateOrUpdateSender(req *http.Request) (futur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pc.Response.Response, err = future.GetResult(sender); err == nil && pc.Response.Response.StatusCode != http.StatusNoContent {
+		pc.Response.Response, err = future.GetResult(sender)
+		if pc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "avs.PrivateCloudsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pc.Response.Response.StatusCode != http.StatusNoContent {
 			pc, err = client.CreateOrUpdateResponder(pc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "avs.PrivateCloudsCreateOrUpdateFuture", "Result", pc.Response.Response, "Failure responding to request")
@@ -761,7 +765,11 @@ func (client PrivateCloudsClient) UpdateSender(req *http.Request) (future Privat
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pc.Response.Response, err = future.GetResult(sender); err == nil && pc.Response.Response.StatusCode != http.StatusNoContent {
+		pc.Response.Response, err = future.GetResult(sender)
+		if pc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "avs.PrivateCloudsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pc.Response.Response.StatusCode != http.StatusNoContent {
 			pc, err = client.UpdateResponder(pc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "avs.PrivateCloudsUpdateFuture", "Result", pc.Response.Response, "Failure responding to request")

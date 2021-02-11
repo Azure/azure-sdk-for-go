@@ -124,7 +124,11 @@ func (client ManagedServerSecurityAlertPoliciesClient) CreateOrUpdateSender(req 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mssap.Response.Response, err = future.GetResult(sender); err == nil && mssap.Response.Response.StatusCode != http.StatusNoContent {
+		mssap.Response.Response, err = future.GetResult(sender)
+		if mssap.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedServerSecurityAlertPoliciesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mssap.Response.Response.StatusCode != http.StatusNoContent {
 			mssap, err = client.CreateOrUpdateResponder(mssap.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.ManagedServerSecurityAlertPoliciesCreateOrUpdateFuture", "Result", mssap.Response.Response, "Failure responding to request")

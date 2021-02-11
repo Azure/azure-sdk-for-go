@@ -135,7 +135,11 @@ func (client ServerAdministratorsClient) CreateOrUpdateSender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sar.Response.Response, err = future.GetResult(sender); err == nil && sar.Response.Response.StatusCode != http.StatusNoContent {
+		sar.Response.Response, err = future.GetResult(sender)
+		if sar.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "mysql.ServerAdministratorsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sar.Response.Response.StatusCode != http.StatusNoContent {
 			sar, err = client.CreateOrUpdateResponder(sar.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "mysql.ServerAdministratorsCreateOrUpdateFuture", "Result", sar.Response.Response, "Failure responding to request")

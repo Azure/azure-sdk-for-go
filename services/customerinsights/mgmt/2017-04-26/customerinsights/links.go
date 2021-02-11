@@ -137,7 +137,11 @@ func (client LinksClient) CreateOrUpdateSender(req *http.Request) (future LinksC
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if lrf.Response.Response, err = future.GetResult(sender); err == nil && lrf.Response.Response.StatusCode != http.StatusNoContent {
+		lrf.Response.Response, err = future.GetResult(sender)
+		if lrf.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.LinksCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && lrf.Response.Response.StatusCode != http.StatusNoContent {
 			lrf, err = client.CreateOrUpdateResponder(lrf.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "customerinsights.LinksCreateOrUpdateFuture", "Result", lrf.Response.Response, "Failure responding to request")

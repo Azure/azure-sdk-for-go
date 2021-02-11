@@ -639,7 +639,11 @@ func (client ManagedNetworksClient) UpdateSender(req *http.Request) (future Mana
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mn.Response.Response, err = future.GetResult(sender); err == nil && mn.Response.Response.StatusCode != http.StatusNoContent {
+		mn.Response.Response, err = future.GetResult(sender)
+		if mn.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksUpdateFutureType", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mn.Response.Response.StatusCode != http.StatusNoContent {
 			mn, err = client.UpdateResponder(mn.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksUpdateFutureType", "Result", mn.Response.Response, "Failure responding to request")

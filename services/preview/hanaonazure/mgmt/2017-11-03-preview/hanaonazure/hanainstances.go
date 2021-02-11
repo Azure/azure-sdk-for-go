@@ -118,7 +118,11 @@ func (client HanaInstancesClient) CreateSender(req *http.Request) (future HanaIn
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if hi.Response.Response, err = future.GetResult(sender); err == nil && hi.Response.Response.StatusCode != http.StatusNoContent {
+		hi.Response.Response, err = future.GetResult(sender)
+		if hi.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && hi.Response.Response.StatusCode != http.StatusNoContent {
 			hi, err = client.CreateResponder(hi.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesCreateFuture", "Result", hi.Response.Response, "Failure responding to request")

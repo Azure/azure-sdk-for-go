@@ -136,7 +136,11 @@ func (client PoliciesClient) CreateOrUpdateSender(req *http.Request) (future Pol
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if wafp.Response.Response, err = future.GetResult(sender); err == nil && wafp.Response.Response.StatusCode != http.StatusNoContent {
+		wafp.Response.Response, err = future.GetResult(sender)
+		if wafp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "frontdoor.PoliciesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && wafp.Response.Response.StatusCode != http.StatusNoContent {
 			wafp, err = client.CreateOrUpdateResponder(wafp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "frontdoor.PoliciesCreateOrUpdateFuture", "Result", wafp.Response.Response, "Failure responding to request")

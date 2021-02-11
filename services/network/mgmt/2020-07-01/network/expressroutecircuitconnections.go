@@ -126,7 +126,11 @@ func (client ExpressRouteCircuitConnectionsClient) CreateOrUpdateSender(req *htt
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ercc.Response.Response, err = future.GetResult(sender); err == nil && ercc.Response.Response.StatusCode != http.StatusNoContent {
+		ercc.Response.Response, err = future.GetResult(sender)
+		if ercc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitConnectionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ercc.Response.Response.StatusCode != http.StatusNoContent {
 			ercc, err = client.CreateOrUpdateResponder(ercc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitConnectionsCreateOrUpdateFuture", "Result", ercc.Response.Response, "Failure responding to request")

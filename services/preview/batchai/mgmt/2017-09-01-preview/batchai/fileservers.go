@@ -146,7 +146,11 @@ func (client FileServersClient) CreateSender(req *http.Request) (future FileServ
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if fs.Response.Response, err = future.GetResult(sender); err == nil && fs.Response.Response.StatusCode != http.StatusNoContent {
+		fs.Response.Response, err = future.GetResult(sender)
+		if fs.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "batchai.FileServersCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && fs.Response.Response.StatusCode != http.StatusNoContent {
 			fs, err = client.CreateResponder(fs.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "batchai.FileServersCreateFuture", "Result", fs.Response.Response, "Failure responding to request")

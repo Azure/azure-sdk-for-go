@@ -147,7 +147,11 @@ func (client BackupsClient) CreateSender(req *http.Request) (future BackupsCreat
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if b.Response.Response, err = future.GetResult(sender); err == nil && b.Response.Response.StatusCode != http.StatusNoContent {
+		b.Response.Response, err = future.GetResult(sender)
+		if b.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "netapp.BackupsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && b.Response.Response.StatusCode != http.StatusNoContent {
 			b, err = client.CreateResponder(b.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "netapp.BackupsCreateFuture", "Result", b.Response.Response, "Failure responding to request")

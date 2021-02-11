@@ -142,7 +142,11 @@ func (client GremlinResourcesClient) CreateUpdateGremlinDatabaseSender(req *http
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if gdgr.Response.Response, err = future.GetResult(sender); err == nil && gdgr.Response.Response.StatusCode != http.StatusNoContent {
+		gdgr.Response.Response, err = future.GetResult(sender)
+		if gdgr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesCreateUpdateGremlinDatabaseFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && gdgr.Response.Response.StatusCode != http.StatusNoContent {
 			gdgr, err = client.CreateUpdateGremlinDatabaseResponder(gdgr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesCreateUpdateGremlinDatabaseFuture", "Result", gdgr.Response.Response, "Failure responding to request")
@@ -273,7 +277,11 @@ func (client GremlinResourcesClient) CreateUpdateGremlinGraphSender(req *http.Re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if gggr.Response.Response, err = future.GetResult(sender); err == nil && gggr.Response.Response.StatusCode != http.StatusNoContent {
+		gggr.Response.Response, err = future.GetResult(sender)
+		if gggr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesCreateUpdateGremlinGraphFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && gggr.Response.Response.StatusCode != http.StatusNoContent {
 			gggr, err = client.CreateUpdateGremlinGraphResponder(gggr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesCreateUpdateGremlinGraphFuture", "Result", gggr.Response.Response, "Failure responding to request")
@@ -1166,7 +1174,11 @@ func (client GremlinResourcesClient) UpdateGremlinDatabaseThroughputSender(req *
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tsgr.Response.Response, err = future.GetResult(sender); err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
+		tsgr.Response.Response, err = future.GetResult(sender)
+		if tsgr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesUpdateGremlinDatabaseThroughputFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
 			tsgr, err = client.UpdateGremlinDatabaseThroughputResponder(tsgr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesUpdateGremlinDatabaseThroughputFuture", "Result", tsgr.Response.Response, "Failure responding to request")
@@ -1289,7 +1301,11 @@ func (client GremlinResourcesClient) UpdateGremlinGraphThroughputSender(req *htt
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tsgr.Response.Response, err = future.GetResult(sender); err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
+		tsgr.Response.Response, err = future.GetResult(sender)
+		if tsgr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesUpdateGremlinGraphThroughputFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
 			tsgr, err = client.UpdateGremlinGraphThroughputResponder(tsgr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesUpdateGremlinGraphThroughputFuture", "Result", tsgr.Response.Response, "Failure responding to request")

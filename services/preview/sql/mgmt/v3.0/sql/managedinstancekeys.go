@@ -125,7 +125,11 @@ func (client ManagedInstanceKeysClient) CreateOrUpdateSender(req *http.Request) 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mik.Response.Response, err = future.GetResult(sender); err == nil && mik.Response.Response.StatusCode != http.StatusNoContent {
+		mik.Response.Response, err = future.GetResult(sender)
+		if mik.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedInstanceKeysCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mik.Response.Response.StatusCode != http.StatusNoContent {
 			mik, err = client.CreateOrUpdateResponder(mik.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.ManagedInstanceKeysCreateOrUpdateFuture", "Result", mik.Response.Response, "Failure responding to request")

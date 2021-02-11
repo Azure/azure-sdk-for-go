@@ -120,7 +120,11 @@ func (client FirewallPoliciesClient) CreateOrUpdateSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if fp.Response.Response, err = future.GetResult(sender); err == nil && fp.Response.Response.StatusCode != http.StatusNoContent {
+		fp.Response.Response, err = future.GetResult(sender)
+		if fp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.FirewallPoliciesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && fp.Response.Response.StatusCode != http.StatusNoContent {
 			fp, err = client.CreateOrUpdateResponder(fp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.FirewallPoliciesCreateOrUpdateFuture", "Result", fp.Response.Response, "Failure responding to request")

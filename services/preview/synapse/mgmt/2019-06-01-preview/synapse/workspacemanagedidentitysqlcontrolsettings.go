@@ -131,7 +131,11 @@ func (client WorkspaceManagedIdentitySQLControlSettingsClient) CreateOrUpdateSen
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if miscsm.Response.Response, err = future.GetResult(sender); err == nil && miscsm.Response.Response.StatusCode != http.StatusNoContent {
+		miscsm.Response.Response, err = future.GetResult(sender)
+		if miscsm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && miscsm.Response.Response.StatusCode != http.StatusNoContent {
 			miscsm, err = client.CreateOrUpdateResponder(miscsm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdateFuture", "Result", miscsm.Response.Response, "Failure responding to request")

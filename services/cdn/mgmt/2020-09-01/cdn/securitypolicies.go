@@ -130,7 +130,11 @@ func (client SecurityPoliciesClient) CreateSender(req *http.Request) (future Sec
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sp.Response.Response, err = future.GetResult(sender); err == nil && sp.Response.Response.StatusCode != http.StatusNoContent {
+		sp.Response.Response, err = future.GetResult(sender)
+		if sp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.SecurityPoliciesCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sp.Response.Response.StatusCode != http.StatusNoContent {
 			sp, err = client.CreateResponder(sp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.SecurityPoliciesCreateFuture", "Result", sp.Response.Response, "Failure responding to request")
@@ -552,7 +556,11 @@ func (client SecurityPoliciesClient) PatchSender(req *http.Request) (future Secu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sp.Response.Response, err = future.GetResult(sender); err == nil && sp.Response.Response.StatusCode != http.StatusNoContent {
+		sp.Response.Response, err = future.GetResult(sender)
+		if sp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.SecurityPoliciesPatchFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sp.Response.Response.StatusCode != http.StatusNoContent {
 			sp, err = client.PatchResponder(sp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.SecurityPoliciesPatchFuture", "Result", sp.Response.Response, "Failure responding to request")

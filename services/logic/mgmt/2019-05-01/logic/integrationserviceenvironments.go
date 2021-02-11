@@ -119,7 +119,11 @@ func (client IntegrationServiceEnvironmentsClient) CreateOrUpdateSender(req *htt
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ise.Response.Response, err = future.GetResult(sender); err == nil && ise.Response.Response.StatusCode != http.StatusNoContent {
+		ise.Response.Response, err = future.GetResult(sender)
+		if ise.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ise.Response.Response.StatusCode != http.StatusNoContent {
 			ise, err = client.CreateOrUpdateResponder(ise.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentsCreateOrUpdateFuture", "Result", ise.Response.Response, "Failure responding to request")
@@ -683,7 +687,11 @@ func (client IntegrationServiceEnvironmentsClient) UpdateSender(req *http.Reques
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ise.Response.Response, err = future.GetResult(sender); err == nil && ise.Response.Response.StatusCode != http.StatusNoContent {
+		ise.Response.Response, err = future.GetResult(sender)
+		if ise.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ise.Response.Response.StatusCode != http.StatusNoContent {
 			ise, err = client.UpdateResponder(ise.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentsUpdateFuture", "Result", ise.Response.Response, "Failure responding to request")

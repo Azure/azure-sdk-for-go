@@ -123,7 +123,11 @@ func (client LoadBalancerBackendAddressPoolsClient) CreateOrUpdateSender(req *ht
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if bap.Response.Response, err = future.GetResult(sender); err == nil && bap.Response.Response.StatusCode != http.StatusNoContent {
+		bap.Response.Response, err = future.GetResult(sender)
+		if bap.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.LoadBalancerBackendAddressPoolsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && bap.Response.Response.StatusCode != http.StatusNoContent {
 			bap, err = client.CreateOrUpdateResponder(bap.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.LoadBalancerBackendAddressPoolsCreateOrUpdateFuture", "Result", bap.Response.Response, "Failure responding to request")

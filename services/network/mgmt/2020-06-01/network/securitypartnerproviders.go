@@ -120,7 +120,11 @@ func (client SecurityPartnerProvidersClient) CreateOrUpdateSender(req *http.Requ
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if spp.Response.Response, err = future.GetResult(sender); err == nil && spp.Response.Response.StatusCode != http.StatusNoContent {
+		spp.Response.Response, err = future.GetResult(sender)
+		if spp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.SecurityPartnerProvidersCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && spp.Response.Response.StatusCode != http.StatusNoContent {
 			spp, err = client.CreateOrUpdateResponder(spp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.SecurityPartnerProvidersCreateOrUpdateFuture", "Result", spp.Response.Response, "Failure responding to request")

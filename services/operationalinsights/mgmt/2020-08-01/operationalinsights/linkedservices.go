@@ -137,7 +137,11 @@ func (client LinkedServicesClient) CreateOrUpdateSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ls.Response.Response, err = future.GetResult(sender); err == nil && ls.Response.Response.StatusCode != http.StatusNoContent {
+		ls.Response.Response, err = future.GetResult(sender)
+		if ls.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ls.Response.Response.StatusCode != http.StatusNoContent {
 			ls, err = client.CreateOrUpdateResponder(ls.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesCreateOrUpdateFuture", "Result", ls.Response.Response, "Failure responding to request")
@@ -250,7 +254,11 @@ func (client LinkedServicesClient) DeleteSender(req *http.Request) (future Linke
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ls.Response.Response, err = future.GetResult(sender); err == nil && ls.Response.Response.StatusCode != http.StatusNoContent {
+		ls.Response.Response, err = future.GetResult(sender)
+		if ls.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesDeleteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ls.Response.Response.StatusCode != http.StatusNoContent {
 			ls, err = client.DeleteResponder(ls.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesDeleteFuture", "Result", ls.Response.Response, "Failure responding to request")

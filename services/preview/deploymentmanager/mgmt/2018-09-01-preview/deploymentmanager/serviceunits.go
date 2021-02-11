@@ -135,7 +135,11 @@ func (client ServiceUnitsClient) CreateOrUpdateSender(req *http.Request) (future
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sur.Response.Response, err = future.GetResult(sender); err == nil && sur.Response.Response.StatusCode != http.StatusNoContent {
+		sur.Response.Response, err = future.GetResult(sender)
+		if sur.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceUnitsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sur.Response.Response.StatusCode != http.StatusNoContent {
 			sur, err = client.CreateOrUpdateResponder(sur.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceUnitsCreateOrUpdateFuture", "Result", sur.Response.Response, "Failure responding to request")

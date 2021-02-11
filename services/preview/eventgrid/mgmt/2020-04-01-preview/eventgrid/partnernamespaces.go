@@ -120,7 +120,11 @@ func (client PartnerNamespacesClient) CreateOrUpdateSender(req *http.Request) (f
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pn.Response.Response, err = future.GetResult(sender); err == nil && pn.Response.Response.StatusCode != http.StatusNoContent {
+		pn.Response.Response, err = future.GetResult(sender)
+		if pn.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "eventgrid.PartnerNamespacesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pn.Response.Response.StatusCode != http.StatusNoContent {
 			pn, err = client.CreateOrUpdateResponder(pn.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "eventgrid.PartnerNamespacesCreateOrUpdateFuture", "Result", pn.Response.Response, "Failure responding to request")
@@ -805,7 +809,11 @@ func (client PartnerNamespacesClient) UpdateSender(req *http.Request) (future Pa
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pn.Response.Response, err = future.GetResult(sender); err == nil && pn.Response.Response.StatusCode != http.StatusNoContent {
+		pn.Response.Response, err = future.GetResult(sender)
+		if pn.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "eventgrid.PartnerNamespacesUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pn.Response.Response.StatusCode != http.StatusNoContent {
 			pn, err = client.UpdateResponder(pn.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "eventgrid.PartnerNamespacesUpdateFuture", "Result", pn.Response.Response, "Failure responding to request")

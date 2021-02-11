@@ -130,7 +130,11 @@ func (client ReplicationRecoveryPlansClient) CreateSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rp.Response.Response, err = future.GetResult(sender); err == nil && rp.Response.Response.StatusCode != http.StatusNoContent {
+		rp.Response.Response, err = future.GetResult(sender)
+		if rp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryPlansCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rp.Response.Response.StatusCode != http.StatusNoContent {
 			rp, err = client.CreateResponder(rp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryPlansCreateFuture", "Result", rp.Response.Response, "Failure responding to request")
@@ -317,7 +321,11 @@ func (client ReplicationRecoveryPlansClient) FailoverCommitSender(req *http.Requ
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rp.Response.Response, err = future.GetResult(sender); err == nil && rp.Response.Response.StatusCode != http.StatusNoContent {
+		rp.Response.Response, err = future.GetResult(sender)
+		if rp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryPlansFailoverCommitFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rp.Response.Response.StatusCode != http.StatusNoContent {
 			rp, err = client.FailoverCommitResponder(rp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryPlansFailoverCommitFuture", "Result", rp.Response.Response, "Failure responding to request")
@@ -614,7 +622,11 @@ func (client ReplicationRecoveryPlansClient) PlannedFailoverSender(req *http.Req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rp.Response.Response, err = future.GetResult(sender); err == nil && rp.Response.Response.StatusCode != http.StatusNoContent {
+		rp.Response.Response, err = future.GetResult(sender)
+		if rp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryPlansPlannedFailoverFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rp.Response.Response.StatusCode != http.StatusNoContent {
 			rp, err = client.PlannedFailoverResponder(rp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryPlansPlannedFailoverFuture", "Result", rp.Response.Response, "Failure responding to request")
@@ -711,7 +723,11 @@ func (client ReplicationRecoveryPlansClient) ReprotectSender(req *http.Request) 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rp.Response.Response, err = future.GetResult(sender); err == nil && rp.Response.Response.StatusCode != http.StatusNoContent {
+		rp.Response.Response, err = future.GetResult(sender)
+		if rp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryPlansReprotectFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rp.Response.Response.StatusCode != http.StatusNoContent {
 			rp, err = client.ReprotectResponder(rp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryPlansReprotectFuture", "Result", rp.Response.Response, "Failure responding to request")
@@ -818,7 +834,11 @@ func (client ReplicationRecoveryPlansClient) TestFailoverSender(req *http.Reques
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rp.Response.Response, err = future.GetResult(sender); err == nil && rp.Response.Response.StatusCode != http.StatusNoContent {
+		rp.Response.Response, err = future.GetResult(sender)
+		if rp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryPlansTestFailoverFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rp.Response.Response.StatusCode != http.StatusNoContent {
 			rp, err = client.TestFailoverResponder(rp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryPlansTestFailoverFuture", "Result", rp.Response.Response, "Failure responding to request")
@@ -924,7 +944,11 @@ func (client ReplicationRecoveryPlansClient) TestFailoverCleanupSender(req *http
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rp.Response.Response, err = future.GetResult(sender); err == nil && rp.Response.Response.StatusCode != http.StatusNoContent {
+		rp.Response.Response, err = future.GetResult(sender)
+		if rp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryPlansTestFailoverCleanupFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rp.Response.Response.StatusCode != http.StatusNoContent {
 			rp, err = client.TestFailoverCleanupResponder(rp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryPlansTestFailoverCleanupFuture", "Result", rp.Response.Response, "Failure responding to request")
@@ -1030,7 +1054,11 @@ func (client ReplicationRecoveryPlansClient) UnplannedFailoverSender(req *http.R
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rp.Response.Response, err = future.GetResult(sender); err == nil && rp.Response.Response.StatusCode != http.StatusNoContent {
+		rp.Response.Response, err = future.GetResult(sender)
+		if rp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryPlansUnplannedFailoverFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rp.Response.Response.StatusCode != http.StatusNoContent {
 			rp, err = client.UnplannedFailoverResponder(rp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryPlansUnplannedFailoverFuture", "Result", rp.Response.Response, "Failure responding to request")
@@ -1130,7 +1158,11 @@ func (client ReplicationRecoveryPlansClient) UpdateSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rp.Response.Response, err = future.GetResult(sender); err == nil && rp.Response.Response.StatusCode != http.StatusNoContent {
+		rp.Response.Response, err = future.GetResult(sender)
+		if rp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryPlansUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rp.Response.Response.StatusCode != http.StatusNoContent {
 			rp, err = client.UpdateResponder(rp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryPlansUpdateFuture", "Result", rp.Response.Response, "Failure responding to request")

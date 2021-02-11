@@ -120,7 +120,11 @@ func (client ExpressRouteCrossConnectionsClient) CreateOrUpdateSender(req *http.
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ercc.Response.Response, err = future.GetResult(sender); err == nil && ercc.Response.Response.StatusCode != http.StatusNoContent {
+		ercc.Response.Response, err = future.GetResult(sender)
+		if ercc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteCrossConnectionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ercc.Response.Response.StatusCode != http.StatusNoContent {
 			ercc, err = client.CreateOrUpdateResponder(ercc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ExpressRouteCrossConnectionsCreateOrUpdateFuture", "Result", ercc.Response.Response, "Failure responding to request")
@@ -411,7 +415,11 @@ func (client ExpressRouteCrossConnectionsClient) ListArpTableSender(req *http.Re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ercatlr.Response.Response, err = future.GetResult(sender); err == nil && ercatlr.Response.Response.StatusCode != http.StatusNoContent {
+		ercatlr.Response.Response, err = future.GetResult(sender)
+		if ercatlr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteCrossConnectionsListArpTableFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ercatlr.Response.Response.StatusCode != http.StatusNoContent {
 			ercatlr, err = client.ListArpTableResponder(ercatlr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ExpressRouteCrossConnectionsListArpTableFuture", "Result", ercatlr.Response.Response, "Failure responding to request")
@@ -629,7 +637,11 @@ func (client ExpressRouteCrossConnectionsClient) ListRoutesTableSender(req *http
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ercrtlr.Response.Response, err = future.GetResult(sender); err == nil && ercrtlr.Response.Response.StatusCode != http.StatusNoContent {
+		ercrtlr.Response.Response, err = future.GetResult(sender)
+		if ercrtlr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteCrossConnectionsListRoutesTableFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ercrtlr.Response.Response.StatusCode != http.StatusNoContent {
 			ercrtlr, err = client.ListRoutesTableResponder(ercrtlr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ExpressRouteCrossConnectionsListRoutesTableFuture", "Result", ercrtlr.Response.Response, "Failure responding to request")
@@ -731,7 +743,11 @@ func (client ExpressRouteCrossConnectionsClient) ListRoutesTableSummarySender(re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if erccrtslr.Response.Response, err = future.GetResult(sender); err == nil && erccrtslr.Response.Response.StatusCode != http.StatusNoContent {
+		erccrtslr.Response.Response, err = future.GetResult(sender)
+		if erccrtslr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteCrossConnectionsListRoutesTableSummaryFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && erccrtslr.Response.Response.StatusCode != http.StatusNoContent {
 			erccrtslr, err = client.ListRoutesTableSummaryResponder(erccrtslr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ExpressRouteCrossConnectionsListRoutesTableSummaryFuture", "Result", erccrtslr.Response.Response, "Failure responding to request")

@@ -123,7 +123,11 @@ func (client DdosProtectionPlansClient) CreateOrUpdateSender(req *http.Request) 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dpp.Response.Response, err = future.GetResult(sender); err == nil && dpp.Response.Response.StatusCode != http.StatusNoContent {
+		dpp.Response.Response, err = future.GetResult(sender)
+		if dpp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dpp.Response.Response.StatusCode != http.StatusNoContent {
 			dpp, err = client.CreateOrUpdateResponder(dpp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansCreateOrUpdateFuture", "Result", dpp.Response.Response, "Failure responding to request")
@@ -618,7 +622,11 @@ func (client DdosProtectionPlansClient) UpdateTagsSender(req *http.Request) (fut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dpp.Response.Response, err = future.GetResult(sender); err == nil && dpp.Response.Response.StatusCode != http.StatusNoContent {
+		dpp.Response.Response, err = future.GetResult(sender)
+		if dpp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansUpdateTagsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dpp.Response.Response.StatusCode != http.StatusNoContent {
 			dpp, err = client.UpdateTagsResponder(dpp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansUpdateTagsFuture", "Result", dpp.Response.Response, "Failure responding to request")

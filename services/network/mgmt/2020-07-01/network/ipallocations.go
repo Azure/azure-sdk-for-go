@@ -119,7 +119,11 @@ func (client IPAllocationsClient) CreateOrUpdateSender(req *http.Request) (futur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ia.Response.Response, err = future.GetResult(sender); err == nil && ia.Response.Response.StatusCode != http.StatusNoContent {
+		ia.Response.Response, err = future.GetResult(sender)
+		if ia.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.IPAllocationsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ia.Response.Response.StatusCode != http.StatusNoContent {
 			ia, err = client.CreateOrUpdateResponder(ia.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.IPAllocationsCreateOrUpdateFuture", "Result", ia.Response.Response, "Failure responding to request")

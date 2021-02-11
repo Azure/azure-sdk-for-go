@@ -134,7 +134,11 @@ func (client ShareSubscriptionsClient) CancelSynchronizationSender(req *http.Req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sss.Response.Response, err = future.GetResult(sender); err == nil && sss.Response.Response.StatusCode != http.StatusNoContent {
+		sss.Response.Response, err = future.GetResult(sender)
+		if sss.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "datashare.ShareSubscriptionsCancelSynchronizationFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sss.Response.Response.StatusCode != http.StatusNoContent {
 			sss, err = client.CancelSynchronizationResponder(sss.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "datashare.ShareSubscriptionsCancelSynchronizationFuture", "Result", sss.Response.Response, "Failure responding to request")
@@ -321,7 +325,11 @@ func (client ShareSubscriptionsClient) DeleteSender(req *http.Request) (future S
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if or.Response.Response, err = future.GetResult(sender); err == nil && or.Response.Response.StatusCode != http.StatusNoContent {
+		or.Response.Response, err = future.GetResult(sender)
+		if or.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "datashare.ShareSubscriptionsDeleteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && or.Response.Response.StatusCode != http.StatusNoContent {
 			or, err = client.DeleteResponder(or.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "datashare.ShareSubscriptionsDeleteFuture", "Result", or.Response.Response, "Failure responding to request")
@@ -1034,7 +1042,11 @@ func (client ShareSubscriptionsClient) SynchronizeMethodSender(req *http.Request
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sss.Response.Response, err = future.GetResult(sender); err == nil && sss.Response.Response.StatusCode != http.StatusNoContent {
+		sss.Response.Response, err = future.GetResult(sender)
+		if sss.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "datashare.ShareSubscriptionsSynchronizeMethodFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sss.Response.Response.StatusCode != http.StatusNoContent {
 			sss, err = client.SynchronizeMethodResponder(sss.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "datashare.ShareSubscriptionsSynchronizeMethodFuture", "Result", sss.Response.Response, "Failure responding to request")

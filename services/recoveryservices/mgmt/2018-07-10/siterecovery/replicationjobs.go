@@ -115,7 +115,11 @@ func (client ReplicationJobsClient) CancelSender(req *http.Request) (future Repl
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if j.Response.Response, err = future.GetResult(sender); err == nil && j.Response.Response.StatusCode != http.StatusNoContent {
+		j.Response.Response, err = future.GetResult(sender)
+		if j.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationJobsCancelFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && j.Response.Response.StatusCode != http.StatusNoContent {
 			j, err = client.CancelResponder(j.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationJobsCancelFuture", "Result", j.Response.Response, "Failure responding to request")
@@ -213,7 +217,11 @@ func (client ReplicationJobsClient) ExportSender(req *http.Request) (future Repl
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if j.Response.Response, err = future.GetResult(sender); err == nil && j.Response.Response.StatusCode != http.StatusNoContent {
+		j.Response.Response, err = future.GetResult(sender)
+		if j.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationJobsExportFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && j.Response.Response.StatusCode != http.StatusNoContent {
 			j, err = client.ExportResponder(j.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationJobsExportFuture", "Result", j.Response.Response, "Failure responding to request")
@@ -506,7 +514,11 @@ func (client ReplicationJobsClient) RestartSender(req *http.Request) (future Rep
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if j.Response.Response, err = future.GetResult(sender); err == nil && j.Response.Response.StatusCode != http.StatusNoContent {
+		j.Response.Response, err = future.GetResult(sender)
+		if j.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationJobsRestartFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && j.Response.Response.StatusCode != http.StatusNoContent {
 			j, err = client.RestartResponder(j.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationJobsRestartFuture", "Result", j.Response.Response, "Failure responding to request")
@@ -606,7 +618,11 @@ func (client ReplicationJobsClient) ResumeSender(req *http.Request) (future Repl
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if j.Response.Response, err = future.GetResult(sender); err == nil && j.Response.Response.StatusCode != http.StatusNoContent {
+		j.Response.Response, err = future.GetResult(sender)
+		if j.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationJobsResumeFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && j.Response.Response.StatusCode != http.StatusNoContent {
 			j, err = client.ResumeResponder(j.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationJobsResumeFuture", "Result", j.Response.Response, "Failure responding to request")

@@ -141,7 +141,11 @@ func (client KpiClient) CreateOrUpdateSender(req *http.Request) (future KpiCreat
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if krf.Response.Response, err = future.GetResult(sender); err == nil && krf.Response.Response.StatusCode != http.StatusNoContent {
+		krf.Response.Response, err = future.GetResult(sender)
+		if krf.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.KpiCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && krf.Response.Response.StatusCode != http.StatusNoContent {
 			krf, err = client.CreateOrUpdateResponder(krf.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "customerinsights.KpiCreateOrUpdateFuture", "Result", krf.Response.Response, "Failure responding to request")

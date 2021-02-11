@@ -226,7 +226,11 @@ func (client AccountsClient) CreateSender(req *http.Request) (future AccountsCre
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dlaa.Response.Response, err = future.GetResult(sender); err == nil && dlaa.Response.Response.StatusCode != http.StatusNoContent {
+		dlaa.Response.Response, err = future.GetResult(sender)
+		if dlaa.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "account.AccountsCreateFutureType", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dlaa.Response.Response.StatusCode != http.StatusNoContent {
 			dlaa, err = client.CreateResponder(dlaa.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "account.AccountsCreateFutureType", "Result", dlaa.Response.Response, "Failure responding to request")
@@ -804,7 +808,11 @@ func (client AccountsClient) UpdateSender(req *http.Request) (future AccountsUpd
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dlaa.Response.Response, err = future.GetResult(sender); err == nil && dlaa.Response.Response.StatusCode != http.StatusNoContent {
+		dlaa.Response.Response, err = future.GetResult(sender)
+		if dlaa.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "account.AccountsUpdateFutureType", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dlaa.Response.Response.StatusCode != http.StatusNoContent {
 			dlaa, err = client.UpdateResponder(dlaa.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "account.AccountsUpdateFutureType", "Result", dlaa.Response.Response, "Failure responding to request")

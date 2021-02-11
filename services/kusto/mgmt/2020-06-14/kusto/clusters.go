@@ -322,7 +322,11 @@ func (client ClustersClient) CreateOrUpdateSender(req *http.Request) (future Clu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if c.Response.Response, err = future.GetResult(sender); err == nil && c.Response.Response.StatusCode != http.StatusNoContent {
+		c.Response.Response, err = future.GetResult(sender)
+		if c.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "kusto.ClustersCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && c.Response.Response.StatusCode != http.StatusNoContent {
 			c, err = client.CreateOrUpdateResponder(c.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "kusto.ClustersCreateOrUpdateFuture", "Result", c.Response.Response, "Failure responding to request")
@@ -611,7 +615,11 @@ func (client ClustersClient) DiagnoseVirtualNetworkSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dvnr.Response.Response, err = future.GetResult(sender); err == nil && dvnr.Response.Response.StatusCode != http.StatusNoContent {
+		dvnr.Response.Response, err = future.GetResult(sender)
+		if dvnr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "kusto.ClustersDiagnoseVirtualNetworkFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dvnr.Response.Response.StatusCode != http.StatusNoContent {
 			dvnr, err = client.DiagnoseVirtualNetworkResponder(dvnr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "kusto.ClustersDiagnoseVirtualNetworkFuture", "Result", dvnr.Response.Response, "Failure responding to request")
@@ -1505,7 +1513,11 @@ func (client ClustersClient) UpdateSender(req *http.Request) (future ClustersUpd
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if c.Response.Response, err = future.GetResult(sender); err == nil && c.Response.Response.StatusCode != http.StatusNoContent {
+		c.Response.Response, err = future.GetResult(sender)
+		if c.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "kusto.ClustersUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && c.Response.Response.StatusCode != http.StatusNoContent {
 			c, err = client.UpdateResponder(c.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "kusto.ClustersUpdateFuture", "Result", c.Response.Response, "Failure responding to request")

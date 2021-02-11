@@ -134,7 +134,11 @@ func (client ManagedInstanceAdministratorsClient) CreateOrUpdateSender(req *http
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mia.Response.Response, err = future.GetResult(sender); err == nil && mia.Response.Response.StatusCode != http.StatusNoContent {
+		mia.Response.Response, err = future.GetResult(sender)
+		if mia.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedInstanceAdministratorsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mia.Response.Response.StatusCode != http.StatusNoContent {
 			mia, err = client.CreateOrUpdateResponder(mia.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.ManagedInstanceAdministratorsCreateOrUpdateFuture", "Result", mia.Response.Response, "Failure responding to request")

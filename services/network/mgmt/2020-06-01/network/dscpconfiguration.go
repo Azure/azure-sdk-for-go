@@ -120,7 +120,11 @@ func (client DscpConfigurationClient) CreateOrUpdateSender(req *http.Request) (f
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dc.Response.Response, err = future.GetResult(sender); err == nil && dc.Response.Response.StatusCode != http.StatusNoContent {
+		dc.Response.Response, err = future.GetResult(sender)
+		if dc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.DscpConfigurationCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dc.Response.Response.StatusCode != http.StatusNoContent {
 			dc, err = client.CreateOrUpdateResponder(dc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.DscpConfigurationCreateOrUpdateFuture", "Result", dc.Response.Response, "Failure responding to request")

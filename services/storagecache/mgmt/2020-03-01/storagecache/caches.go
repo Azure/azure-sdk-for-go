@@ -152,7 +152,11 @@ func (client CachesClient) CreateOrUpdateSender(req *http.Request) (future Cache
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if c.Response.Response, err = future.GetResult(sender); err == nil && c.Response.Response.StatusCode != http.StatusNoContent {
+		c.Response.Response, err = future.GetResult(sender)
+		if c.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storagecache.CachesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && c.Response.Response.StatusCode != http.StatusNoContent {
 			c, err = client.CreateOrUpdateResponder(c.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storagecache.CachesCreateOrUpdateFuture", "Result", c.Response.Response, "Failure responding to request")
@@ -256,7 +260,11 @@ func (client CachesClient) DeleteSender(req *http.Request) (future CachesDeleteF
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so.Response.Response, err = future.GetResult(sender)
+		if so.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storagecache.CachesDeleteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 			so, err = client.DeleteResponder(so.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storagecache.CachesDeleteFuture", "Result", so.Response.Response, "Failure responding to request")
@@ -361,7 +369,11 @@ func (client CachesClient) FlushSender(req *http.Request) (future CachesFlushFut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so.Response.Response, err = future.GetResult(sender)
+		if so.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storagecache.CachesFlushFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 			so, err = client.FlushResponder(so.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storagecache.CachesFlushFuture", "Result", so.Response.Response, "Failure responding to request")
@@ -777,7 +789,11 @@ func (client CachesClient) StartSender(req *http.Request) (future CachesStartFut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so.Response.Response, err = future.GetResult(sender)
+		if so.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storagecache.CachesStartFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 			so, err = client.StartResponder(so.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storagecache.CachesStartFuture", "Result", so.Response.Response, "Failure responding to request")
@@ -881,7 +897,11 @@ func (client CachesClient) StopSender(req *http.Request) (future CachesStopFutur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so.Response.Response, err = future.GetResult(sender)
+		if so.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storagecache.CachesStopFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 			so, err = client.StopResponder(so.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storagecache.CachesStopFuture", "Result", so.Response.Response, "Failure responding to request")
@@ -1079,7 +1099,11 @@ func (client CachesClient) UpgradeFirmwareSender(req *http.Request) (future Cach
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so.Response.Response, err = future.GetResult(sender)
+		if so.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storagecache.CachesUpgradeFirmwareFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 			so, err = client.UpgradeFirmwareResponder(so.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storagecache.CachesUpgradeFirmwareFuture", "Result", so.Response.Response, "Failure responding to request")

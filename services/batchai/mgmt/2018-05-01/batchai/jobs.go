@@ -179,7 +179,11 @@ func (client JobsClient) CreateSender(req *http.Request) (future JobsCreateFutur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if j.Response.Response, err = future.GetResult(sender); err == nil && j.Response.Response.StatusCode != http.StatusNoContent {
+		j.Response.Response, err = future.GetResult(sender)
+		if j.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "batchai.JobsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && j.Response.Response.StatusCode != http.StatusNoContent {
 			j, err = client.CreateResponder(j.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "batchai.JobsCreateFuture", "Result", j.Response.Response, "Failure responding to request")

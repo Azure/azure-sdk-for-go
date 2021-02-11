@@ -211,7 +211,11 @@ func (client IotDpsResourceClient) CreateOrUpdateSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if psd.Response.Response, err = future.GetResult(sender); err == nil && psd.Response.Response.StatusCode != http.StatusNoContent {
+		psd.Response.Response, err = future.GetResult(sender)
+		if psd.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && psd.Response.Response.StatusCode != http.StatusNoContent {
 			psd, err = client.CreateOrUpdateResponder(psd.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceCreateOrUpdateFuture", "Result", psd.Response.Response, "Failure responding to request")
@@ -1102,7 +1106,11 @@ func (client IotDpsResourceClient) UpdateSender(req *http.Request) (future IotDp
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if psd.Response.Response, err = future.GetResult(sender); err == nil && psd.Response.Response.StatusCode != http.StatusNoContent {
+		psd.Response.Response, err = future.GetResult(sender)
+		if psd.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && psd.Response.Response.StatusCode != http.StatusNoContent {
 			psd, err = client.UpdateResponder(psd.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceUpdateFuture", "Result", psd.Response.Response, "Failure responding to request")

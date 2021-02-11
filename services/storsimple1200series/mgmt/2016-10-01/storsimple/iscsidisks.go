@@ -137,7 +137,11 @@ func (client IscsiDisksClient) CreateOrUpdateSender(req *http.Request) (future I
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ID.Response.Response, err = future.GetResult(sender); err == nil && ID.Response.Response.StatusCode != http.StatusNoContent {
+		ID.Response.Response, err = future.GetResult(sender)
+		if ID.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storsimple.IscsiDisksCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ID.Response.Response.StatusCode != http.StatusNoContent {
 			ID, err = client.CreateOrUpdateResponder(ID.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storsimple.IscsiDisksCreateOrUpdateFuture", "Result", ID.Response.Response, "Failure responding to request")

@@ -128,7 +128,11 @@ func (client MachineExtensionsClient) CreateOrUpdateSender(req *http.Request) (f
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if me.Response.Response, err = future.GetResult(sender); err == nil && me.Response.Response.StatusCode != http.StatusNoContent {
+		me.Response.Response, err = future.GetResult(sender)
+		if me.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && me.Response.Response.StatusCode != http.StatusNoContent {
 			me, err = client.CreateOrUpdateResponder(me.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsCreateOrUpdateFuture", "Result", me.Response.Response, "Failure responding to request")
@@ -546,7 +550,11 @@ func (client MachineExtensionsClient) UpdateSender(req *http.Request) (future Ma
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if me.Response.Response, err = future.GetResult(sender); err == nil && me.Response.Response.StatusCode != http.StatusNoContent {
+		me.Response.Response, err = future.GetResult(sender)
+		if me.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && me.Response.Response.StatusCode != http.StatusNoContent {
 			me, err = client.UpdateResponder(me.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsUpdateFuture", "Result", me.Response.Response, "Failure responding to request")

@@ -125,7 +125,11 @@ func (client BackupShortTermRetentionPoliciesClient) CreateOrUpdateSender(req *h
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if bstrp.Response.Response, err = future.GetResult(sender); err == nil && bstrp.Response.Response.StatusCode != http.StatusNoContent {
+		bstrp.Response.Response, err = future.GetResult(sender)
+		if bstrp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.BackupShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && bstrp.Response.Response.StatusCode != http.StatusNoContent {
 			bstrp, err = client.CreateOrUpdateResponder(bstrp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.BackupShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", bstrp.Response.Response, "Failure responding to request")
@@ -430,7 +434,11 @@ func (client BackupShortTermRetentionPoliciesClient) UpdateSender(req *http.Requ
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if bstrp.Response.Response, err = future.GetResult(sender); err == nil && bstrp.Response.Response.StatusCode != http.StatusNoContent {
+		bstrp.Response.Response, err = future.GetResult(sender)
+		if bstrp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.BackupShortTermRetentionPoliciesUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && bstrp.Response.Response.StatusCode != http.StatusNoContent {
 			bstrp, err = client.UpdateResponder(bstrp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.BackupShortTermRetentionPoliciesUpdateFuture", "Result", bstrp.Response.Response, "Failure responding to request")

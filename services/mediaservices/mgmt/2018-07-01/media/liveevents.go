@@ -136,7 +136,11 @@ func (client LiveEventsClient) CreateSender(req *http.Request) (future LiveEvent
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if le.Response.Response, err = future.GetResult(sender); err == nil && le.Response.Response.StatusCode != http.StatusNoContent {
+		le.Response.Response, err = future.GetResult(sender)
+		if le.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "media.LiveEventsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && le.Response.Response.StatusCode != http.StatusNoContent {
 			le, err = client.CreateResponder(le.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "media.LiveEventsCreateFuture", "Result", le.Response.Response, "Failure responding to request")
@@ -853,7 +857,11 @@ func (client LiveEventsClient) UpdateSender(req *http.Request) (future LiveEvent
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if le.Response.Response, err = future.GetResult(sender); err == nil && le.Response.Response.StatusCode != http.StatusNoContent {
+		le.Response.Response, err = future.GetResult(sender)
+		if le.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "media.LiveEventsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && le.Response.Response.StatusCode != http.StatusNoContent {
 			le, err = client.UpdateResponder(le.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "media.LiveEventsUpdateFuture", "Result", le.Response.Response, "Failure responding to request")

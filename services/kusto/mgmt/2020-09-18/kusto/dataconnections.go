@@ -213,7 +213,11 @@ func (client DataConnectionsClient) CreateOrUpdateSender(req *http.Request) (fut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dcm.Response.Response, err = future.GetResult(sender); err == nil && dcm.Response.Response.StatusCode != http.StatusNoContent {
+		dcm.Response.Response, err = future.GetResult(sender)
+		if dcm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "kusto.DataConnectionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dcm.Response.Response.StatusCode != http.StatusNoContent {
 			dcm, err = client.CreateOrUpdateResponder(dcm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "kusto.DataConnectionsCreateOrUpdateFuture", "Result", dcm.Response.Response, "Failure responding to request")
@@ -315,7 +319,11 @@ func (client DataConnectionsClient) DataConnectionValidationMethodSender(req *ht
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dcvlr.Response.Response, err = future.GetResult(sender); err == nil && dcvlr.Response.Response.StatusCode != http.StatusNoContent {
+		dcvlr.Response.Response, err = future.GetResult(sender)
+		if dcvlr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "kusto.DataConnectionsDataConnectionValidationMethodFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dcvlr.Response.Response.StatusCode != http.StatusNoContent {
 			dcvlr, err = client.DataConnectionValidationMethodResponder(dcvlr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "kusto.DataConnectionsDataConnectionValidationMethodFuture", "Result", dcvlr.Response.Response, "Failure responding to request")
@@ -671,7 +679,11 @@ func (client DataConnectionsClient) UpdateSender(req *http.Request) (future Data
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dcm.Response.Response, err = future.GetResult(sender); err == nil && dcm.Response.Response.StatusCode != http.StatusNoContent {
+		dcm.Response.Response, err = future.GetResult(sender)
+		if dcm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "kusto.DataConnectionsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dcm.Response.Response.StatusCode != http.StatusNoContent {
 			dcm, err = client.UpdateResponder(dcm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "kusto.DataConnectionsUpdateFuture", "Result", dcm.Response.Response, "Failure responding to request")

@@ -241,7 +241,11 @@ func (client AccountsClient) CreateSender(req *http.Request) (future AccountsCre
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
+		a.Response.Response, err = future.GetResult(sender)
+		if a.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storage.AccountsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
 			a, err = client.CreateResponder(a.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storage.AccountsCreateFuture", "Result", a.Response.Response, "Failure responding to request")
@@ -1244,7 +1248,11 @@ func (client AccountsClient) RestoreBlobRangesSender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if brs.Response.Response, err = future.GetResult(sender); err == nil && brs.Response.Response.StatusCode != http.StatusNoContent {
+		brs.Response.Response, err = future.GetResult(sender)
+		if brs.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storage.AccountsRestoreBlobRangesFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && brs.Response.Response.StatusCode != http.StatusNoContent {
 			brs, err = client.RestoreBlobRangesResponder(brs.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storage.AccountsRestoreBlobRangesFuture", "Result", brs.Response.Response, "Failure responding to request")

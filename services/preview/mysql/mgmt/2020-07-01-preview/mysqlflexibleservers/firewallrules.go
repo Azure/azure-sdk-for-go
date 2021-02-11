@@ -140,7 +140,11 @@ func (client FirewallRulesClient) CreateOrUpdateSender(req *http.Request) (futur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if fr.Response.Response, err = future.GetResult(sender); err == nil && fr.Response.Response.StatusCode != http.StatusNoContent {
+		fr.Response.Response, err = future.GetResult(sender)
+		if fr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "mysqlflexibleservers.FirewallRulesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && fr.Response.Response.StatusCode != http.StatusNoContent {
 			fr, err = client.CreateOrUpdateResponder(fr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "mysqlflexibleservers.FirewallRulesCreateOrUpdateFuture", "Result", fr.Response.Response, "Failure responding to request")

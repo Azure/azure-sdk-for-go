@@ -128,7 +128,11 @@ func (client DatasetClient) CreateOrUpdateDatasetSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dr.Response.Response, err = future.GetResult(sender); err == nil && dr.Response.Response.StatusCode != http.StatusNoContent {
+		dr.Response.Response, err = future.GetResult(sender)
+		if dr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "artifacts.DatasetCreateOrUpdateDatasetFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dr.Response.Response.StatusCode != http.StatusNoContent {
 			dr, err = client.CreateOrUpdateDatasetResponder(dr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "artifacts.DatasetCreateOrUpdateDatasetFuture", "Result", dr.Response.Response, "Failure responding to request")

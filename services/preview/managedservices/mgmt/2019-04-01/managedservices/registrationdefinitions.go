@@ -137,7 +137,11 @@ func (client RegistrationDefinitionsClient) CreateOrUpdateSender(req *http.Reque
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rd.Response.Response, err = future.GetResult(sender); err == nil && rd.Response.Response.StatusCode != http.StatusNoContent {
+		rd.Response.Response, err = future.GetResult(sender)
+		if rd.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "managedservices.RegistrationDefinitionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rd.Response.Response.StatusCode != http.StatusNoContent {
 			rd, err = client.CreateOrUpdateResponder(rd.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "managedservices.RegistrationDefinitionsCreateOrUpdateFuture", "Result", rd.Response.Response, "Failure responding to request")

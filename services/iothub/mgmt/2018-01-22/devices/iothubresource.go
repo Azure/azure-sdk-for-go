@@ -319,7 +319,11 @@ func (client IotHubResourceClient) CreateOrUpdateSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ihd.Response.Response, err = future.GetResult(sender); err == nil && ihd.Response.Response.StatusCode != http.StatusNoContent {
+		ihd.Response.Response, err = future.GetResult(sender)
+		if ihd.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "devices.IotHubResourceCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ihd.Response.Response.StatusCode != http.StatusNoContent {
 			ihd, err = client.CreateOrUpdateResponder(ihd.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "devices.IotHubResourceCreateOrUpdateFuture", "Result", ihd.Response.Response, "Failure responding to request")
@@ -416,7 +420,11 @@ func (client IotHubResourceClient) DeleteSender(req *http.Request) (future IotHu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so.Response.Response, err = future.GetResult(sender)
+		if so.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "devices.IotHubResourceDeleteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 			so, err = client.DeleteResponder(so.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "devices.IotHubResourceDeleteFuture", "Result", so.Response.Response, "Failure responding to request")
@@ -1985,7 +1993,11 @@ func (client IotHubResourceClient) UpdateSender(req *http.Request) (future IotHu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ihd.Response.Response, err = future.GetResult(sender); err == nil && ihd.Response.Response.StatusCode != http.StatusNoContent {
+		ihd.Response.Response, err = future.GetResult(sender)
+		if ihd.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "devices.IotHubResourceUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ihd.Response.Response.StatusCode != http.StatusNoContent {
 			ihd, err = client.UpdateResponder(ihd.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "devices.IotHubResourceUpdateFuture", "Result", ihd.Response.Response, "Failure responding to request")

@@ -158,7 +158,11 @@ func (client InterfaceTapConfigurationsClient) CreateOrUpdateSender(req *http.Re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if itc.Response.Response, err = future.GetResult(sender); err == nil && itc.Response.Response.StatusCode != http.StatusNoContent {
+		itc.Response.Response, err = future.GetResult(sender)
+		if itc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.InterfaceTapConfigurationsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && itc.Response.Response.StatusCode != http.StatusNoContent {
 			itc, err = client.CreateOrUpdateResponder(itc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.InterfaceTapConfigurationsCreateOrUpdateFuture", "Result", itc.Response.Response, "Failure responding to request")

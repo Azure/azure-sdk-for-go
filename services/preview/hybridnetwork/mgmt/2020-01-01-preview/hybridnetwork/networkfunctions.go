@@ -130,7 +130,11 @@ func (client NetworkFunctionsClient) CreateOrUpdateSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if nf.Response.Response, err = future.GetResult(sender); err == nil && nf.Response.Response.StatusCode != http.StatusNoContent {
+		nf.Response.Response, err = future.GetResult(sender)
+		if nf.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && nf.Response.Response.StatusCode != http.StatusNoContent {
 			nf, err = client.CreateOrUpdateResponder(nf.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsCreateOrUpdateFuture", "Result", nf.Response.Response, "Failure responding to request")

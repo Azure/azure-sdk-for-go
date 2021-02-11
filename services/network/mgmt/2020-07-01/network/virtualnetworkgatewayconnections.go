@@ -166,7 +166,11 @@ func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdateSender(req *h
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vngc.Response.Response, err = future.GetResult(sender); err == nil && vngc.Response.Response.StatusCode != http.StatusNoContent {
+		vngc.Response.Response, err = future.GetResult(sender)
+		if vngc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vngc.Response.Response.StatusCode != http.StatusNoContent {
 			vngc, err = client.CreateOrUpdateResponder(vngc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsCreateOrUpdateFuture", "Result", vngc.Response.Response, "Failure responding to request")
@@ -638,7 +642,11 @@ func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeySender(req *h
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if crsk.Response.Response, err = future.GetResult(sender); err == nil && crsk.Response.Response.StatusCode != http.StatusNoContent {
+		crsk.Response.Response, err = future.GetResult(sender)
+		if crsk.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsResetSharedKeyFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && crsk.Response.Response.StatusCode != http.StatusNoContent {
 			crsk, err = client.ResetSharedKeyResponder(crsk.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsResetSharedKeyFuture", "Result", crsk.Response.Response, "Failure responding to request")
@@ -747,7 +755,11 @@ func (client VirtualNetworkGatewayConnectionsClient) SetSharedKeySender(req *htt
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if csk.Response.Response, err = future.GetResult(sender); err == nil && csk.Response.Response.StatusCode != http.StatusNoContent {
+		csk.Response.Response, err = future.GetResult(sender)
+		if csk.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsSetSharedKeyFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && csk.Response.Response.StatusCode != http.StatusNoContent {
 			csk, err = client.SetSharedKeyResponder(csk.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsSetSharedKeyFuture", "Result", csk.Response.Response, "Failure responding to request")
@@ -851,7 +863,11 @@ func (client VirtualNetworkGatewayConnectionsClient) StartPacketCaptureSender(re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+		s.Response.Response, err = future.GetResult(sender)
+		if s.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsStartPacketCaptureFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
 			s, err = client.StartPacketCaptureResponder(s.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsStartPacketCaptureFuture", "Result", s.Response.Response, "Failure responding to request")
@@ -952,7 +968,11 @@ func (client VirtualNetworkGatewayConnectionsClient) StopPacketCaptureSender(req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+		s.Response.Response, err = future.GetResult(sender)
+		if s.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsStopPacketCaptureFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
 			s, err = client.StopPacketCaptureResponder(s.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsStopPacketCaptureFuture", "Result", s.Response.Response, "Failure responding to request")
@@ -1052,7 +1072,11 @@ func (client VirtualNetworkGatewayConnectionsClient) UpdateTagsSender(req *http.
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vngc.Response.Response, err = future.GetResult(sender); err == nil && vngc.Response.Response.StatusCode != http.StatusNoContent {
+		vngc.Response.Response, err = future.GetResult(sender)
+		if vngc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsUpdateTagsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vngc.Response.Response.StatusCode != http.StatusNoContent {
 			vngc, err = client.UpdateTagsResponder(vngc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsUpdateTagsFuture", "Result", vngc.Response.Response, "Failure responding to request")

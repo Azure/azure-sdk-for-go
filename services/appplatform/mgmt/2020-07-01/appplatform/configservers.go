@@ -197,7 +197,11 @@ func (client ConfigServersClient) UpdatePatchSender(req *http.Request) (future C
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if csr.Response.Response, err = future.GetResult(sender); err == nil && csr.Response.Response.StatusCode != http.StatusNoContent {
+		csr.Response.Response, err = future.GetResult(sender)
+		if csr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "appplatform.ConfigServersUpdatePatchFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && csr.Response.Response.StatusCode != http.StatusNoContent {
 			csr, err = client.UpdatePatchResponder(csr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "appplatform.ConfigServersUpdatePatchFuture", "Result", csr.Response.Response, "Failure responding to request")
@@ -309,7 +313,11 @@ func (client ConfigServersClient) UpdatePutSender(req *http.Request) (future Con
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if csr.Response.Response, err = future.GetResult(sender); err == nil && csr.Response.Response.StatusCode != http.StatusNoContent {
+		csr.Response.Response, err = future.GetResult(sender)
+		if csr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "appplatform.ConfigServersUpdatePutFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && csr.Response.Response.StatusCode != http.StatusNoContent {
 			csr, err = client.UpdatePutResponder(csr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "appplatform.ConfigServersUpdatePutFuture", "Result", csr.Response.Response, "Failure responding to request")
@@ -417,7 +425,11 @@ func (client ConfigServersClient) ValidateSender(req *http.Request) (future Conf
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cssvr.Response.Response, err = future.GetResult(sender); err == nil && cssvr.Response.Response.StatusCode != http.StatusNoContent {
+		cssvr.Response.Response, err = future.GetResult(sender)
+		if cssvr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "appplatform.ConfigServersValidateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cssvr.Response.Response.StatusCode != http.StatusNoContent {
 			cssvr, err = client.ValidateResponder(cssvr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "appplatform.ConfigServersValidateFuture", "Result", cssvr.Response.Response, "Failure responding to request")

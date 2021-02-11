@@ -129,7 +129,11 @@ func (client InterfacesClient) CreateOrUpdateSender(req *http.Request) (future I
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if i.Response.Response, err = future.GetResult(sender); err == nil && i.Response.Response.StatusCode != http.StatusNoContent {
+		i.Response.Response, err = future.GetResult(sender)
+		if i.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.InterfacesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && i.Response.Response.StatusCode != http.StatusNoContent {
 			i, err = client.CreateOrUpdateResponder(i.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.InterfacesCreateOrUpdateFuture", "Result", i.Response.Response, "Failure responding to request")
@@ -480,7 +484,11 @@ func (client InterfacesClient) GetEffectiveRouteTableSender(req *http.Request) (
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if erlr.Response.Response, err = future.GetResult(sender); err == nil && erlr.Response.Response.StatusCode != http.StatusNoContent {
+		erlr.Response.Response, err = future.GetResult(sender)
+		if erlr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.InterfacesGetEffectiveRouteTableFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && erlr.Response.Response.StatusCode != http.StatusNoContent {
 			erlr, err = client.GetEffectiveRouteTableResponder(erlr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.InterfacesGetEffectiveRouteTableFuture", "Result", erlr.Response.Response, "Failure responding to request")
@@ -1216,7 +1224,11 @@ func (client InterfacesClient) ListEffectiveNetworkSecurityGroupsSender(req *htt
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ensglr.Response.Response, err = future.GetResult(sender); err == nil && ensglr.Response.Response.StatusCode != http.StatusNoContent {
+		ensglr.Response.Response, err = future.GetResult(sender)
+		if ensglr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.InterfacesListEffectiveNetworkSecurityGroupsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ensglr.Response.Response.StatusCode != http.StatusNoContent {
 			ensglr, err = client.ListEffectiveNetworkSecurityGroupsResponder(ensglr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.InterfacesListEffectiveNetworkSecurityGroupsFuture", "Result", ensglr.Response.Response, "Failure responding to request")

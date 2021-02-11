@@ -404,7 +404,11 @@ func (client ProviderShareSubscriptionsClient) RevokeSender(req *http.Request) (
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pss.Response.Response, err = future.GetResult(sender); err == nil && pss.Response.Response.StatusCode != http.StatusNoContent {
+		pss.Response.Response, err = future.GetResult(sender)
+		if pss.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "datashare.ProviderShareSubscriptionsRevokeFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pss.Response.Response.StatusCode != http.StatusNoContent {
 			pss, err = client.RevokeResponder(pss.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "datashare.ProviderShareSubscriptionsRevokeFuture", "Result", pss.Response.Response, "Failure responding to request")

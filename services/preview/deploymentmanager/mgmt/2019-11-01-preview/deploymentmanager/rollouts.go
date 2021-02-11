@@ -228,7 +228,11 @@ func (client RolloutsClient) CreateOrUpdateSender(req *http.Request) (future Rol
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rr.Response.Response, err = future.GetResult(sender); err == nil && rr.Response.Response.StatusCode != http.StatusNoContent {
+		rr.Response.Response, err = future.GetResult(sender)
+		if rr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rr.Response.Response.StatusCode != http.StatusNoContent {
 			rr, err = client.CreateOrUpdateResponder(rr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsCreateOrUpdateFuture", "Result", rr.Response.Response, "Failure responding to request")

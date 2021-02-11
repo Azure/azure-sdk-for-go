@@ -136,7 +136,11 @@ func (client MoveResourcesClient) CreateSender(req *http.Request) (future MoveRe
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mr.Response.Response, err = future.GetResult(sender); err == nil && mr.Response.Response.StatusCode != http.StatusNoContent {
+		mr.Response.Response, err = future.GetResult(sender)
+		if mr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mr.Response.Response.StatusCode != http.StatusNoContent {
 			mr, err = client.CreateResponder(mr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesCreateFuture", "Result", mr.Response.Response, "Failure responding to request")
@@ -235,7 +239,11 @@ func (client MoveResourcesClient) DeleteSender(req *http.Request) (future MoveRe
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
+		osVar.Response.Response, err = future.GetResult(sender)
+		if osVar.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesDeleteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
 			osVar, err = client.DeleteResponder(osVar.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesDeleteFuture", "Result", osVar.Response.Response, "Failure responding to request")

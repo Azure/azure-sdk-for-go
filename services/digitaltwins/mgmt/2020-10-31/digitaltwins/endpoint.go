@@ -134,7 +134,11 @@ func (client EndpointClient) CreateOrUpdateSender(req *http.Request) (future End
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if er.Response.Response, err = future.GetResult(sender); err == nil && er.Response.Response.StatusCode != http.StatusNoContent {
+		er.Response.Response, err = future.GetResult(sender)
+		if er.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "digitaltwins.EndpointCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && er.Response.Response.StatusCode != http.StatusNoContent {
 			er, err = client.CreateOrUpdateResponder(er.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "digitaltwins.EndpointCreateOrUpdateFuture", "Result", er.Response.Response, "Failure responding to request")
@@ -246,7 +250,11 @@ func (client EndpointClient) DeleteSender(req *http.Request) (future EndpointDel
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if er.Response.Response, err = future.GetResult(sender); err == nil && er.Response.Response.StatusCode != http.StatusNoContent {
+		er.Response.Response, err = future.GetResult(sender)
+		if er.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "digitaltwins.EndpointDeleteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && er.Response.Response.StatusCode != http.StatusNoContent {
 			er, err = client.DeleteResponder(er.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "digitaltwins.EndpointDeleteFuture", "Result", er.Response.Response, "Failure responding to request")

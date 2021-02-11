@@ -115,7 +115,11 @@ func (client NotebooksClient) PrepareSender(req *http.Request) (future Notebooks
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if nri.Response.Response, err = future.GetResult(sender); err == nil && nri.Response.Response.StatusCode != http.StatusNoContent {
+		nri.Response.Response, err = future.GetResult(sender)
+		if nri.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "machinelearningservices.NotebooksPrepareFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && nri.Response.Response.StatusCode != http.StatusNoContent {
 			nri, err = client.PrepareResponder(nri.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "machinelearningservices.NotebooksPrepareFuture", "Result", nri.Response.Response, "Failure responding to request")

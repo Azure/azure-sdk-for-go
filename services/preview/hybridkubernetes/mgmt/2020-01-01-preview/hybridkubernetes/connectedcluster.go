@@ -140,7 +140,11 @@ func (client ConnectedClusterClient) CreateSender(req *http.Request) (future Con
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cc.Response.Response, err = future.GetResult(sender); err == nil && cc.Response.Response.StatusCode != http.StatusNoContent {
+		cc.Response.Response, err = future.GetResult(sender)
+		if cc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cc.Response.Response.StatusCode != http.StatusNoContent {
 			cc, err = client.CreateResponder(cc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterCreateFuture", "Result", cc.Response.Response, "Failure responding to request")

@@ -119,7 +119,11 @@ func (client BastionHostsClient) CreateOrUpdateSender(req *http.Request) (future
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if bh.Response.Response, err = future.GetResult(sender); err == nil && bh.Response.Response.StatusCode != http.StatusNoContent {
+		bh.Response.Response, err = future.GetResult(sender)
+		if bh.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.BastionHostsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && bh.Response.Response.StatusCode != http.StatusNoContent {
 			bh, err = client.CreateOrUpdateResponder(bh.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.BastionHostsCreateOrUpdateFuture", "Result", bh.Response.Response, "Failure responding to request")

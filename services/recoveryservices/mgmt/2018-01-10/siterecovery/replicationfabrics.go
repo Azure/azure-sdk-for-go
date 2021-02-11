@@ -116,7 +116,11 @@ func (client ReplicationFabricsClient) CheckConsistencySender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if f.Response.Response, err = future.GetResult(sender); err == nil && f.Response.Response.StatusCode != http.StatusNoContent {
+		f.Response.Response, err = future.GetResult(sender)
+		if f.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationFabricsCheckConsistencyFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && f.Response.Response.StatusCode != http.StatusNoContent {
 			f, err = client.CheckConsistencyResponder(f.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationFabricsCheckConsistencyFuture", "Result", f.Response.Response, "Failure responding to request")
@@ -216,7 +220,11 @@ func (client ReplicationFabricsClient) CreateSender(req *http.Request) (future R
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if f.Response.Response, err = future.GetResult(sender); err == nil && f.Response.Response.StatusCode != http.StatusNoContent {
+		f.Response.Response, err = future.GetResult(sender)
+		if f.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationFabricsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && f.Response.Response.StatusCode != http.StatusNoContent {
 			f, err = client.CreateResponder(f.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationFabricsCreateFuture", "Result", f.Response.Response, "Failure responding to request")
@@ -777,7 +785,11 @@ func (client ReplicationFabricsClient) ReassociateGatewaySender(req *http.Reques
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if f.Response.Response, err = future.GetResult(sender); err == nil && f.Response.Response.StatusCode != http.StatusNoContent {
+		f.Response.Response, err = future.GetResult(sender)
+		if f.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationFabricsReassociateGatewayFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && f.Response.Response.StatusCode != http.StatusNoContent {
 			f, err = client.ReassociateGatewayResponder(f.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationFabricsReassociateGatewayFuture", "Result", f.Response.Response, "Failure responding to request")
@@ -877,7 +889,11 @@ func (client ReplicationFabricsClient) RenewCertificateSender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if f.Response.Response, err = future.GetResult(sender); err == nil && f.Response.Response.StatusCode != http.StatusNoContent {
+		f.Response.Response, err = future.GetResult(sender)
+		if f.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationFabricsRenewCertificateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && f.Response.Response.StatusCode != http.StatusNoContent {
 			f, err = client.RenewCertificateResponder(f.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationFabricsRenewCertificateFuture", "Result", f.Response.Response, "Failure responding to request")

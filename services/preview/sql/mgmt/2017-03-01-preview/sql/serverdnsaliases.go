@@ -216,7 +216,11 @@ func (client ServerDNSAliasesClient) CreateOrUpdateSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sda.Response.Response, err = future.GetResult(sender); err == nil && sda.Response.Response.StatusCode != http.StatusNoContent {
+		sda.Response.Response, err = future.GetResult(sender)
+		if sda.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.ServerDNSAliasesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sda.Response.Response.StatusCode != http.StatusNoContent {
 			sda, err = client.CreateOrUpdateResponder(sda.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.ServerDNSAliasesCreateOrUpdateFuture", "Result", sda.Response.Response, "Failure responding to request")

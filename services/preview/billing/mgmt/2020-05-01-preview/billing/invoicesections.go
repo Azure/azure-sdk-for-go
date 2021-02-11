@@ -120,7 +120,11 @@ func (client InvoiceSectionsClient) CreateOrUpdateSender(req *http.Request) (fut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if is.Response.Response, err = future.GetResult(sender); err == nil && is.Response.Response.StatusCode != http.StatusNoContent {
+		is.Response.Response, err = future.GetResult(sender)
+		if is.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && is.Response.Response.StatusCode != http.StatusNoContent {
 			is, err = client.CreateOrUpdateResponder(is.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsCreateOrUpdateFuture", "Result", is.Response.Response, "Failure responding to request")

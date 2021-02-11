@@ -134,7 +134,11 @@ func (client StorageDomainsClient) CreateOrUpdateSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sd.Response.Response, err = future.GetResult(sender); err == nil && sd.Response.Response.StatusCode != http.StatusNoContent {
+		sd.Response.Response, err = future.GetResult(sender)
+		if sd.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storsimple.StorageDomainsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sd.Response.Response.StatusCode != http.StatusNoContent {
 			sd, err = client.CreateOrUpdateResponder(sd.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storsimple.StorageDomainsCreateOrUpdateFuture", "Result", sd.Response.Response, "Failure responding to request")

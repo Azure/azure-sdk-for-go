@@ -124,7 +124,11 @@ func (client ExtendedServerBlobAuditingPoliciesClient) CreateOrUpdateSender(req 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if esbap.Response.Response, err = future.GetResult(sender); err == nil && esbap.Response.Response.StatusCode != http.StatusNoContent {
+		esbap.Response.Response, err = future.GetResult(sender)
+		if esbap.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.ExtendedServerBlobAuditingPoliciesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && esbap.Response.Response.StatusCode != http.StatusNoContent {
 			esbap, err = client.CreateOrUpdateResponder(esbap.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.ExtendedServerBlobAuditingPoliciesCreateOrUpdateFuture", "Result", esbap.Response.Response, "Failure responding to request")

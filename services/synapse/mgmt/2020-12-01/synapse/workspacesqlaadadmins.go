@@ -130,7 +130,11 @@ func (client WorkspaceSQLAadAdminsClient) CreateOrUpdateSender(req *http.Request
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if waai.Response.Response, err = future.GetResult(sender); err == nil && waai.Response.Response.StatusCode != http.StatusNoContent {
+		waai.Response.Response, err = future.GetResult(sender)
+		if waai.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.WorkspaceSQLAadAdminsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && waai.Response.Response.StatusCode != http.StatusNoContent {
 			waai, err = client.CreateOrUpdateResponder(waai.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.WorkspaceSQLAadAdminsCreateOrUpdateFuture", "Result", waai.Response.Response, "Failure responding to request")

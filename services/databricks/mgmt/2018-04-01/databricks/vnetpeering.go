@@ -138,7 +138,11 @@ func (client VNetPeeringClient) CreateOrUpdateSender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vnp.Response.Response, err = future.GetResult(sender); err == nil && vnp.Response.Response.StatusCode != http.StatusNoContent {
+		vnp.Response.Response, err = future.GetResult(sender)
+		if vnp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "databricks.VNetPeeringCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vnp.Response.Response.StatusCode != http.StatusNoContent {
 			vnp, err = client.CreateOrUpdateResponder(vnp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "databricks.VNetPeeringCreateOrUpdateFuture", "Result", vnp.Response.Response, "Failure responding to request")

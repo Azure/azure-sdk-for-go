@@ -123,7 +123,11 @@ func (client CustomDomainsClient) CreateOrUpdateSender(req *http.Request) (futur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cdr.Response.Response, err = future.GetResult(sender); err == nil && cdr.Response.Response.StatusCode != http.StatusNoContent {
+		cdr.Response.Response, err = future.GetResult(sender)
+		if cdr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "appplatform.CustomDomainsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cdr.Response.Response.StatusCode != http.StatusNoContent {
 			cdr, err = client.CreateOrUpdateResponder(cdr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "appplatform.CustomDomainsCreateOrUpdateFuture", "Result", cdr.Response.Response, "Failure responding to request")
@@ -525,7 +529,11 @@ func (client CustomDomainsClient) UpdateSender(req *http.Request) (future Custom
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cdr.Response.Response, err = future.GetResult(sender); err == nil && cdr.Response.Response.StatusCode != http.StatusNoContent {
+		cdr.Response.Response, err = future.GetResult(sender)
+		if cdr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "appplatform.CustomDomainsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cdr.Response.Response.StatusCode != http.StatusNoContent {
 			cdr, err = client.UpdateResponder(cdr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "appplatform.CustomDomainsUpdateFuture", "Result", cdr.Response.Response, "Failure responding to request")

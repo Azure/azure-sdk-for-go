@@ -121,7 +121,11 @@ func (client VirtualMachineScaleSetExtensionsClient) CreateOrUpdateSender(req *h
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vmsse.Response.Response, err = future.GetResult(sender); err == nil && vmsse.Response.Response.StatusCode != http.StatusNoContent {
+		vmsse.Response.Response, err = future.GetResult(sender)
+		if vmsse.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetExtensionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vmsse.Response.Response.StatusCode != http.StatusNoContent {
 			vmsse, err = client.CreateOrUpdateResponder(vmsse.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetExtensionsCreateOrUpdateFuture", "Result", vmsse.Response.Response, "Failure responding to request")

@@ -131,7 +131,11 @@ func (client ApplicationTypeVersionsClient) CreateOrUpdateSender(req *http.Reque
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if atvr.Response.Response, err = future.GetResult(sender); err == nil && atvr.Response.Response.StatusCode != http.StatusNoContent {
+		atvr.Response.Response, err = future.GetResult(sender)
+		if atvr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "servicefabric.ApplicationTypeVersionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && atvr.Response.Response.StatusCode != http.StatusNoContent {
 			atvr, err = client.CreateOrUpdateResponder(atvr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "servicefabric.ApplicationTypeVersionsCreateOrUpdateFuture", "Result", atvr.Response.Response, "Failure responding to request")

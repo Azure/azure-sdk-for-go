@@ -132,7 +132,11 @@ func (client WorkloadNetworksClient) CreateDhcpSender(req *http.Request) (future
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if wnd.Response.Response, err = future.GetResult(sender); err == nil && wnd.Response.Response.StatusCode != http.StatusNoContent {
+		wnd.Response.Response, err = future.GetResult(sender)
+		if wnd.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreateDhcpFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && wnd.Response.Response.StatusCode != http.StatusNoContent {
 			wnd, err = client.CreateDhcpResponder(wnd.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreateDhcpFuture", "Result", wnd.Response.Response, "Failure responding to request")
@@ -244,7 +248,11 @@ func (client WorkloadNetworksClient) CreatePortMirroringSender(req *http.Request
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if wnpm.Response.Response, err = future.GetResult(sender); err == nil && wnpm.Response.Response.StatusCode != http.StatusNoContent {
+		wnpm.Response.Response, err = future.GetResult(sender)
+		if wnpm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreatePortMirroringFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && wnpm.Response.Response.StatusCode != http.StatusNoContent {
 			wnpm, err = client.CreatePortMirroringResponder(wnpm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreatePortMirroringFuture", "Result", wnpm.Response.Response, "Failure responding to request")
@@ -356,7 +364,11 @@ func (client WorkloadNetworksClient) CreateSegmentsSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if wns.Response.Response, err = future.GetResult(sender); err == nil && wns.Response.Response.StatusCode != http.StatusNoContent {
+		wns.Response.Response, err = future.GetResult(sender)
+		if wns.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreateSegmentsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && wns.Response.Response.StatusCode != http.StatusNoContent {
 			wns, err = client.CreateSegmentsResponder(wns.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreateSegmentsFuture", "Result", wns.Response.Response, "Failure responding to request")
@@ -468,7 +480,11 @@ func (client WorkloadNetworksClient) CreateVMGroupSender(req *http.Request) (fut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if wnvg.Response.Response, err = future.GetResult(sender); err == nil && wnvg.Response.Response.StatusCode != http.StatusNoContent {
+		wnvg.Response.Response, err = future.GetResult(sender)
+		if wnvg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreateVMGroupFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && wnvg.Response.Response.StatusCode != http.StatusNoContent {
 			wnvg, err = client.CreateVMGroupResponder(wnvg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreateVMGroupFuture", "Result", wnvg.Response.Response, "Failure responding to request")
@@ -2284,7 +2300,11 @@ func (client WorkloadNetworksClient) UpdateDhcpSender(req *http.Request) (future
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if wnd.Response.Response, err = future.GetResult(sender); err == nil && wnd.Response.Response.StatusCode != http.StatusNoContent {
+		wnd.Response.Response, err = future.GetResult(sender)
+		if wnd.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdateDhcpFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && wnd.Response.Response.StatusCode != http.StatusNoContent {
 			wnd, err = client.UpdateDhcpResponder(wnd.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdateDhcpFuture", "Result", wnd.Response.Response, "Failure responding to request")
@@ -2396,7 +2416,11 @@ func (client WorkloadNetworksClient) UpdatePortMirroringSender(req *http.Request
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if wnpm.Response.Response, err = future.GetResult(sender); err == nil && wnpm.Response.Response.StatusCode != http.StatusNoContent {
+		wnpm.Response.Response, err = future.GetResult(sender)
+		if wnpm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdatePortMirroringFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && wnpm.Response.Response.StatusCode != http.StatusNoContent {
 			wnpm, err = client.UpdatePortMirroringResponder(wnpm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdatePortMirroringFuture", "Result", wnpm.Response.Response, "Failure responding to request")
@@ -2508,7 +2532,11 @@ func (client WorkloadNetworksClient) UpdateSegmentsSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if wns.Response.Response, err = future.GetResult(sender); err == nil && wns.Response.Response.StatusCode != http.StatusNoContent {
+		wns.Response.Response, err = future.GetResult(sender)
+		if wns.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdateSegmentsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && wns.Response.Response.StatusCode != http.StatusNoContent {
 			wns, err = client.UpdateSegmentsResponder(wns.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdateSegmentsFuture", "Result", wns.Response.Response, "Failure responding to request")
@@ -2620,7 +2648,11 @@ func (client WorkloadNetworksClient) UpdateVMGroupSender(req *http.Request) (fut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if wnvg.Response.Response, err = future.GetResult(sender); err == nil && wnvg.Response.Response.StatusCode != http.StatusNoContent {
+		wnvg.Response.Response, err = future.GetResult(sender)
+		if wnvg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdateVMGroupFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && wnvg.Response.Response.StatusCode != http.StatusNoContent {
 			wnvg, err = client.UpdateVMGroupResponder(wnvg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdateVMGroupFuture", "Result", wnvg.Response.Response, "Failure responding to request")

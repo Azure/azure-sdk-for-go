@@ -1563,7 +1563,11 @@ func (client BaseClient) FullBackupSender(req *http.Request) (future FullBackupF
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if fbo.Response.Response, err = future.GetResult(sender); err == nil && fbo.Response.Response.StatusCode != http.StatusNoContent {
+		fbo.Response.Response, err = future.GetResult(sender)
+		if fbo.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "keyvault.FullBackupFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && fbo.Response.Response.StatusCode != http.StatusNoContent {
 			fbo, err = client.FullBackupResponder(fbo.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "keyvault.FullBackupFuture", "Result", fbo.Response.Response, "Failure responding to request")
@@ -1755,7 +1759,11 @@ func (client BaseClient) FullRestoreOperationSender(req *http.Request) (future F
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ro.Response.Response, err = future.GetResult(sender); err == nil && ro.Response.Response.StatusCode != http.StatusNoContent {
+		ro.Response.Response, err = future.GetResult(sender)
+		if ro.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "keyvault.FullRestoreOperationFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ro.Response.Response.StatusCode != http.StatusNoContent {
 			ro, err = client.FullRestoreOperationResponder(ro.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "keyvault.FullRestoreOperationFuture", "Result", ro.Response.Response, "Failure responding to request")
@@ -6401,7 +6409,11 @@ func (client BaseClient) SelectiveKeyRestoreOperationMethodSender(req *http.Requ
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if skro.Response.Response, err = future.GetResult(sender); err == nil && skro.Response.Response.StatusCode != http.StatusNoContent {
+		skro.Response.Response, err = future.GetResult(sender)
+		if skro.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "keyvault.SelectiveKeyRestoreOperationMethodFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && skro.Response.Response.StatusCode != http.StatusNoContent {
 			skro, err = client.SelectiveKeyRestoreOperationMethodResponder(skro.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "keyvault.SelectiveKeyRestoreOperationMethodFuture", "Result", skro.Response.Response, "Failure responding to request")

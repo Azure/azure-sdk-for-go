@@ -125,7 +125,11 @@ func (client BackupLongTermRetentionPoliciesClient) CreateOrUpdateSender(req *ht
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if bltrp.Response.Response, err = future.GetResult(sender); err == nil && bltrp.Response.Response.StatusCode != http.StatusNoContent {
+		bltrp.Response.Response, err = future.GetResult(sender)
+		if bltrp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && bltrp.Response.Response.StatusCode != http.StatusNoContent {
 			bltrp, err = client.CreateOrUpdateResponder(bltrp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesCreateOrUpdateFuture", "Result", bltrp.Response.Response, "Failure responding to request")

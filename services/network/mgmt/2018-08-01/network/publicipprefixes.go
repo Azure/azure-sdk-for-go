@@ -119,7 +119,11 @@ func (client PublicIPPrefixesClient) CreateOrUpdateSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pip.Response.Response, err = future.GetResult(sender); err == nil && pip.Response.Response.StatusCode != http.StatusNoContent {
+		pip.Response.Response, err = future.GetResult(sender)
+		if pip.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.PublicIPPrefixesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pip.Response.Response.StatusCode != http.StatusNoContent {
 			pip, err = client.CreateOrUpdateResponder(pip.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.PublicIPPrefixesCreateOrUpdateFuture", "Result", pip.Response.Response, "Failure responding to request")
@@ -618,7 +622,11 @@ func (client PublicIPPrefixesClient) UpdateTagsSender(req *http.Request) (future
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pip.Response.Response, err = future.GetResult(sender); err == nil && pip.Response.Response.StatusCode != http.StatusNoContent {
+		pip.Response.Response, err = future.GetResult(sender)
+		if pip.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.PublicIPPrefixesUpdateTagsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pip.Response.Response.StatusCode != http.StatusNoContent {
 			pip, err = client.UpdateTagsResponder(pip.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.PublicIPPrefixesUpdateTagsFuture", "Result", pip.Response.Response, "Failure responding to request")

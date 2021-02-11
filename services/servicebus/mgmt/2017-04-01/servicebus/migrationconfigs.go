@@ -225,7 +225,11 @@ func (client MigrationConfigsClient) CreateAndStartMigrationSender(req *http.Req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mcp.Response.Response, err = future.GetResult(sender); err == nil && mcp.Response.Response.StatusCode != http.StatusNoContent {
+		mcp.Response.Response, err = future.GetResult(sender)
+		if mcp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsCreateAndStartMigrationFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mcp.Response.Response.StatusCode != http.StatusNoContent {
 			mcp, err = client.CreateAndStartMigrationResponder(mcp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsCreateAndStartMigrationFuture", "Result", mcp.Response.Response, "Failure responding to request")

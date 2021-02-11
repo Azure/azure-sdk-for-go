@@ -137,7 +137,11 @@ func (client VirtualNetworkRulesClient) CreateOrUpdateSender(req *http.Request) 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vnr.Response.Response, err = future.GetResult(sender); err == nil && vnr.Response.Response.StatusCode != http.StatusNoContent {
+		vnr.Response.Response, err = future.GetResult(sender)
+		if vnr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "mariadb.VirtualNetworkRulesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vnr.Response.Response.StatusCode != http.StatusNoContent {
 			vnr, err = client.CreateOrUpdateResponder(vnr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "mariadb.VirtualNetworkRulesCreateOrUpdateFuture", "Result", vnr.Response.Response, "Failure responding to request")

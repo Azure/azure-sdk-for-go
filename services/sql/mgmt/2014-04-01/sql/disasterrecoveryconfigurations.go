@@ -121,7 +121,11 @@ func (client DisasterRecoveryConfigurationsClient) CreateOrUpdateSender(req *htt
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if drc.Response.Response, err = future.GetResult(sender); err == nil && drc.Response.Response.StatusCode != http.StatusNoContent {
+		drc.Response.Response, err = future.GetResult(sender)
+		if drc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && drc.Response.Response.StatusCode != http.StatusNoContent {
 			drc, err = client.CreateOrUpdateResponder(drc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsCreateOrUpdateFuture", "Result", drc.Response.Response, "Failure responding to request")

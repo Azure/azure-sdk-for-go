@@ -133,7 +133,11 @@ func (client SharedPrivateLinkResourcesClient) CreateOrUpdateSender(req *http.Re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if splr.Response.Response, err = future.GetResult(sender); err == nil && splr.Response.Response.StatusCode != http.StatusNoContent {
+		splr.Response.Response, err = future.GetResult(sender)
+		if splr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "search.SharedPrivateLinkResourcesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && splr.Response.Response.StatusCode != http.StatusNoContent {
 			splr, err = client.CreateOrUpdateResponder(splr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "search.SharedPrivateLinkResourcesCreateOrUpdateFuture", "Result", splr.Response.Response, "Failure responding to request")

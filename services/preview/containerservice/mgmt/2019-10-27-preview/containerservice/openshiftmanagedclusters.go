@@ -133,7 +133,11 @@ func (client OpenShiftManagedClustersClient) CreateOrUpdateSender(req *http.Requ
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if osmc.Response.Response, err = future.GetResult(sender); err == nil && osmc.Response.Response.StatusCode != http.StatusNoContent {
+		osmc.Response.Response, err = future.GetResult(sender)
+		if osmc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "containerservice.OpenShiftManagedClustersCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && osmc.Response.Response.StatusCode != http.StatusNoContent {
 			osmc, err = client.CreateOrUpdateResponder(osmc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "containerservice.OpenShiftManagedClustersCreateOrUpdateFuture", "Result", osmc.Response.Response, "Failure responding to request")
@@ -654,7 +658,11 @@ func (client OpenShiftManagedClustersClient) UpdateTagsSender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if osmc.Response.Response, err = future.GetResult(sender); err == nil && osmc.Response.Response.StatusCode != http.StatusNoContent {
+		osmc.Response.Response, err = future.GetResult(sender)
+		if osmc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "containerservice.OpenShiftManagedClustersUpdateTagsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && osmc.Response.Response.StatusCode != http.StatusNoContent {
 			osmc, err = client.UpdateTagsResponder(osmc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "containerservice.OpenShiftManagedClustersUpdateTagsFuture", "Result", osmc.Response.Response, "Failure responding to request")

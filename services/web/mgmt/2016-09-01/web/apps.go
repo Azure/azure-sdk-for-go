@@ -1046,7 +1046,11 @@ func (client AppsClient) CreateFunctionSender(req *http.Request) (future AppsCre
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if fe.Response.Response, err = future.GetResult(sender); err == nil && fe.Response.Response.StatusCode != http.StatusNoContent {
+		fe.Response.Response, err = future.GetResult(sender)
+		if fe.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppsCreateFunctionFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && fe.Response.Response.StatusCode != http.StatusNoContent {
 			fe, err = client.CreateFunctionResponder(fe.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppsCreateFunctionFuture", "Result", fe.Response.Response, "Failure responding to request")
@@ -1159,7 +1163,11 @@ func (client AppsClient) CreateInstanceFunctionSlotSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if fe.Response.Response, err = future.GetResult(sender); err == nil && fe.Response.Response.StatusCode != http.StatusNoContent {
+		fe.Response.Response, err = future.GetResult(sender)
+		if fe.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppsCreateInstanceFunctionSlotFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && fe.Response.Response.StatusCode != http.StatusNoContent {
 			fe, err = client.CreateInstanceFunctionSlotResponder(fe.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppsCreateInstanceFunctionSlotFuture", "Result", fe.Response.Response, "Failure responding to request")
@@ -1269,7 +1277,11 @@ func (client AppsClient) CreateInstanceMSDeployOperationSender(req *http.Request
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mds.Response.Response, err = future.GetResult(sender); err == nil && mds.Response.Response.StatusCode != http.StatusNoContent {
+		mds.Response.Response, err = future.GetResult(sender)
+		if mds.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppsCreateInstanceMSDeployOperationFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mds.Response.Response.StatusCode != http.StatusNoContent {
 			mds, err = client.CreateInstanceMSDeployOperationResponder(mds.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppsCreateInstanceMSDeployOperationFuture", "Result", mds.Response.Response, "Failure responding to request")
@@ -1381,7 +1393,11 @@ func (client AppsClient) CreateInstanceMSDeployOperationSlotSender(req *http.Req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mds.Response.Response, err = future.GetResult(sender); err == nil && mds.Response.Response.StatusCode != http.StatusNoContent {
+		mds.Response.Response, err = future.GetResult(sender)
+		if mds.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppsCreateInstanceMSDeployOperationSlotFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mds.Response.Response.StatusCode != http.StatusNoContent {
 			mds, err = client.CreateInstanceMSDeployOperationSlotResponder(mds.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppsCreateInstanceMSDeployOperationSlotFuture", "Result", mds.Response.Response, "Failure responding to request")
@@ -1489,7 +1505,11 @@ func (client AppsClient) CreateMSDeployOperationSender(req *http.Request) (futur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mds.Response.Response, err = future.GetResult(sender); err == nil && mds.Response.Response.StatusCode != http.StatusNoContent {
+		mds.Response.Response, err = future.GetResult(sender)
+		if mds.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppsCreateMSDeployOperationFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mds.Response.Response.StatusCode != http.StatusNoContent {
 			mds, err = client.CreateMSDeployOperationResponder(mds.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppsCreateMSDeployOperationFuture", "Result", mds.Response.Response, "Failure responding to request")
@@ -1599,7 +1619,11 @@ func (client AppsClient) CreateMSDeployOperationSlotSender(req *http.Request) (f
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mds.Response.Response, err = future.GetResult(sender); err == nil && mds.Response.Response.StatusCode != http.StatusNoContent {
+		mds.Response.Response, err = future.GetResult(sender)
+		if mds.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppsCreateMSDeployOperationSlotFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mds.Response.Response.StatusCode != http.StatusNoContent {
 			mds, err = client.CreateMSDeployOperationSlotResponder(mds.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppsCreateMSDeployOperationSlotFuture", "Result", mds.Response.Response, "Failure responding to request")
@@ -1723,7 +1747,11 @@ func (client AppsClient) CreateOrUpdateSender(req *http.Request) (future AppsCre
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+		s.Response.Response, err = future.GetResult(sender)
+		if s.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
 			s, err = client.CreateOrUpdateResponder(s.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppsCreateOrUpdateFuture", "Result", s.Response.Response, "Failure responding to request")
@@ -2973,7 +3001,11 @@ func (client AppsClient) CreateOrUpdateSlotSender(req *http.Request) (future App
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+		s.Response.Response, err = future.GetResult(sender)
+		if s.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppsCreateOrUpdateSlotFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
 			s, err = client.CreateOrUpdateSlotResponder(s.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppsCreateOrUpdateSlotFuture", "Result", s.Response.Response, "Failure responding to request")
@@ -3081,7 +3113,11 @@ func (client AppsClient) CreateOrUpdateSourceControlSender(req *http.Request) (f
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ssc.Response.Response, err = future.GetResult(sender); err == nil && ssc.Response.Response.StatusCode != http.StatusNoContent {
+		ssc.Response.Response, err = future.GetResult(sender)
+		if ssc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppsCreateOrUpdateSourceControlFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ssc.Response.Response.StatusCode != http.StatusNoContent {
 			ssc, err = client.CreateOrUpdateSourceControlResponder(ssc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppsCreateOrUpdateSourceControlFuture", "Result", ssc.Response.Response, "Failure responding to request")
@@ -3192,7 +3228,11 @@ func (client AppsClient) CreateOrUpdateSourceControlSlotSender(req *http.Request
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ssc.Response.Response, err = future.GetResult(sender); err == nil && ssc.Response.Response.StatusCode != http.StatusNoContent {
+		ssc.Response.Response, err = future.GetResult(sender)
+		if ssc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppsCreateOrUpdateSourceControlSlotFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ssc.Response.Response.StatusCode != http.StatusNoContent {
 			ssc, err = client.CreateOrUpdateSourceControlSlotResponder(ssc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppsCreateOrUpdateSourceControlSlotFuture", "Result", ssc.Response.Response, "Failure responding to request")
@@ -14156,7 +14196,11 @@ func (client AppsClient) InstallSiteExtensionSender(req *http.Request) (future A
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sei.Response.Response, err = future.GetResult(sender); err == nil && sei.Response.Response.StatusCode != http.StatusNoContent {
+		sei.Response.Response, err = future.GetResult(sender)
+		if sei.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppsInstallSiteExtensionFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sei.Response.Response.StatusCode != http.StatusNoContent {
 			sei, err = client.InstallSiteExtensionResponder(sei.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppsInstallSiteExtensionFuture", "Result", sei.Response.Response, "Failure responding to request")
@@ -14266,7 +14310,11 @@ func (client AppsClient) InstallSiteExtensionSlotSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sei.Response.Response, err = future.GetResult(sender); err == nil && sei.Response.Response.StatusCode != http.StatusNoContent {
+		sei.Response.Response, err = future.GetResult(sender)
+		if sei.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppsInstallSiteExtensionSlotFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sei.Response.Response.StatusCode != http.StatusNoContent {
 			sei, err = client.InstallSiteExtensionSlotResponder(sei.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppsInstallSiteExtensionSlotFuture", "Result", sei.Response.Response, "Failure responding to request")
@@ -21465,7 +21513,11 @@ func (client AppsClient) ListPublishingCredentialsSender(req *http.Request) (fut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if u.Response.Response, err = future.GetResult(sender); err == nil && u.Response.Response.StatusCode != http.StatusNoContent {
+		u.Response.Response, err = future.GetResult(sender)
+		if u.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppsListPublishingCredentialsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && u.Response.Response.StatusCode != http.StatusNoContent {
 			u, err = client.ListPublishingCredentialsResponder(u.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppsListPublishingCredentialsFuture", "Result", u.Response.Response, "Failure responding to request")
@@ -21573,7 +21625,11 @@ func (client AppsClient) ListPublishingCredentialsSlotSender(req *http.Request) 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if u.Response.Response, err = future.GetResult(sender); err == nil && u.Response.Response.StatusCode != http.StatusNoContent {
+		u.Response.Response, err = future.GetResult(sender)
+		if u.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppsListPublishingCredentialsSlotFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && u.Response.Response.StatusCode != http.StatusNoContent {
 			u, err = client.ListPublishingCredentialsSlotResponder(u.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppsListPublishingCredentialsSlotFuture", "Result", u.Response.Response, "Failure responding to request")
@@ -24566,7 +24622,11 @@ func (client AppsClient) MigrateMySQLSender(req *http.Request) (future AppsMigra
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if o.Response.Response, err = future.GetResult(sender); err == nil && o.Response.Response.StatusCode != http.StatusNoContent {
+		o.Response.Response, err = future.GetResult(sender)
+		if o.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppsMigrateMySQLFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && o.Response.Response.StatusCode != http.StatusNoContent {
 			o, err = client.MigrateMySQLResponder(o.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppsMigrateMySQLFuture", "Result", o.Response.Response, "Failure responding to request")
@@ -24681,7 +24741,11 @@ func (client AppsClient) MigrateStorageSender(req *http.Request) (future AppsMig
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if smr.Response.Response, err = future.GetResult(sender); err == nil && smr.Response.Response.StatusCode != http.StatusNoContent {
+		smr.Response.Response, err = future.GetResult(sender)
+		if smr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppsMigrateStorageFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && smr.Response.Response.StatusCode != http.StatusNoContent {
 			smr, err = client.MigrateStorageResponder(smr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppsMigrateStorageFuture", "Result", smr.Response.Response, "Failure responding to request")
@@ -25540,7 +25604,11 @@ func (client AppsClient) RestoreSender(req *http.Request) (future AppsRestoreFut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rr.Response.Response, err = future.GetResult(sender); err == nil && rr.Response.Response.StatusCode != http.StatusNoContent {
+		rr.Response.Response, err = future.GetResult(sender)
+		if rr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppsRestoreFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rr.Response.Response.StatusCode != http.StatusNoContent {
 			rr, err = client.RestoreResponder(rr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppsRestoreFuture", "Result", rr.Response.Response, "Failure responding to request")
@@ -25658,7 +25726,11 @@ func (client AppsClient) RestoreSlotSender(req *http.Request) (future AppsRestor
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rr.Response.Response, err = future.GetResult(sender); err == nil && rr.Response.Response.StatusCode != http.StatusNoContent {
+		rr.Response.Response, err = future.GetResult(sender)
+		if rr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppsRestoreSlotFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rr.Response.Response.StatusCode != http.StatusNoContent {
 			rr, err = client.RestoreSlotResponder(rr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppsRestoreSlotFuture", "Result", rr.Response.Response, "Failure responding to request")

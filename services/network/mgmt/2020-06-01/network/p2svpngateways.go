@@ -119,7 +119,11 @@ func (client P2sVpnGatewaysClient) CreateOrUpdateSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pvg.Response.Response, err = future.GetResult(sender); err == nil && pvg.Response.Response.StatusCode != http.StatusNoContent {
+		pvg.Response.Response, err = future.GetResult(sender)
+		if pvg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.P2sVpnGatewaysCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pvg.Response.Response.StatusCode != http.StatusNoContent {
 			pvg, err = client.CreateOrUpdateResponder(pvg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.P2sVpnGatewaysCreateOrUpdateFuture", "Result", pvg.Response.Response, "Failure responding to request")
@@ -403,7 +407,11 @@ func (client P2sVpnGatewaysClient) GenerateVpnProfileSender(req *http.Request) (
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vpr.Response.Response, err = future.GetResult(sender); err == nil && vpr.Response.Response.StatusCode != http.StatusNoContent {
+		vpr.Response.Response, err = future.GetResult(sender)
+		if vpr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.P2sVpnGatewaysGenerateVpnProfileFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vpr.Response.Response.StatusCode != http.StatusNoContent {
 			vpr, err = client.GenerateVpnProfileResponder(vpr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.P2sVpnGatewaysGenerateVpnProfileFuture", "Result", vpr.Response.Response, "Failure responding to request")
@@ -577,7 +585,11 @@ func (client P2sVpnGatewaysClient) GetP2sVpnConnectionHealthSender(req *http.Req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pvg.Response.Response, err = future.GetResult(sender); err == nil && pvg.Response.Response.StatusCode != http.StatusNoContent {
+		pvg.Response.Response, err = future.GetResult(sender)
+		if pvg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.P2sVpnGatewaysGetP2sVpnConnectionHealthFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pvg.Response.Response.StatusCode != http.StatusNoContent {
 			pvg, err = client.GetP2sVpnConnectionHealthResponder(pvg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.P2sVpnGatewaysGetP2sVpnConnectionHealthFuture", "Result", pvg.Response.Response, "Failure responding to request")
@@ -678,7 +690,11 @@ func (client P2sVpnGatewaysClient) GetP2sVpnConnectionHealthDetailedSender(req *
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pvch.Response.Response, err = future.GetResult(sender); err == nil && pvch.Response.Response.StatusCode != http.StatusNoContent {
+		pvch.Response.Response, err = future.GetResult(sender)
+		if pvch.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.P2sVpnGatewaysGetP2sVpnConnectionHealthDetailedFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pvch.Response.Response.StatusCode != http.StatusNoContent {
 			pvch, err = client.GetP2sVpnConnectionHealthDetailedResponder(pvch.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.P2sVpnGatewaysGetP2sVpnConnectionHealthDetailedFuture", "Result", pvch.Response.Response, "Failure responding to request")
@@ -1004,7 +1020,11 @@ func (client P2sVpnGatewaysClient) ResetSender(req *http.Request) (future P2SVpn
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pvg.Response.Response, err = future.GetResult(sender); err == nil && pvg.Response.Response.StatusCode != http.StatusNoContent {
+		pvg.Response.Response, err = future.GetResult(sender)
+		if pvg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.P2SVpnGatewaysResetFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pvg.Response.Response.StatusCode != http.StatusNoContent {
 			pvg, err = client.ResetResponder(pvg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.P2SVpnGatewaysResetFuture", "Result", pvg.Response.Response, "Failure responding to request")
@@ -1104,7 +1124,11 @@ func (client P2sVpnGatewaysClient) UpdateTagsSender(req *http.Request) (future P
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pvg.Response.Response, err = future.GetResult(sender); err == nil && pvg.Response.Response.StatusCode != http.StatusNoContent {
+		pvg.Response.Response, err = future.GetResult(sender)
+		if pvg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.P2sVpnGatewaysUpdateTagsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pvg.Response.Response.StatusCode != http.StatusNoContent {
 			pvg, err = client.UpdateTagsResponder(pvg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.P2sVpnGatewaysUpdateTagsFuture", "Result", pvg.Response.Response, "Failure responding to request")

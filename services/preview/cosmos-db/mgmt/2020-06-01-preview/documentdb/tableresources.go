@@ -141,7 +141,11 @@ func (client TableResourcesClient) CreateUpdateTableSender(req *http.Request) (f
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tgr.Response.Response, err = future.GetResult(sender); err == nil && tgr.Response.Response.StatusCode != http.StatusNoContent {
+		tgr.Response.Response, err = future.GetResult(sender)
+		if tgr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.TableResourcesCreateUpdateTableFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tgr.Response.Response.StatusCode != http.StatusNoContent {
 			tgr, err = client.CreateUpdateTableResponder(tgr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.TableResourcesCreateUpdateTableFuture", "Result", tgr.Response.Response, "Failure responding to request")
@@ -645,7 +649,11 @@ func (client TableResourcesClient) UpdateTableThroughputSender(req *http.Request
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tsgr.Response.Response, err = future.GetResult(sender); err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
+		tsgr.Response.Response, err = future.GetResult(sender)
+		if tsgr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.TableResourcesUpdateTableThroughputFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
 			tsgr, err = client.UpdateTableThroughputResponder(tsgr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.TableResourcesUpdateTableThroughputFuture", "Result", tsgr.Response.Response, "Failure responding to request")

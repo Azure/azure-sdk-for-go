@@ -136,7 +136,11 @@ func (client VirtualHubBgpConnectionClient) CreateOrUpdateSender(req *http.Reque
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if bc.Response.Response, err = future.GetResult(sender); err == nil && bc.Response.Response.StatusCode != http.StatusNoContent {
+		bc.Response.Response, err = future.GetResult(sender)
+		if bc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualHubBgpConnectionCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && bc.Response.Response.StatusCode != http.StatusNoContent {
 			bc, err = client.CreateOrUpdateResponder(bc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualHubBgpConnectionCreateOrUpdateFuture", "Result", bc.Response.Response, "Failure responding to request")

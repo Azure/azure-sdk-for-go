@@ -115,7 +115,11 @@ func (client ProfilesClient) CreateSender(req *http.Request) (future ProfilesCre
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if p.Response.Response, err = future.GetResult(sender); err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
+		p.Response.Response, err = future.GetResult(sender)
+		if p.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "billing.ProfilesCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
 			p, err = client.CreateResponder(p.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "billing.ProfilesCreateFuture", "Result", p.Response.Response, "Failure responding to request")
@@ -412,7 +416,11 @@ func (client ProfilesClient) UpdateSender(req *http.Request) (future ProfilesUpd
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if p.Response.Response, err = future.GetResult(sender); err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
+		p.Response.Response, err = future.GetResult(sender)
+		if p.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "billing.ProfilesUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
 			p, err = client.UpdateResponder(p.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "billing.ProfilesUpdateFuture", "Result", p.Response.Response, "Failure responding to request")

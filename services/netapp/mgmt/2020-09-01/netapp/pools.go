@@ -149,7 +149,11 @@ func (client PoolsClient) CreateOrUpdateSender(req *http.Request) (future PoolsC
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cp.Response.Response, err = future.GetResult(sender); err == nil && cp.Response.Response.StatusCode != http.StatusNoContent {
+		cp.Response.Response, err = future.GetResult(sender)
+		if cp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "netapp.PoolsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cp.Response.Response.StatusCode != http.StatusNoContent {
 			cp, err = client.CreateOrUpdateResponder(cp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "netapp.PoolsCreateOrUpdateFuture", "Result", cp.Response.Response, "Failure responding to request")
@@ -544,7 +548,11 @@ func (client PoolsClient) UpdateSender(req *http.Request) (future PoolsUpdateFut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cp.Response.Response, err = future.GetResult(sender); err == nil && cp.Response.Response.StatusCode != http.StatusNoContent {
+		cp.Response.Response, err = future.GetResult(sender)
+		if cp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "netapp.PoolsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cp.Response.Response.StatusCode != http.StatusNoContent {
 			cp, err = client.UpdateResponder(cp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "netapp.PoolsUpdateFuture", "Result", cp.Response.Response, "Failure responding to request")

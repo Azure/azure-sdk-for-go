@@ -118,7 +118,11 @@ func (client NatGatewaysClient) CreateOrUpdateSender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ng.Response.Response, err = future.GetResult(sender); err == nil && ng.Response.Response.StatusCode != http.StatusNoContent {
+		ng.Response.Response, err = future.GetResult(sender)
+		if ng.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.NatGatewaysCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ng.Response.Response.StatusCode != http.StatusNoContent {
 			ng, err = client.CreateOrUpdateResponder(ng.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.NatGatewaysCreateOrUpdateFuture", "Result", ng.Response.Response, "Failure responding to request")

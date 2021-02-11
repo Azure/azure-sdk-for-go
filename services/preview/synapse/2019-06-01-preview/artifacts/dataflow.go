@@ -128,7 +128,11 @@ func (client DataFlowClient) CreateOrUpdateDataFlowSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dfr.Response.Response, err = future.GetResult(sender); err == nil && dfr.Response.Response.StatusCode != http.StatusNoContent {
+		dfr.Response.Response, err = future.GetResult(sender)
+		if dfr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "artifacts.DataFlowCreateOrUpdateDataFlowFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dfr.Response.Response.StatusCode != http.StatusNoContent {
 			dfr, err = client.CreateOrUpdateDataFlowResponder(dfr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "artifacts.DataFlowCreateOrUpdateDataFlowFuture", "Result", dfr.Response.Response, "Failure responding to request")

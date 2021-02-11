@@ -135,7 +135,11 @@ func (client ServerAzureADAdministratorsClient) CreateOrUpdateSender(req *http.R
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if saaa.Response.Response, err = future.GetResult(sender); err == nil && saaa.Response.Response.StatusCode != http.StatusNoContent {
+		saaa.Response.Response, err = future.GetResult(sender)
+		if saaa.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && saaa.Response.Response.StatusCode != http.StatusNoContent {
 			saaa, err = client.CreateOrUpdateResponder(saaa.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsCreateOrUpdateFuture", "Result", saaa.Response.Response, "Failure responding to request")

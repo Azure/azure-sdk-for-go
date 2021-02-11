@@ -340,7 +340,11 @@ func (client VolumesClient) CreateOrUpdateSender(req *http.Request) (future Volu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vVar.Response.Response, err = future.GetResult(sender); err == nil && vVar.Response.Response.StatusCode != http.StatusNoContent {
+		vVar.Response.Response, err = future.GetResult(sender)
+		if vVar.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "netapp.VolumesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vVar.Response.Response.StatusCode != http.StatusNoContent {
 			vVar, err = client.CreateOrUpdateResponder(vVar.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "netapp.VolumesCreateOrUpdateFuture", "Result", vVar.Response.Response, "Failure responding to request")

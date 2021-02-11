@@ -120,7 +120,11 @@ func (client DiskAccessesClient) CreateOrUpdateSender(req *http.Request) (future
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if da.Response.Response, err = future.GetResult(sender); err == nil && da.Response.Response.StatusCode != http.StatusNoContent {
+		da.Response.Response, err = future.GetResult(sender)
+		if da.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "compute.DiskAccessesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && da.Response.Response.StatusCode != http.StatusNoContent {
 			da, err = client.CreateOrUpdateResponder(da.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "compute.DiskAccessesCreateOrUpdateFuture", "Result", da.Response.Response, "Failure responding to request")
@@ -699,7 +703,11 @@ func (client DiskAccessesClient) UpdateSender(req *http.Request) (future DiskAcc
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if da.Response.Response, err = future.GetResult(sender); err == nil && da.Response.Response.StatusCode != http.StatusNoContent {
+		da.Response.Response, err = future.GetResult(sender)
+		if da.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "compute.DiskAccessesUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && da.Response.Response.StatusCode != http.StatusNoContent {
 			da, err = client.UpdateResponder(da.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "compute.DiskAccessesUpdateFuture", "Result", da.Response.Response, "Failure responding to request")

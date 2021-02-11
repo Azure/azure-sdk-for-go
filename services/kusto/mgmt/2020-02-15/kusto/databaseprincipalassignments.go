@@ -221,7 +221,11 @@ func (client DatabasePrincipalAssignmentsClient) CreateOrUpdateSender(req *http.
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dpa.Response.Response, err = future.GetResult(sender); err == nil && dpa.Response.Response.StatusCode != http.StatusNoContent {
+		dpa.Response.Response, err = future.GetResult(sender)
+		if dpa.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "kusto.DatabasePrincipalAssignmentsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dpa.Response.Response.StatusCode != http.StatusNoContent {
 			dpa, err = client.CreateOrUpdateResponder(dpa.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "kusto.DatabasePrincipalAssignmentsCreateOrUpdateFuture", "Result", dpa.Response.Response, "Failure responding to request")

@@ -124,7 +124,11 @@ func (client ReplicationProtectedItemsClient) ApplyRecoveryPointSender(req *http
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rpi.Response.Response, err = future.GetResult(sender); err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
+		rpi.Response.Response, err = future.GetResult(sender)
+		if rpi.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsApplyRecoveryPointFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
 			rpi, err = client.ApplyRecoveryPointResponder(rpi.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsApplyRecoveryPointFuture", "Result", rpi.Response.Response, "Failure responding to request")
@@ -228,7 +232,11 @@ func (client ReplicationProtectedItemsClient) CreateSender(req *http.Request) (f
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rpi.Response.Response, err = future.GetResult(sender); err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
+		rpi.Response.Response, err = future.GetResult(sender)
+		if rpi.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
 			rpi, err = client.CreateResponder(rpi.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsCreateFuture", "Result", rpi.Response.Response, "Failure responding to request")
@@ -426,7 +434,11 @@ func (client ReplicationProtectedItemsClient) FailoverCommitSender(req *http.Req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rpi.Response.Response, err = future.GetResult(sender); err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
+		rpi.Response.Response, err = future.GetResult(sender)
+		if rpi.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsFailoverCommitFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
 			rpi, err = client.FailoverCommitResponder(rpi.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsFailoverCommitFuture", "Result", rpi.Response.Response, "Failure responding to request")
@@ -854,7 +866,11 @@ func (client ReplicationProtectedItemsClient) PlannedFailoverSender(req *http.Re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rpi.Response.Response, err = future.GetResult(sender); err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
+		rpi.Response.Response, err = future.GetResult(sender)
+		if rpi.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsPlannedFailoverFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
 			rpi, err = client.PlannedFailoverResponder(rpi.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsPlannedFailoverFuture", "Result", rpi.Response.Response, "Failure responding to request")
@@ -1052,7 +1068,11 @@ func (client ReplicationProtectedItemsClient) RepairReplicationSender(req *http.
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rpi.Response.Response, err = future.GetResult(sender); err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
+		rpi.Response.Response, err = future.GetResult(sender)
+		if rpi.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsRepairReplicationFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
 			rpi, err = client.RepairReplicationResponder(rpi.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsRepairReplicationFuture", "Result", rpi.Response.Response, "Failure responding to request")
@@ -1156,7 +1176,11 @@ func (client ReplicationProtectedItemsClient) ReprotectSender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rpi.Response.Response, err = future.GetResult(sender); err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
+		rpi.Response.Response, err = future.GetResult(sender)
+		if rpi.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsReprotectFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
 			rpi, err = client.ReprotectResponder(rpi.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsReprotectFuture", "Result", rpi.Response.Response, "Failure responding to request")
@@ -1260,7 +1284,11 @@ func (client ReplicationProtectedItemsClient) TestFailoverSender(req *http.Reque
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rpi.Response.Response, err = future.GetResult(sender); err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
+		rpi.Response.Response, err = future.GetResult(sender)
+		if rpi.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsTestFailoverFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
 			rpi, err = client.TestFailoverResponder(rpi.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsTestFailoverFuture", "Result", rpi.Response.Response, "Failure responding to request")
@@ -1370,7 +1398,11 @@ func (client ReplicationProtectedItemsClient) TestFailoverCleanupSender(req *htt
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rpi.Response.Response, err = future.GetResult(sender); err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
+		rpi.Response.Response, err = future.GetResult(sender)
+		if rpi.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsTestFailoverCleanupFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
 			rpi, err = client.TestFailoverCleanupResponder(rpi.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsTestFailoverCleanupFuture", "Result", rpi.Response.Response, "Failure responding to request")
@@ -1474,7 +1506,11 @@ func (client ReplicationProtectedItemsClient) UnplannedFailoverSender(req *http.
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rpi.Response.Response, err = future.GetResult(sender); err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
+		rpi.Response.Response, err = future.GetResult(sender)
+		if rpi.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsUnplannedFailoverFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
 			rpi, err = client.UnplannedFailoverResponder(rpi.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsUnplannedFailoverFuture", "Result", rpi.Response.Response, "Failure responding to request")
@@ -1578,7 +1614,11 @@ func (client ReplicationProtectedItemsClient) UpdateSender(req *http.Request) (f
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rpi.Response.Response, err = future.GetResult(sender); err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
+		rpi.Response.Response, err = future.GetResult(sender)
+		if rpi.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
 			rpi, err = client.UpdateResponder(rpi.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsUpdateFuture", "Result", rpi.Response.Response, "Failure responding to request")
@@ -1683,7 +1723,11 @@ func (client ReplicationProtectedItemsClient) UpdateMobilityServiceSender(req *h
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rpi.Response.Response, err = future.GetResult(sender); err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
+		rpi.Response.Response, err = future.GetResult(sender)
+		if rpi.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsUpdateMobilityServiceFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rpi.Response.Response.StatusCode != http.StatusNoContent {
 			rpi, err = client.UpdateMobilityServiceResponder(rpi.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectedItemsUpdateMobilityServiceFuture", "Result", rpi.Response.Response, "Failure responding to request")

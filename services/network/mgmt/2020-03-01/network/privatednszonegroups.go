@@ -122,7 +122,11 @@ func (client PrivateDNSZoneGroupsClient) CreateOrUpdateSender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pdzg.Response.Response, err = future.GetResult(sender); err == nil && pdzg.Response.Response.StatusCode != http.StatusNoContent {
+		pdzg.Response.Response, err = future.GetResult(sender)
+		if pdzg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.PrivateDNSZoneGroupsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pdzg.Response.Response.StatusCode != http.StatusNoContent {
 			pdzg, err = client.CreateOrUpdateResponder(pdzg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.PrivateDNSZoneGroupsCreateOrUpdateFuture", "Result", pdzg.Response.Response, "Failure responding to request")

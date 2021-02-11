@@ -412,7 +412,11 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) UpdateSender(re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if agpec.Response.Response, err = future.GetResult(sender); err == nil && agpec.Response.Response.StatusCode != http.StatusNoContent {
+		agpec.Response.Response, err = future.GetResult(sender)
+		if agpec.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ApplicationGatewayPrivateEndpointConnectionsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && agpec.Response.Response.StatusCode != http.StatusNoContent {
 			agpec, err = client.UpdateResponder(agpec.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ApplicationGatewayPrivateEndpointConnectionsUpdateFuture", "Result", agpec.Response.Response, "Failure responding to request")

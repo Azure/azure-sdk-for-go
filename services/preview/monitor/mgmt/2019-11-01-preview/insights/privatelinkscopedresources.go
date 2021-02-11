@@ -127,7 +127,11 @@ func (client PrivateLinkScopedResourcesClient) CreateOrUpdateSender(req *http.Re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sr.Response.Response, err = future.GetResult(sender); err == nil && sr.Response.Response.StatusCode != http.StatusNoContent {
+		sr.Response.Response, err = future.GetResult(sender)
+		if sr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "insights.PrivateLinkScopedResourcesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sr.Response.Response.StatusCode != http.StatusNoContent {
 			sr, err = client.CreateOrUpdateResponder(sr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "insights.PrivateLinkScopedResourcesCreateOrUpdateFuture", "Result", sr.Response.Response, "Failure responding to request")

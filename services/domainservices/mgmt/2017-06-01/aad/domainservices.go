@@ -130,7 +130,11 @@ func (client DomainServicesClient) CreateOrUpdateSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ds.Response.Response, err = future.GetResult(sender); err == nil && ds.Response.Response.StatusCode != http.StatusNoContent {
+		ds.Response.Response, err = future.GetResult(sender)
+		if ds.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "aad.DomainServicesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ds.Response.Response.StatusCode != http.StatusNoContent {
 			ds, err = client.CreateOrUpdateResponder(ds.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "aad.DomainServicesCreateOrUpdateFuture", "Result", ds.Response.Response, "Failure responding to request")
@@ -664,7 +668,11 @@ func (client DomainServicesClient) UpdateSender(req *http.Request) (future Domai
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ds.Response.Response, err = future.GetResult(sender); err == nil && ds.Response.Response.StatusCode != http.StatusNoContent {
+		ds.Response.Response, err = future.GetResult(sender)
+		if ds.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "aad.DomainServicesUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ds.Response.Response.StatusCode != http.StatusNoContent {
 			ds, err = client.UpdateResponder(ds.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "aad.DomainServicesUpdateFuture", "Result", ds.Response.Response, "Failure responding to request")

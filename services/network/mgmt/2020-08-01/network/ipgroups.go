@@ -119,7 +119,11 @@ func (client IPGroupsClient) CreateOrUpdateSender(req *http.Request) (future IPG
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ig.Response.Response, err = future.GetResult(sender); err == nil && ig.Response.Response.StatusCode != http.StatusNoContent {
+		ig.Response.Response, err = future.GetResult(sender)
+		if ig.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.IPGroupsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ig.Response.Response.StatusCode != http.StatusNoContent {
 			ig, err = client.CreateOrUpdateResponder(ig.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.IPGroupsCreateOrUpdateFuture", "Result", ig.Response.Response, "Failure responding to request")

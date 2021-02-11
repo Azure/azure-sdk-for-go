@@ -133,7 +133,11 @@ func (client ServerAzureADOnlyAuthenticationsClient) CreateOrUpdateSender(req *h
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if saaoa.Response.Response, err = future.GetResult(sender); err == nil && saaoa.Response.Response.StatusCode != http.StatusNoContent {
+		saaoa.Response.Response, err = future.GetResult(sender)
+		if saaoa.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.ServerAzureADOnlyAuthenticationsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && saaoa.Response.Response.StatusCode != http.StatusNoContent {
 			saaoa, err = client.CreateOrUpdateResponder(saaoa.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.ServerAzureADOnlyAuthenticationsCreateOrUpdateFuture", "Result", saaoa.Response.Response, "Failure responding to request")

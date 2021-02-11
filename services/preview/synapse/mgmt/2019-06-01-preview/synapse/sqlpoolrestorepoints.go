@@ -134,7 +134,11 @@ func (client SQLPoolRestorePointsClient) CreateSender(req *http.Request) (future
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rp.Response.Response, err = future.GetResult(sender); err == nil && rp.Response.Response.StatusCode != http.StatusNoContent {
+		rp.Response.Response, err = future.GetResult(sender)
+		if rp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.SQLPoolRestorePointsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rp.Response.Response.StatusCode != http.StatusNoContent {
 			rp, err = client.CreateResponder(rp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.SQLPoolRestorePointsCreateFuture", "Result", rp.Response.Response, "Failure responding to request")

@@ -136,7 +136,11 @@ func (client OrchestratorInstanceServiceClient) CreateSender(req *http.Request) 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if o.Response.Response, err = future.GetResult(sender); err == nil && o.Response.Response.StatusCode != http.StatusNoContent {
+		o.Response.Response, err = future.GetResult(sender)
+		if o.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && o.Response.Response.StatusCode != http.StatusNoContent {
 			o, err = client.CreateResponder(o.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceCreateFuture", "Result", o.Response.Response, "Failure responding to request")

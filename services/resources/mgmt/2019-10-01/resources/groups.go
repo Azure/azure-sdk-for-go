@@ -395,7 +395,11 @@ func (client GroupsClient) ExportTemplateSender(req *http.Request) (future Group
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ger.Response.Response, err = future.GetResult(sender); err == nil && ger.Response.Response.StatusCode != http.StatusNoContent {
+		ger.Response.Response, err = future.GetResult(sender)
+		if ger.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "resources.GroupsExportTemplateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ger.Response.Response.StatusCode != http.StatusNoContent {
 			ger, err = client.ExportTemplateResponder(ger.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "resources.GroupsExportTemplateFuture", "Result", ger.Response.Response, "Failure responding to request")

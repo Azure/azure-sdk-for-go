@@ -285,7 +285,11 @@ func (client HSMSecurityDomainClient) UploadSender(req *http.Request) (future HS
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sdos.Response.Response, err = future.GetResult(sender); err == nil && sdos.Response.Response.StatusCode != http.StatusNoContent {
+		sdos.Response.Response, err = future.GetResult(sender)
+		if sdos.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainUploadFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sdos.Response.Response.StatusCode != http.StatusNoContent {
 			sdos, err = client.UploadResponder(sdos.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainUploadFuture", "Result", sdos.Response.Response, "Failure responding to request")

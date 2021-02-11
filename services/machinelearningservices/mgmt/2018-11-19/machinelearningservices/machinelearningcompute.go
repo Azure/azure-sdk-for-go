@@ -123,7 +123,11 @@ func (client MachineLearningComputeClient) CreateOrUpdateSender(req *http.Reques
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cr.Response.Response, err = future.GetResult(sender); err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
+		cr.Response.Response, err = future.GetResult(sender)
+		if cr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
 			cr, err = client.CreateOrUpdateResponder(cr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeCreateOrUpdateFuture", "Result", cr.Response.Response, "Failure responding to request")
@@ -720,7 +724,11 @@ func (client MachineLearningComputeClient) UpdateSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cr.Response.Response, err = future.GetResult(sender); err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
+		cr.Response.Response, err = future.GetResult(sender)
+		if cr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
 			cr, err = client.UpdateResponder(cr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeUpdateFuture", "Result", cr.Response.Response, "Failure responding to request")

@@ -672,7 +672,11 @@ func (client SubscriptionsClient) MoveSender(req *http.Request) (future Subscrip
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+		s.Response.Response, err = future.GetResult(sender)
+		if s.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "billing.SubscriptionsMoveFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
 			s, err = client.MoveResponder(s.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "billing.SubscriptionsMoveFuture", "Result", s.Response.Response, "Failure responding to request")

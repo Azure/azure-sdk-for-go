@@ -132,7 +132,11 @@ func (client AuthorizationsClient) CreateOrUpdateSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if era.Response.Response, err = future.GetResult(sender); err == nil && era.Response.Response.StatusCode != http.StatusNoContent {
+		era.Response.Response, err = future.GetResult(sender)
+		if era.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "avs.AuthorizationsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && era.Response.Response.StatusCode != http.StatusNoContent {
 			era, err = client.CreateOrUpdateResponder(era.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "avs.AuthorizationsCreateOrUpdateFuture", "Result", era.Response.Response, "Failure responding to request")

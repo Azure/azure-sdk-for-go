@@ -128,7 +128,11 @@ func (client ExpressRouteGatewaysClient) CreateOrUpdateSender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if erg.Response.Response, err = future.GetResult(sender); err == nil && erg.Response.Response.StatusCode != http.StatusNoContent {
+		erg.Response.Response, err = future.GetResult(sender)
+		if erg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteGatewaysCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && erg.Response.Response.StatusCode != http.StatusNoContent {
 			erg, err = client.CreateOrUpdateResponder(erg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ExpressRouteGatewaysCreateOrUpdateFuture", "Result", erg.Response.Response, "Failure responding to request")

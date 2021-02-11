@@ -121,7 +121,11 @@ func (client VirtualMachineScaleSetExtensionsClient) CreateOrUpdateSender(req *h
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vmsse.Response.Response, err = future.GetResult(sender); err == nil && vmsse.Response.Response.StatusCode != http.StatusNoContent {
+		vmsse.Response.Response, err = future.GetResult(sender)
+		if vmsse.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetExtensionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vmsse.Response.Response.StatusCode != http.StatusNoContent {
 			vmsse, err = client.CreateOrUpdateResponder(vmsse.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetExtensionsCreateOrUpdateFuture", "Result", vmsse.Response.Response, "Failure responding to request")
@@ -220,7 +224,11 @@ func (client VirtualMachineScaleSetExtensionsClient) DeleteSender(req *http.Requ
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
+		osr.Response.Response, err = future.GetResult(sender)
+		if osr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetExtensionsDeleteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
 			osr, err = client.DeleteResponder(osr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetExtensionsDeleteFuture", "Result", osr.Response.Response, "Failure responding to request")

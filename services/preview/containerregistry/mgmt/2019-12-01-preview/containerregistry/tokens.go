@@ -135,7 +135,11 @@ func (client TokensClient) CreateSender(req *http.Request) (future TokensCreateF
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t.Response.Response, err = future.GetResult(sender)
+		if t.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.TokensCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
 			t, err = client.CreateResponder(t.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "containerregistry.TokensCreateFuture", "Result", t.Response.Response, "Failure responding to request")
@@ -577,7 +581,11 @@ func (client TokensClient) UpdateSender(req *http.Request) (future TokensUpdateF
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t.Response.Response, err = future.GetResult(sender)
+		if t.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.TokensUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
 			t, err = client.UpdateResponder(t.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "containerregistry.TokensUpdateFuture", "Result", t.Response.Response, "Failure responding to request")

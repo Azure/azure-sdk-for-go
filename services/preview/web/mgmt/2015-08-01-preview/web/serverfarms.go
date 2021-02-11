@@ -122,7 +122,11 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarmSender(req *http.Request
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sfwrs.Response.Response, err = future.GetResult(sender); err == nil && sfwrs.Response.Response.StatusCode != http.StatusNoContent {
+		sfwrs.Response.Response, err = future.GetResult(sender)
+		if sfwrs.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.ServerFarmsCreateOrUpdateServerFarmFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sfwrs.Response.Response.StatusCode != http.StatusNoContent {
 			sfwrs, err = client.CreateOrUpdateServerFarmResponder(sfwrs.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.ServerFarmsCreateOrUpdateServerFarmFuture", "Result", sfwrs.Response.Response, "Failure responding to request")

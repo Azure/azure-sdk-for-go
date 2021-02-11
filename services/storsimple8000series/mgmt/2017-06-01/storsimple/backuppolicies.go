@@ -236,7 +236,11 @@ func (client BackupPoliciesClient) CreateOrUpdateSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if bp.Response.Response, err = future.GetResult(sender); err == nil && bp.Response.Response.StatusCode != http.StatusNoContent {
+		bp.Response.Response, err = future.GetResult(sender)
+		if bp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storsimple.BackupPoliciesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && bp.Response.Response.StatusCode != http.StatusNoContent {
 			bp, err = client.CreateOrUpdateResponder(bp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storsimple.BackupPoliciesCreateOrUpdateFuture", "Result", bp.Response.Response, "Failure responding to request")

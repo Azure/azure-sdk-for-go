@@ -225,7 +225,11 @@ func (client ManagedDatabasesClient) CreateOrUpdateSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if md.Response.Response, err = future.GetResult(sender); err == nil && md.Response.Response.StatusCode != http.StatusNoContent {
+		md.Response.Response, err = future.GetResult(sender)
+		if md.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && md.Response.Response.StatusCode != http.StatusNoContent {
 			md, err = client.CreateOrUpdateResponder(md.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesCreateOrUpdateFuture", "Result", md.Response.Response, "Failure responding to request")
@@ -619,7 +623,11 @@ func (client ManagedDatabasesClient) UpdateSender(req *http.Request) (future Man
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if md.Response.Response, err = future.GetResult(sender); err == nil && md.Response.Response.StatusCode != http.StatusNoContent {
+		md.Response.Response, err = future.GetResult(sender)
+		if md.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && md.Response.Response.StatusCode != http.StatusNoContent {
 			md, err = client.UpdateResponder(md.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesUpdateFuture", "Result", md.Response.Response, "Failure responding to request")

@@ -142,7 +142,11 @@ func (client PacketCapturesClient) CreateSender(req *http.Request) (future Packe
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pcr.Response.Response, err = future.GetResult(sender); err == nil && pcr.Response.Response.StatusCode != http.StatusNoContent {
+		pcr.Response.Response, err = future.GetResult(sender)
+		if pcr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.PacketCapturesCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pcr.Response.Response.StatusCode != http.StatusNoContent {
 			pcr, err = client.CreateResponder(pcr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.PacketCapturesCreateFuture", "Result", pcr.Response.Response, "Failure responding to request")
@@ -411,7 +415,11 @@ func (client PacketCapturesClient) GetStatusSender(req *http.Request) (future Pa
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pcqsr.Response.Response, err = future.GetResult(sender); err == nil && pcqsr.Response.Response.StatusCode != http.StatusNoContent {
+		pcqsr.Response.Response, err = future.GetResult(sender)
+		if pcqsr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.PacketCapturesGetStatusFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pcqsr.Response.Response.StatusCode != http.StatusNoContent {
 			pcqsr, err = client.GetStatusResponder(pcqsr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.PacketCapturesGetStatusFuture", "Result", pcqsr.Response.Response, "Failure responding to request")

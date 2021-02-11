@@ -119,7 +119,11 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentSender(r
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if he.Response.Response, err = future.GetResult(sender); err == nil && he.Response.Response.StatusCode != http.StatusNoContent {
+		he.Response.Response, err = future.GetResult(sender)
+		if he.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && he.Response.Response.StatusCode != http.StatusNoContent {
 			he, err = client.CreateOrUpdateHostingEnvironmentResponder(he.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture", "Result", he.Response.Response, "Failure responding to request")
@@ -219,7 +223,11 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolSender(req *h
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if wp.Response.Response, err = future.GetResult(sender); err == nil && wp.Response.Response.StatusCode != http.StatusNoContent {
+		wp.Response.Response, err = future.GetResult(sender)
+		if wp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && wp.Response.Response.StatusCode != http.StatusNoContent {
 			wp, err = client.CreateOrUpdateMultiRolePoolResponder(wp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture", "Result", wp.Response.Response, "Failure responding to request")
@@ -321,7 +329,11 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolSender(req *http
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if wp.Response.Response, err = future.GetResult(sender); err == nil && wp.Response.Response.StatusCode != http.StatusNoContent {
+		wp.Response.Response, err = future.GetResult(sender)
+		if wp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsCreateOrUpdateWorkerPoolFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && wp.Response.Response.StatusCode != http.StatusNoContent {
 			wp, err = client.CreateOrUpdateWorkerPoolResponder(wp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsCreateOrUpdateWorkerPoolFuture", "Result", wp.Response.Response, "Failure responding to request")
@@ -422,7 +434,11 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironmentSender(req *http
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so.Response.Response, err = future.GetResult(sender)
+		if so.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsDeleteHostingEnvironmentFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 			so, err = client.DeleteHostingEnvironmentResponder(so.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsDeleteHostingEnvironmentFuture", "Result", so.Response.Response, "Failure responding to request")
@@ -3681,7 +3697,11 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironmentSender(req *http
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if scp.sc.Response.Response, err = future.GetResult(sender); err == nil && scp.sc.Response.Response.StatusCode != http.StatusNoContent {
+		scp.sc.Response.Response, err = future.GetResult(sender)
+		if scp.sc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsResumeHostingEnvironmentFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && scp.sc.Response.Response.StatusCode != http.StatusNoContent {
 			scp, err = client.ResumeHostingEnvironmentResponder(scp.sc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsResumeHostingEnvironmentFuture", "Result", scp.sc.Response.Response, "Failure responding to request")
@@ -3819,7 +3839,11 @@ func (client HostingEnvironmentsClient) SuspendHostingEnvironmentSender(req *htt
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if scp.sc.Response.Response, err = future.GetResult(sender); err == nil && scp.sc.Response.Response.StatusCode != http.StatusNoContent {
+		scp.sc.Response.Response, err = future.GetResult(sender)
+		if scp.sc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsSuspendHostingEnvironmentFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && scp.sc.Response.Response.StatusCode != http.StatusNoContent {
 			scp, err = client.SuspendHostingEnvironmentResponder(scp.sc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsSuspendHostingEnvironmentFuture", "Result", scp.sc.Response.Response, "Failure responding to request")

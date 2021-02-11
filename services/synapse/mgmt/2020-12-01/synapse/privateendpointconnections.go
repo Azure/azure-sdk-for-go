@@ -132,7 +132,11 @@ func (client PrivateEndpointConnectionsClient) CreateSender(req *http.Request) (
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pec.Response.Response, err = future.GetResult(sender); err == nil && pec.Response.Response.StatusCode != http.StatusNoContent {
+		pec.Response.Response, err = future.GetResult(sender)
+		if pec.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.PrivateEndpointConnectionsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pec.Response.Response.StatusCode != http.StatusNoContent {
 			pec, err = client.CreateResponder(pec.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.PrivateEndpointConnectionsCreateFuture", "Result", pec.Response.Response, "Failure responding to request")
@@ -241,7 +245,11 @@ func (client PrivateEndpointConnectionsClient) DeleteSender(req *http.Request) (
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if or.Response.Response, err = future.GetResult(sender); err == nil && or.Response.Response.StatusCode != http.StatusNoContent {
+		or.Response.Response, err = future.GetResult(sender)
+		if or.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.PrivateEndpointConnectionsDeleteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && or.Response.Response.StatusCode != http.StatusNoContent {
 			or, err = client.DeleteResponder(or.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.PrivateEndpointConnectionsDeleteFuture", "Result", or.Response.Response, "Failure responding to request")

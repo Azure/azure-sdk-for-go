@@ -140,7 +140,11 @@ func (client DscNodeConfigurationClient) CreateOrUpdateSender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dnc.Response.Response, err = future.GetResult(sender); err == nil && dnc.Response.Response.StatusCode != http.StatusNoContent {
+		dnc.Response.Response, err = future.GetResult(sender)
+		if dnc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dnc.Response.Response.StatusCode != http.StatusNoContent {
 			dnc, err = client.CreateOrUpdateResponder(dnc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationCreateOrUpdateFuture", "Result", dnc.Response.Response, "Failure responding to request")

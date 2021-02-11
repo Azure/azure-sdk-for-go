@@ -136,7 +136,11 @@ func (client RulesClient) CreateSender(req *http.Request) (future RulesCreateFut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if r.Response.Response, err = future.GetResult(sender); err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
+		r.Response.Response, err = future.GetResult(sender)
+		if r.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.RulesCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
 			r, err = client.CreateResponder(r.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.RulesCreateFuture", "Result", r.Response.Response, "Failure responding to request")
@@ -566,7 +570,11 @@ func (client RulesClient) UpdateSender(req *http.Request) (future RulesUpdateFut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if r.Response.Response, err = future.GetResult(sender); err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
+		r.Response.Response, err = future.GetResult(sender)
+		if r.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.RulesUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
 			r, err = client.UpdateResponder(r.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.RulesUpdateFuture", "Result", r.Response.Response, "Failure responding to request")

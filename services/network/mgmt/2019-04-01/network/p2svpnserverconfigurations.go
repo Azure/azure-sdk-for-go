@@ -123,7 +123,11 @@ func (client P2sVpnServerConfigurationsClient) CreateOrUpdateSender(req *http.Re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pvsc.Response.Response, err = future.GetResult(sender); err == nil && pvsc.Response.Response.StatusCode != http.StatusNoContent {
+		pvsc.Response.Response, err = future.GetResult(sender)
+		if pvsc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.P2sVpnServerConfigurationsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pvsc.Response.Response.StatusCode != http.StatusNoContent {
 			pvsc, err = client.CreateOrUpdateResponder(pvsc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.P2sVpnServerConfigurationsCreateOrUpdateFuture", "Result", pvsc.Response.Response, "Failure responding to request")

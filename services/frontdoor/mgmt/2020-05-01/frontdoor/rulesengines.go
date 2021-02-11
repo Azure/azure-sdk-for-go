@@ -141,7 +141,11 @@ func (client RulesEnginesClient) CreateOrUpdateSender(req *http.Request) (future
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if re.Response.Response, err = future.GetResult(sender); err == nil && re.Response.Response.StatusCode != http.StatusNoContent {
+		re.Response.Response, err = future.GetResult(sender)
+		if re.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "frontdoor.RulesEnginesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && re.Response.Response.StatusCode != http.StatusNoContent {
 			re, err = client.CreateOrUpdateResponder(re.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "frontdoor.RulesEnginesCreateOrUpdateFuture", "Result", re.Response.Response, "Failure responding to request")

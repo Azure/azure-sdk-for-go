@@ -133,7 +133,11 @@ func (client DatabasesClient) CreateImportOperationSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ier.Response.Response, err = future.GetResult(sender); err == nil && ier.Response.Response.StatusCode != http.StatusNoContent {
+		ier.Response.Response, err = future.GetResult(sender)
+		if ier.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.DatabasesCreateImportOperationFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ier.Response.Response.StatusCode != http.StatusNoContent {
 			ier, err = client.CreateImportOperationResponder(ier.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.DatabasesCreateImportOperationFuture", "Result", ier.Response.Response, "Failure responding to request")
@@ -237,7 +241,11 @@ func (client DatabasesClient) CreateOrUpdateSender(req *http.Request) (future Da
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
+		d.Response.Response, err = future.GetResult(sender)
+		if d.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.DatabasesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
 			d, err = client.CreateOrUpdateResponder(d.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.DatabasesCreateOrUpdateFuture", "Result", d.Response.Response, "Failure responding to request")
@@ -427,7 +435,11 @@ func (client DatabasesClient) ExportSender(req *http.Request) (future DatabasesE
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ier.Response.Response, err = future.GetResult(sender); err == nil && ier.Response.Response.StatusCode != http.StatusNoContent {
+		ier.Response.Response, err = future.GetResult(sender)
+		if ier.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.DatabasesExportFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ier.Response.Response.StatusCode != http.StatusNoContent {
 			ier, err = client.ExportResponder(ier.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.DatabasesExportFuture", "Result", ier.Response.Response, "Failure responding to request")
@@ -781,7 +793,11 @@ func (client DatabasesClient) ImportSender(req *http.Request) (future DatabasesI
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ier.Response.Response, err = future.GetResult(sender); err == nil && ier.Response.Response.StatusCode != http.StatusNoContent {
+		ier.Response.Response, err = future.GetResult(sender)
+		if ier.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.DatabasesImportFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ier.Response.Response.StatusCode != http.StatusNoContent {
 			ier, err = client.ImportResponder(ier.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.DatabasesImportFuture", "Result", ier.Response.Response, "Failure responding to request")
@@ -1561,7 +1577,11 @@ func (client DatabasesClient) UpdateSender(req *http.Request) (future DatabasesU
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
+		d.Response.Response, err = future.GetResult(sender)
+		if d.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.DatabasesUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
 			d, err = client.UpdateResponder(d.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.DatabasesUpdateFuture", "Result", d.Response.Response, "Failure responding to request")

@@ -132,7 +132,11 @@ func (client GlobalReachConnectionsClient) CreateOrUpdateSender(req *http.Reques
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if grc.Response.Response, err = future.GetResult(sender); err == nil && grc.Response.Response.StatusCode != http.StatusNoContent {
+		grc.Response.Response, err = future.GetResult(sender)
+		if grc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "avs.GlobalReachConnectionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && grc.Response.Response.StatusCode != http.StatusNoContent {
 			grc, err = client.CreateOrUpdateResponder(grc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "avs.GlobalReachConnectionsCreateOrUpdateFuture", "Result", grc.Response.Response, "Failure responding to request")

@@ -135,7 +135,11 @@ func (client InstanceFailoverGroupsClient) CreateOrUpdateSender(req *http.Reques
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ifg.Response.Response, err = future.GetResult(sender); err == nil && ifg.Response.Response.StatusCode != http.StatusNoContent {
+		ifg.Response.Response, err = future.GetResult(sender)
+		if ifg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ifg.Response.Response.StatusCode != http.StatusNoContent {
 			ifg, err = client.CreateOrUpdateResponder(ifg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsCreateOrUpdateFuture", "Result", ifg.Response.Response, "Failure responding to request")
@@ -328,7 +332,11 @@ func (client InstanceFailoverGroupsClient) FailoverSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ifg.Response.Response, err = future.GetResult(sender); err == nil && ifg.Response.Response.StatusCode != http.StatusNoContent {
+		ifg.Response.Response, err = future.GetResult(sender)
+		if ifg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsFailoverFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ifg.Response.Response.StatusCode != http.StatusNoContent {
 			ifg, err = client.FailoverResponder(ifg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsFailoverFuture", "Result", ifg.Response.Response, "Failure responding to request")
@@ -429,7 +437,11 @@ func (client InstanceFailoverGroupsClient) ForceFailoverAllowDataLossSender(req 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ifg.Response.Response, err = future.GetResult(sender); err == nil && ifg.Response.Response.StatusCode != http.StatusNoContent {
+		ifg.Response.Response, err = future.GetResult(sender)
+		if ifg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsForceFailoverAllowDataLossFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ifg.Response.Response.StatusCode != http.StatusNoContent {
 			ifg, err = client.ForceFailoverAllowDataLossResponder(ifg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsForceFailoverAllowDataLossFuture", "Result", ifg.Response.Response, "Failure responding to request")

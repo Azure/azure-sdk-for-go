@@ -186,7 +186,11 @@ func (client ReplicationVaultHealthClient) RefreshSender(req *http.Request) (fut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vhd.Response.Response, err = future.GetResult(sender); err == nil && vhd.Response.Response.StatusCode != http.StatusNoContent {
+		vhd.Response.Response, err = future.GetResult(sender)
+		if vhd.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationVaultHealthRefreshFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vhd.Response.Response.StatusCode != http.StatusNoContent {
 			vhd, err = client.RefreshResponder(vhd.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationVaultHealthRefreshFuture", "Result", vhd.Response.Response, "Failure responding to request")

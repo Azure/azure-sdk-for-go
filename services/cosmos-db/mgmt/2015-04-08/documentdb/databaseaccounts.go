@@ -228,7 +228,11 @@ func (client DatabaseAccountsClient) CreateOrUpdateSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if da.Response.Response, err = future.GetResult(sender); err == nil && da.Response.Response.StatusCode != http.StatusNoContent {
+		da.Response.Response, err = future.GetResult(sender)
+		if da.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && da.Response.Response.StatusCode != http.StatusNoContent {
 			da, err = client.CreateOrUpdateResponder(da.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateOrUpdateFuture", "Result", da.Response.Response, "Failure responding to request")
@@ -348,7 +352,11 @@ func (client DatabaseAccountsClient) CreateUpdateCassandraKeyspaceSender(req *ht
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ck.Response.Response, err = future.GetResult(sender); err == nil && ck.Response.Response.StatusCode != http.StatusNoContent {
+		ck.Response.Response, err = future.GetResult(sender)
+		if ck.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateCassandraKeyspaceFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ck.Response.Response.StatusCode != http.StatusNoContent {
 			ck, err = client.CreateUpdateCassandraKeyspaceResponder(ck.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateCassandraKeyspaceFuture", "Result", ck.Response.Response, "Failure responding to request")
@@ -470,7 +478,11 @@ func (client DatabaseAccountsClient) CreateUpdateCassandraTableSender(req *http.
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ct.Response.Response, err = future.GetResult(sender); err == nil && ct.Response.Response.StatusCode != http.StatusNoContent {
+		ct.Response.Response, err = future.GetResult(sender)
+		if ct.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateCassandraTableFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ct.Response.Response.StatusCode != http.StatusNoContent {
 			ct, err = client.CreateUpdateCassandraTableResponder(ct.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateCassandraTableFuture", "Result", ct.Response.Response, "Failure responding to request")
@@ -590,7 +602,11 @@ func (client DatabaseAccountsClient) CreateUpdateGremlinDatabaseSender(req *http
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if gd.Response.Response, err = future.GetResult(sender); err == nil && gd.Response.Response.StatusCode != http.StatusNoContent {
+		gd.Response.Response, err = future.GetResult(sender)
+		if gd.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateGremlinDatabaseFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && gd.Response.Response.StatusCode != http.StatusNoContent {
 			gd, err = client.CreateUpdateGremlinDatabaseResponder(gd.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateGremlinDatabaseFuture", "Result", gd.Response.Response, "Failure responding to request")
@@ -712,7 +728,11 @@ func (client DatabaseAccountsClient) CreateUpdateGremlinGraphSender(req *http.Re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if gg.Response.Response, err = future.GetResult(sender); err == nil && gg.Response.Response.StatusCode != http.StatusNoContent {
+		gg.Response.Response, err = future.GetResult(sender)
+		if gg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateGremlinGraphFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && gg.Response.Response.StatusCode != http.StatusNoContent {
 			gg, err = client.CreateUpdateGremlinGraphResponder(gg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateGremlinGraphFuture", "Result", gg.Response.Response, "Failure responding to request")
@@ -834,7 +854,11 @@ func (client DatabaseAccountsClient) CreateUpdateMongoDBCollectionSender(req *ht
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mdc.Response.Response, err = future.GetResult(sender); err == nil && mdc.Response.Response.StatusCode != http.StatusNoContent {
+		mdc.Response.Response, err = future.GetResult(sender)
+		if mdc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateMongoDBCollectionFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mdc.Response.Response.StatusCode != http.StatusNoContent {
 			mdc, err = client.CreateUpdateMongoDBCollectionResponder(mdc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateMongoDBCollectionFuture", "Result", mdc.Response.Response, "Failure responding to request")
@@ -954,7 +978,11 @@ func (client DatabaseAccountsClient) CreateUpdateMongoDBDatabaseSender(req *http
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mdd.Response.Response, err = future.GetResult(sender); err == nil && mdd.Response.Response.StatusCode != http.StatusNoContent {
+		mdd.Response.Response, err = future.GetResult(sender)
+		if mdd.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateMongoDBDatabaseFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mdd.Response.Response.StatusCode != http.StatusNoContent {
 			mdd, err = client.CreateUpdateMongoDBDatabaseResponder(mdd.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateMongoDBDatabaseFuture", "Result", mdd.Response.Response, "Failure responding to request")
@@ -1076,7 +1104,11 @@ func (client DatabaseAccountsClient) CreateUpdateSQLContainerSender(req *http.Re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sc.Response.Response, err = future.GetResult(sender); err == nil && sc.Response.Response.StatusCode != http.StatusNoContent {
+		sc.Response.Response, err = future.GetResult(sender)
+		if sc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateSQLContainerFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sc.Response.Response.StatusCode != http.StatusNoContent {
 			sc, err = client.CreateUpdateSQLContainerResponder(sc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateSQLContainerFuture", "Result", sc.Response.Response, "Failure responding to request")
@@ -1196,7 +1228,11 @@ func (client DatabaseAccountsClient) CreateUpdateSQLDatabaseSender(req *http.Req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sd.Response.Response, err = future.GetResult(sender); err == nil && sd.Response.Response.StatusCode != http.StatusNoContent {
+		sd.Response.Response, err = future.GetResult(sender)
+		if sd.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateSQLDatabaseFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sd.Response.Response.StatusCode != http.StatusNoContent {
 			sd, err = client.CreateUpdateSQLDatabaseResponder(sd.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateSQLDatabaseFuture", "Result", sd.Response.Response, "Failure responding to request")
@@ -1316,7 +1352,11 @@ func (client DatabaseAccountsClient) CreateUpdateTableSender(req *http.Request) 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t.Response.Response, err = future.GetResult(sender)
+		if t.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateTableFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
 			t, err = client.CreateUpdateTableResponder(t.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateTableFuture", "Result", t.Response.Response, "Failure responding to request")
@@ -6111,7 +6151,11 @@ func (client DatabaseAccountsClient) PatchSender(req *http.Request) (future Data
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if da.Response.Response, err = future.GetResult(sender); err == nil && da.Response.Response.StatusCode != http.StatusNoContent {
+		da.Response.Response, err = future.GetResult(sender)
+		if da.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsPatchFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && da.Response.Response.StatusCode != http.StatusNoContent {
 			da, err = client.PatchResponder(da.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsPatchFuture", "Result", da.Response.Response, "Failure responding to request")
@@ -6336,7 +6380,11 @@ func (client DatabaseAccountsClient) UpdateCassandraKeyspaceThroughputSender(req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t.Response.Response, err = future.GetResult(sender)
+		if t.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateCassandraKeyspaceThroughputFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
 			t, err = client.UpdateCassandraKeyspaceThroughputResponder(t.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateCassandraKeyspaceThroughputFuture", "Result", t.Response.Response, "Failure responding to request")
@@ -6458,7 +6506,11 @@ func (client DatabaseAccountsClient) UpdateCassandraTableThroughputSender(req *h
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t.Response.Response, err = future.GetResult(sender)
+		if t.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateCassandraTableThroughputFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
 			t, err = client.UpdateCassandraTableThroughputResponder(t.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateCassandraTableThroughputFuture", "Result", t.Response.Response, "Failure responding to request")
@@ -6578,7 +6630,11 @@ func (client DatabaseAccountsClient) UpdateGremlinDatabaseThroughputSender(req *
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t.Response.Response, err = future.GetResult(sender)
+		if t.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateGremlinDatabaseThroughputFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
 			t, err = client.UpdateGremlinDatabaseThroughputResponder(t.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateGremlinDatabaseThroughputFuture", "Result", t.Response.Response, "Failure responding to request")
@@ -6699,7 +6755,11 @@ func (client DatabaseAccountsClient) UpdateGremlinGraphThroughputSender(req *htt
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t.Response.Response, err = future.GetResult(sender)
+		if t.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateGremlinGraphThroughputFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
 			t, err = client.UpdateGremlinGraphThroughputResponder(t.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateGremlinGraphThroughputFuture", "Result", t.Response.Response, "Failure responding to request")
@@ -6821,7 +6881,11 @@ func (client DatabaseAccountsClient) UpdateMongoDBCollectionThroughputSender(req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t.Response.Response, err = future.GetResult(sender)
+		if t.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateMongoDBCollectionThroughputFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
 			t, err = client.UpdateMongoDBCollectionThroughputResponder(t.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateMongoDBCollectionThroughputFuture", "Result", t.Response.Response, "Failure responding to request")
@@ -6941,7 +7005,11 @@ func (client DatabaseAccountsClient) UpdateMongoDBDatabaseThroughputSender(req *
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t.Response.Response, err = future.GetResult(sender)
+		if t.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateMongoDBDatabaseThroughputFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
 			t, err = client.UpdateMongoDBDatabaseThroughputResponder(t.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateMongoDBDatabaseThroughputFuture", "Result", t.Response.Response, "Failure responding to request")
@@ -7062,7 +7130,11 @@ func (client DatabaseAccountsClient) UpdateSQLContainerThroughputSender(req *htt
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t.Response.Response, err = future.GetResult(sender)
+		if t.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateSQLContainerThroughputFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
 			t, err = client.UpdateSQLContainerThroughputResponder(t.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateSQLContainerThroughputFuture", "Result", t.Response.Response, "Failure responding to request")
@@ -7181,7 +7253,11 @@ func (client DatabaseAccountsClient) UpdateSQLDatabaseThroughputSender(req *http
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t.Response.Response, err = future.GetResult(sender)
+		if t.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateSQLDatabaseThroughputFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
 			t, err = client.UpdateSQLDatabaseThroughputResponder(t.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateSQLDatabaseThroughputFuture", "Result", t.Response.Response, "Failure responding to request")
@@ -7300,7 +7376,11 @@ func (client DatabaseAccountsClient) UpdateTableThroughputSender(req *http.Reque
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t.Response.Response, err = future.GetResult(sender)
+		if t.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateTableThroughputFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
 			t, err = client.UpdateTableThroughputResponder(t.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateTableThroughputFuture", "Result", t.Response.Response, "Failure responding to request")

@@ -124,7 +124,11 @@ func (client ElasticPoolsClient) CreateOrUpdateSender(req *http.Request) (future
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ep.Response.Response, err = future.GetResult(sender); err == nil && ep.Response.Response.StatusCode != http.StatusNoContent {
+		ep.Response.Response, err = future.GetResult(sender)
+		if ep.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.ElasticPoolsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ep.Response.Response.StatusCode != http.StatusNoContent {
 			ep, err = client.CreateOrUpdateResponder(ep.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.ElasticPoolsCreateOrUpdateFuture", "Result", ep.Response.Response, "Failure responding to request")
@@ -621,7 +625,11 @@ func (client ElasticPoolsClient) UpdateSender(req *http.Request) (future Elastic
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ep.Response.Response, err = future.GetResult(sender); err == nil && ep.Response.Response.StatusCode != http.StatusNoContent {
+		ep.Response.Response, err = future.GetResult(sender)
+		if ep.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.ElasticPoolsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ep.Response.Response.StatusCode != http.StatusNoContent {
 			ep, err = client.UpdateResponder(ep.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.ElasticPoolsUpdateFuture", "Result", ep.Response.Response, "Failure responding to request")

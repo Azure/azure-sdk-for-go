@@ -962,7 +962,11 @@ func (client TriggersClient) SubscribeToEventsSender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tsos.Response.Response, err = future.GetResult(sender); err == nil && tsos.Response.Response.StatusCode != http.StatusNoContent {
+		tsos.Response.Response, err = future.GetResult(sender)
+		if tsos.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "datafactory.TriggersSubscribeToEventsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tsos.Response.Response.StatusCode != http.StatusNoContent {
 			tsos, err = client.SubscribeToEventsResponder(tsos.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "datafactory.TriggersSubscribeToEventsFuture", "Result", tsos.Response.Response, "Failure responding to request")
@@ -1077,7 +1081,11 @@ func (client TriggersClient) UnsubscribeFromEventsSender(req *http.Request) (fut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tsos.Response.Response, err = future.GetResult(sender); err == nil && tsos.Response.Response.StatusCode != http.StatusNoContent {
+		tsos.Response.Response, err = future.GetResult(sender)
+		if tsos.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "datafactory.TriggersUnsubscribeFromEventsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tsos.Response.Response.StatusCode != http.StatusNoContent {
 			tsos, err = client.UnsubscribeFromEventsResponder(tsos.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "datafactory.TriggersUnsubscribeFromEventsFuture", "Result", tsos.Response.Response, "Failure responding to request")

@@ -119,7 +119,11 @@ func (client FormulaClient) CreateOrUpdateResourceSender(req *http.Request) (fut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if f.Response.Response, err = future.GetResult(sender); err == nil && f.Response.Response.StatusCode != http.StatusNoContent {
+		f.Response.Response, err = future.GetResult(sender)
+		if f.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "dtl.FormulaCreateOrUpdateResourceFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && f.Response.Response.StatusCode != http.StatusNoContent {
 			f, err = client.CreateOrUpdateResourceResponder(f.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "dtl.FormulaCreateOrUpdateResourceFuture", "Result", f.Response.Response, "Failure responding to request")

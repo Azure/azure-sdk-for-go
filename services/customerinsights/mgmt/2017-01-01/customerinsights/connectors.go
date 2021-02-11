@@ -134,7 +134,11 @@ func (client ConnectorsClient) CreateOrUpdateSender(req *http.Request) (future C
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if crf.Response.Response, err = future.GetResult(sender); err == nil && crf.Response.Response.StatusCode != http.StatusNoContent {
+		crf.Response.Response, err = future.GetResult(sender)
+		if crf.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.ConnectorsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && crf.Response.Response.StatusCode != http.StatusNoContent {
 			crf, err = client.CreateOrUpdateResponder(crf.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "customerinsights.ConnectorsCreateOrUpdateFuture", "Result", crf.Response.Response, "Failure responding to request")

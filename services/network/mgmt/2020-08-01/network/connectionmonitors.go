@@ -150,7 +150,11 @@ func (client ConnectionMonitorsClient) CreateOrUpdateSender(req *http.Request) (
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cmr.Response.Response, err = future.GetResult(sender); err == nil && cmr.Response.Response.StatusCode != http.StatusNoContent {
+		cmr.Response.Response, err = future.GetResult(sender)
+		if cmr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ConnectionMonitorsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cmr.Response.Response.StatusCode != http.StatusNoContent {
 			cmr, err = client.CreateOrUpdateResponder(cmr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ConnectionMonitorsCreateOrUpdateFuture", "Result", cmr.Response.Response, "Failure responding to request")
@@ -495,7 +499,11 @@ func (client ConnectionMonitorsClient) QuerySender(req *http.Request) (future Co
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cmqr.Response.Response, err = future.GetResult(sender); err == nil && cmqr.Response.Response.StatusCode != http.StatusNoContent {
+		cmqr.Response.Response, err = future.GetResult(sender)
+		if cmqr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ConnectionMonitorsQueryFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cmqr.Response.Response.StatusCode != http.StatusNoContent {
 			cmqr, err = client.QueryResponder(cmqr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ConnectionMonitorsQueryFuture", "Result", cmqr.Response.Response, "Failure responding to request")

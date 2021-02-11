@@ -120,7 +120,11 @@ func (client CustomIPPrefixesClient) CreateOrUpdateSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cip.Response.Response, err = future.GetResult(sender); err == nil && cip.Response.Response.StatusCode != http.StatusNoContent {
+		cip.Response.Response, err = future.GetResult(sender)
+		if cip.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.CustomIPPrefixesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cip.Response.Response.StatusCode != http.StatusNoContent {
 			cip, err = client.CreateOrUpdateResponder(cip.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.CustomIPPrefixesCreateOrUpdateFuture", "Result", cip.Response.Response, "Failure responding to request")

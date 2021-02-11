@@ -133,7 +133,11 @@ func (client DatabasesClient) CreateOrUpdateSender(req *http.Request) (future Da
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
+		d.Response.Response, err = future.GetResult(sender)
+		if d.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "mysqlflexibleservers.DatabasesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
 			d, err = client.CreateOrUpdateResponder(d.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "mysqlflexibleservers.DatabasesCreateOrUpdateFuture", "Result", d.Response.Response, "Failure responding to request")

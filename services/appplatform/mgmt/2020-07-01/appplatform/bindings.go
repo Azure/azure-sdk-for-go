@@ -123,7 +123,11 @@ func (client BindingsClient) CreateOrUpdateSender(req *http.Request) (future Bin
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if br.Response.Response, err = future.GetResult(sender); err == nil && br.Response.Response.StatusCode != http.StatusNoContent {
+		br.Response.Response, err = future.GetResult(sender)
+		if br.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "appplatform.BindingsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && br.Response.Response.StatusCode != http.StatusNoContent {
 			br, err = client.CreateOrUpdateResponder(br.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "appplatform.BindingsCreateOrUpdateFuture", "Result", br.Response.Response, "Failure responding to request")
@@ -525,7 +529,11 @@ func (client BindingsClient) UpdateSender(req *http.Request) (future BindingsUpd
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if br.Response.Response, err = future.GetResult(sender); err == nil && br.Response.Response.StatusCode != http.StatusNoContent {
+		br.Response.Response, err = future.GetResult(sender)
+		if br.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "appplatform.BindingsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && br.Response.Response.StatusCode != http.StatusNoContent {
 			br, err = client.UpdateResponder(br.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "appplatform.BindingsUpdateFuture", "Result", br.Response.Response, "Failure responding to request")

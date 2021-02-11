@@ -129,7 +129,11 @@ func (client VirtualMachineImageTemplatesClient) CreateOrUpdateSender(req *http.
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if it.Response.Response, err = future.GetResult(sender); err == nil && it.Response.Response.StatusCode != http.StatusNoContent {
+		it.Response.Response, err = future.GetResult(sender)
+		if it.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && it.Response.Response.StatusCode != http.StatusNoContent {
 			it, err = client.CreateOrUpdateResponder(it.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesCreateOrUpdateFuture", "Result", it.Response.Response, "Failure responding to request")

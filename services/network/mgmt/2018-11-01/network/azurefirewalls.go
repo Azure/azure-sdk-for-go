@@ -119,7 +119,11 @@ func (client AzureFirewallsClient) CreateOrUpdateSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if af.Response.Response, err = future.GetResult(sender); err == nil && af.Response.Response.StatusCode != http.StatusNoContent {
+		af.Response.Response, err = future.GetResult(sender)
+		if af.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.AzureFirewallsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && af.Response.Response.StatusCode != http.StatusNoContent {
 			af, err = client.CreateOrUpdateResponder(af.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.AzureFirewallsCreateOrUpdateFuture", "Result", af.Response.Response, "Failure responding to request")

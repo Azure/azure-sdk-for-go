@@ -129,7 +129,11 @@ func (client EndpointsClient) CreateSender(req *http.Request) (future EndpointsC
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if e.Response.Response, err = future.GetResult(sender); err == nil && e.Response.Response.StatusCode != http.StatusNoContent {
+		e.Response.Response, err = future.GetResult(sender)
+		if e.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.EndpointsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && e.Response.Response.StatusCode != http.StatusNoContent {
 			e, err = client.CreateResponder(e.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.EndpointsCreateFuture", "Result", e.Response.Response, "Failure responding to request")
@@ -676,7 +680,11 @@ func (client EndpointsClient) StartSender(req *http.Request) (future EndpointsSt
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if e.Response.Response, err = future.GetResult(sender); err == nil && e.Response.Response.StatusCode != http.StatusNoContent {
+		e.Response.Response, err = future.GetResult(sender)
+		if e.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.EndpointsStartFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && e.Response.Response.StatusCode != http.StatusNoContent {
 			e, err = client.StartResponder(e.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.EndpointsStartFuture", "Result", e.Response.Response, "Failure responding to request")
@@ -775,7 +783,11 @@ func (client EndpointsClient) StopSender(req *http.Request) (future EndpointsSto
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if e.Response.Response, err = future.GetResult(sender); err == nil && e.Response.Response.StatusCode != http.StatusNoContent {
+		e.Response.Response, err = future.GetResult(sender)
+		if e.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.EndpointsStopFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && e.Response.Response.StatusCode != http.StatusNoContent {
 			e, err = client.StopResponder(e.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.EndpointsStopFuture", "Result", e.Response.Response, "Failure responding to request")
@@ -877,7 +889,11 @@ func (client EndpointsClient) UpdateSender(req *http.Request) (future EndpointsU
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if e.Response.Response, err = future.GetResult(sender); err == nil && e.Response.Response.StatusCode != http.StatusNoContent {
+		e.Response.Response, err = future.GetResult(sender)
+		if e.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.EndpointsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && e.Response.Response.StatusCode != http.StatusNoContent {
 			e, err = client.UpdateResponder(e.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.EndpointsUpdateFuture", "Result", e.Response.Response, "Failure responding to request")

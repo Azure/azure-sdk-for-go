@@ -233,7 +233,11 @@ func (client SparkJobDefinitionClient) DebugSparkJobDefinitionSender(req *http.R
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sbj.Response.Response, err = future.GetResult(sender); err == nil && sbj.Response.Response.StatusCode != http.StatusNoContent {
+		sbj.Response.Response, err = future.GetResult(sender)
+		if sbj.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionDebugSparkJobDefinitionFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sbj.Response.Response.StatusCode != http.StatusNoContent {
 			sbj, err = client.DebugSparkJobDefinitionResponder(sbj.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionDebugSparkJobDefinitionFuture", "Result", sbj.Response.Response, "Failure responding to request")
@@ -407,7 +411,11 @@ func (client SparkJobDefinitionClient) ExecuteSparkJobDefinitionSender(req *http
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sbj.Response.Response, err = future.GetResult(sender); err == nil && sbj.Response.Response.StatusCode != http.StatusNoContent {
+		sbj.Response.Response, err = future.GetResult(sender)
+		if sbj.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionExecuteSparkJobDefinitionFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sbj.Response.Response.StatusCode != http.StatusNoContent {
 			sbj, err = client.ExecuteSparkJobDefinitionResponder(sbj.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionExecuteSparkJobDefinitionFuture", "Result", sbj.Response.Response, "Failure responding to request")

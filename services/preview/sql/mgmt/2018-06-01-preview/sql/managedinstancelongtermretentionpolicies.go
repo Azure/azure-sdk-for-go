@@ -126,7 +126,11 @@ func (client ManagedInstanceLongTermRetentionPoliciesClient) CreateOrUpdateSende
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if miltrp.Response.Response, err = future.GetResult(sender); err == nil && miltrp.Response.Response.StatusCode != http.StatusNoContent {
+		miltrp.Response.Response, err = future.GetResult(sender)
+		if miltrp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && miltrp.Response.Response.StatusCode != http.StatusNoContent {
 			miltrp, err = client.CreateOrUpdateResponder(miltrp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateFuture", "Result", miltrp.Response.Response, "Failure responding to request")

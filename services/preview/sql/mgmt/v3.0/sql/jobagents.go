@@ -133,7 +133,11 @@ func (client JobAgentsClient) CreateOrUpdateSender(req *http.Request) (future Jo
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ja.Response.Response, err = future.GetResult(sender); err == nil && ja.Response.Response.StatusCode != http.StatusNoContent {
+		ja.Response.Response, err = future.GetResult(sender)
+		if ja.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.JobAgentsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ja.Response.Response.StatusCode != http.StatusNoContent {
 			ja, err = client.CreateOrUpdateResponder(ja.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.JobAgentsCreateOrUpdateFuture", "Result", ja.Response.Response, "Failure responding to request")
@@ -527,7 +531,11 @@ func (client JobAgentsClient) UpdateSender(req *http.Request) (future JobAgentsU
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ja.Response.Response, err = future.GetResult(sender); err == nil && ja.Response.Response.StatusCode != http.StatusNoContent {
+		ja.Response.Response, err = future.GetResult(sender)
+		if ja.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.JobAgentsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ja.Response.Response.StatusCode != http.StatusNoContent {
 			ja, err = client.UpdateResponder(ja.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.JobAgentsUpdateFuture", "Result", ja.Response.Response, "Failure responding to request")

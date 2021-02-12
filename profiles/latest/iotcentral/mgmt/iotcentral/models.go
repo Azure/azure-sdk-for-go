@@ -48,6 +48,7 @@ type AppPatch = original.AppPatch
 type AppProperties = original.AppProperties
 type AppSkuInfo = original.AppSkuInfo
 type AppTemplate = original.AppTemplate
+type AppTemplateLocations = original.AppTemplateLocations
 type AppTemplatesResult = original.AppTemplatesResult
 type AppTemplatesResultIterator = original.AppTemplatesResultIterator
 type AppTemplatesResultPage = original.AppTemplatesResultPage
